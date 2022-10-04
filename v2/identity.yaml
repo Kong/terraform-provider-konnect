@@ -1,0 +1,1069 @@
+openapi: 3.0.2
+info:
+  title: Konnect Identity API
+  version: '2.0'
+  description: The management API for Kong Konnect Identity resources.
+  contact:
+    name: Kong
+    email: konnect-noreply@konghq.com
+    url: 'https://cloud.konghq.com'
+servers:
+  - url: 'http://localhost:8000/v2'
+    description: Local
+  - url: 'https://global.api.konghq.tech/v2'
+    description: Development
+  - url: 'https://global.api.konghq.com/v2'
+    description: Production
+paths:
+  /identity-provider/team-assignments:
+    put:
+      summary: UpdateTeamAssignments
+      operationId: update-idp-team-assignments
+      responses:
+        '200':
+          $ref: '#/components/responses/TeamAssignmentCollection'
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '404':
+          description: Not Found
+        '412':
+          $ref: '#/components/responses/Error'
+        '500':
+          $ref: '#/components/responses/Error'
+      tags:
+        - IdPs
+      description: Update the IdP group to Konnect team mapping.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateTeamAssignments'
+    get:
+      summary: GetTeamAssignment
+      operationId: get-idp-team-assignments
+      responses:
+        '200':
+          $ref: '#/components/responses/TeamAssignmentCollection'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '404':
+          $ref: '#/components/responses/Error'
+        '500':
+          $ref: '#/components/responses/Error'
+      tags:
+        - IdPs
+      description: Get the IdP group to Konnect team mapping.
+  /teams:
+    get:
+      summary: List Teams
+      responses:
+        '200':
+          $ref: '#/components/responses/TeamCollection'
+      operationId: list-teams
+      description: List the teams.
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+      tags:
+        - Teams
+    parameters: []
+    post:
+      summary: Create Team
+      operationId: create-team
+      responses:
+        '201':
+          $ref: '#/components/responses/TeamSingle'
+        '400':
+          $ref: '#/components/responses/Error'
+      tags:
+        - Teams
+      requestBody:
+        $ref: '#/components/requestBodies/CreateTeam'
+      description: Create a team.
+  '/teams/{teamID}':
+    parameters:
+      - schema:
+          type: string
+          format: uuid
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        name: teamID
+        in: path
+        required: true
+        description: ID of the team.
+    get:
+      summary: Get Team
+      responses:
+        '200':
+          $ref: '#/components/responses/TeamSingle'
+        '404':
+          $ref: '#/components/responses/Error'
+      operationId: get-team
+      description: Get an individual team.
+      tags:
+        - Teams
+    patch:
+      summary: Update Team
+      operationId: update-team
+      responses:
+        '200':
+          $ref: '#/components/responses/TeamSingle'
+        '404':
+          $ref: '#/components/responses/Error'
+      description: Update an individual team.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateTeam'
+      tags:
+        - Teams
+    delete:
+      summary: Delete Team
+      operationId: delete-team
+      responses:
+        '204':
+          description: No Content
+      description: Delete an individual team.
+      tags:
+        - Teams
+  '/teams/{teamID}/users':
+    parameters:
+      - schema:
+          type: string
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+          format: uuid
+        name: teamID
+        in: path
+        required: true
+        description: ID of the team.
+    get:
+      summary: List Team Users
+      responses:
+        '200':
+          $ref: '#/components/responses/UserCollection'
+        '404':
+          $ref: '#/components/responses/Error'
+      operationId: list-team-users
+      description: List a team's users.
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+      tags:
+        - Team Membership
+    post:
+      summary: Add User
+      operationId: add-user-to-team
+      responses:
+        '201':
+          description: Created
+        '400':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+      description: Add a user to a team.
+      requestBody:
+        $ref: '#/components/requestBodies/AddUserToTeam'
+      tags:
+        - Team Membership
+  '/teams/{teamID}/users/{userID}':
+    parameters:
+      - schema:
+          type: string
+          format: uuid
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        name: userID
+        in: path
+        required: true
+        description: ID of the user.
+      - schema:
+          type: string
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+          format: uuid
+        name: teamID
+        in: path
+        required: true
+        description: ID of the team.
+    delete:
+      summary: Remove User
+      operationId: remove-user-from-team
+      responses:
+        '204':
+          description: No Content
+        '404':
+          $ref: '#/components/responses/Error'
+      description: Remove a user from a team.
+      tags:
+        - Team Membership
+  '/teams/{teamID}/assigned-roles':
+    parameters:
+      - schema:
+          type: string
+          format: uuid
+          example: e81bc3e5-e9db-4764-b7dd-e81e39072cbe
+        name: teamID
+        in: path
+        required: true
+    get:
+      summary: List Team Roles
+      tags:
+        - Roles
+      responses:
+        '200':
+          $ref: '#/components/responses/AssignedRoleCollection'
+        '404':
+          $ref: '#/components/responses/Error'
+        '500':
+          $ref: '#/components/responses/Error'
+      operationId: list-team-roles
+      description: List a users assigned roles.
+    post:
+      summary: Assign Role
+      operationId: teams-assign-role
+      responses:
+        '200':
+          $ref: '#/components/responses/AssignedRoleSingle'
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '404':
+          $ref: '#/components/responses/Error'
+        '500':
+          $ref: '#/components/responses/Error'
+      description: Assign a role to a user.
+      requestBody:
+        $ref: '#/components/requestBodies/AssignRole'
+      tags:
+        - Roles
+  '/teams/{teamID}/assigned-roles/{roleID}':
+    parameters:
+      - schema:
+          type: string
+          format: uuid
+          example: e81bc3e5-e9db-4764-b7dd-e81e39072cbe
+        name: teamID
+        in: path
+        required: true
+      - schema:
+          type: string
+          example: 8350205f-a305-4e39-abe9-bc082a80091a
+          format: uuid
+        name: roleID
+        in: path
+        required: true
+    delete:
+      summary: Remove Role
+      operationId: teams-remove-role
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '404':
+          $ref: '#/components/responses/Error'
+        '500':
+          $ref: '#/components/responses/Error'
+      tags:
+        - Roles
+      description: Remove an assigned role from a team.
+  /users:
+    get:
+      summary: List Users
+      tags:
+        - Users
+      responses:
+        '200':
+          $ref: '#/components/responses/UserCollection'
+      operationId: list-users
+      description: List the users.
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+  '/users/{userID}':
+    parameters:
+      - schema:
+          type: string
+          format: uuid
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        name: userID
+        in: path
+        required: true
+        description: ID of the user.
+    get:
+      summary: Get User
+      tags:
+        - Users
+      responses:
+        '200':
+          $ref: '#/components/responses/UserSingle'
+        '404':
+          $ref: '#/components/responses/Error'
+      operationId: get-user
+      description: Get an individual user.
+    patch:
+      summary: Update User
+      operationId: update-user
+      responses:
+        '200':
+          $ref: '#/components/responses/UserSingle'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '404':
+          $ref: '#/components/responses/Error'
+      description: Update an individual user.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateUser'
+      tags:
+        - Users
+    delete:
+      summary: Delete User
+      operationId: delete-user
+      responses:
+        '204':
+          description: No Content
+      description: Delete an individual user.
+      tags:
+        - Users
+  '/users/{userID}/teams':
+    parameters:
+      - schema:
+          type: string
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+          format: uuid
+        name: userID
+        in: path
+        required: true
+        description: ID of the user.
+    get:
+      summary: List User Teams
+      responses:
+        '200':
+          $ref: '#/components/responses/TeamCollection'
+        '404':
+          $ref: '#/components/responses/Error'
+      operationId: list-user-teams
+      description: List a users teams.
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+      tags:
+        - Team Membership
+  '/users/{userID}/assigned-roles':
+    parameters:
+      - schema:
+          type: string
+          format: uuid
+          example: e81bc3e5-e9db-4764-b7dd-e81e39072cbe
+        name: userID
+        in: path
+        required: true
+    get:
+      summary: List User Roles
+      tags:
+        - Roles
+      responses:
+        '200':
+          $ref: '#/components/responses/AssignedRoleCollection'
+        '404':
+          $ref: '#/components/responses/Error'
+        '500':
+          $ref: '#/components/responses/Error'
+      operationId: list-user-roles
+      description: List a users assigned roles.
+    post:
+      summary: Assign Role
+      operationId: users-assign-role
+      responses:
+        '200':
+          $ref: '#/components/responses/AssignedRoleSingle'
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '404':
+          $ref: '#/components/responses/Error'
+        '500':
+          $ref: '#/components/responses/Error'
+      description: Assign a role to a user.
+      requestBody:
+        $ref: '#/components/requestBodies/AssignRole'
+      tags:
+        - Roles
+  '/users/{userID}/assigned-roles/{roleID}':
+    parameters:
+      - schema:
+          type: string
+          format: uuid
+          example: e81bc3e5-e9db-4764-b7dd-e81e39072cbe
+        name: userID
+        in: path
+        required: true
+      - schema:
+          type: string
+          example: 8350205f-a305-4e39-abe9-bc082a80091a
+          format: uuid
+        name: roleID
+        in: path
+        required: true
+    delete:
+      summary: Remove Role
+      operationId: users-remove-role
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '404':
+          $ref: '#/components/responses/Error'
+        '500':
+          $ref: '#/components/responses/Error'
+      tags:
+        - Roles
+      description: Remove an assigned role from a user.
+components:
+  parameters:
+    PageSize:
+      name: 'page[size]'
+      description: The limit in the number of items in the page.
+      in: query
+      required: false
+      schema:
+        type: integer
+        example: 10
+    PageNumber:
+      name: 'page[number]'
+      description: The specific page number in the collection results.
+      in: query
+      required: false
+      schema:
+        type: integer
+        example: 2
+  responses:
+    Error:
+      description: A response in which an error has occurred.
+      content:
+        application/json:
+          schema:
+            type: object
+            x-examples:
+              Example:
+                type: 'https://kongapi.info/konnect/invalid-permissions'
+                status: 403
+                title: Invalid Permissions
+                detail: 'You must have the [administrator] role to perform this action'
+                instance: 'kong:trace:6c1ef33ae5bce33634d7d7d695c7f203'
+            properties:
+              type:
+                type: string
+                example: 'https://kongapi.info/konnect/invalid-permissions'
+                readOnly: true
+              status:
+                type: integer
+                example: 403
+                readOnly: true
+              title:
+                type: string
+                example: Invalid Permissions
+                readOnly: true
+              instance:
+                type: string
+                example: 'konnect:trace:6c1ef33ae5bce33634d7d7d695c7f203'
+                readOnly: true
+              detail:
+                type: string
+                example: 'You must have the [administrator] role to perform this action'
+                readOnly: true
+              invalid_parameters:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    field:
+                      type: string
+                      example: name
+                      readOnly: true
+                    rule:
+                      type: string
+                      example: required
+                      readOnly: true
+                    reason:
+                      type: string
+                      example: is a required field
+                      readOnly: true
+                    choices:
+                      type: array
+                      uniqueItems: true
+                      items: {}
+                      readOnly: true
+          examples:
+            '400':
+              value:
+                type: 'https://kongapi.info/konnect/validation-failed'
+                status: 400
+                title: Validation Failed
+                instance: 'konnect:trace:6c1ef33ae5bce33634d7d7d695c7f203'
+                invalid_parameters:
+                  - field: name
+                    rule: required
+                    reason: is a required field
+                  - field: role
+                    reason: 'must be one of: [admin, member]'
+                    rule: enum
+                    choices:
+                      - admin
+                      - member
+            '401':
+              value:
+                type: 'https://kongapi.info/konnect/failed-authentication'
+                status: 403
+                title: Failed Authentication
+                instance: 'konnect:trace:6c1ef33ae5bce33634d7d7d695c7f203'
+                detail: 'The [username] or [password] are invalid'
+            '403':
+              value:
+                type: 'https://kongapi.info/konnect/invalid-permissions'
+                status: 403
+                title: Invalid Permissions
+                detail: 'You must have the [administrator] role to perform this action'
+                instance: 'konnect:trace:6c1ef33ae5bce33634d7d7d695c7f203'
+            '412':
+              value:
+                type: 'https://kongapi.info/konnect/precondition-failed'
+                status: 412
+                title: Precondition Failed
+                instance: 'konnect:trace:6c1ef33ae5bce33634d7d7d695c7f203'
+                detail: Group mapping is disabled
+      headers: {}
+    UserSingle:
+      description: A get action response of a single user.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/User'
+          examples:
+            Example:
+              value:
+                id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+                email: iamnande@konghq.com
+                full_name: Nicholas L Anderson
+                preferred_name: iamnande
+                active: true
+                created_at: '1992-02-07T17:46:57.52Z'
+                updated_at: '2022-02-07T17:00:00.52Z'
+    UserCollection:
+      description: A paginated list response for a collection of users.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              meta:
+                $ref: '#/components/schemas/PaginatedMeta'
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+          examples:
+            Example:
+              value:
+                meta:
+                  page:
+                    number: 2
+                    size: 1
+                    total: 10
+                data:
+                  - id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+                    email: iamnande@konghq.com
+                    full_name: Nicholas L Anderson
+                    preferred_name: iamnande
+                    active: true
+                    created_at: '1992-02-07T17:46:57.52Z'
+                    updated_at: '2022-02-07T17:00:00.52Z'
+    TeamSingle:
+      description: A get action response of a single team.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Team'
+          examples:
+            Example:
+              value:
+                id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+                name: IDM - Developers
+                description: The developers for the IDM API.
+                system_team: false
+                created_at: '1992-02-07T17:46:57.52Z'
+                updated_at: '2022-02-07T17:00:00.52Z'
+    TeamCollection:
+      description: A paginated list response for a collection of users.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              meta:
+                $ref: '#/components/schemas/PaginatedMeta'
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Team'
+          examples:
+            Example:
+              value:
+                meta:
+                  page:
+                    number: 2
+                    size: 1
+                    total: 10
+                data:
+                  - id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+                    name: IDM - Developers
+                    description: The developers for the IDM API.
+                    system_team: false
+                    created_at: '1992-02-07T17:46:57.52Z'
+                    updated_at: '2022-02-07T17:00:00.52Z'
+    TeamAssignmentCollection:
+      description: A paginated list response for a collection of team assignments.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              assignments:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TeamAssignment'
+          examples:
+            Example:
+              value:
+                assignments:
+                  - group: Service Developers
+                    team_ids:
+                      - 6801e673-cc10-498a-94cd-4271de07a0d3
+    AssignedRoleSingle:
+      description: A get action response of a single assigned role.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AssignedRole'
+          examples:
+            Example:
+              value:
+                id: eaf7adf1-32c8-4bbf-b960-d1f8456afe67
+                role: viewer
+                entity_id: 817d0422-45c9-4d88-8d64-45aef05c1ae7
+                entity_type: runtime_groups
+                entity_region: eu
+    AssignedRoleCollection:
+      description: A paginated list response for a collection of assigned roles.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              meta:
+                $ref: '#/components/schemas/PaginatedMeta'
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AssignedRole'
+          examples:
+            CollectionExample:
+              value:
+                meta:
+                  page:
+                    number: 2
+                    size: 10
+                    total: 100
+                data:
+                  - id: b02e23c5-8ee4-4e5a-99f4-43329923adcd
+                    role: viewer
+                    entity_id: 437c7192-fea0-4f35-8478-c8d57783f8c1
+                    entity_type: runtime_groups
+                    entity_region: eu
+                  - id: 869d9402-f117-4f9a-840f-69acaf70a81a
+                    role: admin
+                    entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
+                    entity_type: reports
+                    entity_region: '*'
+  requestBodies:
+    UpdateUser:
+      description: The request schema for the update user request.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                format: email
+                example: iamnande@konghq.com
+                writeOnly: true
+              full_name:
+                type: string
+                pattern: '^[\w \W]+$'
+                example: Nicholas L Anderson
+                writeOnly: true
+              preferred_name:
+                type: string
+                maxLength: 250
+                example: iamnande
+                writeOnly: true
+          examples:
+            Example:
+              value:
+                email: iamnande@konghq.com
+                full_name: Nicholas L Anderson
+                preferred_name: iamnande
+    CreateTeam:
+      description: The request schema for the create team request.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                example: IDM - Developers
+                pattern: '^[\w \W]+$'
+                writeOnly: true
+              description:
+                type: string
+                maxLength: 250
+                example: The collection of humans that work on the Identity Management (IDM) API.
+                writeOnly: true
+            required:
+              - name
+          examples:
+            Example:
+              value:
+                name: IDM - Developers
+                description: The collection of humans that work on the Identity Management (IDM) API.
+    UpdateTeam:
+      description: The request schema for the update team request.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                example: IDM - Developers
+                pattern: '^[\w \W]+$'
+                writeOnly: true
+              description:
+                type: string
+                maxLength: 250
+                example: The collection of humans that work on the Identity Management (IDM) API.
+                writeOnly: true
+          examples:
+            Example:
+              value:
+                name: IDM - Developers
+                description: The collection of humans that work on the Identity Management (IDM) API.
+    AddUserToTeam:
+      description: The request schema for the add user to team.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                example: df120cb4-f60b-47bc-a2f8-6a28e6a3c63b
+                format: uuid
+                writeOnly: true
+            required:
+              - id
+          examples:
+            Example:
+              value:
+                id: df120cb4-f60b-47bc-a2f8-6a28e6a3c63b
+    UpdateTeamAssignments:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              assignments:
+                type: array
+                minItems: 1
+                maxItems: 1000
+                items:
+                  type: object
+                  properties:
+                    group:
+                      type: string
+                      example: Service Developers
+                    team_ids:
+                      type: array
+                      uniqueItems: true
+                      items:
+                        type: string
+                        example: 6801e673-cc10-498a-94cd-4271de07a0d3
+                        format: uuid
+                        writeOnly: true
+                      writeOnly: true
+                  required:
+                    - group
+                    - team_ids
+                  writeOnly: true
+            required:
+              - assignments
+          examples:
+            Example:
+              value:
+                assignments:
+                  - group: Service Developers
+                    team_ids:
+                      - 6801e673-cc10-498a-94cd-4271de07a0d3
+      description: The request schema for the update team assignments request.
+    AssignRole:
+      content:
+        application/json:
+          schema:
+            type: object
+            description: An assigned role is a role that has been assigned to a user or team.
+            x-examples:
+              US Example:
+                id: 1a3c2169-27f8-4594-926b-41df3432d5dc
+                role: viewer
+                entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
+                entity_type: runtime_groups
+                entity_region: us
+              All Regions Example:
+                id: 1a3c2169-27f8-4594-926b-41df3432d5dc
+                role: admin
+                entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
+                entity_type: reports
+                entity_region: '*'
+            properties:
+              role:
+                type: string
+                example: viewer
+              entity_id:
+                type: string
+                format: uuid
+                example: e67490ce-44dc-4cbd-b65e-b52c746fc26a
+              entity_type:
+                type: string
+                example: runtime_groups
+              entity_region:
+                type: string
+                enum:
+                  - us
+                  - eu
+                  - jp
+                  - au
+                  - '*'
+                example: eu
+          examples:
+            US Example:
+              value:
+                role: viewer
+                entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
+                entity_type: runtime_groups
+                entity_region: us
+            All Regions Example:
+              value:
+                role: admin
+                entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
+                entity_type: reports
+                entity_region: '*'
+      description: Assign a role to a user or a team.
+  schemas:
+    PaginatedMeta:
+      type: object
+      properties:
+        page:
+          type: object
+          properties:
+            number:
+              type: integer
+              example: 2
+            size:
+              type: integer
+              example: 10
+            total:
+              type: integer
+              maximum: 1000
+              example: 100
+    User:
+      title: User
+      type: object
+      description: A user is a an individual Konnect user.
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+          readOnly: true
+        email:
+          type: string
+          format: email
+          example: iamnande@konghq.com
+          maxLength: 250
+        full_name:
+          type: string
+          pattern: '^[\w \W]+$'
+          example: Nicholas L Anderson
+          maxLength: 250
+        preferred_name:
+          type: string
+          example: iamnande
+          maxLength: 250
+        active:
+          type: boolean
+          default: true
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          example: '1992-02-07T17:46:57.52Z'
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          example: '2022-02-07T17:00:00.52Z'
+          readOnly: true
+      x-examples:
+        Example:
+          id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+          email: iamnande@konghq.com
+          full_name: Nicholas L Anderson
+          preferred_name: iamnande
+          active: true
+          created_at: '1992-02-07T17:46:57.52Z'
+          updated_at: '2022-02-07T17:00:00.52Z'
+    Team:
+      title: Team
+      type: object
+      description: A team is a collection of users.
+      x-examples:
+        Example:
+          id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+          name: IDM - Developers
+          description: The developers for the IDM API.
+          system_team: false
+          created_at: '1992-02-07T17:46:57.52Z'
+          updated_at: '2022-02-07T17:00:00.52Z'
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+          readOnly: true
+        name:
+          type: string
+          pattern: '^[\w \W]+$'
+          example: IDM - Developers
+          maxLength: 250
+        description:
+          type: string
+          example: The developers for the IDM API.
+          maxLength: 250
+        system_team:
+          type: boolean
+          default: false
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          example: '1992-02-07T17:46:57.52Z'
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          example: '2022-02-07T17:00:00.52Z'
+          readOnly: true
+    TeamAssignment:
+      title: TeamAssignment
+      x-stoplight:
+        id: x4v1bjuyy8u0t
+      type: object
+      description: A team assignment is a mapping of an IdP group to a Konnect Team.
+      properties:
+        group:
+          type: string
+          example: Service Developers
+        team_ids:
+          type: array
+          uniqueItems: true
+          items:
+            type: string
+            format: uuid
+            example: 6801e673-cc10-498a-94cd-4271de07a0d3
+      x-examples:
+        Example:
+          group: Service Developers
+          team_ids:
+            - 6801e673-cc10-498a-94cd-4271de07a0d3
+    AssignedRole:
+      title: AssignedRole
+      x-stoplight:
+        id: qg2tbuwjg5jpv
+      type: object
+      description: An assigned role is a role that has been assigned to a user or team.
+      x-examples:
+        US Example:
+          id: 1a3c2169-27f8-4594-926b-41df3432d5dc
+          role: viewer
+          entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
+          entity_type: runtime_groups
+          entity_region: us
+        All Regions Example:
+          id: 1a3c2169-27f8-4594-926b-41df3432d5dc
+          role: admin
+          entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
+          entity_type: reports
+          entity_region: '*'
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: eaf7adf1-32c8-4bbf-b960-d1f8456afe67
+        role:
+          type: string
+          example: viewer
+        entity_id:
+          type: string
+          format: uuid
+          example: 817d0422-45c9-4d88-8d64-45aef05c1ae7
+        entity_type:
+          type: string
+          example: runtime_groups
+        entity_region:
+          type: string
+          enum:
+            - us
+            - eu
+            - jp
+            - au
+            - '*'
+          example: eu
+  securitySchemes:
+    accessToken:
+      type: http
+      scheme: bearer
+      description: Konnect Access Token
+    personalAccessToken:
+      type: http
+      scheme: bearer
+      description: Konnect Personal Access Token (PAT)
+security:
+  - accessToken: []
+  - personalAccessToken: []
+tags:
+  - name: IdPs
+  - name: Roles
+  - name: Team Membership
+  - name: Teams
+  - name: Users
