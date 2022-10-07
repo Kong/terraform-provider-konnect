@@ -15,13 +15,13 @@ servers:
   - url: 'https://global.api.konghq.com/v2'
     description: Production
 paths:
-  /identity-provider/team-assignments:
+  /identity-provider/team-mappings:
     put:
-      summary: UpdateTeamAssignments
-      operationId: update-idp-team-assignments
+      summary: UpdateTeamMappings
+      operationId: update-idp-team-mappings
       responses:
         '200':
-          $ref: '#/components/responses/TeamAssignmentCollection'
+          $ref: '#/components/responses/TeamMappingCollection'
         '400':
           $ref: '#/components/responses/Error'
         '401':
@@ -36,13 +36,13 @@ paths:
         - IdPs
       description: Update the IdP group to Konnect team mapping.
       requestBody:
-        $ref: '#/components/requestBodies/UpdateTeamAssignments'
+        $ref: '#/components/requestBodies/UpdateTeamMappings'
     get:
-      summary: GetTeamAssignment
-      operationId: get-idp-team-assignments
+      summary: GetTeamMapping
+      operationId: get-idp-team-mappings
       responses:
         '200':
-          $ref: '#/components/responses/TeamAssignmentCollection'
+          $ref: '#/components/responses/TeamMappingCollection'
         '401':
           $ref: '#/components/responses/Error'
         '403':
@@ -630,21 +630,21 @@ components:
                     system_team: false
                     created_at: '2022-02-07T17:46:57.52Z'
                     updated_at: '2022-09-25T13:00:00.00Z'
-    TeamAssignmentCollection:
-      description: A paginated list response for a collection of team assignments.
+    TeamMappingCollection:
+      description: A paginated list response for a collection of team mappings.
       content:
         application/json:
           schema:
             type: object
             properties:
-              assignments:
+              mappings:
                 type: array
                 items:
-                  $ref: '#/components/schemas/TeamAssignment'
+                  $ref: '#/components/schemas/TeamMapping'
           examples:
             Example:
               value:
-                assignments:
+                mappings:
                   - group: Service Developers
                     team_ids:
                       - 6801e673-cc10-498a-94cd-4271de07a0d3
@@ -781,13 +781,13 @@ components:
             Example:
               value:
                 id: df120cb4-f60b-47bc-a2f8-6a28e6a3c63b
-    UpdateTeamAssignments:
+    UpdateTeamMappings:
       content:
         application/json:
           schema:
             type: object
             properties:
-              assignments:
+              mappings:
                 type: array
                 minItems: 1
                 maxItems: 1000
@@ -811,11 +811,11 @@ components:
                     - team_ids
                   writeOnly: true
             required:
-              - assignments
+              - mappings
           examples:
             Example:
               value:
-                assignments:
+                mappings:
                   - group: Service Developers
                     team_ids:
                       - 6801e673-cc10-498a-94cd-4271de07a0d3
@@ -976,8 +976,8 @@ components:
           format: date-time
           example: '2022-02-07T17:00:00.52Z'
           readOnly: true
-    TeamAssignment:
-      title: TeamAssignment
+    TeamMapping:
+      title: TeamMapping
       type: object
       description: A team assignment is a mapping of an IdP group to a Konnect Team.
       properties:
