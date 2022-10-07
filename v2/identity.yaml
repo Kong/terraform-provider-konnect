@@ -828,13 +828,13 @@ components:
             description: An assigned role is a role that has been assigned to a user or team.
             x-examples:
               US Example:
-                id: 1a3c2169-27f8-4594-926b-41df3432d5dc
+                id: 11e342b4-cdc4-463c-b47c-78ff927e7514
                 role: viewer
                 entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
                 entity_type: runtime_groups
                 entity_region: us
               All Regions Example:
-                id: 1a3c2169-27f8-4594-926b-41df3432d5dc
+                id: 8f7fff49-de9d-4a77-8669-33216744ce2d
                 role: admin
                 entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
                 entity_type: reports
@@ -1002,13 +1002,13 @@ components:
       description: An assigned role is a role that has been assigned to a user or team.
       x-examples:
         US Example:
-          id: 1a3c2169-27f8-4594-926b-41df3432d5dc
+          id: 54cc6168-ebb1-4300-8168-d62a0dd08fc8
           role: viewer
           entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
           entity_type: runtime_groups
           entity_region: us
         All Regions Example:
-          id: 1a3c2169-27f8-4594-926b-41df3432d5dc
+          id: 745bc744-7a3d-46c0-a9ea-04302e44fb44
           role: admin
           entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
           entity_type: services
