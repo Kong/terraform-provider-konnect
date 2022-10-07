@@ -213,7 +213,7 @@ paths:
         '500':
           $ref: '#/components/responses/Error'
       operationId: list-team-roles
-      description: List a users assigned roles.
+      description: List the roles belonging to a team.
     post:
       summary: Assign Role
       operationId: teams-assign-role
@@ -230,7 +230,7 @@ paths:
           $ref: '#/components/responses/Error'
         '500':
           $ref: '#/components/responses/Error'
-      description: Assign a role to a user.
+      description: Assign a role to a team.
       requestBody:
         $ref: '#/components/requestBodies/AssignRole'
       tags:
@@ -346,7 +346,7 @@ paths:
         '404':
           $ref: '#/components/responses/Error'
       operationId: list-user-teams
-      description: List a users teams.
+      description: List the teams to which a user belongs.
       parameters:
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageNumber'
@@ -373,7 +373,7 @@ paths:
         '500':
           $ref: '#/components/responses/Error'
       operationId: list-user-roles
-      description: List a users assigned roles.
+      description: List the roles assigned to a user.
     post:
       summary: Assign Role
       operationId: users-assign-role
@@ -432,7 +432,7 @@ components:
   parameters:
     PageSize:
       name: 'page[size]'
-      description: The limit in the number of items in the page.
+      description: How many items to include in a page.
       in: query
       required: false
       schema:
@@ -581,14 +581,14 @@ components:
                     total: 10
                 data:
                   - id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-                    email: iamnande@konghq.com
-                    full_name: Nicholas L Anderson
-                    preferred_name: iamnande
+                    email: james.woods@email.com
+                    full_name: James Woods
+                    preferred_name: Jimmy
                     active: true
-                    created_at: '1992-02-07T17:46:57.52Z'
-                    updated_at: '2022-02-07T17:00:00.52Z'
+                    created_at: '2022-08-17T17:46:57.52Z'
+                    updated_at: '2022-10-03T17:00:00.00Z'
     TeamSingle:
-      description: A get action response of a single team.
+      description: A response including a single team.
       content:
         application/json:
           schema:
@@ -600,8 +600,8 @@ components:
                 name: IDM - Developers
                 description: The developers for the IDM API.
                 system_team: false
-                created_at: '1992-02-07T17:46:57.52Z'
-                updated_at: '2022-02-07T17:00:00.52Z'
+                created_at: '2022-02-07T17:46:57.52Z'
+                updated_at: '2022-09-25T13:00:00.00Z'
     TeamCollection:
       description: A paginated list response for a collection of users.
       content:
@@ -628,8 +628,8 @@ components:
                     name: IDM - Developers
                     description: The developers for the IDM API.
                     system_team: false
-                    created_at: '1992-02-07T17:46:57.52Z'
-                    updated_at: '2022-02-07T17:00:00.52Z'
+                    created_at: '2022-02-07T17:46:57.52Z'
+                    updated_at: '2022-09-25T13:00:00.00Z'
     TeamAssignmentCollection:
       description: A paginated list response for a collection of team assignments.
       content:
@@ -692,7 +692,7 @@ components:
                   - id: 869d9402-f117-4f9a-840f-69acaf70a81a
                     role: admin
                     entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
-                    entity_type: reports
+                    entity_type: services
                     entity_region: '*'
   requestBodies:
     UpdateUser:
@@ -702,27 +702,21 @@ components:
           schema:
             type: object
             properties:
-              email:
-                type: string
-                format: email
-                example: iamnande@konghq.com
-                writeOnly: true
               full_name:
                 type: string
                 pattern: '^[\w \W]+$'
-                example: Nicholas L Anderson
+                example: James C. Woods
                 writeOnly: true
               preferred_name:
                 type: string
                 maxLength: 250
-                example: iamnande
+                example: Jimmy
                 writeOnly: true
           examples:
             Example:
               value:
-                email: iamnande@konghq.com
-                full_name: Nicholas L Anderson
-                preferred_name: iamnande
+                full_name: James C Woods
+                preferred_name: Jimmy
     CreateTeam:
       description: The request schema for the create team request.
       content:
@@ -738,7 +732,7 @@ components:
               description:
                 type: string
                 maxLength: 250
-                example: The collection of humans that work on the Identity Management (IDM) API.
+                example: The Identity Management (IDM) team.
                 writeOnly: true
             required:
               - name
@@ -746,7 +740,7 @@ components:
             Example:
               value:
                 name: IDM - Developers
-                description: The collection of humans that work on the Identity Management (IDM) API.
+                description: The Identity Management (IDM) team.
     UpdateTeam:
       description: The request schema for the update team request.
       content:
@@ -762,15 +756,15 @@ components:
               description:
                 type: string
                 maxLength: 250
-                example: The collection of humans that work on the Identity Management (IDM) API.
+                example: The Identity Management (IDM) API team.
                 writeOnly: true
           examples:
             Example:
               value:
                 name: IDM - Developers
-                description: The collection of humans that work on the Identity Management (IDM) API.
+                description: The Identity Management (IDM) API team.
     AddUserToTeam:
-      description: The request schema for the add user to team.
+      description: The request schema for adding a user to a team.
       content:
         application/json:
           schema:
@@ -825,7 +819,7 @@ components:
                   - group: Service Developers
                     team_ids:
                       - 6801e673-cc10-498a-94cd-4271de07a0d3
-      description: The request schema for the update team assignments request.
+      description: The request schema for updating IdP team mappings.
     AssignRole:
       content:
         application/json:
@@ -861,8 +855,6 @@ components:
                 enum:
                   - us
                   - eu
-                  - jp
-                  - au
                   - '*'
                 example: eu
           examples:
@@ -876,7 +868,7 @@ components:
               value:
                 role: admin
                 entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
-                entity_type: reports
+                entity_type: services
                 entity_region: '*'
       description: Assign a role to a user or a team.
   schemas:
@@ -899,7 +891,7 @@ components:
     User:
       title: User
       type: object
-      description: A user is a an individual Konnect user.
+      description: A user is an individual who can use the Konnect application and API.
       properties:
         id:
           type: string
@@ -909,16 +901,16 @@ components:
         email:
           type: string
           format: email
-          example: iamnande@konghq.com
+          example: user@email.com
           maxLength: 250
         full_name:
           type: string
           pattern: '^[\w \W]+$'
-          example: Nicholas L Anderson
+          example: Test User
           maxLength: 250
         preferred_name:
           type: string
-          example: iamnande
+          example: test
           maxLength: 250
         active:
           type: boolean
@@ -927,26 +919,26 @@ components:
         created_at:
           type: string
           format: date-time
-          example: '1992-02-07T17:46:57.52Z'
+          example: '2022-02-07T17:46:57.52Z'
           readOnly: true
         updated_at:
           type: string
           format: date-time
-          example: '2022-02-07T17:00:00.52Z'
+          example: '2022-10-08T17:00:00.52Z'
           readOnly: true
       x-examples:
         Example:
           id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-          email: iamnande@konghq.com
-          full_name: Nicholas L Anderson
-          preferred_name: iamnande
+          email: user@email.com
+          full_name: Test User
+          preferred_name: test
           active: true
-          created_at: '1992-02-07T17:46:57.52Z'
-          updated_at: '2022-02-07T17:00:00.52Z'
+          created_at: '2022-02-07T17:46:57.52Z'
+          updated_at: '2022-10-08T17:00:00.52Z'
     Team:
       title: Team
       type: object
-      description: A team is a collection of users.
+      description: A team is a group of users.
       x-examples:
         Example:
           id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
@@ -954,7 +946,7 @@ components:
           description: The developers for the IDM API.
           system_team: false
           created_at: '1992-02-07T17:46:57.52Z'
-          updated_at: '2022-02-07T17:00:00.52Z'
+          updated_at: '2022-08-31T17:00:00.52Z'
       properties:
         id:
           type: string
@@ -986,8 +978,6 @@ components:
           readOnly: true
     TeamAssignment:
       title: TeamAssignment
-      x-stoplight:
-        id: x4v1bjuyy8u0t
       type: object
       description: A team assignment is a mapping of an IdP group to a Konnect Team.
       properties:
@@ -1008,8 +998,6 @@ components:
             - 6801e673-cc10-498a-94cd-4271de07a0d3
     AssignedRole:
       title: AssignedRole
-      x-stoplight:
-        id: qg2tbuwjg5jpv
       type: object
       description: An assigned role is a role that has been assigned to a user or team.
       x-examples:
@@ -1023,7 +1011,7 @@ components:
           id: 1a3c2169-27f8-4594-926b-41df3432d5dc
           role: admin
           entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
-          entity_type: reports
+          entity_type: services
           entity_region: '*'
       properties:
         id:
@@ -1045,8 +1033,6 @@ components:
           enum:
             - us
             - eu
-            - jp
-            - au
             - '*'
           example: eu
   securitySchemes:
