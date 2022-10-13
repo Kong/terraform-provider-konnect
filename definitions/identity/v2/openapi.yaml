@@ -1,7 +1,7 @@
 openapi: 3.0.2
 info:
   title: Konnect Identity API
-  version: '2.0'
+  version: '2.0.0'
   description: The management API for Kong Konnect Identity resources.
   contact:
     name: Kong
@@ -81,13 +81,13 @@ paths:
       requestBody:
         $ref: '#/components/requestBodies/CreateTeam'
       description: Create a team.
-  '/teams/{teamID}':
+  '/teams/{teamId}':
     parameters:
       - schema:
           type: string
           format: uuid
           example: d32d905a-ed33-46a3-a093-d8f536af9a8a
-        name: teamID
+        name: teamId
         in: path
         required: true
         description: ID of the team.
@@ -124,13 +124,13 @@ paths:
       description: Delete an individual team.
       tags:
         - Teams
-  '/teams/{teamID}/users':
+  '/teams/{teamId}/users':
     parameters:
       - schema:
           type: string
           example: d32d905a-ed33-46a3-a093-d8f536af9a8a
           format: uuid
-        name: teamID
+        name: teamId
         in: path
         required: true
         description: ID of the team.
@@ -163,13 +163,13 @@ paths:
         $ref: '#/components/requestBodies/AddUserToTeam'
       tags:
         - Team Membership
-  '/teams/{teamID}/users/{userID}':
+  '/teams/{teamId}/users/{userId}':
     parameters:
       - schema:
           type: string
           format: uuid
           example: d32d905a-ed33-46a3-a093-d8f536af9a8a
-        name: userID
+        name: userId
         in: path
         required: true
         description: ID of the user.
@@ -177,7 +177,7 @@ paths:
           type: string
           example: d32d905a-ed33-46a3-a093-d8f536af9a8a
           format: uuid
-        name: teamID
+        name: teamId
         in: path
         required: true
         description: ID of the team.
@@ -192,13 +192,13 @@ paths:
       description: Remove a user from a team.
       tags:
         - Team Membership
-  '/teams/{teamID}/assigned-roles':
+  '/teams/{teamId}/assigned-roles':
     parameters:
       - schema:
           type: string
           format: uuid
           example: e81bc3e5-e9db-4764-b7dd-e81e39072cbe
-        name: teamID
+        name: teamId
         in: path
         required: true
     get:
@@ -235,20 +235,20 @@ paths:
         $ref: '#/components/requestBodies/AssignRole'
       tags:
         - Roles
-  '/teams/{teamID}/assigned-roles/{roleID}':
+  '/teams/{teamId}/assigned-roles/{roleId}':
     parameters:
       - schema:
           type: string
           format: uuid
           example: e81bc3e5-e9db-4764-b7dd-e81e39072cbe
-        name: teamID
+        name: teamId
         in: path
         required: true
       - schema:
           type: string
           example: 8350205f-a305-4e39-abe9-bc082a80091a
           format: uuid
-        name: roleID
+        name: roleId
         in: path
         required: true
     delete:
@@ -281,13 +281,13 @@ paths:
       parameters:
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageNumber'
-  '/users/{userID}':
+  '/users/{userId}':
     parameters:
       - schema:
           type: string
           format: uuid
           example: d32d905a-ed33-46a3-a093-d8f536af9a8a
-        name: userID
+        name: userId
         in: path
         required: true
         description: ID of the user.
@@ -328,13 +328,13 @@ paths:
       description: Delete an individual user.
       tags:
         - Users
-  '/users/{userID}/teams':
+  '/users/{userId}/teams':
     parameters:
       - schema:
           type: string
           example: d32d905a-ed33-46a3-a093-d8f536af9a8a
           format: uuid
-        name: userID
+        name: userId
         in: path
         required: true
         description: ID of the user.
@@ -352,13 +352,13 @@ paths:
         - $ref: '#/components/parameters/PageNumber'
       tags:
         - Team Membership
-  '/users/{userID}/assigned-roles':
+  '/users/{userId}/assigned-roles':
     parameters:
       - schema:
           type: string
           format: uuid
           example: e81bc3e5-e9db-4764-b7dd-e81e39072cbe
-        name: userID
+        name: userId
         in: path
         required: true
     get:
@@ -395,20 +395,20 @@ paths:
         $ref: '#/components/requestBodies/AssignRole'
       tags:
         - Roles
-  '/users/{userID}/assigned-roles/{roleID}':
+  '/users/{userId}/assigned-roles/{roleId}':
     parameters:
       - schema:
           type: string
           format: uuid
           example: e81bc3e5-e9db-4764-b7dd-e81e39072cbe
-        name: userID
+        name: userId
         in: path
         required: true
       - schema:
           type: string
           example: 8350205f-a305-4e39-abe9-bc082a80091a
           format: uuid
-        name: roleID
+        name: roleId
         in: path
         required: true
     delete:

@@ -1,0 +1,134 @@
+extends:
+  - "spectral:oas"
+rules:
+  # ---------------------------------------------------------------------------
+  # Schema rules
+  # ---------------------------------------------------------------------------
+  info-version-semver:
+    severity: error
+    recommended: true
+    message: Specs should follow semantic versioning. {{value}} is not a valid version.
+    given: $.info.version
+    then:
+      function: pattern
+      functionOptions:
+        match: "^([0-9]+.[0-9]+.[0-9]+)$"
+
+  path-summary-required:
+    description: All paths require a summary
+    severity: error
+    message: Missing {{property}} at {{path}}
+    given: $.paths.*[get,post,patch,put,delete]
+    then:
+      - field: "summary"
+        function: truthy
+
+  adv-parameter-property-include-id-check:
+    description: |-
+      If property or path parameters contain 'ID' it should have Id instead of ID.
+    severity: warn
+    message: >-
+      {{property}} contains the letters ID, If this is short for identifier it MAY be Id instead.
+    given:
+      - $..parameters..name
+      - $.components.schemas[*]..properties[*]~
+    then:
+      function: pattern
+      functionOptions:
+        notMatch: /.*([^A-Z])(ID)(?![A-Z])+.*/
+
+  # ---------------------------------------------------------------------------
+  # API Rules
+  # ---------------------------------------------------------------------------
+
+  server-url-must-contain-version:
+    description: Global API version must be present in the path
+    severity: error
+    recommended: true
+    message: "Unversioned server URL detected: {{value}}"
+    given: "$.servers[*].url"
+    then:
+      function: pattern
+      functionOptions:
+        match: "\/v[1-9]+\/"
+
+  paths-kebab-case:
+    description: All YAML/JSON paths MUST follow kebab-case
+    severity: error
+    recommended: true
+    message: "{{property}} is not kebab-case"
+    given: $.paths[*]~
+    then:
+      function: pattern
+      functionOptions:
+        match: "^\/([a-z0-9]+(-[a-z0-9]+)*)?(\/[a-z0-9]+(-[a-z0-9]+)*|\/{.+})*$" # doesn't allow /asasd{asdas}sadas pattern or not closed braces
+
+  paths-not-include-api:
+    description: Paths must not include /api/
+    severity: error
+    recommended: true
+    message: "{{property}} must not contain /api/"
+    given:
+      - $.paths[*]~
+      - $.servers[*].url
+    then:
+      function: pattern
+      functionOptions:
+        notMatch: "[\/-]api\/?"
+
+  path-parameters-camelCase-alphanumeric:
+    description: Path parameters MUST follow camelCase
+    severity: error
+    recommended: true
+    message: "{{property}} path parameter is not camelCase: {{error}}"
+    given: $..parameters[?(@.in == 'path')].name
+    then:
+      function: pattern
+      functionOptions:
+        match: "^[a-z][a-zA-Z0-9]+$"
+
+  properties-snake-case:
+    description: Property name has to be ASCII snake_case
+    severity: error
+    recommended: true
+    message: "Invalid property name: {{value}} (expected: lowercase with underscores)"
+    given:
+      - $.paths.*.*[responses,requestBody]..content..schema.properties.*~
+      - $..components.schemas.*.properties[*]~
+    then:
+      function: pattern
+      functionOptions:
+        match: "^[a-z_]+$"
+
+  query-parameters-properties-snake-case-and-square-brackets:
+    description: Query parameters must be snake case. Square brackets are allowed (e.g. page[number]=1) 
+    severity: error
+    recommended: true
+    message: "Invalid property name: {{value}} (expected: lowercase with underscores)"
+    given:
+      - $..parameters[?(@.in == 'query')].name
+    then:
+      function: pattern
+      functionOptions:
+        match: "^[a-z_\\[\\]]+$"
+
+  headers-hyphenated-pascal-case:
+    description: All `HTTP` headers MUST use `Hyphenated-Pascal-Case` notation
+    severity: error
+    given: "$..parameters[?(@.in == 'header')].name"
+    message: "'HTTP' headers MUST follow 'Hyphenated-Pascal-Case' notation"
+    recommended: true
+    type: style
+    then:
+      function: pattern
+      functionOptions:
+        match: "/^([A-Z][a-z0-9]-)*([A-Z][a-z0-9])+/"
+
+  request-GET-no-body:
+    description: "A 'GET' request MUST NOT accept a 'body` parameter"
+    severity: error
+    given: $.paths..get.requestBody
+    then:
+      function: pattern
+      functionOptions:
+        notMatch: "/^body$/"

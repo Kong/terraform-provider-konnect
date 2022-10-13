@@ -1,0 +1,24 @@
+{
+  "name": "platform-api",
+  "version": "1.0.0",
+  "description": "Konnect Platform OpenAPI specs",
+  "main": "index.js",
+  "scripts": {
+    "lint:all": "spectral lint 'definitions/**/openapi.yaml'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kong/platform-api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Kong/platform-api/issues"
+  },
+  "homepage": "https://github.com/Kong/platform-api#readme",
+  "devDependencies": {
+    "@stoplight/spectral-cli": "^6.5.0",
+    "redoc-cli": "^0.13.19"
+  }
+}
