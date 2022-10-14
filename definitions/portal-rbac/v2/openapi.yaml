@@ -544,8 +544,8 @@ components:
             Example:
               value:
                 id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-                name: IDM - Developers
-                description: The developers for the IDM API.
+                name: Gold Tier
+                description: Team with access to APIs in the Gold tier
                 created_at: '2022-02-07T17:46:57.52Z'
                 updated_at: '2022-09-25T13:00:00.00Z'
     TeamCollection:
@@ -554,7 +554,7 @@ components:
         application/json:
           schema:
             type: object
-            required: 
+            required:
               - data
               - meta
             properties:
@@ -574,8 +574,8 @@ components:
                     total: 10
                 data:
                   - id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-                    name: IDM - Developers
-                    description: The developers for the IDM API.
+                    name: Partner
+                    description: Team with access to Partner APIs
                     created_at: '2022-02-07T17:46:57.52Z'
                     updated_at: '2022-09-25T13:00:00.00Z'
     RolesDocument:
@@ -584,11 +584,12 @@ components:
         application/json:
           schema:
             type: object
-            required:
-              - services
             properties:
               services:
                 type: object
+                required:
+                  - name
+                  - roles
                 properties:
                   name:
                     type: string
@@ -628,6 +629,20 @@ components:
                             type: string
                             enum:
                               - API Consumers can make calls to the given service
+            required:
+              - services
+          examples:
+            example-1:
+              value:
+                services:
+                  name: Services
+                  roles:
+                    viewer:
+                      name: Viewer
+                      description: Viewers have read-only access to the documentation of a service in a portal
+                    apiconsumer:
+                      name: API Consumer
+                      description: API Consumers can make calls to the given service
     AssignedRoleSingle:
       description: A get action response of a single assigned role.
       content:
@@ -663,20 +678,25 @@ components:
               value:
                 meta:
                   page:
-                    number: 2
-                    size: 10
+                    number: 1
+                    size: 3
                     total: 100
                 data:
                   - id: b02e23c5-8ee4-4e5a-99f4-43329923adce
                     role: viewer
                     entity_id: 437c7192-fea0-4f35-8478-c8d57783f8c1
-                    entity_type: runtime_groups
-                    entity_region: eu
+                    entity_type: services
+                    entity_region: us
+                  - id: b02e23c5-8ee4-4e5a-99f4-43329923adce
+                    role: apiconsumer
+                    entity_id: 437c7192-fea0-4f35-8478-c8d57783f8c1
+                    entity_type: services
+                    entity_region: us
                   - id: 869d9402-f117-4f9a-840f-69acaf70a81a
-                    role: admin
+                    role: viewer
                     entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
                     entity_type: services
-                    entity_region: '*'
+                    entity_region: us
   requestBodies:
     CreateTeam:
       description: The request schema for the create team request.
@@ -767,11 +787,11 @@ components:
                   - '*'
                 example: eu
           examples:
-            US Example:
+            Example:
               value:
                 role: viewer
                 entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
-                entity_type: runtime_groups
+                entity_type: services
                 entity_region: us
       description: Assign a role to a team.
   schemas:
