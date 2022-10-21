@@ -1,7 +1,7 @@
-openapi: 3.0.2
+openapi: 3.1.0
 info:
   title: Konnect Identity API
-  version: '2.0.0'
+  version: 2.0.0
   description: The management API for Kong Konnect Identity resources.
   contact:
     name: Kong
@@ -17,51 +17,53 @@ servers:
 paths:
   /identity-provider/team-mappings:
     put:
-      summary: UpdateTeamMappings
+      summary: Update Team Mappings
       operationId: update-idp-team-mappings
       responses:
         '200':
           $ref: '#/components/responses/TeamMappingCollection'
         '400':
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/BadRequest'
         '401':
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/PermissionDenied'
         '404':
-          description: Not Found
+          $ref: '#/components/responses/NotFound'
         '412':
-          $ref: '#/components/responses/Error'
-        '500':
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/PreconditionFailed'
       tags:
         - IdPs
       description: Update the IdP group to Konnect team mapping.
       requestBody:
         $ref: '#/components/requestBodies/UpdateTeamMappings'
     get:
-      summary: GetTeamMapping
+      summary: Fetch Team Mapping
       operationId: get-idp-team-mappings
       responses:
         '200':
-          $ref: '#/components/responses/TeamMappingCollection'
+          $ref: '#/components/responses/TeamMappingResponse'
         '401':
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/Unauthenticated'
         '403':
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/PermissionDenied'
         '404':
-          $ref: '#/components/responses/Error'
-        '500':
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/NotFound'
+        '412':
+          $ref: '#/components/responses/PreconditionFailed'
       tags:
         - IdPs
-      description: Get the IdP group to Konnect team mapping.
+      description: Fetch the IdP group to Konnect team mapping.
   /teams:
     get:
       summary: List Teams
       responses:
         '200':
           $ref: '#/components/responses/TeamCollection'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
       operationId: list-teams
-      description: List the teams.
+      description: Returns an array of team objects containing information about the Konnect Teams.
       parameters:
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageNumber'
@@ -75,55 +77,14 @@ paths:
         '201':
           $ref: '#/components/responses/TeamSingle'
         '400':
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/PermissionDenied'
       tags:
         - Teams
       requestBody:
         $ref: '#/components/requestBodies/CreateTeam'
-      description: Create a team.
-  '/teams/{teamId}':
-    parameters:
-      - schema:
-          type: string
-          format: uuid
-          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
-        name: teamId
-        in: path
-        required: true
-        description: ID of the team.
-    get:
-      summary: Get Team
-      responses:
-        '200':
-          $ref: '#/components/responses/TeamSingle'
-        '404':
-          $ref: '#/components/responses/Error'
-      operationId: get-team
-      description: Get an individual team.
-      tags:
-        - Teams
-    patch:
-      summary: Update Team
-      operationId: update-team
-      responses:
-        '200':
-          $ref: '#/components/responses/TeamSingle'
-        '404':
-          $ref: '#/components/responses/Error'
-      description: Update an individual team.
-      requestBody:
-        $ref: '#/components/requestBodies/UpdateTeam'
-      tags:
-        - Teams
-    delete:
-      summary: Delete Team
-      operationId: delete-team
-      responses:
-        '204':
-          description: No Content
-      description: Delete an individual team.
-      tags:
-        - Teams
+      description: 'Create a team in the Konnect Organization. '
   '/teams/{teamId}/users':
     parameters:
       - schema:
@@ -139,10 +100,12 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/UserCollection'
+        '400':
+          $ref: '#/components/responses/BadRequest'
         '404':
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/NotFound'
       operationId: list-team-users
-      description: List a team's users.
+      description: Returns a paginated list of users that belong to the team specified in the path paramater.
       parameters:
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageNumber'
@@ -155,14 +118,68 @@ paths:
         '201':
           description: Created
         '400':
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
         '409':
-          $ref: '#/components/responses/Error'
+          description: |-
+            Conflict
+
+            This error response is returned when trying to add a user to a team that doesn't exist.
       description: Add a user to a team.
       requestBody:
         $ref: '#/components/requestBodies/AddUserToTeam'
       tags:
         - Team Membership
+  '/teams/{teamId}':
+    parameters:
+      - schema:
+          type: string
+          format: uuid
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        name: teamId
+        in: path
+        required: true
+        description: The team ID
+    get:
+      summary: Fetch Team
+      responses:
+        '200':
+          $ref: '#/components/responses/TeamSingle'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      operationId: get-team
+      description: Returns information about a team from a given team ID.
+      tags:
+        - Teams
+    patch:
+      summary: Update Team
+      operationId: update-team
+      responses:
+        '200':
+          $ref: '#/components/responses/TeamSingle'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      description: Update an individual team.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateTeam'
+      tags:
+        - Teams
+    delete:
+      summary: Delete Team
+      operationId: delete-team
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/BadRequest'
+      description: Delete an individual team.
+      tags:
+        - Teams
   '/teams/{teamId}/users/{userId}':
     parameters:
       - schema:
@@ -172,7 +189,7 @@ paths:
         name: userId
         in: path
         required: true
-        description: ID of the user.
+        description: User ID
       - schema:
           type: string
           example: d32d905a-ed33-46a3-a093-d8f536af9a8a
@@ -180,16 +197,20 @@ paths:
         name: teamId
         in: path
         required: true
-        description: ID of the team.
+        description: Team ID.
     delete:
       summary: Remove User
       operationId: remove-user-from-team
       responses:
         '204':
           description: No Content
+        '400':
+          $ref: '#/components/responses/BadRequest'
         '404':
-          $ref: '#/components/responses/Error'
-      description: Remove a user from a team.
+          $ref: '#/components/responses/NotFound'
+      description: |-
+        Remove a user from a team. 
+        If the user was removed successfully, returns a 204 empty response.
       tags:
         - Team Membership
   '/teams/{teamId}/assigned-roles':
@@ -201,6 +222,7 @@ paths:
         name: teamId
         in: path
         required: true
+        description: The team ID
     get:
       summary: List Team Roles
       tags:
@@ -209,9 +231,7 @@ paths:
         '200':
           $ref: '#/components/responses/AssignedRoleCollection'
         '404':
-          $ref: '#/components/responses/Error'
-        '500':
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/NotFound'
       operationId: list-team-roles
       description: List the roles belonging to a team.
     post:
@@ -221,15 +241,13 @@ paths:
         '200':
           $ref: '#/components/responses/AssignedRoleSingle'
         '400':
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/BadRequest'
         '401':
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/Unauthenticated'
         '403':
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/PermissionDenied'
         '404':
-          $ref: '#/components/responses/Error'
-        '500':
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/NotFound'
       description: Assign a role to a team.
       requestBody:
         $ref: '#/components/requestBodies/AssignRole'
@@ -244,6 +262,7 @@ paths:
         name: teamId
         in: path
         required: true
+        description: The team ID.
       - schema:
           type: string
           example: 8350205f-a305-4e39-abe9-bc082a80091a
@@ -251,6 +270,7 @@ paths:
         name: roleId
         in: path
         required: true
+        description: The role ID.
     delete:
       summary: Remove Role
       operationId: teams-remove-role
@@ -258,13 +278,11 @@ paths:
         '204':
           description: No Content
         '400':
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/BadRequest'
         '401':
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/PermissionDenied'
         '404':
-          $ref: '#/components/responses/Error'
-        '500':
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/NotFound'
       tags:
         - Roles
       description: Remove an assigned role from a team.
@@ -276,8 +294,10 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/UserCollection'
+        '400':
+          $ref: '#/components/responses/BadRequest'
       operationId: list-users
-      description: List the users.
+      description: Returns a paginated list of user objects.
       parameters:
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageNumber'
@@ -290,18 +310,20 @@ paths:
         name: userId
         in: path
         required: true
-        description: ID of the user.
+        description: The ID of the user being deleted.
     get:
-      summary: Get User
+      summary: Fetch User
       tags:
         - Users
       responses:
         '200':
           $ref: '#/components/responses/UserSingle'
+        '400':
+          $ref: '#/components/responses/BadRequest'
         '404':
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/NotFound'
       operationId: get-user
-      description: Get an individual user.
+      description: Returns the user object for the user ID specified as a path paramater.
     patch:
       summary: Update User
       operationId: update-user
@@ -309,11 +331,11 @@ paths:
         '200':
           $ref: '#/components/responses/UserSingle'
         '401':
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/Unauthenticated'
         '403':
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/PermissionDenied'
         '404':
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/NotFound'
       description: Update an individual user.
       requestBody:
         $ref: '#/components/requestBodies/UpdateUser'
@@ -337,16 +359,16 @@ paths:
         name: userId
         in: path
         required: true
-        description: ID of the user.
+        description: The user ID.
     get:
       summary: List User Teams
       responses:
         '200':
           $ref: '#/components/responses/TeamCollection'
         '404':
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/NotFound'
       operationId: list-user-teams
-      description: List the teams to which a user belongs.
+      description: Returns a paginated list of a teams that the belong to the user ID paramater.
       parameters:
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageNumber'
@@ -361,6 +383,7 @@ paths:
         name: userId
         in: path
         required: true
+        description: The user ID
     get:
       summary: List User Roles
       tags:
@@ -369,9 +392,7 @@ paths:
         '200':
           $ref: '#/components/responses/AssignedRoleCollection'
         '404':
-          $ref: '#/components/responses/Error'
-        '500':
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/NotFound'
       operationId: list-user-roles
       description: List the roles assigned to a user.
     post:
@@ -381,15 +402,13 @@ paths:
         '200':
           $ref: '#/components/responses/AssignedRoleSingle'
         '400':
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/BadRequest'
         '401':
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/Unauthenticated'
         '403':
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/PermissionDenied'
         '404':
-          $ref: '#/components/responses/Error'
-        '500':
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/NotFound'
       description: Assign a role to a user.
       requestBody:
         $ref: '#/components/requestBodies/AssignRole'
@@ -418,13 +437,11 @@ paths:
         '204':
           description: No Content
         '400':
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/BadRequest'
         '401':
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/Unauthenticated'
         '404':
-          $ref: '#/components/responses/Error'
-        '500':
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/NotFound'
       tags:
         - Roles
       description: Remove an assigned role from a user.
@@ -438,6 +455,7 @@ components:
       schema:
         type: integer
         example: 10
+      allowEmptyValue: true
     PageNumber:
       name: 'page[number]'
       description: The specific page number in the collection results.
@@ -446,102 +464,8 @@ components:
       schema:
         type: integer
         example: 2
+      allowEmptyValue: true
   responses:
-    Error:
-      description: A response in which an error has occurred.
-      content:
-        application/json:
-          schema:
-            type: object
-            x-examples:
-              Example:
-                type: 'https://kongapi.info/konnect/invalid-permissions'
-                status: 403
-                title: Invalid Permissions
-                detail: 'You must have the [administrator] role to perform this action'
-                instance: 'kong:trace:6c1ef33ae5bce33634d7d7d695c7f203'
-            properties:
-              type:
-                type: string
-                example: 'https://kongapi.info/konnect/invalid-permissions'
-                readOnly: true
-              status:
-                type: integer
-                example: 403
-                readOnly: true
-              title:
-                type: string
-                example: Invalid Permissions
-                readOnly: true
-              instance:
-                type: string
-                example: 'konnect:trace:6c1ef33ae5bce33634d7d7d695c7f203'
-                readOnly: true
-              detail:
-                type: string
-                example: 'You must have the [administrator] role to perform this action'
-                readOnly: true
-              invalid_parameters:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    field:
-                      type: string
-                      example: name
-                      readOnly: true
-                    rule:
-                      type: string
-                      example: required
-                      readOnly: true
-                    reason:
-                      type: string
-                      example: is a required field
-                      readOnly: true
-                    choices:
-                      type: array
-                      uniqueItems: true
-                      items: {}
-                      readOnly: true
-          examples:
-            '400':
-              value:
-                type: 'https://kongapi.info/konnect/validation-failed'
-                status: 400
-                title: Validation Failed
-                instance: 'konnect:trace:6c1ef33ae5bce33634d7d7d695c7f203'
-                invalid_parameters:
-                  - field: name
-                    rule: required
-                    reason: is a required field
-                  - field: role
-                    reason: 'must be one of: [admin, member]'
-                    rule: enum
-                    choices:
-                      - admin
-                      - member
-            '401':
-              value:
-                type: 'https://kongapi.info/konnect/failed-authentication'
-                status: 403
-                title: Failed Authentication
-                instance: 'konnect:trace:6c1ef33ae5bce33634d7d7d695c7f203'
-                detail: 'The [username] or [password] are invalid'
-            '403':
-              value:
-                type: 'https://kongapi.info/konnect/invalid-permissions'
-                status: 403
-                title: Invalid Permissions
-                detail: 'You must have the [administrator] role to perform this action'
-                instance: 'konnect:trace:6c1ef33ae5bce33634d7d7d695c7f203'
-            '412':
-              value:
-                type: 'https://kongapi.info/konnect/precondition-failed'
-                status: 412
-                title: Precondition Failed
-                instance: 'konnect:trace:6c1ef33ae5bce33634d7d7d695c7f203'
-                detail: Group mapping is disabled
-      headers: {}
     UserSingle:
       description: A get action response of a single user.
       content:
@@ -550,14 +474,7 @@ components:
             $ref: '#/components/schemas/User'
           examples:
             Example:
-              value:
-                id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-                email: iamnande@konghq.com
-                full_name: Nicholas L Anderson
-                preferred_name: iamnande
-                active: true
-                created_at: '1992-02-07T17:46:57.52Z'
-                updated_at: '2022-02-07T17:00:00.52Z'
+              $ref: '#/components/examples/Get-User-Resposne'
     UserCollection:
       description: A paginated list response for a collection of users.
       content:
@@ -572,21 +489,8 @@ components:
                 items:
                   $ref: '#/components/schemas/User'
           examples:
-            Example:
-              value:
-                meta:
-                  page:
-                    number: 2
-                    size: 1
-                    total: 10
-                data:
-                  - id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-                    email: james.woods@email.com
-                    full_name: James Woods
-                    preferred_name: Jimmy
-                    active: true
-                    created_at: '2022-08-17T17:46:57.52Z'
-                    updated_at: '2022-10-03T17:00:00.00Z'
+            User Collection Response:
+              $ref: '#/components/examples/user-collection-response-example'
     TeamSingle:
       description: A response including a single team.
       content:
@@ -594,14 +498,8 @@ components:
           schema:
             $ref: '#/components/schemas/Team'
           examples:
-            Example:
-              value:
-                id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-                name: IDM - Developers
-                description: The developers for the IDM API.
-                system_team: false
-                created_at: '2022-02-07T17:46:57.52Z'
-                updated_at: '2022-09-25T13:00:00.00Z'
+            Single team response:
+              $ref: '#/components/examples/single-team-response'
     TeamCollection:
       description: A paginated list response for a collection of users.
       content:
@@ -616,7 +514,7 @@ components:
                 items:
                   $ref: '#/components/schemas/Team'
           examples:
-            Example:
+            Team Collection:
               value:
                 meta:
                   page:
@@ -642,12 +540,8 @@ components:
                 items:
                   $ref: '#/components/schemas/TeamMapping'
           examples:
-            Example:
-              value:
-                mappings:
-                  - group: Service Developers
-                    team_ids:
-                      - 6801e673-cc10-498a-94cd-4271de07a0d3
+            Team Mapping Collection:
+              $ref: '#/components/examples/team-mapping-collection'
     AssignedRoleSingle:
       description: A get action response of a single assigned role.
       content:
@@ -655,13 +549,8 @@ components:
           schema:
             $ref: '#/components/schemas/AssignedRole'
           examples:
-            Example:
-              value:
-                id: eaf7adf1-32c8-4bbf-b960-d1f8456afe67
-                role: viewer
-                entity_id: 817d0422-45c9-4d88-8d64-45aef05c1ae7
-                entity_type: runtime_groups
-                entity_region: eu
+            Assigned Role Example:
+              $ref: '#/components/examples/Assigned-Role-Example'
     AssignedRoleCollection:
       description: A paginated list response for a collection of assigned roles.
       content:
@@ -673,27 +562,238 @@ components:
                 $ref: '#/components/schemas/PaginatedMeta'
               data:
                 type: array
+                description: An Array
                 items:
                   $ref: '#/components/schemas/AssignedRole'
           examples:
             CollectionExample:
+              $ref: '#/components/examples/collection-example'
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            type: object
+            description: The error object
+            properties:
+              status:
+                type: integer
+                description: The HTTP response code
+                example: 400
+              title:
+                type: string
+                example: Bad Request
+                description: The Error response
+              instance:
+                type: string
+                description: The Konnect traceback ID.
+                example: 'konnect:trace:3674017986744198214'
+              invalid_parameters:
+                type: array
+                description: An array of objects that contains information related to the error response.
+                items:
+                  type: object
+                  properties:
+                    field:
+                      type: string
+                    reason:
+                      type: string
+          examples:
+            Request Format is Invalid:
+              $ref: '#/components/examples/400-request-format-is-invalid'
+            Cannot be Blank:
+              $ref: '#/components/examples/400-cannot-be-blank'
+            Invalid ID format:
+              $ref: '#/components/examples/400-invalid-id-format'
+            Must be a valid UUID v4:
+              $ref: '#/components/examples/400-valid-uuid'
+            System teams cannot be modified:
+              $ref: '#/components/examples/400-systems-team-modified'
+    PermissionDenied:
+      description: Permission denied
+      content:
+        application/json:
+          schema:
+            type: object
+            description: The error object.
+            properties:
+              status:
+                type: integer
+                description: HTTP status code.
+                example: 403
+              title:
+                type: string
+                example: Bad Request
+                description: HTTP status code
+              instance:
+                type: string
+                description: Konnect traceback error code.
+                example: 'konnect:trace:3674017986744198214'
+              detail:
+                type: string
+                description: Information about the error response.
+                example: Only enterprise organizations can create teams
+          examples:
+            Permission Denied:
+              $ref: '#/components/examples/403-permission-denied'
+            Invalid Permissions:
+              $ref: '#/components/examples/403-invalid-permissions'
+            Username or Password invalid:
+              $ref: '#/components/examples/403-auth-invalid'
+    PreconditionFailed:
+      description: Precondition Failed
+      content:
+        application/json:
+          schema:
+            type: object
+            description: The error response object.
+            properties:
+              status:
+                type: integer
+                description: The HTTP status code.
+                example: 412
+              title:
+                type: string
+                description: The error response code.
+                example: Precondition Failed
+              instance:
+                type: string
+                description: The Konnect traceback code.
+                example: 'konnect:trace:1896611024257578096'
+              detail:
+                type: string
+                description: Details about the error response.
+                example: IdP configuration not found
+          examples:
+            Precondition Failed:
+              $ref: '#/components/examples/412-precondition-failed'
+        multipart/form-data:
+          schema:
+            type: object
+            description: The error response object.
+            properties:
+              status:
+                type: integer
+                description: The HTTP status code.
+                example: 412
+              title:
+                type: string
+                description: The Error Response.
+                example: Precondition Failed
+              instance:
+                type: string
+                description: The Konnect traceback code.
+                example: 'konnect:trace:1896611024257578096'
+              detail:
+                type: string
+                description: Detailed explanation of the error response.
+                example: IdP configuration not found
+          examples:
+            IdP configuration not found:
               value:
-                meta:
+                status: 412
+                title: Precondition Failed
+                instance: 'konnect:trace:1896611024257578096'
+                detail: IdP configuration not found
+    Unauthenticated:
+      description: Unauthenticated
+      content:
+        application/json:
+          schema:
+            type: object
+            description: The error response object.
+            properties:
+              status:
+                type: integer
+                example: 401
+                description: The HTTP status code.
+              title:
+                type: string
+                description: The Error Response.
+                example: Unauthenticated
+              instance:
+                type: string
+                description: The Konnect traceback code.
+                example: 'konnect:trace:952172606039454040'
+              detail:
+                type: string
+                description: Details about the error response.
+                example: A valid token is required
+          examples:
+            Unauthorized:
+              $ref: '#/components/examples/401-unauthenticated'
+    NotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            type: object
+            description: The error response object.
+            properties:
+              status:
+                type: integer
+                description: The HTTP status code.
+                example: 404
+              title:
+                type: string
+                description: The error response code.
+                example: Not Found
+              instance:
+                type: string
+                example: 'konnect:trace:2287285207635123011'
+                description: The Konnect traceback code
+              detail:
+                type: string
+                example: The requested team was not found
+                description: Details about the error.
+          examples:
+            Not Found:
+              $ref: '#/components/examples/404-not-found'
+    TeamMappingResponse:
+      description: A paginated list response for a collection of team mappings.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              meta:
+                type: object
+                description: Contains pagination data.
+                properties:
                   page:
-                    number: 2
-                    size: 10
-                    total: 100
-                data:
-                  - id: b02e23c5-8ee4-4e5a-99f4-43329923adcd
-                    role: viewer
-                    entity_id: 437c7192-fea0-4f35-8478-c8d57783f8c1
-                    entity_type: runtime_groups
-                    entity_region: eu
-                  - id: 869d9402-f117-4f9a-840f-69acaf70a81a
-                    role: admin
-                    entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
-                    entity_type: services
-                    entity_region: '*'
+                    type: object
+                    description: The page object.
+                    properties:
+                      number:
+                        type: integer
+                        description: Page number.
+                        example: 1
+                      size:
+                        type: integer
+                        description: Page size.
+                        example: 9
+                      total:
+                        type: integer
+                        description: Total number of results.
+                        example: 5
+              data:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    group:
+                      type: string
+                      description: Group names.
+                      example: 111(@&*$)(@*#_@(gfds re gdsf dfg
+                    team_ids:
+                      type: array
+                      description: Team ID's that belong to the specified group.
+                      items:
+                        type: string
+                        example: 3df49db8-39ff-490d-9fe1-251a3361fb13
+          examples:
+            Group Collection:
+              $ref: '#/components/examples/group-collection-example'
   requestBodies:
     UpdateUser:
       description: The request schema for the update user request.
@@ -706,19 +806,22 @@ components:
                 type: string
                 pattern: '^[\w \W]+$'
                 example: James C. Woods
+                description: The user's full name.
                 writeOnly: true
               preferred_name:
                 type: string
                 maxLength: 250
                 example: Jimmy
+                description: The user's desired name.
                 writeOnly: true
           examples:
-            Example:
-              value:
-                full_name: James C Woods
-                preferred_name: Jimmy
+            Example Request Body:
+              $ref: '#/components/examples/Update-User-Request'
     CreateTeam:
-      description: The request schema for the create team request.
+      description: |-
+        The request schema for the create team request.
+
+        If you pass the same `name` and `description` of an existing team in the request, a team with the same `name` and `description` will be created. The two teams will have different `team_id` values to differntiate them.
       content:
         application/json:
           schema:
@@ -728,19 +831,19 @@ components:
                 type: string
                 example: IDM - Developers
                 pattern: '^[\w \W]+$'
+                description: A name for the team being created.
                 writeOnly: true
               description:
                 type: string
                 maxLength: 250
                 example: The Identity Management (IDM) team.
+                description: The description of the new team.
                 writeOnly: true
             required:
               - name
           examples:
-            Example:
-              value:
-                name: IDM - Developers
-                description: The Identity Management (IDM) team.
+            Example Request Body:
+              $ref: '#/components/examples/CreateTeamExample'
     UpdateTeam:
       description: The request schema for the update team request.
       content:
@@ -752,17 +855,17 @@ components:
                 type: string
                 example: IDM - Developers
                 pattern: '^[\w \W]+$'
+                description: The name of the team.
                 writeOnly: true
               description:
                 type: string
                 maxLength: 250
                 example: The Identity Management (IDM) API team.
+                description: The description of the team.
                 writeOnly: true
           examples:
-            Example:
-              value:
-                name: IDM - Developers
-                description: The Identity Management (IDM) API team.
+            Example Request Body:
+              $ref: '#/components/examples/Update-Team-Request'
     AddUserToTeam:
       description: The request schema for adding a user to a team.
       content:
@@ -774,13 +877,13 @@ components:
                 type: string
                 example: df120cb4-f60b-47bc-a2f8-6a28e6a3c63b
                 format: uuid
+                description: The user ID for the user being added to a team.
                 writeOnly: true
             required:
               - id
           examples:
-            Example:
-              value:
-                id: df120cb4-f60b-47bc-a2f8-6a28e6a3c63b
+            Example request body:
+              $ref: '#/components/examples/Add-User-Request'
     UpdateTeamMappings:
       content:
         application/json:
@@ -789,36 +892,19 @@ components:
             properties:
               mappings:
                 type: array
-                minItems: 1
-                maxItems: 1000
+                description: The mappings object.
                 items:
                   type: object
                   properties:
                     group:
                       type: string
-                      example: Service Developers
                     team_ids:
                       type: array
-                      uniqueItems: true
                       items:
                         type: string
-                        example: 6801e673-cc10-498a-94cd-4271de07a0d3
-                        format: uuid
-                        writeOnly: true
-                      writeOnly: true
-                  required:
-                    - group
-                    - team_ids
-                  writeOnly: true
-            required:
-              - mappings
           examples:
-            Example:
-              value:
-                mappings:
-                  - group: Service Developers
-                    team_ids:
-                      - 6801e673-cc10-498a-94cd-4271de07a0d3
+            Example Request Body:
+              $ref: '#/components/examples/Update-Team-Mappings'
       description: The request schema for updating IdP team mappings.
     AssignRole:
       content:
@@ -826,30 +912,20 @@ components:
           schema:
             type: object
             description: An assigned role is a role that has been assigned to a user or team.
-            x-examples:
-              US Example:
-                id: 11e342b4-cdc4-463c-b47c-78ff927e7514
-                role: viewer
-                entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
-                entity_type: runtime_groups
-                entity_region: us
-              All Regions Example:
-                id: 8f7fff49-de9d-4a77-8669-33216744ce2d
-                role: admin
-                entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
-                entity_type: reports
-                entity_region: '*'
             properties:
               role:
                 type: string
                 example: viewer
+                description: The desired role.
               entity_id:
                 type: string
                 format: uuid
                 example: e67490ce-44dc-4cbd-b65e-b52c746fc26a
+                description: The ID of the entity.
               entity_type:
                 type: string
                 example: runtime_groups
+                description: The type of entity.
               entity_region:
                 type: string
                 enum:
@@ -857,124 +933,121 @@ components:
                   - eu
                   - '*'
                 example: eu
+                description: The region of the team.
           examples:
-            US Example:
-              value:
-                role: viewer
-                entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
-                entity_type: runtime_groups
-                entity_region: us
-            All Regions Example:
-              value:
-                role: admin
-                entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
-                entity_type: services
-                entity_region: '*'
+            Assigned Roles US:
+              $ref: '#/components/examples/Assign-Roles-US'
+            Assigned Roles Global:
+              $ref: '#/components/examples/Assign-Roles-Global'
       description: Assign a role to a user or a team.
   schemas:
     PaginatedMeta:
       type: object
+      title: PaginatedMeta
+      description: Returns pagination information
       properties:
         page:
           type: object
+          description: Contains pagination query paramaters and the total number of objects that returned.
           properties:
             number:
               type: integer
               example: 2
+              description: Specifies the number of objects returned per page.
             size:
               type: integer
               example: 10
+              maximum: 100
+              description: Specifies the size of the page.
             total:
               type: integer
               maximum: 1000
               example: 100
+              description: Integer representation of the amount of items returned.
     User:
       title: User
       type: object
-      description: A user is an individual who can use the Konnect application and API.
+      description: The user object contains information about an individual user who can use the Konnect application and API.
       properties:
         id:
           type: string
           format: uuid
           example: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+          description: The User ID.
           readOnly: true
         email:
           type: string
           format: email
           example: user@email.com
           maxLength: 250
+          description: The email registered to the user.
         full_name:
           type: string
           pattern: '^[\w \W]+$'
-          example: Test User
           maxLength: 250
+          description: The User's full name.
+          example: Jane Doe
         preferred_name:
           type: string
-          example: test
+          example: Jane
           maxLength: 250
+          description: The User's preffered name.
         active:
           type: boolean
           default: true
+          description: Returns True if a user has verified their email address.
           readOnly: true
         created_at:
           type: string
           format: date-time
           example: '2022-02-07T17:46:57.52Z'
+          description: The time stamp for the date the account was registered.
           readOnly: true
         updated_at:
           type: string
           format: date-time
           example: '2022-10-08T17:00:00.52Z'
+          description: A Unix timestamp representation of the most recent change to the User account.
           readOnly: true
-      x-examples:
-        Example:
-          id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-          email: user@email.com
-          full_name: Test User
-          preferred_name: test
-          active: true
-          created_at: '2022-02-07T17:46:57.52Z'
-          updated_at: '2022-10-08T17:00:00.52Z'
     Team:
       title: Team
       type: object
-      description: A team is a group of users.
-      x-examples:
-        Example:
-          id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-          name: IDM - Developers
-          description: The developers for the IDM API.
-          system_team: false
-          created_at: '1992-02-07T17:46:57.52Z'
-          updated_at: '2022-08-31T17:00:00.52Z'
+      description: The team object contains information about a group of users.
       properties:
         id:
           type: string
           format: uuid
           example: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+          description: The team ID.
           readOnly: true
         name:
           type: string
           pattern: '^[\w \W]+$'
           example: IDM - Developers
           maxLength: 250
+          description: The name of the team.
         description:
           type: string
           example: The developers for the IDM API.
           maxLength: 250
+          description: The team description in Konnect.
         system_team:
           type: boolean
           default: false
+          description: 'Returns True if a user belongs to a `system_team`. System teams are teams that can manage Konnect objects, like "Organization Admin", or "Service'
           readOnly: true
         created_at:
           type: string
           format: date-time
           example: '1992-02-07T17:46:57.52Z'
+          description: A Unix timestamp representation of team creation.
           readOnly: true
         updated_at:
           type: string
           format: date-time
           example: '2022-02-07T17:00:00.52Z'
+          description: |
+            A Unix timestamp representation of the most recent change to the team object in Konnect.
           readOnly: true
     TeamMapping:
       title: TeamMapping
@@ -984,50 +1057,38 @@ components:
         group:
           type: string
           example: Service Developers
+          description: The IdP group.
         team_ids:
           type: array
           uniqueItems: true
+          description: An array of ID's that are mapped to the specified group.
           items:
             type: string
             format: uuid
             example: 6801e673-cc10-498a-94cd-4271de07a0d3
-      x-examples:
-        Example:
-          group: Service Developers
-          team_ids:
-            - 6801e673-cc10-498a-94cd-4271de07a0d3
     AssignedRole:
       title: AssignedRole
       type: object
       description: An assigned role is a role that has been assigned to a user or team.
-      x-examples:
-        US Example:
-          id: 54cc6168-ebb1-4300-8168-d62a0dd08fc8
-          role: viewer
-          entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
-          entity_type: runtime_groups
-          entity_region: us
-        All Regions Example:
-          id: 745bc744-7a3d-46c0-a9ea-04302e44fb44
-          role: admin
-          entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
-          entity_type: services
-          entity_region: '*'
       properties:
         id:
           type: string
           format: uuid
           example: eaf7adf1-32c8-4bbf-b960-d1f8456afe67
+          description: The ID of the role assignment.
         role:
           type: string
           example: viewer
+          description: Name of the role being assigned.
         entity_id:
           type: string
           format: uuid
           example: 817d0422-45c9-4d88-8d64-45aef05c1ae7
+          description: A RBAC entity ID.
         entity_type:
           type: string
           example: runtime_groups
+          description: Entity type the role is being assigned to.
         entity_region:
           type: string
           enum:
@@ -1035,6 +1096,7 @@ components:
             - eu
             - '*'
           example: eu
+          description: Region of the entity.
   securitySchemes:
     accessToken:
       type: http
@@ -1044,6 +1106,194 @@ components:
       type: http
       scheme: bearer
       description: Konnect Personal Access Token (PAT)
+  examples:
+    400-request-format-is-invalid:
+      value:
+        status: 400
+        title: Bad Request
+        instance: 'konnect:trace:3674017986744198214'
+        invalid_parameters:
+          - field: body
+            reason: request format is invalid
+    400-cannot-be-blank:
+      value:
+        status: 400
+        title: Bad Request
+        instance: 'konnect:trace:6644808935508571943'
+        invalid_parameters:
+          - field: name
+            reason: cannot be blank
+    400-invalid-id-format:
+      value:
+        status: 400
+        title: Bad Request
+        instance: 'konnect:trace:8988732526256293040'
+        invalid_parameters:
+          - field: teamID
+            reason: invalid ID format
+    400-valid-uuid:
+      value:
+        status: 400
+        title: Bad Request
+        instance: 'konnect:trace:7680390984800447837'
+        invalid_parameters:
+          - field: id
+            reason: must be a valid UUID v4
+    400-systems-team-modified:
+      value:
+        status: 400
+        title: Bad Request
+        instance: 'konnect:trace:1738820719742148545'
+        invalid_parameters:
+          - field: teamID
+            reason: system teams cannot be modified
+    404-not-found:
+      value:
+        status: 404
+        title: Not Found
+        instance: 'konnect:trace:2287285207635123011'
+        detail: The requested team was not found
+    403-permission-denied:
+      value:
+        status: 403
+        title: Permission denied
+        instance: 'konnect:trace:2822394689570210664'
+        detail: Only enterprise organizations can create teams
+    403-invalid-permissions:
+      value:
+        status: 403
+        title: Invalid Permissions
+        detail: 'You must have the [administrator] role to perform this action'
+        instance: 'konnect:trace:6c1ef33ae5bce33634d7d7d695c7f203'
+    403-auth-invalid:
+      value:
+        type: 'https://kongapi.info/konnect/invalid-permissions'
+        status: 403
+        title: Invalid Permissions
+        detail: 'You must have the [administrator] role to perform this action'
+        instance: 'konnect:trace:6c1ef33ae5bce33634d7d7d695c7f203'
+    412-precondition-failed:
+      value:
+        status: 412
+        title: Precondition Failed
+        instance: 'konnect:trace:1896611024257578096'
+        detail: IdP configuration not found
+    collection-example:
+      value:
+        meta:
+          page:
+            number: 2
+            size: 10
+            total: 100
+        data:
+          - id: b02e23c5-8ee4-4e5a-99f4-43329923adcd
+            role: viewer
+            entity_id: 437c7192-fea0-4f35-8478-c8d57783f8c1
+            entity_type: runtime_groups
+            entity_region: eu
+          - id: 869d9402-f117-4f9a-840f-69acaf70a81a
+            role: admin
+            entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
+            entity_type: services
+            entity_region: '*'
+    Assigned-Role-Example:
+      value:
+        id: eaf7adf1-32c8-4bbf-b960-d1f8456afe67
+        role: viewer
+        entity_id: 817d0422-45c9-4d88-8d64-45aef05c1ae7
+        entity_type: runtime_groups
+        entity_region: eu
+    group-collection-example:
+      value:
+        meta:
+          page:
+            number: 1
+            size: 10
+            total: 6
+        data:
+          - group: 111(@&*$)(@*#_@(gfds re gdsf dfg
+            team_ids:
+              - c0010105-e840-4824-b7ee-787f22267c36
+          - group: '2222'
+            team_ids:
+              - af91db4c-6e51-403e-a2bf-33d27ae50c0a
+    single-team-response:
+      value:
+        id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+        name: IDM - Developers
+        description: The developers for the IDM API.
+        system_team: false
+        created_at: '2022-02-07T17:46:57.52Z'
+        updated_at: '2022-09-25T13:00:00.00Z'
+    team-mapping-collection:
+      value:
+        mappings:
+          - group: Service Developers
+            team_ids:
+              - 6801e673-cc10-498a-94cd-4271de07a0d3
+    401-unauthenticated:
+      value:
+        status: 401
+        title: Unauthenticated
+        instance: 'konnect:trace:952172606039454040'
+        detail: A valid token is required
+    user-collection-response-example:
+      value:
+        meta:
+          page:
+            number: 2
+            size: 1
+            total: 10
+        data:
+          - id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+            email: james.woods@email.com
+            full_name: James Woods
+            preferred_name: Jimmy
+            active: true
+            created_at: '2022-08-17T17:46:57.52Z'
+            updated_at: '2022-10-03T17:00:00.00Z'
+    Get-User-Resposne:
+      value:
+        id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+        email: iamnande@konghq.com
+        full_name: Nicholas L Anderson
+        preferred_name: iamnande
+        active: true
+        created_at: '1992-02-07T17:46:57.52Z'
+        updated_at: '2022-02-07T17:00:00.52Z'
+    Assign-Roles-US:
+      value:
+        role: viewer
+        entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
+        entity_type: runtime_groups
+        entity_region: us
+    Assign-Roles-Global:
+      value:
+        role: admin
+        entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
+        entity_type: services
+        entity_region: '*'
+    CreateTeamExample:
+      value:
+        name: IDM - Developers
+        description: The Identity Management (IDM) team.
+    Update-Team-Request:
+      value:
+        name: IDM - Developers
+        description: The Identity Management (IDM) API team.
+    Update-Team-Mappings:
+      value:
+        mappings:
+          - group: Service Developers
+            team_ids:
+              - af91db4c-6e51-403e-a2bf-33d27ae50c0a
+    Update-User-Request:
+      value:
+        full_name: James C Woods
+        preferred_name: Jimmy
+    Add-User-Request:
+      value:
+        id: df120cb4-f60b-47bc-a2f8-6a28e6a3c63b
 security:
   - accessToken: []
   - personalAccessToken: []
