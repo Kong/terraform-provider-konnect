@@ -130,3 +130,6 @@ dmypy.json
 
 # Node related dependencies
 node_modules
+
+# OS files
+.DS_Store
