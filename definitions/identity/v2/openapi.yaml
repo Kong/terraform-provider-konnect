@@ -8,12 +8,8 @@ info:
     email: konnect-noreply@konghq.com
     url: 'https://cloud.konghq.com'
 servers:
-  - url: 'http://localhost:8000/v2'
-    description: Local
-  - url: 'https://global.api.konghq.tech/v2'
-    description: Development
   - url: 'https://global.api.konghq.com/v2'
-    description: Production
+    description: Global Base URL
 paths:
   /identity-provider/team-mappings:
     put:
@@ -209,7 +205,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       description: |-
-        Remove a user from a team. 
+        Remove a user from a team.
         If the user was removed successfully, returns a 204 empty response.
       tags:
         - Team Membership
@@ -1226,7 +1222,7 @@ components:
       bearerFormat: Token
       description: |
         You can generate a Personal Access Token (PAT) from the [personal access token page](https://cloud.konghq.com/global/tokens/) in the Konnect dashboard.
-        The PAT token must be passed in the header of a request, for example: 
+        The PAT token must be passed in the header of a request, for example:
          `curl -X GET 'https://global.api.konghq.tech/v2/users/' --header 'Authorization: Bearer kpat_xgfT'`
     konnectAccessCookie:
       name: konnectAccessToken
