@@ -258,7 +258,7 @@ paths:
       summary: Assign Role
       operationId: teams-assign-role
       responses:
-        '200':
+        '201':
           $ref: '#/components/responses/AssignedRoleSingle'
         '400':
           $ref: '#/components/responses/Error'
