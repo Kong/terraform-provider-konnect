@@ -63,6 +63,12 @@ paths:
       parameters:
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageNumber'
+        - schema:
+            type: string
+            example: 'filter[name]=Organization+Admins'
+          in: query
+          name: 'filter[field]'
+          description: 'A field to filter on. Supported fields: name'
       tags:
         - Teams
     parameters: []
@@ -230,6 +236,12 @@ paths:
           $ref: '#/components/responses/NotFound'
       operationId: list-team-roles
       description: List the roles belonging to a team.
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: 'filter[field]'
+          description: 'A field to filter on. Supported fields: name, entity_type'
     post:
       summary: Assign Role
       operationId: teams-assign-role
@@ -297,6 +309,12 @@ paths:
       parameters:
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageNumber'
+        - schema:
+            type: string
+            example: 'filter[active]=true'
+          in: query
+          name: 'filter[field]'
+          description: 'A field to filter on. Supported fields: email, full_name, preferred_name, active, created_at, updated_at'
   '/users/{userId}':
     parameters:
       - schema:
@@ -391,6 +409,12 @@ paths:
           $ref: '#/components/responses/NotFound'
       operationId: list-user-roles
       description: List the roles assigned to a user.
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: 'filter[field]'
+          description: 'A field to filter on. Supported fields: name, entity_type'
     post:
       summary: Assign Role
       operationId: users-assign-role
