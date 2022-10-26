@@ -1248,16 +1248,6 @@ components:
         You can generate a Personal Access Token (PAT) from the [personal access token page](https://cloud.konghq.com/global/tokens/) in the Konnect dashboard.
         The PAT token must be passed in the header of a request, for example:
          `curl -X GET 'https://global.api.konghq.tech/v2/users/' --header 'Authorization: Bearer kpat_xgfT'`
-    konnectAccessCookie:
-      name: konnectAccessToken
-      type: apiKey
-      in: cookie
-      description: Konnect Access Cookie
-    konnectAccessToken:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
-      description: Konnect Access Token
   examples:
     400-request-format-is-invalid:
       value:
@@ -1448,8 +1438,6 @@ components:
         id: df120cb4-f60b-47bc-a2f8-6a28e6a3c63b
 security:
   - personalAccessToken: []
-  - konnectAccessCookie: []
-  - konnectAccessToken: []
 tags:
   - name: IdPs
   - name: Roles
