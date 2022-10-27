@@ -411,7 +411,7 @@ components:
     Error:
       description: A response in which an error has occurred.
       content:
-        application/json:
+        application/problem+json:
           schema:
             type: object
             x-examples:

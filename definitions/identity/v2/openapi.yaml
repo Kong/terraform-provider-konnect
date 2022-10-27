@@ -591,7 +591,7 @@ components:
     BadRequest:
       description: Bad Request
       content:
-        application/json:
+        application/problem+json:
           schema:
             type: object
             description: The error object
@@ -632,7 +632,7 @@ components:
     PermissionDenied:
       description: Permission denied
       content:
-        application/json:
+        application/problem+json:
           schema:
             type: object
             x-examples:
@@ -669,7 +669,7 @@ components:
     PreconditionFailed:
       description: Precondition Failed
       content:
-        application/json:
+        application/problem+json:
           schema:
             type: object
             x-examples:
@@ -736,7 +736,7 @@ components:
     Unauthenticated:
       description: Unauthenticated
       content:
-        application/json:
+        application/problem+json:
           schema:
             type: object
             x-examples:
@@ -769,7 +769,7 @@ components:
     NotFound:
       description: Not Found
       content:
-        application/json:
+        application/problem+json:
           schema:
             type: object
             x-examples:
