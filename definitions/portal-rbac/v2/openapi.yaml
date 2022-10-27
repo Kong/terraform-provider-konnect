@@ -389,9 +389,6 @@ paths:
           $ref: '#/components/responses/Error'
       operationId: list-portal-roles
       description: List roles that can be assigned to teams in a portal.
-      parameters:
-        - $ref: '#/components/parameters/PageSize'
-        - $ref: '#/components/parameters/PageNumber'
       tags:
         - Roles
 components:
@@ -598,10 +595,10 @@ components:
                   roles:
                     type: object
                     required:
-                      - viewer
+                      - apiviewer
                       - apiconsumer
                     properties:
-                      viewer:
+                      apiviewer:
                         type: object
                         required:
                           - name
@@ -610,11 +607,11 @@ components:
                           name:
                             type: string
                             enum:
-                              - Viewer
+                              - API Viewer
                           description:
                             type: string
                             enum:
-                              - Viewers have read-only access to the documentation of a service in a portal
+                              - API Viewers have read-only access to the documentation of a service in a portal
                       apiconsumer:
                         type: object
                         required:
@@ -632,14 +629,14 @@ components:
             required:
               - services
           examples:
-            example-1:
+            roles:
               value:
                 services:
                   name: Services
                   roles:
-                    viewer:
-                      name: Viewer
-                      description: Viewers have read-only access to the documentation of a service in a portal
+                    apiviewer:
+                      name: API Viewer
+                      description: API Viewers have read-only access to the documentation of a service in a portal
                     apiconsumer:
                       name: API Consumer
                       description: API Consumers can make calls to the given service
