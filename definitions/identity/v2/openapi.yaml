@@ -11,6 +11,40 @@ servers:
   - url: 'https://global.api.konghq.com/v2'
     description: Global Base URL
 paths:
+  /accept-invite:
+    post:
+      summary: Accept Invite
+      description: Manually accept the Konnect invitation. This endpoint allows you to manually accept the invitation to join a Konnect organization. Upon accepting the invitation, the user's name and password are set and the active state is set to true. This can be used as an alternative to the https://cloud.konghq.com/login link in the email which will finish the registration process in a web browser.
+      operationId: accept-invite
+      requestBody:
+        $ref: '#/components/requestBodies/AcceptInvite'
+      responses:
+        '202':
+          description: Accepted
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Invites
+  /invites:
+    post:
+      summary: Invite User
+      description: Send an invitation email to invite a user to the Konnect organization. The email contains a link with a one time token to accept the invitation. Upon accepting the invitation, the user is directed to https://cloud.konghq.com/login to complete registration.
+      operationId: invite-user
+      requestBody:
+        $ref: '#/components/requestBodies/InviteUser'
+      responses:
+        '201':
+          description: Created
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+      tags:
+        - Invites
   /identity-provider/team-mappings:
     put:
       summary: Update Team Mappings
@@ -643,6 +677,33 @@ components:
               $ref: '#/components/examples/400-valid-uuid'
             System teams cannot be modified:
               $ref: '#/components/examples/400-systems-team-modified'
+    Conflict:
+      description: Conflict
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            description: The error object
+            properties:
+              status:
+                type: integer
+                description: The HTTP response code
+                example: 409
+              title:
+                type: string
+                example: Resource Conflict
+                description: The Error response
+              instance:
+                type: string
+                description: The Konnect traceback ID.
+                example: 'konnect:trace:3674017986744198214'
+              detail:
+                type: string
+                description: Detailed explanation of the error response.
+                example: User is already active
+          examples:
+            User is Already Active:
+              $ref: '#/components/examples/409-user-is-already-active'
     PermissionDenied:
       description: Permission denied
       content:
@@ -747,6 +808,33 @@ components:
                 title: Precondition Failed
                 instance: 'konnect:trace:1896611024257578096'
                 detail: IdP configuration not found
+    RateLimited:
+      description: Rate Limited
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            description: The error object
+            properties:
+              status:
+                type: integer
+                description: The HTTP response code
+                example: 429
+              title:
+                type: string
+                example: Rate Limited
+                description: The Error response
+              instance:
+                type: string
+                description: The Konnect traceback ID.
+                example: 'konnect:trace:3674017986744198214'
+              detail:
+                type: string
+                description: Detailed explanation of the error response.
+                example: Too many requests
+          examples:
+            Rate Limited:
+              $ref: '#/components/examples/429-rate-limited'
     Unauthenticated:
       description: Unauthenticated
       content:
@@ -1460,6 +1548,56 @@ components:
             Assigned Roles Global:
               $ref: '#/components/examples/Assign-Roles-Global'
       description: Assign a role to a user or a team.
+    AcceptInvite:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              password:
+                type: string
+                example: TestPassword123!!
+                format: password
+                writeOnly: true
+                description: Sets the password for the user.
+              full_name:
+                type: string
+                example: James C. Woods
+                writeOnly: true
+                description: Full name of the user.
+              preferred_name:
+                type: string
+                example: Tiger
+                description: Preferred name of the user.
+              token:
+                type: string
+                format: uuid
+                example: 7690d649-86fc-4d10-8771-c094d2efbd85
+                writeOnly: true
+                description: The one time token in accept-invitation link. 
+            required:
+              - password
+              - full_name
+              - preferred_name
+              - token
+      description: The request schema for the accept invite request.
+    InviteUser:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                format: email
+                example: james.c.woods@example.com
+                writeOnly: true
+            required:
+              - email
+      description: |-
+        The request schema for the invite user request.
+
+        If you pass an `email` that is not already an active user in the request, a fresh invitation email will be created and sent to the new user.
   schemas:
     PaginatedMeta:
       type: object
@@ -1733,12 +1871,24 @@ components:
         title: Invalid Permissions
         detail: 'You must have the [administrator] role to perform this action'
         instance: 'konnect:trace:6c1ef33ae5bce33634d7d7d695c7f203'
+    409-user-is-already-active:
+      value:
+        status: 409
+        title: Resource Conflict
+        instance: 'konnect:trace:6644808935508571943'
+        detail: User is already active
     412-precondition-failed:
       value:
         status: 412
         title: Precondition Failed
         instance: 'konnect:trace:1896611024257578096'
         detail: IdP configuration not found
+    429-rate-limited:
+      value:
+        status: 429
+        title: Rate Limited
+        instance: 'konnect:trace:6644808935508571943'
+        detail: Too many requests
     collection-example:
       value:
         meta:
@@ -1859,6 +2009,7 @@ security:
   - personalAccessToken: []
 tags:
   - name: IdPs
+  - name: Invites
   - name: Roles
   - name: Team Membership
   - name: Teams
