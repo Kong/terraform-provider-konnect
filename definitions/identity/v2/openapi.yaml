@@ -294,7 +294,7 @@ paths:
       summary: Assign Role
       operationId: teams-assign-role
       responses:
-        '200':
+        '201':
           $ref: '#/components/responses/AssignedRoleSingle'
         '400':
           $ref: '#/components/responses/BadRequest'
@@ -304,7 +304,9 @@ paths:
           $ref: '#/components/responses/PermissionDenied'
         '404':
           $ref: '#/components/responses/NotFound'
-      description: Assign a role to a team.
+        '409':
+          $ref: '#/components/responses/Conflict'
+      description: Assign a role to a team. Returns 409 if role is already assigned.
       requestBody:
         $ref: '#/components/requestBodies/AssignRole'
       tags:
@@ -467,7 +469,7 @@ paths:
       summary: Assign Role
       operationId: users-assign-role
       responses:
-        '200':
+        '201':
           $ref: '#/components/responses/AssignedRoleSingle'
         '400':
           $ref: '#/components/responses/BadRequest'
@@ -477,7 +479,9 @@ paths:
           $ref: '#/components/responses/PermissionDenied'
         '404':
           $ref: '#/components/responses/NotFound'
-      description: Assign a role to a user.
+        '409':
+          $ref: '#/components/responses/NotFound'
+      description: Assign a role to a user.  Returns 409 if role is already assigned.
       requestBody:
         $ref: '#/components/requestBodies/AssignRole'
       tags:
