@@ -546,7 +546,7 @@ components:
             $ref: '#/components/schemas/User'
           examples:
             Example:
-              $ref: '#/components/examples/Get-User-Resposne'
+              $ref: '#/components/examples/Get-User-Response'
     UserCollection:
       description: A paginated list response for a collection of users.
       content:
@@ -1967,12 +1967,12 @@ components:
             active: true
             created_at: '2022-08-17T17:46:57.52Z'
             updated_at: '2022-10-03T17:00:00.00Z'
-    Get-User-Resposne:
+    Get-User-Response:
       value:
         id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-        email: iamnande@konghq.com
-        full_name: Nicholas L Anderson
-        preferred_name: iamnande
+        email: james.woods@email.com
+        full_name: James Woods
+        preferred_name: Jimmy
         active: true
         created_at: '1992-02-07T17:46:57.52Z'
         updated_at: '2022-02-07T17:00:00.52Z'
