@@ -84,7 +84,7 @@ paths:
       description: Fetch the IdP group to Konnect team mapping.
   /roles:
     get:
-      summary: Get Predfined Roles
+      summary: Get Predefined Roles
       description: 'Retrieve the predefined, or system managed, roles.'
       operationId: get-predefined-roles
       responses:
@@ -1578,7 +1578,7 @@ components:
                 format: uuid
                 example: 7690d649-86fc-4d10-8771-c094d2efbd85
                 writeOnly: true
-                description: The one time token in accept-invitation link. 
+                description: The one time token in accept-invitation link.
             required:
               - password
               - full_name
