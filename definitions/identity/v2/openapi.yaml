@@ -289,7 +289,7 @@ paths:
             type: string
           in: query
           name: 'filter[field]'
-          description: 'A field to filter on. Supported fields: name, entity_type'
+          description: 'A field to filter on. Supported fields: role, entity_type'
     post:
       summary: Assign Role
       operationId: teams-assign-role
@@ -464,7 +464,7 @@ paths:
             type: string
           in: query
           name: 'filter[field]'
-          description: 'A field to filter on. Supported fields: name, entity_type'
+          description: 'A field to filter on. Supported fields: role, entity_type'
     post:
       summary: Assign Role
       operationId: users-assign-role
