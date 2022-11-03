@@ -155,7 +155,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       operationId: list-team-users
-      description: Returns a paginated list of users that belong to the team specified in the path paramater.
+      description: Returns a paginated list of users that belong to the team specified in the path parameter.
       parameters:
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageNumber'
@@ -171,11 +171,6 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '404':
           $ref: '#/components/responses/NotFound'
-        '409':
-          description: |-
-            Conflict
-
-            This error response is returned when trying to add a user to a team that doesn't exist.
       description: Add a user to a team.
       requestBody:
         $ref: '#/components/requestBodies/AddUserToTeam'
@@ -364,7 +359,7 @@ paths:
             example: 'filter[active]=true'
           in: query
           name: 'filter[field]'
-          description: 'A field to filter on. Supported fields: email, full_name, preferred_name, active, created_at, updated_at'
+          description: 'A field to filter on. Supported fields: id, email, full_name, active'
   '/users/{userId}':
     parameters:
       - schema:
@@ -387,7 +382,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       operationId: get-user
-      description: Returns the user object for the user ID specified as a path paramater.
+      description: Returns the user object for the user ID specified as a path parameter.
     patch:
       summary: Update User
       operationId: update-user
@@ -432,7 +427,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       operationId: list-user-teams
-      description: Returns a paginated list of a teams that the belong to the user ID paramater.
+      description: Returns a paginated list of a teams that the belong to the user ID parameter.
       parameters:
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageNumber'
@@ -1616,7 +1611,7 @@ components:
       properties:
         page:
           type: object
-          description: Contains pagination query paramaters and the total number of objects that returned.
+          description: Contains pagination query parameters and the total number of objects returned.
           properties:
             number:
               type: integer
