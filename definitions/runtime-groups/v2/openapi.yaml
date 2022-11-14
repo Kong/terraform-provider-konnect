@@ -1,0 +1,639 @@
+openapi: 3.0.0
+info:
+  title: Runtime Groups API
+  version: 2.0.0
+  description: The API for Kong Konnect Runtime Groups.
+  contact:
+    name: Kong
+    url: 'https://cloud.konghq.com'
+servers:
+  - url: 'https://us.api.konghq.com/v2'
+    description: US Region Base URL
+  - url: 'https://eu.api.konghq.com/v2'
+    description: EU Region Base URL
+paths:
+  /runtime-groups:
+    get:
+      summary: List Runtime Groups
+      responses:
+        '200':
+          $ref: '#/components/responses/ListRuntimeGroupsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/PermissionDenied'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+      operationId: list-runtime-groups
+      description: Returns an array of runtime groups objects containing information about the Konnect Runtime Groups.
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/FilterByNameEquality'
+        - $ref: '#/components/parameters/FilterByNameEqualityShort'
+      tags:
+        - Runtime Groups
+    parameters: []
+    post:
+      summary: Create Runtime Group
+      operationId: create-runtime-group
+      responses:
+        '201':
+          $ref: '#/components/responses/CreateRuntimeGroupResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/PermissionDenied'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+      tags:
+        - Runtime Groups
+      requestBody:
+        $ref: '#/components/requestBodies/CreateRuntimeGroupRequest'
+      description: 'Create a runtime group in the Konnect Organization.'
+  /runtime-groups/{id}:
+    parameters:
+      - schema:
+          type: string
+          format: uuid
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        name: id
+        in: path
+        required: true
+        description: The runtime group ID
+    get:
+      summary: Fetch Runtime Group
+      responses:
+        '200':
+          $ref: '#/components/responses/RetrieveRuntimeGroupResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/PermissionDenied'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+      operationId: get-team
+      description: Returns information about a team from a given team ID.
+      tags:
+        - Runtime Groups
+    patch:
+      summary: Update Runtime Group
+      operationId: update-runtime-group
+      responses:
+        '200':
+          $ref: '#/components/responses/UpdateRuntimeGroupResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/PermissionDenied'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+      description: Update an individual runtime group.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateRuntimeGroupRequest'
+      tags:
+        - Runtime Groups
+    delete:
+      summary: Delete Runtime Group
+      operationId: delete-runtime-group
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/PermissionDenied'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+      description: Delete an individual runtime group.
+      tags:
+        - Runtime Groups
+components:
+  parameters:
+    PageSize:
+      name: 'page[size]'
+      description: How many items to include in a page.
+      in: query
+      required: false
+      schema:
+        type: integer
+        example: 10
+    PageNumber:
+      name: 'page[number]'
+      description: The specific page number in the collection results.
+      in: query
+      required: false
+      schema:
+        type: integer
+        example: 2
+    FilterByNameEquality:
+      name: 'filter[name][eq]'
+      description: Filter by direct equality comparison of the name property with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 'test'
+    FilterByNameEqualityShort:
+      name: 'filter[name]'
+      description: Filter by direct equality comparison (short-hand) of the name property with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 'test'
+  requestBodies:
+    CreateRuntimeGroupRequest:
+      description: The request schema for the create runtime group request.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                example: Test Runtime Group
+                description: The name of the runtime group.
+              description:
+                type: string
+                example: A test runtime group for exploration.
+                description: The description of the runtime group in Konnect.
+              labels:
+                $ref: '#/components/schemas/Labels'
+            required:
+              - name
+          examples:
+            Example Request Body:
+              $ref: '#/components/examples/CreateRuntimeGroupRequestExample'
+    UpdateRuntimeGroupRequest:
+      description: The request schema for the update runtime group request.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                example: Test Runtime Group
+                description: The name of the runtime group.
+              description:
+                type: string
+                example: A test runtime group for exploration.
+                description: The description of the runtime group in Konnect.
+              labels:
+                $ref: '#/components/schemas/Labels'
+          examples:
+            Example Request Body:
+              $ref: '#/components/examples/UpdateRuntimeGroupRequestExample'
+  responses:
+    RetrieveRuntimeGroupResponse:
+      description: A response to retrieving a single runtime group.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RuntimeGroup'
+          examples:
+            Single runtime group response:
+              $ref: '#/components/examples/RuntimeGroupExample'
+    CreateRuntimeGroupResponse:
+      description: A response to creating a runtime group.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RuntimeGroup'
+          examples:
+            Create Runtime Group Response:
+              $ref: '#/components/examples/RuntimeGroupExample'
+    UpdateRuntimeGroupResponse:
+      description: A response to updating a runtime group.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RuntimeGroup'
+          examples:
+            Update Runtime Group Response:
+              $ref: '#/components/examples/RuntimeGroupExample'
+    ListRuntimeGroupsResponse:
+      description: A paginated list response for a collection of runtime groups.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              meta:
+                $ref: '#/components/schemas/PaginatedMeta'
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RuntimeGroup'
+          examples:
+            Runtime Group Collection:
+              value:
+                meta:
+                  page:
+                    number: 2
+                    size: 1
+                    total: 10
+                data:
+                  - id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+                    name: Test Runtime Group
+                    description: A test runtime group for exploration.
+                    labels:
+                      test: 'true'
+                    config:
+                      control_plane_endpoint: 'https://acfe5f253f.cp0.konghq.com'
+                      telemetry_endpoint: 'https://acfe5f253f.tp0.konghq.com'
+                    created_at: '2022-11-04T20:10:06.927Z'
+                    updated_at: '2022-11-04T20:10:06.927Z'
+    BadRequest:
+      description: Bad Request
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            description: The error object
+            properties:
+              status:
+                type: integer
+                description: The HTTP response code
+                example: 400
+              title:
+                type: string
+                example: Bad Request
+                description: The Error response
+              instance:
+                type: string
+                description: The Konnect traceback ID.
+                example: 'konnect:trace:3674017986744198214'
+              # specific to bad request case when organization attempts to breach runtime group limits
+              # could be moved to another error code, but would technically be non-compliant
+              detail:
+                type: string
+                description: Information about the error response.
+                example: Cannot create an additional runtime group because usage limits have been reached.
+              # used on failed validation in requests, not for failing business-logic requirements
+              invalid_parameters:
+                type: array
+                description: An array of objects that contains information related to the error response.
+                items:
+                  type: object
+                  additionalProperties: true
+                  properties:
+                    rule:
+                      type: string
+                    field:
+                      type: string
+                    reason:
+                      type: string
+                required:
+                  - field
+                  - reason
+          examples:
+            Request Format Invalid:
+              $ref: '#/components/examples/400RequestFormatInvalidExample'
+            Cannot Be Blank:
+              $ref: '#/components/examples/400CannotBeBlankExample'
+            Invalid ID Format:
+              $ref: '#/components/examples/400InvalidIDFormatExample'
+            Usage Limits Reached:
+              $ref: '#/components/examples/400UsageLimitsReachedExample'
+    PermissionDenied:
+      description: Permission denied
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            description: The error object.
+            properties:
+              status:
+                type: integer
+                description: HTTP status code.
+                example: 403
+              title:
+                type: string
+                example: Permission denied
+                description: HTTP status code
+              instance:
+                type: string
+                description: Konnect traceback error code.
+                example: 'konnect:trace:3674017986744198214'
+              detail:
+                type: string
+                description: Information about the error response.
+                example: Insufficient role-set to create runtime groups.
+          examples:
+            Permission Denied:
+              $ref: '#/components/examples/403PermissionDeniedExample'
+    Unauthenticated:
+      description: Unauthenticated
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            description: The error response object.
+            properties:
+              status:
+                type: integer
+                example: 401
+                description: The HTTP status code.
+              title:
+                type: string
+                description: The Error Response.
+                example: Unauthenticated
+              instance:
+                type: string
+                description: The Konnect traceback code.
+                example: 'konnect:trace:952172606039454040'
+              detail:
+                type: string
+                description: Details about the error response.
+                example: A valid token is required
+          examples:
+            Unauthorized:
+              $ref: '#/components/examples/401UnauthenticatedExample'
+    NotFound:
+      description: Not Found
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            description: The error response object.
+            properties:
+              status:
+                type: integer
+                description: The HTTP status code.
+                example: 404
+              title:
+                type: string
+                description: The error response code.
+                example: Not Found
+              instance:
+                type: string
+                example: 'konnect:trace:2287285207635123011'
+                description: The Konnect traceback code
+              detail:
+                type: string
+                example: The requested runtime group was not found.
+                description: Details about the error.
+          examples:
+            Not Found:
+              $ref: '#/components/examples/404NotFoundExample'
+    InternalServerError:
+      description: Internal Server Error
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            description: The error response object.
+            properties:
+              status:
+                type: integer
+                description: The HTTP status code.
+                example: 500
+              title:
+                type: string
+                description: The error response code.
+                example: Internal Server Error
+              instance:
+                type: string
+                example: 'konnect:trace:2287285207635123011'
+                description: The Konnect traceback code
+              details:
+                type: string
+                example: Could not propagate runtime group changes to control plane cluster service.
+                description: Details about the error.
+          examples:
+            Internal Server Error:
+              $ref: '#/components/examples/500InternalKokoErrorExample'
+    ServiceUnavailable:
+      description: Service Unavailable
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            description: Error response for temporary service unavailability.
+            properties:
+              status:
+                type: integer
+                description: The HTTP status code.
+                example: 503
+              title:
+                type: string
+                description: The error response code.
+                example: Service Unavailable
+              instance:
+                type: string
+                example: 'konnect:trace:2287285207635123011'
+                description: The Konnect traceback code
+              detail:
+                type: string
+                example: Could not retrieve permissions to check resource accessibility.
+                description: Details about the error.
+          examples:
+            Service Unavailable:
+              $ref: '#/components/examples/503PermissionReadFailureExample'
+  schemas:
+    PaginatedMeta:
+      type: object
+      title: PaginatedMeta
+      description: Returns pagination information
+      properties:
+        page:
+          type: object
+          description: Contains pagination query parameters and the total number of objects returned.
+          properties:
+            number:
+              type: integer
+              example: 2
+              description: Specifies the number of objects returned per page.
+            size:
+              type: integer
+              example: 10
+              maximum: 100
+              description: Specifies the size of the page.
+            total:
+              type: integer
+              maximum: 1000
+              example: 100
+              description: Integer representation of the amount of items returned.
+    RuntimeGroup:
+      title: Runtime Group
+      type: object
+      description: The runtime group object contains information about a Kong control plane.
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+          description: The runtime group ID.
+          readOnly: true
+        name:
+          type: string
+          example: Test Runtime Group
+          description: The name of the runtime group.
+        description:
+          type: string
+          example: A test runtime group for exploration.
+          description: The description of the runtime group in Konnect.
+        labels:
+          $ref: '#/components/schemas/Labels'
+        config:
+          type: object
+          description: CP configuration object for related access endpoints.
+          properties:
+            control_plane_endpoint:
+              type: string
+              format: url
+              example: 'https://acfe5f253f.cp0.konghq.com'
+              description: Control Plane Endpoint.
+              readOnly: true
+            telemetry_endpoint:
+              type: string
+              format: url
+              example: 'https://acfe5f253f.tp0.konghq.com'
+              description: Telemetry Endpoint.
+              readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          description: An ISO-8604 timestamp representation of runtime group creation date.
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          description: An ISO-8604 timestamp representation of runtime group update date.
+          readOnly: true
+    Labels:
+      type: object
+      example:
+        test: 'true'
+      description: Labels to facilitate tagged search on runtime groups. Keys must be of length 1-63 characters, and cannot start with 'kong', 'konnect', 'mesh', 'kic', or '_'.
+      additionalProperties:
+        type: string
+        pattern: '^[a-z0-9A-Z]{1}([a-z0-9A-Z\-\.\_]*[a-z0-9A-Z]+)?$'
+        minLength: 1
+        maxLength: 63
+  securitySchemes:
+    accessToken:
+      type: http
+      scheme: bearer
+      bearerFormat: Token
+    personalAccessToken:
+      type: http
+      scheme: bearer
+      bearerFormat: Token
+  examples:
+    400RequestFormatInvalidExample:
+      value:
+        status: 400
+        title: Bad Request
+        instance: 'konnect:trace:3674017986744198214'
+        invalid_parameters:
+          - field: body
+            reason: request format is invalid
+    400CannotBeBlankExample:
+      value:
+        status: 400
+        title: Bad Request
+        instance: 'konnect:trace:6644808935508571943'
+        invalid_parameters:
+          - field: name
+            reason: cannot be blank
+    400InvalidIDFormatExample:
+      value:
+        status: 400
+        title: Bad Request
+        instance: 'konnect:trace:8988732526256293040'
+        invalid_parameters:
+          - field: id
+            reason: invalid ID format
+    400UsageLimitsReachedExample:
+      value:
+        status: 400
+        title: Bad Request
+        instance: 'konnect:trace:8988732526256293040'
+        detail: Cannot create an additional runtime group because usage limits have been reached.
+    401UnauthenticatedExample:
+      value:
+        status: 401
+        title: Unauthenticated
+        instance: 'konnect:trace:952172606039454040'
+        detail: A valid token is required
+    403PermissionDeniedExample:
+      value:
+        status: 403
+        title: Permission denied
+        instance: 'konnect:trace:2822394689570210664'
+        detail: Insufficient role-set to create runtime groups.
+    404NotFoundExample:
+      value:
+        status: 404
+        title: Not Found
+        instance: 'konnect:trace:2287285207635123011'
+        detail: The requested runtime group was not found.
+    500InternalKokoErrorExample:
+      value:
+        status: 500
+        title: Internal Server Error
+        instance: 'konnect:trace:2287285207635123011'
+        detail: Could not propagate runtime group changes to control plane cluster service.
+    503PermissionReadFailureExample:
+      value:
+        status: 503
+        title: Service Unavailable
+        instance: 'konnect:trace:2287285207635123011'
+        detail: Could not retrieve permissions to check resource accessibility.
+    CreateRuntimeGroupRequestExample:
+      value:
+        name: 'Test Runtime Group'
+        description: A test runtime group for exploration.
+        labels:
+          test: 'true'
+    UpdateRuntimeGroupRequestExample:
+      value:
+        name: 'Test Runtime Group'
+        description: A test runtime group for exploration.
+        labels:
+          otherTest: 'true'
+    RuntimeGroupExample:
+      value:
+        id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+        name: Test Runtime Group
+        description: A test runtime group for exploration.
+        labels:
+          test: 'true'
+        config:
+          control_plane_endpoint: 'https://acfe5f253f.cp0.konghq.com'
+          telemetry_endpoint: 'https://acfe5f253f.tp0.konghq.com'
+        created_at: '2022-11-04T20:10:06.927Z'
+        updated_at: '2022-11-04T20:10:06.927Z'
+security:
+  - accessToken: []
+  - personalAccessToken: []
+tags:
+  - name: Runtime Groups
+
