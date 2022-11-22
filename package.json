@@ -4,7 +4,9 @@
   "description": "Konnect Platform OpenAPI specs",
   "main": "index.js",
   "scripts": {
-    "lint:all": "spectral lint 'definitions/**/openapi.yaml'"
+    "lint:all": "spectral lint 'definitions/**/openapi.yaml'",
+    "generate:identity-v2-client": "rm -rf ./packages/identity/v2/npm/client && openapi-generator-cli generate --generator-key identity-v2-client",
+    "validate:identity-v2-spec": "openapi-generator-cli validate -i ./definitions/identity/v2/openapi.yaml"
   },
   "repository": {
     "type": "git",
@@ -18,6 +20,7 @@
   },
   "homepage": "https://github.com/Kong/platform-api#readme",
   "devDependencies": {
+    "@openapitools/openapi-generator-cli": "^2.5.2",
     "@stoplight/spectral-cli": "^6.5.0",
     "redoc-cli": "^0.13.19"
   }

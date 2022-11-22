@@ -1,0 +1,17 @@
+{
+  "$schema": "./node_modules/@openapitools/openapi-generator-cli/config.schema.json",
+  "spaces": 2,
+  "generator-cli": {
+    "version": "6.2.1",
+    "generators": {
+      "identity-v2-client": {
+        "generatorName": "typescript-axios",
+        "output": "packages/identity/v2/npm/client",
+        "glob": "definitions/identity/v2/openapi.yaml",
+        "additionalProperties": {
+          "modelPropertyNaming": "original"
+        }
+      }
+    }
+  }
+}

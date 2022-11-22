@@ -1,0 +1,11 @@
+{
+  "extends": "@tsconfig/recommended/tsconfig.json",
+  "compilerOptions": {
+    "allowJs": true,
+    "declaration": true,
+    "declarationDir": "dist/types",
+    "moduleResolution": "node",
+    "outDir": "dist",
+    "sourceMap": true
+  }
+}

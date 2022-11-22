@@ -1,0 +1,24 @@
+{
+  "name": "@kong/kauth-client-v2-axios",
+  "author": "Kong, Inc.",
+  "version": "0.0.1",
+  "description": "Axios Client for the KAuth v2 API",
+  "license": "UNLICENSED",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "typings": "dist/types",
+  "repository": "https://github.com/Kong/platform-api/tree/main/packages/identity/v2/npm",
+  "publishConfig": {
+    "access": "restricted"
+  },
+  "scripts": {
+    "compile": "rm -rf ./dist && tsc",
+    "prepack": "npm run compile"
+  },
+  "devDependencies": {
+    "@tsconfig/recommended": "^1.0.1",
+    "typescript": "^4.9.3"
+  }
+}

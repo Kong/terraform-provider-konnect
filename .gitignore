@@ -133,3 +133,6 @@ node_modules
 
 # OS files
 .DS_Store
+
+# OpenAPI Generator
+packages/**/client

@@ -1,0 +1,64 @@
+name: Publish SDK Packages
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  changes:
+    name: Get Changed Spec Files
+    runs-on: ubuntu-latest
+
+    outputs:
+      identity_spec: ${{ steps.identity.outputs.spec }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - uses: dorny/paths-filter@v2
+        id: identity
+        with:
+          filters: |
+            spec:
+              - 'definitions/identity/v2/openapi.yaml'
+
+  kauth-client-v2-axios-npm:
+    name: Publish KAuth Client v2 Axios Package to NPM
+
+    needs: changes
+    if: ${{ needs.changes.outputs.identity_spec == 'true' }}
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install Dependencies
+        run: |
+          npm install
+          cd packages/identity/v2/npm
+          npm install
+
+      - name: Validate Spec
+        run: npm run validate:identity-v2-spec
+
+      - name: Generate Client
+        run: npm run generate:identity-v2-client
+
+      - name: Publish to NPM Registry
+        run: |
+          cd packages/identity/v2/npm
+          npm version --no-git-tag-version $(npm view @kong/kauth-client-v2-axios@latest version)
+          npm version --no-git-tag-version patch
+          npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
