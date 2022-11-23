@@ -22,7 +22,7 @@ jobs:
         with:
           filters: |
             spec:
-              - 'definitions/identity/v2/openapi.yaml'
+              - 'konnect/definitions/identity/v2/openapi.yaml'
 
   kauth-client-v2-axios-npm:
     name: Publish KAuth Client v2 Axios Package to NPM
@@ -45,7 +45,7 @@ jobs:
       - name: Install Dependencies
         run: |
           npm install
-          cd packages/identity/v2/npm
+          cd konnect/packages/identity/v2/npm
           npm install
 
       - name: Validate Spec
@@ -56,7 +56,7 @@ jobs:
 
       - name: Publish to NPM Registry
         run: |
-          cd packages/identity/v2/npm
+          cd konnect/packages/identity/v2/npm
           npm version --no-git-tag-version $(npm view @kong/kauth-client-v2-axios@latest version)
           npm version --no-git-tag-version patch
           npm publish

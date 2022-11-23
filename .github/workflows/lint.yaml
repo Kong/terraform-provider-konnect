@@ -7,5 +7,11 @@ jobs:
       - uses: actions/checkout@v2
 
       - uses: stoplightio/spectral-action@latest
+        name: lint konnect definitions
         with:
-          file_glob: 'definitions/**/openapi.yaml'
+          file_glob: 'konnect/definitions/**/openapi.yaml'
+
+      - uses: stoplightio/spectral-action@latest
+        name: lint portal definitions
+        with:
+          file_glob: 'portal/definitions/**/openapi.yaml'

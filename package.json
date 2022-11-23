@@ -4,9 +4,9 @@
   "description": "Konnect Platform OpenAPI specs",
   "main": "index.js",
   "scripts": {
-    "lint:all": "spectral lint 'definitions/**/openapi.yaml'",
-    "generate:identity-v2-client": "rm -rf ./packages/identity/v2/npm/client && openapi-generator-cli generate --generator-key identity-v2-client",
-    "validate:identity-v2-spec": "openapi-generator-cli validate -i ./definitions/identity/v2/openapi.yaml"
+    "lint:all": "spectral lint '(portal|konnect)/definitions/**/openapi.yaml'",
+    "generate:identity-v2-client": "rm -rf ./konnect/packages/identity/v2/npm/client && openapi-generator-cli generate --generator-key identity-v2-client",
+    "validate:identity-v2-spec": "openapi-generator-cli validate -i ./konnect/definitions/identity/v2/openapi.yaml"
   },
   "repository": {
     "type": "git",

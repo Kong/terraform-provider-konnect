@@ -1,2 +1,3 @@
 # platform-api
-Konnect Platform OpenAPI specs 
+
+Konnect Platform OpenAPI specs

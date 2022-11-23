@@ -6,8 +6,8 @@
     "generators": {
       "identity-v2-client": {
         "generatorName": "typescript-axios",
-        "output": "packages/identity/v2/npm/client",
-        "glob": "definitions/identity/v2/openapi.yaml",
+        "output": "konnect/packages/identity/v2/npm/client",
+        "glob": "konnect/definitions/identity/v2/openapi.yaml",
         "additionalProperties": {
           "modelPropertyNaming": "original"
         }

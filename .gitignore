@@ -135,4 +135,5 @@ node_modules
 .DS_Store
 
 # OpenAPI Generator
-packages/**/client
+konnect/packages/**/client
+portal/packages/**/client

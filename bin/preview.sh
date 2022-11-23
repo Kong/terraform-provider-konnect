@@ -4,7 +4,7 @@ mkdir -p dist
 DOCS=$1
 
 if [[ -z "$DOCS" ]]; then
-  DOCS=$(find definitions -name 'openapi.yaml')
+  DOCS=$(find konnect/definitions -name 'openapi.yaml')
 fi
 
 rm -f dist/index.html
