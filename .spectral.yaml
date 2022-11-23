@@ -37,6 +37,18 @@ rules:
       functionOptions:
         notMatch: /.*([^A-Z])(ID)(?![A-Z])+.*/
 
+  oas-version:
+    severity: error
+    description: OAS version 3.1.x is unsupported.
+    message: >-
+      OAS version {{value}} is unsupported. Only OAS versions 3.0.x are supported.
+    given: $
+    then:
+      field: openapi
+      function: pattern
+      functionOptions:
+        match: '^(3\.0\.[0-3]+)$'
+
   # ---------------------------------------------------------------------------
   # API Rules
   # ---------------------------------------------------------------------------
@@ -132,3 +144,9 @@ rules:
       function: pattern
       functionOptions:
         notMatch: "/^body$/"
+
+overrides:
+  - files:
+      - konnect/definitions/portal-rbac/v2/openapi.yaml
+    rules:
+      oas-version: "off"
