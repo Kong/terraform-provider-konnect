@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: Portal Auth API
-  version: '0.1.0'
+  version: 0.1.0
   description: 'The management API for portal developers, teams, and RBAC rules.'
   contact:
     name: Kong
@@ -595,10 +595,10 @@ components:
                   roles:
                     type: object
                     required:
-                      - apiviewer
-                      - apiconsumer
+                      - API Viewer
+                      - API Consumer
                     properties:
-                      apiviewer:
+                      API Viewer:
                         type: object
                         required:
                           - name
@@ -612,7 +612,7 @@ components:
                             type: string
                             enum:
                               - API Viewers have read-only access to the documentation of a service in a portal
-                      apiconsumer:
+                      API Consumer:
                         type: object
                         required:
                           - name
@@ -634,10 +634,10 @@ components:
                 services:
                   name: Services
                   roles:
-                    apiviewer:
+                    API Viewer:
                       name: API Viewer
                       description: API Viewers have read-only access to the documentation of a service in a portal
-                    apiconsumer:
+                    API Consumer:
                       name: API Consumer
                       description: API Consumers can make calls to the given service
     AssignedRoleSingle:
@@ -650,9 +650,9 @@ components:
             Example:
               value:
                 id: eaf7adf1-32c8-4bbf-b960-d1f8456afe67
-                role: viewer
+                role_name: API Viewer
                 entity_id: 817d0422-45c9-4d88-8d64-45aef05c1ae7
-                entity_type: runtime_groups
+                entity_type_name: Services
                 entity_region: eu
     AssignedRoleCollection:
       description: A paginated collection of assigned roles.
@@ -680,19 +680,19 @@ components:
                     total: 100
                 data:
                   - id: b02e23c5-8ee4-4e5a-99f4-43329923adce
-                    role: viewer
+                    role_name: API Viewer
                     entity_id: 437c7192-fea0-4f35-8478-c8d57783f8c1
-                    entity_type: services
+                    entity_type_name: Services
                     entity_region: us
                   - id: b02e23c5-8ee4-4e5a-99f4-43329923adce
-                    role: apiconsumer
+                    role_name: API Consumer
                     entity_id: 437c7192-fea0-4f35-8478-c8d57783f8c1
-                    entity_type: services
+                    entity_type: Services
                     entity_region: us
                   - id: 869d9402-f117-4f9a-840f-69acaf70a81a
-                    role: viewer
+                    role_name: API Viewer
                     entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
-                    entity_type: services
+                    entity_type_name: Services
                     entity_region: us
   requestBodies:
     CreateTeam:
@@ -768,7 +768,7 @@ components:
             properties:
               role:
                 type: string
-                example: viewer
+                example: API Viewer
               entity_id:
                 type: string
                 format: uuid
@@ -786,7 +786,7 @@ components:
           examples:
             Example:
               value:
-                role: viewer
+                role: API Viewer
                 entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
                 entity_type: services
                 entity_region: us
@@ -899,31 +899,31 @@ components:
       x-examples:
         US Example:
           id: 1a3c2169-27f8-4594-926b-41df3432d5dc
-          role: viewer
+          role_name: API Viewer
           entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
-          entity_type: runtime_groups
+          entity_type_name: Services
           entity_region: us
         All Regions Example:
           id: 1a3c2169-27f8-4594-926b-41df3432d5dc
-          role: admin
+          role_name: API Consumer
           entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
-          entity_type: services
+          entity_type_name: Services
           entity_region: '*'
       properties:
         id:
           type: string
           format: uuid
           example: eaf7adf1-32c8-4bbf-b960-d1f8456afe67
-        role:
+        role_name:
           type: string
-          example: viewer
+          example: API Viewer
         entity_id:
           type: string
           format: uuid
           example: 817d0422-45c9-4d88-8d64-45aef05c1ae7
-        entity_type:
+        entity_type_name:
           type: string
-          example: runtime_groups
+          example: Services
         entity_region:
           type: string
           enum:
