@@ -13,7 +13,7 @@ paths:
   /accept-invite:
     post:
       summary: Accept Invite
-      description: Manually accept the Konnect invitation. This endpoint allows you to manually accept the invitation to join a Konnect organization. Upon accepting the invitation, the user's name and password are set and the active state is set to true. This can be used as an alternative to the https://cloud.konghq.com/login link in the email which will finish the registration process in a web browser.
+      description: 'Manually accept the Konnect invitation. This endpoint allows you to manually accept the invitation to join a Konnect organization. Upon accepting the invitation, the user''s name and password are set and the active state is set to true. This can be used as an alternative to the https://cloud.konghq.com/login link in the email which will finish the registration process in a web browser.'
       operationId: accept-invite
       requestBody:
         $ref: '#/components/requestBodies/AcceptInvite'
@@ -29,7 +29,7 @@ paths:
   /invites:
     post:
       summary: Invite User
-      description: Send an invitation email to invite a user to the Konnect organization. The email contains a link with a one time token to accept the invitation. Upon accepting the invitation, the user is directed to https://cloud.konghq.com/login to complete registration.
+      description: 'Send an invitation email to invite a user to the Konnect organization. The email contains a link with a one time token to accept the invitation. Upon accepting the invitation, the user is directed to https://cloud.konghq.com/login to complete registration.'
       operationId: invite-user
       requestBody:
         $ref: '#/components/requestBodies/InviteUser'
@@ -426,7 +426,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       operationId: list-user-teams
-      description: Returns a paginated list of a teams that the belong to the user ID parameter.
+      description: Returns a paginated list of a teams that the user belongs to.
       parameters:
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageNumber'
@@ -489,6 +489,7 @@ paths:
         name: userId
         in: path
         required: true
+        description: ID of the user.
       - schema:
           type: string
           example: 8350205f-a305-4e39-abe9-bc082a80091a
@@ -496,6 +497,7 @@ paths:
         name: roleId
         in: path
         required: true
+        description: ID of the role.
     delete:
       summary: Remove Role
       operationId: users-remove-role
@@ -511,6 +513,393 @@ paths:
       tags:
         - Roles
       description: Remove an assigned role from a user.
+  /system-accounts:
+    get:
+      summary: List System Accounts
+      tags:
+        - System Accounts
+      responses:
+        '200':
+          $ref: '#/components/responses/SystemAccountCollection'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+      operationId: get-system-accounts
+      description: Returns an array of system accounts (SA) in the organization. Returns 400 if any filter parameters are invalid.
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+        - schema:
+            type: string
+          in: query
+          name: 'filter[field]'
+          description: 'A field to filter on. Supported fields: name'
+    post:
+      summary: Create System Account
+      operationId: post-system-accounts
+      tags:
+        - System Accounts
+      description: 'Creates a system account. Returns a 409 if a system account with the same name already exists.'
+      requestBody:
+        $ref: '#/components/requestBodies/CreateSystemAccount'
+      responses:
+        '201':
+          $ref: '#/components/responses/SystemAccountSingle'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          $ref: '#/components/responses/Conflict'
+  '/system-accounts/{accountId}':
+    get:
+      summary: Fetch System Account
+      tags:
+        - System Accounts
+      responses:
+        '200':
+          $ref: '#/components/responses/SystemAccountSingle'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      operationId: get-system-accounts-id
+      description: Returns the system account (SA) for the SA ID specified as a path parameter.
+    parameters:
+      - schema:
+          type: string
+        name: accountId
+        in: path
+        required: true
+        description: ID of the system account.
+    patch:
+      summary: Update System Account
+      operationId: patch-system-accounts-id
+      responses:
+        '200':
+          $ref: '#/components/responses/SystemAccountSingle'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      description: 'Updates the specified system account. Returns a 409 if the updated name is the same as another system account in the organization.' 
+      tags:
+        - System Accounts
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateSystemAccount'
+    delete:
+      summary: Delete System Account
+      operationId: delete-system-accounts-id
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+      description: Deletes the specified system account. Returns 204 if the specified account did not exist before the delete request.
+      tags:
+        - System Accounts
+  '/system-accounts/{accountId}/access-tokens':
+    get:
+      summary: List System Account Access Tokens
+      tags:
+        - System Accounts - Access Tokens
+      responses:
+        '200':
+          $ref: '#/components/responses/SystemAccountAccessTokenCollection'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+      operationId: get-system-account-id-access-tokens
+      description: Returns the access tokens for the specified system account. Returns 400 if any filter parameters are invalid.
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+        - schema:
+            type: string
+          in: query
+          name: 'filter[field]'
+          description: 'A field to filter on. Supported fields: name'
+    parameters:
+      - schema:
+          type: string
+        name: accountId
+        in: path
+        required: true
+        description: ID of the system account.
+    post:
+      summary: Create System Account Access Token
+      operationId: post-system-accounts-id-access-tokens
+      responses:
+        '201':
+          $ref: '#/components/responses/SystemAccountAccessTokenCreated'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      description: Creates an access token for the specified system account (SA). The access token can be used for authenticating API and CLI requests. The token will only be displayed once on creation. Returns a 409 if the system user already has a token with the same name.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateSystemAccountAccessToken'
+      tags:
+        - System Accounts - Access Tokens
+  '/system-accounts/{accountId}/access-tokens/{tokenId}':
+    get:
+      summary: Fetch System Account Access Token
+      responses:
+        '200':
+          $ref: '#/components/responses/SystemAccountAccessTokenSingle'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      operationId: get-system-accounts-id-access-tokens-id
+      description: Returns the system account (SA) access token for the SA Access Token ID specified as a path parameter.
+      parameters: []
+      tags:
+        - System Accounts - Access Tokens
+    parameters:
+      - schema:
+          type: string
+        name: accountId
+        in: path
+        required: true
+        description: ID of the system account.
+      - schema:
+          type: string
+        name: tokenId
+        in: path
+        required: true
+        description: ID of the system account access token.
+    patch:
+      summary: Update System Account Access Token
+      operationId: patch-system-accounts-id-access-tokens-id
+      responses:
+        '200':
+          $ref: '#/components/responses/SystemAccountAccessTokenSingle'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      description: Updates the specified access token. Returns a 409 if the updated name is the same as another token belonging to the specified system user.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateSystemAccountAccessToken'
+      tags:
+        - System Accounts - Access Tokens
+    delete:
+      summary: Delete System Account Access Token
+      operationId: delete-system-accounts-id-access-tokens-id
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+      description: Deletes the specified token. Returns 204 if the token did not exist before the delete request.
+      tags:
+        - System Accounts - Access Tokens
+  '/system-accounts/{accountId}/assigned-roles':
+    parameters:
+      - schema:
+          type: string
+        name: accountId
+        in: path
+        required: true
+        description: ID of the system account.
+    get:
+      summary: Fetch Assigned Roles for System Account
+      responses:
+        '200':
+          $ref: '#/components/responses/AssignedRoleCollection'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      operationId: get-system-accounts-accountId-assigned-roles
+      description: List the roles belonging to a system account. Returns 400 if any filter parameteres are invalid.
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: 'filter[field]'
+          description: 'A field to filter on. Supported fields: role_name, entity_type_name'
+      tags:
+        - System Accounts - Roles
+    post:
+      summary: Create Assigned Role for System Account
+      operationId: post-system-accounts-accountId-assigned-roles
+      responses:
+        '201':
+          $ref: '#/components/responses/AssignedRoleSingle'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      description: Assign a role to a system account. Returns 409 if role is already assigned.
+      requestBody:
+        $ref: '#/components/requestBodies/AssignRole'
+      tags:
+        - System Accounts - Roles
+  '/system-accounts/{accountId}/assigned-roles/{roleId}':
+    parameters:
+      - schema:
+          type: string
+        name: accountId
+        in: path
+        required: true
+        description: ID of the system account.
+      - schema:
+          type: string
+        name: roleId
+        in: path
+        required: true
+        description: ID of the role.
+    delete:
+      summary: Delete Assigned Role from System Account
+      operationId: delete-system-accounts-accountId-assigned-roles-roleId
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      description: Remove an assigned role from a system account. Returns 404 if the system account is not found. Returns 204 if the assigned role either was deleted or not found.
+      tags:
+        - System Accounts - Roles
+  '/teams/{teamId}/system-accounts':
+    parameters:
+      - schema:
+          type: string
+        name: teamId
+        in: path
+        required: true
+        description: ID of the team.
+    get:
+      summary: List System Accounts on a Team
+      responses:
+        '200':
+          $ref: '#/components/responses/SystemAccountCollection'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      operationId: get-teams-teamId-system-accounts
+      description: Returns a paginated list of system accounts that belong to the team specified in the path parameter.
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+      tags:
+        - System Accounts - Team Membership
+    post:
+      summary: Add System Account to a Team
+      operationId: post-teams-teamId-system-accounts
+      responses:
+        '201':
+          description: Created
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      description: Add a system account to a team. Returns a 409 if the system account is already a member of the team.
+      requestBody:
+        $ref: '#/components/requestBodies/AddSystemAccountToTeam'
+      tags:
+        - System Accounts - Team Membership
+  '/teams/{teamId}/system-accounts/{accountId}':
+    parameters:
+      - schema:
+          type: string
+        name: teamId
+        in: path
+        required: true
+        description: ID of the team.
+      - schema:
+          type: string
+        name: accountId
+        in: path
+        required: true
+        description: ID of the system account.
+    delete:
+      summary: Remove System Account From Team
+      operationId: delete-teams-teamId-system-accounts-accountId
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      description: Removes a system account from a team. Returns 404 is the team is not found. Returns 204 if either the system account was not found or it was successfully deleted.
+      tags:
+        - System Accounts - Team Membership
+  '/system-accounts/{accountId}/teams':
+    parameters:
+      - schema:
+          type: string
+        name: accountId
+        in: path
+        required: true
+        description: ID of the system account.
+    get:
+      summary: List Teams for a System Account
+      responses:
+        '200':
+          $ref: '#/components/responses/TeamCollection'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      operationId: get-system-accounts-accountId-teams
+      description: Returns a paginated list of a teams that the system account belongs to.
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+      tags:
+        - System Accounts - Team Membership
 components:
   parameters:
     PageSize:
@@ -866,6 +1255,39 @@ components:
           examples:
             Unauthorized:
               $ref: '#/components/examples/401-unauthenticated'
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            x-examples:
+              Example:
+                status: 403
+                title: Unauthorized
+                instance: 'konnect:trace:952172606039454040'
+                detail: You do not have permission to perform this action
+            description: The error response object.
+            properties:
+              status:
+                type: integer
+                example: 403
+                description: The HTTP status code.
+              title:
+                type: string
+                description: The Error Response.
+                example: Unauthorized
+              instance:
+                type: string
+                description: The Konnect traceback code.
+                example: 'konnect:trace:952172606039454040'
+              detail:
+                type: string
+                description: Details about the error response.
+                example: You do not have permission to perform this action
+          examples:
+            Unauthorized:
+              $ref: '#/components/examples/403-permission-denied'
     NotFound:
       description: Not Found
       content:
@@ -1381,6 +1803,145 @@ components:
                     viewer:
                       name: Viewer
                       description: 'Viewer has read-only access to all the configurations of a service, attributes, versions, reports, vitals and plugins.'
+    SystemAccountCollection:
+      description: A paginated list response for a collection of system accounts.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              meta:
+                $ref: '#/components/schemas/PaginatedMeta'
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SystemAccount'
+          examples:
+            Sample System Accounts:
+              value:
+                meta:
+                  page:
+                    number: 2
+                    size: 10
+                    total: 100
+                data:
+                  - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    name: Sample System Account
+                    created_at: '2019-08-24T14:15:22Z'
+                    updated_at: '2019-08-24T14:15:22Z'
+    SystemAccountSingle:
+      description: A response including a single system account.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SystemAccount'
+          examples:
+            Sample System Account:
+              value:
+                id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                name: Sample System Account
+                created_at: '2019-08-24T14:15:22Z'
+                updated_at: '2019-08-24T14:15:22Z'
+    SystemAccountAccessTokenSingle:
+      description: A response including a single system account access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SystemAccountAccessToken'
+          examples:
+            Sample System Account Access Token:
+              value:
+                id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                name: Sample Access Token
+                created_at: '2019-08-24T14:15:22Z'
+                updated_at: '2019-08-24T14:15:22Z'
+                expires_at: '2019-08-24T14:15:22Z'
+                last_used_at: '2019-08-24T14:15:22Z'
+    SystemAccountAccessTokenCollection:
+      description: A paginated list response for a collection of system accounts access tokens.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              meta:
+                $ref: '#/components/schemas/PaginatedMeta'
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SystemAccountAccessToken'
+          examples:
+            Sample System Account Access Token:
+              value:
+                meta:
+                  page:
+                    number: 2
+                    size: 10
+                    total: 100
+                data:
+                  - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    name: Sample Access Token
+                    created_at: '2019-08-24T14:15:22Z'
+                    updated_at: '2019-08-24T14:15:22Z'
+                    expires_at: '2019-08-24T14:15:22Z'
+                    last_used_at: '2019-08-24T14:15:22Z'
+    SystemAccountAccessTokenCreated:
+      description: A response including a single system account access token with the token.
+      content:
+        application/json:
+          schema:
+            type: object
+            x-examples:
+              example-1:
+                id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                name: Sample Access Token
+                created_at: '2022-08-01T14:16:09Z'
+                updated_at: '2022-08-02T08:35:49Z'
+                expires_at: '2022-12-31T12:52:23Z'
+                last_used_at: '2022-10-24T13:05:42Z'
+            properties:
+              id:
+                type: string
+                description: ID of the system account access token.
+                format: uuid
+                readOnly: true
+              name:
+                type: string
+                description: Name of the system account access token.
+              created_at:
+                type: string
+                description: Timestamp of when the system account access token was created.
+                format: date-time
+                readOnly: true
+              updated_at:
+                type: string
+                description: Timestamp of when the system account access token was last updated.
+                format: date-time
+                readOnly: true
+              expires_at:
+                type: string
+                description: Timestamp of when the system account access token will expire.
+                format: date-time
+                readOnly: true
+              last_used_at:
+                type: string
+                description: Timestamp of when the system account access token was last used.
+                format: date-time
+                readOnly: true
+              token:
+                type: string
+                description: The token of the system account access token.
+                readOnly: true
+          examples:
+            Sample Access Token:
+              value:
+                id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                name: Sample Access Token
+                created_at: '2019-08-24T14:15:22Z'
+                updated_at: '2019-08-24T14:15:22Z'
+                expires_at: '2019-08-24T14:15:22Z'
+                last_used_at: '2019-08-24T14:15:22Z'
+                token: npat_12345678901234567890123456789012345678901234567890
   requestBodies:
     UpdateUser:
       description: The request schema for the update user request.
@@ -1545,7 +2106,7 @@ components:
               $ref: '#/components/examples/Assign-Roles-US'
             Assigned Roles Global:
               $ref: '#/components/examples/Assign-Roles-Global'
-      description: Assign a role to a user or a team.
+      description: The request schema for assigning a role.
     AcceptInvite:
       content:
         application/json:
@@ -1596,6 +2157,71 @@ components:
         The request schema for the invite user request.
 
         If you pass an `email` that is not already an active user in the request, a fresh invitation email will be created and sent to the new user.
+    CreateSystemAccount:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Name of the system account.
+          examples:
+            Sample System Account:
+              value:
+                name: Sample System Account
+      description: The request schema to create a system account.
+    UpdateSystemAccount:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Name of the system account.
+      description: The request schema for the update system account request.
+    UpdateSystemAccountAccessToken:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Name of the system account access token.
+    CreateSystemAccountAccessToken:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              expires_at:
+                type: string
+                format: date-time
+          examples:
+            Sample Access Token:
+              value:
+                name: Sample Access Token
+                expires_at: '2019-08-24T14:15:22Z'
+      description: The request body to create a system account access token.
+    AddSystemAccountToTeam:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                description: ID of the system account.
+                format: uuid
+          examples:
+            Sample System Account:
+              value:
+                id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+      description: The request schema for adding a system account to a team.
   schemas:
     PaginatedMeta:
       type: object
@@ -1794,6 +2420,79 @@ components:
             - '*'
           example: eu
           description: Region of the entity.
+    SystemAccount:
+      title: System Account
+      x-stoplight:
+        id: ofv9sp97hg70a
+      type: object
+      x-examples:
+        Example System Account:
+          id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+          name: Example System Account
+          created_at: '2022-08-24T14:15:22Z'
+          updated_at: '2022-10-05T10:33:49Z'
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: ID of the system account.
+          readOnly: true
+        name:
+          type: string
+          description: Name of the system account.
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp of when the system account was created.
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          description: Timestamp of when the system account was last updated.
+          readOnly: true
+      description: Schema of the system account.
+    SystemAccountAccessToken:
+      title: System Account Access Token
+      x-stoplight:
+        id: ofv9sp97hg70a
+      x-examples:
+        Sample System Account Access Token:
+          id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+          name: Sample Access Token
+          created_at: '2022-08-01T14:16:09Z'
+          updated_at: '2022-08-02T08:35:49Z'
+          expires_at: '2022-12-31T12:52:23Z'
+          last_used_at: '2022-10-24T13:05:42Z'
+      description: Schema of the system account access token.
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: ID of the system account access token.
+          readOnly: true
+        name:
+          type: string
+          description: Name of the system account access token.
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp of when the system account access token was created.
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          description: Timestamp of when the system account access token was last updated.
+          readOnly: true
+        expires_at:
+          type: string
+          format: date-time
+          description: Timestamp of when the system account access token will expire.
+        last_used_at:
+          type: string
+          format: date-time
+          description: Timestamp of when the system account access token was last used.
+          readOnly: true
   securitySchemes:
     personalAccessToken:
       type: http
@@ -2012,3 +2711,7 @@ tags:
   - name: Team Membership
   - name: Teams
   - name: Users
+  - name: System Accounts
+  - name: System Accounts - Access Tokens
+  - name: System Accounts - Roles
+  - name: System Accounts - Team Membership
