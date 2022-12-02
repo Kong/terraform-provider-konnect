@@ -48,6 +48,8 @@ paths:
           $ref: '#/components/responses/Unauthenticated'
         '403':
           $ref: '#/components/responses/PermissionDenied'
+        '409':
+          $ref: '#/components/responses/Conflict'
         '500':
           $ref: '#/components/responses/InternalServerError'
         '503':
@@ -55,7 +57,14 @@ paths:
       tags:
         - Runtime Groups
       requestBody:
-        $ref: '#/components/requestBodies/CreateRuntimeGroupRequest'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateRuntimeGroupRequest'
+            examples:
+                Example Request Body:
+                  $ref: '#/components/examples/CreateRuntimeGroupRequestExample'
       description: 'Create a runtime group in the Konnect Organization.'
   /runtime-groups/{id}:
     parameters:
@@ -82,7 +91,7 @@ paths:
           $ref: '#/components/responses/NotFound'
         '503':
           $ref: '#/components/responses/ServiceUnavailable'
-      operationId: get-team
+      operationId: get-runtime-group
       description: Returns information about a team from a given team ID.
       tags:
         - Runtime Groups
@@ -106,7 +115,14 @@ paths:
           $ref: '#/components/responses/ServiceUnavailable'
       description: Update an individual runtime group.
       requestBody:
-        $ref: '#/components/requestBodies/UpdateRuntimeGroupRequest'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateRuntimeGroupRequest'
+            examples:
+              Example Request Body:
+                $ref: '#/components/examples/UpdateRuntimeGroupRequestExample'
       tags:
         - Runtime Groups
     delete:
@@ -164,49 +180,6 @@ components:
       schema:
         type: string
         example: 'test'
-  requestBodies:
-    CreateRuntimeGroupRequest:
-      description: The request schema for the create runtime group request.
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              name:
-                type: string
-                example: Test Runtime Group
-                description: The name of the runtime group.
-              description:
-                type: string
-                example: A test runtime group for exploration.
-                description: The description of the runtime group in Konnect.
-              labels:
-                $ref: '#/components/schemas/Labels'
-            required:
-              - name
-          examples:
-            Example Request Body:
-              $ref: '#/components/examples/CreateRuntimeGroupRequestExample'
-    UpdateRuntimeGroupRequest:
-      description: The request schema for the update runtime group request.
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              name:
-                type: string
-                example: Test Runtime Group
-                description: The name of the runtime group.
-              description:
-                type: string
-                example: A test runtime group for exploration.
-                description: The description of the runtime group in Konnect.
-              labels:
-                $ref: '#/components/schemas/Labels'
-          examples:
-            Example Request Body:
-              $ref: '#/components/examples/UpdateRuntimeGroupRequestExample'
   responses:
     RetrieveRuntimeGroupResponse:
       description: A response to retrieving a single runtime group.
@@ -240,6 +213,7 @@ components:
       content:
         application/json:
           schema:
+            title: 'ListRuntimeGroupsResponse'
             type: object
             properties:
               meta:
@@ -272,6 +246,7 @@ components:
       content:
         application/problem+json:
           schema:
+            title: 'BadRequestError'
             type: object
             description: The error object
             properties:
@@ -279,6 +254,8 @@ components:
                 type: integer
                 description: The HTTP response code
                 example: 400
+                enum:
+                  - 400
               title:
                 type: string
                 example: Bad Request
@@ -310,6 +287,9 @@ components:
                 required:
                   - field
                   - reason
+            required:
+              - status
+              - title
           examples:
             Request Format Invalid:
               $ref: '#/components/examples/400RequestFormatInvalidExample'
@@ -324,6 +304,7 @@ components:
       content:
         application/problem+json:
           schema:
+            title: 'PermissionDeniedError'
             type: object
             description: The error object.
             properties:
@@ -331,6 +312,8 @@ components:
                 type: integer
                 description: HTTP status code.
                 example: 403
+                enum:
+                  - 403
               title:
                 type: string
                 example: Permission denied
@@ -343,6 +326,9 @@ components:
                 type: string
                 description: Information about the error response.
                 example: Insufficient role-set to create runtime groups.
+            required:
+              - status
+              - title
           examples:
             Permission Denied:
               $ref: '#/components/examples/403PermissionDeniedExample'
@@ -351,6 +337,7 @@ components:
       content:
         application/problem+json:
           schema:
+            title: 'UnauthenticatedError'
             type: object
             description: The error response object.
             properties:
@@ -358,6 +345,8 @@ components:
                 type: integer
                 example: 401
                 description: The HTTP status code.
+                enum:
+                  - 401
               title:
                 type: string
                 description: The Error Response.
@@ -370,6 +359,9 @@ components:
                 type: string
                 description: Details about the error response.
                 example: A valid token is required
+            required:
+              - status
+              - title
           examples:
             Unauthorized:
               $ref: '#/components/examples/401UnauthenticatedExample'
@@ -378,6 +370,7 @@ components:
       content:
         application/problem+json:
           schema:
+            title: 'NotFoundError'
             type: object
             description: The error response object.
             properties:
@@ -385,6 +378,8 @@ components:
                 type: integer
                 description: The HTTP status code.
                 example: 404
+                enum:
+                  - 404
               title:
                 type: string
                 description: The error response code.
@@ -397,14 +392,51 @@ components:
                 type: string
                 example: The requested runtime group was not found.
                 description: Details about the error.
+            required:
+              - status
+              - title
           examples:
             Not Found:
               $ref: '#/components/examples/404NotFoundExample'
+    Conflict:
+      description: Conflict
+      content:
+        application/problem+json:
+          schema:
+            title: 'ConflictError'
+            type: object
+            description: The error response object.
+            properties:
+              status:
+                type: integer
+                description: The HTTP status code.
+                example: 409
+                enum:
+                  - 409
+              title:
+                type: string
+                description: The error response code.
+                example: Conflict
+              instance:
+                type: string
+                example: 'konnect:trace:2287285207635123011'
+                description: The Konnect traceback code
+              detail:
+                type: string
+                example: Runtime group with provided name already exists.
+                description: Details about the error.
+            required:
+              - status
+              - title
+          examples:
+            Conflict:
+              $ref: '#/components/examples/409ConflictExample'
     InternalServerError:
       description: Internal Server Error
       content:
         application/problem+json:
           schema:
+            title: 'InternalServerError'
             type: object
             description: The error response object.
             properties:
@@ -412,6 +444,8 @@ components:
                 type: integer
                 description: The HTTP status code.
                 example: 500
+                enum:
+                  - 500
               title:
                 type: string
                 description: The error response code.
@@ -424,6 +458,9 @@ components:
                 type: string
                 example: Could not propagate runtime group changes to control plane cluster service.
                 description: Details about the error.
+            required:
+              - status
+              - title
           examples:
             Internal Server Error:
               $ref: '#/components/examples/500InternalKokoErrorExample'
@@ -432,6 +469,7 @@ components:
       content:
         application/problem+json:
           schema:
+            title: 'ServiceUnavailableError'
             type: object
             description: Error response for temporary service unavailability.
             properties:
@@ -439,6 +477,8 @@ components:
                 type: integer
                 description: The HTTP status code.
                 example: 503
+                enum:
+                  - 503
               title:
                 type: string
                 description: The error response code.
@@ -451,10 +491,45 @@ components:
                 type: string
                 example: Could not retrieve permissions to check resource accessibility.
                 description: Details about the error.
+            required:
+              - status
+              - title
           examples:
             Service Unavailable:
               $ref: '#/components/examples/503PermissionReadFailureExample'
   schemas:
+    CreateRuntimeGroupRequest:
+      title: 'CreateRuntimeGroupRequest'
+      description: The request schema for the create runtime group request.
+      type: object
+      properties:
+        name:
+          type: string
+          example: Test Runtime Group
+          description: The name of the runtime group.
+        description:
+          type: string
+          example: A test runtime group for exploration.
+          description: The description of the runtime group in Konnect.
+        labels:
+          $ref: '#/components/schemas/Labels'
+      required:
+        - name
+    UpdateRuntimeGroupRequest:
+      title: 'UpdateRuntimeGroupRequest'
+      description: The request schema for the update runtime group request.
+      type: object
+      properties:
+        name:
+          type: string
+          example: Test Runtime Group
+          description: The name of the runtime group.
+        description:
+          type: string
+          example: A test runtime group for exploration.
+          description: The description of the runtime group in Konnect.
+        labels:
+          $ref: '#/components/schemas/Labels'
     PaginatedMeta:
       type: object
       title: PaginatedMeta
@@ -528,6 +603,7 @@ components:
           description: An ISO-8604 timestamp representation of runtime group update date.
           readOnly: true
     Labels:
+      title: 'Labels'
       type: object
       example:
         test: 'true'
@@ -595,6 +671,12 @@ components:
         title: Not Found
         instance: 'konnect:trace:2287285207635123011'
         detail: The requested runtime group was not found.
+    409ConflictExample:
+      value:
+        status: 409
+        title: Conflict
+        instance: 'konnect:trace:2287285207635123011'
+        detail: Runtime group with provided name already exists.
     500InternalKokoErrorExample:
       value:
         status: 500
