@@ -23,6 +23,7 @@ jobs:
           filters: |
             spec:
               - 'konnect/definitions/identity/v2/openapi.yaml'
+              - 'konnect/packages/identity/v2/npm/**'
 
   kauth-client-v2-axios-npm:
     name: Publish KAuth Client v2 Axios Package to NPM

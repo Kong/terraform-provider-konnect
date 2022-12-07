@@ -9,7 +9,8 @@
         "output": "konnect/packages/identity/v2/npm/client",
         "glob": "konnect/definitions/identity/v2/openapi.yaml",
         "additionalProperties": {
-          "modelPropertyNaming": "original"
+          "modelPropertyNaming": "original",
+          "useSingleRequestParameter": "true"
         }
       }
     }
