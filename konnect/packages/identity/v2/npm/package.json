@@ -1,7 +1,7 @@
 {
   "name": "@kong/kauth-client-v2-axios",
   "author": "Kong, Inc.",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Axios Client for the KAuth Identity v2 API",
   "license": "UNLICENSED",
   "main": "dist/index.js",
