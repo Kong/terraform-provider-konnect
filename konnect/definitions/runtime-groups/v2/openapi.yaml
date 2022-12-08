@@ -33,6 +33,7 @@ paths:
         - $ref: '#/components/parameters/PageNumber'
         - $ref: '#/components/parameters/FilterByNameEquality'
         - $ref: '#/components/parameters/FilterByNameEqualityShort'
+        - $ref: '#/components/parameters/FilterByNameContains'
       tags:
         - Runtime Groups
     parameters: []
@@ -180,6 +181,14 @@ components:
       schema:
         type: string
         example: 'test'
+    FilterByNameContains:
+      name: 'filter[name][contains]'
+      description: Filter by contains comparison of the name property with a supplied substring
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 'test'
   responses:
     RetrieveRuntimeGroupResponse:
       description: A response to retrieving a single runtime group.
@@ -299,6 +308,8 @@ components:
               $ref: '#/components/examples/400InvalidIDFormatExample'
             Usage Limits Reached:
               $ref: '#/components/examples/400UsageLimitsReachedExample'
+            Unknown Property:
+              $ref: '#/components/examples/400UnknownPropertyExample'
     PermissionDenied:
       description: Permission denied
       content:
@@ -502,6 +513,7 @@ components:
       title: 'CreateRuntimeGroupRequest'
       description: The request schema for the create runtime group request.
       type: object
+      additionalProperties: false
       properties:
         name:
           type: string
@@ -519,6 +531,7 @@ components:
       title: 'UpdateRuntimeGroupRequest'
       description: The request schema for the update runtime group request.
       type: object
+      additionalProperties: false
       properties:
         name:
           type: string
@@ -653,6 +666,15 @@ components:
         title: Bad Request
         instance: 'konnect:trace:8988732526256293040'
         detail: Cannot create an additional runtime group because usage limits have been reached.
+    400UnknownPropertyExample:
+      value:
+        status: 400
+        title: Bad Request
+        instance: 'konnect:trace:8988732526256293040'
+        invalid_parameters:
+          - field: id
+            rule: unknownProperty
+            reason: property id should not exist
     401UnauthenticatedExample:
       value:
         status: 401
