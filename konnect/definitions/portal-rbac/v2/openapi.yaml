@@ -595,10 +595,10 @@ components:
                   roles:
                     type: object
                     required:
-                      - API Viewer
-                      - API Consumer
+                      - apiviewer
+                      - apiconsumer
                     properties:
-                      API Viewer:
+                      apiviewer:
                         type: object
                         required:
                           - name
@@ -612,7 +612,7 @@ components:
                             type: string
                             enum:
                               - API Viewers have read-only access to the documentation of a service in a portal
-                      API Consumer:
+                      apiconsumer:
                         type: object
                         required:
                           - name
@@ -634,10 +634,10 @@ components:
                 services:
                   name: Services
                   roles:
-                    API Viewer:
+                    apiviewer:
                       name: API Viewer
                       description: API Viewers have read-only access to the documentation of a service in a portal
-                    API Consumer:
+                    apiconsumer:
                       name: API Consumer
                       description: API Consumers can make calls to the given service
     AssignedRoleSingle:
@@ -766,16 +766,16 @@ components:
             type: object
             description: An assigned role associates a service and an action to a team.
             properties:
-              role:
+              role_name:
                 type: string
                 example: API Viewer
               entity_id:
                 type: string
                 format: uuid
                 example: e67490ce-44dc-4cbd-b65e-b52c746fc26a
-              entity_type:
+              entity_type_name:
                 type: string
-                example: runtime_groups
+                example: Services
               entity_region:
                 type: string
                 enum:
@@ -786,9 +786,9 @@ components:
           examples:
             Example:
               value:
-                role: API Viewer
+                role_name: API Viewer
                 entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
-                entity_type: services
+                entity_type_name: Services
                 entity_region: us
       description: Assign a role to a team.
   schemas:
