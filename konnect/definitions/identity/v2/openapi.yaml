@@ -274,6 +274,10 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/AssignedRoleCollection'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/PermissionDenied'
         '404':
           $ref: '#/components/responses/NotFound'
       operationId: list-team-roles
@@ -332,6 +336,8 @@ paths:
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
           $ref: '#/components/responses/PermissionDenied'
         '404':
           $ref: '#/components/responses/NotFound'
