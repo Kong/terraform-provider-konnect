@@ -660,7 +660,7 @@ paths:
           $ref: '#/components/responses/NotFound'
         '409':
           $ref: '#/components/responses/Conflict'
-      description: Creates an access token for the specified system account (SA). The access token can be used for authenticating API and CLI requests. The token will only be displayed once on creation. Returns a 409 if the system user already has a token with the same name.
+      description: Creates an access token for the specified system account (SA). The access token can be used for authenticating API and CLI requests. The token will only be displayed once on creation. Returns a 409 if the system account already has a token with the same name.
       requestBody:
         $ref: '#/components/requestBodies/CreateSystemAccountAccessToken'
       tags:
