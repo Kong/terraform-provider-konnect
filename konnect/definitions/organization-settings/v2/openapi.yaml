@@ -1,0 +1,345 @@
+openapi: 3.0.2
+info:
+  title: Konnect Organization Settings API
+  version: 2.0.0
+  description: The management API for Kong Konnect Organization Settings resources.
+  contact:
+    name: Kong
+    url: 'https://konghq.com'
+servers:
+  - url: 'https://global.api.konghq.com/v2'
+    description: Global Base URL
+paths:
+  /audit-log-webhook:
+    put:
+      summary: Update Audit Log Webhook
+      description: 'Update audit log export webhook settings. This endpoint allows you to set the webhook endpoint to receive authorization and authentication audit logs.'
+      operationId: update-audit-log-webhook
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateAuditLogWebhook'
+      tags: [Audit Logs - Webhook]
+      responses:
+        '200':
+          $ref: '#/components/responses/AuditLogWebhook'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+    get:
+      summary: Get Audit Log Webhook
+      description: 'Get audit log export webhook settings. This endpoint retrieves the current audit log webhook endpoint.'
+      operationId: get-audit-log-webhook
+      tags: [Audit Logs - Webhook]
+      responses:
+        '200':
+          $ref: '#/components/responses/AuditLogWebhook'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+
+components:
+  responses:
+    AuditLogWebhook:
+      description: Get response for audit log webhook
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              endpoint:
+                type: string
+                example: "https://example.com/audit-logs"
+                description: The endpoint that will receive audit log messages.
+              authorization:
+                type: string
+                example: "Bearer sometoken"
+                description: The value to be included in the `Authorization` header when sending audit logs
+              enabled:
+                type: boolean
+                example: true
+                description: Indicates if the data should be sent to the webhook.
+          examples:
+            Get Audit Log Webhook:
+              $ref: '#/components/examples/Get-Audit-Log-Webhook'
+    BadRequest:
+      description: Bad Request
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            description: The error object
+            properties:
+              status:
+                type: integer
+                description: The HTTP response code
+                example: 400
+              title:
+                type: string
+                example: Bad Request
+                description: The Error response
+              instance:
+                type: string
+                description: The Konnect traceback ID.
+                example: 'konnect:trace:3674017986744198214'
+              invalid_parameters:
+                type: array
+                description: An array of objects that contains information related to the error response.
+                items:
+                  type: object
+                  properties:
+                    field:
+                      type: string
+                    reason:
+                      type: string
+          examples:
+            Request Format is Invalid:
+              $ref: '#/components/examples/400-request-format-is-invalid'
+            Cannot be Blank:
+              $ref: '#/components/examples/400-cannot-be-blank'
+            Invalid ID format:
+              $ref: '#/components/examples/400-invalid-id-format'
+    PermissionDenied:
+      description: Permission denied
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            x-examples:
+              Example 1:
+                status: 403
+                title: Permission denied
+                instance: 'konnect:trace:2822394689570210664'
+                detail: Only enterprise organizations can create teams
+            description: The error object.
+            properties:
+              status:
+                type: integer
+                description: HTTP status code.
+                example: 403
+              title:
+                type: string
+                example: Bad Request
+                description: HTTP status code
+              instance:
+                type: string
+                description: Konnect traceback error code.
+                example: 'konnect:trace:3674017986744198214'
+              detail:
+                type: string
+                description: Information about the error response.
+                example: Only enterprise organizations can create teams
+          examples:
+            Permission Denied:
+              $ref: '#/components/examples/403-permission-denied'
+            Invalid Permissions:
+              $ref: '#/components/examples/403-invalid-permissions'
+            Username or Password invalid:
+              $ref: '#/components/examples/403-auth-invalid'
+    Unauthenticated:
+      description: Unauthenticated
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            x-examples:
+              Example 1:
+                status: 401
+                title: Unauthenticated
+                instance: 'konnect:trace:952172606039454040'
+                detail: A valid token is required
+            description: The error response object.
+            properties:
+              status:
+                type: integer
+                example: 401
+                description: The HTTP status code.
+              title:
+                type: string
+                description: The Error Response.
+                example: Unauthenticated
+              instance:
+                type: string
+                description: The Konnect traceback code.
+                example: 'konnect:trace:952172606039454040'
+              detail:
+                type: string
+                description: Details about the error response.
+                example: A valid token is required
+          examples:
+            Unauthorized:
+              $ref: '#/components/examples/401-unauthenticated'
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            x-examples:
+              Example:
+                status: 403
+                title: Unauthorized
+                instance: 'konnect:trace:952172606039454040'
+                detail: You do not have permission to perform this action
+            description: The error response object.
+            properties:
+              status:
+                type: integer
+                example: 403
+                description: The HTTP status code.
+              title:
+                type: string
+                description: The Error Response.
+                example: Unauthorized
+              instance:
+                type: string
+                description: The Konnect traceback code.
+                example: 'konnect:trace:952172606039454040'
+              detail:
+                type: string
+                description: Details about the error response.
+                example: You do not have permission to perform this action
+          examples:
+            Unauthorized:
+              $ref: '#/components/examples/403-permission-denied'
+  requestBodies:
+    UpdateAuditLogWebhook:
+      description: The request schema to update an audit log webhook.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              endpoint:
+                type: string
+                example: "https://example.com/audit-logs"
+                description: The endpoint that will receive audit log messages.
+              authorization:
+                type: string
+                example: "Bearer sometoken"
+                description: The value to be included in the `Authorization` header when sending audit logs
+              enabled:
+                type: boolean
+                example: true
+                description: Indicates if the data should be sent to the webhook.
+
+          examples:
+            Example Request Body:
+              $ref: '#/components/examples/Update-Audit-Log-Webhook'
+
+  securitySchemes:
+    personalAccessToken:
+      type: http
+      scheme: bearer
+      bearerFormat: Token
+      description: |
+        You can generate a Personal Access Token (PAT) from the [personal access token page](https://cloud.konghq.com/global/tokens/) in the Konnect dashboard.
+        The PAT token must be passed in the header of a request, for example:
+         `curl -X GET 'https://global.api.konghq.tech/v2/users/' --header 'Authorization: Bearer kpat_xgfT'`
+  examples:
+    400-request-format-is-invalid:
+      value:
+        status: 400
+        title: Bad Request
+        instance: 'konnect:trace:3674017986744198214'
+        invalid_parameters:
+          - field: body
+            reason: request format is invalid
+    400-cannot-be-blank:
+      value:
+        status: 400
+        title: Bad Request
+        instance: 'konnect:trace:6644808935508571943'
+        invalid_parameters:
+          - field: name
+            reason: cannot be blank
+    400-invalid-id-format:
+      value:
+        status: 400
+        title: Bad Request
+        instance: 'konnect:trace:8988732526256293040'
+        invalid_parameters:
+          - field: teamID
+            reason: invalid ID format
+    400-valid-uuid:
+      value:
+        status: 400
+        title: Bad Request
+        instance: 'konnect:trace:7680390984800447837'
+        invalid_parameters:
+          - field: id
+            reason: must be a valid UUID v4
+    400-systems-team-modified:
+      value:
+        status: 400
+        title: Bad Request
+        instance: 'konnect:trace:1738820719742148545'
+        invalid_parameters:
+          - field: teamID
+            reason: system teams cannot be modified
+    404-not-found:
+      value:
+        status: 404
+        title: Not Found
+        instance: 'konnect:trace:2287285207635123011'
+        detail: The requested team was not found
+    403-permission-denied:
+      value:
+        status: 403
+        title: Permission denied
+        instance: 'konnect:trace:2822394689570210664'
+        detail: Only enterprise organizations can create teams
+    403-invalid-permissions:
+      value:
+        status: 403
+        title: Invalid Permissions
+        detail: 'You must have the [administrator] role to perform this action'
+        instance: 'konnect:trace:6c1ef33ae5bce33634d7d7d695c7f203'
+    403-auth-invalid:
+      value:
+        type: 'https://kongapi.info/konnect/invalid-permissions'
+        status: 403
+        title: Invalid Permissions
+        detail: 'You must have the [administrator] role to perform this action'
+        instance: 'konnect:trace:6c1ef33ae5bce33634d7d7d695c7f203'
+    409-user-is-already-active:
+      value:
+        status: 409
+        title: Resource Conflict
+        instance: 'konnect:trace:6644808935508571943'
+        detail: User is already active
+    412-precondition-failed:
+      value:
+        status: 412
+        title: Precondition Failed
+        instance: 'konnect:trace:1896611024257578096'
+        detail: IdP configuration not found
+    429-rate-limited:
+      value:
+        status: 429
+        title: Rate Limited
+        instance: 'konnect:trace:6644808935508571943'
+        detail: Too many requests
+    401-unauthenticated:
+      value:
+        status: 401
+        title: Unauthenticated
+        instance: 'konnect:trace:952172606039454040'
+        detail: A valid token is required
+    Update-Audit-Log-Webhook:
+      value:
+        endpoint: https://example.com/audit-log
+        authorization: "Bearer sometoken"
+        enabled: true
+    Get-Audit-Log-Webhook:
+      value:
+        endpoint: https://example.com/audit-log
+        authorization: "Bearer sometoken"
+        enabled: true
+
+security:
+  - personalAccessToken: []
+tags:
+  - name: Audit Logs - Webhook
