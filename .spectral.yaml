@@ -53,7 +53,7 @@ rules:
   # API Rules
   # ---------------------------------------------------------------------------
 
-  server-url-must-contain-version:
+  server-url-must-contain-version-aip-3101:
     description: Global API version must be present in the path
     severity: error
     recommended: true
@@ -64,7 +64,7 @@ rules:
       functionOptions:
         match: "\/v[1-9]+\/"
 
-  paths-kebab-case:
+  paths-kebab-case-aip-122:
     description: All YAML/JSON paths MUST follow kebab-case
     severity: error
     recommended: true
@@ -99,7 +99,7 @@ rules:
       functionOptions:
         match: "^[a-z][a-zA-Z0-9]+$"
 
-  properties-snake-case:
+  properties-snake-case-aip-122:
     description: Property name has to be ASCII snake_case
     severity: error
     recommended: true
@@ -112,8 +112,8 @@ rules:
       functionOptions:
         match: "^[a-z_]+$"
 
-  query-parameters-properties-snake-case-and-square-brackets:
-    description: Query parameters must be snake case. Square brackets are allowed (e.g. page[number]=1) 
+  query-parameters-properties-snake-case-and-square-brackets-aip-122:
+    description: Query parameters must be snake case. Square brackets are allowed (e.g. page[number]=1)
     severity: error
     recommended: true
     message: "Invalid property name: {{value}} (expected: lowercase with underscores)"
@@ -144,3 +144,122 @@ rules:
       function: pattern
       functionOptions:
         notMatch: "/^body$/"
+
+  errors-problem-json-aip-193:
+    description: "Errors must use application/problem+json"
+    severity: error
+    given:
+      - $..400.content.*~
+      - $..401.content.*~
+      - $..402.content.*~
+      - $..403.content.*~
+      - $..404.content.*~
+      - $..405.content.*~
+      - $..406.content.*~
+      - $..407.content.*~
+      - $..408.content.*~
+      - $..409.content.*~
+      - $..410.content.*~
+      - $..411.content.*~
+      - $..412.content.*~
+      - $..413.content.*~
+      - $..414.content.*~
+      - $..415.content.*~
+      - $..416.content.*~
+      - $..417.content.*~
+      - $..418.content.*~
+      - $..422.content.*~
+      - $..425.content.*~
+      - $..426.content.*~
+      - $..428.content.*~
+      - $..429.content.*~
+      - $..431.content.*~
+      - $..451.content.*~
+    then:
+      function: pattern
+      functionOptions:
+        match: 'application/problem\+json'
+
+  errors-require-type-aip-193:
+    severity: error
+    given:
+      - $..401.content.*.schema
+      - $..402.content.*.schema
+      - $..403.content.*.schema
+      - $..404.content.*.schema
+      - $..405.content.*.schema
+      - $..406.content.*.schema
+      - $..407.content.*.schema
+      - $..408.content.*.schema
+      - $..409.content.*.schema
+      - $..410.content.*.schema
+      - $..411.content.*.schema
+      - $..412.content.*.schema
+      - $..413.content.*.schema
+      - $..414.content.*.schema
+      - $..415.content.*.schema
+      - $..416.content.*.schema
+      - $..417.content.*.schema
+      - $..418.content.*.schema
+      - $..422.content.*.schema
+      - $..425.content.*.schema
+      - $..426.content.*.schema
+      - $..428.content.*.schema
+      - $..429.content.*.schema
+      - $..431.content.*.schema
+      - $..451.content.*.schema
+    then:
+      field: properties
+      function: schema
+      functionOptions:
+        allErrors: true
+        schema:
+          type: object
+          required:
+            - type
+            - status
+            - title
+            - instance
+
+  validation-error-invalid-parameters-aip-193:
+    severity: error
+    given:
+      - $..400.content.*.schema
+    then:
+      field: properties
+      function: schema
+      functionOptions:
+        allErrors: true
+        schema:
+          type: object
+          required:
+            - invalid_parameters
+          properties:
+            invalid_parameters:
+              type: object
+              properties:
+                items:
+                  type: object
+                  properties:
+                    properties:
+                      type: object
+                      required:
+                        - field
+                        - rule
+
+overrides:
+  - files:
+      - "konnect/definitions/organization-settings/v2/openapi.yaml"
+    rules:
+      errors-require-type-aip-193: "off"
+      validation-error-invalid-parameters-aip-193: "off"
+  - files:
+      - "konnect/definitions/identity/v2/openapi.yaml"
+    rules:
+      errors-require-type-aip-193: "off"
+      validation-error-invalid-parameters-aip-193: "off"
+  - files:
+      - "konnect/definitions/runtime-groups/v2/openapi.yaml"
+    rules:
+      errors-require-type-aip-193: "off"
+      validation-error-invalid-parameters-aip-193: "off"

@@ -1175,40 +1175,6 @@ components:
           examples:
             Precondition Failed:
               $ref: '#/components/examples/412-precondition-failed'
-        multipart/form-data:
-          schema:
-            type: object
-            x-examples:
-              Example 1:
-                status: 412
-                title: Precondition Failed
-                instance: 'konnect:trace:1896611024257578096'
-                detail: IdP configuration not found
-            description: The error response object.
-            properties:
-              status:
-                type: integer
-                description: The HTTP status code.
-                example: 412
-              title:
-                type: string
-                description: The Error Response.
-                example: Precondition Failed
-              instance:
-                type: string
-                description: The Konnect traceback code.
-                example: 'konnect:trace:1896611024257578096'
-              detail:
-                type: string
-                description: Detailed explanation of the error response.
-                example: IdP configuration not found
-          examples:
-            IdP configuration not found:
-              value:
-                status: 412
-                title: Precondition Failed
-                instance: 'konnect:trace:1896611024257578096'
-                detail: IdP configuration not found
     RateLimited:
       description: Rate Limited
       content:
