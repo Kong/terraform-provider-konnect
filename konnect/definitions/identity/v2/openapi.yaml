@@ -13,7 +13,7 @@ paths:
   /accept-invite:
     post:
       summary: Accept Invite
-      description: 'Manually accept the Konnect invitation. This endpoint allows you to manually accept the invitation to join a Konnect organization. Upon accepting the invitation, the user''s name and password are set and the active state is set to true. This can be used as an alternative to the https://cloud.konghq.com/login link in the email which will finish the registration process in a web browser.'
+      description: 'Accepts the Konnect invitation. This endpoint allows you to manually accept the invitation to join a Konnect organization. Upon accepting the invitation, the user''s name and password are set and the active state is set to true. This can be used as an alternative to the https://cloud.konghq.com/login link in the email which will finish the registration process in a web browser.'
       operationId: accept-invite
       requestBody:
         $ref: '#/components/requestBodies/AcceptInvite'
@@ -29,7 +29,7 @@ paths:
   /invites:
     post:
       summary: Invite User
-      description: 'Send an invitation email to invite a user to the Konnect organization. The email contains a link with a one time token to accept the invitation. Upon accepting the invitation, the user is directed to https://cloud.konghq.com/login to complete registration.'
+      description: 'Sends an invitation email to invite a user to the Konnect organization. The email contains a link with a one time token to accept the invitation. Upon accepting the invitation, the user is directed to https://cloud.konghq.com/login to complete registration.'
       operationId: invite-user
       requestBody:
         $ref: '#/components/requestBodies/InviteUser'
@@ -61,7 +61,7 @@ paths:
           $ref: '#/components/responses/PreconditionFailed'
       tags:
         - IdPs
-      description: Update the IdP group to Konnect team mapping.
+      description: Updates the IdP group to Konnect team mapping.
       requestBody:
         $ref: '#/components/requestBodies/UpdateTeamMappings'
     get:
@@ -84,7 +84,7 @@ paths:
   /roles:
     get:
       summary: Get Predefined Roles
-      description: 'Retrieve the predefined, or system managed, roles.'
+      description: 'Retrieves the predefined, or system managed, roles.'
       operationId: get-predefined-roles
       responses:
         '200':
@@ -133,7 +133,7 @@ paths:
         - Teams
       requestBody:
         $ref: '#/components/requestBodies/CreateTeam'
-      description: 'Create a team in the Konnect Organization. '
+      description: 'Creates a team in the Konnect Organization. '
   '/teams/{teamId}/users':
     parameters:
       - schema:
@@ -170,7 +170,7 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '404':
           $ref: '#/components/responses/NotFound'
-      description: Add a user to a team.
+      description: Adds a user to a team.
       requestBody:
         $ref: '#/components/requestBodies/AddUserToTeam'
       tags:
@@ -208,7 +208,7 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '404':
           $ref: '#/components/responses/NotFound'
-      description: Update an individual team.
+      description: Updates an individual team.
       requestBody:
         $ref: '#/components/requestBodies/UpdateTeam'
       tags:
@@ -221,7 +221,9 @@ paths:
           description: No Content
         '400':
           $ref: '#/components/responses/BadRequest'
-      description: Delete an individual team.
+        '404':
+          $ref: '#/components/responses/NotFound'
+      description: Deletes an individual team. Returns 404 if the team is not found.
       tags:
         - Teams
   '/teams/{teamId}/users/{userId}':
@@ -253,8 +255,8 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       description: |-
-        Remove a user from a team.
-        If the user was removed successfully, returns a 204 empty response.
+        Removes a user from a team.
+        If the user was removed, returns a 204 empty response. Returns 404 if the user or team were not found.
       tags:
         - Team Membership
   '/teams/{teamId}/assigned-roles':
@@ -281,7 +283,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       operationId: list-team-roles
-      description: List the roles belonging to a team.
+      description: Lists the roles belonging to a team.
       parameters:
         - schema:
             type: string
@@ -304,7 +306,7 @@ paths:
           $ref: '#/components/responses/NotFound'
         '409':
           $ref: '#/components/responses/Conflict'
-      description: Assign a role to a team. Returns 409 if role is already assigned.
+      description: Assigns a role to a team. Returns 409 if role is already assigned.
       requestBody:
         $ref: '#/components/requestBodies/AssignRole'
       tags:
@@ -343,7 +345,7 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Roles
-      description: Remove an assigned role from a team.
+      description: Removes an assigned role from a team. Returns 404 if the requested team or assigned role were not found.
   /users:
     get:
       summary: List Users
@@ -411,7 +413,9 @@ paths:
       responses:
         '204':
           description: No Content
-      description: Delete an individual user.
+        '404':
+          $ref: '#/components/responses/NotFound'
+      description: Deletes an individual user. Returns 404 if the requested user was not found.
       tags:
         - Users
   '/users/{userId}/teams':
@@ -458,7 +462,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       operationId: list-user-roles
-      description: List the roles assigned to a user.
+      description: Lists the roles assigned to a user.
       parameters:
         - schema:
             type: string
@@ -481,7 +485,7 @@ paths:
           $ref: '#/components/responses/NotFound'
         '409':
           $ref: '#/components/responses/NotFound'
-      description: Assign a role to a user.  Returns 409 if role is already assigned.
+      description: Assigns a role to a user.  Returns 409 if role is already assigned.
       requestBody:
         $ref: '#/components/requestBodies/AssignRole'
       tags:
@@ -518,7 +522,7 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Roles
-      description: Remove an assigned role from a user.
+      description: Removes an assigned role from a user. Returns 404 if the requested user or assigned role were not found.
   /system-accounts:
     get:
       summary: List System Accounts
@@ -612,7 +616,9 @@ paths:
           $ref: '#/components/responses/Unauthenticated'
         '403':
           $ref: '#/components/responses/Unauthorized'
-      description: Deletes the specified system account. Returns 204 if the specified account did not exist before the delete request.
+        '404':
+          $ref: '#/components/responses/NotFound'
+      description: Deletes the specified system account. Returns 404 if the requested account was not found.
       tags:
         - System Accounts
   '/system-accounts/{accountId}/access-tokens':
@@ -724,7 +730,9 @@ paths:
           $ref: '#/components/responses/Unauthenticated'
         '403':
           $ref: '#/components/responses/Unauthorized'
-      description: Deletes the specified token. Returns 204 if the token did not exist before the delete request.
+        '404':
+          $ref: '#/components/responses/NotFound'
+      description: Deletes the specified token. Returns 404 if the token was not found.
       tags:
         - System Accounts - Access Tokens
   '/system-accounts/{accountId}/assigned-roles':
@@ -749,7 +757,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       operationId: get-system-accounts-accountId-assigned-roles
-      description: List the roles belonging to a system account. Returns 400 if any filter parameteres are invalid.
+      description: Lists the roles belonging to a system account. Returns 400 if any filter parameteres are invalid.
       parameters:
         - schema:
             type: string
@@ -772,7 +780,7 @@ paths:
           $ref: '#/components/responses/NotFound'
         '409':
           $ref: '#/components/responses/Conflict'
-      description: Assign a role to a system account. Returns 409 if role is already assigned.
+      description: Assigns a role to a system account. Returns 409 if role is already assigned.
       requestBody:
         $ref: '#/components/requestBodies/AssignRole'
       tags:
@@ -803,7 +811,7 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
-      description: Remove an assigned role from a system account. Returns 404 if the system account is not found. Returns 204 if the assigned role either was deleted or not found.
+      description: Removes an assigned role from a system account. Returns 404 if the system account or assigned role were not found.
       tags:
         - System Accounts - Roles
   '/teams/{teamId}/system-accounts':
@@ -846,7 +854,7 @@ paths:
           $ref: '#/components/responses/NotFound'
         '409':
           $ref: '#/components/responses/Conflict'
-      description: Add a system account to a team. Returns a 409 if the system account is already a member of the team.
+      description: Adds a system account to a team. Returns a 409 if the system account is already a member of the team.
       requestBody:
         $ref: '#/components/requestBodies/AddSystemAccountToTeam'
       tags:
@@ -877,7 +885,7 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
-      description: Removes a system account from a team. Returns 404 is the team is not found. Returns 204 if either the system account was not found or it was successfully deleted.
+      description: Removes a system account from a team. Returns 404 if the team or system account were not found.
       tags:
         - System Accounts - Team Membership
   '/system-accounts/{accountId}/teams':
