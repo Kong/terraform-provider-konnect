@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.0.3
 info:
   title: Portal Auth API
   version: 0.1.0
@@ -904,7 +904,7 @@ components:
           entity_type_name: Services
           entity_region: us
         All Regions Example:
-          id: 1a3c2169-27f8-4594-926b-41df3432d5dc
+          id: 034cb810-1f2d-40d2-a1ce-31944144668e
           role_name: API Consumer
           entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
           entity_type_name: Services

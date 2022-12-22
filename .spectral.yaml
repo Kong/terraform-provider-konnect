@@ -144,9 +144,3 @@ rules:
       function: pattern
       functionOptions:
         notMatch: "/^body$/"
-
-overrides:
-  - files:
-      - konnect/definitions/portal-rbac/v2/openapi.yaml
-    rules:
-      oas-version: "off"
