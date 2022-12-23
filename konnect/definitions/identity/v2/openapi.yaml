@@ -635,6 +635,8 @@ paths:
           $ref: '#/components/responses/Unauthenticated'
         '403':
           $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
       operationId: get-system-account-id-access-tokens
       description: Returns the access tokens for the specified system account. Returns 400 if any filter parameters are invalid.
       parameters:
