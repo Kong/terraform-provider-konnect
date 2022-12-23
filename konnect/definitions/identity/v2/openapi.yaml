@@ -527,7 +527,7 @@ paths:
     get:
       summary: List System Accounts
       tags:
-        - System Accounts
+        - 'System Accounts [Beta]'
       responses:
         '200':
           $ref: '#/components/responses/SystemAccountCollection'
@@ -538,7 +538,10 @@ paths:
         '403':
           $ref: '#/components/responses/Unauthorized'
       operationId: get-system-accounts
-      description: Returns an array of system accounts (SA) in the organization. Returns 400 if any filter parameters are invalid.
+      description: |-
+        _The system accounts feature is currently in beta and is subject to change._
+
+        Returns an array of system accounts (SA) in the organization. Returns 400 if any filter parameters are invalid.
       parameters:
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageNumber'
@@ -551,8 +554,11 @@ paths:
       summary: Create System Account
       operationId: post-system-accounts
       tags:
-        - System Accounts
-      description: 'Creates a system account. Returns a 409 if a system account with the same name already exists.'
+        - 'System Accounts [Beta]'
+      description: |-
+        _The system accounts feature is currently in beta and is subject to change._
+
+        Creates a system account. Returns a 409 if a system account with the same name already exists.
       requestBody:
         $ref: '#/components/requestBodies/CreateSystemAccount'
       responses:
@@ -568,7 +574,7 @@ paths:
     get:
       summary: Fetch System Account
       tags:
-        - System Accounts
+        - 'System Accounts [Beta]'
       responses:
         '200':
           $ref: '#/components/responses/SystemAccountSingle'
@@ -579,7 +585,10 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       operationId: get-system-accounts-id
-      description: Returns the system account (SA) for the SA ID specified as a path parameter.
+      description: |-
+        _The system accounts feature is currently in beta and is subject to change._
+
+        Returns the system account (SA) for the SA ID specified as a path parameter.
     parameters:
       - schema:
           type: string
@@ -601,9 +610,12 @@ paths:
           $ref: '#/components/responses/NotFound'
         '409':
           $ref: '#/components/responses/Conflict'
-      description: 'Updates the specified system account. Returns a 409 if the updated name is the same as another system account in the organization.' 
+      description: |-
+        _The system accounts feature is currently in beta and is subject to change._
+
+        Updates the specified system account. Returns a 409 if the updated name is the same as another system account in the organization.
       tags:
-        - System Accounts
+        - 'System Accounts [Beta]'
       requestBody:
         $ref: '#/components/requestBodies/UpdateSystemAccount'
     delete:
@@ -618,14 +630,17 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
-      description: Deletes the specified system account. Returns 404 if the requested account was not found.
+      description: |-
+        _The system accounts feature is currently in beta and is subject to change._
+
+        Deletes the specified system account. Returns 404 if the requested account was not found.
       tags:
-        - System Accounts
+        - 'System Accounts [Beta]'
   '/system-accounts/{accountId}/access-tokens':
     get:
       summary: List System Account Access Tokens
       tags:
-        - System Accounts - Access Tokens
+        - 'System Accounts [Beta] - Access Tokens'
       responses:
         '200':
           $ref: '#/components/responses/SystemAccountAccessTokenCollection'
@@ -638,7 +653,10 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       operationId: get-system-account-id-access-tokens
-      description: Returns the access tokens for the specified system account. Returns 400 if any filter parameters are invalid.
+      description: |-
+        _The system accounts feature is currently in beta and is subject to change._
+
+        Returns the access tokens for the specified system account. Returns 400 if any filter parameters are invalid.
       parameters:
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageNumber'
@@ -668,11 +686,14 @@ paths:
           $ref: '#/components/responses/NotFound'
         '409':
           $ref: '#/components/responses/Conflict'
-      description: Creates an access token for the specified system account (SA). The access token can be used for authenticating API and CLI requests. The token will only be displayed once on creation. Returns a 409 if the system account already has a token with the same name.
+      description: |-
+        _The system accounts feature is currently in beta and is subject to change._
+
+        Creates an access token for the specified system account (SA). The access token can be used for authenticating API and CLI requests. The token will only be displayed once on creation. Returns a 409 if the system account already has a token with the same name.
       requestBody:
         $ref: '#/components/requestBodies/CreateSystemAccountAccessToken'
       tags:
-        - System Accounts - Access Tokens
+        - 'System Accounts [Beta] - Access Tokens'
   '/system-accounts/{accountId}/access-tokens/{tokenId}':
     get:
       summary: Fetch System Account Access Token
@@ -686,10 +707,13 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       operationId: get-system-accounts-id-access-tokens-id
-      description: Returns the system account (SA) access token for the SA Access Token ID specified as a path parameter.
+      description: |-
+        _The system accounts feature is currently in beta and is subject to change._
+
+        Returns the system account (SA) access token for the SA Access Token ID specified as a path parameter.
       parameters: []
       tags:
-        - System Accounts - Access Tokens
+        - 'System Accounts [Beta] - Access Tokens'
     parameters:
       - schema:
           type: string
@@ -717,11 +741,14 @@ paths:
           $ref: '#/components/responses/NotFound'
         '409':
           $ref: '#/components/responses/Conflict'
-      description: Updates the specified access token. Returns a 409 if the updated name is the same as another token belonging to the specified system user.
+      description: |-
+        _The system accounts feature is currently in beta and is subject to change._
+
+        Updates the specified access token. Returns a 409 if the updated name is the same as another token belonging to the specified system user.
       requestBody:
         $ref: '#/components/requestBodies/UpdateSystemAccountAccessToken'
       tags:
-        - System Accounts - Access Tokens
+        - 'System Accounts [Beta] - Access Tokens'
     delete:
       summary: Delete System Account Access Token
       operationId: delete-system-accounts-id-access-tokens-id
@@ -734,9 +761,12 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
-      description: Deletes the specified token. Returns 404 if the token was not found.
+      description: |-
+        _The system accounts feature is currently in beta and is subject to change._
+
+        Deletes the specified token. Returns 404 if the token was not found.
       tags:
-        - System Accounts - Access Tokens
+        - 'System Accounts [Beta] - Access Tokens'
   '/system-accounts/{accountId}/assigned-roles':
     parameters:
       - schema:
@@ -759,7 +789,10 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       operationId: get-system-accounts-accountId-assigned-roles
-      description: Lists the roles belonging to a system account. Returns 400 if any filter parameteres are invalid.
+      description: |-
+        _The system accounts feature is currently in beta and is subject to change._
+
+        Lists the roles belonging to a system account. Returns 400 if any filter parameteres are invalid.
       parameters:
         - schema:
             type: string
@@ -767,7 +800,7 @@ paths:
           name: 'filter[field]'
           description: 'A field to filter on. Supported fields: role_name, entity_type_name'
       tags:
-        - System Accounts - Roles
+        - 'System Accounts [Beta] - Roles'
     post:
       summary: Create Assigned Role for System Account
       operationId: post-system-accounts-accountId-assigned-roles
@@ -782,11 +815,14 @@ paths:
           $ref: '#/components/responses/NotFound'
         '409':
           $ref: '#/components/responses/Conflict'
-      description: Assigns a role to a system account. Returns 409 if role is already assigned.
+      description: |-
+        _The system accounts feature is currently in beta and is subject to change._
+
+        Assigns a role to a system account. Returns 409 if role is already assigned.
       requestBody:
         $ref: '#/components/requestBodies/AssignRole'
       tags:
-        - System Accounts - Roles
+        - 'System Accounts [Beta] - Roles'
   '/system-accounts/{accountId}/assigned-roles/{roleId}':
     parameters:
       - schema:
@@ -813,9 +849,12 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
-      description: Removes an assigned role from a system account. Returns 404 if the system account or assigned role were not found.
+      description: |-
+        _The system accounts feature is currently in beta and is subject to change._
+
+        Removes an assigned role from a system account. Returns 404 if the system account or assigned role were not found.
       tags:
-        - System Accounts - Roles
+        - 'System Accounts [Beta] - Roles'
   '/teams/{teamId}/system-accounts':
     parameters:
       - schema:
@@ -841,7 +880,7 @@ paths:
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageNumber'
       tags:
-        - System Accounts - Team Membership
+        - 'System Accounts [Beta] - Team Membership'
     post:
       summary: Add System Account to a Team
       operationId: post-teams-teamId-system-accounts
@@ -860,7 +899,7 @@ paths:
       requestBody:
         $ref: '#/components/requestBodies/AddSystemAccountToTeam'
       tags:
-        - System Accounts - Team Membership
+        - 'System Accounts [Beta] - Team Membership'
   '/teams/{teamId}/system-accounts/{accountId}':
     parameters:
       - schema:
@@ -889,7 +928,7 @@ paths:
           $ref: '#/components/responses/NotFound'
       description: Removes a system account from a team. Returns 404 if the team or system account were not found.
       tags:
-        - System Accounts - Team Membership
+        - 'System Accounts [Beta] - Team Membership'
   '/system-accounts/{accountId}/teams':
     parameters:
       - schema:
@@ -915,7 +954,7 @@ paths:
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageNumber'
       tags:
-        - System Accounts - Team Membership
+        - 'System Accounts [Beta] - Team Membership'
 components:
   parameters:
     PageSize:
@@ -2693,7 +2732,7 @@ tags:
   - name: Team Membership
   - name: Teams
   - name: Users
-  - name: System Accounts
-  - name: System Accounts - Access Tokens
-  - name: System Accounts - Roles
-  - name: System Accounts - Team Membership
+  - name: 'System Accounts [Beta]'
+  - name: 'System Accounts [Beta] - Access Tokens'
+  - name: 'System Accounts [Beta] - Roles'
+  - name: 'System Accounts [Beta] - Team Membership'
