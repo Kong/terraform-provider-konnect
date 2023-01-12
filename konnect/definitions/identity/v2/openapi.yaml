@@ -549,7 +549,7 @@ paths:
             type: string
           in: query
           name: 'filter[field]'
-          description: 'A field to filter on. Supported fields: name'
+          description: 'A field to filter on. Supported fields: name, description'
     post:
       summary: Create System Account
       operationId: post-system-accounts
@@ -1861,6 +1861,7 @@ components:
               value:
                 id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                 name: Sample System Account
+                description: This is a sample system account description.
                 created_at: '2019-08-24T14:15:22Z'
                 updated_at: '2019-08-24T14:15:22Z'
     SystemAccountAccessTokenSingle:
@@ -2187,10 +2188,14 @@ components:
               name:
                 type: string
                 description: Name of the system account.
+              description:
+                type: string
+                description: Description of the system account. Useful when the system account name is not sufficient to differentiate one system account from another.
           examples:
             Sample System Account:
               value:
                 name: Sample System Account
+                description: This is a sample system account description.
       description: The request schema to create a system account.
     UpdateSystemAccount:
       content:
@@ -2201,6 +2206,9 @@ components:
               name:
                 type: string
                 description: Name of the system account.
+              description:
+                type: string
+                description: Description of the system account.
       description: The request schema for the update system account request.
     UpdateSystemAccountAccessToken:
       content:
@@ -2450,8 +2458,10 @@ components:
         Example System Account:
           id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
           name: Example System Account
+          description: This is a sample system account description.
           created_at: '2022-08-24T14:15:22Z'
           updated_at: '2022-10-05T10:33:49Z'
+      description: Schema of the system account.
       properties:
         id:
           type: string
@@ -2461,6 +2471,9 @@ components:
         name:
           type: string
           description: Name of the system account.
+        description:
+          type: string
+          description: Description of the system account.
         created_at:
           type: string
           format: date-time
@@ -2471,7 +2484,6 @@ components:
           format: date-time
           description: Timestamp of when the system account was last updated.
           readOnly: true
-      description: Schema of the system account.
     SystemAccountAccessToken:
       title: System Account Access Token
       x-stoplight:
