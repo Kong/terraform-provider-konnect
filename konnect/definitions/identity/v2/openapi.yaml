@@ -527,7 +527,7 @@ paths:
     get:
       summary: List System Accounts
       tags:
-        - 'System Accounts [Beta]'
+        - 'System Accounts'
       responses:
         '200':
           $ref: '#/components/responses/SystemAccountCollection'
@@ -538,6 +538,7 @@ paths:
         '403':
           $ref: '#/components/responses/Unauthorized'
       operationId: get-system-accounts
+      x-unstable: true
       description: |-
         _The system accounts feature is currently in beta and is subject to change._
 
@@ -553,8 +554,9 @@ paths:
     post:
       summary: Create System Account
       operationId: post-system-accounts
+      x-unstable: true
       tags:
-        - 'System Accounts [Beta]'
+        - 'System Accounts'
       description: |-
         _The system accounts feature is currently in beta and is subject to change._
 
@@ -574,7 +576,7 @@ paths:
     get:
       summary: Fetch System Account
       tags:
-        - 'System Accounts [Beta]'
+        - 'System Accounts'
       responses:
         '200':
           $ref: '#/components/responses/SystemAccountSingle'
@@ -585,6 +587,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       operationId: get-system-accounts-id
+      x-unstable: true
       description: |-
         _The system accounts feature is currently in beta and is subject to change._
 
@@ -599,6 +602,7 @@ paths:
     patch:
       summary: Update System Account
       operationId: patch-system-accounts-id
+      x-unstable: true
       responses:
         '200':
           $ref: '#/components/responses/SystemAccountSingle'
@@ -615,12 +619,13 @@ paths:
 
         Updates the specified system account. Returns a 409 if the updated name is the same as another system account in the organization.
       tags:
-        - 'System Accounts [Beta]'
+        - 'System Accounts'
       requestBody:
         $ref: '#/components/requestBodies/UpdateSystemAccount'
     delete:
       summary: Delete System Account
       operationId: delete-system-accounts-id
+      x-unstable: true
       responses:
         '204':
           description: No Content
@@ -635,12 +640,12 @@ paths:
 
         Deletes the specified system account. Returns 404 if the requested account was not found.
       tags:
-        - 'System Accounts [Beta]'
+        - 'System Accounts'
   '/system-accounts/{accountId}/access-tokens':
     get:
       summary: List System Account Access Tokens
       tags:
-        - 'System Accounts [Beta] - Access Tokens'
+        - 'System Accounts - Access Tokens'
       responses:
         '200':
           $ref: '#/components/responses/SystemAccountAccessTokenCollection'
@@ -653,6 +658,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       operationId: get-system-account-id-access-tokens
+      x-unstable: true
       description: |-
         _The system accounts feature is currently in beta and is subject to change._
 
@@ -675,6 +681,7 @@ paths:
     post:
       summary: Create System Account Access Token
       operationId: post-system-accounts-id-access-tokens
+      x-unstable: true
       responses:
         '201':
           $ref: '#/components/responses/SystemAccountAccessTokenCreated'
@@ -693,7 +700,7 @@ paths:
       requestBody:
         $ref: '#/components/requestBodies/CreateSystemAccountAccessToken'
       tags:
-        - 'System Accounts [Beta] - Access Tokens'
+        - 'System Accounts - Access Tokens'
   '/system-accounts/{accountId}/access-tokens/{tokenId}':
     get:
       summary: Fetch System Account Access Token
@@ -707,13 +714,14 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       operationId: get-system-accounts-id-access-tokens-id
+      x-unstable: true
       description: |-
         _The system accounts feature is currently in beta and is subject to change._
 
         Returns the system account (SA) access token for the SA Access Token ID specified as a path parameter.
       parameters: []
       tags:
-        - 'System Accounts [Beta] - Access Tokens'
+        - 'System Accounts - Access Tokens'
     parameters:
       - schema:
           type: string
@@ -730,6 +738,7 @@ paths:
     patch:
       summary: Update System Account Access Token
       operationId: patch-system-accounts-id-access-tokens-id
+      x-unstable: true
       responses:
         '200':
           $ref: '#/components/responses/SystemAccountAccessTokenSingle'
@@ -748,10 +757,11 @@ paths:
       requestBody:
         $ref: '#/components/requestBodies/UpdateSystemAccountAccessToken'
       tags:
-        - 'System Accounts [Beta] - Access Tokens'
+        - 'System Accounts - Access Tokens'
     delete:
       summary: Delete System Account Access Token
       operationId: delete-system-accounts-id-access-tokens-id
+      x-unstable: true
       responses:
         '204':
           description: No Content
@@ -766,7 +776,7 @@ paths:
 
         Deletes the specified token. Returns 404 if the token was not found.
       tags:
-        - 'System Accounts [Beta] - Access Tokens'
+        - 'System Accounts - Access Tokens'
   '/system-accounts/{accountId}/assigned-roles':
     parameters:
       - schema:
@@ -789,6 +799,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       operationId: get-system-accounts-accountId-assigned-roles
+      x-unstable: true
       description: |-
         _The system accounts feature is currently in beta and is subject to change._
 
@@ -800,10 +811,11 @@ paths:
           name: 'filter[field]'
           description: 'A field to filter on. Supported fields: role_name, entity_type_name'
       tags:
-        - 'System Accounts [Beta] - Roles'
+        - 'System Accounts - Roles'
     post:
       summary: Create Assigned Role for System Account
       operationId: post-system-accounts-accountId-assigned-roles
+      x-unstable: true
       responses:
         '201':
           $ref: '#/components/responses/AssignedRoleSingle'
@@ -822,7 +834,7 @@ paths:
       requestBody:
         $ref: '#/components/requestBodies/AssignRole'
       tags:
-        - 'System Accounts [Beta] - Roles'
+        - 'System Accounts - Roles'
   '/system-accounts/{accountId}/assigned-roles/{roleId}':
     parameters:
       - schema:
@@ -840,6 +852,7 @@ paths:
     delete:
       summary: Delete Assigned Role from System Account
       operationId: delete-system-accounts-accountId-assigned-roles-roleId
+      x-unstable: true
       responses:
         '204':
           description: No Content
@@ -854,7 +867,7 @@ paths:
 
         Removes an assigned role from a system account. Returns 404 if the system account or assigned role were not found.
       tags:
-        - 'System Accounts [Beta] - Roles'
+        - 'System Accounts - Roles'
   '/teams/{teamId}/system-accounts':
     parameters:
       - schema:
@@ -875,15 +888,17 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       operationId: get-teams-teamId-system-accounts
+      x-unstable: true
       description: Returns a paginated list of system accounts that belong to the team specified in the path parameter.
       parameters:
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageNumber'
       tags:
-        - 'System Accounts [Beta] - Team Membership'
+        - 'System Accounts - Team Membership'
     post:
       summary: Add System Account to a Team
       operationId: post-teams-teamId-system-accounts
+      x-unstable: true
       responses:
         '201':
           description: Created
@@ -899,7 +914,7 @@ paths:
       requestBody:
         $ref: '#/components/requestBodies/AddSystemAccountToTeam'
       tags:
-        - 'System Accounts [Beta] - Team Membership'
+        - 'System Accounts - Team Membership'
   '/teams/{teamId}/system-accounts/{accountId}':
     parameters:
       - schema:
@@ -917,6 +932,7 @@ paths:
     delete:
       summary: Remove System Account From Team
       operationId: delete-teams-teamId-system-accounts-accountId
+      x-unstable: true
       responses:
         '204':
           description: No Content
@@ -928,7 +944,7 @@ paths:
           $ref: '#/components/responses/NotFound'
       description: Removes a system account from a team. Returns 404 if the team or system account were not found.
       tags:
-        - 'System Accounts [Beta] - Team Membership'
+        - 'System Accounts - Team Membership'
   '/system-accounts/{accountId}/teams':
     parameters:
       - schema:
@@ -949,12 +965,13 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       operationId: get-system-accounts-accountId-teams
+      x-unstable: true
       description: Returns a paginated list of a teams that the system account belongs to.
       parameters:
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageNumber'
       tags:
-        - 'System Accounts [Beta] - Team Membership'
+        - 'System Accounts - Team Membership'
 components:
   parameters:
     PageSize:
@@ -2744,7 +2761,7 @@ tags:
   - name: Team Membership
   - name: Teams
   - name: Users
-  - name: 'System Accounts [Beta]'
-  - name: 'System Accounts [Beta] - Access Tokens'
-  - name: 'System Accounts [Beta] - Roles'
-  - name: 'System Accounts [Beta] - Team Membership'
+  - name: 'System Accounts'
+  - name: 'System Accounts - Access Tokens'
+  - name: 'System Accounts - Roles'
+  - name: 'System Accounts - Team Membership'
