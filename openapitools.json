@@ -12,6 +12,62 @@
           "modelPropertyNaming": "original",
           "useSingleRequestParameter": "true"
         }
+      },
+
+      "konnect-dev-client": {
+        "generatorName": "typescript-axios",
+        "output": "packages/konnect/dev/npm/client",
+        "glob": "output/konnect/dev.yaml",
+        "additionalProperties": {
+          "modelPropertyNaming": "original",
+          "useSingleRequestParameter": "true"
+        }
+      },
+      "konnect-internal-client": {
+        "generatorName": "typescript-axios",
+        "output": "packages/konnect/internal/npm/client",
+        "glob": "output/konnect/internal.yaml",
+        "additionalProperties": {
+          "modelPropertyNaming": "original",
+          "useSingleRequestParameter": "true"
+        }
+      },
+      "konnect-public-client": {
+        "generatorName": "typescript-axios",
+        "output": "packages/konnect/public/npm/client",
+        "glob": "output/konnect/public.yaml",
+        "additionalProperties": {
+          "modelPropertyNaming": "original",
+          "useSingleRequestParameter": "true"
+        }
+      },
+      
+      "portal-dev-client": {
+        "generatorName": "typescript-axios",
+        "output": "packages/portal/dev/npm/client",
+        "glob": "output/portal/dev.yaml",
+        "additionalProperties": {
+          "modelPropertyNaming": "original",
+          "useSingleRequestParameter": "true"
+        }
+      },
+      "portal-internal-client": {
+        "generatorName": "typescript-axios",
+        "output": "packages/portal/internal/npm/client",
+        "glob": "output/portal/internal.yaml",
+        "additionalProperties": {
+          "modelPropertyNaming": "original",
+          "useSingleRequestParameter": "true"
+        }
+      },
+      "portal-public-client": {
+        "generatorName": "typescript-axios",
+        "output": "packages/portal/public/npm/client",
+        "glob": "output/portal/public.yaml",
+        "additionalProperties": {
+          "modelPropertyNaming": "original",
+          "useSingleRequestParameter": "true"
+        }
       }
     }
   }

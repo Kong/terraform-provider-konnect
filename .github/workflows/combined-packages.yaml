@@ -1,0 +1,57 @@
+name: Generate Test SDK Packages
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types:
+      - opened
+      - synchronize
+
+jobs:
+  all-client-v2-axios-npm:
+    name: Publish Dev, Internal and Public packages to NPM
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16.x"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Install Dependencies
+        run: |
+          npm install
+
+      - name: Process OpenAPI files
+        run: |
+          node tools/generate-sdk-openapi-files.js
+
+      - name: "[Konnect] Generate Dev Client"
+        run: npm run generate:konnect-dev-client
+
+      - name: "[Konnect] Generate Internal Client"
+        run: npm run generate:konnect-internal-client
+
+      - name: "[Konnect] Generate Public Client"
+        run: npm run generate:konnect-public-client
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: generated-sdks
+          path: packages/
+
+      #- name: Publish to NPM Registry
+      #  run: |
+      #    cd konnect/packages/identity/v2/npm
+      #    npm version --no-git-tag-version $(npm view @kong/kauth-client-v2-axios@latest version)
+      #    npm version --no-git-tag-version patch
+      #    npm publish
+      #  env:
+      #    NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

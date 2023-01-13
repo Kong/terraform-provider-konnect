@@ -32,7 +32,7 @@ paths:
           $ref: '#/components/responses/Error'
         '500':
           $ref: '#/components/responses/Error'
-      operationId: list-teams
+      operationId: list-portal-teams
       description: List the teams.
       parameters:
         - $ref: '#/components/parameters/PageSize'
@@ -47,7 +47,7 @@ paths:
         required: true
     post:
       summary: Create Team
-      operationId: create-team
+      operationId: create-portal-team
       responses:
         '201':
           $ref: '#/components/responses/TeamSingle'
@@ -95,13 +95,13 @@ paths:
           $ref: '#/components/responses/Error'
         '500':
           $ref: '#/components/responses/Error'
-      operationId: get-team
+      operationId: get-portal-team
       description: Get an individual team.
       tags:
         - Teams
     patch:
       summary: Update Team
-      operationId: update-team
+      operationId: update-portal-team
       responses:
         '200':
           $ref: '#/components/responses/TeamSingle'
@@ -120,7 +120,7 @@ paths:
         - Teams
     delete:
       summary: Delete Team
-      operationId: delete-team
+      operationId: delete-portal-team
       responses:
         '204':
           description: No Content
@@ -160,7 +160,7 @@ paths:
           $ref: '#/components/responses/Error'
         '500':
           $ref: '#/components/responses/Error'
-      operationId: list-team-developers
+      operationId: list-portal-team-developers
       description: List a team's developers.
       parameters:
         - $ref: '#/components/parameters/PageSize'
@@ -169,7 +169,7 @@ paths:
         - Team Membership
     post:
       summary: Add Developer
-      operationId: add-developer-to-team
+      operationId: add-developer-to-portal-team
       responses:
         '201':
           description: Created
@@ -210,7 +210,7 @@ paths:
         required: true
     delete:
       summary: Remove Developer from Team
-      operationId: remove-developer-from-team
+      operationId: remove-developer-from-portal-team
       responses:
         '204':
           description: No Content
@@ -243,7 +243,7 @@ paths:
         - Team Roles
       responses:
         '200':
-          $ref: '#/components/responses/AssignedRoleCollection'
+          $ref: '#/components/responses/AssignedPortalRoleCollection'
         '401':
           $ref: '#/components/responses/Error'
         '403':
@@ -252,11 +252,11 @@ paths:
           $ref: '#/components/responses/Error'
         '500':
           $ref: '#/components/responses/Error'
-      operationId: list-team-roles
+      operationId: list-portal-team-roles
       description: List the roles belonging to a team.
     post:
       summary: Assign Role
-      operationId: teams-assign-role
+      operationId: portal-teams-assign-role
       responses:
         '201':
           $ref: '#/components/responses/AssignedRoleSingle'
@@ -298,7 +298,7 @@ paths:
         required: true
     delete:
       summary: Remove Role
-      operationId: teams-remove-role
+      operationId: portal-teams-remove-role
       responses:
         '204':
           description: No Content
@@ -331,7 +331,7 @@ paths:
           $ref: '#/components/responses/Error'
         '500':
           $ref: '#/components/responses/Error'
-      operationId: list-developers
+      operationId: list-portal-developers
       description: List the developers.
       parameters:
         - $ref: '#/components/parameters/PageSize'
@@ -370,7 +370,7 @@ paths:
           $ref: '#/components/responses/Error'
         '500':
           $ref: '#/components/responses/Error'
-      operationId: list-developer-teams
+      operationId: list-portal-developer-teams
       description: List the teams to which a developer belongs.
       parameters:
         - $ref: '#/components/parameters/PageSize'
@@ -656,7 +656,7 @@ components:
                 entity_id: 817d0422-45c9-4d88-8d64-45aef05c1ae7
                 entity_type_name: Services
                 entity_region: eu
-    AssignedRoleCollection:
+    AssignedPortalRoleCollection:
       description: A paginated collection of assigned roles.
       content:
         application/json:

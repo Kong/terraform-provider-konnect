@@ -5,8 +5,14 @@
   "main": "index.js",
   "scripts": {
     "lint:all": "spectral lint '(portal|konnect)/definitions/**/openapi.yaml'",
-    "generate:identity-v2-client": "rm -rf ./konnect/packages/identity/v2/npm/client && openapi-generator-cli generate --generator-key identity-v2-client",
-    "validate:identity-v2-spec": "openapi-generator-cli validate -i ./konnect/definitions/identity/v2/openapi.yaml"
+    "generateAdd exception for KPortal to Versioning:identity-v2-client": "rm -rf ./konnect/packages/identity/v2/npm/client && openapi-generator-cli generate --generator-key identity-v2-client",
+    "validate:identity-v2-spec": "openapi-generator-cli validate -i ./konnect/definitions/identity/v2/openapi.yaml",
+    "generate:konnect-dev-client": "rm -rf ./packages/dev && openapi-generator-cli generate --generator-key konnect-dev-client",
+    "generate:konnect-internal-client": "rm -rf ./packages/internal && openapi-generator-cli generate --generator-key konnect-internal-client",
+    "generate:konnect-public-client": "rm -rf ./packages/public && openapi-generator-cli generate --generator-key konnect-public-client",
+    "generate:portal-dev-client": "rm -rf ./packages/dev && openapi-generator-cli generate --generator-key portal-dev-client",
+    "generate:portal-internal-client": "rm -rf ./packages/internal && openapi-generator-cli generate --generator-key portal-internal-client",
+    "generate:portal-public-client": "rm -rf ./packages/public && openapi-generator-cli generate --generator-key portal-public-client"
   },
   "repository": {
     "type": "git",
@@ -20,8 +26,13 @@
   },
   "homepage": "https://github.com/Kong/platform-api#readme",
   "devDependencies": {
+    "@apidevtools/json-schema-ref-parser": "^9.1.0",
     "@openapitools/openapi-generator-cli": "^2.5.2",
     "@stoplight/spectral-cli": "^6.5.0",
-    "redoc-cli": "^0.13.19"
+    "fast-glob": "^3.2.12",
+    "js-yaml": "^4.1.0",
+    "mergician": "^1.0.3",
+    "redoc-cli": "^0.13.19",
+    "traverse": "^0.6.7"
   }
 }
