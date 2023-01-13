@@ -484,8 +484,8 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
         '409':
-          $ref: '#/components/responses/NotFound'
-      description: Assigns a role to a user.  Returns 409 if role is already assigned.
+          $ref: '#/components/responses/Conflict'
+      description: Assigns a role to a user. Returns 409 if role is already assigned.
       requestBody:
         $ref: '#/components/requestBodies/AssignRole'
       tags:
@@ -803,7 +803,7 @@ paths:
       description: |-
         _The system accounts feature is currently in beta and is subject to change._
 
-        Lists the roles belonging to a system account. Returns 400 if any filter parameteres are invalid.
+        Lists the roles belonging to a system account. Returns 400 if any filter parameters are invalid.
       parameters:
         - schema:
             type: string
@@ -1518,9 +1518,9 @@ components:
                               - Creator
                           description:
                             type: string
-                            example: Creates a new Runtime Group in an organization. The creator becomes the owner of the Runtimegroup they create.
+                            example: Creates a new Runtime Group in an organization. The creator becomes the owner of the Runtime Group they create.
                             enum:
-                              - Creates a new Runtime Group in an organization. The creator becomes the owner of the Runtimegroup they create.
+                              - Creates a new Runtime Group in an organization. The creator becomes the owner of the Runtime Group they create.
                       deployer:
                         type: object
                         additionalProperties: false
@@ -1792,7 +1792,7 @@ components:
                       description: This role grants full write access to administer consumers.
                     creator:
                       name: Creator
-                      description: Creates a new Runtime Group in an organization. The creator becomes the owner of the Runtimegroup they create.
+                      description: Creates a new Runtime Group in an organization. The creator becomes the owner of the Runtime Group they create.
                     deployer:
                       name: Deployer
                       description: 'This role grants full write access to administer services, routes and plugins necessary to deploy services in Service Hub.'
@@ -2008,7 +2008,7 @@ components:
       description: |-
         The request schema for the create team request.
 
-        If you pass the same `name` and `description` of an existing team in the request, a team with the same `name` and `description` will be created. The two teams will have different `team_id` values to differntiate them.
+        If you pass the same `name` and `description` of an existing team in the request, a team with the same `name` and `description` will be created. The two teams will have different `team_id` values to differentiate them.
       content:
         application/json:
           schema:
@@ -2334,7 +2334,7 @@ components:
           type: string
           example: Jane
           maxLength: 250
-          description: The User's preffered name.
+          description: The User's preferred name.
         active:
           type: boolean
           default: true
