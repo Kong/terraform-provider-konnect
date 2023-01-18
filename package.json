@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "lint:all": "spectral lint '(portal|konnect)/definitions/**/openapi.yaml'",
-    "generateAdd exception for KPortal to Versioning:identity-v2-client": "rm -rf ./konnect/packages/identity/v2/npm/client && openapi-generator-cli generate --generator-key identity-v2-client",
+    "generate:identity-v2-client": "rm -rf ./konnect/packages/identity/v2/npm/client && openapi-generator-cli generate --generator-key identity-v2-client",
     "validate:identity-v2-spec": "openapi-generator-cli validate -i ./konnect/definitions/identity/v2/openapi.yaml",
     "generate:konnect-dev-client": "rm -rf ./packages/dev && openapi-generator-cli generate --generator-key konnect-dev-client",
     "generate:konnect-internal-client": "rm -rf ./packages/internal && openapi-generator-cli generate --generator-key konnect-internal-client",
