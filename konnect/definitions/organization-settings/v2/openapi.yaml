@@ -1,7 +1,7 @@
 openapi: 3.0.2
 info:
-  title: Konnect Organization Settings API
-  version: 2.0.0
+  title: Konnect Organization Settings API - Beta
+  version: 0.0.0
   description: The management API for Kong Konnect Organization Settings resources.
   contact:
     name: Kong
@@ -13,8 +13,12 @@ paths:
   /audit-log-webhook:
     put:
       summary: Update Audit Log Webhook
-      description: 'Update audit log export webhook settings. This endpoint allows you to set the webhook endpoint to receive authorization and authentication audit logs.'
+      description: |-
+        _The audit logs feature is currently in beta and is subject to change._
+
+        Sets configuration for a webhook to receive audit logs.
       operationId: update-audit-log-webhook
+      x-unstable: true
       requestBody:
         $ref: '#/components/requestBodies/UpdateAuditLogWebhook'
       tags: [Audit Logs - Webhook]
@@ -29,8 +33,12 @@ paths:
           $ref: '#/components/responses/Unauthorized'
     get:
       summary: Get Audit Log Webhook
-      description: 'Get audit log export webhook settings. This endpoint retrieves the current audit log webhook endpoint.'
+      description: |-
+        _The audit logs feature is currently in beta and is subject to change._
+
+        Returns configuration for the audit log webhook.
       operationId: get-audit-log-webhook
+      x-unstable: true
       tags: [Audit Logs - Webhook]
       responses:
         '200':
@@ -60,7 +68,7 @@ components:
               enabled:
                 type: boolean
                 example: true
-                description: Indicates if the data should be sent to the webhook.
+                description: Indicates whether audit data should be sent to the webhook.
           examples:
             Get Audit Log Webhook:
               $ref: '#/components/examples/Get-Audit-Log-Webhook'
@@ -99,8 +107,6 @@ components:
               $ref: '#/components/examples/400-request-format-is-invalid'
             Cannot be Blank:
               $ref: '#/components/examples/400-cannot-be-blank'
-            Invalid ID format:
-              $ref: '#/components/examples/400-invalid-id-format'
     PermissionDenied:
       description: Permission denied
       content:
@@ -112,7 +118,7 @@ components:
                 status: 403
                 title: Permission denied
                 instance: 'konnect:trace:2822394689570210664'
-                detail: Only enterprise organizations can create teams
+                detail: Only enterprise organizations can set audit log webhooks
             description: The error object.
             properties:
               status:
@@ -130,7 +136,7 @@ components:
               detail:
                 type: string
                 description: Information about the error response.
-                example: Only enterprise organizations can create teams
+                example: Only enterprise organizations can set audit log webhooks
           examples:
             Permission Denied:
               $ref: '#/components/examples/403-permission-denied'
@@ -219,7 +225,7 @@ components:
               authorization:
                 type: string
                 example: "Bearer sometoken"
-                description: The value to be included in the `Authorization` header when sending audit logs
+                description: The value to include in the `Authorization` header when sending audit logs
               enabled:
                 type: boolean
                 example: true
@@ -253,44 +259,20 @@ components:
         title: Bad Request
         instance: 'konnect:trace:6644808935508571943'
         invalid_parameters:
-          - field: name
+          - field: authorization
             reason: cannot be blank
-    400-invalid-id-format:
-      value:
-        status: 400
-        title: Bad Request
-        instance: 'konnect:trace:8988732526256293040'
-        invalid_parameters:
-          - field: teamID
-            reason: invalid ID format
-    400-valid-uuid:
-      value:
-        status: 400
-        title: Bad Request
-        instance: 'konnect:trace:7680390984800447837'
-        invalid_parameters:
-          - field: id
-            reason: must be a valid UUID v4
-    400-systems-team-modified:
-      value:
-        status: 400
-        title: Bad Request
-        instance: 'konnect:trace:1738820719742148545'
-        invalid_parameters:
-          - field: teamID
-            reason: system teams cannot be modified
     404-not-found:
       value:
         status: 404
         title: Not Found
         instance: 'konnect:trace:2287285207635123011'
-        detail: The requested team was not found
+        detail: The requested resource was not found
     403-permission-denied:
       value:
         status: 403
         title: Permission denied
         instance: 'konnect:trace:2822394689570210664'
-        detail: Only enterprise organizations can create teams
+        detail: Only enterprise organizations can perform this action
     403-invalid-permissions:
       value:
         status: 403
@@ -304,18 +286,6 @@ components:
         title: Invalid Permissions
         detail: 'You must have the [administrator] role to perform this action'
         instance: 'konnect:trace:6c1ef33ae5bce33634d7d7d695c7f203'
-    409-user-is-already-active:
-      value:
-        status: 409
-        title: Resource Conflict
-        instance: 'konnect:trace:6644808935508571943'
-        detail: User is already active
-    412-precondition-failed:
-      value:
-        status: 412
-        title: Precondition Failed
-        instance: 'konnect:trace:1896611024257578096'
-        detail: IdP configuration not found
     429-rate-limited:
       value:
         status: 429
