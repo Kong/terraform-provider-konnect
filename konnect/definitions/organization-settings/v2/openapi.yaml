@@ -59,7 +59,7 @@ components:
             properties:
               endpoint:
                 type: string
-                example: "https://example.com/audit-logs"
+                example: 'https://example.com/audit-logs'
                 description: The endpoint that will receive audit log messages.
               enabled:
                 type: boolean
@@ -216,11 +216,11 @@ components:
             properties:
               endpoint:
                 type: string
-                example: "https://example.com/audit-logs"
+                example: 'https://example.com/audit-logs'
                 description: The endpoint that will receive audit log messages.
               authorization:
                 type: string
-                example: "Bearer sometoken"
+                example: 'Bearer sometoken'
                 description: The value to include in the `Authorization` header when sending audit logs
               enabled:
                 type: boolean
@@ -297,12 +297,12 @@ components:
     Update-Audit-Log-Webhook:
       value:
         endpoint: https://example.com/audit-log
-        authorization: "Bearer sometoken"
+        authorization: 'Bearer sometoken'
         enabled: true
     Get-Audit-Log-Webhook:
       value:
         endpoint: https://example.com/audit-log
-        authorization: "Bearer sometoken"
+        authorization: 'Bearer sometoken'
         enabled: true
 
 security:

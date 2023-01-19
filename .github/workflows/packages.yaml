@@ -12,7 +12,7 @@ jobs:
 
     outputs:
       identity_spec: ${{ steps.identity.outputs.spec }}
-      organization_settings_spec: ${{ steps.identity.outputs.organization-settings }}
+      organization_settings_spec: ${{ steps.organization-settings.outputs.spec }}
 
     steps:
       - name: Checkout
