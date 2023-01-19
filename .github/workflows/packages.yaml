@@ -12,6 +12,7 @@ jobs:
 
     outputs:
       identity_spec: ${{ steps.identity.outputs.spec }}
+      organization_settings_spec: ${{ steps.identity.outputs.organization-settings }}
 
     steps:
       - name: Checkout
@@ -24,6 +25,14 @@ jobs:
             spec:
               - 'konnect/definitions/identity/v2/openapi.yaml'
               - 'konnect/packages/identity/v2/npm/**'
+
+      - uses: dorny/paths-filter@v2
+        id: organization-settings
+        with:
+          filters: |
+            spec:
+              - 'konnect/definitions/organization-settings/v2/openapi.yaml'
+              - 'konnect/packages/organization-settings/v2/npm/**'
 
   kauth-client-v2-axios-npm:
     name: Publish KAuth Client v2 Axios Package to NPM
@@ -59,6 +68,45 @@ jobs:
         run: |
           cd konnect/packages/identity/v2/npm
           npm version --no-git-tag-version $(npm view @kong/kauth-client-v2-axios@latest version)
+          npm version --no-git-tag-version patch
+          npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  organization-settings-client-v2-axios-npm:
+    name: Publish Organization Settings Client v2 Axios Package to NPM
+
+    needs: changes
+    if: ${{ needs.changes.outputs.organization_settings_spec == 'true' }}
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install Dependencies
+        run: |
+          npm install
+          cd konnect/packages/organization-settings/v2/npm
+          npm install
+
+      - name: Validate Spec
+        run: npm run validate:organization-settings-v2-spec
+
+      - name: Generate Client
+        run: npm run generate:organization-settings-v2-client
+
+      - name: Publish to NPM Registry
+        run: |
+          cd konnect/packages/organization-settings/v2/npm
+          npm version --no-git-tag-version $(npm view @kong/organization-settings-client-v2-axios@latest version)
           npm version --no-git-tag-version patch
           npm publish
         env:

@@ -7,6 +7,8 @@
     "lint:all": "spectral lint '(portal|konnect)/definitions/**/openapi.yaml'",
     "generate:identity-v2-client": "rm -rf ./konnect/packages/identity/v2/npm/client && openapi-generator-cli generate --generator-key identity-v2-client",
     "validate:identity-v2-spec": "openapi-generator-cli validate -i ./konnect/definitions/identity/v2/openapi.yaml",
+    "generate:organization-settings-v2-client": "rm -rf ./konnect/packages/organization-settings/v2/npm/client && openapi-generator-cli generate --generator-key organization-settings-v2-client",
+    "validate:organization-settings-v2-spec": "openapi-generator-cli validate -i ./konnect/definitions/organization-settings/v2/openapi.yaml",
     "generate:konnect-dev-client": "rm -rf ./packages/dev && openapi-generator-cli generate --generator-key konnect-dev-client",
     "generate:konnect-internal-client": "rm -rf ./packages/internal && openapi-generator-cli generate --generator-key konnect-internal-client",
     "generate:konnect-public-client": "rm -rf ./packages/public && openapi-generator-cli generate --generator-key konnect-public-client",

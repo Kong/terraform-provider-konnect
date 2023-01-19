@@ -13,6 +13,15 @@
           "useSingleRequestParameter": "true"
         }
       },
+      "organization-settings-v2-client": {
+        "generatorName": "typescript-axios",
+        "output": "konnect/packages/organization-settings/v2/npm/client",
+        "glob": "konnect/definitions/organization-settings/v2/openapi.yaml",
+        "additionalProperties": {
+          "modelPropertyNaming": "original",
+          "useSingleRequestParameter": "true"
+        }
+      },
 
       "konnect-dev-client": {
         "generatorName": "typescript-axios",

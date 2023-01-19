@@ -1,15 +1,15 @@
 {
-  "name": "@kong/kauth-client-v2-axios",
+  "name": "@kong/organization-settings-client-v2-axios",
   "author": "Kong, Inc.",
   "version": "1.0.0",
-  "description": "Axios Client for the KAuth Identity v2 API",
+  "description": "Axios Client for the Organization Settings v2 API",
   "license": "UNLICENSED",
   "main": "dist/index.js",
   "files": [
     "dist"
   ],
   "typings": "dist/types",
-  "repository": "https://github.com/Kong/platform-api/tree/main/konnect/packages/identity/v2/npm",
+  "repository": "https://github.com/Kong/platform-api/tree/main/konnect/packages/organization-settings/v2/npm",
   "publishConfig": {
     "access": "restricted"
   },
