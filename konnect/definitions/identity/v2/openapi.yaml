@@ -2723,13 +2723,13 @@ components:
       value:
         role_name: Viewer
         entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
-        entity_type_name: runtime_groups
+        entity_type_name: Runtime Groups
         entity_region: us
     Assign-Roles-Global:
       value:
         role_name: Admin
         entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
-        entity_type_name: services
+        entity_type_name: Services
         entity_region: '*'
     CreateTeamExample:
       value:
