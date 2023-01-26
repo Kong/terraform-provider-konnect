@@ -4,6 +4,7 @@ const yaml = require("js-yaml");
 const mergician = require("mergician");
 const $RefParser = require("@apidevtools/json-schema-ref-parser");
 const traverse = require("traverse");
+const { transformFilterQueryParams } = require('./helpers/transformFilterQueryParams')
 
 const headers = {
   konnect: {
@@ -94,6 +95,13 @@ const headers = {
       return !node["x-internal"];
     });
 
+    // Create additional spec set optimized for API Documentation rendering
+    const [devApiDocs, internalApiDocs, publicApiDocs] = [
+      transformFilterQueryParams(deepClone(dev)),
+      transformFilterQueryParams(deepClone(internal)),
+      transformFilterQueryParams(deepClone(public))
+    ];
+
     // Write multiple files
     // @TODO: Remove unused components/tags etc
     const outputDir = `${baseDir}/output/${mode}`;
@@ -106,8 +114,11 @@ const headers = {
     }
     await Promise.all([
       fs.writeFile(`${outputDir}/dev.yaml`, yaml.dump(dev)),
+      fs.writeFile(`${outputDir}/dev-api-docs.yaml`, yaml.dump(devApiDocs)),
       fs.writeFile(`${outputDir}/internal.yaml`, yaml.dump(internal)),
+      fs.writeFile(`${outputDir}/internal-api-docs.yaml`, yaml.dump(internalApiDocs)),
       fs.writeFile(`${outputDir}/public.yaml`, yaml.dump(public)),
+      fs.writeFile(`${outputDir}/public-api-docs.yaml`, yaml.dump(publicApiDocs)),
     ]);
   }
 })();
@@ -145,4 +156,8 @@ function unique(s) {
   return [...new Set(s.map((n) => JSON.stringify(n)))].map((n) =>
     JSON.parse(n)
   );
+}
+
+function deepClone(serializable) {
+  return JSON.parse(JSON.stringify(serializable));
 }

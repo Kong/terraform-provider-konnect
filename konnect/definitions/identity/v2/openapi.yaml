@@ -114,8 +114,13 @@ paths:
             type: string
             example: 'filter[name]=Organization+Admins'
           in: query
-          name: 'filter[field]'
-          description: 'A field to filter on. Supported fields: name'
+          name: 'filter[name]'
+          description: Filter results by name that equals the given value.
+        - schema:
+            type: string
+          in: query
+          name: 'filter[name][contains]'
+          description: Filter results by name that contains the given value.
       tags:
         - Teams
     parameters: []
@@ -362,11 +367,20 @@ paths:
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageNumber'
         - schema:
-            type: string
-            example: 'filter[active]=true'
+            type: object
+            properties:
+              id:
+                $ref: '#/components/schemas/StringFieldEqualsFilter'
+              email:
+                $ref: '#/components/schemas/StringFieldFilter'
+              full_name:
+                $ref: '#/components/schemas/StringFieldFilter'
+              active:
+                $ref: '#/components/schemas/BooleanFieldFilter'
           in: query
-          name: 'filter[field]'
-          description: 'A field to filter on. Supported fields: id, email, full_name, active'
+          name: filter
+          description: Filter users returned in the response.
+          required: false
   '/users/{userId}':
     parameters:
       - schema:
@@ -527,7 +541,7 @@ paths:
     get:
       summary: List System Accounts
       tags:
-        - 'System Accounts'
+        - System Accounts
       responses:
         '200':
           $ref: '#/components/responses/SystemAccountCollection'
@@ -549,14 +563,19 @@ paths:
         - schema:
             type: string
           in: query
-          name: 'filter[field]'
-          description: 'A field to filter on. Supported fields: name, description'
+          name: 'filter[name]'
+          description: Filter results by name that equals the given value.
+        - schema:
+            type: string
+          in: query
+          name: 'filter[name][contains]'
+          description: Filter results by name that contains the given value.
     post:
       summary: Create System Account
       operationId: post-system-accounts
       x-unstable: true
       tags:
-        - 'System Accounts'
+        - System Accounts
       description: |-
         _The system accounts feature is currently in beta and is subject to change._
 
@@ -576,7 +595,7 @@ paths:
     get:
       summary: Fetch System Account
       tags:
-        - 'System Accounts'
+        - System Accounts
       responses:
         '200':
           $ref: '#/components/responses/SystemAccountSingle'
@@ -619,7 +638,7 @@ paths:
 
         Updates the specified system account. Returns a 409 if the updated name is the same as another system account in the organization.
       tags:
-        - 'System Accounts'
+        - System Accounts
       requestBody:
         $ref: '#/components/requestBodies/UpdateSystemAccount'
     delete:
@@ -640,12 +659,12 @@ paths:
 
         Deletes the specified system account. Returns 404 if the requested account was not found.
       tags:
-        - 'System Accounts'
+        - System Accounts
   '/system-accounts/{accountId}/access-tokens':
     get:
       summary: List System Account Access Tokens
       tags:
-        - 'System Accounts - Access Tokens'
+        - System Accounts - Access Tokens
       responses:
         '200':
           $ref: '#/components/responses/SystemAccountAccessTokenCollection'
@@ -669,8 +688,13 @@ paths:
         - schema:
             type: string
           in: query
-          name: 'filter[field]'
-          description: 'A field to filter on. Supported fields: name'
+          name: 'filter[name]'
+          description: Filter results by name that equals the given value.
+        - schema:
+            type: string
+          in: query
+          name: 'filter[name][contains]'
+          description: Filter results by name that contains the given value.
     parameters:
       - schema:
           type: string
@@ -700,7 +724,7 @@ paths:
       requestBody:
         $ref: '#/components/requestBodies/CreateSystemAccountAccessToken'
       tags:
-        - 'System Accounts - Access Tokens'
+        - System Accounts - Access Tokens
   '/system-accounts/{accountId}/access-tokens/{tokenId}':
     get:
       summary: Fetch System Account Access Token
@@ -721,7 +745,7 @@ paths:
         Returns the system account (SA) access token for the SA Access Token ID specified as a path parameter.
       parameters: []
       tags:
-        - 'System Accounts - Access Tokens'
+        - System Accounts - Access Tokens
     parameters:
       - schema:
           type: string
@@ -757,7 +781,7 @@ paths:
       requestBody:
         $ref: '#/components/requestBodies/UpdateSystemAccountAccessToken'
       tags:
-        - 'System Accounts - Access Tokens'
+        - System Accounts - Access Tokens
     delete:
       summary: Delete System Account Access Token
       operationId: delete-system-accounts-id-access-tokens-id
@@ -776,7 +800,7 @@ paths:
 
         Deletes the specified token. Returns 404 if the token was not found.
       tags:
-        - 'System Accounts - Access Tokens'
+        - System Accounts - Access Tokens
   '/system-accounts/{accountId}/assigned-roles':
     parameters:
       - schema:
@@ -811,7 +835,7 @@ paths:
           name: 'filter[field]'
           description: 'A field to filter on. Supported fields: role_name, entity_type_name'
       tags:
-        - 'System Accounts - Roles'
+        - System Accounts - Roles
     post:
       summary: Create Assigned Role for System Account
       operationId: post-system-accounts-accountId-assigned-roles
@@ -834,7 +858,7 @@ paths:
       requestBody:
         $ref: '#/components/requestBodies/AssignRole'
       tags:
-        - 'System Accounts - Roles'
+        - System Accounts - Roles
   '/system-accounts/{accountId}/assigned-roles/{roleId}':
     parameters:
       - schema:
@@ -867,7 +891,7 @@ paths:
 
         Removes an assigned role from a system account. Returns 404 if the system account or assigned role were not found.
       tags:
-        - 'System Accounts - Roles'
+        - System Accounts - Roles
   '/teams/{teamId}/system-accounts':
     parameters:
       - schema:
@@ -894,7 +918,7 @@ paths:
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageNumber'
       tags:
-        - 'System Accounts - Team Membership'
+        - System Accounts - Team Membership
     post:
       summary: Add System Account to a Team
       operationId: post-teams-teamId-system-accounts
@@ -914,7 +938,7 @@ paths:
       requestBody:
         $ref: '#/components/requestBodies/AddSystemAccountToTeam'
       tags:
-        - 'System Accounts - Team Membership'
+        - System Accounts - Team Membership
   '/teams/{teamId}/system-accounts/{accountId}':
     parameters:
       - schema:
@@ -944,7 +968,7 @@ paths:
           $ref: '#/components/responses/NotFound'
       description: Removes a system account from a team. Returns 404 if the team or system account were not found.
       tags:
-        - 'System Accounts - Team Membership'
+        - System Accounts - Team Membership
   '/system-accounts/{accountId}/teams':
     parameters:
       - schema:
@@ -971,7 +995,7 @@ paths:
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageNumber'
       tags:
-        - 'System Accounts - Team Membership'
+        - System Accounts - Team Membership
 components:
   parameters:
     PageSize:
@@ -2269,35 +2293,6 @@ components:
                 id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
       description: The request schema for adding a system account to a team.
   schemas:
-    PaginatedMeta:
-      type: object
-      x-examples:
-        example-1:
-          page:
-            number: 2
-            size: 10
-            total: 100
-      title: PaginatedMeta
-      description: Returns pagination information
-      properties:
-        page:
-          type: object
-          description: Contains pagination query parameters and the total number of objects returned.
-          properties:
-            number:
-              type: integer
-              example: 2
-              description: Specifies the number of objects returned per page.
-            size:
-              type: integer
-              example: 10
-              maximum: 100
-              description: Specifies the size of the page.
-            total:
-              type: integer
-              maximum: 1000
-              example: 100
-              description: Integer representation of the amount of items returned.
     User:
       title: User
       type: object
@@ -2543,6 +2538,63 @@ components:
           format: date-time
           description: Timestamp of when the system account access token was last used.
           readOnly: true
+    # Below are common schema across APIs and can be extracted to shared JSON schema.
+    PaginatedMeta:
+      type: object
+      x-examples:
+        example-1:
+          page:
+            number: 2
+            size: 10
+            total: 100
+      title: PaginatedMeta
+      description: Returns pagination information
+      properties:
+        page:
+          type: object
+          description: Contains pagination query parameters and the total number of objects returned.
+          properties:
+            number:
+              type: integer
+              example: 2
+              description: Specifies the number of objects returned per page.
+            size:
+              type: integer
+              example: 10
+              maximum: 100
+              description: Specifies the size of the page.
+            total:
+              type: integer
+              maximum: 1000
+              example: 100
+              description: Integer representation of the amount of items returned.
+    StringFieldFilter:
+      x-examples:
+        example-1: 'equals-some-value'
+        example-2:
+          contains: 'some-value'
+      title: StringFieldFilter
+      description: Filter a string value field either by exact match or partial contains.
+      oneOf:
+        - $ref: '#/components/schemas/StringFieldEqualsFilter'
+        - type: object
+          properties:
+            contains:
+              type: string
+          required:
+            - contains
+    StringFieldEqualsFilter:
+      x-examples:
+        example-1: 'equals-some-value'
+      title: StringFieldEqualsFilter
+      description: Filter a string value by exact match.
+      type: string
+    BooleanFieldFilter:
+      x-examples:
+        example-1: true
+      title: BooleanFieldFilter
+      description: Filter by a boolean value (true/false).
+      type: boolean
   securitySchemes:
     personalAccessToken:
       type: http
@@ -2761,7 +2813,7 @@ tags:
   - name: Team Membership
   - name: Teams
   - name: Users
-  - name: 'System Accounts'
-  - name: 'System Accounts - Access Tokens'
-  - name: 'System Accounts - Roles'
-  - name: 'System Accounts - Team Membership'
+  - name: System Accounts
+  - name: System Accounts - Access Tokens
+  - name: System Accounts - Roles
+  - name: System Accounts - Team Membership

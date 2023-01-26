@@ -137,3 +137,5 @@ node_modules
 # OpenAPI Generator
 konnect/packages/**/client
 portal/packages/**/client
+output
+packages
