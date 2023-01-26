@@ -101,8 +101,12 @@ components:
           examples:
             Request Format is Invalid:
               $ref: '#/components/examples/400-request-format-is-invalid'
-            Cannot be Blank:
-              $ref: '#/components/examples/400-cannot-be-blank'
+            Authorization Cannot be Blank:
+              $ref: '#/components/examples/400-authorization-cannot-be-blank'
+            Endpoint Cannot be Blank:
+              $ref: '#/components/examples/400-endpoint-cannot-be-blank'
+            Endpoint Must be a valid URL:
+              $ref: '#/components/examples/400-endpoint-must-be-valid-url'
     PermissionDenied:
       description: Permission denied
       content:
@@ -213,6 +217,9 @@ components:
         application/json:
           schema:
             type: object
+            required: 
+              - endpoint
+              - authorization
             properties:
               endpoint:
                 type: string
@@ -249,7 +256,7 @@ components:
         invalid_parameters:
           - field: body
             reason: request format is invalid
-    400-cannot-be-blank:
+    400-authorization-cannot-be-blank:
       value:
         status: 400
         title: Bad Request
@@ -257,6 +264,22 @@ components:
         invalid_parameters:
           - field: authorization
             reason: cannot be blank
+    400-endpoint-cannot-be-blank:
+      value:
+        status: 400
+        title: Bad Request
+        instance: 'konnect:trace:6644808935508571943'
+        invalid_parameters:
+          - field: endpoint
+            reason: cannot be blank
+    400-endpoint-must-be-valid-url:
+      value:
+        status: 400
+        title: Bad Request
+        instance: 'konnect:trace:6644808935508571943'
+        invalid_parameters:
+          - field: endpoint
+            reason: must be a valid URL
     404-not-found:
       value:
         status: 404
