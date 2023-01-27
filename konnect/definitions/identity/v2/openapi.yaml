@@ -111,16 +111,14 @@ paths:
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageNumber'
         - schema:
-            type: string
-            example: 'filter[name]=Organization+Admins'
+            type: object
+            properties:
+              name:
+                $ref: '#/components/schemas/StringFieldFilter'
           in: query
-          name: 'filter[name]'
-          description: Filter results by name that equals the given value.
-        - schema:
-            type: string
-          in: query
-          name: 'filter[name][contains]'
-          description: Filter results by name that contains the given value.
+          name: filter
+          description: Filter teams returned in the response.
+          required: false
       tags:
         - Teams
     parameters: []
@@ -163,6 +161,21 @@ paths:
       parameters:
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageNumber'
+        - schema:
+            type: object
+            properties:
+              id:
+                $ref: '#/components/schemas/StringFieldEqualsFilter'
+              email:
+                $ref: '#/components/schemas/StringFieldFilter'
+              full_name:
+                $ref: '#/components/schemas/StringFieldFilter'
+              active:
+                $ref: '#/components/schemas/BooleanFieldFilter'
+          in: query
+          name: filter
+          description: Filter users returned in the response.
+          required: false
       tags:
         - Team Membership
     post:
@@ -291,10 +304,16 @@ paths:
       description: Lists the roles belonging to a team.
       parameters:
         - schema:
-            type: string
+            type: object
+            properties:
+              role_name:
+                $ref: '#/components/schemas/StringFieldFilter'
+              entity_type_name:
+                $ref: '#/components/schemas/StringFieldFilter'
           in: query
-          name: 'filter[field]'
-          description: 'A field to filter on. Supported fields: role_name, entity_type_name'
+          name: filter
+          description: Filter roles returned in the response.
+          required: false
     post:
       summary: Assign Role
       operationId: teams-assign-role
@@ -454,6 +473,15 @@ paths:
       parameters:
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageNumber'
+        - schema:
+            type: object
+            properties:
+              name:
+                $ref: '#/components/schemas/StringFieldFilter'
+          in: query
+          name: filter
+          description: Filter teams returned in the response.
+          required: false
       tags:
         - Team Membership
   '/users/{userId}/assigned-roles':
@@ -479,10 +507,16 @@ paths:
       description: Lists the roles assigned to a user.
       parameters:
         - schema:
-            type: string
+            type: object
+            properties:
+              role_name:
+                $ref: '#/components/schemas/StringFieldFilter'
+              entity_type_name:
+                $ref: '#/components/schemas/StringFieldFilter'
           in: query
-          name: 'filter[field]'
-          description: 'A field to filter on. Supported fields: role_name, entity_type_name'
+          name: filter
+          description: Filter roles returned in the response.
+          required: false
     post:
       summary: Assign Role
       operationId: users-assign-role
@@ -561,15 +595,14 @@ paths:
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageNumber'
         - schema:
-            type: string
+            type: object
+            properties:
+              name:
+                $ref: '#/components/schemas/StringFieldFilter'
           in: query
-          name: 'filter[name]'
-          description: Filter results by name that equals the given value.
-        - schema:
-            type: string
-          in: query
-          name: 'filter[name][contains]'
-          description: Filter results by name that contains the given value.
+          name: filter
+          description: Filter system accounts returned in the response.
+          required: false
     post:
       summary: Create System Account
       operationId: post-system-accounts
@@ -686,15 +719,14 @@ paths:
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageNumber'
         - schema:
-            type: string
+            type: object
+            properties:
+              name:
+                $ref: '#/components/schemas/StringFieldFilter'
           in: query
-          name: 'filter[name]'
-          description: Filter results by name that equals the given value.
-        - schema:
-            type: string
-          in: query
-          name: 'filter[name][contains]'
-          description: Filter results by name that contains the given value.
+          name: filter
+          description: Filter access tokens returned in the response.
+          required: false
     parameters:
       - schema:
           type: string
@@ -830,10 +862,16 @@ paths:
         Lists the roles belonging to a system account. Returns 400 if any filter parameters are invalid.
       parameters:
         - schema:
-            type: string
+            type: object
+            properties:
+              role_name:
+                $ref: '#/components/schemas/StringFieldFilter'
+              entity_type_name:
+                $ref: '#/components/schemas/StringFieldFilter'
           in: query
-          name: 'filter[field]'
-          description: 'A field to filter on. Supported fields: role_name, entity_type_name'
+          name: filter
+          description: Filter roles returned in the response.
+          required: false
       tags:
         - System Accounts - Roles
     post:
@@ -917,6 +955,15 @@ paths:
       parameters:
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageNumber'
+        - schema:
+            type: object
+            properties:
+              name:
+                $ref: '#/components/schemas/StringFieldFilter'
+          in: query
+          name: filter
+          description: Filter system accounts returned in the response.
+          required: false
       tags:
         - System Accounts - Team Membership
     post:
@@ -994,6 +1041,15 @@ paths:
       parameters:
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageNumber'
+        - schema:
+            type: object
+            properties:
+              name:
+                $ref: '#/components/schemas/StringFieldFilter'
+          in: query
+          name: filter
+          description: Filter teams returned in the response.
+          required: false
       tags:
         - System Accounts - Team Membership
 components:
