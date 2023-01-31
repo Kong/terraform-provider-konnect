@@ -1,8 +1,8 @@
 openapi: 3.0.3
 info:
-  title: Portal Auth API
+  title: Portal RBAC API
   version: 0.1.0
-  description: 'The management API for portal developers, teams, and RBAC rules.'
+  description: 'The management API for Portal teams, roles, and assignments'
   contact:
     name: Kong
     url: 'https://konghq.com'
