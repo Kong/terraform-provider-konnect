@@ -599,6 +599,8 @@ paths:
             properties:
               name:
                 $ref: '#/components/schemas/StringFieldFilter'
+              description:
+                $ref: '#/components/schemas/StringFieldFilter'
           in: query
           name: filter
           description: Filter system accounts returned in the response.
