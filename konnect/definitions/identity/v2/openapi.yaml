@@ -1054,6 +1054,105 @@ paths:
           required: false
       tags:
         - System Accounts - Team Membership
+  /users/me:
+    get:
+      summary: Retrieve My User Account
+      tags:
+        - Me
+      responses:
+        '200':
+          $ref: '#/components/responses/UserSingle'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+      operationId: get-users-me
+      x-internal: true
+      security:
+        - personalAccessToken: []
+        - konnectAccessToken: []
+      description: Returns the user account for the user identified in the token of the request.
+    delete:
+      summary: Delete My User Account
+      operationId: delete-users-me
+      x-internal: true
+      security:
+        - konnectAccessToken: []
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          description: Forbidden - Owner cannot be deleted when there are other users in the organization.
+      description: Deletes the user account for the user identified in the token of the request.
+      tags:
+        - Me
+    patch:
+      summary: Update My User Account
+      operationId: patch-users-me
+      responses:
+        '200':
+          $ref: '#/components/responses/UserSingle'
+        '400':
+          description: Bad Request - Invalid Parameters
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+      description: Updates the user account for the user identified in the token of the request.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateUser'
+      tags:
+        - Me
+      x-internal: true
+      security:
+        - konnectAccessToken: []
+  /users/me/password:
+    patch:
+      summary: Update My User Account Password
+      operationId: patch-users-me-password
+      responses:
+        '202':
+          description: Accepted
+        '400':
+          description: 'Bad Request - Password complexity, invalid params or old password is wrong.'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          description: Forbidden - If basic auth is disabled.
+      x-internal: true
+      security:
+        - konnectAccessToken: []
+      description: Update the password of the user identified in the token of the request.
+      tags:
+        - Me
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                old_password:
+                  type: string
+                  description: Old password.
+                new_password:
+                  type: string
+                  description: New Password.
+              required:
+                - old_password
+                - new_password
+        description: ''
+  /organizations/me:
+    get:
+      summary: Retrieve My Organization
+      tags:
+        - Me
+      responses:
+        '200':
+          $ref: '#/components/responses/MeOrganization'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+      operationId: get-organizations-me
+      x-internal: true
+      description: Returns the organization of the user identified in the token of the request.
 components:
   parameters:
     PageSize:
@@ -2063,6 +2162,53 @@ components:
                 expires_at: '2019-08-24T14:15:22Z'
                 last_used_at: '2019-08-24T14:15:22Z'
                 token: npat_12345678901234567890123456789012345678901234567890
+    MeOrganization:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: object
+            x-examples:
+              Example 1:
+                id: string
+                name: string
+                owner_id: string
+                created_at: '2023-01-23T17:22:52.150Z'
+                updated_at: '2023-01-23T17:22:52.150Z'
+            properties:
+              id:
+                type: string
+                description: UUID of the organization.
+                format: uuid
+                readOnly: true
+              name:
+                type: string
+                description: Name of the organization.
+              owner_id:
+                type: string
+                description: Owner ID of the organization.
+              login_path:
+                type: string
+                description: Path to organization-specific login when single sign on (SSO) is enabled. Blank otherwise.
+              created_at:
+                type: string
+                description: Date the organization was created.
+                format: date-time
+                readOnly: true
+              updated_at:
+                type: string
+                description: Date the organization was last updated.
+                format: date-time
+                readOnly: true
+          examples:
+            Example:
+              value:
+                created_at: '2023-01-18T11:35:45.130Z'
+                id: 023bfa42-3513-4cbf-b059-a9ddb4ea995d
+                name: Acme Co.
+                owner_id: e02c829c-0e2d-44b5-9057-07714ea613a3
+                login_path: acme
+                updated_at: '2023-01-23T17:22:52.150Z'
   requestBodies:
     UpdateUser:
       description: The request schema for the update user request.
@@ -2659,9 +2805,25 @@ components:
       scheme: bearer
       bearerFormat: Token
       description: |
+        The personal access token is meant to be used as an alternative to basic-auth when accessing Konnect via APIs.
         You can generate a Personal Access Token (PAT) from the [personal access token page](https://cloud.konghq.com/global/tokens/) in the Konnect dashboard.
         The PAT token must be passed in the header of a request, for example:
-         `curl -X GET 'https://global.api.konghq.tech/v2/users/' --header 'Authorization: Bearer kpat_xgfT'`
+         `curl -X GET 'https://global.api.konghq.tech/v2/users/' --header 'Authorization: Bearer kpat_xgfT...'`
+    systemAccountAccessToken:
+      type: http
+      scheme: bearer
+      bearerFormat: Token
+      description: |
+        The system account access token is meant for automations and integrations that are not directly associated with a human identity.
+        You can generate a system account Access Token by creating a system account and then obtaining a system account access token for that account.
+        The access token must be passed in the header of a request, for example:
+         `curl -X GET 'https://global.api.konghq.tech/v2/users/' --header 'Authorization: Bearer spat_i2Ej...'`
+    konnectAccessToken:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        The Konnect access token is meant to be used by the Konnect dashboard and the decK CLI authenticate with.
   examples:
     400-request-format-is-invalid:
       value:
@@ -2864,6 +3026,8 @@ components:
         id: df120cb4-f60b-47bc-a2f8-6a28e6a3c63b
 security:
   - personalAccessToken: []
+  - systemAccountAccessToken: []
+  - konnectAccessToken: []
 tags:
   - name: IdPs
   - name: Invites
@@ -2875,3 +3039,4 @@ tags:
   - name: System Accounts - Access Tokens
   - name: System Accounts - Roles
   - name: System Accounts - Team Membership
+  - name: Me
