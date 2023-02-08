@@ -7,16 +7,10 @@ info:
     name: Kong
     url: 'https://konghq.com'
 servers:
-  - url: 'http://localhost:8000/v2'
-    description: Local
-  - url: 'https://us.api.konghq.tech/v2'
-    description: Development - US
   - url: 'https://us.api.konghq.com/v2'
-    description: Production - US
-  - url: 'https://eu.api.konghq.tech/v2'
-    description: Development - EU
+    description: US Region Base URL
   - url: 'https://eu.api.konghq.com/v2'
-    description: Production - EU
+    description: EU Region Base URL
 paths:
   '/portals/{portalId}/teams':
     get:
