@@ -4,7 +4,8 @@ const yaml = require("js-yaml");
 const mergician = require("mergician");
 const $RefParser = require("@apidevtools/json-schema-ref-parser");
 const traverse = require("traverse");
-const { transformFilterQueryParams } = require('./helpers/transformFilterQueryParams')
+const { transformFilterQueryParams } = require('./helpers/transformFilterQueryParams');
+const { tryMkdir } = require("./helpers/fs");
 
 const headers = {
   konnect: {
@@ -105,13 +106,7 @@ const headers = {
     // Write multiple files
     // @TODO: Remove unused components/tags etc
     const outputDir = `${baseDir}/output/${mode}`;
-    try {
-      await fs.mkdir(outputDir, { recursive: true });
-    } catch (e) {
-      if (e.code !== "EEXIST") {
-        throw e;
-      }
-    }
+    await tryMkdir(outputDir, { recursive: true })
     await Promise.all([
       fs.writeFile(`${outputDir}/dev.yaml`, yaml.dump(dev)),
       fs.writeFile(`${outputDir}/dev-api-docs.yaml`, yaml.dump(devApiDocs)),

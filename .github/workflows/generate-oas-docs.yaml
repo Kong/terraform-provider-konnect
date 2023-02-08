@@ -1,0 +1,37 @@
+name: Generate OAS Docs Files
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types:
+      - opened
+      - synchronize
+
+jobs:
+  generate-docs:
+    name: Generates all OAS Docs Files
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18.x"
+
+      - name: Install Dependencies
+        run: |
+          npm install
+
+      - name: Generate OAS Doc Files
+        run: |
+          npm run generate-docs
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: docs-oas-files
+          path: output/konnect/*-docs.yaml
