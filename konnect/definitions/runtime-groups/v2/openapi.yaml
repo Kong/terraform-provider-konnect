@@ -627,14 +627,24 @@ components:
         minLength: 1
         maxLength: 63
   securitySchemes:
-    accessToken:
-      type: http
-      scheme: bearer
-      bearerFormat: Token
     personalAccessToken:
       type: http
       scheme: bearer
       bearerFormat: Token
+      description: |
+        The personal access token is meant to be used as an alternative to basic-auth when accessing Konnect via APIs.
+        You can generate a Personal Access Token (PAT) from the [personal access token page](https://cloud.konghq.com/global/tokens/) in the Konnect dashboard.
+        The PAT token must be passed in the header of a request, for example:
+         `curl -X GET 'https://global.api.konghq.com/v2/users/' --header 'Authorization: Bearer kpat_xgfT...'`
+    systemAccountAccessToken:
+      type: http
+      scheme: bearer
+      bearerFormat: Token
+      description: |
+        The system account access token is meant for automations and integrations that are not directly associated with a human identity.
+        You can generate a system account Access Token by creating a system account and then obtaining a system account access token for that account.
+        The access token must be passed in the header of a request, for example:
+         `curl -X GET 'https://global.api.konghq.com/v2/users/' --header 'Authorization: Bearer spat_i2Ej...'`
   examples:
     400RequestFormatInvalidExample:
       value:
@@ -736,8 +746,8 @@ components:
         created_at: '2022-11-04T20:10:06.927Z'
         updated_at: '2022-11-04T20:10:06.927Z'
 security:
-  - accessToken: []
   - personalAccessToken: []
+  - systemAccountAccessToken: []
 tags:
   - name: Runtime Groups
 
