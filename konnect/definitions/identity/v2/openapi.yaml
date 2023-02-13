@@ -1140,6 +1140,19 @@ paths:
                 - old_password
                 - new_password
         description: ''
+  /users/me/permissions:
+    get:
+      summary: Get My Permissions
+      description: Returns the permissions for the current user
+      operationId: get-users-me-permissions
+      x-internal: true
+      security:
+        - konnectAccessToken: []
+      responses:
+        '200':
+          $ref: '#/components/responses/UserPermissions'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
   /organizations/me:
     get:
       summary: Retrieve My Organization
@@ -2209,6 +2222,37 @@ components:
                 owner_id: e02c829c-0e2d-44b5-9057-07714ea613a3
                 login_path: acme
                 updated_at: '2023-01-23T17:22:52.150Z'
+    UserPermissions:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    resource:
+                      type: string
+                    actions:
+                      type: array
+                      items:
+                        type: string
+            x-examples:
+              Example 1:
+                data:
+                  - resource: 'krn:accounts:reg/*:org/aa878768-05cb-4811-90d2-b82ef61caf44'
+                    actions:
+                      - '#root'
+          examples:
+            OrganizationAdminExample:
+              value:
+                data:
+                  - resource: 'krn:accounts:reg/*:org/aa878768-05cb-4811-90d2-b82ef61caf44'
+                    actions:
+                      - '#root'
   requestBodies:
     UpdateUser:
       description: The request schema for the update user request.
