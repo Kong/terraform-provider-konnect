@@ -1143,6 +1143,8 @@ paths:
   /users/me/permissions:
     get:
       summary: Get My Permissions
+      tags:
+        - Me
       description: Returns the permissions for the current user
       operationId: get-users-me-permissions
       x-internal: true
