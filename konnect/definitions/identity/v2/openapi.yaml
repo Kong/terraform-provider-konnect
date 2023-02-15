@@ -44,6 +44,40 @@ paths:
           $ref: '#/components/responses/RateLimited'
       tags:
         - Invites
+  /identity-provider:
+    get:
+      summary: Fetch IdP Configuration
+      operationId: get-idp-configuration
+      responses:
+        '200':
+          $ref: '#/components/responses/IdPConfiguration'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/PermissionDenied'
+      tags:
+        - IdPs
+      description: Fetch the IdP configuration.
+    parameters: []
+    patch:
+      summary: Update IdP Configuration
+      operationId: update-idp-configuration
+      responses:
+        '200':
+          $ref: '#/components/responses/IdPConfiguration'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+      description: Update the IdP configuration.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateIdPConfiguration'
+      tags:
+        - IdPs
   /identity-provider/team-mappings:
     put:
       summary: Update Team Mappings
@@ -2255,6 +2289,12 @@ components:
                   - resource: 'krn:accounts:reg/*:org/aa878768-05cb-4811-90d2-b82ef61caf44'
                     actions:
                       - '#root'
+    IdPConfiguration:
+      description: A get action response of the IdP configuration.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/IdP'
   requestBodies:
     UpdateUser:
       description: The request schema for the update user request.
@@ -2542,7 +2582,97 @@ components:
               value:
                 id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
       description: The request schema for adding a system account to a team.
+    UpdateIdPConfiguration:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              issuer:
+                type: string
+                format: uri
+                example: 'https://myidp.com/oauth2'
+              login_path:
+                type: string
+                example: myapp
+              client_id:
+                type: string
+                example: YOUR_CLIENT_ID
+              client_secret:
+                type: string
+                example: YOUR_CLIENT_SECRET
+              scopes:
+                type: array
+                default:
+                  - email
+                  - openid
+                  - profile
+                items:
+                  type: string
+                  default: openid
+              claim_mappings:
+                type: object
+                minProperties: 3
+                properties:
+                  name:
+                    type: string
+                    example: name
+                    default: name
+                  email:
+                    type: string
+                    example: email
+                    default: email
+                  groups:
+                    type: string
+                    default: groups
+                    example: custom-group-claim
+      description: The request schema for the update IdP configuration request.
   schemas:
+    IdP:
+      title: IdP Configuration
+      type: object
+      description: |-
+        The IdP object contains the configuration data for the OIDC authentication integration.
+
+        NOTE: The `openid` scope is required. Removing it could break the OIDC integration.
+      properties:
+        issuer:
+          type: string
+          format: uri
+          example: 'https://myidp.com/oauth2'
+        login_path:
+          type: string
+          example: myapp
+        client_id:
+          type: string
+          example: YOUR_CLIENT_ID
+        client_secret:
+          type: string
+          example: YOUR_CLIENT_SECRET
+        scopes:
+          type: array
+          default:
+            - email
+            - openid
+            - profile
+          items:
+            type: string
+        claim_mappings:
+          type: object
+          minProperties: 3
+          properties:
+            name:
+              type: string
+              example: name
+              default: name
+            email:
+              type: string
+              example: email
+              default: email
+            groups:
+              type: string
+              default: groups
+              example: custom-groups-claim
     User:
       title: User
       type: object
@@ -2788,7 +2918,6 @@ components:
           format: date-time
           description: Timestamp of when the system account access token was last used.
           readOnly: true
-    # Below are common schema across APIs and can be extracted to shared JSON schema.
     PaginatedMeta:
       type: object
       x-examples:
@@ -2820,9 +2949,9 @@ components:
               description: Integer representation of the amount of items returned.
     StringFieldFilter:
       x-examples:
-        example-1: 'equals-some-value'
+        example-1: equals-some-value
         example-2:
-          contains: 'some-value'
+          contains: some-value
       title: StringFieldFilter
       description: Filter a string value field either by exact match or partial contains.
       oneOf:
@@ -2835,7 +2964,7 @@ components:
             - contains
     StringFieldEqualsFilter:
       x-examples:
-        example-1: 'equals-some-value'
+        example-1: equals-some-value
       title: StringFieldEqualsFilter
       description: Filter a string value by exact match.
       type: string
