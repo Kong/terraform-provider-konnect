@@ -1116,7 +1116,7 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthenticated'
         '403':
-          description: Forbidden - Owner cannot be deleted when there are other users in the organization.
+          description: Forbidden - If there are other users in the organization or a konnectAccessToken was not provided.
       description: Deletes the user account for the user identified in the token of the request.
       tags:
         - Me
@@ -1130,6 +1130,8 @@ paths:
           description: Bad Request - Invalid Parameters
         '401':
           $ref: '#/components/responses/Unauthenticated'
+        '403':
+          description: Forbidden - If a konnectAccessToken was not provided.
       description: Updates the user account for the user identified in the token of the request.
       requestBody:
         $ref: '#/components/requestBodies/UpdateUser'
@@ -1150,7 +1152,7 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
-          description: Forbidden - If basic auth is disabled.
+          description: Forbidden - If basic auth is disabled or a konnectAccessToken was not provided.
       x-internal: true
       security:
         - konnectAccessToken: []
