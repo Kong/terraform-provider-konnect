@@ -1184,11 +1184,31 @@ paths:
       description: Returns the permissions for the current user
       operationId: get-users-me-permissions
       x-internal: true
+      parameters:
+        - schema:
+            type: object
+            properties:
+              actions:
+                $ref: '#/components/schemas/StringFieldEqualsFilter'
+              region:
+                $ref: '#/components/schemas/StringFieldEqualsFilter'
+              resource:
+                $ref: '#/components/schemas/StringFieldEqualsFilter'
+              service:
+                $ref: '#/components/schemas/StringFieldEqualsFilter'
+              top-level:
+                $ref: '#/components/schemas/BooleanFieldFilter'
+          in: query
+          name: filter
+          description: Filter permissions returned in the response.
+          required: false
       security:
         - konnectAccessToken: []
       responses:
         '200':
           $ref: '#/components/responses/UserPermissions'
+        '400':
+          $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthenticated'
   /organizations/me:
@@ -1368,6 +1388,14 @@ components:
               $ref: '#/components/examples/400-valid-uuid'
             System teams cannot be modified:
               $ref: '#/components/examples/400-systems-team-modified'
+            Unsupported filter operation:
+              value:
+                status: 400
+                title: Bad Request
+                instance: 'konnect:trace:3674017986744198214'
+                invalid_parameters:
+                  - field: '[filter][actions][contains]'
+                    reason: '[contains] is not a supported filter operation'
     Conflict:
       description: Conflict
       content:
