@@ -1148,7 +1148,7 @@ paths:
         '202':
           description: Accepted
         '400':
-          description: 'Bad Request - Password complexity, invalid params or old password is wrong.'
+          $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -1388,6 +1388,8 @@ components:
               $ref: '#/components/examples/400-valid-uuid'
             System teams cannot be modified:
               $ref: '#/components/examples/400-systems-team-modified'
+            Password Complexity:
+              $ref: '#/components/examples/400-password-complexity'
             Unsupported filter operation:
               value:
                 status: 400
@@ -3062,6 +3064,33 @@ components:
         invalid_parameters:
           - field: id
             reason: must be a valid UUID v4
+    400-password-complexity:
+      value:
+        status: 400
+        title: Bad Request
+        detail: Password does not meet complexity requirements.
+        instance: 'konnect:trace:1738820719742148545'
+        invalid_parameters:
+          - field: new_password
+            reason: 'is too short (minimum length: 8)'
+            rule: min_length
+            minimum: 8
+          - field: new_password
+            reason: 'must contain at least 1 digit'
+            rule: min_digits
+            minimum: 1
+          - field: new_password
+            reason: 'must contain at least 1 lower case character'
+            rule: min_lowercase
+            minimum: 1
+          - field: new_password
+            reason: 'must contain at least 1 upper case character'
+            rule: min_uppercase
+            minimum: 1
+          - field: new_password
+            reason: 'must contain at least 1 special character'
+            rule: min_symbols
+            minimum: 1
     400-systems-team-modified:
       value:
         status: 400
