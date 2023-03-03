@@ -10,6 +10,44 @@ servers:
   - url: 'https://global.api.konghq.com/v2'
     description: Global Base URL
 paths:
+  /audit-log-replay-job:
+    put:
+      summary: Create or replace a job to replay audit logs
+      description: |-
+        _The audit logs feature is currently in beta and is subject to change._
+
+        Creates or replaces a job to replay/re-send audit logs to an organization's webook.
+      operationId: create-audit-log-replay-job
+      x-unstable: true
+      requestBody:
+        $ref: '#/components/requestBodies/CreateAuditLogReplayJob'
+      tags: [Audit Logs]
+      responses:
+        '202':
+          $ref: '#/components/responses/AuditLogReplayJob'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+    get:
+      summary: Get Audit Log Replay Job
+      description: |-
+        _The audit logs feature is currently in beta and is subject to change._
+
+        Returns the audit log replay job's configuration and status.
+      operationId: get-audit-log-replay-job
+      x-unstable: true
+      tags: [Audit Logs]
+      responses:
+        '200':
+          $ref: '#/components/responses/AuditLogReplayJob'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+
   /audit-log-webhook:
     put:
       summary: Update Audit Log Webhook
@@ -50,6 +88,36 @@ paths:
 
 components:
   responses:
+    AuditLogReplayJob:
+      description: Get response for an audit log replay job
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              start_at:
+                type: string
+                format: date-time
+                example: '2017-07-21T17:32:28Z'
+                description: The start of a date-time range.
+              end_at:
+                type: string
+                format: date-time
+                example: '2017-07-21T17:32:28Z'
+                description: The end of a date-time range.
+              region:
+                type: string
+                example: us
+                description: The konnect region.
+                enum: [us, eu]
+              status:
+                type: string
+                enum: [accepted, canceled, completed, running, failed]
+              created_at:
+                type: string
+                description: Timestamp of when the audit log replay job was created.
+                format: date-time
+                readOnly: true
     AuditLogWebhook:
       description: Get response for audit log webhook
       content:
@@ -211,6 +279,38 @@ components:
             Unauthorized:
               $ref: '#/components/examples/403-permission-denied'
   requestBodies:
+    CreateAuditLogReplayJob:
+      description: The request schema to create/replace an audit log replay job.
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - start
+              - end
+              - region
+            properties:
+              start_at:
+                type: string
+                format: date-time
+                description: |- 
+                  The start of a date-time range in RFC3339 format e.g. 2017-07-21T17:32:28Z.
+                  Within the last 7 days.
+              end_at:
+                type: string
+                format: date-time
+                description: |-
+                  The end of a date-time range in RFC3339 format e.g. 2017-07-21T17:32:28Z.
+                  Within the last 7 days.
+              region:
+                type: string
+                example: us
+                description: The konnect region.
+                enum: [us, eu]
+              cancel:
+                type: boolean
+                description: Cancel an existing job with status accepted or running.
+
     UpdateAuditLogWebhook:
       description: The request schema to update an audit log webhook.
       content:
@@ -342,4 +442,4 @@ security:
   - personalAccessToken: []
   - systemAccountAccessToken: []
 tags:
-  - name: Audit Logs - Webhook
+  - name: Audit Logs
