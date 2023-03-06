@@ -49,17 +49,58 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 
   /audit-log-webhook:
-    put:
-      summary: Update Audit Log Webhook
+    post:
+      summary: Create Audit Log Webhook
       description: |-
         _The audit logs feature is currently in beta and is subject to change._
 
         Sets configuration for a webhook to receive audit logs.
+      operationId: create-audit-log-webhook
+      x-unstable: true
+      requestBody:
+        $ref: '#/components/requestBodies/CreateAuditLogWebhook'
+      tags: [Audit Logs]
+      responses:
+        '200':
+          $ref: '#/components/responses/AuditLogWebhook'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+    patch:
+      summary: Update Audit Log Webhook
+      description: |-
+        _The audit logs feature is currently in beta and is subject to change._
+
+        Updates the configuration for a webhook to receive audit logs.
       operationId: update-audit-log-webhook
       x-unstable: true
       requestBody:
         $ref: '#/components/requestBodies/UpdateAuditLogWebhook'
-      tags: [Audit Logs - Webhook]
+      tags: [Audit Logs]
+      responses:
+        '200':
+          $ref: '#/components/responses/AuditLogWebhook'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+    put:
+      deprecated: true
+      summary: Replace Audit Log Webhook
+      description: |-
+        _The audit logs feature is currently in beta and is subject to change._
+
+        Sets configuration for a webhook to receive audit logs.
+      operationId: replace-audit-log-webhook
+      x-unstable: true
+      requestBody:
+        $ref: '#/components/requestBodies/CreateAuditLogWebhook'
+      tags: [Audit Logs]
       responses:
         '200':
           $ref: '#/components/responses/AuditLogWebhook'
@@ -77,7 +118,7 @@ paths:
         Returns configuration for the audit log webhook.
       operationId: get-audit-log-webhook
       x-unstable: true
-      tags: [Audit Logs - Webhook]
+      tags: [Audit Logs]
       responses:
         '200':
           $ref: '#/components/responses/AuditLogWebhook'
@@ -310,9 +351,8 @@ components:
               cancel:
                 type: boolean
                 description: Cancel an existing job with status accepted or running.
-
-    UpdateAuditLogWebhook:
-      description: The request schema to update an audit log webhook.
+    CreateAuditLogWebhook:
+      description: The request schema to create or replace an audit log webhook.
       content:
         application/json:
           schema:
@@ -336,8 +376,30 @@ components:
 
           examples:
             Example Request Body:
-              $ref: '#/components/examples/Update-Audit-Log-Webhook'
+              $ref: '#/components/examples/Create-Audit-Log-Webhook'
+    UpdateAuditLogWebhook:
+      description: The request schema to modify an audit log webhook.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              endpoint:
+                type: string
+                example: 'https://example.com/audit-logs'
+                description: The endpoint that will receive audit log messages.
+              authorization:
+                type: string
+                example: 'Bearer sometoken'
+                description: The value to include in the `Authorization` header when sending audit logs
+              enabled:
+                type: boolean
+                example: true
+                description: Indicates if the data should be sent to the webhook.
 
+          examples:
+            Example Request Body:
+              $ref: '#/components/examples/Update-Audit-Log-Webhook'
   securitySchemes:
     personalAccessToken:
       type: http
@@ -427,11 +489,14 @@ components:
         title: Unauthenticated
         instance: 'konnect:trace:952172606039454040'
         detail: A valid token is required
-    Update-Audit-Log-Webhook:
+    Create-Audit-Log-Webhook:
       value:
         endpoint: https://example.com/audit-log
         authorization: 'Bearer sometoken'
         enabled: true
+    Update-Audit-Log-Webhook:
+      value:
+        enabled: false
     Get-Audit-Log-Webhook:
       value:
         endpoint: https://example.com/audit-log
