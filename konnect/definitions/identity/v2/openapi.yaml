@@ -1196,7 +1196,7 @@ paths:
                 $ref: '#/components/schemas/StringFieldEqualsFilter'
               service:
                 $ref: '#/components/schemas/StringFieldEqualsFilter'
-              top-level:
+              top_level:
                 $ref: '#/components/schemas/BooleanFieldFilter'
           in: query
           name: filter
