@@ -130,6 +130,34 @@ paths:
         '403':
           $ref: '#/components/responses/Unauthorized'
 
+  /authentication-settings:
+    get:
+      summary: Get the organization's authentication settings
+      description: Returns authentication configuration for the current organization.
+      operationId: get-authentication-settings
+      x-unstable: false
+      tags: [Authentication Settings]
+      responses:
+        '200':
+          $ref: '#/components/responses/AuthenticationSettings'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+    patch:
+      summary: Updates the organization's authentication settings
+      description: Returns updated authentication configuration for the current organization.
+      operationId: update-authentication-settings
+      x-unstable: false
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateAuthenticationSettings'
+      tags: [Authentication Settings]
+      responses:
+        '200':
+          $ref: '#/components/responses/AuthenticationSettings'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+
 components:
   responses:
     AuditLogReplayJob:
@@ -176,6 +204,25 @@ components:
           examples:
             Get Audit Log Webhook:
               $ref: '#/components/examples/Get-Audit-Log-Webhook'
+    AuthenticationSettings:
+      description: Response for authentication settings endpoint
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              basic_auth_enabled:
+                type: boolean
+                example: true
+                description: The organization has basic auth enabled.
+              oidc_auth_enabled:
+                type: boolean
+                example: false
+                description: The organization has OIDC disabled.
+          examples:
+            Get Authorization Settings:
+              $ref: '#/components/examples/Get-Authentication-Settings'
+      
     BadRequest:
       description: Bad Request
       content:
@@ -419,6 +466,25 @@ components:
           examples:
             Example Request Body:
               $ref: '#/components/examples/Update-Audit-Log-Webhook'
+    UpdateAuthenticationSettings:
+      description: The request schema to update an organization's authentication settings.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              basic_auth_enabled:
+                type: boolean
+                example: true
+                description: The organization has basic auth enabled.
+              oidc_auth_enabled:
+                type: boolean
+                example: false
+                description: The organization has OIDC disabled.
+
+          examples:
+            Example Request Body:
+              $ref: '#/components/examples/Update-Authentication-Settings'
   securitySchemes:
     personalAccessToken:
       type: http
@@ -527,6 +593,14 @@ components:
         endpoint: https://example.com/audit-log
         authorization: 'Bearer sometoken'
         enabled: true
+    Get-Authentication-Settings:
+      value:
+        oidc_auth_enabled: true
+        basic_auth_enabled: false
+    Update-Authentication-Settings:
+      value:
+        oidc_auth_enabled: false
+        basic_auth_enabled: true
 
 security:
   - personalAccessToken: []
