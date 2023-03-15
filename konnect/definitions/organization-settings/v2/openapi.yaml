@@ -7,8 +7,10 @@ info:
     name: Kong
     url: 'https://konghq.com'
 servers:
-  - url: 'https://global.api.konghq.com/v2'
-    description: Global Base URL
+  - url: 'https://us.api.konghq.com/v2'
+    description: US URL
+  - url: 'https://eu.api.konghq.com/v2'
+    description: EU URL
 paths:
   /audit-log-replay-job:
     put:
@@ -31,6 +33,8 @@ paths:
           $ref: '#/components/responses/Unauthenticated'
         '403':
           $ref: '#/components/responses/Unauthorized'
+        '409':
+          $ref: '#/components/responses/Conflict'
     get:
       summary: Get Audit Log Replay Job
       description: |-
@@ -47,7 +51,6 @@ paths:
           $ref: '#/components/responses/Unauthenticated'
         '403':
           $ref: '#/components/responses/Unauthorized'
-
   /audit-log-webhook:
     post:
       summary: Create Audit Log Webhook
@@ -146,14 +149,10 @@ components:
                 format: date-time
                 example: '2017-07-21T17:32:28Z'
                 description: The end of a date-time range.
-              region:
-                type: string
-                example: us
-                description: The konnect region.
-                enum: [us, eu]
               status:
                 type: string
-                enum: [accepted, canceled, completed, running, failed]
+                enum: [accepted, canceled, canceling, completed, failed, running, pending]
+                readOnly: true
               created_at:
                 type: string
                 description: Timestamp of when the audit log replay job was created.
@@ -216,6 +215,33 @@ components:
               $ref: '#/components/examples/400-endpoint-cannot-be-blank'
             Endpoint Must be a valid URL:
               $ref: '#/components/examples/400-endpoint-must-be-valid-url'
+    Conflict:
+      description: Conflict
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            description: The error object
+            properties:
+              status:
+                type: integer
+                description: The HTTP response code
+                example: 409
+              title:
+                type: string
+                example: Resource Conflict
+                description: The Error response
+              instance:
+                type: string
+                description: The Konnect traceback ID.
+                example: 'konnect:trace:3674017986744198214'
+              detail:
+                type: string
+                description: Detailed explanation of the error response.
+                example: A replay job is currently running
+          examples:
+            Job Running:
+              $ref: '#/components/examples/409-job-running'
     PermissionDenied:
       description: Permission denied
       content:
@@ -329,7 +355,6 @@ components:
             required:
               - start
               - end
-              - region
             properties:
               start_at:
                 type: string
@@ -343,11 +368,6 @@ components:
                 description: |-
                   The end of a date-time range in RFC3339 format e.g. 2017-07-21T17:32:28Z.
                   Within the last 7 days.
-              region:
-                type: string
-                example: us
-                description: The konnect region.
-                enum: [us, eu]
               cancel:
                 type: boolean
                 description: Cancel an existing job with status accepted or running.
@@ -396,7 +416,6 @@ components:
                 type: boolean
                 example: true
                 description: Indicates if the data should be sent to the webhook.
-
           examples:
             Example Request Body:
               $ref: '#/components/examples/Update-Audit-Log-Webhook'
@@ -477,6 +496,12 @@ components:
         title: Invalid Permissions
         detail: 'You must have the [administrator] role to perform this action'
         instance: 'konnect:trace:6c1ef33ae5bce33634d7d7d695c7f203'
+    409-job-running:
+      value:
+        status: 409
+        title: Resource Conflict
+        instance: 'konnect:trace:6644808935508571943'
+        detail: A replay job is currently running
     429-rate-limited:
       value:
         status: 429
