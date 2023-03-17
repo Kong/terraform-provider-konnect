@@ -2680,9 +2680,6 @@ components:
         client_id:
           type: string
           example: YOUR_CLIENT_ID
-        client_secret:
-          type: string
-          example: YOUR_CLIENT_SECRET
         scopes:
           type: array
           default:
