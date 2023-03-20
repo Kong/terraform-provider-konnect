@@ -201,6 +201,12 @@ components:
                 type: boolean
                 example: true
                 description: Indicates whether audit data should be sent to the webhook.
+              log_format:
+                type: string
+                example: cef
+                enum: [cef, json]
+                description: The output format of each log messages.
+                default: cef
           examples:
             Get Audit Log Webhook:
               $ref: '#/components/examples/Get-Audit-Log-Webhook'
@@ -440,7 +446,12 @@ components:
                 type: boolean
                 example: true
                 description: Indicates if the data should be sent to the webhook.
-
+              log_format:
+                type: string
+                example: cef
+                enum: [cef, json]
+                description: The output format of each log messages.
+                default: cef
           examples:
             Example Request Body:
               $ref: '#/components/examples/Create-Audit-Log-Webhook'
@@ -463,6 +474,12 @@ components:
                 type: boolean
                 example: true
                 description: Indicates if the data should be sent to the webhook.
+              log_format:
+                type: string
+                example: cef
+                enum: [cef, json]
+                description: The output format of each log messages.
+                default: cef
           examples:
             Example Request Body:
               $ref: '#/components/examples/Update-Audit-Log-Webhook'
@@ -585,6 +602,7 @@ components:
         endpoint: https://example.com/audit-log
         authorization: 'Bearer sometoken'
         enabled: true
+        log_format: json
     Update-Audit-Log-Webhook:
       value:
         enabled: false
@@ -593,6 +611,7 @@ components:
         endpoint: https://example.com/audit-log
         authorization: 'Bearer sometoken'
         enabled: true
+        log_format: cef
     Get-Authentication-Settings:
       value:
         oidc_auth_enabled: true
