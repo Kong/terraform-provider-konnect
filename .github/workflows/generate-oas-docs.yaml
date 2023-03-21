@@ -31,6 +31,10 @@ jobs:
         run: |
           npm run generate-docs
 
+      - name: Generate combined OAS Files
+        run: |
+          node tools/generate-sdk-openapi-files.js
+
       - uses: actions/upload-artifact@v3
         with:
           name: docs-oas-files
