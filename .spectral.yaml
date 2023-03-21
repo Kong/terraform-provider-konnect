@@ -282,3 +282,8 @@ overrides:
     rules:
       paths-not-include-api: "off"
       oas3-api-servers: "off"
+  - files:
+      - "konnect/definitions/identity/v2/openapi.yaml"
+      - "konnect/definitions/runtime-groups-config/v2/openapi.yaml"
+    rules:
+      errors-delete-contains-404-aip-135: "off"
