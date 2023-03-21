@@ -277,3 +277,8 @@ overrides:
     rules:
       errors-require-type-aip-193: "off"
       validation-error-invalid-parameters-aip-193: "off"
+  - files:
+      - "portal/definitions/**/*"
+    rules:
+      paths-not-include-api: "off"
+      oas3-api-servers: "off"

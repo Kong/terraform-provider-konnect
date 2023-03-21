@@ -1,0 +1,165 @@
+openapi: 3.0.0
+info:
+  title: Portal API
+  version: 2.0.0
+  description: The API for Konnect Portal.
+  contact:
+    name: Kong
+    url: https://cloud.konghq.com
+paths:
+  /api/v2/portal/appearance:
+    get:
+      operationId: get-portal-appearance
+      summary: portal appearance
+      description: appearance of the portal
+      responses:
+        '200':
+          $ref: '#/components/responses/RetrievePortalAppearanceResponse'
+      tags:
+        - portal
+  /api/v2/portal/context:
+    get:
+      operationId: get-portal-context
+      summary: get portal context
+      description: return the portal context
+      responses:
+        '200':
+          $ref: '#/components/responses/RetrievePortalContextResponse'
+      tags:
+        - portal
+  /api/v2/portal/stylesheet/logo:
+    get:
+      operationId: get-portal-logo
+      summary: portal logo
+      description: Logo of the developer portal
+      responses:
+        '200':
+          $ref: '#/components/responses/RetrievePortalLogoResponse'
+      tags:
+        - portal
+  /api/v2/portal/stylesheet/catalog-cover:
+    get:
+      operationId: get-portal-catalog-cover
+      summary: catalog cover
+      description: Cover banner for the developer portal
+      responses:
+        '200':
+          $ref: '#/components/responses/RetrievePortalCoverResponse'
+      tags:
+        - portal
+components:
+  responses:
+    RetrievePortalLogoResponse:
+      description: Logo of the portal. Can be either png or jpg
+      content:
+        image/png:
+          schema:
+            type: string
+            format: binary
+        image/jpg:
+          schema:
+            type: string
+            format: binary
+    RetrievePortalCoverResponse:
+      description: Cover of the portal. Can be either png or jpg
+      content:
+        image/png:
+          schema:
+            type: string
+            format: binary
+        image/jpg:
+          schema:
+            type: string
+            format: binary
+    RetrievePortalAppearanceResponse:
+      description: portal appearance
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalAppearance'
+    RetrievePortalContextResponse:
+      description: portal context
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalContext'
+  schemas:
+    PortalAppearance:
+      title: Portal Appearance
+      description: the portal appearance
+      type: object
+      additionalProperties: false
+      properties:
+        variables:
+          type: object
+          properties:
+            catalog:
+              type: object
+              properties:
+                logo:
+                  type: object
+                  properties:
+                    url:
+                      type: string
+                cover:
+                  type: object
+                  properties:
+                    url:
+                      type: string
+                primary_header:
+                  type: object
+                  properties:
+                    text:
+                      type: string
+                welcome_message:
+                  type: object
+                  properties:
+                    text:
+                      type: string
+        stylesheets:
+          type: object
+          properties:
+            global:
+              type: object
+              properties:
+                main:
+                  type: object
+                  properties:
+                    data:
+                      type: object
+    PortalContext:
+      title: Portal Context
+      description: describe the portal execution context
+      type: object
+      additionalProperties: false
+      properties:
+        portal_id:
+          type: string
+        org_id:
+          type: string
+        featureset_id:
+          type: string
+        basic_auth_enabled:
+          type: boolean
+        is_public:
+          type: boolean
+        rbac_enabled:
+          type: boolean
+          description: Is the portal protected with role base access
+        is_dcr:
+          type: boolean
+          description: Is the portal using DCR application registration
+        oidc_auth_enabled:
+          type: boolean
+      required:
+        - portal_id
+        - org_id
+        - is_public
+        - featureset_id
+        - basic_auth_enabled
+        - rbac_enabled
+        - is_dcr
+        - oidc_auth_enabled
+tags:
+  - name: portal
+    description: Portal API

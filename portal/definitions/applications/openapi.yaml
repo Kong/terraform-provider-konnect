@@ -1,0 +1,646 @@
+openapi: 3.0.0
+info:
+  title: Portal developer application API
+  version: 2.0.0
+  description: |
+    The API for Konnect Portal developer applications. If the portal is public
+    all of the described endpoints will return a 404 error.
+  contact:
+    name: Kong
+    url: 'https://cloud.konghq.com'
+paths:
+  /api/v2/applications:
+    get:
+      summary: Get many applications
+      description: This endpoint allows the developer to list applications
+      operationId: get-many-applications
+      parameters:
+        - $ref: '#/components/parameters/Page'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetManyApplications'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+      tags:
+        - applications
+    post:
+      summary: Create Application
+      description: This endpoint allows the developer to create an application
+      operationId: create-application
+      requestBody:
+        $ref: '#/components/requestBodies/CreateApplication'
+      responses:
+        '201':
+          $ref: '#/components/responses/ApplicationCreation'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      tags:
+        - applications
+  /api/v2/applications/{applicationId}:
+    get:
+      summary: Get one Application
+      description: This endpoint allows the developer to get an application
+      operationId: get-one-application
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetApplication'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - applications
+    delete:
+      summary: Delete Application
+      description: This endpoint allows the developer to delete an application they own
+      operationId: delete-application
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+      responses:
+        '204':
+          description: The application has been deleted
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      tags:
+        - applications
+    put:
+      summary: Update Application
+      description: This endpoint allows the developer to update an application they own
+      operationId: update-application
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateApplication'
+      responses:
+        '200':
+          $ref: '#/components/responses/ApplicationUpdate'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      tags:
+        - applications
+  /api/v2/applications/{applicationId}/refresh-token:
+    post:
+      summary: refresh token
+      description: This endpoint allows the developer to reset the client secret for an application they own
+      operationId: refresh-application-token
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+      responses:
+        '201':
+          $ref: '#/components/responses/RefreshToken'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      tags:
+        - applications
+        - credentials
+  /api/v2/applications/{applicationId}/credentials:
+    get:
+      summary: Get Many credentials
+      description: This endpoint allows the developer to list the credentials for an application they own
+      operationId: get-many-credentials
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+        - $ref: '#/components/parameters/Page'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetCredentials'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      tags:
+        - credentials
+    post:
+      summary: Post Credential
+      description: This endpoint allows the developer to create a credential for an application they own
+      operationId: create-credential
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+      requestBody:
+        $ref: '#/components/requestBodies/CreateCredential'
+      responses:
+        '201':
+          $ref: '#/components/responses/CredentialCreation'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      tags:
+        - credentials
+  /api/v2/applications/{applicationId}/credentials/{credentialId}:
+    put:
+      summary: Update Credential
+      description: This endpoint allows the developer to update a credential for an application they own
+      operationId: update-credential
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+        - $ref: '#/components/parameters/CredentialId'
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateCredential'
+      responses:
+        '200':
+          description: credential properly updated
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      tags:
+        - credentials
+    delete:
+      summary: Delete Credential
+      description: This endpoint allows the developer to delete a credential for an application they own
+      operationId: delete-credential
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+        - $ref: '#/components/parameters/CredentialId'
+      responses:
+        '204':
+          description: credential properly deleted
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      tags:
+        - credentials
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  parameters:
+    ApplicationId:
+      name: applicationId
+      in: path
+      required: true
+      description: Id of the targeted application
+      schema:
+        type: string
+        format: uuid
+    CredentialId:
+      name: credentialId
+      in: path
+      required: true
+      description: Id of the targeted credential
+      schema:
+        type: string
+        format: uuid
+    Page:
+      name: page
+      description: Determines which page of search results to retrieve.
+      required: false
+      in: query
+      schema:
+        $ref: '#/components/schemas/PageParameters'
+  requestBodies:
+    CreateApplication:
+      description: Create an application
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateApplicationPayload'
+    UpdateApplication:
+      description: Update an application
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateApplicationPayload'
+    CreateCredential:
+      description: Create a credential
+      required: false
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateCredentialPayload'
+    UpdateCredential:
+      description: Update a credential
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateCredentialPayload'
+  responses:
+    GetManyApplications:
+      description: Get applications response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GetManyApplicationsResponse'
+    GetApplication:
+      description: Get application response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GetApplicationResponse'
+    RefreshToken:
+      description: Refresh token response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RefreshTokenResponse'
+    GetCredentials:
+      description: Get credentials response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GetCredentialsResponse'
+    CredentialCreation:
+      description: Credential Creation success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CredentialCreationResponse'
+    ApplicationCreation:
+      description: Application Creation success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApplicationCreationResponse'
+    ApplicationUpdate:
+      description: Application Update success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApplicationUpdateResponse'
+    Unauthenticated:
+      description: Unauthenticated
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Conflict:
+      description: Conflict
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Bad Request
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Forbidden
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    TooManyRequests:
+      description: Too Many Requests
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Not Found
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    InternalServerError:
+      description: Internal Server Error
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    PaginatedMeta:
+      type: object
+      additionalProperties: false
+      title: PaginatedMeta
+      description: Returns pagination information
+      properties:
+        page:
+          type: object
+          description: Contains pagination query parameters and the total number of objects returned.
+          properties:
+            number:
+              type: integer
+              example: 2
+              description: Specifies the number of objects returned per page.
+            size:
+              type: integer
+              example: 10
+              maximum: 100
+              description: Specifies the size of the page.
+            total:
+              type: integer
+              example: 100
+              description: Integer representation of the amount of items returned.
+    PageParameters:
+      additionalProperties: false
+      title: 'PageParameters'
+      type: object
+      properties:
+        size:
+          type: integer
+          example: 10
+        number:
+          type: integer
+          example: 2
+    CreateCredentialPayload:
+      additionalProperties: false
+      type: object
+      properties:
+        display_name:
+          type: string
+          maxLength: 255
+    UpdateCredentialPayload:
+      additionalProperties: false
+      type: object
+      required:
+        - display_name
+      properties:
+        display_name:
+          type: string
+          maxLength: 255
+    GetManyApplicationsResponse:
+      additionalProperties: false
+      type: object
+      required:
+        - data
+        - meta
+      properties:
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/GetApplicationResponse'
+    GetApplicationResponse:
+      additionalProperties: false
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        reference_id:
+          type: string
+        description:
+          type: string
+        redirect_uri:
+          type: string
+        is_dcr:
+          type: boolean
+      required:
+        - id
+        - name
+        - reference_id
+        - description
+        - is_dcr
+    GetCredentialsResponse:
+      additionalProperties: false
+      type: object
+      required:
+        - data
+        - meta
+      properties:
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              display_name:
+                type: string
+            required:
+              - id
+              - display_name
+    CredentialCreationResponse:
+      additionalProperties: false
+      type: object
+      properties:
+        credential:
+          type: string
+        id:
+          type: string
+        display_name:
+          type: string
+      required:
+        - credential
+        - id
+        - display_name
+    RefreshTokenResponse:
+      additionalProperties: false
+      type: object
+      title: Refresh token response
+      description: Refresh token response
+      required:
+        - client_id
+        - client_secret
+      properties:
+        client_id:
+          type: string
+        client_secret:
+          type: string
+    CreateApplicationPayload:
+      additionalProperties: false
+      type: object
+      title: CreateApplicationPayload
+      description: an application payload
+      required:
+        - name
+        - reference_id
+      properties:
+        name:
+          type: string
+          maxLength: 255
+        reference_id:
+          type: string
+          maxLength: 255
+        redirect_uri:
+          type: string
+          format: uri
+        description:
+          type: string
+          maxLength: 255
+    ApplicationCreationResponse:
+      additionalProperties: false
+      type: object
+      title: ApplicationCreationResponse
+      description: Application creation response payload
+      required:
+        - name
+        - reference_id
+        - description
+        - is_dcr
+      properties:
+        name:
+          type: string
+        reference_id:
+          type: string
+        description:
+          type: string
+        redirect_uri:
+          type: string
+        is_dcr:
+          type: boolean
+        credentials:
+          type: object
+          required:
+            - client_id
+            - client_secret
+          properties:
+            client_id:
+              type: string
+            client_secret:
+              type: string
+    UpdateApplicationPayload:
+      additionalProperties: false
+      type: object
+      title: UpdateApplicationPayload
+      description: Payload required to update an application
+      properties:
+        name:
+          type: string
+        reference_id:
+          type: string
+        description:
+          type: string
+        redirect_uri:
+          type: string
+    ApplicationUpdateResponse:
+      additionalProperties: false
+      type: object
+      title: ApplicationUpdateResponse
+      description: Application update response payload
+      required:
+        - name
+        - reference_id
+        - description
+        - is_dcr
+      properties:
+        name:
+          type: string
+        reference_id:
+          type: string
+        description:
+          type: string
+        redirect_uri:
+          type: string
+        is_dcr:
+          type: boolean
+    Error:
+      type: object
+      title: Error
+      description: standard error
+      x-examples:
+        Example 1:
+          status: 404
+          title: Not Found
+          type: https://kongapi.info/konnect/not-found
+          instance: 'portal:trace:2287285207635123011'
+          detail: The requested document was not found
+      required:
+        - status
+        - title
+        - instance
+      properties:
+        status:
+          type: integer
+          description: The HTTP status code.
+          example: 404
+        title:
+          type: string
+          description: The error response code.
+          example: Not Found
+        type:
+          type: string
+          description: The error type.
+          example: Not Found
+        instance:
+          type: string
+          example: 'portal:trace:2287285207635123011'
+          description: The portal traceback code
+        invalid_parameters:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: The name of the invalid parameter.
+              reason:
+                type: string
+                description: The reason the parameter is invalid.
+              field:
+                type: string
+                description: The field that caused the error.
+                example: name
+              rule:
+                type: string
+                description: The rule that caused the error.
+                example: required
+          description: An array of invalid parameters.
+        detail:
+          type: string
+          example: The requested team was not found
+          description: Details about the error.
+security:
+  - bearerAuth: []
+tags:
+  - name: applications
+  - name: credentials

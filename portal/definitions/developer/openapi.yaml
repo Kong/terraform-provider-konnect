@@ -1,0 +1,162 @@
+openapi: 3.0.0
+info:
+  title: Portal Developer API
+  version: 2.0.0
+  description: The API for Konnect Portal Developers.
+  contact:
+    name: Kong
+    url: 'https://cloud.konghq.com'
+paths:
+  /api/v2/developer:
+    post:
+      operationId: register
+      summary: Register
+      description: Register to the developer portal
+      requestBody:
+        description: Developer registration
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterPayload'
+      responses:
+        '201':
+          description: the developer has been properly registered.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      tags:
+        - developer
+  /api/v2/developer/password-reset:
+    post:
+      operationId: reset-password
+      summary: Password Reset
+      description: |
+        Starts the password reset flow for the desired account. An email
+        will be sent to the email address to initiate the password reset flow.
+      requestBody:
+        description: Developer registration
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResetPasswordPayload'
+      responses:
+        '200':
+          description: the password reset flow has been initiated.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      tags:
+        - developer
+components:
+  responses:
+    InternalServerError:
+      description: Internal Server Error
+      content:
+        application/problem+json:
+          schema:
+            title: 'InternalServerError'
+            type: object
+            description: The error response object.
+            properties:
+              status:
+                type: integer
+                description: The HTTP status code.
+                example: 500
+                enum:
+                  - 500
+              title:
+                type: string
+                description: The error response code.
+                example: Internal Server Error
+              instance:
+                type: string
+                example: 'konnect:trace:2287285207635123011'
+                description: The Konnect traceback code
+              details:
+                type: string
+                description: Details about the error.
+            required:
+              - status
+              - title
+    BadRequest:
+      description: Bad Request
+      content:
+        application/problem+json:
+          schema:
+            title: 'BadRequestError'
+            type: object
+            description: The error object
+            properties:
+              status:
+                type: integer
+                description: The HTTP response code
+                example: 400
+                enum:
+                  - 400
+              title:
+                type: string
+                example: Bad Request
+                description: The Error response
+              instance:
+                type: string
+                description: The portal traceback ID.
+                example: 'konnect:trace:3674017986744198214'
+              # used on failed validation in requests, not for failing business-logic requirements
+              invalid_parameters:
+                type: array
+                description: An array of objects that contains information related to the error response.
+                items:
+                  type: object
+                  additionalProperties: true
+                  properties:
+                    rule:
+                      type: string
+                    field:
+                      type: string
+                    reason:
+                      type: string
+                required:
+                  - field
+                  - reason
+            required:
+              - status
+              - title
+  schemas:
+    RegisterPayload:
+      title: register payload
+      description: |
+        Payload required to be sent to register a developer to the
+        portal.
+      type: object
+      additionalProperties: false
+      properties:
+        email:
+          type: string
+          format: email
+          example: developer@konghq.com
+        full_name:
+          type: string
+          minLength: 1
+          maxLength: 256
+          example: Jane Doe
+      required:
+        - full_name
+        - email
+    ResetPasswordPayload:
+      title: reset password payload
+      description: |
+        Payload required to start the reset password flow
+      type: object
+      additionalProperties: false
+      properties:
+        email:
+          type: string
+          format: email
+          example: developer@konghq.com
+      required:
+        - email
+tags:
+  - name: developer
+    description: Portal Developer API

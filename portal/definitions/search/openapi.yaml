@@ -1,0 +1,352 @@
+openapi: 3.0.0
+info:
+  title: Portal API
+  version: 2.0.0
+  description: The API for Konnect Portal.
+  contact:
+    name: Kong
+    url: 'https://cloud.konghq.com'
+paths:
+  /api/v2/search/{indices}:
+    get:
+      summary: Search Portal Entities
+      operationId: search-portal-entities
+      description: Returns paginated search results from the specified entities with the given search parameters.
+      responses:
+        '200':
+          $ref: '#/components/responses/SearchResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+      parameters:
+        - $ref: '#/components/parameters/Search'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/SearchIndices'
+      tags:
+        - Search
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+  parameters:
+    Page:
+      name: page
+      description: Determines which page of search results to retrieve.
+      required: false
+      in: query
+      schema:
+        $ref: '#/components/schemas/PageParameters'
+    Search:
+      name: search
+      description: Determines how to filter search results
+      required: false
+      in: query
+      schema:
+        $ref: '#/components/schemas/SearchParameters'
+    SearchIndices:
+      name: indices
+      description: Determines which entity sets to search
+      required: true
+      in: path
+      schema:
+        $ref: '#/components/schemas/SearchIndicesParameters'
+  responses:
+    SearchResponse:
+      description: Search Results
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SearchResults'
+          examples:
+            Search Response Example:
+              $ref: '#/components/examples/SearchResponseExample'
+    BadRequest:
+      description: Bad Request
+      content:
+        application/problem+json:
+          schema:
+            title: 'BadRequestError'
+            type: object
+            description: The error object
+            properties:
+              status:
+                type: integer
+                description: The HTTP response code
+                example: 400
+                enum:
+                  - 400
+              title:
+                type: string
+                example: Bad Request
+                description: The Error response
+              instance:
+                type: string
+                description: The Konnect traceback ID.
+                example: 'konnect:trace:3674017986744198214'
+              detail:
+                type: string
+                description: Information about the error response.
+                example: Validation
+              invalid_parameters:
+                type: array
+                description: An array of objects that contains information related to the error response.
+                items:
+                  type: object
+                  additionalProperties: true
+                  properties:
+                    rule:
+                      type: string
+                    field:
+                      type: string
+                    reason:
+                      type: string
+                required:
+                  - field
+                  - reason
+            required:
+              - status
+              - title
+    Unauthenticated:
+      description: Unauthenticated
+      content:
+        application/problem+json:
+          schema:
+            title: 'UnauthenticatedError'
+            type: object
+            description: The error response object.
+            properties:
+              status:
+                type: integer
+                example: 401
+                description: The HTTP status code.
+                enum:
+                  - 401
+              title:
+                type: string
+                description: The Error Response.
+                example: Unauthenticated
+              instance:
+                type: string
+                description: The Konnect traceback code.
+                example: 'konnect:trace:952172606039454040'
+              detail:
+                type: string
+                description: Details about the error response.
+                example: A valid session is required
+              type:
+                type: string
+                description: The type of error.
+                example: unauthenticated
+            required:
+              - status
+              - title
+  schemas:
+    PaginatedMeta:
+      type: object
+      title: PaginatedMeta
+      description: Returns pagination information
+      properties:
+        page:
+          type: object
+          description: Contains pagination query parameters and the total number of objects returned.
+          properties:
+            number:
+              type: integer
+              example: 2
+              description: Specifies the number of objects returned per page.
+            size:
+              type: integer
+              example: 10
+              maximum: 100
+              description: Specifies the size of the page.
+            total:
+              type: integer
+              example: 100
+              description: Integer representation of the amount of items returned.
+    SearchResults:
+      title: 'SearchResults'
+      type: object
+      required:
+        - data
+        - meta
+      properties:
+        data:
+          type: array
+          description: The paginated data items that matched the search query
+          items:
+            type: object
+            additionalProperties: false
+            properties:
+              index:
+                $ref: '#/components/schemas/SearchIndicesParameters'
+              source:
+                $ref: '#/components/schemas/ServiceCatalogIndexSource'
+            required:
+              - index
+              - source
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
+    ServiceCatalogIndexSource:
+      title: 'ServiceCatalogIndexSource'
+      type: object
+      required:
+        - id
+        - created_at
+        - updated_at
+        - name
+        # - labels # not defined in the schema
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 4f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+          description: The entity ID.
+          readOnly: true
+        name:
+          type: string
+          example: Test Service
+          description: the name of the service
+          readOnly: true
+        display_name:
+          type: string
+          example: Test Service
+          description: the name of the service
+          readOnly: true
+        description:
+          type: string
+          example: Test Service
+          description: the name of the service
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          description: An ISO-8604 timestamp representation of entity creation date.
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          description: An ISO-8604 timestamp representation of entity update date.
+          readOnly: true
+        versions:
+          type: array
+          items:
+            type: object
+            required:
+              - id
+              - created_at
+              - updated_at
+              - version
+              - publish_status
+              - deprecated
+              - tracking_id
+            properties:
+              id:
+                type: string
+                format: uuid
+                example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+                description: The entity ID.
+                readOnly: true
+              created_at:
+                type: string
+                format: date-time
+                example: '2022-11-04T20:10:06.927Z'
+                description: An ISO-8604 timestamp representation of entity creation date.
+                readOnly: true
+              updated_at:
+                type: string
+                format: date-time
+                example: '2022-11-04T20:10:06.927Z'
+                description: An ISO-8604 timestamp representation of entity update date.
+                readOnly: true
+              version:
+                type: string
+                example: Test Service
+                description: the name of the service
+              publish_status:
+                type: string
+                enum:
+                  - published
+                  - unpublished
+                example: published
+                readOnly: true
+              deprecated:
+                type: boolean
+                example: true
+                readOnly: true
+              tracking_id:
+                type: string
+                format: uuid
+                example: 4f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+                description: The entity ID.
+                readOnly: true
+    SearchIndicesParameters:
+      title: 'SearchIndicesParameters'
+      type: string
+      enum:
+        - service-catalog
+    PageParameters:
+      title: 'PageParameters'
+      type: object
+      properties:
+        size:
+          type: integer
+          example: 10
+        number:
+          type: integer
+          example: 2
+    SearchParameters:
+      title: 'SearchParameters'
+      type: object
+      properties:
+        q:
+          type: string
+        join:
+          type: string
+          enum:
+            - documents
+            - versions
+            - versions.documents
+          example: versions.documents
+  examples:
+    SearchResponseExample:
+      value:
+        data:
+          - index: service-catalog
+            source:
+              created_at: '2023-01-19T17:41:55.896Z'
+              updated_at: '2023-01-19T17:41:55.896Z'
+              id: e35b0beb-c3f7-4f8f-95f7-cd8ff0ee478e
+              name: test service
+              display_name: Test Service
+              description: Test Service Description
+              labels: {}
+              versions:
+                - created_at: '2023-01-19T17:41:55.896Z'
+                  updated_at: '2023-01-19T17:41:55.896Z'
+                  id: b35b0beb-c3f7-4f8f-95f7-cd8ff0ee478e
+                  version: v0
+                  publish_status: published
+                  deprecated: false
+                  tracking_id: c45b0beb-c3f7-4f8f-95f7-cd8ff0ee478e
+                - created_at: '2022-01-19T17:41:55.896Z'
+                  updated_at: '2022-01-19T17:41:55.896Z'
+                  id: 455b0beb-c3f7-4f8f-95f7-cd8ff0ee478e
+                  version: v1
+                  publish_status: unpublished
+                  deprecated: false
+                  tracking_id: 885b0beb-c3f7-4f8f-95f7-cd8ff0ee478e
+        meta:
+          page:
+            number: 2
+            size: 1
+            total: 4
+security:
+  - bearerAuth: []
+  - {}
+tags:
+  - name: Search
+    description: Endpoints for searching across portal entities
