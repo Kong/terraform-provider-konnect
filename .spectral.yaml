@@ -247,6 +247,20 @@ rules:
                         - field
                         - rule
 
+  errors-delete-contains-404-aip-135:
+    description: "DELETE operations must contain a 404 (returned when an ID is not found)"
+    severity: error
+    given:
+      - $.paths..delete
+    then:
+      field: responses
+      function: schema
+      functionOptions:
+        schema:
+          type: object
+          required:
+            - "404"
+
 overrides:
   - files:
       - "konnect/definitions/organization-settings/v2/openapi.yaml"
