@@ -26,6 +26,38 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Invites
+  /authentication-settings:
+    get:
+      summary: Get the organization's authentication settings
+      description: Returns authentication configuration for the current organization.
+      operationId: get-authentication-settings
+      x-unstable: false
+      tags:
+        - Authentication Settings
+      responses:
+        '200':
+          $ref: '#/components/responses/AuthenticationSettings'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+    patch:
+      summary: Updates the organization's authentication settings
+      description: Returns updated authentication configuration for the current organization.
+      operationId: update-authentication-settings
+      x-unstable: false
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateAuthenticationSettings'
+      tags: 
+        - Authentication Settings
+      responses:
+        '200':
+          $ref: '#/components/responses/AuthenticationSettings'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+
   /invites:
     post:
       summary: Invite User
@@ -1349,6 +1381,24 @@ components:
           examples:
             CollectionExample:
               $ref: '#/components/examples/collection-example'
+    AuthenticationSettings:
+      description: Response for authentication settings endpoint
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              basic_auth_enabled:
+                type: boolean
+                example: true
+                description: The organization has basic auth enabled.
+              oidc_auth_enabled:
+                type: boolean
+                example: false
+                description: The organization has OIDC disabled.
+          examples:
+            Get Authorization Settings:
+              $ref: '#/components/examples/Get-Authentication-Settings'
     BadRequest:
       description: Bad Request
       content:
@@ -1392,6 +1442,10 @@ components:
               $ref: '#/components/examples/400-systems-team-modified'
             Password Complexity:
               $ref: '#/components/examples/400-password-complexity'
+            Authentication Settings cannot be both Disabled:
+              $ref: '#/components/examples/400-authentication-settings-cannot-be-both-disabled'
+            OIDC needs an IDP configure:
+              $ref: '#/components/examples/400-oidc-auth-enabled-needs-idp'
             Unsupported filter operation:
               value:
                 status: 400
@@ -2616,6 +2670,24 @@ components:
               value:
                 id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
       description: The request schema for adding a system account to a team.
+    UpdateAuthenticationSettings:
+      description: The request schema to update an organization's authentication settings.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              basic_auth_enabled:
+                type: boolean
+                example: true
+                description: The organization has basic auth enabled.
+              oidc_auth_enabled:
+                type: boolean
+                example: false
+                description: The organization has OIDC disabled.
+          examples:
+            Example Request Body:
+              $ref: '#/components/examples/Update-Authentication-Settings'
     UpdateIdPConfiguration:
       content:
         application/json:
@@ -3098,6 +3170,24 @@ components:
         invalid_parameters:
           - field: teamID
             reason: system teams cannot be modified
+    400-authentication-settings-cannot-be-both-disabled:
+      value:
+        status: 400
+        title: Bad Request
+        instance: 'konnect:trace:6644808935508571943'
+        invalid_parameters:
+          - field: oidc_auth_enabled
+            reason: cannot be disabled when basic auth is also disabled
+          - field: basic_auth_enabled
+            reason: cannot be disabled when OIDC is also disabled
+    400-oidc-auth-enabled-needs-idp:
+      value:
+        status: 400
+        title: Bad Request
+        instance: 'konnect:trace:6644808935508571943'
+        invalid_parameters:
+          - field: oidc_auth_enabled
+            reason: cannot be set before configuring an identity provider
     404-not-found:
       value:
         status: 404
@@ -3257,6 +3347,14 @@ components:
     Add-User-Request:
       value:
         id: df120cb4-f60b-47bc-a2f8-6a28e6a3c63b
+    Get-Authentication-Settings:
+      value:
+        oidc_auth_enabled: true
+        basic_auth_enabled: false
+    Update-Authentication-Settings:
+      value:
+        oidc_auth_enabled: false
+        basic_auth_enabled: true
 security:
   - personalAccessToken: []
   - systemAccountAccessToken: []
@@ -3273,3 +3371,4 @@ tags:
   - name: System Accounts - Roles
   - name: System Accounts - Team Membership
   - name: Me
+  - name: Authentication Settings

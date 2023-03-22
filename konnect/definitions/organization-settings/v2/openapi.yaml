@@ -129,35 +129,6 @@ paths:
           $ref: '#/components/responses/Unauthenticated'
         '403':
           $ref: '#/components/responses/Unauthorized'
-
-  /authentication-settings:
-    get:
-      summary: Get the organization's authentication settings
-      description: Returns authentication configuration for the current organization.
-      operationId: get-authentication-settings
-      x-unstable: false
-      tags: [Authentication Settings]
-      responses:
-        '200':
-          $ref: '#/components/responses/AuthenticationSettings'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-    patch:
-      summary: Updates the organization's authentication settings
-      description: Returns updated authentication configuration for the current organization.
-      operationId: update-authentication-settings
-      x-unstable: false
-      requestBody:
-        $ref: '#/components/requestBodies/UpdateAuthenticationSettings'
-      tags: [Authentication Settings]
-      responses:
-        '200':
-          $ref: '#/components/responses/AuthenticationSettings'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
-
 components:
   responses:
     AuditLogReplayJob:
@@ -210,25 +181,6 @@ components:
           examples:
             Get Audit Log Webhook:
               $ref: '#/components/examples/Get-Audit-Log-Webhook'
-    AuthenticationSettings:
-      description: Response for authentication settings endpoint
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              basic_auth_enabled:
-                type: boolean
-                example: true
-                description: The organization has basic auth enabled.
-              oidc_auth_enabled:
-                type: boolean
-                example: false
-                description: The organization has OIDC disabled.
-          examples:
-            Get Authorization Settings:
-              $ref: '#/components/examples/Get-Authentication-Settings'
-      
     BadRequest:
       description: Bad Request
       content:
@@ -295,43 +247,6 @@ components:
           examples:
             Job Running:
               $ref: '#/components/examples/409-job-running'
-    PermissionDenied:
-      description: Permission denied
-      content:
-        application/problem+json:
-          schema:
-            type: object
-            x-examples:
-              Example 1:
-                status: 403
-                title: Permission denied
-                instance: 'konnect:trace:2822394689570210664'
-                detail: Only enterprise organizations can set audit log webhooks
-            description: The error object.
-            properties:
-              status:
-                type: integer
-                description: HTTP status code.
-                example: 403
-              title:
-                type: string
-                example: Bad Request
-                description: HTTP status code
-              instance:
-                type: string
-                description: Konnect traceback error code.
-                example: 'konnect:trace:3674017986744198214'
-              detail:
-                type: string
-                description: Information about the error response.
-                example: Only enterprise organizations can set audit log webhooks
-          examples:
-            Permission Denied:
-              $ref: '#/components/examples/403-permission-denied'
-            Invalid Permissions:
-              $ref: '#/components/examples/403-invalid-permissions'
-            Username or Password invalid:
-              $ref: '#/components/examples/403-auth-invalid'
     Unauthenticated:
       description: Unauthenticated
       content:
@@ -483,25 +398,6 @@ components:
           examples:
             Example Request Body:
               $ref: '#/components/examples/Update-Audit-Log-Webhook'
-    UpdateAuthenticationSettings:
-      description: The request schema to update an organization's authentication settings.
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              basic_auth_enabled:
-                type: boolean
-                example: true
-                description: The organization has basic auth enabled.
-              oidc_auth_enabled:
-                type: boolean
-                example: false
-                description: The organization has OIDC disabled.
-
-          examples:
-            Example Request Body:
-              $ref: '#/components/examples/Update-Authentication-Settings'
   securitySchemes:
     personalAccessToken:
       type: http
@@ -554,43 +450,18 @@ components:
         invalid_parameters:
           - field: endpoint
             reason: must be a valid URL
-    404-not-found:
-      value:
-        status: 404
-        title: Not Found
-        instance: 'konnect:trace:2287285207635123011'
-        detail: The requested resource was not found
     403-permission-denied:
       value:
         status: 403
         title: Permission denied
         instance: 'konnect:trace:2822394689570210664'
         detail: Only enterprise organizations can perform this action
-    403-invalid-permissions:
-      value:
-        status: 403
-        title: Invalid Permissions
-        detail: 'You must have the [administrator] role to perform this action'
-        instance: 'konnect:trace:6c1ef33ae5bce33634d7d7d695c7f203'
-    403-auth-invalid:
-      value:
-        type: 'https://kongapi.info/konnect/invalid-permissions'
-        status: 403
-        title: Invalid Permissions
-        detail: 'You must have the [administrator] role to perform this action'
-        instance: 'konnect:trace:6c1ef33ae5bce33634d7d7d695c7f203'
     409-job-running:
       value:
         status: 409
         title: Resource Conflict
         instance: 'konnect:trace:6644808935508571943'
         detail: A replay job is currently running
-    429-rate-limited:
-      value:
-        status: 429
-        title: Rate Limited
-        instance: 'konnect:trace:6644808935508571943'
-        detail: Too many requests
     401-unauthenticated:
       value:
         status: 401
@@ -612,15 +483,6 @@ components:
         authorization: 'Bearer sometoken'
         enabled: true
         log_format: cef
-    Get-Authentication-Settings:
-      value:
-        oidc_auth_enabled: true
-        basic_auth_enabled: false
-    Update-Authentication-Settings:
-      value:
-        oidc_auth_enabled: false
-        basic_auth_enabled: true
-
 security:
   - personalAccessToken: []
   - systemAccountAccessToken: []
