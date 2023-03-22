@@ -1,0 +1,48 @@
+{
+  "kong/openapi-specifications": [
+    {
+      "src": "output/konnect/public.yaml",
+      "dest": "konnect/openapi.yaml"
+    },
+    {
+      "src": "output/portal/public.yaml",
+      "dest": "portal/openapi.yaml"
+    }
+  ],
+  "kong/sdk-konnect-js": [
+    {
+      "src": "output/konnect/public.yaml",
+      "dest": "openapi.yaml"
+    }
+  ],
+  "kong/sdk-konnect-js-internal": [
+    {
+      "src": "output/konnect/internal.yaml",
+      "dest": "openapi.yaml"
+    }
+  ],
+  "kong/sdk-konnect-js-dev": [
+    {
+      "src": "output/konnect/dev.yaml",
+      "dest": "openapi.yaml"
+    }
+  ],
+  "kong/sdk-portal-js": [
+    {
+      "src": "output/portal/public.yaml",
+      "dest": "openapi.yaml"
+    }
+  ],
+  "kong/sdk-portal-js-internal": [
+    {
+      "src": "output/portal/internal.yaml",
+      "dest": "openapi.yaml"
+    }
+  ],
+  "kong/sdk-portal-js-dev": [
+    {
+      "src": "output/portal/dev.yaml",
+      "dest": "openapi.yaml"
+    }
+  ]
+}

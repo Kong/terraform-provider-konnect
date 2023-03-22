@@ -1,0 +1,38 @@
+name: Push OAS Downstream
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  raise-pr-on-change:
+    if: github.event.pull_request.merged == true
+    name: Raise PR on change
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16.x"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Install Dependencies
+        run: |
+          npm ci
+
+      - name: Process OpenAPI files
+        run: |
+          node tools/generate-sdk-openapi-files.js
+
+      - name: Raise PR in downstream repos
+        uses: mheap/raise-pr-on-change-action@v1
+        with:
+          token: ${{ secrets.APIOPS_PAT }}
+          mode: check-upstream
+          configFile: ".github/raise-pr-on-change.json"
+          prBranch: automated-update
+          targetBranch: main
+          prTitle: "Automated OAS Update"
+          prBody: "Generated OAS files from platform-api"

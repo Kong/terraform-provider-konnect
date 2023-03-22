@@ -65,6 +65,11 @@ const headers = {
     // Overwrite known fields
     const complete = mergician(mergedSpecs, headers[mode]);
 
+    if (!complete.paths) {
+      console.log(`No paths found for ${mode}`);
+      continue;
+    }
+
     // Make entries in `tags` unique
     complete.tags = unique(complete.tags);
 
@@ -82,6 +87,14 @@ const headers = {
         op.parameters = unique(op.parameters);
       }
     }
+
+    // Sort by paths alphabetically to make diffs deterministic
+    // This makes the OAS oddly ordered, but any UI will group by tags anyway
+    complete.paths = Object.fromEntries(
+      Object.entries(complete.paths).sort(function (a, b) {
+        return a[0].localeCompare(b[0]);
+      })
+    );
 
     // Filter down paths to the groups that we need
     const dev = filterOperations(complete, function (node) {
