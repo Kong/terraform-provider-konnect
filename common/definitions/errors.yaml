@@ -1,0 +1,178 @@
+components:
+  responses:
+    ErrorResponse:
+      description: api error response
+      content:
+        application/problem+json:
+          schema:
+            oneOf:
+            - $ref: '#/components/responses/BadRequest'
+            - $ref: '#/components/responses/Unauthorized'
+            - $ref: '#/components/responses/Forbidden'
+            - $ref: '#/components/responses/NotFound'
+            - $ref: '#/components/responses/Conflict'
+            - $ref: '#/components/responses/Internal'
+            - $ref: '#/components/responses/NotAvailable'
+            discriminator:
+              propertyName: status
+              mapping:
+                400: '#/components/responses/BadRequest'
+                401: '#/components/responses/Unauthorized'
+                403: '#/components/responses/Forbidden'
+                404: '#/components/responses/NotFound'
+                409: '#/components/responses/Conflict'
+                500: '#/components/responses/Internal'
+                503: '#/components/responses/NotAvailable'
+    # 400
+    BadRequest:
+      description: Bad Request
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/BadRequestError'
+    # 401
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/UnauthorizedError'
+    # 403
+    Forbidden:
+      description: Forbidden
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ForbiddenError'
+    # 404
+    NotFound:
+      description: Not Found
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/NotFoundError'
+    # 409
+    Conflict:
+      description: Conflict
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ConflictError'
+    # 500
+    Internal:
+      description: Internal
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/InternalError'
+    # 503
+    NotAvailable:
+      description: Service not available
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/NotAvailableError'
+  schemas:
+    InvalidRules:
+      description: invalid parameters rules
+      type: string
+      readOnly: true
+      enum:
+        - required
+        - enum
+        - min_length
+        - max_length
+        - min_digits
+        - min_lowercase
+        - min_uppercase
+        - min_symbols
+    InvalidParameters:
+      type: array
+      items:
+        $ref: '#/components/schemas/InvalidParameterItem'
+    InvalidParameterItem:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          $ref: '#/components/schemas/InvalidRules'
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+        choices:
+          type: array
+          uniqueItems: true
+          items: {}
+          readOnly: true
+      required:
+      - field
+      - rule
+      - reason
+    BaseError:
+      type: object
+      title: Error
+      description: standard error
+      required:
+      - status
+      - title
+      - instance
+      - detail
+      properties:
+        status:
+          type: integer
+          description: |
+            The HTTP status code of the error. Useful when passing the response
+            body to child properties in a frontend UI. Must be returned as an integer.
+          readOnly: true
+        title:
+          type: string
+          description: |
+            A short, human-readable summary of the problem. It should not
+            change between occurences of a problem, except for localization.
+            Should be provided as "Sentence case" for direct use in the UI.
+          readOnly: true
+        type:
+          type: string
+          description: The error type.
+          readOnly: true
+        instance:
+          type: string
+          description: |
+            Used to return the correlation ID back to the user, in the format
+            kong:trace:<correlation_id>. This helps us find the relevant logs
+            when a customer reports an issue.
+          readOnly: true
+        detail:
+          type: string
+          description: |
+            A human readable explanation specific to this occurence of the problem.
+            This field may contain request/entity data to help the user understand
+            what went wrong. Enclose variable values in square brackets. Should be
+            provided as "Sentence case" for direct use in the UI.
+          readOnly: true
+    BadRequestError:
+      allOf:
+      - $ref: '#/components/schemas/BaseError'
+      - $ref: '#/components/schemas/InvalidParameters'
+    UnauthorizedError:
+      allOf:
+      - $ref: '#/components/schemas/BaseError'
+    ForbiddenError:
+      allOf:
+      - $ref: '#/components/schemas/BaseError'
+    NotFoundError:
+      allOf:
+      - $ref: '#/components/schemas/BaseError'
+    ConflictError:
+      allOf:
+      - $ref: '#/components/schemas/BaseError'
+    InternalError:
+      allOf:
+      - $ref: '#/components/schemas/BaseError'
+    NotAvailableError:
+      allOf:
+      - $ref: '#/components/schemas/BaseError'
