@@ -34,6 +34,11 @@ paths:
         - $ref: '#/components/parameters/FilterByNameEquality'
         - $ref: '#/components/parameters/FilterByNameEqualityShort'
         - $ref: '#/components/parameters/FilterByNameContains'
+        - $ref: '#/components/parameters/FilterByIdEquality'
+        - $ref: '#/components/parameters/FilterByIdEqualityShort'
+        - $ref: '#/components/parameters/FilterByClusterTypeEquality'
+        - $ref: '#/components/parameters/FilterByClusterTypeEqualityShort'
+        - $ref: '#/components/parameters/FilterByLabels'
       tags:
         - Runtime Groups
     parameters: []
@@ -64,8 +69,8 @@ paths:
             schema:
               $ref: '#/components/schemas/CreateRuntimeGroupRequest'
             examples:
-                Example Request Body:
-                  $ref: '#/components/examples/CreateRuntimeGroupRequestExample'
+              Example Request Body:
+                $ref: '#/components/examples/CreateRuntimeGroupRequestExample'
       description: 'Create a runtime group in the Konnect Organization.'
   /runtime-groups/{id}:
     parameters:
@@ -165,6 +170,14 @@ components:
       schema:
         type: integer
         example: 2
+    FilterByLabels:
+      name: 'labels'
+      description: Filter runtime groups in the response by associated labels. 
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 'key:value,existCheck'
     FilterByNameEquality:
       name: 'filter[name][eq]'
       description: Filter by direct equality comparison of the name property with a supplied value.
@@ -189,6 +202,38 @@ components:
       schema:
         type: string
         example: 'test'
+    FilterByIdEquality:
+        name: 'filter[id][eq]'
+        description: Filter by direct equality comparison of the id property with a supplied value.
+        in: query
+        required: false
+        schema:
+          type: string
+          example: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+    FilterByIdEqualityShort:
+      name: 'filter[id]'
+      description: Filter by direct equality comparison (short-hand) of the id property with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+    FilterByClusterTypeEquality:
+        name: 'filter[cluster_type][eq]'
+        description: Filter by direct equality comparison of the cluster_type property with a supplied value.
+        in: query
+        required: false
+        schema:
+          type: string
+        example: CLUSTER_TYPE_HYBRID
+    FilterByClusterTypeEqualityShort:
+      name: 'filter[cluster_type]'
+      description: Filter by direct equality comparison (short-hand) of the cluster_type property with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: CLUSTER_TYPE_HYBRID
   responses:
     RetrieveRuntimeGroupResponse:
       description: A response to retrieving a single runtime group.
@@ -248,6 +293,7 @@ components:
                     config:
                       control_plane_endpoint: 'https://acfe5f253f.cp0.konghq.com'
                       telemetry_endpoint: 'https://acfe5f253f.tp0.konghq.com'
+                      cluster_type: 'CLUSTER_TYPE_HYBRID'
                     created_at: '2022-11-04T20:10:06.927Z'
                     updated_at: '2022-11-04T20:10:06.927Z'
     BadRequest:
@@ -337,6 +383,10 @@ components:
                 type: string
                 description: Information about the error response.
                 example: Insufficient role-set to create runtime groups.
+              type:
+                type: string
+                description: Human-readable documentation for the problem
+                example: https://kongapi.info/konnect/invalid-permissions
             required:
               - status
               - title
@@ -370,6 +420,10 @@ components:
                 type: string
                 description: Details about the error response.
                 example: A valid token is required
+              type:
+                type: string
+                description: Human-readable documentation for the problem
+                example: https://kongapi.info/konnect/invalid-permissions
             required:
               - status
               - title
@@ -403,6 +457,10 @@ components:
                 type: string
                 example: The requested runtime group was not found.
                 description: Details about the error.
+              type:
+                type: string
+                description: Human-readable documentation for the problem
+                example: https://kongapi.info/konnect/invalid-permissions
             required:
               - status
               - title
@@ -436,6 +494,10 @@ components:
                 type: string
                 example: Runtime group with provided name already exists.
                 description: Details about the error.
+              type:
+                type: string
+                description: Human-readable documentation for the problem
+                example: https://kongapi.info/konnect/invalid-permissions
             required:
               - status
               - title
@@ -523,6 +585,13 @@ components:
           type: string
           example: A test runtime group for exploration.
           description: The description of the runtime group in Konnect.
+        cluster_type:
+          type: string
+          description: The ClusterType value of the Koko Cluster associated with the Runtime Group.
+          example: CLUSTER_TYPE_HYBRID
+          enum:
+            - CLUSTER_TYPE_HYBRID
+            - CLUSTER_TYPE_K8S_INGRESS_CONTROLLER
         labels:
           $ref: '#/components/schemas/Labels'
       required:
@@ -603,6 +672,15 @@ components:
               example: 'https://acfe5f253f.tp0.konghq.com'
               description: Telemetry Endpoint.
               readOnly: true
+            cluster_type:
+              type: string
+              description: The ClusterType value of the Koko Cluster associated with the Runtime Group.
+              example: CLUSTER_TYPE_HYBRID
+              readOnly: true
+              enum:
+                - CLUSTER_TYPE_UNSPECIFIED
+                - CLUSTER_TYPE_HYBRID
+                - CLUSTER_TYPE_K8S_INGRESS_CONTROLLER
         created_at:
           type: string
           format: date-time
@@ -725,6 +803,7 @@ components:
       value:
         name: 'Test Runtime Group'
         description: A test runtime group for exploration.
+        cluster_type: CLUSTER_TYPE_K8S_INGRESS_CONTROLLER
         labels:
           test: 'true'
     UpdateRuntimeGroupRequestExample:
@@ -743,6 +822,7 @@ components:
         config:
           control_plane_endpoint: 'https://acfe5f253f.cp0.konghq.com'
           telemetry_endpoint: 'https://acfe5f253f.tp0.konghq.com'
+          cluster_type: 'CLUSTER_TYPE_HYBRID'
         created_at: '2022-11-04T20:10:06.927Z'
         updated_at: '2022-11-04T20:10:06.927Z'
 security:
@@ -750,4 +830,3 @@ security:
   - systemAccountAccessToken: []
 tags:
   - name: Runtime Groups
-
