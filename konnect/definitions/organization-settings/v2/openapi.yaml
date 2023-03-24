@@ -129,6 +129,22 @@ paths:
           $ref: '#/components/responses/Unauthenticated'
         '403':
           $ref: '#/components/responses/Unauthorized'
+  /audit-log-webhook/status:
+    get:
+      summary: Get Audit Log Webhook Status
+      description: |-
+        _The audit logs feature is currently in beta and is subject to change._
+
+        Returns status of the audit log webhook.
+      x-unstable: true
+      tags: [Audit Logs]
+      responses:
+        '200':
+          $ref: '#/components/responses/AuditLogWebhookStatus'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
 components:
   responses:
     AuditLogReplayJob:
@@ -181,6 +197,46 @@ components:
           examples:
             Get Audit Log Webhook:
               $ref: '#/components/examples/Get-Audit-Log-Webhook'
+    AuditLogWebhookStatus:
+      description: Get response for audit log webhook status
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: object
+                description: Status of a webhook.
+                properties:
+                  webhook_status:
+                    type: string
+                    example: active
+                    enum: [active, inactive]
+                    description: |- 
+                      Current status of a webhook. `active` indicates the webhook is sending or ready to send requests. 
+                      `inactive` indicates the webhook has been turned off due to failed attempts.
+                  webhook_enabled:
+                    type: boolean
+                    example: true
+                    description: |- 
+                      Configured status of a webhook. `enabled` indicates the client will accept requests. 
+                      `disabled` indicates the client will not accept requests.
+                  last_attempt_at:
+                    type: string
+                    format: date-time
+                    example: '2023-03-21T09:29:14.52Z'
+                    description: The last time a request was made to the webhook, regardless of outcome.
+                  last_response_code:
+                    type: integer
+                    example: 401
+                    description: The last response code received from the webhook.
+                  last_response_message:
+                    type: string
+                    example: Unauthenticated
+                    description: The last message received from the webhook. Useful for debugging.
+          examples:
+            Get Audit Log Webhook Status:
+              $ref: '#/components/examples/Get-Audit-Log-Webhook-Status'
     BadRequest:
       description: Bad Request
       content:
@@ -483,6 +539,13 @@ components:
         authorization: 'Bearer sometoken'
         enabled: true
         log_format: cef
+    Get-Audit-Log-Webhook-Status:
+      value:
+        webhook_enabled: true
+        webhook_status: inactive
+        last_attempt_at: '2023-03-21T09:29:14.52Z'
+        last_response_code: 401
+        last_response_message: Unauthorized
 security:
   - personalAccessToken: []
   - systemAccountAccessToken: []
