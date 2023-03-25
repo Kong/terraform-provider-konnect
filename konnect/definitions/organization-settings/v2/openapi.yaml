@@ -166,7 +166,7 @@ components:
                 description: The end of a date-time range.
               status:
                 type: string
-                enum: [accepted, canceled, canceling, completed, failed, running, pending]
+                enum: [accepted, completed, failed, running, pending]
                 readOnly: true
               created_at:
                 type: string
@@ -392,9 +392,6 @@ components:
                 description: |-
                   The end of a date-time range in RFC3339 format e.g. 2017-07-21T17:32:28Z.
                   Within the last 7 days.
-              cancel:
-                type: boolean
-                description: Cancel an existing job with status accepted or running.
     CreateAuditLogWebhook:
       description: The request schema to create or replace an audit log webhook.
       content:
