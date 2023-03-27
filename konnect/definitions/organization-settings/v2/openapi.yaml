@@ -64,7 +64,7 @@ paths:
         $ref: '#/components/requestBodies/CreateAuditLogWebhook'
       tags: [Audit Logs]
       responses:
-        '200':
+        '201':
           $ref: '#/components/responses/AuditLogWebhook'
         '400':
           $ref: '#/components/responses/BadRequest'
