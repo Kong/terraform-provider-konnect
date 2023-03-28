@@ -18,7 +18,7 @@ paths:
       description: |-
         _The audit logs feature is currently in beta and is subject to change._
 
-        Creates or replaces a job to replay/re-send audit logs to an organization's webook.
+        Creates or replaces a job to replay/re-send audit logs to an organization's webhook.
       operationId: create-audit-log-replay-job
       x-unstable: true
       requestBody:
@@ -125,6 +125,20 @@ paths:
           $ref: '#/components/responses/Unauthenticated'
         '403':
           $ref: '#/components/responses/Unauthorized'
+  /audit-log-webhook/jwks.json:
+    get:
+      operationId: get-audit-log-jwks
+      summary: Get Audit Log JSON Web Keys
+      description: |-
+        _The audit logs feature is currently in beta and is subject to change._
+        Returns the public keys used to sign audit log entries in order to verify the 
+        validity of audit log entries.
+      x-unstable: true
+      tags:
+        - Audit Logs
+      responses:
+        '200':
+          $ref: '#/components/responses/JWKS'
 components:
   responses:
     AuditLogReplayJob:
@@ -217,6 +231,20 @@ components:
           examples:
             Get Audit Log Webhook Status:
               $ref: '#/components/examples/Get-Audit-Log-Webhook-Status'
+    JWKS:
+      description: Get response for the audit log JSON Web Keys
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              keys:
+                type: array
+                items:
+                  $ref: '#/components/schemas/JWK'
+          examples:
+            JWKS:
+              $ref: '#/components/examples/JWKS'
     BadRequest:
       description: Bad Request
       content:
@@ -525,6 +553,45 @@ components:
         last_attempt_at: '2023-03-21T09:29:14.52Z'
         last_response_code: 401
         last_response_message: Unauthorized
+    JWKS:
+      value:
+        keys:
+          - kty: OKP
+            alg: EdDSA
+            kid: 3f60bc4376c937154f3c004ebd180433ac0d03e6
+            crv: Ed25519
+            x: XWxGtApfcqmKI7p0OKnF5JSEWMVoLsytFXLEP7xZ_l8
+    JWK:
+      value:
+        kty: OKP
+        alg: EdDSA
+        kid: 3f60bc4376c937154f3c004ebd180433ac0d03e6
+        crv: Ed25519
+        x: XWxGtApfcqmKI7p0OKnF5JSEWMVoLsytFXLEP7xZ_l8
+  schemas:
+    JWK:
+      title: JWK
+      type: object
+      description: An individual JSON Web Key.
+      properties:
+        kty:
+          type: string
+          description: The algorithm family of the key.
+        alg:
+          type: string
+          description: The algorithm intended for use with the key.
+        kid:
+          type: string
+          description: The unique ID of the key.
+        crv:
+          type: string
+          description: The cryptographic curve used with the key.
+        x:
+          type: string
+          description: The x coordinate for the Elliptic Curve point.
+      x-examples:
+        JWK:
+          $ref: '#/components/examples/JWK'
 security:
   - personalAccessToken: []
   - systemAccountAccessToken: []
