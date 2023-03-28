@@ -292,9 +292,9 @@ components:
                 type: string
               reason:
                 type: string
-          required:
-            - field
-            - reason
+            required:
+              - field
+              - reason
 security:
   - bearerAuth: []
 tags:

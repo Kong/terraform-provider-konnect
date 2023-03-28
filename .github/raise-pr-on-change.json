@@ -33,6 +33,12 @@
       "dest": "openapi.yaml"
     }
   ],
+  "kong/khcp": [
+    {
+      "src": "output/portal/public.yaml",
+      "dest": "apps/portal-api/openapi/v2/openapi.yaml"
+    }
+  ],
   "kong/sdk-portal-js-internal": [
     {
       "src": "output/portal/internal.yaml",
