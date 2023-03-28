@@ -1,0 +1,301 @@
+openapi: 3.0.0
+info:
+  title: Portal Registrations API
+  version: 2.0.0
+  description: |
+    The API for Konnect Portal application registrations. If the portal is public
+    all of the described endpoints will return a 404 error
+  contact:
+    name: Kong
+    url: 'https://cloud.konghq.com'
+paths:
+  /api/v2/applications/{applicationId}/registrations:
+    get:
+      summary: Get application registrations
+      description: This endpoint lists service registrations for an application
+      operationId: get-many-application-registrations
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetManyRegistrations'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - registrations
+    post:
+      summary: Register an application for a service
+      description: This endpoint registers an application for a service
+      operationId: create-application-registration
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+      requestBody:
+        $ref: '#/components/requestBodies/CreateRegistration'
+      responses:
+        '201':
+          $ref: '#/components/responses/CreateRegistration'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - registrations
+  /api/v2/applications/{applicationId}/registrations/{registrationId}:
+    get:
+      summary: Get an application registration
+      description: This endpoint retrieves the specified service registration for an application
+      operationId: get-one-application-registration
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+        - $ref: '#/components/parameters/RegistrationId'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetRegistration'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - registrations
+    delete:
+      summary: Delete an application registration
+      description: This endpoint unregister an application for a service version
+      operationId: delete-application-registration
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+        - $ref: '#/components/parameters/RegistrationId'
+      responses:
+        '204':
+          description: The registration has been deleted
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - registrations
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  parameters:
+    ApplicationId:
+      name: applicationId
+      in: path
+      required: true
+      description: Id of the targeted application
+      schema:
+        type: string
+        format: uuid
+    RegistrationId:
+      name: registrationId
+      in: path
+      required: true
+      description: Id of the targeted registration
+      schema:
+        type: string
+        format: uuid
+  responses:
+    CreateRegistration:
+      description: Registration creation response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GetRegistrationResponse'
+    GetRegistration:
+      description: Get registration response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GetRegistrationResponse'
+    GetManyRegistrations:
+      description: Get registrations response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GetManyRegistrationsResponse'
+    NotFound:
+      description: Not Found
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Conflict:
+      description: Conflict
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthenticated:
+      description: Unauthenticated
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Bad Request
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  requestBodies:
+    CreateRegistration:
+      description: Create an application registration
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateRegistrationPayload'
+  schemas:
+    PaginatedMeta:
+      type: object
+      additionalProperties: false
+      title: PaginatedMeta
+      description: Returns pagination information
+      properties:
+        page:
+          type: object
+          description: Contains pagination query parameters and the total number of objects returned.
+          properties:
+            number:
+              type: integer
+              example: 2
+              description: Specifies the number of objects returned per page.
+            size:
+              type: integer
+              example: 10
+              maximum: 100
+              description: Specifies the size of the page.
+            total:
+              type: integer
+              example: 100
+              description: Integer representation of the amount of items returned.
+    CreateRegistrationPayload:
+      additionalProperties: false
+      type: object
+      title: CreateRegistrationPayload
+      description: an application registration payload
+      required:
+        - service_version_id
+      properties:
+        service_version_id:
+          description: The UUID of the service version to register for
+          type: string
+          format: uuid
+    GetManyRegistrationsResponse:
+      additionalProperties: false
+      type: object
+      required:
+      - data
+      - meta
+      properties:
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/GetRegistrationResponse'
+    GetRegistrationResponse:
+      additionalProperties: false
+      type: object
+      required:
+        - id
+        - status
+        - service_version_id
+        - application_id
+        - created_at
+        - updated_at
+      properties:
+        id:
+          description: The UUID of the registration
+          type: string
+          format: uuid
+        status:
+          description: The approval status of the registration
+          type: string
+          enum:
+            - approved
+            - pending
+            - rejected
+            - revoked
+        service_version_id:
+          description: The UUID of the service version registered for
+          type: string
+          format: uuid
+        application_id:
+          description: The UUID of the application the registration is linked to
+          type: string
+          format: uuid
+        created_at:
+          description: ISO timestamp the registration record was created
+          type: string
+          format: date-time
+        updated_at:
+          description: ISO timestamp the registration record was last updated
+          type: string
+          format: date-time
+    Error:
+      type: object
+      title: Error
+      description: standard error
+      x-examples:
+        Example 1:
+          status: 404
+          title: Not Found
+          type: https://kongapi.info/konnect/not-found
+          instance: 'portal:trace:2287285207635123011'
+          detail: The requested document was not found
+      required:
+      - status
+      - title
+      - instance
+      properties:
+        status:
+          type: integer
+          description: The HTTP status code.
+          example: 404
+        title:
+          type: string
+          description: The error response code.
+          example: Not Found
+        type:
+          type: string
+          description: The error type.
+          example: Not Found
+        instance:
+          type: string
+          example: 'portal:trace:2287285207635123011'
+          description: The portal traceback code
+        detail:
+          type: string
+          example: The requested team was not found
+          description: Details about the error.
+        invalid_parameters:
+          type: array
+          description: An array of objects that contains information related to the error response.
+          items:
+            type: object
+            additionalProperties: true
+            properties:
+              rule:
+                type: string
+              field:
+                type: string
+              reason:
+                type: string
+          required:
+            - field
+            - reason
+security:
+  - bearerAuth: []
+tags:
+  - name: registrations
