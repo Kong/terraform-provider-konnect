@@ -52,26 +52,6 @@ paths:
         '403':
           $ref: '#/components/responses/Unauthorized'
   /audit-log-webhook:
-    post:
-      summary: Create Audit Log Webhook
-      description: |-
-        _The audit logs feature is currently in beta and is subject to change._
-
-        Sets configuration for a webhook to receive audit logs.
-      operationId: create-audit-log-webhook
-      x-unstable: true
-      requestBody:
-        $ref: '#/components/requestBodies/CreateAuditLogWebhook'
-      tags: [Audit Logs]
-      responses:
-        '201':
-          $ref: '#/components/responses/AuditLogWebhook'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
     patch:
       summary: Update Audit Log Webhook
       description: |-
@@ -449,8 +429,10 @@ components:
                 description: The output format of each log messages.
                 default: cef
           examples:
-            Example Request Body:
+            Disable Webhook:
               $ref: '#/components/examples/Update-Audit-Log-Webhook'
+            Enable Webhook:
+              $ref: '#/components/examples/Create-Audit-Log-Webhook'
   securitySchemes:
     personalAccessToken:
       type: http
