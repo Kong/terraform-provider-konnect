@@ -22,6 +22,9 @@ jobs:
         run: |
           npm ci
 
+      - name: Bundle Apis
+        run: npm run bundle-apis
+
       - name: Process OpenAPI files
         run: |
           node tools/generate-sdk-openapi-files.js
