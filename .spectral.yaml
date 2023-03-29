@@ -73,7 +73,7 @@ rules:
     then:
       function: pattern
       functionOptions:
-        match: "^\/([a-z0-9]+(-[a-z0-9]+)*)?(\/[a-z0-9]+(-[a-z0-9]+)*|\/{.+})*$" # doesn't allow /asasd{asdas}sadas pattern or not closed braces
+        match: "^\/([a-z0-9]+(-[a-z0-9]+)*)?(\/[a-z0-9]+(-[a-z0-9]+)*|\/{.+})*[\\.\\w]*$" # doesn't allow /asasd{asdas}sadas pattern or not closed braces
 
   paths-not-include-api:
     description: Paths must not include /api/
@@ -267,10 +267,6 @@ overrides:
     rules:
       errors-require-type-aip-193: "off"
       validation-error-invalid-parameters-aip-193: "off"
-  - files:
-      - "konnect/definitions/**/openapi.yaml#/paths/~1audit-log-webhook~1jwks.json"
-    rules:
-      paths-kebab-case-aip-122: "off"
   - files:
       - "konnect/definitions/identity/v2/openapi.yaml"
     rules:
