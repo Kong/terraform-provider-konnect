@@ -158,10 +158,8 @@ paths:
         - documentation
 components:
   securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
+    portalAccessToken:
+      $ref: '../../../../common/definitions/security.yaml#/components/securitySchemes/portalAccessToken'
   parameters:
     ProductId:
       name: productId
@@ -456,7 +454,7 @@ components:
           items:
             $ref: '../../../../common/definitions/documenthub_nodes.yaml#/components/schemas/DocumentBlock'
 security:
-  - bearerAuth: []
+  - portalAccessToken: []
 tags:
   - name: products
   - name: versions
