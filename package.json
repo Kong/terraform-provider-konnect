@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "lint:all": "spectral lint '(portal|konnect)/definitions/**/openapi.yaml'",
+    "lint:artifacts": "spectral lint 'output/**/*.yaml'",
     "generate-docs": "npm-run-all generate:*-docs",
     "generate:identity-v2-client": "rm -rf ./konnect/packages/identity/v2/npm/client && openapi-generator-cli generate --generator-key identity-v2-client",
     "generate:identity-v2-docs": "node ./tools/generate-docs-oas-file.js identity-v2 ./konnect/definitions/identity/v2/openapi.yaml",

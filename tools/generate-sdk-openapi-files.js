@@ -20,7 +20,6 @@ const headers = {
         description: "Production",
       },
     ],
-    security: [{ accessToken: [] }],
   },
 
   portal: {
@@ -31,11 +30,10 @@ const headers = {
     },
     servers: [
       {
-        url: "https://custom.example.com/api",
+        url: "https://custom.example.com",
         description: "Portal API",
       },
     ],
-    security: [{ accessToken: [] }],
   },
 };
 
@@ -95,6 +93,8 @@ const headers = {
         return a[0].localeCompare(b[0]);
       })
     );
+
+    complete.security = unique(complete.security);
 
     // Filter down paths to the groups that we need
     const dev = filterOperations(complete, function (node) {
