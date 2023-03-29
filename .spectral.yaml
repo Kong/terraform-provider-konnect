@@ -263,17 +263,22 @@ rules:
 
 overrides:
   - files:
-      - "konnect/definitions/organization-settings/v2/openapi.yaml"
+      - "konnect/definitions/organization-settings/v2/**/openapi.yaml"
     rules:
       errors-require-type-aip-193: "off"
       validation-error-invalid-parameters-aip-193: "off"
   - files:
-      - "konnect/definitions/identity/v2/openapi.yaml"
+      - "konnect/definitions/identity/v2/**/openapi.yaml"
     rules:
       errors-require-type-aip-193: "off"
       validation-error-invalid-parameters-aip-193: "off"
   - files:
-      - "konnect/definitions/runtime-groups/v2/openapi.yaml"
+      - "konnect/definitions/runtime-groups/v2/**/openapi.yaml"
+    rules:
+      errors-require-type-aip-193: "off"
+      validation-error-invalid-parameters-aip-193: "off"
+  - files:
+      - "portal/definitions/products/**/openapi.yaml"
     rules:
       errors-require-type-aip-193: "off"
       validation-error-invalid-parameters-aip-193: "off"
@@ -284,7 +289,7 @@ overrides:
       paths-not-include-api: "off"
       oas3-api-servers: "off"
   - files:
-      - "konnect/definitions/identity/v2/openapi.yaml"
-      - "konnect/definitions/runtime-groups-config/v2/openapi.yaml"
+      - "konnect/definitions/identity/v2/**/openapi.yaml"
+      - "konnect/definitions/runtime-groups-config/v2/**/openapi.yaml"
     rules:
       errors-delete-contains-404-aip-135: "off"

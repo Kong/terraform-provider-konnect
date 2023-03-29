@@ -8,3 +8,9 @@ GitHub Actions are used to perform the following tasks:
 
 - Lint APIs to ensure they meet our [AIP definitions](https://kong-aip.netlify.app/)
 - Generate SDKs for use internally (and externally eventually)
+
+## Contributing
+
+Any OAS has to be put in either `konnect/definitions` or `portal/definitions` within an `src` folder. By then it will
+be bundled in the CI to resolve all the relative schema references into a `computed` folder. This process can be done
+using the command `npm run bundle-apis`.

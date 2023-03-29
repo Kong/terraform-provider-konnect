@@ -1,0 +1,463 @@
+openapi: 3.0.3
+info:
+  title: Portal Products API
+  version: 2.0.0
+  description: The API for Konnect Portal Products.
+  contact:
+    name: Kong
+    url: 'https://cloud.konghq.com'
+paths:
+  /api/v2/products/{productId}:
+    get:
+      summary: Get a product
+      description: Returns the given published product, with its versions attached
+      operationId: get-product
+      parameters:
+        - $ref: '#/components/parameters/ProductId'
+      responses:
+        '200':
+          $ref: '#/components/responses/ProductGet'
+        '400':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '404':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+      tags:
+        - products
+  /api/v2/products:
+    get:
+      summary: Get page of products
+      description: Returns a paginated list of published API Products, each with their versions and documents
+      operationId: get-many-products
+      parameters:
+        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/Page'
+      responses:
+        '200':
+          $ref: '#/components/responses/ProductGetMany'
+        '400':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '404':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+      tags:
+        - products
+  /api/v2/products/{productId}/versions:
+    get:
+      summary: Get page of product versions
+      description: Returns paginated list of versions of a given product
+      operationId: get-many-product-versions
+      parameters:
+        - $ref: '#/components/parameters/ProductId'
+        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/Page'
+      responses:
+        '200':
+          $ref: '#/components/responses/ProductGetManyVersions'
+        '400':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '404':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+      tags:
+        - versions
+  /api/v2/products/{productId}/versions/{versionId}:
+    get:
+      summary: Get product version
+      description: Return given product version
+      operationId: get-product-version
+      parameters:
+        - $ref: '#/components/parameters/ProductId'
+        - $ref: '#/components/parameters/ProductVersionId'
+      responses:
+        '200':
+          $ref: '#/components/responses/ProductVersionGet'
+        '400':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '404':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+      tags:
+        - versions
+  /api/v2/products/{productId}/versions/{versionId}/spec:
+    get:
+      summary: Get OpenAPI spec for product version
+      description: Returns the OpenAPI specification document attached to given product version
+      operationId: get-product-version-spec
+      parameters:
+        - $ref: '#/components/parameters/ProductId'
+        - $ref: '#/components/parameters/ProductVersionId'
+      responses:
+        '200':
+          $ref: '#/components/responses/ProductVersionSpecGet'
+        '400':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '404':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+      tags:
+        - versions
+  /api/v2/products/{productId}/versions/{versionId}/operations:
+    get:
+      summary: Get operations in version spec
+      description: Returns list of operations used in the OpenAPI specefication document attached to given product version
+      operationId: get-product-version-spec-operations
+      parameters:
+        - $ref: '#/components/parameters/ProductId'
+        - $ref: '#/components/parameters/ProductVersionId'
+      responses:
+        '200':
+          $ref: '#/components/responses/ProductVersionSpecOperationsGet'
+        '400':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '404':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+      tags:
+        - versions
+  /api/v2/products/{productId}/document-tree:
+    get:
+      summary: Get product document tree
+      description: Return the entire documentation tree of a product
+      operationId: get-product-document-tree
+      parameters:
+        - $ref: '#/components/parameters/ProductId'
+      responses:
+        '200':
+          $ref: '#/components/responses/ProductDocumentTreeGet'
+        '400':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '404':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+      tags:
+        - documentation
+  /api/v2/products/{productId}/documents/{documentId}:
+    get:
+      summary: Get one product document
+      description: Returns the specified document from the product's document tree
+      operationId: get-product-document
+      parameters:
+        - $ref: '#/components/parameters/ProductId'
+        - $ref: '#/components/parameters/DocumentId'
+      responses:
+        '200':
+          $ref: '#/components/responses/ProductDocumentGet'
+        '400':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '404':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+      tags:
+        - documentation
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  parameters:
+    ProductId:
+      name: productId
+      in: path
+      required: true
+      description: Id of the product
+      schema:
+        type: string
+        format: uuid
+    ProductVersionId:
+      name: versionId
+      in: path
+      required: true
+      description: Id of the product version
+      schema:
+        type: string
+        format: uuid
+    DocumentId:
+      name: documentId
+      in: path
+      required: true
+      description: Id of the document
+      schema:
+        type: string
+        format: uuid
+  responses:
+    ProductGet:
+      description: Response for getting a product
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Product'
+    ProductGetMany:
+      description: Response for getting many products
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProductListPage'
+    ProductGetManyVersions:
+      description: Response for getting a paginated list of versions of an API Product
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProductVersionListPage'
+    ProductVersionGet:
+      description: Response for getting a product version
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProductVersion'
+    ProductVersionSpecGet:
+      description: Response for getting a product version spec document
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProductVersionSpec'
+    ProductVersionSpecOperationsGet:
+      description: Response for getting product version spec operations
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProductVersionSpecOperations'
+    ProductDocumentGet:
+      description: Response for getting one of the product's documents
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProductDocument'
+    ProductDocumentTreeGet:
+      description: Response for getting product documentation tree
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProductDocumentTree'
+  schemas:
+    Product:
+      title: Product
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - created_at
+        - updated_at
+        - name
+      properties:
+        id:
+          type: string
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          description: An ISO-8604 timestamp representation of product creation date.
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          description: An ISO-8604 timestamp representation of product update date.
+          readOnly: true
+        name:
+          type: string
+          example: Billing
+          description: name of service
+        display_name:
+          type: string
+          example: Billing
+          description: display name used by UI for service
+        description:
+          type: string
+          example: Api for billing functions
+        labels:
+          type: object
+    ProductListPage:
+      title: ProductListPage
+      type: object
+      properties:
+        meta:
+          $ref: '../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Product'
+    ProductVersion:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          description: An ISO-8604 timestamp representation of product version creation date.
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          description: An ISO-8604 timestamp representation of product version update date.
+          readOnly: true
+        version:
+          type: string
+          example: v2.0.0
+          description: Name of product version
+        is_deprecated:
+          type: boolean
+          description: If true, product version is deprecated
+        tracking_id:
+          type: string
+          format: uuid
+          description: ID used for application registration with Konnect Application Auth Plugin
+      required:
+        - id
+        - created_at
+        - updated_at
+        - version
+        - is_deprecated
+        - tracking_id
+    ProductVersionListPage:
+      title: ProductVersionListPage
+      type: object
+      properties:
+        meta:
+          $ref: '../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductVersion'
+    ProductVersionSpec:
+      type: string
+      title: Product Version Spec Document
+      description: Open API specification
+    ProductVersionSpecOperations:
+      type: object
+      title: Operations in product version spec document
+      description: List of every operation detailed in the product version spec document
+      properties:
+        operations:
+          type: array
+          items:
+            type: object
+            properties:
+              path:
+                type: string
+                example: /pet
+              method:
+                type: string
+                enum: [get, patch, post, put, delete, options, connect, trace]
+                example: post
+              opertationId:
+                type: string
+                example: "addPet"
+              tags:
+                type: array
+                items:
+                  type: string
+                  example: "pet"
+              summary:
+                type: string
+                example: "Add a new Pet to the store"
+              depercated:
+                type: boolean
+    ProductDocument:
+      type: object
+      title: Document
+      description: a document
+      required:
+        - id
+        - slug
+        - meta
+        - title
+        - content
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: the id of the document
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        parent_document_id:
+          type: string
+          format: uuid
+          description: the id of the parent document
+          nullable: true
+          example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
+        slug:
+          type: string
+          description: the slug of the document
+          example: getting-started
+        content:
+          $ref: '../../../../common/definitions/documenthub_nodes.yaml#/components/schemas/DocumentBlock'
+        meta:
+          type: object
+          description: the metadata of the document
+          additionalProperties: true
+          example:
+            title: Hello World
+            description: This is a description
+            keywords: hello, world
+        title:
+          type: string
+          description: the title of the document
+          example: Hello World
+    ProductDocumentTree:
+      type: object
+      title: ProductDocumentTree
+      description: a list of top-level documents in a document tree, each with their children
+      required:
+        - tree
+      properties:
+        tree:
+          $ref: '#/components/schemas/ProductDocumentTreeItem'
+    ProductDocumentTreeItem:
+      type: object
+      title: ProductDocumentTreeItem
+      description: an item in a document tree attached to a product
+      required:
+        - id
+        - title
+        - slug
+        - meta
+        - children
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        parent_document_id:
+          type: string
+          format: uuid
+          nullable: true
+          example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
+        title:
+          type: string
+          description: the title of the document
+          example: Getting Started
+        slug:
+          type: string
+          description: the slug of the document
+          example: getting-started
+        meta:
+          type: object
+          description: the metadata of the document
+          additionalProperties: true
+          example:
+            author: Jane Doe
+            description: This is a description
+            keywords: hello, world
+        children:
+          type: array
+          items:
+            $ref: '../../../../common/definitions/documenthub_nodes.yaml#/components/schemas/DocumentBlock'
+security:
+  - bearerAuth: []
+tags:
+  - name: products
+  - name: versions
+  - name: documentation

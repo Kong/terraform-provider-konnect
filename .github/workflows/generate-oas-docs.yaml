@@ -27,6 +27,9 @@ jobs:
         run: |
           npm install
 
+      - name: Bundle Apis
+        run: npm run bundle-apis
+
       - name: Generate OAS Doc Files
         run: |
           npm run generate-docs

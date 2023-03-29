@@ -58,6 +58,9 @@ jobs:
           cd konnect/packages/identity/v2/npm
           npm install
 
+      - name: Bundle Apis
+        run: npm run bundle-apis
+
       - name: Validate Spec
         run: npm run validate:identity-v2-spec
 
@@ -96,6 +99,9 @@ jobs:
           npm install
           cd konnect/packages/organization-settings/v2/npm
           npm install
+
+      - name: Bundle Apis
+        run: npm run bundle-apis
 
       - name: Validate Spec
         run: npm run validate:organization-settings-v2-spec

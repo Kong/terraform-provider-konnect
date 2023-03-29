@@ -1,0 +1,4 @@
+plugins:
+  - './redocly/plugins/kong-aip-compliancy/plugin.js'
+preprocessors:
+  kong-aip-compliancy/add-additional-prop: false

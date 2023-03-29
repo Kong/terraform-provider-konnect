@@ -39,10 +39,8 @@ paths:
       - app-reg
 components:
   securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
+    portalAccessToken:
+      $ref: '../../../../common/definitions/security.yaml#/components/securitySchemes/portalAccessToken'
   schemas:
     ApplicationRegistrationConfiguration:
       type: object
@@ -239,7 +237,7 @@ components:
           schema:
             $ref: '#/components/schemas/Error'
 security:
-  - bearerAuth: []
+  - portalAccessToken: []
 tags:
   - name: app-reg
     description: Application Registration

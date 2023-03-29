@@ -27,9 +27,8 @@ paths:
         - Search
 components:
   securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
+    portalAccessToken:
+      $ref: '../../../../common/definitions/security.yaml#/components/securitySchemes/portalAccessToken'
   parameters:
     Page:
       name: page
@@ -345,7 +344,7 @@ components:
             size: 1
             total: 4
 security:
-  - bearerAuth: []
+  - portalAccessToken: []
   - {}
 tags:
   - name: Search

@@ -218,10 +218,8 @@ paths:
         - credentials
 components:
   securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
+    portalAccessToken:
+      $ref: '../../../../common/definitions/security.yaml#/components/securitySchemes/portalAccessToken'
   parameters:
     ApplicationId:
       name: applicationId
@@ -640,7 +638,7 @@ components:
           example: The requested team was not found
           description: Details about the error.
 security:
-  - bearerAuth: []
+  - portalAccessToken: []
 tags:
   - name: applications
   - name: credentials

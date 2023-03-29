@@ -83,10 +83,8 @@ paths:
         - registrations
 components:
   securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
+    portalAccessToken:
+      $ref: '../../../../common/definitions/security.yaml#/components/securitySchemes/portalAccessToken'
   parameters:
     ApplicationId:
       name: applicationId
@@ -296,6 +294,6 @@ components:
               - field
               - reason
 security:
-  - bearerAuth: []
+  - portalAccessToken: []
 tags:
   - name: registrations

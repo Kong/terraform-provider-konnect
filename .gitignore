@@ -139,3 +139,5 @@ konnect/packages/**/client
 portal/packages/**/client
 output
 packages
+
+**/computed

@@ -6,12 +6,23 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Bundle Apis
+        run: |
+          npm ci
+          npm run bundle-apis
+ 
       - uses: stoplightio/spectral-action@latest
         name: lint konnect definitions
         with:
-          file_glob: 'konnect/definitions/**/openapi.yaml'
+          file_glob: 'konnect/definitions/**/computed/openapi.yaml'
 
       - uses: stoplightio/spectral-action@latest
         name: lint portal definitions
         with:
-          file_glob: 'portal/definitions/**/openapi.yaml'
+          file_glob: 'portal/definitions/**/computed/openapi.yaml'

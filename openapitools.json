@@ -7,7 +7,7 @@
       "identity-v2-client": {
         "generatorName": "typescript-axios",
         "output": "konnect/packages/identity/v2/npm/client",
-        "glob": "konnect/definitions/identity/v2/openapi.yaml",
+        "glob": "konnect/definitions/identity/v2/computed/openapi.yaml",
         "templateDir": "oas-generator-templates",
         "additionalProperties": {
           "modelPropertyNaming": "original",
@@ -17,7 +17,7 @@
       "organization-settings-v2-client": {
         "generatorName": "typescript-axios",
         "output": "konnect/packages/organization-settings/v2/npm/client",
-        "glob": "konnect/definitions/organization-settings/v2/openapi.yaml",
+        "glob": "konnect/definitions/organization-settings/v2/computed/openapi.yaml",
         "templateDir": "oas-generator-templates",
         "additionalProperties": {
           "modelPropertyNaming": "original",

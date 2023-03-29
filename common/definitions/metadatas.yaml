@@ -1,0 +1,44 @@
+components:
+  schemas:
+    PaginatedMeta:
+      type: object
+      title: PaginatedMeta
+      description: returns the pagination information
+      properties:
+        page:
+          $ref: '#/components/schemas/PageMeta'
+      required:
+      - page
+    PageMeta:
+      type: object
+      description: Contains pagination query parameters and the total number of objects returned.
+      required:
+      - number
+      - size
+      - total
+      properties:
+        number:
+          type: number
+          example: 2
+        size:
+          type: number
+          example: 10
+        total:
+          type: number
+          example: 100
+  parameters:
+    Page:
+      name: page
+      description: Determines which page of the entity to retrieve.
+      required: false
+      in: query
+      schema:
+        title: 'PageParameters'
+        type: object
+        properties:
+          'page[size]':
+            type: integer
+            example: 10
+          'page[number]':
+            type: integer
+            example: 2

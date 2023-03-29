@@ -43,7 +43,7 @@ const headers = {
   for (let mode of projects) {
     const baseDir = `${__dirname}/..`;
 
-    let files = await fg(`${baseDir}/${mode}/definitions/**/openapi.yaml`);
+    let files = await fg(`${baseDir}/${mode}/definitions/**/computed/openapi.yaml`);
 
     const openapiFiles = [];
 
