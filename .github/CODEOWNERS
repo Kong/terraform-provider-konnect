@@ -1,6 +1,6 @@
 # IdentityAPI
-v2/identity.yaml    @Kong/team-platform-services
-v2/portal-rbac.yaml    @Kong/team-platform-services
+konnect/definitions/identity/**    @Kong/team-platform-services
+konnect/definitions/portal-rbac/**   @Kong/team-platform-services
 
 # Portal
 portal/    @Kong/team-devx
