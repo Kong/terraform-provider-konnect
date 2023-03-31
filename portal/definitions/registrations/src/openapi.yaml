@@ -20,11 +20,11 @@ paths:
         '200':
           $ref: '#/components/responses/GetManyRegistrations'
         '400':
-          $ref: '#/components/responses/BadRequest'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       tags:
         - registrations
     post:
@@ -39,13 +39,13 @@ paths:
         '201':
           $ref: '#/components/responses/CreateRegistration'
         '400':
-          $ref: '#/components/responses/BadRequest'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
         '409':
-          $ref: '#/components/responses/Conflict'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Conflict'
       tags:
         - registrations
   /api/v2/applications/{applicationId}/registrations/{registrationId}:
@@ -60,9 +60,9 @@ paths:
         '200':
           $ref: '#/components/responses/GetRegistration'
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       tags:
         - registrations
     delete:
@@ -76,9 +76,9 @@ paths:
         '204':
           description: The registration has been deleted
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       tags:
         - registrations
 components:
@@ -121,30 +121,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/GetManyRegistrationsResponse'
-    NotFound:
-      description: Not Found
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Conflict:
-      description: Conflict
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthenticated:
-      description: Unauthenticated
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Bad Request
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/Error'
   requestBodies:
     CreateRegistration:
       description: Create an application registration
@@ -154,29 +130,6 @@ components:
           schema:
             $ref: '#/components/schemas/CreateRegistrationPayload'
   schemas:
-    PaginatedMeta:
-      type: object
-      additionalProperties: false
-      title: PaginatedMeta
-      description: Returns pagination information
-      properties:
-        page:
-          type: object
-          description: Contains pagination query parameters and the total number of objects returned.
-          properties:
-            number:
-              type: integer
-              example: 2
-              description: Specifies the number of objects returned per page.
-            size:
-              type: integer
-              example: 10
-              maximum: 100
-              description: Specifies the size of the page.
-            total:
-              type: integer
-              example: 100
-              description: Integer representation of the amount of items returned.
     CreateRegistrationPayload:
       additionalProperties: false
       type: object
@@ -197,7 +150,7 @@ components:
       - meta
       properties:
         meta:
-          $ref: '#/components/schemas/PaginatedMeta'
+          $ref: '../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
         data:
           type: array
           items:
@@ -241,58 +194,6 @@ components:
           description: ISO timestamp the registration record was last updated
           type: string
           format: date-time
-    Error:
-      type: object
-      title: Error
-      description: standard error
-      x-examples:
-        Example 1:
-          status: 404
-          title: Not Found
-          type: https://kongapi.info/konnect/not-found
-          instance: 'portal:trace:2287285207635123011'
-          detail: The requested document was not found
-      required:
-      - status
-      - title
-      - instance
-      properties:
-        status:
-          type: integer
-          description: The HTTP status code.
-          example: 404
-        title:
-          type: string
-          description: The error response code.
-          example: Not Found
-        type:
-          type: string
-          description: The error type.
-          example: Not Found
-        instance:
-          type: string
-          example: 'portal:trace:2287285207635123011'
-          description: The portal traceback code
-        detail:
-          type: string
-          example: The requested team was not found
-          description: Details about the error.
-        invalid_parameters:
-          type: array
-          description: An array of objects that contains information related to the error response.
-          items:
-            type: object
-            additionalProperties: true
-            properties:
-              rule:
-                type: string
-              field:
-                type: string
-              reason:
-                type: string
-            required:
-              - field
-              - reason
 security:
   - portalAccessToken: []
 tags:

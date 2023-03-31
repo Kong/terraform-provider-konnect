@@ -288,6 +288,7 @@ overrides:
     rules:
       paths-not-include-api: "off"
       oas3-api-servers: "off"
+      server-url-must-contain-version-aip-3101: "off"
   - files:
       - "konnect/definitions/identity/v2/**/openapi.yaml"
       - "konnect/definitions/runtime-groups-config/v2/**/openapi.yaml"

@@ -15,14 +15,14 @@ paths:
       description: This endpoint allows the developer to list applications
       operationId: get-many-applications
       parameters:
-        - $ref: '#/components/parameters/Page'
+        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/Page'
       responses:
         '200':
           $ref: '#/components/responses/GetManyApplications'
         '400':
-          $ref: '#/components/responses/BadRequest'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
       tags:
         - applications
     post:
@@ -35,17 +35,17 @@ paths:
         '201':
           $ref: '#/components/responses/ApplicationCreation'
         '400':
-          $ref: '#/components/responses/BadRequest'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '403':
-          $ref: '#/components/responses/Forbidden'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
         '409':
-          $ref: '#/components/responses/Conflict'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Conflict'
         '500':
-          $ref: '#/components/responses/InternalServerError'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Internal'
       tags:
         - applications
   /api/v2/applications/{applicationId}:
@@ -59,11 +59,11 @@ paths:
         '200':
           $ref: '#/components/responses/GetApplication'
         '400':
-          $ref: '#/components/responses/BadRequest'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       tags:
         - applications
     delete:
@@ -76,11 +76,11 @@ paths:
         '204':
           description: The application has been deleted
         '400':
-          $ref: '#/components/responses/BadRequest'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
         '429':
           $ref: '#/components/responses/TooManyRequests'
       tags:
@@ -97,15 +97,15 @@ paths:
         '200':
           $ref: '#/components/responses/ApplicationUpdate'
         '400':
-          $ref: '#/components/responses/BadRequest'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
         '409':
-          $ref: '#/components/responses/Conflict'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Conflict'
         '500':
-          $ref: '#/components/responses/InternalServerError'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Internal'
       tags:
         - applications
   /api/v2/applications/{applicationId}/refresh-token:
@@ -119,13 +119,13 @@ paths:
         '201':
           $ref: '#/components/responses/RefreshToken'
         '400':
-          $ref: '#/components/responses/BadRequest'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
         '500':
-          $ref: '#/components/responses/InternalServerError'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Internal'
       tags:
         - applications
         - credentials
@@ -136,18 +136,18 @@ paths:
       operationId: get-many-credentials
       parameters:
         - $ref: '#/components/parameters/ApplicationId'
-        - $ref: '#/components/parameters/Page'
+        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/Page'
       responses:
         '200':
           $ref: '#/components/responses/GetCredentials'
         '400':
-          $ref: '#/components/responses/BadRequest'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '403':
-          $ref: '#/components/responses/Forbidden'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
         '500':
-          $ref: '#/components/responses/InternalServerError'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Internal'
       tags:
         - credentials
     post:
@@ -162,13 +162,13 @@ paths:
         '201':
           $ref: '#/components/responses/CredentialCreation'
         '400':
-          $ref: '#/components/responses/BadRequest'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
         '500':
-          $ref: '#/components/responses/InternalServerError'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Internal'
       tags:
         - credentials
   /api/v2/applications/{applicationId}/credentials/{credentialId}:
@@ -185,13 +185,13 @@ paths:
         '200':
           description: credential properly updated
         '400':
-          $ref: '#/components/responses/BadRequest'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
         '500':
-          $ref: '#/components/responses/InternalServerError'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Internal'
       tags:
         - credentials
     delete:
@@ -205,15 +205,15 @@ paths:
         '204':
           description: credential properly deleted
         '400':
-          $ref: '#/components/responses/BadRequest'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
         '409':
-          $ref: '#/components/responses/Conflict'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Conflict'
         '500':
-          $ref: '#/components/responses/InternalServerError'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Internal'
       tags:
         - credentials
 components:
@@ -237,13 +237,6 @@ components:
       schema:
         type: string
         format: uuid
-    Page:
-      name: page
-      description: Determines which page of search results to retrieve.
-      required: false
-      in: query
-      schema:
-        $ref: '#/components/schemas/PageParameters'
   requestBodies:
     CreateApplication:
       description: Create an application
@@ -316,83 +309,14 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ApplicationUpdateResponse'
-    Unauthenticated:
-      description: Unauthenticated
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Conflict:
-      description: Conflict
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Bad Request
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Forbidden:
-      description: Forbidden
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/Error'
+    
     TooManyRequests:
       description: Too Many Requests
       content:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/Error'
-    NotFound:
-      description: Not Found
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    InternalServerError:
-      description: Internal Server Error
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
-    PaginatedMeta:
-      type: object
-      additionalProperties: false
-      title: PaginatedMeta
-      description: Returns pagination information
-      properties:
-        page:
-          type: object
-          description: Contains pagination query parameters and the total number of objects returned.
-          properties:
-            number:
-              type: integer
-              example: 2
-              description: Specifies the number of objects returned per page.
-            size:
-              type: integer
-              example: 10
-              maximum: 100
-              description: Specifies the size of the page.
-            total:
-              type: integer
-              example: 100
-              description: Integer representation of the amount of items returned.
-    PageParameters:
-      additionalProperties: false
-      title: 'PageParameters'
-      type: object
-      properties:
-        size:
-          type: integer
-          example: 10
-        number:
-          type: integer
-          example: 2
     CreateCredentialPayload:
       additionalProperties: false
       type: object
@@ -417,7 +341,7 @@ components:
         - meta
       properties:
         meta:
-          $ref: '#/components/schemas/PaginatedMeta'
+          $ref: '../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
         data:
           type: array
           items:
@@ -453,7 +377,7 @@ components:
         - meta
       properties:
         meta:
-          $ref: '#/components/schemas/PaginatedMeta'
+          $ref: '../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
         data:
           type: array
           items:

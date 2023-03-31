@@ -22,9 +22,9 @@ paths:
         '201':
           description: the developer has been properly registered.
         '400':
-          $ref: '#/components/responses/BadRequest'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '500':
-          $ref: '#/components/responses/InternalServerError'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Internal'
       tags:
         - developer
   /api/v2/developer/password-reset:
@@ -44,85 +44,12 @@ paths:
         '200':
           description: the password reset flow has been initiated.
         '400':
-          $ref: '#/components/responses/BadRequest'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '500':
-          $ref: '#/components/responses/InternalServerError'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Internal'
       tags:
         - developer
 components:
-  responses:
-    InternalServerError:
-      description: Internal Server Error
-      content:
-        application/problem+json:
-          schema:
-            title: 'InternalServerError'
-            type: object
-            description: The error response object.
-            properties:
-              status:
-                type: integer
-                description: The HTTP status code.
-                example: 500
-                enum:
-                  - 500
-              title:
-                type: string
-                description: The error response code.
-                example: Internal Server Error
-              instance:
-                type: string
-                example: 'konnect:trace:2287285207635123011'
-                description: The Konnect traceback code
-              details:
-                type: string
-                description: Details about the error.
-            required:
-              - status
-              - title
-    BadRequest:
-      description: Bad Request
-      content:
-        application/problem+json:
-          schema:
-            title: 'BadRequestError'
-            type: object
-            description: The error object
-            properties:
-              status:
-                type: integer
-                description: The HTTP response code
-                example: 400
-                enum:
-                  - 400
-              title:
-                type: string
-                example: Bad Request
-                description: The Error response
-              instance:
-                type: string
-                description: The portal traceback ID.
-                example: 'konnect:trace:3674017986744198214'
-              # used on failed validation in requests, not for failing business-logic requirements
-              invalid_parameters:
-                type: array
-                description: An array of objects that contains information related to the error response.
-                items:
-                  type: object
-                  additionalProperties: true
-                  properties:
-                    rule:
-                      type: string
-                    field:
-                      type: string
-                    reason:
-                      type: string
-                required:
-                  - field
-                  - reason
-            required:
-              - status
-              - title
   schemas:
     RegisterPayload:
       title: register payload

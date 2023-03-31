@@ -194,12 +194,45 @@ components:
       allOf:
       - $ref: '#/components/schemas/BaseError'
     ForbiddenError:
+      properties:
+        status:
+          example: 403
+        title:
+          example: Forbidden
+        type:
+          example: https://httpstatuses.com/403
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Forbidden
       allOf:
       - $ref: '#/components/schemas/BaseError'
     NotFoundError:
+      properties:
+        status:
+          example: 404
+        title:
+          example: Not Found
+        type:
+          example: https://httpstatuses.com/404
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Not found
       allOf:
       - $ref: '#/components/schemas/BaseError'
     ConflictError:
+      properties:
+        status:
+          example: 409
+        title:
+          example: Conflict
+        type:
+          example: https://httpstatuses.com/409
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Conflict
       allOf:
       - $ref: '#/components/schemas/BaseError'
     InternalError:
