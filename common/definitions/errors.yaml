@@ -88,6 +88,12 @@ components:
         - min_symbols
     InvalidParameters:
       type: array
+      uniqueItems: true
+      description: invalid parameters
+      properties:
+        invalid_parameters:
+          type: array
+          uniqueItems: true
       items:
         $ref: '#/components/schemas/InvalidParameterItem'
     InvalidParameterItem:
@@ -155,10 +161,36 @@ components:
             provided as "Sentence case" for direct use in the UI.
           readOnly: true
     BadRequestError:
+      properties:
+        status:
+          example: 400
+        title:
+          example: Bad Request
+        type:
+          example: https://httpstatuses.com/400
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Invalid request body
+        invalid_parameters:
+          $ref: '#/components/schemas/InvalidParameters'
       allOf:
       - $ref: '#/components/schemas/BaseError'
       - $ref: '#/components/schemas/InvalidParameters'
     UnauthorizedError:
+      properties:
+        status:
+          example: 401
+        title:
+          example: Unauthorized
+        type:
+          example: https://httpstatuses.com/401
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Invalid credentials
+        invalid_parameters:
+          $ref: '#/components/schemas/InvalidParameters'
       allOf:
       - $ref: '#/components/schemas/BaseError'
     ForbiddenError:
