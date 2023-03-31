@@ -27,7 +27,7 @@ jobs:
 
       - name: Process OpenAPI files
         run: |
-          node tools/generate-sdk-openapi-files.js
+          npm run merge-oas-for-sdk
 
       - name: Raise PR in downstream repos
         uses: mheap/raise-pr-on-change-action@v1

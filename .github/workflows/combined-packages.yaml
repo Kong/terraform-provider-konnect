@@ -34,7 +34,7 @@ jobs:
 
       - name: Process OpenAPI files
         run: |
-          node tools/generate-sdk-openapi-files.js
+          npm run merge-oas-for-sdk
 
       - name: "[Konnect] Generate Dev Client"
         run: npm run generate:konnect-dev-client

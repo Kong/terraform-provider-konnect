@@ -26,3 +26,8 @@ jobs:
         name: lint portal definitions
         with:
           file_glob: 'portal/definitions/**/computed/openapi.yaml'
+          
+      - name: Lint OAS artifacts
+        shell: bash
+        run: |
+          npm run lint:artifacts
