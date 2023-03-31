@@ -31,9 +31,8 @@ paths:
       summary: Get the organization's authentication settings
       description: Returns authentication configuration for the current organization.
       operationId: get-authentication-settings
-      x-unstable: false
       tags:
-        - Authentication Settings
+        - Auth Settings
       responses:
         '200':
           $ref: '#/components/responses/AuthenticationSettings'
@@ -43,11 +42,10 @@ paths:
       summary: Updates the organization's authentication settings
       description: Returns updated authentication configuration for the current organization.
       operationId: update-authentication-settings
-      x-unstable: false
       requestBody:
         $ref: '#/components/requestBodies/UpdateAuthenticationSettings'
       tags: 
-        - Authentication Settings
+        - Auth Settings
       responses:
         '200':
           $ref: '#/components/responses/AuthenticationSettings'
@@ -92,7 +90,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       tags:
-        - IdPs
+        - Auth Settings
       description: Fetch the IdP configuration.
     parameters: []
     patch:
@@ -111,7 +109,7 @@ paths:
       requestBody:
         $ref: '#/components/requestBodies/UpdateIdPConfiguration'
       tags:
-        - IdPs
+        - Auth Settings
   /identity-provider/team-mappings:
     put:
       summary: Update Team Mappings
@@ -128,7 +126,7 @@ paths:
         '412':
           $ref: '#/components/responses/PreconditionFailed'
       tags:
-        - IdPs
+        - Auth Settings
       description: Updates the IdP group to Konnect team mapping.
       requestBody:
         $ref: '#/components/requestBodies/UpdateTeamMappings'
@@ -147,7 +145,7 @@ paths:
         '412':
           $ref: '#/components/responses/PreconditionFailed'
       tags:
-        - IdPs
+        - Auth Settings
       description: Fetch the IdP group to Konnect team mapping.
   /roles:
     get:
@@ -654,7 +652,6 @@ paths:
         '403':
           $ref: '#/components/responses/Unauthorized'
       operationId: get-system-accounts
-      x-unstable: true
       description: |-
         _The system accounts feature is currently in beta and is subject to change._
 
@@ -676,7 +673,6 @@ paths:
     post:
       summary: Create System Account
       operationId: post-system-accounts
-      x-unstable: true
       tags:
         - System Accounts
       description: |-
@@ -709,7 +705,6 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       operationId: get-system-accounts-id
-      x-unstable: true
       description: |-
         _The system accounts feature is currently in beta and is subject to change._
 
@@ -724,7 +719,6 @@ paths:
     patch:
       summary: Update System Account
       operationId: patch-system-accounts-id
-      x-unstable: true
       responses:
         '200':
           $ref: '#/components/responses/SystemAccountSingle'
@@ -747,7 +741,6 @@ paths:
     delete:
       summary: Delete System Account
       operationId: delete-system-accounts-id
-      x-unstable: true
       responses:
         '204':
           description: No Content
@@ -780,7 +773,6 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       operationId: get-system-account-id-access-tokens
-      x-unstable: true
       description: |-
         _The system accounts feature is currently in beta and is subject to change._
 
@@ -807,7 +799,6 @@ paths:
     post:
       summary: Create System Account Access Token
       operationId: post-system-accounts-id-access-tokens
-      x-unstable: true
       responses:
         '201':
           $ref: '#/components/responses/SystemAccountAccessTokenCreated'
@@ -840,7 +831,6 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       operationId: get-system-accounts-id-access-tokens-id
-      x-unstable: true
       description: |-
         _The system accounts feature is currently in beta and is subject to change._
 
@@ -864,7 +854,6 @@ paths:
     patch:
       summary: Update System Account Access Token
       operationId: patch-system-accounts-id-access-tokens-id
-      x-unstable: true
       responses:
         '200':
           $ref: '#/components/responses/SystemAccountAccessTokenSingle'
@@ -887,7 +876,6 @@ paths:
     delete:
       summary: Delete System Account Access Token
       operationId: delete-system-accounts-id-access-tokens-id
-      x-unstable: true
       responses:
         '204':
           description: No Content
@@ -925,7 +913,6 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       operationId: get-system-accounts-accountId-assigned-roles
-      x-unstable: true
       description: |-
         _The system accounts feature is currently in beta and is subject to change._
 
@@ -947,7 +934,6 @@ paths:
     post:
       summary: Create Assigned Role for System Account
       operationId: post-system-accounts-accountId-assigned-roles
-      x-unstable: true
       responses:
         '201':
           $ref: '#/components/responses/AssignedRoleSingle'
@@ -984,7 +970,6 @@ paths:
     delete:
       summary: Delete Assigned Role from System Account
       operationId: delete-system-accounts-accountId-assigned-roles-roleId
-      x-unstable: true
       responses:
         '204':
           description: No Content
@@ -1020,7 +1005,6 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       operationId: get-teams-teamId-system-accounts
-      x-unstable: true
       description: Returns a paginated list of system accounts that belong to the team specified in the path parameter.
       parameters:
         - $ref: '#/components/parameters/PageSize'
@@ -1039,7 +1023,6 @@ paths:
     post:
       summary: Add System Account to a Team
       operationId: post-teams-teamId-system-accounts
-      x-unstable: true
       responses:
         '201':
           description: Created
@@ -1073,7 +1056,6 @@ paths:
     delete:
       summary: Remove System Account From Team
       operationId: delete-teams-teamId-system-accounts-accountId
-      x-unstable: true
       responses:
         '204':
           description: No Content
@@ -1106,7 +1088,6 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       operationId: get-system-accounts-accountId-teams
-      x-unstable: true
       description: Returns a paginated list of a teams that the system account belongs to.
       parameters:
         - $ref: '#/components/parameters/PageSize'
@@ -2946,8 +2927,6 @@ components:
           description: Region of the entity.
     SystemAccount:
       title: System Account
-      x-stoplight:
-        id: ofv9sp97hg70a
       type: object
       x-examples:
         Example System Account:
@@ -2981,8 +2960,6 @@ components:
           readOnly: true
     SystemAccountAccessToken:
       title: System Account Access Token
-      x-stoplight:
-        id: ofv9sp97hg70a
       x-examples:
         Sample System Account Access Token:
           id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
@@ -3342,7 +3319,7 @@ security:
   - systemAccountAccessToken: []
   - konnectAccessToken: []
 tags:
-  - name: IdPs
+  - name: Auth Settings
   - name: Invites
   - name: Roles
   - name: Team Membership
@@ -3353,4 +3330,4 @@ tags:
   - name: System Accounts - Roles
   - name: System Accounts - Team Membership
   - name: Me
-  - name: Authentication Settings
+ 
