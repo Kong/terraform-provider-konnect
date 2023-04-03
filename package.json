@@ -6,6 +6,7 @@
   "scripts": {
     "lint:all": "spectral lint '(portal|konnect)/definitions/**/computed/openapi.yaml'",
     "lint:artifacts": "spectral lint 'output/**/*.yaml'",
+    "test:common": "node ./common/test/index.js",
     "bundle-apis": "node ./tools/bundle.js",
     "merge-oas-for-sdk": "node ./tools/generate-sdk-openapi-files.js",
     "generate-docs": "npm-run-all generate:*-docs",
@@ -38,9 +39,11 @@
   "homepage": "https://github.com/Kong/platform-api#readme",
   "devDependencies": {
     "@apidevtools/json-schema-ref-parser": "^9.1.0",
+    "@apidevtools/swagger-parser": "^10.1.0",
     "@openapitools/openapi-generator-cli": "^2.5.2",
     "@redocly/cli": "^1.0.0-beta.124",
     "@stoplight/spectral-cli": "^6.5.0",
+    "ajv": "^8.12.0",
     "fast-glob": "^3.2.12",
     "js-yaml": "^4.1.0",
     "mergician": "^1.0.3",

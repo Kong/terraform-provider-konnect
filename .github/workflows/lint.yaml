@@ -16,6 +16,9 @@ jobs:
         run: |
           npm ci
           npm run bundle-apis
+      
+      - name: Test common definitions
+        run: npm run test:common
  
       - uses: stoplightio/spectral-action@latest
         name: lint konnect definitions

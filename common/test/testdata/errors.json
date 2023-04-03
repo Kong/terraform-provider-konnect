@@ -1,0 +1,87 @@
+{
+    "BadRequestError": {
+        "ok": [
+            {
+                "type": "https://kongapi.info/konnect/create-member-validation",
+                "status": 400,
+                "title": "Validation failed",
+                "detail": "the current validation as failed because name is required",
+                "instance": "kong:trace:6c1ef33ae5bce33634d7d7d695c7f203",
+                "invalid_parameters": [
+                    {
+                        "field": "name",
+                        "rule": "required",
+                        "reason": "is a required field"
+                    },
+                    {
+                        "field": "role",
+                        "reason": "must be one of: [admin, member]",
+                        "rule": "enum",
+                        "choices": [
+                            "admin",
+                            "member"
+                        ]
+                    },
+                    {
+                        "field": "ssh_key",
+                        "reason": "invalid SSH key provided"
+                    }
+                ]
+            }
+        ],
+        "nok": [
+            {
+                "type": "https://kongapi.info/konnect/create-member-validation",
+                "status": 400,
+                "title": "Validation failed",
+                "detail": "the current validation as failed because name is required",
+                "instance": "kong:trace:6c1ef33ae5bce33634d7d7d695c7f203",
+                "invalid_parameters": null
+            },
+            {
+                "type": "https://kongapi.info/konnect/create-member-validation",
+                "status": 400,
+                "title": "Validation failed",
+                "detail": "the current validation as failed because name is required",
+                "instance": "kong:trace:6c1ef33ae5bce33634d7d7d695c7f203",
+                "invalid_parameters": []
+            }
+        ]
+    },
+    "UnauthorizedError": {
+        "ok": [
+            {
+                "type": "https://kongapi.info/konnect/unauthorized",
+                "status": 401,
+                "title": "Not authenticated",
+                "detail": "you need to be authenticated to access this endpoint",
+                "instance": "kong:trace:6c1ef33ae5bce33634d7d7d695c7f203"
+            }
+        ],
+        "nok": [
+            {
+                "type": "https://kongapi.info/konnect/unauthorized",
+                "status": 401,
+                "title": "Not authenticated",
+                "detail": "you need to be authenticated to access this endpoint",
+                "instance": "kong:trace:6c1ef33ae5bce33634d7d7d695c7f203",
+                "invalid_parameters": []
+            }
+        ]
+    },
+    "ForbiddenError": {
+        "ok": [
+            {
+                "type": "https://kongapi.info/konnect/invalid-permissions",
+                "status": 403,
+                "title": "Invalid Permissions",
+                "detail": "You must have the [administrator] role to perform this action",
+                "instance": "kong:trace:6c1ef33ae5bce33634d7d7d695c7f203"
+            }
+        ]
+    },
+    "NotFoundError": {},
+    "ConflictError": {},
+    "InternalError": {},
+    "NotAvailableError": {}
+}

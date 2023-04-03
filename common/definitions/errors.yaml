@@ -77,6 +77,7 @@ components:
       description: invalid parameters rules
       type: string
       readOnly: true
+      nullable: true
       enum:
         - required
         - enum
@@ -88,12 +89,10 @@ components:
         - min_symbols
     InvalidParameters:
       type: array
+      nullable: false
       uniqueItems: true
+      minItems: 1
       description: invalid parameters
-      properties:
-        invalid_parameters:
-          type: array
-          uniqueItems: true
       items:
         $ref: '#/components/schemas/InvalidParameterItem'
     InvalidParameterItem:
@@ -112,11 +111,11 @@ components:
         choices:
           type: array
           uniqueItems: true
+          nullable: true
           items: {}
           readOnly: true
       required:
       - field
-      - rule
       - reason
     BaseError:
       type: object
@@ -161,6 +160,8 @@ components:
             provided as "Sentence case" for direct use in the UI.
           readOnly: true
     BadRequestError:
+      type: object
+      additionalProperties: false
       properties:
         status:
           example: 400
@@ -176,8 +177,9 @@ components:
           $ref: '#/components/schemas/InvalidParameters'
       allOf:
       - $ref: '#/components/schemas/BaseError'
-      - $ref: '#/components/schemas/InvalidParameters'
     UnauthorizedError:
+      type: object
+      additionalProperties: false
       properties:
         status:
           example: 401
@@ -189,11 +191,11 @@ components:
           example: kong:trace:1234567890
         detail:
           example: Invalid credentials
-        invalid_parameters:
-          $ref: '#/components/schemas/InvalidParameters'
       allOf:
       - $ref: '#/components/schemas/BaseError'
     ForbiddenError:
+      type: object
+      additionalProperties: false
       properties:
         status:
           example: 403
@@ -208,6 +210,8 @@ components:
       allOf:
       - $ref: '#/components/schemas/BaseError'
     NotFoundError:
+      type: object
+      additionalProperties: false
       properties:
         status:
           example: 404
@@ -222,6 +226,8 @@ components:
       allOf:
       - $ref: '#/components/schemas/BaseError'
     ConflictError:
+      type: object
+      additionalProperties: false
       properties:
         status:
           example: 409
