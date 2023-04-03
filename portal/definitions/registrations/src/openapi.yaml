@@ -12,7 +12,7 @@ paths:
   /api/v2/applications/{applicationId}/registrations:
     get:
       summary: Get application registrations
-      description: This endpoint lists service registrations for an application
+      description: This endpoint lists product registrations for an application
       operationId: get-many-application-registrations
       parameters:
         - $ref: '#/components/parameters/ApplicationId'
@@ -28,8 +28,8 @@ paths:
       tags:
         - registrations
     post:
-      summary: Register an application for a service
-      description: This endpoint registers an application for a service
+      summary: Register an application for a product
+      description: This endpoint registers an application for a product
       operationId: create-application-registration
       parameters:
         - $ref: '#/components/parameters/ApplicationId'
@@ -51,7 +51,7 @@ paths:
   /api/v2/applications/{applicationId}/registrations/{registrationId}:
     get:
       summary: Get an application registration
-      description: This endpoint retrieves the specified service registration for an application
+      description: This endpoint retrieves the specified product registration for an application
       operationId: get-one-application-registration
       parameters:
         - $ref: '#/components/parameters/ApplicationId'
@@ -67,7 +67,7 @@ paths:
         - registrations
     delete:
       summary: Delete an application registration
-      description: This endpoint unregister an application for a service version
+      description: This endpoint unregister an application for a product version
       operationId: delete-application-registration
       parameters:
         - $ref: '#/components/parameters/ApplicationId'
@@ -136,10 +136,10 @@ components:
       title: CreateRegistrationPayload
       description: an application registration payload
       required:
-        - service_version_id
+        - product_version_id
       properties:
-        service_version_id:
-          description: The UUID of the service version to register for
+        product_version_id:
+          description: The UUID of the product version to register for
           type: string
           format: uuid
     GetManyRegistrationsResponse:
@@ -161,8 +161,9 @@ components:
       required:
         - id
         - status
-        - service_version_id
         - application_id
+        - product_id
+        - product_version_id
         - created_at
         - updated_at
       properties:
@@ -178,8 +179,12 @@ components:
             - pending
             - rejected
             - revoked
-        service_version_id:
-          description: The UUID of the service version registered for
+        product_id:
+          description: The UUID of the product registered for
+          type: string
+          format: uuid
+        product_version_id:
+          description: The UUID of the product version registered for
           type: string
           format: uuid
         application_id:
