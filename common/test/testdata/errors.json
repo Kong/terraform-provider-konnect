@@ -45,6 +45,13 @@
                 "detail": "the current validation as failed because name is required",
                 "instance": "kong:trace:6c1ef33ae5bce33634d7d7d695c7f203",
                 "invalid_parameters": []
+            },
+            {
+                "type": "https://kongapi.info/konnect/create-member-validation",
+                "status": 400,
+                "title": "Validation failed",
+                "detail": "the current validation as failed because name is required",
+                "instance": "kong:trace:6c1ef33ae5bce33634d7d7d695c7f203"
             }
         ]
     },
@@ -56,16 +63,6 @@
                 "title": "Not authenticated",
                 "detail": "you need to be authenticated to access this endpoint",
                 "instance": "kong:trace:6c1ef33ae5bce33634d7d7d695c7f203"
-            }
-        ],
-        "nok": [
-            {
-                "type": "https://kongapi.info/konnect/unauthorized",
-                "status": 401,
-                "title": "Not authenticated",
-                "detail": "you need to be authenticated to access this endpoint",
-                "instance": "kong:trace:6c1ef33ae5bce33634d7d7d695c7f203",
-                "invalid_parameters": []
             }
         ]
     },

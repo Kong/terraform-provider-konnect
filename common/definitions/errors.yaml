@@ -161,7 +161,8 @@ components:
           readOnly: true
     BadRequestError:
       type: object
-      additionalProperties: false
+      required:
+      - invalid_parameters
       properties:
         status:
           example: 400
@@ -179,7 +180,6 @@ components:
       - $ref: '#/components/schemas/BaseError'
     UnauthorizedError:
       type: object
-      additionalProperties: false
       properties:
         status:
           example: 401
@@ -195,7 +195,6 @@ components:
       - $ref: '#/components/schemas/BaseError'
     ForbiddenError:
       type: object
-      additionalProperties: false
       properties:
         status:
           example: 403
@@ -211,7 +210,6 @@ components:
       - $ref: '#/components/schemas/BaseError'
     NotFoundError:
       type: object
-      additionalProperties: false
       properties:
         status:
           example: 404
@@ -227,7 +225,6 @@ components:
       - $ref: '#/components/schemas/BaseError'
     ConflictError:
       type: object
-      additionalProperties: false
       properties:
         status:
           example: 409
