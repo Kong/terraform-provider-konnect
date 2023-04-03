@@ -127,7 +127,6 @@ paths:
         '500':
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/Internal'
       tags:
-        - applications
         - credentials
   /api/v2/applications/{applicationId}/credentials:
     get:
@@ -363,12 +362,26 @@ components:
           type: string
         is_dcr:
           type: boolean
+        created_at:
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          description: An ISO-8601 timestamp representation of application creation date.
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          description: An ISO-8601 timestamp representation of application last updated at date.
+          readOnly: true
       required:
         - id
         - name
         - reference_id
         - description
         - is_dcr
+        - updated_at
+        - created_at
     GetCredentialsResponse:
       additionalProperties: false
       type: object
@@ -449,6 +462,8 @@ components:
         - reference_id
         - description
         - is_dcr
+        - created_at
+        - updated_at
       properties:
         name:
           type: string
@@ -470,6 +485,18 @@ components:
               type: string
             client_secret:
               type: string
+        created_at:
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          description: An ISO-8601 timestamp representation of application creation date.
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          description: An ISO-8601 timestamp representation of application last updated at date.
+          readOnly: true
     UpdateApplicationPayload:
       additionalProperties: false
       type: object
@@ -494,6 +521,8 @@ components:
         - reference_id
         - description
         - is_dcr
+        - updated_at
+        - created_at
       properties:
         name:
           type: string
@@ -505,6 +534,18 @@ components:
           type: string
         is_dcr:
           type: boolean
+        created_at:
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          description: An ISO-8601 timestamp representation of application creation date.
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          description: An ISO-8601 timestamp representation of application last updated at date.
+          readOnly: true
     Error:
       type: object
       title: Error
