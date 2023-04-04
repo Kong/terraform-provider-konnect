@@ -49,8 +49,63 @@ paths:
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/Internal'
       tags:
         - developer
+  /api/v2/developer/me:
+    get:
+      summary: Retrieve My Account
+      tags:
+        - developer
+      responses:
+        '200':
+          $ref: '#/components/responses/MeResponse'
+        '401':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '500':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Internal'
+      operationId: get-developer-me
+      description: Returns info about the current developer.
 components:
+  responses:
+    MeResponse:
+      description: Response from me endpoint.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Developer'
   schemas:
+    Developer:
+      title: Developer
+      type: object
+      description: A developer is an individual who can use a developer portal.
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+          readOnly: true
+        email:
+          type: string
+          format: email
+          example: developer@email.com
+          maxLength: 250
+        full_name:
+          type: string
+          pattern: '^[\w \W]+$'
+          example: API Developer
+          maxLength: 250
+        created_at:
+          type: string
+          format: date-time
+          example: '2022-02-07T17:46:57.52Z'
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          example: '2022-10-08T17:00:00.52Z'
+          readOnly: true
+      required:
+        - full_name
+        - email
     RegisterPayload:
       title: register payload
       description: |
