@@ -23,7 +23,7 @@ jobs:
         with:
           filters: |
             spec:
-              - 'konnect/definitions/identity/v2/openapi.yaml'
+              - 'konnect/definitions/identity/v2/src/openapi.yaml'
               - 'konnect/packages/identity/v2/npm/**'
 
       - uses: dorny/paths-filter@v2
@@ -31,7 +31,7 @@ jobs:
         with:
           filters: |
             spec:
-              - 'konnect/definitions/organization-settings/v2/openapi.yaml'
+              - 'konnect/definitions/organization-settings/v2/src/openapi.yaml'
               - 'konnect/packages/organization-settings/v2/npm/**'
 
   kauth-client-v2-axios-npm:

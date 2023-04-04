@@ -206,13 +206,13 @@ components:
                     type: string
                     example: active
                     enum: [active, inactive]
-                    description: |- 
+                    description: |-
                       Current status of a webhook. `active` indicates the webhook is sending or ready to send requests. 
                       `inactive` indicates the webhook has been turned off due to failed attempts.
                   webhook_enabled:
                     type: boolean
                     example: true
-                    description: |- 
+                    description: |-
                       Configured status of a webhook. `enabled` indicates the client will accept requests. 
                       `disabled` indicates the client will not accept requests.
                   last_attempt_at:
@@ -391,7 +391,7 @@ components:
               start_at:
                 type: string
                 format: date-time
-                description: |- 
+                description: |-
                   The start of a date-time range in RFC3339 format e.g. 2017-07-21T17:32:28Z.
                   Within the last 7 days.
               end_at:
@@ -406,7 +406,7 @@ components:
         application/json:
           schema:
             type: object
-            required: 
+            required:
               - endpoint
               - authorization
             properties:

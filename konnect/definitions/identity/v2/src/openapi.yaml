@@ -13,7 +13,7 @@ paths:
   /accept-invite:
     post:
       summary: Accept Invite
-      description: 'Accepts the Konnect invitation. This endpoint allows you to manually accept the invitation to join a Konnect organization. Upon accepting the invitation, the user''s name and password are set and the active state is set to true. This can be used as an alternative to the https://cloud.konghq.com/login link in the email which will finish the registration process in a web browser.'
+      description: "Accepts the Konnect invitation. This endpoint allows you to manually accept the invitation to join a Konnect organization. Upon accepting the invitation, the user's name and password are set and the active state is set to true. This can be used as an alternative to the https://cloud.konghq.com/login link in the email which will finish the registration process in a web browser."
       operationId: accept-invite
       requestBody:
         $ref: '#/components/requestBodies/AcceptInvite'
