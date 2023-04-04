@@ -44,7 +44,7 @@ paths:
       operationId: update-authentication-settings
       requestBody:
         $ref: '#/components/requestBodies/UpdateAuthenticationSettings'
-      tags: 
+      tags:
         - Auth Settings
       responses:
         '200':
@@ -55,7 +55,6 @@ paths:
           $ref: '#/components/responses/Unauthenticated'
         '403':
           $ref: '#/components/responses/Unauthorized'
-
   /invites:
     post:
       summary: Invite User
@@ -2550,6 +2549,7 @@ components:
                 type: string
                 example: Tiger
                 description: Preferred name of the user.
+                nullable: true
               token:
                 type: string
                 format: uuid
@@ -2559,7 +2559,6 @@ components:
             required:
               - password
               - full_name
-              - preferred_name
               - token
       description: The request schema for the accept invite request.
     InviteUser:
@@ -3106,19 +3105,19 @@ components:
             rule: min_length
             minimum: 8
           - field: new_password
-            reason: 'must contain at least 1 digit'
+            reason: must contain at least 1 digit
             rule: min_digits
             minimum: 1
           - field: new_password
-            reason: 'must contain at least 1 lower case character'
+            reason: must contain at least 1 lower case character
             rule: min_lowercase
             minimum: 1
           - field: new_password
-            reason: 'must contain at least 1 upper case character'
+            reason: must contain at least 1 upper case character
             rule: min_uppercase
             minimum: 1
           - field: new_password
-            reason: 'must contain at least 1 special character'
+            reason: must contain at least 1 special character
             rule: min_symbols
             minimum: 1
     400-systems-team-modified:
@@ -3330,4 +3329,3 @@ tags:
   - name: System Accounts - Roles
   - name: System Accounts - Team Membership
   - name: Me
- 
