@@ -313,6 +313,17 @@ components:
           type: string
           format: uuid
           description: ID used for application registration with Konnect Application Auth Plugin
+        registration_configs:
+          description: Configurations for how the product version is able to be registered for by applications
+          type: array
+          items:
+            type: object
+            required:
+              - name
+            properties:
+              name:
+                type: string
+                enum: [ key-auth, openid-connect ]
       required:
         - id
         - created_at
@@ -320,6 +331,7 @@ components:
         - version
         - is_deprecated
         - tracking_id
+        - registration_configs
     ProductVersionListPage:
       title: ProductVersionListPage
       type: object
