@@ -27,10 +27,10 @@ paths:
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/Internal'
       tags:
         - developer
-  /api/v2/developer/password-reset:
+  /api/v2/developer/forgot-password:
     post:
-      operationId: reset-password
-      summary: Password Reset
+      operationId: forgot-password
+      summary: Forgot Password
       description: |
         Starts the password reset flow for the desired account. An email
         will be sent to the email address to initiate the password reset flow.
