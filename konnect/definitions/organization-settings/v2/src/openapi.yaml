@@ -14,15 +14,15 @@ servers:
 paths:
   /audit-log-replay-job:
     put:
-      summary: Create or replace a job to replay audit logs
+      summary: Update Audit Log Replay Job
       description: |-
         _The audit logs feature is currently in beta and is subject to change._
 
-        Creates or replaces a job to replay/re-send audit logs to an organization's webhook.
-      operationId: create-audit-log-replay-job
+        Updates a job to re-send audit logs to an organization's webhook.
+      operationId: update-audit-log-replay-job
       x-unstable: true
       requestBody:
-        $ref: '#/components/requestBodies/CreateAuditLogReplayJob'
+        $ref: '#/components/requestBodies/ReplaceAuditLogReplayJob'
       tags: [Audit Logs]
       responses:
         '202':
@@ -30,9 +30,9 @@ paths:
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '403':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
         '409':
           $ref: '#/components/responses/Conflict'
     get:
@@ -48,9 +48,9 @@ paths:
         '200':
           $ref: '#/components/responses/AuditLogReplayJob'
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '403':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
   /audit-log-webhook:
     patch:
       summary: Update Audit Log Webhook
@@ -69,30 +69,9 @@ paths:
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '403':
-          $ref: '#/components/responses/Unauthorized'
-    put:
-      deprecated: true
-      summary: Replace Audit Log Webhook
-      description: |-
-        _The audit logs feature is currently in beta and is subject to change._
-
-        Sets configuration for a webhook to receive audit logs.
-      operationId: replace-audit-log-webhook
-      x-unstable: true
-      requestBody:
-        $ref: '#/components/requestBodies/CreateAuditLogWebhook'
-      tags: [Audit Logs]
-      responses:
-        '200':
-          $ref: '#/components/responses/AuditLogWebhook'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
     get:
       summary: Get Audit Log Webhook
       description: |-
@@ -106,9 +85,9 @@ paths:
         '200':
           $ref: '#/components/responses/AuditLogWebhook'
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '403':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
   /audit-log-webhook/status:
     get:
       summary: Get Audit Log Webhook Status
@@ -116,15 +95,16 @@ paths:
         _The audit logs feature is currently in beta and is subject to change._
 
         Returns status of the audit log webhook.
+      operationId: get-audit-log-webhook-status
       x-unstable: true
       tags: [Audit Logs]
       responses:
         '200':
           $ref: '#/components/responses/AuditLogWebhookStatus'
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '403':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
   /audit-log-webhook/jwks.json:
     get:
       operationId: get-audit-log-jwks
@@ -142,7 +122,7 @@ paths:
 components:
   responses:
     AuditLogReplayJob:
-      description: Get response for an audit log replay job
+      description: Response from fetching or updating an audit log replay job
       content:
         application/json:
           schema:
@@ -152,19 +132,19 @@ components:
                 type: string
                 format: date-time
                 example: '2017-07-21T17:32:28Z'
-                description: The start of a date-time range.
+                description: The start of a date-time range. Initial value is 0001-01-01T00:00:0Z.
               end_at:
                 type: string
                 format: date-time
                 example: '2017-07-21T17:32:28Z'
-                description: The end of a date-time range.
+                description: The end of a date-time range. Initial value is 0001-01-01T00:00:0Z.
               status:
                 type: string
-                enum: [accepted, completed, failed, running, pending]
+                enum: [unconfigured, accepted, pending, running, completed, failed]
                 readOnly: true
-              created_at:
+              updated_at:
                 type: string
-                description: Timestamp of when the audit log replay job was created.
+                description: Timestamp when this job was last updated. Initial value is 0001-01-01T00:00:0Z.
                 format: date-time
                 readOnly: true
     AuditLogWebhook:
@@ -188,6 +168,11 @@ components:
                 enum: [cef, json]
                 description: The output format of each log messages.
                 default: cef
+              updated_at:
+                type: string
+                description: Timestamp when this webhook was last updated. Initial value is 0001-01-01T00:00:0Z.
+                format: date-time
+                readOnly: true
           examples:
             Get Audit Log Webhook:
               $ref: '#/components/examples/Get-Audit-Log-Webhook'
@@ -250,31 +235,7 @@ components:
       content:
         application/problem+json:
           schema:
-            type: object
-            description: The error object
-            properties:
-              status:
-                type: integer
-                description: The HTTP response code
-                example: 400
-              title:
-                type: string
-                example: Bad Request
-                description: The Error response
-              instance:
-                type: string
-                description: The Konnect traceback ID.
-                example: 'konnect:trace:3674017986744198214'
-              invalid_parameters:
-                type: array
-                description: An array of objects that contains information related to the error response.
-                items:
-                  type: object
-                  properties:
-                    field:
-                      type: string
-                    reason:
-                      type: string
+            $ref: '../../../../../common/definitions/errors.yaml#/components/schemas/BadRequestError'
           examples:
             Request Format is Invalid:
               $ref: '#/components/examples/400-request-format-is-invalid'
@@ -289,148 +250,33 @@ components:
       content:
         application/problem+json:
           schema:
-            type: object
-            description: The error object
-            properties:
-              status:
-                type: integer
-                description: The HTTP response code
-                example: 409
-              title:
-                type: string
-                example: Resource Conflict
-                description: The Error response
-              instance:
-                type: string
-                description: The Konnect traceback ID.
-                example: 'konnect:trace:3674017986744198214'
-              detail:
-                type: string
-                description: Detailed explanation of the error response.
-                example: A replay job is currently running
+            $ref: '../../../../../common/definitions/errors.yaml#/components/schemas/ConflictError'
           examples:
             Job Running:
               $ref: '#/components/examples/409-job-running'
-    Unauthenticated:
-      description: Unauthenticated
-      content:
-        application/problem+json:
-          schema:
-            type: object
-            x-examples:
-              Example 1:
-                status: 401
-                title: Unauthenticated
-                instance: 'konnect:trace:952172606039454040'
-                detail: A valid token is required
-            description: The error response object.
-            properties:
-              status:
-                type: integer
-                example: 401
-                description: The HTTP status code.
-              title:
-                type: string
-                description: The Error Response.
-                example: Unauthenticated
-              instance:
-                type: string
-                description: The Konnect traceback code.
-                example: 'konnect:trace:952172606039454040'
-              detail:
-                type: string
-                description: Details about the error response.
-                example: A valid token is required
-          examples:
-            Unauthorized:
-              $ref: '#/components/examples/401-unauthenticated'
-    Unauthorized:
-      description: Unauthorized
-      content:
-        application/problem+json:
-          schema:
-            type: object
-            x-examples:
-              Example:
-                status: 403
-                title: Unauthorized
-                instance: 'konnect:trace:952172606039454040'
-                detail: You do not have permission to perform this action
-            description: The error response object.
-            properties:
-              status:
-                type: integer
-                example: 403
-                description: The HTTP status code.
-              title:
-                type: string
-                description: The Error Response.
-                example: Unauthorized
-              instance:
-                type: string
-                description: The Konnect traceback code.
-                example: 'konnect:trace:952172606039454040'
-              detail:
-                type: string
-                description: Details about the error response.
-                example: You do not have permission to perform this action
-          examples:
-            Unauthorized:
-              $ref: '#/components/examples/403-permission-denied'
   requestBodies:
-    CreateAuditLogReplayJob:
-      description: The request schema to create/replace an audit log replay job.
+    ReplaceAuditLogReplayJob:
+      description: The request schema to replace an audit log replay job.
       content:
         application/json:
           schema:
             type: object
             required:
-              - start
-              - end
+              - start_at
+              - end_at
             properties:
               start_at:
                 type: string
                 format: date-time
                 description: |-
                   The start of a date-time range in RFC3339 format e.g. 2017-07-21T17:32:28Z.
-                  Within the last 7 days.
+                  Must be within the last 7 days.
               end_at:
                 type: string
                 format: date-time
                 description: |-
                   The end of a date-time range in RFC3339 format e.g. 2017-07-21T17:32:28Z.
-                  Within the last 7 days.
-    CreateAuditLogWebhook:
-      description: The request schema to create or replace an audit log webhook.
-      content:
-        application/json:
-          schema:
-            type: object
-            required:
-              - endpoint
-              - authorization
-            properties:
-              endpoint:
-                type: string
-                example: 'https://example.com/audit-logs'
-                description: The endpoint that will receive audit log messages.
-              authorization:
-                type: string
-                example: 'Bearer sometoken'
-                description: The value to include in the `Authorization` header when sending audit logs
-              enabled:
-                type: boolean
-                example: true
-                description: Indicates if the data should be sent to the webhook.
-              log_format:
-                type: string
-                example: cef
-                enum: [cef, json]
-                description: The output format of each log messages.
-                default: cef
-          examples:
-            Example Request Body:
-              $ref: '#/components/examples/Create-Audit-Log-Webhook'
+                  Must be within the last 7 days.
     UpdateAuditLogWebhook:
       description: The request schema to modify an audit log webhook.
       content:
@@ -445,22 +291,25 @@ components:
               authorization:
                 type: string
                 example: 'Bearer sometoken'
-                description: The value to include in the `Authorization` header when sending audit logs
+                description: The value to include in the `Authorization` header when sending audit logs to the webhook.
               enabled:
                 type: boolean
                 example: true
                 description: Indicates if the data should be sent to the webhook.
+                default: false
               log_format:
                 type: string
                 example: cef
                 enum: [cef, json]
-                description: The output format of each log messages.
+                description: The output format of each log message.
                 default: cef
           examples:
             Disable Webhook:
-              $ref: '#/components/examples/Update-Audit-Log-Webhook'
+              $ref: '#/components/examples/Disable-Audit-Log-Webhook'
             Enable Webhook:
-              $ref: '#/components/examples/Create-Audit-Log-Webhook'
+              $ref: '#/components/examples/Enable-Audit-Log-Webhook'
+            Update Webhook:
+              $ref: '#/components/examples/Update-Audit-Log-Webhook'
   securitySchemes:
     personalAccessToken:
       $ref: '../../../../../common/definitions/security.yaml#/components/securitySchemes/personalAccessToken'
@@ -471,6 +320,7 @@ components:
       value:
         status: 400
         title: Bad Request
+        detail: Could not parse request body
         instance: 'konnect:trace:3674017986744198214'
         invalid_parameters:
           - field: body
@@ -479,6 +329,7 @@ components:
       value:
         status: 400
         title: Bad Request
+        detail: Required field missing
         instance: 'konnect:trace:6644808935508571943'
         invalid_parameters:
           - field: authorization
@@ -487,6 +338,7 @@ components:
       value:
         status: 400
         title: Bad Request
+        detail: Required field missing
         instance: 'konnect:trace:6644808935508571943'
         invalid_parameters:
           - field: endpoint
@@ -495,37 +347,27 @@ components:
       value:
         status: 400
         title: Bad Request
+        detail: Invalid endpoint
         instance: 'konnect:trace:6644808935508571943'
         invalid_parameters:
           - field: endpoint
             reason: must be a valid URL
-    403-permission-denied:
-      value:
-        status: 403
-        title: Permission denied
-        instance: 'konnect:trace:2822394689570210664'
-        detail: Only enterprise organizations can perform this action
     409-job-running:
       value:
         status: 409
         title: Resource Conflict
         instance: 'konnect:trace:6644808935508571943'
         detail: A replay job is currently running
-    401-unauthenticated:
-      value:
-        status: 401
-        title: Unauthenticated
-        instance: 'konnect:trace:952172606039454040'
-        detail: A valid token is required
-    Create-Audit-Log-Webhook:
-      value:
-        endpoint: https://example.com/audit-log
-        authorization: 'Bearer sometoken'
-        enabled: true
-        log_format: json
     Update-Audit-Log-Webhook:
       value:
+        endpoint: https://example.com/audit-log-json
+        log_format: json
+    Disable-Audit-Log-Webhook:
+      value:
         enabled: false
+    Enable-Audit-Log-Webhook:
+      value:
+        enabled: true
     Get-Audit-Log-Webhook:
       value:
         endpoint: https://example.com/audit-log
