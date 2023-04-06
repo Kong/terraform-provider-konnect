@@ -21,7 +21,8 @@ paths:
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
       parameters:
         - $ref: '#/components/parameters/SearchIndices'
-        - $ref: '#/components/parameters/Search'
+        - $ref: '#/components/parameters/SearchQuery'
+        - $ref: '#/components/parameters/SearchJoin'
         - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/Page'
       tags:
         - search
@@ -30,13 +31,20 @@ components:
     portalAccessToken:
       $ref: '../../../../common/definitions/security.yaml#/components/securitySchemes/portalAccessToken'
   parameters:
-    Search:
-      name: search
+    SearchQuery:
+      name: q
       description: Determines how to filter search results
       required: false
       in: query
       schema:
-        $ref: '#/components/schemas/SearchParameters'
+        $ref: '#/components/schemas/SearchQueryParameters'
+    SearchJoin:
+      name: join
+      description: Determines which sub-entities to include in search results
+      required: false
+      in: query
+      schema:
+        $ref: '#/components/schemas/SearchJoinParameters'
     SearchIndices:
       name: indices
       description: Determines which entity sets to search
@@ -171,18 +179,16 @@ components:
       type: string
       enum:
         - product-catalog
-    SearchParameters:
-      title: 'SearchParameters'
-      type: object
-      properties:
-        q:
-          type: string
-        join:
-          type: string
-          enum:
-            - versions
-            - versions.documents
-          example: versions.documents
+    SearchQueryParameters:
+      title: 'SearchQueryParameters'
+      type: string
+    SearchJoinParameters:
+      title: 'SearchJoinParameters'
+      type: string
+      enum:
+        - versions
+        - versions.documents
+      example: versions.documents
   examples:
     SearchResponseExample:
       value:
