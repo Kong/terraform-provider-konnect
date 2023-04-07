@@ -39,10 +39,6 @@
       "dest": "apps/portal-api/openapi/v2/applications/openapi.yaml"
     },
     {
-      "src": "portal/definitions/application-registration-configuration/computed/openapi.yaml",
-      "dest": "apps/portal-api/openapi/v2/application-registration-configuration/openapi.yaml"
-    },
-    {
       "src": "portal/definitions/developer/computed/openapi.yaml",
       "dest": "apps/portal-api/openapi/v2/developer/openapi.yaml"
     },
