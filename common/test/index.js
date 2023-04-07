@@ -14,10 +14,13 @@ const oasStub = {
 }
 
 async function main() {
-    let gotError = false
+    let errorCount = false
     const testDatas = await fs.readdir(dataFolder)
     for (const testCasesFile of testDatas) {
         const schemaName = path.parse(testCasesFile).name
+        if (schemaName.startsWith('.')) {
+          continue
+        }
         const testCases = JSON.parse(await fs.readFile(path.resolve(dataFolder, testCasesFile), 'utf-8'))
         const rawDefinition = await fs.readFile(path.resolve(schemaFolder, `${schemaName}.yaml`), 'utf-8')
 
@@ -48,29 +51,35 @@ async function main() {
             // Positive assertions
             if (testCases[typeDefinition].ok) {
 
+                console.log(`ok:`)
                 for (const ok of testCases[typeDefinition].ok) {
                     const validate = mainValidate.compile(parsedDefinition.components.schemas[typeDefinition])
 
 
                     const validateResult = validate(ok)
                     if (!validateResult) {
-                        console.log(`ERROR: OK assertions item#${idx}`, validate.errors)
-                        gotError = true
+                        console.error(`  ⚔︎ ERROR: OK assertions item#${idx}`, validate.errors)
+                        errorCount++
+                    } else {
+                        console.log(`  √ - item#${idx}`)
                     }
                     idx++
                 }
             }
 
             idx = 0
-            // Positive assertions
+            // Negative assertions
             if (testCases[typeDefinition].nok) {
+                console.log(`nok:`)
                 for (const nok of testCases[typeDefinition].nok) {
                     const validate = mainValidate.compile(parsedDefinition.components.schemas[typeDefinition])
 
                     const validateResult = validate(nok)
                     if (validateResult) {
-                        console.log(`ERROR: nok item#${idx} should be invalid`)
-                        gotError = true
+                        console.error(`  ⚔︎ ERROR: nok item#${idx} should be invalid`)
+                        errorCount++
+                    } else {
+                        console.log(`  √ - item#${idx}`)
                     }
                     idx++
                 }
@@ -78,9 +87,11 @@ async function main() {
             console.log('')
         }
     }
-    if (gotError) {
-        console.log("Error have been found")
+    if (errorCount) {
+        console.error(`TESTS FAILED: ${errorCount} error${errorCount > 1 ? 's': ''} found`)
         process.exit(1)
+    } else {
+        console.log('all tests passed')
     }
 }
 
