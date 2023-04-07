@@ -45,8 +45,6 @@ paths:
           description: the password reset flow has been initiated.
         '400':
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
-        '500':
-          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Internal'
       tags:
         - developer
   /api/v2/developer/me:
