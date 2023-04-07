@@ -27,18 +27,21 @@ components:
           type: number
           example: 100
   parameters:
-    Page:
-      name: page
-      description: Determines which page of the entity to retrieve.
+    PageSize:
+      name: 'page[size]'
+      description: Determines the size of the page to retrieve.
       required: false
       in: query
+      allowEmptyValue: true
       schema:
-        title: 'PageParameters'
-        type: object
-        properties:
-          'page[size]':
-            type: integer
-            example: 10
-          'page[number]':
-            type: integer
-            example: 2
+        type: integer
+        example: 2
+    PageNumber:
+      name: 'page[number]'
+      description: Determines which page of the entities to retrieve.
+      required: false
+      in: query
+      allowEmptyValue: true
+      schema:
+        type: integer
+        example: 10

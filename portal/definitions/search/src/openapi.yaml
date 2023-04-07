@@ -23,7 +23,8 @@ paths:
         - $ref: '#/components/parameters/SearchIndices'
         - $ref: '#/components/parameters/SearchQuery'
         - $ref: '#/components/parameters/SearchJoin'
-        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/Page'
+        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
       tags:
         - search
 components:

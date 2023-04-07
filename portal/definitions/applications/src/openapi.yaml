@@ -15,7 +15,8 @@ paths:
       description: This endpoint allows the developer to list applications
       operationId: get-many-applications
       parameters:
-        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/Page'
+        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
       responses:
         '200':
           $ref: '#/components/responses/GetManyApplications'
@@ -135,7 +136,8 @@ paths:
       operationId: get-many-credentials
       parameters:
         - $ref: '#/components/parameters/ApplicationId'
-        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/Page'
+        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
       responses:
         '200':
           $ref: '#/components/responses/GetCredentials'

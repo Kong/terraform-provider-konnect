@@ -31,7 +31,8 @@ paths:
       description: Returns a paginated list of published API Products, each with their versions and documents
       operationId: get-many-products
       parameters:
-        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/Page'
+        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
       responses:
         '200':
           $ref: '#/components/responses/ProductGetMany'
@@ -48,7 +49,8 @@ paths:
       operationId: get-many-product-versions
       parameters:
         - $ref: '#/components/parameters/ProductId'
-        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/Page'
+        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
       responses:
         '200':
           $ref: '#/components/responses/ProductGetManyVersions'
