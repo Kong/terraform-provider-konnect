@@ -39,8 +39,6 @@ paths:
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
-        '404':
-          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       tags:
         - products
   /api/v2/products/{productId}/versions:
