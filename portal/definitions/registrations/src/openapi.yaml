@@ -16,6 +16,10 @@ paths:
       operationId: get-many-application-registrations
       parameters:
         - $ref: '#/components/parameters/ApplicationId'
+        - $ref: '../../../../common/definitions/filter_parameters.yaml#/components/parameters/FilterByIdEquality'
+        - $ref: '../../../../common/definitions/filter_parameters.yaml#/components/parameters/FilterByIdEqualityShort'
+        - $ref: '../../../../common/definitions/filter_parameters.yaml#/components/parameters/FilterByStatusEquality'
+        - $ref: '../../../../common/definitions/filter_parameters.yaml#/components/parameters/FilterByStatusEqualityShort'
       responses:
         '200':
           $ref: '#/components/responses/GetManyRegistrations'

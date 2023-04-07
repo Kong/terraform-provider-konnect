@@ -33,6 +33,14 @@ paths:
       parameters:
         - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
         - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
+        - $ref: '../../../../common/definitions/filter_parameters.yaml#/components/parameters/FilterByNameEquality'
+        - $ref: '../../../../common/definitions/filter_parameters.yaml#/components/parameters/FilterByNameEqualityShort'
+        - $ref: '../../../../common/definitions/filter_parameters.yaml#/components/parameters/FilterByNameContains'
+        - $ref: '../../../../common/definitions/filter_parameters.yaml#/components/parameters/FilterByDescriptionEquality'
+        - $ref: '../../../../common/definitions/filter_parameters.yaml#/components/parameters/FilterByDescriptionEqualityShort'
+        - $ref: '../../../../common/definitions/filter_parameters.yaml#/components/parameters/FilterByDescriptionContains'
+        - $ref: '../../../../common/definitions/filter_parameters.yaml#/components/parameters/FilterByIdEquality'
+        - $ref: '../../../../common/definitions/filter_parameters.yaml#/components/parameters/FilterByIdEqualityShort'
       responses:
         '200':
           $ref: '#/components/responses/ProductGetMany'
@@ -51,6 +59,9 @@ paths:
         - $ref: '#/components/parameters/ProductId'
         - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
         - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
+        - $ref: '../../../../common/definitions/filter_parameters.yaml#/components/parameters/FilterByVersionEquality'
+        - $ref: '../../../../common/definitions/filter_parameters.yaml#/components/parameters/FilterByVersionEqualityShort'
+        - $ref: '../../../../common/definitions/filter_parameters.yaml#/components/parameters/FilterByVersionContains'
       responses:
         '200':
           $ref: '#/components/responses/ProductGetManyVersions'

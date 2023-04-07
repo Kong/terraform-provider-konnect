@@ -1,0 +1,116 @@
+components:
+  parameters:
+    FilterByStatusEquality:
+      name: 'filter[status][eq]'
+      description: Filter by direct equality comparison of the status property with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        enum:
+          - approved
+          - pending
+          - rejected
+          - revoked
+        example: 'approved'
+    FilterByStatusEqualityShort:
+      name: 'filter[status]'
+      description: Filter by direct equality comparison (short-hand) of the status property with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        enum:
+          - approved
+          - pending
+          - rejected
+          - revoked
+        example: 'approved'
+    FilterByNameEquality:
+      name: 'filter[name][eq]'
+      description: Filter by direct equality comparison of the name property with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 'good service'
+    FilterByNameEqualityShort:
+      name: 'filter[name]'
+      description: Filter by direct equality comparison (short-hand) of the name property with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 'good service'
+    FilterByNameContains:
+      name: 'filter[name][contains]'
+      description: Filter by contains comparison of the name property with a supplied substring
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 'good service'
+    FilterByVersionEquality:
+      name: 'filter[version][eq]'
+      description: Filter by direct equality comparison of the version property with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 'v2'
+    FilterByVersionEqualityShort:
+      name: 'filter[version]'
+      description: Filter by direct equality comparison (short-hand) of the version property with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 'v2'
+    FilterByVersionContains:
+      name: 'filter[version][contains]'
+      description: Filter by contains comparison of the version property with a supplied substring
+      in: query
+      required: false
+      schema:
+        type: string
+        example: '2'
+    FilterByDescriptionEquality:
+      name: 'filter[description][eq]'
+      description: Filter by direct equality comparison of the description property with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 'portal'
+    FilterByDescriptionEqualityShort:
+      name: 'filter[description]'
+      description: Filter by direct equality comparison (short-hand) of the description property with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 'portal'
+    FilterByDescriptionContains:
+      name: 'filter[description][contains]'
+      description: Filter by contains comparison of the description property with a supplied substring
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 'portal'
+    FilterByIdEquality:
+        name: 'filter[id][eq]'
+        description: Filter by direct equality comparison of the id property with a supplied value.
+        in: query
+        required: false
+        schema:
+          type: string
+          example: 5be86298-147b-45ab-bfaf-a1bff97dce39
+    FilterByIdEqualityShort:
+      name: 'filter[id]'
+      description: Filter by direct equality comparison (short-hand) of the id property with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 5be86298-147b-45ab-bfaf-a1bff97dce39

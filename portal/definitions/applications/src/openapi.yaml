@@ -17,6 +17,9 @@ paths:
       parameters:
         - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
         - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
+        - $ref: '../../../../common/definitions/filter_parameters.yaml#/components/parameters/FilterByNameEquality'
+        - $ref: '../../../../common/definitions/filter_parameters.yaml#/components/parameters/FilterByNameEqualityShort'
+        - $ref: '../../../../common/definitions/filter_parameters.yaml#/components/parameters/FilterByNameContains'
       responses:
         '200':
           $ref: '#/components/responses/GetManyApplications'
