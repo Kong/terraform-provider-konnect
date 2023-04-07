@@ -461,6 +461,7 @@ components:
       title: ApplicationCreationResponse
       description: Application creation response payload
       required:
+        - id
         - name
         - reference_id
         - description
@@ -468,6 +469,9 @@ components:
         - created_at
         - updated_at
       properties:
+        id:
+          type: string
+          format: uuid
         name:
           type: string
         reference_id:
@@ -520,6 +524,7 @@ components:
       title: ApplicationUpdateResponse
       description: Application update response payload
       required:
+        - id
         - name
         - reference_id
         - description
@@ -527,6 +532,9 @@ components:
         - updated_at
         - created_at
       properties:
+        id:
+          type: string
+          format: uuid
         name:
           type: string
         reference_id:
