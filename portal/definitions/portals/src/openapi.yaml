@@ -7,6 +7,18 @@ info:
     name: Kong
     url: https://cloud.konghq.com
 paths:
+  /api/v2/portal:
+    get:
+      operationId: get-portal-context
+      summary: get portal context
+      description: return the portal context
+      responses:
+        '200':
+          $ref: '#/components/responses/RetrievePortalContextResponse'
+      tags:
+        - portal
+      security:
+        - {}
   /api/v2/portal/appearance:
     get:
       operationId: get-portal-appearance
@@ -15,18 +27,6 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/RetrievePortalAppearanceResponse'
-      tags:
-        - portal
-      security:
-        - {}
-  /api/v2/portal/context:
-    get:
-      operationId: get-portal-context
-      summary: get portal context
-      description: return the portal context
-      responses:
-        '200':
-          $ref: '#/components/responses/RetrievePortalContextResponse'
       tags:
         - portal
       security:
