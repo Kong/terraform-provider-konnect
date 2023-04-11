@@ -275,10 +275,6 @@ components:
           type: string
           example: Billing
           description: name of service
-        display_name:
-          type: string
-          example: Billing
-          description: display name used by UI for service
         description:
           type: string
           example: Api for billing functions
