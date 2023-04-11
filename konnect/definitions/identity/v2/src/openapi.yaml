@@ -1116,21 +1116,18 @@ paths:
       x-internal: true
       security:
         - personalAccessToken: []
-        - konnectAccessToken: []
       description: Returns the user account for the user identified in the token of the request.
     delete:
       summary: Delete My User Account
       operationId: delete-users-me
       x-internal: true
-      security:
-        - konnectAccessToken: []
       responses:
         '204':
           description: No Content
         '401':
           $ref: '#/components/responses/Unauthenticated'
         '403':
-          description: Forbidden - If there are other users in the organization or a konnectAccessToken was not provided.
+          description: Forbidden - If there are other users in the organization or a personalAccessToken was not provided.
       description: Deletes the user account for the user identified in the token of the request.
       tags:
         - Me
@@ -1145,15 +1142,13 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthenticated'
         '403':
-          description: Forbidden - If a konnectAccessToken was not provided.
+          description: Forbidden - If a personalAccessToken was not provided.
       description: Updates the user account for the user identified in the token of the request.
       requestBody:
         $ref: '#/components/requestBodies/UpdateUser'
       tags:
         - Me
       x-internal: true
-      security:
-        - konnectAccessToken: []
   /users/me/password:
     patch:
       summary: Update My User Account Password
@@ -1166,10 +1161,8 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
-          description: Forbidden - If basic auth is disabled or a konnectAccessToken was not provided.
+          description: Forbidden - If basic auth is disabled or a personalAccessToken was not provided.
       x-internal: true
-      security:
-        - konnectAccessToken: []
       description: Update the password of the user identified in the token of the request.
       tags:
         - Me
@@ -1216,8 +1209,6 @@ paths:
           name: filter
           description: Filter permissions returned in the response.
           required: false
-      security:
-        - konnectAccessToken: []
       responses:
         '200':
           $ref: '#/components/responses/UserPermissions'
@@ -3058,8 +3049,6 @@ components:
       $ref: '../../../../../common/definitions/security.yaml#/components/securitySchemes/systemAccountAccessToken'
     personalAccessToken:
       $ref: '../../../../../common/definitions/security.yaml#/components/securitySchemes/personalAccessToken'
-    konnectAccessToken:
-      $ref: '../../../../../common/definitions/security.yaml#/components/securitySchemes/konnectAccessToken'
   examples:
     400-request-format-is-invalid:
       value:
@@ -3316,7 +3305,6 @@ components:
 security:
   - personalAccessToken: []
   - systemAccountAccessToken: []
-  - konnectAccessToken: []
 tags:
   - name: Auth Settings
   - name: Invites
