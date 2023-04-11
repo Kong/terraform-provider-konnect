@@ -25,6 +25,9 @@ paths:
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       tags:
         - products
+      security:
+        - portalAccessToken: []
+        - {}
   /api/v2/products:
     get:
       summary: Get page of products
@@ -50,6 +53,9 @@ paths:
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
       tags:
         - products
+      security:
+        - portalAccessToken: []
+        - {}
   /api/v2/products/{productId}/versions:
     get:
       summary: Get page of product versions
@@ -73,6 +79,9 @@ paths:
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       tags:
         - versions
+      security:
+        - portalAccessToken: []
+        - {}
   /api/v2/products/{productId}/versions/{versionId}:
     get:
       summary: Get product version
@@ -92,6 +101,9 @@ paths:
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       tags:
         - versions
+      security:
+        - portalAccessToken: []
+        - {}
   /api/v2/products/{productId}/versions/{versionId}/spec:
     get:
       summary: Get OpenAPI spec for product version
@@ -111,6 +123,9 @@ paths:
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       tags:
         - versions
+      security:
+        - portalAccessToken: []
+        - {}
   /api/v2/products/{productId}/versions/{versionId}/operations:
     get:
       summary: Get operations in version spec
@@ -130,6 +145,9 @@ paths:
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       tags:
         - versions
+      security:
+        - portalAccessToken: []
+        - {}
   /api/v2/products/{productId}/document-tree:
     get:
       summary: Get product document tree
@@ -148,6 +166,9 @@ paths:
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       tags:
         - documentation
+      security:
+        - portalAccessToken: []
+        - {}
   /api/v2/products/{productId}/documents/{documentId}:
     get:
       summary: Get one product document
@@ -167,6 +188,9 @@ paths:
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       tags:
         - documentation
+      security:
+        - portalAccessToken: []
+        - {}
 components:
   securitySchemes:
     portalAccessToken:
@@ -472,8 +496,6 @@ components:
           type: array
           items:
             $ref: '../../../../common/definitions/documenthub_nodes.yaml#/components/schemas/DocumentBlock'
-security:
-  - portalAccessToken: []
 tags:
   - name: products
   - name: versions

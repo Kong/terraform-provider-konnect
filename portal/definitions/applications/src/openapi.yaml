@@ -29,6 +29,8 @@ paths:
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
       tags:
         - applications
+      security:
+        - portalAccessToken: []
     post:
       summary: Create Application
       description: This endpoint allows the developer to create an application
@@ -52,6 +54,8 @@ paths:
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/Internal'
       tags:
         - applications
+      security:
+        - portalAccessToken: []
   /api/v2/applications/{applicationId}:
     get:
       summary: Get one Application
@@ -70,6 +74,8 @@ paths:
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       tags:
         - applications
+      security:
+        - portalAccessToken: []
     delete:
       summary: Delete Application
       description: This endpoint allows the developer to delete an application they own
@@ -89,6 +95,8 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
       tags:
         - applications
+      security:
+        - portalAccessToken: []
     put:
       summary: Update Application
       description: This endpoint allows the developer to update an application they own
@@ -112,6 +120,8 @@ paths:
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/Internal'
       tags:
         - applications
+      security:
+        - portalAccessToken: []
   /api/v2/applications/{applicationId}/refresh-token:
     post:
       summary: refresh token
@@ -132,6 +142,8 @@ paths:
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/Internal'
       tags:
         - credentials
+      security:
+        - portalAccessToken: []
   /api/v2/applications/{applicationId}/credentials:
     get:
       summary: Get Many credentials
@@ -154,6 +166,8 @@ paths:
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/Internal'
       tags:
         - credentials
+      security:
+        - portalAccessToken: []
     post:
       summary: Post Credential
       description: This endpoint allows the developer to create a credential for an application they own
@@ -175,6 +189,8 @@ paths:
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/Internal'
       tags:
         - credentials
+      security:
+        - portalAccessToken: []
   /api/v2/applications/{applicationId}/credentials/{credentialId}:
     put:
       summary: Update Credential
@@ -198,6 +214,8 @@ paths:
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/Internal'
       tags:
         - credentials
+      security:
+        - portalAccessToken: []
     delete:
       summary: Delete Credential
       description: This endpoint allows the developer to delete a credential for an application they own
@@ -220,6 +238,8 @@ paths:
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/Internal'
       tags:
         - credentials
+      security:
+        - portalAccessToken: []
 components:
   securitySchemes:
     portalAccessToken:
@@ -618,8 +638,6 @@ components:
           type: string
           example: The requested team was not found
           description: Details about the error.
-security:
-  - portalAccessToken: []
 tags:
   - name: applications
   - name: credentials

@@ -17,6 +17,8 @@ paths:
           $ref: '#/components/responses/RetrievePortalAppearanceResponse'
       tags:
         - portal
+      security:
+        - {}
   /api/v2/portal/context:
     get:
       operationId: get-portal-context
@@ -27,6 +29,8 @@ paths:
           $ref: '#/components/responses/RetrievePortalContextResponse'
       tags:
         - portal
+      security:
+        - {}
   /api/v2/portal/stylesheet/logo:
     get:
       operationId: get-portal-logo
@@ -37,6 +41,8 @@ paths:
           $ref: '#/components/responses/RetrievePortalLogoResponse'
       tags:
         - portal
+      security:
+        - {}
   /api/v2/portal/stylesheet/catalog-cover:
     get:
       operationId: get-portal-catalog-cover
@@ -47,6 +53,8 @@ paths:
           $ref: '#/components/responses/RetrievePortalCoverResponse'
       tags:
         - portal
+      security:
+        - {}
 components:
   responses:
     RetrievePortalLogoResponse:

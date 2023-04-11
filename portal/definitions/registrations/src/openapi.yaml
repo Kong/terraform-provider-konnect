@@ -31,6 +31,8 @@ paths:
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       tags:
         - registrations
+      security:
+        - portalAccessToken: []
     post:
       summary: Register an application for a product
       description: This endpoint registers an application for a product
@@ -52,6 +54,8 @@ paths:
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/Conflict'
       tags:
         - registrations
+      security:
+        - portalAccessToken: []
   /api/v2/applications/{applicationId}/registrations/{registrationId}:
     get:
       summary: Get an application registration
@@ -69,6 +73,8 @@ paths:
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       tags:
         - registrations
+      security:
+        - portalAccessToken: []
     delete:
       summary: Delete an application registration
       description: This endpoint unregister an application for a product version
@@ -85,6 +91,8 @@ paths:
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       tags:
         - registrations
+      security:
+        - portalAccessToken: []
 components:
   securitySchemes:
     portalAccessToken:
@@ -211,7 +219,5 @@ components:
           description: ISO timestamp the registration record was last updated
           type: string
           format: date-time
-security:
-  - portalAccessToken: []
 tags:
   - name: registrations

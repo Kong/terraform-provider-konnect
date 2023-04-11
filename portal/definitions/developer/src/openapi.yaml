@@ -27,6 +27,8 @@ paths:
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/Internal'
       tags:
         - developer
+      security:
+        - {}
   /api/v2/developer/forgot-password:
     post:
       operationId: forgot-password
@@ -47,6 +49,8 @@ paths:
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
       tags:
         - developer
+      security:
+        - {}
   /api/v2/developer/me:
     get:
       summary: Retrieve My Account
@@ -61,7 +65,12 @@ paths:
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/Internal'
       operationId: get-developer-me
       description: Returns info about the current developer.
+      security:
+        - portalAccessToken: []
 components:
+  securitySchemes:
+    portalAccessToken:
+      $ref: '../../../../common/definitions/security.yaml#/components/securitySchemes/portalAccessToken'
   responses:
     MeResponse:
       description: Response from me endpoint.

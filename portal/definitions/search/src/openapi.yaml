@@ -27,6 +27,9 @@ paths:
         - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
       tags:
         - search
+      security:
+        - portalAccessToken: []
+        - {}
 components:
   securitySchemes:
     portalAccessToken:
@@ -219,8 +222,5 @@ components:
             number: 2
             size: 1
             total: 4
-security:
-  - portalAccessToken: []
-  - {}
 tags:
   - name: search
