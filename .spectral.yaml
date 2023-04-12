@@ -261,6 +261,21 @@ rules:
           required:
             - "404"
 
+  errors-post-not-contain-200:
+    description: "POST operations must not contain a 200 (created must return 201)"
+    severity: error
+    given:
+      - $.paths..post
+    then:
+      field: responses
+      function: schema
+      functionOptions:
+        schema:
+          not:
+            type: object
+            required:
+              - "200"
+
 overrides:
   - files:
       - "konnect/definitions/organization-settings/v2/**/openapi.yaml"
@@ -294,3 +309,7 @@ overrides:
       - "konnect/definitions/runtime-groups-config/v2/**/openapi.yaml"
     rules:
       errors-delete-contains-404-aip-135: "off"
+  - files:
+      - "portal/definitions/developer/**/openapi.yaml"
+    rules:
+      errors-post-not-contain-200: "off"
