@@ -31,7 +31,7 @@ paths:
   /api/v2/products:
     get:
       summary: Get page of products
-      description: Returns a paginated list of published API Products, each with their versions and documents
+      description: Returns a paginated list of published API Products
       operationId: get-many-products
       parameters:
         - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
@@ -340,10 +340,6 @@ components:
         is_deprecated:
           type: boolean
           description: If true, product version is deprecated
-        tracking_id:
-          type: string
-          format: uuid
-          description: ID used for application registration with Konnect Application Auth Plugin
         registration_configs:
           description: Configurations for how the product version is able to be registered for by applications
           type: array
@@ -361,7 +357,6 @@ components:
         - updated_at
         - version
         - is_deprecated
-        - tracking_id
         - registration_configs
     ProductVersionListPage:
       title: ProductVersionListPage
@@ -414,7 +409,6 @@ components:
       required:
         - id
         - slug
-        - meta
         - title
         - content
       properties:
@@ -435,14 +429,6 @@ components:
           example: getting-started
         content:
           $ref: '../../../../common/definitions/documenthub_nodes.yaml#/components/schemas/DocumentBlock'
-        meta:
-          type: object
-          description: the metadata of the document
-          additionalProperties: true
-          example:
-            title: Hello World
-            description: This is a description
-            keywords: hello, world
         title:
           type: string
           description: the title of the document
@@ -464,7 +450,6 @@ components:
         - id
         - title
         - slug
-        - meta
         - children
       properties:
         id:
@@ -484,14 +469,6 @@ components:
           type: string
           description: the slug of the document
           example: getting-started
-        meta:
-          type: object
-          description: the metadata of the document
-          additionalProperties: true
-          example:
-            author: Jane Doe
-            description: This is a description
-            keywords: hello, world
         children:
           type: array
           items:
