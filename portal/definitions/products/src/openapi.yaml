@@ -137,6 +137,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/ProductVersionSpecOperationsGet'
+        '204':
+          description: Response when there are no operations to send because no spec is defined for the version
         '400':
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
@@ -376,11 +378,20 @@ components:
       type: object
       title: Operations in product version spec document
       description: List of every operation detailed in the product version spec document
+      required:
+        - operations
       properties:
         operations:
           type: array
           items:
             type: object
+            required:
+              - path
+              - method
+              - operation_id
+              - tags
+              - summary
+              - deprecated
             properties:
               path:
                 type: string
@@ -389,8 +400,9 @@ components:
                 type: string
                 enum: [get, patch, post, put, delete, options, connect, trace]
                 example: post
-              opertationId:
+              operation_id:
                 type: string
+                nullable: true
                 example: "addPet"
               tags:
                 type: array
@@ -399,8 +411,9 @@ components:
                   example: "pet"
               summary:
                 type: string
+                nullable: true
                 example: "Add a new Pet to the store"
-              depercated:
+              deprecated:
                 type: boolean
     ProductDocument:
       type: object
