@@ -31,7 +31,7 @@ paths:
         - portal
       security:
         - {}
-  /api/v2/portal/stylesheet/logo:
+  /api/v2/portal/logo:
     get:
       operationId: get-portal-logo
       summary: portal logo
@@ -43,7 +43,7 @@ paths:
         - portal
       security:
         - {}
-  /api/v2/portal/stylesheet/catalog-cover:
+  /api/v2/portal/catalog-cover:
     get:
       operationId: get-portal-catalog-cover
       summary: catalog cover
