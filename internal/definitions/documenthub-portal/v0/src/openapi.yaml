@@ -132,7 +132,7 @@ components:
       default: 'application/json'
       enum:
       - 'application/json'
-      - 'application/document-tree+json'
+      - 'application/konnect.document-tree+json'
     GetManyDocumentTrees:
       type: object
       required:
