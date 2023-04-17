@@ -107,6 +107,10 @@ rules:
     given:
       - $.paths.*.*[responses,requestBody]..content..schema.properties.*~
       - $..components.schemas.*.properties[*]~
+      # If you're seeing this on a $ref then check where it's used
+      # as it's likely that the parent property name is incorrect
+      # This is a bug in Spectral
+      - $.paths.*[post,get,patch,put,delete].parameters[?(@.in == "query")].schema.properties.*~
     then:
       function: pattern
       functionOptions:
