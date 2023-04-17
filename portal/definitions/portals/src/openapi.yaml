@@ -149,25 +149,31 @@ components:
           type: string
         basic_auth_enabled:
           type: boolean
-        is_public:
-          type: boolean
-        rbac_enabled:
-          type: boolean
-          description: Is the portal protected with role base access
-        is_dcr:
-          type: boolean
-          description: Is the portal using DCR application registration
+          description: Whether the portal can be accessed via email and password
         oidc_auth_enabled:
           type: boolean
+          description: Whether the portal can be accessed via authentication with Single Sign On (SSO) through OpenID Connect (OIDC) from a third-party Identity Provider
+        is_public:
+          type: boolean
+          description: Whether the portal catalog can be accessed by non-authenticated users
+        rbac_enabled:
+          type: boolean
+          description: Whether the portal is protected with Role-Based Access Control
+        dcr_provider_ids:
+          type: array
+          description: The unique identifiers of each available client provider when using Dynamic Client Registration
+          items:
+            type: string
+            format: uuid
       required:
         - portal_id
         - org_id
         - is_public
         - featureset_id
         - basic_auth_enabled
-        - rbac_enabled
-        - is_dcr
         - oidc_auth_enabled
+        - rbac_enabled
+        - dcr_provider_ids
 tags:
   - name: portal
     description: Portal API
