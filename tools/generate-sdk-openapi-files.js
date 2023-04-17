@@ -1,6 +1,7 @@
 const fs = require("fs").promises;
 const fg = require("fast-glob");
 const yaml = require("js-yaml");
+const path = require("path");
 const mergician = require("mergician");
 const $RefParser = require("@apidevtools/json-schema-ref-parser");
 const traverse = require("traverse");
@@ -37,11 +38,68 @@ const headers = {
   },
 };
 
-(async function () {
+function filterOperations(doc, callback, log) {
+  doc = traverse(doc).clone();
+
+  return traverse(doc).forEach(function () {
+    if (!this.node || !this.node["operationId"]) {
+      return;
+    }
+
+    const result = callback(this.node);
+    if (!result) {
+      this.remove();
+
+      if (isEmptyOperation(this.parent.node)) {
+        this.parent.remove();
+      }
+    }
+  });
+}
+
+function isEmptyOperation(node) {
+  const allowedKeys = Object.keys(node).filter((k) =>
+    ["get", "post", "put", "patch", "delete"].includes(k)
+  );
+  return allowedKeys.length == 0;
+}
+
+function unique(s) {
+  if (!s) {
+    return s;
+  }
+  return [...new Set(s.map((n) => JSON.stringify(n)))].map((n) =>
+    JSON.parse(n)
+  );
+}
+
+function deepClone(serializable) {
+  return JSON.parse(JSON.stringify(serializable));
+}
+
+async function copyInternals(basedir) {
+  let files = await fg(`${basedir}/internal/definitions/**/computed/openapi.yaml`)
+
+  for (const specPaths of files) {
+    // keeping /servicename/<version> from the path
+    const specPathDirname = path.dirname(specPaths).split('/').splice(-3, 2)
+    const data = await fs.readFile(specPaths)
+    const targetPath = path.join(basedir,'output', 'internal', ...specPathDirname)
+    await tryMkdir(targetPath, { recursive: true })
+    await fs.writeFile(
+      path.join(targetPath, 'openapi.yaml'),
+      data,
+      { encoding: 'utf-8' }
+    )
+  }
+
+}
+
+async function main() {
+  const baseDir = `${__dirname}/..`;
   const projects = ["konnect", "portal"];
 
   for (let mode of projects) {
-    const baseDir = `${__dirname}/..`;
 
     let files = await fg(`${baseDir}/${mode}/definitions/**/computed/openapi.yaml`);
 
@@ -129,43 +187,9 @@ const headers = {
       fs.writeFile(`${outputDir}/public-api-docs.yaml`, yaml.dump(publicApiDocs)),
     ]);
   }
-})();
-
-function filterOperations(doc, callback, log) {
-  doc = traverse(doc).clone();
-
-  return traverse(doc).forEach(function () {
-    if (!this.node || !this.node["operationId"]) {
-      return;
-    }
-
-    const result = callback(this.node);
-    if (!result) {
-      this.remove();
-
-      if (isEmptyOperation(this.parent.node)) {
-        this.parent.remove();
-      }
-    }
-  });
+  await copyInternals(baseDir)
 }
 
-function isEmptyOperation(node) {
-  const allowedKeys = Object.keys(node).filter((k) =>
-    ["get", "post", "put", "patch", "delete"].includes(k)
-  );
-  return allowedKeys.length == 0;
-}
-
-function unique(s) {
-  if (!s) {
-    return s;
-  }
-  return [...new Set(s.map((n) => JSON.stringify(n)))].map((n) =>
-    JSON.parse(n)
-  );
-}
-
-function deepClone(serializable) {
-  return JSON.parse(JSON.stringify(serializable));
+if (require.main === module) {
+  main().catch(e => { throw e })
 }

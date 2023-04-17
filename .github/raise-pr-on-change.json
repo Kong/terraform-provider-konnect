@@ -70,5 +70,23 @@
       "src": "output/portal/dev.yaml",
       "dest": "openapi.yaml"
     }
+  ],
+  "kong/documenthub": [
+    {
+      "src": "output/internal/documenthub-konnect/v0/openapi.yaml",
+      "dest": "specs/openapi/konnect.v0.yml"
+    },
+    {
+      "src": "output/internal/documenthub-konnect/v2/openapi.yaml",
+      "dest": "specs/openapi/konnect.v2.yml"
+    },
+    {
+      "src": "output/internal/documenthub-portal/v0/openapi.yaml",
+      "dest": "specs/openapi/portal.v0.yml"
+    },
+    {
+      "src": "output/internal/documenthub-portal/v2/openapi.yaml",
+      "dest": "specs/openapi/portal.v2.yml"
+    }
   ]
 }

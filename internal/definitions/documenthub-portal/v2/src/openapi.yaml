@@ -1,0 +1,210 @@
+openapi: 3.0.3
+info:
+    title: DocumentHub Developer Api v2
+    description: DocumentHub developer Api
+    version: '0.0.1'
+    contact:
+      name: Kong
+      url: 'https://konghq.com'
+servers:
+  - url: 'http://localhost:4400/developer/v2'
+    description: Local
+  - url: 'http://documenthub.documenthub.svc.cluster.local:4400/developer/v2'
+    description: Konnect cluster
+paths:
+  /collections/{collectionId}/documents:
+    get:
+      summary: List collection documents
+      description: List documents in a collection
+      operationId: listDocuments
+      parameters:
+        - $ref: '#/components/parameters/collectionId'
+        - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+        - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
+        - schema:
+            type: string
+            example: 'filter[name]=my-doc'
+          in: query
+          name: 'filter[field]'
+          description: |
+            A field to filter on. Supported fields: slug.
+      responses:
+        '200':
+          description: Documents in the collection
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/ListDocumentCollectionResponse'
+        '404':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+      tags:
+        - Documents
+  /collections/{collectionId}/tree:
+    get:
+      summary: Get the collection tree
+      description: Get the document collection as a tree
+      operationId: getCollectionTree
+      parameters:
+        - $ref: '#/components/parameters/collectionId'
+      responses:
+        '200':
+          description: Tree of documents
+          content:
+            'application/json':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DocumentTree'
+        '404':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+      tags:
+        - Documents
+  /collections/{collectionId}/documents/{documentId}:
+    get:
+      summary: Get the document
+      description: Get the document
+      operationId: getDocument
+      parameters:
+        - $ref: '#/components/parameters/collectionId'
+        - $ref: '#/components/parameters/documentId'
+        - schema:
+            type: boolean
+          name: raw
+          in: query
+          required: false
+          description: include raw document data in the response
+          example: true
+      responses:
+        '200':
+          description: The document
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/Document'
+        '404':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+      tags:
+        - Documents
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    ListDocumentCollectionResponse:
+      type: object
+      properties:
+        meta:
+          $ref: '../../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Document'
+    Document:
+      type: object
+      title: Document
+      description: a document
+      required:
+      - id
+      - slug
+      - meta
+      - title
+      - content
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: the id of the document
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        parent_document_id:
+          type: string
+          format: uuid
+          description: the id of the parent document
+          nullable: true
+          example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
+        slug:
+          type: string
+          description: the slug of the document
+          example: getting-started
+        content:
+          $ref: '../../../../../common/definitions/documenthub_nodes.yaml#/components/schemas/DocumentBlock'
+        meta:
+          type: object
+          description: the metadata of the document
+          example: {
+              "title": "Hello World",
+              "description": "This is a description",
+              "keywords": "hello, world"
+            }
+        title:
+          type: string
+          description: the title of the document
+          example: Hello World
+    DocumentTree:
+      type: object
+      title: DocumentTree
+      description: a document tree
+      required:
+      - id
+      - title
+      - slug
+      - meta
+      - children
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        parent_document_id:
+          type: string
+          format: uuid
+          nullable: true
+          example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
+        title:
+          type: string
+          description: the title of the document
+          example: Getting Started
+        slug:
+          type: string
+          description: the slug of the document
+          example: getting-started
+        meta:
+          type: object
+          description: the metadata of the document
+          example: {
+              "author": "Jane Doe",
+              "description": "This is a description",
+              "keywords": "hello, world"
+            }
+        children:
+          type: array
+          items:
+            $ref: '#/components/schemas/DocumentTree'
+  requestBodies: {}
+  responses: {}
+  parameters:
+    collectionId:
+      name: collectionId
+      in: path
+      required: true
+      description: Targeted collection
+      example: bb84c46a-432d-4314-81e4-478614a52dcb
+      schema:
+        type: string
+        format: uuid
+    documentId:
+      name: documentId
+      in: path
+      required: true
+      description: Targeted document
+      example: bb84c46a-432d-4314-81e4-478614a52dcb
+      schema:
+        type: string
+        format: uuid
+
+security:
+  - bearerAuth: []
+tags:
+  - name: Documents
+    description: document operations

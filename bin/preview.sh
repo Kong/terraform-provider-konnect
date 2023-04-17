@@ -40,11 +40,15 @@ portal_paths="portal/definitions/**/computed"
 konnect_paths="konnect/definitions/**/*/computed"
 konnect_output="output/konnect/*.yaml"
 portal_output="output/portal/*.yaml"
+internal_paths="internal/definitions/**/**/computed"
 
 rm -f dist/index.html
 
 # if DOCS is not empty, then we are building a single doc
 if [[ -z "$DOCS" ]]; then
+  # Build internal docs
+  build_doc "$internal_paths" "*.yaml" "internal computed"
+
   # Build computed docs
   build_doc "$portal_paths" "openapi.yaml" "portal computed" 
   build_doc "$konnect_paths" "openapi.yaml" "konnect computed" 
@@ -52,4 +56,5 @@ if [[ -z "$DOCS" ]]; then
   # build bundled docs
   build_doc "$portal_output" "*.yaml" "portal bundled" 
   build_doc "$konnect_output" "*.yaml" "konnnect bundled" 
+
 fi
