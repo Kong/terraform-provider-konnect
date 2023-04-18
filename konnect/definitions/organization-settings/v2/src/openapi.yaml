@@ -371,9 +371,9 @@ components:
     Get-Audit-Log-Webhook:
       value:
         endpoint: https://example.com/audit-log
-        authorization: 'Bearer sometoken'
         enabled: true
         log_format: cef
+        updated_at: '2023-03-21T09:29:14.52Z'
     Get-Audit-Log-Webhook-Status:
       value:
         webhook_enabled: true
