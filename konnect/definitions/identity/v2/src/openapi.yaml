@@ -2073,6 +2073,66 @@ components:
                             example: 'Viewer has read-only access to all the configurations of a service, attributes, versions, reports, vitals and plugins.'
                             enum:
                               - 'Viewer has read-only access to all the configurations of a service, attributes, versions, reports, vitals and plugins.'
+              audit_logs:
+                type: object
+                additionalProperties: false
+                required:
+                  - name
+                  - roles
+                properties:
+                  name:
+                    type: string
+                    enum:
+                      - Audit Logs
+                  roles:
+                    type: object
+                    properties:
+                      admin:
+                        type: object
+                        additionalProperties: false
+                        required:
+                          - name
+                          - description
+                        properties:
+                          name:
+                            type: string
+                            enum:
+                              - Admin
+                          description:
+                            type: string
+                            example: 'This role grants full write access to the Audit log configuration.'
+                            enum:
+                              - 'This role grants full write access to the Audit log configuration.'
+              identity:
+                type: object
+                additionalProperties: false
+                required:
+                  - name
+                  - roles
+                properties:
+                  name:
+                    type: string
+                    enum:
+                      - Identity
+                  roles:
+                    type: object
+                    properties:
+                      admin:
+                        type: object
+                        additionalProperties: false
+                        required:
+                          - name
+                          - description
+                        properties:
+                          name:
+                            type: string
+                            enum:
+                              - Admin
+                          description:
+                            type: string
+                            example: 'This role grants full write access to the Identity configuration.'
+                            enum:
+                              - 'This role grants full write access to the Identity configuration.'
           examples:
             Predefined Roles:
               value:
@@ -2139,6 +2199,18 @@ components:
                     viewer:
                       name: Viewer
                       description: 'Viewer has read-only access to all the configurations of a service, attributes, versions, reports, vitals and plugins.'
+                audit_logs:
+                  name: Audit Logs
+                  roles:
+                    admin:
+                      name: Admin
+                      description: This role grants full write access to the Audit log configuration.
+                identity:
+                  name: Identity
+                  roles:
+                    admin:
+                      name: Admin
+                      description: This role grants full write access to the Identity configuration.
     SystemAccountCollection:
       description: A paginated list response for a collection of system accounts.
       content:
