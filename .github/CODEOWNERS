@@ -4,3 +4,4 @@ konnect/definitions/portal-rbac/**   @Kong/team-platform-services
 
 # Portal
 portal/    @Kong/team-devx
+portal/definitions/authentication/**    @Kong/team-platform-services

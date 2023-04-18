@@ -11,6 +11,7 @@ components:
             - $ref: '#/components/responses/Forbidden'
             - $ref: '#/components/responses/NotFound'
             - $ref: '#/components/responses/Conflict'
+            - $ref: '#/components/responses/Gone'
             - $ref: '#/components/responses/Internal'
             - $ref: '#/components/responses/NotAvailable'
             discriminator:
@@ -21,6 +22,7 @@ components:
                 403: '#/components/responses/Forbidden'
                 404: '#/components/responses/NotFound'
                 409: '#/components/responses/Conflict'
+                410: '#/components/responses/Gone'
                 500: '#/components/responses/Internal'
                 503: '#/components/responses/NotAvailable'
     # 400
@@ -58,6 +60,13 @@ components:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/ConflictError'
+    # 410
+    Gone:
+      description: Gone
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/GoneError'
     # 500
     Internal:
       description: Internal
@@ -236,6 +245,21 @@ components:
           example: kong:trace:1234567890
         detail:
           example: Conflict
+      allOf:
+      - $ref: '#/components/schemas/BaseError'
+    GoneError:
+      type: object
+      properties:
+        status:
+          example: 410
+        title:
+          example: Gone
+        type:
+          example: https://httpstatuses.com/410
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Gone
       allOf:
       - $ref: '#/components/schemas/BaseError'
     InternalError:
