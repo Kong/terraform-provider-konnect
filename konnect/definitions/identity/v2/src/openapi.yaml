@@ -1311,7 +1311,7 @@ components:
               value:
                 meta:
                   page:
-                    number: 2
+                    number: 1
                     size: 1
                     total: 10
                 data:
@@ -2229,7 +2229,7 @@ components:
               value:
                 meta:
                   page:
-                    number: 2
+                    number: 1
                     size: 10
                     total: 100
                 data:
@@ -2284,7 +2284,7 @@ components:
               value:
                 meta:
                   page:
-                    number: 2
+                    number: 1
                     size: 10
                     total: 100
                 data:
@@ -3074,7 +3074,7 @@ components:
       x-examples:
         example-1:
           page:
-            number: 2
+            number: 1
             size: 10
             total: 100
       title: PaginatedMeta
@@ -3265,7 +3265,7 @@ components:
       value:
         meta:
           page:
-            number: 2
+            number: 1
             size: 10
             total: 100
         data:
@@ -3324,7 +3324,7 @@ components:
       value:
         meta:
           page:
-            number: 2
+            number: 1
             size: 1
             total: 10
         data:

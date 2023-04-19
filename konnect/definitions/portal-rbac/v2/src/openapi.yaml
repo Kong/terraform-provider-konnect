@@ -516,7 +516,7 @@ components:
               value:
                 meta:
                   page:
-                    number: 2
+                    number: 1
                     size: 1
                     total: 10
                 data:
@@ -562,7 +562,7 @@ components:
               value:
                 meta:
                   page:
-                    number: 2
+                    number: 1
                     size: 1
                     total: 10
                 data:

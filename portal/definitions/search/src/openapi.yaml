@@ -212,7 +212,7 @@ components:
                   deprecated: false
         meta:
           page:
-            number: 2
+            number: 1
             size: 1
             total: 4
 tags:
