@@ -371,16 +371,27 @@ components:
           items:
             $ref: '#/components/schemas/ProductVersion'
     ProductVersionSpec:
-      type: string
+      type: object
       title: Product Version Spec Document
-      description: Open API specification
+      description: API specification
+      properties:
+        api_type:
+          $ref: '#/components/schemas/ApiTypeEnum'
+        content:
+          type: string
+      required:
+      - api_type
+      - content 
     ProductVersionSpecOperations:
       type: object
       title: Operations in product version spec document
       description: List of every operation detailed in the product version spec document
       required:
+        - api_type
         - operations
       properties:
+        api_type:
+          $ref: '#/components/schemas/ApiTypeEnum'
         operations:
           type: array
           items:
@@ -415,6 +426,10 @@ components:
                 example: "Add a new Pet to the store"
               deprecated:
                 type: boolean
+    ApiTypeEnum:
+      type: string
+      enum:
+      - openapi
     ProductDocument:
       type: object
       title: Document
