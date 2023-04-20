@@ -224,6 +224,7 @@ components:
       properties:
         alignments:
           type: array
+          nullable: true
           items:
             $ref: '#/components/schemas/AlignmentKind'
       required:
