@@ -191,8 +191,8 @@ components:
     AuthenticateRequest:
       type: object
       additionalProperties: false
-      x-examples:
-        $ref: '#/components/examples/Authenticate-Request'
+      example:
+        $ref: '#/components/examples/Authenticate-Request/value'
       title: AuthenticateRequest
       description: The request schema for the authenticate endpoint.
       properties:
@@ -214,9 +214,8 @@ components:
       type: object
       additionalProperties: false
       description: The request schema for the reset password endpoint.
-      x-examples:
-        $ref:
-          $ref: '#/components/examples/Reset-Password-Request'
+      example:
+        $ref: '#/components/examples/Reset-Password-Request/value'
       properties:
         password:
           type: string
@@ -236,9 +235,8 @@ components:
       type: object
       additionalProperties: false
       description: The request schema for the verify email endpoint.
-      x-examples:
-        $ref:
-          $ref: '#/components/examples/Verify-Email-Request'
+      example:
+        $ref: '#/components/examples/Verify-Email-Request/value'
       properties:
         token:
           type: string
@@ -252,9 +250,8 @@ components:
       type: object
       additionalProperties: false
       description: The response schema for the verify email endpoint.
-      x-examples:
-        $ref:
-          $ref: '#/components/examples/Verify-Email-Response'
+      example:
+        $ref: '#/components/examples/Verify-Email-Response/value'
       properties:
         email:
           type: string
@@ -271,7 +268,6 @@ components:
       value:
         username: developer@example.com
         password: <!N0taP@$$w0rd!>
-        portal_id: c8efd006-d8e1-4743-b91b-f163b9eae06a
     Reset-Password-Request:
       value:
         password: <!D3finitelyN0taP@$$w0rd!>

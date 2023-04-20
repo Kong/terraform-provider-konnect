@@ -586,13 +586,12 @@ components:
       type: object
       title: Error
       description: standard error
-      x-examples:
-        Example 1:
-          status: 404
-          title: Not Found
-          type: https://kongapi.info/konnect/not-found
-          instance: 'portal:trace:2287285207635123011'
-          detail: The requested document was not found
+      example:
+        status: 404
+        title: Not Found
+        type: https://kongapi.info/konnect/not-found
+        instance: 'portal:trace:2287285207635123011'
+        detail: The requested document was not found
       required:
         - status
         - title

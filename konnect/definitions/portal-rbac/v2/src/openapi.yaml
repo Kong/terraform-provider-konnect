@@ -410,13 +410,12 @@ components:
         application/problem+json:
           schema:
             type: object
-            x-examples:
-              Example:
-                type: 'https://kongapi.info/konnect/invalid-permissions'
-                status: 403
-                title: Invalid Permissions
-                detail: 'You must have the [administrator] role to perform this action'
-                instance: 'kong:trace:6c1ef33ae5bce33634d7d7d695c7f203'
+            example:
+              type: 'https://kongapi.info/konnect/invalid-permissions'
+              status: 403
+              title: Invalid Permissions
+              detail: 'You must have the [administrator] role to perform this action'
+              instance: 'kong:trace:6c1ef33ae5bce33634d7d7d695c7f203'
             properties:
               type:
                 type: string
@@ -643,13 +642,20 @@ components:
           schema:
             $ref: '#/components/schemas/AssignedRole'
           examples:
-            Example:
+            US Example:
               value:
-                id: eaf7adf1-32c8-4bbf-b960-d1f8456afe67
+                id: 1a3c2169-27f8-4594-926b-41df3432d5dc
                 role_name: API Viewer
-                entity_id: 817d0422-45c9-4d88-8d64-45aef05c1ae7
+                entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
                 entity_type_name: Services
-                entity_region: eu
+                entity_region: us
+            All Regions Example:
+              value:
+                id: 034cb810-1f2d-40d2-a1ce-31944144668e
+                role_name: API Consumer
+                entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
+                entity_type_name: Services
+                entity_region: '*'
     AssignedPortalRoleCollection:
       description: A paginated collection of assigned roles.
       content:
@@ -842,27 +848,25 @@ components:
           format: date-time
           example: '2022-10-08T17:00:00.52Z'
           readOnly: true
-      x-examples:
-        Example:
-          id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-          email: user@email.com
-          full_name: API Developer
-          preferred_name: apidev
-          status: active
-          portal_id: 51d313f4-e13d-43d0-a2b4-8d4bf2aa172b
-          created_at: '2022-02-07T17:46:57.52Z'
-          updated_at: '2022-10-08T17:00:00.52Z'
+      example:
+        id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+        email: user@email.com
+        full_name: API Developer
+        preferred_name: apidev
+        status: active
+        portal_id: 51d313f4-e13d-43d0-a2b4-8d4bf2aa172b
+        created_at: '2022-02-07T17:46:57.52Z'
+        updated_at: '2022-10-08T17:00:00.52Z'
     Team:
       title: Team
       type: object
       description: A team is a group of developers.
-      x-examples:
-        Example:
-          id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-          name: IDM - Developers
-          description: The developers for the IDM API.
-          created_at: '1992-02-07T17:46:57.52Z'
-          updated_at: '2022-08-31T17:00:00.52Z'
+      example:
+        id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+        name: IDM - Developers
+        description: The developers for the IDM API.
+        created_at: '1992-02-07T17:46:57.52Z'
+        updated_at: '2022-08-31T17:00:00.52Z'
       properties:
         id:
           type: string
@@ -892,19 +896,12 @@ components:
       title: AssignedRole
       type: object
       description: An assigned role associates a service and an action to a team.
-      x-examples:
-        US Example:
-          id: 1a3c2169-27f8-4594-926b-41df3432d5dc
-          role_name: API Viewer
-          entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
-          entity_type_name: Services
-          entity_region: us
-        All Regions Example:
-          id: 034cb810-1f2d-40d2-a1ce-31944144668e
-          role_name: API Consumer
-          entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
-          entity_type_name: Services
-          entity_region: '*'
+      example:
+        id: 1a3c2169-27f8-4594-926b-41df3432d5dc
+        role_name: API Viewer
+        entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
+        entity_type_name: Services
+        entity_region: us
       properties:
         id:
           type: string

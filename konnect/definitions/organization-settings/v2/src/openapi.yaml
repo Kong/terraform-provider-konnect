@@ -417,9 +417,8 @@ components:
         x:
           type: string
           description: The x coordinate for the Elliptic Curve point.
-      x-examples:
-        JWK:
-          $ref: '#/components/examples/JWK'
+      example:
+        $ref: '#/components/examples/JWK/value'
 security:
   - personalAccessToken: []
   - systemAccountAccessToken: []
