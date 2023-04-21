@@ -385,8 +385,6 @@ components:
           type: string
         redirect_uri:
           type: string
-        is_dcr:
-          type: boolean
         created_at:
           type: string
           format: date-time
@@ -404,7 +402,6 @@ components:
         - name
         - reference_id
         - description
-        - is_dcr
         - updated_at
         - created_at
     GetCredentialsResponse:
@@ -490,7 +487,6 @@ components:
         - name
         - reference_id
         - description
-        - is_dcr
         - created_at
         - updated_at
       properties:
@@ -505,8 +501,6 @@ components:
           type: string
         redirect_uri:
           type: string
-        is_dcr:
-          type: boolean
         credentials:
           type: object
           required:
@@ -553,7 +547,6 @@ components:
         - name
         - reference_id
         - description
-        - is_dcr
         - updated_at
         - created_at
       properties:
@@ -568,8 +561,6 @@ components:
           type: string
         redirect_uri:
           type: string
-        is_dcr:
-          type: boolean
         created_at:
           type: string
           format: date-time
