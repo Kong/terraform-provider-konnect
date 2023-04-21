@@ -150,16 +150,29 @@ paths:
       security:
         - portalAccessToken: []
         - {}
-  /api/v2/products/{productId}/document-tree:
+  /api/v2/products/{productId}/documents:
     get:
-      summary: Get product document tree
-      description: Return the entire documentation tree of a product
-      operationId: get-product-document-tree
+      summary: Get product documentation
+      description: Return the documentation tree of a product
+      operationId: get-product-documents
       parameters:
         - $ref: '#/components/parameters/ProductId'
+        - in: header
+          name: Accept
+          schema:
+            $ref: '../../../../common/definitions/documenthub.yaml#/components/schemas/DocumentContentTypeEnum'
+        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
       responses:
         '200':
-          $ref: '#/components/responses/ProductDocumentTreeGet'
+          description: Tree of documents
+          content:
+            'application/json':
+              schema:
+                $ref: '../../../../common/definitions/documenthub.yaml#/components/schemas/GetManyDocuments'
+            'application/konnect.document-tree+json':
+              schema:
+                $ref: '../../../../common/definitions/documenthub.yaml#/components/schemas/GetManyDocumentTrees'
         '400':
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
@@ -265,12 +278,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ProductDocument'
-    ProductDocumentTreeGet:
-      description: Response for getting product documentation tree
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProductDocumentTree'
   schemas:
     Product:
       title: Product
@@ -461,46 +468,6 @@ components:
           type: string
           description: the title of the document
           example: Hello World
-    ProductDocumentTree:
-      type: object
-      title: ProductDocumentTree
-      description: a list of top-level documents in a document tree, each with their children
-      required:
-        - tree
-      properties:
-        tree:
-          $ref: '#/components/schemas/ProductDocumentTreeItem'
-    ProductDocumentTreeItem:
-      type: object
-      title: ProductDocumentTreeItem
-      description: an item in a document tree attached to a product
-      required:
-        - id
-        - title
-        - slug
-        - children
-      properties:
-        id:
-          type: string
-          format: uuid
-          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
-        parent_document_id:
-          type: string
-          format: uuid
-          nullable: true
-          example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
-        title:
-          type: string
-          description: the title of the document
-          example: Getting Started
-        slug:
-          type: string
-          description: the slug of the document
-          example: getting-started
-        children:
-          type: array
-          items:
-            $ref: '../../../../common/definitions/documenthub_nodes.yaml#/components/schemas/DocumentBlock'
 tags:
   - name: products
   - name: versions
