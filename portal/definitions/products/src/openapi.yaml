@@ -126,7 +126,7 @@ paths:
       security:
         - portalAccessToken: []
         - {}
-  /api/v2/products/{productId}/versions/{versionId}/operations:
+  /api/v2/products/{productId}/versions/{versionId}/spec/operations:
     get:
       summary: Get operations in version spec
       description: Returns list of operations used in the OpenAPI specefication document attached to given product version
