@@ -115,6 +115,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/ProductVersionSpecGet'
+        '204':
+          description: 'No specification is defined for the version'
         '400':
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
