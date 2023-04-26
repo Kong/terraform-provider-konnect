@@ -16,6 +16,8 @@ paths:
       operationId: get-many-application-registrations
       parameters:
         - $ref: '#/components/parameters/ApplicationId'
+        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
         - $ref: '../../../../common/definitions/filter_parameters.yaml#/components/parameters/FilterByIdEquality'
         - $ref: '../../../../common/definitions/filter_parameters.yaml#/components/parameters/FilterByIdEqualityShort'
         - $ref: '../../../../common/definitions/filter_parameters.yaml#/components/parameters/FilterByStatusEquality'
