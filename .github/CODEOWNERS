@@ -1,3 +1,6 @@
+# All APIs need review from team-aip
+*       @Kong/team-aip
+
 # IdentityAPI
 konnect/definitions/identity/**    @Kong/team-platform-services
 konnect/definitions/portal-rbac/**   @Kong/team-platform-services
