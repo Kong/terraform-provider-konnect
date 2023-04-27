@@ -348,7 +348,7 @@ components:
           type: string
           example: v2.0.0
           description: Name of product version
-        is_deprecated:
+        deprecated:
           type: boolean
           description: If true, product version is deprecated
         registration_configs:
@@ -367,7 +367,7 @@ components:
         - created_at
         - updated_at
         - version
-        - is_deprecated
+        - deprecated
         - registration_configs
     ProductVersionListPage:
       title: ProductVersionListPage
