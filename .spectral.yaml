@@ -317,3 +317,24 @@ overrides:
       - "portal/definitions/developer/**/openapi.yaml"
     rules:
       errors-post-not-contain-200: "off"
+  - files:
+      # This should be a 403, not a 400. It's missing invalid_parameters
+      - "konnect/definitions/runtime-groups/v2/**/openapi.yaml#/components/examples/400UsageLimitsReachedExample"
+      # The 'unknownProperty' rule isn't in the enum of allowed types
+      - "konnect/definitions/runtime-groups/v2/**/openapi.yaml#/components/examples/400UnknownPropertyExample"
+      # The next block are errors that are missing a "detail" field as we made it required after the endpoints were built
+      ## Runtime Groups
+      - "konnect/definitions/runtime-groups/v2/**/openapi.yaml#/components/examples/400RequestFormatInvalidExample"
+      - "konnect/definitions/runtime-groups/v2/**/openapi.yaml#/components/examples/400CannotBeBlankExample"
+      - "konnect/definitions/runtime-groups/v2/**/openapi.yaml#/components/examples/400InvalidIDFormatExample"
+      ## Identity
+      - "konnect/definitions/identity/v2/**/openapi.yaml#/components/examples/400-request-format-is-invalid"
+      - "konnect/definitions/identity/v2/**/openapi.yaml#/components/examples/400-cannot-be-blank"
+      - "konnect/definitions/identity/v2/**/openapi.yaml#/components/examples/400-invalid-id-format"
+      - "konnect/definitions/identity/v2/**/openapi.yaml#/components/examples/400-valid-uuid"
+      - "konnect/definitions/identity/v2/**/openapi.yaml#/components/examples/400-systems-team-modified"
+      - "konnect/definitions/identity/v2/**/openapi.yaml#/components/examples/400-authentication-settings-cannot-be-both-disabled"
+      - "konnect/definitions/identity/v2/**/openapi.yaml#/components/examples/400-oidc-auth-enabled-needs-idp"
+      - "konnect/definitions/identity/v2/**/openapi.yaml#/components/responses/IdentityBadRequest"
+    rules:
+      oas3-valid-media-example: "off"

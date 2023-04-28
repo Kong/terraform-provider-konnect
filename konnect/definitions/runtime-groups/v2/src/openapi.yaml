@@ -19,18 +19,18 @@ paths:
         '200':
           $ref: '#/components/responses/ListRuntimeGroupsResponse'
         '400':
-          $ref: '#/components/responses/BadRequest'
+          $ref: '#/components/responses/RuntimeGroupsBadRequest'
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '#/components/responses/RuntimeGroupUnauthenticated'
         '403':
-          $ref: '#/components/responses/PermissionDenied'
+          $ref: '#/components/responses/RuntimeGroupPermissionDenied'
         '503':
           $ref: '#/components/responses/ServiceUnavailable'
       operationId: list-runtime-groups
       description: Returns an array of runtime groups objects containing information about the Konnect Runtime Groups.
       parameters:
-        - $ref: '#/components/parameters/PageSize'
-        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+        - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
         - $ref: '#/components/parameters/FilterByNameEquality'
         - $ref: '#/components/parameters/FilterByNameEqualityShort'
         - $ref: '#/components/parameters/FilterByNameContains'
@@ -49,13 +49,13 @@ paths:
         '201':
           $ref: '#/components/responses/CreateRuntimeGroupResponse'
         '400':
-          $ref: '#/components/responses/BadRequest'
+          $ref: '#/components/responses/RuntimeGroupsBadRequest'
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '#/components/responses/RuntimeGroupUnauthenticated'
         '403':
-          $ref: '#/components/responses/PermissionDenied'
+          $ref: '#/components/responses/RuntimeGroupPermissionDenied'
         '409':
-          $ref: '#/components/responses/Conflict'
+          $ref: '#/components/responses/RuntimeGroupConflict'
         '500':
           $ref: '#/components/responses/InternalServerError'
         '503':
@@ -88,13 +88,13 @@ paths:
         '200':
           $ref: '#/components/responses/RetrieveRuntimeGroupResponse'
         '400':
-          $ref: '#/components/responses/BadRequest'
+          $ref: '#/components/responses/RuntimeGroupsBadRequest'
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '#/components/responses/RuntimeGroupUnauthenticated'
         '403':
-          $ref: '#/components/responses/PermissionDenied'
+          $ref: '#/components/responses/RuntimeGroupPermissionDenied'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/RuntimeGroupNotFound'
         '503':
           $ref: '#/components/responses/ServiceUnavailable'
       operationId: get-runtime-group
@@ -108,13 +108,13 @@ paths:
         '200':
           $ref: '#/components/responses/UpdateRuntimeGroupResponse'
         '400':
-          $ref: '#/components/responses/BadRequest'
+          $ref: '#/components/responses/RuntimeGroupsBadRequest'
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '#/components/responses/RuntimeGroupUnauthenticated'
         '403':
-          $ref: '#/components/responses/PermissionDenied'
+          $ref: '#/components/responses/RuntimeGroupPermissionDenied'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/RuntimeGroupNotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
         '503':
@@ -138,13 +138,13 @@ paths:
         '204':
           description: No Content
         '400':
-          $ref: '#/components/responses/BadRequest'
+          $ref: '#/components/responses/RuntimeGroupsBadRequest'
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '#/components/responses/RuntimeGroupUnauthenticated'
         '403':
-          $ref: '#/components/responses/PermissionDenied'
+          $ref: '#/components/responses/RuntimeGroupPermissionDenied'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/RuntimeGroupNotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
         '503':
@@ -154,22 +154,6 @@ paths:
         - Runtime Groups
 components:
   parameters:
-    PageSize:
-      name: 'page[size]'
-      description: How many items to include in a page.
-      in: query
-      required: false
-      schema:
-        type: integer
-        example: 10
-    PageNumber:
-      name: 'page[number]'
-      description: The specific page number in the collection results.
-      in: query
-      required: false
-      schema:
-        type: integer
-        example: 2
     FilterByLabels:
       name: 'labels'
       description: Filter runtime groups in the response by associated labels. 
@@ -271,7 +255,7 @@ components:
             type: object
             properties:
               meta:
-                $ref: '#/components/schemas/PaginatedMeta'
+                $ref: '../../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
               data:
                 type: array
                 items:
@@ -296,55 +280,12 @@ components:
                       cluster_type: 'CLUSTER_TYPE_HYBRID'
                     created_at: '2022-11-04T20:10:06.927Z'
                     updated_at: '2022-11-04T20:10:06.927Z'
-    BadRequest:
+    RuntimeGroupsBadRequest:
       description: Bad Request
       content:
         application/problem+json:
           schema:
-            title: 'BadRequestError'
-            type: object
-            description: The error object
-            properties:
-              status:
-                type: integer
-                description: The HTTP response code
-                example: 400
-                enum:
-                  - 400
-              title:
-                type: string
-                example: Bad Request
-                description: The Error response
-              instance:
-                type: string
-                description: The Konnect traceback ID.
-                example: 'konnect:trace:3674017986744198214'
-              # specific to bad request case when organization attempts to breach runtime group limits
-              # could be moved to another error code, but would technically be non-compliant
-              detail:
-                type: string
-                description: Information about the error response.
-                example: Cannot create an additional runtime group because usage limits have been reached.
-              # used on failed validation in requests, not for failing business-logic requirements
-              invalid_parameters:
-                type: array
-                description: An array of objects that contains information related to the error response.
-                items:
-                  type: object
-                  additionalProperties: true
-                  properties:
-                    rule:
-                      type: string
-                    field:
-                      type: string
-                    reason:
-                      type: string
-                required:
-                  - field
-                  - reason
-            required:
-              - status
-              - title
+            $ref: '../../../../../common/definitions/errors.yaml#/components/schemas/BadRequestError'
           examples:
             Request Format Invalid:
               $ref: '#/components/examples/400RequestFormatInvalidExample'
@@ -356,151 +297,39 @@ components:
               $ref: '#/components/examples/400UsageLimitsReachedExample'
             Unknown Property:
               $ref: '#/components/examples/400UnknownPropertyExample'
-    PermissionDenied:
+    RuntimeGroupPermissionDenied:
       description: Permission denied
       content:
         application/problem+json:
           schema:
-            title: 'PermissionDeniedError'
-            type: object
-            description: The error object.
-            properties:
-              status:
-                type: integer
-                description: HTTP status code.
-                example: 403
-                enum:
-                  - 403
-              title:
-                type: string
-                example: Permission denied
-                description: HTTP status code
-              instance:
-                type: string
-                description: Konnect traceback error code.
-                example: 'konnect:trace:3674017986744198214'
-              detail:
-                type: string
-                description: Information about the error response.
-                example: Insufficient role-set to create runtime groups.
-              type:
-                type: string
-                description: Human-readable documentation for the problem
-                example: https://kongapi.info/konnect/invalid-permissions
-            required:
-              - status
-              - title
+            $ref: '../../../../../common/definitions/errors.yaml#/components/schemas/ForbiddenError'
           examples:
             Permission Denied:
               $ref: '#/components/examples/403PermissionDeniedExample'
-    Unauthenticated:
+    RuntimeGroupUnauthenticated:
       description: Unauthenticated
       content:
         application/problem+json:
           schema:
-            title: 'UnauthenticatedError'
-            type: object
-            description: The error response object.
-            properties:
-              status:
-                type: integer
-                example: 401
-                description: The HTTP status code.
-                enum:
-                  - 401
-              title:
-                type: string
-                description: The Error Response.
-                example: Unauthenticated
-              instance:
-                type: string
-                description: The Konnect traceback code.
-                example: 'konnect:trace:952172606039454040'
-              detail:
-                type: string
-                description: Details about the error response.
-                example: A valid token is required
-              type:
-                type: string
-                description: Human-readable documentation for the problem
-                example: https://kongapi.info/konnect/invalid-permissions
-            required:
-              - status
-              - title
+            $ref: '../../../../../common/definitions/errors.yaml#/components/schemas/UnauthorizedError'
           examples:
             Unauthorized:
               $ref: '#/components/examples/401UnauthenticatedExample'
-    NotFound:
+    RuntimeGroupNotFound:
       description: Not Found
       content:
         application/problem+json:
           schema:
-            title: 'NotFoundError'
-            type: object
-            description: The error response object.
-            properties:
-              status:
-                type: integer
-                description: The HTTP status code.
-                example: 404
-                enum:
-                  - 404
-              title:
-                type: string
-                description: The error response code.
-                example: Not Found
-              instance:
-                type: string
-                example: 'konnect:trace:2287285207635123011'
-                description: The Konnect traceback code
-              detail:
-                type: string
-                example: The requested runtime group was not found.
-                description: Details about the error.
-              type:
-                type: string
-                description: Human-readable documentation for the problem
-                example: https://kongapi.info/konnect/invalid-permissions
-            required:
-              - status
-              - title
+            $ref: '../../../../../common/definitions/errors.yaml#/components/schemas/NotFoundError'
           examples:
             Not Found:
               $ref: '#/components/examples/404NotFoundExample'
-    Conflict:
+    RuntimeGroupConflict:
       description: Conflict
       content:
         application/problem+json:
           schema:
-            title: 'ConflictError'
-            type: object
-            description: The error response object.
-            properties:
-              status:
-                type: integer
-                description: The HTTP status code.
-                example: 409
-                enum:
-                  - 409
-              title:
-                type: string
-                description: The error response code.
-                example: Conflict
-              instance:
-                type: string
-                example: 'konnect:trace:2287285207635123011'
-                description: The Konnect traceback code
-              detail:
-                type: string
-                example: Runtime group with provided name already exists.
-                description: Details about the error.
-              type:
-                type: string
-                description: Human-readable documentation for the problem
-                example: https://kongapi.info/konnect/invalid-permissions
-            required:
-              - status
-              - title
+            $ref: '../../../../../common/definitions/errors.yaml#/components/schemas/ConflictError'
           examples:
             Conflict:
               $ref: '#/components/examples/409ConflictExample'
@@ -612,29 +441,6 @@ components:
           description: The description of the runtime group in Konnect.
         labels:
           $ref: '#/components/schemas/Labels'
-    PaginatedMeta:
-      type: object
-      title: PaginatedMeta
-      description: Returns pagination information
-      properties:
-        page:
-          type: object
-          description: Contains pagination query parameters and the total number of objects returned.
-          properties:
-            number:
-              type: integer
-              example: 2
-              description: Specifies the number of objects returned per page.
-            size:
-              type: integer
-              example: 10
-              maximum: 100
-              description: Specifies the size of the page.
-            total:
-              type: integer
-              maximum: 1000
-              example: 100
-              description: Integer representation of the amount of items returned.
     RuntimeGroup:
       title: Runtime Group
       type: object

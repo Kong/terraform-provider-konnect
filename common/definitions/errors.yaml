@@ -17,14 +17,14 @@ components:
             discriminator:
               propertyName: status
               mapping:
-                400: '#/components/responses/BadRequest'
-                401: '#/components/responses/Unauthorized'
-                403: '#/components/responses/Forbidden'
-                404: '#/components/responses/NotFound'
-                409: '#/components/responses/Conflict'
-                410: '#/components/responses/Gone'
-                500: '#/components/responses/Internal'
-                503: '#/components/responses/NotAvailable'
+                "400": '#/components/responses/BadRequest'
+                "401": '#/components/responses/Unauthorized'
+                "403": '#/components/responses/Forbidden'
+                "404": '#/components/responses/NotFound'
+                "409": '#/components/responses/Conflict'
+                "410": '#/components/responses/Gone'
+                "500": '#/components/responses/Internal'
+                "503": '#/components/responses/NotAvailable'
     # 400
     BadRequest:
       description: Bad Request

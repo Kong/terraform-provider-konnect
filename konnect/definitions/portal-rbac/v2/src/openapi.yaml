@@ -17,7 +17,7 @@ paths:
       summary: List Teams
       responses:
         '200':
-          $ref: '#/components/responses/TeamCollection'
+          $ref: '#/components/responses/PortalTeamCollection'
         '401':
           $ref: '#/components/responses/Error'
         '403':
@@ -29,8 +29,8 @@ paths:
       operationId: list-portal-teams
       description: List the teams.
       parameters:
-        - $ref: '#/components/parameters/PageSize'
-        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+        - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
       tags:
         - Teams
     parameters:
@@ -44,7 +44,7 @@ paths:
       operationId: create-portal-team
       responses:
         '201':
-          $ref: '#/components/responses/TeamSingle'
+          $ref: '#/components/responses/PortalTeamSingle'
         '400':
           $ref: '#/components/responses/Error'
         '401':
@@ -58,7 +58,7 @@ paths:
       tags:
         - Teams
       requestBody:
-        $ref: '#/components/requestBodies/CreateTeam'
+        $ref: '#/components/requestBodies/PortalCreateTeam'
       description: Create a team.
   '/portals/{portalId}/teams/{teamId}':
     parameters:
@@ -80,7 +80,7 @@ paths:
       summary: Get Team
       responses:
         '200':
-          $ref: '#/components/responses/TeamSingle'
+          $ref: '#/components/responses/PortalTeamSingle'
         '401':
           $ref: '#/components/responses/Error'
         '403':
@@ -98,7 +98,7 @@ paths:
       operationId: update-portal-team
       responses:
         '200':
-          $ref: '#/components/responses/TeamSingle'
+          $ref: '#/components/responses/PortalTeamSingle'
         '401':
           $ref: '#/components/responses/Error'
         '403':
@@ -109,7 +109,7 @@ paths:
           $ref: '#/components/responses/Error'
       description: Update an individual team.
       requestBody:
-        $ref: '#/components/requestBodies/UpdateTeam'
+        $ref: '#/components/requestBodies/PortalUpdateTeam'
       tags:
         - Teams
     delete:
@@ -157,8 +157,8 @@ paths:
       operationId: list-portal-team-developers
       description: List a team's developers.
       parameters:
-        - $ref: '#/components/parameters/PageSize'
-        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+        - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
       tags:
         - Team Membership
     post:
@@ -253,7 +253,7 @@ paths:
       operationId: portal-teams-assign-role
       responses:
         '201':
-          $ref: '#/components/responses/AssignedRoleSingle'
+          $ref: '#/components/responses/PortalAssignedRoleResponse'
         '400':
           $ref: '#/components/responses/Error'
         '401':
@@ -268,7 +268,7 @@ paths:
           $ref: '#/components/responses/Error'
       description: Assign a role to a team.
       requestBody:
-        $ref: '#/components/requestBodies/AssignRole'
+        $ref: '#/components/requestBodies/PortalAssignRole'
       tags:
         - Team Roles
   '/portals/{portalId}/teams/{teamId}/assigned-roles/{roleId}':
@@ -328,8 +328,8 @@ paths:
       operationId: list-portal-developers
       description: List the developers.
       parameters:
-        - $ref: '#/components/parameters/PageSize'
-        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+        - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
     parameters:
       - schema:
           type: string
@@ -355,7 +355,7 @@ paths:
       summary: List Developer Teams
       responses:
         '200':
-          $ref: '#/components/responses/TeamCollection'
+          $ref: '#/components/responses/PortalTeamCollection'
         '401':
           $ref: '#/components/responses/Error'
         '403':
@@ -367,8 +367,8 @@ paths:
       operationId: list-portal-developer-teams
       description: List the teams to which a developer belongs.
       parameters:
-        - $ref: '#/components/parameters/PageSize'
-        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+        - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
       tags:
         - Team Membership
   /portal-roles:
@@ -388,21 +388,6 @@ paths:
       tags:
         - Roles
 components:
-  parameters:
-    PageSize:
-      name: 'page[size]'
-      description: How many items to include in a page.
-      in: query
-      schema:
-        type: integer
-        example: 10
-    PageNumber:
-      name: 'page[number]'
-      description: The specific page number in the collection results.
-      in: query
-      schema:
-        type: integer
-        example: 2
   responses:
     Error:
       description: A response in which an error has occurred.
@@ -505,7 +490,7 @@ components:
             type: object
             properties:
               meta:
-                $ref: '#/components/schemas/PaginatedMeta'
+                $ref: '../../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
               data:
                 type: array
                 items:
@@ -526,12 +511,12 @@ components:
                     active: true
                     created_at: '2022-08-17T17:46:57.52Z'
                     updated_at: '2022-10-03T17:00:00.00Z'
-    TeamSingle:
+    PortalTeamSingle:
       description: A response including a single team.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Team'
+            $ref: '#/components/schemas/PortalTeam'
           examples:
             Example:
               value:
@@ -540,7 +525,7 @@ components:
                 description: Team with access to APIs in the Gold tier
                 created_at: '2022-02-07T17:46:57.52Z'
                 updated_at: '2022-09-25T13:00:00.00Z'
-    TeamCollection:
+    PortalTeamCollection:
       description: A paginated list of teams.
       content:
         application/json:
@@ -551,11 +536,11 @@ components:
               - meta
             properties:
               meta:
-                $ref: '#/components/schemas/PaginatedMeta'
+                $ref: '../../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
               data:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Team'
+                  $ref: '#/components/schemas/PortalTeam'
           examples:
             Example:
               value:
@@ -635,12 +620,12 @@ components:
                     apiconsumer:
                       name: API Consumer
                       description: API Consumers can make calls to the given service
-    AssignedRoleSingle:
+    PortalAssignedRoleResponse:
       description: A get action response of a single assigned role.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/AssignedRole'
+            $ref: '#/components/schemas/PortalAssignedRole'
           examples:
             US Example:
               value:
@@ -667,11 +652,11 @@ components:
               - data
             properties:
               meta:
-                $ref: '#/components/schemas/PaginatedMeta'
+                $ref: '../../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
               data:
                 type: array
                 items:
-                  $ref: '#/components/schemas/AssignedRole'
+                  $ref: '#/components/schemas/PortalAssignedRole'
           examples:
             CollectionExample:
               value:
@@ -697,7 +682,7 @@ components:
                     entity_type_name: Services
                     entity_region: us
   requestBodies:
-    CreateTeam:
+    PortalCreateTeam:
       description: The request schema for the create team request.
       content:
         application/json:
@@ -721,7 +706,7 @@ components:
               value:
                 name: IDM - Developers
                 description: The Identity Management (IDM) team.
-    UpdateTeam:
+    PortalUpdateTeam:
       description: The request schema for the update team request.
       content:
         application/json:
@@ -761,7 +746,7 @@ components:
             Example:
               value:
                 id: df120cb4-f60b-47bc-a2f8-6a28e6a3c63b
-    AssignRole:
+    PortalAssignRole:
       content:
         application/json:
           schema:
@@ -794,22 +779,6 @@ components:
                 entity_region: us
       description: Assign a role to a team.
   schemas:
-    PaginatedMeta:
-      type: object
-      properties:
-        page:
-          type: object
-          properties:
-            number:
-              type: integer
-              example: 2
-            size:
-              type: integer
-              example: 10
-            total:
-              type: integer
-              maximum: 1000
-              example: 100
     Developer:
       title: Developer
       type: object
@@ -857,7 +826,7 @@ components:
         portal_id: 51d313f4-e13d-43d0-a2b4-8d4bf2aa172b
         created_at: '2022-02-07T17:46:57.52Z'
         updated_at: '2022-10-08T17:00:00.52Z'
-    Team:
+    PortalTeam:
       title: Team
       type: object
       description: A team is a group of developers.
@@ -892,7 +861,7 @@ components:
           format: date-time
           example: '2022-02-07T17:00:00.52Z'
           readOnly: true
-    AssignedRole:
+    PortalAssignedRole:
       title: AssignedRole
       type: object
       description: An assigned role associates a service and an action to a team.

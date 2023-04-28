@@ -21,9 +21,9 @@ paths:
         '202':
           description: Accepted
         '400':
-          $ref: '#/components/responses/BadRequest'
+          $ref: '#/components/responses/IdentityBadRequest'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/IdentityNotFound'
       tags:
         - Invites
   /authentication-settings:
@@ -37,7 +37,7 @@ paths:
         '200':
           $ref: '#/components/responses/AuthenticationSettings'
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '#/components/responses/IdentityUnauthenticated'
     patch:
       summary: Updates the organization's authentication settings
       description: Returns updated authentication configuration for the current organization.
@@ -50,9 +50,9 @@ paths:
         '200':
           $ref: '#/components/responses/AuthenticationSettings'
         '400':
-          $ref: '#/components/responses/BadRequest'
+          $ref: '#/components/responses/IdentityBadRequest'
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '#/components/responses/IdentityUnauthenticated'
         '403':
           $ref: '#/components/responses/Unauthorized'
   /invites:
@@ -66,9 +66,9 @@ paths:
         '201':
           description: Created
         '400':
-          $ref: '#/components/responses/BadRequest'
+          $ref: '#/components/responses/IdentityBadRequest'
         '409':
-          $ref: '#/components/responses/Conflict'
+          $ref: '#/components/responses/IdentityConflict'
         '429':
           $ref: '#/components/responses/RateLimited'
       tags:
@@ -81,13 +81,13 @@ paths:
         '200':
           $ref: '#/components/responses/IdPConfiguration'
         '400':
-          $ref: '#/components/responses/BadRequest'
+          $ref: '#/components/responses/IdentityBadRequest'
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '#/components/responses/IdentityUnauthenticated'
         '403':
-          $ref: '#/components/responses/PermissionDenied'
+          $ref: '#/components/responses/IdentityPermissionDenied'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/IdentityNotFound'
       tags:
         - Auth Settings
       description: Fetch the IdP configuration.
@@ -99,9 +99,9 @@ paths:
         '200':
           $ref: '#/components/responses/IdPConfiguration'
         '400':
-          $ref: '#/components/responses/BadRequest'
+          $ref: '#/components/responses/IdentityBadRequest'
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '#/components/responses/IdentityUnauthenticated'
         '403':
           $ref: '#/components/responses/Unauthorized'
       description: Update the IdP configuration.
@@ -117,11 +117,11 @@ paths:
         '200':
           $ref: '#/components/responses/TeamMappingCollection'
         '400':
-          $ref: '#/components/responses/BadRequest'
+          $ref: '#/components/responses/IdentityBadRequest'
         '401':
-          $ref: '#/components/responses/PermissionDenied'
+          $ref: '#/components/responses/IdentityPermissionDenied'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/IdentityNotFound'
         '412':
           $ref: '#/components/responses/PreconditionFailed'
       tags:
@@ -136,11 +136,11 @@ paths:
         '200':
           $ref: '#/components/responses/TeamMappingResponse'
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '#/components/responses/IdentityUnauthenticated'
         '403':
-          $ref: '#/components/responses/PermissionDenied'
+          $ref: '#/components/responses/IdentityPermissionDenied'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/IdentityNotFound'
         '412':
           $ref: '#/components/responses/PreconditionFailed'
       tags:
@@ -155,9 +155,9 @@ paths:
         '200':
           $ref: '#/components/responses/Roles'
         '400':
-          $ref: '#/components/responses/BadRequest'
+          $ref: '#/components/responses/IdentityBadRequest'
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '#/components/responses/IdentityUnauthenticated'
       tags:
         - Roles
   /teams:
@@ -167,14 +167,14 @@ paths:
         '200':
           $ref: '#/components/responses/TeamCollection'
         '400':
-          $ref: '#/components/responses/BadRequest'
+          $ref: '#/components/responses/IdentityBadRequest'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/IdentityNotFound'
       operationId: list-teams
       description: Returns an array of team objects containing information about the Konnect Teams.
       parameters:
-        - $ref: '#/components/parameters/PageSize'
-        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+        - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
         - schema:
             type: object
             properties:
@@ -194,9 +194,9 @@ paths:
         '201':
           $ref: '#/components/responses/TeamSingle'
         '400':
-          $ref: '#/components/responses/BadRequest'
+          $ref: '#/components/responses/IdentityBadRequest'
         '403':
-          $ref: '#/components/responses/PermissionDenied'
+          $ref: '#/components/responses/IdentityPermissionDenied'
       tags:
         - Teams
       requestBody:
@@ -218,14 +218,14 @@ paths:
         '200':
           $ref: '#/components/responses/UserCollection'
         '400':
-          $ref: '#/components/responses/BadRequest'
+          $ref: '#/components/responses/IdentityBadRequest'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/IdentityNotFound'
       operationId: list-team-users
       description: Returns a paginated list of users that belong to the team specified in the path parameter.
       parameters:
-        - $ref: '#/components/parameters/PageSize'
-        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+        - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
         - schema:
             type: object
             properties:
@@ -250,9 +250,9 @@ paths:
         '201':
           description: Created
         '400':
-          $ref: '#/components/responses/BadRequest'
+          $ref: '#/components/responses/IdentityBadRequest'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/IdentityNotFound'
       description: Adds a user to a team.
       requestBody:
         $ref: '#/components/requestBodies/AddUserToTeam'
@@ -274,9 +274,9 @@ paths:
         '200':
           $ref: '#/components/responses/TeamSingle'
         '400':
-          $ref: '#/components/responses/BadRequest'
+          $ref: '#/components/responses/IdentityBadRequest'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/IdentityNotFound'
       operationId: get-team
       description: Returns information about a team from a given team ID.
       tags:
@@ -288,9 +288,9 @@ paths:
         '200':
           $ref: '#/components/responses/TeamSingle'
         '400':
-          $ref: '#/components/responses/BadRequest'
+          $ref: '#/components/responses/IdentityBadRequest'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/IdentityNotFound'
       description: Updates an individual team.
       requestBody:
         $ref: '#/components/requestBodies/UpdateTeam'
@@ -303,9 +303,9 @@ paths:
         '204':
           description: No Content
         '400':
-          $ref: '#/components/responses/BadRequest'
+          $ref: '#/components/responses/IdentityBadRequest'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/IdentityNotFound'
       description: Deletes an individual team. Returns 404 if the team is not found.
       tags:
         - Teams
@@ -334,9 +334,9 @@ paths:
         '204':
           description: No Content
         '400':
-          $ref: '#/components/responses/BadRequest'
+          $ref: '#/components/responses/IdentityBadRequest'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/IdentityNotFound'
       description: |-
         Removes a user from a team.
         If the user was removed, returns a 204 empty response. Returns 404 if the user or team were not found.
@@ -360,11 +360,11 @@ paths:
         '200':
           $ref: '#/components/responses/AssignedRoleCollection'
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '#/components/responses/IdentityUnauthenticated'
         '403':
-          $ref: '#/components/responses/PermissionDenied'
+          $ref: '#/components/responses/IdentityPermissionDenied'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/IdentityNotFound'
       operationId: list-team-roles
       description: Lists the roles belonging to a team.
       parameters:
@@ -386,15 +386,15 @@ paths:
         '201':
           $ref: '#/components/responses/AssignedRoleSingle'
         '400':
-          $ref: '#/components/responses/BadRequest'
+          $ref: '#/components/responses/IdentityBadRequest'
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '#/components/responses/IdentityUnauthenticated'
         '403':
-          $ref: '#/components/responses/PermissionDenied'
+          $ref: '#/components/responses/IdentityPermissionDenied'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/IdentityNotFound'
         '409':
-          $ref: '#/components/responses/Conflict'
+          $ref: '#/components/responses/IdentityConflict'
       description: Assigns a role to a team. Returns 409 if role is already assigned.
       requestBody:
         $ref: '#/components/requestBodies/AssignRole'
@@ -425,13 +425,13 @@ paths:
         '204':
           description: No Content
         '400':
-          $ref: '#/components/responses/BadRequest'
+          $ref: '#/components/responses/IdentityBadRequest'
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '#/components/responses/IdentityUnauthenticated'
         '403':
-          $ref: '#/components/responses/PermissionDenied'
+          $ref: '#/components/responses/IdentityPermissionDenied'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/IdentityNotFound'
       tags:
         - Roles
       description: Removes an assigned role from a team. Returns 404 if the requested team or assigned role were not found.
@@ -444,12 +444,12 @@ paths:
         '200':
           $ref: '#/components/responses/UserCollection'
         '400':
-          $ref: '#/components/responses/BadRequest'
+          $ref: '#/components/responses/IdentityBadRequest'
       operationId: list-users
       description: Returns a paginated list of user objects.
       parameters:
-        - $ref: '#/components/parameters/PageSize'
-        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+        - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
         - schema:
             type: object
             properties:
@@ -483,9 +483,9 @@ paths:
         '200':
           $ref: '#/components/responses/UserSingle'
         '400':
-          $ref: '#/components/responses/BadRequest'
+          $ref: '#/components/responses/IdentityBadRequest'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/IdentityNotFound'
       operationId: get-user
       description: Returns the user object for the user ID specified as a path parameter.
     patch:
@@ -495,11 +495,11 @@ paths:
         '200':
           $ref: '#/components/responses/UserSingle'
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '#/components/responses/IdentityUnauthenticated'
         '403':
-          $ref: '#/components/responses/PermissionDenied'
+          $ref: '#/components/responses/IdentityPermissionDenied'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/IdentityNotFound'
       description: Update an individual user.
       requestBody:
         $ref: '#/components/requestBodies/UpdateUser'
@@ -512,7 +512,7 @@ paths:
         '204':
           description: No Content
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/IdentityNotFound'
       description: Deletes an individual user. Returns 404 if the requested user was not found.
       tags:
         - Users
@@ -532,12 +532,12 @@ paths:
         '200':
           $ref: '#/components/responses/TeamCollection'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/IdentityNotFound'
       operationId: list-user-teams
       description: Returns a paginated list of a teams that the user belongs to.
       parameters:
-        - $ref: '#/components/parameters/PageSize'
-        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+        - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
         - schema:
             type: object
             properties:
@@ -567,7 +567,7 @@ paths:
         '200':
           $ref: '#/components/responses/AssignedRoleCollection'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/IdentityNotFound'
       operationId: list-user-roles
       description: Lists the roles assigned to a user.
       parameters:
@@ -589,15 +589,15 @@ paths:
         '201':
           $ref: '#/components/responses/AssignedRoleSingle'
         '400':
-          $ref: '#/components/responses/BadRequest'
+          $ref: '#/components/responses/IdentityBadRequest'
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '#/components/responses/IdentityUnauthenticated'
         '403':
-          $ref: '#/components/responses/PermissionDenied'
+          $ref: '#/components/responses/IdentityPermissionDenied'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/IdentityNotFound'
         '409':
-          $ref: '#/components/responses/Conflict'
+          $ref: '#/components/responses/IdentityConflict'
       description: Assigns a role to a user. Returns 409 if role is already assigned.
       requestBody:
         $ref: '#/components/requestBodies/AssignRole'
@@ -628,11 +628,11 @@ paths:
         '204':
           description: No Content
         '400':
-          $ref: '#/components/responses/BadRequest'
+          $ref: '#/components/responses/IdentityBadRequest'
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '#/components/responses/IdentityUnauthenticated'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/IdentityNotFound'
       tags:
         - Roles
       description: Removes an assigned role from a user. Returns 404 if the requested user or assigned role were not found.
@@ -645,9 +645,9 @@ paths:
         '200':
           $ref: '#/components/responses/SystemAccountCollection'
         '400':
-          $ref: '#/components/responses/BadRequest'
+          $ref: '#/components/responses/IdentityBadRequest'
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '#/components/responses/IdentityUnauthenticated'
         '403':
           $ref: '#/components/responses/Unauthorized'
       operationId: get-system-accounts
@@ -656,8 +656,8 @@ paths:
 
         Returns an array of system accounts (SA) in the organization. Returns 400 if any filter parameters are invalid.
       parameters:
-        - $ref: '#/components/parameters/PageSize'
-        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+        - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
         - schema:
             type: object
             properties:
@@ -684,11 +684,11 @@ paths:
         '201':
           $ref: '#/components/responses/SystemAccountSingle'
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '#/components/responses/IdentityUnauthenticated'
         '403':
           $ref: '#/components/responses/Unauthorized'
         '409':
-          $ref: '#/components/responses/Conflict'
+          $ref: '#/components/responses/IdentityConflict'
   '/system-accounts/{accountId}':
     get:
       summary: Fetch System Account
@@ -698,11 +698,11 @@ paths:
         '200':
           $ref: '#/components/responses/SystemAccountSingle'
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '#/components/responses/IdentityUnauthenticated'
         '403':
           $ref: '#/components/responses/Unauthorized'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/IdentityNotFound'
       operationId: get-system-accounts-id
       description: |-
         _The system accounts feature is currently in beta and is subject to change._
@@ -722,13 +722,13 @@ paths:
         '200':
           $ref: '#/components/responses/SystemAccountSingle'
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '#/components/responses/IdentityUnauthenticated'
         '403':
           $ref: '#/components/responses/Unauthorized'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/IdentityNotFound'
         '409':
-          $ref: '#/components/responses/Conflict'
+          $ref: '#/components/responses/IdentityConflict'
       description: |-
         _The system accounts feature is currently in beta and is subject to change._
 
@@ -744,11 +744,11 @@ paths:
         '204':
           description: No Content
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '#/components/responses/IdentityUnauthenticated'
         '403':
           $ref: '#/components/responses/Unauthorized'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/IdentityNotFound'
       description: |-
         _The system accounts feature is currently in beta and is subject to change._
 
@@ -764,21 +764,21 @@ paths:
         '200':
           $ref: '#/components/responses/SystemAccountAccessTokenCollection'
         '400':
-          $ref: '#/components/responses/BadRequest'
+          $ref: '#/components/responses/IdentityBadRequest'
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '#/components/responses/IdentityUnauthenticated'
         '403':
           $ref: '#/components/responses/Unauthorized'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/IdentityNotFound'
       operationId: get-system-account-id-access-tokens
       description: |-
         _The system accounts feature is currently in beta and is subject to change._
 
         Returns the access tokens for the specified system account. Returns 400 if any filter parameters are invalid.
       parameters:
-        - $ref: '#/components/parameters/PageSize'
-        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+        - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
         - schema:
             type: object
             properties:
@@ -802,13 +802,13 @@ paths:
         '201':
           $ref: '#/components/responses/SystemAccountAccessTokenCreated'
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '#/components/responses/IdentityUnauthenticated'
         '403':
           $ref: '#/components/responses/Unauthorized'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/IdentityNotFound'
         '409':
-          $ref: '#/components/responses/Conflict'
+          $ref: '#/components/responses/IdentityConflict'
       description: |-
         _The system accounts feature is currently in beta and is subject to change._
 
@@ -824,11 +824,11 @@ paths:
         '200':
           $ref: '#/components/responses/SystemAccountAccessTokenSingle'
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '#/components/responses/IdentityUnauthenticated'
         '403':
           $ref: '#/components/responses/Unauthorized'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/IdentityNotFound'
       operationId: get-system-accounts-id-access-tokens-id
       description: |-
         _The system accounts feature is currently in beta and is subject to change._
@@ -857,13 +857,13 @@ paths:
         '200':
           $ref: '#/components/responses/SystemAccountAccessTokenSingle'
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '#/components/responses/IdentityUnauthenticated'
         '403':
           $ref: '#/components/responses/Unauthorized'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/IdentityNotFound'
         '409':
-          $ref: '#/components/responses/Conflict'
+          $ref: '#/components/responses/IdentityConflict'
       description: |-
         _The system accounts feature is currently in beta and is subject to change._
 
@@ -879,11 +879,11 @@ paths:
         '204':
           description: No Content
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '#/components/responses/IdentityUnauthenticated'
         '403':
           $ref: '#/components/responses/Unauthorized'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/IdentityNotFound'
       description: |-
         _The system accounts feature is currently in beta and is subject to change._
 
@@ -904,13 +904,13 @@ paths:
         '200':
           $ref: '#/components/responses/AssignedRoleCollection'
         '400':
-          $ref: '#/components/responses/BadRequest'
+          $ref: '#/components/responses/IdentityBadRequest'
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '#/components/responses/IdentityUnauthenticated'
         '403':
           $ref: '#/components/responses/Unauthorized'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/IdentityNotFound'
       operationId: get-system-accounts-accountId-assigned-roles
       description: |-
         _The system accounts feature is currently in beta and is subject to change._
@@ -937,13 +937,13 @@ paths:
         '201':
           $ref: '#/components/responses/AssignedRoleSingle'
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '#/components/responses/IdentityUnauthenticated'
         '403':
           $ref: '#/components/responses/Unauthorized'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/IdentityNotFound'
         '409':
-          $ref: '#/components/responses/Conflict'
+          $ref: '#/components/responses/IdentityConflict'
       description: |-
         _The system accounts feature is currently in beta and is subject to change._
 
@@ -973,11 +973,11 @@ paths:
         '204':
           description: No Content
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '#/components/responses/IdentityUnauthenticated'
         '403':
           $ref: '#/components/responses/Unauthorized'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/IdentityNotFound'
       description: |-
         _The system accounts feature is currently in beta and is subject to change._
 
@@ -998,16 +998,16 @@ paths:
         '200':
           $ref: '#/components/responses/SystemAccountCollection'
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '#/components/responses/IdentityUnauthenticated'
         '403':
           $ref: '#/components/responses/Unauthorized'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/IdentityNotFound'
       operationId: get-teams-teamId-system-accounts
       description: Returns a paginated list of system accounts that belong to the team specified in the path parameter.
       parameters:
-        - $ref: '#/components/parameters/PageSize'
-        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+        - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
         - schema:
             type: object
             properties:
@@ -1026,13 +1026,13 @@ paths:
         '201':
           description: Created
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '#/components/responses/IdentityUnauthenticated'
         '403':
           $ref: '#/components/responses/Unauthorized'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/IdentityNotFound'
         '409':
-          $ref: '#/components/responses/Conflict'
+          $ref: '#/components/responses/IdentityConflict'
       description: Adds a system account to a team. Returns a 409 if the system account is already a member of the team.
       requestBody:
         $ref: '#/components/requestBodies/AddSystemAccountToTeam'
@@ -1059,11 +1059,11 @@ paths:
         '204':
           description: No Content
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '#/components/responses/IdentityUnauthenticated'
         '403':
           $ref: '#/components/responses/Unauthorized'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/IdentityNotFound'
       description: Removes a system account from a team. Returns 404 if the team or system account were not found.
       tags:
         - System Accounts - Team Membership
@@ -1081,16 +1081,16 @@ paths:
         '200':
           $ref: '#/components/responses/TeamCollection'
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '#/components/responses/IdentityUnauthenticated'
         '403':
           $ref: '#/components/responses/Unauthorized'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/IdentityNotFound'
       operationId: get-system-accounts-accountId-teams
       description: Returns a paginated list of a teams that the system account belongs to.
       parameters:
-        - $ref: '#/components/parameters/PageSize'
-        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+        - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
         - schema:
             type: object
             properties:
@@ -1111,7 +1111,7 @@ paths:
         '200':
           $ref: '#/components/responses/UserSingle'
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '#/components/responses/IdentityUnauthenticated'
       operationId: get-users-me
       x-internal: true
       security:
@@ -1128,7 +1128,7 @@ paths:
         '204':
           description: No Content
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '#/components/responses/IdentityUnauthenticated'
         '403':
           description: Forbidden - If there are other users in the organization or a konnectAccessToken was not provided.
       description: Deletes the user account for the user identified in the token of the request.
@@ -1143,7 +1143,7 @@ paths:
         '400':
           description: Bad Request - Invalid Parameters
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '#/components/responses/IdentityUnauthenticated'
         '403':
           description: Forbidden - If a konnectAccessToken was not provided.
       description: Updates the user account for the user identified in the token of the request.
@@ -1162,7 +1162,7 @@ paths:
         '202':
           description: Accepted
         '400':
-          $ref: '#/components/responses/BadRequest'
+          $ref: '#/components/responses/IdentityBadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -1222,9 +1222,9 @@ paths:
         '200':
           $ref: '#/components/responses/UserPermissions'
         '400':
-          $ref: '#/components/responses/BadRequest'
+          $ref: '#/components/responses/IdentityBadRequest'
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '#/components/responses/IdentityUnauthenticated'
   /organizations/me:
     get:
       summary: Retrieve My Organization
@@ -1234,30 +1234,11 @@ paths:
         '200':
           $ref: '#/components/responses/MeOrganization'
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          $ref: '#/components/responses/IdentityUnauthenticated'
       operationId: get-organizations-me
       x-internal: true
       description: Returns the organization of the user identified in the token of the request.
 components:
-  parameters:
-    PageSize:
-      name: 'page[size]'
-      description: How many items to include in a page.
-      in: query
-      required: false
-      schema:
-        type: integer
-        example: 10
-      allowEmptyValue: true
-    PageNumber:
-      name: 'page[number]'
-      description: The specific page number in the collection results.
-      in: query
-      required: false
-      schema:
-        type: integer
-        example: 2
-      allowEmptyValue: true
   responses:
     UserSingle:
       description: A get action response of a single user.
@@ -1276,7 +1257,7 @@ components:
             type: object
             properties:
               meta:
-                $ref: '#/components/schemas/PaginatedMeta'
+                $ref: '../../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
               data:
                 type: array
                 items:
@@ -1301,7 +1282,7 @@ components:
             type: object
             properties:
               meta:
-                $ref: '#/components/schemas/PaginatedMeta'
+                $ref: '../../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
               data:
                 type: array
                 items:
@@ -1352,7 +1333,7 @@ components:
             type: object
             properties:
               meta:
-                $ref: '#/components/schemas/PaginatedMeta'
+                $ref: '../../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
               data:
                 type: array
                 description: An Array
@@ -1379,36 +1360,12 @@ components:
           examples:
             Get Authorization Settings:
               $ref: '#/components/examples/Get-Authentication-Settings'
-    BadRequest:
+    IdentityBadRequest:
       description: Bad Request
       content:
         application/problem+json:
           schema:
-            type: object
-            description: The error object
-            properties:
-              status:
-                type: integer
-                description: The HTTP response code
-                example: 400
-              title:
-                type: string
-                example: Bad Request
-                description: The Error response
-              instance:
-                type: string
-                description: The Konnect traceback ID.
-                example: 'konnect:trace:3674017986744198214'
-              invalid_parameters:
-                type: array
-                description: An array of objects that contains information related to the error response.
-                items:
-                  type: object
-                  properties:
-                    field:
-                      type: string
-                    reason:
-                      type: string
+            $ref: '../../../../../common/definitions/errors.yaml#/components/schemas/BadRequestError'
           examples:
             Request Format is Invalid:
               $ref: '#/components/examples/400-request-format-is-invalid'
@@ -1434,57 +1391,21 @@ components:
                 invalid_parameters:
                   - field: '[filter][actions][contains]'
                     reason: '[contains] is not a supported filter operation'
-    Conflict:
+    IdentityConflict:
       description: Conflict
       content:
         application/problem+json:
           schema:
-            type: object
-            description: The error object
-            properties:
-              status:
-                type: integer
-                description: The HTTP response code
-                example: 409
-              title:
-                type: string
-                example: Resource Conflict
-                description: The Error response
-              instance:
-                type: string
-                description: The Konnect traceback ID.
-                example: 'konnect:trace:3674017986744198214'
-              detail:
-                type: string
-                description: Detailed explanation of the error response.
-                example: User is already active
+            $ref: '../../../../../common/definitions/errors.yaml#/components/schemas/ConflictError'
           examples:
             User is Already Active:
               $ref: '#/components/examples/409-user-is-already-active'
-    PermissionDenied:
+    IdentityPermissionDenied:
       description: Permission denied
       content:
         application/problem+json:
           schema:
-            type: object
-            description: The error object.
-            properties:
-              status:
-                type: integer
-                description: HTTP status code.
-                example: 403
-              title:
-                type: string
-                example: Bad Request
-                description: HTTP status code
-              instance:
-                type: string
-                description: Konnect traceback error code.
-                example: 'konnect:trace:3674017986744198214'
-              detail:
-                type: string
-                description: Information about the error response.
-                example: Only enterprise organizations can create teams
+            $ref: '../../../../../common/definitions/errors.yaml#/components/schemas/ForbiddenError'
           examples:
             Permission Denied:
               $ref: '#/components/examples/403-permission-denied'
@@ -1546,30 +1467,12 @@ components:
           examples:
             Rate Limited:
               $ref: '#/components/examples/429-rate-limited'
-    Unauthenticated:
+    IdentityUnauthenticated:
       description: Unauthenticated
       content:
         application/problem+json:
           schema:
-            type: object
-            description: The error response object.
-            properties:
-              status:
-                type: integer
-                example: 401
-                description: The HTTP status code.
-              title:
-                type: string
-                description: The Error Response.
-                example: Unauthenticated
-              instance:
-                type: string
-                description: The Konnect traceback code.
-                example: 'konnect:trace:952172606039454040'
-              detail:
-                type: string
-                description: Details about the error response.
-                example: A valid token is required
+            $ref: '../../../../../common/definitions/errors.yaml#/components/schemas/UnauthorizedError'
           examples:
             Unauthorized:
               $ref: '#/components/examples/401-unauthenticated'
@@ -1600,30 +1503,12 @@ components:
           examples:
             Unauthorized:
               $ref: '#/components/examples/403-permission-denied'
-    NotFound:
+    IdentityNotFound:
       description: Not Found
       content:
         application/problem+json:
           schema:
-            type: object
-            description: The error response object.
-            properties:
-              status:
-                type: integer
-                description: The HTTP status code.
-                example: 404
-              title:
-                type: string
-                description: The error response code.
-                example: Not Found
-              instance:
-                type: string
-                example: 'konnect:trace:2287285207635123011'
-                description: The Konnect traceback code
-              detail:
-                type: string
-                example: The requested team was not found
-                description: Details about the error.
+            $ref: '../../../../../common/definitions/errors.yaml#/components/schemas/NotFoundError'
           examples:
             Not Found:
               $ref: '#/components/examples/404-not-found'
@@ -2157,7 +2042,7 @@ components:
             type: object
             properties:
               meta:
-                $ref: '#/components/schemas/PaginatedMeta'
+                $ref: '../../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
               data:
                 type: array
                 items:
@@ -2212,7 +2097,7 @@ components:
             type: object
             properties:
               meta:
-                $ref: '#/components/schemas/PaginatedMeta'
+                $ref: '../../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
               data:
                 type: array
                 items:
@@ -2978,34 +2863,6 @@ components:
           format: date-time
           description: Timestamp of when the system account access token was last used.
           readOnly: true
-    PaginatedMeta:
-      type: object
-      example:
-        page:
-          number: 1
-          size: 10
-          total: 100
-      title: PaginatedMeta
-      description: Returns pagination information
-      properties:
-        page:
-          type: object
-          description: Contains pagination query parameters and the total number of objects returned.
-          properties:
-            number:
-              type: integer
-              example: 2
-              description: Specifies the number of objects returned per page.
-            size:
-              type: integer
-              example: 10
-              maximum: 100
-              description: Specifies the size of the page.
-            total:
-              type: integer
-              maximum: 1000
-              example: 100
-              description: Integer representation of the amount of items returned.
     StringFieldFilter:
       title: StringFieldFilter
       description: Filter a string value field either by exact match or partial contains.

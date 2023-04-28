@@ -28,13 +28,13 @@ paths:
         '202':
           $ref: '#/components/responses/AuditLogReplayJob'
         '400':
-          $ref: '#/components/responses/BadRequest'
+          $ref: '#/components/responses/ReplayJobBadRequest'
         '401':
           $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '403':
           $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
         '409':
-          $ref: '#/components/responses/Conflict'
+          $ref: '#/components/responses/ReplayJobConflict'
     get:
       summary: Get Audit Log Replay Job
       description: |-
@@ -67,7 +67,7 @@ paths:
         '200':
           $ref: '#/components/responses/AuditLogWebhook'
         '400':
-          $ref: '#/components/responses/BadRequest'
+          $ref: '#/components/responses/WebhookBadRequest'
         '401':
           $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '403':
@@ -230,7 +230,7 @@ components:
           examples:
             JWKS:
               $ref: '#/components/examples/JWKS'
-    BadRequest:
+    WebhookBadRequest:
       description: Bad Request
       content:
         application/problem+json:
@@ -245,7 +245,13 @@ components:
               $ref: '#/components/examples/400-endpoint-cannot-be-blank'
             Endpoint Must be a valid URL:
               $ref: '#/components/examples/400-endpoint-must-be-valid-url'
-    Conflict:
+    ReplayJobBadRequest:
+      description: Bad Request
+      content:
+        application/problem+json:
+          schema:
+            $ref: '../../../../../common/definitions/errors.yaml#/components/schemas/BadRequestError'
+    ReplayJobConflict:
       description: Conflict
       content:
         application/problem+json:
