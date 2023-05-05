@@ -183,36 +183,32 @@ components:
           schema:
             type: object
             properties:
-              status:
-                type: object
-                description: Status of a webhook.
-                properties:
-                  webhook_status:
-                    type: string
-                    example: active
-                    enum: [active, inactive]
-                    description: |-
-                      Current status of a webhook. `active` indicates the webhook is sending or ready to send requests. 
-                      `inactive` indicates the webhook has been turned off due to failed attempts.
-                  webhook_enabled:
-                    type: boolean
-                    example: true
-                    description: |-
-                      Configured status of a webhook. `enabled` indicates the client will accept requests. 
-                      `disabled` indicates the client will not accept requests.
-                  last_attempt_at:
-                    type: string
-                    format: date-time
-                    example: '2023-03-21T09:29:14.52Z'
-                    description: The last time a request was made to the webhook, regardless of outcome.
-                  last_response_code:
-                    type: integer
-                    example: 401
-                    description: The last response code received from the webhook.
-                  last_response_message:
-                    type: string
-                    example: Unauthenticated
-                    description: The last message received from the webhook. Useful for debugging.
+              webhook_status:
+                type: string
+                example: active
+                enum: [active, inactive]
+                description: |-
+                  Current status of a webhook. `active` indicates the webhook is sending or ready to send requests. 
+                  `inactive` indicates the webhook has been turned off due to failed attempts.
+              webhook_enabled:
+                type: boolean
+                example: true
+                description: |-
+                  Configured status of a webhook. `enabled` indicates the client will accept requests. 
+                  `disabled` indicates the client will not accept requests.
+              last_attempt_at:
+                type: string
+                format: date-time
+                example: '2023-03-21T09:29:14.52Z'
+                description: The last time a request was made to the webhook, regardless of outcome.
+              last_response_code:
+                type: integer
+                example: 401
+                description: The last response code received from the webhook.
+              last_response_message:
+                type: string
+                example: Unauthenticated
+                description: The last message received from the webhook. Useful for debugging.
           examples:
             Get Audit Log Webhook Status:
               $ref: '#/components/examples/Get-Audit-Log-Webhook-Status'
