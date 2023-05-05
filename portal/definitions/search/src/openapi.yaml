@@ -213,7 +213,7 @@ components:
         meta:
           page:
             number: 1
-            size: 1
+            size: 10
             total: 4
 tags:
   - name: search

@@ -3086,7 +3086,7 @@ components:
         meta:
           page:
             number: 1
-            size: 1
+            size: 10
             total: 10
         data:
           - id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
