@@ -15,7 +15,7 @@ paths:
       description: This endpoint lists product registrations for an application
       operationId: get-many-application-registrations
       parameters:
-        - $ref: '#/components/parameters/ApplicationId'
+        - $ref: '../../../../common/definitions/portal.yaml#/components/parameters/ApplicationId'
         - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
         - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
         - $ref: '../../../../common/definitions/filter_parameters.yaml#/components/parameters/FilterByIdEquality'
@@ -40,7 +40,7 @@ paths:
       description: This endpoint registers an application for a product
       operationId: create-application-registration
       parameters:
-        - $ref: '#/components/parameters/ApplicationId'
+        - $ref: '../../../../common/definitions/portal.yaml#/components/parameters/ApplicationId'
       requestBody:
         $ref: '#/components/requestBodies/CreateRegistration'
       responses:
@@ -64,7 +64,7 @@ paths:
       description: This endpoint retrieves the specified product registration for an application
       operationId: get-one-application-registration
       parameters:
-        - $ref: '#/components/parameters/ApplicationId'
+        - $ref: '../../../../common/definitions/portal.yaml#/components/parameters/ApplicationId'
         - $ref: '#/components/parameters/RegistrationId'
       responses:
         '200':
@@ -82,7 +82,7 @@ paths:
       description: This endpoint unregister an application for a product version
       operationId: delete-application-registration
       parameters:
-        - $ref: '#/components/parameters/ApplicationId'
+        - $ref: '../../../../common/definitions/portal.yaml#/components/parameters/ApplicationId'
         - $ref: '#/components/parameters/RegistrationId'
       responses:
         '204':
@@ -100,14 +100,6 @@ components:
     portalAccessToken:
       $ref: '../../../../common/definitions/security.yaml#/components/securitySchemes/portalAccessToken'
   parameters:
-    ApplicationId:
-      name: applicationId
-      in: path
-      required: true
-      description: Id of the targeted application
-      schema:
-        type: string
-        format: uuid
     RegistrationId:
       name: registrationId
       in: path

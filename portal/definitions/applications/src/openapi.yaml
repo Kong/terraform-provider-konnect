@@ -62,7 +62,7 @@ paths:
       description: This endpoint allows the developer to get an application
       operationId: get-one-application
       parameters:
-        - $ref: '#/components/parameters/ApplicationId'
+        - $ref: '../../../../common/definitions/portal.yaml#/components/parameters/ApplicationId'
       responses:
         '200':
           $ref: '#/components/responses/GetApplication'
@@ -81,7 +81,7 @@ paths:
       description: This endpoint allows the developer to delete an application they own
       operationId: delete-application
       parameters:
-        - $ref: '#/components/parameters/ApplicationId'
+        - $ref: '../../../../common/definitions/portal.yaml#/components/parameters/ApplicationId'
       responses:
         '204':
           description: The application has been deleted
@@ -102,7 +102,7 @@ paths:
       description: This endpoint allows the developer to update an application they own
       operationId: update-application
       parameters:
-        - $ref: '#/components/parameters/ApplicationId'
+        - $ref: '../../../../common/definitions/portal.yaml#/components/parameters/ApplicationId'
       requestBody:
         $ref: '#/components/requestBodies/UpdateApplication'
       responses:
@@ -128,7 +128,7 @@ paths:
       description: This endpoint allows the developer to reset the client secret for an application they own
       operationId: refresh-application-token
       parameters:
-        - $ref: '#/components/parameters/ApplicationId'
+        - $ref: '../../../../common/definitions/portal.yaml#/components/parameters/ApplicationId'
       responses:
         '201':
           $ref: '#/components/responses/RefreshToken'
@@ -150,7 +150,7 @@ paths:
       description: This endpoint allows the developer to list the credentials for an application they own
       operationId: get-many-credentials
       parameters:
-        - $ref: '#/components/parameters/ApplicationId'
+        - $ref: '../../../../common/definitions/portal.yaml#/components/parameters/ApplicationId'
         - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
         - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
       responses:
@@ -173,7 +173,7 @@ paths:
       description: This endpoint allows the developer to create a credential for an application they own
       operationId: create-credential
       parameters:
-        - $ref: '#/components/parameters/ApplicationId'
+        - $ref: '../../../../common/definitions/portal.yaml#/components/parameters/ApplicationId'
       requestBody:
         $ref: '#/components/requestBodies/CreateCredential'
       responses:
@@ -197,7 +197,7 @@ paths:
       description: This endpoint allows the developer to update a credential for an application they own
       operationId: update-credential
       parameters:
-        - $ref: '#/components/parameters/ApplicationId'
+        - $ref: '../../../../common/definitions/portal.yaml#/components/parameters/ApplicationId'
         - $ref: '#/components/parameters/CredentialId'
       requestBody:
         $ref: '#/components/requestBodies/UpdateCredential'
@@ -221,7 +221,7 @@ paths:
       description: This endpoint allows the developer to delete a credential for an application they own
       operationId: delete-credential
       parameters:
-        - $ref: '#/components/parameters/ApplicationId'
+        - $ref: '../../../../common/definitions/portal.yaml#/components/parameters/ApplicationId'
         - $ref: '#/components/parameters/CredentialId'
       responses:
         '204':
@@ -245,14 +245,6 @@ components:
     portalAccessToken:
       $ref: '../../../../common/definitions/security.yaml#/components/securitySchemes/portalAccessToken'
   parameters:
-    ApplicationId:
-      name: applicationId
-      in: path
-      required: true
-      description: Id of the targeted application
-      schema:
-        type: string
-        format: uuid
     CredentialId:
       name: credentialId
       in: path
