@@ -2,9 +2,7 @@ openapi: 3.0.0
 info:
   title: Portal Registrations API
   version: 2.0.0
-  description: |
-    The API for Konnect Portal application registrations. If the portal is public
-    all of the described endpoints will return a 404 error
+  description: N/A (this description is removed during bundling)
   contact:
     name: Kong
     url: 'https://cloud.konghq.com'
@@ -12,8 +10,8 @@ paths:
   /api/v2/applications/{applicationId}/registrations:
     get:
       summary: Get application registrations
-      description: This endpoint lists product registrations for an application
-      operationId: get-many-application-registrations
+      description: Lists product registrations for an application.
+      operationId: list-application-registrations
       parameters:
         - $ref: '../../../../common/definitions/portal.yaml#/components/parameters/ApplicationId'
         - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
@@ -24,7 +22,7 @@ paths:
         - $ref: '../../../../common/definitions/filter_parameters.yaml#/components/parameters/FilterByStatusEqualityShort'
       responses:
         '200':
-          $ref: '#/components/responses/GetManyRegistrations'
+          $ref: '#/components/responses/ListRegistrations'
         '400':
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
@@ -37,7 +35,7 @@ paths:
         - portalAccessToken: []
     post:
       summary: Register an application for a product
-      description: This endpoint registers an application for a product
+      description: Registers an application for a product.
       operationId: create-application-registration
       parameters:
         - $ref: '../../../../common/definitions/portal.yaml#/components/parameters/ApplicationId'
@@ -61,8 +59,8 @@ paths:
   /api/v2/applications/{applicationId}/registrations/{registrationId}:
     get:
       summary: Get an application registration
-      description: This endpoint retrieves the specified product registration for an application
-      operationId: get-one-application-registration
+      description: Retrieves the specified product registration for an application.
+      operationId: get-application-registration
       parameters:
         - $ref: '../../../../common/definitions/portal.yaml#/components/parameters/ApplicationId'
         - $ref: '#/components/parameters/RegistrationId'
@@ -79,14 +77,14 @@ paths:
         - portalAccessToken: []
     delete:
       summary: Delete an application registration
-      description: This endpoint unregister an application for a product version
+      description: Unregister an application for a product version.
       operationId: delete-application-registration
       parameters:
         - $ref: '../../../../common/definitions/portal.yaml#/components/parameters/ApplicationId'
         - $ref: '#/components/parameters/RegistrationId'
       responses:
         '204':
-          description: The registration has been deleted
+          description: The registration has been deleted.
         '401':
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '404':
@@ -104,32 +102,32 @@ components:
       name: registrationId
       in: path
       required: true
-      description: Id of the targeted registration
+      description: Contains a unique identifier used by the Portal API for this resource.
       schema:
         type: string
         format: uuid
   responses:
     CreateRegistration:
-      description: Registration creation response
+      description: Registration creation response.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/GetRegistrationResponse'
     GetRegistration:
-      description: Get registration response
+      description: Get registration response.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/GetRegistrationResponse'
-    GetManyRegistrations:
-      description: Get registrations response
+    ListRegistrations:
+      description: Get registrations response.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/GetManyRegistrationsResponse'
+            $ref: '#/components/schemas/ListRegistrationsResponse'
   requestBodies:
     CreateRegistration:
-      description: Create an application registration
+      description: Create an application registration.
       required: true
       content:
         application/json:
@@ -140,15 +138,15 @@ components:
       additionalProperties: false
       type: object
       title: CreateRegistrationPayload
-      description: an application registration payload
+      description: The payload to create a registration.
       required:
         - product_version_id
       properties:
         product_version_id:
-          description: The UUID of the product version to register for
+          description: The product version id required for registration.
           type: string
           format: uuid
-    GetManyRegistrationsResponse:
+    ListRegistrationsResponse:
       additionalProperties: false
       type: object
       required:
@@ -176,11 +174,13 @@ components:
         - updated_at
       properties:
         id:
-          description: The UUID of the registration
-          type: string
-          format: uuid
+          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/UUID'
+        created_at:
+          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/UpdatedAt'
         status:
-          description: The approval status of the registration
+          description: The approval status of the registration.
           type: string
           enum:
             - approved
@@ -188,30 +188,25 @@ components:
             - rejected
             - revoked
         product_id:
-          description: The UUID of the product registered for
+          description: Contains a unique identifier used by the Portal API for this resource.
           type: string
           format: uuid
         product_name:
-          description: The name of the product registered for
+          description: The name of the product. This is the name that is displayed in the developer portal.
           type: string
         product_version_id:
-          description: The UUID of the product version registered for
+          description: Contains a unique identifier used by the Portal API for this resource.
           type: string
           format: uuid
         product_version_name:
-          description: The name of the product version registered for
+          description: The name of the product version. This is the version label that is displayed in the developer portal.
           type: string
         application_id:
-          description: The UUID of the application the registration is linked to
+          description: Contains a unique identifier used by the Portal API for this resource.
           type: string
           format: uuid
-        created_at:
-          description: ISO timestamp the registration record was created
-          type: string
-          format: date-time
-        updated_at:
-          description: ISO timestamp the registration record was last updated
-          type: string
-          format: date-time
 tags:
   - name: registrations
+    description: |
+      The API for Konnect Portal application registrations. If the portal is public
+      all of the described endpoints will return a 404 error

@@ -17,14 +17,14 @@ components:
             discriminator:
               propertyName: status
               mapping:
-                "400": '#/components/responses/BadRequest'
-                "401": '#/components/responses/Unauthorized'
-                "403": '#/components/responses/Forbidden'
-                "404": '#/components/responses/NotFound'
-                "409": '#/components/responses/Conflict'
-                "410": '#/components/responses/Gone'
-                "500": '#/components/responses/Internal'
-                "503": '#/components/responses/NotAvailable'
+                '400': '#/components/responses/BadRequest'
+                '401': '#/components/responses/Unauthorized'
+                '403': '#/components/responses/Forbidden'
+                '404': '#/components/responses/NotFound'
+                '409': '#/components/responses/Conflict'
+                '410': '#/components/responses/Gone'
+                '500': '#/components/responses/Internal'
+                '503': '#/components/responses/NotAvailable'
     # 400
     BadRequest:
       description: Bad Request
@@ -67,6 +67,13 @@ components:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/GoneError'
+    # 429
+    TooManyRequests:
+      description: Too Many Requests
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/TooManyRequestsError'
     # 500
     Internal:
       description: Internal
@@ -245,6 +252,21 @@ components:
           example: kong:trace:1234567890
         detail:
           example: Conflict
+      allOf:
+      - $ref: '#/components/schemas/BaseError'
+    TooManyRequestsError:
+      type: object
+      properties:
+        status:
+          example: 429
+        title:
+          example: Too Many Requests
+        type:
+          example: https://httpstatuses.com/429
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Too Many Requests
       allOf:
       - $ref: '#/components/schemas/BaseError'
     GoneError:

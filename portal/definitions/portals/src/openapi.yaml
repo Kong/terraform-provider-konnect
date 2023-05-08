@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Portal API
   version: 2.0.0
-  description: The API for Konnect Portal.
+  description: N/A (this description is removed during bundling)
   contact:
     name: Kong
     url: https://cloud.konghq.com
@@ -10,11 +10,11 @@ paths:
   /api/v2/portal:
     get:
       operationId: get-portal-context
-      summary: get portal context
-      description: return the portal context
+      summary: Get portal context
+      description: Return the portal context object.
       responses:
         '200':
-          $ref: '#/components/responses/RetrievePortalContextResponse'
+          $ref: '#/components/responses/GetPortalContextResponse'
       tags:
         - portal
       security:
@@ -22,11 +22,11 @@ paths:
   /api/v2/portal/appearance:
     get:
       operationId: get-portal-appearance
-      summary: portal appearance
-      description: appearance of the portal
+      summary: Portal Appearance Details
+      description: Gets appearance configuration object for the portal. This object is set in Konnect.
       responses:
         '200':
-          $ref: '#/components/responses/RetrievePortalAppearanceResponse'
+          $ref: '#/components/responses/GetPortalAppearanceResponse'
       tags:
         - portal
       security:
@@ -34,11 +34,11 @@ paths:
   /api/v2/portal/logo:
     get:
       operationId: get-portal-logo
-      summary: portal logo
-      description: Logo of the developer portal
+      summary: Portal Logo
+      description: Gets logo of the developer portal. This object is set in Konnect.
       responses:
         '200':
-          $ref: '#/components/responses/RetrievePortalLogoResponse'
+          $ref: '#/components/responses/GetPortalLogoResponse'
       tags:
         - portal
       security:
@@ -46,18 +46,18 @@ paths:
   /api/v2/portal/catalog-cover:
     get:
       operationId: get-portal-catalog-cover
-      summary: catalog cover
-      description: Cover banner for the developer portal
+      summary: Portal Catalog Cover Banner
+      description: Gets cover banner for the developer portal. This object is set in Konnect.
       responses:
         '200':
-          $ref: '#/components/responses/RetrievePortalCoverResponse'
+          $ref: '#/components/responses/GetPortalCoverResponse'
       tags:
         - portal
       security:
         - {}
 components:
   responses:
-    RetrievePortalLogoResponse:
+    GetPortalLogoResponse:
       description: Logo of the portal. Can be either png or jpg
       content:
         image/png:
@@ -68,7 +68,7 @@ components:
           schema:
             type: string
             format: binary
-    RetrievePortalCoverResponse:
+    GetPortalCoverResponse:
       description: Cover of the portal. Can be either png or jpg
       content:
         image/png:
@@ -79,13 +79,13 @@ components:
           schema:
             type: string
             format: binary
-    RetrievePortalAppearanceResponse:
+    GetPortalAppearanceResponse:
       description: portal appearance
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/PortalAppearance'
-    RetrievePortalContextResponse:
+    GetPortalContextResponse:
       description: portal context
       content:
         application/json:
@@ -176,4 +176,4 @@ components:
         - dcr_provider_ids
 tags:
   - name: portal
-    description: Portal API
+    description: The API for retrieving details about a single Konnect Portal.

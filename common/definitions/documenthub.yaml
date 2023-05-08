@@ -6,7 +6,7 @@ components:
       enum:
       - 'application/json'
       - 'application/konnect.document-tree+json'
-    GetManyDocuments:
+    ListDocuments:
       type: object
       required:
       - meta
@@ -17,8 +17,8 @@ components:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/ListDocumentsItem'
-    GetManyDocumentTrees:
+            $ref: '#/components/schemas/DocumentItem'
+    ListDocumentsTree:
       type: object
       required:
       - meta
@@ -30,7 +30,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DocumentTree'
-    ListDocumentsItem:
+    DocumentItem:
       type: object
       title: Document item
       required:

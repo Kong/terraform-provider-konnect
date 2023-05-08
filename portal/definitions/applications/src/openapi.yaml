@@ -1,19 +1,17 @@
 openapi: 3.0.0
 info:
-  title: Portal developer application API
+  title: Portal Developer Application API
   version: 2.0.0
-  description: |
-    The API for Konnect Portal developer applications. If the portal is public
-    all of the described endpoints will return a 404 error.
+  description: N/A (this description is removed during bundling)
   contact:
     name: Kong
     url: 'https://cloud.konghq.com'
 paths:
   /api/v2/applications:
     get:
-      summary: Get many applications
-      description: This endpoint allows the developer to list applications
-      operationId: get-many-applications
+      summary: List Applications
+      description: List applications owned by the developer currently logged in.
+      operationId: list-applications
       parameters:
         - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
         - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
@@ -22,7 +20,7 @@ paths:
         - $ref: '../../../../common/definitions/filter_parameters.yaml#/components/parameters/FilterByNameContains'
       responses:
         '200':
-          $ref: '#/components/responses/GetManyApplications'
+          $ref: '#/components/responses/ListApplications'
         '400':
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
@@ -32,8 +30,8 @@ paths:
       security:
         - portalAccessToken: []
     post:
-      summary: Create Application
-      description: This endpoint allows the developer to create an application
+      summary: Create an Application
+      description: Creates a new Application.
       operationId: create-application
       requestBody:
         $ref: '#/components/requestBodies/CreateApplication'
@@ -58,9 +56,9 @@ paths:
         - portalAccessToken: []
   /api/v2/applications/{applicationId}:
     get:
-      summary: Get one Application
-      description: This endpoint allows the developer to get an application
-      operationId: get-one-application
+      summary: Get an Application
+      description: Gets the details for an existing application. You need only supply the unique application identifier that was returned upon application creation or by the list-applications endpoint.
+      operationId: get-application
       parameters:
         - $ref: '../../../../common/definitions/portal.yaml#/components/parameters/ApplicationId'
       responses:
@@ -78,13 +76,13 @@ paths:
         - portalAccessToken: []
     delete:
       summary: Delete Application
-      description: This endpoint allows the developer to delete an application they own
+      description: Deletes an application and all of its associated entities (registrations).
       operationId: delete-application
       parameters:
         - $ref: '../../../../common/definitions/portal.yaml#/components/parameters/ApplicationId'
       responses:
         '204':
-          description: The application has been deleted
+          description: Application was deleted successfully.
         '400':
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
@@ -92,14 +90,14 @@ paths:
         '404':
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
         '429':
-          $ref: '#/components/responses/TooManyRequests'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/TooManyRequests'
       tags:
         - applications
       security:
         - portalAccessToken: []
     put:
       summary: Update Application
-      description: This endpoint allows the developer to update an application they own
+      description: Updates an application, replacing the object with the new values supplied in the request body.
       operationId: update-application
       parameters:
         - $ref: '../../../../common/definitions/portal.yaml#/components/parameters/ApplicationId'
@@ -124,8 +122,8 @@ paths:
         - portalAccessToken: []
   /api/v2/applications/{applicationId}/refresh-token:
     post:
-      summary: refresh token
-      description: This endpoint allows the developer to reset the client secret for an application they own
+      summary: Refresh Client Secret
+      description: Resets the client secret for an application.
       operationId: refresh-application-token
       parameters:
         - $ref: '../../../../common/definitions/portal.yaml#/components/parameters/ApplicationId'
@@ -146,16 +144,16 @@ paths:
         - portalAccessToken: []
   /api/v2/applications/{applicationId}/credentials:
     get:
-      summary: Get Many credentials
-      description: This endpoint allows the developer to list the credentials for an application they own
-      operationId: get-many-credentials
+      summary: List credentials
+      description: Lists the credentials for an application they own.
+      operationId: list-credentials
       parameters:
         - $ref: '../../../../common/definitions/portal.yaml#/components/parameters/ApplicationId'
         - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
         - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
       responses:
         '200':
-          $ref: '#/components/responses/GetCredentials'
+          $ref: '#/components/responses/ListCredentials'
         '400':
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '409':
@@ -169,8 +167,8 @@ paths:
       security:
         - portalAccessToken: []
     post:
-      summary: Post Credential
-      description: This endpoint allows the developer to create a credential for an application they own
+      summary: Create Credential for Application
+      description: Allows a developer to create a credential for an application they own.
       operationId: create-credential
       parameters:
         - $ref: '../../../../common/definitions/portal.yaml#/components/parameters/ApplicationId'
@@ -194,7 +192,7 @@ paths:
   /api/v2/applications/{applicationId}/credentials/{credentialId}:
     put:
       summary: Update Credential
-      description: This endpoint allows the developer to update a credential for an application they own
+      description: Updates a credential for an application owned by the current logged in developer.
       operationId: update-credential
       parameters:
         - $ref: '../../../../common/definitions/portal.yaml#/components/parameters/ApplicationId'
@@ -203,7 +201,7 @@ paths:
         $ref: '#/components/requestBodies/UpdateCredential'
       responses:
         '200':
-          description: credential properly updated
+          description: Credential successfully updated.
         '400':
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
@@ -218,14 +216,14 @@ paths:
         - portalAccessToken: []
     delete:
       summary: Delete Credential
-      description: This endpoint allows the developer to delete a credential for an application they own
+      description: Deletes a credential for an application they own.
       operationId: delete-credential
       parameters:
         - $ref: '../../../../common/definitions/portal.yaml#/components/parameters/ApplicationId'
         - $ref: '#/components/parameters/CredentialId'
       responses:
         '204':
-          description: credential properly deleted
+          description: Credential successfully deleted.
         '400':
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
@@ -283,12 +281,12 @@ components:
           schema:
             $ref: '#/components/schemas/UpdateCredentialPayload'
   responses:
-    GetManyApplications:
+    ListApplications:
       description: Get applications response
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/GetManyApplicationsResponse'
+            $ref: '#/components/schemas/ListApplicationsResponse'
     GetApplication:
       description: Get application response
       content:
@@ -301,12 +299,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/RefreshTokenResponse'
-    GetCredentials:
-      description: Get credentials response
+    ListCredentials:
+      description: List credentials response
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/GetCredentialsResponse'
+            $ref: '#/components/schemas/ListCredentialsResponse'
     CredentialCreation:
       description: Credential Creation success
       content:
@@ -325,13 +323,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ApplicationUpdateResponse'
-    
-    TooManyRequests:
-      description: Too Many Requests
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
     CreateCredentialPayload:
       additionalProperties: false
@@ -349,7 +340,7 @@ components:
         display_name:
           type: string
           maxLength: 255
-    GetManyApplicationsResponse:
+    ListApplicationsResponse:
       additionalProperties: false
       type: object
       required:
@@ -367,28 +358,19 @@ components:
       type: object
       properties:
         id:
-          type: string
-          format: uuid
+          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/UUID'
         name:
           type: string
         reference_id:
-          type: string
+          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/ApplicationReferenceId'
         description:
           type: string
         redirect_uri:
           type: string
         created_at:
-          type: string
-          format: date-time
-          example: '2022-11-04T20:10:06.927Z'
-          description: An ISO-8601 timestamp representation of application creation date.
-          readOnly: true
+          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/CreatedAt'
         updated_at:
-          type: string
-          format: date-time
-          example: '2022-11-04T20:10:06.927Z'
-          description: An ISO-8601 timestamp representation of application last updated at date.
-          readOnly: true
+          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/UpdatedAt'
       required:
         - id
         - name
@@ -396,7 +378,7 @@ components:
         - description
         - updated_at
         - created_at
-    GetCredentialsResponse:
+    ListCredentialsResponse:
       additionalProperties: false
       type: object
       required:
@@ -411,8 +393,7 @@ components:
             type: object
             properties:
               id:
-                type: string
-                format: uuid
+                $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/UUID'
               display_name:
                 type: string
             required:
@@ -425,7 +406,7 @@ components:
         credential:
           type: string
         id:
-          type: string
+          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/UUID'
         display_name:
           type: string
       required:
@@ -449,7 +430,7 @@ components:
       additionalProperties: false
       type: object
       title: CreateApplicationPayload
-      description: an application payload
+      description: Application creation payload
       required:
         - name
       properties:
@@ -458,9 +439,7 @@ components:
           type: string
           maxLength: 255
         reference_id:
-          description: An identifier to correlate the application with an external system. Cannot be set when using Dynamic Client Registration.
-          type: string
-          maxLength: 255
+          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/ApplicationReferenceId'
         redirect_uri:
           description: URL to redirect to after completing an OIDC auth flow
           type: string
@@ -483,12 +462,11 @@ components:
         - updated_at
       properties:
         id:
-          type: string
-          format: uuid
+          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/UUID'
         name:
           type: string
         reference_id:
-          type: string
+          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/ApplicationReferenceId'
         description:
           type: string
         redirect_uri:
@@ -504,17 +482,9 @@ components:
             client_secret:
               type: string
         created_at:
-          type: string
-          format: date-time
-          example: '2022-11-04T20:10:06.927Z'
-          description: An ISO-8601 timestamp representation of application creation date.
-          readOnly: true
+          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/CreatedAt'
         updated_at:
-          type: string
-          format: date-time
-          example: '2022-11-04T20:10:06.927Z'
-          description: An ISO-8601 timestamp representation of application last updated at date.
-          readOnly: true
+          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/UpdatedAt'
     UpdateApplicationPayload:
       additionalProperties: false
       type: object
@@ -524,7 +494,7 @@ components:
         name:
           type: string
         reference_id:
-          type: string
+          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/ApplicationReferenceId'
         description:
           type: string
         redirect_uri:
@@ -543,83 +513,26 @@ components:
         - created_at
       properties:
         id:
-          type: string
-          format: uuid
+          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/UUID'
         name:
           type: string
         reference_id:
-          type: string
+          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/ApplicationReferenceId'
         description:
           type: string
+          example: A brief description of the application
         redirect_uri:
           type: string
+          example: https://example.com/callback
         created_at:
-          type: string
-          format: date-time
-          example: '2022-11-04T20:10:06.927Z'
-          description: An ISO-8601 timestamp representation of application creation date.
-          readOnly: true
+          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/CreatedAt'
         updated_at:
-          type: string
-          format: date-time
-          example: '2022-11-04T20:10:06.927Z'
-          description: An ISO-8601 timestamp representation of application last updated at date.
-          readOnly: true
-    Error:
-      type: object
-      title: Error
-      description: standard error
-      example:
-        status: 404
-        title: Not Found
-        type: https://kongapi.info/konnect/not-found
-        instance: 'portal:trace:2287285207635123011'
-        detail: The requested document was not found
-      required:
-        - status
-        - title
-        - instance
-      properties:
-        status:
-          type: integer
-          description: The HTTP status code.
-          example: 404
-        title:
-          type: string
-          description: The error response code.
-          example: Not Found
-        type:
-          type: string
-          description: The error type.
-          example: Not Found
-        instance:
-          type: string
-          example: 'portal:trace:2287285207635123011'
-          description: The portal traceback code
-        invalid_parameters:
-          type: array
-          items:
-            type: object
-            properties:
-              name:
-                type: string
-                description: The name of the invalid parameter.
-              reason:
-                type: string
-                description: The reason the parameter is invalid.
-              field:
-                type: string
-                description: The field that caused the error.
-                example: name
-              rule:
-                type: string
-                description: The rule that caused the error.
-                example: required
-          description: An array of invalid parameters.
-        detail:
-          type: string
-          example: The requested team was not found
-          description: Details about the error.
+          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/UpdatedAt'
 tags:
   - name: applications
+    description: The API for Konnect Portal developer applications within a private portal (i.e. requires registration/authentication).
+      When a portal is in `public` mode, all of the described endpoints will return a 404 error. A public portal means
+      that applications and registrations are not available/needed. In this API's context, "you" and "your" refers to the
+      developer consuming the API.
   - name: credentials
+    description: The API for Konnect Portal developer credentials within a private portal (i.e. requires registration/authentication).

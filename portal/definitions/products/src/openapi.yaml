@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: Portal Products API
   version: 2.0.0
-  description: The API for Konnect Portal Products.
+  description: N/A (this description is removed during bundling)
   contact:
     name: Kong
     url: 'https://cloud.konghq.com'
@@ -10,7 +10,7 @@ paths:
   /api/v2/products/{productId}:
     get:
       summary: Get a product
-      description: Returns the given published product, with its versions attached
+      description: Gets the details for an existing published product.
       operationId: get-product
       parameters:
         - $ref: '#/components/parameters/ProductId'
@@ -30,9 +30,9 @@ paths:
         - {}
   /api/v2/products:
     get:
-      summary: Get page of products
-      description: Returns a paginated list of published API Products
-      operationId: get-many-products
+      summary: List Products
+      description: Returns a paginated list of published API Products.
+      operationId: list-products
       parameters:
         - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
         - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
@@ -46,7 +46,7 @@ paths:
         - $ref: '../../../../common/definitions/filter_parameters.yaml#/components/parameters/FilterByIdEqualityShort'
       responses:
         '200':
-          $ref: '#/components/responses/ProductGetMany'
+          $ref: '#/components/responses/ProductList'
         '400':
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
@@ -59,8 +59,8 @@ paths:
   /api/v2/products/{productId}/versions:
     get:
       summary: Get page of product versions
-      description: Returns paginated list of versions of a given product
-      operationId: get-many-product-versions
+      description: Returns paginated list of versions of a given product.
+      operationId: list-product-versions
       parameters:
         - $ref: '#/components/parameters/ProductId'
         - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
@@ -70,7 +70,7 @@ paths:
         - $ref: '../../../../common/definitions/filter_parameters.yaml#/components/parameters/FilterByVersionContains'
       responses:
         '200':
-          $ref: '#/components/responses/ProductGetManyVersions'
+          $ref: '#/components/responses/ProductListVersions'
         '400':
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
@@ -85,7 +85,7 @@ paths:
   /api/v2/products/{productId}/versions/{versionId}:
     get:
       summary: Get product version
-      description: Return given product version
+      description: Gets the details for an existing product version.
       operationId: get-product-version
       parameters:
         - $ref: '#/components/parameters/ProductId'
@@ -106,8 +106,8 @@ paths:
         - {}
   /api/v2/products/{productId}/versions/{versionId}/spec:
     get:
-      summary: Get OpenAPI spec for product version
-      description: Returns the OpenAPI specification document attached to given product version
+      summary: Get spec for product version
+      description: Returns the API specification document attached to given product version. Currently only OpenAPI is supported.
       operationId: get-product-version-spec
       parameters:
         - $ref: '#/components/parameters/ProductId'
@@ -116,7 +116,7 @@ paths:
         '200':
           $ref: '#/components/responses/ProductVersionSpecGet'
         '204':
-          description: 'No specification is defined for the version'
+          description: No specification is defined for the version.
         '400':
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
@@ -131,7 +131,7 @@ paths:
   /api/v2/products/{productId}/versions/{versionId}/spec/operations:
     get:
       summary: Get operations in version spec
-      description: Returns list of operations used in the OpenAPI specefication document attached to given product version
+      description: Returns list of operations used in the API specification document attached to given product version.
       operationId: get-product-version-spec-operations
       parameters:
         - $ref: '#/components/parameters/ProductId'
@@ -140,7 +140,7 @@ paths:
         '200':
           $ref: '#/components/responses/ProductVersionSpecOperationsGet'
         '204':
-          description: Response when there are no operations to send because no spec is defined for the version
+          description: Response when there are no operations to send because no spec is defined for the version.
         '400':
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
@@ -154,9 +154,9 @@ paths:
         - {}
   /api/v2/products/{productId}/documents:
     get:
-      summary: Get product documentation
-      description: Return the documentation tree of a product
-      operationId: get-product-documents
+      summary: List product documents
+      description: Returns a list of documents that are associated with a given product. The list is paginated, and is in either a list or tree format (based on the Accept header).
+      operationId: list-product-documents
       parameters:
         - $ref: '#/components/parameters/ProductId'
         - in: header
@@ -167,14 +167,14 @@ paths:
         - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
       responses:
         '200':
-          description: Tree of documents
+          description: Lists documents for a given product.
           content:
             'application/json':
               schema:
-                $ref: '../../../../common/definitions/documenthub.yaml#/components/schemas/GetManyDocuments'
+                $ref: '../../../../common/definitions/documenthub.yaml#/components/schemas/ListDocuments'
             'application/konnect.document-tree+json':
               schema:
-                $ref: '../../../../common/definitions/documenthub.yaml#/components/schemas/GetManyDocumentTrees'
+                $ref: '../../../../common/definitions/documenthub.yaml#/components/schemas/ListDocumentsTree'
         '400':
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
@@ -189,7 +189,7 @@ paths:
   /api/v2/products/{productId}/documents/{documentId}:
     get:
       summary: Get one product document
-      description: Returns the specified document from the product's document tree
+      description: Returns the specified document from the product's document tree.
       operationId: get-product-document
       parameters:
         - $ref: '#/components/parameters/ProductId'
@@ -217,7 +217,7 @@ components:
       name: productId
       in: path
       required: true
-      description: Id of the product
+      description: Contains a unique identifier used by the Portal API for this resource.
       schema:
         type: string
         format: uuid
@@ -225,7 +225,7 @@ components:
       name: versionId
       in: path
       required: true
-      description: Id of the product version
+      description: Contains a unique identifier used by the Portal API for this resource.
       schema:
         type: string
         format: uuid
@@ -233,49 +233,49 @@ components:
       name: documentId
       in: path
       required: true
-      description: Id of the document
+      description: Contains a unique identifier used by the Portal API for this resource.
       schema:
         type: string
         format: uuid
   responses:
     ProductGet:
-      description: Response for getting a product
+      description: Response for a single product's details.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Product'
-    ProductGetMany:
-      description: Response for getting many products
+    ProductList:
+      description: Response for a list of products.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ProductListPage'
-    ProductGetManyVersions:
-      description: Response for getting a paginated list of versions of an API Product
+    ProductListVersions:
+      description: Paginated list of versions of an API Product.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ProductVersionListPage'
     ProductVersionGet:
-      description: Response for getting a product version
+      description: Product version details.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ProductVersion'
     ProductVersionSpecGet:
-      description: Response for getting a product version spec document
+      description: Product version spec document.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ProductVersionSpec'
     ProductVersionSpecOperationsGet:
-      description: Response for getting product version spec operations
+      description: Product version spec operations.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ProductVersionSpecOperations'
     ProductDocumentGet:
-      description: Response for getting one of the product's documents
+      description: Details for a single document for a given product.
       content:
         application/json:
           schema:
@@ -292,27 +292,18 @@ components:
         - name
       properties:
         id:
-          type: string
-          format: uuid
+          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/UUID'
         created_at:
-          type: string
-          format: date-time
-          example: '2022-11-04T20:10:06.927Z'
-          description: An ISO-8604 timestamp representation of product creation date.
-          readOnly: true
+          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/CreatedAt'
         updated_at:
-          type: string
-          format: date-time
-          example: '2022-11-04T20:10:06.927Z'
-          description: An ISO-8604 timestamp representation of product update date.
-          readOnly: true
+          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/UpdatedAt'
         name:
           type: string
           example: Billing
-          description: name of service
+          description: Name of product.
         description:
           type: string
-          example: Api for billing functions
+          example: API for billing functions
         labels:
           type: object
     ProductListPage:
@@ -330,29 +321,20 @@ components:
       additionalProperties: false
       properties:
         id:
-          type: string
-          format: uuid
+          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/UUID'
         created_at:
-          type: string
-          format: date-time
-          example: '2022-11-04T20:10:06.927Z'
-          description: An ISO-8604 timestamp representation of product version creation date.
-          readOnly: true
+          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/CreatedAt'
         updated_at:
-          type: string
-          format: date-time
-          example: '2022-11-04T20:10:06.927Z'
-          description: An ISO-8604 timestamp representation of product version update date.
-          readOnly: true
+          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/UpdatedAt'
         version:
           type: string
           example: v2.0.0
-          description: Name of product version
+          description: Name of product version.
         deprecated:
           type: boolean
-          description: If true, product version is deprecated
+          description: If true, product version is deprecated.
         registration_configs:
-          description: Configurations for how the product version is able to be registered for by applications
+          description: Configurations for how the product version is able to be registered for by applications.
           type: array
           items:
             type: object
@@ -382,7 +364,7 @@ components:
     ProductVersionSpec:
       type: object
       title: Product Version Spec Document
-      description: API specification
+      description: API specification document for a product version.
       properties:
         api_type:
           $ref: '#/components/schemas/ApiTypeEnum'
@@ -394,7 +376,7 @@ components:
     ProductVersionSpecOperations:
       type: object
       title: Operations in product version spec document
-      description: List of every operation detailed in the product version spec document
+      description: List of every operation detailed in a product version spec document.
       required:
         - api_type
         - operations
@@ -442,7 +424,7 @@ components:
     ProductDocument:
       type: object
       title: Document
-      description: a document
+      description: A document for a product. This is a document that is not a part of the API specification.
       required:
         - id
         - slug
@@ -450,27 +432,29 @@ components:
         - content
       properties:
         id:
-          type: string
-          format: uuid
-          description: the id of the document
-          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+          allOf:
+            - $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/UUID'
+            - description: Contains a unique identifier used by the DocumentHub service for this resource.
         parent_document_id:
           type: string
           format: uuid
-          description: the id of the parent document
+          description: Contains a unique identifier used by the DocumentHub service for this resource.
           nullable: true
           example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
         slug:
           type: string
-          description: the slug of the document
+          description: Slug of the document. This is used in the URL to identify the document.
           example: getting-started
         content:
           $ref: '../../../../common/definitions/documenthub_nodes.yaml#/components/schemas/DocumentBlock'
         title:
           type: string
-          description: the title of the document
+          description: Title of the document. This is used in the Portal UI to identify the document.
           example: Hello World
 tags:
   - name: products
+    description: The API for Konnect Portal Products.
   - name: versions
+    description: The API for Konnect Portal Product Versions.
   - name: documentation
+    description: The API for Konnect Portal Product Documentation.

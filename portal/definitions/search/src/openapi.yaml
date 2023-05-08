@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Portal Search API
   version: 2.0.0
-  description: The API for Konnect Portal Search.
+  description: N/A (this description is removed during bundling)
   contact:
     name: Kong
     url: 'https://cloud.konghq.com'
@@ -102,11 +102,7 @@ components:
         - has_documentation
       properties:
         id:
-          type: string
-          format: uuid
-          example: 4f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-          description: The entity ID.
-          readOnly: true
+          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/UUID'
         name:
           type: string
           example: Nice Product
@@ -121,20 +117,12 @@ components:
         has_documentation:
           type: boolean
           example: true
-          description: whether the product has documents associated with it
+          description: Whether the product has documents associated with it.
           readOnly: true
         created_at:
-          type: string
-          format: date-time
-          example: '2022-11-04T20:10:06.927Z'
-          description: An ISO-8601 timestamp representation of entity creation date.
-          readOnly: true
+          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/CreatedAt'
         updated_at:
-          type: string
-          format: date-time
-          example: '2022-11-04T20:10:06.927Z'
-          description: An ISO-8601 timestamp representation of entity update date.
-          readOnly: true
+          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/UpdatedAt'
         versions:
           type: array
           items:
@@ -148,29 +136,18 @@ components:
               - deprecated
             properties:
               id:
-                type: string
-                format: uuid
-                example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-                description: the entity id
-                readOnly: true
+                $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/UUID'
               created_at:
-                type: string
-                format: date-time
-                example: '2022-11-04T20:10:06.927Z'
-                description: An ISO-8601 timestamp representation of entity creation date.
-                readOnly: true
+                $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/CreatedAt'
               updated_at:
-                type: string
-                format: date-time
-                example: '2022-11-04T20:10:06.927Z'
-                description: An ISO-8601 timestamp representation of entity update date.
-                readOnly: true
+                $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/UpdatedAt'
               version:
                 type: string
                 example: v2.0.0
-                description: the name of the version
+                description: Name of product version.
                 readOnly: true
               deprecated:
+                description: Whether the version is deprecated.
                 type: boolean
                 example: true
                 readOnly: true
@@ -217,3 +194,4 @@ components:
             total: 4
 tags:
   - name: search
+    description: The API for Konnect Portal Search.

@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Portal Developer API
   version: 2.0.0
-  description: The API for Konnect Portal Developers.
+  description: N/A (this description is removed during bundling)
   contact:
     name: Kong
     url: 'https://cloud.konghq.com'
@@ -11,7 +11,7 @@ paths:
     post:
       operationId: register
       summary: Register
-      description: Register to the developer portal
+      description: Register to the developer portal.
       requestBody:
         description: Developer registration
         content:
@@ -73,7 +73,7 @@ components:
       $ref: '../../../../common/definitions/security.yaml#/components/securitySchemes/portalAccessToken'
   responses:
     MeResponse:
-      description: Response from me endpoint.
+      description: Response from me endpoint
       content:
         application/json:
           schema:
@@ -82,14 +82,11 @@ components:
     Developer:
       title: Developer
       type: object
-      description: A developer is an individual who can use a developer portal.
+      description: A user who can use a developer portal
       additionalProperties: false
       properties:
         id:
-          type: string
-          format: uuid
-          example: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-          readOnly: true
+          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/UUID'
         email:
           type: string
           format: email
@@ -101,15 +98,9 @@ components:
           example: API Developer
           maxLength: 250
         created_at:
-          type: string
-          format: date-time
-          example: '2022-02-07T17:46:57.52Z'
-          readOnly: true
+          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/CreatedAt'
         updated_at:
-          type: string
-          format: date-time
-          example: '2022-10-08T17:00:00.52Z'
-          readOnly: true
+          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/UpdatedAt'
       required:
         - full_name
         - email
@@ -148,4 +139,4 @@ components:
         - email
 tags:
   - name: developer
-    description: Portal Developer API
+    description: API for managing Konnect Portal Developers.
