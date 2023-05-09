@@ -160,10 +160,13 @@ components:
           format: uuid
         has_documentation:
           type: boolean
+        document_count:
+          type: integer
       required:
       - resource_kind
       - resource_id
       - has_documentation
+      - document_count
     Document:
       type: object
       title: Document
