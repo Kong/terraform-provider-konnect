@@ -42,6 +42,33 @@ paths:
       tags:
         - Customization
   /{resourceKind}/{resourceId}/documents:
+    get:
+      summary: Get many documents
+      description: Get many documents
+      operationId: getManyDocuments
+      parameters:
+        - in: header
+          name: Accept
+          schema:
+            $ref: '../../../../../common/definitions/documenthub.yaml#/components/schemas/DocumentContentTypeEnum'
+        - $ref: '#/components/parameters/resourceKind'
+        - $ref: '#/components/parameters/resourceId'
+        - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+        - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
+      responses:
+        '200':
+          description: Tree of documents or flat list of documents
+          content:
+            'application/json':
+              schema:
+                $ref: '../../../../../common/definitions/documenthub.yaml#/components/schemas/GetManyDocuments'
+            'application/konnect.document-tree+json':
+              schema:
+                $ref: '#/components/schemas/GetManyDocumentTrees'
+        '400':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+      tags:
+        - Customization
     post:
       summary: Create document
       description: Create document and associate it with a Konnect resource
@@ -211,6 +238,18 @@ components:
           example: '2023-01-11T02:30:42.227Z'
         revision:
           $ref: '#/components/schemas/Revision'
+    GetManyDocumentTrees:
+      type: object
+      required:
+      - meta
+      - data
+      properties:
+        meta:
+          $ref: '../../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/DocumentTree'
     DocumentTree:
       type: object
       title: DocumentTree
@@ -313,6 +352,7 @@ components:
         parent_document_id:
           type: string
           format: uuid
+          nullable: true
           description: parent document id
           example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
         slug:
@@ -329,6 +369,7 @@ components:
         raw_content:
           type: string
           format: byte
+          description: Must be a base64 encoded string
           example: YmFzZTY0LWVuY29kZWQgdGV4dCBzdHJpbmc=
         metadata:
           type: object
