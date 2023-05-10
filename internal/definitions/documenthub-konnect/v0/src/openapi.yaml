@@ -61,7 +61,7 @@ paths:
           content:
             'application/json':
               schema:
-                $ref: '../../../../../common/definitions/documenthub.yaml#/components/schemas/GetManyDocuments'
+                $ref: '../../../../../common/definitions/documenthub.yaml#/components/schemas/ListDocuments'
             'application/konnect.document-tree+json':
               schema:
                 $ref: '#/components/schemas/GetManyDocumentTrees'
