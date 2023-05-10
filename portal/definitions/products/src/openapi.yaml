@@ -192,6 +192,10 @@ paths:
       description: Returns the specified document from the product's document tree.
       operationId: get-product-document
       parameters:
+        - in: header
+          name: Accept
+          schema:
+            $ref: '../../../../common/definitions/documenthub.yaml#/components/schemas/DocumentFormatContentTypeEnum'
         - $ref: '#/components/parameters/ProductId'
         - $ref: '#/components/parameters/DocumentId'
       responses:
@@ -278,6 +282,9 @@ components:
       description: Details for a single document for a given product.
       content:
         application/json:
+          schema:
+            $ref: '#/components/schemas/ProductDocumentRaw'
+        application/konnect.document-nodes+json:
           schema:
             $ref: '#/components/schemas/ProductDocument'
   schemas:
@@ -447,6 +454,41 @@ components:
           example: getting-started
         content:
           $ref: '../../../../common/definitions/documenthub_nodes.yaml#/components/schemas/DocumentBlock'
+        title:
+          type: string
+          description: Title of the document. This is used in the Portal UI to identify the document.
+          example: Hello World
+    ProductDocumentRaw:
+      type: object
+      title: Document
+      description: A document for a product. This is a document that is not a part of the API specification.
+      required:
+        - id
+        - slug
+        - title
+        - content
+      properties:
+        id:
+          allOf:
+            - $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/UUID'
+            - description: Contains a unique identifier used by the DocumentHub service for this resource.
+        parent_document_id:
+          type: string
+          format: uuid
+          description: Contains a unique identifier used by the DocumentHub service for this resource.
+          nullable: true
+          example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
+        slug:
+          type: string
+          description: Slug of the document. This is used in the URL to identify the document.
+          example: getting-started
+        content:
+          type: string
+          description: Markdown document
+          example: |
+            # My Kong api
+            
+            This api is powered by Konnect
         title:
           type: string
           description: Title of the document. This is used in the Portal UI to identify the document.

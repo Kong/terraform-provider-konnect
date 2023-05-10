@@ -1,5 +1,11 @@
 components:
   schemas:
+    DocumentFormatContentTypeEnum:
+      type: string
+      default: application/json
+      enum:
+        - application/json
+        - application/konnect.document-nodes+json
     DocumentContentTypeEnum:
       type: string
       default: 'application/json'
