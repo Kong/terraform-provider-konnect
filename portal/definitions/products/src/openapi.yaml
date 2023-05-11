@@ -65,9 +65,9 @@ paths:
         - $ref: '#/components/parameters/ProductId'
         - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
         - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
-        - $ref: '../../../../common/definitions/filter_parameters.yaml#/components/parameters/FilterByVersionEquality'
-        - $ref: '../../../../common/definitions/filter_parameters.yaml#/components/parameters/FilterByVersionEqualityShort'
-        - $ref: '../../../../common/definitions/filter_parameters.yaml#/components/parameters/FilterByVersionContains'
+        - $ref: '../../../../common/definitions/filter_parameters.yaml#/components/parameters/FilterByNameEquality'
+        - $ref: '../../../../common/definitions/filter_parameters.yaml#/components/parameters/FilterByNameEqualityShort'
+        - $ref: '../../../../common/definitions/filter_parameters.yaml#/components/parameters/FilterByNameContains'
       responses:
         '200':
           $ref: '#/components/responses/ProductListVersions'
@@ -333,7 +333,7 @@ components:
           $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/CreatedAt'
         updated_at:
           $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/UpdatedAt'
-        version:
+        name:
           type: string
           example: v2.0.0
           description: Name of product version.
@@ -355,7 +355,7 @@ components:
         - id
         - created_at
         - updated_at
-        - version
+        - name
         - deprecated
         - registration_configs
     ProductVersionListPage:

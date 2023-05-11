@@ -132,7 +132,7 @@ components:
               - id
               - created_at
               - updated_at
-              - version
+              - name
               - deprecated
             properties:
               id:
@@ -141,7 +141,7 @@ components:
                 $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/CreatedAt'
               updated_at:
                 $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/UpdatedAt'
-              version:
+              name:
                 type: string
                 example: v2.0.0
                 description: Name of product version.
@@ -180,12 +180,12 @@ components:
                 - created_at: '2023-01-19T17:41:55.896Z'
                   updated_at: '2023-01-20T17:41:55.896Z'
                   id: b35b0beb-c3f7-4f8f-95f7-cd8ff0ee478e
-                  version: v0
+                  name: v0
                   deprecated: false
                 - created_at: '2022-01-19T17:41:55.896Z'
                   updated_at: '2022-01-19T17:41:55.896Z'
                   id: 455b0beb-c3f7-4f8f-95f7-cd8ff0ee478e
-                  version: v1
+                  name: v1
                   deprecated: false
         meta:
           page:
