@@ -14,10 +14,10 @@
           "useSingleRequestParameter": "true"
         }
       },
-      "organization-settings-v2-client": {
+      "audit-logs-v2-client": {
         "generatorName": "typescript-axios",
-        "output": "konnect/packages/organization-settings/v2/npm/client",
-        "glob": "konnect/definitions/organization-settings/v2/computed/openapi.yaml",
+        "output": "konnect/packages/audit-logs/v2/npm/client",
+        "glob": "konnect/definitions/audit-logs/v2/computed/openapi.yaml",
         "templateDir": "oas-generator-templates",
         "additionalProperties": {
           "modelPropertyNaming": "original",
