@@ -1956,6 +1956,68 @@ components:
                             example: 'This role grants full write access to the Identity configuration.'
                             enum:
                               - 'This role grants full write access to the Identity configuration.'
+              mesh_control_planes:
+                type: object
+                additionalProperties: false
+                required:
+                  - name
+                  - roles
+                properties:
+                  name:
+                    type: string
+                    enum:
+                      - Mesh Control Plane
+                  roles:
+                    type: object
+                    properties:
+                      admin:
+                        type: object
+                        additionalProperties: false
+                        required:
+                          - name
+                          - description
+                        properties:
+                          name:
+                            type: string
+                            enum:
+                              - Admin
+                          description:
+                            type: string
+                            example: 'This role grants full write access to the related to Mesh control planes.'
+                            enum:
+                              - 'This role grants full write access to the related to Mesh control planes.'
+                      creator:
+                        type: object
+                        additionalProperties: false
+                        required:
+                          - name
+                          - description
+                        properties:
+                          name:
+                            type: string
+                            enum:
+                              - Creator
+                          description:
+                            type: string
+                            example: 'This role grants access to create new Mesh control planes.'
+                            enum:
+                              - 'This role grants access to create new Mesh control planes.'
+                      viewer:
+                        type: object
+                        additionalProperties: false
+                        required:
+                          - name
+                          - description
+                        properties:
+                          name:
+                            type: string
+                            enum:
+                              - Viewer
+                          description:
+                            type: string
+                            example: 'This role grants access to read-only permissions to Mesh control planes.'
+                            enum:
+                              - 'This role grants access to read-only permissions to Mesh control planes.'
           examples:
             Predefined Roles:
               value:
@@ -2034,6 +2096,18 @@ components:
                     admin:
                       name: Admin
                       description: This role grants full write access to the Identity configuration.
+                mesh_control_planes:
+                  name: Mesh Control Plane
+                  roles:
+                    admin:
+                      name: Admin
+                      description: This role grants full write access to the related to Mesh control planes.
+                    creator:
+                      name: Creator
+                      description: This role grants access to create new Mesh control planes.
+                    viewer:
+                      name: Viewer
+                      description: This role grants access to read-only permissions to Mesh control planes.
     SystemAccountCollection:
       description: A paginated list response for a collection of system accounts.
       content:
@@ -2719,7 +2793,7 @@ components:
         system_team:
           type: boolean
           default: false
-          description: 'Returns True if a user belongs to a `system_team`. System teams are teams that can manage Konnect objects, like "Organization Admin", or "Service'
+          description: 'Returns True if a user belongs to a `system_team`. System teams are teams that can manage Konnect objects, like "Organization Admin", or "Service"'
           readOnly: true
         created_at:
           type: string
