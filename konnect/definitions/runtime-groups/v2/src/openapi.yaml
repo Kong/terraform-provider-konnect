@@ -156,7 +156,7 @@ components:
   parameters:
     FilterByLabels:
       name: 'labels'
-      description: Filter runtime groups in the response by associated labels. 
+      description: Filter runtime groups in the response by associated labels.
       in: query
       required: false
       schema:
@@ -253,6 +253,7 @@ components:
           schema:
             title: 'ListRuntimeGroupsResponse'
             type: object
+            additionalProperties: false
             properties:
               meta:
                 $ref: '../../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
@@ -260,6 +261,9 @@ components:
                 type: array
                 items:
                   $ref: '#/components/schemas/RuntimeGroup'
+            required:
+              - meta
+              - data
           examples:
             Runtime Group Collection:
               value:
@@ -356,13 +360,14 @@ components:
                 type: string
                 example: 'konnect:trace:2287285207635123011'
                 description: The Konnect traceback code
-              details:
+              detail:
                 type: string
                 example: Could not propagate runtime group changes to control plane cluster service.
                 description: Details about the error.
             required:
               - status
               - title
+              - instance
           examples:
             Internal Server Error:
               $ref: '#/components/examples/500InternalKokoErrorExample'
@@ -396,6 +401,7 @@ components:
             required:
               - status
               - title
+              - instance
           examples:
             Service Unavailable:
               $ref: '#/components/examples/503PermissionReadFailureExample'
@@ -445,6 +451,7 @@ components:
       title: Runtime Group
       type: object
       description: The runtime group object contains information about a Kong control plane.
+      additionalProperties: false
       properties:
         id:
           type: string
@@ -465,6 +472,7 @@ components:
         config:
           type: object
           description: CP configuration object for related access endpoints.
+          additionalProperties: false
           properties:
             control_plane_endpoint:
               type: string
@@ -487,6 +495,10 @@ components:
                 - CLUSTER_TYPE_UNSPECIFIED
                 - CLUSTER_TYPE_HYBRID
                 - CLUSTER_TYPE_K8S_INGRESS_CONTROLLER
+          required:
+            - control_plane_endpoint
+            - telemetry_endpoint
+            - cluster_type
         created_at:
           type: string
           format: date-time
@@ -499,6 +511,14 @@ components:
           example: '2022-11-04T20:10:06.927Z'
           description: An ISO-8604 timestamp representation of runtime group update date.
           readOnly: true
+      required:
+        - id
+        - name
+        - description
+        - labels
+        - config
+        - created_at
+        - updated_at
     Labels:
       title: 'Labels'
       type: object
