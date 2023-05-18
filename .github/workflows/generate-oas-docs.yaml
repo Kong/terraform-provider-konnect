@@ -24,25 +24,24 @@ jobs:
           node-version: "18.x"
 
       - name: Install Dependencies
-        run: |
-          npm install
+        run: npm install
 
       - name: Bundle Apis
         run: npm run bundle-apis
 
-      - name: Generate OAS Doc Files
+      - name: Merge OAS in to konnect/portal
         run: |
-          npm run generate-docs
+          ./tools/merge-oas.sh
 
-      - name: Generate combined OAS Files
+      - name: Process OpenAPI files
         run: |
-          npm run merge-oas-for-sdk
+          npm run generate-sdk-oas
 
-      - name: upload docs OAS files
+      - name: Upload docs OAS files
         uses: actions/upload-artifact@v3
         with:
           name: docs-oas-files
-          path: output/konnect/*-docs.yaml
+          path: output/**/*-docs.yaml
 
       - name: Upload combined public OAS files
         uses: actions/upload-artifact@v3

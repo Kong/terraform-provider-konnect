@@ -8,7 +8,7 @@
     "lint:artifacts": "spectral lint 'output/**/*.yaml'",
     "test:common": "node ./common/test/index.js",
     "bundle-apis": "node ./tools/bundle.js",
-    "merge-oas-for-sdk": "node ./tools/generate-sdk-openapi-files.js",
+    "generate-sdk-oas": "node ./tools/generate-sdk-openapi-files.js",
     "generate-docs": "npm-run-all generate:*-docs",
     "generate:identity-v2-client": "rm -rf ./konnect/packages/identity/v2/npm/client && openapi-generator-cli generate --generator-key identity-v2-client",
     "generate:identity-v2-docs": "node ./tools/generate-docs-oas-file.js identity-v2 ./konnect/definitions/identity/v2/computed/openapi.yaml",
@@ -21,10 +21,7 @@
     "generate:konnect-public-client": "rm -rf ./packages/public && openapi-generator-cli generate --generator-key konnect-public-client",
     "generate:portal-dev-client": "rm -rf ./packages/dev && openapi-generator-cli generate --generator-key portal-dev-client",
     "generate:portal-internal-client": "rm -rf ./packages/internal && openapi-generator-cli generate --generator-key portal-internal-client",
-    "generate:portal-public-client": "rm -rf ./packages/public && openapi-generator-cli generate --generator-key portal-public-client",
-    "generate:portal-rbac-v2-docs": "node ./tools/generate-docs-oas-file.js portal-rbac-v2 ./konnect/definitions/portal-rbac/v2/computed/openapi.yaml",
-    "generate:runtime-groups-v2-docs": "node ./tools/generate-docs-oas-file.js runtime-groups-v2 ./konnect/definitions/runtime-groups/v2/computed/openapi.yaml",
-    "generate:runtime-groups-config-v2-docs": "node ./tools/generate-docs-oas-file.js runtime-groups-config-v2 ./konnect/definitions/runtime-groups-config/v2/computed/openapi.yaml"
+    "generate:portal-public-client": "rm -rf ./packages/public && openapi-generator-cli generate --generator-key portal-public-client"
   },
   "repository": {
     "type": "git",
@@ -38,7 +35,6 @@
   },
   "homepage": "https://github.com/Kong/platform-api#readme",
   "devDependencies": {
-    "@apidevtools/json-schema-ref-parser": "^9.1.0",
     "@apidevtools/swagger-parser": "^10.1.0",
     "@openapitools/openapi-generator-cli": "^2.5.2",
     "@redocly/cli": "^1.0.0-beta.124",
@@ -46,8 +42,8 @@
     "ajv": "^8.12.0",
     "fast-glob": "^3.2.12",
     "js-yaml": "^4.1.0",
-    "mergician": "^1.0.3",
     "npm-run-all": "^4.1.5",
+    "oas-toolkit": "^0.3.0",
     "redoc-cli": "^0.13.19",
     "traverse": "^0.6.7"
   }

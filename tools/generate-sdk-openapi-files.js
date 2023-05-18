@@ -2,41 +2,13 @@ const fs = require("fs").promises;
 const fg = require("fast-glob");
 const yaml = require("js-yaml");
 const path = require("path");
-const mergician = require("mergician");
-const $RefParser = require("@apidevtools/json-schema-ref-parser");
 const traverse = require("traverse");
 const { transformFilterQueryParams } = require('./helpers/transformFilterQueryParams');
 const { tryMkdir } = require("./helpers/fs");
+const redoc = require('@redocly/cli/lib/commands/bundle')
 
-const headers = {
-  konnect: {
-    openapi: "3.0.3",
-    info: {
-      title: "Konnect API",
-      description: "The Konnect platform API",
-    },
-    servers: [
-      {
-        url: "https://global.api.konghq.com/v2",
-        description: "Production",
-      },
-    ],
-  },
-
-  portal: {
-    openapi: "3.0.3",
-    info: {
-      title: "Portal API",
-      description: "Portal API",
-    },
-    servers: [
-      {
-        url: "https://custom.example.com",
-        description: "Portal API",
-      },
-    ],
-  },
-};
+const baseDir = path.resolve(__dirname, '..');
+const redocConfigurationPath = path.join(baseDir, 'redocly.yaml');
 
 function filterOperations(doc, callback, log) {
   doc = traverse(doc).clone();
@@ -100,36 +72,15 @@ async function main() {
   const projects = ["konnect", "portal"];
 
   for (let mode of projects) {
-
-    let files = await fg(`${baseDir}/${mode}/definitions/**/computed/openapi.yaml`);
-
-    const openapiFiles = [];
-
-    // Build a complete OAS
-    for (let f of files) {
-      let oas = yaml.load(await fs.readFile(f));
-      oas = await $RefParser.bundle(oas);
-      openapiFiles.push(oas);
-    }
-
-    const merger = mergician({
-      appendArrays: true,
-      dedupArrays: true,
-    });
-    const mergedSpecs = merger.apply(null, openapiFiles);
-
-    // Overwrite known fields
-    const complete = mergician(mergedSpecs, headers[mode]);
+    const f = `${baseDir}/output/${mode}/complete.yaml`;
+    let complete = yaml.load(await fs.readFile(f));
 
     if (!complete.paths) {
       console.log(`No paths found for ${mode}`);
       continue;
     }
 
-    // Make entries in `tags` unique
-    complete.tags = unique(complete.tags);
-
-    // Parameters might be duplicated too
+    // Parameters might be duplicated
     for (let k in complete.paths) {
       const p = complete.paths[k];
       if (p.parameters) {
@@ -153,6 +104,18 @@ async function main() {
     );
 
     complete.security = unique(complete.security);
+
+    let processed = `${baseDir}/output/${mode}/complete.yaml`;
+    await fs.writeFile(processed, yaml.dump(complete));
+
+    // Bundle everything into a single file
+    const args = {
+      config: redocConfigurationPath,
+      output: processed,
+      apis: [processed],
+    }
+    await redoc.handleBundle(args);
+    complete = yaml.load(await fs.readFile(processed));
 
     // Filter down paths to the groups that we need
     const dev = filterOperations(complete, function (node) {

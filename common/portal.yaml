@@ -1,0 +1,7 @@
+openapi: "3.0.3"
+info: 
+  title: "Portal API"
+  description: "Portal API"
+servers:
+  - url: "https://custom.example.com"
+    description: "Production"

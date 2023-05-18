@@ -1,0 +1,9 @@
+openapi: "3.0.3"
+info: 
+  title: "Konnect API"
+  description: "The Konnect platform API"
+servers:
+  - url: "https://global.api.konghq.com/v2"
+  - url: "https://us.api.konghq.com/v2"
+  - url: "https://eu.api.konghq.com/v2"
+    description: "Production"
