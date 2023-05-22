@@ -28,8 +28,8 @@ paths:
         - Invites
   /authentication-settings:
     get:
-      summary: Get the organization's authentication settings
-      description: Returns authentication configuration for the current organization.
+      summary: Get Auth Settings
+      description: Returns authentication configuration, which determines how users can log in and how they are assigned to teams.
       operationId: get-authentication-settings
       tags:
         - Auth Settings
@@ -39,8 +39,8 @@ paths:
         '401':
           $ref: '#/components/responses/IdentityUnauthenticated'
     patch:
-      summary: Updates the organization's authentication settings
-      description: Returns updated authentication configuration for the current organization.
+      summary: Update Auth Settings
+      description: Updates authentication configuration.
       operationId: update-authentication-settings
       requestBody:
         $ref: '#/components/requestBodies/UpdateAuthenticationSettings'
@@ -1357,6 +1357,14 @@ components:
                 type: boolean
                 example: false
                 description: The organization has OIDC disabled.
+              idp_mapping_enabled:
+                type: boolean
+                example: true
+                description: IdP groups determine the Konnect teams a user has.
+              konnect_mapping_enabled:
+                type: boolean
+                example: false
+                description: A Konnect Identity Admin assigns teams to a user.
           examples:
             Get Authorization Settings:
               $ref: '#/components/examples/Get-Authentication-Settings'
@@ -2617,6 +2625,14 @@ components:
                 type: boolean
                 example: false
                 description: The organization has OIDC disabled.
+              idp_mapping_enabled:
+                type: boolean
+                example: true
+                description: Whether IdP groups determine the Konnect teams a user has.
+              konnect_mapping_enabled:
+                type: boolean
+                example: false
+                description: Whether a Konnect Identity Admin assigns teams to a user.
           examples:
             Example Request Body:
               $ref: '#/components/examples/Update-Authentication-Settings'
@@ -3216,10 +3232,14 @@ components:
       value:
         oidc_auth_enabled: true
         basic_auth_enabled: false
+        idp_mapping_enabled: false
+        konnect_mapping_enabled: true
     Update-Authentication-Settings:
       value:
         oidc_auth_enabled: false
         basic_auth_enabled: true
+        idp_mapping_enabled: false
+        konnect_mapping_enabled: true
 security:
   - personalAccessToken: []
   - systemAccountAccessToken: []
