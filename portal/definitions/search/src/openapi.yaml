@@ -99,7 +99,9 @@ components:
         - created_at
         - updated_at
         - name
-        - has_documentation
+        - document_count
+        - version_count
+        - latest_version
       properties:
         id:
           $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/UUID'
@@ -114,43 +116,35 @@ components:
           example: A nice product for customers to read about and consume
           description: a description of the product
           readOnly: true
-        has_documentation:
-          type: boolean
-          example: true
-          description: Whether the product has documents associated with it.
-          readOnly: true
         created_at:
           $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/CreatedAt'
         updated_at:
           $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/UpdatedAt'
-        versions:
-          type: array
-          items:
+        document_count:
+          type: number
+          example: 5
+          description: Number of product documents available.
+          readonly: true
+        version_count:
+          type: number
+          example: 2
+          description: Number of product versions.
+          readonly: true
+        latest_version:
+           type: object
+           description: Last created version.
+           required:
+            - name
+            - id
             additionalProperties: false
-            type: object
-            required:
-              - id
-              - created_at
-              - updated_at
-              - name
-              - deprecated
             properties:
-              id:
-                $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/UUID'
-              created_at:
-                $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/CreatedAt'
-              updated_at:
-                $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/UpdatedAt'
               name:
                 type: string
                 example: v2.0.0
                 description: Name of product version.
-                readOnly: true
-              deprecated:
-                description: Whether the version is deprecated.
-                type: boolean
-                example: true
-                readOnly: true
+              id:
+                $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/UUID'
+
     SearchIndicesParameters:
       title: 'SearchIndicesParameters'
       type: string
@@ -176,17 +170,11 @@ components:
               name: Great Product
               description: Great products are built with great care
               has_documentation: true
-              versions:
-                - created_at: '2023-01-19T17:41:55.896Z'
-                  updated_at: '2023-01-20T17:41:55.896Z'
-                  id: b35b0beb-c3f7-4f8f-95f7-cd8ff0ee478e
-                  name: v0
-                  deprecated: false
-                - created_at: '2022-01-19T17:41:55.896Z'
-                  updated_at: '2022-01-19T17:41:55.896Z'
-                  id: 455b0beb-c3f7-4f8f-95f7-cd8ff0ee478e
-                  name: v1
-                  deprecated: false
+              document_count: 5
+              version_count: 5
+              latest_version: 
+                name: v5
+                id: 455b0beb-c3f7-4f8f-95f7-cd8ff0ee478e
         meta:
           page:
             number: 1
