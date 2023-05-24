@@ -132,6 +132,9 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/AuthenticateRequest'
+          examples:
+            Authenticate-Request:
+              $ref: '#/components/examples/Authenticate-Request'
     ResetPasswordRequest:
       description: The request schema for the reset password endpoint.
       content:
