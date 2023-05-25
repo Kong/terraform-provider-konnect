@@ -136,8 +136,8 @@ components:
            required:
             - name
             - id
-            additionalProperties: false
-            properties:
+           additionalProperties: false
+           properties:
               name:
                 type: string
                 example: v2.0.0
