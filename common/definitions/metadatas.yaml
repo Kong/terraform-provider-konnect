@@ -19,7 +19,7 @@ components:
       properties:
         number:
           type: number
-          example: 2
+          example: 1
         size:
           type: number
           example: 10
@@ -35,7 +35,7 @@ components:
       allowEmptyValue: true
       schema:
         type: integer
-        example: 2
+        example: 10
     PageNumber:
       name: 'page[number]'
       description: Determines which page of the entities to retrieve.
@@ -44,4 +44,4 @@ components:
       allowEmptyValue: true
       schema:
         type: integer
-        example: 10
+        example: 1
