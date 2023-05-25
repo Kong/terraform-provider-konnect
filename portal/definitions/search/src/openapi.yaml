@@ -124,12 +124,12 @@ components:
           type: number
           example: 5
           description: Number of product documents available.
-          readonly: true
+          readOnly: true
         version_count:
           type: number
           example: 2
           description: Number of product versions.
-          readonly: true
+          readOnly: true
         latest_version:
            type: object
            description: Last created version.
@@ -169,7 +169,6 @@ components:
               id: e35b0beb-c3f7-4f8f-95f7-cd8ff0ee478e
               name: Great Product
               description: Great products are built with great care
-              has_documentation: true
               document_count: 5
               version_count: 5
               latest_version: 
