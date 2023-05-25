@@ -53,6 +53,7 @@ paths:
         - {}
   /api/v2/developer/me:
     get:
+      x-internal: true
       summary: Retrieve My Account
       tags:
         - developer
@@ -139,4 +140,4 @@ components:
         - email
 tags:
   - name: developer
-    description: API for managing Konnect Portal Developers.
+    description: API for managing a Konnect Portal Developer.

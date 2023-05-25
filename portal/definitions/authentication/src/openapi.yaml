@@ -8,8 +8,9 @@ info:
     name: Kong
     url: 'https://cloud.konghq.com'
 paths:
-  /api/v2/authenticate:
+  /api/v2/developer/authenticate:
     post:
+      x-internal: true
       summary: Authenticate
       description: This endpoint allows a developer to authenticate to their portal using a username and password.
       operationId: authenticate
@@ -31,23 +32,23 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       tags:
-        - authentication
-  '/api/v2/authenticate/{ssoLoginPath}':
+        - developer
+  '/api/v2/developer/authenticate/sso':
     get:
+      x-internal: true
       summary: Authenticate SSO
       description: This endpoint allows a developer to authenticate to their portal using an external IdP.
       operationId: authenticate-sso
-      parameters:
-        - $ref: '#/components/parameters/ssoLoginPath'
       responses:
         '302':
           description: Found
         '400':
           $ref: '#/components/responses/BadRequest'
       tags:
-        - authentication
-  /api/v2/refresh:
+        - developer
+  /api/v2/developer/refresh:
     post:
+      x-internal: true
       summary: Refresh Access Token
       description: This endpoint allows a developer to refresh their existing access token.
       operationId: refresh
@@ -64,9 +65,10 @@ paths:
         '401':
           $ref: ../../../../common/definitions/errors.yaml#/components/responses/Unauthorized
       tags:
-        - authentication
-  /api/v2/logout:
+        - developer
+  /api/v2/developer/logout:
     post:
+      x-internal: true
       summary: Logout
       description: This endpoint allows a developer to logout of the portal. This operation revokes all active tokens and clears the portal cookies.
       operationId: logout
@@ -74,9 +76,10 @@ paths:
         '204':
           description: No Content
       tags:
-        - authentication
-  /api/v2/reset-password:
+        - developer
+  /api/v2/developer/reset-password:
     post:
+      x-internal: true
       summary: Reset Password
       description: 'This endpoint allows a developer to reset their password, using a reset token.'
       operationId: reset-password
@@ -92,12 +95,13 @@ paths:
         '410':
           $ref: '#/components/responses/Gone'
       tags:
-        - authentication
+        - developer
       requestBody:
         $ref: '#/components/requestBodies/ResetPasswordRequest'
     parameters: []
-  /api/v2/verify-email:
+  /api/v2/developer/verify-email:
     post:
+      x-internal: true
       summary: Verify Email
       description: This endpoint allows a new developer to verify their email.
       operationId: verify-email
@@ -111,20 +115,11 @@ paths:
         '410':
           $ref: '#/components/responses/Gone'
       tags:
-        - authentication
+        - developer
       requestBody:
         $ref: '#/components/requestBodies/VerifyEmailRequest'
     parameters: []
 components:
-  parameters:
-    ssoLoginPath:
-      name: ssoLoginPath
-      in: path
-      required: true
-      schema:
-        type: string
-        example: mycompany
-      description: The login path unique to the portal for SSO.
   requestBodies:
     AuthenticateRequest:
       description: The request schema for the authenticate endpoint.
@@ -304,4 +299,5 @@ components:
         instance: 'konnect:trace:8988732526256293040'
         detail: The token has expired
 tags:
-  - name: authentication
+  - name: developer
+    description: API for managing a Konnect Portal Developer.
