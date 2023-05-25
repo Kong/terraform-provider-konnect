@@ -311,8 +311,18 @@ components:
         description:
           type: string
           example: API for billing functions
-        labels:
-          type: object
+        document_count:
+          type: integer
+          example: 3
+          description: Number of linked documents in documentation.
+          readOnly: true
+        version_count:
+          type: integer
+          example: 2
+          description: Number of published versions.
+          readOnly: true
+        latest_version:
+           $ref: '#/components/schemas/LatestVersion'
     ProductListPage:
       title: ProductListPage
       type: object
@@ -358,6 +368,17 @@ components:
         - name
         - deprecated
         - registration_configs
+    LatestVersion:
+      type: object
+      additionalProperties: false
+      nullable: true
+      properties:
+        name:
+          type: string
+          example: v2.0.0
+          readOnly: true
+        id:
+          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/UUID'
     ProductVersionListPage:
       title: ProductVersionListPage
       type: object
@@ -379,7 +400,7 @@ components:
           type: string
       required:
       - api_type
-      - content 
+      - content
     ProductVersionSpecOperations:
       type: object
       title: Operations in product version spec document
