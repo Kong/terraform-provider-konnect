@@ -165,6 +165,9 @@ components:
           items:
             type: string
             format: uuid
+        allowed_time_period:
+          type: string
+          description: Allowed time period for Analytics queries
       required:
         - portal_id
         - org_id
@@ -174,6 +177,7 @@ components:
         - oidc_auth_enabled
         - rbac_enabled
         - dcr_provider_ids
+        - allowed_time_period
 tags:
   - name: portal
     description: The API for retrieving details about a single Konnect Portal.
