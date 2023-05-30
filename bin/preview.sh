@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 mkdir -p dist
 
-npm run bundle-apis
-npm run merge-oas-for-sdk
+
+# get script directory
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+$DIR/../tools/merge-oas.sh
 
 function build_doc {
   

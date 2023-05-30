@@ -22,12 +22,10 @@ jobs:
         run: |
           npm ci
 
-      - name: Bundle Apis
-        run: npm run bundle-apis
-
       - name: Merge OAS in to konnect/portal
         run: |
           ./tools/merge-oas.sh
+
       - name: Process OpenAPI files
         run: |
           npm run generate-sdk-oas

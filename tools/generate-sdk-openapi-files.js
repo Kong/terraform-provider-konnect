@@ -72,7 +72,7 @@ async function main() {
   const projects = ["konnect", "portal"];
 
   for (let mode of projects) {
-    const f = `${baseDir}/output/${mode}/complete.yaml`;
+    const f = `${baseDir}/output/${mode}/openapi.yaml`;
     let complete = yaml.load(await fs.readFile(f));
 
     if (!complete.paths) {
@@ -105,7 +105,7 @@ async function main() {
 
     complete.security = unique(complete.security);
 
-    let processed = `${baseDir}/output/${mode}/complete.yaml`;
+    let processed = `${baseDir}/output/${mode}/openapi.yaml`;
     await fs.writeFile(processed, yaml.dump(complete));
 
     // Bundle everything into a single file

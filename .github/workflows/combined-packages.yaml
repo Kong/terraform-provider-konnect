@@ -29,9 +29,6 @@ jobs:
         run: |
           npm install
 
-      - name: Bundle Apis
-        run: npm run bundle-apis
-  
       - name: Merge OAS in to konnect/portal
         run: |
           ./tools/merge-oas.sh
