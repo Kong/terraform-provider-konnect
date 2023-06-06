@@ -32,7 +32,7 @@ paths:
         - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
         - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
       tags:
-        - Teams
+        - Portal Teams
     parameters:
       - schema:
           type: string
@@ -56,7 +56,7 @@ paths:
         '500':
           $ref: '#/components/responses/Error'
       tags:
-        - Teams
+        - Portal Teams
       requestBody:
         $ref: '#/components/requestBodies/PortalCreateTeam'
       description: Create a team.
@@ -92,7 +92,7 @@ paths:
       operationId: get-portal-team
       description: Get an individual team.
       tags:
-        - Teams
+        - Portal Teams
     patch:
       summary: Update Team
       operationId: update-portal-team
@@ -111,7 +111,7 @@ paths:
       requestBody:
         $ref: '#/components/requestBodies/PortalUpdateTeam'
       tags:
-        - Teams
+        - Portal Teams
     delete:
       summary: Delete Team
       operationId: delete-portal-team
@@ -128,7 +128,7 @@ paths:
           $ref: '#/components/responses/Error'
       description: Deleting a team also deletes its assigned roles. Members of the team are not deleted.
       tags:
-        - Teams
+        - Portal Teams
   '/portals/{portalId}/teams/{teamId}/developers':
     parameters:
       - schema:
@@ -160,7 +160,7 @@ paths:
         - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
         - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
       tags:
-        - Team Membership
+        - Portal Team Membership
     post:
       summary: Add Developer
       operationId: add-developer-to-portal-team
@@ -181,7 +181,7 @@ paths:
       requestBody:
         $ref: '#/components/requestBodies/AddDeveloperToTeam'
       tags:
-        - Team Membership
+        - Portal Team Membership
   '/portals/{portalId}/teams/{teamId}/developers/{developerId}':
     parameters:
       - schema:
@@ -218,7 +218,7 @@ paths:
           $ref: '#/components/responses/Error'
       description: Remove a developer from a team.
       tags:
-        - Team Membership
+        - Portal Team Membership
   '/portals/{portalId}/teams/{teamId}/assigned-roles':
     parameters:
       - schema:
@@ -234,7 +234,7 @@ paths:
     get:
       summary: List Team Roles
       tags:
-        - Team Roles
+        - Portal Team Roles
       responses:
         '200':
           $ref: '#/components/responses/AssignedPortalRoleCollection'
@@ -270,7 +270,7 @@ paths:
       requestBody:
         $ref: '#/components/requestBodies/PortalAssignRole'
       tags:
-        - Team Roles
+        - Portal Team Roles
   '/portals/{portalId}/teams/{teamId}/assigned-roles/{roleId}':
     parameters:
       - schema:
@@ -307,13 +307,13 @@ paths:
         '500':
           $ref: '#/components/responses/Error'
       tags:
-        - Team Roles
+        - Portal Team Roles
       description: Remove an assigned role from a team.
   '/portals/{portalId}/developers':
     get:
       summary: List Developers
       tags:
-        - Developers
+        - Portal Developers
       responses:
         '200':
           $ref: '#/components/responses/DeveloperCollection'
@@ -370,7 +370,7 @@ paths:
         - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
         - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
       tags:
-        - Team Membership
+        - Portal Team Membership
   /portal-roles:
     get:
       summary: List Portal Roles
@@ -386,7 +386,7 @@ paths:
       operationId: list-portal-roles
       description: List roles that can be assigned to teams in a portal.
       tags:
-        - Roles
+        - Portal Roles
 components:
   responses:
     Error:
@@ -902,8 +902,8 @@ security:
   - personalAccessToken: []
   - systemAccountAccessToken: []
 tags:
-  - name: Teams
-  - name: Team Membership
-  - name: Team Roles
-  - name: Roles
-  - name: Developers
+  - name: Portal Teams
+  - name: Portal Team Membership
+  - name: Portal Team Roles
+  - name: Portal Roles
+  - name: Portal Developers
