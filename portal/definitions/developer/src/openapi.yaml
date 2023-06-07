@@ -53,7 +53,6 @@ paths:
         - {}
   /api/v2/developer/me:
     get:
-      x-internal: true
       summary: Retrieve My Account
       tags:
         - developer
