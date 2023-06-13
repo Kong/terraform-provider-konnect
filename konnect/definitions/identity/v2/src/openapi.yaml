@@ -132,6 +132,9 @@ paths:
     get:
       summary: Fetch Team Mapping
       operationId: get-idp-team-mappings
+      parameters:
+        - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+        - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
       responses:
         '200':
           $ref: '#/components/responses/TeamMappingResponse'
