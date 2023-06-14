@@ -4,6 +4,7 @@
   "description": "Konnect Platform OpenAPI specs",
   "main": "index.js",
   "scripts": {
+    "clean": "rm -rf ./konnect/definitions/**/computed; rm -rf ./portal/definitions/**/computed; rm -rf output;",
     "lint:all": "spectral lint '(portal|konnect)/definitions/**/computed/openapi.yaml'",
     "lint:artifacts": "spectral lint 'output/**/*.yaml'",
     "test:common": "node ./common/test/index.js",
