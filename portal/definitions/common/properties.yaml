@@ -1,0 +1,9 @@
+components:
+  schemas:
+    ApplicationReferenceId:
+      description: |
+        An identifier to correlate the application with an external system.
+        Cannot be set when using Dynamic Client Registration.
+      type: string
+      maxLength: 255
+    

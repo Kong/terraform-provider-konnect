@@ -13,13 +13,13 @@ paths:
       description: Lists product registrations for an application.
       operationId: list-application-registrations
       parameters:
-        - $ref: '../../../../common/definitions/portal.yaml#/components/parameters/ApplicationId'
         - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
         - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
-        - $ref: '../../../../common/definitions/filter_parameters.yaml#/components/parameters/FilterByIdEquality'
-        - $ref: '../../../../common/definitions/filter_parameters.yaml#/components/parameters/FilterByIdEqualityShort'
-        - $ref: '../../../../common/definitions/filter_parameters.yaml#/components/parameters/FilterByStatusEquality'
-        - $ref: '../../../../common/definitions/filter_parameters.yaml#/components/parameters/FilterByStatusEqualityShort'
+        - $ref: '../../common/parameters.yaml#/components/parameters/ApplicationId'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByIdEquality'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByIdEqualityShort'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByStatusEquality'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByStatusEqualityShort'
       responses:
         '200':
           $ref: '#/components/responses/ListRegistrations'
@@ -38,7 +38,7 @@ paths:
       description: Registers an application for a product.
       operationId: create-application-registration
       parameters:
-        - $ref: '../../../../common/definitions/portal.yaml#/components/parameters/ApplicationId'
+        - $ref: '../../common/parameters.yaml#/components/parameters/ApplicationId'
       requestBody:
         $ref: '#/components/requestBodies/CreateRegistration'
       responses:
@@ -62,7 +62,7 @@ paths:
       description: Retrieves the specified product registration for an application.
       operationId: get-application-registration
       parameters:
-        - $ref: '../../../../common/definitions/portal.yaml#/components/parameters/ApplicationId'
+        - $ref: '../../common/parameters.yaml#/components/parameters/ApplicationId'
         - $ref: '#/components/parameters/RegistrationId'
       responses:
         '200':
@@ -80,7 +80,7 @@ paths:
       description: Unregister an application for a product version.
       operationId: delete-application-registration
       parameters:
-        - $ref: '../../../../common/definitions/portal.yaml#/components/parameters/ApplicationId'
+        - $ref: '../../common/parameters.yaml#/components/parameters/ApplicationId'
         - $ref: '#/components/parameters/RegistrationId'
       responses:
         '204':
@@ -174,11 +174,11 @@ components:
         - updated_at
       properties:
         id:
-          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/UUID'
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
         created_at:
-          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/CreatedAt'
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
         updated_at:
-          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/UpdatedAt'
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
         status:
           description: The approval status of the registration.
           type: string

@@ -15,9 +15,9 @@ paths:
       parameters:
         - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
         - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
-        - $ref: '../../../../common/definitions/filter_parameters.yaml#/components/parameters/FilterByNameEquality'
-        - $ref: '../../../../common/definitions/filter_parameters.yaml#/components/parameters/FilterByNameEqualityShort'
-        - $ref: '../../../../common/definitions/filter_parameters.yaml#/components/parameters/FilterByNameContains'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByNameEquality'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByNameEqualityShort'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByNameContains'
       responses:
         '200':
           $ref: '#/components/responses/ListApplications'
@@ -60,7 +60,7 @@ paths:
       description: Gets the details for an existing application. You need only supply the unique application identifier that was returned upon application creation or by the list-applications endpoint.
       operationId: get-application
       parameters:
-        - $ref: '../../../../common/definitions/portal.yaml#/components/parameters/ApplicationId'
+        - $ref: '../../common/parameters.yaml#/components/parameters/ApplicationId'
       responses:
         '200':
           $ref: '#/components/responses/GetApplication'
@@ -79,7 +79,7 @@ paths:
       description: Deletes an application and all of its associated entities (registrations).
       operationId: delete-application
       parameters:
-        - $ref: '../../../../common/definitions/portal.yaml#/components/parameters/ApplicationId'
+        - $ref: '../../common/parameters.yaml#/components/parameters/ApplicationId'
       responses:
         '204':
           description: Application was deleted successfully.
@@ -100,7 +100,7 @@ paths:
       description: Updates an application, replacing the object with the new values supplied in the request body.
       operationId: update-application
       parameters:
-        - $ref: '../../../../common/definitions/portal.yaml#/components/parameters/ApplicationId'
+        - $ref: '../../common/parameters.yaml#/components/parameters/ApplicationId'
       requestBody:
         $ref: '#/components/requestBodies/UpdateApplication'
       responses:
@@ -126,7 +126,7 @@ paths:
       description: Resets the client secret for an application.
       operationId: refresh-application-token
       parameters:
-        - $ref: '../../../../common/definitions/portal.yaml#/components/parameters/ApplicationId'
+        - $ref: '../../common/parameters.yaml#/components/parameters/ApplicationId'
       responses:
         '201':
           $ref: '#/components/responses/RefreshToken'
@@ -148,7 +148,7 @@ paths:
       description: Lists the credentials for an application they own.
       operationId: list-credentials
       parameters:
-        - $ref: '../../../../common/definitions/portal.yaml#/components/parameters/ApplicationId'
+        - $ref: '../../common/parameters.yaml#/components/parameters/ApplicationId'
         - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
         - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
       responses:
@@ -171,7 +171,7 @@ paths:
       description: Allows a developer to create a credential for an application they own.
       operationId: create-credential
       parameters:
-        - $ref: '../../../../common/definitions/portal.yaml#/components/parameters/ApplicationId'
+        - $ref: '../../common/parameters.yaml#/components/parameters/ApplicationId'
       requestBody:
         $ref: '#/components/requestBodies/CreateCredential'
       responses:
@@ -195,7 +195,7 @@ paths:
       description: Updates a credential for an application owned by the current logged in developer.
       operationId: update-credential
       parameters:
-        - $ref: '../../../../common/definitions/portal.yaml#/components/parameters/ApplicationId'
+        - $ref: '../../common/parameters.yaml#/components/parameters/ApplicationId'
         - $ref: '#/components/parameters/CredentialId'
       requestBody:
         $ref: '#/components/requestBodies/UpdateCredential'
@@ -219,7 +219,7 @@ paths:
       description: Deletes a credential for an application they own.
       operationId: delete-credential
       parameters:
-        - $ref: '../../../../common/definitions/portal.yaml#/components/parameters/ApplicationId'
+        - $ref: '../../common/parameters.yaml#/components/parameters/ApplicationId'
         - $ref: '#/components/parameters/CredentialId'
       responses:
         '204':
@@ -358,19 +358,19 @@ components:
       type: object
       properties:
         id:
-          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/UUID'
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
         name:
           type: string
         reference_id:
-          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/ApplicationReferenceId'
+          $ref: '../../common/properties.yaml#/components/schemas/ApplicationReferenceId'
         description:
           type: string
         redirect_uri:
           type: string
         created_at:
-          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/CreatedAt'
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
         updated_at:
-          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/UpdatedAt'
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
       required:
         - id
         - name
@@ -393,7 +393,7 @@ components:
             type: object
             properties:
               id:
-                $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/UUID'
+                $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
               display_name:
                 type: string
             required:
@@ -406,7 +406,7 @@ components:
         credential:
           type: string
         id:
-          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/UUID'
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
         display_name:
           type: string
       required:
@@ -439,7 +439,7 @@ components:
           type: string
           maxLength: 255
         reference_id:
-          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/ApplicationReferenceId'
+          $ref: '../../common/properties.yaml#/components/schemas/ApplicationReferenceId'
         redirect_uri:
           description: URL to redirect to after completing an OIDC auth flow
           type: string
@@ -462,11 +462,11 @@ components:
         - updated_at
       properties:
         id:
-          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/UUID'
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
         name:
           type: string
         reference_id:
-          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/ApplicationReferenceId'
+          $ref: '../../common/properties.yaml#/components/schemas/ApplicationReferenceId'
         description:
           type: string
         redirect_uri:
@@ -482,9 +482,9 @@ components:
             client_secret:
               type: string
         created_at:
-          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/CreatedAt'
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
         updated_at:
-          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/UpdatedAt'
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
     UpdateApplicationPayload:
       additionalProperties: false
       type: object
@@ -494,7 +494,7 @@ components:
         name:
           type: string
         reference_id:
-          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/ApplicationReferenceId'
+          $ref: '../../common/properties.yaml#/components/schemas/ApplicationReferenceId'
         description:
           type: string
         redirect_uri:
@@ -513,11 +513,11 @@ components:
         - created_at
       properties:
         id:
-          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/UUID'
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
         name:
           type: string
         reference_id:
-          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/ApplicationReferenceId'
+          $ref: '../../common/properties.yaml#/components/schemas/ApplicationReferenceId'
         description:
           type: string
           example: A brief description of the application
@@ -525,9 +525,9 @@ components:
           type: string
           example: https://example.com/callback
         created_at:
-          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/CreatedAt'
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
         updated_at:
-          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/UpdatedAt'
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
 tags:
   - name: applications
     description: The API for Konnect Portal developer applications within a private portal (i.e. requires registration/authentication).

@@ -86,7 +86,7 @@ components:
       additionalProperties: false
       properties:
         id:
-          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/UUID'
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
         email:
           type: string
           format: email
@@ -98,9 +98,9 @@ components:
           example: API Developer
           maxLength: 250
         created_at:
-          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/CreatedAt'
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
         updated_at:
-          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/UpdatedAt'
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
       required:
         - full_name
         - email

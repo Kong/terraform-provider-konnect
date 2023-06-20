@@ -36,14 +36,14 @@ paths:
       parameters:
         - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
         - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
-        - $ref: '../../../../common/definitions/filter_parameters.yaml#/components/parameters/FilterByNameEquality'
-        - $ref: '../../../../common/definitions/filter_parameters.yaml#/components/parameters/FilterByNameEqualityShort'
-        - $ref: '../../../../common/definitions/filter_parameters.yaml#/components/parameters/FilterByNameContains'
-        - $ref: '../../../../common/definitions/filter_parameters.yaml#/components/parameters/FilterByDescriptionEquality'
-        - $ref: '../../../../common/definitions/filter_parameters.yaml#/components/parameters/FilterByDescriptionEqualityShort'
-        - $ref: '../../../../common/definitions/filter_parameters.yaml#/components/parameters/FilterByDescriptionContains'
-        - $ref: '../../../../common/definitions/filter_parameters.yaml#/components/parameters/FilterByIdEquality'
-        - $ref: '../../../../common/definitions/filter_parameters.yaml#/components/parameters/FilterByIdEqualityShort'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByNameEquality'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByNameEqualityShort'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByNameContains'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByDescriptionEquality'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByDescriptionEqualityShort'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByDescriptionContains'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByIdEquality'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByIdEqualityShort'
       responses:
         '200':
           $ref: '#/components/responses/ProductList'
@@ -65,9 +65,9 @@ paths:
         - $ref: '#/components/parameters/ProductId'
         - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
         - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
-        - $ref: '../../../../common/definitions/filter_parameters.yaml#/components/parameters/FilterByNameEquality'
-        - $ref: '../../../../common/definitions/filter_parameters.yaml#/components/parameters/FilterByNameEqualityShort'
-        - $ref: '../../../../common/definitions/filter_parameters.yaml#/components/parameters/FilterByNameContains'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByNameEquality'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByNameEqualityShort'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByNameContains'
       responses:
         '200':
           $ref: '#/components/responses/ProductListVersions'
@@ -299,11 +299,11 @@ components:
         - name
       properties:
         id:
-          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/UUID'
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
         created_at:
-          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/CreatedAt'
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
         updated_at:
-          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/UpdatedAt'
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
         name:
           type: string
           example: Billing
@@ -338,11 +338,11 @@ components:
       additionalProperties: false
       properties:
         id:
-          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/UUID'
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
         created_at:
-          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/CreatedAt'
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
         updated_at:
-          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/UpdatedAt'
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
         name:
           type: string
           example: v2.0.0
@@ -378,7 +378,7 @@ components:
           example: v2.0.0
           readOnly: true
         id:
-          $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/UUID'
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
     ProductVersionListPage:
       title: ProductVersionListPage
       type: object
@@ -461,7 +461,7 @@ components:
       properties:
         id:
           allOf:
-            - $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/UUID'
+            - $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
             - description: Contains a unique identifier used by the DocumentHub service for this resource.
         parent_document_id:
           type: string
@@ -491,7 +491,7 @@ components:
       properties:
         id:
           allOf:
-            - $ref: '../../../../common/definitions/portal_properties.yaml#/components/schemas/UUID'
+            - $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
             - description: Contains a unique identifier used by the DocumentHub service for this resource.
         parent_document_id:
           type: string
