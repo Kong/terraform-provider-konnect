@@ -172,7 +172,7 @@ paths:
             'application/json':
               schema:
                 $ref: '../../../../common/definitions/documenthub.yaml#/components/schemas/ListDocuments'
-            'application/konnect.document-tree+json':
+            'application/vnd.konnect.document-tree+json':
               schema:
                 $ref: '../../../../common/definitions/documenthub.yaml#/components/schemas/ListDocumentsTree'
         '400':
@@ -284,7 +284,7 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ProductDocumentRaw'
-        application/konnect.document-nodes+json:
+        application/vnd.konnect.document-nodes+json:
           schema:
             $ref: '#/components/schemas/ProductDocument'
   schemas:
