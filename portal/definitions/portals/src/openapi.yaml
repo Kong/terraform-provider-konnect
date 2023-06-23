@@ -147,6 +147,9 @@ components:
           type: string
         featureset_id:
           type: string
+        feature_set:
+          type: string
+          description: String that determines feature set group developer belongs to when logged in
         basic_auth_enabled:
           type: boolean
           description: Whether the portal can be accessed via email and password
