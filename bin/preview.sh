@@ -5,6 +5,7 @@ mkdir -p dist
 # get script directory
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 $DIR/../tools/merge-oas.sh
+node $DIR/../tools/generate-sdk-openapi-files.js
 
 function build_doc {
   

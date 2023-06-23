@@ -29,6 +29,26 @@ function filterOperations(doc, callback, log) {
   });
 }
 
+function addUnstablePublicDescription(doc) {
+  doc = traverse(doc).clone();
+
+  return traverse(doc).forEach(function () {
+    if (!this.node || !this.node["x-unstable"]) {
+      return;
+    }
+
+    if (this.node["x-internal"]) {
+      return;
+    }
+
+    let description = this.node["description"] || "";
+    this.node["description"] = `**Pre-release Endpoint**
+This endpoint is currently in beta and is subject to change.
+
+${description}`.trim();
+  });
+}
+
 function isEmptyOperation(node) {
   const allowedKeys = Object.keys(node).filter((k) =>
     ["get", "post", "put", "patch", "delete"].includes(k)
@@ -116,6 +136,7 @@ async function main() {
     }
     await redoc.handleBundle(args);
     complete = yaml.load(await fs.readFile(processed));
+    complete = addUnstablePublicDescription(complete);
 
     // Filter down paths to the groups that we need
     const dev = filterOperations(complete, function (node) {
@@ -129,6 +150,7 @@ async function main() {
     const public = filterOperations(complete, function (node) {
       return !node["x-internal"];
     });
+
 
     // Create additional spec set optimized for API Documentation rendering
     const [devApiDocs, internalApiDocs, publicApiDocs] = [
@@ -154,5 +176,8 @@ async function main() {
 }
 
 if (require.main === module) {
-  main().catch(e => { throw e })
+  main().catch((e) => {
+    console.log(e);
+    throw e;
+  });
 }
