@@ -1,7 +1,7 @@
 openapi: 3.0.2
 info:
-  title: Konnect Audit Logs Settings API - Beta
-  version: 0.0.0
+  title: Konnect Audit Logs Settings API
+  version: 2.0.0
   description: The API for configuring Kong Konnect Audit Logs.
   contact:
     name: Kong
@@ -15,12 +15,8 @@ paths:
   /audit-log-replay-job:
     put:
       summary: Update Audit Log Replay Job
-      description: |-
-        _The audit logs feature is currently in beta and is subject to change._
-
-        Updates a job to re-send audit logs to an organization's webhook.
+      description: Updates a job to re-send audit logs to an organization's webhook.
       operationId: update-audit-log-replay-job
-      x-unstable: true
       requestBody:
         $ref: '#/components/requestBodies/ReplaceAuditLogReplayJob'
       tags: [Audit Logs]
@@ -37,12 +33,8 @@ paths:
           $ref: '#/components/responses/ReplayJobConflict'
     get:
       summary: Get Audit Log Replay Job
-      description: |-
-        _The audit logs feature is currently in beta and is subject to change._
-
-        Returns the audit log replay job's configuration and status.
+      description: Returns the audit log replay job's configuration and status.
       operationId: get-audit-log-replay-job
-      x-unstable: true
       tags: [Audit Logs]
       responses:
         '200':
@@ -54,12 +46,8 @@ paths:
   /audit-log-webhook:
     patch:
       summary: Update Audit Log Webhook
-      description: |-
-        _The audit logs feature is currently in beta and is subject to change._
-
-        Updates the configuration for a webhook to receive audit logs.
+      description: Updates the configuration for a webhook to receive audit logs.
       operationId: update-audit-log-webhook
-      x-unstable: true
       requestBody:
         $ref: '#/components/requestBodies/UpdateAuditLogWebhook'
       tags: [Audit Logs]
@@ -74,12 +62,8 @@ paths:
           $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
     get:
       summary: Get Audit Log Webhook
-      description: |-
-        _The audit logs feature is currently in beta and is subject to change._
-
-        Returns configuration for the audit log webhook.
+      description: Returns configuration for the audit log webhook.
       operationId: get-audit-log-webhook
-      x-unstable: true
       tags: [Audit Logs]
       responses:
         '200':
@@ -91,12 +75,8 @@ paths:
   /audit-log-webhook/status:
     get:
       summary: Get Audit Log Webhook Status
-      description: |-
-        _The audit logs feature is currently in beta and is subject to change._
-
-        Returns status of the audit log webhook.
+      description: Returns status of the audit log webhook.
       operationId: get-audit-log-webhook-status
-      x-unstable: true
       tags: [Audit Logs]
       responses:
         '200':
@@ -109,11 +89,8 @@ paths:
     get:
       operationId: get-audit-log-jwks
       summary: Get Audit Log JSON Web Keys
-      description: |-
-        _The audit logs feature is currently in beta and is subject to change._
-        Returns the public keys used to sign audit log entries in order to verify the 
+      description: Returns the public keys used to sign audit log entries in order to verify the 
         validity of audit log entries.
-      x-unstable: true
       tags:
         - Audit Logs
       responses:
