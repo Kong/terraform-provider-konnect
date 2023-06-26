@@ -10,7 +10,6 @@ info:
 paths:
   /api/v2/developer/authenticate:
     post:
-      x-unstable: true
       summary: Authenticate
       description: This endpoint allows a developer to authenticate to their portal using a username and password.
       operationId: authenticate
@@ -37,7 +36,6 @@ paths:
         - developer
   '/api/v2/developer/authenticate/sso':
     get:
-      x-unstable: true
       summary: Authenticate SSO
       description: This endpoint allows a developer to authenticate to their portal using an external IdP.
       operationId: authenticate-sso
@@ -50,7 +48,6 @@ paths:
         - developer
   /api/v2/developer/refresh:
     post:
-      x-unstable: true
       summary: Refresh Access Token
       description: This endpoint allows a developer to refresh their existing access token.
       operationId: refresh
@@ -70,7 +67,6 @@ paths:
         - developer
   /api/v2/developer/logout:
     post:
-      x-unstable: true
       summary: Logout
       description: This endpoint allows a developer to logout of the portal. This operation revokes all active tokens and clears the portal cookies.
       operationId: logout
@@ -81,7 +77,6 @@ paths:
         - developer
   /api/v2/developer/reset-password:
     post:
-      x-unstable: true
       summary: Reset Password
       description: 'This endpoint allows a developer to reset their password, using a reset token.'
       operationId: reset-password
@@ -103,7 +98,6 @@ paths:
     parameters: []
   /api/v2/developer/verify-email:
     post:
-      x-unstable: true
       summary: Verify Email
       description: This endpoint allows a new developer to verify their email.
       operationId: verify-email
