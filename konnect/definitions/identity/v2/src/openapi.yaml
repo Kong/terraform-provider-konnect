@@ -149,6 +149,33 @@ paths:
       tags:
         - Auth Settings
       description: Fetch the IdP group to Konnect team mapping.
+  /identity-provider/team-group-mappings:
+    patch:
+      summary: Patch Mappings by Team ID
+      operationId: patch-team-group-mappings
+      responses:
+        '200':
+          $ref: '#/components/responses/TeamGroupMappingCollection'
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+        '403':
+          $ref: '#/components/responses/IdentityPermissionDenied'
+      tags:
+        - Auth Settings
+      description: |-
+        Allows partial updates to the mappings between Konnect Teams and Identity Provider Groups.
+        The request body must be keyed on team ID. For a given team ID, the given group list is a
+        complete replacement. To remove all mappings for a given team, provide an empty group list.
+        
+        The response is keyed on group name. The inconsistency between request and response bodies
+        is a compromise for performance.
+
+        Returns a 400 error if an Identity Provider has not yet been configured, or if a team ID in
+        the request body is not found or is not a UUID.
+      requestBody:
+        $ref: '#/components/requestBodies/PatchTeamGroupMappings'
   /roles:
     get:
       summary: Get Predefined Roles
@@ -1312,10 +1339,26 @@ components:
           schema:
             type: object
             properties:
-              mappings:
+              data:
                 type: array
                 items:
                   $ref: '#/components/schemas/TeamMapping'
+          examples:
+            Team Mapping Collection:
+              $ref: '#/components/examples/team-mapping-collection'
+    TeamGroupMappingCollection:
+      description: A paginated collection of mappings grouped by team_id.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              meta:
+                $ref: '../../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TeamGroupMapping'
           examples:
             Team Mapping Collection:
               $ref: '#/components/examples/team-mapping-collection'
@@ -1392,8 +1435,10 @@ components:
               $ref: '#/components/examples/400-password-complexity'
             Authentication Settings cannot be both Disabled:
               $ref: '#/components/examples/400-authentication-settings-cannot-be-both-disabled'
-            OIDC needs an IDP configure:
+            OIDC needs an IdP configuration:
               $ref: '#/components/examples/400-oidc-auth-enabled-needs-idp'
+            IdP configuration is required:
+              $ref: '#/components/examples/400-idp-config-is-required'
             Unsupported filter operation:
               value:
                 status: 400
@@ -2457,6 +2502,34 @@ components:
             Example Request Body:
               $ref: '#/components/examples/Update-Team-Mappings'
       description: The request schema for updating IdP team mappings.
+    PatchTeamGroupMappings:
+      content:
+        application/json:
+          schema:
+            type: object
+            example:
+              data:
+                - group: Service Developers
+                  team_ids:
+                    - af91db4c-6e51-403e-a2bf-33d27ae50c0a
+            properties:
+              data:
+                type: array
+                description: The IdP groups to map to the given team.
+                items:
+                  type: object
+                  properties:
+                    team_id:
+                      type: string
+                      format: uuid
+                    groups:
+                      type: array
+                      items:
+                        type: string
+          examples:
+            Example Request Body:
+              $ref: '#/components/examples/Patch-Team-Group-Mappings'
+      description: The request schema for a partial update of mappings from Konnect Teams to IdP Groups.
     AssignRole:
       content:
         application/json:
@@ -2848,6 +2921,28 @@ components:
             type: string
             format: uuid
             example: 6801e673-cc10-498a-94cd-4271de07a0d3
+    TeamGroupMapping:
+      title: TeamGroupMapping
+      type: object
+      description: A map of Konnect Team to IdP groups.
+      example:
+        team_id: 6801e673-cc10-498a-94cd-4271de07a0d3
+        groups: 
+          - Tech Leads
+          - API Engineers
+      properties:
+        team_id:
+          type: string
+          format: uuid
+          example: 6801e673-cc10-498a-94cd-4271de07a0d3
+          description: The Konnect team ID.
+        groups:
+          type: array
+          uniqueItems: true
+          description: The IdP groups that are mapped to the specified team.
+          items:
+            type: string
+            example: API Engineers
     AssignedRole:
       title: AssignedRole
       type: object
@@ -3054,6 +3149,15 @@ components:
         invalid_parameters:
           - field: oidc_auth_enabled
             reason: cannot be set before configuring an identity provider
+    400-idp-config-is-required:
+      value:
+        status: 400
+        title: Bad Request
+        detail: An IdP configuration is required
+        instance: 'konnect:trace:6644808935508571943'
+        invalid_parameters:
+          - field: data
+            reason: cannot be set before configuring an identity provider
     404-not-found:
       value:
         status: 404
@@ -3203,9 +3307,16 @@ components:
     Update-Team-Mappings:
       value:
         mappings:
-          - group: Service Developers
+          - group: API Engineers
             team_ids:
               - af91db4c-6e51-403e-a2bf-33d27ae50c0a
+    Patch-Team-Group-Mappings:
+      value:
+        data:
+          - team_id: af91db4c-6e51-403e-a2bf-33d27ae50c0a
+            groups:
+              - Team Leads
+              - API Engineers
     Update-User-Request:
       value:
         full_name: James C Woods
