@@ -182,7 +182,7 @@ paths:
             type: object
             properties:
               name:
-                $ref: '#/components/schemas/StringFieldFilter'
+                $ref: '../../../../../common/definitions/filters.yaml#/components/schemas/StringFieldFilter'
           in: query
           name: filter
           description: Filter teams returned in the response.
@@ -233,11 +233,11 @@ paths:
             type: object
             properties:
               id:
-                $ref: '#/components/schemas/StringFieldEqualsFilter'
+                $ref: '../../../../../common/definitions/filters.yaml#/components/schemas/StringFieldEqualsFilter'
               email:
-                $ref: '#/components/schemas/StringFieldFilter'
+                $ref: '../../../../../common/definitions/filters.yaml#/components/schemas/StringFieldFilter'
               full_name:
-                $ref: '#/components/schemas/StringFieldFilter'
+                $ref: '../../../../../common/definitions/filters.yaml#/components/schemas/StringFieldFilter'
               active:
                 $ref: '#/components/schemas/BooleanFieldFilter'
           in: query
@@ -375,9 +375,9 @@ paths:
             type: object
             properties:
               role_name:
-                $ref: '#/components/schemas/StringFieldFilter'
+                $ref: '../../../../../common/definitions/filters.yaml#/components/schemas/StringFieldFilter'
               entity_type_name:
-                $ref: '#/components/schemas/StringFieldFilter'
+                $ref: '../../../../../common/definitions/filters.yaml#/components/schemas/StringFieldFilter'
           in: query
           name: filter
           description: Filter roles returned in the response.
@@ -457,11 +457,11 @@ paths:
             type: object
             properties:
               id:
-                $ref: '#/components/schemas/StringFieldEqualsFilter'
+                $ref: '../../../../../common/definitions/filters.yaml#/components/schemas/StringFieldEqualsFilter'
               email:
-                $ref: '#/components/schemas/StringFieldFilter'
+                $ref: '../../../../../common/definitions/filters.yaml#/components/schemas/StringFieldFilter'
               full_name:
-                $ref: '#/components/schemas/StringFieldFilter'
+                $ref: '../../../../../common/definitions/filters.yaml#/components/schemas/StringFieldFilter'
               active:
                 $ref: '#/components/schemas/BooleanFieldFilter'
           in: query
@@ -545,7 +545,7 @@ paths:
             type: object
             properties:
               name:
-                $ref: '#/components/schemas/StringFieldFilter'
+                $ref: '../../../../../common/definitions/filters.yaml#/components/schemas/StringFieldFilter'
           in: query
           name: filter
           description: Filter teams returned in the response.
@@ -578,9 +578,9 @@ paths:
             type: object
             properties:
               role_name:
-                $ref: '#/components/schemas/StringFieldFilter'
+                $ref: '../../../../../common/definitions/filters.yaml#/components/schemas/StringFieldFilter'
               entity_type_name:
-                $ref: '#/components/schemas/StringFieldFilter'
+                $ref: '../../../../../common/definitions/filters.yaml#/components/schemas/StringFieldFilter'
           in: query
           name: filter
           description: Filter roles returned in the response.
@@ -665,9 +665,9 @@ paths:
             type: object
             properties:
               name:
-                $ref: '#/components/schemas/StringFieldFilter'
+                $ref: '../../../../../common/definitions/filters.yaml#/components/schemas/StringFieldFilter'
               description:
-                $ref: '#/components/schemas/StringFieldFilter'
+                $ref: '../../../../../common/definitions/filters.yaml#/components/schemas/StringFieldFilter'
           in: query
           name: filter
           description: Filter system accounts returned in the response.
@@ -786,7 +786,7 @@ paths:
             type: object
             properties:
               name:
-                $ref: '#/components/schemas/StringFieldFilter'
+                $ref: '../../../../../common/definitions/filters.yaml#/components/schemas/StringFieldFilter'
           in: query
           name: filter
           description: Filter access tokens returned in the response.
@@ -924,9 +924,9 @@ paths:
             type: object
             properties:
               role_name:
-                $ref: '#/components/schemas/StringFieldFilter'
+                $ref: '../../../../../common/definitions/filters.yaml#/components/schemas/StringFieldFilter'
               entity_type_name:
-                $ref: '#/components/schemas/StringFieldFilter'
+                $ref: '../../../../../common/definitions/filters.yaml#/components/schemas/StringFieldFilter'
           in: query
           name: filter
           description: Filter roles returned in the response.
@@ -1015,7 +1015,7 @@ paths:
             type: object
             properties:
               name:
-                $ref: '#/components/schemas/StringFieldFilter'
+                $ref: '../../../../../common/definitions/filters.yaml#/components/schemas/StringFieldFilter'
           in: query
           name: filter
           description: Filter system accounts returned in the response.
@@ -1098,7 +1098,7 @@ paths:
             type: object
             properties:
               name:
-                $ref: '#/components/schemas/StringFieldFilter'
+                $ref: '../../../../../common/definitions/filters.yaml#/components/schemas/StringFieldFilter'
           in: query
           name: filter
           description: Filter teams returned in the response.
@@ -1206,13 +1206,13 @@ paths:
             type: object
             properties:
               actions:
-                $ref: '#/components/schemas/StringFieldEqualsFilter'
+                $ref: '../../../../../common/definitions/filters.yaml#/components/schemas/StringFieldEqualsFilter'
               region:
-                $ref: '#/components/schemas/StringFieldEqualsFilter'
+                $ref: '../../../../../common/definitions/filters.yaml#/components/schemas/StringFieldEqualsFilter'
               resource:
-                $ref: '#/components/schemas/StringFieldEqualsFilter'
+                $ref: '../../../../../common/definitions/filters.yaml#/components/schemas/StringFieldEqualsFilter'
               service:
-                $ref: '#/components/schemas/StringFieldEqualsFilter'
+                $ref: '../../../../../common/definitions/filters.yaml#/components/schemas/StringFieldEqualsFilter'
               top_level:
                 $ref: '#/components/schemas/BooleanFieldFilter'
           in: query
@@ -2956,24 +2956,6 @@ components:
           format: date-time
           description: Timestamp of when the system account access token was last used.
           readOnly: true
-    StringFieldFilter:
-      title: StringFieldFilter
-      description: Filter a string value field either by exact match or partial contains.
-      oneOf:
-        - $ref: '#/components/schemas/StringFieldEqualsFilter'
-        - type: object
-          properties:
-            contains:
-              type: string
-          required:
-            - contains
-          example:
-            contains: some-value
-    StringFieldEqualsFilter:
-      example: equals-some-value
-      title: StringFieldEqualsFilter
-      description: Filter a string value by exact match.
-      type: string
     BooleanFieldFilter:
       example: true
       title: BooleanFieldFilter

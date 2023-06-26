@@ -1,0 +1,21 @@
+components:
+  schemas:
+    StringFieldFilter:
+      title: StringFieldFilter
+      description: Filter a string value field either by exact match or partial contains.
+      oneOf:
+        - $ref: '#/components/schemas/StringFieldEqualsFilter'
+        - $ref: '#/components/schemas/StringFieldContainsFilter'
+    StringFieldContainsFilter:
+      type: object
+      title: StringFieldContainsFilter
+      description: Filter a string value field by partial contains.
+      properties:
+        contains:
+          type: string
+      required:
+        - contains
+    StringFieldEqualsFilter:
+      title: StringFieldEqualsFilter
+      description: Filter a string value by exact match.
+      type: string
