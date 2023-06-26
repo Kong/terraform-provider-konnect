@@ -103,6 +103,18 @@ components:
         - min_lowercase
         - min_uppercase
         - min_symbols
+        - is_array
+        - is_boolean
+        - is_date_time
+        - is_integer
+        - is_null
+        - is_number
+        - is_object
+        - is_string
+        - is_uuid
+        - unknown_property
+        - is_label
+        - matches_regex
     InvalidParameters:
       type: array
       nullable: false
