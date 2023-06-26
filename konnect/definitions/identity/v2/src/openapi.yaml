@@ -150,6 +150,23 @@ paths:
         - Auth Settings
       description: Fetch the IdP group to Konnect team mapping.
   /identity-provider/team-group-mappings:
+    get:
+      summary: Fetch Team Group Mappings
+      operationId: get-team-group-mappings
+      responses:
+        '200':
+          $ref: '#/components/responses/TeamGroupMappingCollection'
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+        '403':
+          $ref: '#/components/responses/IdentityPermissionDenied'
+      tags:
+        - Auth Settings
+      description: |-
+        Retrieves the mappings between Konnect Teams and Identity Provider Groups.
+        Returns a 400 error if an Identity Provider has not yet been configured.
     patch:
       summary: Patch Mappings by Team ID
       operationId: patch-team-group-mappings
@@ -169,9 +186,6 @@ paths:
         The request body must be keyed on team ID. For a given team ID, the given group list is a
         complete replacement. To remove all mappings for a given team, provide an empty group list.
         
-        The response is keyed on group name. The inconsistency between request and response bodies
-        is a compromise for performance.
-
         Returns a 400 error if an Identity Provider has not yet been configured, or if a team ID in
         the request body is not found or is not a UUID.
       requestBody:
