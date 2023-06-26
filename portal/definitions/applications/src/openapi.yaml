@@ -95,9 +95,9 @@ paths:
         - applications
       security:
         - portalAccessToken: []
-    put:
+    patch:
       summary: Update Application
-      description: Updates an application, replacing the object with the new values supplied in the request body.
+      description: Updates an application, replacing specified properties with any new values supplied in the request body.
       operationId: update-application
       parameters:
         - $ref: '../../common/parameters.yaml#/components/parameters/ApplicationId'
