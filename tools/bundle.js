@@ -8,7 +8,10 @@ const redocConfigurationPath = path.join(baseDir, 'redocly.yaml')
 // Loop over all `src` folders in `konnect`/`portal`/`internal` projects definitions to
 // generate the `computed` folder to be consumed by the api tooling
 async function main() {
-    const projects = ["konnect", "portal", "internal"];
+    let projects = ["konnect", "portal", "internal"];
+    if (process.argv.length > 2) {
+        projects = process.argv.slice(2);
+    }
     for (const mode of projects) {
         const files = await fg(`${baseDir}/${mode}/definitions/**/src/openapi.yaml`);
         for (const f of files) {

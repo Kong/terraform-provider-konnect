@@ -45,3 +45,9 @@ jobs:
         with:
           name: public-oas-files
           path: output/**/public.yaml
+
+      - name: Upload computed OAS files per-service
+        uses: actions/upload-artifact@v3
+        with:
+          name: computed-oas-files
+          path: "**/definitions/**/computed/openapi.yaml"
