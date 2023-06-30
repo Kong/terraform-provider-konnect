@@ -2207,6 +2207,7 @@ components:
                     name: Sample System Account
                     created_at: '2019-08-24T14:15:22Z'
                     updated_at: '2019-08-24T14:15:22Z'
+                    konnect_managed: false
     SystemAccountSingle:
       description: A response including a single system account.
       content:
@@ -2221,6 +2222,7 @@ components:
                 description: This is a sample system account description.
                 created_at: '2019-08-24T14:15:22Z'
                 updated_at: '2019-08-24T14:15:22Z'
+                konnect_managed: false
     SystemAccountAccessTokenSingle:
       description: A response including a single system account access token.
       content:
@@ -2636,6 +2638,9 @@ components:
         application/json:
           schema:
             type: object
+            required:
+              - name
+              - description
             properties:
               name:
                 type: string
@@ -2643,11 +2648,15 @@ components:
               description:
                 type: string
                 description: Description of the system account. Useful when the system account name is not sufficient to differentiate one system account from another.
+              konnect_managed:
+                type: boolean
+                description: The system account is managed by Konnect (true/false).
           examples:
             Sample System Account:
               value:
                 name: Sample System Account
                 description: This is a sample system account description.
+                konnect_managed: false
       description: The request schema to create a system account.
     UpdateSystemAccount:
       content:
@@ -3006,6 +3015,7 @@ components:
         description: This is a sample system account description.
         created_at: '2022-08-24T14:15:22Z'
         updated_at: '2022-10-05T10:33:49Z'
+        konnect_managed: false
       description: Schema of the system account.
       properties:
         id:
@@ -3029,6 +3039,9 @@ components:
           format: date-time
           description: Timestamp of when the system account was last updated.
           readOnly: true
+        konnect_managed:
+          type: boolean
+          description: The system account is managed by Konnect (true/false).
     SystemAccountAccessToken:
       title: System Account Access Token
       example:
