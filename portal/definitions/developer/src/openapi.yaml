@@ -23,8 +23,6 @@ paths:
           description: the developer has been properly registered.
         '400':
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
-        '500':
-          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Internal'
       tags:
         - developer
       security:
@@ -61,8 +59,6 @@ paths:
           $ref: '#/components/responses/MeResponse'
         '401':
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
-        '500':
-          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Internal'
       operationId: get-developer-me
       description: Returns info about the current developer.
       security:

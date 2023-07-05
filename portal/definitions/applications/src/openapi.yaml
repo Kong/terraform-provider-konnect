@@ -48,8 +48,6 @@ paths:
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
         '409':
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/Conflict'
-        '500':
-          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Internal'
       tags:
         - applications
       security:
@@ -114,8 +112,6 @@ paths:
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
         '409':
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/Conflict'
-        '500':
-          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Internal'
       tags:
         - applications
       security:
@@ -136,8 +132,6 @@ paths:
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '404':
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
-        '500':
-          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Internal'
       tags:
         - credentials
       security:
@@ -160,8 +154,6 @@ paths:
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/Conflict'
         '404':
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
-        '500':
-          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Internal'
       tags:
         - credentials
       security:
@@ -183,8 +175,6 @@ paths:
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '404':
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
-        '500':
-          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Internal'
       tags:
         - credentials
       security:
@@ -208,8 +198,6 @@ paths:
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '404':
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
-        '500':
-          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Internal'
       tags:
         - credentials
       security:
@@ -232,8 +220,6 @@ paths:
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
         '409':
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/Conflict'
-        '500':
-          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Internal'
       tags:
         - credentials
       security:
