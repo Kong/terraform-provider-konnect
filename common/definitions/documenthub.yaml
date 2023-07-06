@@ -14,6 +14,7 @@ components:
       - 'application/vnd.konnect.document-tree+json'
     ListDocuments:
       type: object
+      additionalProperties: false
       required:
       - meta
       - data
@@ -39,6 +40,7 @@ components:
     DocumentItem:
       type: object
       title: Document item
+      additionalProperties: false
       required:
       - id
       - parent_document_id

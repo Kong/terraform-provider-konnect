@@ -70,6 +70,7 @@ components:
     SearchResults:
       title: 'SearchResults'
       type: object
+      additionalProperties: false
       required:
         - data
         - meta
@@ -133,6 +134,7 @@ components:
         latest_version:
            type: object
            description: Last created version.
+           nullable: true
            required:
             - name
             - id

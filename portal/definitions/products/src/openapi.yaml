@@ -271,7 +271,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ProductVersionSpec'
+            $ref: '#/components/schemas/ProductVersionSpecDocument'
     ProductVersionSpecOperationsGet:
       description: Product version spec operations.
       content:
@@ -382,6 +382,10 @@ components:
     ProductVersionListPage:
       title: ProductVersionListPage
       type: object
+      additionalProperties: false
+      required:
+        - meta
+        - data
       properties:
         meta:
           $ref: '../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
@@ -389,9 +393,9 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ProductVersion'
-    ProductVersionSpec:
+    ProductVersionSpecDocument:
       type: object
-      title: Product Version Spec Document
+      title: ProductVersionSpecDocument
       description: API specification document for a product version.
       properties:
         api_type:
@@ -403,7 +407,7 @@ components:
       - content
     ProductVersionSpecOperations:
       type: object
-      title: Operations in product version spec document
+      title: ProductVersionSpecOperations
       description: List of every operation detailed in a product version spec document.
       required:
         - api_type
@@ -451,7 +455,7 @@ components:
       - openapi
     ProductDocument:
       type: object
-      title: Document
+      title: ProductDocument
       description: A document for a product. This is a document that is not a part of the API specification.
       required:
         - id
@@ -463,6 +467,7 @@ components:
           allOf:
             - $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
             - description: Contains a unique identifier used by the DocumentHub service for this resource.
+              type: string
         parent_document_id:
           type: string
           format: uuid
@@ -481,7 +486,7 @@ components:
           example: Hello World
     ProductDocumentRaw:
       type: object
-      title: Document
+      title: ProductDocumentRaw
       description: A document for a product. This is a document that is not a part of the API specification.
       required:
         - id
@@ -493,6 +498,7 @@ components:
           allOf:
             - $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
             - description: Contains a unique identifier used by the DocumentHub service for this resource.
+              type: string
         parent_document_id:
           type: string
           format: uuid
