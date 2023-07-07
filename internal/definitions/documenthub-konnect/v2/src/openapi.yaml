@@ -260,6 +260,12 @@ components:
       scheme: bearer
       bearerFormat: JWT
   schemas:
+    Slug:
+      type: string
+      description: document slug
+      pattern: ^[\w-]+$
+      maxLength: 80
+      example: path-for-seo
     PublishStatus:
       description: document publish status
       type: string
@@ -365,8 +371,7 @@ components:
           example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
           nullable: true
         slug:
-          type: string
-          example: path-for-seo
+          $ref: '#/components/schemas/Slug'
         status:
           $ref: '#/components/schemas/PublishStatus'
         created_at:
@@ -404,6 +409,7 @@ components:
           type: string
         slug:
           type: string
+          description: document slug
           example: path-for-seo
         status:
           $ref: '#/components/schemas/PublishStatus'
@@ -501,10 +507,7 @@ components:
           description: parent document id
           example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
         slug:
-          type: string
-          description: document slug
-          pattern: '^[\w-]+$'
-          example: path-for-seo
+          $ref: '#/components/schemas/Slug'
         status:
           $ref: '#/components/schemas/PublishStatus'
         title:
@@ -538,10 +541,7 @@ components:
             document will be put as a top level document at the bottom of the tree.
           example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
         slug:
-          type: string
-          description: document slug
-          pattern: '^[\w-]+$'
-          example: path-for-seo
+          $ref: '#/components/schemas/Slug'
         status:
           $ref: '#/components/schemas/PublishStatus'
         title:
