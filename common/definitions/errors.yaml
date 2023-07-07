@@ -104,6 +104,7 @@ components:
         - min_uppercase
         - min_symbols
         - is_array
+        - is_base64
         - is_boolean
         - is_date_time
         - is_integer
