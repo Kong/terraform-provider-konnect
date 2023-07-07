@@ -169,6 +169,16 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/ListCompositeMemberships'
+        '400':
+          $ref: ../../../../../common/definitions/errors.yaml#/components/responses/BadRequest
+        '401':
+          $ref: ../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized
+        '403':
+          $ref: ../../../../../common/definitions/errors.yaml#/components/responses/Forbidden
+        '404':
+          $ref: ../../../../../common/definitions/errors.yaml#/components/responses/NotFound
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
       operationId: get-runtime-groups-id-composite-memberships
       description: Returns an array of runtime groups that are a member of this composite runtime group.
       parameters:
@@ -188,6 +198,16 @@ paths:
       responses:
         '204':
           description: No Content
+        '400':
+          $ref: ../../../../../common/definitions/errors.yaml#/components/responses/BadRequest
+        '401':
+          $ref: ../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized
+        '403':
+          $ref: ../../../../../common/definitions/errors.yaml#/components/responses/Forbidden
+        '404':
+          $ref: ../../../../../common/definitions/errors.yaml#/components/responses/NotFound
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
       requestBody:
         $ref: '#/components/requestBodies/CompositeMemebershipAdd'
       tags:
@@ -212,6 +232,16 @@ paths:
       responses:
         '204':
           description: No Content
+        '400':
+          $ref: ../../../../../common/definitions/errors.yaml#/components/responses/BadRequest
+        '401':
+          $ref: ../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized
+        '403':
+          $ref: ../../../../../common/definitions/errors.yaml#/components/responses/Forbidden
+        '404':
+          $ref: ../../../../../common/definitions/errors.yaml#/components/responses/NotFound
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
   '/runtime-groups/{id}/composite-status':
     parameters:
       - schema:
@@ -454,7 +484,7 @@ components:
               - instance
           examples:
             Internal Server Error:
-              $ref: '#/components/examples/500InternalKokoErrorExample'
+              $ref: '#/components/examples/500InternalErrorExample'
     ServiceUnavailable:
       description: Service Unavailable
       content:
@@ -504,23 +534,8 @@ components:
                 items:
                   $ref: '#/components/schemas/RuntimeGroupSummary'
           examples:
-            Example 1:
-              value:
-                meta:
-                  page:
-                    number: 2
-                    size: 10
-                    total: 100
-                data:
-                  - id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-                    name: Test Runtime Group
-                    description: A test runtime group for exploration.
-                    labels:
-                      test: 'true'
-                    config:
-                      control_plane_endpoint: 'https://acfe5f253f.cp0.konghq.com'
-                      telemetry_endpoint: 'https://acfe5f253f.tp0.konghq.com'
-                      cluster_type: CLUSTER_TYPE_HYBRID
+            List Composite Memberships Example:
+              $ref: '#/components/examples/ListCompositeMembershipsExample'
     GetCompositeStatus:
       description: 'Status of a composite runtime group, including existing conflicts.'
       content:
@@ -528,8 +543,10 @@ components:
           schema:
             $ref: '#/components/schemas/CompositeStatus'
           examples:
-            Get Composite Status response:
-              $ref: '#/components/examples/CompositeStatusExample'
+            Composite Conflict Status Example:
+              $ref: '#/components/examples/CompositeConflictStatusExample'
+            Composite No Conflict Status Example:
+              $ref: '#/components/examples/CompositeNoConflictStatusExample'
   schemas:
     CreateRuntimeGroupRequest:
       title: CreateRuntimeGroupRequest
@@ -547,10 +564,9 @@ components:
           description: The description of the runtime group in Konnect.
         cluster_type:
           type: string
-          description: The ClusterType value of the Koko Cluster associated with the Runtime Group.
+          description: The ClusterType value of the cluster associated with the Runtime Group.
           example: CLUSTER_TYPE_HYBRID
           enum:
-            - CLUSTER_TYPE_UNSPECIFIED
             - CLUSTER_TYPE_HYBRID
             - CLUSTER_TYPE_K8S_INGRESS_CONTROLLER
             - CLUSTER_TYPE_COMPOSITE
@@ -663,18 +679,23 @@ components:
               readOnly: true
             cluster_type:
               type: string
-              description: The ClusterType value of the Koko Cluster associated with the Runtime Group.
+              description: The ClusterType value of the cluster associated with the Runtime Group.
               example: CLUSTER_TYPE_HYBRID
-              readOnly: true
               enum:
-                - CLUSTER_TYPE_UNSPECIFIED
                 - CLUSTER_TYPE_HYBRID
                 - CLUSTER_TYPE_K8S_INGRESS_CONTROLLER
                 - CLUSTER_TYPE_COMPOSITE
+              readOnly: true
           required:
             - control_plane_endpoint
             - telemetry_endpoint
             - cluster_type
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
     CompositeStatus:
       title: CompositeStatus
       type: object
@@ -829,7 +850,7 @@ components:
         title: Conflict
         instance: 'konnect:trace:2287285207635123011'
         detail: Runtime group with provided name already exists.
-    500InternalKokoErrorExample:
+    500InternalErrorExample:
       value:
         status: 500
         title: Internal Server Error
@@ -865,7 +886,7 @@ components:
           control_plane_endpoint: 'https://acfe5f253f.cp0.konghq.com'
           telemetry_endpoint: 'https://acfe5f253f.tp0.konghq.com'
           cluster_type: CLUSTER_TYPE_HYBRID
-    CompositeStatusExample:
+    CompositeConflictStatusExample:
       value:
         id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
         conflicts:
@@ -882,6 +903,54 @@ components:
         state: COMPOSITE_STATE_CONFLICT
         created_at: '2022-11-04T20:10:06.927Z'
         updated_at: '2022-11-04T20:10:06.927Z'
+    CompositeNoConflictStatusExample:
+      value:
+        id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+        conflicts:
+          - cluster_id: 57fdf779-7935-476f-ab2b-7fa1323b70e6
+            description: 'conflicting entity found: ID=df43b088-cace-4119-9e2a-d83e5fbb0c48, Name=svc1'
+            resource:
+              id: df43b088-cace-4119-9e2a-d83e5fbb0c48
+              type: service
+          - cluster_id: 38ceea96-fe39-11ed-be56-0242ac120002
+            description: 'conflicting entity found: ID=15f3ab7d-7202-498a-95b4-334f783dbcdd, Name=svc1'
+            resource:
+              id: 15f3ab7d-7202-498a-95b4-334f783dbcdd
+              type: service
+        state: COMPOSITE_STATE_CONFLICT
+        created_at: '2022-11-04T20:10:06.927Z'
+        updated_at: '2022-11-04T20:10:06.927Z'
+    ListCompositeMembershipsExample:
+      value:
+        meta:
+          page:
+            total: 2
+            size: 100
+            number: 1
+        data:
+          - id: 774f2a35-509d-4b94-97e9-1ed49563bcb1
+            name: Composite Member 1
+            description: Child RG
+            labels:
+              env: prod
+            config:
+              control_plane_endpoint: 'https://9e0353434a.us.cp0.konghq.com'
+              telemetry_endpoint: 'https://9e0353434a.us.tp0.konghq.com'
+              cluster_type: CLUSTER_TYPE_HYBRID
+            created_at: '2023-03-20T22:23:45.873Z'
+            updated_at: '2023-03-30T16:17:55.073Z'
+          - id: e4a1917c-bb26-4aa1-9a3e-50ee366f13db
+            name: Composite Member 2
+            description: Child RG
+            labels:
+              env: prod
+              foo: bar
+            config:
+              control_plane_endpoint: 'https://05459046af.us.cp0.konghq.com'
+              telemetry_endpoint: 'https://05459046af.us.tp0.konghq.com'
+              cluster_type: CLUSTER_TYPE_HYBRID
+            created_at: '2023-03-23T22:25:30.907Z'
+            updated_at: '2023-03-30T16:18:12.067Z'
   requestBodies:
     CompositeMemebershipAdd:
       content:
