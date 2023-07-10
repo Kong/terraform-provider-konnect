@@ -67,6 +67,16 @@ components:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/GoneError'
+    # 415
+    UnsupportedMediaType:
+      description: Unsupported Media Type
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/UnsupportedMediaTypeError'
+          examples:
+            UnsupportedMediaTypeExample:
+              $ref: '#/components/examples/UnsupportedMediaTypeExample'
     # 429
     TooManyRequests:
       description: Too Many Requests
@@ -298,6 +308,21 @@ components:
           example: Conflict
       allOf:
       - $ref: '#/components/schemas/BaseError'
+    UnsupportedMediaTypeError:
+      type: object
+      properties:
+        status:
+          example: 415
+        title:
+          example: UnsupportedMediaType
+        type:
+          example: https://httpstatuses.com/415
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: UnsupportedMediaType
+      allOf:
+      - $ref: '#/components/schemas/BaseError'
     TooManyRequestsError:
       type: object
       properties:
@@ -334,3 +359,10 @@ components:
     NotAvailableError:
       allOf:
       - $ref: '#/components/schemas/BaseError'
+  examples:
+    UnsupportedMediaTypeExample:
+      value:
+        status: 415
+        title: Unsupported Media Type
+        instance: kong:trace:8347343766220159418
+        detail: "This API only supports requests with `Content-Type: application/json`"
