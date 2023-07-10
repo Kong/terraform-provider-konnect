@@ -310,6 +310,7 @@ components:
           description: Name of product.
         description:
           type: string
+          nullable: true
           example: API for billing functions
         document_count:
           type: integer

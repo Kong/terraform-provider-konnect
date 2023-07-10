@@ -116,6 +116,7 @@ components:
           type: string
           example: A nice product for customers to read about and consume
           description: a description of the product
+          nullable: true
           readOnly: true
         created_at:
           $ref: '../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
