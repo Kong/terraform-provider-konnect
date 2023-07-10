@@ -123,8 +123,10 @@ components:
       minItems: 1
       description: invalid parameters
       items:
-        $ref: '#/components/schemas/InvalidParameterItem'
-    InvalidParameterItem:
+        oneOf:
+          - $ref: '#/components/schemas/InvalidParameterChoiceItem'
+          - $ref: '#/components/schemas/InvalidParameterDependentItem'
+    InvalidParameterChoiceItem:
       type: object
       properties:
         field:
@@ -146,6 +148,35 @@ components:
       required:
       - field
       - reason
+    InvalidParameterDependentItem:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          description: invalid parameters rules
+          type: string
+          readOnly: true
+          nullable: true
+          enum:
+          - dependent_fields
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+        dependents:
+          type: array
+          uniqueItems: true
+          nullable: true
+          items: {}
+          readOnly: true
+      required:
+      - field
+      - rule
+      - reason
+      - dependents
     BaseError:
       type: object
       title: Error
