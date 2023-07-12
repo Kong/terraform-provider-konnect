@@ -13,3 +13,11 @@ echo "############################################"
   node ./tools/process-computed.js $PRODUCT
   ./node_modules/.bin/oas-toolkit merge $PRODUCT/definitions/**/computed/openapi.yaml common/$PRODUCT.yaml --ignorePrefix components.securitySchemes --ignorePrefix components.examples > output/$PRODUCT/openapi.yaml
 done
+
+# Finally, bundle all internal APIs. They do not need merging
+# so we do it outside the loop
+echo "############################################"
+echo "Processing: internal"
+echo "############################################"
+node ./tools/bundle.js internal
+node ./tools/process-computed.js internal
