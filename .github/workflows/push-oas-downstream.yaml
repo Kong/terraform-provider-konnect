@@ -2,6 +2,7 @@ name: Push OAS Downstream
 on:
   pull_request:
     types: [closed]
+    branches: [main]
 
 jobs:
   raise-pr-on-change:
