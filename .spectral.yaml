@@ -86,7 +86,7 @@ rules:
     then:
       function: pattern
       functionOptions:
-        notMatch: "[\/-]api\/?"
+        notMatch: "\/api\/|\/api$"
 
   path-parameters-camelCase-alphanumeric:
     description: Path parameters MUST follow camelCase

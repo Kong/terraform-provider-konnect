@@ -22,7 +22,9 @@
     "generate:konnect-public-client": "rm -rf ./packages/public && openapi-generator-cli generate --generator-key konnect-public-client",
     "generate:portal-dev-client": "rm -rf ./packages/dev && openapi-generator-cli generate --generator-key portal-dev-client",
     "generate:portal-internal-client": "rm -rf ./packages/internal && openapi-generator-cli generate --generator-key portal-internal-client",
-    "generate:portal-public-client": "rm -rf ./packages/public && openapi-generator-cli generate --generator-key portal-public-client"
+    "generate:portal-public-client": "rm -rf ./packages/public && openapi-generator-cli generate --generator-key portal-public-client",
+    "preview:api-products-v2-docs": "redocly preview-docs ./konnect/definitions/api-products/v2/src/openapi.yaml",
+    "generate:api-products-v2-docs": "node ./tools/generate-docs-oas-file.js api-products-v2 ./konnect/definitions/api-products/v2/computed/openapi.yaml"
   },
   "repository": {
     "type": "git",
