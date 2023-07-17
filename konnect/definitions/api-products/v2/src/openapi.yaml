@@ -954,24 +954,6 @@ components:
             API Product Version Document Response:
               $ref: '#/components/examples/APIProductVersionSpecExample'
   schemas:
-    CreatedAt:
-      title: CreatedAt
-      type: string
-      format: date-time
-      example: 2023-01-01T00:00:00.000Z
-      description: |
-        The timestamp denoting when the entity was created.
-        RFC-3339 format is used with a "T" character separating date from time within the field value.
-      readOnly: true
-    UpdatedAt:
-      title: UpdatedAt
-      type: string
-      format: date-time
-      example: 2023-01-01T00:00:00.000Z
-      description: |
-        The timestamp denoting when the entity was last updated.
-        RFC-3339 format is used with a "T" character separating date from time within the field value.
-      readOnly: true
     APIProductLabels:
       title: 'Labels'
       type: object
@@ -1044,9 +1026,9 @@ components:
             format: uuid
             example: 25a2624c-49fc-4764-99e1-224ed819f200
         created_at:
-          $ref: '#/components/schemas/CreatedAt'
+          $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
         updated_at:
-          $ref: '#/components/schemas/UpdatedAt'
+          $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
         labels:
           $ref: '#/components/schemas/APIProductLabels'
     APIProductDocumentSummary:
@@ -1121,9 +1103,9 @@ components:
           items:
             $ref: '../../../../../common/definitions/documenthub_nodes.yaml#/components/schemas/AnyNode'
         created_at:
-          $ref: '#/components/schemas/CreatedAt'
+          $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
         updated_at:
-          $ref: '#/components/schemas/UpdatedAt'
+          $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
     APIProductVersion:
       title: API Product Version
       type: object
@@ -1177,9 +1159,9 @@ components:
           description: Indicates if this API product version is deprecated
           example: false
         created_at:
-          $ref: '#/components/schemas/CreatedAt'
+          $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
         updated_at:
-          $ref: '#/components/schemas/UpdatedAt'
+          $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
     APIProductVersionSpec:
       title: API Product Version Spec
       type: object
@@ -1206,9 +1188,9 @@ components:
           description: The contents of the API product version specification
           example: My YAML or JSON formatted OAS content
         created_at:
-          $ref: '#/components/schemas/CreatedAt'
+          $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
         updated_at:
-          $ref: '#/components/schemas/UpdatedAt'
+          $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
     CreateAPIProductDTO:
       title: Create API Product Request
       description: The request schema to create an API product.
