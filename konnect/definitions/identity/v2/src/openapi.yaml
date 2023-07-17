@@ -712,6 +712,8 @@ paths:
                 $ref: '../../../../../common/definitions/filters.yaml#/components/schemas/StringFieldFilter'
               description:
                 $ref: '../../../../../common/definitions/filters.yaml#/components/schemas/StringFieldFilter'
+              konnect_managed:
+                $ref: '../../../../../common/definitions/filters.yaml#/components/schemas/BooleanFieldFilter'
           in: query
           name: filter
           description: Filter system accounts returned in the response.
