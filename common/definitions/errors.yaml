@@ -39,6 +39,9 @@ components:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/UnauthorizedError'
+          examples:
+            UnauthorizedExample:
+              $ref: '#/components/examples/UnauthorizedExample'
     # 403
     Forbidden:
       description: Forbidden
@@ -46,6 +49,9 @@ components:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/ForbiddenError'
+          examples:
+            UnauthorizedExample:
+              $ref: '#/components/examples/ForbiddenExample'
     # 404
     NotFound:
       description: Not Found
@@ -53,6 +59,9 @@ components:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/NotFoundError'
+          examples:
+            NotFoundExample:
+              $ref: '#/components/examples/NotFoundExample'
     # 409
     Conflict:
       description: Conflict
@@ -360,9 +369,27 @@ components:
       allOf:
       - $ref: '#/components/schemas/BaseError'
   examples:
+    ForbiddenExample:
+      value:
+        status: 403
+        title: Forbidden
+        instance: kong:trace:2723154947768991354
+        detail: You do not have permission to perform this action
+    NotFoundExample:
+      value:
+        status: 404
+        title: Not Found
+        instance: kong:trace:6816496025408232265
+        detail: Not Found
     UnsupportedMediaTypeExample:
       value:
         status: 415
         title: Unsupported Media Type
         instance: kong:trace:8347343766220159418
         detail: "This API only supports requests with `Content-Type: application/json`"
+    UnauthorizedExample:
+      value:
+        status: 401
+        title: Unauthorized
+        instance: kong:trace:8347343766220159418
+        detail: Unauthorized
