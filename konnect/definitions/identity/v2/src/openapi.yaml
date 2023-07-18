@@ -13,7 +13,7 @@ paths:
   /accept-invite:
     post:
       summary: Accept Invite
-      description: "Accepts the Konnect invitation. This endpoint allows you to manually accept the invitation to join a Konnect organization. Upon accepting the invitation, the user's name and password are set and the active state is set to true. This can be used as an alternative to the https://cloud.konghq.com/login link in the email which will finish the registration process in a web browser."
+      description: 'Accepts the Konnect invitation. This endpoint allows you to manually accept the invitation to join a Konnect organization. Upon accepting the invitation, the user''s name and password are set and the active state is set to true. This can be used as an alternative to the https://cloud.konghq.com/login link in the email which will finish the registration process in a web browser.'
       operationId: accept-invite
       requestBody:
         $ref: '#/components/requestBodies/AcceptInvite'
@@ -29,7 +29,7 @@ paths:
   /authentication-settings:
     get:
       summary: Get Auth Settings
-      description: Returns authentication configuration, which determines how users can log in and how they are assigned to teams.
+      description: 'Returns authentication configuration, which determines how users can log in and how they are assigned to teams.'
       operationId: get-authentication-settings
       tags:
         - Auth Settings
@@ -188,7 +188,7 @@ paths:
         Allows partial updates to the mappings between Konnect Teams and Identity Provider Groups.
         The request body must be keyed on team ID. For a given team ID, the given group list is a
         complete replacement. To remove all mappings for a given team, provide an empty group list.
-        
+
         Returns a 400 error if an Identity Provider has not yet been configured, or if a team ID in
         the request body is not found or is not a UUID.
       requestBody:
@@ -939,6 +939,69 @@ paths:
         Deletes the specified token. Returns 404 if the token was not found.
       tags:
         - System Accounts - Access Tokens
+  '/internal/system-accounts/{accountId}/assigned-roles':
+    parameters:
+      - schema:
+          type: string
+        name: accountId
+        in: path
+        required: true
+        description: ID of the system account.
+    get:
+      operationId: get-system-accounts-assigned-roles-internal
+      summary: Fetch assigned roles for a managed system account.
+      description: Lists the roles belonging to a managed system account.
+      responses:
+        '200':
+          $ref: '#/components/responses/ParameterizedAssignedRolesCollection'
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/IdentityNotFound'
+      parameters:
+        - schema:
+            type: object
+            properties:
+              role_name:
+                $ref: '../../../../../common/definitions/filters.yaml#/components/schemas/StringFieldFilter'
+              entity_type_name:
+                $ref: '../../../../../common/definitions/filters.yaml#/components/schemas/StringFieldFilter'
+          in: query
+          name: filter
+          description: Filter roles returned in the response.
+          required: false
+      tags:
+        - Managed System Accounts - Roles
+      x-internal: true
+      security:
+        - clientToken: []
+    post:
+      summary: Assign a role to a managed System Account.
+      operationId: create-system-accounts-assigned-roles-internal
+      responses:
+        '201':
+          $ref: '#/components/responses/ParameterizedAssignedRoleSingle'
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/IdentityNotFound'
+        '409':
+          $ref: '#/components/responses/IdentityConflict'
+      description: |-
+        Assigns a role to a managed system account. Returns 409 if role is already assigned.
+      requestBody:
+        $ref: '#/components/requestBodies/AssignParameterizedRole'
+      tags:
+        - Managed System Accounts - Roles
+      x-internal: true
+      security:
+        - clientToken: []
   '/system-accounts/{accountId}/assigned-roles':
     parameters:
       - schema:
@@ -1390,6 +1453,15 @@ components:
           examples:
             Assigned Role Example:
               $ref: '#/components/examples/Assigned-Role-Example'
+    ParameterizedAssignedRoleSingle:
+      description: A get response of a single parameterized assigned role.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ParameterizedAssignedRole'
+          examples:
+            Assigned Role Example:
+              $ref: '#/components/examples/Parameterized-Assigned-Role-Example'
     AssignedRoleCollection:
       description: A paginated list response for a collection of assigned roles.
       content:
@@ -1407,6 +1479,23 @@ components:
           examples:
             CollectionExample:
               $ref: '#/components/examples/collection-example'
+    ParameterizedAssignedRolesCollection:
+      description: A paginated list response for a collection of parameterized assigned roles.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              meta:
+                $ref: '../../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
+              data:
+                type: array
+                description: An Array
+                items:
+                  $ref: '#/components/schemas/ParameterizedAssignedRole'
+          examples:
+            ParameterizedAssignedRolesCollection:
+              $ref: '#/components/examples/Parameterized-Assigned-Roles-Collection-Example'
     AuthenticationSettings:
       description: Response for authentication settings endpoint
       content:
@@ -2585,6 +2674,42 @@ components:
             Assigned Roles Global:
               $ref: '#/components/examples/Assign-Roles-Global'
       description: The request schema for assigning a role.
+    AssignParameterizedRole:
+      content:
+        application/json:
+          schema:
+            type: object
+            description: A parameterized assigned role is a role that has been assigned to a managed system account.
+            properties:
+              role_name:
+                type: string
+                example: Connector
+                description: The desired role.
+              entity_id:
+                type: string
+                format: uuid
+                example: e67490ce-44dc-4cbd-b65e-b52c746fc26a
+                description: The ID of the entity.
+              entity_type_name:
+                type: string
+                example: Mesh Control Planes
+                description: The type of entity.
+              entity_region:
+                type: string
+                enum:
+                  - us
+                  - eu
+                  - '*'
+                example: eu
+                description: The region to scope the role assignment to.
+              parameters:
+                type: object
+                example:
+                  zoneName: zone3
+          examples:
+            Parameterized-Assigned-Role:
+              $ref: '#/components/examples/Parameterized-Assigned-Role-Example'
+      description: The request schema for assigning a role.
     AcceptInvite:
       content:
         application/json:
@@ -2955,7 +3080,7 @@ components:
       description: A map of Konnect Team to IdP groups.
       example:
         team_id: 6801e673-cc10-498a-94cd-4271de07a0d3
-        groups: 
+        groups:
           - Tech Leads
           - API Engineers
       properties:
@@ -3008,6 +3133,52 @@ components:
             - '*'
           example: eu
           description: Region of the entity.
+    ParameterizedAssignedRole:
+      title: ParameterizedAssignedRole
+      type: object
+      description: A parameterized assigned role is a role that has been assigned to a managed system account with additional parameters.
+      example:
+        id: 54cc6168-ebb1-4300-8168-d62a0dd08fc8
+        role_name: Viewer
+        entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
+        entity_type_name: Runtime Groups
+        entity_region: us
+        parameters:
+          zoneName: zone3
+      x-internal: true
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: eaf7adf1-32c8-4bbf-b960-d1f8456afe67
+          description: The ID of the role assignment.
+        role_name:
+          type: string
+          example: Viewer
+          description: Name of the role being assigned.
+        entity_id:
+          type: string
+          format: uuid
+          example: 817d0422-45c9-4d88-8d64-45aef05c1ae7
+          description: A RBAC entity ID.
+        entity_type_name:
+          type: string
+          example: Runtime Groups
+          description: Name of the entity type the role is being assigned to.
+        entity_region:
+          type: string
+          enum:
+            - us
+            - eu
+            - '*'
+          example: eu
+          description: Region of the entity.
+        parameters:
+          type: object
+          description: Additional parameters for the role assignment.
+          properties:
+            '':
+              type: object
     SystemAccount:
       title: System Account
       type: object
@@ -3251,6 +3422,28 @@ components:
             entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
             entity_type_name: Services
             entity_region: '*'
+    Parameterized-Assigned-Roles-Collection-Example:
+      value:
+        meta:
+          page:
+            number: 1
+            size: 10
+            total: 100
+        data:
+          - id: b02e23c5-8ee4-4e5a-99f4-43329923adcd
+            role_name: Connector
+            entity_id: 437c7192-fea0-4f35-8478-c8d57783f8c1
+            entity_type_name: Mesh Control Planes
+            entity_region: us
+            parameters:
+              zoneName: zone2
+          - id: 869d9402-f117-4f9a-840f-69acaf70a81a
+            role_name: Connector
+            entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
+            entity_type_name: Mesh Control Planes
+            entity_region: eu
+            parameters:
+              zoneName: zone3
     Assigned-Role-Example:
       value:
         id: eaf7adf1-32c8-4bbf-b960-d1f8456afe67
@@ -3258,6 +3451,15 @@ components:
         entity_id: 817d0422-45c9-4d88-8d64-45aef05c1ae7
         entity_type_name: Runtime Groups
         entity_region: eu
+    Parameterized-Assigned-Role-Example:
+      value:
+        id: eaf7adf1-32c8-4bbf-b960-d1f8456afe67
+        role_name: Connector
+        entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
+        entity_type_name: Mesh Control Planes
+        entity_region: eu
+        parameters:
+          zoneName: zone3
     group-collection-example:
       value:
         meta:
@@ -3384,3 +3586,4 @@ tags:
   - name: System Accounts - Roles
   - name: System Accounts - Team Membership
   - name: Me
+  - name: Managed System Accounts - Roles
