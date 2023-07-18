@@ -8,6 +8,7 @@ const {
 } = require("./helpers/transformFilterQueryParams");
 const { tryMkdir } = require("./helpers/fs");
 const redoc = require("@redocly/cli/lib/commands/bundle");
+const toolkit = require("oas-toolkit");
 
 const baseDir = path.resolve(__dirname, "..");
 const redocConfigurationPath = path.join(baseDir, "redocly.yaml");
@@ -124,17 +125,22 @@ async function main() {
     complete = yaml.load(await fs.readFile(processed));
 
     // Filter down paths to the groups that we need
-    const dev = filterOperations(complete, function (node) {
+    let dev = filterOperations(complete, function (node) {
       return node["x-internal"] && node["x-unstable"];
     });
 
-    const internal = filterOperations(complete, function (node) {
+    let internal = filterOperations(complete, function (node) {
       return node["x-internal"] && !node["x-unstable"];
     });
 
-    const public = filterOperations(complete, function (node) {
+    let public = filterOperations(complete, function (node) {
       return !node["x-internal"];
     });
+
+    // Remove unused components from each spec
+    dev = toolkit.components.removeUnusedComponents(dev);
+    internal = toolkit.components.removeUnusedComponents(internal);
+    public = toolkit.components.removeUnusedComponents(public);
 
     // Create additional spec set optimized for API Documentation rendering
     const [devApiDocs, internalApiDocs, publicApiDocs] = [
