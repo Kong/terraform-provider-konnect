@@ -25,6 +25,19 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DocumentItem'
+    ListDocumentsWithStatus:
+      type: object
+      additionalProperties: false
+      required:
+      - meta
+      - data
+      properties:
+        meta:
+          $ref: './metadatas.yaml#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/DocumentItemWithStatus'
     ListDocumentsTree:
       type: object
       required:
@@ -66,6 +79,21 @@ components:
           type: string
           description: the title of the document
           example: Getting Started
+    DocumentItemWithStatus:
+      allOf:
+      - $ref: '#/components/schemas/DocumentItem'
+      - type: object
+        title: Document item with status
+        additionalProperties: false
+        required:
+        - status
+        properties:
+          status:
+            description: document publish status
+            type: string
+            enum:
+            - published
+            - unpublished
     DocumentTree:
       type: object
       title: DocumentTree
