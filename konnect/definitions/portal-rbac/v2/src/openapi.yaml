@@ -31,6 +31,15 @@ paths:
       parameters:
         - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
         - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
+        - schema:
+            type: object
+            properties:
+              name:
+                $ref: '../../../../../common/definitions/filters.yaml#/components/schemas/StringFieldFilter'
+          in: query
+          name: filter
+          description: Filter teams returned in the response.
+          required: false
       tags:
         - Portal Teams
     parameters:
