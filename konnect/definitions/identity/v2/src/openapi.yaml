@@ -10,6 +10,23 @@ servers:
   - url: 'https://global.api.konghq.com/v2'
     description: Global Base URL
 paths:
+  /internal/auth0/register:
+    post:
+      operationId: post-auth0-register-internal
+      summary: Register a new organization with an Auth0 authenticated user.
+      description: Create a new organization with Auth0 authentication. The Auth0 user will be the organization owner.
+      responses:
+        '201':
+          $ref: '#/components/responses/Auth0Register'
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
+        '404':
+          $ref: '#/components/responses/IdentityNotFound'
+      requestBody:
+        $ref: '#/components/requestBodies/Auth0Registration'
+      tags:
+        - SSO Auth0
+      x-internal: true
   /accept-invite:
     post:
       summary: Accept Invite
@@ -1350,6 +1367,12 @@ paths:
       description: Returns the organization of the user identified in the token of the request.
 components:
   responses:
+    Auth0Register:
+      description: Auth0 organization registration
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Auth0Register'
     UserSingle:
       description: A get action response of a single user.
       content:
@@ -2494,6 +2517,19 @@ components:
           schema:
             $ref: '#/components/schemas/IdP'
   requestBodies:
+    Auth0Register:
+      title: Auth0 organization register
+      type: object
+      required:
+        - organization_name
+        - default_region
+      description: |-
+        Auth0 organization registration
+      properties:
+        organization_name:
+          type: string
+        default_region:
+          type: string
     UpdateUser:
       description: The request schema for the update user request.
       content:
@@ -2909,6 +2945,14 @@ components:
                     example: custom-group-claim
       description: The request schema for the update IdP configuration request.
   schemas:
+    Auth0Registration:
+      title: Auth0 organization registration response
+      type: object
+      description: |-
+        A successful Auth0 organization registration response.
+      properties:
+        organization_id:
+          type: string
     IdP:
       title: IdP Configuration
       type: object
