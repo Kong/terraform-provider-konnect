@@ -12,7 +12,90 @@ servers:
   - url: 'https://eu.api.konghq.com/v2'
     description: EU Region Base URL
 paths:
+  /portals/{portalId}/authentication-settings:
+    parameters:
+    - $ref: '#/components/parameters/PortalId'
+    get:
+      x-unstable: true
+      summary: Get Auth Settings
+      description: 'Returns authentication configuration, which determines how users can log in and how they are assigned to teams.'
+      operationId: get-portal-authentication-settings
+      tags:
+        - Portal Auth Settings
+      responses:
+        '200':
+          $ref: '#/components/responses/AuthenticationSettings'
+        '401':
+          $ref: '#/components/responses/Error'
+    patch:
+      x-unstable: true
+      summary: Update Auth Settings
+      description: Updates authentication configuration.
+      operationId: update-portal-authentication-settings
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateAuthenticationSettings'
+      tags:
+        - Portal Auth Settings
+      responses:
+        '200':
+          $ref: '#/components/responses/AuthenticationSettings'
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+  /portals/{portalId}/identity-provider/team-group-mappings:
+    parameters:
+    - $ref: '#/components/parameters/PortalId'
+    get:
+      x-unstable: true
+      summary: Fetch Team Group Mappings
+      operationId: get-portal-team-group-mappings
+      parameters:
+        - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+        - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
+      responses:
+        '200':
+          $ref: '#/components/responses/TeamGroupMappingCollection'
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+      tags:
+        - Portal Auth Settings
+      description: |-
+        Retrieves the mappings between Konnect Portal Teams and Identity Provider Groups.
+        Returns a 400 error if an Identity Provider has not yet been configured.
+    patch:
+      x-unstable: true
+      summary: Patch Mappings by Team ID
+      operationId: patch-portal-team-group-mappings
+      responses:
+        '200':
+          $ref: '#/components/responses/TeamGroupMappingCollection'
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+      tags:
+        - Portal Auth Settings
+      description: |-
+        Allows partial updates to the mappings between Konnect Portal Teams and Identity Provider Groups.
+        The request body must be keyed on team ID. For a given team ID, the given group list is a
+        complete replacement. To remove all mappings for a given team, provide an empty group list.
+
+        Returns a 400 error if an Identity Provider has not yet been configured, or if a team ID in
+        the request body is not found or is not a UUID.
+      requestBody:
+        $ref: '#/components/requestBodies/PatchTeamGroupMappings'
   '/portals/{portalId}/teams':
+    parameters:
+    - $ref: '#/components/parameters/PortalId'
     get:
       summary: List Teams
       responses:
@@ -42,12 +125,6 @@ paths:
           required: false
       tags:
         - Portal Teams
-    parameters:
-      - schema:
-          type: string
-        name: portalId
-        in: path
-        required: true
     post:
       summary: Create Team
       operationId: create-portal-team
@@ -71,20 +148,8 @@ paths:
       description: Create a team.
   '/portals/{portalId}/teams/{teamId}':
     parameters:
-      - schema:
-          type: string
-          format: uuid
-          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
-        name: teamId
-        in: path
-        required: true
-        description: ID of the team.
-      - schema:
-          type: string
-        name: portalId
-        in: path
-        required: true
-        description: ID of the portal.
+      - $ref: '#/components/parameters/TeamId'
+      - $ref: '#/components/parameters/PortalId'
     get:
       summary: Get Team
       responses:
@@ -140,16 +205,8 @@ paths:
         - Portal Teams
   '/portals/{portalId}/teams/{teamId}/developers':
     parameters:
-      - schema:
-          type: string
-        name: portalId
-        in: path
-        required: true
-      - schema:
-          type: string
-        name: teamId
-        in: path
-        required: true
+      - $ref: '#/components/parameters/PortalId'
+      - $ref: '#/components/parameters/TeamId'
     get:
       summary: List Team Developers
       responses:
@@ -193,24 +250,9 @@ paths:
         - Portal Team Membership
   '/portals/{portalId}/teams/{teamId}/developers/{developerId}':
     parameters:
-      - schema:
-          type: string
-          format: uuid
-          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
-        name: developerId
-        in: path
-        required: true
-        description: ID of the developer.
-      - schema:
-          type: string
-        name: portalId
-        in: path
-        required: true
-      - schema:
-          type: string
-        name: teamId
-        in: path
-        required: true
+      - $ref: '#/components/parameters/PortalId'
+      - $ref: '#/components/parameters/DeveloperId'
+      - $ref: '#/components/parameters/TeamId'
     delete:
       summary: Remove Developer from Team
       operationId: remove-developer-from-portal-team
@@ -230,16 +272,8 @@ paths:
         - Portal Team Membership
   '/portals/{portalId}/teams/{teamId}/assigned-roles':
     parameters:
-      - schema:
-          type: string
-        name: portalId
-        in: path
-        required: true
-      - schema:
-          type: string
-        name: teamId
-        in: path
-        required: true
+      - $ref: '#/components/parameters/PortalId'
+      - $ref: '#/components/parameters/TeamId'
     get:
       summary: List Team Roles
       tags:
@@ -282,23 +316,9 @@ paths:
         - Portal Team Roles
   '/portals/{portalId}/teams/{teamId}/assigned-roles/{roleId}':
     parameters:
-      - schema:
-          type: string
-          example: 8350205f-a305-4e39-abe9-bc082a80091a
-          format: uuid
-        name: roleId
-        in: path
-        required: true
-      - schema:
-          type: string
-        name: portalId
-        in: path
-        required: true
-      - schema:
-          type: string
-        name: teamId
-        in: path
-        required: true
+      - $ref: '#/components/parameters/RoleId'
+      - $ref: '#/components/parameters/PortalId'
+      - $ref: '#/components/parameters/TeamId'
     delete:
       summary: Remove Role
       operationId: portal-teams-remove-role
@@ -319,6 +339,8 @@ paths:
         - Portal Team Roles
       description: Remove an assigned role from a team.
   '/portals/{portalId}/developers':
+    parameters:
+      - $ref: '#/components/parameters/PortalId'
     get:
       summary: List Developers
       tags:
@@ -339,27 +361,10 @@ paths:
       parameters:
         - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
         - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
-    parameters:
-      - schema:
-          type: string
-        name: portalId
-        in: path
-        required: true
   '/portals/{portalId}/developers/{developerId}/teams':
     parameters:
-      - schema:
-          type: string
-          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
-          format: uuid
-        name: developerId
-        in: path
-        required: true
-        description: ID of the developer.
-      - schema:
-          type: string
-        name: portalId
-        in: path
-        required: true
+      - $ref: '#/components/parameters/DeveloperId'
+      - $ref: '#/components/parameters/PortalId'
     get:
       summary: List Developer Teams
       responses:
@@ -397,7 +402,98 @@ paths:
       tags:
         - Portal Roles
 components:
+  parameters:
+    RoleId:
+      schema:
+        type: string
+        example: 8350205f-a305-4e39-abe9-bc082a80091a
+        format: uuid
+      name: roleId
+      in: path
+      required: true
+    TeamId:
+      schema:
+          type: string
+          format: uuid
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+      name: teamId
+      in: path
+      required: true
+      description: ID of the team.
+    DeveloperId:
+      schema:
+        type: string
+        example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        format: uuid
+      name: developerId
+      in: path
+      required: true
+      description: ID of the developer.
+    PortalId:
+      schema:
+        type: string
+      name: portalId
+      in: path
+      required: true
+      description: ID of the portal.
   responses:
+    AuthenticationSettings:
+      description: Response for authentication settings endpoint
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              basic_auth_enabled:
+                type: boolean
+                example: true
+                description: The organization has basic auth enabled.
+              oidc_auth_enabled:
+                type: boolean
+                example: false
+                description: The organization has OIDC disabled.
+              oidc_team_mapping_enabled:
+                type: boolean
+                example: true
+                description: IdP groups determine the Portal Teams a developer has.
+              konnect_mapping_enabled:
+                type: boolean
+                example: false
+                description: A Konnect Identity Admin assigns teams to a developer.
+              oidc_config:
+                type: object
+                properties:
+                  issuer:
+                    type: string
+                  client_id:
+                    type: string
+                required:
+                - issuer
+                - client_id
+            required:
+            - basic_auth_enabled
+            - konnect_mapping_enabled
+            - oidc_auth_enabled
+            - oidc_team_mapping_enabled
+          # examples:
+          #   Get Authorization Settings:
+          #     $ref: '#/components/examples/Get-Authentication-Settings'
+    TeamGroupMappingCollection:
+      description: A paginated collection of mappings grouped by team_id.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              meta:
+                $ref: '../../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TeamGroupMapping'
+          # examples:
+          #   Team Mapping Collection:
+          #     $ref: '#/components/examples/team-mapping-collection'
     Error:
       description: A response in which an error has occurred.
       content:
@@ -691,6 +787,59 @@ components:
                     entity_type_name: Services
                     entity_region: us
   requestBodies:
+    PatchTeamGroupMappings:
+      content:
+        application/json:
+          schema:
+            type: object
+            example:
+              data:
+                - group: Service Developers
+                  team_ids:
+                    - af91db4c-6e51-403e-a2bf-33d27ae50c0a
+            properties:
+              data:
+                type: array
+                description: The IdP groups to map to the given team.
+                items:
+                  type: object
+                  properties:
+                    team_id:
+                      type: string
+                      format: uuid
+                    groups:
+                      type: array
+                      items:
+                        type: string
+          # examples:
+          #   Example Request Body:
+          #     $ref: '#/components/examples/Patch-Team-Group-Mappings'
+    UpdateAuthenticationSettings:
+      description: The request schema to update an organization's authentication settings.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              basic_auth_enabled:
+                type: boolean
+                example: true
+                description: The organization has basic auth enabled.
+              oidc_auth_enabled:
+                type: boolean
+                example: false
+                description: The organization has OIDC disabled.
+              oidc_team_mapping_enabled:
+                type: boolean
+                example: true
+                description: Whether IdP groups determine the Konnect Portal teams a developer has.
+              konnect_mapping_enabled:
+                type: boolean
+                example: false
+                description: Whether a Konnect Identity Admin assigns teams to a developer.
+          # examples:
+          #   Example Request Body:
+          #     $ref: '#/components/examples/Update-Authentication-Settings'
     PortalCreateTeam:
       description: The request schema for the create team request.
       content:
@@ -788,6 +937,28 @@ components:
                 entity_region: us
       description: Assign a role to a team.
   schemas:
+    TeamGroupMapping:
+      title: TeamGroupMapping
+      type: object
+      description: A map of Konnect Team to IdP groups.
+      example:
+        team_id: 6801e673-cc10-498a-94cd-4271de07a0d3
+        groups:
+          - Tech Leads
+          - API Engineers
+      properties:
+        team_id:
+          type: string
+          format: uuid
+          example: 6801e673-cc10-498a-94cd-4271de07a0d3
+          description: The Konnect team ID.
+        groups:
+          type: array
+          uniqueItems: true
+          description: The IdP groups that are mapped to the specified team.
+          items:
+            type: string
+            example: API Engineers
     Developer:
       title: Developer
       type: object
@@ -916,3 +1087,4 @@ tags:
   - name: Portal Team Roles
   - name: Portal Roles
   - name: Portal Developers
+  - name: Portal Auth Settings
