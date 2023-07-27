@@ -143,8 +143,10 @@ components:
       properties:
         portal_id:
           type: string
+          format: uuid
         org_id:
           type: string
+          format: uuid
         featureset_id:
           type: string
         feature_set:
