@@ -2953,6 +2953,8 @@ components:
       properties:
         organization_id:
           type: string
+        login_path:
+          type: string
     IdP:
       title: IdP Configuration
       type: object
