@@ -23,10 +23,25 @@ paths:
         '404':
           $ref: '#/components/responses/IdentityNotFound'
       requestBody:
-        $ref: '#/components/requestBodies/Auth0Registration'
+        $ref: '#/components/requestBodies/Auth0Register'
       tags:
         - SSO Auth0
       x-internal: true
+  /internal/auth0/organizations:
+    get:
+      operationId: get-auth0-organizations-internal
+      x-internal: true
+      summary: Retrieves the list of organizations available to the given user.
+      description: Retrieves the list of organizations available to the given user.
+      responses:
+        '200':
+          $ref: '#/components/responses/Auth0OrganizationsCollection'
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
+        '404':
+          $ref: '#/components/responses/IdentityNotFound'
+      tags:
+        - SSO Auth0
   /accept-invite:
     post:
       summary: Accept Invite
@@ -1372,7 +1387,31 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Auth0Register'
+            $ref: '#/components/schemas/Auth0Registration'
+    Auth0OrganizationsCollection:
+      description: A paginated list response for a collection of auth0 organizations.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              meta:
+                $ref: '../../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Auth0Organization'
+          examples:
+            Organization Collection:
+              value:
+                meta:
+                  page:
+                    number: 1
+                    size: 1
+                    total: 10
+                data:
+                  - name: IDM - Developers
+                    login_path: /v2/authenticate/federated?org_id=7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
     UserSingle:
       description: A get action response of a single user.
       content:
@@ -2518,18 +2557,23 @@ components:
             $ref: '#/components/schemas/IdP'
   requestBodies:
     Auth0Register:
-      title: Auth0 organization register
-      type: object
-      required:
-        - organization_name
-        - default_region
-      description: |-
-        Auth0 organization registration
-      properties:
-        organization_name:
-          type: string
-        default_region:
-          type: string
+      description: The request schema for the organization registration request.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              organization_name:
+                type: string
+                example: My Organization
+                description: The name of the new organization.
+              default_region:
+                type: string
+                enum:
+                  - us
+                  - eu
+                example: us
+                description: The default Konnect region to provision for the organization.
     UpdateUser:
       description: The request schema for the update user request.
       content:
@@ -2945,6 +2989,22 @@ components:
                     example: custom-group-claim
       description: The request schema for the update IdP configuration request.
   schemas:
+    Auth0Organization:
+      title: Auth0 organization schema.
+      type: object
+      description: |-
+        A single auth0 organization.
+      properties:
+        name:
+          type: string
+          example: My Organization
+          description: The name of the organization.
+          readOnly: true
+        login_path:
+          type: string
+          example: /v2/authenticate/federated?org_id=7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+          description: The login path of the organization.
+          readOnly: true
     Auth0Registration:
       title: Auth0 organization registration response
       type: object
