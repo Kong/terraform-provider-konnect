@@ -26,7 +26,7 @@ paths:
         '200':
           $ref: '#/components/responses/AuthenticationSettings'
         '401':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
     patch:
       x-unstable: true
       summary: Update Auth Settings
@@ -40,11 +40,11 @@ paths:
         '200':
           $ref: '#/components/responses/AuthenticationSettings'
         '400':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '403':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
   /portals/{portalId}/identity-provider/team-group-mappings:
     parameters:
     - $ref: '#/components/parameters/PortalId'
@@ -59,11 +59,11 @@ paths:
         '200':
           $ref: '#/components/responses/TeamGroupMappingCollection'
         '400':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '403':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
       tags:
         - Portal Auth Settings
       description: |-
@@ -77,11 +77,11 @@ paths:
         '200':
           $ref: '#/components/responses/TeamGroupMappingCollection'
         '400':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '403':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
       tags:
         - Portal Auth Settings
       description: |-
@@ -102,13 +102,11 @@ paths:
         '200':
           $ref: '#/components/responses/PortalTeamCollection'
         '401':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '403':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
         '404':
-          $ref: '#/components/responses/Error'
-        '500':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       operationId: list-portal-teams
       description: List the teams.
       parameters:
@@ -132,15 +130,13 @@ paths:
         '201':
           $ref: '#/components/responses/PortalTeamSingle'
         '400':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '403':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
         '404':
-          $ref: '#/components/responses/Error'
-        '500':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       tags:
         - Portal Teams
       requestBody:
@@ -156,13 +152,11 @@ paths:
         '200':
           $ref: '#/components/responses/PortalTeamSingle'
         '401':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '403':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
         '404':
-          $ref: '#/components/responses/Error'
-        '500':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       operationId: get-portal-team
       description: Get an individual team.
       tags:
@@ -174,13 +168,11 @@ paths:
         '200':
           $ref: '#/components/responses/PortalTeamSingle'
         '401':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '403':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
         '404':
-          $ref: '#/components/responses/Error'
-        '500':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       description: Update an individual team.
       requestBody:
         $ref: '#/components/requestBodies/PortalUpdateTeam'
@@ -193,13 +185,11 @@ paths:
         '204':
           description: No Content
         '401':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '403':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
         '404':
-          $ref: '#/components/responses/Error'
-        '500':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       description: Deleting a team also deletes its assigned roles. Members of the team are not deleted.
       tags:
         - Portal Teams
@@ -213,13 +203,11 @@ paths:
         '200':
           $ref: '#/components/responses/DeveloperCollection'
         '401':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '403':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
         '404':
-          $ref: '#/components/responses/Error'
-        '500':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       operationId: list-portal-team-developers
       description: List a team's developers.
       parameters:
@@ -234,15 +222,13 @@ paths:
         '201':
           description: Created
         '400':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '403':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
         '404':
-          $ref: '#/components/responses/Error'
-        '500':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       description: Add a developer to a team.
       requestBody:
         $ref: '#/components/requestBodies/AddDeveloperToTeam'
@@ -260,13 +246,11 @@ paths:
         '204':
           description: No Content
         '401':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '403':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
         '404':
-          $ref: '#/components/responses/Error'
-        '500':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       description: Remove a developer from a team.
       tags:
         - Portal Team Membership
@@ -282,13 +266,11 @@ paths:
         '200':
           $ref: '#/components/responses/AssignedPortalRoleCollection'
         '401':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '403':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
         '404':
-          $ref: '#/components/responses/Error'
-        '500':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       operationId: list-portal-team-roles
       description: List the roles belonging to a team.
     post:
@@ -298,17 +280,15 @@ paths:
         '201':
           $ref: '#/components/responses/PortalAssignedRoleResponse'
         '400':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '403':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
         '404':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
         '409':
-          $ref: '#/components/responses/Error'
-        '500':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Conflict'
       description: Assign a role to a team.
       requestBody:
         $ref: '#/components/requestBodies/PortalAssignRole'
@@ -326,15 +306,13 @@ paths:
         '204':
           description: No Content
         '400':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '403':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
         '404':
-          $ref: '#/components/responses/Error'
-        '500':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       tags:
         - Portal Team Roles
       description: Remove an assigned role from a team.
@@ -349,13 +327,11 @@ paths:
         '200':
           $ref: '#/components/responses/DeveloperCollection'
         '401':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '403':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
         '404':
-          $ref: '#/components/responses/Error'
-        '500':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       operationId: list-portal-developers
       description: List the developers.
       parameters:
@@ -371,13 +347,11 @@ paths:
         '200':
           $ref: '#/components/responses/PortalTeamCollection'
         '401':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '403':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
         '404':
-          $ref: '#/components/responses/Error'
-        '500':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       operationId: list-portal-developer-teams
       description: List the teams to which a developer belongs.
       parameters:
@@ -392,11 +366,9 @@ paths:
         '200':
           $ref: '#/components/responses/RolesDocument'
         '401':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '403':
-          $ref: '#/components/responses/Error'
-        '500':
-          $ref: '#/components/responses/Error'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
       operationId: list-portal-roles
       description: List roles that can be assigned to teams in a portal.
       tags:
