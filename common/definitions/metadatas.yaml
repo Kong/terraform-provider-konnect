@@ -26,10 +26,65 @@ components:
         total:
           type: number
           example: 100
+    CursorPaginatedMeta:
+      type: object
+      title: CursorPaginatedMeta
+      description: Returns the pagination information
+      properties:
+        page:
+          $ref: '#/components/schemas/CursorPageMeta'
+      required:
+      - page
+    CursorPageMeta:
+      type: object
+      description: Contains the cursor pagination metadata
+      required:
+      - size
+      - next
+      - previous
+      properties:
+        first:
+          description: URI to the first page
+          type: string
+          format: uri
+        last:
+          description: URI to the last page
+          type: string
+          format: uri
+        next:
+          description: URI to the next page
+          type: string
+          format: uri
+        previous:
+          description: URI to the previous page
+          type: string
+          format: uri
+        size:
+          description: Requested page size
+          type: number
+          example: 10
   parameters:
+    PageBefore:      
+      name: 'page[before]'
+      description: Request the next page of data, starting with the item before this parameter.
+      required: false
+      in: query
+      allowEmptyValue: true
+      schema:
+        type: string
+        example: 'ewogICJpZCI6ICJoZWxsbyB3b3JsZCIKfQ'
+    PageAfter:
+      name: 'page[after]'
+      description: Request the next page of data, starting with the item after this parameter.
+      required: false
+      in: query
+      allowEmptyValue: true
+      schema:
+        type: string
+        example: 'ewogICJpZCI6ICJoZWxsbyB3b3JsZCIKfQ'
     PageSize:
       name: 'page[size]'
-      description: Determines the size of the page to retrieve.
+      description: The maximum number of items to include per page. The last page of a collection may include fewer items.
       required: false
       in: query
       allowEmptyValue: true
