@@ -106,7 +106,7 @@ components:
         Payload required to be sent to register a developer to the
         portal.
       type: object
-      additionalProperties: false
+      additionalProperties: true
       properties:
         email:
           type: string
