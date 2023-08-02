@@ -17,13 +17,13 @@ paths:
       description: Create a new organization with Auth0 authentication. The Auth0 user will be the organization owner.
       responses:
         '201':
-          $ref: '#/components/responses/Auth0Register'
+          $ref: '#/components/responses/Auth0Registration'
         '400':
           $ref: '#/components/responses/IdentityBadRequest'
         '404':
           $ref: '#/components/responses/IdentityNotFound'
       requestBody:
-        $ref: '#/components/requestBodies/Auth0Register'
+        $ref: '#/components/requestBodies/Auth0Registration'
       tags:
         - SSO Auth0
       x-internal: true
@@ -1382,7 +1382,7 @@ paths:
       description: Returns the organization of the user identified in the token of the request.
 components:
   responses:
-    Auth0Register:
+    Auth0Registration:
       description: Auth0 organization registration
       content:
         application/json:
@@ -2556,24 +2556,22 @@ components:
           schema:
             $ref: '#/components/schemas/IdP'
   requestBodies:
-    Auth0Register:
-      description: The request schema for the organization registration request.
+    Auth0Registration:
       content:
         application/json:
           schema:
+            title: Auth0 organization register
             type: object
+            required:
+              - organization_name
+              - default_region
+            description: |-
+              Auth0 organization registration
             properties:
               organization_name:
                 type: string
-                example: My Organization
-                description: The name of the new organization.
               default_region:
                 type: string
-                enum:
-                  - us
-                  - eu
-                example: us
-                description: The default Konnect region to provision for the organization.
     UpdateUser:
       description: The request schema for the update user request.
       content:

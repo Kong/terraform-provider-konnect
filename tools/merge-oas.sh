@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 shopt -s globstar
+set -e
 
 PRODUCTS=(konnect portal)
 for PRODUCT in "${PRODUCTS[@]}"; do

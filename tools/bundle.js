@@ -1,5 +1,6 @@
 const fg = require("fast-glob");
-const redoc = require('@redocly/cli/lib/commands/bundle')
+const {handleBundle: redocBundle} = require('@redocly/cli/lib/commands/bundle')
+const {loadConfigAndHandleErrors: redocConfig} = require('@redocly/cli/lib/utils');
 const path = require('path')
 
 const baseDir = path.resolve(__dirname, '..')
@@ -18,18 +19,19 @@ async function main() {
             const srcDir = path.dirname(f)
             const output = path.resolve(srcDir, '..', 'computed', 'openapi.yaml')
             const args = {
-                config: redocConfigurationPath,
                 output: output,
                 apis: [f],
-            }
-            await redoc.handleBundle(args).catch(e => {
-                console.error("Error while bundling API.", args, e)
-                throw e
-            })
+            };
+
+            const config = await redocConfig({
+                configPath: redocConfigurationPath
+            });
+
+            await redocBundle(args, config);
         }
     }
 }
 
 if (require.main === module) {
-    main().catch(e => { throw e })
+    main()
 }

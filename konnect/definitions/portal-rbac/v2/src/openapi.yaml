@@ -24,7 +24,7 @@ paths:
         - Portal Auth Settings
       responses:
         '200':
-          $ref: '#/components/responses/AuthenticationSettings'
+          $ref: '#/components/responses/PortalAuthenticationSettings'
         '401':
           $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
     patch:
@@ -33,12 +33,12 @@ paths:
       description: Updates authentication configuration.
       operationId: update-portal-authentication-settings
       requestBody:
-        $ref: '#/components/requestBodies/UpdateAuthenticationSettings'
+        $ref: '#/components/requestBodies/UpdatePortalAuthenticationSettings'
       tags:
         - Portal Auth Settings
       responses:
         '200':
-          $ref: '#/components/responses/AuthenticationSettings'
+          $ref: '#/components/responses/PortalAuthenticationSettings'
         '400':
           $ref: '../../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
@@ -57,7 +57,7 @@ paths:
         - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
       responses:
         '200':
-          $ref: '#/components/responses/TeamGroupMappingCollection'
+          $ref: '#/components/responses/PortalTeamGroupMappingCollection'
         '400':
           $ref: '../../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
@@ -75,7 +75,7 @@ paths:
       operationId: patch-portal-team-group-mappings
       responses:
         '200':
-          $ref: '#/components/responses/TeamGroupMappingCollection'
+          $ref: '#/components/responses/PortalTeamGroupMappingCollection'
         '400':
           $ref: '../../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
@@ -92,7 +92,7 @@ paths:
         Returns a 400 error if an Identity Provider has not yet been configured, or if a team ID in
         the request body is not found or is not a UUID.
       requestBody:
-        $ref: '#/components/requestBodies/PatchTeamGroupMappings'
+        $ref: '#/components/requestBodies/PatchPortalTeamGroupMappings'
   '/portals/{portalId}/teams':
     parameters:
     - $ref: '#/components/parameters/PortalId'
@@ -409,7 +409,7 @@ components:
       required: true
       description: ID of the portal.
   responses:
-    AuthenticationSettings:
+    PortalAuthenticationSettings:
       description: Response for authentication settings endpoint
       content:
         application/json:
@@ -450,7 +450,7 @@ components:
           # examples:
           #   Get Authorization Settings:
           #     $ref: '#/components/examples/Get-Authentication-Settings'
-    TeamGroupMappingCollection:
+    PortalTeamGroupMappingCollection:
       description: A paginated collection of mappings grouped by team_id.
       content:
         application/json:
@@ -462,7 +462,7 @@ components:
               data:
                 type: array
                 items:
-                  $ref: '#/components/schemas/TeamGroupMapping'
+                  $ref: '#/components/schemas/PortalTeamGroupMapping'
           # examples:
           #   Team Mapping Collection:
           #     $ref: '#/components/examples/team-mapping-collection'
@@ -759,7 +759,7 @@ components:
                     entity_type_name: Services
                     entity_region: us
   requestBodies:
-    PatchTeamGroupMappings:
+    PatchPortalTeamGroupMappings:
       content:
         application/json:
           schema:
@@ -786,7 +786,7 @@ components:
           # examples:
           #   Example Request Body:
           #     $ref: '#/components/examples/Patch-Team-Group-Mappings'
-    UpdateAuthenticationSettings:
+    UpdatePortalAuthenticationSettings:
       description: The request schema to update an organization's authentication settings.
       content:
         application/json:
@@ -909,8 +909,8 @@ components:
                 entity_region: us
       description: Assign a role to a team.
   schemas:
-    TeamGroupMapping:
-      title: TeamGroupMapping
+    PortalTeamGroupMapping:
+      title: PortalTeamGroupMapping
       type: object
       description: A map of Konnect Team to IdP groups.
       example:

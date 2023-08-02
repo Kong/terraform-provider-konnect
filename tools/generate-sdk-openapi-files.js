@@ -8,6 +8,7 @@ const {
 } = require("./helpers/transformFilterQueryParams");
 const { tryMkdir } = require("./helpers/fs");
 const redoc = require("@redocly/cli/lib/commands/bundle");
+const {loadConfigAndHandleErrors: redocConfig} = require('@redocly/cli/lib/utils');
 const toolkit = require("oas-toolkit");
 
 const baseDir = path.resolve(__dirname, "..");
@@ -117,11 +118,13 @@ async function main() {
 
     // Bundle everything into a single file
     const args = {
-      config: redocConfigurationPath,
       output: processed,
       apis: [processed],
     };
-    await redoc.handleBundle(args);
+    const config = await redocConfig({
+      configPath: redocConfigurationPath
+    });
+    await redoc.handleBundle(args, config);
     complete = yaml.load(await fs.readFile(processed));
 
     // Filter down paths to the groups that we need

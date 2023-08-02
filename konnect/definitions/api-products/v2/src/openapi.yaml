@@ -40,7 +40,7 @@ paths:
                 APIProductNameBadRequestExample:
                   $ref: '#/components/examples/APIProductNameBadRequestExample'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/ApiProductUnauthorized'
         '415':
           $ref:  '../../../../../common/definitions/errors.yaml#/components/responses/UnsupportedMediaType'
         '403':
@@ -72,11 +72,11 @@ paths:
                 InvalidSortQueryBadRequestExample:
                   $ref: '#/components/examples/InvalidSortQueryNameBadRequestExample'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/ApiProductUnauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/ApiProductNotFound'
       tags:
         - API Products
   /api-products/{id}:
@@ -97,11 +97,11 @@ paths:
         '200':
           $ref: '#/components/responses/APIProductResponse'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/ApiProductUnauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/ApiProductNotFound'
       tags:
         - API Products
     patch:
@@ -121,11 +121,11 @@ paths:
                 APIProductNameBadRequestExample:
                   $ref: '#/components/examples/APIProductNameBadRequestExample'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/ApiProductUnauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/ApiProductNotFound'
         '415':
           $ref:  '../../../../../common/definitions/errors.yaml#/components/responses/UnsupportedMediaType'
       tags:
@@ -140,11 +140,11 @@ paths:
         '204':
           description: API product was deleted successfully.
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/ApiProductUnauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/ApiProductNotFound'
       tags:
         - API Products
   /api-products/{apiProductId}/documents:
@@ -174,11 +174,11 @@ paths:
                 APIProductNameBadRequestExample:
                   $ref: '#/components/examples/APIProductDocumentBadRequestExample'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/ApiProductUnauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/ApiProductNotFound'
         '409':
           $ref: '#/components/responses/SlugConflict'
         '415':
@@ -207,11 +207,11 @@ paths:
                 InvalidSortQueryBadRequestExample:
                   $ref: '#/components/examples/InvalidSortQueryBadRequestExample'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/ApiProductUnauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/ApiProductNotFound'
       tags:
         - API Product Documentation
   /api-products/{apiProductId}/documents/{id}:
@@ -240,11 +240,11 @@ paths:
         '200':
           $ref: '#/components/responses/APIProductDocumentResponse'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/ApiProductUnauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/ApiProductNotFound'
       tags:
         - API Product Documentation
     patch:
@@ -264,11 +264,11 @@ paths:
                 APIProductNameBadRequestExample:
                   $ref: '#/components/examples/APIProductDocumentBadRequestExample'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/ApiProductUnauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/ApiProductNotFound'
         '409':
           $ref: '#/components/responses/SlugConflict'
         '415':
@@ -285,11 +285,11 @@ paths:
         '204':
           description: Document for the API product was deleted successfully.
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/ApiProductUnauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/ApiProductNotFound'
       tags:
         - API Product Documentation
   /api-products/{apiProductId}/product-versions:
@@ -319,11 +319,11 @@ paths:
                 APIProductVersionNameBadRequestExample:
                   $ref: '#/components/examples/APIProductNameBadRequestExample'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/ApiProductUnauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/ApiProductNotFound'
         '415':
           $ref: '../../../../../common/definitions/errors.yaml#/components/responses/UnsupportedMediaType'
       tags:
@@ -352,11 +352,11 @@ paths:
                 InvalidSortQueryBadRequestExample:
                   $ref: '#/components/examples/InvalidSortQueryNameBadRequestExample'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/ApiProductUnauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/ApiProductNotFound'
       tags:
         - API Product Versions
   /api-products/{apiProductId}/product-versions/{id}:
@@ -385,11 +385,11 @@ paths:
         '200':
           $ref: '#/components/responses/APIProductVersionResponse'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/ApiProductUnauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/ApiProductNotFound'
       tags:
         - API Product Versions
     patch:
@@ -409,11 +409,11 @@ paths:
                 APIProductVersionNameBadRequestExample:
                   $ref: '#/components/examples/APIProductNameBadRequestExample'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/ApiProductUnauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/ApiProductNotFound'
         '415':
           $ref:  '../../../../../common/definitions/errors.yaml#/components/responses/UnsupportedMediaType'
       tags:
@@ -428,11 +428,11 @@ paths:
         '204':
           description: API product version was deleted successfully.
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/ApiProductUnauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/ApiProductNotFound'
       tags:
         - API Product Versions
   /api-products/{apiProductId}/product-versions/{productVersionId}/specifications:
@@ -472,11 +472,11 @@ paths:
                 APIProductVersionSpecContentBadRequestExample:
                   $ref: '#/components/examples/APIProductVersionSpecContentBadRequestExample'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/ApiProductUnauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/ApiProductNotFound'
         '409':
           $ref: '#/components/responses/VersionSpecConflict'
         '415':
@@ -495,11 +495,11 @@ paths:
         '200':
           $ref: '#/components/responses/ListAPIProductVersionSpecResponse'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/ApiProductUnauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/ApiProductNotFound'
       tags:
         - API Product Version Specification
   /api-products/{apiProductId}/product-versions/{productVersionId}/specifications/{specificationId}:
@@ -536,11 +536,11 @@ paths:
         '200':
           $ref: '#/components/responses/APIProductVersionSpecResponse'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/ApiProductUnauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/ApiProductNotFound'
       tags:
         - API Product Version Specification
     patch:
@@ -560,11 +560,11 @@ paths:
                 APIProductVersionSpecContentBadRequestExample:
                   $ref: '#/components/examples/APIProductVersionSpecContentBadRequestExample'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/ApiProductUnauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/ApiProductNotFound'
         '409':
           $ref: '#/components/responses/VersionSpecHiddenConflict'
         '415':
@@ -581,11 +581,11 @@ paths:
         '204':
           description: Specification for the version of an API product was deleted successfully.
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/ApiProductUnauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/ApiProductNotFound'
       tags:
         - API Product Version Specification
 components:
@@ -766,7 +766,7 @@ components:
           examples:
             VersionSpecConflictExample:
               $ref: '#/components/examples/VersionSpecHiddenConflictExample'
-    Unauthorized:
+    ApiProductUnauthorized:
       description: Unauthorized
       content:
         application/problem+json:
@@ -775,14 +775,14 @@ components:
           examples:
             UnauthorizedExample:
               $ref: '#/components/examples/UnauthorizedExample'
-    NotFound:
+    ApiProductNotFound:
       description: Not Found
       content:
         application/problem+json:
           schema:
             $ref: '../../../../../common/definitions/errors.yaml#/components/schemas/NotFoundError'
           examples:
-            UnauthorizedExample:
+            NotFoundExample:
               $ref: '#/components/examples/NotFoundExample'
     Forbidden:
       description: Forbidden
@@ -791,7 +791,7 @@ components:
           schema:
             $ref: '../../../../../common/definitions/errors.yaml#/components/schemas/ForbiddenError'
           examples:
-            UnauthorizedExample:
+            ForbiddenExample:
               $ref: '#/components/examples/ForbiddenExample'
     APIProductResponse:
       description: API product
