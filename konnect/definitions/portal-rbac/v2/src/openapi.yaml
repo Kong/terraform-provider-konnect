@@ -14,7 +14,7 @@ servers:
 paths:
   /portals/{portalId}/authentication-settings:
     parameters:
-    - $ref: '#/components/parameters/PortalId'
+    - $ref: '../../../../../common/definitions/portal.yaml#/components/parameters/PortalId'
     get:
       x-unstable: true
       summary: Get Auth Settings
@@ -47,7 +47,7 @@ paths:
           $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
   /portals/{portalId}/identity-provider/team-group-mappings:
     parameters:
-    - $ref: '#/components/parameters/PortalId'
+    - $ref: '../../../../../common/definitions/portal.yaml#/components/parameters/PortalId'
     get:
       x-unstable: true
       summary: Fetch Team Group Mappings
@@ -95,7 +95,7 @@ paths:
         $ref: '#/components/requestBodies/PatchPortalTeamGroupMappings'
   '/portals/{portalId}/teams':
     parameters:
-    - $ref: '#/components/parameters/PortalId'
+    - $ref: '../../../../../common/definitions/portal.yaml#/components/parameters/PortalId'
     get:
       summary: List Teams
       responses:
@@ -144,8 +144,8 @@ paths:
       description: Create a team.
   '/portals/{portalId}/teams/{teamId}':
     parameters:
-      - $ref: '#/components/parameters/TeamId'
-      - $ref: '#/components/parameters/PortalId'
+      - $ref: '../../../../../common/definitions/portal.yaml#/components/parameters/TeamId'
+      - $ref: '../../../../../common/definitions/portal.yaml#/components/parameters/PortalId'
     get:
       summary: Get Team
       responses:
@@ -195,8 +195,8 @@ paths:
         - Portal Teams
   '/portals/{portalId}/teams/{teamId}/developers':
     parameters:
-      - $ref: '#/components/parameters/PortalId'
-      - $ref: '#/components/parameters/TeamId'
+      - $ref: '../../../../../common/definitions/portal.yaml#/components/parameters/PortalId'
+      - $ref: '../../../../../common/definitions/portal.yaml#/components/parameters/TeamId'
     get:
       summary: List Team Developers
       responses:
@@ -236,9 +236,9 @@ paths:
         - Portal Team Membership
   '/portals/{portalId}/teams/{teamId}/developers/{developerId}':
     parameters:
-      - $ref: '#/components/parameters/PortalId'
-      - $ref: '#/components/parameters/DeveloperId'
-      - $ref: '#/components/parameters/TeamId'
+      - $ref: '../../../../../common/definitions/portal.yaml#/components/parameters/PortalId'
+      - $ref: '../../../../../common/definitions/portal.yaml#/components/parameters/DeveloperId'
+      - $ref: '../../../../../common/definitions/portal.yaml#/components/parameters/TeamId'
     delete:
       summary: Remove Developer from Team
       operationId: remove-developer-from-portal-team
@@ -256,8 +256,8 @@ paths:
         - Portal Team Membership
   '/portals/{portalId}/teams/{teamId}/assigned-roles':
     parameters:
-      - $ref: '#/components/parameters/PortalId'
-      - $ref: '#/components/parameters/TeamId'
+      - $ref: '../../../../../common/definitions/portal.yaml#/components/parameters/PortalId'
+      - $ref: '../../../../../common/definitions/portal.yaml#/components/parameters/TeamId'
     get:
       summary: List Team Roles
       tags:
@@ -296,9 +296,9 @@ paths:
         - Portal Team Roles
   '/portals/{portalId}/teams/{teamId}/assigned-roles/{roleId}':
     parameters:
-      - $ref: '#/components/parameters/RoleId'
-      - $ref: '#/components/parameters/PortalId'
-      - $ref: '#/components/parameters/TeamId'
+      - $ref: '../../../../../common/definitions/portal.yaml#/components/parameters/RoleId'
+      - $ref: '../../../../../common/definitions/portal.yaml#/components/parameters/PortalId'
+      - $ref: '../../../../../common/definitions/portal.yaml#/components/parameters/TeamId'
     delete:
       summary: Remove Role
       operationId: portal-teams-remove-role
@@ -318,7 +318,7 @@ paths:
       description: Remove an assigned role from a team.
   '/portals/{portalId}/developers':
     parameters:
-      - $ref: '#/components/parameters/PortalId'
+      - $ref: '../../../../../common/definitions/portal.yaml#/components/parameters/PortalId'
     get:
       summary: List Developers
       tags:
@@ -339,8 +339,8 @@ paths:
         - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
   '/portals/{portalId}/developers/{developerId}/teams':
     parameters:
-      - $ref: '#/components/parameters/DeveloperId'
-      - $ref: '#/components/parameters/PortalId'
+      - $ref: '../../../../../common/definitions/portal.yaml#/components/parameters/DeveloperId'
+      - $ref: '../../../../../common/definitions/portal.yaml#/components/parameters/PortalId'
     get:
       summary: List Developer Teams
       responses:
@@ -374,40 +374,6 @@ paths:
       tags:
         - Portal Roles
 components:
-  parameters:
-    RoleId:
-      schema:
-        type: string
-        example: 8350205f-a305-4e39-abe9-bc082a80091a
-        format: uuid
-      name: roleId
-      in: path
-      required: true
-    TeamId:
-      schema:
-          type: string
-          format: uuid
-          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
-      name: teamId
-      in: path
-      required: true
-      description: ID of the team.
-    DeveloperId:
-      schema:
-        type: string
-        example: d32d905a-ed33-46a3-a093-d8f536af9a8a
-        format: uuid
-      name: developerId
-      in: path
-      required: true
-      description: ID of the developer.
-    PortalId:
-      schema:
-        type: string
-      name: portalId
-      in: path
-      required: true
-      description: ID of the portal.
   responses:
     PortalAuthenticationSettings:
       description: Response for authentication settings endpoint
