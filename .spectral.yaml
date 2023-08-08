@@ -340,5 +340,6 @@ overrides:
       oas3-valid-media-example: "off"
   - files:
       - "konnect/definitions/analytics-reports/v2/**/openapi.yaml#/paths/~1reports~1{reportId}~1export/post/responses"
+      - "portal/definitions/analytics/**/openapi.yaml#/paths/~1api~1v2~1stats/post/responses"
     rules:
       errors-post-not-contain-200: "off"
