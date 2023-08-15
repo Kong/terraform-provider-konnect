@@ -212,6 +212,25 @@ paths:
       security:
         - portalAccessToken: []
         - {}
+  /api/v2/products/{productId}/actions:
+    x-unstable: true
+    parameters:
+      - $ref: '#/components/parameters/ProductId'
+    get:
+      summary: Get Product Actions
+      description: Get a list of actions that the current developer is allowed to perform on an API product.
+      operationId: get-product-actions
+      responses:
+        '200':
+          $ref: '#/components/responses/ProductActionsResponse'
+        '401':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+        '404':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+      tags:
+        - products
 components:
   securitySchemes:
     portalAccessToken:
@@ -242,6 +261,15 @@ components:
         type: string
         format: uuid
   responses:
+    ProductActionsResponse:
+      description: Product actions
+      content:
+        application/json:
+          schema:
+             $ref: '#/components/schemas/ProductActions'
+          examples:
+            Retrieve Product Actions Response:
+              $ref: '#/components/examples/ProductActionsExample'
     ProductGet:
       description: Response for a single product's details.
       content:
@@ -288,6 +316,26 @@ components:
           schema:
             $ref: '#/components/schemas/ProductDocument'
   schemas:
+    ProductActions:
+      title: Product Actions Response
+      type: object
+      additionalProperties: false
+      properties:
+        actions:
+          type: object
+          properties:
+            view: 
+              type: boolean
+            register:
+              type: boolean
+            view_documentation:
+              type: boolean
+          description: List of actions that can be performed on the API Product
+          example:
+            actions:
+              - view: true
+              - register: false
+              - view_documentation: true
     Product:
       title: Product
       type: object
@@ -521,6 +569,13 @@ components:
           type: string
           description: Title of the document. This is used in the Portal UI to identify the document.
           example: Hello World
+  examples:
+    ProductActionsExample:
+        value:
+          actions:
+            register: false
+            view: true
+            view_documentation: true
 tags:
   - name: products
     description: The API for Konnect Portal Products.
