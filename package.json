@@ -41,7 +41,7 @@
     "@apidevtools/swagger-parser": "^10.1.0",
     "@openapitools/openapi-generator-cli": "^2.5.2",
     "@redocly/cli": "^1.0.0-rc.1",
-    "@stoplight/spectral-cli": "^6.5.0",
+    "@stoplight/spectral-cli": "^6.10.1",
     "ajv": "^8.12.0",
     "fast-glob": "^3.2.12",
     "js-yaml": "^4.1.0",

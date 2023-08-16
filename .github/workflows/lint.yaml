@@ -27,16 +27,12 @@ jobs:
       - name: Test common definitions
         run: npm run test:common
  
-      - uses: stoplightio/spectral-action@latest
-        name: lint konnect definitions
-        with:
-          file_glob: 'konnect/definitions/**/computed/openapi.yaml'
+      - name: lint konnect definitions
+        run : npx spectral lint 'konnect/definitions/**/computed/openapi.yaml'
 
-      - uses: stoplightio/spectral-action@latest
-        name: lint portal definitions
-        with:
-          file_glob: 'portal/definitions/**/computed/openapi.yaml'
-          
+      - name: lint portal definitions
+        run : npx spectral lint 'portal/definitions/**/computed/openapi.yaml'
+
       - name: Lint OAS artifacts
         shell: bash
         run: |
