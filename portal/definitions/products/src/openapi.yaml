@@ -222,7 +222,7 @@ paths:
       operationId: get-product-actions
       responses:
         '200':
-          $ref: '#/components/responses/ProductActionsResponse'
+          $ref: '#/components/responses/ProductActions'
         '401':
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '403':
@@ -261,12 +261,12 @@ components:
         type: string
         format: uuid
   responses:
-    ProductActionsResponse:
+    ProductActions:
       description: Product actions
       content:
         application/json:
           schema:
-             $ref: '#/components/schemas/ProductActions'
+             $ref: '#/components/schemas/ProductActionsResponse'
           examples:
             Retrieve Product Actions Response:
               $ref: '#/components/examples/ProductActionsExample'
@@ -316,13 +316,20 @@ components:
           schema:
             $ref: '#/components/schemas/ProductDocument'
   schemas:
-    ProductActions:
+    ProductActionsResponse:
       title: Product Actions Response
       type: object
       additionalProperties: false
+      required:
+        - actions
       properties:
         actions:
           type: object
+          additionalProperties: false
+          required:
+            - view
+            - register
+            - view_documentation
           properties:
             view: 
               type: boolean
@@ -331,11 +338,11 @@ components:
             view_documentation:
               type: boolean
           description: List of actions that can be performed on the API Product
-          example:
-            actions:
-              - view: true
-              - register: false
-              - view_documentation: true
+      example:
+        actions:
+          view: true
+          register: false
+          view_documentation: true
     Product:
       title: Product
       type: object
