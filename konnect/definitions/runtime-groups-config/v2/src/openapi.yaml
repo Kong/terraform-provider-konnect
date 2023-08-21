@@ -3673,7 +3673,7 @@ paths:
       - $ref: '#/components/parameters/runtimeGroupId'
     get:
       description: 'Retrieve a list of all available Certificate Authority (CA) certificates, including the certificate ID, creation date, and other details. You can use query parameters to filter the results by size or tags, for example `/ca-certificates?size=50&tags=enterprise`.'
-      operationId: list-ca_certificate
+      operationId: list-ca_certificates
       parameters:
         - $ref: '#/components/parameters/pagination-size'
         - $ref: '#/components/parameters/pagination-offset'
@@ -3793,7 +3793,7 @@ paths:
   '/runtime-groups/{runtimeGroupId}/core-entities/certificates':
     get:
       description: 'Retrieve a list of all available certificate/ You can use query parameters to filter the results by size or tags, for example `/certificates?size=50&tags=enterprise`.'
-      operationId: list-certificate
+      operationId: list-certificates
       parameters:
         - $ref: '#/components/parameters/pagination-size'
         - $ref: '#/components/parameters/pagination-offset'
@@ -4025,7 +4025,7 @@ paths:
   '/runtime-groups/{runtimeGroupId}/core-entities/consumers':
     get:
       description: 'Retrieve a list of all consumers.You can use query parameters to filter the results by size or tags, for example `/consumers?size=50&tags=enterprise`.'
-      operationId: list-consumer
+      operationId: list-consumers
       parameters:
         - $ref: '#/components/parameters/pagination-size'
         - $ref: '#/components/parameters/pagination-offset'
@@ -4183,7 +4183,7 @@ paths:
     get:
       description: |
         Retrieve a list of all Key-sets in the system. A Key Set object holds a collection of asymmetric key objects. This entity allows to logically group keys by their purpose. Key Sets can be both tagged and filtered by tags.
-      operationId: list-key-set
+      operationId: list-key-sets
       parameters:
         - $ref: '#/components/parameters/pagination-size'
         - $ref: '#/components/parameters/pagination-offset'
@@ -4257,7 +4257,7 @@ paths:
   '/runtime-groups/{runtimeGroupId}/core-entities/keys':
     get:
       description: List all Keys
-      operationId: list-key
+      operationId: list-keys
       parameters:
         - $ref: '#/components/parameters/pagination-size'
         - $ref: '#/components/parameters/pagination-offset'
@@ -4381,7 +4381,7 @@ paths:
   '/runtime-groups/{runtimeGroupId}/core-entities/plugins':
     get:
       description: 'This endpoint allows you to list all the plugins. You can use query parameters to filter the results by size or tags, for example `/plugins?size=50&tags=enterprise`.'
-      operationId: list-plugin
+      operationId: list-plugins
       parameters:
         - $ref: '#/components/parameters/pagination-size'
         - $ref: '#/components/parameters/pagination-offset'
@@ -4516,7 +4516,7 @@ paths:
         route entities define rules to match client requests. Each route is associated with a service, and a service may have multiple routes associated to it. Every request matching a given route will be proxied to its associated service.
 
         > Note: Path handling algorithms v1 was deprecated in Kong 3.0. From Kong 3.0, when router_flavor is set to expressions, route.path_handling will be unconfigurable and the path handling behavior will be v0; when router_flavor is set to traditional_compatible, the path handling behavior will be v0 regardless of the value of route.path_handling. Only router_flavor = traditional will support path_handling v1' behavior.
-      operationId: list-route
+      operationId: list-routes
       parameters:
         - $ref: '#/components/parameters/pagination-size'
         - $ref: '#/components/parameters/pagination-offset'
@@ -4722,7 +4722,7 @@ paths:
   '/runtime-groups/{runtimeGroupId}/core-entities/services':
     get:
       description: List all services
-      operationId: list-service
+      operationId: list-services
       parameters:
         - $ref: '#/components/parameters/pagination-size'
         - $ref: '#/components/parameters/pagination-offset'
@@ -5160,7 +5160,7 @@ paths:
   '/runtime-groups/{runtimeGroupId}/core-entities/snis':
     get:
       description: List all SNIs
-      operationId: list-sni
+      operationId: list-snis
       parameters:
         - $ref: '#/components/parameters/pagination-size'
         - $ref: '#/components/parameters/pagination-offset'
@@ -5239,7 +5239,7 @@ paths:
     get:
       description: |
         List all registered upstreams. You can filter the results by pagination size, offset, or tags like `/upstreams?size=10&offset=0`.
-      operationId: list-upstream
+      operationId: list-upstreams
       parameters:
         - $ref: '#/components/parameters/pagination-size'
         - $ref: '#/components/parameters/pagination-offset'
@@ -5625,7 +5625,7 @@ paths:
   '/runtime-groups/{runtimeGroupId}/core-entities/vaults':
     get:
       description: List all Vaults
-      operationId: list-vault
+      operationId: list-vaults
       parameters:
         - $ref: '#/components/parameters/pagination-size'
         - $ref: '#/components/parameters/pagination-offset'
