@@ -225,10 +225,10 @@ paths:
           $ref: '#/components/responses/ProductActions'
         '401':
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
-        '403':
-          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
         '404':
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+        '503':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotAvailable'
       tags:
         - products
 components:
