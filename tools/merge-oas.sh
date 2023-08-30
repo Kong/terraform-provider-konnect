@@ -8,11 +8,15 @@ echo "############################################"
 echo "Processing: $PRODUCT"
 echo "############################################"
   mkdir -p output/$PRODUCT
-  ./node_modules/.bin/oas-toolkit check-conflicts $PRODUCT/definitions/**/src/openapi.yaml common/$PRODUCT.yaml --ignorePrefix components.securitySchemes --ignorePrefix components.examples
+
+  FILES=$(node ./tools/get-product-files.js $PRODUCT --plain);
+  COMPUTED_FILES=$(echo $FILES | sed 's/src/computed/g');
+
+  ./node_modules/.bin/oas-toolkit check-conflicts $FILES common/$PRODUCT.yaml --ignorePrefix components.securitySchemes --ignorePrefix components.examples
   # Bundle here to make sure `computed` comes from `src` after we've linted
   node ./tools/bundle.js $PRODUCT
   node ./tools/process-computed.js $PRODUCT
-  ./node_modules/.bin/oas-toolkit merge $PRODUCT/definitions/**/computed/openapi.yaml common/$PRODUCT.yaml --ignorePrefix components.securitySchemes --ignorePrefix components.examples > output/$PRODUCT/openapi.yaml
+  ./node_modules/.bin/oas-toolkit merge $COMPUTED_FILES common/$PRODUCT.yaml --ignorePrefix components.securitySchemes --ignorePrefix components.examples > output/$PRODUCT/openapi.yaml
 done
 
 # Finally, bundle all internal APIs. They do not need merging

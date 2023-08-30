@@ -313,6 +313,7 @@ overrides:
       validation-error-invalid-parameters-aip-193: "off"
   - files:
       - "konnect/definitions/identity/v2/**/openapi.yaml"
+      - "konnect/definitions/identity/v3/**/openapi.yaml"
     rules:
       errors-require-type-aip-193: "off"
       validation-error-invalid-parameters-aip-193: "off"
@@ -335,6 +336,7 @@ overrides:
       server-url-must-contain-version-aip-3101: "off"
   - files:
       - "konnect/definitions/identity/v2/**/openapi.yaml"
+      - "konnect/definitions/identity/v3/**/openapi.yaml"
       - "konnect/definitions/runtime-groups-config/v2/**/openapi.yaml"
     rules:
       errors-delete-contains-404-aip-135: "off"
@@ -361,6 +363,14 @@ overrides:
       - "konnect/definitions/identity/v2/**/openapi.yaml#/components/examples/400-authentication-settings-cannot-be-both-disabled"
       - "konnect/definitions/identity/v2/**/openapi.yaml#/components/examples/400-oidc-auth-enabled-needs-idp"
       - "konnect/definitions/identity/v2/**/openapi.yaml#/components/responses/IdentityBadRequest"
+      - "konnect/definitions/identity/v3/**/openapi.yaml#/components/examples/400-request-format-is-invalid"
+      - "konnect/definitions/identity/v3/**/openapi.yaml#/components/examples/400-cannot-be-blank"
+      - "konnect/definitions/identity/v3/**/openapi.yaml#/components/examples/400-invalid-id-format"
+      - "konnect/definitions/identity/v3/**/openapi.yaml#/components/examples/400-valid-uuid"
+      - "konnect/definitions/identity/v3/**/openapi.yaml#/components/examples/400-systems-team-modified"
+      - "konnect/definitions/identity/v3/**/openapi.yaml#/components/examples/400-authentication-settings-cannot-be-both-disabled"
+      - "konnect/definitions/identity/v3/**/openapi.yaml#/components/examples/400-oidc-auth-enabled-needs-idp"
+      - "konnect/definitions/identity/v3/**/openapi.yaml#/components/responses/IdentityBadRequest"
     rules:
       oas3-valid-media-example: "off"
   - files:

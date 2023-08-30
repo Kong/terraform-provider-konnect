@@ -1,7 +1,7 @@
-const fg = require("fast-glob");
 const {handleBundle: redocBundle} = require('@redocly/cli/lib/commands/bundle')
 const {loadConfigAndHandleErrors: redocConfig} = require('@redocly/cli/lib/utils');
 const path = require('path')
+const getProductFiles = require("./get-product-files");
 
 const baseDir = path.resolve(__dirname, '..')
 const redocConfigurationPath = path.join(baseDir, 'redocly.yaml')
@@ -14,7 +14,7 @@ async function main() {
         projects = process.argv.slice(2);
     }
     for (const mode of projects) {
-        const files = await fg(`${baseDir}/${mode}/definitions/**/src/openapi.yaml`);
+        const files = getProductFiles(mode).map(f => `${baseDir}/${f}`)
         for (const f of files) {
             const srcDir = path.dirname(f)
             const output = path.resolve(srcDir, '..', 'computed', 'openapi.yaml')

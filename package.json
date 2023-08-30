@@ -43,11 +43,14 @@
     "@redocly/cli": "^1.0.0-rc.1",
     "@stoplight/spectral-cli": "^6.10.1",
     "ajv": "^8.12.0",
-    "fast-glob": "^3.2.12",
+    "fast-glob": "^3.3.1",
     "js-yaml": "^4.1.0",
     "npm-run-all": "^4.1.5",
     "oas-toolkit": "^0.6.2",
     "redoc-cli": "^0.13.19",
     "traverse": "^0.6.7"
+  },
+  "dependencies": {
+    "micromatch": "^4.0.5"
   }
 }

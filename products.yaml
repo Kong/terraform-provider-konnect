@@ -1,0 +1,16 @@
+products:
+  konnect:
+    match:
+      - "konnect/definitions/**/src/openapi.yaml"
+    notMatch:
+      - "konnect/definitions/identity/v2/src/openapi.yaml"
+
+  portal:
+    match:
+      - "portal/definitions/**/src/openapi.yaml"
+    notMatch: []
+
+  internal:
+    match:
+      - "internal/definitions/**/src/openapi.yaml"
+    notMatch: []
