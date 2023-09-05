@@ -258,6 +258,8 @@ paths:
     parameters:
       - $ref: '../../../../../common/definitions/portal.yaml#/components/parameters/PortalId'
       - $ref: '../../../../../common/definitions/portal.yaml#/components/parameters/TeamId'
+      - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+      - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
     get:
       summary: List Team Roles
       tags:
