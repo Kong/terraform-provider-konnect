@@ -1,0 +1,358 @@
+openapi: 3.0.2
+info:
+  title: Control Planes Configuration API
+  version: 2.0.0
+  description: The API for configuring Konnect Control Planes.
+  contact:
+    name: Kong
+    url: 'https://cloud.konghq.com'
+servers:
+  - url: 'https://us.api.konghq.com/v2/control-planes/{controlPlaneId}'
+    description: US Region Konnect Platform Base URL
+    variables:
+      controlPlaneId:
+        default: '{controlPlaneId}'
+        description: UUID of the control plane.
+  - url: 'https://eu.api.konghq.com/v2/control-planes/{controlPlaneId}'
+    description: EU Region Konnect Platform Base URL
+    variables:
+      controlPlaneId:
+        default: '{controlPlaneId}'
+        description: UUID of the control plane.
+paths:
+  /nodes:
+    get:
+      summary: List Data Plane Node Records
+      responses:
+        '200':
+          $ref: '#/components/responses/list-nodes'
+      operationId: get-nodes
+      tags:
+        - DP Nodes
+      description: Returns a list of data plane node records that are associated to this control plane. A data plane node record contains all the metadata information of the Kong Gateway data plane node.
+      parameters:
+        - $ref: '#/components/parameters/page_size'
+        - $ref: '#/components/parameters/page_number'
+    parameters: []
+  '/nodes/{nodeId}':
+    parameters:
+      - schema:
+          type: string
+        name: nodeId
+        in: path
+        required: true
+    get:
+      summary: Fetch Data Plane Node Record
+      responses:
+        '200':
+          $ref: '#/components/responses/get-node'
+      operationId: get-nodes-node_id
+      tags:
+        - DP Nodes
+      description: Retrieve a specific data plane node record associated to this control plane. A data plane node record contains all the metadata information of the Kong Gateway data plane node.
+    delete:
+      summary: Delete Data Plane Node Record
+      operationId: delete-nodes-node_id
+      responses:
+        '204':
+          description: No Content
+      tags:
+        - DP Nodes
+      description: Remove a specific data plane node record associated to this control plane. Deleting this record does not prevent the data plane node from re-connecting to the control plane.
+  /dp-client-certificates:
+    parameters: []
+    get:
+      summary: List DP Client Certificates
+      responses:
+        '200':
+          $ref: '#/components/responses/list-dp-client-certs'
+      operationId: get-dp-client-certificates
+      tags:
+        - DP Certificates
+      description: Returns a list of pinned data plane node client certificates that are associated to this control plane. A pinned data plane node certificate allows data plane nodes configured with the certificate and corresponding private key to establish a connection with this control plane.
+      parameters:
+        - $ref: '#/components/parameters/page_size'
+        - $ref: '#/components/parameters/page_number'
+    post:
+      summary: Pin New DP Client Certificate
+      operationId: post-dp-client-certificates
+      responses:
+        '201':
+          $ref: '#/components/responses/get-dp-client-cert'
+      tags:
+        - DP Certificates
+      description: Pin a new DP Client Certificate to this control plane. A pinned data plane node certificate allows data plane nodes configured with the certificate and corresponding private key to establish connection with this control plane.
+      requestBody:
+        $ref: '#/components/requestBodies/create-dp-client-cert'
+  '/dp-client-certificates/{certificateId}':
+    parameters:
+      - schema:
+          type: string
+        name: certificateId
+        in: path
+        required: true
+    get:
+      summary: Fetch DP Client Certificate
+      tags:
+        - DP Certificates
+      responses:
+        '200':
+          $ref: '#/components/responses/get-dp-client-cert'
+      operationId: get-dp-client-certificates-cert_id
+      description: Retrieve a pinned data plane node client certificate associated to this control plane. A pinned data plane node certificate allows data plane nodes configured with the certificate and corresponding private key to establish connection with this control plane.
+    delete:
+      summary: Delete DP Client Certificate
+      operationId: delete-dp-client-certificates-cert_id
+      responses:
+        '204':
+          description: No Content
+      tags:
+        - DP Certificates
+      description: Remove a pinned data plane node client certificate associated to this control plane. Removing a pinned data plane node certificate would invalidate any data plane nodes currently connected to this control plane using this certificate.
+  '/core-entities/{entityEndpoint}':
+    get:
+      summary: Core Entity GET Endpoint
+      responses:
+        '200':
+          description: OK
+      operationId: get-core-entities
+      description: 'GET operation on a gateway core entity based on the entity_endpoint. For example, to retrieve a route: /core-entities/routes/{route name or id}. Documentation for supported core entity endpoints can be found at [docs.konghq.com](https://docs.konghq.com/konnect/api/control-planes-config/).'
+      tags:
+        - Gateway Core Entities
+    post:
+      summary: Core Entity POST Endpoint
+      operationId: post-core-entities
+      responses:
+        '201':
+          description: Created
+      tags:
+        - Gateway Core Entities
+      description: 'POST operation on a gateway core entity based on the entity_endpoint. For example, to create a route: /core-entities/routes. Documentation for supported core entity endpoints can be found at [docs.konghq.com](https://docs.konghq.com/konnect/api/control-planes-config/).'
+    put:
+      summary: Core Entity PUT Endpoint
+      operationId: put-core-entities
+      responses:
+        '200':
+          description: OK
+      tags:
+        - Gateway Core Entities
+      description: 'PUT operation on a gateway core entity based on the entity_endpoint. For example, to update a route: /core-entities/routes/{route name or id}. Documentation for supported core entity endpoints can be found at [docs.konghq.com](https://docs.konghq.com/konnect/api/control-planes-config/).'
+    delete:
+      summary: Core Entity DELETE Endpoint
+      operationId: delete-core-entities
+      responses:
+        '204':
+          description: No Content
+      description: 'DELETE operation on a gateway core entity based on the entity_endpoint. For example, to delete a route: /core-entities/routes/{route name or id}. Documentation for supported core entity endpoints can be found at [docs.konghq.com](https://docs.konghq.com/konnect/api/control-planes-config/).'
+      tags:
+        - Gateway Core Entities
+    parameters:
+      - schema:
+          type: string
+          enum:
+            - 'service/{id}'
+            - 'route/{id}'
+            - '/consumers/{id}'
+            - '/certificates/{id}'
+            - '/ca_certificates/{id}'
+            - '/plugins/{id}'
+            - '/snis/{id}'
+            - '/upstreams/{id}'
+            - '/vaults/{id}'
+        name: entityEndpoint
+        in: path
+        description: Path of the Kong Gateway core entity API endpoint.
+        required: true
+  /expected-config-hash:
+    get:
+      summary: Fetch Expected Config Hash
+      tags:
+        - DP Nodes
+      responses:
+        '200':
+          $ref: '#/components/responses/get-expected-config-hash'
+      operationId: get-expected-config-hash
+      description: Retrieve the expected config hash for this control plane. The expected config hash can be used to verify if the config hash of a data plane node is up to date with the control plane. The config hash will be the same if they are in sync.
+components:
+  schemas: {}
+  parameters:
+    page_size:
+      name: page_size
+      in: query
+      required: false
+      schema:
+        type: integer
+      description: The number of items to include in a page.
+    page_number:
+      name: page_number
+      in: query
+      required: false
+      schema:
+        type: integer
+      description: The specific page number in the collection results.
+  securitySchemes:
+    personalAccessToken:
+      $ref: '../../../../../common/definitions/security.yaml#/components/securitySchemes/personalAccessToken'
+    systemAccountAccessToken:
+      $ref: '../../../../../common/definitions/security.yaml#/components/securitySchemes/systemAccountAccessToken'
+  responses:
+    list-nodes:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              items:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    version:
+                      type: string
+                    hostname:
+                      type: string
+                    last_ping:
+                      type: integer
+                    type:
+                      type: string
+                    created_at:
+                      type: integer
+                    updated_at:
+                      type: integer
+                    config_hash:
+                      type: string
+                    compatibility_status:
+                      type: object
+                      properties:
+                        state:
+                          type: string
+              page:
+                type: object
+                properties:
+                  total_count:
+                    type: integer
+    get-node:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              item:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  version:
+                    type: string
+                  hostname:
+                    type: string
+                  last_ping:
+                    type: integer
+                  type:
+                    type: string
+                  created_at:
+                    type: integer
+                  updated_at:
+                    type: integer
+                  config_hash:
+                    type: string
+                  compatibility_status:
+                    type: object
+                    properties:
+                      state:
+                        type: string
+    list-dp-client-certs:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              items:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      description: Unique ID of the certificate entity.
+                    created_at:
+                      type: integer
+                      description: Date certificate was created.
+                    updated_at:
+                      type: integer
+                      description: Date certificate was last updated.
+                    cert:
+                      type: string
+                      description: JSON escaped string of the certificate.
+              page:
+                type: object
+                properties:
+                  total_count:
+                    type: integer
+    get-dp-client-cert:
+      description: Response body for retrieving a dp-client-certificate.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              item:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: Unique ID of the certificate entity.
+                  created_at:
+                    type: integer
+                    description: Date certificate was created.
+                  updated_at:
+                    type: integer
+                    description: Date certificate was last updated.
+                  cert:
+                    type: string
+                    description: JSON escaped string of the certificate.
+    get-expected-config-hash:
+      description: Response body for retrieving the expected config hash of the control plane.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              expected_hash:
+                type: string
+                description: The expected configuration hash.
+              created_at:
+                type: integer
+                description: Date the control plane configuration was created.
+              updated_at:
+                type: integer
+                description: Date the control plane configuration was last updated.
+  requestBodies:
+    create-dp-client-cert:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              cert:
+                type: string
+                description: JSON escaped string of the certificate.
+            required:
+              - cert
+          examples:
+            Sample DP Client Certificate:
+              value:
+                cert: "-----BEGIN CERTIFICATE-----\r\n*****\r\n-----END CERTIFICATE-----\r\n"
+      description: Request body for creating a dp-client-certificate.
+security:
+  - personalAccessToken: []
+  - systemAccountAccessToken: []
+tags:
+  - name: DP Nodes
+  - name: DP Certificates
+  - name: Gateway Core Entities
