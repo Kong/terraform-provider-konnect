@@ -438,6 +438,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/AssignedRoleCollection'
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
         '401':
           $ref: '#/components/responses/IdentityUnauthenticated'
         '403':
@@ -451,12 +453,12 @@ paths:
             type: object
             properties:
               role_name:
-                $ref: '../../../../../common/definitions/filters.yaml#/components/schemas/StringFieldFilter'
+                $ref: '../../../../../common/definitions/filters.yaml#/components/schemas/StringFieldEqualsFilter'
               entity_type_name:
-                $ref: '../../../../../common/definitions/filters.yaml#/components/schemas/StringFieldFilter'
+                $ref: '../../../../../common/definitions/filters.yaml#/components/schemas/StringFieldEqualsFilter'
           in: query
           name: filter
-          description: Filter roles returned in the response.
+          description: Filter roles returned in the response. Returns 400 if any filter parameters are invalid.
           required: false
     post:
       summary: Assign Role
@@ -645,18 +647,20 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/AssignedRoleCollection'
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
         '404':
           $ref: '#/components/responses/IdentityNotFound'
       operationId: list-user-roles
-      description: Lists the roles assigned to a user.
+      description: Lists the roles assigned to a user.  Returns 400 if any filter parameters are invalid.
       parameters:
         - schema:
             type: object
             properties:
               role_name:
-                $ref: '../../../../../common/definitions/filters.yaml#/components/schemas/StringFieldFilter'
+                $ref: '../../../../../common/definitions/filters.yaml#/components/schemas/StringFieldEqualsFilter'
               entity_type_name:
-                $ref: '../../../../../common/definitions/filters.yaml#/components/schemas/StringFieldFilter'
+                $ref: '../../../../../common/definitions/filters.yaml#/components/schemas/StringFieldEqualsFilter'
           in: query
           name: filter
           description: Filter roles returned in the response.
@@ -979,7 +983,7 @@ paths:
         description: ID of the system account.
     get:
       operationId: get-system-accounts-assigned-roles-internal
-      summary: Fetch assigned roles for a managed system account.
+      summary: Fetch assigned roles for a managed system account. Returns 400 if any filter parameters are invalid.
       description: Lists the roles belonging to a managed system account.
       responses:
         '200':
@@ -997,9 +1001,9 @@ paths:
             type: object
             properties:
               role_name:
-                $ref: '../../../../../common/definitions/filters.yaml#/components/schemas/StringFieldFilter'
+                $ref: '../../../../../common/definitions/filters.yaml#/components/schemas/StringFieldEqualsFilter'
               entity_type_name:
-                $ref: '../../../../../common/definitions/filters.yaml#/components/schemas/StringFieldFilter'
+                $ref: '../../../../../common/definitions/filters.yaml#/components/schemas/StringFieldEqualsFilter'
           in: query
           name: filter
           description: Filter roles returned in the response.
@@ -1063,9 +1067,9 @@ paths:
             type: object
             properties:
               role_name:
-                $ref: '../../../../../common/definitions/filters.yaml#/components/schemas/StringFieldFilter'
+                $ref: '../../../../../common/definitions/filters.yaml#/components/schemas/StringFieldEqualsFilter'
               entity_type_name:
-                $ref: '../../../../../common/definitions/filters.yaml#/components/schemas/StringFieldFilter'
+                $ref: '../../../../../common/definitions/filters.yaml#/components/schemas/StringFieldEqualsFilter'
           in: query
           name: filter
           description: Filter roles returned in the response.
