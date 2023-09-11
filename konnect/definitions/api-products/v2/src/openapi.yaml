@@ -870,6 +870,7 @@ components:
                     name: v1
                     gateway_service:
                       runtime_group_id: e4d9ebb1-26b4-426a-b00e-cb67044f3baf
+                      control_plane_id: e4d9ebb1-26b4-426a-b00e-cb67044f3baf
                       id: 09b4786a-3e48-4631-8f6b-62d1d8e1a7f3
                     publish_status: unpublished
                     deprecated: false
@@ -1137,6 +1138,7 @@ components:
           required:
             - id
             - runtime_group_id
+            - control_plane_id
           properties:
             id:
               type: string
@@ -1147,6 +1149,13 @@ components:
             runtime_group_id:
               type: string
               format: uuid
+              deprecated: true
+              description: This field is deprecated, please use `control_plane_id` instead. The identifier of the control plane that the gateway service resides in
+              example: e4d9ebb1-26b4-426a-b00e-cb67044f3baf
+            control_plane_id:
+              type: string
+              format: uuid
+              description: The identifier of the control plane that the gateway service resides in
               example: e4d9ebb1-26b4-426a-b00e-cb67044f3baf
         publish_status:
           type: string
@@ -1273,23 +1282,9 @@ components:
           example: false
           default: false
         gateway_service:
-          type: object
-          nullable: true
-          # default: null # Cannot add default, fails openapi-generator-cli generate
-          additionalProperties: false
-          required:
-            - id
-            - runtime_group_id
-          properties:
-            id:
-              type: string
-              format: uuid
-              description: The identifier of a gateway service associated with the version of the API product.
-              example: 09b4786a-3e48-4631-8f6b-62d1d8e1a7f3
-            runtime_group_id:
-              type: string
-              format: uuid
-              example: e4d9ebb1-26b4-426a-b00e-cb67044f3baf
+          oneOf:
+            - $ref: '#/components/schemas/GatewayServicePayload'
+            - $ref: '#/components/schemas/LegacyGatewayServicePayload'
     CreateAPIProductVersionSpecDTO:
       title: Create API Product Version Specification Request
       description: The request schema to create a specification for a version of an API product.
@@ -1422,23 +1417,9 @@ components:
             then consumers of the now deprecated verion of the API product will be notified.
           example: true
         gateway_service:
-          type: object
-          nullable: true
-          additionalProperties: false
-          required:
-            - id
-            - runtime_group_id
-          properties:
-            id:
-              type: string
-              format: uuid
-              nullable: true
-              description: The identifier of a gateway service associated with the version of the API product.
-              example: 09b4786a-3e48-4631-8f6b-62d1d8e1a7f3
-            runtime_group_id:
-              type: string
-              format: uuid
-              example: e4d9ebb1-26b4-426a-b00e-cb67044f3baf
+          anyOf:
+            - $ref: '#/components/schemas/GatewayServicePayload'
+            - $ref: '#/components/schemas/LegacyGatewayServicePayload'
     UpdateAPIProductVersionSpecDTO:
       title: Update API Product Version Specification Request
       description: The request schema for updating a specification for a version of an API product.
@@ -1459,6 +1440,45 @@ components:
           minLength: 1
           example: TXkgWUFNTCBvciBKU09OIGZvcm1hdHRlZCBPQVMgY29udGVudA==
           description: The base64 encoded contents of the API product version specification
+    LegacyGatewayServicePayload:
+      type: object
+      nullable: true
+      # default: null # Cannot add default, fails openapi-generator-cli generate
+      additionalProperties: false
+      required:
+        - id
+        - runtime_group_id
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: The identifier of a gateway service associated with the version of the API product.
+          example: 09b4786a-3e48-4631-8f6b-62d1d8e1a7f3
+        runtime_group_id:
+          type: string
+          format: uuid
+          deprecated: true
+          description: The identifier of the control plane that the gateway service resides in
+          example: e4d9ebb1-26b4-426a-b00e-cb67044f3baf
+    GatewayServicePayload:
+      type: object
+      nullable: true
+      # default: null # Cannot add default, fails openapi-generator-cli generate
+      additionalProperties: false
+      required:
+        - id
+        - control_plane_id
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: The identifier of a gateway service associated with the version of the API product.
+          example: 09b4786a-3e48-4631-8f6b-62d1d8e1a7f3
+        control_plane_id:
+          type: string
+          format: uuid
+          description: The identifier of the control plane that the gateway service resides in
+          example: e4d9ebb1-26b4-426a-b00e-cb67044f3baf
   securitySchemes:
     personalAccessToken:
       $ref: '../../../../../common/definitions/security.yaml#/components/securitySchemes/personalAccessToken'
@@ -1481,6 +1501,7 @@ components:
         name: v1
         gateway_service:
           runtime_group_id: e4d9ebb1-26b4-426a-b00e-cb67044f3baf
+          control_plane_id: e4d9ebb1-26b4-426a-b00e-cb67044f3baf
           id: 09b4786a-3e48-4631-8f6b-62d1d8e1a7f3
         publish_status: unpublished
         deprecated: false
@@ -1538,7 +1559,7 @@ components:
           publish_status: unpublished
           deprecated: false
           gateway_service:
-            runtime_group_id: e4d9ebb1-26b4-426a-b00e-cb67044f3baf
+            control_plane_id: e4d9ebb1-26b4-426a-b00e-cb67044f3baf
             id: 09b4786a-3e48-4631-8f6b-62d1d8e1a7f3
     CreateAPIProductVersionSpecificationRequestExample:
       summary: Create API Product Version Specification Request
@@ -1553,7 +1574,7 @@ components:
       summary: Link API Product Version
       value:
         gateway_service:
-          runtime_group_id: e4d9ebb1-26b4-426a-b00e-cb67044f3baf
+          control_plane_id: e4d9ebb1-26b4-426a-b00e-cb67044f3baf
           id: 09b4786a-3e48-4631-8f6b-62d1d8e1a7f3
     UnlinkAPIProductVersionRequestExample:
       summary: Unlink API Product Version
