@@ -407,6 +407,31 @@ components:
                     type: string
                   client_id:
                     type: string
+                  scopes:
+                    type: array
+                    default:
+                      - email
+                      - openid
+                      - profile
+                    items:
+                      type: string
+                      default: openid
+                  claim_mappings:
+                    type: object
+                    minProperties: 3
+                    properties:
+                      name:
+                        type: string
+                        example: name
+                        default: name
+                      email:
+                        type: string
+                        example: email
+                        default: email
+                      groups:
+                        type: string
+                        default: groups
+                        example: custom-group-claim
                 required:
                 - issuer
                 - client_id
@@ -734,9 +759,9 @@ components:
             type: object
             example:
               data:
-                - group: Service Developers
-                  team_ids:
-                    - af91db4c-6e51-403e-a2bf-33d27ae50c0a
+                - team_id: af91db4c-6e51-403e-a2bf-33d27ae50c0a
+                  groups:
+                    - Service Developer
             properties:
               data:
                 type: array
@@ -777,6 +802,35 @@ components:
                 type: boolean
                 example: false
                 description: Whether a Konnect Identity Admin assigns teams to a developer.
+              oidc_issuer:
+                type: string
+              oidc_client_id:
+                type: string
+              oidc_scopes:
+                type: array
+                default:
+                  - email
+                  - openid
+                  - profile
+                items:
+                  type: string
+                  default: openid
+              oidc_claim_mappings:
+                type: object
+                minProperties: 3
+                properties:
+                  name:
+                    type: string
+                    example: name
+                    default: name
+                  email:
+                    type: string
+                    example: email
+                    default: email
+                  groups:
+                    type: string
+                    default: groups
+                    example: custom-group-claim
           # examples:
           #   Example Request Body:
           #     $ref: '#/components/examples/Update-Authentication-Settings'
