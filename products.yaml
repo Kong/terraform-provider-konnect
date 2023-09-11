@@ -4,6 +4,8 @@ products:
       - "konnect/definitions/**/src/openapi.yaml"
     notMatch:
       - "konnect/definitions/identity/v2/src/openapi.yaml"
+      - "konnect/definitions/runtime-groups/v2/src/openapi.yaml"
+      - "konnect/definitions/runtime-groups-config/v2/src/openapi.yaml"
 
   portal:
     match:

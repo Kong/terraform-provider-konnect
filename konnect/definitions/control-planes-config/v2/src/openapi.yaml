@@ -7,20 +7,22 @@ info:
     name: Kong
     url: 'https://cloud.konghq.com'
 servers:
-  - url: 'https://us.api.konghq.com/v2/control-planes/{controlPlaneId}'
+  - url: 'https://us.api.konghq.com/v2'
     description: US Region Konnect Platform Base URL
     variables:
       controlPlaneId:
         default: '{controlPlaneId}'
         description: UUID of the control plane.
-  - url: 'https://eu.api.konghq.com/v2/control-planes/{controlPlaneId}'
+  - url: 'https://eu.api.konghq.com/v2'
     description: EU Region Konnect Platform Base URL
     variables:
       controlPlaneId:
         default: '{controlPlaneId}'
         description: UUID of the control plane.
 paths:
-  /nodes:
+  /control-planes/{controlPlaneId}/nodes:
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
     get:
       summary: List Data Plane Node Records
       responses:
@@ -33,9 +35,9 @@ paths:
       parameters:
         - $ref: '#/components/parameters/page_size'
         - $ref: '#/components/parameters/page_number'
-    parameters: []
-  '/nodes/{nodeId}':
+  '/control-planes/{controlPlaneId}/nodes/{nodeId}':
     parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
       - schema:
           type: string
         name: nodeId
@@ -59,8 +61,9 @@ paths:
       tags:
         - DP Nodes
       description: Remove a specific data plane node record associated to this control plane. Deleting this record does not prevent the data plane node from re-connecting to the control plane.
-  /dp-client-certificates:
-    parameters: []
+  /control-planes/{controlPlaneId}/dp-client-certificates:
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
     get:
       summary: List DP Client Certificates
       responses:
@@ -84,8 +87,9 @@ paths:
       description: Pin a new DP Client Certificate to this control plane. A pinned data plane node certificate allows data plane nodes configured with the certificate and corresponding private key to establish connection with this control plane.
       requestBody:
         $ref: '#/components/requestBodies/create-dp-client-cert'
-  '/dp-client-certificates/{certificateId}':
+  '/control-planes/{controlPlaneId}/dp-client-certificates/{certificateId}':
     parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
       - schema:
           type: string
         name: certificateId
@@ -109,7 +113,7 @@ paths:
       tags:
         - DP Certificates
       description: Remove a pinned data plane node client certificate associated to this control plane. Removing a pinned data plane node certificate would invalidate any data plane nodes currently connected to this control plane using this certificate.
-  '/core-entities/{entityEndpoint}':
+  '/control-planes/{controlPlaneId}/core-entities/{entityEndpoint}':
     get:
       summary: Core Entity GET Endpoint
       responses:
@@ -147,6 +151,7 @@ paths:
       tags:
         - Gateway Core Entities
     parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
       - schema:
           type: string
           enum:
@@ -163,7 +168,9 @@ paths:
         in: path
         description: Path of the Kong Gateway core entity API endpoint.
         required: true
-  /expected-config-hash:
+  /control-planes/{controlPlaneId}/expected-config-hash:
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
     get:
       summary: Fetch Expected Config Hash
       tags:
@@ -176,6 +183,14 @@ paths:
 components:
   schemas: {}
   parameters:
+    controlPlaneId:
+      name: controlPlaneId
+      in: path
+      required: true
+      schema:
+        type: string
+        example: 9524ec7d-36d9-465d-a8c5-83a3c9390458
+      description: The ID of your Control Plane. This variable is available in Konnect Gateway Manager
     page_size:
       name: page_size
       in: query
