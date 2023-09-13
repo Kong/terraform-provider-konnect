@@ -806,6 +806,8 @@ components:
                 type: string
               oidc_client_id:
                 type: string
+              oidc_client_secret:
+                type: string
               oidc_scopes:
                 type: array
                 default:
