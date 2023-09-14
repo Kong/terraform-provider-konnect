@@ -334,7 +334,7 @@ components:
       required: false
       schema:
         type: string
-      example: CLUSTER_TYPE_HYBRID
+      example: CLUSTER_TYPE_CONTROL_PLANE
     FilterByClusterTypeEqualityShort:
       name: 'filter[cluster_type]'
       description: Filter by direct equality comparison (short-hand) of the cluster_type property with a supplied value.
@@ -342,7 +342,7 @@ components:
       required: false
       schema:
         type: string
-        example: CLUSTER_TYPE_HYBRID
+        example: CLUSTER_TYPE_CONTROL_PLANE
     FilterByClusterTypeNotEquals:
       name: 'filter[cluster_type][neq]'
       description: Filter by non-equality comparison of the cluster_type property with a supplied value.
@@ -565,11 +565,11 @@ components:
         cluster_type:
           type: string
           description: The ClusterType value of the cluster associated with the Control Plane.
-          example: CLUSTER_TYPE_HYBRID
+          example: CLUSTER_TYPE_CONTROL_PLANE
           enum:
-            - CLUSTER_TYPE_HYBRID
+            - CLUSTER_TYPE_CONTROL_PLANE
             - CLUSTER_TYPE_K8S_INGRESS_CONTROLLER
-            - CLUSTER_TYPE_COMPOSITE
+            - CLUSTER_TYPE_CONTROL_PLANE_GROUP
         auth_type:
           type: string
           description: The auth type value of the cluster associated with the Runtime Group.
@@ -649,7 +649,7 @@ components:
           config:
             control_plane_endpoint: 'https://acfe5f253f.cp0.konghq.com'
             telemetry_endpoint: 'https://acfe5f253f.tp0.konghq.com'
-            cluster_type: CLUSTER_TYPE_HYBRID
+            cluster_type: CLUSTER_TYPE_CONTROL_PLANE
             auth_type: pinned_client_certs
           created_at: '2022-11-04T20:10:06.927Z'
           updated_at: '2022-11-04T20:10:06.927Z'
@@ -695,11 +695,11 @@ components:
             cluster_type:
               type: string
               description: The ClusterType value of the cluster associated with the Control Plane.
-              example: CLUSTER_TYPE_HYBRID
+              example: CLUSTER_TYPE_CONTROL_PLANE
               enum:
-                - CLUSTER_TYPE_HYBRID
+                - CLUSTER_TYPE_CONTROL_PLANE
                 - CLUSTER_TYPE_K8S_INGRESS_CONTROLLER
-                - CLUSTER_TYPE_COMPOSITE
+                - CLUSTER_TYPE_CONTROL_PLANE_GROUP
               readOnly: true
             auth_type:
               type: string
@@ -751,12 +751,12 @@ components:
         state:
           type: string
           description: The state of the control plane group.
-          example: COMPOSITE_STATE_CONFLICT
+          example: CONFLICT
           readOnly: true
           enum:
-            - COMPOSITE_STATE_OK
-            - COMPOSITE_STATE_CONFLICT
-            - COMPOSITE_STATE_UNKNOWN
+            - OK
+            - CONFLICT
+            - UNKNOWN
     GroupConflict:
       title: GroupConflict
       type: object
@@ -909,7 +909,7 @@ components:
         config:
           control_plane_endpoint: 'https://acfe5f253f.cp0.konghq.com'
           telemetry_endpoint: 'https://acfe5f253f.tp0.konghq.com'
-          cluster_type: CLUSTER_TYPE_HYBRID
+          cluster_type: CLUSTER_TYPE_CONTROL_PLANE
           auth_type: pinned_client_certs
     GroupConflictStatusExample:
       value:
@@ -925,7 +925,7 @@ components:
             resource:
               id: 15f3ab7d-7202-498a-95b4-334f783dbcdd
               type: service
-        state: COMPOSITE_STATE_CONFLICT
+        state: CONFLICT
         created_at: '2022-11-04T20:10:06.927Z'
         updated_at: '2022-11-04T20:10:06.927Z'
     GroupNoConflictStatusExample:
@@ -942,7 +942,7 @@ components:
             resource:
               id: 15f3ab7d-7202-498a-95b4-334f783dbcdd
               type: service
-        state: COMPOSITE_STATE_CONFLICT
+        state: CONFLICT
         created_at: '2022-11-04T20:10:06.927Z'
         updated_at: '2022-11-04T20:10:06.927Z'
     ListGroupMembershipsExample:
@@ -961,7 +961,7 @@ components:
             config:
               control_plane_endpoint: 'https://9e0353434a.us.cp0.konghq.com'
               telemetry_endpoint: 'https://9e0353434a.us.tp0.konghq.com'
-              cluster_type: CLUSTER_TYPE_HYBRID
+              cluster_type: CLUSTER_TYPE_CONTROL_PLANE
               auth_type: pinned_client_certs
             created_at: '2023-03-20T22:23:45.873Z'
             updated_at: '2023-03-30T16:17:55.073Z'
@@ -974,7 +974,7 @@ components:
             config:
               control_plane_endpoint: 'https://05459046af.us.cp0.konghq.com'
               telemetry_endpoint: 'https://05459046af.us.tp0.konghq.com'
-              cluster_type: CLUSTER_TYPE_HYBRID
+              cluster_type: CLUSTER_TYPE_CONTROL_PLANE
               auth_type: pinned_client_certs
             created_at: '2023-03-23T22:25:30.907Z'
             updated_at: '2023-03-30T16:18:12.067Z'
