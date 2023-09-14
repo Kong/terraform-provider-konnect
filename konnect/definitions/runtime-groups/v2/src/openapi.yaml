@@ -570,6 +570,13 @@ components:
             - CLUSTER_TYPE_HYBRID
             - CLUSTER_TYPE_K8S_INGRESS_CONTROLLER
             - CLUSTER_TYPE_COMPOSITE
+        auth_type:
+          type: string
+          description: The auth type value of the cluster associated with the Runtime Group.
+          example: pinned_client_certs 
+          enum:
+            - pinned_client_certs 
+            - pki_client_certs
         labels:
           $ref: '#/components/schemas/Labels'
       required:
@@ -588,6 +595,13 @@ components:
           type: string
           example: A test runtime group for exploration.
           description: The description of the runtime group in Konnect.
+        auth_type:
+          type: string
+          description: The auth type value of the cluster associated with the Runtime Group.
+          example: pinned_client_certs 
+          enum:
+            - pinned_client_certs 
+            - pki_client_certs
         labels:
           $ref: '#/components/schemas/Labels'
     RuntimeGroup:
@@ -636,6 +650,7 @@ components:
             control_plane_endpoint: 'https://acfe5f253f.cp0.konghq.com'
             telemetry_endpoint: 'https://acfe5f253f.tp0.konghq.com'
             cluster_type: CLUSTER_TYPE_HYBRID
+            auth_type: pinned_client_certs
           created_at: '2022-11-04T20:10:06.927Z'
           updated_at: '2022-11-04T20:10:06.927Z'
     RuntimeGroupSummary:
@@ -686,10 +701,19 @@ components:
                 - CLUSTER_TYPE_K8S_INGRESS_CONTROLLER
                 - CLUSTER_TYPE_COMPOSITE
               readOnly: true
+            auth_type:
+              type: string
+              description: The auth type value of the cluster associated with the Runtime Group.
+              example: pinned_client_certs 
+              enum:
+                - pinned_client_certs 
+                - pki_client_certs
+              readOnly: true
           required:
             - control_plane_endpoint
             - telemetry_endpoint
             - cluster_type
+            - auth_type
         created_at:
           type: string
           format: date-time
@@ -886,6 +910,7 @@ components:
           control_plane_endpoint: 'https://acfe5f253f.cp0.konghq.com'
           telemetry_endpoint: 'https://acfe5f253f.tp0.konghq.com'
           cluster_type: CLUSTER_TYPE_HYBRID
+          auth_type: pinned_client_certs
     CompositeConflictStatusExample:
       value:
         id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
@@ -937,6 +962,7 @@ components:
               control_plane_endpoint: 'https://9e0353434a.us.cp0.konghq.com'
               telemetry_endpoint: 'https://9e0353434a.us.tp0.konghq.com'
               cluster_type: CLUSTER_TYPE_HYBRID
+              auth_type: pinned_client_certs
             created_at: '2023-03-20T22:23:45.873Z'
             updated_at: '2023-03-30T16:17:55.073Z'
           - id: e4a1917c-bb26-4aa1-9a3e-50ee366f13db
@@ -949,6 +975,7 @@ components:
               control_plane_endpoint: 'https://05459046af.us.cp0.konghq.com'
               telemetry_endpoint: 'https://05459046af.us.tp0.konghq.com'
               cluster_type: CLUSTER_TYPE_HYBRID
+              auth_type: pinned_client_certs
             created_at: '2023-03-23T22:25:30.907Z'
             updated_at: '2023-03-30T16:18:12.067Z'
   requestBodies:
