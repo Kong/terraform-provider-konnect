@@ -1,5 +1,6 @@
-const {handleBundle: redocBundle} = require('@redocly/cli/lib/commands/bundle')
-const {loadConfigAndHandleErrors: redocConfig} = require('@redocly/cli/lib/utils');
+const fg = require("fast-glob");
+const { handleBundle: redocBundle } = require('@redocly/cli/lib/commands/bundle')
+const { loadConfigAndHandleErrors: redocConfig } = require('@redocly/cli/lib/utils');
 const path = require('path')
 const getProductFiles = require("./get-product-files");
 
@@ -9,12 +10,23 @@ const redocConfigurationPath = path.join(baseDir, 'redocly.yaml')
 // Loop over all `src` folders in `konnect`/`portal`/`internal` projects definitions to
 // generate the `computed` folder to be consumed by the api tooling
 async function main() {
+    let allFiles = false
     let projects = ["konnect", "portal", "internal"];
     if (process.argv.length > 2) {
-        projects = process.argv.slice(2);
+        const arg = process.argv.slice(2)
+        if (arg[0] === 'all-files') {
+            allFiles = true
+        } else {
+            projects = arg
+        }
     }
     for (const mode of projects) {
-        const files = getProductFiles(mode).map(f => `${baseDir}/${f}`)
+        let files = []
+        if (allFiles) {
+            files = await fg(`${baseDir}/${mode}/definitions/**/src/openapi.yaml`);
+        } else {
+            files = getProductFiles(mode).map(f => `${baseDir}/${f}`)
+        }
         for (const f of files) {
             const srcDir = path.dirname(f)
             const output = path.resolve(srcDir, '..', 'computed', 'openapi.yaml')

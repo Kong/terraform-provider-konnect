@@ -14,6 +14,16 @@
           "useSingleRequestParameter": "true"
         }
       },
+      "identity-v3-client": {
+        "generatorName": "typescript-axios",
+        "output": "konnect/packages/identity/v3/npm/client",
+        "glob": "konnect/definitions/identity/v3/computed/openapi.yaml",
+        "templateDir": "oas-generator-templates",
+        "additionalProperties": {
+          "modelPropertyNaming": "original",
+          "useSingleRequestParameter": "true"
+        }
+      },
       "audit-logs-v2-client": {
         "generatorName": "typescript-axios",
         "output": "konnect/packages/audit-logs/v2/npm/client",
