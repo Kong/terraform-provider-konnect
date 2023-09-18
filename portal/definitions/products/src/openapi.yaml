@@ -104,12 +104,14 @@ paths:
       security:
         - portalAccessToken: []
         - {}
-  /api/v2/products/{productId}/versions/{versionId}/unregistered-applications:
+  /api/v2/products/{productId}/versions/{versionId}/applications:
     get:
       x-unstable: true
       x-internal: true
-      summary: Get applications not registered for a product version
-      description: Get applications that do not have a registration for a given product version. Any registration for the version will count, regardless of status (i.e. even if it is pending, rejected, or revoked).
+      summary: Get applications by product version
+      description: |-
+        Get applications that have a registration for a given product version. Any registration for the version will count, regardless of status (i.e. even if it is pending, rejected, or revoked).
+        Use the `unregistered` query param to return the inverse, only including applicatons that do not have a registration (regardless of status).
       operationId: get-unregistered-applications
       parameters:
         - $ref: '#/components/parameters/ProductId'
@@ -119,9 +121,12 @@ paths:
         - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByNameEquality'
         - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByNameEqualityShort'
         - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByNameContains'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByStatusEquality'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByStatusEqualityShort'
+        - $ref: '#/components/parameters/QueryUnregisteredApplications'
       responses:
         '200':
-          $ref: '#/components/responses/ProductVersionListUnregisteredApplications'
+          $ref: '#/components/responses/ProductVersionListApplications'
         '400':
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
@@ -288,6 +293,14 @@ components:
       schema:
         type: string
         format: uuid
+    QueryUnregisteredApplications:
+      name: unregistered
+      description: Return applications that do **not** have a registration for the product version (regardless of registration status).
+      in: query
+      required: false
+      schema:
+        type: boolean
+      allowEmptyValue: true
   responses:
     ProductActions:
       description: Product actions
@@ -322,12 +335,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ProductVersion'
-    ProductVersionListUnregisteredApplications:
-      description: Paginated list of applications not registered for a product version.
+    ProductVersionListApplications:
+      description: Paginated list of applications either registered or not registered for a product version.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ProductVersionListUnregisteredApplicationsPage'
+            $ref: '#/components/schemas/ProductVersionListApplicationsPage'
     ProductVersionSpecGet:
       description: Product version spec document.
       content:
@@ -483,8 +496,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ProductVersion'
-    ProductVersionListUnregisteredApplicationsPage:
-      title: ProductVersionListUnregisteredApplicationsPage
+    ProductVersionListApplicationsPage:
+      title: ProductVersionListApplicationsPage
       type: object
       additionalProperties: false
       required:
@@ -506,12 +519,24 @@ components:
         - name
         - created_at
         - updated_at
+        - registration_status
+        - registration_id
       properties:
         id:
           $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
         name:
           description: The name of the application
           type: string
+        registration_id:
+          $ref: '../../../../common/definitions/konnect_properties.yaml#/components/schemas/NullableUUID'
+        registration_status:
+          type: string
+          nullable: true
+          enum:
+            - approved
+            - pending
+            - rejected
+            - revoked
         created_at:
           $ref: '../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
         updated_at:
