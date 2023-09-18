@@ -104,6 +104,34 @@ paths:
       security:
         - portalAccessToken: []
         - {}
+  /api/v2/products/{productId}/versions/{versionId}/unregistered-applications:
+    get:
+      x-unstable: true
+      x-internal: true
+      summary: Get applications not registered for a product version
+      description: Get applications that do not have a registration for a given product version. Any registration for the version will count, regardless of status (i.e. even if it is pending, rejected, or revoked).
+      operationId: get-unregistered-applications
+      parameters:
+        - $ref: '#/components/parameters/ProductId'
+        - $ref: '#/components/parameters/ProductVersionId'
+        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByNameEquality'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByNameEqualityShort'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByNameContains'
+      responses:
+        '200':
+          $ref: '#/components/responses/ProductVersionListUnregisteredApplications'
+        '400':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '404':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+      tags:
+        - versions
+      security:
+        - portalAccessToken: []
   /api/v2/products/{productId}/versions/{versionId}/spec:
     get:
       summary: Get spec for product version
@@ -294,6 +322,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ProductVersion'
+    ProductVersionListUnregisteredApplications:
+      description: Paginated list of applications not registered for a product version.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProductVersionListUnregisteredApplicationsPage'
     ProductVersionSpecGet:
       description: Product version spec document.
       content:
@@ -449,6 +483,39 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ProductVersion'
+    ProductVersionListUnregisteredApplicationsPage:
+      title: ProductVersionListUnregisteredApplicationsPage
+      type: object
+      additionalProperties: false
+      required:
+        - meta
+        - data
+      properties:
+        meta:
+          $ref: '../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnregisteredApplication'
+    UnregisteredApplication:
+      title: UnregisteredApplication
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - created_at
+        - updated_at
+      properties:
+        id:
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
+        name:
+          description: The name of the application
+          type: string
+        created_at:
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
     ProductVersionSpecDocument:
       type: object
       title: ProductVersionSpecDocument
