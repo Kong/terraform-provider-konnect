@@ -110,14 +110,6 @@ components:
           default: 86400000
           description: |
             `granularity_ms` is only valid for queries that include a time dimension, and it specifies the time buckets in for the returned data.
-        meta: 
-          type: object
-          additionalProperties: false 
-          description: Meta information about the query.
-          properties:
-            query_id:
-              type: string
-              description: Optional ID used to look up the query.
         filter:
           type: array
           items:
@@ -611,9 +603,6 @@ components:
         'metrics': [
           'REQUEST_PER_MINUTE'
         ],
-        'meta': {
-          'query_id': 'portal-api-3c0abb98-90bd-4e80-a495-ac268acc493e'
-        },
         'filter': [
           {
             'dimension':  'API_PRODUCT_VERSION',
@@ -634,9 +623,6 @@ components:
         'dimensions': [
           'APPLICATION'
         ],
-        'meta': {
-          'query_id': 'portal-api-3c0abb98-90bd-4e80-a495-ac268acc493e'
-        }
       }
     QueryExampleWithMetricAndMultipleDimensions:
       value: {
@@ -649,9 +635,6 @@ components:
           'APPLICATION',
           'STATUS_CODE_GROUPED'
         ],
-        'meta': {
-          'query_id': 'portal-api-3c0abb98-90bd-4e80-a495-ac268acc493e'
-        },
         'filter': [
           {
             'dimension':  'STATUS_CODE_GROUPED',
@@ -674,10 +657,7 @@ components:
         'dimensions': [
           'TIME',
           'STATUS_CODE_GROUPED'
-        ],
-        'meta': {
-          'query_id': 'portal-api-3c0abb98-90bd-4e80-a495-ac268acc493e'
-        }
+        ]
       }
     BadRequestExample:
       value:
