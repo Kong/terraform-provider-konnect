@@ -34,27 +34,10 @@ paths:
           content:
             'application/json':
               schema:
-                $ref: '#/components/schemas/ListDocumentCollectionResponse'
-        '404':
-          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
-      tags:
-        - Documents
-  /collections/{collectionId}/tree:
-    get:
-      summary: Get the collection tree
-      description: Get the document collection as a tree
-      operationId: getCollectionTree
-      parameters:
-        - $ref: '#/components/parameters/collectionId'
-      responses:
-        '200':
-          description: Tree of documents
-          content:
-            'application/json':
+                $ref: '../../../../../common/definitions/documenthub.yaml#/components/schemas/ListDocuments'
+            'application/vnd.konnect.document-tree+json':
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/DocumentTree'
+                $ref: '../../../../../common/definitions/documenthub.yaml#/components/schemas/ListDocumentsTree'
         '404':
           $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       tags:
@@ -65,6 +48,10 @@ paths:
       description: Get the document
       operationId: getDocument
       parameters:
+        - in: header
+          name: Accept
+          schema:
+            $ref: '../../../../../common/definitions/documenthub.yaml#/components/schemas/DocumentFormatContentTypeEnum'
         - $ref: '#/components/parameters/collectionId'
         - $ref: '#/components/parameters/documentId'
         - schema:
@@ -76,9 +63,12 @@ paths:
           example: true
       responses:
         '200':
-          description: The document
+          description: Document
           content:
             'application/json':
+              schema:
+                $ref: '#/components/schemas/DocumentRaw'
+            application/vnd.konnect.document-nodes+json:
               schema:
                 $ref: '#/components/schemas/Document'
         '404':
@@ -87,11 +77,70 @@ paths:
         - Documents
 components:
   securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
+    portalAccessToken:
+      $ref: '../../../../../common/definitions/security.yaml#/components/securitySchemes/portalAccessToken'
   schemas:
+    DocumentRaw:
+      type: object
+      title: Document
+      description: a document
+      required:
+      - id
+      - slug
+      - revision
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: the id of the document
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        parent_document_id:
+          type: string
+          format: uuid
+          description: the id of the parent document
+          nullable: true
+          example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
+        slug:
+          type: string
+          description: the slug of the document
+          example: getting-started
+        revision:
+          $ref: '#/components/schemas/RevisionRaw'
+    RevisionRaw:
+      type: object
+      title: Revision
+      description: revision of a document
+      required:
+        - id
+        - document_id
+        - content
+        - meta
+        - title
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: the id of the revision
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        document_id:
+          type: string
+          format: uuid
+          description: the id of the document
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        content:
+          type: string
+          description: Markdown document
+        meta:
+          type: object
+          description: the metadata of the document
+          example:
+            title: Hello World
+            description: This is a description
+            keywords: hello, world
+        title:
+          type: string
+          description: the title of the document
+          example: Hello World
     ListDocumentCollectionResponse:
       type: object
       properties:
@@ -202,9 +251,8 @@ components:
       schema:
         type: string
         format: uuid
-
 security:
-  - bearerAuth: []
+  - portalAccessToken: []
 tags:
   - name: Documents
     description: document operations

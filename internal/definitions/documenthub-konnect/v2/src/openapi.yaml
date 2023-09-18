@@ -27,7 +27,6 @@ paths:
             'application/json':
               schema:
                 $ref: '#/components/schemas/ListCollectionResponse'
-
       tags:
         - Collections
     post:
@@ -48,12 +47,12 @@ paths:
       tags:
         - Collections
   /collections/{collectionId}:
+    parameters:
+      - $ref: '#/components/parameters/collectionId'
     get:
       summary: Get document collection
       description: Get document collection
       operationId: getCollection
-      parameters:
-        - $ref: '#/components/parameters/collectionId'
       responses:
         '200':
           description: Document collection
@@ -65,12 +64,10 @@ paths:
           $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       tags:
         - Collections
-    put:
+    patch:
       summary: Update collection
       description: Update the document collection
       operationId: updateCollection
-      parameters:
-        - $ref: '#/components/parameters/collectionId'
       requestBody:
         $ref: '#/components/requestBodies/UpdateCollection'
       responses:
@@ -90,8 +87,6 @@ paths:
       summary: Delete collection
       description: Delete the document collection
       operationId: deleteCollection
-      parameters:
-        - $ref: '#/components/parameters/collectionId'
       responses:
         '204':
           description: The document collection has been deleted
@@ -100,12 +95,17 @@ paths:
       tags:
         - Collections
   /collections/{collectionId}/documents:
+    parameters:
+      - $ref: '#/components/parameters/collectionId'
     get:
       summary: List collection documents
       description: List documents in a collection
       operationId: listDocuments
       parameters:
-        - $ref: '#/components/parameters/collectionId'
+        - in: header
+          name: Accept
+          schema:
+            $ref: '../../../../../common/definitions/documenthub.yaml#/components/schemas/DocumentContentTypeEnum'
         - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
         - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
       responses:
@@ -114,7 +114,10 @@ paths:
           content:
             'application/json':
               schema:
-                $ref: '#/components/schemas/ListDocumentCollectionResponse'
+                $ref: '../../../../../common/definitions/documenthub.yaml#/components/schemas/ListDocuments'
+            'application/vnd.konnect.document-tree+json':
+              schema:
+                $ref: '../../../../../common/definitions/documenthub.yaml#/components/schemas/ListDocumentsTree'
         '400':
           $ref: '../../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '404':
@@ -125,8 +128,6 @@ paths:
       summary: Create document
       description: Create document and put it in a collection
       operationId: createDocument
-      parameters:
-        - $ref: '#/components/parameters/collectionId'
       requestBody:
         $ref: '#/components/requestBodies/CreateDocument'
       responses:
@@ -142,34 +143,19 @@ paths:
           $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       tags:
         - Documents
-  /collections/{collectionId}/tree:
-    get:
-      summary: Get the collection tree
-      description: Get the document collection as a tree
-      operationId: getCollectionTree
-      parameters:
-        - $ref: '#/components/parameters/collectionId'
-      responses:
-        '200':
-          description: Tree of documents
-          content:
-            'application/json':
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/DocumentTree'
-        '404':
-          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
-      tags:
-        - Documents
   /collections/{collectionId}/documents/{documentId}:
+    parameters:
+      - $ref: '#/components/parameters/collectionId'
+      - $ref: '#/components/parameters/documentId'
     get:
       summary: Get the document
       description: Get the document
       operationId: getDocument
       parameters:
-        - $ref: '#/components/parameters/collectionId'
-        - $ref: '#/components/parameters/documentId'
+        - in: header
+          name: Accept
+          schema:
+            $ref: '../../../../../common/definitions/documenthub.yaml#/components/schemas/DocumentFormatContentTypeEnum'
         - schema:
             type: boolean
           name: raw
@@ -179,9 +165,12 @@ paths:
           example: true
       responses:
         '200':
-          description: The document
+          description: Document
           content:
             'application/json':
+              schema:
+                $ref: '#/components/schemas/DocumentRaw'
+            application/vnd.konnect.document-nodes+json:
               schema:
                 $ref: '#/components/schemas/Document'
         '404':
@@ -192,9 +181,6 @@ paths:
       summary: Delete the document
       description: Delete the document
       operationId: deleteDocument
-      parameters:
-        - $ref: '#/components/parameters/collectionId'
-        - $ref: '#/components/parameters/documentId'
       responses:
         '204':
           description: The document has been deleted
@@ -202,13 +188,10 @@ paths:
           $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       tags:
         - Documents
-    put:
+    patch:
       summary: Update the document
       description: Update the document
       operationId: updateDocument
-      parameters:
-        - $ref: '#/components/parameters/collectionId'
-        - $ref: '#/components/parameters/documentId'
       requestBody:
         $ref: '#/components/requestBodies/UpdateDocument'
       responses:
@@ -255,11 +238,70 @@ paths:
 
 components:
   securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
+    konnectAccessToken:
+      $ref: '../../../../../common/definitions/security.yaml#/components/securitySchemes/konnectAccessToken'
   schemas:
+    DocumentRaw:
+      type: object
+      title: Document
+      description: a document
+      required:
+      - id
+      - slug
+      - revision
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: the id of the document
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        parent_document_id:
+          type: string
+          format: uuid
+          description: the id of the parent document
+          nullable: true
+          example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
+        slug:
+          type: string
+          description: the slug of the document
+          example: getting-started
+        revision:
+          $ref: '#/components/schemas/RevisionRaw'
+    RevisionRaw:
+      type: object
+      title: Revision
+      description: revision of a document
+      required:
+        - id
+        - document_id
+        - content
+        - meta
+        - title
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: the id of the revision
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        document_id:
+          type: string
+          format: uuid
+          description: the id of the document
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        content:
+          type: string
+          description: Markdown document
+        meta:
+          type: object
+          description: the metadata of the document
+          example:
+            title: Hello World
+            description: This is a description
+            keywords: hello, world
+        title:
+          type: string
+          description: the title of the document
+          example: Hello World
     Slug:
       type: string
       description: document slug
@@ -284,45 +326,6 @@ components:
       required:
       - meta
       - data
-    ListDocumentCollectionResponse:
-      type: object
-      properties:
-        meta:
-          $ref: '../../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/DocumentListItem'
-      required:
-      - meta
-      - data
-    DocumentListItem:
-      type: object
-      required:
-        - id
-        - created_at
-        - modified_at
-        - path
-      properties:
-        id:
-          type: string
-          format: uuid
-          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
-        parent_document_id:
-          type: string
-          format: uuid
-          example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
-        created_at:
-          type: string
-          format: date-time
-          example: '2019-08-24T14:15:22Z'
-        modified_at:
-          type: string
-          format: date-time
-          example: '2019-08-24T14:15:22Z'
-        path:
-          type: string
-          example: parent-doc/child-doc
     DocumentCollection:
       type: object
       title: Document Collection
@@ -644,7 +647,7 @@ components:
         format: uuid
 
 security:
-  - bearerAuth: []
+  - konnectAccessToken: []
 tags:
   - name: Collections
     description: document collections operations
