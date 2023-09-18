@@ -1,0 +1,1283 @@
+openapi: 3.0.3
+info:
+  title: Portal Management API
+  version: 0.1.0
+  description: 'The management API for Portals'
+  contact:
+    name: Kong
+    url: 'https://konghq.com'
+servers:
+  - url: 'https://us.api.konghq.com/v2'
+    description: US Region Base URL
+  - url: 'https://eu.api.konghq.com/v2'
+    description: EU Region Base URL
+paths:
+  '/portals':
+    get:
+      summary: List Portals
+      description: |-
+        Returns a list of developer portals defined in this region for this organization. Each developer portal is available at a unique address and has isolated appearance, configuration, developers, and applications.
+      operationId: list-portals
+      x-unstable: true
+      x-internal: true
+      tags:
+      - Portals
+      parameters:
+        - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+        - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/SortPortals'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListPortals'
+        '401':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+    # post:
+    #   summary: Create a Portal
+    #   description: |-
+    #     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod 
+    #     tempor incididunt ut labore et dolore magna aliqua.
+    #   operationId: create-portal
+    #   x-unstable: true
+    #   x-internal: true
+    #   tags:
+    #   - Portals
+    #   responses:
+    #     '201':
+    #       $ref: '#/components/responses/CreatePortal'
+    #     '400':
+    #       $ref: '../../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+    #     '401':
+    #       $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+    #     '403':
+    #       $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+  '/portals/{portalId}':
+    parameters:
+      - $ref: '../../../../../common/definitions/portal.yaml#/components/parameters/PortalId'
+    get:
+      summary: Get One Portal
+      description: |-
+        Returns the configuration for a single developer portal. This allows you to understand the current visibility and domain settings.
+      operationId: get-portal
+      x-unstable: true
+      x-internal: true
+      tags:
+      - Portals
+      responses:
+        '200':
+          $ref: '#/components/responses/GetPortal'
+        '401':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '400':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        '403':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+        '404':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+    patch:
+      summary: Update One Portal
+      description: |-
+        Updates the configuration for a single portal including the visibility and custom domain settings.
+      operationId: update-portal
+      x-unstable: true
+      x-internal: true
+      requestBody:
+        $ref: '#/components/requestBodies/UpdatePortal'
+      tags:
+      - Portals
+      responses:
+        '200':
+          $ref: '#/components/responses/UpdatePortal'
+        '400':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+        '404':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+  '/portals/{portalId}/products':
+    get:
+      summary: List Portal Products
+      operationId: list-portal-products
+      x-unstable: true
+      x-internal: true
+      description: |-
+        Lists all of the API Products that are published to this developer portal. An API Product packages together associated APIs and their operations, backed by thorough documentation, with the objective of making API consumption straightforward for developers
+      parameters:
+        - $ref: '../../../../../common/definitions/portal.yaml#/components/parameters/PortalId'
+        - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+        - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
+      tags:
+      - Portals
+      responses:
+          '200':
+            $ref: '#/components/responses/ListPortalProducts'
+          '400':
+            $ref: '../../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+          '401':
+            $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+          '403':
+            $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+          '404':
+            $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+
+  # TODO: this will ported over from the portal-rbac v2 OAS with TDX-3291
+  # '/portals/{portalId}/developers':
+  #   get:
+  #     summary: List Developers
+  #     description: |-
+  #       List all of the Developers that have registered for this Portal. Each Developer can be registered to one Portal and must be approved to login unless using the Developer auto-approve setting.
+  #     operationId: list-developers
+  #     x-unstable: true
+  #     x-internal: true
+  #     parameters:
+  #       - $ref: '../../../../../common/definitions/portal.yaml#/components/parameters/PortalId'
+  #       - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+  #       - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
+  #       - $ref: '#/components/parameters/FilterDevelopersByEmail'
+  #       - $ref: '#/components/parameters/FilterDevelopersByName'
+  #       - $ref: '#/components/parameters/FilterDevelopersByNameShort'
+  #       - $ref: '#/components/parameters/SortDevelopers'
+  #     tags:
+  #     - Portals
+  #     responses:
+  #       '200':
+  #         $ref: '#/components/responses/ListDevelopers'
+  #       '400':
+  #         $ref: '../../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+  #       '401':
+  #         $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+  #       '403':
+  #         $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+  #       '404':
+  #         $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+  '/portals/{portalId}/developers/{developerId}':
+    parameters:
+      - $ref: '../../../../../common/definitions/portal.yaml#/components/parameters/PortalId'
+      - $ref: '#/components/parameters/DeveloperId'
+    get:
+      summary: Get One Developer
+      description: |-
+        Gets information about a single Developer in this portal.
+      operationId: get-one-developer
+      x-unstable: true
+      x-internal: true
+      parameters:
+        - $ref: '../../../../../common/definitions/portal.yaml#/components/parameters/PortalId'
+        - $ref: '#/components/parameters/DeveloperId'
+      tags:
+      - Portals
+      responses:
+        '200':
+          $ref: '#/components/responses/GetDeveloper'
+        '401':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+        '404':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+    patch:
+      summary: Update One Developer
+      description: |-
+        Updates the status of a particular developer. Approved developers have access to login to the portal. Revoked, Rejected, or Pending are not allowed to login.
+      operationId: update-developer
+      x-unstable: true
+      x-internal: true
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateDeveloper'
+      tags:
+      - Portals
+      responses:
+        '200':
+          $ref: '#/components/responses/UpdateDeveloper'
+        '400':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+        '404':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+    delete:
+      summary: Delete One Developer
+      description: |-
+        Deletes a developer, which will discontinue their ability to login or view any resources. They must re-register to and be approved to gain access again.
+      operationId: delete-developer
+      x-unstable: true
+      x-internal: true
+      tags:
+      - Portals
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+        '404':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+  '/portals/{portalId}/applications':
+    get:
+      summary: List Applications
+      description: |-
+        List all of the Applications that have been created by Developers in this Portal. Each Application can be registered to one or more API Product Versions which means that API Requests can be made to the API Product Version using credentials from the Application.
+      operationId: list-applications
+      x-unstable: true
+      x-internal: true
+      parameters:
+        - $ref: '../../../../../common/definitions/portal.yaml#/components/parameters/PortalId'
+        - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+        - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/FilterApplicationByName'
+        - $ref: '#/components/parameters/FilterApplicationByNameShort'
+        - $ref: '#/components/parameters/FilterByDeveloperId'
+        - $ref: '#/components/parameters/SortApplications'
+      tags:
+      - Portals
+      responses:
+        '200':
+          $ref: '#/components/responses/ListApplications'
+        '400':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+        '404':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+  '/portals/{portalId}/applications/{applicationId}':
+    get:
+      summary: Get One Application
+      description: |-
+        Gets the configuration of a single Application in this portal.
+      operationId: get-one-application
+      x-unstable: true
+      x-internal: true
+      parameters:
+        - $ref: '../../../../../common/definitions/portal.yaml#/components/parameters/PortalId'
+        - $ref: '#/components/parameters/ApplicationId'
+      tags:
+      - Portals
+      responses:
+        '200':
+          $ref: '#/components/responses/GetApplication'
+        '401':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+        '404':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+  '/portals/{portalId}/application-registrations':
+     get:
+      summary: List Application Registrations by Portal
+      description: |-
+        Lists all of the Application Registrations and their current status (e.g. approved or pending) for this Portal. Approved applications can be used by Developers to register for one or more API Product Versions which allows API requests to be made successfully.
+      operationId: list-registrations
+      x-unstable: true
+      x-internal: true
+      parameters:
+        - $ref: '../../../../../common/definitions/portal.yaml#/components/parameters/PortalId'
+        - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+        - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/FilterApplicationRegistrationByStatusShort'
+        - $ref: '#/components/parameters/FilterApplicationRegistrationByStatus'
+        - $ref: '#/components/parameters/SortListAllApplicationRegistrations'
+      tags:
+      - Portals
+      responses:
+        '200':
+          $ref: '#/components/responses/ListApplicationRegistrations'
+        '400':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+        '404':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+  '/portals/{portalId}/applications/{applicationId}/registrations':
+     get:
+      summary: List Registrations by Application
+      description: |-
+        Lists all of the API Products that this Application has registered for and their current status (e.g. "pending", "approved", "rejected").
+      operationId: list-registrations-by-application
+      x-unstable: true
+      x-internal: true
+      parameters:
+        - $ref: '../../../../../common/definitions/portal.yaml#/components/parameters/PortalId'
+        - $ref: '#/components/parameters/ApplicationId'
+        - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+        - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/FilterApplicationRegistrationByStatusShort'
+        - $ref: '#/components/parameters/FilterApplicationRegistrationByStatus'
+        - $ref: '#/components/parameters/SortApplicationRegistrations'
+      tags:
+      - Portals
+      responses:
+        '200':
+          $ref: '#/components/responses/ListApplicationRegistrations'
+        '400':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+        '404':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+  '/portals/{portalId}/applications/{applicationId}/registrations/{registrationId}':
+    parameters:
+      - $ref: '../../../../../common/definitions/portal.yaml#/components/parameters/PortalId'
+      - $ref: '#/components/parameters/ApplicationId'
+      - $ref: '#/components/parameters/RegistrationId'
+    get:
+      summary: Get One Application Registration
+      description: |-
+        Gets the detailed information about the registration status of an Application for a Particular API Product Version.
+      operationId: get-one-application-registration
+      x-unstable: true
+      x-internal: true
+      tags:
+      - Portals
+      responses:
+        '200':
+          $ref: '#/components/responses/GetApplicationRegistration'
+        '401':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+        '404':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+    patch:
+      summary: Update One Application Registration
+      description: |-
+        Updates the status of a particular application registration to an API Product Version. Approved application registrations will allow API traffic to the corresponding API. Revoked, Rejected, or Pending will not allow API traffic.
+      operationId: update-application-registration
+      x-unstable: true
+      x-internal: true
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateApplicationRegistration'
+      tags:
+      - Portals
+      responses:
+        '200':
+          $ref: '#/components/responses/UpdateApplicationRegistration'
+        '400':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+        '404':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+    delete:
+      summary: Delete One Application Registration
+      description: |-
+        Deletes an application registration, which if currently approved will immediately block API traffic to the API Product Version. Note: Developers can request a new Application Registration.
+      operationId: delete-application-registration
+      x-unstable: true
+      x-internal: true
+      tags:
+      - Portals
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+        '404':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+  '/portals/appearance':
+    get:
+      summary: Get Default Appearance Configurations
+      description: |-
+        Returns the default Portal appearance configuration including pre-defined theme, color, and font configurations.
+      operationId: get-portal-appearance-defaults
+      x-unstable: true
+      x-internal: true
+      tags:
+      - Portals
+      responses:
+        '200':
+          $ref: '#/components/responses/GetAppearanceDefaults'
+        '400':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+        '404':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+  '/portals/{portalId}/appearance':
+    get:
+      summary: Get Appearance Configuration
+      description: |-
+        Returns the current Portal appearance configuration including pre-defined theme, colors, and font configurations. Portals using the fully-customizable portal client may override or ignore these settings.
+      operationId: get-portal-appearance
+      x-unstable: true
+      x-internal: true
+      parameters:
+        - $ref: '../../../../../common/definitions/portal.yaml#/components/parameters/PortalId'
+      tags:
+      - Portals
+      responses:
+        '200':
+          $ref: '#/components/responses/GetPortalAppearance'
+        '400':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+        '404':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+    patch:
+      summary: Update Appearance Configuration
+      description: |-
+        Updates the current appearance configuration for this portal including themes, fonts, and colors. Note that portals using the fully-customizable portal client may override these settings.
+      operationId: update-portal-appearance
+      x-unstable: true
+      x-internal: true
+      requestBody:
+        $ref: '#/components/requestBodies/UpdatePortalAppearance'
+      parameters:
+        - $ref: '../../../../../common/definitions/portal.yaml#/components/parameters/PortalId'
+      tags:
+      - Portals
+      responses:
+        '200':
+          $ref: '#/components/responses/UpdatePortalAppearance'
+        '400':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+        '404':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+  '/portals/{portalId}/verify-domain':
+    post:
+      summary: Verify Custom Domains
+      description: |-
+        Verifies the current status of the custom hosted domain for this portal. It will indicate whether the appropriate CNAME properties have propagated and that a corresponding SSL certificate has been generated.
+      operationId: verify-portal-domains
+      x-unstable: true
+      x-internal: true
+      parameters:
+        - $ref: '../../../../../common/definitions/portal.yaml#/components/parameters/PortalId'
+      tags:
+      - Portals
+      responses:
+        '200':
+          $ref: '#/components/responses/VerifyPortalDomains'
+        '400':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+        '404':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+components:
+  requestBodies:
+    UpdatePortal:
+      description: Update a portal
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdatePortalRequest'
+    UpdateApplicationRegistration:
+      description: Update an application registration
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateApplicationRegistrationRequest'
+    UpdatePortalAppearance:
+      description: Update a portal's appearance settings
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdatePortalAppearanceRequest'
+    UpdateDeveloper:
+      description: Update a developer
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateDeveloperRequest'
+  parameters:
+    DeveloperId:
+      name: developerId
+      in: path
+      required: true
+      description: The Developer Id
+      schema:
+        $ref: '../../../../../common/definitions/konnect_properties.yaml#/components/schemas/UUID'
+    ApplicationId:
+      name: applicationId
+      in: path
+      required: true
+      description: The Application Id
+      schema:
+        $ref: '../../../../../common/definitions/konnect_properties.yaml#/components/schemas/UUID'
+    RegistrationId:
+      name: registrationId
+      in: path
+      required: true
+      description: The Application registration Id
+      schema:
+        $ref: '../../../../../common/definitions/konnect_properties.yaml#/components/schemas/UUID'
+    FilterDevelopersByEmail:
+      name: 'filter[email][eq]'
+      description: 'filters developers by their email'
+      in: query
+      required: false
+      schema:
+        type: string
+    FilterDevelopersByName:
+      name: 'filter[name][eq]'
+      description: 'filters developers by their names'
+      in: query
+      required: false
+      schema:
+        type: string
+    FilterDevelopersByNameShort:
+      name: 'filter[name]'
+      description: 'filters developers by their names (alias for filter[name][eq])'
+      in: query
+      required: false
+      schema:
+        type: string
+    FilterApplicationByName:
+      name: 'filter[name][eq]'
+      description: 'filters an applications by their names'
+      in: query
+      required: false
+      schema:
+        type: string
+    FilterApplicationByNameShort:
+      name: 'filter[name]'
+      description: 'filters applications by their names (alias for filter[name][eq])'
+      in: query
+      required: false
+      schema:
+        type: string
+    FilterByDeveloperId:
+      name: 'filter[developer]'
+      description: "filters applications by their developer's id"
+      in: query
+      required: false
+      schema:
+        type: string
+    FilterApplicationRegistrationByStatus:
+      name: 'filter[status][eq]'
+      description: 'filters application registrations by their statuses'
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/ApplicationRegistrationStatus'
+    FilterApplicationRegistrationByStatusShort:
+      name: 'filter[status]'
+      description: 'filters application registrations by their statuses (alias for filter[status][eq])'
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/ApplicationRegistrationStatus'
+    SortPortals:
+      name: 'sort'
+      description: |
+        Sorts a collection of portals. Supported sort attributes are:
+          - created_at
+          - updated_at
+      in: query
+      required: false
+      schema:
+        type: string
+    SortDevelopers:
+      name: 'sort'
+      description: |
+        Sorts a collection of developers. Supported sort attributes are:
+          - created_at
+          - updated_at
+          - email
+          - name
+      in: query
+      required: false
+      schema:
+        type: string
+    SortApplications:
+      name: 'sort'
+      description: |
+        Sorts a collection of applications. Supported sort attributes are:
+          - created_at
+          - updated_at
+          - developer_id
+          - name
+      in: query
+      required: false
+      schema:
+        type: string
+    SortApplicationRegistrations:
+      name: 'sort'
+      description: |
+        Sorts a set of registration for an application. Supported sort attributes are:
+          - created_at
+          - updated_at
+          - status
+      in: query
+      required: false
+      schema:
+        type: string
+    SortListAllApplicationRegistrations:
+      name: 'sort'
+      description: |
+        Sorts a collection of application registrations. Supported sort attributes are:
+          - created_at
+          - updated_at
+          - developer_id
+          - status
+      in: query
+      required: false
+      schema:
+        type: string
+  responses:
+    ListPortals:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ListPortalsResponse'
+    ListPortalProducts:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ListPortalProductsResponse'
+    GetPortal:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GetPortalResponse'
+    CreatePortal:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreatePortalResponse'
+    UpdatePortal:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdatePortalResponse'
+    VerifyPortalDomains:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/VerifyPortalDomainsResponse'
+    ListDevelopers:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ListDevelopersResponse'
+    GetDeveloper:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GetDeveloperResponse'
+    UpdateDeveloper:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateDeveloperResponse'
+    ListApplications:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ListApplicationsResponse'
+    GetApplication:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GetApplicationResponse'
+    ListApplicationRegistrations:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ListApplicationRegistrationsResponse'
+    GetApplicationRegistration:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GetApplicationRegistrationResponse'
+    UpdateApplicationRegistration:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateApplicationRegistrationResponse'
+    GetAppearanceDefaults:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GetAppearanceDefaultsResponse'
+    GetPortalAppearance:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GetPortalAppearanceResponse'
+    UpdatePortalAppearance:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdatePortalAppearanceResponse'
+  schemas:
+    ListPortalsResponse:
+      additionalProperties: false
+      type: object
+      required:
+        - data
+        - meta
+      properties:
+        meta:
+          $ref: '../../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Portal'
+    ListPortalProductsResponse:
+      additionalProperties: false
+      type: object
+      required:
+        - data
+        - meta
+      properties:
+        meta:
+          $ref: '../../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '../../../api-products/v2/src/openapi.yaml#/components/schemas/APIProduct'
+    GetPortalResponse:
+      $ref: '#/components/schemas/Portal'
+    CreatePortalResponse:
+      $ref: '#/components/schemas/Portal'
+    UpdatePortalResponse:
+      $ref: '#/components/schemas/Portal'
+    GetAppearanceDefaultsResponse:
+      $ref: '#/components/schemas/AppearanceDefaults'
+    GetPortalAppearanceResponse:
+      allOf:
+        - $ref: '#/components/schemas/PortalAppearance'
+        - type: object
+          required: &requiredPortalAppearanceProps
+            - theme_name
+            - use_custom_fonts
+            - custom_theme
+            - custom_fonts
+            - text
+            - images
+    UpdatePortalAppearanceResponse:
+      allOf:
+        - $ref: '#/components/schemas/PortalAppearance'
+        - type: object
+          required: *requiredPortalAppearanceProps
+    ListDevelopersResponse:
+      additionalProperties: false
+      type: object
+      required:
+        - data
+        - meta
+      properties:
+        meta:
+          $ref: '../../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PortalDeveloper'
+    ListApplicationsResponse:
+      additionalProperties: false
+      type: object
+      required:
+        - data
+        - meta
+      properties:
+        meta:
+          $ref: '../../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Application'
+    UpdateDeveloperResponse:
+      $ref: '#/components/schemas/PortalDeveloper'
+    GetDeveloperResponse:
+      $ref: '#/components/schemas/PortalDeveloper'
+    GetApplicationResponse:
+      $ref: '#/components/schemas/Application'
+    ListApplicationRegistrationsResponse:
+      additionalProperties: false
+      type: object
+      required:
+        - data
+        - meta
+      properties:
+        meta:
+          $ref: '../../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApplicationRegistration'
+    GetApplicationRegistrationResponse:
+        $ref: '#/components/schemas/ApplicationRegistration'
+    UpdateApplicationRegistrationResponse:
+        $ref: '#/components/schemas/ApplicationRegistration'
+    VerifyPortalDomainsResponse:
+      additionalProperties: false
+      type: object
+      required:
+      - is_cname_verified
+      - is_ssl_issued
+      properties:
+        is_cname_verified:
+          type: boolean
+          readOnly: true
+        is_ssl_issued:
+          type: boolean
+          readOnly: true
+    PortalDeveloper:
+      additionalProperties: false
+      type: object
+      required:
+      - id
+      - created_at
+      - updated_at
+      - email
+      - full_name
+      - status
+      properties:
+        id:
+          $ref: '../../../../../common/definitions/konnect_properties.yaml#/components/schemas/UUID'
+        created_at:
+          $ref: '../../../../../common/definitions/konnect_properties.yaml#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '../../../../../common/definitions/konnect_properties.yaml#/components/schemas/UpdatedAt'
+        email:
+          type: string
+          format: email
+          maxLength: 255
+        full_name:
+          type: string
+          maxLength: 255
+        status:
+          $ref: '#/components/schemas/DeveloperStatus'
+    Application:
+      additionalProperties: false
+      type: object
+      required:
+      - id
+      - created_at
+      - updated_at
+      - name
+      - description
+      - reference_id
+      - client_provider_id
+      - developer_id
+      properties:
+        id:
+          $ref: '../../../../../common/definitions/konnect_properties.yaml#/components/schemas/UUID'
+        created_at:
+          $ref: '../../../../../common/definitions/konnect_properties.yaml#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '../../../../../common/definitions/konnect_properties.yaml#/components/schemas/UpdatedAt'
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        reference_id:
+          type: string
+          readOnly: true
+        client_provider_id:
+          $ref: '../../../../../common/definitions/konnect_properties.yaml#/components/schemas/NullableUUID'
+        developer_id:
+          type: string
+          format: uuid
+          readOnly: true
+    ApplicationRegistration:
+      additionalProperties: false
+      type: object
+      required:
+      - id
+      - created_at
+      - updated_at
+      - status
+      - product_version_id
+      - application_id
+      properties:
+        id:
+          $ref: '../../../../../common/definitions/konnect_properties.yaml#/components/schemas/UUID'
+        created_at:
+          $ref: '../../../../../common/definitions/konnect_properties.yaml#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '../../../../../common/definitions/konnect_properties.yaml#/components/schemas/UpdatedAt'
+        status:
+          $ref: '#/components/schemas/ApplicationRegistrationStatus'
+        product_version_id:
+          $ref: '../../../../../common/definitions/konnect_properties.yaml#/components/schemas/UUID'
+        application_id:
+          $ref: '../../../../../common/definitions/konnect_properties.yaml#/components/schemas/UUID'
+    Portal:
+      additionalProperties: false
+      type: object
+      required:
+      - id
+      - created_at
+      - updated_at
+      - name
+      - default_domain
+      - is_public
+      - rbac_enabled
+      - auto_approve_applications
+      - auto_approve_developers
+      - custom_domain
+      - custom_client_domain
+      properties:
+        id:
+          $ref: '../../../../../common/definitions/konnect_properties.yaml#/components/schemas/UUID'
+        created_at:
+          $ref: '../../../../../common/definitions/konnect_properties.yaml#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '../../../../../common/definitions/konnect_properties.yaml#/components/schemas/UpdatedAt'
+        name:
+          type: string
+          maxLength: 255
+          minLength: 1
+        default_domain:
+          type: string
+          format: hostname
+          readOnly: true
+        is_public:
+          type: boolean
+        rbac_enabled:
+          type: boolean
+        auto_approve_applications:
+          type: boolean
+        auto_approve_developers:
+          type: boolean
+        custom_domain:
+          nullable: true
+          type: string
+          format: hostname
+        custom_client_domain:
+          nullable: true
+          type: string
+          format: hostname
+    UpdatePortalRequest:
+      additionalProperties: false
+      type: object
+      properties:
+        is_public:
+          type: boolean
+        rbac_enabled:
+          type: boolean
+        auto_approve_applications:
+          type: boolean
+        auto_approve_developers:
+          type: boolean
+        custom_domain:
+          type: string
+          format: hostname
+          maxLength: 1024
+        custom_client_domain:
+          type: string
+          format: hostname
+          maxLength: 1024
+    UpdateDeveloperRequest:
+      additionalProperties: false
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/DeveloperStatus'
+    UpdateApplicationRegistrationRequest:
+      additionalProperties: false
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/ApplicationRegistrationStatus'
+    UpdatePortalAppearanceRequest:
+      $ref: '#/components/schemas/PortalAppearance'
+    AppearanceDefaults:
+      additionalProperties: false
+      type: object
+      readOnly: true
+      required:
+      - themes
+      - fonts
+      - text
+      properties:
+        themes:
+          $ref: '#/components/schemas/AppearanceDefaultThemes'
+        fonts:
+          $ref: '#/components/schemas/AppearanceFonts'
+        text:
+          $ref: '#/components/schemas/AppearanceTextVariables'
+    AppearanceDefaultThemes:
+      additionalProperties: false
+      type: object
+      readOnly: true
+      required:
+        - mint_rocket
+        - dark_mode
+      properties:
+        mint_rocket:
+          $ref: '#/components/schemas/AppearanceThemeVariables'
+        dark_mode:
+          $ref: '#/components/schemas/AppearanceThemeVariables'
+    AppearanceColorVariable:
+      type: object
+      additionalProperties: false
+      required:
+        - value
+        - description
+      properties:
+        value:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+          maxLength: 512
+    AppearanceThemeColorVariables:
+      type: object
+      additionalProperties: false
+      required:
+        - section
+        - text
+        - button
+      properties:
+        section:
+          type: object
+          additionalProperties: false
+          required:
+            - header
+            - body
+            - hero
+            - accent
+            - tertiary
+            - stroke
+            - footer
+          properties:
+            header:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            body:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            hero:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            accent:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            tertiary:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            stroke:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            footer:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+        text:
+          type: object
+          additionalProperties: false
+          required:
+            - header
+            - hero
+            - primary
+            - secondary
+            - accent
+            - link
+            - footer
+          properties:
+            header:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            hero:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            primary:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            secondary:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            accent:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            link:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            footer:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+        button:
+          type: object
+          additionalProperties: false
+          required:
+            - primary_fill
+            - primary_text
+          properties:
+            primary_fill:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            primary_text:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+    AppearanceThemeVariables: &appearanceThemeVariables
+      description: Groups of variables for configuring visual details of the portal user interface. Set theme_name to 'custom' to use custom values for theme variables.
+      type: object
+      additionalProperties: false
+      required:
+        - colors
+      properties:
+        colors:
+          $ref: '#/components/schemas/AppearanceThemeColorVariables'
+    NullableAppearanceThemeVariables:
+      <<: *appearanceThemeVariables
+      nullable: true
+    AppearanceFonts: &appearanceFonts
+      description: Font selections to render text in the portal user interface. Must set use_custom_fonts to true to enable using custom font values.
+      type: object
+      additionalProperties: false
+      required:
+        - base
+        - code
+        - headings
+      properties:
+        base:
+          $ref: '#/components/schemas/AppearanceFontName'
+        code:
+          $ref: '#/components/schemas/AppearanceFontName'
+        headings:
+          $ref: '#/components/schemas/AppearanceFontName'
+    NullableAppearanceFonts:
+      <<: *appearanceFonts
+      nullable: true
+    AppearanceFontName:
+      type: string
+      enum:
+        - Roboto
+        - Inter
+        - Open Sans
+        - Lato
+        - Slabo 27px
+        - Slabo 13px
+        - Oswald
+        - Source Sans Pro
+        - Montserrat
+        - Raleway
+        - PT Sans
+        - Lora
+        - Roboto Mono
+        - Inconsolata
+        - Source Code Pro
+        - PT Mono
+        - Ubuntu Mono
+        - IBM Plex Mono
+    AppearanceImage:
+      type: object
+      additionalProperties: false
+      nullable: true
+      required:
+        - data
+      properties:
+        data:
+          type: string
+        filename:
+          type: string
+          maxLength: 512
+    AppearanceImages:
+      description: A collection of binary image data to customize images in the portal
+      type: object
+      additionalProperties: false
+      nullable: true
+      properties:
+        logo:
+          $ref: '#/components/schemas/AppearanceImage'
+        favicon:
+          $ref: '#/components/schemas/AppearanceImage'
+        catalog_cover:
+          $ref: '#/components/schemas/AppearanceImage'
+    AppearanceTextVariables: &appearanceTextVariables
+      description: Values to display for customizable text in the portal user interface
+      type: object
+      additionalProperties: false
+      required:
+      - catalog
+      properties:
+        catalog:
+          type: object
+          additionalProperties: false
+          required:
+            - welcome_message
+            - primary_header
+          properties:
+            welcome_message:
+              type: string
+              maxLength: 512
+            primary_header:
+              type: string
+              maxLength: 512
+    NullableAppearanceTextVariables:
+      <<: *appearanceTextVariables
+      nullable: true
+    PortalAppearance:
+      additionalProperties: false
+      type: object
+      properties:
+        theme_name:
+          $ref: '#/components/schemas/PortalTheme'
+        custom_theme:
+          $ref: '#/components/schemas/NullableAppearanceThemeVariables'
+        custom_fonts:
+          $ref: '#/components/schemas/NullableAppearanceFonts'
+        use_custom_fonts:
+          description: If true, fonts in custom_fonts will be used over the theme's default fonts
+          type: boolean
+        text:
+          $ref: '#/components/schemas/NullableAppearanceTextVariables'
+        images:
+          $ref: '#/components/schemas/AppearanceImages'
+    DeveloperStatus:
+      type: string
+      enum:
+      - approved
+      - pending
+      - revoked
+      - rejected
+    ApplicationRegistrationStatus:
+      type: string
+      enum:
+      - approved
+      - pending
+      - revoked
+      - rejected
+    PortalTheme:
+      description: Select a pre-existing default theme or specify 'custom' to use custom_theme variables.
+      type: string
+      enum:
+      - 'mint_rocket'
+      - 'dark_mode'
+      - 'custom'
+  securitySchemes:
+    personalAccessToken:
+      $ref: '../../../../../common/definitions/security.yaml#/components/securitySchemes/personalAccessToken'
+    systemAccountAccessToken:
+      $ref: '../../../../../common/definitions/security.yaml#/components/securitySchemes/systemAccountAccessToken'
+security:
+  - personalAccessToken: []
+  - systemAccountAccessToken: []
+tags:
+  - name: Portals
+    description: APIs related to the Konnect Developer Portal Management API.

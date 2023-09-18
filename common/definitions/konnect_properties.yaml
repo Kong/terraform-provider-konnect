@@ -4,8 +4,14 @@ components:
       type: string
       format: uuid
       example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-      description: Contains a unique identifier used by the API for this resource.
+      description: Contains a unique identifier used for this resource.
       readOnly: true
+    NullableUUID:
+      type: string
+      format: uuid
+      example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+      description: Contains a unique identifier for a resource.
+      nullable: true
     CreatedAt:
       type: string
       format: date-time
