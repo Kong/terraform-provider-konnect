@@ -112,7 +112,7 @@ paths:
       description: |-
         Get applications that have a registration for a given product version. Any registration for the version will count, regardless of status (i.e. even if it is pending, rejected, or revoked).
         Use the `unregistered` query param to return the inverse, only including applicatons that do not have a registration (regardless of status).
-      operationId: get-unregistered-applications
+      operationId: get-applications-by-product-version
       parameters:
         - $ref: '#/components/parameters/ProductId'
         - $ref: '#/components/parameters/ProductVersionId'
@@ -509,9 +509,9 @@ components:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/UnregisteredApplication'
-    UnregisteredApplication:
-      title: UnregisteredApplication
+            $ref: '#/components/schemas/ProductVersionApplication'
+    ProductVersionApplication:
+      title: ProductVersionApplication
       type: object
       additionalProperties: false
       required:
