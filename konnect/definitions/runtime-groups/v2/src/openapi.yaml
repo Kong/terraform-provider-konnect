@@ -37,6 +37,7 @@ paths:
         - $ref: '#/components/parameters/FilterByNameNotEquals'
         - $ref: '#/components/parameters/FilterByIdEquality'
         - $ref: '#/components/parameters/FilterByIdEqualityShort'
+        - $ref: '#/components/parameters/FilterByIdsEquality'
         - $ref: '#/components/parameters/FilterByClusterTypeEquality'
         - $ref: '#/components/parameters/FilterByClusterTypeEqualityShort'
         - $ref: '#/components/parameters/FilterByClusterTypeNotEquals'
@@ -327,6 +328,14 @@ components:
       schema:
         type: string
         example: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+    FilterByIdsEquality:
+      name: 'filter[id][oeq]'
+      description: Filter by direct equality comparison of id property with multiple supplied values.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: some-value,some-other-value
     FilterByClusterTypeEquality:
       name: 'filter[cluster_type][eq]'
       description: Filter by direct equality comparison of the cluster_type property with a supplied value.
