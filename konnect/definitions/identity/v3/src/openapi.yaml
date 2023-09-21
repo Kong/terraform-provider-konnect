@@ -42,22 +42,6 @@ paths:
           $ref: '#/components/responses/IdentityNotFound'
       tags:
         - SSO Auth0
-  /accept-invite:
-    post:
-      summary: Accept Invite
-      description: 'Accepts the Konnect invitation. This endpoint allows you to manually accept the invitation to join a Konnect organization. Upon accepting the invitation, the user''s name and password are set and the active state is set to true. This can be used as an alternative to the https://cloud.konghq.com/login link in the email which will finish the registration process in a web browser.'
-      operationId: accept-invite
-      requestBody:
-        $ref: '#/components/requestBodies/AcceptInvite'
-      responses:
-        '202':
-          description: Accepted
-        '400':
-          $ref: '#/components/responses/IdentityBadRequest'
-        '404':
-          $ref: '#/components/responses/IdentityNotFound'
-      tags:
-        - Invites
   /authentication-settings:
     get:
       summary: Get Auth Settings
@@ -1300,42 +1284,6 @@ paths:
       x-internal: true
       security:
         - konnectAccessToken: []
-  /users/me/password:
-    patch:
-      summary: Update My User Account Password
-      operationId: patch-users-me-password
-      responses:
-        '202':
-          description: Accepted
-        '400':
-          $ref: '#/components/responses/IdentityBadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          description: Forbidden - If basic auth is disabled or a konnectAccessToken was not provided.
-      x-internal: true
-      security:
-        - konnectAccessToken: []
-      description: Update the password of the user identified in the token of the request.
-      tags:
-        - Me
-      parameters: []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                old_password:
-                  type: string
-                  description: Old password.
-                new_password:
-                  type: string
-                  description: New Password.
-              required:
-                - old_password
-                - new_password
-        description: ''
   /users/me/permissions:
     get:
       summary: Get My Permissions
