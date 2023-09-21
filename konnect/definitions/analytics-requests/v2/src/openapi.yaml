@@ -1,8 +1,8 @@
 openapi: 3.0.2
 info:
-  title: Konnect Analytics Requests API
+  title: Konnect API Requests API
   version: 2.0.0
-  description: The API for querying Requests.
+  description: The API for querying API Requests.
   contact:
     name: Kong
     url: 'https://cloud.konghq.com'
@@ -15,11 +15,11 @@ paths:
   /api-requests:
     post:
       x-unstable: true
-      summary: Query Requests
+      summary: Query API Requests
       operationId: query-requests
       description: Returns API requests that were proxied through the Kong Gateway.
       tags:
-        - Requests Analytics
+        - API Requests
       requestBody:
         required: true
         content:
@@ -31,6 +31,8 @@ paths:
                 $ref: '#/components/examples/ExampleControlPlaneFilter'
               Query Gateway Service filter and absolute time range:
                 $ref: '#/components/examples/ExampleGatewayServiceFilter'
+              Query API Product filter and offset:
+                $ref: '#/components/examples/ExampleOffsetPagination'
       responses:
         '200':
           $ref: '#/components/responses/AnalyticsRequestsResponse'
@@ -95,6 +97,14 @@ components:
             - ascending
             - descending
           default: descending
+        size:
+          type: integer
+          description: Number of requests to be returned.
+          default: 100
+        offset:
+          type: integer
+          description: Number of requests to be skipped when returning results.
+          default: 0
     RequestsFilterType:
       type: string
       description: The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values.
@@ -349,9 +359,19 @@ components:
         query_id:
           type: string
           description: Unique identifier for the query; can be used to debug issues.
+        size:
+          type: integer
+          description: Number of requests returned.
+          default: 100
+        offset:
+          type: integer
+          description: Number of requests skipped when returning results.
+          default: 0
       required:
         - time_range
         - query_id
+        - size
+        - offset
     ResponseResults:
       type: array
       description: Mapping of the columns to values.
@@ -613,6 +633,24 @@ components:
           }
         ],
       }
+    ExampleOffsetPagination:
+      value: {
+        "time_range": {
+          "type": "relative",
+          "time_range": "1H",
+        },
+        "filters": [
+          {
+            "type": "in",
+            "dimension": "api_product",
+            "values": [
+              "97fdea2e-ed40-4560-b2da-8aa3a3dfa349"
+            ]
+          }
+        ],
+        "size": 10,
+        "offset": 100
+      }
     ResponseExample:
       value: {
         "results": [
@@ -720,6 +758,8 @@ components:
           }
         ],
         "meta": {
+          "size": 15,
+          "offset": 0,
           "query_id": "apilog-11AF3891-C638-43E6-A85A-4EBCCAF0E690",
           "time_range": {
             "start": "2020-02-02T00:00:00.000Z",
@@ -733,4 +773,4 @@ components:
 security:
   - personalAccessToken: []
 tags:
-  - name: Requests Analytics
+  - name: API Requests
