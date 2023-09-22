@@ -1384,6 +1384,27 @@ paths:
       operationId: get-organizations-me
       x-internal: true
       description: Returns the organization of the user identified in the token of the request.
+    patch:
+      summary: Updates the current user's organization
+      operationId: update-organizations-me
+      description: | 
+        This operation allows you to change the organization's owner. The new user must be part of the organization's admin team.
+      x-internal: true
+      tags:
+        - Me
+      responses:
+        '200':
+          $ref: '#/components/responses/MeOrganization'
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+        '403':
+          $ref: '#/components/responses/IdentityPermissionDenied'
+        '404':
+          $ref: '#/components/responses/IdentityNotFound'
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateOrganization'
 components:
   responses:
     Auth0Registration:
@@ -2990,6 +3011,20 @@ components:
                     default: groups
                     example: custom-group-claim
       description: The request schema for the update IdP configuration request.
+    UpdateOrganization:
+      description: The request schema to update an organization.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              owner_id:
+                type: string
+                description: The user id of the new owner of the organization. Must be a member of the organization's admin team.
+                example: YOUR_OWNER_ID
+          examples:
+            Example Request Body:
+              $ref: '#/components/examples/Update-Organization'
   schemas:
     Auth0Organization:
       title: Auth0 organization schema.
@@ -3676,6 +3711,9 @@ components:
         basic_auth_enabled: true
         idp_mapping_enabled: false
         konnect_mapping_enabled: true
+    Update-Organization:
+      value:
+        owner_id: df120cb4-f60b-47bc-a2f8-6a28e6a3c63b
 security:
   - personalAccessToken: []
   - systemAccountAccessToken: []
