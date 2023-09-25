@@ -3022,6 +3022,10 @@ components:
                 type: string
                 description: The user id of the new owner of the organization. Must be a member of the organization's admin team.
                 example: YOUR_OWNER_ID
+              name:
+                type: string
+                description: The new name of the organization.
+                example: Kong Inc
           examples:
             Example Request Body:
               $ref: '#/components/examples/Update-Organization'
@@ -3714,6 +3718,7 @@ components:
     Update-Organization:
       value:
         owner_id: df120cb4-f60b-47bc-a2f8-6a28e6a3c63b
+        name: Kong Inc
 security:
   - personalAccessToken: []
   - systemAccountAccessToken: []
