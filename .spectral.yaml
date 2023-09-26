@@ -312,6 +312,11 @@ overrides:
     rules:
       errors-post-not-contain-200: "off"
   - files:
+      - "konnect/definitions/mesh-control-planes/v0/**/openapi.yaml"
+    rules:
+      server-url-must-contain-version-aip-3101: "off"
+      oas3-valid-media-example: "off" # page[number] is not defined in AIP
+  - files:
       - "konnect/definitions/audit-logs/v2/**/openapi.yaml"
     rules:
       errors-require-type-aip-193: "off"

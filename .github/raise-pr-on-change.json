@@ -33,6 +33,12 @@
       "dest": "openapi.yaml"
     }
   ],
+  "kong/mink-vcp-manager": [
+    {
+      "src": "konnect/definitions/mesh-control-planes/v0/computed/openapi.yaml",
+      "dest": "specs/openapi/controlplanes.v0.yml"
+    }
+  ],
   "kong/khcp": [
     {
       "src": "portal/definitions/applications/computed/openapi.yaml",
