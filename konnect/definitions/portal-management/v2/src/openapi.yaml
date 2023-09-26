@@ -1886,6 +1886,7 @@ components:
       - status
       - product_version_id
       - application_id
+      - developer_id
       properties:
         id:
           $ref: '../../../../../common/definitions/konnect_properties.yaml#/components/schemas/UUID'
@@ -1898,6 +1899,8 @@ components:
         product_version_id:
           $ref: '../../../../../common/definitions/konnect_properties.yaml#/components/schemas/UUID'
         application_id:
+          $ref: '../../../../../common/definitions/konnect_properties.yaml#/components/schemas/UUID'
+        developer_id:
           $ref: '../../../../../common/definitions/konnect_properties.yaml#/components/schemas/UUID'
     Portal:
       additionalProperties: false
