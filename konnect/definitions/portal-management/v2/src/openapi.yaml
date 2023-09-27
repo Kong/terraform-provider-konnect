@@ -283,6 +283,7 @@ paths:
         - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
         - $ref: '#/components/parameters/FilterApplicationRegistrationByStatusShort'
         - $ref: '#/components/parameters/FilterApplicationRegistrationByStatus'
+        - $ref: '#/components/parameters/FilterByDeveloperId'
         - $ref: '#/components/parameters/SortListAllApplicationRegistrations'
       tags:
       - Portals
@@ -966,7 +967,7 @@ components:
       schema:
         type: string
     FilterByDeveloperId:
-      name: 'filter[developer]'
+      name: 'filter[developer_id]'
       description: "filters applications by their developer's id"
       in: query
       required: false
