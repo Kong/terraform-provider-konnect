@@ -36,7 +36,7 @@ paths:
     # post:
     #   summary: Create a Portal
     #   description: |-
-    #     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod 
+    #     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
     #     tempor incididunt ut labore et dolore magna aliqua.
     #   operationId: create-portal
     #   x-unstable: true
@@ -1227,7 +1227,8 @@ components:
   schemas:
     PortalClaimMappings:
       type: object
-      minProperties: 3
+      minProperties: 0
+      maxProperties: 3
       properties:
         name:
           type: string
@@ -1499,21 +1500,7 @@ components:
             type: string
             default: openid
         oidc_claim_mappings:
-          type: object
-          minProperties: 3
-          properties:
-            name:
-              type: string
-              example: name
-              default: name
-            email:
-              type: string
-              example: email
-              default: email
-            groups:
-              type: string
-              default: groups
-              example: custom-group-claim
+          $ref: '#/components/schemas/PortalClaimMappings'
     PortalTeamGroupMappingsUpdateRequest:
       type: object
       example:
