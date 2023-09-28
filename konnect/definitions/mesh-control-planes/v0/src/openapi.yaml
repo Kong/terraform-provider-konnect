@@ -7,15 +7,14 @@ info:
       name: Kong
       url: 'https://konghq.com'
 servers:
-  - url: https://us.api.konghq.com/v0
+  - url: https://us.api.konghq.com/v1
     description: US Public API
-  - url: https://eu.api.konghq.com/v0
+  - url: https://eu.api.konghq.com/v1
     description: EU Public API
 paths:
   /mesh/control-planes:
     get:
       summary: List Control Planes
-      x-unstable: true
       responses:
         '200':
           $ref: '#/components/responses/ListMeshControlPlanesResponse'
@@ -29,7 +28,6 @@ paths:
       summary: Create a new control plane
       description: Create a new control plane
       operationId: create-cp
-      x-unstable: true
       requestBody:
         required: true
         content:
@@ -62,7 +60,6 @@ paths:
       summary: Get the control plane
       description: Get the control plane
       operationId: get-mesh-control-plane
-      x-unstable: true
       responses:
         '200':
           $ref: '#/components/responses/RetrieveMeshControlPlaneResponse'
@@ -76,7 +73,6 @@ paths:
       summary: Delete the control plane
       description: Delete the control plane
       operationId: delete-mesh-control-plane
-      x-unstable: true
       responses:
         '204':
           description: No Content
@@ -89,7 +85,6 @@ paths:
     patch:
       summary: Update control plane
       operationId: update-mesh-control-plane
-      x-unstable: true
       responses:
         '200':
           $ref: '#/components/responses/UpdateMeshControlPlaneResponse'
