@@ -278,7 +278,7 @@ components:
               type: array
               items:
                 type: string
-                enum: [ API_PRODUCT, API_PRODUCT_VERSION, ROUTE, APPLICATION, STATUS_CODE, STATUS_CODE_GROUPED, GATEWAY_SERVICE, RUNTIME_GROUP, TIME ]
+                enum: [ API_PRODUCT, API_PRODUCT_VERSION, ROUTE, APPLICATION, STATUS_CODE, STATUS_CODE_GROUPED, GATEWAY_SERVICE, CONTROL_PLANE, TIME ]
               description: |
                 The dimensions for the report.  A report may have up to 2 dimensions, including time.
                 If the report has a timeseries graph, the time dimension will be added automatically if not provided.
@@ -318,7 +318,7 @@ components:
                     STATUS_CODE: '#/components/schemas/StatusCodeFilter'
                     STATUS_CODE_GROUPED: '#/components/schemas/StatusCodeGroupedFilter'
                     GATEWAY_SERVICE: '#/components/schemas/GatewayServiceFilter'
-                    RUNTIME_GROUP: '#/components/schemas/RuntimeGroupFilter'
+                    CONTROL_PLANE: '#/components/schemas/ControlPlaneFilter'
                 oneOf:
                   - $ref: '#/components/schemas/ApiProductFilter'
                   - $ref: '#/components/schemas/ApiProductVersionFilter'
@@ -327,7 +327,7 @@ components:
                   - $ref: '#/components/schemas/StatusCodeFilter'
                   - $ref: '#/components/schemas/StatusCodeGroupedFilter'
                   - $ref: '#/components/schemas/GatewayServiceFilter'
-                  - $ref: '#/components/schemas/RuntimeGroupFilter'
+                  - $ref: '#/components/schemas/ControlPlaneFilter'
               default: []
     TimeRange:
       description: |
@@ -431,7 +431,7 @@ components:
           $ref: '#/components/schemas/FilterType'
         values:
           description: |
-            The routes to include in the results.  Because route UUIDs are only unique within a given runtime group, the filter values must be of the form "[runtime group UUID]:[route UUID]".
+            The routes to include in the results.  Because route UUIDs are only unique within a given control plane, the filter values must be of the form "[control plane UUID]:[route UUID]".
           type: array
           items: &validScopedUuid
             type: string
@@ -510,25 +510,25 @@ components:
           $ref: '#/components/schemas/FilterType'
         values:
           description: |
-            The gateway services to include in the results.  Because gateway service UUIDs are only unique within a given runtime group, the filter values must be of the form "[runtime group UUID]:[service UUID]".
+            The gateway services to include in the results.  Because gateway service UUIDs are only unique within a given control plane, the filter values must be in the form "[control plane UUID]:[service UUID]".
           type: array
           items: *validScopedUuid
       required:
         - dimension
         - type
         - values
-    RuntimeGroupFilter:
+    ControlPlaneFilter:
       type: object
       properties:
         dimension:
           description: The dimension to filter.
           type: string
-          enum: [ RUNTIME_GROUP ]
+          enum: [ CONTROL_PLANE ]
         type:
           $ref: '#/components/schemas/FilterType'
         values:
           description: |
-            The UUIDs of the runtime groups to include in the results.
+            The UUIDs of the control planes to include in the results.
           type: array
           items: *validKokoUuid
       required:
