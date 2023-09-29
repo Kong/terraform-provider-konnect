@@ -2255,33 +2255,33 @@ components:
                     viewer:
                       name: Viewer
                       description: This role grants read only access to all entities within a control plane.
-                services:
-                  name: Services
+                api_products:
+                  name: API Products
                   roles:
                     admin:
                       name: Admin
-                      description: 'Admin of an existing Service. The admins have all write access permissions related to a Service, service version, service package etc.'
+                      description: 'This role grants full write access to an API product and its versions.'
                     application_registration:
                       name: Application Registration
-                      description: This role grants permission to enable and disable application registration on a service.
+                      description: 'This role grants permission to enable and disable application registration on an API product.'
                     creator:
                       name: Creator
-                      description: 'This access is required to create a service. In addition the creators are granted Admin access to the service they create. This access is not for creating sub-entities such as service versions, implementations, API specs etc.'
+                      description: 'This access is required to create API products. This access is not for creating sub-entities such as versions, API specs, etc.'
                     deployer:
                       name: Deployer
-                      description: This role grants permission to deploy and remove a service from a control plane.
+                      description: 'This role grants permission to deploy and remove an API product from a control plane.'
                     maintainer:
                       name: Maintainer
-                      description: This role grants all write permission to manage a service and to administer plugins.
+                      description: 'This role grants all write permission to manage an API product and to administer plugins.'
                     plugins_admin:
                       name: Plugins Admin
-                      description: This role grants full write permission to administer plugins.
+                      description: 'This role grants full write permission to administer plugins.'
                     publisher:
                       name: Publisher
-                      description: This role grants permission to publish a service to one or more portals.
+                      description: This role grants permission to publish an API product to one or more portals.
                     viewer:
                       name: Viewer
-                      description: 'Viewer has read-only access to all the configurations of a service, attributes, versions, reports, vitals and plugins.'
+                      description: 'Viewer has read-only access to an API product and its sub-entities.'
                 audit_logs:
                   name: Audit Logs
                   roles:
