@@ -3550,7 +3550,7 @@ info:
   license:
     name: Apache 2.0
     url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
-  title: Runtime Groups Configuration API
+  title: Konnect Runtime Groups Configuration
   version: 0.0.1
 openapi: 3.0.0
 paths:

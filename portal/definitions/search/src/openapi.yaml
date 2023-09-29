@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: Portal Search API
+  title: Portal Search
   version: 2.0.0
   description: N/A (this description is removed during bundling)
   contact:

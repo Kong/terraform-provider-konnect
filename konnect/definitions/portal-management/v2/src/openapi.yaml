@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: Portal Management API
+  title: Portal Management
   version: 0.1.0
   description: 'The management API for Portals'
   contact:

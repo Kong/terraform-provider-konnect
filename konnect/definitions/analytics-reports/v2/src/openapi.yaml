@@ -1,6 +1,6 @@
 openapi: 3.0.2
 info:
-  title: Konnect Analytics Reports API
+  title: Konnect Analytics Reports
   version: 2.0.0
   description: The API for managing custom reports.
   contact:

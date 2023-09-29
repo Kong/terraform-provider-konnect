@@ -1,6 +1,6 @@
 openapi: 3.0.2
 info:
-  title: Konnect Audit Logs Settings API
+  title: Konnect Audit Log Settings
   version: 2.0.0
   description: The API for configuring Kong Konnect Audit Logs.
   contact:

@@ -73,6 +73,26 @@ rules:
       functionOptions:
         match: "https://(us|eu|global).api.konghq.com/v(\\d+)"
 
+  title-prefix:
+    severity: error
+    description: "Titles must be prefixed with their product. One of [Konnect, Portal, Gateway]"
+    message: >-
+      "{{value}}" must start with "Konnect", "Portal" or "Gateway"
+    given: $.info.title
+    then:
+      function: pattern
+      functionOptions:
+        match: '^(Konnect|Portal|Gateway)'
+  title-no-api-suffix:
+    severity: error
+    description: "Titles must not end with 'API'"
+    message: >-
+      "{{value}}" must not have an "API" suffix
+    given: $.info.title
+    then:
+      function: pattern
+      functionOptions:
+        notMatch: 'API\s?$'
 
   # ---------------------------------------------------------------------------
   # API Rules

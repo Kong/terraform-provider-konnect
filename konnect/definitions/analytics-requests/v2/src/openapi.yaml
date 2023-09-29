@@ -1,6 +1,6 @@
 openapi: 3.0.2
 info:
-  title: Konnect API Requests API
+  title: Konnect API Requests
   version: 2.0.0
   description: The API for querying API Requests.
   contact:

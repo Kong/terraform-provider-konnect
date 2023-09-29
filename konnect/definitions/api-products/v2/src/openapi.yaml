@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: API Products API
+  title: Konnect API Products
   version: 2.0.0
   description: The API for Kong Konnect API Products.
   contact:
@@ -1014,7 +1014,6 @@ components:
           example: My Name
         description:
           type: string
-          nullable: true
           description: The description of the API product
           example: MyDescription
         portal_ids:

@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: Control Planes API
+  title: Konnect Control Planes
   version: 2.0.0
   description: The API for Kong Konnect Control Planes.
   contact:

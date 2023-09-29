@@ -1,6 +1,6 @@
 openapi: 3.0.2
 info:
-  title: Konnect Identity API
+  title: Konnect Identity Management
   version: 2.0.0
   description: The management API for Kong Konnect Identity resources.
   contact:

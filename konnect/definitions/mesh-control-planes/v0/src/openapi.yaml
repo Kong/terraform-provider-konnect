@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-    title: Control Plane manager API
+    title: Konnect Mesh Control Plane manager
     description: Control Plane manager API
     version: '0.0.1'
     contact:
