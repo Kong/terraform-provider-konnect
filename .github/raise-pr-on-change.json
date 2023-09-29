@@ -66,7 +66,7 @@
     },
     {
       "src": "konnect/definitions/api-products/v2/computed/openapi.yaml",
-      "dest": "apps/konnect-api/v2/api-products/openapi.yaml"
+      "dest": "apps/konnect-api/openapi/v2/api-products/openapi.yaml"
     }
   ],
   "kong/sdk-portal-js-internal": [
