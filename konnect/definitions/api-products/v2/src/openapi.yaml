@@ -597,6 +597,7 @@ components:
       in: query
       schema:
         $ref: '#/components/schemas/APIProductFilterParameters'
+      style: deepObject
     APIProductVersionFilters:
       name: filter
       description: Filters API Product Versions in the response.
@@ -604,6 +605,7 @@ components:
       in: query
       schema:
         $ref: '#/components/schemas/APIProductVersionFilterParameters'
+      style: deepObject
     LabelsFilter:
       name: labels
       description: Filters requested resource by associated labels.

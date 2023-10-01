@@ -173,6 +173,20 @@ rules:
       functionOptions:
         match: "^[a-z_\\[\\]]+$"
 
+  query-parameters-filter-deepobject:
+    severity: error
+    description: Filter parameters must set style=deepObject
+    given: "$..parameters[?(@.in == 'query' && @.name == 'filter')]*"
+    then:
+      - field: style
+        function: truthy
+        message: "{{property}}: {{ description }}"
+      - field: style
+        message: "{{property}}: {{ description }}"
+        function: pattern
+        functionOptions:
+          match: /^deepObject$/
+
   headers-hyphenated-pascal-case:
     description: All `HTTP` headers MUST use `Hyphenated-Pascal-Case` notation
     severity: error

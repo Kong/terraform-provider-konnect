@@ -263,6 +263,7 @@ paths:
           name: filter
           description: Filter teams returned in the response.
           required: false
+          style: deepObject
       tags:
         - Teams
     parameters: []
@@ -320,6 +321,7 @@ paths:
           name: filter
           description: Filter users returned in the response.
           required: false
+          style: deepObject
       tags:
         - Team Membership
     post:
@@ -460,6 +462,7 @@ paths:
           name: filter
           description: Filter roles returned in the response. Returns 400 if any filter parameters are invalid.
           required: false
+          style: deepObject
     post:
       summary: Assign Role
       operationId: teams-assign-role
@@ -546,6 +549,7 @@ paths:
           name: filter
           description: Filter users returned in the response.
           required: false
+          style: deepObject
   '/users/{userId}':
     parameters:
       - schema:
@@ -628,6 +632,7 @@ paths:
           name: filter
           description: Filter teams returned in the response.
           required: false
+          style: deepObject
       tags:
         - Team Membership
   '/users/{userId}/assigned-roles':
@@ -665,6 +670,7 @@ paths:
           name: filter
           description: Filter roles returned in the response.
           required: false
+          style: deepObject
     post:
       summary: Assign Role
       operationId: users-assign-role
@@ -752,6 +758,7 @@ paths:
           name: filter
           description: Filter system accounts returned in the response.
           required: false
+          style: deepObject
     post:
       summary: Create System Account
       operationId: post-system-accounts
@@ -871,6 +878,7 @@ paths:
           name: filter
           description: Filter access tokens returned in the response.
           required: false
+          style: deepObject
     parameters:
       - schema:
           type: string
@@ -1008,6 +1016,7 @@ paths:
           name: filter
           description: Filter roles returned in the response.
           required: false
+          style: deepObject
       tags:
         - Managed System Accounts - Roles
       x-internal: true
@@ -1074,6 +1083,7 @@ paths:
           name: filter
           description: Filter roles returned in the response.
           required: false
+          style: deepObject
       tags:
         - System Accounts - Roles
     post:
@@ -1163,6 +1173,7 @@ paths:
           name: filter
           description: Filter system accounts returned in the response.
           required: false
+          style: deepObject
       tags:
         - System Accounts - Team Membership
     post:
@@ -1246,6 +1257,7 @@ paths:
           name: filter
           description: Filter teams returned in the response.
           required: false
+          style: deepObject
       tags:
         - System Accounts - Team Membership
   /users/me:
@@ -1362,6 +1374,7 @@ paths:
           name: filter
           description: Filter permissions returned in the response.
           required: false
+          style: deepObject
       security:
         - konnectAccessToken: []
       responses:

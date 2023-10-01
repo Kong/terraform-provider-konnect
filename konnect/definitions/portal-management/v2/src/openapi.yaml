@@ -590,6 +590,7 @@ paths:
           name: filter
           description: Filter teams returned in the response.
           required: false
+          style: deepObject
       tags:
         - Portal Teams
     post:
