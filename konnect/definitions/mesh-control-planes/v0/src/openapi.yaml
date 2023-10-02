@@ -378,6 +378,7 @@ components:
                   page:
                     size: 1
                     total: 10
+                    number: 3
                 data:
                   - id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
                     name: Test Control Plane
