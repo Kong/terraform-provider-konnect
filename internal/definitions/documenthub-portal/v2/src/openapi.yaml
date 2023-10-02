@@ -34,10 +34,10 @@ paths:
           content:
             'application/json':
               schema:
-                $ref: '../../../../../common/definitions/documenthub.yaml#/components/schemas/ListDocuments'
+                $ref: '../../../documenthub/common/v2/documenthub.yaml#/components/schemas/ListDocuments'
             'application/vnd.konnect.document-tree+json':
               schema:
-                $ref: '../../../../../common/definitions/documenthub.yaml#/components/schemas/ListDocumentsTree'
+                $ref: '../../../documenthub/common/v2/documenthub.yaml#/components/schemas/ListDocumentsTree'
         '404':
           $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       tags:
@@ -51,7 +51,7 @@ paths:
         - in: header
           name: Accept
           schema:
-            $ref: '../../../../../common/definitions/documenthub.yaml#/components/schemas/DocumentFormatContentTypeEnum'
+            $ref: '../../../documenthub/common/v2/documenthub.yaml#/components/schemas/DocumentFormatContentTypeEnum'
         - $ref: '#/components/parameters/collectionId'
         - $ref: '#/components/parameters/documentId'
         - schema:
@@ -114,7 +114,7 @@ components:
         - id
         - document_id
         - content
-        - meta
+        - metadata
         - title
       properties:
         id:
@@ -130,7 +130,7 @@ components:
         content:
           type: string
           description: Markdown document
-        meta:
+        metadata:
           type: object
           description: the metadata of the document
           example:
@@ -177,7 +177,7 @@ components:
           description: the slug of the document
           example: getting-started
         content:
-          $ref: '../../../../../common/definitions/documenthub_nodes.yaml#/components/schemas/DocumentBlock'
+          $ref: '../../../documenthub/common/v2/documenthub_nodes.yaml#/components/schemas/DocumentBlock'
         meta:
           type: object
           description: the metadata of the document
@@ -198,7 +198,7 @@ components:
       - id
       - title
       - slug
-      - meta
+      - metadata
       - children
       properties:
         id:
@@ -218,7 +218,7 @@ components:
           type: string
           description: the slug of the document
           example: getting-started
-        meta:
+        metadata:
           type: object
           description: the metadata of the document
           example: {

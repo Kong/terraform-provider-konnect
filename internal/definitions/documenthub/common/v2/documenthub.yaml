@@ -20,7 +20,7 @@ components:
       - data
       properties:
         meta:
-          $ref: './metadatas.yaml#/components/schemas/PaginatedMeta'
+          $ref: '../../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
         data:
           type: array
           items:
@@ -33,7 +33,7 @@ components:
       - data
       properties:
         meta:
-          $ref: './metadatas.yaml#/components/schemas/PaginatedMeta'
+          $ref: '../../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
         data:
           type: array
           items:
@@ -45,7 +45,7 @@ components:
       - data
       properties:
         meta:
-          $ref: './metadatas.yaml#/components/schemas/PaginatedMeta'
+          $ref: '../../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
         data:
           type: array
           items:
@@ -102,7 +102,7 @@ components:
       - id
       - title
       - slug
-      - meta
+      - metadata
       - children
       properties:
         id:
@@ -122,7 +122,7 @@ components:
           type: string
           description: the slug of the document
           example: getting-started
-        meta:
+        metadata:
           type: object
           description: the metadata of the document
           example: {

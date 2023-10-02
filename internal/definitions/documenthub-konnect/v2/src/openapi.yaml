@@ -105,7 +105,7 @@ paths:
         - in: header
           name: Accept
           schema:
-            $ref: '../../../../../common/definitions/documenthub.yaml#/components/schemas/DocumentContentTypeEnum'
+            $ref: '../../../documenthub/common/v2/documenthub.yaml#/components/schemas/DocumentContentTypeEnum'
         - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
         - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
       responses:
@@ -114,10 +114,10 @@ paths:
           content:
             'application/json':
               schema:
-                $ref: '../../../../../common/definitions/documenthub.yaml#/components/schemas/ListDocuments'
+                $ref: '../../../documenthub/common/v2/documenthub.yaml#/components/schemas/ListDocuments'
             'application/vnd.konnect.document-tree+json':
               schema:
-                $ref: '../../../../../common/definitions/documenthub.yaml#/components/schemas/ListDocumentsTree'
+                $ref: '../../../documenthub/common/v2/documenthub.yaml#/components/schemas/ListDocumentsTree'
         '400':
           $ref: '../../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '404':
@@ -155,7 +155,7 @@ paths:
         - in: header
           name: Accept
           schema:
-            $ref: '../../../../../common/definitions/documenthub.yaml#/components/schemas/DocumentFormatContentTypeEnum'
+            $ref: '../../../documenthub/common/v2/documenthub.yaml#/components/schemas/DocumentFormatContentTypeEnum'
         - schema:
             type: boolean
           name: raw
@@ -275,7 +275,7 @@ components:
         - id
         - document_id
         - content
-        - meta
+        - metadata
         - title
       properties:
         id:
@@ -291,7 +291,7 @@ components:
         content:
           type: string
           description: Markdown document
-        meta:
+        metadata:
           type: object
           description: the metadata of the document
           example:
@@ -334,7 +334,7 @@ components:
       - id
       - name
       - created_at
-      - modified_at
+      - updated_at
       properties:
         id:
           type: string
@@ -347,7 +347,7 @@ components:
           type: string
           format: date-time
           example: '2019-08-24T14:15:22Z'
-        modified_at:
+        updated_at:
           type: string
           format: date-time
           example: '2019-08-24T14:15:22Z'
@@ -361,7 +361,7 @@ components:
       - slug
       - revision
       - status
-      - modified_at
+      - updated_at
       - created_at
       properties:
         id:
@@ -381,7 +381,7 @@ components:
           type: string
           format: date-time
           example: '2019-08-24T14:15:22Z'
-        modified_at:
+        updated_at:
           type: string
           format: date-time
           example: '2019-08-24T14:15:22Z'
@@ -449,7 +449,7 @@ components:
           description: document id
           example: 2272b454-4af6-4c56-8a02-d6145ac62e67
         content:
-          $ref: '../../../../../common/definitions/documenthub_nodes.yaml#/components/schemas/DocumentBlock'
+          $ref: '../../../documenthub/common/v2/documenthub_nodes.yaml#/components/schemas/DocumentBlock'
         metadata:
           type: object
           example: { "author": "John Doe" }

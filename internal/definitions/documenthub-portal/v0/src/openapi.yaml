@@ -21,7 +21,7 @@ paths:
         - in: header
           name: Accept
           schema:
-            $ref: '../../../../../common/definitions/documenthub.yaml#/components/schemas/DocumentContentTypeEnum'
+            $ref: '../../../documenthub/common/v0/documenthub.yaml#/components/schemas/DocumentContentTypeEnum'
         - $ref: '#/components/parameters/resourceKindParam'
         - $ref: '#/components/parameters/resourceId'
         - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
@@ -32,10 +32,10 @@ paths:
           content:
             'application/json':
               schema:
-                $ref: '../../../../../common/definitions/documenthub.yaml#/components/schemas/ListDocuments'
+                $ref: '../../../documenthub/common/v0/documenthub.yaml#/components/schemas/ListDocuments'
             'application/vnd.konnect.document-tree+json':
               schema:
-                $ref: '../../../../../common/definitions/documenthub.yaml#/components/schemas/ListDocumentsTree'
+                $ref: '../../../documenthub/common/v0/documenthub.yaml#/components/schemas/ListDocumentsTree'
         '400':
           $ref: '../../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
       tags:
@@ -56,7 +56,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '../../../../../common/definitions/documenthub.yaml#/components/schemas/DocumentTree'
+                  $ref: '../../../documenthub/common/v0/documenthub.yaml#/components/schemas/DocumentTree'
         '404':
           $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       tags:
@@ -69,7 +69,7 @@ paths:
         - in: header
           name: Accept
           schema:
-            $ref: '../../../../../common/definitions/documenthub.yaml#/components/schemas/DocumentFormatContentTypeEnum'
+            $ref: '../../../documenthub/common/v0/documenthub.yaml#/components/schemas/DocumentFormatContentTypeEnum'
         - $ref: '#/components/parameters/resourceKindParam'
         - $ref: '#/components/parameters/resourceId'
         - $ref: '#/components/parameters/documentId'
@@ -96,7 +96,7 @@ paths:
         - in: header
           name: Accept
           schema:
-            $ref: '../../../../../common/definitions/documenthub.yaml#/components/schemas/DocumentFormatContentTypeEnum'
+            $ref: '../../../documenthub/common/v0/documenthub.yaml#/components/schemas/DocumentFormatContentTypeEnum'
         - $ref: '#/components/parameters/resourceKindParam'
         - $ref: '#/components/parameters/resourceId'
         - schema:
@@ -229,7 +229,7 @@ components:
           description: the id of the document
           example: d32d905a-ed33-46a3-a093-d8f536af9a8a
         content:
-          $ref: '../../../../../common/definitions/documenthub_nodes.yaml#/components/schemas/DocumentBlock'
+          $ref: '../../../documenthub/common/v0/documenthub_nodes.yaml#/components/schemas/DocumentBlock'
         meta:
           type: object
           description: the metadata of the document

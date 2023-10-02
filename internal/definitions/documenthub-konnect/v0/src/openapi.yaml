@@ -50,7 +50,7 @@ paths:
         - in: header
           name: Accept
           schema:
-            $ref: '../../../../../common/definitions/documenthub.yaml#/components/schemas/DocumentContentTypeEnum'
+            $ref: '../../../documenthub/common/v0/documenthub.yaml#/components/schemas/DocumentContentTypeEnum'
         - $ref: '#/components/parameters/resourceKind'
         - $ref: '#/components/parameters/resourceId'
         - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
@@ -61,7 +61,7 @@ paths:
           content:
             'application/json':
               schema:
-                $ref: '../../../../../common/definitions/documenthub.yaml#/components/schemas/ListDocumentsWithStatus'
+                $ref: '../../../documenthub/common/v0/documenthub.yaml#/components/schemas/ListDocumentsWithStatus'
             'application/vnd.konnect.document-tree+json':
               schema:
                 $ref: '#/components/schemas/GetManyDocumentTrees'
@@ -317,7 +317,7 @@ components:
           description: document id
           example: 2272b454-4af6-4c56-8a02-d6145ac62e67
         content:
-          $ref: '../../../../../common/definitions/documenthub_nodes.yaml#/components/schemas/DocumentBlock'
+          $ref: '../../../documenthub/common/v0/documenthub_nodes.yaml#/components/schemas/DocumentBlock'
 
         metadata:
           type: object

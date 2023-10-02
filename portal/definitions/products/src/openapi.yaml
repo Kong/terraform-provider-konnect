@@ -195,7 +195,7 @@ paths:
         - in: header
           name: Accept
           schema:
-            $ref: '../../../../common/definitions/documenthub.yaml#/components/schemas/DocumentContentTypeEnum'
+            $ref: '../../../../internal/definitions/documenthub/common/v2/documenthub.yaml#/components/schemas/DocumentContentTypeEnum'
         - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
         - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
       responses:
@@ -204,10 +204,10 @@ paths:
           content:
             'application/json':
               schema:
-                $ref: '../../../../common/definitions/documenthub.yaml#/components/schemas/ListDocuments'
+                $ref: '../../../../internal/definitions/documenthub/common/v2/documenthub.yaml#/components/schemas/ListDocuments'
             'application/vnd.konnect.document-tree+json':
               schema:
-                $ref: '../../../../common/definitions/documenthub.yaml#/components/schemas/ListDocumentsTree'
+                $ref: '../../../../internal/definitions/documenthub/common/v2/documenthub.yaml#/components/schemas/ListDocumentsTree'
         '400':
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
@@ -228,7 +228,7 @@ paths:
         - in: header
           name: Accept
           schema:
-            $ref: '../../../../common/definitions/documenthub.yaml#/components/schemas/DocumentFormatContentTypeEnum'
+            $ref: '../../../../internal/definitions/documenthub/common/v2/documenthub.yaml#/components/schemas/DocumentFormatContentTypeEnum'
         - $ref: '#/components/parameters/ProductId'
         - $ref: '#/components/parameters/DocumentId'
       responses:
@@ -378,7 +378,7 @@ components:
             - register
             - view_documentation
           properties:
-            view: 
+            view:
               type: boolean
             register:
               type: boolean
@@ -627,7 +627,7 @@ components:
           description: Slug of the document. This is used in the URL to identify the document.
           example: getting-started
         content:
-          $ref: '../../../../common/definitions/documenthub_nodes.yaml#/components/schemas/DocumentBlock'
+          $ref: '../../../../internal/definitions/documenthub/common/v2/documenthub_nodes.yaml#/components/schemas/DocumentBlock'
         title:
           type: string
           description: Title of the document. This is used in the Portal UI to identify the document.
