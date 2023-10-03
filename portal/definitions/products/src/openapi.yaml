@@ -106,8 +106,6 @@ paths:
         - {}
   /api/v2/products/{productId}/versions/{versionId}/applications:
     get:
-      x-unstable: true
-      x-internal: true
       summary: Get applications by product version
       description: |-
         Get applications that have a registration for a given product version. Any registration for the version will count, regardless of status (i.e. even if it is pending, rejected, or revoked).
