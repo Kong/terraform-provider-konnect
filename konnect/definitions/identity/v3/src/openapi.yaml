@@ -725,8 +725,6 @@ paths:
           $ref: '#/components/responses/Unauthorized'
       operationId: get-system-accounts
       description: |-
-        _The system accounts feature is currently in beta and is subject to change._
-
         Returns an array of system accounts (SA) in the organization. Returns 400 if any filter parameters are invalid.
       parameters:
         - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
@@ -749,8 +747,6 @@ paths:
       tags:
         - System Accounts
       description: |-
-        _The system accounts feature is currently in beta and is subject to change._
-
         Creates a system account. Returns a 409 if a system account with the same name already exists.
       requestBody:
         $ref: '#/components/requestBodies/CreateSystemAccount'
@@ -779,8 +775,6 @@ paths:
           $ref: '#/components/responses/IdentityNotFound'
       operationId: get-system-accounts-id
       description: |-
-        _The system accounts feature is currently in beta and is subject to change._
-
         Returns the system account (SA) for the SA ID specified as a path parameter.
     parameters:
       - schema:
@@ -804,8 +798,6 @@ paths:
         '409':
           $ref: '#/components/responses/IdentityConflict'
       description: |-
-        _The system accounts feature is currently in beta and is subject to change._
-
         Updates the specified system account. Returns a 409 if the updated name is the same as another system account in the organization.
       tags:
         - System Accounts
@@ -824,8 +816,6 @@ paths:
         '404':
           $ref: '#/components/responses/IdentityNotFound'
       description: |-
-        _The system accounts feature is currently in beta and is subject to change._
-
         Deletes the specified system account. Returns 404 if the requested account was not found.
       tags:
         - System Accounts
@@ -847,8 +837,6 @@ paths:
           $ref: '#/components/responses/IdentityNotFound'
       operationId: get-system-account-id-access-tokens
       description: |-
-        _The system accounts feature is currently in beta and is subject to change._
-
         Returns the access tokens for the specified system account. Returns 400 if any filter parameters are invalid.
       parameters:
         - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
@@ -885,8 +873,6 @@ paths:
         '409':
           $ref: '#/components/responses/IdentityConflict'
       description: |-
-        _The system accounts feature is currently in beta and is subject to change._
-
         Creates an access token for the specified system account (SA). The access token can be used for authenticating API and CLI requests. The token will only be displayed once on creation. Returns a 409 if the system account already has a token with the same name.
       requestBody:
         $ref: '#/components/requestBodies/CreateSystemAccountAccessToken'
@@ -906,8 +892,6 @@ paths:
           $ref: '#/components/responses/IdentityNotFound'
       operationId: get-system-accounts-id-access-tokens-id
       description: |-
-        _The system accounts feature is currently in beta and is subject to change._
-
         Returns the system account (SA) access token for the SA Access Token ID specified as a path parameter.
       parameters: []
       tags:
@@ -940,8 +924,6 @@ paths:
         '409':
           $ref: '#/components/responses/IdentityConflict'
       description: |-
-        _The system accounts feature is currently in beta and is subject to change._
-
         Updates the specified access token. Returns a 409 if the updated name is the same as another token belonging to the specified system user.
       requestBody:
         $ref: '#/components/requestBodies/UpdateSystemAccountAccessToken'
@@ -960,8 +942,6 @@ paths:
         '404':
           $ref: '#/components/responses/IdentityNotFound'
       description: |-
-        _The system accounts feature is currently in beta and is subject to change._
-
         Deletes the specified token. Returns 404 if the token was not found.
       tags:
         - System Accounts - Access Tokens
@@ -1052,8 +1032,6 @@ paths:
           $ref: '#/components/responses/IdentityNotFound'
       operationId: get-system-accounts-accountId-assigned-roles
       description: |-
-        _The system accounts feature is currently in beta and is subject to change._
-
         Lists the roles belonging to a system account. Returns 400 if any filter parameters are invalid.
       parameters:
         - schema:
@@ -1085,8 +1063,6 @@ paths:
         '409':
           $ref: '#/components/responses/IdentityConflict'
       description: |-
-        _The system accounts feature is currently in beta and is subject to change._
-
         Assigns a role to a system account. Returns 409 if role is already assigned.
       requestBody:
         $ref: '#/components/requestBodies/AssignRole'
@@ -1119,8 +1095,6 @@ paths:
         '404':
           $ref: '#/components/responses/IdentityNotFound'
       description: |-
-        _The system accounts feature is currently in beta and is subject to change._
-
         Removes an assigned role from a system account. Returns 404 if the system account or assigned role were not found.
       tags:
         - System Accounts - Roles
