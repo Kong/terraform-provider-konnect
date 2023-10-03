@@ -339,6 +339,21 @@ rules:
             required:
               - "200"
 
+  blocked-field-names:
+    severity: error
+    given: $.paths.*.*[responses,requestBody]..content..schema..properties.*~
+    message: "The field '{{property}}' has a preferred synonym. See ./docs/linting-rules.md"
+    then:
+      - function: pattern
+        functionOptions:
+          notMatch: "^modified_at$"
+      - function: pattern
+        functionOptions:
+          notMatch: "whitelist"
+      - function: pattern
+        functionOptions:
+          notMatch: "blacklist"
+
 overrides:
   - files:
     # verify domain override
