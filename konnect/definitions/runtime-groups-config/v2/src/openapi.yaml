@@ -329,6 +329,32 @@ components:
           type: string
       type: object
       title: Consumer
+    CustomPluginSchema:
+      description: A Custom Plugin Schema entity represents a Lua plugin schema file that can be used to apply a plugin configuration for a custom plugin.
+      example:
+        lua_schema: return { name = \"myplugin\", fields = { { config = { type = \"record\", fields = { } } } } }
+        name: myplugin
+        created_at: 1422386534
+        updated_at: 1422412345
+      properties:
+        lua_schema:
+          description: The custom plugin schema; `jq -Rs '.' schema.lua`.
+          type: string
+          example: return { name = \"myplugin\", fields = { { config = { type = \"record\", fields = { } } } } }
+        name:
+          description: The name of the custom plugin.
+          type: string
+          example: myplugin
+        created_at:
+          description: Unix epoch when the resource was created.
+          type: integer
+          example: 1422386534
+        updated_at:
+          description: Unix epoch when the resouce was updated.
+          type: integer
+          example: 1422412345
+      type: object
+      title: Custom Plugin Schema
     Key:
       description: 'A Key object holds a representation of asymmetric keys in various formats. When Kong or a Kong plugin requires a specific public or private key to perform certain operations, it can use this entity.'
       example:
@@ -1735,8 +1761,8 @@ components:
               protocol:
                 type: string
                 description: |-
-                  The protocol used to communicate with the upstream. Accepted values are: `grpc`, `grpcs`, `http`, `https`, `tcp`, `tls`, `tls_passthrough`, `udp`, `ws` 
-                  , `wss` 
+                  The protocol used to communicate with the upstream. Accepted values are: `grpc`, `grpcs`, `http`, `https`, `tcp`, `tls`, `tls_passthrough`, `udp`, `ws`
+                  , `wss`
                   . Default: `http`.
                 default: http
                 enum:
@@ -2506,6 +2532,22 @@ components:
               value:
                 cert: "-----BEGIN CERTIFICATE-----\r\n*****\r\n-----END CERTIFICATE-----\r\n"
       description: Request body for creating a dp-client-certificate.
+    create-plugin-schemas:
+      content:
+        application/json:
+          schema:
+            type: object
+            x-examples:
+              Example 1:
+                lua_schema: return { name = \"myplugin\", fields = { { config = { type = \"record\", fields = { } } } } }
+            properties:
+              lua_schema:
+                type: string
+                description: |
+                  The custom plugin schema; `jq -Rs '.' schema.lua`.
+                example: return { name = \"myplugin\", fields = { { config = { type = \"record\", fields = { } } } } }
+            required:
+              - lua_schema
   responses:
     sni-response:
       description: SNI response object
@@ -3527,12 +3569,71 @@ components:
                     properties:
                       state:
                         type: string
+    list-plugin-schemas:
+      description: A paginated list response for a collection of custom plugin schemas.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              items:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    lua_schema:
+                      type: string
+                      description: The custom plugin schema; `jq -Rs '.' schema.lua`.
+                      example: return { name = \"myplugin\", fields = { { config = { type = \"record\", fields = { } } } } }
+                    name:
+                      type: string
+                      description: The custom plugin name determined by the custom plugin schema.
+                      example: myplugin
+                    created_at:
+                      type: integer
+                      description: An ISO-8604 timestamp representation of custom plugin schema creation date.
+                      example: 1422386534
+                    updated_at:
+                      type: integer
+                      description: An ISO-8604 timestamp representation of custom plugin schema update date.
+                      example: 1422412345
+              page:
+                type: object
+                properties:
+                  total_count:
+                    type: integer
+    plugin-schemas:
+      description: A response for a single custom plugin schema.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              item:
+                type: object
+                properties:
+                  lua_schema:
+                    type: string
+                    description: The custom plugin schema; `jq -Rs '.' schema.lua`.
+                    example: return { name = \"myplugin\", fields = { { config = { type = \"record\", fields = { } } } } }
+                  name:
+                    type: string
+                    description: The custom plugin name determined by the custom plugin schema.
+                    example: myplugin
+                  created_at:
+                    type: integer
+                    description: An ISO-8604 timestamp representation of custom plugin schema creation date.
+                    example: 1422386534
+                  updated_at:
+                    type: integer
+                    description: An ISO-8604 timestamp representation of custom plugin schema update date.
+                    example: 1422412345
   securitySchemes:
     konnectAccessToken:
       type: http
       scheme: bearer
       description: |-
-        The Konnect access token is meant to be used by the Konnect dashboard and the decK CLI to 
+        The Konnect access token is meant to be used by the Konnect dashboard and the decK CLI to
         authenticate with.
     personalAccessToken:
       type: http
@@ -3668,6 +3769,104 @@ paths:
       tags:
         - DP Nodes
       description: Remove a specific runtime instance record associated to this runtime group. Deleting this record does not prevent the runtime instance from re-connecting to the runtime group.
+  '/runtime-groups/{runtimeGroupId}/core-entities/plugin-schemas':
+    parameters:
+      - $ref: '#/components/parameters/runtimeGroupId'
+    get:
+      summary: List custom plugin schemas associated with a runtime group
+      responses:
+        '200':
+          $ref: '#/components/responses/list-plugin-schemas'
+        '400':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+      operationId: list-plugin-schemas
+      description: Returns an array of custom plugins schemas associated with a runtime group.
+      parameters:
+        - $ref: ../../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize
+        - $ref: ../../../../../common/definitions/metadatas.yaml#/components/parameters/PageAfter
+        - $ref: ../../../../../common/definitions/metadatas.yaml#/components/parameters/PageBefore
+      tags:
+        - Custom Plugin Schemas
+    post:
+      summary: Upload custom plugin schema
+      operationId: create-plugin-schemas
+      responses:
+        '201':
+          $ref: '#/components/responses/plugin-schemas'
+        '400':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+        '409':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Conflict'
+      tags:
+        - Custom Plugin Schemas
+      description: Upload a custom plugin schema associated with a runtime group.
+      requestBody:
+        $ref: '#/components/requestBodies/create-plugin-schemas'
+  '/runtime-groups/{runtimeGroupId}/core-entities/plugin-schemas/{name}':
+    parameters:
+      - $ref: '#/components/parameters/runtimeGroupId'
+      - schema:
+          type: string
+          example: myplugin
+        name: name
+        in: path
+        required: true
+        description: The custom plugin name
+    get:
+      summary: Fetch custom plugin schema
+      responses:
+        '200':
+          $ref: '#/components/responses/plugin-schemas'
+        '401':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+        '404':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+      operationId: get-plugin-schema
+      description: Returns information about a custom plugin from a given name.
+      tags:
+        - Custom Plugin Schemas
+    delete:
+      summary: Delete custom plugin schema
+      operationId: delete-plugin-schemas
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+        '404':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+      description: Delete an individual custom plugin schema.
+      tags:
+        - Custom Plugin Schemas
+    put:
+      summary: Create or update a custom plugin schema
+      operationId: update-plugin-schemas
+      responses:
+        '200':
+          $ref: '#/components/responses/plugin-schemas'
+        '401':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+        '404':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+      description: Create or update an individual custom plugin schema.
+      tags:
+        - Custom Plugin Schemas
+      requestBody:
+        $ref: '#/components/requestBodies/create-plugin-schemas'
   '/runtime-groups/{runtimeGroupId}/core-entities/ca_certificates':
     parameters:
       - $ref: '#/components/parameters/runtimeGroupId'
@@ -4082,7 +4281,7 @@ paths:
         - $ref: '#/components/parameters/pagination-tags-filter'
     put:
       description: |-
-        Create or Update Consumer using ID or username. The consumer will be identified via the username or id attribute.If the consumer with the specified ID or username cannot be found, the endpoint will return a 404. 
+        Create or Update Consumer using ID or username. The consumer will be identified via the username or id attribute.If the consumer with the specified ID or username cannot be found, the endpoint will return a 404.
 
         When the username or id attribute has the structure of a UUID, the Consumer being inserted/replaced will be identified by its id. Otherwise it will be identified by its username.
 
@@ -6126,6 +6325,8 @@ tags:
     name: DP Nodes
   - description: DP Certificates
     name: DP Certificates
+  - description: Custom Plugin Schemas
+    name: Custom Plugin Schemas
 x-internal: false
 security:
   - konnectAccessToken: []
