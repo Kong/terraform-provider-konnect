@@ -31,6 +31,10 @@ jobs:
         run: |
           npm run generate-sdk-oas
 
+      - name: Update OpenAPI files before pushing them downstream
+        run: |
+          ./tools/process-mesh.sh
+
       - name: Raise PR in downstream repos
         uses: mheap/raise-pr-on-change-action@v1
         with:
