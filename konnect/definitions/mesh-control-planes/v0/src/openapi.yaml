@@ -126,6 +126,7 @@ components:
         pattern: '^[a-z0-9A-Z]{1}([a-z0-9A-Z\-\.\_]*[a-z0-9A-Z]+)?$'
         minLength: 1
         maxLength: 63
+        nullable: true
     MeshControlPlane:
       type: object
       title: ControlPlane
