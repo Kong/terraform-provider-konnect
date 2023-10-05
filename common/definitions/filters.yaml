@@ -19,3 +19,8 @@ components:
       title: StringFieldEqualsFilter
       description: Filter a string value by exact match.
       type: string
+    BooleanFieldFilter:
+      example: true
+      title: BooleanFieldFilter
+      description: Filter by a boolean value (true/false).
+      type: boolean
