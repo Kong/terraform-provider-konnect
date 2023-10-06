@@ -1,3 +1,6 @@
+# THIS FILE IS FROM platform-api REPOSITORY
+# https://github.com/Kong/platform-api/blob/main/konnect/definitions/mesh-control-planes/v0/src/openapi.yaml
+# DO NOT EDIT ANYWHERE ELSE OR YOUR CHANGES WILL BE OVERRIDDEN
 openapi: 3.0.3
 info:
     title: Konnect Mesh Control Plane manager
