@@ -34,6 +34,10 @@ jobs:
         run: |
           npm run generate-sdk-oas
 
+      - name: Process OpenAPI files
+        run: |
+          node ./tools/split-service-specs.js
+
       - name: Upload docs OAS files
         uses: actions/upload-artifact@v3
         with:

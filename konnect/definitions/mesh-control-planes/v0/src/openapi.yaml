@@ -24,10 +24,14 @@ paths:
           $ref: '#/components/responses/MeshControlPlaneForbiddenError'
       operationId: list-mesh-control-planes
       description: Returns an array of control planes objects.
+      tags:
+        - Mesh
     post:
       summary: Create a new control plane
       description: Create a new control plane
       operationId: create-cp
+      tags:
+        - Mesh
       requestBody:
         required: true
         content:
@@ -60,6 +64,8 @@ paths:
       summary: Get the control plane
       description: Get the control plane
       operationId: get-mesh-control-plane
+      tags:
+        - Mesh
       responses:
         '200':
           $ref: '#/components/responses/RetrieveMeshControlPlaneResponse'
@@ -73,6 +79,8 @@ paths:
       summary: Delete the control plane
       description: Delete the control plane
       operationId: delete-mesh-control-plane
+      tags:
+        - Mesh
       responses:
         '204':
           description: No Content
@@ -85,6 +93,8 @@ paths:
     patch:
       summary: Update control plane
       operationId: update-mesh-control-plane
+      tags:
+        - Mesh
       responses:
         '200':
           $ref: '#/components/responses/UpdateMeshControlPlaneResponse'
@@ -413,3 +423,5 @@ components:
 security:
   - personalAccessToken: []
   - systemAccountAccessToken: []
+tags:
+  - name: Mesh

@@ -145,6 +145,11 @@ async function main() {
     internal = toolkit.components.removeUnusedComponents(internal);
     public = toolkit.components.removeUnusedComponents(public);
 
+    // Remove unused tags too
+    dev = toolkit.tags.removeUnusedTags(dev);
+    internal = toolkit.tags.removeUnusedTags(internal);
+    public = toolkit.tags.removeUnusedTags(public);
+
     // Create additional spec set optimized for API Documentation rendering
     const [devApiDocs, internalApiDocs, publicApiDocs] = [
       transformFilterQueryParams(deepClone(dev)),
