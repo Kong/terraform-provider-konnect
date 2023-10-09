@@ -390,7 +390,7 @@ paths:
           $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
         '404':
           $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
-  '/portals/appearance':
+  '/portals/appearance-defaults':
     get:
       summary: Get Default Appearance Configurations
       description: |-
