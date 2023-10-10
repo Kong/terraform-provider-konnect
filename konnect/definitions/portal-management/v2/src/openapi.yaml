@@ -2051,6 +2051,7 @@ components:
           required:
             - header
             - hero
+            - headings
             - primary
             - secondary
             - accent
@@ -2060,6 +2061,8 @@ components:
             header:
               $ref: '#/components/schemas/AppearanceColorVariable'
             hero:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            headings:
               $ref: '#/components/schemas/AppearanceColorVariable'
             primary:
               $ref: '#/components/schemas/AppearanceColorVariable'
