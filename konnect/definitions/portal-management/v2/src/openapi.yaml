@@ -231,6 +231,7 @@ paths:
         - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
         - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
         - $ref: '#/components/parameters/FilterApplicationByName'
+        - $ref: '#/components/parameters/FilterApplicationByNameContains'
         - $ref: '#/components/parameters/FilterApplicationByNameShort'
         - $ref: '#/components/parameters/FilterByDeveloperId'
         - $ref: '#/components/parameters/SortApplications'
