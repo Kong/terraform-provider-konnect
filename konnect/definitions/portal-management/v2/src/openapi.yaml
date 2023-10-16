@@ -960,6 +960,13 @@ components:
       required: false
       schema:
         type: string
+    FilterApplicationByNameContains:
+      name: 'filter[name][contains]'
+      description: 'filters an applications by their names with a supplied substring'
+      in: query
+      required: false
+      schema:
+        type: string
     FilterApplicationByNameShort:
       name: 'filter[name]'
       description: 'filters applications by their names (alias for filter[name][eq])'
@@ -1015,7 +1022,6 @@ components:
       description: |
         Sorts a collection of applications. Supported sort attributes are:
           - created_at
-          - updated_at
           - developer_id
           - name
       in: query
