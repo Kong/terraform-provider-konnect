@@ -54,13 +54,6 @@ paths:
             $ref: '../../../documenthub/common/v2/documenthub.yaml#/components/schemas/DocumentFormatContentTypeEnum'
         - $ref: '#/components/parameters/collectionId'
         - $ref: '#/components/parameters/documentId'
-        - schema:
-            type: boolean
-          name: raw
-          in: query
-          required: false
-          description: include raw document data in the response
-          example: true
       responses:
         '200':
           description: Document
