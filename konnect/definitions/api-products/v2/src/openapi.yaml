@@ -831,6 +831,7 @@ components:
                     portal_ids: []
                     created_at: 2023-01-01T00:00:00.000Z
                     updated_at: 2023-01-01T00:00:00.000Z
+                    version_count: 10
                     labels:
                       env: test
                 meta:
@@ -1003,6 +1004,7 @@ components:
         - created_at
         - updated_at
         - labels
+        - version_count
       properties:
         id:
           type: string
@@ -1028,6 +1030,10 @@ components:
             type: string
             format: uuid
             example: 25a2624c-49fc-4764-99e1-224ed819f200
+        version_count:
+          type: number
+          example: 10
+          description: The number of product versions attached to this API product
         created_at:
           $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
         updated_at:
@@ -1494,6 +1500,7 @@ components:
         portal_ids: []
         created_at: 2023-01-01T00:00:00.000Z
         updated_at: 2023-01-01T00:00:00.000Z
+        version_count: 10
         labels:
           env: test
     APIProductVersionExample:

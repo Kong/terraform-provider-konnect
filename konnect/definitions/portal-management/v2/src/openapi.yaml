@@ -1726,7 +1726,55 @@ components:
         data:
           type: array
           items:
-            $ref: '../../../api-products/v2/src/openapi.yaml#/components/schemas/APIProduct'
+            $ref: '#/components/schemas/PublishedAPIProduct'
+    PublishedAPIProduct:
+      title: API Product
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - description
+        - portal_ids
+        - created_at
+        - updated_at
+        - labels
+        - version_count
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: b9e81174-b5bb-4638-a3c3-8afe61a0abf8
+          description: The API product ID.
+          readOnly: true
+        name:
+          type: string
+          description: The name of the API product
+          example: My Name
+        description:
+          type: string
+          description: The description of the API product
+          example: MyDescription
+        portal_ids:
+          type: array
+          nullable: false
+          uniqueItems: true
+          minItems: 0
+          description: The list of portal identifiers which this API product is published to
+          items:
+            type: string
+            format: uuid
+            example: 25a2624c-49fc-4764-99e1-224ed819f200
+        version_count:
+          type: number
+          example: 10
+          description: The number of published product versions attached to this API product
+        created_at:
+          $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
+        labels:
+          $ref: '../../../api-products/v2/src/openapi.yaml#/components/schemas/APIProductLabels'
     GetPortalResponse:
       $ref: '#/components/schemas/Portal'
     CreatePortalResponse:
