@@ -360,6 +360,27 @@ paths:
           $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
         '404':
           $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+  '/portals/{portalId}/applications/{applicationId}/registrations/{registrationId}/granted-scopes':
+    get:
+      summary: List Granted Scopes
+      description: |-
+        Lists all of the granted scopes for this application registration. This is the list of scopes that will be sent to the API when making requests.
+      operationId: list-granted-scopes
+      x-unstable: true
+      x-internal: true
+      tags:
+        - Portals
+      parameters:
+        - $ref: '../../../../../common/definitions/portal.yaml#/components/parameters/PortalId'
+        - $ref: '#/components/parameters/ApplicationId'
+        - $ref: '#/components/parameters/RegistrationId'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListGrantedScopes'
+        '401':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
   '/portals/appearance-defaults':
     get:
       summary: Get Default Appearance Configurations
@@ -1220,6 +1241,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ListApplicationRegistrationsResponse'
+    ListGrantedScopes:
+      description: 'List the granted scopes for an application registration.'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ListGrantedScopesResponse'
     GetApplicationRegistration:
       description: ''
       content:
@@ -1861,6 +1888,16 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ApplicationRegistration'
+    ListGrantedScopesResponse:
+      additionalProperties: false
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: array
+          items:
+            type: string
     GetApplicationRegistrationResponse:
         $ref: '#/components/schemas/ApplicationRegistration'
     UpdateApplicationRegistrationResponse:

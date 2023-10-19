@@ -455,13 +455,7 @@ components:
           description: Configurations for how the product version is able to be registered for by applications.
           type: array
           items:
-            type: object
-            required:
-              - name
-            properties:
-              name:
-                type: string
-                enum: [ key-auth, openid-connect ]
+            $ref: '#/components/schemas/RegistrationConfiguration'
       required:
         - id
         - created_at
@@ -469,6 +463,18 @@ components:
         - name
         - deprecated
         - registration_configs
+    RegistrationConfiguration:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          enum: [ key-auth, openid-connect ]
+        available_scopes:
+          type: array
+          items:
+            type: string
     LatestVersion:
       type: object
       additionalProperties: false
