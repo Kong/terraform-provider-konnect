@@ -358,6 +358,7 @@ overrides:
   - files:
     # verify domain override
     - "konnect/definitions/portal-management/v2/**/openapi.yaml#/paths/~1portals~1%7BportalId%7D~1verify-domain/post/responses"
+    - "konnect/definitions/application-auth-strategies/v2/**/openapi.yaml#/paths"
     rules:
       errors-post-not-contain-200: "off"
   - files:
