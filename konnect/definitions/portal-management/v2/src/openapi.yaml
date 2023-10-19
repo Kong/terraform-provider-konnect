@@ -122,37 +122,6 @@ paths:
             $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
           '404':
             $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
-
-  # TODO: this will ported over from the portal-rbac v2 OAS with TDX-3291
-  # '/portals/{portalId}/developers':
-  #   get:
-  #     summary: List Developers
-  #     description: |-
-  #       List all of the Developers that have registered for this Portal. Each Developer can be registered to one Portal and must be approved to login unless using the Developer auto-approve setting.
-  #     operationId: list-developers
-  #     x-unstable: true
-  #     x-internal: true
-  #     parameters:
-  #       - $ref: '../../../../../common/definitions/portal.yaml#/components/parameters/PortalId'
-  #       - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
-  #       - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
-  #       - $ref: '#/components/parameters/FilterDevelopersByEmail'
-  #       - $ref: '#/components/parameters/FilterDevelopersByName'
-  #       - $ref: '#/components/parameters/FilterDevelopersByNameShort'
-  #       - $ref: '#/components/parameters/SortDevelopers'
-  #     tags:
-  #     - Portals
-  #     responses:
-  #       '200':
-  #         $ref: '#/components/responses/ListDevelopers'
-  #       '400':
-  #         $ref: '../../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
-  #       '401':
-  #         $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
-  #       '403':
-  #         $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
-  #       '404':
-  #         $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
   '/portals/{portalId}/developers/{developerId}':
     parameters:
       - $ref: '../../../../../common/definitions/portal.yaml#/components/parameters/PortalId'
@@ -794,11 +763,15 @@ paths:
       - $ref: '../../../../../common/definitions/portal.yaml#/components/parameters/PortalId'
     get:
       summary: List Developers
+      description: |-
+        List all of the Developers that have registered for this Portal. Each Developer can be registered to one Portal and must be approved to login unless using the Developer auto-approve setting.
       tags:
         - Portal Developers
       responses:
         '200':
           $ref: '#/components/responses/DeveloperCollection'
+        '400':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
           $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '403':
@@ -806,10 +779,18 @@ paths:
         '404':
           $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       operationId: list-portal-developers
-      description: List the developers.
       parameters:
         - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
         - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/FilterDevelopersByEmail'
+        - $ref: '#/components/parameters/FilterDevelopersByEmailShort'
+        - $ref: '#/components/parameters/FilterDevelopersByEmailContains'
+        - $ref: '#/components/parameters/FilterDevelopersByName'
+        - $ref: '#/components/parameters/FilterDevelopersByNameShort'
+        - $ref: '#/components/parameters/FilterDevelopersByNameContains'
+        - $ref: '#/components/parameters/FilterDevelopersByStatus'
+        - $ref: '#/components/parameters/FilterDevelopersByStatusShort'
+        - $ref: '#/components/parameters/SortDevelopers'
   /portals/{portalId}/developers/{developerId}/teams:
     parameters:
       - $ref: '../../../../../common/definitions/portal.yaml#/components/parameters/DeveloperId'
@@ -940,6 +921,20 @@ components:
       required: false
       schema:
         type: string
+    FilterDevelopersByEmailShort:
+      name: filter[email]
+      description: filters developers by their email (alias for filter[email][eq])
+      in: query
+      required: false
+      schema:
+        type: string
+    FilterDevelopersByEmailContains:
+      name: filter[email][contains]
+      description: filters by contains comparison of the email property with a supplied substring
+      in: query
+      required: false
+      schema:
+        type: string
     FilterDevelopersByName:
       name: 'filter[name][eq]'
       description: 'filters developers by their names'
@@ -950,6 +945,27 @@ components:
     FilterDevelopersByNameShort:
       name: 'filter[name]'
       description: 'filters developers by their names (alias for filter[name][eq])'
+      in: query
+      required: false
+      schema:
+        type: string
+    FilterDevelopersByNameContains:
+      name: filter[name][contains]
+      description: Filter by contains comparison of the name property with a supplied substring
+      in: query
+      required: false
+      schema:
+        type: string
+    FilterDevelopersByStatus:
+      name: 'filter[status][eq]'
+      description: 'filters developers by their status'
+      in: query
+      required: false
+      schema:
+        type: string
+    FilterDevelopersByStatusShort:
+      name: 'filter[status]'
+      description: 'filters developers by their status (alias for filter[status][eq])'
       in: query
       required: false
       schema:
@@ -1014,6 +1030,7 @@ components:
           - updated_at
           - email
           - name
+          - status
       in: query
       required: false
       schema:
@@ -1871,6 +1888,7 @@ components:
       - email
       - full_name
       - status
+      - application_count
       properties:
         id:
           $ref: '../../../../../common/definitions/konnect_properties.yaml#/components/schemas/UUID'
@@ -1887,6 +1905,10 @@ components:
           maxLength: 255
         status:
           $ref: '#/components/schemas/DeveloperStatus'
+        application_count:
+          readOnly: true
+          type: number
+          example: 4
     Application:
       additionalProperties: false
       type: object
