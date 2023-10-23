@@ -1018,6 +1018,7 @@ components:
           example: My Name
         description:
           type: string
+          nullable: true
           description: The description of the API product
           example: MyDescription
         portal_ids:
