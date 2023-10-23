@@ -102,5 +102,43 @@
       "src": "output/internal/documenthub-portal/v2/openapi.yaml",
       "dest": "specs/openapi/portal.v2.yml"
     }
+  ],
+  "kong/docs.konghq.com": [
+    {
+      "src": "output/konnect/services/analytics-reports/public.yaml",
+      "dest": "api-specs/Konnect/v2/yaml/analytics-reports.yaml"
+    },
+    {
+      "src": "output/konnect/services/analytics-requests/public.yaml",
+      "dest": "api-specs/Konnect/v2/yaml/analytics-requests.yaml"
+    },
+    {
+      "src": "output/konnect/services/api-products/public.yaml",
+      "dest": "api-specs/Konnect/v2/yaml/api-products.yaml"
+    },
+    {
+      "src": "output/konnect/services/audit-logs/public.yaml",
+      "dest": "api-specs/Konnect/v2/yaml/audit-logs.yaml"
+    },
+    {
+      "src": "output/konnect/services/control-planes-config/public.yaml",
+      "dest": "api-specs/Konnect/control-planes-config/control-planes-config.yaml"
+    },
+    {
+      "src": "output/konnect/services/control-planes/public.yaml",
+      "dest": "api-specs/Konnect/v2/yaml/control-planes.yaml"
+    },
+    {
+      "src": "output/konnect/services/identity/public.yaml",
+      "dest": "api-specs/Konnect/v3/yaml/identity.yaml"
+    },
+    {
+      "src": "output/konnect/services/mesh-control-planes/public.yaml",
+      "dest": "api-specs/Konnect/v0/yaml/mesh-control-planes.yaml"
+    },
+    {
+      "src": "output/konnect/services/portal-management/public.yaml",
+      "dest": "apps/konnect-api/openapi/v2/portal-management/openapi.yaml"
+    }
   ]
 }
