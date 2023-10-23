@@ -2069,10 +2069,12 @@ components:
         custom_domain:
           type: string
           format: hostname
+          nullable: true
           maxLength: 1024
         custom_client_domain:
           type: string
           format: hostname
+          nullable: true
           maxLength: 1024
         public_catalog_enabled:
           type: boolean
