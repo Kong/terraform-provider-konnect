@@ -254,6 +254,8 @@ paths:
         - $ref: '#/components/parameters/FilterApplicationRegistrationByStatusShort'
         - $ref: '#/components/parameters/FilterApplicationRegistrationByStatus'
         - $ref: '#/components/parameters/FilterByDeveloperId'
+        - $ref: '#/components/parameters/FilterApplicationRegistrationByApplicationName'
+        - $ref: '#/components/parameters/FilterApplicationRegistrationByApplicationNameContains'
         - $ref: '#/components/parameters/SortListAllApplicationRegistrations'
       tags:
       - Portal Application Registrations
@@ -1015,6 +1017,20 @@ components:
     FilterByDeveloperId:
       name: 'filter[developer_id]'
       description: "filters applications by their developer's id"
+      in: query
+      required: false
+      schema:
+        type: string
+    FilterApplicationRegistrationByApplicationName:
+      name: 'filter[application_name]'
+      description: "filters applications registrations by their application's name"
+      in: query
+      required: false
+      schema:
+        type: string
+    FilterApplicationRegistrationByApplicationNameContains:
+      name: 'filter[application_name][contains]'
+      description: "filters applications registrations by their application's name via a substring"
       in: query
       required: false
       schema:
@@ -1988,9 +2004,10 @@ components:
       - created_at
       - updated_at
       - status
-      - product_version_id
-      - application_id
-      - developer_id
+      - product
+      - product_version
+      - application
+      - developer
       properties:
         id:
           $ref: '../../../../../common/definitions/konnect_properties.yaml#/components/schemas/UUID'
@@ -2000,12 +2017,54 @@ components:
           $ref: '../../../../../common/definitions/konnect_properties.yaml#/components/schemas/UpdatedAt'
         status:
           $ref: '#/components/schemas/ApplicationRegistrationStatus'
-        product_version_id:
-          $ref: '../../../../../common/definitions/konnect_properties.yaml#/components/schemas/UUID'
-        application_id:
-          $ref: '../../../../../common/definitions/konnect_properties.yaml#/components/schemas/UUID'
-        developer_id:
-          $ref: '../../../../../common/definitions/konnect_properties.yaml#/components/schemas/UUID'
+        product:
+          type: object
+          additionalProperties: false
+          required:
+            - id
+            - name
+          properties:
+            id:
+              $ref: '../../../../../common/definitions/konnect_properties.yaml#/components/schemas/UUID'
+            name:
+              description: The name of the product the application is registered to.
+              type: string
+        product_version:
+          type: object
+          additionalProperties: false
+          required:
+            - id
+            - name
+          properties:
+            id:
+              $ref: '../../../../../common/definitions/konnect_properties.yaml#/components/schemas/UUID'
+            name:
+              description: The name of the product version associated with the product the application is registered to.
+              type: string
+        application:
+          type: object
+          additionalProperties: false
+          required:
+            - id
+            - name
+          properties:
+            id:
+              $ref: '../../../../../common/definitions/konnect_properties.yaml#/components/schemas/UUID'
+            name:
+              description: The name of the application.
+              type: string
+        developer:
+          type: object
+          additionalProperties: false
+          required:
+            - id
+            - name
+          properties:
+            id:
+              $ref: '../../../../../common/definitions/konnect_properties.yaml#/components/schemas/UUID'
+            name:
+              description: The name of the developer that created the registration.
+              type: string
     Portal:
       additionalProperties: false
       type: object
