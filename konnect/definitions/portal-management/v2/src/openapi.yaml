@@ -110,7 +110,7 @@ paths:
         - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
         - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
       tags:
-      - Portals
+      - Portal Products
       responses:
           '200':
             $ref: '#/components/responses/ListPortalProducts'
@@ -137,7 +137,7 @@ paths:
         - $ref: '../../../../../common/definitions/portal.yaml#/components/parameters/PortalId'
         - $ref: '#/components/parameters/DeveloperId'
       tags:
-      - Portals
+      - Portal Developers
       responses:
         '200':
           $ref: '#/components/responses/GetDeveloper'
@@ -157,7 +157,7 @@ paths:
       requestBody:
         $ref: '#/components/requestBodies/UpdateDeveloper'
       tags:
-      - Portals
+      - Portal Developers
       responses:
         '200':
           $ref: '#/components/responses/UpdateDeveloper'
@@ -177,7 +177,7 @@ paths:
       x-unstable: true
       x-internal: true
       tags:
-      - Portals
+      - Portal Developers
       responses:
         '204':
           description: No Content
@@ -205,7 +205,7 @@ paths:
         - $ref: '#/components/parameters/FilterByDeveloperId'
         - $ref: '#/components/parameters/SortApplications'
       tags:
-      - Portals
+      - Portal Applications
       responses:
         '200':
           $ref: '#/components/responses/ListApplications'
@@ -229,7 +229,7 @@ paths:
         - $ref: '../../../../../common/definitions/portal.yaml#/components/parameters/PortalId'
         - $ref: '#/components/parameters/ApplicationId'
       tags:
-      - Portals
+      - Portal Applications
       responses:
         '200':
           $ref: '#/components/responses/GetApplication'
@@ -256,7 +256,7 @@ paths:
         - $ref: '#/components/parameters/FilterByDeveloperId'
         - $ref: '#/components/parameters/SortListAllApplicationRegistrations'
       tags:
-      - Portals
+      - Portal Application Registrations
       responses:
         '200':
           $ref: '#/components/responses/ListApplicationRegistrations'
@@ -285,7 +285,7 @@ paths:
         - $ref: '#/components/parameters/FilterApplicationRegistrationByStatus'
         - $ref: '#/components/parameters/SortApplicationRegistrations'
       tags:
-      - Portals
+      - Portal Application Registrations
       responses:
         '200':
           $ref: '#/components/responses/ListApplicationRegistrations'
@@ -310,7 +310,7 @@ paths:
       x-unstable: true
       x-internal: true
       tags:
-      - Portals
+      - Portal Application Registrations
       responses:
         '200':
           $ref: '#/components/responses/GetApplicationRegistration'
@@ -330,7 +330,7 @@ paths:
       requestBody:
         $ref: '#/components/requestBodies/UpdateApplicationRegistration'
       tags:
-      - Portals
+      - Portal Application Registrations
       responses:
         '200':
           $ref: '#/components/responses/UpdateApplicationRegistration'
@@ -350,7 +350,7 @@ paths:
       x-unstable: true
       x-internal: true
       tags:
-      - Portals
+      - Portal Application Registrations
       responses:
         '204':
           description: No Content
@@ -369,7 +369,7 @@ paths:
       x-unstable: true
       x-internal: true
       tags:
-        - Portals
+        - Portal Application Registrations
       parameters:
         - $ref: '../../../../../common/definitions/portal.yaml#/components/parameters/PortalId'
         - $ref: '#/components/parameters/ApplicationId'
@@ -390,7 +390,7 @@ paths:
       x-unstable: true
       x-internal: true
       tags:
-      - Portals
+        - Portal Appearance
       responses:
         '200':
           $ref: '#/components/responses/GetAppearanceDefaults'
@@ -413,7 +413,7 @@ paths:
       parameters:
         - $ref: '../../../../../common/definitions/portal.yaml#/components/parameters/PortalId'
       tags:
-      - Portals
+        - Portal Appearance
       responses:
         '200':
           $ref: '#/components/responses/GetPortalAppearance'
@@ -437,7 +437,7 @@ paths:
       parameters:
         - $ref: '../../../../../common/definitions/portal.yaml#/components/parameters/PortalId'
       tags:
-      - Portals
+        - Portal Appearance
       responses:
         '200':
           $ref: '#/components/responses/UpdatePortalAppearance'
@@ -460,7 +460,7 @@ paths:
       parameters:
         - $ref: '../../../../../common/definitions/portal.yaml#/components/parameters/PortalId'
       tags:
-      - Portals
+        - Portals
       responses:
         '200':
           $ref: '#/components/responses/VerifyPortalDomains'
@@ -847,7 +847,7 @@ paths:
       operationId: list-portal-roles
       description: List roles that can be assigned to teams in a portal.
       tags:
-        - Portal Roles
+        - Portal Team Roles
 components:
   requestBodies:
     PortalUpdateTeam:
@@ -2353,10 +2353,22 @@ security:
   - systemAccountAccessToken: []
 tags:
   - name: Portals
-    description: APIs related to the Konnect Developer Portal Management API.
-  - name: Portal Teams
-  - name: Portal Team Membership
-  - name: Portal Team Roles
-  - name: Portal Roles
+    description: APIs related to Configuration of Konnect Developer Portals.
   - name: Portal Developers
+    description: APIs related to Konnect Developer Portal Developers.
+  - name: Portal Teams
+    description: APIs related to Konnect Developer Portal Developer Teams.
+  - name: Portal Team Membership
+    description: APIs related to Developer Membership in Konnect Developer Portal Developer Teams.
+  - name: Portal Team Roles
+    description: APIs related to Team Roles in Konnect Developer Portal.
+  - name: Portal Applications
+    description: APIs related to Konnect Developer Portal Applications.
+  - name: Portal Application Registrations
+    description: APIs related to Konnect Developer Portal Application Registrations.
+  - name: Portal Products
+    description: APIs related to API Products Published to Konnect Developer Portals.
   - name: Portal Auth Settings
+    description: APIs related to Konnect Developer Portal Authentication Settings.
+  - name: Portal Appearance
+    description: APIs related to Konnect Developer Portal Appearance Settings.
