@@ -1957,7 +1957,7 @@ components:
       - name
       - description
       - reference_id
-      - client_provider_id
+      - dcr_provider_id
       - developer_id
       properties:
         id:
@@ -1974,7 +1974,7 @@ components:
         reference_id:
           type: string
           readOnly: true
-        client_provider_id:
+        dcr_provider_id:
           $ref: '../../../../../common/definitions/konnect_properties.yaml#/components/schemas/NullableUUID'
         developer_id:
           type: string
