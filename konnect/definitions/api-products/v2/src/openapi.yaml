@@ -976,13 +976,15 @@ components:
       type: object
       properties:
         name:
-          $ref: '../../../../../common/definitions/filters.yaml#/components/schemas/StringFieldFilter'
+          $ref: '../../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter'
     APIProductVersionFilterParameters:
       title: 'APIProductVersionFilterParameters'
       type: object
       properties:
         name:
-          $ref: '../../../../../common/definitions/filters.yaml#/components/schemas/StringFieldFilter'
+          $ref: '../../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter'
+        publish_status:
+          $ref: '../../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter'
     SortQuery:
       title: SortQuery
       type: string
