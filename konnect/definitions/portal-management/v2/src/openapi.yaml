@@ -1894,8 +1894,9 @@ components:
       - name
       - description
       - reference_id
-      - dcr_provider_id
-      - developer_id
+      - dcr_provider
+      - portal
+      - developer
       properties:
         id:
           $ref: '../../../../../common/definitions/konnect_properties.yaml#/components/schemas/UUID'
@@ -1911,12 +1912,39 @@ components:
         reference_id:
           type: string
           readOnly: true
-        dcr_provider_id:
-          $ref: '../../../../../common/definitions/konnect_properties.yaml#/components/schemas/NullableUUID'
-        developer_id:
-          type: string
-          format: uuid
-          readOnly: true
+        dcr_provider:
+          type: object
+          additionalProperties: false
+          nullable: true
+          required:
+            - id
+          properties:
+            id:
+              $ref: '../../../../../common/definitions/konnect_properties.yaml#/components/schemas/UUID'
+        portal:
+          type: object
+          additionalProperties: false
+          required:
+            - id
+          properties:
+            id:
+              $ref: '../../../../../common/definitions/konnect_properties.yaml#/components/schemas/UUID'
+        developer:
+          type: object
+          additionalProperties: false
+          required:
+            - id
+            - name
+            - email
+          properties:
+            id:
+              $ref: '../../../../../common/definitions/konnect_properties.yaml#/components/schemas/UUID'
+            name:
+              description: The name of the developer that created the application.
+              type: string
+            email:
+              description: The email of the developer that created the application.
+              type: string
     ApplicationRegistration:
       additionalProperties: false
       type: object
