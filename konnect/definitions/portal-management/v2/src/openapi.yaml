@@ -199,11 +199,19 @@ paths:
         - $ref: '../../../../../common/definitions/portal.yaml#/components/parameters/PortalId'
         - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
         - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
-        - $ref: '#/components/parameters/FilterApplicationByName'
-        - $ref: '#/components/parameters/FilterApplicationByNameContains'
-        - $ref: '#/components/parameters/FilterApplicationByNameShort'
-        - $ref: '#/components/parameters/FilterByDeveloperId'
         - $ref: '#/components/parameters/SortApplications'
+        - schema:
+            type: object
+            properties:
+              developer_id:
+                $ref: '../../../../../common/definitions/aip_filters.yaml#/components/schemas/UuidFieldFilter'
+              name:
+                $ref: '../../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter'
+          in: query
+          name: filter
+          description: Filter applications returned in the response.
+          required: false
+          style: deepObject
       tags:
       - Portal Applications
       responses:
@@ -251,12 +259,23 @@ paths:
         - $ref: '../../../../../common/definitions/portal.yaml#/components/parameters/PortalId'
         - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
         - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
-        - $ref: '#/components/parameters/FilterApplicationRegistrationByStatusShort'
-        - $ref: '#/components/parameters/FilterApplicationRegistrationByStatus'
-        - $ref: '#/components/parameters/FilterByDeveloperId'
-        - $ref: '#/components/parameters/FilterApplicationRegistrationByApplicationName'
-        - $ref: '#/components/parameters/FilterApplicationRegistrationByApplicationNameContains'
         - $ref: '#/components/parameters/SortListAllApplicationRegistrations'
+        - schema:
+            type: object
+            properties:
+              developer_id:
+                $ref: '../../../../../common/definitions/aip_filters.yaml#/components/schemas/UuidFieldFilter'
+              developer_name:
+                $ref: '../../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter'
+              application_name:
+                $ref: '../../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter'
+              status:
+                $ref: '../../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter'
+          in: query
+          name: filter
+          description: Filter application registrations returned in the response.
+          required: false
+          style: deepObject
       tags:
       - Portal Application Registrations
       responses:
@@ -283,9 +302,17 @@ paths:
         - $ref: '#/components/parameters/ApplicationId'
         - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
         - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
-        - $ref: '#/components/parameters/FilterApplicationRegistrationByStatusShort'
-        - $ref: '#/components/parameters/FilterApplicationRegistrationByStatus'
         - $ref: '#/components/parameters/SortApplicationRegistrations'
+        - schema:
+            type: object
+            properties:
+              status:
+                $ref: '../../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter'
+          in: query
+          name: filter
+          description: Filter application registrations returned in the response.
+          required: false
+          style: deepObject
       tags:
       - Portal Application Registrations
       responses:
@@ -578,7 +605,7 @@ paths:
             type: object
             properties:
               name:
-                $ref: '../../../../../common/definitions/filters.yaml#/components/schemas/StringFieldFilter'
+                $ref: '../../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter'
           in: query
           name: filter
           description: Filter teams returned in the response.
@@ -805,15 +832,21 @@ paths:
       parameters:
         - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
         - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
-        - $ref: '#/components/parameters/FilterDevelopersByEmail'
-        - $ref: '#/components/parameters/FilterDevelopersByEmailShort'
-        - $ref: '#/components/parameters/FilterDevelopersByEmailContains'
-        - $ref: '#/components/parameters/FilterDevelopersByName'
-        - $ref: '#/components/parameters/FilterDevelopersByNameShort'
-        - $ref: '#/components/parameters/FilterDevelopersByNameContains'
-        - $ref: '#/components/parameters/FilterDevelopersByStatus'
-        - $ref: '#/components/parameters/FilterDevelopersByStatusShort'
         - $ref: '#/components/parameters/SortDevelopers'
+        - schema:
+            type: object
+            properties:
+              name:
+                $ref: '../../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter'
+              status:
+                $ref: '../../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter'
+              email:
+                $ref: '../../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter'
+          in: query
+          name: filter
+          description: Filter developers returned in the response.
+          required: false
+          style: deepObject
   /portals/{portalId}/developers/{developerId}/teams:
     parameters:
       - $ref: '../../../../../common/definitions/portal.yaml#/components/parameters/DeveloperId'
@@ -937,118 +970,6 @@ components:
       description: The Application registration Id
       schema:
         $ref: '../../../../../common/definitions/konnect_properties.yaml#/components/schemas/UUID'
-    FilterDevelopersByEmail:
-      name: 'filter[email][eq]'
-      description: 'filters developers by their email'
-      in: query
-      required: false
-      schema:
-        type: string
-    FilterDevelopersByEmailShort:
-      name: filter[email]
-      description: filters developers by their email (alias for filter[email][eq])
-      in: query
-      required: false
-      schema:
-        type: string
-    FilterDevelopersByEmailContains:
-      name: filter[email][contains]
-      description: filters by contains comparison of the email property with a supplied substring
-      in: query
-      required: false
-      schema:
-        type: string
-    FilterDevelopersByName:
-      name: 'filter[name][eq]'
-      description: 'filters developers by their names'
-      in: query
-      required: false
-      schema:
-        type: string
-    FilterDevelopersByNameShort:
-      name: 'filter[name]'
-      description: 'filters developers by their names (alias for filter[name][eq])'
-      in: query
-      required: false
-      schema:
-        type: string
-    FilterDevelopersByNameContains:
-      name: filter[name][contains]
-      description: Filter by contains comparison of the name property with a supplied substring
-      in: query
-      required: false
-      schema:
-        type: string
-    FilterDevelopersByStatus:
-      name: 'filter[status][eq]'
-      description: 'filters developers by their status'
-      in: query
-      required: false
-      schema:
-        type: string
-    FilterDevelopersByStatusShort:
-      name: 'filter[status]'
-      description: 'filters developers by their status (alias for filter[status][eq])'
-      in: query
-      required: false
-      schema:
-        type: string
-    FilterApplicationByName:
-      name: 'filter[name][eq]'
-      description: 'filters an applications by their names'
-      in: query
-      required: false
-      schema:
-        type: string
-    FilterApplicationByNameContains:
-      name: 'filter[name][contains]'
-      description: 'filters an applications by their names with a supplied substring'
-      in: query
-      required: false
-      schema:
-        type: string
-    FilterApplicationByNameShort:
-      name: 'filter[name]'
-      description: 'filters applications by their names (alias for filter[name][eq])'
-      in: query
-      required: false
-      schema:
-        type: string
-    FilterByDeveloperId:
-      name: 'filter[developer_id]'
-      description: "filters applications by their developer's id"
-      in: query
-      required: false
-      schema:
-        type: string
-    FilterApplicationRegistrationByApplicationName:
-      name: 'filter[application_name]'
-      description: "filters applications registrations by their application's name"
-      in: query
-      required: false
-      schema:
-        type: string
-    FilterApplicationRegistrationByApplicationNameContains:
-      name: 'filter[application_name][contains]'
-      description: "filters applications registrations by their application's name via a substring"
-      in: query
-      required: false
-      schema:
-        type: string
-    FilterApplicationRegistrationByStatus:
-      name: 'filter[status][eq]'
-      description: 'filters application registrations by their statuses'
-      in: query
-      required: false
-      schema:
-        $ref: '#/components/schemas/ApplicationRegistrationStatus'
-    FilterApplicationRegistrationByStatusShort:
-      name: 'filter[status]'
-      description: 'filters application registrations by their statuses (alias for filter[status][eq])'
-      in: query
-      required: false
-      schema:
-        $ref: '#/components/schemas/ApplicationRegistrationStatus'
     SortPortals:
       name: 'sort'
       description: |

@@ -9,6 +9,21 @@ components:
         The `desc` suffix is used to specify a descending order.
         Multiple sort attributes may be provided via a comma separated list.
         JSONPath notation may be used to specify a sub-attribute (eg: 'foo.bar desc').
+    UuidFieldFilter:
+      title: UuidFieldFilter
+      description: Filters on the given UUID field value by exact match.
+      oneOf:
+        - $ref: '#/components/schemas/StringFieldEqualsFilter'
+        - $ref: '#/components/schemas/StringFieldOEQFilter'
+        - $ref: '#/components/schemas/StringFieldNEQFilter'
+      x-examples:
+        example-1: '3bbfd3a-e9ab-48a9-9881-ed589e4615d1'
+        example-2:
+          eq: '3bbfd3a-e9ab-48a9-9881-ed589e4615d1'
+        example-3:
+          oeq: '3bbfd3a-e9ab-48a9-9881-ed589e4615d1'
+        example-4:
+          neq: '3bbfd3a-e9ab-48a9-9881-ed589e4615d1'
     StringFieldFilter:
       title: StringFieldFilter
       description: Filters on the given string field value by either exact or fuzzy match.

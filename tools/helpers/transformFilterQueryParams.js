@@ -1,6 +1,7 @@
 const FILTER_QUERY_NAME='filter'
 
 const filterSchemaTransformerMap = {
+    '#/components/schemas/UuidFieldFilter': transformUuidFieldFilter,
     '#/components/schemas/StringFieldFilter': transformStringFieldFilter,
     '#/components/schemas/StringFieldEqualsFilter': transformStringFieldEqualsFilter,
     '#/components/schemas/BooleanFieldFilter': transformBooleanFieldFilter,
@@ -51,6 +52,18 @@ function transformFilterQueryParam(param) {
   }
 
   return transformedProperties;
+}
+
+function transformUuidFieldFilter(filterName) {
+  const properties = [];
+  properties.push({
+    schema: { type: 'string' },
+    in: 'query',
+    name: `${FILTER_QUERY_NAME}[${filterName}]`,
+    description: `Filter results by ${filterName} that equals the given value.`
+  });
+
+  return properties;
 }
 
 function transformStringFieldFilter(filterName) {
