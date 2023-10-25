@@ -43,6 +43,8 @@ components:
           ocontains: 'some-potential,value'
         example-5:
           oeq: 'some-potential,value'
+        example-6:
+          neq: 'not-this-value'
     StringFieldEqualsFilter:
       title: StringFieldEqualsFilter
       description: Filters on the given string field value by exact match.
@@ -101,12 +103,12 @@ components:
       type: object
       additionalProperties: false
       properties:
-        oeq:
+        neq:
           type: string
       required: [neq]
       x-examples:
         example-1:
-          oeq: 'not-this-value'
+          neq: 'not-this-value'
     DateTimeFieldFilter:
       title: DateTimeFieldFilter
       description: Filters on the given datetime (RFC-3339) field value.
