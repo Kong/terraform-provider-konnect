@@ -205,6 +205,10 @@ paths:
             properties:
               developer_id:
                 $ref: '../../../../../common/definitions/aip_filters.yaml#/components/schemas/UuidFieldFilter'
+              developer_name: 
+                $ref: '../../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter'
+              developer_email:
+                $ref: '../../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter'
               name:
                 $ref: '../../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter'
           in: query
