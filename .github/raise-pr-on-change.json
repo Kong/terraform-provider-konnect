@@ -138,7 +138,7 @@
     },
     {
       "src": "output/konnect/services/portal-management/public.yaml",
-      "dest": "apps/konnect-api/openapi/v2/portal-management/openapi.yaml"
+      "dest": "api-specs/Konnect/v2/yaml/portal-management.yaml"
     }
   ]
 }
