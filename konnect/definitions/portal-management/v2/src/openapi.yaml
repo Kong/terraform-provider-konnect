@@ -33,6 +33,108 @@ paths:
           $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '403':
           $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+  '/portals/categories':
+    post:
+      summary: Create a category
+      description: |-
+        Creates a Category that can be applied to multiple API Products on multiple Portals.
+        A Category can contain a description, image and document to convey information to the developers.
+      operationId: create-category
+      x-unstable: true
+      x-internal: true
+      tags:
+        - Portal Categories
+      requestBody:
+        $ref: '#/components/requestBodies/CreateCategoryRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/CategoryResponse'
+        '400':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+    get:
+      summary: List categories
+      description: |-
+        Return a list of categories defined in this region for this organization.
+      operationId: list-categories
+      x-unstable: true
+      x-internal: true
+      tags:
+      - Portal Categories
+      parameters:
+        - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+        - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListCategories'
+        '401':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+  '/portals/categories/{categoryId}':
+    parameters:
+      - $ref: '#/components/parameters/CategoryId'
+    get:
+      summary: Get a category by ID
+      description: |-
+        Retrieves a category by its unique ID.
+      operationId: get-category-by-id
+      x-unstable: true
+      x-internal: true
+      tags:
+        - Portal Categories
+      responses:
+        '200':
+          $ref: '#/components/responses/CategoryResponse'
+        '401':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '400':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        '403':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+        '404':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+    patch:
+      summary: Partially update a category by ID
+      description: |-
+        Partially updates an existing category by its unique ID.
+      operationId: patch-category-by-id
+      x-unstable: true
+      x-internal: true
+      tags:
+        - Portal Categories
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateCategoryRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/CategoryResponse'
+        '401':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '400':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        '403':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+        '404':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+    delete:
+      summary: Delete a category by ID
+      description: |-
+        Delete a category by its unique ID.
+      operationId: delete-category-by-id
+      tags:
+        - Portal Categories
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+        '404':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
     # post:
     #   summary: Create a Portal
     #   description: |-
@@ -98,6 +200,8 @@ paths:
         '404':
           $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
   '/portals/{portalId}/products':
+    parameters:
+        - $ref: '../../../../../common/definitions/portal.yaml#/components/parameters/PortalId'
     get:
       summary: List Portal Products
       operationId: list-portal-products
@@ -106,7 +210,6 @@ paths:
       description: |-
         Lists all of the API Products that are published to this developer portal. An API Product packages together associated APIs and their operations, backed by thorough documentation, with the objective of making API consumption straightforward for developers
       parameters:
-        - $ref: '../../../../../common/definitions/portal.yaml#/components/parameters/PortalId'
         - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
         - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
       tags:
@@ -122,6 +225,90 @@ paths:
             $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
           '404':
             $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+    post:
+      summary: Publish an API product to the Portal
+      description: |
+        Publish an existing API product to the Portal
+      operationId: publish-api-product
+      x-unstable: true
+      x-internal: true
+      tags:
+        - Portal Products
+      requestBody:
+        $ref: '#/components/requestBodies/PublishToPortal'
+      responses:
+        '201':
+          $ref: '#/components/responses/PortalProductResponse'
+        '400':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+        '404':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+  '/portals/{portalId}/products/{productId}':
+    parameters:
+      - $ref: '../../../../../common/definitions/portal.yaml#/components/parameters/PortalId'
+      - $ref: '#/components/parameters/ProductId'
+    get:
+      summary: Get One Portal Product
+      operationId: get-portal-product
+      x-unstable: true
+      x-internal: true
+      description: Retrieves portal-specific info for the API product
+      tags:
+      - Portal Products
+      responses:
+        '201':
+          $ref: '#/components/responses/PortalProductResponse'
+        '400':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+        '404':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+    patch:
+      summary: Patch A Portal Product
+      operationId: update-portal-product
+      x-unstable: true
+      x-internal: true
+      description: Update portal-specific info for the API product
+      tags:
+        - Portal Products
+      requestBody:
+        $ref: '#/components/requestBodies/PatchPortalProduct'
+      responses:
+        '201':
+          $ref: '#/components/responses/PortalProductResponse'
+        '400':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+        '404':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+    delete:
+      summary: Unpublish an API Product from the Portal
+      operationId: delete-portal-product
+      x-unstable: true
+      x-internal: true
+      description: |
+        Unpublish an API product from the Portal, deleting the Portal Product
+      tags:
+        - Portal Products
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+        '404':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
   '/portals/{portalId}/developers/{developerId}':
     parameters:
       - $ref: '../../../../../common/definitions/portal.yaml#/components/parameters/PortalId'
@@ -952,6 +1139,33 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/UpdateDeveloperRequest'
+    CreateCategoryRequest:
+      description: Create a category
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CategoryWithDocumentRequest'
+    UpdateCategoryRequest:
+      description: Update a category
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CategoryWithDocumentRequest'
+    PublishToPortal:
+      description: Publish an API Product to the Portal
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PublishPortal'
+    PatchPortalProduct:
+      description: Updates the relationship with the Portal
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalProduct'
   parameters:
     DeveloperId:
       name: developerId
@@ -980,6 +1194,7 @@ components:
         Sorts a collection of portals. Supported sort attributes are:
           - created_at
           - updated_at
+          - category
       in: query
       required: false
       schema:
@@ -1031,6 +1246,22 @@ components:
       required: false
       schema:
         type: string
+    CategoryId:
+      schema:
+        type: string
+        format: uuid
+      name: categoryId
+      in: path
+      required: true
+      description: ID of the category.
+    ProductId:
+      schema:
+        type: string
+        format: uuid
+      name: productId
+      in: path
+      required: true
+      description: ID of the category.
   responses:
     PortalTeamGroupMappingCollection:
       description: A paginated collection of mappings grouped by team_id.
@@ -1218,6 +1449,24 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/UpdatePortalAppearanceResponse'
+    ListCategories:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ListCategoriesResponse'
+    CategoryResponse:
+      description: A response containing a single category.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CategoryResponse'
+    PortalProductResponse:
+      description: Portal specific state of the API Product
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalProduct'
   schemas:
     PortalClaimMappings:
       type: object
@@ -1699,6 +1948,19 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Portal'
+    ListCategoriesResponse:
+      additionalProperties: false
+      type: object
+      required:
+        - data
+        - meta
+      properties:
+        meta:
+          $ref: '../../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/CategoryResponseList'
     ListPortalProductsResponse:
       additionalProperties: false
       type: object
@@ -2355,6 +2617,114 @@ components:
       - 'mint_rocket'
       - 'dark_mode'
       - 'custom'
+    CategoryResponseList:
+      additionalProperties: false
+      type: object
+      properties:
+        id:
+          $ref: '../../../../../common/definitions/konnect_properties.yaml#/components/schemas/UUID'
+        internal_name:
+          type: string
+        external_name:
+          type: string
+        internal_description:
+          type: string
+        external_description:
+          type: string
+        has_content:
+          type: boolean
+        had_image:
+          type: boolean
+        created_at:
+          $ref: '../../../../../common/definitions/konnect_properties.yaml#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '../../../../../common/definitions/konnect_properties.yaml#/components/schemas/UpdatedAt'
+    CategoryResponse:
+      additionalProperties: false
+      type: object
+      properties:
+        internal_name:
+          type: string
+        external_name:
+          type: string
+        internal_description:
+          type: string
+        external_description:
+          type: string
+        image:
+          $ref: '#/components/schemas/AppearanceImage'
+        document:
+          $ref: '../../../api-products/v2/src/openapi.yaml#/components/schemas/APIProductDocument'
+        created_at:
+          $ref: '../../../../../common/definitions/konnect_properties.yaml#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '../../../../../common/definitions/konnect_properties.yaml#/components/schemas/UpdatedAt'
+    CategoryWithDocumentRequest:
+      type: object
+      required:
+        - internal_name
+      properties:
+        internal_name:
+          type: string
+        external_name:
+          type: string
+        internal_description:
+          type: string
+        external_description:
+          type: string
+        image:
+          $ref: '#/components/schemas/AppearanceImage'
+        document:
+          $ref: '#/components/schemas/DocumentPayload'
+    PublishPortal:
+      type: object
+      required:
+       - api_product_id
+      properties:
+        api_product_id:
+          type: string
+          format: uuid
+        category_id:
+          type: string
+          format: uuid
+          nullable: true
+        public_catalog_enabled:
+          type: boolean
+          default: false
+    PortalProduct:
+      additionalProperties: false
+      type: object
+      properties:
+        category_id:
+          type: string
+          format: uuid
+          nullable: true
+        public_catalog_enabled:
+          type: boolean
+          nullable: false
+    DocumentPayload:
+      type: object
+      title: DocumentPayload
+      required:
+       - content
+       - title
+      properties:
+        title:
+          type: string
+          minLength: 1
+          description: document title
+          example: How to add a document to a category
+        content:
+          type: string
+          format: byte
+          description: Must be a base64 encoded string
+          example: YmFzZTY0LWVuY29kZWQgdGV4dCBzdHJpbmc=
+        metadata:
+          type: object
+          nullable: false
+          description: metadata of the document
+          example: { "author": "John Doe" }
+          default: { }
   securitySchemes:
     personalAccessToken:
       $ref: '../../../../../common/definitions/security.yaml#/components/securitySchemes/personalAccessToken'
@@ -2384,3 +2754,5 @@ tags:
     description: APIs related to Konnect Developer Portal Authentication Settings.
   - name: Portal Appearance
     description: APIs related to Konnect Developer Portal Appearance Settings.
+  - name: Portal Categories
+    description: APIs related to Portal Products Categories.
