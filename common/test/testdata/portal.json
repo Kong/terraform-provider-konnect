@@ -1,0 +1,19 @@
+{
+  "ImageDataUri": {
+    "ok": [
+      "data:image/png,YW5faW1hZ2VfZmlsZQ==",
+      "data:image/png;base64,YW5faW1hZ2VfZmlsZQ==",
+      "data:image/jpeg,YW5faW1hZ2VfZmlsZQ==",
+      "data:image/jpeg;base64,YW5faW1hZ2VfZmlsZQ==",
+      "data:image/gif,YW5faW1hZ2VfZmlsZQ==",
+      "data:image/gif;base64,YW5faW1hZ2VfZmlsZQ=="
+    ],
+    "nok": [
+      "data:image/jpeg,notBase64",
+      "hello",
+      "data:hello",
+      "",
+      {}
+    ]
+  }
+}

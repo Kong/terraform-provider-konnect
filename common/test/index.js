@@ -5,6 +5,7 @@ const dataFolder = path.resolve(__dirname, 'testdata')
 const schemaFolder = path.resolve(__dirname, '..', 'definitions')
 const yaml = require('yaml')
 const Ajv = require('ajv')
+const addFormats = require('ajv-formats')
 
 const oasStub = {
     openapi: "3.0.3",
@@ -33,7 +34,7 @@ async function main() {
         const parsedDefinition = await SwaggerParser.dereference(stubbedOAS, { validate: false })
 
         // instanciation and adding all the schemas in the AJV environment to handle the `$ref`
-        let mainValidate = new Ajv({ allErrors: true }).addVocabulary(['example'])
+        let mainValidate = addFormats(new Ajv({ allErrors: true })).addVocabulary(['example', 'x-validation-message'])
         for (const def in parsedDefinition.components.schemas) {
             mainValidate = mainValidate.addSchema(parsedDefinition.components.schemas[def], def)
         }

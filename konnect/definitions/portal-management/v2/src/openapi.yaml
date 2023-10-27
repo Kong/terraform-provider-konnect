@@ -2278,7 +2278,7 @@ components:
         - data
       properties:
         data:
-          type: string
+          $ref: '../../../../../common/definitions/portal.yaml#/components/schemas/ImageDataUri'
         filename:
           type: string
           maxLength: 512
