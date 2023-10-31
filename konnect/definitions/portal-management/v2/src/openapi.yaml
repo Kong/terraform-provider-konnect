@@ -1208,7 +1208,7 @@ components:
         auto_approve_developers: true
         custom_domain: 'api.example.com'
         custom_client_domain: 'portal.example.com'
-        public_catalog_enabled: false
+        # public_catalog_enabled: false
     PortalProductExample1:
       value:
         id: fcdcba18-5bdf-4936-81de-d76da02cb99b
@@ -1513,7 +1513,7 @@ components:
         auto_approve_developers: false
         custom_domain: 'api.example.com'
         custom_client_domain: 'portal.example.com'
-        public_catalog_enabled: false
+        # public_catalog_enabled: false
     UpdateApplicationRegistrationApproved:
       value:
         status: approved
@@ -1805,7 +1805,7 @@ components:
           auto_approve_developers: true
           custom_domain: 'api.example.com'
           custom_client_domain: 'portal.example.com'
-          public_catalog_enabled: false
+          # public_catalog_enabled: false
     ListPortalProductsExample1:
       value:
         meta:
@@ -1848,7 +1848,7 @@ components:
         auto_approve_developers: true
         custom_domain: 'api.example.com'
         custom_client_domain: 'portal.example.com'
-        public_catalog_enabled: false
+        # public_catalog_enabled: false
     UpdatePortalResponseExample1:
       value:
         $ref: '#/components/examples/GetPortalExample1/value'
@@ -3548,7 +3548,7 @@ components:
       - auto_approve_developers
       - custom_domain
       - custom_client_domain
-      - public_catalog_enabled
+      # - public_catalog_enabled
       properties:
         id:
           $ref: '../../../../../common/definitions/konnect_properties.yaml#/components/schemas/UUID'
@@ -3602,10 +3602,10 @@ components:
           nullable: true
           type: string
           format: hostname
-        public_catalog_enabled:
-          description: |-
-            Whether API products that have been set to publicly visible will be visible in the portal to unauthenticated users.
-          type: boolean
+        # public_catalog_enabled:
+        #   description: |-
+        #     Whether API products that have been set to publicly visible will be visible in the portal to unauthenticated users.
+        #   type: boolean
       example:
         $ref: '#/components/examples/GetPortalExample1/value'
     UpdatePortalRequest:
@@ -3649,10 +3649,10 @@ components:
           format: hostname
           nullable: true
           maxLength: 1024
-        public_catalog_enabled:
-          description: |-
-            Whether API products that have been set to publicly visible will be visible in the portal to unauthenticated users.
-          type: boolean
+        # public_catalog_enabled:
+        #   description: |-
+        #     Whether API products that have been set to publicly visible will be visible in the portal to unauthenticated users.
+        #   type: boolean
       example:
         is_public: false
         rbac_enabled: true
@@ -3660,7 +3660,7 @@ components:
         auto_approve_developers: false
         custom_domain: 'api.example.com'
         custom_client_domain: 'portal.example.com'
-        public_catalog_enabled: false
+        # public_catalog_enabled: false
     UpdateDeveloperRequest:
       title: UpdateDeveloperRequest
       additionalProperties: false
