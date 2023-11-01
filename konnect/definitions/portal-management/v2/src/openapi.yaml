@@ -123,6 +123,8 @@ paths:
       description: |-
         Delete a category by its unique ID.
       operationId: delete-category-by-id
+      x-unstable: true
+      x-internal: true
       tags:
         - Portal Categories
       responses:
@@ -4307,7 +4309,7 @@ components:
       additionalProperties: false
       type: object
       required:
-        - catagory_id
+        - category_id
         - public_catalog_enabled
       properties:
         category_id:
