@@ -1301,341 +1301,6 @@ paths:
         - Portal Team Roles
 components:
   examples:
-    PortalThemeMintRocket:
-      value:
-        colors:
-          section:
-            header:
-              value: '#F8F8F8'
-              description: Background for header
-            body:
-              value: '#FFFFFF'
-              description: Background for main content
-            hero:
-              value: '#F8F8F8'
-              description: Background for hero section
-            accent:
-              value: '#F8F8F8'
-              description: Subtle background
-            tertiary:
-              value: '#FFFFFF'
-              description: Tertiary background
-            stroke:
-              value: rgba(0,0,0,0.1)
-              description: Border color
-            footer:
-              value: '#07A88D'
-              description: Background for footer
-          text:
-            header:
-              value: rgba(0,0,0,0.8)
-              description: Header text
-            hero:
-              value: '#FFFFFF'
-              description: Hero text
-            headings:
-              value: rgba(0,0,0,0.8)
-              description: Headings text
-            primary:
-              value: rgba(0,0,0,0.8)
-              description: Main content text
-            secondary:
-              value: rgba(0,0,0,0.8)
-              description: Supporting text
-            accent:
-              value: '#07A88D'
-              description: Subtle text
-            link:
-              value: '#07A88D'
-              description: Link text
-            footer:
-              value: '#FFFFFF'
-              description: Footer text
-          button:
-            primary_fill:
-              value: '#1155CB'
-              description: Background for Primary Button
-            primary_text:
-              value: '#FFFFFF'
-              description: Text for Primary Button
-    PortalThemeDarkMode:
-      value:
-        colors:
-          section:
-            header:
-              value: '#0A161E'
-              description: Background for header
-            body:
-              value: '#0C0C0C'
-              description: Background for main content
-            hero:
-              value: '#1A1D21'
-              description: Background for hero section
-            accent:
-              value: '#1F1F1F'
-              description: Subtle background
-            tertiary:
-              value: '#222529'
-              description: Tertiary background
-            stroke:
-              value: '#34393F'
-              description: Border color
-            footer:
-              value: '#212429'
-              description: Background for footer
-          text:
-            header:
-              value: '#FFFFFF'
-              description: Header text
-            hero:
-              value: rgba(255,255,255,0.8)
-              description: Hero text
-            headings:
-              value: '#FFFFFF'
-              description: Headings text
-            primary:
-              value: '#C8C8C9'
-              description: Main content text
-            secondary:
-              value: '#919294'
-              description: Supporting text
-            accent:
-              value: '#FFFFFF'
-              description: Subtle text
-            link:
-              value: '#2977FF'
-              description: Link text
-            footer:
-              value: '#FFFFFF'
-              description: Footer text
-          button:
-            primary_fill:
-              value: '#1155CB'
-              description: Background for Primary Button
-            primary_text:
-              value: '#FFFFFF'
-              description: Text for Primary Button
-    PortalExample1:
-      value:
-        id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-        created_at: '2022-02-07T17:46:57.52Z'
-        updated_at: '2022-10-08T17:00:00.52Z'
-        name: Portal A
-        default_domain: 123455678abcd.us.portal.konghq.com
-        is_public: false
-        rbac_enabled: true
-        auto_approve_applications: false
-        auto_approve_developers: true
-        custom_domain: api.example.com
-        custom_client_domain: portal.example.com
-    PortalProductExample1:
-      value:
-        id: fcdcba18-5bdf-4936-81de-d76da02cb99b
-        name: Excellent API
-        description: Excellent for serving
-        created_at: '2022-05-24T18:40:35.500Z'
-        updated_at: '2022-05-24T18:40:35.500Z'
-        portal_ids:
-          - 83f1733c-862c-43e5-a005-acfb0addfcfb
-        labels:
-          department: marketing
-        version_count: 4
-    PortalDeveloperExample1:
-      value:
-        id: 0cd9feff-b4da-4a9f-ba49-cbe83c75ff22
-        email: developer@example.com
-        full_name: Jane Dev
-        status: approved
-        application_count: 3
-        created_at: '2022-11-15T20:37:41.457Z'
-        updated_at: '2022-11-15T20:37:47.456Z'
-    PortalApplicationExample1:
-      value:
-        id: f15e2460-ba40-431d-9df0-4957fcffacda
-        name: App 1
-        description: The main app for the system
-        reference_id: yr1k0d9kj3l0cl01hp4o0
-        portal:
-          id: 95606071-49c7-4c2e-ae49-8a86d72a8110
-        dcr_provider: null
-        developer:
-          id: 1cd9feff-b4da-4a9f-ba49-cbe83c75fe22
-          name: Jane Dev
-          email: developer@example.com
-        created_at: '2022-12-22T19:09:30.712Z'
-        updated_at: '2022-12-22T19:09:30.712Z'
-    PortalApplicationRegistrationExample1:
-      value:
-        id: c200cc33-2d33-4754-b086-a98e0fcd36fb
-        status: approved
-        application:
-          id: d15e2460-ba40-431d-9df0-4957fcff7cda
-          name: App 1
-        product:
-          id: 96f637b7-cd95-478b-9b02-d770618f641c
-          name: Great Product
-        product_version:
-          id: 94e54925-20a0-4788-9873-d24db33f1495
-          name: v1
-        developer:
-          id: 9cd9feff-b4da-4a9f-ba49-cbe83c75ff22
-          name: Jane Dev
-        created_at: '2022-12-22T20:13:07.305Z'
-        updated_at: '2022-12-22T20:13:36.710Z'
-    PortalAppearanceColorVariablesExample1:
-      value:
-        section:
-          header:
-            value: '#0A161E'
-            description: Background for header
-          body:
-            value: '#0C0C0C'
-            description: Background for main content
-          hero:
-            value: '#1A1D21'
-            description: Background for hero section
-          accent:
-            value: '#1F1F1F'
-            description: Subtle background
-          tertiary:
-            value: '#222529'
-            description: Tertiary background
-          stroke:
-            value: '#34393F'
-            description: Border color
-          footer:
-            value: '#212429'
-            description: Background for footer
-        text:
-          header:
-            value: '#FFFFFF'
-            description: Header text
-          hero:
-            value: rgba(255,255,255,0.8)
-            description: Hero text
-          headings:
-            value: '#FFFFFF'
-            description: Headings text
-          primary:
-            value: '#C8C8C9'
-            description: Main content text
-          secondary:
-            value: '#919294'
-            description: Supporting text
-          accent:
-            value: '#FFFFFF'
-            description: Subtle text
-          link:
-            value: '#2977FF'
-            description: Link text
-          footer:
-            value: '#FFFFFF'
-            description: Footer text
-        button:
-          primary_fill:
-            value: '#1155CB'
-            description: Background for Primary Button
-          primary_text:
-            value: '#FFFFFF'
-            description: Text for Primary Button
-    PortalAppearanceTextVariablesExample1:
-      value:
-        catalog:
-          welcome_message: Welcome to our service catalog
-          primary_header: Find All of Our Services in a Single Place
-    PortalDefaultAppearanceExample:
-      value:
-        themes:
-          mint_rocket:
-            $ref: '#/components/examples/PortalThemeMintRocket/value'
-          dark_mode:
-            $ref: '#/components/examples/PortalThemeDarkMode/value'
-        fonts:
-          base: Roboto
-          code: Roboto Mono
-          headings: Lato
-        text:
-          $ref: '#/components/examples/PortalAppearanceTextVariablesExample1/value'
-    PortalImageExample1:
-      value:
-        data: data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
-    PortalAppearanceExample1:
-      value:
-        theme_name: custom
-        use_custom_fonts: true
-        custom_theme:
-          colors:
-            section:
-              header:
-                value: '#F8F8F8'
-                description: Background for header
-              body:
-                value: '#FFFFFF'
-                description: Background for main content
-              hero:
-                value: '#F8F8F8'
-                description: Background for hero section
-              accent:
-                value: '#F8F8F8'
-                description: Subtle background
-              tertiary:
-                value: '#FFFFFF'
-                description: Tertiary background
-              stroke:
-                value: rgba(0,0,0,0.1)
-                description: Border color
-              footer:
-                value: '#07A88D'
-                description: Background for footer
-            text:
-              header:
-                value: rgba(0,0,0,0.8)
-                description: Header text
-              hero:
-                value: '#FFFFFF'
-                description: Hero text
-              headings:
-                value: rgba(0,0,0,0.8)
-                description: Headings text
-              primary:
-                value: rgba(0,0,0,0.8)
-                description: Main content text
-              secondary:
-                value: rgba(0,0,0,0.8)
-                description: Supporting text
-              accent:
-                value: '#07A88D'
-                description: Subtle text
-              link:
-                value: '#07A88D'
-                description: Link text
-              footer:
-                value: '#FFFFFF'
-                description: Footer text
-            button:
-              primary_fill:
-                value: '#1155CB'
-                description: Background for Primary Button
-              primary_text:
-                value: '#FFFFFF'
-                description: Text for Primary Button
-        custom_fonts:
-          base: Roboto
-          code: Roboto
-          headings: Roboto
-        text:
-          catalog:
-            welcome_message: Welcome
-            primary_header: Come on in!
-        images:
-          favicon:
-            data: data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
-            filename: favicon.ico
-          logo:
-            data: data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
-            filename: logo.png
-          catalog_cover:
-            data: data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
     UpdateTeamExample1:
       value:
         name: IDM - Developers
@@ -2298,9 +1963,117 @@ components:
       value:
         themes:
           mint_rocket:
-            $ref: '#/components/examples/PortalThemeMintRocket/value'
+            colors:
+              section:
+                header:
+                  value: '#F8F8F8'
+                  description: Background for header
+                body:
+                  value: '#FFFFFF'
+                  description: Background for main content
+                hero:
+                  value: '#F8F8F8'
+                  description: Background for hero section
+                accent:
+                  value: '#F8F8F8'
+                  description: Subtle background
+                tertiary:
+                  value: '#FFFFFF'
+                  description: Tertiary background
+                stroke:
+                  value: rgba(0,0,0,0.1)
+                  description: Border color
+                footer:
+                  value: '#07A88D'
+                  description: Background for footer
+              text:
+                header:
+                  value: rgba(0,0,0,0.8)
+                  description: Header text
+                hero:
+                  value: '#FFFFFF'
+                  description: Hero text
+                headings:
+                  value: rgba(0,0,0,0.8)
+                  description: Headings text
+                primary:
+                  value: rgba(0,0,0,0.8)
+                  description: Main content text
+                secondary:
+                  value: rgba(0,0,0,0.8)
+                  description: Supporting text
+                accent:
+                  value: '#07A88D'
+                  description: Subtle text
+                link:
+                  value: '#07A88D'
+                  description: Link text
+                footer:
+                  value: '#FFFFFF'
+                  description: Footer text
+              button:
+                primary_fill:
+                  value: '#1155CB'
+                  description: Background for Primary Button
+                primary_text:
+                  value: '#FFFFFF'
+                  description: Text for Primary Button
           dark_mode:
-            $ref: '#/components/examples/PortalThemeDarkMode/value'
+            colors:
+              section:
+                header:
+                  value: '#0A161E'
+                  description: Background for header
+                body:
+                  value: '#0C0C0C'
+                  description: Background for main content
+                hero:
+                  value: '#1A1D21'
+                  description: Background for hero section
+                accent:
+                  value: '#1F1F1F'
+                  description: Subtle background
+                tertiary:
+                  value: '#222529'
+                  description: Tertiary background
+                stroke:
+                  value: '#34393F'
+                  description: Border color
+                footer:
+                  value: '#212429'
+                  description: Background for footer
+              text:
+                header:
+                  value: '#FFFFFF'
+                  description: Header text
+                hero:
+                  value: rgba(255,255,255,0.8)
+                  description: Hero text
+                headings:
+                  value: '#FFFFFF'
+                  description: Headings text
+                primary:
+                  value: '#C8C8C9'
+                  description: Main content text
+                secondary:
+                  value: '#919294'
+                  description: Supporting text
+                accent:
+                  value: '#FFFFFF'
+                  description: Subtle text
+                link:
+                  value: '#2977FF'
+                  description: Link text
+                footer:
+                  value: '#FFFFFF'
+                  description: Footer text
+              button:
+                primary_fill:
+                  value: '#1155CB'
+                  description: Background for Primary Button
+                primary_text:
+                  value: '#FFFFFF'
+                  description: Text for Primary Button
         fonts:
           base: Roboto
           code: Roboto Mono
@@ -2311,10 +2084,158 @@ components:
             primary_header: Find All of Our Services in a Single Place
     GetPortalAppearanceExample1:
       value:
-        $ref: '#/components/examples/PortalAppearanceExample1/value'
+        theme_name: custom
+        use_custom_fonts: true
+        custom_theme:
+          colors:
+            section:
+              header:
+                value: '#F8F8F8'
+                description: Background for header
+              body:
+                value: '#FFFFFF'
+                description: Background for main content
+              hero:
+                value: '#F8F8F8'
+                description: Background for hero section
+              accent:
+                value: '#F8F8F8'
+                description: Subtle background
+              tertiary:
+                value: '#FFFFFF'
+                description: Tertiary background
+              stroke:
+                value: rgba(0,0,0,0.1)
+                description: Border color
+              footer:
+                value: '#07A88D'
+                description: Background for footer
+            text:
+              header:
+                value: rgba(0,0,0,0.8)
+                description: Header text
+              hero:
+                value: '#FFFFFF'
+                description: Hero text
+              headings:
+                value: rgba(0,0,0,0.8)
+                description: Headings text
+              primary:
+                value: rgba(0,0,0,0.8)
+                description: Main content text
+              secondary:
+                value: rgba(0,0,0,0.8)
+                description: Supporting text
+              accent:
+                value: '#07A88D'
+                description: Subtle text
+              link:
+                value: '#07A88D'
+                description: Link text
+              footer:
+                value: '#FFFFFF'
+                description: Footer text
+            button:
+              primary_fill:
+                value: '#1155CB'
+                description: Background for Primary Button
+              primary_text:
+                value: '#FFFFFF'
+                description: Text for Primary Button
+        custom_fonts:
+          base: Roboto
+          code: Roboto
+          headings: Roboto
+        text:
+          catalog:
+            welcome_message: Welcome
+            primary_header: Come on in!
+        images:
+          favicon:
+            data: data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+            filename: favicon.ico
+          logo:
+            data: data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+            filename: logo.png
+          catalog_cover:
+            data: data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
     UpdatePortalAppearanceResponseExample1:
       value:
-        $ref: '#/components/examples/PortalAppearanceExample1/value'
+        theme_name: custom
+        use_custom_fonts: true
+        custom_theme:
+          colors:
+            section:
+              header:
+                value: '#F8F8F8'
+                description: Background for header
+              body:
+                value: '#FFFFFF'
+                description: Background for main content
+              hero:
+                value: '#F8F8F8'
+                description: Background for hero section
+              accent:
+                value: '#F8F8F8'
+                description: Subtle background
+              tertiary:
+                value: '#FFFFFF'
+                description: Tertiary background
+              stroke:
+                value: rgba(0,0,0,0.1)
+                description: Border color
+              footer:
+                value: '#07A88D'
+                description: Background for footer
+            text:
+              header:
+                value: rgba(0,0,0,0.8)
+                description: Header text
+              hero:
+                value: '#FFFFFF'
+                description: Hero text
+              headings:
+                value: rgba(0,0,0,0.8)
+                description: Headings text
+              primary:
+                value: rgba(0,0,0,0.8)
+                description: Main content text
+              secondary:
+                value: rgba(0,0,0,0.8)
+                description: Supporting text
+              accent:
+                value: '#07A88D'
+                description: Subtle text
+              link:
+                value: '#07A88D'
+                description: Link text
+              footer:
+                value: '#FFFFFF'
+                description: Footer text
+            button:
+              primary_fill:
+                value: '#1155CB'
+                description: Background for Primary Button
+              primary_text:
+                value: '#FFFFFF'
+                description: Text for Primary Button
+        custom_fonts:
+          base: Roboto
+          code: Roboto
+          headings: Roboto
+        text:
+          catalog:
+            welcome_message: Welcome
+            primary_header: Come on in!
+        images:
+          favicon:
+            data: data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+            filename: favicon.ico
+          logo:
+            data: data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+            filename: logo.png
+          catalog_cover:
+            data: data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
     VerifyPortalDomainsBadRequestExample1:
       value:
         status: 400
@@ -3994,7 +3915,81 @@ components:
             - text
             - images
       example:
-        $ref: '#/components/examples/PortalAppearanceExample1/value'
+        theme_name: custom
+        use_custom_fonts: true
+        custom_theme:
+          colors:
+            section:
+              header:
+                value: '#F8F8F8'
+                description: Background for header
+              body:
+                value: '#FFFFFF'
+                description: Background for main content
+              hero:
+                value: '#F8F8F8'
+                description: Background for hero section
+              accent:
+                value: '#F8F8F8'
+                description: Subtle background
+              tertiary:
+                value: '#FFFFFF'
+                description: Tertiary background
+              stroke:
+                value: rgba(0,0,0,0.1)
+                description: Border color
+              footer:
+                value: '#07A88D'
+                description: Background for footer
+            text:
+              header:
+                value: rgba(0,0,0,0.8)
+                description: Header text
+              hero:
+                value: '#FFFFFF'
+                description: Hero text
+              headings:
+                value: rgba(0,0,0,0.8)
+                description: Headings text
+              primary:
+                value: rgba(0,0,0,0.8)
+                description: Main content text
+              secondary:
+                value: rgba(0,0,0,0.8)
+                description: Supporting text
+              accent:
+                value: '#07A88D'
+                description: Subtle text
+              link:
+                value: '#07A88D'
+                description: Link text
+              footer:
+                value: '#FFFFFF'
+                description: Footer text
+            button:
+              primary_fill:
+                value: '#1155CB'
+                description: Background for Primary Button
+              primary_text:
+                value: '#FFFFFF'
+                description: Text for Primary Button
+        custom_fonts:
+          base: Roboto
+          code: Roboto
+          headings: Roboto
+        text:
+          catalog:
+            welcome_message: Welcome
+            primary_header: Come on in!
+        images:
+          favicon:
+            data: data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+            filename: favicon.ico
+          logo:
+            data: data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+            filename: logo.png
+          catalog_cover:
+            data: data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
     UpdatePortalAppearanceResponse:
       allOf:
         - $ref: '#/components/schemas/PortalAppearance'
@@ -4007,7 +4002,81 @@ components:
             - text
             - images
       example:
-        $ref: '#/components/examples/PortalAppearanceExample1/value'
+        theme_name: custom
+        use_custom_fonts: true
+        custom_theme:
+          colors:
+            section:
+              header:
+                value: '#F8F8F8'
+                description: Background for header
+              body:
+                value: '#FFFFFF'
+                description: Background for main content
+              hero:
+                value: '#F8F8F8'
+                description: Background for hero section
+              accent:
+                value: '#F8F8F8'
+                description: Subtle background
+              tertiary:
+                value: '#FFFFFF'
+                description: Tertiary background
+              stroke:
+                value: rgba(0,0,0,0.1)
+                description: Border color
+              footer:
+                value: '#07A88D'
+                description: Background for footer
+            text:
+              header:
+                value: rgba(0,0,0,0.8)
+                description: Header text
+              hero:
+                value: '#FFFFFF'
+                description: Hero text
+              headings:
+                value: rgba(0,0,0,0.8)
+                description: Headings text
+              primary:
+                value: rgba(0,0,0,0.8)
+                description: Main content text
+              secondary:
+                value: rgba(0,0,0,0.8)
+                description: Supporting text
+              accent:
+                value: '#07A88D'
+                description: Subtle text
+              link:
+                value: '#07A88D'
+                description: Link text
+              footer:
+                value: '#FFFFFF'
+                description: Footer text
+            button:
+              primary_fill:
+                value: '#1155CB'
+                description: Background for Primary Button
+              primary_text:
+                value: '#FFFFFF'
+                description: Text for Primary Button
+        custom_fonts:
+          base: Roboto
+          code: Roboto
+          headings: Roboto
+        text:
+          catalog:
+            welcome_message: Welcome
+            primary_header: Come on in!
+        images:
+          favicon:
+            data: data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+            filename: favicon.ico
+          logo:
+            data: data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+            filename: logo.png
+          catalog_cover:
+            data: data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
     ListDevelopersResponse:
       additionalProperties: false
       type: object
@@ -4714,7 +4783,60 @@ components:
             primary_text:
               $ref: '#/components/schemas/AppearanceColorVariable'
       example:
-        $ref: '#/components/examples/PortalAppearanceColorVariablesExample1/value'
+        section:
+          header:
+            value: '#0A161E'
+            description: Background for header
+          body:
+            value: '#0C0C0C'
+            description: Background for main content
+          hero:
+            value: '#1A1D21'
+            description: Background for hero section
+          accent:
+            value: '#1F1F1F'
+            description: Subtle background
+          tertiary:
+            value: '#222529'
+            description: Tertiary background
+          stroke:
+            value: '#34393F'
+            description: Border color
+          footer:
+            value: '#212429'
+            description: Background for footer
+        text:
+          header:
+            value: '#FFFFFF'
+            description: Header text
+          hero:
+            value: rgba(255,255,255,0.8)
+            description: Hero text
+          headings:
+            value: '#FFFFFF'
+            description: Headings text
+          primary:
+            value: '#C8C8C9'
+            description: Main content text
+          secondary:
+            value: '#919294'
+            description: Supporting text
+          accent:
+            value: '#FFFFFF'
+            description: Subtle text
+          link:
+            value: '#2977FF'
+            description: Link text
+          footer:
+            value: '#FFFFFF'
+            description: Footer text
+        button:
+          primary_fill:
+            value: '#1155CB'
+            description: Background for Primary Button
+          primary_text:
+            value: '#FFFFFF'
+            description: Text for Primary Button
     AppearanceThemeVariables:
       title: AppearanceThemeVariables
       description: >-
