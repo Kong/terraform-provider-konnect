@@ -2753,6 +2753,7 @@ components:
                 enum:
                   - us
                   - eu
+                  - au
                   - '*'
                 example: eu
                 description: The region of the team.
@@ -2787,6 +2788,7 @@ components:
                 enum:
                   - us
                   - eu
+                  - au
                   - '*'
                 example: eu
                 description: The region to scope the role assignment to.
@@ -3262,6 +3264,7 @@ components:
           enum:
             - us
             - eu
+            - au
             - '*'
           example: eu
           description: Region of the entity.
@@ -3302,6 +3305,7 @@ components:
           enum:
             - us
             - eu
+            - au
             - '*'
           example: eu
           description: Region of the entity.
