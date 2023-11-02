@@ -9,3 +9,9 @@ konnect/definitions/portal-rbac/**   @Kong/team-platform-services
 # Portal
 portal/    @Kong/team-devx
 portal/definitions/authentication/**    @Kong/team-platform-services
+
+# Gateway Manager
+konnect/definitions/control-planes/**           @Kong/team-konnectx-be
+konnect/definitions/control-planes-config/**    @Kong/team-konnectx-be
+konnect/definitions/runtime-groups/**           @Kong/team-konnectx-be
+konnect/definitions/runtime-groups-config/**    @Kong/team-konnectx-be
