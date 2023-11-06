@@ -1324,7 +1324,7 @@ paths:
     patch:
       summary: Update My Organization
       operationId: update-organizations-me
-      description: | 
+      description: |
         Updates the current user's organization. When updating the owner, the new owner 
         must be an organization admin.
       x-internal: true
@@ -1343,6 +1343,71 @@ paths:
           $ref: '#/components/responses/IdentityNotFound'
       requestBody:
         $ref: '#/components/requestBodies/UpdateOrganization'
+  /refresh:
+    post:
+      summary: Refresh Token
+      description: Issues new tokens. Returns 401 if a) the user is no longer active, b) the token has exceeded its lifetime limit, or c) the token has been revoked.
+      operationId: refresh-token
+      x-internal: true
+      tags:
+        - Authentication
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+  /logout:
+    post:
+      summary: Log Out
+      description: Clears the auth cookies.
+      operationId: logout
+      x-internal: true
+      tags:
+        - Authentication
+      responses:
+        '201':
+          $ref: '#/components/responses/LogoutResponse'
+  /aws/marketplace/resolve-customer:
+    post:
+      summary: Resolves an AWS Customer.
+      description: This call the aws marketplace resolve customer api.
+      operationId: resolveCustomer
+      x-internal: true
+      tags:
+        - AWS
+      requestBody:
+        $ref: '#/components/requestBodies/AWSResolveCustomerRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/ResolveCustomerResponse'
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
+  '/authenticate/{organizationLoginPath}':
+    get:
+      summary: SSO Callback
+      description: Callback for authenticating via an organization's IdP
+      operationId: authenticate-sso
+      tags:
+        - Authentication
+      parameters:
+        - in: path
+          name: organizationLoginPath
+          description: The login path for the organization.
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: return_to
+          description: Return destination for the callback.
+          schema:
+            type: string
+      responses:
+        '302':
+          description: Found
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
 components:
   responses:
     Auth0Registration:
@@ -2518,6 +2583,31 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/IdP'
+    LogoutResponse:
+      description: Logout response
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - login_path
+            properties:
+              login_path:
+                type: string
+                description: The login path.
+    ResolveCustomerResponse:
+      description: AWS Resolve customer response
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - organization_id
+            properties:
+              organization_id:
+                type: string
+                description: UUID of the organization.
+                format: uuid
   requestBodies:
     Auth0Registration:
       content:
@@ -2970,6 +3060,22 @@ components:
           examples:
             Example Request Body:
               $ref: '#/components/examples/Update-Organization'
+    AWSResolveCustomerRequest:
+      description: AWS Marketplace Metering Resolve Customer request.
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - token
+            properties:
+              token:
+                type: string
+                description: Token is the aws customer token from the aws marketplace.
+          examples:
+            Example Request Body:
+              $ref: '#/components/examples/AWS-Resolve-Customer-Request'
+
   schemas:
     Auth0Organization:
       title: Auth0 organization schema.
@@ -3662,6 +3768,9 @@ components:
       value:
         owner_id: df120cb4-f60b-47bc-a2f8-6a28e6a3c63b
         name: Kong Inc
+    AWS-Resolve-Customer-Request:
+      value:
+        token: A1B2C3D4E5F6G7H8I9J0K+LMNOPQRSTUVWXYZabcd+efghijklmnopqrstuv+wxyz0123456789+
 security:
   - personalAccessToken: []
   - systemAccountAccessToken: []
@@ -3679,3 +3788,5 @@ tags:
   - name: System Accounts - Team Membership
   - name: Me
   - name: Managed System Accounts - Roles
+  - name: Authentication
+  - name: AWS
