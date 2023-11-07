@@ -146,6 +146,11 @@ components:
           description: The product version id required for registration.
           type: string
           format: uuid
+        scopes:
+          description: The requested scopes for the registration, requires developer_managed_scopes to be enabled.
+          type: array
+          items:
+            type: string
     ListRegistrationsResponse:
       additionalProperties: false
       type: object
