@@ -18,6 +18,9 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/RegisterPayload'
+            examples:
+              RegisterDeveloperRequestExample1:
+                $ref: '#/components/examples/RegisterDeveloperRequestExample1'
       responses:
         '201':
           description: the developer has been properly registered.
@@ -64,6 +67,11 @@ paths:
       security:
         - portalAccessToken: []
 components:
+  examples:
+    RegisterDeveloperRequestExample1:
+      value:
+        email: dev@company.com
+        full_name: Dev Smith
   securitySchemes:
     portalAccessToken:
       $ref: '../../../../common/definitions/security.yaml#/components/securitySchemes/portalAccessToken'
