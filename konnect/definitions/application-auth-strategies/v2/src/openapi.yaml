@@ -8,6 +8,7 @@ info:
     url: https://cloud.konghq.com
 tags:
   - name: DCR Providers
+  - name: App Auth Strategies
 servers:
   - url: https://us.api.konghq.com/v2
     description: US Region Base URL
@@ -173,11 +174,135 @@ paths:
           $ref:  '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       tags:
         - DCR Providers
+  '/application-auth-strategies':
+    post:
+      x-unstable: true
+      x-internal: true
+      summary: Create App Auth Strategy
+      operationId: create-app-auth-strategy
+      description: Creates an application auth strategy.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateAppAuthStrategy'
+      responses:
+        '201':
+          $ref: '#/components/responses/CreateAppAuthStrategy'
+        '400':
+          $ref:  '../../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        '401':
+          $ref:  '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref:  '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+      tags:
+        - App Auth Strategies
+    get:
+      x-unstable: true
+      x-internal: true
+      summary: List App Auth Strategies
+      operationId: list-app-auth-strategies
+      description: Returns a paginated collection of application auth strategies.
+      parameters:
+        - $ref: '#/components/parameters/SortAppAuthStrategies'
+        - schema:
+            type: object
+            properties:
+              strategy_type:
+                $ref: >-
+                  ../../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter
+              dcr_provider_id:
+                $ref: >-
+                  ../../../../../common/definitions/aip_filters.yaml#/components/schemas/UuidFieldFilter
+              name:
+                $ref: >-
+                  ../../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter
+              display_name:
+                $ref: >-
+                  ../../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter
+          in: query
+          name: filter
+          description: Filter application auth strategies returned in the response.
+          required: false
+          style: deepObject
+      responses:
+        '200':
+          $ref: '#/components/responses/ListAppAuthStrategies'
+        '400':
+          $ref:  '../../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        '401':
+          $ref:  '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref:  '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+      tags:
+        - App Auth Strategies
+  '/application-auth-strategies/{authStrategyId}':
+    parameters:
+      - $ref: '#/components/parameters/AuthStrategyId'
+    get:
+      x-unstable: true
+      x-internal: true
+      summary: Get App Auth Strategy
+      description: Returns an application auth strategy.
+      operationId: get-app-auth-strategy
+      responses:
+        '200':
+          $ref: '#/components/responses/GetAppAuthStrategy'
+        '401':
+          $ref:  '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref:  '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+        '404':
+          $ref:  '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+      tags:
+        - App Auth Strategies
+    patch:
+      x-unstable: true
+      x-internal: true
+      summary: Update App Auth Strategy
+      operationId: update-app-auth-strategy
+      description: Updates an application auth strategy.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateAppAuthStrategy'
+      responses:
+        '200':
+          $ref: '#/components/responses/UpdateAppAuthStrategy'
+        '400':
+          $ref:  '../../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        '401':
+          $ref:  '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref:  '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+        '404':
+          $ref:  '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+      tags:
+        - App Auth Strategies
+    delete:
+      x-unstable: true
+      x-internal: true
+      summary: Delete App Auth Strategy
+      description: Deletes an application auth strategy.
+      operationId: delete-app-auth-strategy
+      responses:
+        '204':
+          description: No Content.
+        '401':
+          $ref:  '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref:  '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+        '404':
+          $ref:  '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+      tags:
+        - App Auth Strategies
 components:
   parameters:
     DcrProviderId:
       name: dcrProviderId
       description: DCR provider identifier
+      in: path
+      required: true
+      schema:
+        $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/UUID'
+    AuthStrategyId:
+      name: authStrategyId
+      description: Application auth strategy identifier
       in: path
       required: true
       schema:
@@ -192,6 +317,20 @@ components:
           - issuer
           - name
           - display_name
+      in: query
+      required: false
+      schema:
+        type: string
+    SortAppAuthStrategies:
+      name: 'sort'
+      description: |
+        Sorts a collection of application auth strategies. Supported sort attributes are:
+          - created_at
+          - updated_at
+          - strategy_type
+          - name
+          - display_name
+          - dcr_provider_id
       in: query
       required: false
       schema:
@@ -363,6 +502,28 @@ components:
           examples:
             DcrProviderRequest:
               $ref: '#/components/examples/DcrProviderOktaUpdateRequest'
+    CreateAppAuthStrategy:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateAppAuthStrategyRequest'
+          examples:
+            CreateAppAuthStrategyKeyAuthRequest:
+              $ref: '#/components/examples/CreateAppAuthStrategyKeyAuthRequest'
+            CreateAppAuthStrategyOpenIDConnectRequest:
+              $ref: '#/components/examples/CreateAppAuthStrategyOpenIDConnectRequest'
+    UpdateAppAuthStrategy:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateAppAuthStrategyRequest'
+          examples:
+            UpdateAppAuthStrategyKeyAuthRequest:
+              $ref: '#/components/examples/UpdateAppAuthStrategyKeyAuthRequest'
+            UpdateAppAuthStrategyOpenIDConnectRequest:
+              $ref: '#/components/examples/UpdateAppAuthStrategyOpenIDConnectRequest'
   responses:
     CreateDcrProvider:
       description: A response containing the newly created DCR provider object.
@@ -383,7 +544,7 @@ components:
             DcrProvider:
               $ref: '#/components/examples/DcrProviderOktaResponse'
     ListDcrProviders:
-      description: A paginated list response for a collection of client providers
+      description: A paginated list response for a collection of DCR providers
       content:
         application/json:
           schema:
@@ -392,7 +553,7 @@ components:
             ListDcrProviders:
               $ref: '#/components/examples/ListDcrProvidersResponse'
     VerifyDcrProvider:
-      description: A response containing the result of attempting to verify a DCR Provider config.
+      description: A response containing the result of attempting to verify a DCR provider config.
       content:
         application/json:
           schema:
@@ -408,6 +569,42 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/RefreshDcrProviderApiKeyResponse'
+    CreateAppAuthStrategy:
+      description: A response containing the newly created application auth strategy object.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateAppAuthStrategyResponse'
+          examples:
+            AppAuthStrategyResponseExample1:
+              $ref: '#/components/examples/AppAuthStrategyResponseExample1'
+    GetAppAuthStrategy:
+      description: A response containing a single application auth strategy object.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GetAppAuthStrategyResponse'
+          examples:
+            AppAuthStrategyResponseExample1:
+              $ref: '#/components/examples/AppAuthStrategyResponseExample1'
+    UpdateAppAuthStrategy:
+      description: A response containing a single updated application auth strategy object.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateAppAuthStrategyResponse'
+          examples:
+            AppAuthStrategyResponseExample1:
+              $ref: '#/components/examples/AppAuthStrategyResponseExample1'
+    ListAppAuthStrategies:
+      description: A paginated list response for a collection of application auth strategies.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ListAppAuthStrategiesResponse'
+          examples:
+            AppAuthStrategyResponseExample1:
+              $ref: '#/components/examples/ListAppAuthStrategyResponseExample1'
   schemas:
     DcrConfigPropertyInitialClientId:
       title: DcrConfigPropertyInitialClientId
@@ -612,6 +809,10 @@ components:
           $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
     DcrProviderAuth0:
       title: DcrProviderAuth0
+      type: object
+      required:
+        - provider_type
+        - dcr_config
       properties:
         provider_type:
           type: string
@@ -621,6 +822,10 @@ components:
           $ref: '#/components/schemas/DcrConfigAuth0InResponse'
     DcrProviderAzureAd:
       title: DcrProviderAzureAd
+      type: object
+      required:
+        - provider_type
+        - dcr_config
       properties:
         provider_type:
           type: string
@@ -630,6 +835,10 @@ components:
           $ref: '#/components/schemas/DcrConfigAzureAdInResponse'
     DcrProviderCurity:
       title: DcrProviderCurity
+      type: object
+      required:
+        - provider_type
+        - dcr_config
       properties:
         provider_type:
           type: string
@@ -639,6 +848,10 @@ components:
           $ref: '#/components/schemas/DcrConfigCurityInResponse'
     DcrProviderOkta:
       title: DcrProviderOkta
+      type: object
+      required:
+        - provider_type
+        - dcr_config
       properties:
         provider_type:
           type: string
@@ -648,6 +861,10 @@ components:
           $ref: '#/components/schemas/DcrConfigOktaInResponse'
     DcrProviderHttp:
       title: DcrProviderHttp
+      type: object
+      required:
+        - provider_type
+        - dcr_config
       properties:
         provider_type:
           type: string
@@ -657,6 +874,10 @@ components:
           $ref: '#/components/schemas/DcrConfigHttpInResponse'
     DcrProviderHttpWithApiKey:
       title: DcrProviderHttpWithApiKey
+      type: object
+      required:
+        - provider_type
+        - dcr_config
       properties:
         provider_type:
           type: string
@@ -670,7 +891,8 @@ components:
         - $ref: '#/components/schemas/DcrProviderBase'
         - discriminator:
             propertyName: provider_type
-          anyOf:
+          type: object
+          oneOf:
             - $ref: '#/components/schemas/DcrProviderAuth0'
             - $ref: '#/components/schemas/DcrProviderAzureAd'
             - $ref: '#/components/schemas/DcrProviderCurity'
@@ -682,7 +904,8 @@ components:
         - $ref: '#/components/schemas/DcrProviderBase'
         - discriminator:
             propertyName: provider_type
-          anyOf:
+          type: object
+          oneOf:
             - $ref: '#/components/schemas/DcrProviderAuth0'
             - $ref: '#/components/schemas/DcrProviderAzureAd'
             - $ref: '#/components/schemas/DcrProviderCurity'
@@ -718,6 +941,10 @@ components:
           type: object
     CreateDcrProviderRequestAuth0:
       title: CreateDcrProviderRequestAuth0
+      type: object
+      required:
+        - provider_type
+        - dcr_config
       properties:
         provider_type:
           type: string
@@ -727,6 +954,10 @@ components:
           $ref: '#/components/schemas/DcrConfigAuth0InRequest'
     CreateDcrProviderRequestAzureAd:
       title: CreateDcrProviderRequestAzureAd
+      type: object
+      required:
+        - provider_type
+        - dcr_config
       properties:
         provider_type:
           type: string
@@ -736,6 +967,10 @@ components:
           $ref: '#/components/schemas/DcrConfigAzureAdInRequest'
     CreateDcrProviderRequestCurity:
       title: CreateDcrProviderRequestCurity
+      type: object
+      required:
+        - provider_type
+        - dcr_config
       properties:
         provider_type:
           type: string
@@ -745,6 +980,10 @@ components:
           $ref: '#/components/schemas/DcrConfigCurityInRequest'
     CreateDcrProviderRequestOkta:
       title: CreateDcrProviderRequestOkta
+      type: object
+      required:
+        - provider_type
+        - dcr_config
       properties:
         provider_type:
           type: string
@@ -754,6 +993,10 @@ components:
           $ref: '#/components/schemas/DcrConfigOktaInRequest'
     CreateDcrProviderRequestHttp:
       title: CreateDcrProviderRequestHttp
+      type: object
+      required:
+        - provider_type
+        - dcr_config
       properties:
         provider_type:
           type: string
@@ -769,7 +1012,8 @@ components:
         - $ref: '#/components/schemas/CreateDcrProviderRequestBase'
         - discriminator:
             propertyName: provider_type
-          anyOf:
+          type: object
+          oneOf:
             - $ref: '#/components/schemas/CreateDcrProviderRequestAuth0'
             - $ref: '#/components/schemas/CreateDcrProviderRequestAzureAd'
             - $ref: '#/components/schemas/CreateDcrProviderRequestCurity'
@@ -836,6 +1080,259 @@ components:
       title: RefreshDcrProviderApiKeyResponse
       oneOf:
         - $ref: '#/components/schemas/DcrProviderHttpWithApiKey'
+    AuthStrategyType:
+      title: AuthStrategyType
+      # description: # TODO
+      type: string
+      enum:
+        - key_auth
+        - openid_connect
+    AppAuthStrategyResponseBase:
+      title: AppAuthStrategyResponseBase
+      # description: # TODO
+      type: object
+      required:
+        - id
+        - name
+        - display_name
+        - strategy_type
+        - configs
+        - dcr_provider_id
+        - created_at
+        - updated_at
+      properties:
+        id:
+          $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/UUID'
+        name:
+          type: string
+          maxLength: 256
+        display_name:
+          type: string
+          maxLength: 256
+        strategy_type:
+          $ref: '#/components/schemas/AuthStrategyType'
+        configs:
+          type: object
+        dcr_provider_id:
+          nullable: true
+          type: string
+          format: uuid
+        created_at:
+          $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
+    CreateAppAuthStrategyRequestBase:
+      title: CreateAppAuthStrategyRequestBase
+      # description: # TODO
+      type: object
+      required:
+        - name
+        - display_name
+        - strategy_type
+        - configs
+      properties:
+        name:
+          type: string
+          maxLength: 256
+        display_name:
+          type: string
+          maxLength: 256
+        strategy_type:
+          $ref: '#/components/schemas/AuthStrategyType'
+        configs:
+          type: object
+        dcr_provider_id:
+          nullable: true
+          type: string
+          format: uuid
+    AppAuthStrategyConfigKeyAuth:
+      title: AppAuthStrategyConfigKeyAuth
+      # description: # TODO
+      type: object
+      additionalProperties: false
+      properties:
+        key_names:
+          type: array
+          maxItems: 10
+          minItems: 1
+          items:
+            type: string
+            maxLength: 256
+          description: The names of the headers containing the API key. You can specify multiple header names.
+    AppAuthStrategyConfigOpenIDConnect:
+      title: AppAuthStrategyConfigOpenIDConnect
+      # description: # TODO
+      type: object
+      additionalProperties: true
+      required:
+        - issuer
+        - credential_claim
+        - scopes
+        - auth_methods
+      properties:
+        issuer:
+          type: string
+          format: url
+          maxLength: 256
+        credential_claim:
+          type: array
+          maxItems: 10
+          items:
+            type: string
+            maxLength: 128
+        scopes:
+          type: array
+          maxItems: 50
+          items:
+            type: string
+            maxLength: 128
+        auth_methods:
+          type: array
+          maxItems: 10
+          items:
+            type: string
+            maxLength: 64
+    AppAuthStrategyKeyAuth:
+      title: AppAuthStrategyKeyAuth
+      # description: # TODO
+      type: object
+      required:
+        - strategy_type
+        - configs
+      properties:
+        strategy_type:
+          type: string
+          enum:
+            - key_auth
+        configs:
+          type: object
+          additionalProperties: false
+          required:
+            - 'key-auth'
+          properties:
+            'key-auth':
+              $ref: '#/components/schemas/AppAuthStrategyConfigKeyAuth'
+    AppAuthStrategyOpenIDConnect:
+      title: AppAuthStrategyOpenIDConnect
+      # description: # TODO
+      type: object
+      required:
+        - strategy_type
+        - configs
+      properties:
+        strategy_type:
+          type: string
+          enum:
+            - openid_connect
+        configs:
+          type: object
+          additionalProperties: false
+          required:
+            - 'openid-connect'
+          properties:
+            'openid-connect':
+              $ref: '#/components/schemas/AppAuthStrategyConfigOpenIDConnect'
+    CreateAppAuthStrategyRequest:
+      title: CreateAppAuthStrategyRequest
+      # description: # TODO
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/CreateAppAuthStrategyRequestBase'
+        - discriminator:
+            propertyName: strategy_type
+          type: object
+          oneOf:
+            - $ref: '#/components/schemas/AppAuthStrategyKeyAuth'
+            - $ref: '#/components/schemas/AppAuthStrategyOpenIDConnect'
+    AppAuthStrategy:
+      title: AppAuthStrategy
+      # description: # TODO
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/AppAuthStrategyResponseBase'
+        - discriminator:
+            propertyName: strategy_type
+          type: object
+          oneOf:
+            - $ref: '#/components/schemas/AppAuthStrategyKeyAuth'
+            - $ref: '#/components/schemas/AppAuthStrategyOpenIDConnect'
+    CreateAppAuthStrategyResponse:
+      $ref: '#/components/schemas/AppAuthStrategy'
+    UpdateAppAuthStrategyRequest:
+      title: UpdateAppAuthStrategyRequest
+      # description: # TODO
+      allOf:
+        - type: object
+          additionalProperties: false
+          properties:
+            name:
+              type: string
+              maxLength: 256
+            display_name:
+              type: string
+              maxLength: 256
+            strategy_type:
+              $ref: '#/components/schemas/AuthStrategyType'
+            configs:
+              type: object
+            dcr_provider_id:
+              nullable: true
+              type: string
+              format: uuid
+        - anyOf:
+          - allOf:
+            - type: object
+              required:
+                - strategy_type
+              properties:
+                strategy_type:
+                  $ref: '#/components/schemas/AuthStrategyType'
+            - discriminator:
+                propertyName: strategy_type
+              type: object
+              oneOf:
+                - $ref: '#/components/schemas/AppAuthStrategyKeyAuth'
+                - $ref: '#/components/schemas/AppAuthStrategyOpenIDConnect'
+          - anyOf:
+            - type: object
+              properties:
+                configs:
+                  type: object
+                  additionalProperties: false
+                  required:
+                    - 'key-auth'
+                  properties:
+                    'key-auth':
+                      $ref: '#/components/schemas/AppAuthStrategyConfigKeyAuth'
+            - type: object
+              properties:
+                configs:
+                  type: object
+                  additionalProperties: false
+                  required:
+                    - 'openid-connect'
+                  properties:
+                    'openid-connect':
+                      $ref: '#/components/schemas/AppAuthStrategyConfigOpenIDConnect'
+          - type: object
+    UpdateAppAuthStrategyResponse:
+      $ref: '#/components/schemas/AppAuthStrategy'
+    GetAppAuthStrategyResponse:
+      $ref: '#/components/schemas/AppAuthStrategy'
+    ListAppAuthStrategiesResponse:
+      title: ListAppAuthStrategiesResponse
+      type: object
+      additionalProperties: false
+      required:
+        - data
+        - meta
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/AppAuthStrategy'
+        meta:
+          $ref: '../../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
   examples:
     DcrProviderOktaCreateRequest:
       summary: DCR Provider Okta Create Request
@@ -931,3 +1428,82 @@ components:
         status: 'failed'
         errors:
           - 'Unable to create the DCR application'
+    CreateAppAuthStrategyKeyAuthRequest:
+      value:
+        name: auth strategy 1
+        display_name: API Key Auth
+        strategy_type: key_auth
+        configs:
+          'key-auth':
+            key_names:
+              - apikey
+              - 'api-key'
+              - 'x-api-key'
+        dcr_provider_id: null
+    CreateAppAuthStrategyOpenIDConnectRequest:
+      value:
+        name: auth strategy 2
+        display_name: Enterprise Auth
+        strategy_type: openid_connect
+        configs:
+          'openid-connect':
+            issuer: 'https://oidc.example.com'
+            credential_claim:
+              - client_id
+            scopes:
+              - openid
+              - email
+            auth_methods:
+              - client_credentials
+              - bearer
+        dcr_provider_id: 73f8380e-7798-4566-99e3-2edf2b57d281
+    UpdateAppAuthStrategyKeyAuthRequest:
+      value:
+        display_name: API Key
+    UpdateAppAuthStrategyOpenIDConnectRequest:
+      value:
+        display_name: Client Credentials
+    AppAuthStrategyResponseExample1:
+      value:
+        id: 22f8380e-7798-4566-99e3-2edf2b57d289
+        name: auth strategy 1
+        display_name: Client Credentials
+        strategy_type: openid_connect
+        configs:
+          'openid-connect':
+            issuer: https://my-issuer.example.com/default
+            auth_methods:
+              - client_credentials
+            credential_claim:
+              - client_id
+            scopes:
+              - openid
+              - email
+        dcr_provider_id: 33f8380e-7798-4566-99e3-2edf2b57d289
+        created_at: 2023-01-01T00:00:00.000Z
+        updated_at: 2023-01-01T00:00:00.000Z
+    ListAppAuthStrategyResponseExample1:
+      value:
+        data:
+          - id: 22f8380e-7798-4566-99e3-2edf2b57d289
+            name: auth strategy 1
+            display_name: Client Credentials
+            strategy_type: openid_connect
+            configs:
+              'openid-connect':
+                issuer: https://my-issuer.example.com/default
+                auth_methods:
+                  - client_credentials
+                credential_claim:
+                  - client_id
+                scopes:
+                  - openid
+                  - email
+            dcr_provider_id: null
+            created_at: 2023-01-01T00:00:00.000Z
+            updated_at: 2023-01-01T00:00:00.000Z
+        meta:
+          page:
+            number: 1
+            size: 1
+            total: 10
