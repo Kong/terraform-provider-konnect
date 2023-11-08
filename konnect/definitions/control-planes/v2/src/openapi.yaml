@@ -243,6 +243,33 @@ paths:
           $ref: ../../../../../common/definitions/errors.yaml#/components/responses/NotFound
         '503':
           $ref: '#/components/responses/ServiceUnavailable'
+  '/control-planes/{id}/group-member-status':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+        description: ID of a control plane
+    get:
+      summary: Control Plane Group Member Status
+      operationId: get-control-planes-id-group-member-status
+      tags:
+        - Control Plane Groups
+      description: Determines the group membership status of a control plane.
+      responses:
+        '200':
+          $ref: '#/components/responses/GetGroupMemberStatus'
+        '400':
+          $ref: ../../../../../common/definitions/errors.yaml#/components/responses/BadRequest
+        '401':
+          $ref: ../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized
+        '403':
+          $ref: ../../../../../common/definitions/errors.yaml#/components/responses/Forbidden
+        '404':
+          $ref: ../../../../../common/definitions/errors.yaml#/components/responses/NotFound
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
   '/control-planes/{id}/group-status':
     parameters:
       - schema:
@@ -556,6 +583,12 @@ components:
               $ref: '#/components/examples/GroupConflictStatusExample'
             Group No Conflict Status Example:
               $ref: '#/components/examples/GroupNoConflictStatusExample'
+    GetGroupMemberStatus:
+      description: Determines the group membership status of a control plane.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GroupMemberStatus'
   schemas:
     CreateControlPlaneRequest:
       title: CreateControlPlaneRequest
@@ -582,9 +615,9 @@ components:
         auth_type:
           type: string
           description: The auth type value of the cluster associated with the Runtime Group.
-          example: pinned_client_certs 
+          example: pinned_client_certs
           enum:
-            - pinned_client_certs 
+            - pinned_client_certs
             - pki_client_certs
         labels:
           $ref: '#/components/schemas/Labels'
@@ -607,9 +640,9 @@ components:
         auth_type:
           type: string
           description: The auth type value of the cluster associated with the Runtime Group.
-          example: pinned_client_certs 
+          example: pinned_client_certs
           enum:
-            - pinned_client_certs 
+            - pinned_client_certs
             - pki_client_certs
         labels:
           $ref: '#/components/schemas/Labels'
@@ -713,9 +746,9 @@ components:
             auth_type:
               type: string
               description: The auth type value of the cluster associated with the Runtime Group.
-              example: pinned_client_certs 
+              example: pinned_client_certs
               enum:
-                - pinned_client_certs 
+                - pinned_client_certs
                 - pki_client_certs
               readOnly: true
           required:
@@ -803,6 +836,18 @@ components:
       required:
         - id
         - type
+    GroupMemberStatus:
+      title: GroupMemberStatus
+      type: object
+      description: Object with information determining the group membership status of a control plane.
+      properties:
+        is_member:
+          type: boolean
+          example: true
+          description: Boolean indicating if a control plane is a member of a control plane group.
+          readOnly: true
+      required:
+        - is_member
     Labels:
       title: Labels
       type: object
