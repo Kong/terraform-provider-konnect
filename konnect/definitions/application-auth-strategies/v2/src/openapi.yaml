@@ -208,13 +208,22 @@ paths:
               strategy_type:
                 $ref: >-
                   ../../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter
-              dcr_provider_id:
-                $ref: >-
-                  ../../../../../common/definitions/aip_filters.yaml#/components/schemas/UuidFieldFilter
               name:
                 $ref: >-
                   ../../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter
               display_name:
+                $ref: >-
+                  ../../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter
+              dcr_provider_id:
+                $ref: >-
+                  ../../../../../common/definitions/aip_filters.yaml#/components/schemas/UuidFieldFilter
+              dcr_provider_name:
+                $ref: >-
+                  ../../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter
+              dcr_provider_display_name:
+                $ref: >-
+                  ../../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter
+              dcr_provider_type:
                 $ref: >-
                   ../../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter
           in: query
@@ -331,6 +340,9 @@ components:
           - name
           - display_name
           - dcr_provider_id
+          - dcr_provider_name
+          - dcr_provider_display_name
+          - dcr_provider_type
       in: query
       required: false
       schema:
@@ -1147,7 +1159,7 @@ components:
         - display_name
         - strategy_type
         - configs
-        - dcr_provider_id
+        - dcr_provider
         - created_at
         - updated_at
       properties:
@@ -1163,10 +1175,24 @@ components:
           $ref: '#/components/schemas/AuthStrategyType'
         configs:
           type: object
-        dcr_provider_id:
+        dcr_provider:
           nullable: true
-          type: string
-          format: uuid
+          type: object
+          additionalProperties: false
+          required:
+            - id
+            - name
+            - display_name
+            - provider_type
+          properties:
+            id:
+              $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/UUID'
+            name:
+              type: string
+            display_name:
+              type: string
+            provider_type:
+              $ref: '#/components/schemas/DcrProviderType'
         created_at:
           $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
         updated_at:
@@ -1534,7 +1560,11 @@ components:
             scopes:
               - openid
               - email
-        dcr_provider_id: 33f8380e-7798-4566-99e3-2edf2b57d289
+        dcr_provider:
+          id: 33f8380e-7798-4566-99e3-2edf2b57d289
+          name: DCR Provider 1
+          display_name: Credentials
+          provider_type: http
         created_at: 2023-01-01T00:00:00.000Z
         updated_at: 2023-01-01T00:00:00.000Z
     ListAppAuthStrategyResponseExample1:
@@ -1554,7 +1584,11 @@ components:
                 scopes:
                   - openid
                   - email
-            dcr_provider_id: null
+            dcr_provider:
+              id: 33f8380e-7798-4566-99e3-2edf2b57d289
+              name: DCR Provider 1
+              display_name: Credentials
+              provider_type: http
             created_at: 2023-01-01T00:00:00.000Z
             updated_at: 2023-01-01T00:00:00.000Z
         meta:
