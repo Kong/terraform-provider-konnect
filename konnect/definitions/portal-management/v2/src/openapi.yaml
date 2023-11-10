@@ -4697,7 +4697,6 @@ components:
       additionalProperties: false
       required:
         - value
-        - description
       properties:
         value:
           type: string
