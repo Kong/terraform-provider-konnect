@@ -639,6 +639,8 @@ components:
     DcrConfigPropertyApiKey:
       title: DcrConfigPropertyApiKey
       type: string
+      pattern: "^[a-zA-Z0-9_]+$"
+      minLength: 12
       maxLength: 256
       description: |
         This is the API Key that will be sent with each HTTP request to the custom DCR server. It can be
@@ -658,13 +660,26 @@ components:
           $ref: '#/components/schemas/DcrConfigPropertyInitialClientAudience'
         use_developer_managed_scopes:
           type: boolean
-    DcrConfigAuth0InRequest:
+    CreateDcrConfigAuth0InRequest:
       title: DcrConfigAuth0InRequest
       type: object
       additionalProperties: false
       required:
         - initial_client_id
         - initial_client_secret
+      properties:
+        initial_client_id:
+          $ref: '#/components/schemas/DcrConfigPropertyInitialClientId'
+        initial_client_secret:
+          $ref: '#/components/schemas/DcrConfigPropertyInitialClientSecret'
+        initial_client_audience:
+          $ref: '#/components/schemas/DcrConfigPropertyInitialClientAudience'
+        use_developer_managed_scopes:
+          type: boolean
+    UpdateDcrConfigAuth0InRequest:
+      title: DcrConfigAuth0InRequest
+      type: object
+      additionalProperties: false
       properties:
         initial_client_id:
           $ref: '#/components/schemas/DcrConfigPropertyInitialClientId'
@@ -683,13 +698,22 @@ components:
       properties:
         initial_client_id:
           $ref: '#/components/schemas/DcrConfigPropertyInitialClientId'
-    DcrConfigAzureAdInRequest:
+    CreateDcrConfigAzureAdInRequest:
       title: DcrConfigAzureAdInRequest
       type: object
       additionalProperties: false
       required:
         - initial_client_id
         - initial_client_secret
+      properties:
+        initial_client_id:
+          $ref: '#/components/schemas/DcrConfigPropertyInitialClientId'
+        initial_client_secret:
+          $ref: '#/components/schemas/DcrConfigPropertyInitialClientSecret'
+    UpdateDcrConfigAzureAdInRequest:
+      title: DcrConfigAzureAdInRequest
+      type: object
+      additionalProperties: false
       properties:
         initial_client_id:
           $ref: '#/components/schemas/DcrConfigPropertyInitialClientId'
@@ -704,7 +728,7 @@ components:
       properties:
         initial_client_id:
           $ref: '#/components/schemas/DcrConfigPropertyInitialClientId'
-    DcrConfigCurityInRequest:
+    CreateDcrConfigCurityInRequest:
       title: DcrConfigCurityInRequest
       type: object
       additionalProperties: false
@@ -716,16 +740,32 @@ components:
           $ref: '#/components/schemas/DcrConfigPropertyInitialClientId'
         initial_client_secret:
           $ref: '#/components/schemas/DcrConfigPropertyInitialClientSecret'
+    UpdateDcrConfigCurityInRequest:
+      title: DcrConfigCurityInRequest
+      type: object
+      additionalProperties: false
+      properties:
+        initial_client_id:
+          $ref: '#/components/schemas/DcrConfigPropertyInitialClientId'
+        initial_client_secret:
+          $ref: '#/components/schemas/DcrConfigPropertyInitialClientSecret'
     DcrConfigOktaInResponse:
       title: DcrConfigOktaInResponse
       type: object
       additionalProperties: false
-    DcrConfigOktaInRequest:
+    CreateDcrConfigOktaInRequest:
       title: DcrConfigOktaInRequest
       type: object
       additionalProperties: false
       required:
         - dcr_token
+      properties:
+        dcr_token:
+          $ref: '#/components/schemas/DcrConfigPropertyDcrToken'
+    UpdateDcrConfigOktaInRequest:
+      title: DcrConfigOktaInRequest
+      type: object
+      additionalProperties: false
       properties:
         dcr_token:
           $ref: '#/components/schemas/DcrConfigPropertyDcrToken'
@@ -752,17 +792,27 @@ components:
           format: url
         api_key:
           $ref: '#/components/schemas/DcrConfigPropertyApiKey'
-    DcrConfigHttpInRequest:
-      title: DcrConfigHttpInRequest
+    CreateDcrConfigHttpInRequest:
+      title: CreateDcrConfigHttpInRequest
       type: object
       additionalProperties: false
       required:
         - dcr_base_url
+        - api_key
       properties:
         dcr_base_url:
-          type: string
-          format: url
-          maxLength: 256
+          $ref: '#/components/schemas/DcrBaseUrl'
+        api_key:
+          $ref: '#/components/schemas/DcrConfigPropertyApiKey'
+    UpdateDcrConfigHttpInRequest:
+      title: CreateDcrConfigHttpInRequest
+      type: object
+      additionalProperties: false
+      properties:
+        dcr_base_url:
+          $ref: '#/components/schemas/DcrBaseUrl'
+        api_key:
+          $ref: '#/components/schemas/DcrConfigPropertyApiKey'
     DcrProviderType:
       title: DcrProviderType
       type: string
@@ -951,7 +1001,7 @@ components:
           enum:
             - auth0
         dcr_config:
-          $ref: '#/components/schemas/DcrConfigAuth0InRequest'
+          $ref: '#/components/schemas/CreateDcrConfigAuth0InRequest'
     CreateDcrProviderRequestAzureAd:
       title: CreateDcrProviderRequestAzureAd
       type: object
@@ -964,7 +1014,7 @@ components:
           enum:
             - azureAd
         dcr_config:
-          $ref: '#/components/schemas/DcrConfigAzureAdInRequest'
+          $ref: '#/components/schemas/CreateDcrConfigAzureAdInRequest'
     CreateDcrProviderRequestCurity:
       title: CreateDcrProviderRequestCurity
       type: object
@@ -977,7 +1027,7 @@ components:
           enum:
             - curity
         dcr_config:
-          $ref: '#/components/schemas/DcrConfigCurityInRequest'
+          $ref: '#/components/schemas/CreateDcrConfigCurityInRequest'
     CreateDcrProviderRequestOkta:
       title: CreateDcrProviderRequestOkta
       type: object
@@ -990,7 +1040,7 @@ components:
           enum:
             - okta
         dcr_config:
-          $ref: '#/components/schemas/DcrConfigOktaInRequest'
+          $ref: '#/components/schemas/CreateDcrConfigOktaInRequest'
     CreateDcrProviderRequestHttp:
       title: CreateDcrProviderRequestHttp
       type: object
@@ -1003,7 +1053,7 @@ components:
           enum:
             - http
         dcr_config:
-          $ref: '#/components/schemas/DcrConfigHttpInRequest'
+          $ref: '#/components/schemas/CreateDcrConfigHttpInRequest'
     CreateDcrProviderRequest:
       title: CreateDcrProviderRequest
       description: A DCR provider to create.
@@ -1039,11 +1089,11 @@ components:
           maxLength: 256
         dcr_config:
           anyOf:
-            - $ref: '#/components/schemas/DcrConfigAuth0InRequest'
-            - $ref: '#/components/schemas/DcrConfigAzureAdInRequest'
-            - $ref: '#/components/schemas/DcrConfigCurityInRequest'
-            - $ref: '#/components/schemas/DcrConfigOktaInRequest'
-            - $ref: '#/components/schemas/DcrConfigHttpInRequest'
+            - $ref: '#/components/schemas/UpdateDcrConfigAuth0InRequest'
+            - $ref: '#/components/schemas/UpdateDcrConfigAzureAdInRequest'
+            - $ref: '#/components/schemas/UpdateDcrConfigCurityInRequest'
+            - $ref: '#/components/schemas/UpdateDcrConfigOktaInRequest'
+            - $ref: '#/components/schemas/UpdateDcrConfigHttpInRequest'
     ListDcrProvidersResponse:
       title: ListDcrProvidersResponse
       type: object
@@ -1333,6 +1383,10 @@ components:
             $ref: '#/components/schemas/AppAuthStrategy'
         meta:
           $ref: '../../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
+    DcrBaseUrl:
+      type: string
+      format: url
+      maxLength: 256
   examples:
     DcrProviderOktaCreateRequest:
       summary: DCR Provider Okta Create Request
@@ -1383,6 +1437,7 @@ components:
         issuer: https://my-issuer-server.com
         dcr_config:
           dcr_base_url: https://my-http-dcr-server.com/v1/dcr
+          api_key: gYmrbDfu_7PTsZWH
     DcrProviderOktaUpdateRequest:
       summary: DCR Provider Create Request
       value:
