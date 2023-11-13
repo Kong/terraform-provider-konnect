@@ -5,10 +5,13 @@
 konnect/definitions/audit-logs/**    @Kong/team-platform-services
 konnect/definitions/identity/**    @Kong/team-platform-services
 konnect/definitions/portal-rbac/**   @Kong/team-platform-services
+portal/definitions/authentication/**  @Kong/team-platform-services
 
-# Portal
-portal/    @Kong/team-devx
-portal/definitions/authentication/**    @Kong/team-platform-services
+# DevX
+portal/**                                   @Kong/team-devx
+konnect/definitions/portal-management/**  @Kong/team-devx
+konnect/definitions/api-products/**       @Kong/team-devx
+konnect/definitions/application-auth-strategies/**       @Kong/team-devx
 
 # Gateway Manager
 konnect/definitions/control-planes/**           @Kong/team-konnectx-be
