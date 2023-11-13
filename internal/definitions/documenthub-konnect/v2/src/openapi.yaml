@@ -172,13 +172,17 @@ paths:
         - Documents
     delete:
       summary: Delete the document
-      description: Delete the document
+      description: |
+        Delete the document. 
+        Returns 404 if the document cannot be found, 409 if deleting the document would result in other orphaned documents.
       operationId: deleteDocument
       responses:
         '204':
           description: The document has been deleted
         '404':
           $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+        '409':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/schemas/ConflictError'
       tags:
         - Documents
     patch:

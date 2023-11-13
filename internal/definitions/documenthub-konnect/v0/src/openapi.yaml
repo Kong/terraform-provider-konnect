@@ -147,6 +147,7 @@ paths:
       description: |
         Delete the document and all its associated revisions including the saved
         files in the datastore. This is a hard delete, files are not recoverable.
+        Returns 404 if the document cannot be found, 409 if deleting the document would result in other orphaned documents.
       operationId: deleteDocument
       parameters:
         - $ref: '#/components/parameters/resourceKind'
@@ -157,6 +158,8 @@ paths:
           description: The document has been deleted
         '404':
           $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+        '409':
+          $ref: '../../../../../common/definitions/errors.yaml#/components/schemas/ConflictError'
       tags:
         - Customization
   /{resourceKind}/{resourceId}/documents/{documentId}/move:
