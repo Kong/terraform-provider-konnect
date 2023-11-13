@@ -584,7 +584,6 @@ components:
                 example: /pet
               method:
                 type: string
-                enum: [get, patch, post, put, delete, options, connect, trace]
                 example: post
               operation_id:
                 type: string
