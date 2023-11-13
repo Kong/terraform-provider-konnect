@@ -356,6 +356,13 @@ rules:
 
 overrides:
   - files:
+    - "portal/definitions/products/**/openapi.yaml#/components/schemas/ListBlock"
+    - "portal/definitions/products/**/openapi.yaml#/components/schemas/Text"
+    - "konnect/definitions/api-products/**/openapi.yaml#/components/schemas/Text"
+    - "konnect/definitions/api-products/**/openapi.yaml#/components/schemas/ListBlock"
+    rules:
+      properties-snake-case-aip-122: "off"
+  - files:
     # verify domain override
     - "konnect/definitions/portal-management/v2/**/openapi.yaml#/paths/~1portals~1%7BportalId%7D~1verify-domain/post/responses"
     - "konnect/definitions/application-auth-strategies/v2/**/openapi.yaml#/paths"

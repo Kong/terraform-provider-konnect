@@ -1113,7 +1113,7 @@ components:
         ast:
           type: array
           items:
-            $ref: '../../../../../internal/definitions/documenthub/common/v2/documenthub_nodes.yaml#/components/schemas/AnyNode'
+            $ref: '../../../../../internal/definitions/documenthub/common/v2/documenthub_nodes.yaml#/components/schemas/ChildNode'
         created_at:
           $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
         updated_at:
