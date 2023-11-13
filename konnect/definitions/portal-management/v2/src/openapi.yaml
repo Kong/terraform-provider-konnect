@@ -3831,7 +3831,7 @@ components:
       example:
         $ref: '#/components/examples/ListPortalProductsExample1/value'
     PublishedAPIProduct:
-      title: API Product
+      title: PublishedApiProduct
       type: object
       additionalProperties: false
       required:
