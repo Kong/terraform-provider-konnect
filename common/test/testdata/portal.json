@@ -6,7 +6,11 @@
       "data:image/jpeg,YW5faW1hZ2VfZmlsZQ==",
       "data:image/jpeg;base64,YW5faW1hZ2VfZmlsZQ==",
       "data:image/gif,YW5faW1hZ2VfZmlsZQ==",
-      "data:image/gif;base64,YW5faW1hZ2VfZmlsZQ=="
+      "data:image/gif;base64,YW5faW1hZ2VfZmlsZQ==",
+      "data:image/ico;base64,YW5faW1hZ2VfZmlsZQ==",
+      "data:image/icon;base64,YW5faW1hZ2VfZmlsZQ==",
+      "data:image/x-icon;base64,YW5faW1hZ2VfZmlsZQ==",
+      "data:image/vnd.microsoft.icon;base64,YW5faW1hZ2VfZmlsZQ=="
     ],
     "nok": [
       "data:image/jpeg,notBase64",
