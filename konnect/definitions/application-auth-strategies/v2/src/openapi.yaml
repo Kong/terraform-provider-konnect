@@ -14,6 +14,8 @@ servers:
     description: US Region Base URL
   - url: https://eu.api.konghq.com/v2
     description: EU Region Base URL
+  - url: https://au.api.konghq.com/v2
+    description: AU Region Base URL
 paths:
   '/dcr-providers':
     post:
