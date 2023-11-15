@@ -93,6 +93,29 @@ paths:
         - registrations
       security:
         - portalAccessToken: []
+  /api/v2/applications/{applicationId}/registrations/{registrationId}/granted-scopes:
+   get:
+      x-unstable: true
+      x-internal: true
+      summary: Get the granted scopes of an application registration
+      description: Retrieves the granted scopes of a specified product registration directly from the IDP for an application. Will return 409 if this feature is not supported by the application.
+      operationId: get-application-registration-granted-scopes
+      parameters:
+        - $ref: '../../common/parameters.yaml#/components/parameters/ApplicationId'
+        - $ref: '#/components/parameters/RegistrationId'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetGrantedScopes'
+        '401':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '404':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+        '409':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Conflict'
+      tags:
+        - registrations
+      security:
+        - portalAccessToken: []
 components:
   securitySchemes:
     portalAccessToken:
@@ -125,6 +148,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ListRegistrationsResponse'
+    GetGrantedScopes:
+      description: Get granted scopes response.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GetGrantedScopesResponse'
   requestBodies:
     CreateRegistration:
       description: Create an application registration.
@@ -210,6 +239,17 @@ components:
           description: Contains a unique identifier used by the Portal API for this resource.
           type: string
           format: uuid
+    GetGrantedScopesResponse:
+      additionalProperties: false
+      type: object
+      required:
+        - scopes
+      properties:
+        scopes:
+          description: list of scopes granted
+          type: array
+          items:
+            type: string
 tags:
   - name: registrations
     description: |
