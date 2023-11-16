@@ -8,3 +8,11 @@ components:
       schema:
         type: string
         format: uuid
+    ProductVersionId:
+      name: productVersionId
+      in: path
+      required: true
+      description: Contains a unique identifier used by the Portal API for this resource.
+      schema:
+        type: string
+        format: uuid

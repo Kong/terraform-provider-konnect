@@ -98,7 +98,9 @@ paths:
       x-unstable: true
       x-internal: true
       summary: Get the granted scopes of an application registration
-      description: Retrieves the granted scopes of a specified product registration directly from the IDP for an application. Will return 409 if this feature is not supported by the application.
+      description: | 
+        Retrieves the granted scopes of a specified product registration directly from the IDP for an application.
+        Will return 409 if this feature is not supported by the application.
       operationId: get-application-registration-granted-scopes
       parameters:
         - $ref: '../../common/parameters.yaml#/components/parameters/ApplicationId'
@@ -239,7 +241,7 @@ components:
           description: Contains a unique identifier used by the Portal API for this resource.
           type: string
           format: uuid
-        granted_scopes: 
+        granted_scopes:
           description: | 
             Cached list of scopes granted for the given application registration.
             Use `/api/v2/applications/{applicationId}/registrations/{registrationId}/granted-scopes` to get up to date granted scopes from the IDP.
@@ -254,10 +256,7 @@ components:
         - scopes
       properties:
         scopes:
-          description: List of scopes granted for the given application registration directly updated from the IDP
-          type: array
-          items:
-            type: string
+          $ref: '../../common/properties.yaml#/components/schemas/RefreshedGrantedScopes'
 tags:
   - name: registrations
     description: |

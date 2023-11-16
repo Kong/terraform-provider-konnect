@@ -6,4 +6,10 @@ components:
         Cannot be set when using Dynamic Client Registration.
       type: string
       maxLength: 255
+    RefreshedGrantedScopes: 
+      description: List of granted scopes, directly updated from the IDP
+      type: array
+      items:
+        type: string
+      
     

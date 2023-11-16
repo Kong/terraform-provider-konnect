@@ -82,14 +82,14 @@ paths:
       security:
         - portalAccessToken: []
         - {}
-  /api/v2/products/{productId}/versions/{versionId}:
+  /api/v2/products/{productId}/versions/{productVersionId}:
     get:
       summary: Get product version
       description: Gets the details for an existing product version.
       operationId: get-product-version
       parameters:
         - $ref: '#/components/parameters/ProductId'
-        - $ref: '#/components/parameters/ProductVersionId'
+        - $ref: '../../common/parameters.yaml#/components/parameters/ProductVersionId'
       responses:
         '200':
           $ref: '#/components/responses/ProductVersionGet'
@@ -104,7 +104,7 @@ paths:
       security:
         - portalAccessToken: []
         - {}
-  /api/v2/products/{productId}/versions/{versionId}/applications:
+  /api/v2/products/{productId}/versions/{productVersionId}/applications:
     get:
       summary: Get applications by product version
       description: |-
@@ -113,7 +113,7 @@ paths:
       operationId: get-applications-by-product-version
       parameters:
         - $ref: '#/components/parameters/ProductId'
-        - $ref: '#/components/parameters/ProductVersionId'
+        - $ref: '../../common/parameters.yaml#/components/parameters/ProductVersionId'
         - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
         - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
         - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByNameEquality'
@@ -135,14 +135,14 @@ paths:
         - versions
       security:
         - portalAccessToken: []
-  /api/v2/products/{productId}/versions/{versionId}/spec:
+  /api/v2/products/{productId}/versions/{productVersionId}/spec:
     get:
       summary: Get spec for product version
       description: Returns the API specification document attached to given product version. Currently only OpenAPI is supported.
       operationId: get-product-version-spec
       parameters:
         - $ref: '#/components/parameters/ProductId'
-        - $ref: '#/components/parameters/ProductVersionId'
+        - $ref: '../../common/parameters.yaml#/components/parameters/ProductVersionId'
       responses:
         '200':
           $ref: '#/components/responses/ProductVersionSpecGet'
@@ -159,14 +159,14 @@ paths:
       security:
         - portalAccessToken: []
         - {}
-  /api/v2/products/{productId}/versions/{versionId}/spec/operations:
+  /api/v2/products/{productId}/versions/{productVersionId}/spec/operations:
     get:
       summary: Get operations in version spec
       description: Returns list of operations used in the API specification document attached to given product version.
       operationId: get-product-version-spec-operations
       parameters:
         - $ref: '#/components/parameters/ProductId'
-        - $ref: '#/components/parameters/ProductVersionId'
+        - $ref: '../../common/parameters.yaml#/components/parameters/ProductVersionId'
       responses:
         '200':
           $ref: '#/components/responses/ProductVersionSpecOperationsGet'
@@ -269,14 +269,6 @@ components:
   parameters:
     ProductId:
       name: productId
-      in: path
-      required: true
-      description: Contains a unique identifier used by the Portal API for this resource.
-      schema:
-        type: string
-        format: uuid
-    ProductVersionId:
-      name: versionId
       in: path
       required: true
       description: Contains a unique identifier used by the Portal API for this resource.

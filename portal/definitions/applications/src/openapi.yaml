@@ -224,6 +224,33 @@ paths:
         - credentials
       security:
         - portalAccessToken: []
+  /api/v2/applications/{applicationId}/product-versions/{productVersionId}/granted-scopes:
+     get:
+      x-unstable: true
+      x-internal: true
+      summary: Get the granted scopes
+      description: |
+       Retrieves the granted scopes of a specified application and product version directly from the IDP.
+       Scopes shared between product versions will be returned, even if not currently registered for given product version.
+       Will return 409 if this feature is not supported by the application.
+      operationId: get-application-product-version-granted-scopes
+      parameters:
+        - $ref: '../../common/parameters.yaml#/components/parameters/ApplicationId'
+        - $ref: '../../common/parameters.yaml#/components/parameters/ProductVersionId'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetGrantedScopesProductVersion'
+        '401':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '404':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+        '409':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Conflict'
+      tags:
+        - applications
+      security:
+        - portalAccessToken: []
+
 components:
   securitySchemes:
     portalAccessToken:
@@ -309,6 +336,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ApplicationUpdateResponse'
+    GetGrantedScopesProductVersion:
+      description: Get granted scopes response.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GetGrantedScopesProductVersionResponse'
   schemas:
     CreateCredentialPayload:
       additionalProperties: false
@@ -530,6 +563,14 @@ components:
           $ref: '../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
         updated_at:
           $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
+    GetGrantedScopesProductVersionResponse:
+      additionalProperties: false
+      type: object
+      required:
+        - scopes
+      properties:
+        scopes:
+          $ref: '../../common/properties.yaml#/components/schemas/RefreshedGrantedScopes'
 tags:
   - name: applications
     description: The API for Konnect Portal developer applications within a private portal (i.e. requires registration/authentication).
