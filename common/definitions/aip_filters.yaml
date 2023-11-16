@@ -1,5 +1,11 @@
 components:
   schemas:
+    BooleanFieldFilter:
+      title: BooleanFieldFilter
+      description: Filter by a boolean value (true/false).
+      type: boolean
+      x-examples:
+        example-1: true
     SortQuery:
       title: SortQuery
       type: string

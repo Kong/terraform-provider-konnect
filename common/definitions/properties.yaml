@@ -6,6 +6,12 @@ components:
       example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
       description: Contains a unique identifier used by the API for this resource.
       readOnly: true
+    # UUID_RW defines a ReadWrite UUID, as UUID defines a UUID readonly
+    UUID_RW:
+      type: string
+      format: uuid
+      example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+      description: Contains a unique identifier used by the API for this resource.
     CreatedAt:
       type: string
       format: date-time
