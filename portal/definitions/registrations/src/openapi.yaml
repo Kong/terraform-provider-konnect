@@ -239,6 +239,14 @@ components:
           description: Contains a unique identifier used by the Portal API for this resource.
           type: string
           format: uuid
+        granted_scopes: 
+          description: | 
+            Cached list of scopes granted for the given application registration.
+            Use `/api/v2/applications/{applicationId}/registrations/{registrationId}/granted-scopes` to get up to date granted scopes from the IDP.
+            This property will be omitted if not supported by the application.
+          type: array
+          items:
+            type: string 
     GetGrantedScopesResponse:
       additionalProperties: false
       type: object
@@ -246,7 +254,7 @@ components:
         - scopes
       properties:
         scopes:
-          description: list of scopes granted
+          description: List of scopes granted for the given application registration directly updated from the IDP
           type: array
           items:
             type: string
