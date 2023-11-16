@@ -450,7 +450,7 @@ components:
           - updated_at
           - publish_status
           - product_version_id
-          - auth_strategy_id
+          - auth_strategy_ids
           - application_registration_enabled
           - auto_approve_registration
           - deprecated
@@ -832,7 +832,7 @@ components:
           $ref: '../../../../../common/definitions/aip_filters.yaml#/components/schemas/DateTimeFieldFilter'
         updated_at:
           $ref: '../../../../../common/definitions/aip_filters.yaml#/components/schemas/DateTimeFieldFilter'
-        auth_strategy_id:
+        auth_strategy_ids:
           $ref: '../../../../../common/definitions/aip_filters.yaml#/components/schemas/UuidFieldFilter'
         application_registration_enabled:
           $ref: '../../../../../common/definitions/aip_filters.yaml#/components/schemas/BooleanFieldFilter'
@@ -864,8 +864,10 @@ components:
           $ref: '#/components/schemas/PortalProductVersionPublishStatus'
         product_version_id:
           $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/UUID_RW'
-        auth_strategy_id:
-          $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/UUID_RW'
+        auth_strategy_ids:
+          type: array
+          items:
+            $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/UUID_RW'
         application_registration_enabled:
           $ref: '#/components/schemas/ApplicationRegistrationEnabled'
         auto_approve_registration:
@@ -878,7 +880,7 @@ components:
       - auto_approve_registration
       - product_version_id
       - deprecated
-      - auth_strategy_id
+      - auth_strategy_ids
     UpdatePortalProductVersionPayload:
       title: UpdatePortalProductVersionPayload
       type: object
@@ -888,8 +890,10 @@ components:
           $ref: '#/components/schemas/PortalProductVersionPublishStatus'
         product_version_id:
           $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/UUID_RW'
-        auth_strategy_id:
-          $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/UUID_RW'
+        auth_strategy_ids:
+          type: array
+          items:
+            $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/UUID_RW'
         application_registration_enabled:
           $ref: '#/components/schemas/ApplicationRegistrationEnabled'
         auto_approve_registration:
@@ -911,8 +915,10 @@ components:
           $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
         updated_at:
           $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
-        auth_strategy_id:
-          $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/UUID_RW'
+        auth_strategy_ids:
+          type: array
+          items:
+            $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/UUID_RW'
         application_registration_enabled:
           $ref: '#/components/schemas/ApplicationRegistrationEnabled'
         auto_approve_registration:
@@ -926,7 +932,7 @@ components:
       - auto_approve_registration
       - product_version_id
       - deprecated
-      - auth_strategy_id
+      - auth_strategy_ids
       - created_at
       - updated_at
     ListPortalProductVersions:
@@ -1926,7 +1932,7 @@ components:
         id: 22f8380e-7798-4566-99e3-2edf2b57d289
         publish_status: published
         product_version_id: 33f8380e-7798-4566-99e3-2edf2b57d289
-        auth_strategy_id: 44f8380e-7798-4566-99e3-2edf2b57d289
+        auth_strategy_ids: [44f8380e-7798-4566-99e3-2edf2b57d289]
         application_registration_enabled: true
         auto_approve_registration: true
         deprecated: false
@@ -1938,7 +1944,7 @@ components:
         - id: 22f8380e-7798-4566-99e3-2edf2b57d289
           publish_status: published
           product_version_id: 33f8380e-7798-4566-99e3-2edf2b57d289
-          auth_strategy_id: 44f8380e-7798-4566-99e3-2edf2b57d289
+          auth_strategy_ids: [44f8380e-7798-4566-99e3-2edf2b57d289]
           application_registration_enabled: true
           auto_approve_registration: true
           deprecated: false
@@ -1952,7 +1958,7 @@ components:
     PortalProductVersionCreateRequest:
       value:
         product_version_id: 33f8380e-7798-4566-99e3-2edf2b57d289
-        auth_strategy_id: 44f8380e-7798-4566-99e3-2edf2b57d289
+        auth_strategy_ids: [44f8380e-7798-4566-99e3-2edf2b57d289]
         publish_status: published
         application_registration_enabled: true
         auto_approve_registration: true
