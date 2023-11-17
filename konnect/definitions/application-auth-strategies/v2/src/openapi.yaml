@@ -866,6 +866,13 @@ components:
     PortalProductVersionDeprecated:
       type: boolean
       description: Deprecates the api product version on the portal
+    AuthStrategyIDs:
+      description: A list of authentication strategy IDs
+      type: array
+      minItems: 0
+      maxItems: 1
+      items:
+        $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/UUID_RW'
     CreatePortalProductVersionPayload:
       title: CreatePortalProductVersionPayload
       type: object
@@ -876,9 +883,7 @@ components:
         product_version_id:
           $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/UUID_RW'
         auth_strategy_ids:
-          type: array
-          items:
-            $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/UUID_RW'
+          $ref: '#/components/schemas/AuthStrategyIDs'
         application_registration_enabled:
           $ref: '#/components/schemas/ApplicationRegistrationEnabled'
         auto_approve_registration:
@@ -902,9 +907,7 @@ components:
         product_version_id:
           $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/UUID_RW'
         auth_strategy_ids:
-          type: array
-          items:
-            $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/UUID_RW'
+          $ref: '#/components/schemas/AuthStrategyIDs'
         application_registration_enabled:
           $ref: '#/components/schemas/ApplicationRegistrationEnabled'
         auto_approve_registration:
@@ -927,9 +930,7 @@ components:
         updated_at:
           $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
         auth_strategy_ids:
-          type: array
-          items:
-            $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/UUID_RW'
+          $ref: '#/components/schemas/AuthStrategyIDs'
         application_registration_enabled:
           $ref: '#/components/schemas/ApplicationRegistrationEnabled'
         auto_approve_registration:
