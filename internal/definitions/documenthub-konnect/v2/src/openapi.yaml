@@ -18,8 +18,25 @@ paths:
       description: Create a document collection
       operationId: listCollections
       parameters:
+        - $ref: '#/components/parameters/SortCollections'
         - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
         - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
+        - schema:
+            type: object
+            properties:
+              id:
+                $ref: '../../../../../common/definitions/aip_filters.yaml#/components/schemas/UuidFieldFilter'
+              name:
+                $ref: '../../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter'
+              created_at:
+                 $ref: '../../../../../common/definitions/aip_filters.yaml#/components/schemas/DateTimeFieldFilter'
+              updated_at:
+                 $ref: '../../../../../common/definitions/aip_filters.yaml#/components/schemas/DateTimeFieldFilter'
+          in: query
+          name: filter
+          description: Filter documents returned in the response.
+          required: false
+          style: deepObject
       responses:
         '200':
           description: The collection has been created
@@ -106,8 +123,29 @@ paths:
           name: Accept
           schema:
             $ref: '../../../documenthub/common/v2/documenthub.yaml#/components/schemas/DocumentContentTypeEnum'
+        - $ref: '#/components/parameters/SortDocuments'
         - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
         - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
+        - schema:
+            type: object
+            properties:
+              id:
+                $ref: '../../../../../common/definitions/aip_filters.yaml#/components/schemas/UuidFieldFilter'
+              slug:
+                $ref: '../../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter'
+              title:
+                $ref: '../../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter'
+              created_at:
+                 $ref: '../../../../../common/definitions/aip_filters.yaml#/components/schemas/DateTimeFieldFilter'
+              updated_at:
+                 $ref: '../../../../../common/definitions/aip_filters.yaml#/components/schemas/DateTimeFieldFilter'
+          in: query
+          name: filter
+          description: |
+            Filter documents returned in the response.
+            The filters are only applied for 'application/json' content-type.
+          required: false
+          style: deepObject
       responses:
         '200':
           description: Documents in the collection
@@ -642,6 +680,31 @@ components:
       schema:
         type: string
         format: uuid
+    SortDocuments:
+      name: 'sort'
+      description: |
+        Sorts a collection of documents. 
+        The sort parameter is only applied for 'application/json' content-type.
+        Supported sort attributes are:
+          - created_at
+          - updated_at
+          - slug
+          - title
+      in: query
+      required: false
+      schema:
+        type: string
+    SortCollections:
+      name: 'sort'
+      description: |
+        Sorts a list of collections. Supported sort attributes are:
+          - created_at
+          - updated_at
+          - name
+      in: query
+      required: false
+      schema:
+        type: string
 
 security:
   - konnectAccessToken: []
