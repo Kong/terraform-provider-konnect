@@ -379,13 +379,9 @@ components:
           type: string
           example: my document collection
         created_at:
-          type: string
-          format: date-time
-          example: '2019-08-24T14:15:22Z'
+          $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
         updated_at:
-          type: string
-          format: date-time
-          example: '2019-08-24T14:15:22Z'
+          $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
     Document:
       type: object
       title: Document
@@ -413,13 +409,9 @@ components:
         status:
           $ref: '#/components/schemas/PublishStatus'
         created_at:
-          type: string
-          format: date-time
-          example: '2019-08-24T14:15:22Z'
+          $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
         updated_at:
-          type: string
-          format: date-time
-          example: '2019-08-24T14:15:22Z'
+          $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
         revision:
           $ref: '#/components/schemas/Revision'
     DocumentTree:

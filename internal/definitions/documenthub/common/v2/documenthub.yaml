@@ -59,6 +59,8 @@ components:
       - parent_document_id
       - slug
       - title
+      - created_at
+      - updated_at
       properties:
         id:
           type: string
@@ -79,6 +81,10 @@ components:
           type: string
           description: the title of the document
           example: Getting Started
+        created_at:
+          $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
     DocumentItemWithStatus:
       allOf:
       - $ref: '#/components/schemas/DocumentItem'
@@ -104,6 +110,8 @@ components:
       - slug
       - metadata
       - children
+      - created_at
+      - updated_at
       properties:
         id:
           type: string
@@ -130,6 +138,10 @@ components:
               "description": "This is a description",
               "keywords": "hello, world"
             }
+        created_at:
+          $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
         children:
           type: array
           items:
