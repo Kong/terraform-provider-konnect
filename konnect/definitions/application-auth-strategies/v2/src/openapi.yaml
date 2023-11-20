@@ -143,8 +143,6 @@ paths:
       summary: Verify DCR Provider configuration.
       description: Verifies if a DCR provider is configured properly. Check the response body status to see the result.
       operationId: verify-dcr-provider
-      requestBody:
-        $ref: '#/components/requestBodies/VerifyDcrProvider'
       responses:
         '200':
           $ref: '#/components/responses/VerifyDcrProvider'
@@ -684,15 +682,6 @@ components:
           examples:
             DcrProviderRequest:
               $ref: '#/components/examples/DcrProviderOktaUpdateRequest'
-    VerifyDcrProvider:
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/VerifyDcrProviderRequest'
-          examples:
-            DcrProviderRequest:
-              $ref: '#/components/examples/VerifyDcrProviderRequest'
     CreateAppAuthStrategy:
       required: true
       content:
@@ -1424,16 +1413,6 @@ components:
             - $ref: '#/components/schemas/CreateDcrProviderRequestCurity'
             - $ref: '#/components/schemas/CreateDcrProviderRequestOkta'
             - $ref: '#/components/schemas/CreateDcrProviderRequestHttp'
-    VerifyDcrProviderRequest:
-      type: object
-      title: VerifyDcrProviderRequest
-      description: Parameters required to test a DCRProvider configuration.
-      additionalProperties: false
-      required:
-        - auth_strategy_id
-      properties:
-        auth_strategy_id:
-          $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/UUID'
     UpdateDcrProviderRequest:
       type: object
       title: UpdateDcrProviderRequest
@@ -1823,10 +1802,6 @@ components:
         name: DCR Okta 1 - Segment A
         display_name: Client Credentials
         issuer: https://my-issuer.okta.com/default
-    VerifyDcrProviderRequest:
-      summary: DCR Provider Verify Request
-      value:
-        auth_strategy_id: 93f8380e-7798-4566-99e3-2edf2b57d280
     DcrProviderOktaResponse:
       summary: DCR Provider Response
       value:
