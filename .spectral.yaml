@@ -107,7 +107,7 @@ rules:
     then:
       function: pattern
       functionOptions:
-        match: "\/v[1-9]+\/"
+        match: "\/v[0-9]+\/"
 
   paths-kebab-case-aip-122:
     description: All YAML/JSON paths MUST follow kebab-case
@@ -444,6 +444,8 @@ overrides:
       - "konnect/definitions/identity/v3/**/openapi.yaml#/components/examples/400-authentication-settings-cannot-be-both-disabled"
       - "konnect/definitions/identity/v3/**/openapi.yaml#/components/examples/400-oidc-auth-enabled-needs-idp"
       - "konnect/definitions/identity/v3/**/openapi.yaml#/components/responses/IdentityBadRequest"
+      ## Ksearch
+      - "konnect/definitions/ksearch/v0/**/openapi.yaml#/components/examples/Successful-Search-Example"
     rules:
       oas3-valid-media-example: "off"
   - files:

@@ -1,0 +1,177 @@
+openapi: 3.0.2
+info:
+  title: Konnect Search
+  version: 0.0.0
+  description: The search API for Kong Konnect.
+  contact:
+    name: Kong
+    url: 'https://konghq.com'
+servers:
+  - url: https://global.api.konghq.com/v0
+    description: Global Base URL
+  - url: https://us.api.konghq.com/v0
+    description: US Region Base URL
+  - url: https://eu.api.konghq.com/v0
+    description: EU Region Base URL
+  - url: https://au.api.konghq.com/v0
+    description: AU Region Base URL
+paths:
+  /search:
+    get:
+      operationId: get-search
+      summary: Search Konnect
+      description: Retrieves a list of Konnect entities matching the search query provided.
+      x-internal: true
+      x-unstable: true
+      tags:
+        - Search
+      parameters:
+        - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+        - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageAfter'
+        - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageBefore'
+        - in: query
+          name: query
+          description: The query that defines the search criteria.
+          example: '@name:”John Smith"'
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/SearchResponse'
+        '400':
+          $ref: '#/components/responses/SearchBadRequest'
+  /search/types:
+    get:
+      operationId: get-search-types
+      summary: List Search Types
+      description: Retrieves a list of searchable Konnect entity types.
+      x-internal: true
+      x-unstable: true
+      tags:
+        - Search
+      responses:
+        '200':
+          $ref: '#/components/responses/SearchTypesResponse'
+components:
+  responses:
+    SearchResponse:
+      description: Search response for containing all matched Konnect entities. 
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SearchResponse'      
+          examples:
+            Successful Search Response:
+              $ref: '#/components/examples/Successful-Search-Example'
+    SearchBadRequest:
+      description: Bad Request
+      content:
+        application/problem+json:
+          schema:
+            $ref: '../../../../../common/definitions/errors.yaml#/components/schemas/BadRequestError'
+          examples:
+            Request Format is Invalid:
+              $ref: '#/components/examples/400-query-is-invalid'
+    SearchTypesResponse:
+      description: Search response for containing all searchable Konnect types. 
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              types:
+                type: array
+                items:
+                  type: string
+  schemas:
+    SearchResponse:
+      title: Search response.
+      description: Search response schema.
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/KonnectEntity'
+        meta:
+          $ref: '../../../../../common/definitions/metadatas.yaml#/components/schemas/CursorPaginatedMeta'
+    KonnectEntity: 
+      title: Konnect entity.
+      description: Konnect entity schema.
+      type: object
+      required:
+        - id
+        - type
+        - name
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the record.
+        type:
+          type: string
+          description: Konnect entity type.
+        name: 
+          type: string
+          description: Name of the entity.
+        description: 
+          type: string
+          description: Description of the entity.
+        tags: 
+          type: array
+          description: Tags for the entity.
+          items:
+             type: string
+        labels:
+          type: object
+          description: Labels for the entity.
+        relations:
+          type: object
+          description: Relations for the entity.
+  securitySchemes:
+    systemAccountAccessToken:
+      $ref: '../../../../../common/definitions/security.yaml#/components/securitySchemes/systemAccountAccessToken'
+    personalAccessToken:
+      $ref: '../../../../../common/definitions/security.yaml#/components/securitySchemes/personalAccessToken'
+    konnectAccessToken:
+      $ref: '../../../../../common/definitions/security.yaml#/components/securitySchemes/konnectAccessToken'
+  examples:
+    400-query-is-invalid:
+      value:
+        status: 400
+        title: Bad Request
+        detail: Invalid query.
+        instance: 'konnect:trace:3674017986744198214'
+        invalid_parameters:
+          - field: query
+            reason: invalid query
+    Successful-Search-Example: 
+      value: 
+        data: 
+          - id: c0010105-e840-4824-b7ee-787f22267c36
+            type: service
+            name: Sonar Readings
+            tags:
+              - us
+              - api
+            labels:
+              env: prod
+            relations:
+              control_plane: 0734a1d4-829d-423c-b95a-d3efe437baa8
+          - id: c0010105-e840-4824-b7ee-787f22267c37 
+            type: user
+            name: Jason Developer
+          - id: c0010105-e840-4824-b7ee-787f22267c38 
+            type: user
+            name: Sonia Engineer
+        meta:
+          page:
+            size: 3
+            previous: /search?query=son&page[before]=ewogICJpZCI6ICJoZWxsbyB3b3JsZCIKfQ
+            next: /search?query=son&page[after]=ewogICJpZCI6ICJoZWysbyB3b3JsZCIKgZ
+security:
+  - personalAccessToken: []
+  - systemAccountAccessToken: []
+  - konnectAccessToken: []
+tags:
+  - name: Search
