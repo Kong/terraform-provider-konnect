@@ -344,7 +344,7 @@ components:
       maxLength: 80
       example: path-for-seo
     PublishStatus:
-      description: document publish status
+      description: document publish status. Default to published.
       type: string
       enum:
       - published
@@ -526,7 +526,6 @@ components:
       description: a document payload
       required:
       - slug
-      - status
       - title
       - raw_content
       - filename
