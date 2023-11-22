@@ -893,8 +893,6 @@ components:
       properties:
         publish_status:
           $ref: '#/components/schemas/PortalProductVersionPublishStatus'
-        product_version_id:
-          $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/UUID_RW'
         auth_strategy_ids:
           $ref: '#/components/schemas/AuthStrategyIDs'
         application_registration_enabled:
