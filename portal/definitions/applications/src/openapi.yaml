@@ -227,7 +227,6 @@ paths:
   /api/v2/applications/{applicationId}/product-versions/{productVersionId}/granted-scopes:
      get:
       x-unstable: true
-      x-internal: true
       summary: Get the granted scopes
       description: |
        Retrieves the granted scopes of a specified application and product version directly from the IDP.
