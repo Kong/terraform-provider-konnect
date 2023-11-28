@@ -202,10 +202,10 @@ paths:
           content:
             'application/json':
               schema:
-                $ref: '../../../../internal/definitions/documenthub/common/v2/documenthub.yaml#/components/schemas/ListDocuments'
+                $ref: '../../../../internal/definitions/documenthub-portal/v2/src/openapi.yaml#/components/schemas/ListDocuments'
             'application/vnd.konnect.document-tree+json':
               schema:
-                $ref: '../../../../internal/definitions/documenthub/common/v2/documenthub.yaml#/components/schemas/ListDocumentsTree'
+                $ref: '../../../../internal/definitions/documenthub-portal/v2/src/openapi.yaml#/components/schemas/ListDocumentsTree'
         '400':
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
