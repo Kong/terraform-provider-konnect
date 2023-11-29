@@ -1489,6 +1489,7 @@ components:
         - display_name
         - strategy_type
         - configs
+        - active
         - dcr_provider
         - created_at
         - updated_at
@@ -1505,6 +1506,9 @@ components:
           $ref: '#/components/schemas/AuthStrategyType'
         configs:
           type: object
+        active: 
+          type: boolean
+          description: At least one published product version is using this auth strategy.
         dcr_provider:
           nullable: true
           type: object
@@ -1880,6 +1884,7 @@ components:
         name: auth strategy 1
         display_name: Client Credentials
         strategy_type: openid_connect
+        active: false
         configs:
           'openid-connect':
             issuer: https://my-issuer.example.com/default
@@ -1904,6 +1909,7 @@ components:
             name: auth strategy 1
             display_name: Client Credentials
             strategy_type: openid_connect
+            active: false
             configs:
               'openid-connect':
                 issuer: https://my-issuer.example.com/default
