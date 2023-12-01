@@ -1885,6 +1885,7 @@ components:
             developer:
               id: 6cd9feff-b4da-4a9f-ba49-cbe83c75ff22
               name: Jane Dev
+            granted_scopes: ['openid']
             created_at: '2022-12-22T20:13:07.305Z'
             updated_at: '2022-12-22T20:13:36.710Z'
           - id: d200cc33-2d33-4754-b086-a98e0fcd36fb
@@ -1901,6 +1902,7 @@ components:
             developer:
               id: 6cd9feff-b4da-4a9f-ba49-cbe83c75ff22
               name: Jane Dev
+            granted_scopes: null
             created_at: '2022-12-22T20:13:07.305Z'
             updated_at: '2022-12-22T20:13:36.710Z'
           - id: d300cc33-2d33-4754-b086-a98e0fcd36fb
@@ -1917,6 +1919,7 @@ components:
             developer:
               id: 6cd9feff-b4da-4a9f-ba49-cbe83c75ff22
               name: Jane Dev
+            granted_scopes: ['openid', 'read:myscope']
             created_at: '2022-12-22T20:13:07.305Z'
             updated_at: '2022-12-22T20:13:36.710Z'
           - id: d300cc33-2d33-4754-b086-a98e0fcd36fb
@@ -1933,6 +1936,7 @@ components:
             developer:
               id: 6cd9feff-b4da-4a9f-ba49-cbe83c75ff22
               name: Jane Dev
+            granted_scopes: []
             created_at: '2022-12-22T20:13:07.305Z'
             updated_at: '2022-12-22T20:13:36.710Z'
     GetApplicationRegistrationExample1:
@@ -1951,6 +1955,7 @@ components:
         developer:
           id: ecd9feff-b4da-4a9f-ba49-cbe83c75ff22
           name: Jane Dev
+        granted_scopes: ['openid']
         created_at: '2022-12-22T20:13:07.305Z'
         updated_at: '2022-12-22T20:13:36.710Z'
     UpdateApplicationRegistrationResponseExample1:
@@ -4344,6 +4349,7 @@ components:
         - product_version
         - application
         - developer
+        - granted_scopes
       properties:
         id:
           $ref: >-
@@ -4417,6 +4423,12 @@ components:
             name:
               description: The name of the developer that created the registration.
               type: string
+        granted_scopes:
+          description: List of granted scopes for the registration. Null if application type does not support returning granted scopes.
+          type: array
+          nullable: true
+          items:
+            type: string
       example:
         $ref: '#/components/examples/GetApplicationRegistrationExample1/value'
     Portal:
