@@ -1149,7 +1149,6 @@ components:
           additionalProperties: false
           required:
             - id
-            - runtime_group_id
             - control_plane_id
           properties:
             id:
