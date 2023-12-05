@@ -86,6 +86,15 @@ components:
           examples:
             UnsupportedMediaTypeExample:
               $ref: '#/components/examples/UnsupportedMediaTypeExample'
+    UnprocessableContent:
+      description: Unprocessable Content
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/UnprocessableContentError'
+          examples:
+            UnprocessableContentExample:
+              $ref: '#/components/examples/UnprocessableContentExample'
     # 429
     TooManyRequests:
       description: Too Many Requests
@@ -332,6 +341,21 @@ components:
           example: UnsupportedMediaType
       allOf:
       - $ref: '#/components/schemas/BaseError'
+    UnprocessableContentError:
+      type: object
+      properties:
+        status:
+          example: 422
+        title:
+          example: Unprocessable Content
+        type:
+          example: https://httpstatuses.com/422
+        instance:
+          example: kong:trace:1234567891
+        detail:
+          example: Unprocessable Content
+      allOf:
+      - $ref: '#/components/schemas/BaseError'
     TooManyRequestsError:
       type: object
       properties:
@@ -387,6 +411,12 @@ components:
         title: Unsupported Media Type
         instance: kong:trace:8347343766220159418
         detail: "This API only supports requests with `Content-Type: application/json`"
+    UnprocessableContentExample:
+      value:
+        status: 422
+        title: Unprocessable Content
+        instance: kong:trace:8347343766220159419
+        detail: "The requested operation cannot be performed with the provided data"
     UnauthorizedExample:
       value:
         status: 401

@@ -242,8 +242,8 @@ paths:
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '404':
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
-        '409':
-          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Conflict'
+        '422':
+          $ref: '#/components/responses/GetGrantedScopesProductVersion422Response'
       tags:
         - applications
       security:
@@ -340,6 +340,18 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/GetGrantedScopesProductVersionResponse'
+          examples:
+            GetGrantedScopesProductVersion200Response:
+              $ref: '#/components/examples/GetGrantedScopesProductVersion200Response'
+    GetGrantedScopesProductVersion422Response:
+      description: Get granted with application using unsupported IDP.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '../../../../common/definitions/errors.yaml#/components/schemas/UnprocessableContentError'
+          examples:
+            GetGrantedScopesProductVersion422Example:
+              $ref: '#/components/examples/GetGrantedScopesProductVersion422Example'
   schemas:
     CreateCredentialPayload:
       additionalProperties: false
@@ -569,9 +581,21 @@ components:
       properties:
         scopes:
           $ref: '../../common/properties.yaml#/components/schemas/RefreshedGrantedScopes'
+  examples:
+    GetGrantedScopesProductVersion200Response:
+      value:
+        scopes: ['openid']
+    GetGrantedScopesProductVersion422Example:
+      value:
+        status: 422
+        title: Unsupported IDP
+        type: https://kongapi.info/konnect/portal/granted-scopes-unavailable
+        detail: This feature is not supported by the application.
+        instance: kong:trace:2724154947768991354
 tags:
   - name: applications
-    description: The API for Konnect Portal developer applications within a private portal (i.e. requires registration/authentication).
+    description:
+      The API for Konnect Portal developer applications within a private portal (i.e. requires registration/authentication).
       When a portal is in `public` mode, all of the described endpoints will return a 404 error. A public portal means
       that applications and registrations are not available/needed. In this API's context, "you" and "your" refers to the
       developer consuming the API.
