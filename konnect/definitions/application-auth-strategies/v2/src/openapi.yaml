@@ -1175,6 +1175,7 @@ components:
         - display_name
         - provider_type
         - issuer
+        - active
         - dcr_config
         - created_at
         - updated_at
@@ -1193,6 +1194,10 @@ components:
           type: string
           format: url
           maxLength: 256
+        active:
+          readOnly: true
+          type: boolean
+          description: At least one active auth strategy is using this DCR provider.
         dcr_config:
           type: object
         created_at:
@@ -1506,7 +1511,7 @@ components:
           $ref: '#/components/schemas/AuthStrategyType'
         configs:
           type: object
-        active: 
+        active:
           type: boolean
           description: At least one published product version is using this auth strategy.
         dcr_provider:
@@ -1812,6 +1817,7 @@ components:
         display_name: Client Credentials
         provider_type: okta
         issuer: https://my-issuer.okta.com/default
+        active: true
         dcr_config: {}
         created_at: 2023-01-01T00:00:00.000Z
         updated_at: 2023-01-01T00:00:00.000Z
@@ -1824,6 +1830,7 @@ components:
             display_name: Client Credentials
             provider_type: okta
             issuer: https://my-issuer.okta.com/default
+            active: true
             dcr_config: {}
             created_at: 2023-01-01T00:00:00.000Z
             updated_at: 2023-01-01T00:00:00.000Z
