@@ -220,7 +220,7 @@ paths:
         '404':
           $ref: '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
         '409':
-          $ref: '../../../../../common/definitions/errors.yaml#/components/schemas/ConflictError'
+          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Conflict'
       tags:
         - Documents
     patch:
