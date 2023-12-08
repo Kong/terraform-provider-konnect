@@ -1503,6 +1503,8 @@ components:
                     name: IDM - Developers
                     description: The developers for the IDM API.
                     system_team: false
+                    labels:
+                      env: test
                     created_at: '2022-02-07T17:46:57.52Z'
                     updated_at: '2022-09-25T13:00:00.00Z'
     TeamMappingCollection:
@@ -2689,6 +2691,8 @@ components:
                 example: The Identity Management (IDM) team.
                 description: The description of the new team.
                 writeOnly: true
+              labels:
+                $ref: '../../../../../common/definitions/konnect_properties.yaml#/components/schemas/Labels'
             required:
               - name
           examples:
@@ -2713,6 +2717,8 @@ components:
                 example: The Identity Management (IDM) API team.
                 description: The description of the team.
                 writeOnly: true
+              labels:
+                $ref: '../../../../../common/definitions/konnect_properties.yaml#/components/schemas/LabelsUpdate'
           examples:
             Example Request Body:
               $ref: '#/components/examples/Update-Team-Request'
@@ -3227,6 +3233,8 @@ components:
         name: IDM - Developers
         description: The developers for the IDM API.
         system_team: false
+        labels:
+          env: test
         created_at: '1992-02-07T17:46:57.52Z'
         updated_at: '2022-08-31T17:00:00.52Z'
       properties:
@@ -3252,6 +3260,8 @@ components:
           default: false
           description: 'Returns True if a user belongs to a `system_team`. System teams are teams that can manage Konnect objects, like "Organization Admin", or "Service"'
           readOnly: true
+        labels:
+          $ref: '../../../../../common/definitions/konnect_properties.yaml#/components/schemas/Labels'
         created_at:
           type: string
           format: date-time
@@ -3694,6 +3704,9 @@ components:
         name: IDM - Developers
         description: The developers for the IDM API.
         system_team: false
+        labels:
+          env: test
+          service: test
         created_at: '2022-02-07T17:46:57.52Z'
         updated_at: '2022-09-25T13:00:00.00Z'
     team-mapping-collection:
@@ -3748,10 +3761,15 @@ components:
       value:
         name: IDM - Developers
         description: The Identity Management (IDM) team.
+        labels:
+          env: test
+          service: test
     Update-Team-Request:
       value:
         name: IDM - Developers
         description: The Identity Management (IDM) API team.
+        labels:
+          env: prod
     Update-Team-Mappings:
       value:
         mappings:

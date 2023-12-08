@@ -12,6 +12,33 @@ components:
       example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
       description: Contains a unique identifier for a resource.
       nullable: true
+    Labels:
+      title: Labels
+      type: object
+      example:
+        env: test
+      description: |
+        Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
+        
+        Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+      additionalProperties:
+        type: string
+        pattern: '^[a-z0-9A-Z]{1}([a-z0-9A-Z\-\.\_]*[a-z0-9A-Z]+)?$'
+        maxItems: 50
+        minLength: 1
+        maxLength: 63
+    LabelsUpdate:
+      type: object
+      nullable: true
+      description: |
+        Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
+        
+        Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+      example:
+        env: test
+      maxItems: 50
+      maxLength: 63
+      writeOnly: true
     CreatedAt:
       type: string
       format: date-time
