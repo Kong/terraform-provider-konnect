@@ -12,7 +12,7 @@ portal/**                                   @Kong/team-devx
 konnect/definitions/portal-management/**  @Kong/team-devx
 konnect/definitions/api-products/**       @Kong/team-devx
 konnect/definitions/application-auth-strategies/**       @Kong/team-devx
-konnect/definitions/documenthub*       @Kong/team-devx
+internal/definitions/documenthub*       @Kong/team-devx
 
 # Gateway Manager
 konnect/definitions/control-planes/**           @Kong/team-konnectx-be
