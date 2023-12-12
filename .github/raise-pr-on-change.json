@@ -139,6 +139,10 @@
     {
       "src": "output/konnect/services/portal-management/public.yaml",
       "dest": "api-specs/Konnect/v2/yaml/portal-management.yaml"
+    },
+    {
+      "src": "output/konnect/services/ksearch/public.yaml",
+      "dest": "api-specs/Konnect/v0/yaml/ksearch.yaml"
     }
   ]
 }
