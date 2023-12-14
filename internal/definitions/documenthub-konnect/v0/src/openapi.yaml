@@ -321,7 +321,6 @@ components:
           example: 2272b454-4af6-4c56-8a02-d6145ac62e67
         content:
           $ref: '../../../documenthub/common/v0/documenthub_nodes.yaml#/components/schemas/DocumentBlock'
-
         metadata:
           type: object
           example: { "author": "John Doe" }
@@ -333,6 +332,10 @@ components:
           format: byte
           description: raw markdown content
           example: I0ludHJvZHVjdGlvbg==
+        str_md_content:
+          type: string
+          description: markdown content
+          example: '## My Markdown'
         file:
           description: file of the revision
           type: object
