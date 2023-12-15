@@ -78,15 +78,13 @@ components:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              types:
-                type: array
-                items:
-                  type: string
+            $ref: '#/components/schemas/SearchTypesResponse'
+          examples:
+            Searchable Entity Types:
+              $ref: '#/components/examples/Searchable-Entity-Types'
   schemas:
     SearchResponse:
-      title: Search response.
+      title: SearchResponse
       description: Search response schema.
       type: object
       properties:
@@ -96,8 +94,17 @@ components:
             $ref: '#/components/schemas/KonnectEntity'
         meta:
           $ref: '../../../../../common/definitions/metadatas.yaml#/components/schemas/CursorPaginatedMeta'
-    KonnectEntity: 
-      title: Konnect entity.
+    SearchTypesResponse:
+      title: SearchableEntityTypesResponse
+      description: The collection of searchable entity types.
+      type: object
+      properties:
+        types:
+          type: array
+          items:
+            type: string
+    KonnectEntity:
+      title: KonnectEntity
       description: Konnect entity schema.
       type: object
       required:
@@ -170,6 +177,14 @@ components:
             size: 3
             previous: /search?q=son&page[before]=ewogICJpZCI6ICJoZWxsbyB3b3JsZCIKfQ
             next: /search?q=son&page[after]=ewogICJpZCI6ICJoZWysbyB3b3JsZCIKgZ
+    Searchable-Entity-Types:
+      value:
+        types:
+          - developer
+          - developer_team
+          - user
+          - team
+          - system_account
 security:
   - personalAccessToken: []
   - systemAccountAccessToken: []
