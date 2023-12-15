@@ -44,6 +44,10 @@ paths:
       operationId: list-dcr-providers
       description: Returns a paginated collection of DCR providers.
       parameters:
+        - $ref: >-
+            ../../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize
+        - $ref: >-
+            ../../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber
         - $ref: '#/components/parameters/SortDcrProviders'
         - $ref: '#/components/parameters/FilterDcrProvidersById'
         - $ref: '#/components/parameters/FilterDcrProvidersByIdShort'
@@ -203,6 +207,10 @@ paths:
       operationId: list-app-auth-strategies
       description: Returns a paginated collection of application auth strategies.
       parameters:
+        - $ref: >-
+            ../../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize
+        - $ref: >-
+            ../../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber
         - $ref: '#/components/parameters/SortAppAuthStrategies'
         - schema:
             type: object
@@ -315,8 +323,8 @@ paths:
         - $ref: '#/components/parameters/SortPortalProductVersions'
         - $ref: '#/components/parameters/PortalProductVersionFilter'
         - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
-        - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageAfter'
-        - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageBefore'
+        - $ref: >-
+            ../../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber
       responses:
         '200':
           $ref: '#/components/responses/ListPortalProductVersions'
