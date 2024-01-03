@@ -4496,8 +4496,17 @@ components:
           nullable: true
           type: string
           format: hostname
+        default_application_auth_strategy_id:
+          $ref: '#/components/schemas/DefaultApplicationAuthStratID'
       example:
         $ref: '#/components/examples/GetPortalExample1/value'
+    DefaultApplicationAuthStratID:
+      description: >-
+        Default strategy ID applied on applications for the portal
+      nullable: true
+      type: string
+      format: uuid
+      example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
     UpdatePortalRequest:
       additionalProperties: false
       type: object
@@ -4533,6 +4542,8 @@ components:
           format: hostname
           nullable: true
           maxLength: 1024
+        default_application_auth_strategy_id:
+          $ref: '#/components/schemas/DefaultApplicationAuthStratID'
       example:
         is_public: false
         rbac_enabled: true
@@ -4540,6 +4551,7 @@ components:
         auto_approve_developers: false
         custom_domain: api.example.com
         custom_client_domain: portal.example.com
+        default_application_auth_strategy_id: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
     UpdateDeveloperRequest:
       title: UpdateDeveloperRequest
       additionalProperties: false
