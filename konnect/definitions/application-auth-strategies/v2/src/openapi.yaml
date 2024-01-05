@@ -1492,82 +1492,6 @@ components:
       enum:
         - key_auth
         - openid_connect
-    AppAuthStrategyResponseBase:
-      title: AppAuthStrategyResponseBase
-      # description: # TODO
-      type: object
-      required:
-        - id
-        - name
-        - display_name
-        - strategy_type
-        - configs
-        - active
-        - dcr_provider
-        - created_at
-        - updated_at
-      properties:
-        id:
-          $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/UUID'
-        name:
-          type: string
-          maxLength: 256
-        display_name:
-          type: string
-          maxLength: 256
-        strategy_type:
-          $ref: '#/components/schemas/AuthStrategyType'
-        configs:
-          type: object
-        active:
-          type: boolean
-          description: At least one published product version is using this auth strategy.
-        dcr_provider:
-          nullable: true
-          type: object
-          additionalProperties: false
-          required:
-            - id
-            - name
-            - display_name
-            - provider_type
-          properties:
-            id:
-              $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/UUID'
-            name:
-              type: string
-            display_name:
-              type: string
-            provider_type:
-              $ref: '#/components/schemas/DcrProviderType'
-        created_at:
-          $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
-        updated_at:
-          $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
-    CreateAppAuthStrategyRequestBase:
-      title: CreateAppAuthStrategyRequestBase
-      # description: # TODO
-      type: object
-      required:
-        - name
-        - display_name
-        - strategy_type
-        - configs
-      properties:
-        name:
-          type: string
-          maxLength: 256
-        display_name:
-          type: string
-          maxLength: 256
-        strategy_type:
-          $ref: '#/components/schemas/AuthStrategyType'
-        configs:
-          type: object
-        dcr_provider_id:
-          nullable: true
-          type: string
-          format: uuid
     AppAuthStrategyConfigKeyAuth:
       title: AppAuthStrategyConfigKeyAuth
       # description: # TODO
@@ -1615,14 +1539,23 @@ components:
           items:
             type: string
             maxLength: 64
-    AppAuthStrategyKeyAuth:
-      title: AppAuthStrategyKeyAuth
+    AppAuthStrategyKeyAuthRequest:
+      title: AppAuthStrategyKeyAuthRequest
       # description: # TODO
       type: object
+      additionalProperties: false
       required:
+        - name
+        - display_name
         - strategy_type
         - configs
       properties:
+        name:
+          type: string
+          maxLength: 256
+        display_name:
+          type: string
+          maxLength: 256
         strategy_type:
           type: string
           enum:
@@ -1635,14 +1568,84 @@ components:
           properties:
             'key-auth':
               $ref: '#/components/schemas/AppAuthStrategyConfigKeyAuth'
-    AppAuthStrategyOpenIDConnect:
-      title: AppAuthStrategyOpenIDConnect
+    AppAuthStrategyKeyAuthResponse:
+      title: AppAuthStrategyKeyAuthResponse
       # description: # TODO
       type: object
+      additionalProperties: false
       required:
+        - id
+        - name
+        - display_name
+        - strategy_type
+        - configs
+        - active
+        - dcr_provider
+        - created_at
+        - updated_at
+      properties:
+        id:
+          $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/UUID'
+        name:
+          type: string
+          maxLength: 256
+        display_name:
+          type: string
+          maxLength: 256
+        strategy_type:
+          type: string
+          enum:
+            - key_auth
+        configs:
+          type: object
+          additionalProperties: false
+          required:
+            - 'key-auth'
+          properties:
+            'key-auth':
+              $ref: '#/components/schemas/AppAuthStrategyConfigKeyAuth'
+        active:
+          type: boolean
+          description: At least one published product version is using this auth strategy.
+        dcr_provider:
+          nullable: true
+          type: object
+          additionalProperties: false
+          required:
+            - id
+            - name
+            - display_name
+            - provider_type
+          properties:
+            id:
+              $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/UUID'
+            name:
+              type: string
+            display_name:
+              type: string
+            provider_type:
+              $ref: '#/components/schemas/DcrProviderType'
+        created_at:
+          $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
+    AppAuthStrategyOpenIDConnectRequest:
+      title: AppAuthStrategyOpenIDConnectRequest
+      # description: # TODO
+      type: object
+      additionalProperties: false
+      required:
+        - name
+        - display_name
         - strategy_type
         - configs
       properties:
+        name:
+          type: string
+          maxLength: 256
+        display_name:
+          type: string
+          maxLength: 256
         strategy_type:
           type: string
           enum:
@@ -1655,89 +1658,144 @@ components:
           properties:
             'openid-connect':
               $ref: '#/components/schemas/AppAuthStrategyConfigOpenIDConnect'
+        dcr_provider_id:
+          nullable: true
+          type: string
+          format: uuid
+    AppAuthStrategyOpenIDConnectResponse:
+      title: AppAuthStrategyOpenIDConnectResponse
+      # description: # TODO
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - display_name
+        - strategy_type
+        - configs
+        - active
+        - dcr_provider
+        - created_at
+        - updated_at
+      properties:
+        id:
+          $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/UUID'
+        name:
+          type: string
+          maxLength: 256
+        display_name:
+          type: string
+          maxLength: 256
+        strategy_type:
+          type: string
+          enum:
+            - openid_connect
+        configs:
+          type: object
+          additionalProperties: false
+          required:
+            - 'openid-connect'
+          properties:
+            'openid-connect':
+              $ref: '#/components/schemas/AppAuthStrategyConfigOpenIDConnect'
+        active:
+          type: boolean
+          description: At least one published product version is using this auth strategy.
+        dcr_provider:
+          nullable: true
+          type: object
+          additionalProperties: false
+          required:
+            - id
+            - name
+            - display_name
+            - provider_type
+          properties:
+            id:
+              $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/UUID'
+            name:
+              type: string
+            display_name:
+              type: string
+            provider_type:
+              $ref: '#/components/schemas/DcrProviderType'
+        created_at:
+          $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '../../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
     CreateAppAuthStrategyRequest:
       title: CreateAppAuthStrategyRequest
       # description: # TODO
       type: object
-      allOf:
-        - $ref: '#/components/schemas/CreateAppAuthStrategyRequestBase'
-        - discriminator:
-            propertyName: strategy_type
-          type: object
-          oneOf:
-            - $ref: '#/components/schemas/AppAuthStrategyKeyAuth'
-            - $ref: '#/components/schemas/AppAuthStrategyOpenIDConnect'
+      discriminator:
+        propertyName: strategy_type
+      oneOf:
+        - $ref: '#/components/schemas/AppAuthStrategyKeyAuthRequest'
+        - $ref: '#/components/schemas/AppAuthStrategyOpenIDConnectRequest'
     AppAuthStrategy:
       title: AppAuthStrategy
       # description: # TODO
       type: object
-      allOf:
-        - $ref: '#/components/schemas/AppAuthStrategyResponseBase'
-        - discriminator:
-            propertyName: strategy_type
-          type: object
-          oneOf:
-            - $ref: '#/components/schemas/AppAuthStrategyKeyAuth'
-            - $ref: '#/components/schemas/AppAuthStrategyOpenIDConnect'
+      discriminator:
+        propertyName: strategy_type
+      oneOf:
+        - $ref: '#/components/schemas/AppAuthStrategyKeyAuthResponse'
+        - $ref: '#/components/schemas/AppAuthStrategyOpenIDConnectResponse'
     CreateAppAuthStrategyResponse:
       $ref: '#/components/schemas/AppAuthStrategy'
+    UpdateAppAuthStrategyKeyAuthRequest:
+      title: UpdateAppAuthStrategyKeyAuthRequest
+      # description: # TODO
+      type: object
+      additionalProperties: false
+      properties:
+        name:
+          type: string
+          maxLength: 256
+        display_name:
+          type: string
+          maxLength: 256
+        configs:
+          type: object
+          additionalProperties: false
+          required:
+            - 'key-auth'
+          properties:
+            'key-auth':
+              $ref: '#/components/schemas/AppAuthStrategyConfigKeyAuth'
+    UpdateAppAuthStrategyOpenIDConnectRequest:
+      title: UpdateAppAuthStrategyOpenIDConnectRequest
+      # description: # TODO
+      type: object
+      additionalProperties: false
+      properties:
+        name:
+          type: string
+          maxLength: 256
+        display_name:
+          type: string
+          maxLength: 256
+        dcr_provider_id:
+          nullable: true
+          type: string
+          format: uuid
+        configs:
+          type: object
+          additionalProperties: false
+          required:
+            - 'openid-connect'
+          properties:
+            'openid-connect':
+              $ref: '#/components/schemas/AppAuthStrategyConfigOpenIDConnect'
     UpdateAppAuthStrategyRequest:
       title: UpdateAppAuthStrategyRequest
       # description: # TODO
-      allOf:
-        - type: object
-          additionalProperties: false
-          properties:
-            name:
-              type: string
-              maxLength: 256
-            display_name:
-              type: string
-              maxLength: 256
-            strategy_type:
-              $ref: '#/components/schemas/AuthStrategyType'
-            configs:
-              type: object
-            dcr_provider_id:
-              nullable: true
-              type: string
-              format: uuid
-        - anyOf:
-          - allOf:
-            - type: object
-              required:
-                - strategy_type
-              properties:
-                strategy_type:
-                  $ref: '#/components/schemas/AuthStrategyType'
-            - discriminator:
-                propertyName: strategy_type
-              type: object
-              oneOf:
-                - $ref: '#/components/schemas/AppAuthStrategyKeyAuth'
-                - $ref: '#/components/schemas/AppAuthStrategyOpenIDConnect'
-          - anyOf:
-            - type: object
-              properties:
-                configs:
-                  type: object
-                  additionalProperties: false
-                  required:
-                    - 'key-auth'
-                  properties:
-                    'key-auth':
-                      $ref: '#/components/schemas/AppAuthStrategyConfigKeyAuth'
-            - type: object
-              properties:
-                configs:
-                  type: object
-                  additionalProperties: false
-                  required:
-                    - 'openid-connect'
-                  properties:
-                    'openid-connect':
-                      $ref: '#/components/schemas/AppAuthStrategyConfigOpenIDConnect'
-          - type: object
+      type: object
+      discriminator:
+        propertyName: strategy_type
+      anyOf:
+        - $ref: '#/components/schemas/UpdateAppAuthStrategyKeyAuthRequest'
+        - $ref: '#/components/schemas/UpdateAppAuthStrategyOpenIDConnectRequest'
     UpdateAppAuthStrategyResponse:
       $ref: '#/components/schemas/AppAuthStrategy'
     GetAppAuthStrategyResponse:
@@ -1869,7 +1927,6 @@ components:
               - apikey
               - 'api-key'
               - 'x-api-key'
-        dcr_provider_id: null
     CreateAppAuthStrategyOpenIDConnectRequest:
       value:
         name: auth strategy 2
