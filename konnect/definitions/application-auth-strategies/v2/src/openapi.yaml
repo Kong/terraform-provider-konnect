@@ -1806,28 +1806,8 @@ components:
         - $ref: '#/components/schemas/AppAuthStrategyOpenIDConnectResponse'
     CreateAppAuthStrategyResponse:
       $ref: '#/components/schemas/AppAuthStrategy'
-    UpdateAppAuthStrategyKeyAuthRequest:
-      title: UpdateAppAuthStrategyKeyAuthRequest
-      # description: # TODO
-      type: object
-      additionalProperties: false
-      properties:
-        name:
-          type: string
-          maxLength: 256
-        display_name:
-          type: string
-          maxLength: 256
-        configs:
-          type: object
-          additionalProperties: false
-          required:
-            - 'key-auth'
-          properties:
-            'key-auth':
-              $ref: '#/components/schemas/AppAuthStrategyConfigKeyAuth'
-    UpdateAppAuthStrategyOpenIDConnectRequest:
-      title: UpdateAppAuthStrategyOpenIDConnectRequest
+    UpdateAppAuthStrategyRequest:
+      title: UpdateAppAuthStrategyRequest
       # description: # TODO
       type: object
       additionalProperties: false
@@ -1844,21 +1824,21 @@ components:
           format: uuid
         configs:
           type: object
-          additionalProperties: false
-          required:
-            - 'openid-connect'
-          properties:
-            'openid-connect':
-              $ref: '#/components/schemas/AppAuthStrategyConfigOpenIDConnect'
-    UpdateAppAuthStrategyRequest:
-      title: UpdateAppAuthStrategyRequest
-      # description: # TODO
-      type: object
-      discriminator:
-        propertyName: strategy_type
-      anyOf:
-        - $ref: '#/components/schemas/UpdateAppAuthStrategyKeyAuthRequest'
-        - $ref: '#/components/schemas/UpdateAppAuthStrategyOpenIDConnectRequest'
+          oneOf:
+            - type: object
+              additionalProperties: false
+              required:
+                - 'openid-connect'
+              properties:
+                'openid-connect':
+                  $ref: '#/components/schemas/AppAuthStrategyConfigOpenIDConnect'
+            - type: object
+              additionalProperties: false
+              required:
+                - 'key-auth'
+              properties:
+                'key-auth':
+                  $ref: '#/components/schemas/AppAuthStrategyConfigKeyAuth'
     UpdateAppAuthStrategyResponse:
       $ref: '#/components/schemas/AppAuthStrategy'
     GetAppAuthStrategyResponse:
