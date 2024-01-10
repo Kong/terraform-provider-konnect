@@ -272,6 +272,25 @@ paths:
           $ref:  '../../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       tags:
         - App Auth Strategies
+    put:
+      x-unstable: true
+      x-internal: true
+      summary: Replace App Auth Strategy
+      operationId: replace-app-auth-strategy
+      description: Replaces an application auth strategy.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateAppAuthStrategy'
+      responses:
+        '201':
+          $ref: '#/components/responses/CreateAppAuthStrategy'
+        '400':
+          $ref:  '../../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        '401':
+          $ref:  '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref:  '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+      tags:
+        - App Auth Strategies
     patch:
       x-unstable: true
       x-internal: true
