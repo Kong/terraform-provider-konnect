@@ -1335,18 +1335,22 @@ components:
             - $ref: '#/components/schemas/DcrProviderCurity'
             - $ref: '#/components/schemas/DcrProviderOkta'
             - $ref: '#/components/schemas/DcrProviderHttp'
-    CreateDcrProviderRequestBase:
+    CreateDcrProviderRequestAuth0:
+      title: CreateDcrProviderRequestAuth0
       type: object
-      title: CreateDcrProviderRequestBase
-      description: A DCR provider payload.
-      additionalProperties: false
       required:
+        - provider_type
+        - dcr_config
         - name
         - display_name
-        - provider_type
         - issuer
-        - dcr_config
       properties:
+        provider_type:
+          type: string
+          enum:
+            - auth0
+        dcr_config:
+          $ref: '#/components/schemas/CreateDcrConfigAuth0InRequest'
         name:
           type: string
           minLength: 1
@@ -1355,33 +1359,19 @@ components:
           type: string
           minLength: 1
           maxLength: 256
-        provider_type:
-          $ref: '#/components/schemas/DcrProviderType'
         issuer:
           type: string
           format: url
           maxLength: 256
-        dcr_config:
-          type: object
-    CreateDcrProviderRequestAuth0:
-      title: CreateDcrProviderRequestAuth0
-      type: object
-      required:
-        - provider_type
-        - dcr_config
-      properties:
-        provider_type:
-          type: string
-          enum:
-            - auth0
-        dcr_config:
-          $ref: '#/components/schemas/CreateDcrConfigAuth0InRequest'
     CreateDcrProviderRequestAzureAd:
       title: CreateDcrProviderRequestAzureAd
       type: object
       required:
         - provider_type
         - dcr_config
+        - name
+        - display_name
+        - issuer
       properties:
         provider_type:
           type: string
@@ -1389,12 +1379,27 @@ components:
             - azureAd
         dcr_config:
           $ref: '#/components/schemas/CreateDcrConfigAzureAdInRequest'
+        name:
+          type: string
+          minLength: 1
+          maxLength: 256
+        display_name:
+          type: string
+          minLength: 1
+          maxLength: 256
+        issuer:
+          type: string
+          format: url
+          maxLength: 256
     CreateDcrProviderRequestCurity:
       title: CreateDcrProviderRequestCurity
       type: object
       required:
         - provider_type
         - dcr_config
+        - name
+        - display_name
+        - issuer
       properties:
         provider_type:
           type: string
@@ -1402,12 +1407,27 @@ components:
             - curity
         dcr_config:
           $ref: '#/components/schemas/CreateDcrConfigCurityInRequest'
+        name:
+          type: string
+          minLength: 1
+          maxLength: 256
+        display_name:
+          type: string
+          minLength: 1
+          maxLength: 256
+        issuer:
+          type: string
+          format: url
+          maxLength: 256
     CreateDcrProviderRequestOkta:
       title: CreateDcrProviderRequestOkta
       type: object
       required:
         - provider_type
         - dcr_config
+        - name
+        - display_name
+        - issuer
       properties:
         provider_type:
           type: string
@@ -1415,12 +1435,27 @@ components:
             - okta
         dcr_config:
           $ref: '#/components/schemas/CreateDcrConfigOktaInRequest'
+        name:
+          type: string
+          minLength: 1
+          maxLength: 256
+        display_name:
+          type: string
+          minLength: 1
+          maxLength: 256
+        issuer:
+          type: string
+          format: url
+          maxLength: 256
     CreateDcrProviderRequestHttp:
       title: CreateDcrProviderRequestHttp
       type: object
       required:
         - provider_type
         - dcr_config
+        - name
+        - display_name
+        - issuer
       properties:
         provider_type:
           type: string
@@ -1428,21 +1463,30 @@ components:
             - http
         dcr_config:
           $ref: '#/components/schemas/CreateDcrConfigHttpInRequest'
+        name:
+          type: string
+          minLength: 1
+          maxLength: 256
+        display_name:
+          type: string
+          minLength: 1
+          maxLength: 256
+        issuer:
+          type: string
+          format: url
+          maxLength: 256
     CreateDcrProviderRequest:
       title: CreateDcrProviderRequest
       description: A DCR provider to create.
       type: object
-      allOf:
-        - $ref: '#/components/schemas/CreateDcrProviderRequestBase'
-        - discriminator:
-            propertyName: provider_type
-          type: object
-          oneOf:
-            - $ref: '#/components/schemas/CreateDcrProviderRequestAuth0'
-            - $ref: '#/components/schemas/CreateDcrProviderRequestAzureAd'
-            - $ref: '#/components/schemas/CreateDcrProviderRequestCurity'
-            - $ref: '#/components/schemas/CreateDcrProviderRequestOkta'
-            - $ref: '#/components/schemas/CreateDcrProviderRequestHttp'
+      discriminator:
+        propertyName: provider_type
+      oneOf:
+        - $ref: '#/components/schemas/CreateDcrProviderRequestAuth0'
+        - $ref: '#/components/schemas/CreateDcrProviderRequestAzureAd'
+        - $ref: '#/components/schemas/CreateDcrProviderRequestCurity'
+        - $ref: '#/components/schemas/CreateDcrProviderRequestOkta'
+        - $ref: '#/components/schemas/CreateDcrProviderRequestHttp'
     UpdateDcrProviderRequest:
       type: object
       title: UpdateDcrProviderRequest
