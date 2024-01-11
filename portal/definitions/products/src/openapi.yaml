@@ -457,16 +457,30 @@ components:
         - registration_configs
     RegistrationConfiguration:
       type: object
+      additionalProperties: false
       required:
         - name
       properties:
+        id:
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
+        auth_methods:
+          type: array
+          items:
+            type: string
+        credential_type:
+            $ref: '#/components/schemas/CredentialType'
         name:
           type: string
-          enum: [ key-auth, openid-connect ]
         available_scopes:
           type: array
           items:
             type: string
+    CredentialType:
+      type: string
+      enum:
+      - client_credentials
+      - self_managed_client_credentials
+      - key_auth
     LatestVersion:
       type: object
       additionalProperties: false
