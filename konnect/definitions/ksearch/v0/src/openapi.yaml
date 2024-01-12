@@ -28,7 +28,6 @@ paths:
       parameters:
         - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
         - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageAfter'
-        - $ref: '../../../../../common/definitions/metadatas.yaml#/components/parameters/PageBefore'
         - in: query
           name: q
           description: The query that defines the search criteria.
@@ -175,7 +174,6 @@ components:
         meta:
           page:
             size: 3
-            previous: /search?q=son&page[before]=ewogICJpZCI6ICJoZWxsbyB3b3JsZCIKfQ
             next: /search?q=son&page[after]=ewogICJpZCI6ICJoZWysbyB3b3JsZCIKgZ
     Searchable-Entity-Types:
       value:
