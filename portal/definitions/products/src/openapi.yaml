@@ -466,7 +466,9 @@ components:
         auth_methods:
           type: array
           items:
+            description: Auth Methods enabled for this strategy
             type: string
+          example: ['bearer']
         credential_type:
             $ref: '#/components/schemas/CredentialType'
         name:
