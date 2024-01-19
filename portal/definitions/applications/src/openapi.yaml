@@ -18,6 +18,8 @@ paths:
         - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByNameEquality'
         - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByNameEqualityShort'
         - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByNameContains'
+        - $ref: '#/components/parameters/FilterByAuthStrategyEquality'
+        - $ref: '#/components/parameters/FilterByAuthStrategyEqualityShort'
       responses:
         '200':
           $ref: '#/components/responses/ListApplications'
@@ -300,6 +302,22 @@ components:
           - self_managed_client_credentials
           - key_auth
         example: 'key_auth'
+    FilterByAuthStrategyEquality:
+      name: 'filter[auth_strategy_id][eq]'
+      description: Filter by the id of the auth strategy supported by the application.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 5be86298-147b-45ab-bfaf-a1bff97dce39
+    FilterByAuthStrategyEqualityShort:
+      name: 'filter[auth_strategy_id]'
+      description: Filter by the id of the auth strategy supported by the application (short-hand).
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 5be86298-147b-45ab-bfaf-a1bff97dce39
   requestBodies:
     CreateApplication:
       description: Create an application
