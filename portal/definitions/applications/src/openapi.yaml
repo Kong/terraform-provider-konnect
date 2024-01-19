@@ -397,8 +397,8 @@ components:
           schema:
             $ref: '#/components/schemas/ListAuthStrategiesResponse'
   schemas:
-    ApplicationAuthStrategyId:
-      description: ID of the application auth strategy to use for the application. If null or not included, the default application auth strategy will be used.
+    AuthStrategyId:
+      description: ID of the auth strategy to use for the application. If null or not included, the default application auth strategy will be used.
       type: string
       format: uuid
       nullable: true
@@ -407,7 +407,7 @@ components:
       additionalProperties: false
       properties:
         id:
-          $ref: '#/components/schemas/ApplicationAuthStrategyId'
+          $ref: '#/components/schemas/AuthStrategyId'
         name:
           type: string
           example: 'Okta Strategy'
@@ -473,8 +473,8 @@ components:
         redirect_uri:
           type: string
           nullable: true
-        application_auth_strategy_id:
-          $ref: '#/components/schemas/ApplicationAuthStrategyId'
+        auth_strategy_id:
+          $ref: '#/components/schemas/AuthStrategyId'
         created_at:
           $ref: '../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
         updated_at:
@@ -557,8 +557,8 @@ components:
           description: A brief description of the application
           type: string
           maxLength: 255
-        application_auth_strategy_id:
-          $ref: '#/components/schemas/ApplicationAuthStrategyId'
+        auth_strategy_id:
+          $ref: '#/components/schemas/AuthStrategyId'
     ApplicationCreationResponse:
       additionalProperties: false
       type: object
@@ -571,7 +571,7 @@ components:
         - description
         - created_at
         - updated_at
-        - application_auth_strategy_id
+        - auth_strategy_id
       properties:
         id:
           $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
@@ -596,8 +596,8 @@ components:
               type: string
             client_secret:
               type: string
-        application_auth_strategy_id:
-           $ref: '#/components/schemas/ApplicationAuthStrategyId'
+        auth_strategy_id:
+           $ref: '#/components/schemas/AuthStrategyId'
         created_at:
           $ref: '../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
         updated_at:
@@ -651,8 +651,8 @@ components:
           type: string
           example: https://example.com/callback
           nullable: true
-        application_auth_strategy_id:
-          $ref: '#/components/schemas/ApplicationAuthStrategyId'
+        auth_strategy_id:
+          $ref: '#/components/schemas/AuthStrategyId'
         created_at:
           $ref: '../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
         updated_at:
