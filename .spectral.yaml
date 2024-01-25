@@ -451,6 +451,7 @@ overrides:
   - files:
       - "konnect/definitions/analytics-reports/v2/**/openapi.yaml#/paths/~1reports~1%7BreportId%7D~1export/post/responses"
       - "konnect/definitions/analytics-requests/v2/**/openapi.yaml#/paths/~1api-requests/post/responses"
+      - "konnect/definitions/analytics-explore/v2/**/openapi.yaml#/paths/~1explore/post/responses"
       - "portal/definitions/analytics/**/openapi.yaml#/paths/~1api~1v2~1stats/post/responses"
     rules:
       errors-post-not-contain-200: "off"
