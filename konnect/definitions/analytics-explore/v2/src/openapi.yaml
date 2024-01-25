@@ -62,6 +62,11 @@ components:
             - 12h
             - 24h
             - 7d
+            - 30d
+            - current_week
+            - current_month
+            - previous_week
+            - previous_month
           default: 1h
       required:
         - type
