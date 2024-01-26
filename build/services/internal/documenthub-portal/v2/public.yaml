@@ -1,0 +1,759 @@
+openapi: 3.0.3
+info:
+  title: DocumentHub Developer Api v2
+  description: DocumentHub developer Api
+  version: 0.0.1
+  contact:
+    name: Kong
+    url: https://konghq.com
+servers:
+  - url: http://localhost:4400/developer/v2
+    description: Local
+  - url: http://documenthub.documenthub.svc.cluster.local:4400/developer/v2
+    description: Konnect cluster
+security:
+  - portalAccessToken: []
+tags:
+  - name: Documents
+    description: document operations
+paths:
+  /collections/{collectionId}/documents:
+    get:
+      summary: List collection documents
+      description: List documents in a collection
+      operationId: listDocuments
+      parameters:
+        - $ref: '#/components/parameters/collectionId'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+        - schema:
+            type: string
+            example: filter[name]=my-doc
+          in: query
+          name: filter[field]
+          description: |
+            A field to filter on. Supported fields: slug.
+      responses:
+        '200':
+          description: Documents in the collection
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListDocuments'
+            application/vnd.konnect.document-tree+json:
+              schema:
+                $ref: '#/components/schemas/ListDocumentsTree'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Documents
+  /collections/{collectionId}/documents/{documentId}:
+    get:
+      summary: Get the document
+      description: Get the document
+      operationId: getDocument
+      parameters:
+        - in: header
+          name: Accept
+          schema:
+            $ref: '#/components/schemas/DocumentFormatContentTypeEnum'
+        - $ref: '#/components/parameters/collectionId'
+        - $ref: '#/components/parameters/documentId'
+      responses:
+        '200':
+          description: Document
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentRaw'
+            application/vnd.konnect.document-nodes+json:
+              schema:
+                $ref: '#/components/schemas/Document'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Documents
+components:
+  securitySchemes:
+    portalAccessToken:
+      type: apiKey
+      in: cookie
+      name: portalaccesstoken
+      description: >
+        The Developer portal cookie is meant to be used by the Developer API to
+        authenticate with.
+  schemas:
+    ListDocumentsTree:
+      type: object
+      required:
+        - meta
+        - data
+      properties:
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/DocumentTree'
+    ListDocuments:
+      type: object
+      additionalProperties: false
+      required:
+        - meta
+        - data
+      properties:
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/DocumentItem'
+    DocumentItem:
+      type: object
+      title: Document item
+      additionalProperties: false
+      required:
+        - id
+        - parent_document_id
+        - slug
+        - title
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: the id of the document
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        parent_document_id:
+          type: string
+          format: uuid
+          description: the id of the parent document
+          nullable: true
+          example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
+        slug:
+          type: string
+          description: the slug of the document
+          example: getting-started
+        title:
+          type: string
+          description: the title of the document
+          example: Getting Started
+    DocumentRaw:
+      type: object
+      title: Document
+      description: a document
+      required:
+        - id
+        - slug
+        - revision
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: the id of the document
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        parent_document_id:
+          type: string
+          format: uuid
+          description: the id of the parent document
+          nullable: true
+          example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
+        slug:
+          type: string
+          description: the slug of the document
+          example: getting-started
+        revision:
+          $ref: '#/components/schemas/RevisionRaw'
+    RevisionRaw:
+      type: object
+      title: Revision
+      description: revision of a document
+      required:
+        - id
+        - document_id
+        - content
+        - metadata
+        - title
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: the id of the revision
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        document_id:
+          type: string
+          format: uuid
+          description: the id of the document
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        content:
+          type: string
+          description: Markdown document
+        metadata:
+          type: object
+          description: the metadata of the document
+          example:
+            title: Hello World
+            description: This is a description
+            keywords: hello, world
+        title:
+          type: string
+          description: the title of the document
+          example: Hello World
+    Document:
+      type: object
+      title: Document
+      description: a document
+      required:
+        - id
+        - slug
+        - meta
+        - title
+        - content
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: the id of the document
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        parent_document_id:
+          type: string
+          format: uuid
+          description: the id of the parent document
+          nullable: true
+          example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
+        slug:
+          type: string
+          description: the slug of the document
+          example: getting-started
+        content:
+          $ref: '#/components/schemas/DocumentBlock'
+        meta:
+          type: object
+          description: the metadata of the document
+          example:
+            title: Hello World
+            description: This is a description
+            keywords: hello, world
+        title:
+          type: string
+          description: the title of the document
+          example: Hello World
+    DocumentTree:
+      type: object
+      title: DocumentTree
+      description: a document tree
+      required:
+        - id
+        - title
+        - slug
+        - metadata
+        - children
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        parent_document_id:
+          type: string
+          format: uuid
+          nullable: true
+          example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
+        title:
+          type: string
+          description: the title of the document
+          example: Getting Started
+        slug:
+          type: string
+          description: the slug of the document
+          example: getting-started
+        metadata:
+          type: object
+          description: the metadata of the document
+          example:
+            author: Jane Doe
+            description: This is a description
+            keywords: hello, world
+        children:
+          type: array
+          items:
+            $ref: '#/components/schemas/DocumentTree'
+    PageMeta:
+      type: object
+      description: >-
+        Contains pagination query parameters and the total number of objects
+        returned.
+      required:
+        - number
+        - size
+        - total
+      properties:
+        number:
+          type: number
+          example: 1
+        size:
+          type: number
+          example: 10
+        total:
+          type: number
+          example: 100
+    PaginatedMeta:
+      type: object
+      title: PaginatedMeta
+      description: returns the pagination information
+      properties:
+        page:
+          $ref: '#/components/schemas/PageMeta'
+      required:
+        - page
+    BaseError:
+      type: object
+      title: Error
+      description: standard error
+      required:
+        - status
+        - title
+        - instance
+        - detail
+      properties:
+        status:
+          type: integer
+          description: >
+            The HTTP status code of the error. Useful when passing the response
+
+            body to child properties in a frontend UI. Must be returned as an
+            integer.
+          readOnly: true
+        title:
+          type: string
+          description: |
+            A short, human-readable summary of the problem. It should not
+            change between occurences of a problem, except for localization.
+            Should be provided as "Sentence case" for direct use in the UI.
+          readOnly: true
+        type:
+          type: string
+          description: The error type.
+          readOnly: true
+        instance:
+          type: string
+          description: |
+            Used to return the correlation ID back to the user, in the format
+            kong:trace:<correlation_id>. This helps us find the relevant logs
+            when a customer reports an issue.
+          readOnly: true
+        detail:
+          type: string
+          description: >
+            A human readable explanation specific to this occurence of the
+            problem.
+
+            This field may contain request/entity data to help the user
+            understand
+
+            what went wrong. Enclose variable values in square brackets. Should
+            be
+
+            provided as "Sentence case" for direct use in the UI.
+          readOnly: true
+    NotFoundError:
+      type: object
+      properties:
+        status:
+          example: 404
+        title:
+          example: Not Found
+        type:
+          example: https://httpstatuses.com/404
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Not found
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+    DocumentFormatContentTypeEnum:
+      type: string
+      default: application/json
+      enum:
+        - application/json
+        - application/vnd.konnect.document-nodes+json
+    NodeChildren:
+      description: List of children nodes of the current node
+      type: array
+      items:
+        $ref: '#/components/schemas/ChildNode'
+    HeadingBlock:
+      type: object
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          enum:
+            - heading
+        level:
+          description: Level of the heading which maps to HTML <h> tag
+          type: number
+          minimum: 1
+          maximum: 6
+        children:
+          $ref: '#/components/schemas/NodeChildren'
+    BlockQuoteBlock:
+      type: object
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          enum:
+            - blockquote
+        children:
+          $ref: '#/components/schemas/NodeChildren'
+    ParagraphBlock:
+      type: object
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          enum:
+            - paragraph
+        children:
+          $ref: '#/components/schemas/NodeChildren'
+    TextBlock:
+      type: object
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          enum:
+            - text_block
+        children:
+          $ref: '#/components/schemas/NodeChildren'
+    BreakBlock:
+      type: object
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          enum:
+            - break
+        children:
+          $ref: '#/components/schemas/NodeChildren'
+    CodeBlock:
+      type: object
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          enum:
+            - code_block
+        lang:
+          type: string
+        children:
+          $ref: '#/components/schemas/NodeChildren'
+    ListBlock:
+      type: object
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          enum:
+            - list
+        isOrdered:
+          description: Defines if the list is ordered or not
+          type: boolean
+        children:
+          $ref: '#/components/schemas/NodeChildren'
+    ListItemBlock:
+      type: object
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          enum:
+            - list_item
+        children:
+          $ref: '#/components/schemas/NodeChildren'
+    Text:
+      type: object
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          enum:
+            - text
+        text:
+          type: string
+        hardBreak:
+          description: |
+            If this property is true the end of this block should
+            be a carriage return and not concatenated to the next Text block.
+          type: boolean
+        softBreak:
+          description: |
+            If this property is true the end of this block should should be
+            concatenated with a space caracter before the next block. This is
+            the flag showing that the parsed markdown block was at the end of
+            the line.
+          type: boolean
+        children:
+          $ref: '#/components/schemas/NodeChildren'
+    Emphasis:
+      type: object
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          enum:
+            - emphasis
+        level:
+          type: number
+          minimum: 1
+          maximum: 2
+          description: |
+            Level of emphasis
+            1 - italic
+            2 - bold
+        children:
+          $ref: '#/components/schemas/NodeChildren'
+    Code:
+      type: object
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          enum:
+            - code
+        children:
+          $ref: '#/components/schemas/NodeChildren'
+    Link:
+      type: object
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          enum:
+            - link
+        href:
+          description: Target url of the link
+          type: string
+        title:
+          description: Title of the link
+          type: string
+    Image:
+      type: object
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          enum:
+            - image
+        url:
+          description: Url of the image
+          type: string
+        alt:
+          description: Alternate tag of the image
+          type: string
+        title:
+          description: Title of the image
+          type: string
+    StrikeThrough:
+      type: object
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          enum:
+            - strikethrough
+    AlignmentKind:
+      type: string
+      enum:
+        - left
+        - right
+        - center
+        - none
+    TableAlignments:
+      type: array
+      nullable: true
+      items:
+        $ref: '#/components/schemas/AlignmentKind'
+    TableBlock:
+      type: object
+      required:
+        - type
+        - alignments
+      properties:
+        type:
+          type: string
+          enum:
+            - table
+        alignments:
+          $ref: '#/components/schemas/TableAlignments'
+        children:
+          $ref: '#/components/schemas/NodeChildren'
+    TableHeaderBlock:
+      type: object
+      required:
+        - type
+        - alignments
+      properties:
+        type:
+          type: string
+          enum:
+            - table_header
+        alignments:
+          $ref: '#/components/schemas/TableAlignments'
+        children:
+          $ref: '#/components/schemas/NodeChildren'
+    TableCellBlock:
+      type: object
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          enum:
+            - table_cell
+        alignment:
+          $ref: '#/components/schemas/AlignmentKind'
+        children:
+          $ref: '#/components/schemas/NodeChildren'
+    TableRowBlock:
+      type: object
+      required:
+        - type
+        - alignments
+      properties:
+        type:
+          type: string
+          enum:
+            - table_row
+        alignments:
+          $ref: '#/components/schemas/TableAlignments'
+        children:
+          $ref: '#/components/schemas/NodeChildren'
+    TaskCheckbox:
+      type: object
+      required:
+        - checked
+        - type
+      properties:
+        type:
+          type: string
+          enum:
+            - task_checkbox
+        checked:
+          type: boolean
+          description: State of the checkbox
+    ChildNode:
+      type: object
+      oneOf:
+        - $ref: '#/components/schemas/HeadingBlock'
+        - $ref: '#/components/schemas/BlockQuoteBlock'
+        - $ref: '#/components/schemas/ParagraphBlock'
+        - $ref: '#/components/schemas/TextBlock'
+        - $ref: '#/components/schemas/BreakBlock'
+        - $ref: '#/components/schemas/CodeBlock'
+        - $ref: '#/components/schemas/ListBlock'
+        - $ref: '#/components/schemas/ListItemBlock'
+        - $ref: '#/components/schemas/Text'
+        - $ref: '#/components/schemas/Emphasis'
+        - $ref: '#/components/schemas/Code'
+        - $ref: '#/components/schemas/Link'
+        - $ref: '#/components/schemas/Image'
+        - $ref: '#/components/schemas/StrikeThrough'
+        - $ref: '#/components/schemas/TableBlock'
+        - $ref: '#/components/schemas/TableHeaderBlock'
+        - $ref: '#/components/schemas/TableCellBlock'
+        - $ref: '#/components/schemas/TableRowBlock'
+        - $ref: '#/components/schemas/TaskCheckbox'
+      discriminator:
+        propertyName: type
+    DocumentBlock:
+      type: object
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          enum:
+            - document
+        version:
+          type: string
+        children:
+          $ref: '#/components/schemas/NodeChildren'
+      description: content of the document
+      example:
+        type: document
+        content:
+          - type: paragraph
+            content:
+              - type: text
+                text: Hello World
+  requestBodies: {}
+  responses:
+    NotFound:
+      description: Not Found
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/NotFoundError'
+          examples:
+            NotFoundExample:
+              $ref: '#/components/examples/NotFoundExample'
+  parameters:
+    collectionId:
+      name: collectionId
+      in: path
+      required: true
+      description: Targeted collection
+      example: bb84c46a-432d-4314-81e4-478614a52dcb
+      schema:
+        type: string
+        format: uuid
+    documentId:
+      name: documentId
+      in: path
+      required: true
+      description: Targeted document
+      example: bb84c46a-432d-4314-81e4-478614a52dcb
+      schema:
+        type: string
+        format: uuid
+    PageSize:
+      name: page[size]
+      description: >-
+        The maximum number of items to include per page. The last page of a
+        collection may include fewer items.
+      required: false
+      in: query
+      allowEmptyValue: true
+      schema:
+        type: integer
+        example: 10
+    PageNumber:
+      name: page[number]
+      description: Determines which page of the entities to retrieve.
+      required: false
+      in: query
+      allowEmptyValue: true
+      schema:
+        type: integer
+        example: 1
+  examples:
+    NotFoundExample:
+      value:
+        status: 404
+        title: Not Found
+        instance: kong:trace:6816496025408232265
+        detail: Not Found

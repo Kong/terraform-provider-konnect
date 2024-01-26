@@ -26,32 +26,18 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Merge OAS in to konnect/portal
+      - name: Bundle + Process OpenAPI specs
         run: |
-          ./tools/merge-oas.sh
-
-      - name: Process OpenAPI files
-        run: |
-          npm run generate-sdk-oas
-
-      - name: Process OpenAPI files
-        run: |
-          node ./tools/split-service-specs.js
-
-      - name: Upload docs OAS files
-        uses: actions/upload-artifact@v3
-        with:
-          name: docs-oas-files
-          path: output/**/*-docs.yaml
+          ./tools/run.sh
 
       - name: Upload combined public OAS files
         uses: actions/upload-artifact@v3
         with:
           name: public-oas-files
-          path: output/**/public.yaml
+          path: build/complete/**/*.yaml
 
       - name: Upload computed OAS files per-service
         uses: actions/upload-artifact@v3
         with:
           name: computed-oas-files
-          path: "**/definitions/**/computed/openapi.yaml"
+          path: build/services/**/*.yaml

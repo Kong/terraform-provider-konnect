@@ -1,0 +1,574 @@
+openapi: 3.0.0
+info:
+  title: Portal Developer Applications
+  version: 2.0.0
+  description: N/A (this description is removed during bundling)
+  contact:
+    name: Kong
+    url: https://cloud.konghq.com
+tags: []
+paths: {}
+components:
+  schemas:
+    CreateCredentialPayload:
+      additionalProperties: false
+      type: object
+      properties:
+        display_name:
+          type: string
+          maxLength: 255
+    UpdateCredentialPayload:
+      additionalProperties: false
+      type: object
+      required:
+        - display_name
+      properties:
+        display_name:
+          type: string
+          maxLength: 255
+    ListApplicationsResponse:
+      additionalProperties: false
+      type: object
+      required:
+        - data
+        - meta
+      properties:
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/GetApplicationResponse'
+    GetApplicationResponse:
+      additionalProperties: false
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        name:
+          type: string
+        reference_id:
+          $ref: '#/components/schemas/ApplicationReferenceId'
+        description:
+          type: string
+          nullable: true
+        redirect_uri:
+          type: string
+          nullable: true
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - id
+        - name
+        - reference_id
+        - description
+        - updated_at
+        - created_at
+    ListCredentialsResponse:
+      additionalProperties: false
+      type: object
+      required:
+        - data
+        - meta
+      properties:
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            type: object
+            additionalProperties: false
+            properties:
+              id:
+                $ref: '#/components/schemas/UUID'
+              display_name:
+                type: string
+            required:
+              - id
+              - display_name
+    CredentialCreationResponse:
+      additionalProperties: false
+      type: object
+      properties:
+        credential:
+          type: string
+        id:
+          $ref: '#/components/schemas/UUID'
+        display_name:
+          type: string
+      required:
+        - credential
+        - id
+        - display_name
+    RefreshTokenResponse:
+      additionalProperties: false
+      type: object
+      title: Refresh token response
+      description: Refresh token response
+      required:
+        - client_id
+        - client_secret
+      properties:
+        client_id:
+          type: string
+        client_secret:
+          type: string
+    CreateApplicationPayload:
+      additionalProperties: false
+      type: object
+      title: CreateApplicationPayload
+      description: Application creation payload
+      required:
+        - name
+      properties:
+        name:
+          description: The name of the application
+          type: string
+          maxLength: 255
+        reference_id:
+          $ref: '#/components/schemas/ApplicationReferenceId'
+        redirect_uri:
+          description: URL to redirect to after completing an OIDC auth flow
+          type: string
+          format: uri
+        description:
+          description: A brief description of the application
+          type: string
+          maxLength: 255
+    ApplicationCreationResponse:
+      additionalProperties: false
+      type: object
+      title: ApplicationCreationResponse
+      description: Application creation response payload
+      required:
+        - id
+        - name
+        - reference_id
+        - description
+        - created_at
+        - updated_at
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        name:
+          type: string
+        reference_id:
+          $ref: '#/components/schemas/ApplicationReferenceId'
+        description:
+          type: string
+          nullable: true
+        redirect_uri:
+          type: string
+          nullable: true
+        credentials:
+          additionalProperties: false
+          type: object
+          required:
+            - client_id
+            - client_secret
+          properties:
+            client_id:
+              type: string
+            client_secret:
+              type: string
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+    UpdateApplicationPayload:
+      additionalProperties: false
+      type: object
+      title: UpdateApplicationPayload
+      description: Payload required to update an application
+      required:
+        - name
+      properties:
+        name:
+          description: The name of the application
+          type: string
+          maxLength: 255
+        reference_id:
+          $ref: '#/components/schemas/ApplicationReferenceId'
+        redirect_uri:
+          description: URL to redirect to after completing an OIDC auth flow
+          type: string
+          format: uri
+        description:
+          description: A brief description of the application
+          type: string
+          maxLength: 255
+    ApplicationUpdateResponse:
+      additionalProperties: false
+      type: object
+      title: ApplicationUpdateResponse
+      description: Application update response payload
+      required:
+        - id
+        - name
+        - reference_id
+        - description
+        - updated_at
+        - created_at
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        name:
+          type: string
+        reference_id:
+          $ref: '#/components/schemas/ApplicationReferenceId'
+        description:
+          type: string
+          example: A brief description of the application
+          nullable: true
+        redirect_uri:
+          type: string
+          example: https://example.com/callback
+          nullable: true
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+    GetGrantedScopesProductVersionResponse:
+      additionalProperties: false
+      type: object
+      required:
+        - scopes
+      properties:
+        scopes:
+          $ref: '#/components/schemas/RefreshedGrantedScopes'
+    PageMeta:
+      type: object
+      description: >-
+        Contains pagination query parameters and the total number of objects
+        returned.
+      required:
+        - number
+        - size
+        - total
+      properties:
+        number:
+          type: number
+          example: 1
+        size:
+          type: number
+          example: 10
+        total:
+          type: number
+          example: 100
+    PaginatedMeta:
+      type: object
+      title: PaginatedMeta
+      description: returns the pagination information
+      properties:
+        page:
+          $ref: '#/components/schemas/PageMeta'
+      required:
+        - page
+    UUID:
+      type: string
+      format: uuid
+      example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+      description: Contains a unique identifier used by the API for this resource.
+      readOnly: true
+    ApplicationReferenceId:
+      description: |
+        An identifier to correlate the application with an external system.
+        Cannot be set when using Dynamic Client Registration.
+      type: string
+      maxLength: 255
+    CreatedAt:
+      type: string
+      format: date-time
+      example: '2022-11-04T20:10:06.927Z'
+      description: An ISO-8601 timestamp representation of entity creation date.
+      readOnly: true
+    UpdatedAt:
+      type: string
+      format: date-time
+      example: '2022-11-04T20:10:06.927Z'
+      description: An ISO-8601 timestamp representation of entity update date.
+      readOnly: true
+    BaseError:
+      type: object
+      title: Error
+      description: standard error
+      required:
+        - status
+        - title
+        - instance
+        - detail
+      properties:
+        status:
+          type: integer
+          description: >
+            The HTTP status code of the error. Useful when passing the response
+
+            body to child properties in a frontend UI. Must be returned as an
+            integer.
+          readOnly: true
+        title:
+          type: string
+          description: |
+            A short, human-readable summary of the problem. It should not
+            change between occurences of a problem, except for localization.
+            Should be provided as "Sentence case" for direct use in the UI.
+          readOnly: true
+        type:
+          type: string
+          description: The error type.
+          readOnly: true
+        instance:
+          type: string
+          description: |
+            Used to return the correlation ID back to the user, in the format
+            kong:trace:<correlation_id>. This helps us find the relevant logs
+            when a customer reports an issue.
+          readOnly: true
+        detail:
+          type: string
+          description: >
+            A human readable explanation specific to this occurence of the
+            problem.
+
+            This field may contain request/entity data to help the user
+            understand
+
+            what went wrong. Enclose variable values in square brackets. Should
+            be
+
+            provided as "Sentence case" for direct use in the UI.
+          readOnly: true
+    InvalidRules:
+      description: invalid parameters rules
+      type: string
+      readOnly: true
+      nullable: true
+      enum:
+        - required
+        - enum
+        - min_length
+        - max_length
+        - min_digits
+        - min_lowercase
+        - min_uppercase
+        - min_symbols
+        - is_array
+        - is_base64
+        - is_boolean
+        - is_date_time
+        - is_integer
+        - is_null
+        - is_number
+        - is_object
+        - is_string
+        - is_uuid
+        - unknown_property
+        - is_label
+        - matches_regex
+    InvalidParameterChoiceItem:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          $ref: '#/components/schemas/InvalidRules'
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+        choices:
+          type: array
+          uniqueItems: true
+          nullable: true
+          items: {}
+          readOnly: true
+      required:
+        - field
+        - reason
+    InvalidParameterDependentItem:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          description: invalid parameters rules
+          type: string
+          readOnly: true
+          nullable: true
+          enum:
+            - dependent_fields
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+        dependents:
+          type: array
+          uniqueItems: true
+          nullable: true
+          items: {}
+          readOnly: true
+      required:
+        - field
+        - rule
+        - reason
+        - dependents
+    InvalidParameters:
+      type: array
+      nullable: false
+      uniqueItems: true
+      minItems: 1
+      description: invalid parameters
+      items:
+        oneOf:
+          - $ref: '#/components/schemas/InvalidParameterChoiceItem'
+          - $ref: '#/components/schemas/InvalidParameterDependentItem'
+    BadRequestError:
+      type: object
+      required:
+        - invalid_parameters
+      properties:
+        status:
+          example: 400
+        title:
+          example: Bad Request
+        type:
+          example: https://httpstatuses.com/400
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Invalid request body
+        invalid_parameters:
+          $ref: '#/components/schemas/InvalidParameters'
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+    UnauthorizedError:
+      type: object
+      properties:
+        status:
+          example: 401
+        title:
+          example: Unauthorized
+        type:
+          example: https://httpstatuses.com/401
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Invalid credentials
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+    ForbiddenError:
+      type: object
+      properties:
+        status:
+          example: 403
+        title:
+          example: Forbidden
+        type:
+          example: https://httpstatuses.com/403
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Forbidden
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+    NotFoundError:
+      type: object
+      properties:
+        status:
+          example: 404
+        title:
+          example: Not Found
+        type:
+          example: https://httpstatuses.com/404
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Not found
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+    ConflictError:
+      type: object
+      properties:
+        status:
+          example: 409
+        title:
+          example: Conflict
+        type:
+          example: https://httpstatuses.com/409
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Conflict
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+    TooManyRequestsError:
+      type: object
+      properties:
+        status:
+          example: 429
+        title:
+          example: Too Many Requests
+        type:
+          example: https://httpstatuses.com/429
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Too Many Requests
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+    RefreshedGrantedScopes:
+      description: List of granted scopes, directly updated from the IDP
+      type: array
+      items:
+        type: string
+    UnprocessableContentError:
+      type: object
+      properties:
+        status:
+          example: 422
+        title:
+          example: Unprocessable Content
+        type:
+          example: https://httpstatuses.com/422
+        instance:
+          example: kong:trace:1234567891
+        detail:
+          example: Unprocessable Content
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+  examples:
+    GetGrantedScopesProductVersion200Response:
+      value:
+        scopes:
+          - openid
+    GetGrantedScopesProductVersion422Example:
+      value:
+        status: 422
+        title: Unsupported IDP
+        type: https://kongapi.info/konnect/portal/granted-scopes-unavailable
+        detail: This feature is not supported by the application.
+        instance: kong:trace:2724154947768991354
+    UnauthorizedExample:
+      value:
+        status: 401
+        title: Unauthorized
+        instance: kong:trace:8347343766220159418
+        detail: Unauthorized
+    ForbiddenExample:
+      value:
+        status: 403
+        title: Forbidden
+        instance: kong:trace:2723154947768991354
+        detail: You do not have permission to perform this action
+    NotFoundExample:
+      value:
+        status: 404
+        title: Not Found
+        instance: kong:trace:6816496025408232265
+        detail: Not Found

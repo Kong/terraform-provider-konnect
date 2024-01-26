@@ -1,0 +1,352 @@
+openapi: 3.0.0
+info:
+  title: Portal Search
+  version: 2.0.0
+  description: N/A (this description is removed during bundling)
+  contact:
+    name: Kong
+    url: https://cloud.konghq.com
+tags: []
+paths: {}
+components:
+  schemas:
+    SearchResults:
+      title: SearchResults
+      type: object
+      additionalProperties: false
+      required:
+        - data
+        - meta
+      properties:
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          description: The paginated results that matched the search query
+          items:
+            type: object
+            additionalProperties: false
+            properties:
+              index:
+                $ref: '#/components/schemas/SearchIndicesParameters'
+              source:
+                $ref: '#/components/schemas/ProductCatalogIndexSource'
+            required:
+              - index
+              - source
+    ProductCatalogIndexSource:
+      title: ProductCatalogIndexSource
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - created_at
+        - updated_at
+        - name
+        - document_count
+        - version_count
+        - latest_version
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        name:
+          type: string
+          example: Nice Product
+          description: the name of the product
+          nullable: true
+          readOnly: true
+        description:
+          type: string
+          example: A nice product for customers to read about and consume
+          description: a description of the product
+          nullable: true
+          readOnly: true
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        document_count:
+          type: number
+          example: 5
+          description: Number of product documents available.
+          readOnly: true
+        version_count:
+          type: number
+          example: 2
+          description: Number of product versions.
+          readOnly: true
+        latest_version:
+          type: object
+          description: Last created version.
+          nullable: true
+          required:
+            - name
+            - id
+          additionalProperties: false
+          properties:
+            name:
+              type: string
+              example: v2.0.0
+              description: Name of product version.
+            id:
+              $ref: '#/components/schemas/UUID'
+    SearchIndicesParameters:
+      title: SearchIndicesParameters
+      type: string
+      enum:
+        - product-catalog
+    SearchQueryParameters:
+      title: SearchQueryParameters
+      type: string
+    SearchJoinParameters:
+      title: SearchJoinParameters
+      type: string
+      description: >-
+        Accepted values are `versions` and `versions.documents`. Use commas to
+        separate multiple values.
+      example: versions,versions.documents
+    PageMeta:
+      type: object
+      description: >-
+        Contains pagination query parameters and the total number of objects
+        returned.
+      required:
+        - number
+        - size
+        - total
+      properties:
+        number:
+          type: number
+          example: 1
+        size:
+          type: number
+          example: 10
+        total:
+          type: number
+          example: 100
+    PaginatedMeta:
+      type: object
+      title: PaginatedMeta
+      description: returns the pagination information
+      properties:
+        page:
+          $ref: '#/components/schemas/PageMeta'
+      required:
+        - page
+    UUID:
+      type: string
+      format: uuid
+      example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+      description: Contains a unique identifier used by the API for this resource.
+      readOnly: true
+    CreatedAt:
+      type: string
+      format: date-time
+      example: '2022-11-04T20:10:06.927Z'
+      description: An ISO-8601 timestamp representation of entity creation date.
+      readOnly: true
+    UpdatedAt:
+      type: string
+      format: date-time
+      example: '2022-11-04T20:10:06.927Z'
+      description: An ISO-8601 timestamp representation of entity update date.
+      readOnly: true
+    BaseError:
+      type: object
+      title: Error
+      description: standard error
+      required:
+        - status
+        - title
+        - instance
+        - detail
+      properties:
+        status:
+          type: integer
+          description: >
+            The HTTP status code of the error. Useful when passing the response
+
+            body to child properties in a frontend UI. Must be returned as an
+            integer.
+          readOnly: true
+        title:
+          type: string
+          description: |
+            A short, human-readable summary of the problem. It should not
+            change between occurences of a problem, except for localization.
+            Should be provided as "Sentence case" for direct use in the UI.
+          readOnly: true
+        type:
+          type: string
+          description: The error type.
+          readOnly: true
+        instance:
+          type: string
+          description: |
+            Used to return the correlation ID back to the user, in the format
+            kong:trace:<correlation_id>. This helps us find the relevant logs
+            when a customer reports an issue.
+          readOnly: true
+        detail:
+          type: string
+          description: >
+            A human readable explanation specific to this occurence of the
+            problem.
+
+            This field may contain request/entity data to help the user
+            understand
+
+            what went wrong. Enclose variable values in square brackets. Should
+            be
+
+            provided as "Sentence case" for direct use in the UI.
+          readOnly: true
+    InvalidRules:
+      description: invalid parameters rules
+      type: string
+      readOnly: true
+      nullable: true
+      enum:
+        - required
+        - enum
+        - min_length
+        - max_length
+        - min_digits
+        - min_lowercase
+        - min_uppercase
+        - min_symbols
+        - is_array
+        - is_base64
+        - is_boolean
+        - is_date_time
+        - is_integer
+        - is_null
+        - is_number
+        - is_object
+        - is_string
+        - is_uuid
+        - unknown_property
+        - is_label
+        - matches_regex
+    InvalidParameterChoiceItem:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          $ref: '#/components/schemas/InvalidRules'
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+        choices:
+          type: array
+          uniqueItems: true
+          nullable: true
+          items: {}
+          readOnly: true
+      required:
+        - field
+        - reason
+    InvalidParameterDependentItem:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          description: invalid parameters rules
+          type: string
+          readOnly: true
+          nullable: true
+          enum:
+            - dependent_fields
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+        dependents:
+          type: array
+          uniqueItems: true
+          nullable: true
+          items: {}
+          readOnly: true
+      required:
+        - field
+        - rule
+        - reason
+        - dependents
+    InvalidParameters:
+      type: array
+      nullable: false
+      uniqueItems: true
+      minItems: 1
+      description: invalid parameters
+      items:
+        oneOf:
+          - $ref: '#/components/schemas/InvalidParameterChoiceItem'
+          - $ref: '#/components/schemas/InvalidParameterDependentItem'
+    BadRequestError:
+      type: object
+      required:
+        - invalid_parameters
+      properties:
+        status:
+          example: 400
+        title:
+          example: Bad Request
+        type:
+          example: https://httpstatuses.com/400
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Invalid request body
+        invalid_parameters:
+          $ref: '#/components/schemas/InvalidParameters'
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+    UnauthorizedError:
+      type: object
+      properties:
+        status:
+          example: 401
+        title:
+          example: Unauthorized
+        type:
+          example: https://httpstatuses.com/401
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Invalid credentials
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+  examples:
+    SearchResponseExample:
+      value:
+        data:
+          - index: product-catalog
+            source:
+              created_at: '2023-01-19T17:41:55.896Z'
+              updated_at: '2023-01-20T17:41:55.896Z'
+              id: e35b0beb-c3f7-4f8f-95f7-cd8ff0ee478e
+              name: Great Product
+              description: Great products are built with great care
+              document_count: 5
+              version_count: 5
+              latest_version:
+                name: v5
+                id: 455b0beb-c3f7-4f8f-95f7-cd8ff0ee478e
+        meta:
+          page:
+            number: 1
+            size: 10
+            total: 4
+    UnauthorizedExample:
+      value:
+        status: 401
+        title: Unauthorized
+        instance: kong:trace:8347343766220159418
+        detail: Unauthorized

@@ -28,10 +28,10 @@ jobs:
         run: npm run test:common
  
       - name: lint konnect definitions
-        run : npx spectral lint 'konnect/definitions/**/computed/openapi.yaml'
+        run : npx spectral lint 'src/konnect/definitions/**/openapi.yaml'
 
       - name: lint portal definitions
-        run : npx spectral lint 'portal/definitions/**/computed/openapi.yaml'
+        run : npx spectral lint 'src/portal/definitions/**/openapi.yaml'
 
       - name: Lint OAS artifacts
         shell: bash

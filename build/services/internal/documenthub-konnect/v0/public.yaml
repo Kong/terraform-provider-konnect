@@ -1,0 +1,1102 @@
+openapi: 3.0.3
+info:
+  title: DocumentHub admin Api
+  description: DocumentHub admin Api
+  version: 0.0.1
+  contact:
+    name: Kong
+    url: https://konghq.com
+servers:
+  - url: http://localhost:4400/v0
+    description: Local
+  - url: https://us.api.konghq.tech/v0
+    description: Development - US
+  - url: https://us.api.konghq.com/v0
+    description: Production - US
+  - url: https://eu.api.konghq.tech/v0
+    description: Development - EU
+  - url: https://eu.api.konghq.com/v0
+    description: Production - EU
+  - url: http://documenthub.documenthub.svc.cluster.local:4400/v0
+    description: Konnect cluster
+security:
+  - bearerAuth: []
+tags:
+  - name: Customization
+    description: customization operations
+paths:
+  /{resourceKind}/{resourceId}/documents/tree:
+    get:
+      summary: Get the document tree
+      description: Get the document tree
+      operationId: getDocumentTree
+      parameters:
+        - $ref: '#/components/parameters/resourceKind'
+        - $ref: '#/components/parameters/resourceId'
+      responses:
+        '200':
+          description: Tree of documents
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DocumentTree'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Customization
+  /{resourceKind}/{resourceId}/documents:
+    get:
+      summary: Get many documents
+      description: Get many documents
+      operationId: getManyDocuments
+      parameters:
+        - in: header
+          name: Accept
+          schema:
+            $ref: '#/components/schemas/DocumentContentTypeEnum'
+        - $ref: '#/components/parameters/resourceKind'
+        - $ref: '#/components/parameters/resourceId'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+      responses:
+        '200':
+          description: Tree of documents or flat list of documents
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListDocumentsWithStatus'
+            application/vnd.konnect.document-tree+json:
+              schema:
+                $ref: '#/components/schemas/GetManyDocumentTrees'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+      tags:
+        - Customization
+    post:
+      summary: Create document
+      description: Create document and associate it with a Konnect resource
+      operationId: createDocument
+      parameters:
+        - $ref: '#/components/parameters/resourceKind'
+        - $ref: '#/components/parameters/resourceId'
+      requestBody:
+        $ref: '#/components/requestBodies/CreateDocument'
+      responses:
+        '201':
+          description: The document has been created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentCreationResponsePayload'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Customization
+  /{resourceKind}/{resourceId}/documents/{documentId}:
+    get:
+      summary: Get the document
+      description: Get the document
+      operationId: getDocument
+      parameters:
+        - $ref: '#/components/parameters/resourceKind'
+        - $ref: '#/components/parameters/resourceId'
+        - $ref: '#/components/parameters/documentId'
+        - schema:
+            type: boolean
+          name: raw
+          in: query
+          required: false
+          description: include raw document data in the response
+          example: true
+      responses:
+        '200':
+          description: The document
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Document'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Customization
+    put:
+      summary: Update the document
+      description: Update the document
+      operationId: updateDocument
+      parameters:
+        - $ref: '#/components/parameters/resourceKind'
+        - $ref: '#/components/parameters/resourceId'
+        - $ref: '#/components/parameters/documentId'
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateDocument'
+      responses:
+        '200':
+          description: The document has been updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Document'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Customization
+    delete:
+      summary: Delete the document
+      description: >
+        Delete the document and all its associated revisions including the saved
+
+        files in the datastore. This is a hard delete, files are not
+        recoverable.
+
+        Returns 404 if the document cannot be found, 409 if deleting the
+        document would result in other orphaned documents.
+      operationId: deleteDocument
+      parameters:
+        - $ref: '#/components/parameters/resourceKind'
+        - $ref: '#/components/parameters/resourceId'
+        - $ref: '#/components/parameters/documentId'
+      responses:
+        '204':
+          description: The document has been deleted
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - Customization
+  /{resourceKind}/{resourceId}/documents/{documentId}/move:
+    put:
+      summary: Move a document
+      description: >
+        This api allows the user to move a document within the document tree
+        using the
+
+        parameters parent_document_id and index. If parent_document_id is not
+
+        provided, the document will be placed at the top level of the document
+        tree.
+
+        index represents a zero-indexed document order relative to its siblings
+        under
+
+        the same parent. For example, if we want to put the document at top
+        level in
+
+        first position we would send parent_document_id: null and index: 0. This
+        api
+
+        also supports using a negative index to count backwards from the end of
+        the
+
+        document list, which means you can put the document in last position by
+        using
+
+        index: -1.
+      operationId: moveDocument
+      parameters:
+        - $ref: '#/components/parameters/resourceKind'
+        - $ref: '#/components/parameters/resourceId'
+        - $ref: '#/components/parameters/documentId'
+      requestBody:
+        $ref: '#/components/requestBodies/MoveDocument'
+      responses:
+        '200':
+          description: The document has been moved
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Customization
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Slug:
+      type: string
+      description: document slug
+      pattern: ^[\w-]+$
+      maxLength: 80
+      example: path-for-seo
+    PublishStatus:
+      description: document publish status
+      type: string
+      enum:
+        - published
+        - unpublished
+    Document:
+      type: object
+      title: Document
+      description: a document
+      required:
+        - id
+        - parent_document_id
+        - slug
+        - revision
+        - status
+        - modified_at
+        - created_at
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        status:
+          $ref: '#/components/schemas/PublishStatus'
+        parent_document_id:
+          type: string
+          format: uuid
+          example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
+          nullable: true
+        slug:
+          $ref: '#/components/schemas/Slug'
+        created_at:
+          type: string
+          format: date-time
+          example: '2023-01-11T02:30:42.227Z'
+        modified_at:
+          type: string
+          format: date-time
+          example: '2023-01-11T02:30:42.227Z'
+        revision:
+          $ref: '#/components/schemas/Revision'
+    GetManyDocumentTrees:
+      type: object
+      required:
+        - meta
+        - data
+      properties:
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/DocumentTree'
+    DocumentTree:
+      type: object
+      title: DocumentTree
+      description: a document tree
+      required:
+        - id
+        - title
+        - slug
+        - metadata
+        - children
+        - status
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        parent_document_id:
+          type: string
+          format: uuid
+          example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
+          nullable: true
+        title:
+          type: string
+        slug:
+          type: string
+          description: document slug
+          example: path-for-seo
+        metadata:
+          type: object
+          description: metadata of the document
+          example:
+            author: John Doe
+        status:
+          $ref: '#/components/schemas/PublishStatus'
+        children:
+          type: array
+          description: children of the document
+          example:
+            - id: d32d905a-ed33-46a3-a093-d8f536af9a8a
+              title: Hello world
+              status: published
+              slug: hello-world
+              metadata:
+                author: John Doe
+              children: []
+          items:
+            $ref: '#/components/schemas/DocumentTree'
+    Revision:
+      type: object
+      title: Revision
+      description: revision of a document
+      required:
+        - content
+        - document_id
+        - id
+        - metadata
+        - title
+        - file
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: revision id
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        document_id:
+          type: string
+          format: uuid
+          description: document id
+          example: 2272b454-4af6-4c56-8a02-d6145ac62e67
+        content:
+          $ref: '#/components/schemas/DocumentBlock'
+        metadata:
+          type: object
+          example:
+            author: John Doe
+        title:
+          type: string
+          example: Hello world
+        raw_md_content:
+          type: string
+          format: byte
+          description: raw markdown content
+          example: I0ludHJvZHVjdGlvbg==
+        str_md_content:
+          type: string
+          description: markdown content
+          example: '## My Markdown'
+        file:
+          description: file of the revision
+          type: object
+          required:
+            - filename
+            - modified_at
+          properties:
+            filename:
+              type: string
+              example: my_doc.md
+            modified_at:
+              type: string
+              format: date-time
+              example: '2023-01-11T02:30:42.227Z'
+    CreateDocumentPayload:
+      type: object
+      title: CreateDocumentPayload
+      description: a document payload
+      required:
+        - slug
+        - status
+        - title
+        - raw_content
+        - filename
+      properties:
+        parent_document_id:
+          type: string
+          format: uuid
+          nullable: true
+          description: parent document id
+          example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
+        slug:
+          $ref: '#/components/schemas/Slug'
+        status:
+          $ref: '#/components/schemas/PublishStatus'
+        title:
+          type: string
+          description: document title
+          example: How to create a document in Konnect DocumentHub
+        raw_content:
+          type: string
+          format: byte
+          description: Must be a base64 encoded string
+          example: YmFzZTY0LWVuY29kZWQgdGV4dCBzdHJpbmc=
+        metadata:
+          type: object
+          nullable: true
+          description: metadata of the document
+          example:
+            author: John Doe
+        filename:
+          type: string
+          description: name of the uploaded file
+          example: my_doc.md
+    UpdateDocumentPayload:
+      type: object
+      title: UpdateDocumentPayload
+      description: a document payload
+      properties:
+        parent_document_id:
+          type: string
+          format: uuid
+          nullable: true
+          description: >
+            Parent document Id. If this value is explicitly set to null, the
+
+            document will be put as a top level document at the bottom of the
+            tree.
+          example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
+        slug:
+          $ref: '#/components/schemas/Slug'
+        status:
+          $ref: '#/components/schemas/PublishStatus'
+        title:
+          type: string
+          description: document title
+          example: How to update a document in Konnect DocumentHub
+        raw_content:
+          type: string
+          format: byte
+          description: base64 encoded string of the document content
+          example: YmFzZTY0LWVuY29kZWQgdGV4dCBzdHJpbmc=
+        filename:
+          type: string
+          description: name of the uploaded file
+          example: my_doc.md
+        metadata:
+          type: object
+          nullable: true
+    DocumentCreationResponsePayload:
+      type: object
+      title: Document Creation Response Payload
+      description: a document payload
+      required:
+        - document_id
+        - revision_id
+      properties:
+        document_id:
+          type: string
+          format: uuid
+          description: document id
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        revision_id:
+          type: string
+          format: uuid
+          description: revision id
+          example: ecfb698d-77a8-4ab5-91fa-45ee383b48ba
+    MoveDocumentRequestPayload:
+      type: object
+      title: Move document
+      description: move document request payload
+      properties:
+        parent_document_id:
+          type: string
+          format: uuid
+          description: parent document id
+          example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
+        index:
+          type: integer
+          description: index of the document in the parent document's children
+          example: 1
+    BaseError:
+      type: object
+      title: Error
+      description: standard error
+      required:
+        - status
+        - title
+        - instance
+        - detail
+      properties:
+        status:
+          type: integer
+          description: >
+            The HTTP status code of the error. Useful when passing the response
+
+            body to child properties in a frontend UI. Must be returned as an
+            integer.
+          readOnly: true
+        title:
+          type: string
+          description: |
+            A short, human-readable summary of the problem. It should not
+            change between occurences of a problem, except for localization.
+            Should be provided as "Sentence case" for direct use in the UI.
+          readOnly: true
+        type:
+          type: string
+          description: The error type.
+          readOnly: true
+        instance:
+          type: string
+          description: |
+            Used to return the correlation ID back to the user, in the format
+            kong:trace:<correlation_id>. This helps us find the relevant logs
+            when a customer reports an issue.
+          readOnly: true
+        detail:
+          type: string
+          description: >
+            A human readable explanation specific to this occurence of the
+            problem.
+
+            This field may contain request/entity data to help the user
+            understand
+
+            what went wrong. Enclose variable values in square brackets. Should
+            be
+
+            provided as "Sentence case" for direct use in the UI.
+          readOnly: true
+    NotFoundError:
+      type: object
+      properties:
+        status:
+          example: 404
+        title:
+          example: Not Found
+        type:
+          example: https://httpstatuses.com/404
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Not found
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+    DocumentContentTypeEnum:
+      type: string
+      default: application/json
+      enum:
+        - application/json
+        - application/vnd.konnect.document-tree+json
+    PageMeta:
+      type: object
+      description: >-
+        Contains pagination query parameters and the total number of objects
+        returned.
+      required:
+        - number
+        - size
+        - total
+      properties:
+        number:
+          type: number
+          example: 1
+        size:
+          type: number
+          example: 10
+        total:
+          type: number
+          example: 100
+    PaginatedMeta:
+      type: object
+      title: PaginatedMeta
+      description: returns the pagination information
+      properties:
+        page:
+          $ref: '#/components/schemas/PageMeta'
+      required:
+        - page
+    DocumentItem:
+      type: object
+      title: Document item
+      additionalProperties: false
+      required:
+        - id
+        - parent_document_id
+        - slug
+        - title
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: the id of the document
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        parent_document_id:
+          type: string
+          format: uuid
+          description: the id of the parent document
+          nullable: true
+          example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
+        slug:
+          type: string
+          description: the slug of the document
+          example: getting-started
+        title:
+          type: string
+          description: the title of the document
+          example: Getting Started
+    DocumentItemWithStatus:
+      allOf:
+        - $ref: '#/components/schemas/DocumentItem'
+        - type: object
+          title: Document item with status
+          additionalProperties: false
+          required:
+            - status
+          properties:
+            status:
+              description: document publish status
+              type: string
+              enum:
+                - published
+                - unpublished
+    ListDocumentsWithStatus:
+      type: object
+      additionalProperties: false
+      required:
+        - meta
+        - data
+      properties:
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/DocumentItemWithStatus'
+    InvalidRules:
+      description: invalid parameters rules
+      type: string
+      readOnly: true
+      nullable: true
+      enum:
+        - required
+        - enum
+        - min_length
+        - max_length
+        - min_digits
+        - min_lowercase
+        - min_uppercase
+        - min_symbols
+        - is_array
+        - is_base64
+        - is_boolean
+        - is_date_time
+        - is_integer
+        - is_null
+        - is_number
+        - is_object
+        - is_string
+        - is_uuid
+        - unknown_property
+        - is_label
+        - matches_regex
+    InvalidParameterChoiceItem:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          $ref: '#/components/schemas/InvalidRules'
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+        choices:
+          type: array
+          uniqueItems: true
+          nullable: true
+          items: {}
+          readOnly: true
+      required:
+        - field
+        - reason
+    InvalidParameterDependentItem:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          description: invalid parameters rules
+          type: string
+          readOnly: true
+          nullable: true
+          enum:
+            - dependent_fields
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+        dependents:
+          type: array
+          uniqueItems: true
+          nullable: true
+          items: {}
+          readOnly: true
+      required:
+        - field
+        - rule
+        - reason
+        - dependents
+    InvalidParameters:
+      type: array
+      nullable: false
+      uniqueItems: true
+      minItems: 1
+      description: invalid parameters
+      items:
+        oneOf:
+          - $ref: '#/components/schemas/InvalidParameterChoiceItem'
+          - $ref: '#/components/schemas/InvalidParameterDependentItem'
+    BadRequestError:
+      type: object
+      required:
+        - invalid_parameters
+      properties:
+        status:
+          example: 400
+        title:
+          example: Bad Request
+        type:
+          example: https://httpstatuses.com/400
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Invalid request body
+        invalid_parameters:
+          $ref: '#/components/schemas/InvalidParameters'
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+    BaseNode:
+      type: object
+      required:
+        - type
+      properties:
+        type:
+          type: string
+    DocumentBlock:
+      allOf:
+        - $ref: '#/components/schemas/BlockNode'
+        - type: object
+          properties:
+            version:
+              type: string
+      description: content of the document
+      example:
+        type: doc
+        content:
+          - type: paragraph
+            content:
+              - type: text
+                text: Hello World
+    BlockNode:
+      allOf:
+        - $ref: '#/components/schemas/BaseNode'
+        - type: object
+          properties:
+            children:
+              description: List of children nodes of the current node
+              type: array
+              items:
+                $ref: '#/components/schemas/AnyNode'
+    HeadingBlock:
+      allOf:
+        - $ref: '#/components/schemas/BlockNode'
+        - type: object
+          properties:
+            level:
+              description: Level of the heading which maps to HTML <h> tag
+              type: number
+              minimum: 1
+              maximum: 6
+    BlockQuoteBlock:
+      allOf:
+        - $ref: '#/components/schemas/BlockNode'
+    ParagraphBlock:
+      allOf:
+        - $ref: '#/components/schemas/BlockNode'
+    TextBlock:
+      allOf:
+        - $ref: '#/components/schemas/BlockNode'
+    BreakBlock:
+      allOf:
+        - $ref: '#/components/schemas/BlockNode'
+    CodeBlock:
+      allOf:
+        - $ref: '#/components/schemas/BlockNode'
+        - type: object
+          properties:
+            lang:
+              type: string
+    ListBlock:
+      allOf:
+        - $ref: '#/components/schemas/BlockNode'
+        - type: object
+          properties:
+            isOrdered:
+              description: Defines if the list is ordered or not
+              type: boolean
+    ListItemBlock:
+      allOf:
+        - $ref: '#/components/schemas/BlockNode'
+    Text:
+      allOf:
+        - $ref: '#/components/schemas/BaseNode'
+        - $ref: '#/components/schemas/BlockNode'
+        - type: object
+          properties:
+            text:
+              type: string
+            hardBreak:
+              description: >
+                If this property is true the end of this block should
+
+                be a carriage return and not concatenated to the next Text
+                block.
+              type: boolean
+            softBreak:
+              description: >
+                If this property is true the end of this block should should be
+
+                concatenated with a space caracter before the next block. This
+                is
+
+                the flag showing that the parsed markdown block was at the end
+                of
+
+                the line.
+              type: boolean
+    Emphasis:
+      allOf:
+        - $ref: '#/components/schemas/BaseNode'
+        - $ref: '#/components/schemas/BlockNode'
+        - type: object
+          properties:
+            level:
+              type: number
+              minimum: 1
+              maximum: 2
+              description: |
+                Level of emphasis
+                1 - italic
+                2 - bold
+    Code:
+      allOf:
+        - $ref: '#/components/schemas/BaseNode'
+        - $ref: '#/components/schemas/BlockNode'
+    Link:
+      allOf:
+        - $ref: '#/components/schemas/BaseNode'
+        - type: object
+          properties:
+            href:
+              description: Target url of the link
+              type: string
+            title:
+              description: Title of the link
+              type: string
+    Image:
+      allOf:
+        - $ref: '#/components/schemas/BaseNode'
+        - type: object
+          properties:
+            url:
+              description: Url of the image
+              type: string
+            alt:
+              description: Alternate tag of the image
+              type: string
+            title:
+              description: Title of the image
+              type: string
+    StrikeThrough:
+      allOf:
+        - $ref: '#/components/schemas/BaseNode'
+    TaskCheckbox:
+      allOf:
+        - $ref: '#/components/schemas/BaseNode'
+        - type: object
+          properties:
+            checked:
+              type: boolean
+              description: State of the checkbox
+          required:
+            - checked
+    AlignmentKind:
+      type: string
+      enum:
+        - left
+        - right
+        - center
+        - none
+    TableAlignments:
+      type: object
+      properties:
+        alignments:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/AlignmentKind'
+      required:
+        - alignments
+    TableBlock:
+      allOf:
+        - $ref: '#/components/schemas/BlockNode'
+        - $ref: '#/components/schemas/TableAlignments'
+    TableHeaderBlock:
+      allOf:
+        - $ref: '#/components/schemas/BlockNode'
+        - $ref: '#/components/schemas/TableAlignments'
+    TableCellBlock:
+      allOf:
+        - $ref: '#/components/schemas/BlockNode'
+        - type: object
+          properties:
+            alignment:
+              $ref: '#/components/schemas/AlignmentKind'
+    TableRowBlock:
+      allOf:
+        - $ref: '#/components/schemas/BlockNode'
+        - $ref: '#/components/schemas/TableAlignments'
+    AnyNode:
+      oneOf:
+        - $ref: '#/components/schemas/DocumentBlock'
+        - $ref: '#/components/schemas/HeadingBlock'
+        - $ref: '#/components/schemas/BlockQuoteBlock'
+        - $ref: '#/components/schemas/ParagraphBlock'
+        - $ref: '#/components/schemas/TextBlock'
+        - $ref: '#/components/schemas/BreakBlock'
+        - $ref: '#/components/schemas/CodeBlock'
+        - $ref: '#/components/schemas/ListBlock'
+        - $ref: '#/components/schemas/ListItemBlock'
+        - $ref: '#/components/schemas/Text'
+        - $ref: '#/components/schemas/Emphasis'
+        - $ref: '#/components/schemas/Code'
+        - $ref: '#/components/schemas/Link'
+        - $ref: '#/components/schemas/Image'
+        - $ref: '#/components/schemas/StrikeThrough'
+        - $ref: '#/components/schemas/TableBlock'
+        - $ref: '#/components/schemas/TableHeaderBlock'
+        - $ref: '#/components/schemas/TableCellBlock'
+        - $ref: '#/components/schemas/TableRowBlock'
+        - $ref: '#/components/schemas/TaskCheckbox'
+      discriminator:
+        propertyName: type
+        mapping:
+          document: '#/components/schemas/DocumentBlock'
+          heading: '#/components/schemas/HeadingBlock'
+          blockquote: '#/components/schemas/BlockQuoteBlock'
+          paragraph: '#/components/schemas/ParagraphBlock'
+          text_block: '#/components/schemas/TextBlock'
+          break: '#/components/schemas/BreakBlock'
+          code_block: '#/components/schemas/CodeBlock'
+          list: '#/components/schemas/ListBlock'
+          list_item: '#/components/schemas/ListItemBlock'
+          text: '#/components/schemas/Text'
+          emphasis: '#/components/schemas/Emphasis'
+          code: '#/components/schemas/Code'
+          link: '#/components/schemas/Link'
+          image: '#/components/schemas/Image'
+          strikethrough: '#/components/schemas/StrikeThrough'
+          task_checkbox: '#/components/schemas/TaskCheckbox'
+          table: '#/components/schemas/TableBlock'
+          table_header: '#/components/schemas/TableHeaderBlock'
+          table_cell: '#/components/schemas/TableCellBlock'
+          table_row: '#/components/schemas/TableRowBlock'
+    ConflictError:
+      type: object
+      properties:
+        status:
+          example: 409
+        title:
+          example: Conflict
+        type:
+          example: https://httpstatuses.com/409
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Conflict
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+  requestBodies:
+    MoveDocument:
+      description: move document
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MoveDocumentRequestPayload'
+    CreateDocument:
+      description: document creation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateDocumentPayload'
+    UpdateDocument:
+      description: document update
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateDocumentPayload'
+  parameters:
+    resourceKind:
+      name: resourceKind
+      in: path
+      required: true
+      description: Kind of the Konnect resource
+      example: services
+      schema:
+        type: string
+        enum:
+          - services
+    resourceId:
+      name: resourceId
+      in: path
+      required: true
+      description: Id of the Konnect resource
+      example: bf138ba2-c9b1-4229-b268-04d9d8a6410b
+      schema:
+        type: string
+        format: uuid
+    documentId:
+      name: documentId
+      in: path
+      required: true
+      description: Targeted document
+      example: bb84c46a-432d-4314-81e4-478614a52dcb
+      schema:
+        type: string
+        format: uuid
+    PageSize:
+      name: page[size]
+      description: >-
+        The maximum number of items to include per page. The last page of a
+        collection may include fewer items.
+      required: false
+      in: query
+      allowEmptyValue: true
+      schema:
+        type: integer
+        example: 10
+    PageNumber:
+      name: page[number]
+      description: Determines which page of the entities to retrieve.
+      required: false
+      in: query
+      allowEmptyValue: true
+      schema:
+        type: integer
+        example: 1
+  examples:
+    NotFoundExample:
+      value:
+        status: 404
+        title: Not Found
+        instance: kong:trace:6816496025408232265
+        detail: Not Found
+  responses:
+    NotFound:
+      description: Not Found
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/NotFoundError'
+          examples:
+            NotFoundExample:
+              $ref: '#/components/examples/NotFoundExample'
+    BadRequest:
+      description: Bad Request
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/BadRequestError'
+    Conflict:
+      description: Conflict
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ConflictError'

@@ -1,0 +1,571 @@
+openapi: 3.0.0
+info:
+  title: Portal Authentication
+  version: 2.0.0
+  description: |
+    The API for Konnect Portal authentication.
+  contact:
+    name: Kong
+    url: https://cloud.konghq.com
+tags:
+  - name: developer
+    description: API for managing a Konnect Portal Developer.
+paths:
+  /api/v2/developer/authenticate:
+    post:
+      summary: Authenticate
+      description: >-
+        This endpoint allows a developer to authenticate to their portal using a
+        username and password.
+      operationId: authenticate
+      requestBody:
+        $ref: '#/components/requestBodies/AuthenticateRequest'
+      responses:
+        '204':
+          description: No Content
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+                example: >
+                  portalaccesstoken=access12345; Path=/;
+                  Domain=example.us.portal.konghq.com; Expires=Thu, 20 Jul 2023
+                  12:00:00 GMT; HttpOnly; Secure; SameSite=None
+
+                  portalrefreshtoken=refresh12345; Path=/v2/refresh;
+                  Domain=example.us.portal.konghq.com; Expires=Thu, 20 Jul 2023
+                  12:00:00 GMT; HttpOnly; Secure; SameSite=None
+              description: The access and refresh tokens.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - developer
+  /api/v2/developer/authenticate/sso:
+    get:
+      summary: Authenticate SSO
+      description: >-
+        This endpoint allows a developer to authenticate to their portal using
+        an external IdP.
+      operationId: authenticate-sso
+      responses:
+        '302':
+          description: Found
+        '400':
+          $ref: '#/components/responses/BadRequest'
+      tags:
+        - developer
+  /api/v2/developer/refresh:
+    post:
+      summary: Refresh Access Token
+      description: This endpoint allows a developer to refresh their existing access token.
+      operationId: refresh
+      responses:
+        '204':
+          description: No Content
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+                example: >
+                  portalaccesstoken=access12345; Path=/;
+                  Domain=example.us.portal.konghq.com; Expires=Thu, 20 Jul 2023
+                  12:00:00 GMT; HttpOnly; Secure; SameSite=None
+
+                  portalrefreshtoken=refresh12345; Path=/v2/refresh;
+                  Domain=example.us.portal.konghq.com; Expires=Thu, 20 Jul 2023
+                  12:00:00 GMT; HttpOnly; Secure; SameSite=None
+        '401':
+          $ref: '#/components/responses/responses-Unauthorized'
+      tags:
+        - developer
+  /api/v2/developer/logout:
+    post:
+      summary: Logout
+      description: >-
+        This endpoint allows a developer to logout of the portal. This operation
+        revokes all active tokens and clears the portal cookies.
+      operationId: logout
+      responses:
+        '204':
+          description: No Content
+      tags:
+        - developer
+  /api/v2/developer/reset-password:
+    post:
+      summary: Reset Password
+      description: >-
+        This endpoint allows a developer to reset their password, using a reset
+        token.
+      operationId: reset-password
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/responses-Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '410':
+          $ref: '#/components/responses/Gone'
+      tags:
+        - developer
+      requestBody:
+        $ref: '#/components/requestBodies/ResetPasswordRequest'
+    parameters: []
+  /api/v2/developer/verify-email:
+    post:
+      summary: Verify Email
+      description: This endpoint allows a new developer to verify their email.
+      operationId: verify-email
+      responses:
+        '202':
+          $ref: '#/components/responses/VerifyEmailResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '410':
+          $ref: '#/components/responses/Gone'
+      tags:
+        - developer
+      requestBody:
+        $ref: '#/components/requestBodies/VerifyEmailRequest'
+    parameters: []
+components:
+  requestBodies:
+    AuthenticateRequest:
+      description: The request schema for the authenticate endpoint.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthenticateRequest'
+          examples:
+            Authenticate-Request:
+              $ref: '#/components/examples/Authenticate-Request'
+    ResetPasswordRequest:
+      description: The request schema for the reset password endpoint.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ResetPasswordRequest'
+          examples:
+            ResetPasswordRequest:
+              $ref: '#/components/examples/Reset-Password-Request'
+    VerifyEmailRequest:
+      description: The request schema for the verify email endpoint.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/VerifyEmailRequest'
+          examples:
+            VerifyEmailRequest:
+              $ref: '#/components/examples/Verify-Email-Request'
+  responses:
+    BadRequest:
+      description: Bad Request
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/BadRequestError'
+          examples:
+            400-Invalid-Token:
+              $ref: '#/components/examples/400-Invalid-Token'
+            400-Login-Failed:
+              $ref: '#/components/examples/400-Login-Failed'
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/UnauthorizedError'
+          examples:
+            401-Unauthorized:
+              $ref: '#/components/examples/401-Unauthorized'
+            401-Account-Not-Approved:
+              $ref: '#/components/examples/401-Account-Not-Approved'
+    NotFound:
+      description: Not Found
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/NotFoundError'
+          examples:
+            404-Token-Not-Found:
+              $ref: '#/components/examples/404-Token-Not-Found'
+    Gone:
+      description: Gone
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/GoneError'
+          examples:
+            410-Expired-Token:
+              $ref: '#/components/examples/410-Expired-Token'
+    VerifyEmailResponse:
+      description: The response schema for the verify email endpoint.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/VerifyEmailResponse'
+          examples:
+            VerifyEmailResponse:
+              $ref: '#/components/examples/Verify-Email-Response'
+    responses-Unauthorized:
+      description: Unauthorized
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/UnauthorizedError'
+          examples:
+            UnauthorizedExample:
+              $ref: '#/components/examples/UnauthorizedExample'
+  schemas:
+    AuthenticateRequest:
+      type: object
+      additionalProperties: false
+      example:
+        username: developer@example.com
+        password: <!N0taP@$$w0rd!>
+      title: AuthenticateRequest
+      description: The request schema for the authenticate endpoint.
+      properties:
+        username:
+          type: string
+          format: email
+          example: developer@example.com
+          writeOnly: true
+        password:
+          type: string
+          format: password
+          example: <!N0taP@$$w0rd!>
+          writeOnly: true
+      required:
+        - username
+        - password
+    ResetPasswordRequest:
+      title: ResetPasswordRequest
+      type: object
+      additionalProperties: false
+      description: The request schema for the reset password endpoint.
+      example:
+        password: <!D3finitelyN0taP@$$w0rd!>
+        token: c8efd006-d8e1-4743-b91b-f163b9eae06a
+      properties:
+        password:
+          type: string
+          format: password
+          example: <!N0taP@$$w0rd!>
+          writeOnly: true
+        token:
+          type: string
+          format: uuid
+          example: c8efd006-d8e1-4743-b91b-f163b9eae06a
+          writeOnly: true
+      required:
+        - password
+        - token
+    VerifyEmailRequest:
+      title: VerifyEmailRequest
+      type: object
+      additionalProperties: false
+      description: The request schema for the verify email endpoint.
+      example:
+        token: c8efd006-d8e1-4743-b91b-f163b9eae06a
+      properties:
+        token:
+          type: string
+          format: uuid
+          example: c8efd006-d8e1-4743-b91b-f163b9eae06a
+          writeOnly: true
+      required:
+        - token
+    VerifyEmailResponse:
+      title: VerifyEmailResponse
+      type: object
+      additionalProperties: false
+      description: The response schema for the verify email endpoint.
+      example:
+        email: developer@example.com
+        token: c8efd006-d8e1-4743-b91b-f163b9eae06a
+      properties:
+        email:
+          type: string
+          format: email
+          example: developer@example.com
+          readOnly: true
+        token:
+          type: string
+          format: uuid
+          example: c8efd006-d8e1-4743-b91b-f163b9eae06a
+          readOnly: true
+    BaseError:
+      type: object
+      title: Error
+      description: standard error
+      required:
+        - status
+        - title
+        - instance
+        - detail
+      properties:
+        status:
+          type: integer
+          description: >
+            The HTTP status code of the error. Useful when passing the response
+
+            body to child properties in a frontend UI. Must be returned as an
+            integer.
+          readOnly: true
+        title:
+          type: string
+          description: |
+            A short, human-readable summary of the problem. It should not
+            change between occurences of a problem, except for localization.
+            Should be provided as "Sentence case" for direct use in the UI.
+          readOnly: true
+        type:
+          type: string
+          description: The error type.
+          readOnly: true
+        instance:
+          type: string
+          description: |
+            Used to return the correlation ID back to the user, in the format
+            kong:trace:<correlation_id>. This helps us find the relevant logs
+            when a customer reports an issue.
+          readOnly: true
+        detail:
+          type: string
+          description: >
+            A human readable explanation specific to this occurence of the
+            problem.
+
+            This field may contain request/entity data to help the user
+            understand
+
+            what went wrong. Enclose variable values in square brackets. Should
+            be
+
+            provided as "Sentence case" for direct use in the UI.
+          readOnly: true
+    InvalidRules:
+      description: invalid parameters rules
+      type: string
+      readOnly: true
+      nullable: true
+      enum:
+        - required
+        - enum
+        - min_length
+        - max_length
+        - min_digits
+        - min_lowercase
+        - min_uppercase
+        - min_symbols
+        - is_array
+        - is_base64
+        - is_boolean
+        - is_date_time
+        - is_integer
+        - is_null
+        - is_number
+        - is_object
+        - is_string
+        - is_uuid
+        - unknown_property
+        - is_label
+        - matches_regex
+    InvalidParameterChoiceItem:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          $ref: '#/components/schemas/InvalidRules'
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+        choices:
+          type: array
+          uniqueItems: true
+          nullable: true
+          items: {}
+          readOnly: true
+      required:
+        - field
+        - reason
+    InvalidParameterDependentItem:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          description: invalid parameters rules
+          type: string
+          readOnly: true
+          nullable: true
+          enum:
+            - dependent_fields
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+        dependents:
+          type: array
+          uniqueItems: true
+          nullable: true
+          items: {}
+          readOnly: true
+      required:
+        - field
+        - rule
+        - reason
+        - dependents
+    InvalidParameters:
+      type: array
+      nullable: false
+      uniqueItems: true
+      minItems: 1
+      description: invalid parameters
+      items:
+        oneOf:
+          - $ref: '#/components/schemas/InvalidParameterChoiceItem'
+          - $ref: '#/components/schemas/InvalidParameterDependentItem'
+    BadRequestError:
+      type: object
+      required:
+        - invalid_parameters
+      properties:
+        status:
+          example: 400
+        title:
+          example: Bad Request
+        type:
+          example: https://httpstatuses.com/400
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Invalid request body
+        invalid_parameters:
+          $ref: '#/components/schemas/InvalidParameters'
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+    UnauthorizedError:
+      type: object
+      properties:
+        status:
+          example: 401
+        title:
+          example: Unauthorized
+        type:
+          example: https://httpstatuses.com/401
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Invalid credentials
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+    NotFoundError:
+      type: object
+      properties:
+        status:
+          example: 404
+        title:
+          example: Not Found
+        type:
+          example: https://httpstatuses.com/404
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Not found
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+    GoneError:
+      type: object
+      properties:
+        status:
+          example: 410
+        title:
+          example: Gone
+        type:
+          example: https://httpstatuses.com/410
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Gone
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+  examples:
+    Authenticate-Request:
+      value:
+        username: developer@example.com
+        password: <!N0taP@$$w0rd!>
+    Reset-Password-Request:
+      value:
+        password: <!D3finitelyN0taP@$$w0rd!>
+        token: c8efd006-d8e1-4743-b91b-f163b9eae06a
+    Verify-Email-Request:
+      value:
+        token: c8efd006-d8e1-4743-b91b-f163b9eae06a
+    Verify-Email-Response:
+      value:
+        email: developer@example.com
+        token: c8efd006-d8e1-4743-b91b-f163b9eae06a
+    400-Invalid-Token:
+      value:
+        status: 400
+        title: Bad Request
+        instance: konnect:trace:8988732526256293040
+        detail: The provided token is invalid
+        invalid_parameters:
+          - field: token
+            reason: invalid ID format
+    400-Login-Failed:
+      value:
+        status: 400
+        title: Bad Request
+        instance: konnect:trace:8988732526256293040
+        detail: Required fields are missing
+        invalid_parameters:
+          - field: password
+            reason: is required
+    401-Unauthorized:
+      value:
+        status: 401
+        title: Invalid Credentials
+        instance: konnect:trace:7283332526256293094
+        detail: You have entered an invalid email or password.
+    401-Account-Not-Approved:
+      value:
+        status: 401
+        title: Approval Required
+        instance: konnect:trace:7283332526256293094
+        detail: Your account is pending approval for access.
+    404-Token-Not-Found:
+      value:
+        status: 400
+        title: Not Found
+        instance: konnect:trace:8988732526256293040
+        detail: The provided token was not found
+    410-Expired-Token:
+      value:
+        status: 410
+        title: Gone
+        instance: konnect:trace:8988732526256293040
+        detail: The token has expired
+    UnauthorizedExample:
+      value:
+        status: 401
+        title: Unauthorized
+        instance: kong:trace:8347343766220159418
+        detail: Unauthorized

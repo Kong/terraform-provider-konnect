@@ -13,6 +13,6 @@ GitHub Actions are used to perform the following tasks:
 
 ## Contributing
 
-Any OAS has to be put in either `konnect/definitions` or `portal/definitions` within an `src` folder. By then it will
-be bundled in the CI to resolve all the relative schema references into a `computed` folder. This process can be done
-using the command `npm run bundle-apis`.
+1. Edit your service in `src/<product>/definitions`.
+2. Run `./tools/run.sh`
+3. Commit everything (even the `build` folder) and raise a PR

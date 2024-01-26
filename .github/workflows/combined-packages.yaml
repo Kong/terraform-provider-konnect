@@ -29,13 +29,9 @@ jobs:
         run: |
           npm install
 
-      - name: Merge OAS in to konnect/portal
+      - name: Bundle + Process OpenAPI specs
         run: |
-          ./tools/merge-oas.sh
-
-      - name: Process OpenAPI files
-        run: |
-          npm run generate-sdk-oas
+          ./tools/run.sh
 
       - name: "[Konnect] Generate Dev Client"
         run: npm run generate:konnect-dev-client

@@ -1,0 +1,146 @@
+openapi: 3.0.0
+info:
+  title: Portal Developer
+  version: 2.0.0
+  description: N/A (this description is removed during bundling)
+  contact:
+    name: Kong
+    url: 'https://cloud.konghq.com'
+paths:
+  /api/v2/developer:
+    post:
+      operationId: register
+      summary: Register
+      description: Register to the developer portal.
+      requestBody:
+        description: Developer registration
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterPayload'
+            examples:
+              RegisterDeveloperRequestExample1:
+                $ref: '#/components/examples/RegisterDeveloperRequestExample1'
+      responses:
+        '201':
+          description: the developer has been properly registered.
+        '400':
+          $ref: '../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+      tags:
+        - developer
+      security:
+        - {}
+  /api/v2/developer/forgot-password:
+    post:
+      operationId: forgot-password
+      summary: Forgot Password
+      description: |
+        Starts the password reset flow for the desired account. An email
+        will be sent to the email address to initiate the password reset flow.
+      requestBody:
+        description: Developer registration
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResetPasswordPayload'
+      responses:
+        '200':
+          description: the password reset flow has been initiated.
+        '400':
+          $ref: '../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+      tags:
+        - developer
+      security:
+        - {}
+  /api/v2/developer/me:
+    get:
+      summary: Retrieve My Account
+      tags:
+        - developer
+      responses:
+        '200':
+          $ref: '#/components/responses/MeResponse'
+        '401':
+          $ref: '../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+      operationId: get-developer-me
+      description: Returns info about the current developer.
+      security:
+        - portalAccessToken: []
+components:
+  examples:
+    RegisterDeveloperRequestExample1:
+      value:
+        email: dev@company.com
+        full_name: Dev Smith
+  securitySchemes:
+    portalAccessToken:
+      $ref: '../../../common/definitions/security.yaml#/components/securitySchemes/portalAccessToken'
+  responses:
+    MeResponse:
+      description: Response from me endpoint
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Developer'
+  schemas:
+    Developer:
+      title: Developer
+      type: object
+      description: A user who can use a developer portal
+      additionalProperties: false
+      properties:
+        id:
+          $ref: '../../../common/definitions/properties.yaml#/components/schemas/UUID'
+        email:
+          type: string
+          format: email
+          example: developer@email.com
+          maxLength: 250
+        full_name:
+          type: string
+          pattern: '^[\w \W]+$'
+          example: API Developer
+          maxLength: 250
+        created_at:
+          $ref: '../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
+      required:
+        - full_name
+        - email
+    RegisterPayload:
+      title: register payload
+      description: |
+        Payload required to be sent to register a developer to the
+        portal.
+      type: object
+      additionalProperties: true
+      properties:
+        email:
+          type: string
+          format: email
+          example: developer@konghq.com
+        full_name:
+          type: string
+          minLength: 1
+          maxLength: 256
+          example: Jane Doe
+      required:
+        - full_name
+        - email
+    ResetPasswordPayload:
+      title: reset password payload
+      description: |
+        Payload required to start the reset password flow
+      type: object
+      additionalProperties: false
+      properties:
+        email:
+          type: string
+          format: email
+          example: developer@konghq.com
+      required:
+        - email
+tags:
+  - name: developer
+    description: API for managing a Konnect Portal Developer.

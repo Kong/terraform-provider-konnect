@@ -1,0 +1,112 @@
+openapi: 3.0.0
+info:
+  title: Portal
+  version: 2.0.0
+  description: N/A (this description is removed during bundling)
+  contact:
+    name: Kong
+    url: https://cloud.konghq.com
+tags: []
+paths: {}
+components:
+  schemas:
+    PortalAppearance:
+      title: Portal Appearance
+      description: the portal appearance
+      type: object
+      additionalProperties: false
+      properties:
+        variables:
+          type: object
+          properties:
+            catalog:
+              type: object
+              properties:
+                logo:
+                  type: object
+                  properties:
+                    url:
+                      type: string
+                cover:
+                  type: object
+                  properties:
+                    url:
+                      type: string
+                primary_header:
+                  type: object
+                  properties:
+                    text:
+                      type: string
+                welcome_message:
+                  type: object
+                  properties:
+                    text:
+                      type: string
+        stylesheets:
+          type: object
+          properties:
+            global:
+              type: object
+              properties:
+                main:
+                  type: object
+                  properties:
+                    data:
+                      type: object
+    PortalContext:
+      title: Portal Context
+      description: describe the portal execution context
+      type: object
+      additionalProperties: false
+      properties:
+        portal_id:
+          type: string
+          format: uuid
+        org_id:
+          type: string
+          format: uuid
+        featureset_id:
+          type: string
+        feature_set:
+          type: string
+          description: >-
+            String that determines feature set group developer belongs to when
+            logged in
+        basic_auth_enabled:
+          type: boolean
+          description: Whether the portal can be accessed via email and password
+        oidc_auth_enabled:
+          type: boolean
+          description: >-
+            Whether the portal can be accessed via authentication with Single
+            Sign On (SSO) through OpenID Connect (OIDC) from a third-party
+            Identity Provider
+        is_public:
+          type: boolean
+          description: >-
+            Whether the portal catalog can be accessed by non-authenticated
+            users
+        rbac_enabled:
+          type: boolean
+          description: Whether the portal is protected with Role-Based Access Control
+        dcr_provider_ids:
+          type: array
+          description: >-
+            The unique identifiers of each available client provider when using
+            Dynamic Client Registration
+          items:
+            type: string
+            format: uuid
+        allowed_time_period:
+          type: string
+          description: Allowed time period for Analytics queries
+      required:
+        - portal_id
+        - org_id
+        - is_public
+        - featureset_id
+        - basic_auth_enabled
+        - oidc_auth_enabled
+        - rbac_enabled
+        - dcr_provider_ids
+        - allowed_time_period

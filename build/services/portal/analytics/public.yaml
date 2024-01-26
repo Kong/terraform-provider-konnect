@@ -1,0 +1,730 @@
+openapi: 3.0.0
+info:
+  title: Portal Application Analytics
+  version: 2.0.0
+  description: API for querying Application Analytics.
+  contact:
+    name: Kong
+    url: https://cloud.konghq.com
+tags:
+  - name: Application Analytics
+    description: >-
+      The API for querying Application Analytics. Application Analytics is only
+      available for private portals.
+paths:
+  /api/v2/stats:
+    post:
+      description: Query
+      operationId: query-application-analytics
+      summary: Query Application Analytics
+      requestBody:
+        description: Object describing the query sent to analytics API.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QueryApplicationAnalytics'
+            examples:
+              Query with a single metric:
+                $ref: '#/components/examples/QueryExampleWithMetric'
+              Query with a metric and dimension:
+                $ref: '#/components/examples/QueryExampleWithMetricAndDimension'
+              Query with a metric and two dimensions:
+                $ref: >-
+                  #/components/examples/QueryExampleWithMetricAndMultipleDimensions
+              Query with time dimension:
+                $ref: '#/components/examples/QueryExampleWithTimeDimension'
+      responses:
+        '200':
+          $ref: '#/components/responses/QueryResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              examples:
+                BadRequestExample:
+                  $ref: '#/components/examples/BadRequestExample'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              examples:
+                UnauthorizedExample:
+                  $ref: '#/components/examples/UnauthorizedExample'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Application Analytics
+      security:
+        - portalAccessToken: []
+components:
+  securitySchemes:
+    portalAccessToken:
+      type: apiKey
+      in: cookie
+      name: portalaccesstoken
+      description: >
+        The Developer portal cookie is meant to be used by the Developer API to
+        authenticate with.
+  schemas:
+    QueryApplicationAnalytics:
+      type: object
+      additionalProperties: false
+      properties:
+        start_ms:
+          type: integer
+          description: >-
+            Unix timestamp in milliseconds specifying the lower bound to return
+            data for the query, inclusive.
+        end_ms:
+          type: integer
+          description: >-
+            Unix timestamp in milliseconds specifying upper bound to return data
+            for the query, inclusive.
+        metrics:
+          type: array
+          minItems: 1
+          maxItems: 1
+          items:
+            type: string
+            enum:
+              - REQUEST_COUNT
+              - REQUEST_PER_MINUTE
+              - RESPONSE_LATENCY_P99
+              - RESPONSE_LATENCY_P95
+              - RESPONSE_LATENCY_P50
+              - RESPONSE_SIZE_P99
+              - RESPONSE_SIZE_P95
+              - RESPONSE_SIZE_P50
+              - REQUEST_SIZE_P99
+              - REQUEST_SIZE_P95
+              - REQUEST_SIZE_P50
+          description: >
+            A property of your API (such as request count or latency) that you
+            wish to query on.
+
+            Your chosen metric is aggregated within the specified dimensions,
+            meaning that if you query 'request count by application', you'll
+            receive the total number of requests each application received
+            within the given time frame.  Some metrics, such as latency and
+            response size, have more complicated aggregations: selecting P99
+            will result in the 99th percentile of the chosen metric.
+        dimensions:
+          type: array
+          minItems: 0
+          maxItems: 2
+          items:
+            type: string
+            enum:
+              - API_PRODUCT_VERSION
+              - APPLICATION
+              - STATUS_CODE
+              - STATUS_CODE_GROUPED
+              - TIME
+          description: >
+            The dimensions for the query.  A query may have up to 2 dimensions,
+            including time.
+
+            If no dimensions are provided, the report will simply return the
+            provided metric aggregated across
+
+            all available data.
+          default: []
+        granularity_ms:
+          type: integer
+          default: 86400000
+          description: >
+            `granularity_ms` is only valid for queries that include a time
+            dimension, and it specifies the time buckets in for the returned
+            data.
+        filter:
+          type: array
+          items:
+            discriminator:
+              propertyName: dimension
+              mapping:
+                API_PRODUCT_VERSION: '#/components/schemas/ApiProductVersionFilter'
+                APPLICATION: '#/components/schemas/ApplicationFilter'
+                STATUS_CODE: '#/components/schemas/StatusCodeFilter'
+                STATUS_CODE_GROUPED: '#/components/schemas/StatusCodeGroupedFilter'
+            oneOf:
+              - $ref: '#/components/schemas/ApiProductVersionFilter'
+              - $ref: '#/components/schemas/ApplicationFilter'
+              - $ref: '#/components/schemas/StatusCodeFilter'
+              - $ref: '#/components/schemas/StatusCodeGroupedFilter'
+          default: []
+      required:
+        - start_ms
+        - end_ms
+        - metrics
+    FilterType:
+      type: string
+      description: >-
+        The type of filter to apply.  `IN` filters will limit results to only
+        the specified values, while `NOT_IN` filters will exclude the specified
+        values.
+      enum:
+        - IN
+        - NOT_IN
+    ApiProductVersionFilter:
+      type: object
+      additionalProperties: false
+      properties:
+        dimension:
+          description: The dimension to filter.
+          type: string
+          enum:
+            - API_PRODUCT_VERSION
+        type:
+          $ref: '#/components/schemas/FilterType'
+        values:
+          description: |
+            The UUIDs of the API product versions to include in the results.
+          type: array
+          items:
+            type: string
+            pattern: ^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$
+      required:
+        - dimension
+        - type
+        - values
+    ApplicationFilter:
+      type: object
+      additionalProperties: false
+      properties:
+        dimension:
+          description: >-
+            The dimension to filter. If no application filter is provided the
+            API will implicitly filter on the applications owned by the
+            developer making the query request.
+          type: string
+          enum:
+            - APPLICATION
+        type:
+          $ref: '#/components/schemas/FilterType'
+        values:
+          description: |
+            The UUIDs of the dev portal applications to include in the results.
+          type: array
+          items:
+            type: string
+            pattern: ^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$
+      required:
+        - dimension
+        - type
+        - values
+    StatusCodeFilter:
+      type: object
+      additionalProperties: false
+      properties:
+        dimension:
+          description: The dimension to filter.
+          type: string
+          enum:
+            - STATUS_CODE
+        type:
+          $ref: '#/components/schemas/FilterType'
+        values:
+          description: |
+            Only include requests with specific status codes in the results.
+          type: array
+          items:
+            type: integer
+            minimum: 100
+            maximum: 999
+      required:
+        - dimension
+        - type
+        - values
+    StatusCodeGroupedFilter:
+      type: object
+      additionalProperties: false
+      properties:
+        dimension:
+          description: The dimension to filter.
+          type: string
+          enum:
+            - STATUS_CODE_GROUPED
+        type:
+          $ref: '#/components/schemas/FilterType'
+        values:
+          description: |
+            Only include the given groups of status codes in the results.
+          type: array
+          items:
+            type: string
+            pattern: ^\d[X][X]$
+      required:
+        - dimension
+        - type
+        - values
+    QueryResponseMeta:
+      type: object
+      additionalProperties: false
+      description: Query response metadata.
+      properties:
+        dimensions:
+          type: object
+          additionalProperties: false
+          description: The dimension name and values returned in the response.
+          properties:
+            API_PRODUCT_VERSION:
+              type: array
+              items:
+                type: string
+            APPLICATION:
+              type: array
+              items:
+                type: string
+            STATUS_CODE:
+              type: array
+              items:
+                type: string
+            STATUS_CODE_GROUPED:
+              type: array
+              items:
+                type: string
+        metric_names:
+          type: array
+          description: The metric requested in query.
+          minItems: 1
+          maxItems: 1
+          items:
+            type: string
+            enum:
+              - REQUEST_COUNT
+              - REQUEST_PER_MINUTE
+              - RESPONSE_LATENCY_P99
+              - RESPONSE_LATENCY_P95
+              - RESPONSE_LATENCY_P50
+              - RESPONSE_SIZE_P99
+              - RESPONSE_SIZE_P95
+              - RESPONSE_SIZE_P50
+              - REQUEST_SIZE_P99
+              - REQUEST_SIZE_P95
+              - REQUEST_SIZE_P50
+        metric_units:
+          type: object
+          description: The unit of metric.
+          properties:
+            REQUEST_COUNT:
+              type: string
+              default: count
+            REQUEST_PER_MINUTE:
+              type: string
+              default: count/minute
+            RESPONSE_LATENCY_P99:
+              type: string
+              default: ms
+            RESPONSE_LATENCY_P95:
+              type: string
+              default: ms
+            RESPONSE_LATENCY_P50:
+              type: string
+              default: ms
+            RESPONSE_SIZE_P99:
+              type: string
+              default: bytes
+            RESPONSE_SIZE_P95:
+              type: string
+              default: bytes
+            RESPONSE_SIZE_P50:
+              type: string
+              default: bytes
+            REQUEST_SIZE_P99:
+              type: string
+              default: bytes
+            REQUEST_SIZE_P95:
+              type: string
+              default: bytes
+            REQUEST_SIZE_P50:
+              type: string
+              default: bytes
+        start_ms:
+          type: integer
+          description: >-
+            Unix timestamp in milliseconds specifying the lower bound to return
+            data for the query. Provided from the query parameters.
+        end_ms:
+          type: integer
+          description: >-
+            Unix timestamp in milliseconds specifying the upper bound to return
+            data for the query. Provided from the query parameters.
+        truncated:
+          type: boolean
+          description: >-
+            True if the limit of dimension values was reached and results were
+            truncated. Limit value is 50.
+        granularity:
+          type: integer
+          description: >-
+            The resulting time bucket for the returned data. If `TIME` was not
+            specified as a dimension, granularity is the duration of the query.
+        query_id:
+          type: string
+          description: Optional ID used to look up the query.
+    QueryResponseRecord:
+      type: object
+      additionalProperties: false
+      description: A response record.
+      properties:
+        event:
+          type: object
+          additionalProperties: false
+          description: >-
+            Event within the response. Mapping from the requested metrics and
+            dimensions to the values.
+          properties:
+            REQUEST_COUNT:
+              type: integer
+              description: The number or requests metric.
+            REQUEST_PER_MINUTE:
+              type: number
+              description: The number of requests per minute metric.
+            RESPONSE_LATENCY_P99:
+              type: number
+              description: 99th percentile response latency metric in milliseconds.
+            RESPONSE_LATENCY_P95:
+              type: number
+              description: 95th percentile response latency metric in milliseconds.
+            RESPONSE_LATENCY_P50:
+              type: number
+              description: 50th percentile response latency metric in milliseconds.
+            RESPONSE_SIZE_P99:
+              type: number
+              description: 99th percentile response size metric in bytes.
+            RESPONSE_SIZE_P95:
+              type: number
+              description: 95th percentile response size metric in bytes.
+            RESPONSE_SIZE_P50:
+              type: number
+              description: 50th percentile response size metric in bytes.
+            REQUEST_SIZE_P99:
+              type: number
+              description: 99th percentile request size metric in bytes.
+            REQUEST_SIZE_P95:
+              type: number
+              description: 95th percentile request size metric in bytes.
+            REQUEST_SIZE_P50:
+              type: number
+              description: 50th percentile request size metric in bytes.
+            API_PRODUCT_VERSION:
+              type: string
+              description: Dimension value for `API_PRODUCT_VERSION` name.
+            APPLICATION:
+              type: string
+              description: Dimension value for `APPLICATION` name.
+            STATUS_CODE:
+              type: string
+              description: Dimension value for `STATUS_CODE`.
+            STATUS_CODE_GROUPED:
+              type: string
+              description: Dimension value for `STATUS_CODE_GROUPED`.
+        timestamp:
+          type: string
+          format: date-time
+          description: >-
+            An ISO-8601 timestamp. If `TIME` was requested as a dimension this
+            will be the start of the time bucket. If not specified this is the
+            start time of the query.
+          example: '2023-08-03T15:00:00.000Z'
+    QueryResponseRecords:
+      type: array
+      description: Query response data.
+      items:
+        $ref: '#/components/schemas/QueryResponseRecord'
+    BaseError:
+      type: object
+      title: Error
+      description: standard error
+      required:
+        - status
+        - title
+        - instance
+        - detail
+      properties:
+        status:
+          type: integer
+          description: >
+            The HTTP status code of the error. Useful when passing the response
+
+            body to child properties in a frontend UI. Must be returned as an
+            integer.
+          readOnly: true
+        title:
+          type: string
+          description: |
+            A short, human-readable summary of the problem. It should not
+            change between occurences of a problem, except for localization.
+            Should be provided as "Sentence case" for direct use in the UI.
+          readOnly: true
+        type:
+          type: string
+          description: The error type.
+          readOnly: true
+        instance:
+          type: string
+          description: |
+            Used to return the correlation ID back to the user, in the format
+            kong:trace:<correlation_id>. This helps us find the relevant logs
+            when a customer reports an issue.
+          readOnly: true
+        detail:
+          type: string
+          description: >
+            A human readable explanation specific to this occurence of the
+            problem.
+
+            This field may contain request/entity data to help the user
+            understand
+
+            what went wrong. Enclose variable values in square brackets. Should
+            be
+
+            provided as "Sentence case" for direct use in the UI.
+          readOnly: true
+    ForbiddenError:
+      type: object
+      properties:
+        status:
+          example: 403
+        title:
+          example: Forbidden
+        type:
+          example: https://httpstatuses.com/403
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Forbidden
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+  responses:
+    QueryResponse:
+      description: A response from an Application Analytics query.
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: false
+            properties:
+              meta:
+                $ref: '#/components/schemas/QueryResponseMeta'
+              records:
+                $ref: '#/components/schemas/QueryResponseRecords'
+          examples:
+            Response with a single metric:
+              $ref: '#/components/examples/ResponseExampleWithMetric'
+            Response with metric and dimension:
+              $ref: '#/components/examples/ResponseExampleWithMetricAndDimension'
+            Response with metric and two dimensions:
+              $ref: >-
+                #/components/examples/ResponseExampleWithMetricAndMultipleDimensions
+            Response with time dimension:
+              $ref: '#/components/examples/ResponseExampleWithTimeDimension'
+    Forbidden:
+      description: Forbidden
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ForbiddenError'
+          examples:
+            UnauthorizedExample:
+              $ref: '#/components/examples/ForbiddenExample'
+  examples:
+    ResponseExampleWithMetricAndDimension:
+      value:
+        meta:
+          dimensions:
+            APPLICATION:
+              - Application 1
+              - Application 2
+          metric_names:
+            - RESPONSE_LATENCY_P99
+          metric_units:
+            RESPONSE_LATENCY_P99: ms
+          start_ms: 1691074800000
+          end_ms: 1691161200000
+          granularity: 86400000
+          truncated: false
+          query_id: portal-api-3c0abb98-90bd-4e80-a495-ac268acc493e
+        records:
+          - event:
+              APPLICATION: Application 1
+              RESPONSE_LATENCY_P99: 250
+            timestamp: '2023-08-03T15:00:00.000Z'
+          - event:
+              APPLICATION: Application 2
+              RESPONSE_LATENCY_P99: 740
+            timestamp: '2023-08-03T15:00:00.000Z'
+    ResponseExampleWithMetric:
+      value:
+        meta:
+          dimensions: {}
+          metric_names:
+            - REQUEST_PER_MINUTE
+          metric_units:
+            REQUEST_PER_MINUTE: count/minute
+          start_ms: 1691158080000
+          end_ms: 1691158980000
+          granularity: 900000
+          truncated: false
+          query_id: portal-api-3c0abb98-90bd-4e80-a495-ac268acc493e
+        records:
+          - event:
+              REQUEST_PER_MINUTE: 1340.8666666666666
+            timestamp: '2023-08-04T14:08:00.000Z'
+    ResponseExampleWithMetricAndMultipleDimensions:
+      value:
+        meta:
+          start_ms: 1691074800000
+          end_ms: 1691082000000
+          granularity: 7200000
+          query_id: portal-api-4fad296e-da5e-41ed-af86-191440fe448e
+          metric_names:
+            - REQUEST_COUNT
+          metric_units:
+            REQUEST_COUNT: count
+          dimensions:
+            APPLICATION:
+              - GetMeAKongApplication926
+            STATUS_CODE_GROUPED:
+              - 2XX
+              - 3XX
+          truncated: false
+        records:
+          - event:
+              APPLICATION: Application 1
+              STATUS_CODE_GROUPED: 2XX
+              REQUEST_COUNT: 81447
+            timestamp: '2023-08-03T15:00:00.000Z'
+          - event:
+              APPLICATION: Application 1
+              STATUS_CODE_GROUPED: 5XX
+              REQUEST_COUNT: 28468
+            timestamp: '2023-08-03T15:00:00.000Z'
+          - event:
+              APPLICATION: Application 2
+              STATUS_CODE_GROUPED: 2XX
+              REQUEST_COUNT: 45819
+            timestamp: '2023-08-03T15:00:00.000Z'
+          - event:
+              APPLICATION: Application 2
+              STATUS_CODE_GROUPED: 5XX
+              REQUEST_COUNT: 25041
+            timestamp: '2023-08-03T15:00:00.000Z'
+    ResponseExampleWithTimeDimension:
+      value:
+        meta:
+          start_ms: 1691074800000
+          end_ms: 1691082000000
+          granularity: 3600000
+          query_id: portal-api-3c0abb98-90bd-4e80-a495-ac268acc493e
+          metric_names:
+            - RESPONSE_SIZE_P99
+          metric_units:
+            RESPONSE_SIZE_P99: bytes
+          dimensions:
+            STATUS_CODE_GROUPED:
+              - 2XX
+              - 3XX
+              - 4XX
+              - 5XX
+          truncated: false
+        records:
+          - event:
+              STATUS_CODE_GROUPED: 2XX
+              RESPONSE_SIZE_P99: 590
+            timestamp: '2023-08-03T15:00:00.000Z'
+          - event:
+              STATUS_CODE_GROUPED: 3XX
+              RESPONSE_SIZE_P99: 584
+            timestamp: '2023-08-03T15:00:00.000Z'
+          - event:
+              STATUS_CODE_GROUPED: 4XX
+              RESPONSE_SIZE_P99: 629
+            timestamp: '2023-08-03T15:00:00.000Z'
+          - event:
+              STATUS_CODE_GROUPED: 5XX
+              RESPONSE_SIZE_P99: 603
+            timestamp: '2023-08-03T15:00:00.000Z'
+          - event:
+              STATUS_CODE_GROUPED: 2XX
+              RESPONSE_SIZE_P99: 590
+            timestamp: '2023-08-03T16:00:00.000Z'
+          - event:
+              STATUS_CODE_GROUPED: 3XX
+              RESPONSE_SIZE_P99: 584
+            timestamp: '2023-08-03T16:00:00.000Z'
+          - event:
+              STATUS_CODE_GROUPED: 4XX
+              RESPONSE_SIZE_P99: 628
+            timestamp: '2023-08-03T16:00:00.000Z'
+          - event:
+              STATUS_CODE_GROUPED: 5XX
+              RESPONSE_SIZE_P99: 603
+            timestamp: '2023-08-03T16:00:00.000Z'
+    QueryExampleWithMetric:
+      value:
+        start_ms: 1691158080000
+        end_ms: 1691158980000
+        metrics:
+          - REQUEST_PER_MINUTE
+        filter:
+          - dimension: API_PRODUCT_VERSION
+            type: IN
+            values:
+              - 417e47e8-ae7b-48a1-9b34-3f6835161de1
+    QueryExampleWithMetricAndDimension:
+      value:
+        start_ms: 1691074800000
+        end_ms: 1691161200000
+        metrics:
+          - RESPONSE_LATENCY_P99
+        dimensions:
+          - APPLICATION
+    QueryExampleWithMetricAndMultipleDimensions:
+      value:
+        start_ms: 1691074800000
+        end_ms: 1691082000000
+        metrics:
+          - REQUEST_COUNT
+        dimensions:
+          - APPLICATION
+          - STATUS_CODE_GROUPED
+        filter:
+          - dimension: STATUS_CODE_GROUPED
+            type: IN
+            values:
+              - 2XX
+              - 5XX
+    QueryExampleWithTimeDimension:
+      value:
+        start_ms: 1691074800000
+        end_ms: 1691082000000
+        granularity_ms: 3600000
+        metrics:
+          - RESPONSE_SIZE_P99
+        dimensions:
+          - TIME
+          - STATUS_CODE_GROUPED
+    BadRequestExample:
+      value:
+        status: 400
+        title: Bad Request
+        instance: kong:trace:9039922446017540182
+        detail: 'Malformed Query: dimension API_PRODUCT is not allowed'
+        invalid_parameters: []
+    UnauthorizedExample:
+      value:
+        status: 401
+        title: Unauthorized
+        instance: kong:trace:9039922446017540182
+        detail: >-
+          Developer to not have access to APPLICATION:
+          abe525e6-6baa-4cca-ba67-36dad0194a69
+        invalid_parameters: []
+    ForbiddenExample:
+      value:
+        status: 403
+        title: Forbidden
+        instance: kong:trace:2723154947768991354
+        detail: You do not have permission to perform this action

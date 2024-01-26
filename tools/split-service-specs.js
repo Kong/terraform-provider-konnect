@@ -34,22 +34,17 @@ function filterOperations(doc, callback, log) {
 
 async function main() {
   const baseDir = path.resolve(__dirname, "..");
-  const projects = ["konnect", "portal"];
+  const projects = ["konnect", "portal", "internal"];
 
   for (let mode of projects) {
+    const outputDir = `${baseDir}/build/services/${mode}`;
+
     let files = await fg(
-      `${baseDir}/${mode}/definitions/**/computed/openapi.yaml`
+      `${baseDir}/computed/${mode}/**/openapi.yaml`
     );
     for (let f of files){
     let complete = yaml.load(await fs.readFile(f));
-    let name = f.replace("computed/openapi.yaml","");
-
-    // If there's a nested v1, v2 etc folder, remove it
-    if (path.basename(name).match(/v\d+/)) {
-      name = path.dirname(name);
-    }
-
-    name = path.basename(name);
+    let name = f.replace(`${baseDir}/computed/${mode}/`,"").replace("openapi.yaml","");
 
     let dev = filterOperations(complete, function (node) {
       return node["x-internal"] && node["x-unstable"];
@@ -74,11 +69,11 @@ async function main() {
     public = toolkit.tags.removeUnusedTags(public);
 
     // Write multiple files
-    const outputDir = `${baseDir}/output/${mode}`;
-    await tryMkdir(`${outputDir}/services/${name}`, { recursive: true });
-    await fs.writeFile(`${outputDir}/services/${name}/dev.yaml`, yaml.dump(dev));
-    await fs.writeFile(`${outputDir}/services/${name}/internal.yaml`, yaml.dump(internal));
-    await fs.writeFile(`${outputDir}/services/${name}/public.yaml`, yaml.dump(public));
+    
+    await tryMkdir(`${outputDir}/${name}`, { recursive: true });
+    await fs.writeFile(`${outputDir}/${name}/dev.yaml`, yaml.dump(dev));
+    await fs.writeFile(`${outputDir}/${name}/internal.yaml`, yaml.dump(internal));
+    await fs.writeFile(`${outputDir}/${name}/public.yaml`, yaml.dump(public));
     }
   }
 }

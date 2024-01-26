@@ -1,0 +1,357 @@
+openapi: 3.0.0
+info:
+  title: Portal Authentication
+  version: 2.0.0
+  description: |
+    The API for Konnect Portal authentication.
+  contact:
+    name: Kong
+    url: https://cloud.konghq.com
+tags: []
+paths: {}
+components:
+  schemas:
+    AuthenticateRequest:
+      type: object
+      additionalProperties: false
+      example:
+        username: developer@example.com
+        password: <!N0taP@$$w0rd!>
+      title: AuthenticateRequest
+      description: The request schema for the authenticate endpoint.
+      properties:
+        username:
+          type: string
+          format: email
+          example: developer@example.com
+          writeOnly: true
+        password:
+          type: string
+          format: password
+          example: <!N0taP@$$w0rd!>
+          writeOnly: true
+      required:
+        - username
+        - password
+    ResetPasswordRequest:
+      title: ResetPasswordRequest
+      type: object
+      additionalProperties: false
+      description: The request schema for the reset password endpoint.
+      example:
+        password: <!D3finitelyN0taP@$$w0rd!>
+        token: c8efd006-d8e1-4743-b91b-f163b9eae06a
+      properties:
+        password:
+          type: string
+          format: password
+          example: <!N0taP@$$w0rd!>
+          writeOnly: true
+        token:
+          type: string
+          format: uuid
+          example: c8efd006-d8e1-4743-b91b-f163b9eae06a
+          writeOnly: true
+      required:
+        - password
+        - token
+    VerifyEmailRequest:
+      title: VerifyEmailRequest
+      type: object
+      additionalProperties: false
+      description: The request schema for the verify email endpoint.
+      example:
+        token: c8efd006-d8e1-4743-b91b-f163b9eae06a
+      properties:
+        token:
+          type: string
+          format: uuid
+          example: c8efd006-d8e1-4743-b91b-f163b9eae06a
+          writeOnly: true
+      required:
+        - token
+    VerifyEmailResponse:
+      title: VerifyEmailResponse
+      type: object
+      additionalProperties: false
+      description: The response schema for the verify email endpoint.
+      example:
+        email: developer@example.com
+        token: c8efd006-d8e1-4743-b91b-f163b9eae06a
+      properties:
+        email:
+          type: string
+          format: email
+          example: developer@example.com
+          readOnly: true
+        token:
+          type: string
+          format: uuid
+          example: c8efd006-d8e1-4743-b91b-f163b9eae06a
+          readOnly: true
+    BaseError:
+      type: object
+      title: Error
+      description: standard error
+      required:
+        - status
+        - title
+        - instance
+        - detail
+      properties:
+        status:
+          type: integer
+          description: >
+            The HTTP status code of the error. Useful when passing the response
+
+            body to child properties in a frontend UI. Must be returned as an
+            integer.
+          readOnly: true
+        title:
+          type: string
+          description: |
+            A short, human-readable summary of the problem. It should not
+            change between occurences of a problem, except for localization.
+            Should be provided as "Sentence case" for direct use in the UI.
+          readOnly: true
+        type:
+          type: string
+          description: The error type.
+          readOnly: true
+        instance:
+          type: string
+          description: |
+            Used to return the correlation ID back to the user, in the format
+            kong:trace:<correlation_id>. This helps us find the relevant logs
+            when a customer reports an issue.
+          readOnly: true
+        detail:
+          type: string
+          description: >
+            A human readable explanation specific to this occurence of the
+            problem.
+
+            This field may contain request/entity data to help the user
+            understand
+
+            what went wrong. Enclose variable values in square brackets. Should
+            be
+
+            provided as "Sentence case" for direct use in the UI.
+          readOnly: true
+    InvalidRules:
+      description: invalid parameters rules
+      type: string
+      readOnly: true
+      nullable: true
+      enum:
+        - required
+        - enum
+        - min_length
+        - max_length
+        - min_digits
+        - min_lowercase
+        - min_uppercase
+        - min_symbols
+        - is_array
+        - is_base64
+        - is_boolean
+        - is_date_time
+        - is_integer
+        - is_null
+        - is_number
+        - is_object
+        - is_string
+        - is_uuid
+        - unknown_property
+        - is_label
+        - matches_regex
+    InvalidParameterChoiceItem:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          $ref: '#/components/schemas/InvalidRules'
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+        choices:
+          type: array
+          uniqueItems: true
+          nullable: true
+          items: {}
+          readOnly: true
+      required:
+        - field
+        - reason
+    InvalidParameterDependentItem:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          description: invalid parameters rules
+          type: string
+          readOnly: true
+          nullable: true
+          enum:
+            - dependent_fields
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+        dependents:
+          type: array
+          uniqueItems: true
+          nullable: true
+          items: {}
+          readOnly: true
+      required:
+        - field
+        - rule
+        - reason
+        - dependents
+    InvalidParameters:
+      type: array
+      nullable: false
+      uniqueItems: true
+      minItems: 1
+      description: invalid parameters
+      items:
+        oneOf:
+          - $ref: '#/components/schemas/InvalidParameterChoiceItem'
+          - $ref: '#/components/schemas/InvalidParameterDependentItem'
+    BadRequestError:
+      type: object
+      required:
+        - invalid_parameters
+      properties:
+        status:
+          example: 400
+        title:
+          example: Bad Request
+        type:
+          example: https://httpstatuses.com/400
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Invalid request body
+        invalid_parameters:
+          $ref: '#/components/schemas/InvalidParameters'
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+    UnauthorizedError:
+      type: object
+      properties:
+        status:
+          example: 401
+        title:
+          example: Unauthorized
+        type:
+          example: https://httpstatuses.com/401
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Invalid credentials
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+    NotFoundError:
+      type: object
+      properties:
+        status:
+          example: 404
+        title:
+          example: Not Found
+        type:
+          example: https://httpstatuses.com/404
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Not found
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+    GoneError:
+      type: object
+      properties:
+        status:
+          example: 410
+        title:
+          example: Gone
+        type:
+          example: https://httpstatuses.com/410
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Gone
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+  examples:
+    Authenticate-Request:
+      value:
+        username: developer@example.com
+        password: <!N0taP@$$w0rd!>
+    Reset-Password-Request:
+      value:
+        password: <!D3finitelyN0taP@$$w0rd!>
+        token: c8efd006-d8e1-4743-b91b-f163b9eae06a
+    Verify-Email-Request:
+      value:
+        token: c8efd006-d8e1-4743-b91b-f163b9eae06a
+    Verify-Email-Response:
+      value:
+        email: developer@example.com
+        token: c8efd006-d8e1-4743-b91b-f163b9eae06a
+    400-Invalid-Token:
+      value:
+        status: 400
+        title: Bad Request
+        instance: konnect:trace:8988732526256293040
+        detail: The provided token is invalid
+        invalid_parameters:
+          - field: token
+            reason: invalid ID format
+    400-Login-Failed:
+      value:
+        status: 400
+        title: Bad Request
+        instance: konnect:trace:8988732526256293040
+        detail: Required fields are missing
+        invalid_parameters:
+          - field: password
+            reason: is required
+    401-Unauthorized:
+      value:
+        status: 401
+        title: Invalid Credentials
+        instance: konnect:trace:7283332526256293094
+        detail: You have entered an invalid email or password.
+    401-Account-Not-Approved:
+      value:
+        status: 401
+        title: Approval Required
+        instance: konnect:trace:7283332526256293094
+        detail: Your account is pending approval for access.
+    404-Token-Not-Found:
+      value:
+        status: 400
+        title: Not Found
+        instance: konnect:trace:8988732526256293040
+        detail: The provided token was not found
+    410-Expired-Token:
+      value:
+        status: 410
+        title: Gone
+        instance: konnect:trace:8988732526256293040
+        detail: The token has expired
+    UnauthorizedExample:
+      value:
+        status: 401
+        title: Unauthorized
+        instance: kong:trace:8347343766220159418
+        detail: Unauthorized

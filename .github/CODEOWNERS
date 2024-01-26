@@ -1,21 +1,22 @@
-# All APIs need review from team-aip
-*       @Kong/team-aip
+# All internal/public APIs need review from editors
+build/services/**/internal.yaml       @Kong/team-aip
+build/services/**/public.yaml       @mheap
 
 # TPS
-konnect/definitions/audit-logs/**    @Kong/team-platform-services
-konnect/definitions/identity/**    @Kong/team-platform-services
-konnect/definitions/portal-rbac/**   @Kong/team-platform-services
-portal/definitions/authentication/**  @Kong/team-platform-services
+src/konnect/definitions/audit-logs/**    @Kong/team-platform-services
+src/konnect/definitions/identity/**    @Kong/team-platform-services
+src/konnect/definitions/portal-rbac/**   @Kong/team-platform-services
+src/portal/definitions/authentication/**  @Kong/team-platform-services
 
 # DevX
-portal/**                                   @Kong/team-devx
-konnect/definitions/portal-management/**  @Kong/team-devx
-konnect/definitions/api-products/**       @Kong/team-devx
-konnect/definitions/application-auth-strategies/**       @Kong/team-devx
-internal/definitions/documenthub*       @Kong/team-devx
+src/portal/**                                   @Kong/team-devx
+src/konnect/definitions/portal-management/**  @Kong/team-devx
+src/konnect/definitions/api-products/**       @Kong/team-devx
+src/konnect/definitions/application-auth-strategies/**       @Kong/team-devx
+src/internal/definitions/documenthub*       @Kong/team-devx
 
 # Gateway Manager
-konnect/definitions/control-planes/**           @Kong/team-konnectx-be
-konnect/definitions/control-planes-config/**    @Kong/team-konnectx-be
-konnect/definitions/runtime-groups/**           @Kong/team-konnectx-be
-konnect/definitions/runtime-groups-config/**    @Kong/team-konnectx-be
+src/konnect/definitions/control-planes/**           @Kong/team-konnectx-be
+src/konnect/definitions/control-planes-config/**    @Kong/team-konnectx-be
+src/konnect/definitions/runtime-groups/**           @Kong/team-konnectx-be
+src/konnect/definitions/runtime-groups-config/**    @Kong/team-konnectx-be

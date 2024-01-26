@@ -23,13 +23,17 @@ async function main() {
     for (const mode of projects) {
         let files = []
         if (allFiles) {
-            files = await fg(`${baseDir}/${mode}/definitions/**/src/openapi.yaml`);
+            files = await fg(`${baseDir}/src/${mode}/definitions/**/openapi.yaml`);
         } else {
             files = getProductFiles(mode).map(f => `${baseDir}/${f}`)
         }
+
         for (const f of files) {
             const srcDir = path.dirname(f)
-            const output = path.resolve(srcDir, '..', 'computed', 'openapi.yaml')
+            const output = path.join(
+                srcDir.replace('src', 'computed').replace('definitions/', ''), 
+                "openapi.yaml"
+            );
             const args = {
                 output: output,
                 apis: [f],

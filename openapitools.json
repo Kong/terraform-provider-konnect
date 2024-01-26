@@ -4,20 +4,10 @@
   "generator-cli": {
     "version": "6.2.1",
     "generators": {
-      "identity-v2-client": {
-        "generatorName": "typescript-axios",
-        "output": "konnect/packages/identity/v2/npm/client",
-        "glob": "konnect/definitions/identity/v2/computed/openapi.yaml",
-        "templateDir": "oas-generator-templates",
-        "additionalProperties": {
-          "modelPropertyNaming": "original",
-          "useSingleRequestParameter": "true"
-        }
-      },
       "identity-v3-client": {
         "generatorName": "typescript-axios",
-        "output": "konnect/packages/identity/v3/npm/client",
-        "glob": "konnect/definitions/identity/v3/computed/openapi.yaml",
+        "output": "src/konnect/packages/identity/v3/npm/client",
+        "glob": "computed/konnect/identity/v3/openapi.yaml",
         "templateDir": "oas-generator-templates",
         "additionalProperties": {
           "modelPropertyNaming": "original",
@@ -26,8 +16,8 @@
       },
       "audit-logs-v2-client": {
         "generatorName": "typescript-axios",
-        "output": "konnect/packages/audit-logs/v2/npm/client",
-        "glob": "konnect/definitions/audit-logs/v2/computed/openapi.yaml",
+        "output": "src/konnect/packages/audit-logs/v2/npm/client",
+        "glob": "computed/konnect/audit-logs/v2/openapi.yaml",
         "templateDir": "oas-generator-templates",
         "additionalProperties": {
           "modelPropertyNaming": "original",
@@ -38,7 +28,7 @@
       "konnect-dev-client": {
         "generatorName": "typescript-axios",
         "output": "packages/konnect/dev/npm/client",
-        "glob": "output/konnect/dev.yaml",
+        "glob": "build/complete/konnect/dev.yaml",
         "templateDir": "oas-generator-templates",
         "additionalProperties": {
           "modelPropertyNaming": "original",
@@ -48,7 +38,7 @@
       "konnect-internal-client": {
         "generatorName": "typescript-axios",
         "output": "packages/konnect/internal/npm/client",
-        "glob": "output/konnect/internal.yaml",
+        "glob": "build/complete/konnect/internal.yaml",
         "templateDir": "oas-generator-templates",
         "additionalProperties": {
           "modelPropertyNaming": "original",
@@ -58,7 +48,7 @@
       "konnect-public-client": {
         "generatorName": "typescript-axios",
         "output": "packages/konnect/public/npm/client",
-        "glob": "output/konnect/public.yaml",
+        "glob": "build/complete/konnect/public.yaml",
         "templateDir": "oas-generator-templates",
         "additionalProperties": {
           "modelPropertyNaming": "original",
@@ -69,7 +59,7 @@
       "portal-dev-client": {
         "generatorName": "typescript-axios",
         "output": "packages/portal/dev/npm/client",
-        "glob": "output/portal/dev.yaml",
+        "glob": "build/complete/portal/dev.yaml",
         "templateDir": "oas-generator-templates",
         "additionalProperties": {
           "modelPropertyNaming": "original",
@@ -79,7 +69,7 @@
       "portal-internal-client": {
         "generatorName": "typescript-axios",
         "output": "packages/portal/internal/npm/client",
-        "glob": "output/portal/internal.yaml",
+        "glob": "build/complete/portal/internal.yaml",
         "templateDir": "oas-generator-templates",
         "additionalProperties": {
           "modelPropertyNaming": "original",
@@ -89,7 +79,7 @@
       "portal-public-client": {
         "generatorName": "typescript-axios",
         "output": "packages/portal/public/npm/client",
-        "glob": "output/portal/public.yaml",
+        "glob": "build/complete/portal/public.yaml",
         "templateDir": "oas-generator-templates",
         "additionalProperties": {
           "modelPropertyNaming": "original",

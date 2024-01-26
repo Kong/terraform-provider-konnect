@@ -1,147 +1,147 @@
 {
   "kong/openapi-specifications": [
     {
-      "src": "output/konnect/public.yaml",
+      "src": "build/complete/konnect/public.yaml",
       "dest": "konnect/openapi.yaml"
     },
     {
-      "src": "output/portal/public.yaml",
+      "src": "build/complete/portal/public.yaml",
       "dest": "portal/openapi.yaml"
     }
   ],
   "kong/sdk-konnect-js": [
     {
-      "src": "output/konnect/public.yaml",
+      "src": "build/complete/konnect/public.yaml",
       "dest": "openapi.yaml"
     }
   ],
   "kong/sdk-konnect-js-internal": [
     {
-      "src": "output/konnect/internal.yaml",
+      "src": "build/complete/konnect/internal.yaml",
       "dest": "openapi.yaml"
     }
   ],
   "kong/sdk-konnect-js-dev": [
     {
-      "src": "output/konnect/dev.yaml",
+      "src": "build/complete/konnect/dev.yaml",
       "dest": "openapi.yaml"
     }
   ],
   "kong/sdk-portal-js": [
     {
-      "src": "output/portal/public.yaml",
+      "src": "build/complete/portal/public.yaml",
       "dest": "openapi.yaml"
-    }
-  ],
-  "kong/mink-vcp-manager": [
-    {
-      "src": "konnect/definitions/mesh-control-planes/v0/computed/openapi.yaml",
-      "dest": "specs/openapi/controlplanes.v0.yml"
-    }
-  ],
-  "kong/khcp": [
-    {
-      "src": "portal/definitions/applications/computed/openapi.yaml",
-      "dest": "apps/portal-api/openapi/v2/applications/openapi.yaml"
-    },
-    {
-      "src": "portal/definitions/developer/computed/openapi.yaml",
-      "dest": "apps/portal-api/openapi/v2/developer/openapi.yaml"
-    },
-    {
-      "src": "portal/definitions/portals/computed/openapi.yaml",
-      "dest": "apps/portal-api/openapi/v2/portals/openapi.yaml"
-    },
-    {
-      "src": "portal/definitions/products/computed/openapi.yaml",
-      "dest": "apps/portal-api/openapi/v2/products/openapi.yaml"
-    },
-    {
-      "src": "portal/definitions/registrations/computed/openapi.yaml",
-      "dest": "apps/portal-api/openapi/v2/registrations/openapi.yaml"
-    },
-    {
-      "src": "portal/definitions/search/computed/openapi.yaml",
-      "dest": "apps/portal-api/openapi/v2/search/openapi.yaml"
-    },
-    {
-      "src": "konnect/definitions/api-products/v2/computed/openapi.yaml",
-      "dest": "apps/konnect-api/openapi/v2/api-products/openapi.yaml"
-    },
-    {
-      "src": "konnect/definitions/portal-management/v2/computed/openapi.yaml",
-      "dest": "apps/konnect-api/openapi/v2/portal-management/openapi.yaml"
     }
   ],
   "kong/sdk-portal-js-internal": [
     {
-      "src": "output/portal/internal.yaml",
+      "src": "build/complete/portal/internal.yaml",
       "dest": "openapi.yaml"
     }
   ],
   "kong/sdk-portal-js-dev": [
     {
-      "src": "output/portal/dev.yaml",
+      "src": "build/complete/portal/dev.yaml",
       "dest": "openapi.yaml"
+    }
+  ],
+  "kong/mink-vcp-manager": [
+    {
+      "src": "computed/konnect/mesh-control-planes/v0/openapi.yaml",
+      "dest": "specs/openapi/controlplanes.v0.yml"
+    }
+  ],
+  "kong/khcp": [
+    {
+      "src": "computed/portal/applications/openapi.yaml",
+      "dest": "apps/portal-api/openapi/v2/applications/openapi.yaml"
+    },
+    {
+      "src": "computed/portal/developer/openapi.yaml",
+      "dest": "apps/portal-api/openapi/v2/developer/openapi.yaml"
+    },
+    {
+      "src": "computed/portal/portals/openapi.yaml",
+      "dest": "apps/portal-api/openapi/v2/portals/openapi.yaml"
+    },
+    {
+      "src": "computed/portal/products/openapi.yaml",
+      "dest": "apps/portal-api/openapi/v2/products/openapi.yaml"
+    },
+    {
+      "src": "computed/portal/registrations/openapi.yaml",
+      "dest": "apps/portal-api/openapi/v2/registrations/openapi.yaml"
+    },
+    {
+      "src": "computed/portal/search/openapi.yaml",
+      "dest": "apps/portal-api/openapi/v2/search/openapi.yaml"
+    },
+    {
+      "src": "computed/konnect/api-products/v2/openapi.yaml",
+      "dest": "apps/konnect-api/openapi/v2/api-products/openapi.yaml"
+    },
+    {
+      "src": "computed/konnect/portal-management/v2/openapi.yaml",
+      "dest": "apps/konnect-api/openapi/v2/portal-management/openapi.yaml"
     }
   ],
   "kong/documenthub": [
     {
-      "src": "output/internal/documenthub-konnect/v0/openapi.yaml",
+      "src": "computed/internal/documenthub-konnect/v0/openapi.yaml",
       "dest": "specs/openapi/konnect.v0.yml"
     },
     {
-      "src": "output/internal/documenthub-konnect/v2/openapi.yaml",
+      "src": "computed/internal/documenthub-konnect/v2/openapi.yaml",
       "dest": "specs/openapi/konnect.v2.yml"
     },
     {
-      "src": "output/internal/documenthub-portal/v0/openapi.yaml",
+      "src": "computed/internal/documenthub-portal/v0/openapi.yaml",
       "dest": "specs/openapi/portal.v0.yml"
     },
     {
-      "src": "output/internal/documenthub-portal/v2/openapi.yaml",
+      "src": "computed/internal/documenthub-portal/v2/openapi.yaml",
       "dest": "specs/openapi/portal.v2.yml"
     }
   ],
   "kong/docs.konghq.com": [
     {
-      "src": "output/konnect/services/analytics-reports/public.yaml",
+      "src": "build/services/konnect/analytics-reports/public.yaml",
       "dest": "api-specs/Konnect/v2/yaml/analytics-reports.yaml"
     },
     {
-      "src": "output/konnect/services/analytics-requests/public.yaml",
+      "src": "build/services/konnect/analytics-requests/public.yaml",
       "dest": "api-specs/Konnect/v2/yaml/analytics-requests.yaml"
     },
     {
-      "src": "output/konnect/services/api-products/public.yaml",
+      "src": "build/services/konnect/api-products/public.yaml",
       "dest": "api-specs/Konnect/v2/yaml/api-products.yaml"
     },
     {
-      "src": "output/konnect/services/audit-logs/public.yaml",
+      "src": "build/services/konnect/audit-logs/public.yaml",
       "dest": "api-specs/Konnect/v2/yaml/audit-logs.yaml"
     },
     {
-      "src": "output/konnect/services/control-planes-config/public.yaml",
+      "src": "build/services/konnect/control-planes-config/public.yaml",
       "dest": "api-specs/Konnect/control-planes-config/control-planes-config.yaml"
     },
     {
-      "src": "output/konnect/services/control-planes/public.yaml",
+      "src": "build/services/konnect/control-planes/public.yaml",
       "dest": "api-specs/Konnect/v2/yaml/control-planes.yaml"
     },
     {
-      "src": "output/konnect/services/identity/public.yaml",
+      "src": "build/services/konnect/identity/public.yaml",
       "dest": "api-specs/Konnect/v3/yaml/identity.yaml"
     },
     {
-      "src": "output/konnect/services/mesh-control-planes/public.yaml",
+      "src": "build/services/konnect/mesh-control-planes/public.yaml",
       "dest": "api-specs/Konnect/v0/yaml/mesh-control-planes.yaml"
     },
     {
-      "src": "output/konnect/services/portal-management/public.yaml",
+      "src": "build/services/konnect/portal-management/public.yaml",
       "dest": "api-specs/Konnect/v2/yaml/portal-management.yaml"
     },
     {
-      "src": "output/konnect/services/ksearch/public.yaml",
+      "src": "build/services/konnect/ksearch/public.yaml",
       "dest": "api-specs/Konnect/v0/yaml/ksearch.yaml"
     }
   ]

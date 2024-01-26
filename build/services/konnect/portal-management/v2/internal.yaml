@@ -1,0 +1,3785 @@
+openapi: 3.0.3
+info:
+  title: Portal Management
+  version: 2.0.0
+  description: The management API for Portals
+  contact:
+    name: Kong
+    url: https://konghq.com
+servers:
+  - url: https://us.api.konghq.com/v2
+    description: US Region Base URL
+  - url: https://eu.api.konghq.com/v2
+    description: EU Region Base URL
+  - url: https://au.api.konghq.com/v2
+    description: AU Region Base URL
+security:
+  - personalAccessToken: []
+  - systemAccountAccessToken: []
+tags: []
+paths: {}
+components:
+  examples:
+    UpdateTeamExample1:
+      value:
+        name: IDM - Developers
+        description: The Identity Management (IDM) API team.
+    CreateTeamExample1:
+      value:
+        name: IDM - Developers
+        description: The Identity Management (IDM) API team.
+    AddDeveloperToTeamExample1:
+      value:
+        id: df120cb4-f60b-47bc-a2f8-6a28e6a3c63b
+    UpdatePortalTeamGroupMappingsExample1:
+      value:
+        data:
+          - team_id: af91db4c-6e51-403e-a2bf-33d27ae50c0a
+            groups:
+              - Service Developer
+          - team_id: bc11db4c-6e51-403e-a2bf-33d27ae50c0a
+            groups:
+              - Service Owner
+    UpdatePortalAuthenticationSettingsExample1:
+      value:
+        basic_auth_enabled: true
+        oidc_auth_enabled: true
+        oidc_team_mapping_enabled: true
+        konnect_mapping_enabled: false
+        oidc_issuer: https://identity.example.com/v2
+        oidc_client_id: x7id0o42lklas0blidl2
+        oidc_scopes:
+          - email
+          - openid
+          - profile
+        oidc_claim_mappings:
+          name: name
+          email: email
+          groups: custom-group-claim
+    UpdatePortalAuthenticationSettingsExampleDisableBasicAuth:
+      value:
+        basic_auth_enabled: false
+    UpdatePortalAuthenticationSettingsExampleEnableOIDC:
+      value:
+        oidc_auth_enabled: true
+        oidc_team_mapping_enabled: false
+        konnect_mapping_enabled: true
+        oidc_issuer: https://identity.example.com/v2
+        oidc_client_id: x7id0o42lklas0blidl2
+        oidc_scopes:
+          - email
+          - openid
+          - profile
+        oidc_claim_mappings:
+          name: name
+          email: email
+          groups: custom-group-claim
+    UpdatePortalAuthenticationSettingsExampleEnableOIDCTeamMapping:
+      value:
+        oidc_team_mapping_enabled: true
+        konnect_mapping_enabled: true
+        oidc_claim_mappings:
+          name: name
+          email: email
+          groups: custom-group-claim
+    PortalAssignRoleExampleViewer:
+      value:
+        role_name: API Viewer
+        entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
+        entity_type_name: Services
+        entity_region: us
+    PortalAssignRoleExampleConsumer:
+      value:
+        role_name: API Consumer
+        entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
+        entity_type_name: Services
+        entity_region: us
+    UpdatePortalExampleRbacEnabled:
+      value:
+        rbac_enabled: true
+    UpdatePortalExamplePublic:
+      value:
+        is_public: true
+    UpdatePortalExampleAutoApprove:
+      value:
+        auto_approve_applications: false
+        auto_approve_developers: false
+    UpdatePortalExampleCustomDomains:
+      value:
+        custom_domain: api.example.com
+        custom_client_domain: portal.example.com
+    UpdatePortalExample1:
+      value:
+        is_public: false
+        rbac_enabled: true
+        auto_approve_applications: false
+        auto_approve_developers: false
+        custom_domain: api.example.com
+        custom_client_domain: portal.example.com
+    UpdateApplicationRegistrationApproved:
+      value:
+        status: approved
+    UpdateApplicationRegistrationPending:
+      value:
+        status: pending
+    UpdateApplicationRegistrationRejected:
+      value:
+        status: rejected
+    UpdateApplicationRegistrationRevoked:
+      value:
+        status: revoked
+    UpdatePortalAppearanceExampleMintRocketTheme:
+      value:
+        theme_name: mint_rocket
+        use_custom_fonts: false
+        custom_theme: null
+        custom_fonts:
+          base: Roboto
+          code: Roboto
+          headings: Roboto
+        text:
+          catalog:
+            welcome_message: Welcome
+            primary_header: Come one in!
+        images:
+          favicon:
+            data: data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+          logo:
+            data: data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+          catalog_cover:
+            data: data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+    UpdatePortalAppearanceExampleDarkModeTheme:
+      value:
+        theme_name: dark_mode
+        use_custom_fonts: true
+        custom_theme: null
+        custom_fonts:
+          base: Lato
+          code: Roboto
+          headings: Roboto
+        text:
+          catalog:
+            welcome_message: Say Hello To Our APIs
+            primary_header: Say goodbye to your problems
+        images:
+          favicon:
+            data: data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+          logo:
+            data: data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+          catalog_cover:
+            data: data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+    UpdatePortalAppearanceExampleCustomTheme:
+      value:
+        theme_name: custom
+        use_custom_fonts: true
+        custom_theme:
+          colors:
+            section:
+              header:
+                value: '#F8F8F8'
+                description: Background for header
+              body:
+                value: '#FFFFFF'
+                description: Background for main content
+              hero:
+                value: '#F8F8F8'
+                description: Background for hero section
+              accent:
+                value: '#F8F8F8'
+                description: Subtle background
+              tertiary:
+                value: '#FFFFFF'
+                description: Tertiary background
+              stroke:
+                value: rgba(0,0,0,0.1)
+                description: Border color
+              footer:
+                value: '#07A88D'
+                description: Background for footer
+            text:
+              header:
+                value: rgba(0,0,0,0.8)
+                description: Header text
+              hero:
+                value: '#FFFFFF'
+                description: Hero text
+              headings:
+                value: rgba(0,0,0,0.8)
+                description: Headings text
+              primary:
+                value: rgba(0,0,0,0.8)
+                description: Main content text
+              secondary:
+                value: rgba(0,0,0,0.8)
+                description: Supporting text
+              accent:
+                value: '#07A88D'
+                description: Subtle text
+              link:
+                value: '#07A88D'
+                description: Link text
+              footer:
+                value: '#FFFFFF'
+                description: Footer text
+            button:
+              primary_fill:
+                value: '#1155CB'
+                description: Background for Primary Button
+              primary_text:
+                value: '#FFFFFF'
+                description: Text for Primary Button
+        custom_fonts:
+          base: Roboto
+          code: Roboto
+          headings: Roboto
+        text:
+          catalog:
+            welcome_message: Welcome
+            primary_header: Come one in!
+        images:
+          favicon:
+            data: data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+            filename: favicon.ico
+          logo:
+            data: data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+            filename: logo.png
+          catalog_cover:
+            data: data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+    UpdateDeveloperExampleApproved:
+      value:
+        status: approved
+    UpdateDeveloperExamplePending:
+      value:
+        status: pending
+    UpdateDeveloperExampleRejected:
+      value:
+        status: rejected
+    UpdateDeveloperExampleRevoked:
+      value:
+        status: revoked
+    PortalTeamGroupMappingCollectionExample1:
+      value:
+        meta:
+          page:
+            number: 1
+            size: 10
+            total: 2
+        data:
+          - team_id: 6801e673-cc10-498a-94cd-4271de07a0d3
+            groups:
+              - Tech Leads
+              - API Engineers
+          - team_id: 7301e673-cc10-498a-94cd-4271de07a0d3
+            groups:
+              - Managers
+              - Directors
+    PortalAuthenticationSettingsExample1:
+      value:
+        basic_auth_enabled: true
+        oidc_auth_enabled: true
+        oidc_team_mapping_enabled: true
+        konnect_mapping_enabled: true
+        oidc_config:
+          issuer: https://identity.example.com/v2
+          client_id: x7id0o42lklas0blidl2
+          scopes:
+            - email
+            - openid
+            - profile
+          claim_mappings:
+            name: name
+            email: email
+            groups: custom-group-claim
+    PortalAssignedRoleUSExample:
+      value:
+        id: 1a3c2169-27f8-4594-926b-41df3432d5dc
+        role_name: API Viewer
+        entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
+        entity_type_name: Services
+        entity_region: us
+    PortalAssignedRoleAllRegionsExample:
+      value:
+        id: 034cb810-1f2d-40d2-a1ce-31944144668e
+        role_name: API Consumer
+        entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
+        entity_type_name: Services
+        entity_region: '*'
+    PortalTeamExample1:
+      value:
+        id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+        name: Gold Tier
+        description: Team with access to APIs in the Gold tier
+        created_at: '2022-02-07T17:46:57.52Z'
+        updated_at: '2022-09-25T13:00:00.00Z'
+    AssignedPortalRoleCollectionExample1:
+      value:
+        meta:
+          page:
+            number: 1
+            size: 10
+            total: 3
+        data:
+          - id: b02e23c5-8ee4-4e5a-99f4-43329923adce
+            role_name: API Viewer
+            entity_id: 437c7192-fea0-4f35-8478-c8d57783f8c1
+            entity_type_name: Services
+            entity_region: us
+          - id: b02e23c5-8ee4-4e5a-99f4-43329923adce
+            role_name: API Consumer
+            entity_id: 437c7192-fea0-4f35-8478-c8d57783f8c1
+            entity_type: Services
+            entity_region: us
+          - id: 869d9402-f117-4f9a-840f-69acaf70a81a
+            role_name: API Viewer
+            entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
+            entity_type_name: Services
+            entity_region: us
+    ListPortalTeamsExample1:
+      value:
+        meta:
+          page:
+            number: 1
+            size: 10
+            total: 3
+        data:
+          - id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+            name: Partner
+            description: Team with access to Partner APIs
+            created_at: '2022-02-07T17:46:57.52Z'
+            updated_at: '2022-09-25T13:00:00.00Z'
+          - id: af9fd312-a987-4628-b4c5-bb4f4fddd5f7
+            name: Internal
+            description: Team with access to Internal APIs
+            created_at: '2022-02-07T17:46:57.52Z'
+            updated_at: '2022-09-25T13:00:00.00Z'
+          - id: 4f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+            name: Root
+            description: Team with access to Internal Systems
+            created_at: '2022-02-07T17:46:57.52Z'
+            updated_at: '2022-09-25T13:00:00.00Z'
+    ListRolesExample1:
+      value:
+        services:
+          name: Services
+          roles:
+            apiviewer:
+              name: API Viewer
+              description: >-
+                API Viewers have read-only access to the documentation of a
+                service in a portal
+            apiconsumer:
+              name: API Consumer
+              description: API Consumers can make calls to the given service
+    ListBasicDevelopersExample1:
+      value:
+        meta:
+          page:
+            number: 1
+            size: 10
+            total: 2
+        data:
+          - id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+            email: james.woods@email.com
+            full_name: James Woods
+            active: true
+            created_at: '2022-08-17T17:46:57.52Z'
+            updated_at: '2022-10-03T17:00:00.00Z'
+          - id: 4f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+            email: jill.stone@email.com
+            full_name: Jill Stone
+            active: false
+            created_at: '2022-07-17T17:46:57.52Z'
+            updated_at: '2022-10-03T17:00:00.00Z'
+    ListPortalsExample1:
+      value:
+        meta:
+          page:
+            number: 1
+            size: 10
+            total: 1
+        data:
+          - id: 8f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+            created_at: '2022-02-07T17:46:57.52Z'
+            updated_at: '2022-10-08T17:00:00.52Z'
+            name: Portal A
+            default_domain: 123455678abcd.us.portal.konghq.com
+            is_public: false
+            rbac_enabled: true
+            auto_approve_applications: false
+            auto_approve_developers: true
+            custom_domain: api.example.com
+            custom_client_domain: portal.example.com
+    ListPortalProductsExample1:
+      value:
+        meta:
+          page:
+            number: 1
+            size: 10
+            total: 2
+        data:
+          - id: 9cdcba18-5bdf-4936-81de-d76da02cb99b
+            name: Excellent API
+            description: Excellent for serving
+            created_at: '2022-05-24T18:40:35.500Z'
+            updated_at: '2022-05-24T18:40:35.500Z'
+            portal_ids:
+              - 83f1733c-862c-43e5-a005-acfb0addfcfb
+            labels:
+              department: marketing
+            version_count: 4
+          - id: 6d8cba18-5bdf-4936-81de-d76da02cb99b
+            name: Utility API
+            description: Useful for helping with progress
+            created_at: '2022-04-24T18:40:35.500Z'
+            updated_at: '2022-09-24T18:40:35.500Z'
+            portal_ids:
+              - 83f1733c-862c-43e5-a005-acfb0addfcfb
+            labels:
+              department: engineering
+              location: cyberspace
+            version_count: 21
+    GetPortalExample1:
+      value:
+        id: 9f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+        created_at: '2022-02-07T17:46:57.52Z'
+        updated_at: '2022-10-08T17:00:00.52Z'
+        name: Portal A
+        default_domain: 123455678abcd.us.portal.konghq.com
+        is_public: false
+        rbac_enabled: true
+        auto_approve_applications: false
+        auto_approve_developers: true
+        custom_domain: api.example.com
+        custom_client_domain: portal.example.com
+    UpdatePortalResponseExample1:
+      value:
+        id: 9f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+        created_at: '2022-02-07T17:46:57.52Z'
+        updated_at: '2022-10-08T17:00:00.52Z'
+        name: Portal A
+        default_domain: 123455678abcd.us.portal.konghq.com
+        is_public: false
+        rbac_enabled: true
+        auto_approve_applications: false
+        auto_approve_developers: true
+        custom_domain: api.example.com
+        custom_client_domain: portal.example.com
+    VerifyPortalDomainsExample1:
+      value:
+        is_cname_verified: true
+        is_ssl_issued: false
+    ListDevelopersExample1:
+      value:
+        meta:
+          page:
+            number: 1
+            size: 10
+            total: 4
+        data:
+          - id: 8cd9feff-b4da-4a9f-ba49-cbe83c75ff22
+            email: jane.developer@example.com
+            full_name: Jane Dev
+            status: approved
+            application_count: 8
+            created_at: '2022-11-15T20:37:41.457Z'
+            updated_at: '2022-11-15T20:37:47.456Z'
+          - id: 4cd9feff-b4da-4a9f-ba49-cbe83c75ff22
+            email: john.developer@example.com
+            full_name: John Dev
+            status: revoked
+            application_count: 27
+            created_at: '2022-11-15T20:37:41.457Z'
+            updated_at: '2022-11-15T20:37:47.456Z'
+          - id: 6cd9feff-b4da-4a9f-ba49-cbe83c75ff22
+            email: john.developer@example.com
+            full_name: Jim Dev
+            status: pending
+            application_count: 0
+            created_at: '2022-11-15T20:37:41.457Z'
+            updated_at: '2022-11-15T20:37:47.456Z'
+          - id: 7cd9feff-b4da-4a9f-ba49-cbe83c75ff22
+            email: john.developer@example.com
+            full_name: Jan Dev
+            status: rejected
+            application_count: 1
+            created_at: '2022-11-15T20:37:41.457Z'
+            updated_at: '2022-11-15T20:37:47.456Z'
+    GetDeveloperExample1:
+      value:
+        id: 7cd9feff-b4da-4a9f-ba49-cbe83c75ff22
+        email: developer@example.com
+        full_name: Jane Dev
+        status: approved
+        application_count: 3
+        created_at: '2022-11-15T20:37:41.457Z'
+        updated_at: '2022-11-15T20:37:47.456Z'
+    UpdateDeveloperResponseExample1:
+      value:
+        id: 7cd9feff-b4da-4a9f-ba49-cbe83c75ff22
+        email: developer@example.com
+        full_name: Jane Dev
+        status: approved
+        application_count: 3
+        created_at: '2022-11-15T20:37:41.457Z'
+        updated_at: '2022-11-15T20:37:47.456Z'
+    ListApplicationsExample1:
+      value:
+        meta:
+          page:
+            number: 1
+            size: 10
+            total: 2
+        data:
+          - id: b15e2460-ba40-431d-9df0-4957fcffacda
+            name: App 1
+            description: An easy to manage app in a Konnect developer portal
+            reference_id: df66b180-97df-4ddb-8b45-8b7d5eac56da
+            registration_count: 2
+            portal:
+              id: 95606071-49c7-4c2e-ae49-8a86d72a8110
+            dcr_provider: null
+            developer:
+              id: 9cd9feff-b4da-4a9f-ba49-cbe83c75ff22
+              name: Jane Dev
+              email: jane.developer@example.com
+            created_at: '2022-12-22T19:09:30.712Z'
+            updated_at: '2022-12-22T19:09:30.712Z'
+          - id: b15e2460-ba40-431d-9df0-4957fcffacda
+            name: App 1
+            description: >-
+              A Konnect application that is linked to an Identity Provider
+              application using Dynamic Client Registration (DCR)
+            reference_id: yr1k0d9kj3l0cl01hp4o0
+            registration_count: 3
+            portal:
+              id: 95606071-49c7-4c2e-ae49-8a86d72a8110
+            dcr_provider:
+              id: 7ea06071-49c7-4c2e-ae49-8a86d72a8110
+            developer:
+              id: 9cd9feff-b4da-4a9f-ba49-cbe83c75ff22
+              name: John Dev
+              email: john.developer@example.com
+            created_at: '2022-12-22T19:07:30.712Z'
+            updated_at: '2022-12-22T19:07:30.712Z'
+    GetApplicationExampleBasic:
+      value:
+        id: b15e2460-ba40-431d-9df0-4957fcffacda
+        name: App 1
+        description: An easy to manage app in a Konnect developer portal
+        reference_id: df66b180-97df-4ddb-8b45-8b7d5eac56da
+        registration_count: 4
+        portal:
+          id: 95606071-49c7-4c2e-ae49-8a86d72a8110
+        dcr_provider: null
+        developer:
+          id: 9cd9feff-b4da-4a9f-ba49-cbe83c75ff22
+          name: Jane Dev
+          email: jane.developer@example.com
+        created_at: '2022-12-22T19:09:30.712Z'
+        updated_at: '2022-12-22T19:09:30.712Z'
+    GetApplicationExampleDcr:
+      value:
+        id: b15e2460-ba40-431d-9df0-4957fcffacda
+        name: App 1
+        description: >-
+          A Konnect application that is linked to an Identity Provider
+          application using Dynamic Client Registration (DCR)
+        reference_id: yr1k0d9kj3l0cl01hp4o0
+        registration_count: 1
+        portal:
+          id: 95606071-49c7-4c2e-ae49-8a86d72a8110
+        dcr_provider:
+          id: 7ea06071-49c7-4c2e-ae49-8a86d72a8110
+        developer:
+          id: 9cd9feff-b4da-4a9f-ba49-cbe83c75ff22
+          name: John Dev
+          email: john.developer@example.com
+        created_at: '2022-12-22T19:07:30.712Z'
+        updated_at: '2022-12-22T19:07:30.712Z'
+    ListApplicationRegistrationsExample1:
+      value:
+        meta:
+          page:
+            number: 1
+            size: 10
+            total: 2
+        data:
+          - id: c200cc33-2d33-4754-b086-a98e0fcd36fb
+            status: approved
+            application:
+              id: e15e2460-ba40-431d-9df0-4957fcff7cda
+              name: App 1
+            product:
+              id: 56f637b7-cd95-478b-9b02-d770618f641c
+              name: Great Product
+            product_version:
+              id: 64e54925-20a0-4788-9873-d24db33f1495
+              name: v1
+            developer:
+              id: 6cd9feff-b4da-4a9f-ba49-cbe83c75ff22
+              name: Jane Dev
+            granted_scopes:
+              - openid
+            created_at: '2022-12-22T20:13:07.305Z'
+            updated_at: '2022-12-22T20:13:36.710Z'
+          - id: d200cc33-2d33-4754-b086-a98e0fcd36fb
+            status: rejected
+            application:
+              id: e15e2460-ba40-431d-9df0-4957fcff7cda
+              name: App 2
+            product:
+              id: 56f637b7-cd95-478b-9b02-d770618f641c
+              name: Great Product
+            product_version:
+              id: 64e54925-20a0-4788-9873-d24db33f1495
+              name: v0
+            developer:
+              id: 6cd9feff-b4da-4a9f-ba49-cbe83c75ff22
+              name: Jane Dev
+            granted_scopes: null
+            created_at: '2022-12-22T20:13:07.305Z'
+            updated_at: '2022-12-22T20:13:36.710Z'
+          - id: d300cc33-2d33-4754-b086-a98e0fcd36fb
+            status: pending
+            application:
+              id: e15e2460-ba40-431d-9df0-4957fcff7cda
+              name: App 3
+            product:
+              id: 56f637b7-cd95-478b-9b02-d770618f641c
+              name: Good Product
+            product_version:
+              id: 64e54925-20a0-4788-9873-d24db33f1495
+              name: v2
+            developer:
+              id: 6cd9feff-b4da-4a9f-ba49-cbe83c75ff22
+              name: Jane Dev
+            granted_scopes:
+              - openid
+              - read:myscope
+            created_at: '2022-12-22T20:13:07.305Z'
+            updated_at: '2022-12-22T20:13:36.710Z'
+          - id: d300cc33-2d33-4754-b086-a98e0fcd36fb
+            status: revoked
+            application:
+              id: e15e2460-ba40-431d-9df0-4957fcff7cda
+              name: App 3
+            product:
+              id: 56f637b7-cd95-478b-9b02-d770618f641c
+              name: Good Product
+            product_version:
+              id: 64e54925-20a0-4788-9873-d24db33f1495
+              name: v1
+            developer:
+              id: 6cd9feff-b4da-4a9f-ba49-cbe83c75ff22
+              name: Jane Dev
+            granted_scopes: []
+            created_at: '2022-12-22T20:13:07.305Z'
+            updated_at: '2022-12-22T20:13:36.710Z'
+    GetApplicationRegistrationExample1:
+      value:
+        id: c300cc33-2d33-4754-b086-a98e0fcd36fb
+        status: approved
+        application:
+          id: c15e2460-ba40-431d-9df0-4957fcff7cda
+          name: App 1
+        product:
+          id: 86f637b7-cd95-478b-9b02-d770618f641c
+          name: Great Product
+        product_version:
+          id: 74e54925-20a0-4788-9873-d24db33f1495
+          name: v1
+        developer:
+          id: ecd9feff-b4da-4a9f-ba49-cbe83c75ff22
+          name: Jane Dev
+        granted_scopes:
+          - openid
+        created_at: '2022-12-22T20:13:07.305Z'
+        updated_at: '2022-12-22T20:13:36.710Z'
+    UpdateApplicationRegistrationResponseExample1:
+      value:
+        id: c300cc33-2d33-4754-b086-a98e0fcd36fb
+        status: approved
+        application:
+          id: c15e2460-ba40-431d-9df0-4957fcff7cda
+          name: App 1
+        product:
+          id: 86f637b7-cd95-478b-9b02-d770618f641c
+          name: Great Product
+        product_version:
+          id: 74e54925-20a0-4788-9873-d24db33f1495
+          name: v1
+        developer:
+          id: ecd9feff-b4da-4a9f-ba49-cbe83c75ff22
+          name: Jane Dev
+        granted_scopes:
+          - openid
+        created_at: '2022-12-22T20:13:07.305Z'
+        updated_at: '2022-12-22T20:13:36.710Z'
+    ListGrantedScopesExample1:
+      value:
+        data:
+          - profile
+          - vault
+    GetAppearanceDefaultsExample1:
+      value:
+        themes:
+          mint_rocket:
+            colors:
+              section:
+                header:
+                  value: '#F8F8F8'
+                  description: Background for header
+                body:
+                  value: '#FFFFFF'
+                  description: Background for main content
+                hero:
+                  value: '#F8F8F8'
+                  description: Background for hero section
+                accent:
+                  value: '#F8F8F8'
+                  description: Subtle background
+                tertiary:
+                  value: '#FFFFFF'
+                  description: Tertiary background
+                stroke:
+                  value: rgba(0,0,0,0.1)
+                  description: Border color
+                footer:
+                  value: '#07A88D'
+                  description: Background for footer
+              text:
+                header:
+                  value: rgba(0,0,0,0.8)
+                  description: Header text
+                hero:
+                  value: '#FFFFFF'
+                  description: Hero text
+                headings:
+                  value: rgba(0,0,0,0.8)
+                  description: Headings text
+                primary:
+                  value: rgba(0,0,0,0.8)
+                  description: Main content text
+                secondary:
+                  value: rgba(0,0,0,0.8)
+                  description: Supporting text
+                accent:
+                  value: '#07A88D'
+                  description: Subtle text
+                link:
+                  value: '#07A88D'
+                  description: Link text
+                footer:
+                  value: '#FFFFFF'
+                  description: Footer text
+              button:
+                primary_fill:
+                  value: '#1155CB'
+                  description: Background for Primary Button
+                primary_text:
+                  value: '#FFFFFF'
+                  description: Text for Primary Button
+          dark_mode:
+            colors:
+              section:
+                header:
+                  value: '#0A161E'
+                  description: Background for header
+                body:
+                  value: '#0C0C0C'
+                  description: Background for main content
+                hero:
+                  value: '#1A1D21'
+                  description: Background for hero section
+                accent:
+                  value: '#1F1F1F'
+                  description: Subtle background
+                tertiary:
+                  value: '#222529'
+                  description: Tertiary background
+                stroke:
+                  value: '#34393F'
+                  description: Border color
+                footer:
+                  value: '#212429'
+                  description: Background for footer
+              text:
+                header:
+                  value: '#FFFFFF'
+                  description: Header text
+                hero:
+                  value: rgba(255,255,255,0.8)
+                  description: Hero text
+                headings:
+                  value: '#FFFFFF'
+                  description: Headings text
+                primary:
+                  value: '#C8C8C9'
+                  description: Main content text
+                secondary:
+                  value: '#919294'
+                  description: Supporting text
+                accent:
+                  value: '#FFFFFF'
+                  description: Subtle text
+                link:
+                  value: '#2977FF'
+                  description: Link text
+                footer:
+                  value: '#FFFFFF'
+                  description: Footer text
+              button:
+                primary_fill:
+                  value: '#1155CB'
+                  description: Background for Primary Button
+                primary_text:
+                  value: '#FFFFFF'
+                  description: Text for Primary Button
+        fonts:
+          base: Roboto
+          code: Roboto Mono
+          headings: Lato
+        text:
+          catalog:
+            welcome_message: Welcome to our service catalog
+            primary_header: Find All of Our Services in a Single Place
+    GetPortalAppearanceExample1:
+      value:
+        theme_name: custom
+        use_custom_fonts: true
+        custom_theme:
+          colors:
+            section:
+              header:
+                value: '#F8F8F8'
+                description: Background for header
+              body:
+                value: '#FFFFFF'
+                description: Background for main content
+              hero:
+                value: '#F8F8F8'
+                description: Background for hero section
+              accent:
+                value: '#F8F8F8'
+                description: Subtle background
+              tertiary:
+                value: '#FFFFFF'
+                description: Tertiary background
+              stroke:
+                value: rgba(0,0,0,0.1)
+                description: Border color
+              footer:
+                value: '#07A88D'
+                description: Background for footer
+            text:
+              header:
+                value: rgba(0,0,0,0.8)
+                description: Header text
+              hero:
+                value: '#FFFFFF'
+                description: Hero text
+              headings:
+                value: rgba(0,0,0,0.8)
+                description: Headings text
+              primary:
+                value: rgba(0,0,0,0.8)
+                description: Main content text
+              secondary:
+                value: rgba(0,0,0,0.8)
+                description: Supporting text
+              accent:
+                value: '#07A88D'
+                description: Subtle text
+              link:
+                value: '#07A88D'
+                description: Link text
+              footer:
+                value: '#FFFFFF'
+                description: Footer text
+            button:
+              primary_fill:
+                value: '#1155CB'
+                description: Background for Primary Button
+              primary_text:
+                value: '#FFFFFF'
+                description: Text for Primary Button
+        custom_fonts:
+          base: Roboto
+          code: Roboto
+          headings: Roboto
+        text:
+          catalog:
+            welcome_message: Welcome
+            primary_header: Come on in!
+        images:
+          favicon:
+            data: data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+            filename: favicon.ico
+          logo:
+            data: data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+            filename: logo.png
+          catalog_cover:
+            data: data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+    UpdatePortalAppearanceResponseExample1:
+      value:
+        theme_name: custom
+        use_custom_fonts: true
+        custom_theme:
+          colors:
+            section:
+              header:
+                value: '#F8F8F8'
+                description: Background for header
+              body:
+                value: '#FFFFFF'
+                description: Background for main content
+              hero:
+                value: '#F8F8F8'
+                description: Background for hero section
+              accent:
+                value: '#F8F8F8'
+                description: Subtle background
+              tertiary:
+                value: '#FFFFFF'
+                description: Tertiary background
+              stroke:
+                value: rgba(0,0,0,0.1)
+                description: Border color
+              footer:
+                value: '#07A88D'
+                description: Background for footer
+            text:
+              header:
+                value: rgba(0,0,0,0.8)
+                description: Header text
+              hero:
+                value: '#FFFFFF'
+                description: Hero text
+              headings:
+                value: rgba(0,0,0,0.8)
+                description: Headings text
+              primary:
+                value: rgba(0,0,0,0.8)
+                description: Main content text
+              secondary:
+                value: rgba(0,0,0,0.8)
+                description: Supporting text
+              accent:
+                value: '#07A88D'
+                description: Subtle text
+              link:
+                value: '#07A88D'
+                description: Link text
+              footer:
+                value: '#FFFFFF'
+                description: Footer text
+            button:
+              primary_fill:
+                value: '#1155CB'
+                description: Background for Primary Button
+              primary_text:
+                value: '#FFFFFF'
+                description: Text for Primary Button
+        custom_fonts:
+          base: Roboto
+          code: Roboto
+          headings: Roboto
+        text:
+          catalog:
+            welcome_message: Welcome
+            primary_header: Come on in!
+        images:
+          favicon:
+            data: data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+            filename: favicon.ico
+          logo:
+            data: data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+            filename: logo.png
+          catalog_cover:
+            data: data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+    UnauthorizedExample:
+      value:
+        status: 401
+        title: Unauthorized
+        instance: kong:trace:8347343766220159418
+        detail: Unauthorized
+    ForbiddenExample:
+      value:
+        status: 403
+        title: Forbidden
+        instance: kong:trace:2723154947768991354
+        detail: You do not have permission to perform this action
+    NotFoundExample:
+      value:
+        status: 404
+        title: Not Found
+        instance: kong:trace:6816496025408232265
+        detail: Not Found
+  schemas:
+    PortalClaimMappings:
+      title: PortalClaimMappings
+      description: Mappings from a portal developer atribute to an Identity Provider claim.
+      type: object
+      minProperties: 0
+      maxProperties: 3
+      properties:
+        name:
+          type: string
+          example: name
+          default: name
+        email:
+          type: string
+          example: email
+          default: email
+        groups:
+          type: string
+          default: groups
+          example: custom-group-claim
+      example:
+        name: name
+        email: email
+        groups: custom-group-claim
+    PortalOIDCConfig:
+      title: PortalOIDCConfig
+      description: Configuration properties for an OpenID Connect Identity Provider.
+      type: object
+      properties:
+        issuer:
+          type: string
+          example: https://identity.example.com/v2
+        client_id:
+          type: string
+          example: x7id0o42lklas0blidl2
+        scopes:
+          type: array
+          default:
+            - email
+            - openid
+            - profile
+          items:
+            type: string
+            default: openid
+          example:
+            - email
+            - openid
+            - profile
+        claim_mappings:
+          $ref: '#/components/schemas/PortalClaimMappings'
+      required:
+        - issuer
+        - client_id
+      example:
+        issuer: https://identity.example.com/v2
+        client_id: x7id0o42lklas0blidl2
+        scopes:
+          - email
+          - openid
+          - profile
+        claim_mappings:
+          name: name
+          email: email
+          groups: custom-group-claim
+    PortalAuthenticationSettingsResponse:
+      title: PortalAuthenticationSettingsResponse
+      description: The developer authentication settings for a portal.
+      type: object
+      properties:
+        basic_auth_enabled:
+          type: boolean
+          example: true
+          description: The organization has basic auth enabled.
+        oidc_auth_enabled:
+          type: boolean
+          example: false
+          description: The organization has OIDC disabled.
+        oidc_team_mapping_enabled:
+          type: boolean
+          example: true
+          description: IdP groups determine the Portal Teams a developer has.
+        konnect_mapping_enabled:
+          type: boolean
+          example: false
+          description: A Konnect Identity Admin assigns teams to a developer.
+        oidc_config:
+          $ref: '#/components/schemas/PortalOIDCConfig'
+      required:
+        - basic_auth_enabled
+        - konnect_mapping_enabled
+        - oidc_auth_enabled
+        - oidc_team_mapping_enabled
+      example:
+        basic_auth_enabled: true
+        oidc_auth_enabled: true
+        oidc_team_mapping_enabled: true
+        konnect_mapping_enabled: false
+        oidc_config:
+          issuer: https://identity.example.com/v2
+          client_id: x7id0o42lklas0blidl2
+          scopes:
+            - email
+            - openid
+            - profile
+          claim_mappings:
+            name: name
+            email: email
+            groups: custom-group-claim
+    AssignedPortalRoleCollectionResponse:
+      title: AssignedPortalRoleCollectionResponse
+      description: A paginated list of roles assigned to a team.
+      type: object
+      required:
+        - meta
+        - data
+      properties:
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PortalAssignedRoleResponse'
+      example:
+        meta:
+          page:
+            number: 1
+            size: 10
+            total: 3
+        data:
+          - id: b02e23c5-8ee4-4e5a-99f4-43329923adce
+            role_name: API Viewer
+            entity_id: 437c7192-fea0-4f35-8478-c8d57783f8c1
+            entity_type_name: Services
+            entity_region: us
+          - id: b02e23c5-8ee4-4e5a-99f4-43329923adce
+            role_name: API Consumer
+            entity_id: 437c7192-fea0-4f35-8478-c8d57783f8c1
+            entity_type: Services
+            entity_region: us
+          - id: 869d9402-f117-4f9a-840f-69acaf70a81a
+            role_name: API Viewer
+            entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
+            entity_type_name: Services
+            entity_region: us
+    ListPortalTeamsResponse:
+      title: ListPortalTeamsResponse
+      description: A paginated list of teams in a portal.
+      type: object
+      required:
+        - data
+        - meta
+      properties:
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PortalTeamResponse'
+      example:
+        meta:
+          page:
+            number: 1
+            size: 10
+            total: 3
+        data:
+          - id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+            name: Partner
+            description: Team with access to Partner APIs
+            created_at: '2022-02-07T17:46:57.52Z'
+            updated_at: '2022-09-25T13:00:00.00Z'
+          - id: af9fd312-a987-4628-b4c5-bb4f4fddd5f7
+            name: Internal
+            description: Team with access to Internal APIs
+            created_at: '2022-02-07T17:46:57.52Z'
+            updated_at: '2022-09-25T13:00:00.00Z'
+          - id: 4f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+            name: Root
+            description: Team with access to Internal Systems
+            created_at: '2022-02-07T17:46:57.52Z'
+            updated_at: '2022-09-25T13:00:00.00Z'
+    ListRolesResponse:
+      title: ListRolesResponse
+      description: >-
+        The set of roles available to associate with resources and assign to
+        teams.
+      type: object
+      properties:
+        services:
+          type: object
+          required:
+            - name
+            - roles
+          properties:
+            name:
+              type: string
+              enum:
+                - Services
+            roles:
+              type: object
+              required:
+                - apiviewer
+                - apiconsumer
+              properties:
+                apiviewer:
+                  type: object
+                  required:
+                    - name
+                    - description
+                  properties:
+                    name:
+                      type: string
+                      enum:
+                        - API Viewer
+                    description:
+                      type: string
+                      enum:
+                        - >-
+                          API Viewers have read-only access to the documentation
+                          of a service in a portal
+                apiconsumer:
+                  type: object
+                  required:
+                    - name
+                    - description
+                  properties:
+                    name:
+                      type: string
+                      enum:
+                        - API Consumer
+                    description:
+                      type: string
+                      enum:
+                        - API Consumers can make calls to the given service
+      required:
+        - services
+      example:
+        services:
+          name: Services
+          roles:
+            apiviewer:
+              name: API Viewer
+              description: >-
+                API Viewers have read-only access to the documentation of a
+                service in a portal
+            apiconsumer:
+              name: API Consumer
+              description: API Consumers can make calls to the given service
+    ListBasicDevelopersResponse:
+      title: ListBasicDevelopersResponse
+      description: A paginated list of basic information about a set of developers.
+      type: object
+      properties:
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/BasicDeveloper'
+      example:
+        meta:
+          page:
+            number: 1
+            size: 10
+            total: 2
+        data:
+          - id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+            email: james.woods@email.com
+            full_name: James Woods
+            active: true
+            created_at: '2022-08-17T17:46:57.52Z'
+            updated_at: '2022-10-03T17:00:00.00Z'
+          - id: 4f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+            email: jill.stone@email.com
+            full_name: Jill Stone
+            active: false
+            created_at: '2022-07-17T17:46:57.52Z'
+            updated_at: '2022-10-03T17:00:00.00Z'
+    AddDeveloperToTeamRequest:
+      title: AddDeveloperToTeamRequest
+      description: Add a developer to a team by specifying the developer ID.
+      type: object
+      properties:
+        id:
+          type: string
+          example: df120cb4-f60b-47bc-a2f8-6a28e6a3c63b
+          format: uuid
+          writeOnly: true
+      required:
+        - id
+      example:
+        id: df120cb4-f60b-47bc-a2f8-6a28e6a3c63b
+    PortalAssignRoleRequest:
+      title: PortalAssignRoleRequest
+      description: An assigned role associates a service and an action to a team.
+      type: object
+      properties:
+        role_name:
+          type: string
+          example: API Viewer
+        entity_id:
+          type: string
+          format: uuid
+          example: e67490ce-44dc-4cbd-b65e-b52c746fc26a
+        entity_type_name:
+          type: string
+          example: Services
+        entity_region:
+          type: string
+          enum:
+            - us
+            - eu
+            - au
+            - '*'
+          example: eu
+      example:
+        role_name: API Viewer
+        entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
+        entity_type_name: Services
+        entity_region: us
+    PortalAuthenticationSettingsUpdateRequest:
+      title: PortalAuthenticationSettingsUpdateRequest
+      description: Properties to update a portal's developer auth settings.
+      type: object
+      properties:
+        basic_auth_enabled:
+          type: boolean
+          example: true
+          description: The organization has basic auth enabled.
+        oidc_auth_enabled:
+          type: boolean
+          example: false
+          description: The organization has OIDC disabled.
+        oidc_team_mapping_enabled:
+          type: boolean
+          example: true
+          description: >-
+            Whether IdP groups determine the Konnect Portal teams a developer
+            has.
+        konnect_mapping_enabled:
+          type: boolean
+          example: false
+          description: Whether a Konnect Identity Admin assigns teams to a developer.
+        oidc_issuer:
+          type: string
+        oidc_client_id:
+          type: string
+        oidc_client_secret:
+          type: string
+        oidc_scopes:
+          type: array
+          default:
+            - email
+            - openid
+            - profile
+          items:
+            type: string
+            default: openid
+        oidc_claim_mappings:
+          $ref: '#/components/schemas/PortalClaimMappings'
+      example:
+        basic_auth_enabled: true
+        oidc_auth_enabled: true
+        oidc_team_mapping_enabled: true
+        konnect_mapping_enabled: false
+        oidc_issuer: https://identity.example.com/v2
+        oidc_client_id: x7id0o42lklas0blidl2
+        oidc_scopes:
+          - email
+          - openid
+          - profile
+        oidc_claim_mappings:
+          name: name
+          email: email
+          groups: custom-group-claim
+    PortalTeamGroupMappingsUpdateRequest:
+      title: PortalTeamGroupMappingsUpdateRequest
+      description: A set of mappings to update from a team to their groups.
+      type: object
+      properties:
+        data:
+          type: array
+          description: The IdP groups to map to the given team.
+          items:
+            type: object
+            properties:
+              team_id:
+                type: string
+                format: uuid
+              groups:
+                type: array
+                items:
+                  type: string
+      example:
+        data:
+          - team_id: af91db4c-6e51-403e-a2bf-33d27ae50c0a
+            groups:
+              - Service Developer
+    PortalUpdateTeamRequest:
+      title: PortalUpdateTeamRequest
+      description: Properties to update on a team.
+      type: object
+      properties:
+        name:
+          type: string
+          example: IDM - Developers
+          pattern: ^[\w \W]+$
+          writeOnly: true
+        description:
+          type: string
+          maxLength: 250
+          example: The Identity Management (IDM) API team.
+          writeOnly: true
+      example:
+        name: IDM - Developers
+        description: The Identity Management (IDM) API team.
+    PortalCreateTeamRequest:
+      title: PortalCreateTeamRequest
+      description: Details about a team to create.
+      type: object
+      properties:
+        name:
+          type: string
+          example: IDM - Developers
+          pattern: ^[\w \W]+$
+          writeOnly: true
+        description:
+          type: string
+          maxLength: 250
+          example: The Identity Management (IDM) team.
+          writeOnly: true
+      required:
+        - name
+      example:
+        name: IDM - Developers
+        description: The Identity Management (IDM) team.
+    PortalTeamResponse:
+      title: PortalTeamResponse
+      description: Details about a developer team.
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+          readOnly: true
+        name:
+          type: string
+          pattern: ^[\w \W]+$
+          example: IDM - Developers
+          maxLength: 250
+        description:
+          type: string
+          example: The developers for the IDM API.
+          maxLength: 250
+        created_at:
+          type: string
+          format: date-time
+          example: '1992-02-07T17:46:57.52Z'
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          example: '2022-02-07T17:00:00.52Z'
+          readOnly: true
+      example:
+        id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+        name: IDM - Developers
+        description: The developers for the IDM API.
+        created_at: '1992-02-07T17:46:57.52Z'
+        updated_at: '2022-08-31T17:00:00.52Z'
+    PortalTeamGroupMappingResponse:
+      title: PortalTeamGroupMappingResponse
+      description: A paginated list of portal team group mappings.
+      type: object
+      properties:
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PortalTeamGroupMapping'
+      example:
+        meta:
+          page:
+            number: 1
+            size: 10
+            total: 2
+        data:
+          - team_id: 6801e673-cc10-498a-94cd-4271de07a0d3
+            groups:
+              - Tech Leads
+              - API Engineers
+          - team_id: 7301e673-cc10-498a-94cd-4271de07a0d3
+            groups:
+              - Managers
+              - Directors
+    PortalTeamGroupMapping:
+      title: PortalTeamGroupMapping
+      description: A map of portal teams to Identity Provider groups.
+      type: object
+      properties:
+        team_id:
+          type: string
+          format: uuid
+          example: 6801e673-cc10-498a-94cd-4271de07a0d3
+          description: The Konnect team ID.
+        groups:
+          type: array
+          uniqueItems: true
+          description: The IdP groups that are mapped to the specified team.
+          items:
+            type: string
+            example: API Engineers
+      example:
+        team_id: 6801e673-cc10-498a-94cd-4271de07a0d3
+        groups:
+          - Tech Leads
+          - API Engineers
+    PortalAssignedRoleResponse:
+      title: PortalAssignedRoleResponse
+      description: An assigned role associates a service and an action to a team.
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: eaf7adf1-32c8-4bbf-b960-d1f8456afe67
+        role_name:
+          type: string
+          example: API Viewer
+        entity_id:
+          type: string
+          format: uuid
+          example: 817d0422-45c9-4d88-8d64-45aef05c1ae7
+        entity_type_name:
+          type: string
+          example: Services
+        entity_region:
+          type: string
+          enum:
+            - us
+            - eu
+            - au
+            - '*'
+          example: eu
+      example:
+        id: 1a3c2169-27f8-4594-926b-41df3432d5dc
+        role_name: API Viewer
+        entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
+        entity_type_name: Services
+        entity_region: us
+    ListPortalsResponse:
+      additionalProperties: false
+      description: A paginated list of portals in the current region in the organization.
+      type: object
+      required:
+        - data
+        - meta
+      properties:
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Portal'
+      example:
+        meta:
+          page:
+            number: 1
+            size: 10
+            total: 1
+        data:
+          - id: 8f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+            created_at: '2022-02-07T17:46:57.52Z'
+            updated_at: '2022-10-08T17:00:00.52Z'
+            name: Portal A
+            default_domain: 123455678abcd.us.portal.konghq.com
+            is_public: false
+            rbac_enabled: true
+            auto_approve_applications: false
+            auto_approve_developers: true
+            custom_domain: api.example.com
+            custom_client_domain: portal.example.com
+    ListPortalProductsResponse:
+      additionalProperties: false
+      description: A paginated list of API products published to a portal.
+      type: object
+      required:
+        - data
+        - meta
+      properties:
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublishedAPIProduct'
+      example:
+        meta:
+          page:
+            number: 1
+            size: 10
+            total: 2
+        data:
+          - id: 9cdcba18-5bdf-4936-81de-d76da02cb99b
+            name: Excellent API
+            description: Excellent for serving
+            created_at: '2022-05-24T18:40:35.500Z'
+            updated_at: '2022-05-24T18:40:35.500Z'
+            portal_ids:
+              - 83f1733c-862c-43e5-a005-acfb0addfcfb
+            labels:
+              department: marketing
+            version_count: 4
+          - id: 6d8cba18-5bdf-4936-81de-d76da02cb99b
+            name: Utility API
+            description: Useful for helping with progress
+            created_at: '2022-04-24T18:40:35.500Z'
+            updated_at: '2022-09-24T18:40:35.500Z'
+            portal_ids:
+              - 83f1733c-862c-43e5-a005-acfb0addfcfb
+            labels:
+              department: engineering
+              location: cyberspace
+            version_count: 21
+    PublishedAPIProduct:
+      title: PublishedApiProduct
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - description
+        - portal_ids
+        - created_at
+        - updated_at
+        - labels
+        - version_count
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: b9e81174-b5bb-4638-a3c3-8afe61a0abf8
+          description: The API product ID.
+          readOnly: true
+        name:
+          type: string
+          description: The name of the API product
+          example: My Name
+        description:
+          type: string
+          nullable: true
+          description: The description of the API product
+          example: MyDescription
+        portal_ids:
+          type: array
+          nullable: false
+          uniqueItems: true
+          minItems: 0
+          description: >-
+            The list of portal identifiers which this API product is published
+            to
+          items:
+            type: string
+            format: uuid
+            example: 25a2624c-49fc-4764-99e1-224ed819f200
+        version_count:
+          type: number
+          example: 10
+          description: >-
+            The number of published product versions attached to this API
+            product
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        labels:
+          $ref: '#/components/schemas/APIProductLabels'
+      example:
+        id: 7cdcba18-5bdf-4936-81de-d76da02cb99b
+        name: Excellent API
+        description: Excellent for serving
+        created_at: '2022-05-24T18:40:35.500Z'
+        updated_at: '2022-05-24T18:40:35.500Z'
+        portal_ids:
+          - 83f1733c-862c-43e5-a005-acfb0addfcfb
+        labels:
+          department: marketing
+        version_count: 4
+    GetPortalResponse:
+      $ref: '#/components/schemas/Portal'
+    UpdatePortalResponse:
+      $ref: '#/components/schemas/Portal'
+    GetAppearanceDefaultsResponse:
+      $ref: '#/components/schemas/AppearanceDefaults'
+    GetPortalAppearanceResponse:
+      allOf:
+        - $ref: '#/components/schemas/PortalAppearance'
+        - type: object
+          required:
+            - theme_name
+            - use_custom_fonts
+            - custom_theme
+            - custom_fonts
+            - text
+            - images
+      example:
+        theme_name: custom
+        use_custom_fonts: true
+        custom_theme:
+          colors:
+            section:
+              header:
+                value: '#F8F8F8'
+                description: Background for header
+              body:
+                value: '#FFFFFF'
+                description: Background for main content
+              hero:
+                value: '#F8F8F8'
+                description: Background for hero section
+              accent:
+                value: '#F8F8F8'
+                description: Subtle background
+              tertiary:
+                value: '#FFFFFF'
+                description: Tertiary background
+              stroke:
+                value: rgba(0,0,0,0.1)
+                description: Border color
+              footer:
+                value: '#07A88D'
+                description: Background for footer
+            text:
+              header:
+                value: rgba(0,0,0,0.8)
+                description: Header text
+              hero:
+                value: '#FFFFFF'
+                description: Hero text
+              headings:
+                value: rgba(0,0,0,0.8)
+                description: Headings text
+              primary:
+                value: rgba(0,0,0,0.8)
+                description: Main content text
+              secondary:
+                value: rgba(0,0,0,0.8)
+                description: Supporting text
+              accent:
+                value: '#07A88D'
+                description: Subtle text
+              link:
+                value: '#07A88D'
+                description: Link text
+              footer:
+                value: '#FFFFFF'
+                description: Footer text
+            button:
+              primary_fill:
+                value: '#1155CB'
+                description: Background for Primary Button
+              primary_text:
+                value: '#FFFFFF'
+                description: Text for Primary Button
+        custom_fonts:
+          base: Roboto
+          code: Roboto
+          headings: Roboto
+        text:
+          catalog:
+            welcome_message: Welcome
+            primary_header: Come on in!
+        images:
+          favicon:
+            data: data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+            filename: favicon.ico
+          logo:
+            data: data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+            filename: logo.png
+          catalog_cover:
+            data: data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+    UpdatePortalAppearanceResponse:
+      allOf:
+        - $ref: '#/components/schemas/PortalAppearance'
+        - type: object
+          required:
+            - theme_name
+            - use_custom_fonts
+            - custom_theme
+            - custom_fonts
+            - text
+            - images
+      example:
+        theme_name: custom
+        use_custom_fonts: true
+        custom_theme:
+          colors:
+            section:
+              header:
+                value: '#F8F8F8'
+                description: Background for header
+              body:
+                value: '#FFFFFF'
+                description: Background for main content
+              hero:
+                value: '#F8F8F8'
+                description: Background for hero section
+              accent:
+                value: '#F8F8F8'
+                description: Subtle background
+              tertiary:
+                value: '#FFFFFF'
+                description: Tertiary background
+              stroke:
+                value: rgba(0,0,0,0.1)
+                description: Border color
+              footer:
+                value: '#07A88D'
+                description: Background for footer
+            text:
+              header:
+                value: rgba(0,0,0,0.8)
+                description: Header text
+              hero:
+                value: '#FFFFFF'
+                description: Hero text
+              headings:
+                value: rgba(0,0,0,0.8)
+                description: Headings text
+              primary:
+                value: rgba(0,0,0,0.8)
+                description: Main content text
+              secondary:
+                value: rgba(0,0,0,0.8)
+                description: Supporting text
+              accent:
+                value: '#07A88D'
+                description: Subtle text
+              link:
+                value: '#07A88D'
+                description: Link text
+              footer:
+                value: '#FFFFFF'
+                description: Footer text
+            button:
+              primary_fill:
+                value: '#1155CB'
+                description: Background for Primary Button
+              primary_text:
+                value: '#FFFFFF'
+                description: Text for Primary Button
+        custom_fonts:
+          base: Roboto
+          code: Roboto
+          headings: Roboto
+        text:
+          catalog:
+            welcome_message: Welcome
+            primary_header: Come on in!
+        images:
+          favicon:
+            data: data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+            filename: favicon.ico
+          logo:
+            data: data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+            filename: logo.png
+          catalog_cover:
+            data: data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+    ListDevelopersResponse:
+      additionalProperties: false
+      type: object
+      required:
+        - data
+        - meta
+      properties:
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PortalDeveloper'
+      example:
+        meta:
+          page:
+            number: 1
+            size: 10
+            total: 4
+        data:
+          - id: 8cd9feff-b4da-4a9f-ba49-cbe83c75ff22
+            email: jane.developer@example.com
+            full_name: Jane Dev
+            status: approved
+            application_count: 8
+            created_at: '2022-11-15T20:37:41.457Z'
+            updated_at: '2022-11-15T20:37:47.456Z'
+          - id: 4cd9feff-b4da-4a9f-ba49-cbe83c75ff22
+            email: john.developer@example.com
+            full_name: John Dev
+            status: revoked
+            application_count: 27
+            created_at: '2022-11-15T20:37:41.457Z'
+            updated_at: '2022-11-15T20:37:47.456Z'
+          - id: 6cd9feff-b4da-4a9f-ba49-cbe83c75ff22
+            email: john.developer@example.com
+            full_name: Jim Dev
+            status: pending
+            application_count: 0
+            created_at: '2022-11-15T20:37:41.457Z'
+            updated_at: '2022-11-15T20:37:47.456Z'
+          - id: 7cd9feff-b4da-4a9f-ba49-cbe83c75ff22
+            email: john.developer@example.com
+            full_name: Jan Dev
+            status: rejected
+            application_count: 1
+            created_at: '2022-11-15T20:37:41.457Z'
+            updated_at: '2022-11-15T20:37:47.456Z'
+    ListApplicationsResponse:
+      additionalProperties: false
+      type: object
+      required:
+        - data
+        - meta
+      properties:
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Application'
+      example:
+        meta:
+          page:
+            number: 1
+            size: 10
+            total: 2
+        data:
+          - id: b15e2460-ba40-431d-9df0-4957fcffacda
+            name: App 1
+            description: An easy to manage app in a Konnect developer portal
+            reference_id: df66b180-97df-4ddb-8b45-8b7d5eac56da
+            registration_count: 2
+            portal:
+              id: 95606071-49c7-4c2e-ae49-8a86d72a8110
+            dcr_provider: null
+            developer:
+              id: 9cd9feff-b4da-4a9f-ba49-cbe83c75ff22
+              name: Jane Dev
+              email: jane.developer@example.com
+            created_at: '2022-12-22T19:09:30.712Z'
+            updated_at: '2022-12-22T19:09:30.712Z'
+          - id: b15e2460-ba40-431d-9df0-4957fcffacda
+            name: App 1
+            description: >-
+              A Konnect application that is linked to an Identity Provider
+              application using Dynamic Client Registration (DCR)
+            reference_id: yr1k0d9kj3l0cl01hp4o0
+            registration_count: 3
+            portal:
+              id: 95606071-49c7-4c2e-ae49-8a86d72a8110
+            dcr_provider:
+              id: 7ea06071-49c7-4c2e-ae49-8a86d72a8110
+            developer:
+              id: 9cd9feff-b4da-4a9f-ba49-cbe83c75ff22
+              name: John Dev
+              email: john.developer@example.com
+            created_at: '2022-12-22T19:07:30.712Z'
+            updated_at: '2022-12-22T19:07:30.712Z'
+    UpdateDeveloperResponse:
+      $ref: '#/components/schemas/PortalDeveloper'
+    GetDeveloperResponse:
+      $ref: '#/components/schemas/PortalDeveloper'
+    GetApplicationResponse:
+      $ref: '#/components/schemas/Application'
+    ListApplicationRegistrationsResponse:
+      title: ListApplicationRegistrationsResponse
+      additionalProperties: false
+      type: object
+      required:
+        - data
+        - meta
+      properties:
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApplicationRegistration'
+      example:
+        meta:
+          page:
+            number: 1
+            size: 10
+            total: 2
+        data:
+          - id: c200cc33-2d33-4754-b086-a98e0fcd36fb
+            status: approved
+            application:
+              id: e15e2460-ba40-431d-9df0-4957fcff7cda
+              name: App 1
+            product:
+              id: 56f637b7-cd95-478b-9b02-d770618f641c
+              name: Great Product
+            product_version:
+              id: 64e54925-20a0-4788-9873-d24db33f1495
+              name: v1
+            developer:
+              id: 6cd9feff-b4da-4a9f-ba49-cbe83c75ff22
+              name: Jane Dev
+            granted_scopes:
+              - openid
+            created_at: '2022-12-22T20:13:07.305Z'
+            updated_at: '2022-12-22T20:13:36.710Z'
+          - id: d200cc33-2d33-4754-b086-a98e0fcd36fb
+            status: rejected
+            application:
+              id: e15e2460-ba40-431d-9df0-4957fcff7cda
+              name: App 2
+            product:
+              id: 56f637b7-cd95-478b-9b02-d770618f641c
+              name: Great Product
+            product_version:
+              id: 64e54925-20a0-4788-9873-d24db33f1495
+              name: v0
+            developer:
+              id: 6cd9feff-b4da-4a9f-ba49-cbe83c75ff22
+              name: Jane Dev
+            granted_scopes: null
+            created_at: '2022-12-22T20:13:07.305Z'
+            updated_at: '2022-12-22T20:13:36.710Z'
+          - id: d300cc33-2d33-4754-b086-a98e0fcd36fb
+            status: pending
+            application:
+              id: e15e2460-ba40-431d-9df0-4957fcff7cda
+              name: App 3
+            product:
+              id: 56f637b7-cd95-478b-9b02-d770618f641c
+              name: Good Product
+            product_version:
+              id: 64e54925-20a0-4788-9873-d24db33f1495
+              name: v2
+            developer:
+              id: 6cd9feff-b4da-4a9f-ba49-cbe83c75ff22
+              name: Jane Dev
+            granted_scopes:
+              - openid
+              - read:myscope
+            created_at: '2022-12-22T20:13:07.305Z'
+            updated_at: '2022-12-22T20:13:36.710Z'
+          - id: d300cc33-2d33-4754-b086-a98e0fcd36fb
+            status: revoked
+            application:
+              id: e15e2460-ba40-431d-9df0-4957fcff7cda
+              name: App 3
+            product:
+              id: 56f637b7-cd95-478b-9b02-d770618f641c
+              name: Good Product
+            product_version:
+              id: 64e54925-20a0-4788-9873-d24db33f1495
+              name: v1
+            developer:
+              id: 6cd9feff-b4da-4a9f-ba49-cbe83c75ff22
+              name: Jane Dev
+            granted_scopes: []
+            created_at: '2022-12-22T20:13:07.305Z'
+            updated_at: '2022-12-22T20:13:36.710Z'
+    ListGrantedScopesResponse:
+      title: ListGrantedScopesResponse
+      additionalProperties: false
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: array
+          items:
+            type: string
+      example:
+        data:
+          - profile
+          - vault
+    GetApplicationRegistrationResponse:
+      $ref: '#/components/schemas/ApplicationRegistration'
+    UpdateApplicationRegistrationResponse:
+      $ref: '#/components/schemas/ApplicationRegistration'
+    VerifyPortalDomainsResponse:
+      title: VerifyPortalDomainsResponse
+      additionalProperties: false
+      description: Details about the current status of a custom domain.
+      type: object
+      required:
+        - is_cname_verified
+        - is_ssl_issued
+      properties:
+        is_cname_verified:
+          type: boolean
+          readOnly: true
+        is_ssl_issued:
+          type: boolean
+          readOnly: true
+      example:
+        is_cname_verified: true
+        is_ssl_issued: false
+    BasicDeveloper:
+      title: BasicDeveloper
+      type: object
+      description: Basic information about a developer.
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+          readOnly: true
+        email:
+          type: string
+          format: email
+          example: developer@email.com
+          maxLength: 250
+        full_name:
+          type: string
+          pattern: ^[\w \W]+$
+          example: API Developer
+          maxLength: 250
+        active:
+          type: boolean
+          example: true
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          example: '2022-02-07T17:46:57.52Z'
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          example: '2022-10-08T17:00:00.52Z'
+          readOnly: true
+      example:
+        id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+        email: user@email.com
+        full_name: API Developer
+        active: true
+        created_at: '2022-02-07T17:46:57.52Z'
+        updated_at: '2022-10-08T17:00:00.52Z'
+    PortalDeveloper:
+      title: PortalDeveloper
+      additionalProperties: false
+      type: object
+      required:
+        - id
+        - created_at
+        - updated_at
+        - email
+        - full_name
+        - status
+        - application_count
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        email:
+          type: string
+          format: email
+          maxLength: 255
+        full_name:
+          type: string
+          maxLength: 255
+        status:
+          $ref: '#/components/schemas/DeveloperStatus'
+        application_count:
+          readOnly: true
+          type: number
+          example: 4
+      example:
+        id: 7cd9feff-b4da-4a9f-ba49-cbe83c75ff22
+        email: developer@example.com
+        full_name: Jane Dev
+        status: approved
+        application_count: 3
+        created_at: '2022-11-15T20:37:41.457Z'
+        updated_at: '2022-11-15T20:37:47.456Z'
+    Application:
+      title: Application
+      additionalProperties: false
+      type: object
+      required:
+        - id
+        - created_at
+        - updated_at
+        - name
+        - description
+        - reference_id
+        - registration_count
+        - dcr_provider
+        - portal
+        - developer
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        name:
+          description: The unique (per developer) name of the application.
+          type: string
+        description:
+          description: A description of the application.
+          type: string
+          nullable: true
+        reference_id:
+          description: >-
+            The ID used to linked the portal application to an Identity Provider
+            application.
+          type: string
+          readOnly: true
+        registration_count:
+          description: >-
+            The number of product version registrations that are associated with
+            the application. Registrations of any status are included in the
+            count.
+          type: number
+          readOnly: true
+        dcr_provider:
+          description: >-
+            Information about the DCR provider this application uses, if using
+            DCR.
+          type: object
+          additionalProperties: false
+          nullable: true
+          required:
+            - id
+          properties:
+            id:
+              $ref: '#/components/schemas/UUID'
+        portal:
+          description: Information about the portal the application is in.
+          type: object
+          additionalProperties: false
+          required:
+            - id
+          properties:
+            id:
+              $ref: '#/components/schemas/UUID'
+        developer:
+          description: Information about the developer that owns the application.
+          type: object
+          additionalProperties: false
+          required:
+            - id
+            - name
+            - email
+          properties:
+            id:
+              $ref: '#/components/schemas/UUID'
+            name:
+              description: The name of the developer that created the application.
+              type: string
+            email:
+              description: The email of the developer that created the application.
+              type: string
+      example:
+        id: b15e2460-ba40-431d-9df0-4957fcffacda
+        name: App 1
+        description: An easy to manage app in a Konnect developer portal
+        reference_id: df66b180-97df-4ddb-8b45-8b7d5eac56da
+        registration_count: 4
+        portal:
+          id: 95606071-49c7-4c2e-ae49-8a86d72a8110
+        dcr_provider: null
+        developer:
+          id: 9cd9feff-b4da-4a9f-ba49-cbe83c75ff22
+          name: Jane Dev
+          email: jane.developer@example.com
+        created_at: '2022-12-22T19:09:30.712Z'
+        updated_at: '2022-12-22T19:09:30.712Z'
+    ApplicationRegistration:
+      title: ApplicationRegistration
+      description: A application's registration for a specific version of a product.
+      additionalProperties: false
+      type: object
+      required:
+        - id
+        - created_at
+        - updated_at
+        - status
+        - product
+        - product_version
+        - application
+        - developer
+        - granted_scopes
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        status:
+          $ref: '#/components/schemas/ApplicationRegistrationStatus'
+        product:
+          description: Details about the product the application is registered to.
+          type: object
+          additionalProperties: false
+          required:
+            - id
+            - name
+          properties:
+            id:
+              $ref: '#/components/schemas/UUID'
+            name:
+              description: The name of the product the application is registered to.
+              type: string
+        product_version:
+          description: >-
+            Details about the version of the product the application is
+            registered to.
+          type: object
+          additionalProperties: false
+          required:
+            - id
+            - name
+          properties:
+            id:
+              $ref: '#/components/schemas/UUID'
+            name:
+              description: >-
+                The name of the product version associated with the product the
+                application is registered to.
+              type: string
+        application:
+          description: Details about the application the registration is part of.
+          type: object
+          additionalProperties: false
+          required:
+            - id
+            - name
+          properties:
+            id:
+              $ref: '#/components/schemas/UUID'
+            name:
+              description: The name of the application the registration is part of.
+              type: string
+        developer:
+          description: >-
+            Details about the developer that owns the application the
+            registration is part of.
+          type: object
+          additionalProperties: false
+          required:
+            - id
+            - name
+          properties:
+            id:
+              $ref: '#/components/schemas/UUID'
+            name:
+              description: The name of the developer that created the registration.
+              type: string
+        granted_scopes:
+          description: >-
+            List of granted scopes for the registration. Null if application
+            type does not support returning granted scopes.
+          type: array
+          nullable: true
+          items:
+            type: string
+      example:
+        id: c300cc33-2d33-4754-b086-a98e0fcd36fb
+        status: approved
+        application:
+          id: c15e2460-ba40-431d-9df0-4957fcff7cda
+          name: App 1
+        product:
+          id: 86f637b7-cd95-478b-9b02-d770618f641c
+          name: Great Product
+        product_version:
+          id: 74e54925-20a0-4788-9873-d24db33f1495
+          name: v1
+        developer:
+          id: ecd9feff-b4da-4a9f-ba49-cbe83c75ff22
+          name: Jane Dev
+        granted_scopes:
+          - openid
+        created_at: '2022-12-22T20:13:07.305Z'
+        updated_at: '2022-12-22T20:13:36.710Z'
+    Portal:
+      additionalProperties: false
+      type: object
+      required:
+        - id
+        - created_at
+        - updated_at
+        - name
+        - default_domain
+        - is_public
+        - rbac_enabled
+        - auto_approve_applications
+        - auto_approve_developers
+        - custom_domain
+        - custom_client_domain
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        name:
+          description: The name of the portal, used to distinguish it from other portals.
+          type: string
+          maxLength: 255
+          minLength: 1
+        default_domain:
+          description: >-
+            The domain assigned to the portal by Konnect. This is the default
+            place to access the portal and its API if not using a
+            `custom_domain``.
+          type: string
+          format: hostname
+          readOnly: true
+        is_public:
+          description: >-
+            Whether the portal catalog can be accessed publicly without any
+            developer authentication. Developer accounts and applications cannot
+            be created if the portal is public.
+          type: boolean
+        rbac_enabled:
+          description: >-
+            Whether the portal resources are protected by Role Based Access
+            Control (RBAC). If enabled, developers view or register for products
+            until unless assigned to teams with access to view and consume
+            specific products.
+          type: boolean
+        auto_approve_applications:
+          description: >-
+            Whether the requests from applications to register for products will
+            be automatically approved, or if they will be set to pending until
+            approved by an admin.
+          type: boolean
+        auto_approve_developers:
+          type: boolean
+          description: >-
+            Whether the developer account registrations will be automatically
+            approved, or if they will be set to pending until approved by an
+            admin.
+        custom_domain:
+          nullable: true
+          type: string
+          format: hostname
+          description: >-
+            The custom domain to access the developer portal. A CNAME for the
+            portal's default domain must be able to be set for the custom domain
+            for it to be valid. After setting a valid CNAME, an SSL/TLS
+            certificate will be automatically manged for the custom domain, and
+            traffic will be able to use the custom domain to route to the
+            portal's web client and API.
+        custom_client_domain:
+          description: >-
+            The custom domain to access a self-hosted customized developer
+            portal client. If this is set, the Konnect-hosted portal client will
+            no longer be available. `custom_domain` must be also set for this
+            value to be set. See https://github.com/Kong/konnect-portal for
+            information on how to get started deploying and customizing your own
+            Konnect portal.
+          nullable: true
+          type: string
+          format: hostname
+      example:
+        id: 9f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+        created_at: '2022-02-07T17:46:57.52Z'
+        updated_at: '2022-10-08T17:00:00.52Z'
+        name: Portal A
+        default_domain: 123455678abcd.us.portal.konghq.com
+        is_public: false
+        rbac_enabled: true
+        auto_approve_applications: false
+        auto_approve_developers: true
+        custom_domain: api.example.com
+        custom_client_domain: portal.example.com
+    UpdatePortalRequest:
+      additionalProperties: false
+      type: object
+      properties:
+        is_public:
+          description: >-
+            Whether the portal catalog can be accessed publicly without any
+            developer authentication. Developer accounts and applications cannot
+            be created if the portal is public.
+          type: boolean
+        rbac_enabled:
+          description: >-
+            Whether the portal resources are protected by Role Based Access
+            Control (RBAC). If enabled, developers view or register for products
+            until unless assigned to teams with access to view and consume
+            specific products.
+          type: boolean
+        auto_approve_applications:
+          description: >-
+            Whether the requests from applications to register for products will
+            be automatically approved, or if they will be set to pending until
+            approved by an admin.
+          type: boolean
+        auto_approve_developers:
+          description: >-
+            Whether the developer account registrations will be automatically
+            approved, or if they will be set to pending until approved by an
+            admin.
+          type: boolean
+        custom_domain:
+          description: >-
+            The custom domain to access the developer portal. A CNAME for the
+            portal's default domain must be able to be set for the custom domain
+            for it to be valid. After setting a valid CNAME, an SSL/TLS
+            certificate will be automatically manged for the custom domain, and
+            traffic will be able to use the custom domain to route to the
+            portal's web client and API.
+          type: string
+          format: hostname
+          nullable: true
+          maxLength: 1024
+        custom_client_domain:
+          description: >-
+            The custom domain to access a self-hosted customized developer
+            portal client. If this is set, the Konnect-hosted portal will no
+            longer be available.  `custom_domain` must be also set for this
+            value to be set. See https://github.com/Kong/konnect-portal for
+            information on how to get started deploying and customizing your own
+            Konnect portal.
+          type: string
+          format: hostname
+          nullable: true
+          maxLength: 1024
+      example:
+        is_public: false
+        rbac_enabled: true
+        auto_approve_applications: false
+        auto_approve_developers: false
+        custom_domain: api.example.com
+        custom_client_domain: portal.example.com
+    UpdateDeveloperRequest:
+      title: UpdateDeveloperRequest
+      additionalProperties: false
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/DeveloperStatus'
+      example:
+        status: approved
+    UpdateApplicationRegistrationRequest:
+      title: UpdateApplicationRegistrationRequest
+      additionalProperties: false
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/ApplicationRegistrationStatus'
+      example:
+        status: rejected
+    UpdatePortalAppearanceRequest:
+      $ref: '#/components/schemas/PortalAppearance'
+    AppearanceDefaults:
+      title: AppearanceDefaults
+      description: The built-in appearance settings available for portals.
+      additionalProperties: false
+      type: object
+      readOnly: true
+      required:
+        - themes
+        - fonts
+        - text
+      properties:
+        themes:
+          $ref: '#/components/schemas/AppearanceDefaultThemes'
+        fonts:
+          $ref: '#/components/schemas/AppearanceFonts'
+        text:
+          $ref: '#/components/schemas/AppearanceTextVariables'
+      example:
+        themes:
+          mint_rocket:
+            colors:
+              section:
+                header:
+                  value: '#F8F8F8'
+                  description: Background for header
+                body:
+                  value: '#FFFFFF'
+                  description: Background for main content
+                hero:
+                  value: '#F8F8F8'
+                  description: Background for hero section
+                accent:
+                  value: '#F8F8F8'
+                  description: Subtle background
+                tertiary:
+                  value: '#FFFFFF'
+                  description: Tertiary background
+                stroke:
+                  value: rgba(0,0,0,0.1)
+                  description: Border color
+                footer:
+                  value: '#07A88D'
+                  description: Background for footer
+              text:
+                header:
+                  value: rgba(0,0,0,0.8)
+                  description: Header text
+                hero:
+                  value: '#FFFFFF'
+                  description: Hero text
+                headings:
+                  value: rgba(0,0,0,0.8)
+                  description: Headings text
+                primary:
+                  value: rgba(0,0,0,0.8)
+                  description: Main content text
+                secondary:
+                  value: rgba(0,0,0,0.8)
+                  description: Supporting text
+                accent:
+                  value: '#07A88D'
+                  description: Subtle text
+                link:
+                  value: '#07A88D'
+                  description: Link text
+                footer:
+                  value: '#FFFFFF'
+                  description: Footer text
+              button:
+                primary_fill:
+                  value: '#1155CB'
+                  description: Background for Primary Button
+                primary_text:
+                  value: '#FFFFFF'
+                  description: Text for Primary Button
+          dark_mode:
+            colors:
+              section:
+                header:
+                  value: '#0A161E'
+                  description: Background for header
+                body:
+                  value: '#0C0C0C'
+                  description: Background for main content
+                hero:
+                  value: '#1A1D21'
+                  description: Background for hero section
+                accent:
+                  value: '#1F1F1F'
+                  description: Subtle background
+                tertiary:
+                  value: '#222529'
+                  description: Tertiary background
+                stroke:
+                  value: '#34393F'
+                  description: Border color
+                footer:
+                  value: '#212429'
+                  description: Background for footer
+              text:
+                header:
+                  value: '#FFFFFF'
+                  description: Header text
+                hero:
+                  value: rgba(255,255,255,0.8)
+                  description: Hero text
+                headings:
+                  value: '#FFFFFF'
+                  description: Headings text
+                primary:
+                  value: '#C8C8C9'
+                  description: Main content text
+                secondary:
+                  value: '#919294'
+                  description: Supporting text
+                accent:
+                  value: '#FFFFFF'
+                  description: Subtle text
+                link:
+                  value: '#2977FF'
+                  description: Link text
+                footer:
+                  value: '#FFFFFF'
+                  description: Footer text
+              button:
+                primary_fill:
+                  value: '#1155CB'
+                  description: Background for Primary Button
+                primary_text:
+                  value: '#FFFFFF'
+                  description: Text for Primary Button
+        fonts:
+          base: Roboto
+          code: Roboto Mono
+          headings: Lato
+        text:
+          catalog:
+            welcome_message: Welcome to our service catalog
+            primary_header: Find All of Our Services in a Single Place
+    AppearanceDefaultThemes:
+      title: AppearanceDefaultThemes
+      description: The set of built-in appearance themes that are provided for portals.
+      additionalProperties: false
+      type: object
+      readOnly: true
+      required:
+        - mint_rocket
+        - dark_mode
+      properties:
+        mint_rocket:
+          $ref: '#/components/schemas/AppearanceThemeVariables'
+        dark_mode:
+          $ref: '#/components/schemas/AppearanceThemeVariables'
+      example:
+        mint_rocket:
+          colors:
+            section:
+              header:
+                value: '#F8F8F8'
+                description: Background for header
+              body:
+                value: '#FFFFFF'
+                description: Background for main content
+              hero:
+                value: '#F8F8F8'
+                description: Background for hero section
+              accent:
+                value: '#F8F8F8'
+                description: Subtle background
+              tertiary:
+                value: '#FFFFFF'
+                description: Tertiary background
+              stroke:
+                value: rgba(0,0,0,0.1)
+                description: Border color
+              footer:
+                value: '#07A88D'
+                description: Background for footer
+            text:
+              header:
+                value: rgba(0,0,0,0.8)
+                description: Header text
+              hero:
+                value: '#FFFFFF'
+                description: Hero text
+              headings:
+                value: rgba(0,0,0,0.8)
+                description: Headings text
+              primary:
+                value: rgba(0,0,0,0.8)
+                description: Main content text
+              secondary:
+                value: rgba(0,0,0,0.8)
+                description: Supporting text
+              accent:
+                value: '#07A88D'
+                description: Subtle text
+              link:
+                value: '#07A88D'
+                description: Link text
+              footer:
+                value: '#FFFFFF'
+                description: Footer text
+            button:
+              primary_fill:
+                value: '#1155CB'
+                description: Background for Primary Button
+              primary_text:
+                value: '#FFFFFF'
+                description: Text for Primary Button
+        dark_mode:
+          colors:
+            section:
+              header:
+                value: '#0A161E'
+                description: Background for header
+              body:
+                value: '#0C0C0C'
+                description: Background for main content
+              hero:
+                value: '#1A1D21'
+                description: Background for hero section
+              accent:
+                value: '#1F1F1F'
+                description: Subtle background
+              tertiary:
+                value: '#222529'
+                description: Tertiary background
+              stroke:
+                value: '#34393F'
+                description: Border color
+              footer:
+                value: '#212429'
+                description: Background for footer
+            text:
+              header:
+                value: '#FFFFFF'
+                description: Header text
+              hero:
+                value: rgba(255,255,255,0.8)
+                description: Hero text
+              headings:
+                value: '#FFFFFF'
+                description: Headings text
+              primary:
+                value: '#C8C8C9'
+                description: Main content text
+              secondary:
+                value: '#919294'
+                description: Supporting text
+              accent:
+                value: '#FFFFFF'
+                description: Subtle text
+              link:
+                value: '#2977FF'
+                description: Link text
+              footer:
+                value: '#FFFFFF'
+                description: Footer text
+            button:
+              primary_fill:
+                value: '#1155CB'
+                description: Background for Primary Button
+              primary_text:
+                value: '#FFFFFF'
+                description: Text for Primary Button
+    AppearanceColorVariable:
+      type: object
+      additionalProperties: false
+      required:
+        - value
+      properties:
+        value:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+          maxLength: 512
+      example:
+        value: '#000000'
+        description: The color for a type of thing
+    AppearanceThemeColorVariables:
+      type: object
+      additionalProperties: false
+      required:
+        - section
+        - text
+        - button
+      properties:
+        section:
+          type: object
+          additionalProperties: false
+          required:
+            - header
+            - body
+            - hero
+            - accent
+            - tertiary
+            - stroke
+            - footer
+          properties:
+            header:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            body:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            hero:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            accent:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            tertiary:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            stroke:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            footer:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+        text:
+          type: object
+          additionalProperties: false
+          required:
+            - header
+            - hero
+            - headings
+            - primary
+            - secondary
+            - accent
+            - link
+            - footer
+          properties:
+            header:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            hero:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            headings:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            primary:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            secondary:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            accent:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            link:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            footer:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+        button:
+          type: object
+          additionalProperties: false
+          required:
+            - primary_fill
+            - primary_text
+          properties:
+            primary_fill:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            primary_text:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+      example:
+        section:
+          header:
+            value: '#0A161E'
+            description: Background for header
+          body:
+            value: '#0C0C0C'
+            description: Background for main content
+          hero:
+            value: '#1A1D21'
+            description: Background for hero section
+          accent:
+            value: '#1F1F1F'
+            description: Subtle background
+          tertiary:
+            value: '#222529'
+            description: Tertiary background
+          stroke:
+            value: '#34393F'
+            description: Border color
+          footer:
+            value: '#212429'
+            description: Background for footer
+        text:
+          header:
+            value: '#FFFFFF'
+            description: Header text
+          hero:
+            value: rgba(255,255,255,0.8)
+            description: Hero text
+          headings:
+            value: '#FFFFFF'
+            description: Headings text
+          primary:
+            value: '#C8C8C9'
+            description: Main content text
+          secondary:
+            value: '#919294'
+            description: Supporting text
+          accent:
+            value: '#FFFFFF'
+            description: Subtle text
+          link:
+            value: '#2977FF'
+            description: Link text
+          footer:
+            value: '#FFFFFF'
+            description: Footer text
+        button:
+          primary_fill:
+            value: '#1155CB'
+            description: Background for Primary Button
+          primary_text:
+            value: '#FFFFFF'
+            description: Text for Primary Button
+    AppearanceThemeVariables:
+      title: AppearanceThemeVariables
+      description: >-
+        Groups of variables for configuring visual details of the portal user
+        interface. Set theme_name to 'custom' to use custom values for theme
+        variables.
+      type: object
+      additionalProperties: false
+      required:
+        - colors
+      properties:
+        colors:
+          $ref: '#/components/schemas/AppearanceThemeColorVariables'
+      example:
+        colors:
+          section:
+            header:
+              value: '#F8F8F8'
+              description: Background for header
+            body:
+              value: '#FFFFFF'
+              description: Background for main content
+            hero:
+              value: '#F8F8F8'
+              description: Background for hero section
+            accent:
+              value: '#F8F8F8'
+              description: Subtle background
+            tertiary:
+              value: '#FFFFFF'
+              description: Tertiary background
+            stroke:
+              value: rgba(0,0,0,0.1)
+              description: Border color
+            footer:
+              value: '#07A88D'
+              description: Background for footer
+          text:
+            header:
+              value: rgba(0,0,0,0.8)
+              description: Header text
+            hero:
+              value: '#FFFFFF'
+              description: Hero text
+            headings:
+              value: rgba(0,0,0,0.8)
+              description: Headings text
+            primary:
+              value: rgba(0,0,0,0.8)
+              description: Main content text
+            secondary:
+              value: rgba(0,0,0,0.8)
+              description: Supporting text
+            accent:
+              value: '#07A88D'
+              description: Subtle text
+            link:
+              value: '#07A88D'
+              description: Link text
+            footer:
+              value: '#FFFFFF'
+              description: Footer text
+          button:
+            primary_fill:
+              value: '#1155CB'
+              description: Background for Primary Button
+            primary_text:
+              value: '#FFFFFF'
+              description: Text for Primary Button
+    NullableAppearanceThemeVariables:
+      title: AppearanceThemeVariables
+      description: >-
+        Groups of variables for configuring visual details of the portal user
+        interface. Set theme_name to 'custom' to use custom values for theme
+        variables.
+      type: object
+      additionalProperties: false
+      required:
+        - colors
+      properties:
+        colors:
+          $ref: '#/components/schemas/AppearanceThemeColorVariables'
+      example:
+        colors:
+          section:
+            header:
+              value: '#F8F8F8'
+              description: Background for header
+            body:
+              value: '#FFFFFF'
+              description: Background for main content
+            hero:
+              value: '#F8F8F8'
+              description: Background for hero section
+            accent:
+              value: '#F8F8F8'
+              description: Subtle background
+            tertiary:
+              value: '#FFFFFF'
+              description: Tertiary background
+            stroke:
+              value: rgba(0,0,0,0.1)
+              description: Border color
+            footer:
+              value: '#07A88D'
+              description: Background for footer
+          text:
+            header:
+              value: rgba(0,0,0,0.8)
+              description: Header text
+            hero:
+              value: '#FFFFFF'
+              description: Hero text
+            headings:
+              value: rgba(0,0,0,0.8)
+              description: Headings text
+            primary:
+              value: rgba(0,0,0,0.8)
+              description: Main content text
+            secondary:
+              value: rgba(0,0,0,0.8)
+              description: Supporting text
+            accent:
+              value: '#07A88D'
+              description: Subtle text
+            link:
+              value: '#07A88D'
+              description: Link text
+            footer:
+              value: '#FFFFFF'
+              description: Footer text
+          button:
+            primary_fill:
+              value: '#1155CB'
+              description: Background for Primary Button
+            primary_text:
+              value: '#FFFFFF'
+              description: Text for Primary Button
+      nullable: true
+    AppearanceFonts:
+      description: >-
+        Font selections to render text in the portal user interface. Must set
+        use_custom_fonts to true to enable using custom font values.
+      type: object
+      additionalProperties: false
+      required:
+        - base
+        - code
+        - headings
+      properties:
+        base:
+          $ref: '#/components/schemas/AppearanceFontName'
+        code:
+          $ref: '#/components/schemas/AppearanceFontName'
+        headings:
+          $ref: '#/components/schemas/AppearanceFontName'
+    NullableAppearanceFonts:
+      description: >-
+        Font selections to render text in the portal user interface. Must set
+        use_custom_fonts to true to enable using custom font values.
+      type: object
+      additionalProperties: false
+      required:
+        - base
+        - code
+        - headings
+      properties:
+        base:
+          $ref: '#/components/schemas/AppearanceFontName'
+        code:
+          $ref: '#/components/schemas/AppearanceFontName'
+        headings:
+          $ref: '#/components/schemas/AppearanceFontName'
+      nullable: true
+    AppearanceFontName:
+      type: string
+      description: The name of the font to render in the browser.
+      enum:
+        - Roboto
+        - Inter
+        - Open Sans
+        - Lato
+        - Slabo 27px
+        - Slabo 13px
+        - Oswald
+        - Source Sans Pro
+        - Montserrat
+        - Raleway
+        - PT Sans
+        - Lora
+        - Roboto Mono
+        - Inconsolata
+        - Source Code Pro
+        - PT Mono
+        - Ubuntu Mono
+        - IBM Plex Mono
+      example: Roboto
+    AppearanceImage:
+      description: >-
+        The image data to upload, along with an optional filename. Images must
+        be a data URL with binary image data in base 64 format. See
+        https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs.
+      type: object
+      additionalProperties: false
+      nullable: true
+      required:
+        - data
+      properties:
+        data:
+          $ref: '#/components/schemas/ImageDataUri'
+        filename:
+          type: string
+          maxLength: 512
+      example:
+        data: data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+    AppearanceImages:
+      description: A collection of binary image data to customize images in the portal
+      type: object
+      additionalProperties: false
+      nullable: true
+      properties:
+        logo:
+          $ref: '#/components/schemas/AppearanceImage'
+        favicon:
+          $ref: '#/components/schemas/AppearanceImage'
+        catalog_cover:
+          $ref: '#/components/schemas/AppearanceImage'
+      example:
+        logo:
+          data: data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+        favicon:
+          data: data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+        catalog_cover:
+          data: data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+    AppearanceTextVariables:
+      description: Values to display for customizable text in the portal user interface
+      type: object
+      additionalProperties: false
+      required:
+        - catalog
+      properties:
+        catalog:
+          type: object
+          additionalProperties: false
+          required:
+            - welcome_message
+            - primary_header
+          properties:
+            welcome_message:
+              type: string
+              maxLength: 512
+            primary_header:
+              type: string
+              maxLength: 512
+    NullableAppearanceTextVariables:
+      description: Values to display for customizable text in the portal user interface
+      type: object
+      additionalProperties: false
+      required:
+        - catalog
+      properties:
+        catalog:
+          type: object
+          additionalProperties: false
+          required:
+            - welcome_message
+            - primary_header
+          properties:
+            welcome_message:
+              type: string
+              maxLength: 512
+            primary_header:
+              type: string
+              maxLength: 512
+      nullable: true
+      example:
+        catalog:
+          welcome_message: Welcome to our service catalog
+          primary_header: Find All of Our Services in a Single Place
+    PortalAppearance:
+      additionalProperties: false
+      type: object
+      properties:
+        theme_name:
+          $ref: '#/components/schemas/PortalTheme'
+        custom_theme:
+          $ref: '#/components/schemas/NullableAppearanceThemeVariables'
+        custom_fonts:
+          $ref: '#/components/schemas/NullableAppearanceFonts'
+        use_custom_fonts:
+          description: >-
+            If true, fonts in custom_fonts will be used over the theme's default
+            fonts
+          type: boolean
+        text:
+          $ref: '#/components/schemas/NullableAppearanceTextVariables'
+        images:
+          $ref: '#/components/schemas/AppearanceImages'
+      example:
+        theme_name: custom
+        use_custom_fonts: true
+        custom_theme:
+          colors:
+            section:
+              header:
+                value: '#F8F8F8'
+                description: Background for header
+              body:
+                value: '#FFFFFF'
+                description: Background for main content
+              hero:
+                value: '#F8F8F8'
+                description: Background for hero section
+              accent:
+                value: '#F8F8F8'
+                description: Subtle background
+              tertiary:
+                value: '#FFFFFF'
+                description: Tertiary background
+              stroke:
+                value: rgba(0,0,0,0.1)
+                description: Border color
+              footer:
+                value: '#07A88D'
+                description: Background for footer
+            text:
+              header:
+                value: rgba(0,0,0,0.8)
+                description: Header text
+              hero:
+                value: '#FFFFFF'
+                description: Hero text
+              headings:
+                value: rgba(0,0,0,0.8)
+                description: Headings text
+              primary:
+                value: rgba(0,0,0,0.8)
+                description: Main content text
+              secondary:
+                value: rgba(0,0,0,0.8)
+                description: Supporting text
+              accent:
+                value: '#07A88D'
+                description: Subtle text
+              link:
+                value: '#07A88D'
+                description: Link text
+              footer:
+                value: '#FFFFFF'
+                description: Footer text
+            button:
+              primary_fill:
+                value: '#1155CB'
+                description: Background for Primary Button
+              primary_text:
+                value: '#FFFFFF'
+                description: Text for Primary Button
+        custom_fonts:
+          base: Roboto
+          code: Roboto
+          headings: Roboto
+        text:
+          catalog:
+            welcome_message: Welcome
+            primary_header: Come one in!
+        images:
+          favicon:
+            data: data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+            filename: favicon.ico
+          logo:
+            data: data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+            filename: logo.png
+          catalog_cover:
+            data: data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+    DeveloperStatus:
+      title: DeveloperStatus
+      description: >-
+        The status of a developer in a portal. Approved developers can log in,
+        create applications, and view and register for products they have access
+        to. Pending, revoked, and rejected developers cannot login or view any
+        non-public portal information, or create or modify applications or
+        registrations.
+      type: string
+      enum:
+        - approved
+        - pending
+        - revoked
+        - rejected
+      example: approved
+    ApplicationRegistrationStatus:
+      title: ApplicationRegistrationStatus
+      description: >-
+        The status of an application registration request. Each registration is
+        linked to a single version of a product, and application credentials
+        will not grant access to the product version until the registration is
+        approved.
+
+        Pending, revoked, and rejected registrations will not provide access to
+        the product version.
+      type: string
+      enum:
+        - approved
+        - pending
+        - revoked
+        - rejected
+      example: approved
+    PortalTheme:
+      description: >-
+        Select a pre-existing default theme or specify 'custom' to use
+        custom_theme variables.
+      type: string
+      enum:
+        - mint_rocket
+        - dark_mode
+        - custom
+      example: mint_rocket
+    PageMeta:
+      type: object
+      description: >-
+        Contains pagination query parameters and the total number of objects
+        returned.
+      required:
+        - number
+        - size
+        - total
+      properties:
+        number:
+          type: number
+          example: 1
+        size:
+          type: number
+          example: 10
+        total:
+          type: number
+          example: 100
+    PaginatedMeta:
+      type: object
+      title: PaginatedMeta
+      description: returns the pagination information
+      properties:
+        page:
+          $ref: '#/components/schemas/PageMeta'
+      required:
+        - page
+    UUID:
+      type: string
+      format: uuid
+      example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+      description: Contains a unique identifier used for this resource.
+      readOnly: true
+    CreatedAt:
+      type: string
+      format: date-time
+      example: '2022-11-04T20:10:06.927Z'
+      description: An ISO-8601 timestamp representation of entity creation date.
+      readOnly: true
+    UpdatedAt:
+      type: string
+      format: date-time
+      example: '2022-11-04T20:10:06.927Z'
+      description: An ISO-8601 timestamp representation of entity update date.
+      readOnly: true
+    BaseError:
+      type: object
+      title: Error
+      description: standard error
+      required:
+        - status
+        - title
+        - instance
+        - detail
+      properties:
+        status:
+          type: integer
+          description: >
+            The HTTP status code of the error. Useful when passing the response
+
+            body to child properties in a frontend UI. Must be returned as an
+            integer.
+          readOnly: true
+        title:
+          type: string
+          description: |
+            A short, human-readable summary of the problem. It should not
+            change between occurences of a problem, except for localization.
+            Should be provided as "Sentence case" for direct use in the UI.
+          readOnly: true
+        type:
+          type: string
+          description: The error type.
+          readOnly: true
+        instance:
+          type: string
+          description: |
+            Used to return the correlation ID back to the user, in the format
+            kong:trace:<correlation_id>. This helps us find the relevant logs
+            when a customer reports an issue.
+          readOnly: true
+        detail:
+          type: string
+          description: >
+            A human readable explanation specific to this occurence of the
+            problem.
+
+            This field may contain request/entity data to help the user
+            understand
+
+            what went wrong. Enclose variable values in square brackets. Should
+            be
+
+            provided as "Sentence case" for direct use in the UI.
+          readOnly: true
+    InvalidRules:
+      description: invalid parameters rules
+      type: string
+      readOnly: true
+      nullable: true
+      enum:
+        - required
+        - enum
+        - min_length
+        - max_length
+        - min_digits
+        - min_lowercase
+        - min_uppercase
+        - min_symbols
+        - is_array
+        - is_base64
+        - is_boolean
+        - is_date_time
+        - is_integer
+        - is_null
+        - is_number
+        - is_object
+        - is_string
+        - is_uuid
+        - unknown_property
+        - is_label
+        - matches_regex
+    InvalidParameterChoiceItem:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          $ref: '#/components/schemas/InvalidRules'
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+        choices:
+          type: array
+          uniqueItems: true
+          nullable: true
+          items: {}
+          readOnly: true
+      required:
+        - field
+        - reason
+    InvalidParameterDependentItem:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          description: invalid parameters rules
+          type: string
+          readOnly: true
+          nullable: true
+          enum:
+            - dependent_fields
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+        dependents:
+          type: array
+          uniqueItems: true
+          nullable: true
+          items: {}
+          readOnly: true
+      required:
+        - field
+        - rule
+        - reason
+        - dependents
+    InvalidParameters:
+      type: array
+      nullable: false
+      uniqueItems: true
+      minItems: 1
+      description: invalid parameters
+      items:
+        oneOf:
+          - $ref: '#/components/schemas/InvalidParameterChoiceItem'
+          - $ref: '#/components/schemas/InvalidParameterDependentItem'
+    UnauthorizedError:
+      type: object
+      properties:
+        status:
+          example: 401
+        title:
+          example: Unauthorized
+        type:
+          example: https://httpstatuses.com/401
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Invalid credentials
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+    ForbiddenError:
+      type: object
+      properties:
+        status:
+          example: 403
+        title:
+          example: Forbidden
+        type:
+          example: https://httpstatuses.com/403
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Forbidden
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+    NotFoundError:
+      type: object
+      properties:
+        status:
+          example: 404
+        title:
+          example: Not Found
+        type:
+          example: https://httpstatuses.com/404
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Not found
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+    APIProductLabels:
+      title: Labels
+      type: object
+      description: >
+        description: A maximum of 5 user-defined labels are allowed on this
+        resource.
+
+        Keys must not start with kong, konnect, insomnia, mesh, kic or _, which
+        are reserved for Kong.
+
+        Keys are case-sensitive.
+      additionalProperties:
+        type: string
+        pattern: ^[a-z0-9A-Z]{1}([a-z0-9A-Z\-._]*[a-z0-9A-Z]+)?$
+        minLength: 1
+        maxLength: 63
+      default: {}
+    StringFieldEqualsFilter:
+      title: StringFieldEqualsFilter
+      description: Filters on the given string field value by exact match.
+      oneOf:
+        - type: string
+        - type: object
+          title: StringFieldEqualsComparison
+          additionalProperties: false
+          properties:
+            eq:
+              type: string
+          required:
+            - eq
+      x-examples:
+        example-1: equals-some-value
+        example-2:
+          eq: some-value
+    StringFieldOEQFilter:
+      title: StringFieldOEQFilter
+      description: >-
+        Returns entities that exact match any of the comma-delimited phrases in
+        the filter string.
+      type: object
+      additionalProperties: false
+      properties:
+        oeq:
+          type: string
+      required:
+        - oeq
+      x-examples:
+        example-1:
+          oeq: some-value,some-other-value
+    StringFieldNEQFilter:
+      title: StringFieldNEQFilter
+      description: Filters on the given string field value by exact match inequality.
+      type: object
+      additionalProperties: false
+      properties:
+        neq:
+          type: string
+      required:
+        - neq
+      x-examples:
+        example-1:
+          neq: not-this-value
+    StringFieldContainsFilter:
+      title: StringFieldContainsFilter
+      description: Filters on the given string field value by fuzzy match.
+      type: object
+      additionalProperties: false
+      properties:
+        contains:
+          type: string
+      required:
+        - contains
+      x-examples:
+        example-1:
+          contains: some-value
+    StringFieldOContainsFilter:
+      title: StringFieldOContainsFilter
+      description: >-
+        Returns entities that fuzzy-match any of the comma-delimited phrases in
+        the filter string.
+      type: object
+      additionalProperties: false
+      properties:
+        ocontains:
+          type: string
+      required:
+        - ocontains
+      x-examples:
+        example-1:
+          ocontains: this-value,or-that-value
+    ImageDataUri:
+      title: ImageDataUri
+      type: string
+      format: uri
+      pattern: >-
+        ^data:image/(png|jpeg|x-icon|ico|icon|vnd.microsoft.icon|gif)(;base64)?,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$
+      description: >-
+        must be a data URL with base64 image data, e.g.,
+        data:image/jpeg;base64,<BASE64_IMAGE_DATA>
+      x-validation-message: >-
+        must be a data URL with base64 image data, e.g.,
+        data:image/jpeg;base64,<BASE64_IMAGE_DATA>
+      example: data:image/png,YW5faW1hZ2VfZmlsZQ==
+    ConflictError:
+      type: object
+      properties:
+        status:
+          example: 409
+        title:
+          example: Conflict
+        type:
+          example: https://httpstatuses.com/409
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Conflict
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+  securitySchemes:
+    personalAccessToken:
+      type: http
+      scheme: bearer
+      bearerFormat: Token
+      description: >
+        The personal access token is meant to be used as an alternative to
+        basic-auth when accessing Konnect via APIs.
+
+        You can generate a Personal Access Token (PAT) from the [personal access
+        token page](https://cloud.konghq.com/global/tokens/) in the Konnect
+        dashboard.
+
+        The PAT token must be passed in the header of a request, for example:
+
+        `curl -X GET 'https://global.api.konghq.com/v2/users/' --header
+        'Authorization: Bearer kpat_xgfT...'`
+    systemAccountAccessToken:
+      type: http
+      scheme: bearer
+      bearerFormat: Token
+      description: >
+        The system account access token is meant for automations and
+        integrations that are not directly associated with a human identity.
+
+        You can generate a system account Access Token by creating a system
+        account and then obtaining a system account access token for that
+        account.
+
+        The access token must be passed in the header of a request, for example:
+
+        `curl -X GET 'https://global.api.konghq.com/v2/users/' --header
+        'Authorization: Bearer spat_i2Ej...'`

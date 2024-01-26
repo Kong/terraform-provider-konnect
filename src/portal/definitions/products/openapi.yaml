@@ -1,0 +1,695 @@
+openapi: 3.0.3
+info:
+  title: Portal Products
+  version: 2.0.0
+  description: N/A (this description is removed during bundling)
+  contact:
+    name: Kong
+    url: 'https://cloud.konghq.com'
+paths:
+  /api/v2/products/{productId}:
+    get:
+      summary: Get a product
+      description: Gets the details for an existing published product.
+      operationId: get-product
+      parameters:
+        - $ref: '#/components/parameters/ProductId'
+      responses:
+        '200':
+          $ref: '#/components/responses/ProductGet'
+        '400':
+          $ref: '../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: '../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '404':
+          $ref: '../../../common/definitions/errors.yaml#/components/responses/NotFound'
+      tags:
+        - products
+      security:
+        - portalAccessToken: []
+        - {}
+  /api/v2/products:
+    get:
+      summary: List Products
+      description: Returns a paginated list of published API Products.
+      operationId: list-products
+      parameters:
+        - $ref: '../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+        - $ref: '../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
+        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByNameEquality'
+        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByNameEqualityShort'
+        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByNameContains'
+        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByDescriptionEquality'
+        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByDescriptionEqualityShort'
+        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByDescriptionContains'
+        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByIdEquality'
+        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByIdEqualityShort'
+      responses:
+        '200':
+          $ref: '#/components/responses/ProductList'
+        '400':
+          $ref: '../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: '../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+      tags:
+        - products
+      security:
+        - portalAccessToken: []
+        - {}
+  /api/v2/products/{productId}/versions:
+    get:
+      summary: Get page of product versions
+      description: Returns paginated list of versions of a given product.
+      operationId: list-product-versions
+      parameters:
+        - $ref: '#/components/parameters/ProductId'
+        - $ref: '../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+        - $ref: '../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
+        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByNameEquality'
+        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByNameEqualityShort'
+        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByNameContains'
+      responses:
+        '200':
+          $ref: '#/components/responses/ProductListVersions'
+        '400':
+          $ref: '../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: '../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '404':
+          $ref: '../../../common/definitions/errors.yaml#/components/responses/NotFound'
+      tags:
+        - versions
+      security:
+        - portalAccessToken: []
+        - {}
+  /api/v2/products/{productId}/versions/{productVersionId}:
+    get:
+      summary: Get product version
+      description: Gets the details for an existing product version.
+      operationId: get-product-version
+      parameters:
+        - $ref: '#/components/parameters/ProductId'
+        - $ref: '../common/parameters.yaml#/components/parameters/ProductVersionId'
+      responses:
+        '200':
+          $ref: '#/components/responses/ProductVersionGet'
+        '400':
+          $ref: '../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: '../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '404':
+          $ref: '../../../common/definitions/errors.yaml#/components/responses/NotFound'
+      tags:
+        - versions
+      security:
+        - portalAccessToken: []
+        - {}
+  /api/v2/products/{productId}/versions/{productVersionId}/applications:
+    get:
+      summary: Get applications by product version
+      description: |-
+        Get applications that have a registration for a given product version. Any registration for the version will count, regardless of status (i.e. even if it is pending, rejected, or revoked).
+        Use the `unregistered` query param to return the inverse, only including applicatons that do not have a registration (regardless of status).
+      operationId: get-applications-by-product-version
+      parameters:
+        - $ref: '#/components/parameters/ProductId'
+        - $ref: '../common/parameters.yaml#/components/parameters/ProductVersionId'
+        - $ref: '../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+        - $ref: '../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
+        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByNameEquality'
+        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByNameEqualityShort'
+        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByNameContains'
+        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByStatusEquality'
+        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByStatusEqualityShort'
+        - $ref: '#/components/parameters/QueryUnregisteredApplications'
+      responses:
+        '200':
+          $ref: '#/components/responses/ProductVersionListApplications'
+        '400':
+          $ref: '../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: '../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '404':
+          $ref: '../../../common/definitions/errors.yaml#/components/responses/NotFound'
+      tags:
+        - versions
+      security:
+        - portalAccessToken: []
+  /api/v2/products/{productId}/versions/{productVersionId}/spec:
+    get:
+      summary: Get spec for product version
+      description: Returns the API specification document attached to given product version. Currently only OpenAPI is supported.
+      operationId: get-product-version-spec
+      parameters:
+        - $ref: '#/components/parameters/ProductId'
+        - $ref: '../common/parameters.yaml#/components/parameters/ProductVersionId'
+      responses:
+        '200':
+          $ref: '#/components/responses/ProductVersionSpecGet'
+        '204':
+          description: No specification is defined for the version.
+        '400':
+          $ref: '../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: '../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '404':
+          $ref: '../../../common/definitions/errors.yaml#/components/responses/NotFound'
+      tags:
+        - versions
+      security:
+        - portalAccessToken: []
+        - {}
+  /api/v2/products/{productId}/versions/{productVersionId}/spec/operations:
+    get:
+      summary: Get operations in version spec
+      description: Returns list of operations used in the API specification document attached to given product version.
+      operationId: get-product-version-spec-operations
+      parameters:
+        - $ref: '#/components/parameters/ProductId'
+        - $ref: '../common/parameters.yaml#/components/parameters/ProductVersionId'
+      responses:
+        '200':
+          $ref: '#/components/responses/ProductVersionSpecOperationsGet'
+        '204':
+          description: Response when there are no operations to send because no spec is defined for the version.
+        '400':
+          $ref: '../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: '../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '404':
+          $ref: '../../../common/definitions/errors.yaml#/components/responses/NotFound'
+      tags:
+        - versions
+      security:
+        - portalAccessToken: []
+        - {}
+  /api/v2/products/{productId}/documents:
+    get:
+      summary: List product documents
+      description: Returns a list of documents that are associated with a given product. The list is paginated, and is in either a list or tree format (based on the Accept header).
+      operationId: list-product-documents
+      parameters:
+        - $ref: '#/components/parameters/ProductId'
+        - in: header
+          name: Accept
+          schema:
+            $ref: '../../../internal/definitions/documenthub/common/v2/documenthub.yaml#/components/schemas/DocumentContentTypeEnum'
+        - $ref: '../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+        - $ref: '../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
+      responses:
+        '200':
+          description: Lists documents for a given product.
+          content:
+            'application/json':
+              schema:
+                $ref: '../../../internal/definitions/documenthub-portal/v2/openapi.yaml#/components/schemas/ListDocuments'
+            'application/vnd.konnect.document-tree+json':
+              schema:
+                $ref: '../../../internal/definitions/documenthub-portal/v2/openapi.yaml#/components/schemas/ListDocumentsTree'
+        '400':
+          $ref: '../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: '../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '404':
+          $ref: '../../../common/definitions/errors.yaml#/components/responses/NotFound'
+      tags:
+        - documentation
+      security:
+        - portalAccessToken: []
+        - {}
+  /api/v2/products/{productId}/documents/{documentId}:
+    get:
+      summary: Get one product document
+      description: Returns the specified document from the product's document tree.
+      operationId: get-product-document
+      parameters:
+        - in: header
+          name: Accept
+          schema:
+            $ref: '../../../internal/definitions/documenthub/common/v2/documenthub.yaml#/components/schemas/DocumentFormatContentTypeEnum'
+        - $ref: '#/components/parameters/ProductId'
+        - $ref: '#/components/parameters/DocumentId'
+      responses:
+        '200':
+          $ref: '#/components/responses/ProductDocumentGet'
+        '400':
+          $ref: '../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: '../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '404':
+          $ref: '../../../common/definitions/errors.yaml#/components/responses/NotFound'
+      tags:
+        - documentation
+      security:
+        - portalAccessToken: []
+        - {}
+  /api/v2/products/{productId}/actions:
+    x-unstable: true
+    parameters:
+      - $ref: '#/components/parameters/ProductId'
+    get:
+      summary: Get Product Actions
+      description: Get a list of actions that the current developer is allowed to perform on an API product.
+      operationId: get-product-actions
+      responses:
+        '200':
+          $ref: '#/components/responses/ProductActions'
+        '401':
+          $ref: '../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '404':
+          $ref: '../../../common/definitions/errors.yaml#/components/responses/NotFound'
+        '503':
+          $ref: '../../../common/definitions/errors.yaml#/components/responses/NotAvailable'
+      tags:
+        - products
+components:
+  securitySchemes:
+    portalAccessToken:
+      $ref: '../../../common/definitions/security.yaml#/components/securitySchemes/portalAccessToken'
+  parameters:
+    ProductId:
+      name: productId
+      in: path
+      required: true
+      description: Contains a unique identifier used by the Portal API for this resource.
+      schema:
+        type: string
+        format: uuid
+    DocumentId:
+      name: documentId
+      in: path
+      required: true
+      description: Contains a unique identifier used by the Portal API for this resource.
+      schema:
+        type: string
+        format: uuid
+    QueryUnregisteredApplications:
+      name: unregistered
+      description: Return applications that do **not** have a registration for the product version (regardless of registration status).
+      in: query
+      required: false
+      schema:
+        type: boolean
+      allowEmptyValue: true
+  responses:
+    ProductActions:
+      description: Product actions
+      content:
+        application/json:
+          schema:
+             $ref: '#/components/schemas/ProductActionsResponse'
+          examples:
+            Retrieve Product Actions Response:
+              $ref: '#/components/examples/ProductActionsExample'
+    ProductGet:
+      description: Response for a single product's details.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Product'
+    ProductList:
+      description: Response for a list of products.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProductListPage'
+    ProductListVersions:
+      description: Paginated list of versions of an API Product.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProductVersionListPage'
+    ProductVersionGet:
+      description: Product version details.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProductVersion'
+    ProductVersionListApplications:
+      description: Paginated list of applications either registered or not registered for a product version.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProductVersionListApplicationsPage'
+    ProductVersionSpecGet:
+      description: Product version spec document.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProductVersionSpecDocument'
+    ProductVersionSpecOperationsGet:
+      description: Product version spec operations.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProductVersionSpecOperations'
+    ProductDocumentGet:
+      description: Details for a single document for a given product.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProductDocumentRaw'
+        application/vnd.konnect.document-nodes+json:
+          schema:
+            $ref: '#/components/schemas/ProductDocument'
+  schemas:
+    ProductActionsResponse:
+      title: Product Actions Response
+      type: object
+      additionalProperties: false
+      required:
+        - actions
+      properties:
+        actions:
+          type: object
+          additionalProperties: false
+          required:
+            - view
+            - register
+            - view_documentation
+          properties:
+            view:
+              type: boolean
+            register:
+              type: boolean
+            view_documentation:
+              type: boolean
+          description: List of actions that can be performed on the API Product
+      example:
+        actions:
+          view: true
+          register: false
+          view_documentation: true
+    Product:
+      title: Product
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - created_at
+        - updated_at
+        - name
+      properties:
+        id:
+          $ref: '../../../common/definitions/properties.yaml#/components/schemas/UUID'
+        created_at:
+          $ref: '../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
+        name:
+          type: string
+          example: Billing
+          description: Name of product.
+        description:
+          type: string
+          nullable: true
+          example: API for billing functions
+        document_count:
+          type: integer
+          example: 3
+          description: Number of linked documents in documentation.
+          readOnly: true
+        version_count:
+          type: integer
+          example: 2
+          description: Number of published versions.
+          readOnly: true
+        latest_version:
+           $ref: '#/components/schemas/LatestVersion'
+    ProductListPage:
+      title: ProductListPage
+      type: object
+      properties:
+        meta:
+          $ref: '../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Product'
+    ProductVersion:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          $ref: '../../../common/definitions/properties.yaml#/components/schemas/UUID'
+        created_at:
+          $ref: '../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
+        name:
+          type: string
+          example: v2.0.0
+          description: Name of product version.
+        deprecated:
+          type: boolean
+          description: If true, product version is deprecated.
+        registration_configs:
+          description: Configurations for how the product version is able to be registered for by applications.
+          type: array
+          items:
+            $ref: '#/components/schemas/RegistrationConfiguration'
+      required:
+        - id
+        - created_at
+        - updated_at
+        - name
+        - deprecated
+        - registration_configs
+    RegistrationConfiguration:
+      type: object
+      additionalProperties: false
+      required:
+        - name
+      properties:
+        id:
+          $ref: '../../../common/definitions/properties.yaml#/components/schemas/UUID'
+        auth_methods:
+          type: array
+          items:
+            description: Auth Methods enabled for this strategy
+            type: string
+          example: ['bearer']
+        credential_type:
+            $ref: '#/components/schemas/CredentialType'
+        name:
+          type: string
+        available_scopes:
+          type: array
+          items:
+            type: string
+    CredentialType:
+      type: string
+      enum:
+      - client_credentials
+      - self_managed_client_credentials
+      - key_auth
+    LatestVersion:
+      type: object
+      additionalProperties: false
+      nullable: true
+      properties:
+        name:
+          type: string
+          example: v2.0.0
+          readOnly: true
+        id:
+          $ref: '../../../common/definitions/properties.yaml#/components/schemas/UUID'
+    ProductVersionListPage:
+      title: ProductVersionListPage
+      type: object
+      additionalProperties: false
+      required:
+        - meta
+        - data
+      properties:
+        meta:
+          $ref: '../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductVersion'
+    ProductVersionListApplicationsPage:
+      title: ProductVersionListApplicationsPage
+      type: object
+      additionalProperties: false
+      required:
+        - meta
+        - data
+      properties:
+        meta:
+          $ref: '../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductVersionApplication'
+    ProductVersionApplication:
+      title: ProductVersionApplication
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - created_at
+        - updated_at
+        - registration_status
+        - registration_id
+      properties:
+        id:
+          $ref: '../../../common/definitions/properties.yaml#/components/schemas/UUID'
+        name:
+          description: The name of the application
+          type: string
+        registration_id:
+          $ref: '../../../common/definitions/konnect_properties.yaml#/components/schemas/NullableUUID'
+        registration_status:
+          type: string
+          nullable: true
+          enum:
+            - approved
+            - pending
+            - rejected
+            - revoked
+        created_at:
+          $ref: '../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
+    ProductVersionSpecDocument:
+      type: object
+      title: ProductVersionSpecDocument
+      description: API specification document for a product version.
+      properties:
+        api_type:
+          $ref: '#/components/schemas/ApiTypeEnum'
+        content:
+          type: string
+      required:
+      - api_type
+      - content
+    ProductVersionSpecOperations:
+      type: object
+      title: ProductVersionSpecOperations
+      description: List of every operation detailed in a product version spec document.
+      required:
+        - api_type
+        - operations
+      properties:
+        api_type:
+          $ref: '#/components/schemas/ApiTypeEnum'
+        operations:
+          type: array
+          items:
+            type: object
+            required:
+              - path
+              - method
+              - operation_id
+              - tags
+              - summary
+              - deprecated
+            properties:
+              path:
+                type: string
+                example: /pet
+              method:
+                type: string
+                example: post
+              operation_id:
+                type: string
+                nullable: true
+                example: "addPet"
+              tags:
+                type: array
+                items:
+                  type: string
+                  example: "pet"
+              summary:
+                type: string
+                nullable: true
+                example: "Add a new Pet to the store"
+              deprecated:
+                type: boolean
+    ApiTypeEnum:
+      type: string
+      enum:
+      - openapi
+    ProductDocument:
+      type: object
+      title: ProductDocument
+      description: A document for a product. This is a document that is not a part of the API specification.
+      required:
+        - id
+        - slug
+        - title
+        - content
+      properties:
+        id:
+          allOf:
+            - $ref: '../../../common/definitions/properties.yaml#/components/schemas/UUID'
+            - description: Contains a unique identifier used by the DocumentHub service for this resource.
+              type: string
+        parent_document_id:
+          type: string
+          format: uuid
+          description: Contains a unique identifier used by the DocumentHub service for this resource.
+          nullable: true
+          example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
+        slug:
+          type: string
+          description: Slug of the document. This is used in the URL to identify the document.
+          example: getting-started
+        content:
+          $ref: '../../../internal/definitions/documenthub/common/v2/documenthub_nodes.yaml#/components/schemas/DocumentBlock'
+        title:
+          type: string
+          description: Title of the document. This is used in the Portal UI to identify the document.
+          example: Hello World
+    ProductDocumentRaw:
+      type: object
+      title: ProductDocumentRaw
+      description: A document for a product. This is a document that is not a part of the API specification.
+      required:
+        - id
+        - slug
+        - title
+        - content
+      properties:
+        id:
+          allOf:
+            - $ref: '../../../common/definitions/properties.yaml#/components/schemas/UUID'
+            - description: Contains a unique identifier used by the DocumentHub service for this resource.
+              type: string
+        parent_document_id:
+          type: string
+          format: uuid
+          description: Contains a unique identifier used by the DocumentHub service for this resource.
+          nullable: true
+          example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
+        slug:
+          type: string
+          description: Slug of the document. This is used in the URL to identify the document.
+          example: getting-started
+        content:
+          type: string
+          description: Markdown document
+          example: |
+            # My Kong api
+            
+            This api is powered by Konnect
+        title:
+          type: string
+          description: Title of the document. This is used in the Portal UI to identify the document.
+          example: Hello World
+  examples:
+    ProductActionsExample:
+        value:
+          actions:
+            register: false
+            view: true
+            view_documentation: true
+tags:
+  - name: products
+    description: The API for Konnect Portal Products.
+  - name: versions
+    description: The API for Konnect Portal Product Versions.
+  - name: documentation
+    description: The API for Konnect Portal Product Documentation.

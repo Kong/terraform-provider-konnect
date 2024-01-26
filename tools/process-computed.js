@@ -13,9 +13,10 @@ async function main() {
   }
   for (const mode of projects) {
     const files = await fg(
-      `${baseDir}/${mode}/definitions/**/computed/openapi.yaml`
+      `${baseDir}/computed/${mode}/**/openapi.yaml`
     );
     for (const f of files) {
+      console.log(`Processing ${f}`);
       let oas = yaml.load(await fs.readFile(f));
       oas = addUnstablePublicDescription(oas);
       await fs.writeFile(f, yaml.dump(oas));

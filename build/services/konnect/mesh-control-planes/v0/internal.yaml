@@ -1,0 +1,344 @@
+openapi: 3.0.3
+info:
+  title: Konnect Mesh Control Plane manager
+  description: Control Plane manager API
+  version: 0.0.1
+  contact:
+    name: Kong
+    url: https://konghq.com
+servers:
+  - url: https://us.api.konghq.com/v1
+    description: US Public API
+  - url: https://eu.api.konghq.com/v1
+    description: EU Public API
+  - url: https://au.api.konghq.com/v1
+    description: AU Public API
+security:
+  - personalAccessToken: []
+  - systemAccountAccessToken: []
+tags: []
+paths: {}
+components:
+  securitySchemes:
+    personalAccessToken:
+      type: http
+      scheme: bearer
+      bearerFormat: Token
+      description: >
+        The personal access token is meant to be used as an alternative to
+        basic-auth when accessing Konnect via APIs.
+
+        You can generate a Personal Access Token (PAT) from the [personal access
+        token page](https://cloud.konghq.com/global/tokens/) in the Konnect
+        dashboard.
+
+        The PAT token must be passed in the header of a request, for example:
+
+        `curl -X GET 'https://global.api.konghq.com/v2/users/' --header
+        'Authorization: Bearer kpat_xgfT...'`
+    systemAccountAccessToken:
+      type: http
+      scheme: bearer
+      bearerFormat: Token
+      description: >
+        The system account access token is meant for automations and
+        integrations that are not directly associated with a human identity.
+
+        You can generate a system account Access Token by creating a system
+        account and then obtaining a system account access token for that
+        account.
+
+        The access token must be passed in the header of a request, for example:
+
+        `curl -X GET 'https://global.api.konghq.com/v2/users/' --header
+        'Authorization: Bearer spat_i2Ej...'`
+  schemas:
+    MeshControlPlaneLabels:
+      title: Labels
+      type: object
+      nullable: true
+      example:
+        test: 'true'
+      description: >-
+        Labels to facilitate tagged search on control planes. Keys must be of
+        length 1-63 characters.
+      maxProperties: 10
+      additionalProperties:
+        type: string
+        pattern: ^[a-z0-9A-Z]{1}([a-z0-9A-Z\-\.\_]*[a-z0-9A-Z]+)?$
+        minLength: 1
+        maxLength: 63
+        nullable: true
+    MeshControlPlane:
+      type: object
+      title: ControlPlane
+      description: a control plane
+      required:
+        - id
+        - name
+        - updated_at
+        - created_at
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: ID of the control plane.
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+          readOnly: true
+        name:
+          type: string
+          example: Test control plane
+          description: The name of the control plane.
+        description:
+          type: string
+          example: A control plane to handle traffic on development environment.
+        labels:
+          $ref: '#/components/schemas/MeshControlPlaneLabels'
+        created_at:
+          type: string
+          format: date-time
+          example: '2023-01-11T02:30:42.227Z'
+        updated_at:
+          type: string
+          format: date-time
+          example: '2023-01-11T02:30:42.227Z'
+    PageMeta:
+      type: object
+      description: >-
+        Contains pagination query parameters and the total number of objects
+        returned.
+      required:
+        - number
+        - size
+        - total
+      properties:
+        number:
+          type: number
+          example: 1
+        size:
+          type: number
+          example: 10
+        total:
+          type: number
+          example: 100
+    PaginatedMeta:
+      type: object
+      title: PaginatedMeta
+      description: returns the pagination information
+      properties:
+        page:
+          $ref: '#/components/schemas/PageMeta'
+      required:
+        - page
+    BaseError:
+      type: object
+      title: Error
+      description: standard error
+      required:
+        - status
+        - title
+        - instance
+        - detail
+      properties:
+        status:
+          type: integer
+          description: >
+            The HTTP status code of the error. Useful when passing the response
+
+            body to child properties in a frontend UI. Must be returned as an
+            integer.
+          readOnly: true
+        title:
+          type: string
+          description: |
+            A short, human-readable summary of the problem. It should not
+            change between occurences of a problem, except for localization.
+            Should be provided as "Sentence case" for direct use in the UI.
+          readOnly: true
+        type:
+          type: string
+          description: The error type.
+          readOnly: true
+        instance:
+          type: string
+          description: |
+            Used to return the correlation ID back to the user, in the format
+            kong:trace:<correlation_id>. This helps us find the relevant logs
+            when a customer reports an issue.
+          readOnly: true
+        detail:
+          type: string
+          description: >
+            A human readable explanation specific to this occurence of the
+            problem.
+
+            This field may contain request/entity data to help the user
+            understand
+
+            what went wrong. Enclose variable values in square brackets. Should
+            be
+
+            provided as "Sentence case" for direct use in the UI.
+          readOnly: true
+    UnauthorizedError:
+      type: object
+      properties:
+        status:
+          example: 401
+        title:
+          example: Unauthorized
+        type:
+          example: https://httpstatuses.com/401
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Invalid credentials
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+    ForbiddenError:
+      type: object
+      properties:
+        status:
+          example: 403
+        title:
+          example: Forbidden
+        type:
+          example: https://httpstatuses.com/403
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Forbidden
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+    InvalidRules:
+      description: invalid parameters rules
+      type: string
+      readOnly: true
+      nullable: true
+      enum:
+        - required
+        - enum
+        - min_length
+        - max_length
+        - min_digits
+        - min_lowercase
+        - min_uppercase
+        - min_symbols
+        - is_array
+        - is_base64
+        - is_boolean
+        - is_date_time
+        - is_integer
+        - is_null
+        - is_number
+        - is_object
+        - is_string
+        - is_uuid
+        - unknown_property
+        - is_label
+        - matches_regex
+    InvalidParameterChoiceItem:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          $ref: '#/components/schemas/InvalidRules'
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+        choices:
+          type: array
+          uniqueItems: true
+          nullable: true
+          items: {}
+          readOnly: true
+      required:
+        - field
+        - reason
+    InvalidParameterDependentItem:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          description: invalid parameters rules
+          type: string
+          readOnly: true
+          nullable: true
+          enum:
+            - dependent_fields
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+        dependents:
+          type: array
+          uniqueItems: true
+          nullable: true
+          items: {}
+          readOnly: true
+      required:
+        - field
+        - rule
+        - reason
+        - dependents
+    InvalidParameters:
+      type: array
+      nullable: false
+      uniqueItems: true
+      minItems: 1
+      description: invalid parameters
+      items:
+        oneOf:
+          - $ref: '#/components/schemas/InvalidParameterChoiceItem'
+          - $ref: '#/components/schemas/InvalidParameterDependentItem'
+    BadRequestError:
+      type: object
+      required:
+        - invalid_parameters
+      properties:
+        status:
+          example: 400
+        title:
+          example: Bad Request
+        type:
+          example: https://httpstatuses.com/400
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Invalid request body
+        invalid_parameters:
+          $ref: '#/components/schemas/InvalidParameters'
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+    NotFoundError:
+      type: object
+      properties:
+        status:
+          example: 404
+        title:
+          example: Not Found
+        type:
+          example: https://httpstatuses.com/404
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Not found
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+  examples:
+    ControlPlaneExample:
+      value:
+        id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+        name: Test Control Plane
+        description: A test control plane for exploration.
+        labels:
+          test: 'true'
+        created_at: '2022-11-04T20:10:06.927Z'
+        updated_at: '2022-11-04T20:10:06.927Z'

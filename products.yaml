@@ -1,18 +1,18 @@
 products:
   konnect:
     match:
-      - "konnect/definitions/**/src/openapi.yaml"
+      - "konnect/definitions/**/openapi.yaml"
     notMatch:
-      - "konnect/definitions/identity/v2/src/openapi.yaml"
-      - "konnect/definitions/runtime-groups/v2/src/openapi.yaml"
-      - "konnect/definitions/runtime-groups-config/v2/src/openapi.yaml"
+      - "konnect/definitions/identity/v2/openapi.yaml"
+      - "konnect/definitions/runtime-groups/v2/openapi.yaml"
+      - "konnect/definitions/runtime-groups-config/v2/openapi.yaml"
 
   portal:
     match:
-      - "portal/definitions/**/src/openapi.yaml"
+      - "portal/definitions/**/openapi.yaml"
     notMatch: []
 
   internal:
     match:
-      - "internal/definitions/**/src/openapi.yaml"
+      - "internal/definitions/**/openapi.yaml"
     notMatch: []

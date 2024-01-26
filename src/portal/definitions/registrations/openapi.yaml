@@ -1,0 +1,262 @@
+openapi: 3.0.0
+info:
+  title: Portal Registrations
+  version: 2.0.0
+  description: N/A (this description is removed during bundling)
+  contact:
+    name: Kong
+    url: 'https://cloud.konghq.com'
+paths:
+  /api/v2/applications/{applicationId}/registrations:
+    get:
+      summary: Get application registrations
+      description: Lists product registrations for an application.
+      operationId: list-application-registrations
+      parameters:
+        - $ref: '../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+        - $ref: '../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
+        - $ref: '../common/parameters.yaml#/components/parameters/ApplicationId'
+        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByIdEquality'
+        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByIdEqualityShort'
+        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByStatusEquality'
+        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByStatusEqualityShort'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListRegistrations'
+        '400':
+          $ref: '../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: '../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '404':
+          $ref: '../../../common/definitions/errors.yaml#/components/responses/NotFound'
+      tags:
+        - registrations
+      security:
+        - portalAccessToken: []
+    post:
+      summary: Register an application for a product
+      description: Registers an application for a product.
+      operationId: create-application-registration
+      parameters:
+        - $ref: '../common/parameters.yaml#/components/parameters/ApplicationId'
+      requestBody:
+        $ref: '#/components/requestBodies/CreateRegistration'
+      responses:
+        '201':
+          $ref: '#/components/responses/CreateRegistration'
+        '400':
+          $ref: '../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: '../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '404':
+          $ref: '../../../common/definitions/errors.yaml#/components/responses/NotFound'
+        '409':
+          $ref: '../../../common/definitions/errors.yaml#/components/responses/Conflict'
+      tags:
+        - registrations
+      security:
+        - portalAccessToken: []
+  /api/v2/applications/{applicationId}/registrations/{registrationId}:
+    get:
+      summary: Get an application registration
+      description: Retrieves the specified product registration for an application.
+      operationId: get-application-registration
+      parameters:
+        - $ref: '../common/parameters.yaml#/components/parameters/ApplicationId'
+        - $ref: '#/components/parameters/RegistrationId'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetRegistration'
+        '401':
+          $ref: '../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '404':
+          $ref: '../../../common/definitions/errors.yaml#/components/responses/NotFound'
+      tags:
+        - registrations
+      security:
+        - portalAccessToken: []
+    delete:
+      summary: Delete an application registration
+      description: Unregister an application for a product version.
+      operationId: delete-application-registration
+      parameters:
+        - $ref: '../common/parameters.yaml#/components/parameters/ApplicationId'
+        - $ref: '#/components/parameters/RegistrationId'
+      responses:
+        '204':
+          description: The registration has been deleted.
+        '401':
+          $ref: '../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '404':
+          $ref: '../../../common/definitions/errors.yaml#/components/responses/NotFound'
+      tags:
+        - registrations
+      security:
+        - portalAccessToken: []
+  /api/v2/applications/{applicationId}/registrations/{registrationId}/granted-scopes:
+   get:
+      summary: Get the granted scopes of an application registration
+      description: |
+        Retrieves the granted scopes of a specified product registration directly from the IDP for an application.
+        Will return 409 if this feature is not supported by the application.
+      operationId: get-application-registration-granted-scopes
+      parameters:
+        - $ref: '../common/parameters.yaml#/components/parameters/ApplicationId'
+        - $ref: '#/components/parameters/RegistrationId'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetGrantedScopes'
+        '401':
+          $ref: '../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '404':
+          $ref: '../../../common/definitions/errors.yaml#/components/responses/NotFound'
+        '422':
+          $ref: '../../../common/definitions/errors.yaml#/components/responses/UnprocessableContent'
+      tags:
+        - registrations
+      security:
+        - portalAccessToken: []
+components:
+  securitySchemes:
+    portalAccessToken:
+      $ref: '../../../common/definitions/security.yaml#/components/securitySchemes/portalAccessToken'
+  parameters:
+    RegistrationId:
+      name: registrationId
+      in: path
+      required: true
+      description: Contains a unique identifier used by the Portal API for this resource.
+      schema:
+        type: string
+        format: uuid
+  responses:
+    CreateRegistration:
+      description: Registration creation response.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GetRegistrationResponse'
+    GetRegistration:
+      description: Get registration response.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GetRegistrationResponse'
+    ListRegistrations:
+      description: Get registrations response.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ListRegistrationsResponse'
+    GetGrantedScopes:
+      description: Get granted scopes response.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GetGrantedScopesResponse'
+  requestBodies:
+    CreateRegistration:
+      description: Create an application registration.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateRegistrationPayload'
+  schemas:
+    CreateRegistrationPayload:
+      additionalProperties: false
+      type: object
+      title: CreateRegistrationPayload
+      description: The payload to create a registration.
+      required:
+        - product_version_id
+      properties:
+        product_version_id:
+          description: The product version id required for registration.
+          type: string
+          format: uuid
+        scopes:
+          description: The requested scopes for the registration, requires developer_managed_scopes to be enabled.
+          type: array
+          items:
+            type: string
+    ListRegistrationsResponse:
+      additionalProperties: false
+      type: object
+      required:
+      - data
+      - meta
+      properties:
+        meta:
+          $ref: '../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/GetRegistrationResponse'
+    GetRegistrationResponse:
+      additionalProperties: false
+      type: object
+      required:
+        - id
+        - status
+        - application_id
+        - product_id
+        - product_name
+        - product_version_id
+        - product_version_name
+        - created_at
+        - updated_at
+      properties:
+        id:
+          $ref: '../../../common/definitions/properties.yaml#/components/schemas/UUID'
+        created_at:
+          $ref: '../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
+        status:
+          description: The approval status of the registration.
+          type: string
+          enum:
+            - approved
+            - pending
+            - rejected
+            - revoked
+        product_id:
+          description: Contains a unique identifier used by the Portal API for this resource.
+          type: string
+          format: uuid
+        product_name:
+          description: The name of the product. This is the name that is displayed in the developer portal.
+          type: string
+        product_version_id:
+          description: Contains a unique identifier used by the Portal API for this resource.
+          type: string
+          format: uuid
+        product_version_name:
+          description: The name of the product version. This is the version label that is displayed in the developer portal.
+          type: string
+        application_id:
+          description: Contains a unique identifier used by the Portal API for this resource.
+          type: string
+          format: uuid
+        granted_scopes:
+          description: |
+            Cached list of scopes granted for the given application registration.
+            Use `/api/v2/applications/{applicationId}/registrations/{registrationId}/granted-scopes` to get up to date granted scopes from the IDP.
+            This property will be omitted if not supported by the application.
+          type: array
+          items:
+            type: string
+    GetGrantedScopesResponse:
+      additionalProperties: false
+      type: object
+      required:
+        - scopes
+      properties:
+        scopes:
+          $ref: '../common/properties.yaml#/components/schemas/RefreshedGrantedScopes'
+tags:
+  - name: registrations
+    description: |
+      The API for Konnect Portal application registrations. If the portal is public
+      all of the described endpoints will return a 404 error

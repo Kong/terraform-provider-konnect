@@ -13,13 +13,13 @@ module.exports = function (product) {
   // Load all the matching files
   let allFiles = [];
   for (let m of productConfig.match) {
-    allFiles = allFiles.concat(fg.sync(m));
+    allFiles = allFiles.concat(fg.sync(`src/${m}`));
   }
 
   // And remove any items in notMatch
   for (let nm of productConfig.notMatch) {
     allFiles = allFiles.filter((f) => {
-      return !minimatch(f, nm);
+      return !minimatch(f, `src/${nm}`);
     });
   }
 

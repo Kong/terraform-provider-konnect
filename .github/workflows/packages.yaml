@@ -11,7 +11,6 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
-      identity_spec_v2: ${{ steps.identity-v2.outputs.spec }}
       identity_spec_v3: ${{ steps.identity-v3.outputs.spec }}
       organization_settings_spec: ${{ steps.audit-logs.outputs.spec }}
 
@@ -24,66 +23,24 @@ jobs:
         with:
           filters: |
             spec:
-              - 'konnect/definitions/identity/v2/src/openapi.yaml'
-              - 'konnect/packages/identity/v2/npm/**'
+              - 'src/konnect/definitions/identity/v2/src/openapi.yaml'
+              - 'src/konnect/packages/identity/v2/npm/**'
 
       - uses: dorny/paths-filter@v2
         id: identity-v3
         with:
           filters: |
             spec:
-              - 'konnect/definitions/identity/v3/src/openapi.yaml'
-              - 'konnect/packages/identity/v3/npm/**'
+              - 'src/konnect/definitions/identity/v3/src/openapi.yaml'
+              - 'src/konnect/packages/identity/v3/npm/**'
 
       - uses: dorny/paths-filter@v2
         id: audit-logs
         with:
           filters: |
             spec:
-              - 'konnect/definitions/audit-logs/v2/src/openapi.yaml'
-              - 'konnect/packages/audit-logs/v2/npm/**'
-
-  kauth-client-v2-axios-npm:
-    name: Publish KAuth Client v2 Axios Package to NPM
-
-    needs: changes
-    if: ${{ needs.changes.outputs.identity_spec_v2 == 'true' }}
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18.x'
-          registry-url: 'https://registry.npmjs.org'
-
-      - name: Install Dependencies
-        run: |
-          npm install
-          cd konnect/packages/identity/v2/npm
-          npm install
-
-      - name: Bundle Apis
-        run: npm run bundle-apis all-files
-
-      - name: Validate Spec
-        run: npm run validate:identity-v2-spec
-
-      - name: Generate Client
-        run: npm run generate:identity-v2-client
-
-      - name: Publish to NPM Registry
-        run: |
-          cd konnect/packages/identity/v2/npm
-          npm version --no-git-tag-version $(npm view @kong/kauth-client-v2-axios@latest version)
-          npm version --no-git-tag-version patch
-          npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+              - 'src/konnect/definitions/audit-logs/v2/src/openapi.yaml'
+              - 'src/konnect/packages/audit-logs/v2/npm/**'
 
   kauth-client-v3-axios-npm:
     name: Publish KAuth Client v3 Axios Package to NPM
@@ -106,7 +63,7 @@ jobs:
       - name: Install Dependencies
         run: |
           npm install
-          cd konnect/packages/identity/v3/npm
+          cd src/konnect/packages/identity/v3/npm
           npm install
 
       - name: Bundle Apis
@@ -120,7 +77,7 @@ jobs:
 
       - name: Publish to NPM Registry
         run: |
-          cd konnect/packages/identity/v3/npm
+          cd src/konnect/packages/identity/v3/npm
           npm version --no-git-tag-version $(npm view @kong/kauth-client-v3-axios@latest version)
           npm version --no-git-tag-version patch
           npm publish
@@ -148,7 +105,7 @@ jobs:
       - name: Install Dependencies
         run: |
           npm install
-          cd konnect/packages/audit-logs/v2/npm
+          cd src/konnect/packages/audit-logs/v2/npm
           npm install
 
       - name: Bundle Apis
@@ -162,7 +119,7 @@ jobs:
 
       - name: Publish to NPM Registry
         run: |
-          cd konnect/packages/audit-logs/v2/npm
+          cd src/konnect/packages/audit-logs/v2/npm
           npm version --no-git-tag-version $(npm view @kong/audit-logs-client-v2-axios@latest version)
           npm version --no-git-tag-version patch
           npm publish

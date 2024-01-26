@@ -30,17 +30,9 @@ jobs:
         run: |
           npm ci
 
-      - name: Merge OAS in to konnect/portal
+      - name: Bundle + Process OpenAPI specs
         run: |
-          ./tools/merge-oas.sh
-
-      - name: Process OpenAPI files
-        run: |
-          npm run generate-sdk-oas
-
-      - name: Process OpenAPI files
-        run: |
-          node ./tools/split-service-specs.js
+          ./tools/run.sh
 
       - name: Update OpenAPI files before pushing them downstream
         run: |
