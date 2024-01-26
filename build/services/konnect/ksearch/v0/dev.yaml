@@ -34,7 +34,6 @@ paths:
       parameters:
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageAfter'
-        - $ref: '#/components/parameters/PageBefore'
         - in: query
           name: q
           description: The query that defines the search criteria.
@@ -450,7 +449,6 @@ components:
         meta:
           page:
             size: 3
-            previous: /search?q=son&page[before]=ewogICJpZCI6ICJoZWxsbyB3b3JsZCIKfQ
             next: /search?q=son&page[after]=ewogICJpZCI6ICJoZWysbyB3b3JsZCIKgZ
     Searchable-Entity-Types:
       value:
@@ -476,17 +474,6 @@ components:
       name: page[after]
       description: >-
         Request the next page of data, starting with the item after this
-        parameter.
-      required: false
-      in: query
-      allowEmptyValue: true
-      schema:
-        type: string
-        example: ewogICJpZCI6ICJoZWxsbyB3b3JsZCIKfQ
-    PageBefore:
-      name: page[before]
-      description: >-
-        Request the next page of data, starting with the item before this
         parameter.
       required: false
       in: query

@@ -10,6 +10,40 @@ tags: []
 paths: {}
 components:
   schemas:
+    AuthStrategyId:
+      description: >-
+        ID of the auth strategy to use for the application. If null or not
+        included, the default application auth strategy will be used.
+      type: string
+      format: uuid
+      nullable: true
+    ListAuthStrategiesItem:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          $ref: '#/components/schemas/AuthStrategyId'
+        name:
+          type: string
+          example: Okta Strategy
+        credential_type:
+          type: string
+          enum:
+            - client_credentials
+            - self_managed_client_credentials
+            - key_auth
+          example: client_credentials
+        auth_methods:
+          type: array
+          items:
+            description: Auth Methods enabled for this strategy
+            type: string
+          example:
+            - bearer
+      required:
+        - id
+        - credential_type
+        - name
     CreateCredentialPayload:
       additionalProperties: false
       type: object
@@ -55,6 +89,8 @@ components:
         redirect_uri:
           type: string
           nullable: true
+        auth_strategy_id:
+          $ref: '#/components/schemas/AuthStrategyId'
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -137,6 +173,8 @@ components:
           description: A brief description of the application
           type: string
           maxLength: 255
+        auth_strategy_id:
+          $ref: '#/components/schemas/AuthStrategyId'
     ApplicationCreationResponse:
       additionalProperties: false
       type: object
@@ -149,6 +187,7 @@ components:
         - description
         - created_at
         - updated_at
+        - auth_strategy_id
       properties:
         id:
           $ref: '#/components/schemas/UUID'
@@ -173,6 +212,8 @@ components:
               type: string
             client_secret:
               type: string
+        auth_strategy_id:
+          $ref: '#/components/schemas/AuthStrategyId'
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -226,6 +267,8 @@ components:
           type: string
           example: https://example.com/callback
           nullable: true
+        auth_strategy_id:
+          $ref: '#/components/schemas/AuthStrategyId'
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -238,6 +281,19 @@ components:
       properties:
         scopes:
           $ref: '#/components/schemas/RefreshedGrantedScopes'
+    ListAuthStrategiesResponse:
+      additionalProperties: false
+      type: object
+      required:
+        - data
+        - meta
+      properties:
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ListAuthStrategiesItem'
     PageMeta:
       type: object
       description: >-
