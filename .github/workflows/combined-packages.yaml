@@ -27,11 +27,15 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          npm install
+          npm ci
 
       - name: Bundle + Process OpenAPI specs
         run: |
           ./tools/run.sh
+
+      - name: Check that /build/ is up to date
+        run: |
+          ./bin/fails_if_changed.sh
 
       - name: "[Konnect] Generate Dev Client"
         run: npm run generate:konnect-dev-client

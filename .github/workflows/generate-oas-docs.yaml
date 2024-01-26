@@ -24,11 +24,15 @@ jobs:
           node-version: "18.x"
 
       - name: Install Dependencies
-        run: npm install
+        run: npm ci
 
       - name: Bundle + Process OpenAPI specs
         run: |
           ./tools/run.sh
+
+      - name: Check that /build/ is up to date
+        run: |
+          ./bin/fails_if_changed.sh
 
       - name: Upload combined public OAS files
         uses: actions/upload-artifact@v3

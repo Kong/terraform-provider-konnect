@@ -34,6 +34,10 @@ jobs:
         run: |
           ./tools/run.sh
 
+      - name: Check that /build/ is up to date
+        run: |
+          ./bin/fails_if_changed.sh
+
       - name: Update OpenAPI files before pushing them downstream
         run: |
           ./tools/process-mesh.sh

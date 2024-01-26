@@ -104,9 +104,9 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          npm install
+          npm ci
           cd src/konnect/packages/audit-logs/v2/npm
-          npm install
+          npm ci
 
       - name: Bundle Apis
         run: npm run bundle-apis all-files
