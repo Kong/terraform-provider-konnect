@@ -391,6 +391,6 @@ paths:
                 BadRequestExample:
                   $ref: '#/components/examples/BadRequestExample'
         '401':
-          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '403':
-          $ref: '../../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Forbidden'

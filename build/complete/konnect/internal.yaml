@@ -1,8 +1,8 @@
 openapi: 3.0.3
 info:
   title: Konnect API
-  version: 2.0.0
   description: The Konnect platform API
+  version: 2.0.0
   contact:
     name: Kong
     url: https://konghq.com
@@ -300,6 +300,287 @@ paths:
           $ref: '#/components/responses/IdentityUnauthenticated'
 components:
   schemas:
+    AbsoluteTimeRangeDtoV2:
+      type: object
+      description: A duration representing an exact start and end time.
+      properties:
+        tz:
+          type: string
+          default: Etc/UTC
+        type:
+          type: string
+          enum:
+            - absolute
+        start_localtime:
+          format: date-time
+          type: string
+        end_localtime:
+          format: date-time
+          type: string
+        start:
+          format: date-time
+          type: string
+        end:
+          format: date-time
+          type: string
+      required:
+        - type
+    RelativeTimeRangeDtoV2:
+      type: object
+      description: >-
+        A duration representing a relative-to-now span of time. Generally the
+        start time is floored to the requested granularity. Eg 7d from now, with
+        1day granularity initiated at 2024-01-08T17:11:00+05:00 will query for
+        the time range from 2024-01-01T00:00:00+05:00 to
+        2024-01-08T17:11:00+05:00. The exact start and end timestamps are
+        returned in the result query in the meta.start_ms and meta.end_ms
+        fields. If the granularity for the previous query was 1hour, it would
+        query a time range from 2024-01-01T17:00:00+05:00 to
+        2024-01-08T17:11:00+05:00.
+      properties:
+        tz:
+          type: string
+          default: Etc/UTC
+        type:
+          type: string
+          enum:
+            - relative
+        time_range:
+          type: string
+          enum:
+            - 15m
+            - 1h
+            - 6h
+            - 12h
+            - 24h
+            - 7d
+            - 30d
+            - current_week
+            - current_month
+            - previous_week
+            - previous_month
+          default: 1h
+      required:
+        - type
+        - time_range
+    ExploreFilter:
+      type: object
+      description: A filter that specifies which data to include in the query
+      properties:
+        dimension:
+          type: string
+          enum:
+            - api_product
+            - api_product_version
+            - application
+            - consumer
+            - control_plane
+            - control_plane_group
+            - data_plane_node
+            - gateway_service
+            - route
+            - status_code
+            - status_code_grouped
+            - time
+          example: status_code
+        type:
+          type: string
+          enum:
+            - in
+            - not_in
+            - selector
+          example: in
+        values:
+          type: array
+          items:
+            type: string
+      required:
+        - dimension
+        - type
+        - values
+    GroupByResult:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          readOnly: true
+        event:
+          type: object
+          readOnly: true
+      required:
+        - timestamp
+        - event
+      example:
+        event:
+          gateway_service: >-
+            d5ac5d88-efed-4e10-9dfe-0b0a6646c219:bf16907c-8673-4f9d-aa83-1f2ea9215055
+          request_count: 1000
+          response_latency_p99: 23
+        timestamp: '2024-01-16T00:00:00Z'
+    DisplayBlob:
+      type: object
+      properties: {}
+      example:
+        gateway_service:
+          d5ac5d88-efed-4e10-9dfe-0b0a6646c219:bf16907c-8673-4f9d-aa83-111111111111:
+            id: >-
+              d5ac5d88-efed-4e10-9dfe-0b0a6646c219:bf16907c-8673-4f9d-aa83-111111111111
+            deleted: true
+            name: Gateway Service Alpha
+          d5ac5d88-efed-4e10-9dfe-0b0a6646c219:bf16907c-8673-4f9d-aa83-1f2ea9215055:
+            id: >-
+              d5ac5d88-efed-4e10-9dfe-0b0a6646c219:bf16907c-8673-4f9d-aa83-1f2ea9215055
+            deleted: false
+            name: Gateway Service Beta
+    MetricUnitDto:
+      type: object
+      properties: {}
+      example:
+        request_count: cnt
+        response_latency_p99: ms
+    QueryResponseMeta:
+      type: object
+      properties:
+        start_ms:
+          type: number
+          readOnly: true
+        end_ms:
+          type: number
+          readOnly: true
+        display:
+          readOnly: true
+          allOf:
+            - $ref: '#/components/schemas/DisplayBlob'
+        metric_units:
+          readOnly: true
+          allOf:
+            - $ref: '#/components/schemas/MetricUnitDto'
+        granularity:
+          type: number
+          readOnly: true
+        granularity_ms:
+          type: number
+          readOnly: true
+        truncated:
+          type: boolean
+          readOnly: true
+        limit:
+          type: number
+          readOnly: true
+        query_id:
+          type: string
+          readOnly: true
+      required:
+        - start_ms
+        - end_ms
+        - display
+        - metric_units
+        - granularity_ms
+        - truncated
+        - limit
+        - query_id
+      example:
+        start_ms: 1705428000000
+        end_ms: 1705429000000
+        display:
+          gateway_service:
+            d5ac5d88-efed-4e10-9dfe-0b0a6646c219:bf16907c-8673-4f9d-aa83-111111111111:
+              id: >-
+                d5ac5d88-efed-4e10-9dfe-0b0a6646c219:bf16907c-8673-4f9d-aa83-111111111111
+              deleted: true
+              name: Gateway Service Alpha
+            d5ac5d88-efed-4e10-9dfe-0b0a6646c219:bf16907c-8673-4f9d-aa83-1f2ea9215055:
+              id: >-
+                d5ac5d88-efed-4e10-9dfe-0b0a6646c219:bf16907c-8673-4f9d-aa83-1f2ea9215055
+              deleted: false
+              name: Gateway Service Beta
+        metric_units:
+          request_count: cnt
+          response_latency_p99: ms
+        granularity_ms: 60000
+        truncated: false
+        limit: 50
+        query_id: requested-query-id
+    BaseError:
+      type: object
+      title: Error
+      description: standard error
+      required:
+        - status
+        - title
+        - instance
+        - detail
+      properties:
+        status:
+          type: integer
+          description: >
+            The HTTP status code of the error. Useful when passing the response
+
+            body to child properties in a frontend UI. Must be returned as an
+            integer.
+          readOnly: true
+        title:
+          type: string
+          description: |
+            A short, human-readable summary of the problem. It should not
+            change between occurences of a problem, except for localization.
+            Should be provided as "Sentence case" for direct use in the UI.
+          readOnly: true
+        type:
+          type: string
+          description: The error type.
+          readOnly: true
+        instance:
+          type: string
+          description: |
+            Used to return the correlation ID back to the user, in the format
+            kong:trace:<correlation_id>. This helps us find the relevant logs
+            when a customer reports an issue.
+          readOnly: true
+        detail:
+          type: string
+          description: >
+            A human readable explanation specific to this occurence of the
+            problem.
+
+            This field may contain request/entity data to help the user
+            understand
+
+            what went wrong. Enclose variable values in square brackets. Should
+            be
+
+            provided as "Sentence case" for direct use in the UI.
+          readOnly: true
+    UnauthorizedError:
+      type: object
+      properties:
+        status:
+          example: 401
+        title:
+          example: Unauthorized
+        type:
+          example: https://httpstatuses.com/401
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Invalid credentials
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+    ForbiddenError:
+      type: object
+      properties:
+        status:
+          example: 403
+        title:
+          example: Forbidden
+        type:
+          example: https://httpstatuses.com/403
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Forbidden
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
     PaginatedMeta:
       type: object
       example:
@@ -1364,86 +1645,6 @@ components:
             type: string
             description: Upstream URI associated with the request.
             nullable: true
-    BaseError:
-      type: object
-      title: Error
-      description: standard error
-      required:
-        - status
-        - title
-        - instance
-        - detail
-      properties:
-        status:
-          type: integer
-          description: >
-            The HTTP status code of the error. Useful when passing the response
-
-            body to child properties in a frontend UI. Must be returned as an
-            integer.
-          readOnly: true
-        title:
-          type: string
-          description: |
-            A short, human-readable summary of the problem. It should not
-            change between occurences of a problem, except for localization.
-            Should be provided as "Sentence case" for direct use in the UI.
-          readOnly: true
-        type:
-          type: string
-          description: The error type.
-          readOnly: true
-        instance:
-          type: string
-          description: |
-            Used to return the correlation ID back to the user, in the format
-            kong:trace:<correlation_id>. This helps us find the relevant logs
-            when a customer reports an issue.
-          readOnly: true
-        detail:
-          type: string
-          description: >
-            A human readable explanation specific to this occurence of the
-            problem.
-
-            This field may contain request/entity data to help the user
-            understand
-
-            what went wrong. Enclose variable values in square brackets. Should
-            be
-
-            provided as "Sentence case" for direct use in the UI.
-          readOnly: true
-    UnauthorizedError:
-      type: object
-      properties:
-        status:
-          example: 401
-        title:
-          example: Unauthorized
-        type:
-          example: https://httpstatuses.com/401
-        instance:
-          example: kong:trace:1234567890
-        detail:
-          example: Invalid credentials
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
-    ForbiddenError:
-      type: object
-      properties:
-        status:
-          example: 403
-        title:
-          example: Forbidden
-        type:
-          example: https://httpstatuses.com/403
-        instance:
-          example: kong:trace:1234567890
-        detail:
-          example: Forbidden
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
     APIProductLabels:
       title: Labels
       type: object
@@ -7108,405 +7309,19 @@ components:
         must be a data URL with base64 image data, e.g.,
         data:image/jpeg;base64,<BASE64_IMAGE_DATA>
       example: data:image/png,YW5faW1hZ2VfZmlsZQ==
-  requestBodies:
-    Auth0Registration:
-      content:
-        application/json:
-          schema:
-            title: Auth0 organization register
-            type: object
-            required:
-              - organization_name
-              - default_region
-            description: Auth0 organization registration
-            properties:
-              organization_name:
-                type: string
-              default_region:
-                type: string
-    UpdateUser:
-      description: The request schema for the update user request.
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              full_name:
-                type: string
-                pattern: ^[\w \W]+$
-                example: James C. Woods
-                description: The user's full name.
-                writeOnly: true
-              preferred_name:
-                type: string
-                maxLength: 250
-                example: Jimmy
-                description: The user's desired name.
-                writeOnly: true
-          examples:
-            Example Request Body:
-              $ref: '#/components/examples/Update-User-Request'
-    AssignParameterizedRole:
-      content:
-        application/json:
-          schema:
-            type: object
-            description: >-
-              A parameterized assigned role is a role that has been assigned to
-              a managed system account.
-            properties:
-              role_name:
-                type: string
-                example: Connector
-                description: The desired role.
-              entity_id:
-                type: string
-                format: uuid
-                example: e67490ce-44dc-4cbd-b65e-b52c746fc26a
-                description: The ID of the entity.
-              entity_type_name:
-                type: string
-                example: Mesh Control Planes
-                description: The type of entity.
-              entity_region:
-                type: string
-                enum:
-                  - us
-                  - eu
-                  - au
-                  - '*'
-                example: eu
-                description: The region to scope the role assignment to.
-              parameters:
-                type: object
-                example:
-                  zoneName: zone3
-          examples:
-            Parameterized-Assigned-Role:
-              $ref: '#/components/examples/Parameterized-Assigned-Role-Example'
-      description: The request schema for assigning a role.
-    UpdateOrganization:
-      description: The request schema to update an organization.
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              owner_id:
-                type: string
-                description: >-
-                  The user id of the new owner of the organization. Must be a
-                  member of the Organization Admins team.
-                format: uuid
-                example: d9c56d92-0339-4dfb-be0c-2253162edba9
-              name:
-                type: string
-                description: The new name of the organization.
-                example: Kong Inc
-          examples:
-            Example Request Body:
-              $ref: '#/components/examples/Update-Organization'
-    AWSResolveCustomerRequest:
-      description: AWS Marketplace Metering Resolve Customer request.
-      content:
-        application/json:
-          schema:
-            type: object
-            required:
-              - token
-            properties:
-              token:
-                type: string
-                description: Token is the aws customer token from the aws marketplace.
-          examples:
-            Example Request Body:
-              $ref: '#/components/examples/AWS-Resolve-Customer-Request'
-  responses:
-    Unauthorized:
-      description: Unauthorized
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/UnauthorizedError'
-            type: object
-            title: Unauthorized Response
-            description: The error response object.
-            properties:
-              status:
-                type: integer
-                example: 403
-                description: The HTTP status code.
-              title:
-                type: string
-                description: The Error Response.
-                example: Unauthorized
-              instance:
-                type: string
-                description: The Konnect traceback code.
-                example: konnect:trace:952172606039454040
-              detail:
-                type: string
-                description: Details about the error response.
-                example: You do not have permission to perform this action
-          examples:
-            UnauthorizedExample:
-              $ref: '#/components/examples/UnauthorizedExample'
-            Unauthorized:
-              $ref: '#/components/examples/403-permission-denied'
-    Auth0Registration:
-      description: Auth0 organization registration
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Auth0Registration'
-    Auth0OrganizationsCollection:
-      description: A paginated list response for a collection of auth0 organizations.
-      content:
-        application/json:
-          schema:
-            type: object
-            title: Auth0 Organizations Collection Response
-            properties:
-              meta:
-                $ref: '#/components/schemas/PaginatedMeta'
-              data:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Auth0Organization'
-          examples:
-            Organization Collection:
-              value:
-                meta:
-                  page:
-                    number: 1
-                    size: 1
-                    total: 10
-                data:
-                  - name: IDM - Developers
-                    login_path: >-
-                      /v2/authenticate/federated?org_id=7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-    UserSingle:
-      description: A get action response of a single user.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/User'
-          examples:
-            Example:
-              $ref: '#/components/examples/Get-User-Response'
-    ParameterizedAssignedRoleSingle:
-      description: A get response of a single parameterized assigned role.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ParameterizedAssignedRole'
-          examples:
-            Assigned Role Example:
-              $ref: '#/components/examples/Parameterized-Assigned-Role-Example'
-    ParameterizedAssignedRolesCollection:
-      description: >-
-        A paginated list response for a collection of parameterized assigned
-        roles.
-      content:
-        application/json:
-          schema:
-            type: object
-            title: Parameterized Assigned Roles Collection Response
-            properties:
-              meta:
-                $ref: '#/components/schemas/PaginatedMeta'
-              data:
-                type: array
-                description: An Array
-                items:
-                  $ref: '#/components/schemas/ParameterizedAssignedRole'
-          examples:
-            ParameterizedAssignedRolesCollection:
-              $ref: >-
-                #/components/examples/Parameterized-Assigned-Roles-Collection-Example
-    IdentityBadRequest:
-      description: Bad Request
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/BadRequestError'
-          examples:
-            Request Format is Invalid:
-              $ref: '#/components/examples/400-request-format-is-invalid'
-            Cannot be Blank:
-              $ref: '#/components/examples/400-cannot-be-blank'
-            Invalid ID format:
-              $ref: '#/components/examples/400-invalid-id-format'
-            Must be a valid UUID v4:
-              $ref: '#/components/examples/400-valid-uuid'
-            System teams cannot be modified:
-              $ref: '#/components/examples/400-systems-team-modified'
-            Password Complexity:
-              $ref: '#/components/examples/400-password-complexity'
-            Authentication Settings cannot be both Disabled:
-              $ref: >-
-                #/components/examples/400-authentication-settings-cannot-be-both-disabled
-            OIDC needs an IdP configuration:
-              $ref: '#/components/examples/400-oidc-auth-enabled-needs-idp'
-            IdP configuration is required:
-              $ref: '#/components/examples/400-idp-config-is-required'
-            Unsupported filter operation:
-              value:
-                status: 400
-                title: Bad Request
-                instance: konnect:trace:3674017986744198214
-                invalid_parameters:
-                  - field: '[filter][actions][contains]'
-                    reason: '[contains] is not a supported filter operation'
-    IdentityConflict:
-      description: Conflict
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ConflictError'
-          examples:
-            User is Already Active:
-              $ref: '#/components/examples/409-user-is-already-active'
-    IdentityPermissionDenied:
-      description: Permission denied
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ForbiddenError'
-          examples:
-            Permission Denied:
-              $ref: '#/components/examples/403-permission-denied'
-            Invalid Permissions:
-              $ref: '#/components/examples/403-invalid-permissions'
-            Username or Password invalid:
-              $ref: '#/components/examples/403-auth-invalid'
-    IdentityUnauthenticated:
-      description: Unauthenticated
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/UnauthorizedError'
-          examples:
-            Unauthorized:
-              $ref: '#/components/examples/401-unauthenticated'
-    IdentityNotFound:
-      description: Not Found
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/NotFoundError'
-          examples:
-            Not Found:
-              $ref: '#/components/examples/404-not-found'
-    MeOrganization:
-      description: Me Organization
-      content:
-        application/json:
-          schema:
-            type: object
-            title: Me Organization Response
-            example:
-              id: d99c041a-c7cf-46a2-bf3a-44bb5f75400e
-              name: string
-              owner_id: 1c9c3848-5897-4f2c-beed-df6f3e3adb37
-              created_at: '2023-01-23T17:22:52.150Z'
-              updated_at: '2023-01-23T17:22:52.150Z'
-            properties:
-              id:
-                type: string
-                description: UUID of the organization.
-                format: uuid
-                readOnly: true
-              name:
-                type: string
-                description: Name of the organization.
-              owner_id:
-                type: string
-                description: Owner ID of the organization.
-              login_path:
-                type: string
-                description: >-
-                  Path to organization-specific login when single sign on (SSO)
-                  is enabled. Blank otherwise.
-              created_at:
-                type: string
-                description: Date the organization was created.
-                format: date-time
-                readOnly: true
-              updated_at:
-                type: string
-                description: Date the organization was last updated.
-                format: date-time
-                readOnly: true
-          examples:
-            Example:
-              value:
-                created_at: '2023-01-18T11:35:45.130Z'
-                id: 023bfa42-3513-4cbf-b059-a9ddb4ea995d
-                name: Acme Co.
-                owner_id: e02c829c-0e2d-44b5-9057-07714ea613a3
-                login_path: acme
-                updated_at: '2023-01-23T17:22:52.150Z'
-    UserPermissions:
-      description: User Permissions
-      content:
-        application/json:
-          schema:
-            type: object
-            title: User Permissions Response
-            properties:
-              data:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    resource:
-                      type: string
-                    actions:
-                      type: array
-                      items:
-                        type: string
-            example:
-              data:
-                - resource: krn:accounts:reg/*:org/aa878768-05cb-4811-90d2-b82ef61caf44
-                  actions:
-                    - '#root'
-          examples:
-            OrganizationAdminExample:
-              value:
-                data:
-                  - resource: >-
-                      krn:accounts:reg/*:org/aa878768-05cb-4811-90d2-b82ef61caf44
-                    actions:
-                      - '#root'
-    LogoutResponse:
-      description: Logout response
-      content:
-        application/json:
-          schema:
-            type: object
-            title: Logout Response
-            required:
-              - login_path
-            properties:
-              login_path:
-                type: string
-                description: The login path.
-    ResolveCustomerResponse:
-      description: AWS Resolve customer response
-      content:
-        application/json:
-          schema:
-            type: object
-            title: Resolve Customer Response
-            required:
-              - organization_id
-            properties:
-              organization_id:
-                type: string
-                description: UUID of the organization.
-                format: uuid
   examples:
+    UnauthorizedExample:
+      value:
+        status: 401
+        title: Unauthorized
+        instance: kong:trace:8347343766220159418
+        detail: Unauthorized
+    ForbiddenExample:
+      value:
+        status: 403
+        title: Forbidden
+        instance: kong:trace:2723154947768991354
+        detail: You do not have permission to perform this action
     ResponseExample:
       value:
         results:
@@ -7624,18 +7439,6 @@ components:
           time_range:
             start: '2020-02-02T00:00:00.000Z'
             end: '2020-02-03T00:00:00.000Z'
-    UnauthorizedExample:
-      value:
-        status: 401
-        title: Unauthorized
-        instance: kong:trace:8347343766220159418
-        detail: Unauthorized
-    ForbiddenExample:
-      value:
-        status: 403
-        title: Forbidden
-        instance: kong:trace:2723154947768991354
-        detail: You do not have permission to perform this action
     APIProductExample:
       value:
         id: e7a4f6c0-5777-4a37-bcb9-2d37d3b362ee
@@ -9699,6 +9502,404 @@ components:
             filename: logo.png
           catalog_cover:
             data: data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+  responses:
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/UnauthorizedError'
+            type: object
+            title: Unauthorized Response
+            description: The error response object.
+            properties:
+              status:
+                type: integer
+                example: 403
+                description: The HTTP status code.
+              title:
+                type: string
+                description: The Error Response.
+                example: Unauthorized
+              instance:
+                type: string
+                description: The Konnect traceback code.
+                example: konnect:trace:952172606039454040
+              detail:
+                type: string
+                description: Details about the error response.
+                example: You do not have permission to perform this action
+          examples:
+            UnauthorizedExample:
+              $ref: '#/components/examples/UnauthorizedExample'
+            Unauthorized:
+              $ref: '#/components/examples/403-permission-denied'
+    Auth0Registration:
+      description: Auth0 organization registration
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Auth0Registration'
+    Auth0OrganizationsCollection:
+      description: A paginated list response for a collection of auth0 organizations.
+      content:
+        application/json:
+          schema:
+            type: object
+            title: Auth0 Organizations Collection Response
+            properties:
+              meta:
+                $ref: '#/components/schemas/PaginatedMeta'
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Auth0Organization'
+          examples:
+            Organization Collection:
+              value:
+                meta:
+                  page:
+                    number: 1
+                    size: 1
+                    total: 10
+                data:
+                  - name: IDM - Developers
+                    login_path: >-
+                      /v2/authenticate/federated?org_id=7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+    UserSingle:
+      description: A get action response of a single user.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/User'
+          examples:
+            Example:
+              $ref: '#/components/examples/Get-User-Response'
+    ParameterizedAssignedRoleSingle:
+      description: A get response of a single parameterized assigned role.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ParameterizedAssignedRole'
+          examples:
+            Assigned Role Example:
+              $ref: '#/components/examples/Parameterized-Assigned-Role-Example'
+    ParameterizedAssignedRolesCollection:
+      description: >-
+        A paginated list response for a collection of parameterized assigned
+        roles.
+      content:
+        application/json:
+          schema:
+            type: object
+            title: Parameterized Assigned Roles Collection Response
+            properties:
+              meta:
+                $ref: '#/components/schemas/PaginatedMeta'
+              data:
+                type: array
+                description: An Array
+                items:
+                  $ref: '#/components/schemas/ParameterizedAssignedRole'
+          examples:
+            ParameterizedAssignedRolesCollection:
+              $ref: >-
+                #/components/examples/Parameterized-Assigned-Roles-Collection-Example
+    IdentityBadRequest:
+      description: Bad Request
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/BadRequestError'
+          examples:
+            Request Format is Invalid:
+              $ref: '#/components/examples/400-request-format-is-invalid'
+            Cannot be Blank:
+              $ref: '#/components/examples/400-cannot-be-blank'
+            Invalid ID format:
+              $ref: '#/components/examples/400-invalid-id-format'
+            Must be a valid UUID v4:
+              $ref: '#/components/examples/400-valid-uuid'
+            System teams cannot be modified:
+              $ref: '#/components/examples/400-systems-team-modified'
+            Password Complexity:
+              $ref: '#/components/examples/400-password-complexity'
+            Authentication Settings cannot be both Disabled:
+              $ref: >-
+                #/components/examples/400-authentication-settings-cannot-be-both-disabled
+            OIDC needs an IdP configuration:
+              $ref: '#/components/examples/400-oidc-auth-enabled-needs-idp'
+            IdP configuration is required:
+              $ref: '#/components/examples/400-idp-config-is-required'
+            Unsupported filter operation:
+              value:
+                status: 400
+                title: Bad Request
+                instance: konnect:trace:3674017986744198214
+                invalid_parameters:
+                  - field: '[filter][actions][contains]'
+                    reason: '[contains] is not a supported filter operation'
+    IdentityConflict:
+      description: Conflict
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ConflictError'
+          examples:
+            User is Already Active:
+              $ref: '#/components/examples/409-user-is-already-active'
+    IdentityPermissionDenied:
+      description: Permission denied
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ForbiddenError'
+          examples:
+            Permission Denied:
+              $ref: '#/components/examples/403-permission-denied'
+            Invalid Permissions:
+              $ref: '#/components/examples/403-invalid-permissions'
+            Username or Password invalid:
+              $ref: '#/components/examples/403-auth-invalid'
+    IdentityUnauthenticated:
+      description: Unauthenticated
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/UnauthorizedError'
+          examples:
+            Unauthorized:
+              $ref: '#/components/examples/401-unauthenticated'
+    IdentityNotFound:
+      description: Not Found
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/NotFoundError'
+          examples:
+            Not Found:
+              $ref: '#/components/examples/404-not-found'
+    MeOrganization:
+      description: Me Organization
+      content:
+        application/json:
+          schema:
+            type: object
+            title: Me Organization Response
+            example:
+              id: d99c041a-c7cf-46a2-bf3a-44bb5f75400e
+              name: string
+              owner_id: 1c9c3848-5897-4f2c-beed-df6f3e3adb37
+              created_at: '2023-01-23T17:22:52.150Z'
+              updated_at: '2023-01-23T17:22:52.150Z'
+            properties:
+              id:
+                type: string
+                description: UUID of the organization.
+                format: uuid
+                readOnly: true
+              name:
+                type: string
+                description: Name of the organization.
+              owner_id:
+                type: string
+                description: Owner ID of the organization.
+              login_path:
+                type: string
+                description: >-
+                  Path to organization-specific login when single sign on (SSO)
+                  is enabled. Blank otherwise.
+              created_at:
+                type: string
+                description: Date the organization was created.
+                format: date-time
+                readOnly: true
+              updated_at:
+                type: string
+                description: Date the organization was last updated.
+                format: date-time
+                readOnly: true
+          examples:
+            Example:
+              value:
+                created_at: '2023-01-18T11:35:45.130Z'
+                id: 023bfa42-3513-4cbf-b059-a9ddb4ea995d
+                name: Acme Co.
+                owner_id: e02c829c-0e2d-44b5-9057-07714ea613a3
+                login_path: acme
+                updated_at: '2023-01-23T17:22:52.150Z'
+    UserPermissions:
+      description: User Permissions
+      content:
+        application/json:
+          schema:
+            type: object
+            title: User Permissions Response
+            properties:
+              data:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    resource:
+                      type: string
+                    actions:
+                      type: array
+                      items:
+                        type: string
+            example:
+              data:
+                - resource: krn:accounts:reg/*:org/aa878768-05cb-4811-90d2-b82ef61caf44
+                  actions:
+                    - '#root'
+          examples:
+            OrganizationAdminExample:
+              value:
+                data:
+                  - resource: >-
+                      krn:accounts:reg/*:org/aa878768-05cb-4811-90d2-b82ef61caf44
+                    actions:
+                      - '#root'
+    LogoutResponse:
+      description: Logout response
+      content:
+        application/json:
+          schema:
+            type: object
+            title: Logout Response
+            required:
+              - login_path
+            properties:
+              login_path:
+                type: string
+                description: The login path.
+    ResolveCustomerResponse:
+      description: AWS Resolve customer response
+      content:
+        application/json:
+          schema:
+            type: object
+            title: Resolve Customer Response
+            required:
+              - organization_id
+            properties:
+              organization_id:
+                type: string
+                description: UUID of the organization.
+                format: uuid
+  requestBodies:
+    Auth0Registration:
+      content:
+        application/json:
+          schema:
+            title: Auth0 organization register
+            type: object
+            required:
+              - organization_name
+              - default_region
+            description: Auth0 organization registration
+            properties:
+              organization_name:
+                type: string
+              default_region:
+                type: string
+    UpdateUser:
+      description: The request schema for the update user request.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              full_name:
+                type: string
+                pattern: ^[\w \W]+$
+                example: James C. Woods
+                description: The user's full name.
+                writeOnly: true
+              preferred_name:
+                type: string
+                maxLength: 250
+                example: Jimmy
+                description: The user's desired name.
+                writeOnly: true
+          examples:
+            Example Request Body:
+              $ref: '#/components/examples/Update-User-Request'
+    AssignParameterizedRole:
+      content:
+        application/json:
+          schema:
+            type: object
+            description: >-
+              A parameterized assigned role is a role that has been assigned to
+              a managed system account.
+            properties:
+              role_name:
+                type: string
+                example: Connector
+                description: The desired role.
+              entity_id:
+                type: string
+                format: uuid
+                example: e67490ce-44dc-4cbd-b65e-b52c746fc26a
+                description: The ID of the entity.
+              entity_type_name:
+                type: string
+                example: Mesh Control Planes
+                description: The type of entity.
+              entity_region:
+                type: string
+                enum:
+                  - us
+                  - eu
+                  - au
+                  - '*'
+                example: eu
+                description: The region to scope the role assignment to.
+              parameters:
+                type: object
+                example:
+                  zoneName: zone3
+          examples:
+            Parameterized-Assigned-Role:
+              $ref: '#/components/examples/Parameterized-Assigned-Role-Example'
+      description: The request schema for assigning a role.
+    UpdateOrganization:
+      description: The request schema to update an organization.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              owner_id:
+                type: string
+                description: >-
+                  The user id of the new owner of the organization. Must be a
+                  member of the Organization Admins team.
+                format: uuid
+                example: d9c56d92-0339-4dfb-be0c-2253162edba9
+              name:
+                type: string
+                description: The new name of the organization.
+                example: Kong Inc
+          examples:
+            Example Request Body:
+              $ref: '#/components/examples/Update-Organization'
+    AWSResolveCustomerRequest:
+      description: AWS Marketplace Metering Resolve Customer request.
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - token
+            properties:
+              token:
+                type: string
+                description: Token is the aws customer token from the aws marketplace.
+          examples:
+            Example Request Body:
+              $ref: '#/components/examples/AWS-Resolve-Customer-Request'
   securitySchemes:
     personalAccessToken:
       type: http

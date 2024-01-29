@@ -1,0 +1,313 @@
+openapi: 3.0.2
+info:
+  title: Konnect Explore Endpoint
+  description: Konnect endpoint for extracting and computing metrics
+  version: 4.0.0
+  contact:
+    name: Kong
+    url: https://cloud.konghq.com
+servers:
+  - url: https://us.api.konghq.com/v4
+    description: US Region Konnect Platform Base URL
+  - url: https://eu.api.konghq.com/v4
+    description: EU Region Konnect Platform Base URL
+  - url: https://au.api.konghq.com/v4
+    description: AU Region Konnect Platform Base URL
+tags: []
+paths: {}
+components:
+  schemas:
+    AbsoluteTimeRangeDtoV2:
+      type: object
+      description: A duration representing an exact start and end time.
+      properties:
+        tz:
+          type: string
+          default: Etc/UTC
+        type:
+          type: string
+          enum:
+            - absolute
+        start_localtime:
+          format: date-time
+          type: string
+        end_localtime:
+          format: date-time
+          type: string
+        start:
+          format: date-time
+          type: string
+        end:
+          format: date-time
+          type: string
+      required:
+        - type
+    RelativeTimeRangeDtoV2:
+      type: object
+      description: >-
+        A duration representing a relative-to-now span of time. Generally the
+        start time is floored to the requested granularity. Eg 7d from now, with
+        1day granularity initiated at 2024-01-08T17:11:00+05:00 will query for
+        the time range from 2024-01-01T00:00:00+05:00 to
+        2024-01-08T17:11:00+05:00. The exact start and end timestamps are
+        returned in the result query in the meta.start_ms and meta.end_ms
+        fields. If the granularity for the previous query was 1hour, it would
+        query a time range from 2024-01-01T17:00:00+05:00 to
+        2024-01-08T17:11:00+05:00.
+      properties:
+        tz:
+          type: string
+          default: Etc/UTC
+        type:
+          type: string
+          enum:
+            - relative
+        time_range:
+          type: string
+          enum:
+            - 15m
+            - 1h
+            - 6h
+            - 12h
+            - 24h
+            - 7d
+            - 30d
+            - current_week
+            - current_month
+            - previous_week
+            - previous_month
+          default: 1h
+      required:
+        - type
+        - time_range
+    ExploreFilter:
+      type: object
+      description: A filter that specifies which data to include in the query
+      properties:
+        dimension:
+          type: string
+          enum:
+            - api_product
+            - api_product_version
+            - application
+            - consumer
+            - control_plane
+            - control_plane_group
+            - data_plane_node
+            - gateway_service
+            - route
+            - status_code
+            - status_code_grouped
+            - time
+          example: status_code
+        type:
+          type: string
+          enum:
+            - in
+            - not_in
+            - selector
+          example: in
+        values:
+          type: array
+          items:
+            type: string
+      required:
+        - dimension
+        - type
+        - values
+    GroupByResult:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          readOnly: true
+        event:
+          type: object
+          readOnly: true
+      required:
+        - timestamp
+        - event
+      example:
+        event:
+          gateway_service: >-
+            d5ac5d88-efed-4e10-9dfe-0b0a6646c219:bf16907c-8673-4f9d-aa83-1f2ea9215055
+          request_count: 1000
+          response_latency_p99: 23
+        timestamp: '2024-01-16T00:00:00Z'
+    DisplayBlob:
+      type: object
+      properties: {}
+      example:
+        gateway_service:
+          d5ac5d88-efed-4e10-9dfe-0b0a6646c219:bf16907c-8673-4f9d-aa83-111111111111:
+            id: >-
+              d5ac5d88-efed-4e10-9dfe-0b0a6646c219:bf16907c-8673-4f9d-aa83-111111111111
+            deleted: true
+            name: Gateway Service Alpha
+          d5ac5d88-efed-4e10-9dfe-0b0a6646c219:bf16907c-8673-4f9d-aa83-1f2ea9215055:
+            id: >-
+              d5ac5d88-efed-4e10-9dfe-0b0a6646c219:bf16907c-8673-4f9d-aa83-1f2ea9215055
+            deleted: false
+            name: Gateway Service Beta
+    MetricUnitDto:
+      type: object
+      properties: {}
+      example:
+        request_count: cnt
+        response_latency_p99: ms
+    QueryResponseMeta:
+      type: object
+      properties:
+        start_ms:
+          type: number
+          readOnly: true
+        end_ms:
+          type: number
+          readOnly: true
+        display:
+          readOnly: true
+          allOf:
+            - $ref: '#/components/schemas/DisplayBlob'
+        metric_units:
+          readOnly: true
+          allOf:
+            - $ref: '#/components/schemas/MetricUnitDto'
+        granularity:
+          type: number
+          readOnly: true
+        granularity_ms:
+          type: number
+          readOnly: true
+        truncated:
+          type: boolean
+          readOnly: true
+        limit:
+          type: number
+          readOnly: true
+        query_id:
+          type: string
+          readOnly: true
+      required:
+        - start_ms
+        - end_ms
+        - display
+        - metric_units
+        - granularity_ms
+        - truncated
+        - limit
+        - query_id
+      example:
+        start_ms: 1705428000000
+        end_ms: 1705429000000
+        display:
+          gateway_service:
+            d5ac5d88-efed-4e10-9dfe-0b0a6646c219:bf16907c-8673-4f9d-aa83-111111111111:
+              id: >-
+                d5ac5d88-efed-4e10-9dfe-0b0a6646c219:bf16907c-8673-4f9d-aa83-111111111111
+              deleted: true
+              name: Gateway Service Alpha
+            d5ac5d88-efed-4e10-9dfe-0b0a6646c219:bf16907c-8673-4f9d-aa83-1f2ea9215055:
+              id: >-
+                d5ac5d88-efed-4e10-9dfe-0b0a6646c219:bf16907c-8673-4f9d-aa83-1f2ea9215055
+              deleted: false
+              name: Gateway Service Beta
+        metric_units:
+          request_count: cnt
+          response_latency_p99: ms
+        granularity_ms: 60000
+        truncated: false
+        limit: 50
+        query_id: requested-query-id
+    BaseError:
+      type: object
+      title: Error
+      description: standard error
+      required:
+        - status
+        - title
+        - instance
+        - detail
+      properties:
+        status:
+          type: integer
+          description: >
+            The HTTP status code of the error. Useful when passing the response
+
+            body to child properties in a frontend UI. Must be returned as an
+            integer.
+          readOnly: true
+        title:
+          type: string
+          description: |
+            A short, human-readable summary of the problem. It should not
+            change between occurences of a problem, except for localization.
+            Should be provided as "Sentence case" for direct use in the UI.
+          readOnly: true
+        type:
+          type: string
+          description: The error type.
+          readOnly: true
+        instance:
+          type: string
+          description: |
+            Used to return the correlation ID back to the user, in the format
+            kong:trace:<correlation_id>. This helps us find the relevant logs
+            when a customer reports an issue.
+          readOnly: true
+        detail:
+          type: string
+          description: >
+            A human readable explanation specific to this occurence of the
+            problem.
+
+            This field may contain request/entity data to help the user
+            understand
+
+            what went wrong. Enclose variable values in square brackets. Should
+            be
+
+            provided as "Sentence case" for direct use in the UI.
+          readOnly: true
+    UnauthorizedError:
+      type: object
+      properties:
+        status:
+          example: 401
+        title:
+          example: Unauthorized
+        type:
+          example: https://httpstatuses.com/401
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Invalid credentials
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+    ForbiddenError:
+      type: object
+      properties:
+        status:
+          example: 403
+        title:
+          example: Forbidden
+        type:
+          example: https://httpstatuses.com/403
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Forbidden
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+  examples:
+    UnauthorizedExample:
+      value:
+        status: 401
+        title: Unauthorized
+        instance: kong:trace:8347343766220159418
+        detail: Unauthorized
+    ForbiddenExample:
+      value:
+        status: 403
+        title: Forbidden
+        instance: kong:trace:2723154947768991354
+        detail: You do not have permission to perform this action

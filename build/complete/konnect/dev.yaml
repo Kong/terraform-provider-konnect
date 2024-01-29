@@ -1,8 +1,8 @@
 openapi: 3.0.3
 info:
   title: Konnect API
-  version: 2.0.0
   description: The Konnect platform API
+  version: 2.0.0
   contact:
     name: Kong
     url: https://konghq.com
@@ -476,6 +476,287 @@ paths:
           $ref: '#/components/responses/SearchTypesResponse'
 components:
   schemas:
+    AbsoluteTimeRangeDtoV2:
+      type: object
+      description: A duration representing an exact start and end time.
+      properties:
+        tz:
+          type: string
+          default: Etc/UTC
+        type:
+          type: string
+          enum:
+            - absolute
+        start_localtime:
+          format: date-time
+          type: string
+        end_localtime:
+          format: date-time
+          type: string
+        start:
+          format: date-time
+          type: string
+        end:
+          format: date-time
+          type: string
+      required:
+        - type
+    RelativeTimeRangeDtoV2:
+      type: object
+      description: >-
+        A duration representing a relative-to-now span of time. Generally the
+        start time is floored to the requested granularity. Eg 7d from now, with
+        1day granularity initiated at 2024-01-08T17:11:00+05:00 will query for
+        the time range from 2024-01-01T00:00:00+05:00 to
+        2024-01-08T17:11:00+05:00. The exact start and end timestamps are
+        returned in the result query in the meta.start_ms and meta.end_ms
+        fields. If the granularity for the previous query was 1hour, it would
+        query a time range from 2024-01-01T17:00:00+05:00 to
+        2024-01-08T17:11:00+05:00.
+      properties:
+        tz:
+          type: string
+          default: Etc/UTC
+        type:
+          type: string
+          enum:
+            - relative
+        time_range:
+          type: string
+          enum:
+            - 15m
+            - 1h
+            - 6h
+            - 12h
+            - 24h
+            - 7d
+            - 30d
+            - current_week
+            - current_month
+            - previous_week
+            - previous_month
+          default: 1h
+      required:
+        - type
+        - time_range
+    ExploreFilter:
+      type: object
+      description: A filter that specifies which data to include in the query
+      properties:
+        dimension:
+          type: string
+          enum:
+            - api_product
+            - api_product_version
+            - application
+            - consumer
+            - control_plane
+            - control_plane_group
+            - data_plane_node
+            - gateway_service
+            - route
+            - status_code
+            - status_code_grouped
+            - time
+          example: status_code
+        type:
+          type: string
+          enum:
+            - in
+            - not_in
+            - selector
+          example: in
+        values:
+          type: array
+          items:
+            type: string
+      required:
+        - dimension
+        - type
+        - values
+    GroupByResult:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          readOnly: true
+        event:
+          type: object
+          readOnly: true
+      required:
+        - timestamp
+        - event
+      example:
+        event:
+          gateway_service: >-
+            d5ac5d88-efed-4e10-9dfe-0b0a6646c219:bf16907c-8673-4f9d-aa83-1f2ea9215055
+          request_count: 1000
+          response_latency_p99: 23
+        timestamp: '2024-01-16T00:00:00Z'
+    DisplayBlob:
+      type: object
+      properties: {}
+      example:
+        gateway_service:
+          d5ac5d88-efed-4e10-9dfe-0b0a6646c219:bf16907c-8673-4f9d-aa83-111111111111:
+            id: >-
+              d5ac5d88-efed-4e10-9dfe-0b0a6646c219:bf16907c-8673-4f9d-aa83-111111111111
+            deleted: true
+            name: Gateway Service Alpha
+          d5ac5d88-efed-4e10-9dfe-0b0a6646c219:bf16907c-8673-4f9d-aa83-1f2ea9215055:
+            id: >-
+              d5ac5d88-efed-4e10-9dfe-0b0a6646c219:bf16907c-8673-4f9d-aa83-1f2ea9215055
+            deleted: false
+            name: Gateway Service Beta
+    MetricUnitDto:
+      type: object
+      properties: {}
+      example:
+        request_count: cnt
+        response_latency_p99: ms
+    QueryResponseMeta:
+      type: object
+      properties:
+        start_ms:
+          type: number
+          readOnly: true
+        end_ms:
+          type: number
+          readOnly: true
+        display:
+          readOnly: true
+          allOf:
+            - $ref: '#/components/schemas/DisplayBlob'
+        metric_units:
+          readOnly: true
+          allOf:
+            - $ref: '#/components/schemas/MetricUnitDto'
+        granularity:
+          type: number
+          readOnly: true
+        granularity_ms:
+          type: number
+          readOnly: true
+        truncated:
+          type: boolean
+          readOnly: true
+        limit:
+          type: number
+          readOnly: true
+        query_id:
+          type: string
+          readOnly: true
+      required:
+        - start_ms
+        - end_ms
+        - display
+        - metric_units
+        - granularity_ms
+        - truncated
+        - limit
+        - query_id
+      example:
+        start_ms: 1705428000000
+        end_ms: 1705429000000
+        display:
+          gateway_service:
+            d5ac5d88-efed-4e10-9dfe-0b0a6646c219:bf16907c-8673-4f9d-aa83-111111111111:
+              id: >-
+                d5ac5d88-efed-4e10-9dfe-0b0a6646c219:bf16907c-8673-4f9d-aa83-111111111111
+              deleted: true
+              name: Gateway Service Alpha
+            d5ac5d88-efed-4e10-9dfe-0b0a6646c219:bf16907c-8673-4f9d-aa83-1f2ea9215055:
+              id: >-
+                d5ac5d88-efed-4e10-9dfe-0b0a6646c219:bf16907c-8673-4f9d-aa83-1f2ea9215055
+              deleted: false
+              name: Gateway Service Beta
+        metric_units:
+          request_count: cnt
+          response_latency_p99: ms
+        granularity_ms: 60000
+        truncated: false
+        limit: 50
+        query_id: requested-query-id
+    BaseError:
+      type: object
+      title: Error
+      description: standard error
+      required:
+        - status
+        - title
+        - instance
+        - detail
+      properties:
+        status:
+          type: integer
+          description: >
+            The HTTP status code of the error. Useful when passing the response
+
+            body to child properties in a frontend UI. Must be returned as an
+            integer.
+          readOnly: true
+        title:
+          type: string
+          description: |
+            A short, human-readable summary of the problem. It should not
+            change between occurences of a problem, except for localization.
+            Should be provided as "Sentence case" for direct use in the UI.
+          readOnly: true
+        type:
+          type: string
+          description: The error type.
+          readOnly: true
+        instance:
+          type: string
+          description: |
+            Used to return the correlation ID back to the user, in the format
+            kong:trace:<correlation_id>. This helps us find the relevant logs
+            when a customer reports an issue.
+          readOnly: true
+        detail:
+          type: string
+          description: >
+            A human readable explanation specific to this occurence of the
+            problem.
+
+            This field may contain request/entity data to help the user
+            understand
+
+            what went wrong. Enclose variable values in square brackets. Should
+            be
+
+            provided as "Sentence case" for direct use in the UI.
+          readOnly: true
+    UnauthorizedError:
+      type: object
+      properties:
+        status:
+          example: 401
+        title:
+          example: Unauthorized
+        type:
+          example: https://httpstatuses.com/401
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Invalid credentials
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+    ForbiddenError:
+      type: object
+      properties:
+        status:
+          example: 403
+        title:
+          example: Forbidden
+        type:
+          example: https://httpstatuses.com/403
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Forbidden
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
     PaginatedMeta:
       type: object
       example:
@@ -1540,86 +1821,6 @@ components:
             type: string
             description: Upstream URI associated with the request.
             nullable: true
-    BaseError:
-      type: object
-      title: Error
-      description: standard error
-      required:
-        - status
-        - title
-        - instance
-        - detail
-      properties:
-        status:
-          type: integer
-          description: >
-            The HTTP status code of the error. Useful when passing the response
-
-            body to child properties in a frontend UI. Must be returned as an
-            integer.
-          readOnly: true
-        title:
-          type: string
-          description: |
-            A short, human-readable summary of the problem. It should not
-            change between occurences of a problem, except for localization.
-            Should be provided as "Sentence case" for direct use in the UI.
-          readOnly: true
-        type:
-          type: string
-          description: The error type.
-          readOnly: true
-        instance:
-          type: string
-          description: |
-            Used to return the correlation ID back to the user, in the format
-            kong:trace:<correlation_id>. This helps us find the relevant logs
-            when a customer reports an issue.
-          readOnly: true
-        detail:
-          type: string
-          description: >
-            A human readable explanation specific to this occurence of the
-            problem.
-
-            This field may contain request/entity data to help the user
-            understand
-
-            what went wrong. Enclose variable values in square brackets. Should
-            be
-
-            provided as "Sentence case" for direct use in the UI.
-          readOnly: true
-    UnauthorizedError:
-      type: object
-      properties:
-        status:
-          example: 401
-        title:
-          example: Unauthorized
-        type:
-          example: https://httpstatuses.com/401
-        instance:
-          example: kong:trace:1234567890
-        detail:
-          example: Invalid credentials
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
-    ForbiddenError:
-      type: object
-      properties:
-        status:
-          example: 403
-        title:
-          example: Forbidden
-        type:
-          example: https://httpstatuses.com/403
-        instance:
-          example: kong:trace:1234567890
-        detail:
-          example: Forbidden
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
     APIProductLabels:
       title: Labels
       type: object
@@ -7284,602 +7485,19 @@ components:
         must be a data URL with base64 image data, e.g.,
         data:image/jpeg;base64,<BASE64_IMAGE_DATA>
       example: data:image/png,YW5faW1hZ2VfZmlsZQ==
-  parameters:
-    PageSize:
-      name: page[size]
-      description: >-
-        The maximum number of items to include per page. The last page of a
-        collection may include fewer items.
-      in: query
-      required: false
-      schema:
-        type: integer
-        example: 10
-      allowEmptyValue: true
-    PageNumber:
-      name: page[number]
-      description: Determines which page of the entities to retrieve.
-      in: query
-      required: false
-      schema:
-        type: integer
-        example: 1
-      allowEmptyValue: true
-    PortalId:
-      name: portalId
-      description: ID of the portal.
-      in: path
-      required: true
-      schema:
-        $ref: '#/components/schemas/UUID'
-        type: string
-        format: uuid
-    ProductVersionId:
-      name: productVersionId
-      description: Api product version identifier
-      in: path
-      required: true
-      schema:
-        $ref: '#/components/schemas/UUID'
-    DcrProviderId:
-      name: dcrProviderId
-      description: DCR provider identifier
-      in: path
-      required: true
-      schema:
-        $ref: '#/components/schemas/UUID'
-    AuthStrategyId:
-      name: authStrategyId
-      description: Application auth strategy identifier
-      in: path
-      required: true
-      schema:
-        $ref: '#/components/schemas/UUID'
-    SortPortalProductVersions:
-      name: sort
-      description: >
-        Sorts a collection of Portal Product Versions. Supported sort attributes
-        are:
-          - created_at
-          - updated_at
-          - publish_status
-          - product_version_id
-          - auth_strategy_ids
-          - application_registration_enabled
-          - auto_approve_registration
-          - deprecated
-      in: query
-      required: false
-      schema:
-        type: string
-    PortalProductVersionFilter:
-      name: filter
-      description: Filters a collection of Portal Product Versions.
-      required: false
-      in: query
-      style: deepObject
-      schema:
-        $ref: '#/components/schemas/PortalProductVersionFilters'
-    SortDcrProviders:
-      name: sort
-      description: |
-        Sorts a collection of DCR Providers. Supported sort attributes are:
-          - created_at
-          - updated_at
-          - provider_type
-          - issuer
-          - name
-          - display_name
-      in: query
-      required: false
-      schema:
-        type: string
-    SortAppAuthStrategies:
-      name: sort
-      description: >
-        Sorts a collection of application auth strategies. Supported sort
-        attributes are:
-          - created_at
-          - updated_at
-          - strategy_type
-          - name
-          - display_name
-          - dcr_provider_id
-          - dcr_provider_name
-          - dcr_provider_display_name
-          - dcr_provider_type
-      in: query
-      required: false
-      schema:
-        type: string
-    FilterDcrProvidersById:
-      name: filter[id][eq]
-      description: filters DCR Providers by their id
-      in: query
-      required: false
-      schema:
-        type: string
-    FilterDcrProvidersByIdShort:
-      name: filter[id]
-      description: filters DCR Providers by their id (alias for filter[id][eq])
-      in: query
-      required: false
-      schema:
-        type: string
-    FilterDcrProvidersByIdContains:
-      name: filter[id][contains]
-      description: filters DCR Providers by their id with a supplied substring
-      in: query
-      required: false
-      schema:
-        type: string
-    FilterDcrProvidersByIssuer:
-      name: filter[issuer][eq]
-      description: filters DCR Providers by their issuer
-      in: query
-      required: false
-      schema:
-        type: string
-    FilterDcrProvidersByIssuerShort:
-      name: filter[issuer]
-      description: filters DCR Providers by their issuer (alias for filter[issuer][eq])
-      in: query
-      required: false
-      schema:
-        type: string
-    FilterDcrProvidersByIssuerContains:
-      name: filter[issuer][contains]
-      description: filters DCR Providers by their issuer with a supplied substring
-      in: query
-      required: false
-      schema:
-        type: string
-    FilterDcrProvidersByName:
-      name: filter[name][eq]
-      description: filters DCR Providers by their name
-      in: query
-      required: false
-      schema:
-        type: string
-    FilterDcrProvidersByNameShort:
-      name: filter[name]
-      description: filters DCR Providers by their name (alias for filter[name][eq])
-      in: query
-      required: false
-      schema:
-        type: string
-    FilterDcrProvidersByNameContains:
-      name: filter[name][contains]
-      description: filters DCR Providers by their name with a supplied substring
-      in: query
-      required: false
-      schema:
-        type: string
-    FilterDcrProvidersByDisplayName:
-      name: filter[display_name][eq]
-      description: filters DCR Providers by their display name
-      in: query
-      required: false
-      schema:
-        type: string
-    FilterDcrProvidersByDisplayNameShort:
-      name: filter[display_name]
-      description: >-
-        filters DCR Providers by their display name (alias for
-        filter[display_name][eq])
-      in: query
-      required: false
-      schema:
-        type: string
-    FilterDcrProvidersByDisplayNameContains:
-      name: filter[display_name][contains]
-      description: filters DCR Providers by their display name with a supplied substring
-      in: query
-      required: false
-      schema:
-        type: string
-    FilterDcrProvidersByProviderType:
-      name: filter[provider_type][eq]
-      description: filters DCR Providers by their provider type
-      in: query
-      required: false
-      schema:
-        type: string
-    FilterDcrProvidersByProviderTypeShort:
-      name: filter[provider_type]
-      description: >-
-        filters DCR Providers by their provider type (alias for
-        filter[provider_type][eq])
-      in: query
-      required: false
-      schema:
-        type: string
-    FilterDcrProvidersByInitialClientId:
-      name: filter[initial_client_id][eq]
-      description: filters DCR Providers by their initial client id
-      in: query
-      required: false
-      schema:
-        type: string
-    FilterDcrProvidersByInitialClientIdShort:
-      name: filter[initial_client_id]
-      description: >-
-        filters DCR Providers by their initial client id (alias for
-        filter[initial_client_id][eq])
-      in: query
-      required: false
-      schema:
-        type: string
-    FilterDcrProvidersByInitialClientIdContains:
-      name: filter[initial_client_id][contains]
-      description: >-
-        filters DCR Providers by their initial client id with a supplied
-        substring
-      in: query
-      required: false
-      schema:
-        type: string
-    FilterDcrProvidersByInitialClientAudience:
-      name: filter[initial_client_audience][eq]
-      description: filters DCR Providers by their initial client audience
-      in: query
-      required: false
-      schema:
-        type: string
-    FilterDcrProvidersByInitialClientAudienceShort:
-      name: filter[initial_client_audience]
-      description: >-
-        filters DCR Providers by their initial client audience (alias for
-        filter[initial_client_audience][eq])
-      in: query
-      required: false
-      schema:
-        type: string
-    FilterDcrProvidersByInitialClientAudienceContains:
-      name: filter[initial_client_audience][contains]
-      description: >-
-        filters DCR Providers by their initial client audience with a supplied
-        substring
-      in: query
-      required: false
-      schema:
-        type: string
-    PageAfter:
-      name: page[after]
-      description: >-
-        Request the next page of data, starting with the item after this
-        parameter.
-      required: false
-      in: query
-      allowEmptyValue: true
-      schema:
-        type: string
-        example: ewogICJpZCI6ICJoZWxsbyB3b3JsZCIKfQ
-  requestBodies:
-    CreatePortalProductVersion:
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CreatePortalProductVersionPayload'
-          examples:
-            PortalProductVersion:
-              $ref: '#/components/examples/PortalProductVersionCreateRequest'
-    UpdatePortalProductVersion:
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/UpdatePortalProductVersionPayload'
-          examples:
-            PortalProductVersion:
-              $ref: '#/components/examples/PortalProductVersionUpdateRequest'
-    CreateDcrProvider:
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CreateDcrProviderRequest'
-          examples:
-            DcrProviderOktaCreateRequest:
-              $ref: '#/components/examples/DcrProviderOktaCreateRequest'
-            DcrProviderAuth0CreateRequest:
-              $ref: '#/components/examples/DcrProviderAuth0CreateRequest'
-            DcrProviderAzureAdCreateRequest:
-              $ref: '#/components/examples/DcrProviderAzureAdCreateRequest'
-            DcrProviderCurityCreateRequest:
-              $ref: '#/components/examples/DcrProviderCurityCreateRequest'
-            DcrProviderHttpCreateRequest:
-              $ref: '#/components/examples/DcrProviderHttpCreateRequest'
-    UpdateDcrProvider:
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/UpdateDcrProviderRequest'
-          examples:
-            DcrProviderRequest:
-              $ref: '#/components/examples/DcrProviderOktaUpdateRequest'
-    CreateAppAuthStrategy:
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CreateAppAuthStrategyRequest'
-          examples:
-            CreateAppAuthStrategyKeyAuthRequest:
-              $ref: '#/components/examples/CreateAppAuthStrategyKeyAuthRequest'
-            CreateAppAuthStrategyOpenIDConnectRequest:
-              $ref: '#/components/examples/CreateAppAuthStrategyOpenIDConnectRequest'
-    UpdateAppAuthStrategy:
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/UpdateAppAuthStrategyRequest'
-          examples:
-            UpdateAppAuthStrategyKeyAuthRequest:
-              $ref: '#/components/examples/UpdateAppAuthStrategyKeyAuthRequest'
-            UpdateAppAuthStrategyOpenIDConnectRequest:
-              $ref: '#/components/examples/UpdateAppAuthStrategyOpenIDConnectRequest'
-  responses:
-    NotFound:
-      description: Not Found
-      content:
-        application/problem+json:
-          schema:
-            type: object
-            example:
-              Example 1:
-                status: 404
-                title: Not Found
-                instance: konnect:trace:2287285207635123011
-                detail: The requested report was not found
-            description: The error response object.
-            properties:
-              type:
-                type: string
-                description: Documentation for this error.
-              status:
-                type: integer
-                description: The HTTP status code.
-                example: 404
-              title:
-                type: string
-                description: The error response code.
-                example: Not Found
-              instance:
-                type: string
-                example: konnect:trace:2287285207635123011
-                description: The Konnect traceback code
-              detail:
-                type: string
-                example: The requested report was not found
-                description: Details about the error.
-            $ref: '#/components/schemas/NotFoundError'
-          examples:
-            NotFoundExample:
-              $ref: '#/components/examples/NotFoundExample'
-    BadRequest:
-      description: Bad Request
-      content:
-        application/problem+json:
-          schema:
-            type: object
-            description: The error object
-            properties:
-              type:
-                type: string
-                description: Documentation for this error.
-              status:
-                type: integer
-                description: The HTTP response code
-                example: 400
-              title:
-                type: string
-                example: Bad Request
-                description: The Error response
-              instance:
-                type: string
-                description: The Konnect traceback ID.
-                example: konnect:trace:3674017986744198214
-              invalid_parameters:
-                type: array
-                description: >-
-                  An array of objects that contains information related to the
-                  error response.
-                items:
-                  type: object
-                  properties:
-                    field:
-                      type: string
-                    reason:
-                      type: string
-                    rule:
-                      type: string
-            $ref: '#/components/schemas/BadRequestError'
-    Unauthorized:
-      description: Unauthorized
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/UnauthorizedError'
-            type: object
-            title: Unauthorized Response
-            description: The error response object.
-            properties:
-              status:
-                type: integer
-                example: 403
-                description: The HTTP status code.
-              title:
-                type: string
-                description: The Error Response.
-                example: Unauthorized
-              instance:
-                type: string
-                description: The Konnect traceback code.
-                example: konnect:trace:952172606039454040
-              detail:
-                type: string
-                description: Details about the error response.
-                example: You do not have permission to perform this action
-          examples:
-            UnauthorizedExample:
-              $ref: '#/components/examples/UnauthorizedExample'
-            Unauthorized:
-              $ref: '#/components/examples/403-permission-denied'
-    Forbidden:
-      description: Forbidden
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ForbiddenError'
-          examples:
-            UnauthorizedExample:
-              $ref: '#/components/examples/ForbiddenExample'
-            ForbiddenExample:
-              $ref: '#/components/examples/ForbiddenExample'
-    ListPortalProductVersions:
-      description: A response containing a list of portal product versions
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ListPortalProductVersions'
-          examples:
-            PortalProductVersion:
-              $ref: '#/components/examples/ListPortalProductVersions'
-    PortalProductVersion:
-      description: A response containing a portal product version
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/PortalProductVersion'
-          examples:
-            PortalProductVersion:
-              $ref: '#/components/examples/PortalProductVersion'
-    CreateDcrProvider:
-      description: A response containing the newly created DCR provider object.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CreateDcrProviderResponse'
-          examples:
-            DcrProvider:
-              $ref: '#/components/examples/DcrProviderOktaResponse'
-    GetDcrProvider:
-      description: A response containing a single DCR provider object.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/DcrProviderResponse'
-          examples:
-            DcrProvider:
-              $ref: '#/components/examples/DcrProviderOktaResponse'
-    ListDcrProviders:
-      description: A paginated list response for a collection of DCR providers
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ListDcrProvidersResponse'
-          examples:
-            ListDcrProviders:
-              $ref: '#/components/examples/ListDcrProvidersResponse'
-    VerifyDcrProvider:
-      description: >-
-        A response containing the result of attempting to verify a DCR provider
-        config.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/VerifyDcrProviderResponse'
-          examples:
-            VerifyDcrProviderSuccess:
-              $ref: '#/components/examples/VerifyDcrProviderResponseSuccess'
-            VerifyDcrProviderFailed:
-              $ref: '#/components/examples/VerifyDcrProviderResponseFailed'
-    RefreshDcrProviderApiKey:
-      description: >-
-        A response containing an HTTP DCR Provider along with its refreshed API
-        Key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RefreshDcrProviderApiKeyResponse'
-    CreateAppAuthStrategy:
-      description: >-
-        A response containing the newly created application auth strategy
-        object.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CreateAppAuthStrategyResponse'
-          examples:
-            AppAuthStrategyResponseExample1:
-              $ref: '#/components/examples/AppAuthStrategyResponseExample1'
-    GetAppAuthStrategy:
-      description: A response containing a single application auth strategy object.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/GetAppAuthStrategyResponse'
-          examples:
-            AppAuthStrategyResponseExample1:
-              $ref: '#/components/examples/AppAuthStrategyResponseExample1'
-    UpdateAppAuthStrategy:
-      description: A response containing a single updated application auth strategy object.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/UpdateAppAuthStrategyResponse'
-          examples:
-            AppAuthStrategyResponseExample1:
-              $ref: '#/components/examples/AppAuthStrategyResponseExample1'
-    ListAppAuthStrategies:
-      description: >-
-        A paginated list response for a collection of application auth
-        strategies.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ListAppAuthStrategiesResponse'
-          examples:
-            AppAuthStrategyResponseExample1:
-              $ref: '#/components/examples/ListAppAuthStrategyResponseExample1'
-    Conflict:
-      description: Conflict
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ConflictError'
-    SearchResponse:
-      description: Search response for containing all matched Konnect entities.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/SearchResponse'
-          examples:
-            Successful Search Response:
-              $ref: '#/components/examples/Successful-Search-Example'
-    SearchBadRequest:
-      description: Bad Request
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/BadRequestError'
-          examples:
-            Request Format is Invalid:
-              $ref: '#/components/examples/400-query-is-invalid'
-    SearchTypesResponse:
-      description: Search response for containing all searchable Konnect types.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/SearchTypesResponse'
-          examples:
-            Searchable Entity Types:
-              $ref: '#/components/examples/Searchable-Entity-Types'
   examples:
+    UnauthorizedExample:
+      value:
+        status: 401
+        title: Unauthorized
+        instance: kong:trace:8347343766220159418
+        detail: Unauthorized
+    ForbiddenExample:
+      value:
+        status: 403
+        title: Forbidden
+        instance: kong:trace:2723154947768991354
+        detail: You do not have permission to perform this action
     ResponseExample:
       value:
         results:
@@ -7997,18 +7615,6 @@ components:
           time_range:
             start: '2020-02-02T00:00:00.000Z'
             end: '2020-02-03T00:00:00.000Z'
-    UnauthorizedExample:
-      value:
-        status: 401
-        title: Unauthorized
-        instance: kong:trace:8347343766220159418
-        detail: Unauthorized
-    ForbiddenExample:
-      value:
-        status: 403
-        title: Forbidden
-        instance: kong:trace:2723154947768991354
-        detail: You do not have permission to perform this action
     APIProductExample:
       value:
         id: e7a4f6c0-5777-4a37-bcb9-2d37d3b362ee
@@ -10072,6 +9678,601 @@ components:
             filename: logo.png
           catalog_cover:
             data: data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+  responses:
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/UnauthorizedError'
+            type: object
+            title: Unauthorized Response
+            description: The error response object.
+            properties:
+              status:
+                type: integer
+                example: 403
+                description: The HTTP status code.
+              title:
+                type: string
+                description: The Error Response.
+                example: Unauthorized
+              instance:
+                type: string
+                description: The Konnect traceback code.
+                example: konnect:trace:952172606039454040
+              detail:
+                type: string
+                description: Details about the error response.
+                example: You do not have permission to perform this action
+          examples:
+            UnauthorizedExample:
+              $ref: '#/components/examples/UnauthorizedExample'
+            Unauthorized:
+              $ref: '#/components/examples/403-permission-denied'
+    Forbidden:
+      description: Forbidden
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ForbiddenError'
+          examples:
+            UnauthorizedExample:
+              $ref: '#/components/examples/ForbiddenExample'
+            ForbiddenExample:
+              $ref: '#/components/examples/ForbiddenExample'
+    NotFound:
+      description: Not Found
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            example:
+              Example 1:
+                status: 404
+                title: Not Found
+                instance: konnect:trace:2287285207635123011
+                detail: The requested report was not found
+            description: The error response object.
+            properties:
+              type:
+                type: string
+                description: Documentation for this error.
+              status:
+                type: integer
+                description: The HTTP status code.
+                example: 404
+              title:
+                type: string
+                description: The error response code.
+                example: Not Found
+              instance:
+                type: string
+                example: konnect:trace:2287285207635123011
+                description: The Konnect traceback code
+              detail:
+                type: string
+                example: The requested report was not found
+                description: Details about the error.
+            $ref: '#/components/schemas/NotFoundError'
+          examples:
+            NotFoundExample:
+              $ref: '#/components/examples/NotFoundExample'
+    BadRequest:
+      description: Bad Request
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            description: The error object
+            properties:
+              type:
+                type: string
+                description: Documentation for this error.
+              status:
+                type: integer
+                description: The HTTP response code
+                example: 400
+              title:
+                type: string
+                example: Bad Request
+                description: The Error response
+              instance:
+                type: string
+                description: The Konnect traceback ID.
+                example: konnect:trace:3674017986744198214
+              invalid_parameters:
+                type: array
+                description: >-
+                  An array of objects that contains information related to the
+                  error response.
+                items:
+                  type: object
+                  properties:
+                    field:
+                      type: string
+                    reason:
+                      type: string
+                    rule:
+                      type: string
+            $ref: '#/components/schemas/BadRequestError'
+    ListPortalProductVersions:
+      description: A response containing a list of portal product versions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ListPortalProductVersions'
+          examples:
+            PortalProductVersion:
+              $ref: '#/components/examples/ListPortalProductVersions'
+    PortalProductVersion:
+      description: A response containing a portal product version
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalProductVersion'
+          examples:
+            PortalProductVersion:
+              $ref: '#/components/examples/PortalProductVersion'
+    CreateDcrProvider:
+      description: A response containing the newly created DCR provider object.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateDcrProviderResponse'
+          examples:
+            DcrProvider:
+              $ref: '#/components/examples/DcrProviderOktaResponse'
+    GetDcrProvider:
+      description: A response containing a single DCR provider object.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DcrProviderResponse'
+          examples:
+            DcrProvider:
+              $ref: '#/components/examples/DcrProviderOktaResponse'
+    ListDcrProviders:
+      description: A paginated list response for a collection of DCR providers
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ListDcrProvidersResponse'
+          examples:
+            ListDcrProviders:
+              $ref: '#/components/examples/ListDcrProvidersResponse'
+    VerifyDcrProvider:
+      description: >-
+        A response containing the result of attempting to verify a DCR provider
+        config.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/VerifyDcrProviderResponse'
+          examples:
+            VerifyDcrProviderSuccess:
+              $ref: '#/components/examples/VerifyDcrProviderResponseSuccess'
+            VerifyDcrProviderFailed:
+              $ref: '#/components/examples/VerifyDcrProviderResponseFailed'
+    RefreshDcrProviderApiKey:
+      description: >-
+        A response containing an HTTP DCR Provider along with its refreshed API
+        Key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RefreshDcrProviderApiKeyResponse'
+    CreateAppAuthStrategy:
+      description: >-
+        A response containing the newly created application auth strategy
+        object.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateAppAuthStrategyResponse'
+          examples:
+            AppAuthStrategyResponseExample1:
+              $ref: '#/components/examples/AppAuthStrategyResponseExample1'
+    GetAppAuthStrategy:
+      description: A response containing a single application auth strategy object.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GetAppAuthStrategyResponse'
+          examples:
+            AppAuthStrategyResponseExample1:
+              $ref: '#/components/examples/AppAuthStrategyResponseExample1'
+    UpdateAppAuthStrategy:
+      description: A response containing a single updated application auth strategy object.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateAppAuthStrategyResponse'
+          examples:
+            AppAuthStrategyResponseExample1:
+              $ref: '#/components/examples/AppAuthStrategyResponseExample1'
+    ListAppAuthStrategies:
+      description: >-
+        A paginated list response for a collection of application auth
+        strategies.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ListAppAuthStrategiesResponse'
+          examples:
+            AppAuthStrategyResponseExample1:
+              $ref: '#/components/examples/ListAppAuthStrategyResponseExample1'
+    Conflict:
+      description: Conflict
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ConflictError'
+    SearchResponse:
+      description: Search response for containing all matched Konnect entities.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SearchResponse'
+          examples:
+            Successful Search Response:
+              $ref: '#/components/examples/Successful-Search-Example'
+    SearchBadRequest:
+      description: Bad Request
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/BadRequestError'
+          examples:
+            Request Format is Invalid:
+              $ref: '#/components/examples/400-query-is-invalid'
+    SearchTypesResponse:
+      description: Search response for containing all searchable Konnect types.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SearchTypesResponse'
+          examples:
+            Searchable Entity Types:
+              $ref: '#/components/examples/Searchable-Entity-Types'
+  parameters:
+    PageSize:
+      name: page[size]
+      description: >-
+        The maximum number of items to include per page. The last page of a
+        collection may include fewer items.
+      in: query
+      required: false
+      schema:
+        type: integer
+        example: 10
+      allowEmptyValue: true
+    PageNumber:
+      name: page[number]
+      description: Determines which page of the entities to retrieve.
+      in: query
+      required: false
+      schema:
+        type: integer
+        example: 1
+      allowEmptyValue: true
+    PortalId:
+      name: portalId
+      description: ID of the portal.
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/UUID'
+        type: string
+        format: uuid
+    ProductVersionId:
+      name: productVersionId
+      description: Api product version identifier
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/UUID'
+    DcrProviderId:
+      name: dcrProviderId
+      description: DCR provider identifier
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/UUID'
+    AuthStrategyId:
+      name: authStrategyId
+      description: Application auth strategy identifier
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/UUID'
+    SortPortalProductVersions:
+      name: sort
+      description: >
+        Sorts a collection of Portal Product Versions. Supported sort attributes
+        are:
+          - created_at
+          - updated_at
+          - publish_status
+          - product_version_id
+          - auth_strategy_ids
+          - application_registration_enabled
+          - auto_approve_registration
+          - deprecated
+      in: query
+      required: false
+      schema:
+        type: string
+    PortalProductVersionFilter:
+      name: filter
+      description: Filters a collection of Portal Product Versions.
+      required: false
+      in: query
+      style: deepObject
+      schema:
+        $ref: '#/components/schemas/PortalProductVersionFilters'
+    SortDcrProviders:
+      name: sort
+      description: |
+        Sorts a collection of DCR Providers. Supported sort attributes are:
+          - created_at
+          - updated_at
+          - provider_type
+          - issuer
+          - name
+          - display_name
+      in: query
+      required: false
+      schema:
+        type: string
+    SortAppAuthStrategies:
+      name: sort
+      description: >
+        Sorts a collection of application auth strategies. Supported sort
+        attributes are:
+          - created_at
+          - updated_at
+          - strategy_type
+          - name
+          - display_name
+          - dcr_provider_id
+          - dcr_provider_name
+          - dcr_provider_display_name
+          - dcr_provider_type
+      in: query
+      required: false
+      schema:
+        type: string
+    FilterDcrProvidersById:
+      name: filter[id][eq]
+      description: filters DCR Providers by their id
+      in: query
+      required: false
+      schema:
+        type: string
+    FilterDcrProvidersByIdShort:
+      name: filter[id]
+      description: filters DCR Providers by their id (alias for filter[id][eq])
+      in: query
+      required: false
+      schema:
+        type: string
+    FilterDcrProvidersByIdContains:
+      name: filter[id][contains]
+      description: filters DCR Providers by their id with a supplied substring
+      in: query
+      required: false
+      schema:
+        type: string
+    FilterDcrProvidersByIssuer:
+      name: filter[issuer][eq]
+      description: filters DCR Providers by their issuer
+      in: query
+      required: false
+      schema:
+        type: string
+    FilterDcrProvidersByIssuerShort:
+      name: filter[issuer]
+      description: filters DCR Providers by their issuer (alias for filter[issuer][eq])
+      in: query
+      required: false
+      schema:
+        type: string
+    FilterDcrProvidersByIssuerContains:
+      name: filter[issuer][contains]
+      description: filters DCR Providers by their issuer with a supplied substring
+      in: query
+      required: false
+      schema:
+        type: string
+    FilterDcrProvidersByName:
+      name: filter[name][eq]
+      description: filters DCR Providers by their name
+      in: query
+      required: false
+      schema:
+        type: string
+    FilterDcrProvidersByNameShort:
+      name: filter[name]
+      description: filters DCR Providers by their name (alias for filter[name][eq])
+      in: query
+      required: false
+      schema:
+        type: string
+    FilterDcrProvidersByNameContains:
+      name: filter[name][contains]
+      description: filters DCR Providers by their name with a supplied substring
+      in: query
+      required: false
+      schema:
+        type: string
+    FilterDcrProvidersByDisplayName:
+      name: filter[display_name][eq]
+      description: filters DCR Providers by their display name
+      in: query
+      required: false
+      schema:
+        type: string
+    FilterDcrProvidersByDisplayNameShort:
+      name: filter[display_name]
+      description: >-
+        filters DCR Providers by their display name (alias for
+        filter[display_name][eq])
+      in: query
+      required: false
+      schema:
+        type: string
+    FilterDcrProvidersByDisplayNameContains:
+      name: filter[display_name][contains]
+      description: filters DCR Providers by their display name with a supplied substring
+      in: query
+      required: false
+      schema:
+        type: string
+    FilterDcrProvidersByProviderType:
+      name: filter[provider_type][eq]
+      description: filters DCR Providers by their provider type
+      in: query
+      required: false
+      schema:
+        type: string
+    FilterDcrProvidersByProviderTypeShort:
+      name: filter[provider_type]
+      description: >-
+        filters DCR Providers by their provider type (alias for
+        filter[provider_type][eq])
+      in: query
+      required: false
+      schema:
+        type: string
+    FilterDcrProvidersByInitialClientId:
+      name: filter[initial_client_id][eq]
+      description: filters DCR Providers by their initial client id
+      in: query
+      required: false
+      schema:
+        type: string
+    FilterDcrProvidersByInitialClientIdShort:
+      name: filter[initial_client_id]
+      description: >-
+        filters DCR Providers by their initial client id (alias for
+        filter[initial_client_id][eq])
+      in: query
+      required: false
+      schema:
+        type: string
+    FilterDcrProvidersByInitialClientIdContains:
+      name: filter[initial_client_id][contains]
+      description: >-
+        filters DCR Providers by their initial client id with a supplied
+        substring
+      in: query
+      required: false
+      schema:
+        type: string
+    FilterDcrProvidersByInitialClientAudience:
+      name: filter[initial_client_audience][eq]
+      description: filters DCR Providers by their initial client audience
+      in: query
+      required: false
+      schema:
+        type: string
+    FilterDcrProvidersByInitialClientAudienceShort:
+      name: filter[initial_client_audience]
+      description: >-
+        filters DCR Providers by their initial client audience (alias for
+        filter[initial_client_audience][eq])
+      in: query
+      required: false
+      schema:
+        type: string
+    FilterDcrProvidersByInitialClientAudienceContains:
+      name: filter[initial_client_audience][contains]
+      description: >-
+        filters DCR Providers by their initial client audience with a supplied
+        substring
+      in: query
+      required: false
+      schema:
+        type: string
+    PageAfter:
+      name: page[after]
+      description: >-
+        Request the next page of data, starting with the item after this
+        parameter.
+      required: false
+      in: query
+      allowEmptyValue: true
+      schema:
+        type: string
+        example: ewogICJpZCI6ICJoZWxsbyB3b3JsZCIKfQ
+  requestBodies:
+    CreatePortalProductVersion:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreatePortalProductVersionPayload'
+          examples:
+            PortalProductVersion:
+              $ref: '#/components/examples/PortalProductVersionCreateRequest'
+    UpdatePortalProductVersion:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdatePortalProductVersionPayload'
+          examples:
+            PortalProductVersion:
+              $ref: '#/components/examples/PortalProductVersionUpdateRequest'
+    CreateDcrProvider:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateDcrProviderRequest'
+          examples:
+            DcrProviderOktaCreateRequest:
+              $ref: '#/components/examples/DcrProviderOktaCreateRequest'
+            DcrProviderAuth0CreateRequest:
+              $ref: '#/components/examples/DcrProviderAuth0CreateRequest'
+            DcrProviderAzureAdCreateRequest:
+              $ref: '#/components/examples/DcrProviderAzureAdCreateRequest'
+            DcrProviderCurityCreateRequest:
+              $ref: '#/components/examples/DcrProviderCurityCreateRequest'
+            DcrProviderHttpCreateRequest:
+              $ref: '#/components/examples/DcrProviderHttpCreateRequest'
+    UpdateDcrProvider:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateDcrProviderRequest'
+          examples:
+            DcrProviderRequest:
+              $ref: '#/components/examples/DcrProviderOktaUpdateRequest'
+    CreateAppAuthStrategy:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateAppAuthStrategyRequest'
+          examples:
+            CreateAppAuthStrategyKeyAuthRequest:
+              $ref: '#/components/examples/CreateAppAuthStrategyKeyAuthRequest'
+            CreateAppAuthStrategyOpenIDConnectRequest:
+              $ref: '#/components/examples/CreateAppAuthStrategyOpenIDConnectRequest'
+    UpdateAppAuthStrategy:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateAppAuthStrategyRequest'
+          examples:
+            UpdateAppAuthStrategyKeyAuthRequest:
+              $ref: '#/components/examples/UpdateAppAuthStrategyKeyAuthRequest'
+            UpdateAppAuthStrategyOpenIDConnectRequest:
+              $ref: '#/components/examples/UpdateAppAuthStrategyOpenIDConnectRequest'
   securitySchemes:
     personalAccessToken:
       type: http
