@@ -121,6 +121,8 @@ paths:
         - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByNameContains'
         - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByStatusEquality'
         - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByStatusEqualityShort'
+        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByAuthStrategyEquality'
+        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByAuthStrategyEqualityShort'
         - $ref: '#/components/parameters/QueryUnregisteredApplications'
       responses:
         '200':

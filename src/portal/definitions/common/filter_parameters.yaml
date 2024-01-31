@@ -90,3 +90,19 @@ components:
       schema:
         type: string
         example: 5be86298-147b-45ab-bfaf-a1bff97dce39
+    FilterByAuthStrategyEquality:
+      name: 'filter[auth_strategy_id][eq]'
+      description: Filter by the id of the auth strategy supported by the application.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 5be86298-147b-45ab-bfaf-a1bff97dce39
+    FilterByAuthStrategyEqualityShort:
+      name: 'filter[auth_strategy_id]'
+      description: Filter by the id of the auth strategy supported by the application (short-hand).
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 5be86298-147b-45ab-bfaf-a1bff97dce39
