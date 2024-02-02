@@ -58,9 +58,6 @@ paths:
         - $ref: '#/components/parameters/FilterDcrProvidersByName'
         - $ref: '#/components/parameters/FilterDcrProvidersByNameShort'
         - $ref: '#/components/parameters/FilterDcrProvidersByNameContains'
-        - $ref: '#/components/parameters/FilterDcrProvidersByDisplayName'
-        - $ref: '#/components/parameters/FilterDcrProvidersByDisplayNameShort'
-        - $ref: '#/components/parameters/FilterDcrProvidersByDisplayNameContains'
         - $ref: '#/components/parameters/FilterDcrProvidersByProviderType'
         - $ref: '#/components/parameters/FilterDcrProvidersByProviderTypeShort'
         - $ref: '#/components/parameters/FilterDcrProvidersByInitialClientId'
@@ -206,9 +203,6 @@ paths:
                 $ref: >-
                   ../../../../common/definitions/aip_filters.yaml#/components/schemas/UuidFieldFilter
               dcr_provider_name:
-                $ref: >-
-                  ../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter
-              dcr_provider_display_name:
                 $ref: >-
                   ../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter
               dcr_provider_type:
@@ -482,7 +476,6 @@ components:
           - provider_type
           - issuer
           - name
-          - display_name
       in: query
       required: false
       schema:
@@ -498,7 +491,6 @@ components:
           - display_name
           - dcr_provider_id
           - dcr_provider_name
-          - dcr_provider_display_name
           - dcr_provider_type
       in: query
       required: false
@@ -563,27 +555,6 @@ components:
     FilterDcrProvidersByNameContains:
       name: 'filter[name][contains]'
       description: 'filters DCR Providers by their name with a supplied substring'
-      in: query
-      required: false
-      schema:
-        type: string
-    FilterDcrProvidersByDisplayName:
-      name: 'filter[display_name][eq]'
-      description: 'filters DCR Providers by their display name'
-      in: query
-      required: false
-      schema:
-        type: string
-    FilterDcrProvidersByDisplayNameShort:
-      name: 'filter[display_name]'
-      description: 'filters DCR Providers by their display name (alias for filter[display_name][eq])'
-      in: query
-      required: false
-      schema:
-        type: string
-    FilterDcrProvidersByDisplayNameContains:
-      name: 'filter[display_name][contains]'
-      description: 'filters DCR Providers by their display name with a supplied substring'
       in: query
       required: false
       schema:
@@ -1173,7 +1144,6 @@ components:
       required:
         - id
         - name
-        - display_name
         - provider_type
         - issuer
         - active
@@ -1184,9 +1154,6 @@ components:
         id:
           $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
         name:
-          type: string
-          maxLength: 256
-        display_name:
           type: string
           maxLength: 256
         provider_type:
@@ -1316,7 +1283,6 @@ components:
         - provider_type
         - dcr_config
         - name
-        - display_name
         - issuer
       properties:
         provider_type:
@@ -1326,10 +1292,6 @@ components:
         dcr_config:
           $ref: '#/components/schemas/CreateDcrConfigAuth0InRequest'
         name:
-          type: string
-          minLength: 1
-          maxLength: 256
-        display_name:
           type: string
           minLength: 1
           maxLength: 256
@@ -1344,7 +1306,6 @@ components:
         - provider_type
         - dcr_config
         - name
-        - display_name
         - issuer
       properties:
         provider_type:
@@ -1354,10 +1315,6 @@ components:
         dcr_config:
           $ref: '#/components/schemas/CreateDcrConfigAzureAdInRequest'
         name:
-          type: string
-          minLength: 1
-          maxLength: 256
-        display_name:
           type: string
           minLength: 1
           maxLength: 256
@@ -1372,7 +1329,6 @@ components:
         - provider_type
         - dcr_config
         - name
-        - display_name
         - issuer
       properties:
         provider_type:
@@ -1382,10 +1338,6 @@ components:
         dcr_config:
           $ref: '#/components/schemas/CreateDcrConfigCurityInRequest'
         name:
-          type: string
-          minLength: 1
-          maxLength: 256
-        display_name:
           type: string
           minLength: 1
           maxLength: 256
@@ -1400,7 +1352,6 @@ components:
         - provider_type
         - dcr_config
         - name
-        - display_name
         - issuer
       properties:
         provider_type:
@@ -1410,10 +1361,6 @@ components:
         dcr_config:
           $ref: '#/components/schemas/CreateDcrConfigOktaInRequest'
         name:
-          type: string
-          minLength: 1
-          maxLength: 256
-        display_name:
           type: string
           minLength: 1
           maxLength: 256
@@ -1428,7 +1375,6 @@ components:
         - provider_type
         - dcr_config
         - name
-        - display_name
         - issuer
       properties:
         provider_type:
@@ -1438,10 +1384,6 @@ components:
         dcr_config:
           $ref: '#/components/schemas/CreateDcrConfigHttpInRequest'
         name:
-          type: string
-          minLength: 1
-          maxLength: 256
-        display_name:
           type: string
           minLength: 1
           maxLength: 256
@@ -1468,10 +1410,6 @@ components:
       additionalProperties: false
       properties:
         name:
-          type: string
-          minLength: 1
-          maxLength: 256
-        display_name:
           type: string
           minLength: 1
           maxLength: 256
@@ -1675,14 +1613,11 @@ components:
           required:
             - id
             - name
-            - display_name
             - provider_type
           properties:
             id:
               $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
             name:
-              type: string
-            display_name:
               type: string
             provider_type:
               $ref: '#/components/schemas/DcrProviderType'
@@ -1769,14 +1704,11 @@ components:
           required:
             - id
             - name
-            - display_name
             - provider_type
           properties:
             id:
               $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
             name:
-              type: string
-            display_name:
               type: string
             provider_type:
               $ref: '#/components/schemas/DcrProviderType'
@@ -1864,7 +1796,6 @@ components:
       summary: DCR Provider Okta Create Request
       value:
         name: DCR Okta 1 - Segment A
-        display_name: Client Credentials
         provider_type: okta
         issuer: https://my-issuer.okta.com/default
         dcr_config:
@@ -1873,7 +1804,6 @@ components:
       summary: DCR Provider Auth0 Create Request
       value:
         name: DCR Auth0 1 - Segment A
-        display_name: Client Credentials 2
         provider_type: auth0
         issuer: https://my-issuer.auth0.com/api/v2/
         dcr_config:
@@ -1884,7 +1814,6 @@ components:
       summary: DCR Provider AzureAd Create Request
       value:
         name: DCR Azure 1 - Segment A
-        display_name: Client Credentials 3
         provider_type: azureAd
         issuer: https://sts.windows.net/my-tenant
         dcr_config:
@@ -1894,7 +1823,6 @@ components:
       summary: DCR Provider Curity Create Request
       value:
         name: DCR Curity 1 - Segment A
-        display_name: Client Credentials 4
         provider_type: curity
         issuer: https://my-curity-instance.com/oauth/v2/oauth-anonymous/.well-known/openid-configuration
         dcr_config:
@@ -1904,7 +1832,6 @@ components:
       summary: DCR Provider HTTP Create Request
       value:
         name: DCR HTTP 1 - Segment A
-        display_name: Client Credentials 5
         provider_type: http
         issuer: https://my-issuer-server.com
         dcr_config:
@@ -1914,14 +1841,12 @@ components:
       summary: DCR Provider Create Request
       value:
         name: DCR Okta 1 - Segment A
-        display_name: Client Credentials
         issuer: https://my-issuer.okta.com/default
     DcrProviderOktaResponse:
       summary: DCR Provider Response
       value:
         id: 93f8380e-7798-4566-99e3-2edf2b57d289
         name: DCR Okta 1 - Segment A
-        display_name: Client Credentials
         provider_type: okta
         issuer: https://my-issuer.okta.com/default
         active: true
@@ -1934,7 +1859,6 @@ components:
         data:
           - id: 93f8380e-7798-4566-99e3-2edf2b57d289
             name: DCR Okta 1 - Segment A
-            display_name: Client Credentials
             provider_type: okta
             issuer: https://my-issuer.okta.com/default
             active: true
@@ -2011,7 +1935,6 @@ components:
         dcr_provider:
           id: 33f8380e-7798-4566-99e3-2edf2b57d289
           name: DCR Provider 1
-          display_name: Credentials
           provider_type: http
         created_at: 2023-01-01T00:00:00.000Z
         updated_at: 2023-01-01T00:00:00.000Z
@@ -2036,7 +1959,6 @@ components:
             dcr_provider:
               id: 33f8380e-7798-4566-99e3-2edf2b57d289
               name: DCR Provider 1
-              display_name: Credentials
               provider_type: http
             created_at: 2023-01-01T00:00:00.000Z
             updated_at: 2023-01-01T00:00:00.000Z
