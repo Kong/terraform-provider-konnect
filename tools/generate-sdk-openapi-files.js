@@ -92,24 +92,32 @@ async function main() {
     });
 
     // Remove unused components from each spec
-    dev = toolkit.components.removeUnusedComponents(dev);
-    internal = toolkit.components.removeUnusedComponents(internal);
-    public = toolkit.components.removeUnusedComponents(public);
 
     // Remove unused tags too
-    dev = toolkit.tags.removeUnusedTags(dev);
-    internal = toolkit.tags.removeUnusedTags(internal);
-    public = toolkit.tags.removeUnusedTags(public);
 
     // Write multiple files
     const outputDir = `${baseDir}/build/complete/${mode}`;
     await tryMkdir(outputDir, { recursive: true });
-    await Promise.all([
-      fs.writeFile(`${outputDir}/dev.yaml`, yaml.dump(dev)),
-      fs.writeFile(`${outputDir}/internal.yaml`, yaml.dump(internal)),
-      fs.writeFile(`${outputDir}/public.yaml`, yaml.dump(public)),
-    ]);
+
+    const builds = {
+      dev,
+      internal,
+      public,
+    };
+
+    for (let build in builds){
+      let oas = builds[build];
+      if (containsPaths(oas)){
+        oas = toolkit.components.removeUnusedComponents(oas);
+        oas = toolkit.tags.removeUnusedTags(oas);
+        await fs.writeFile(`${outputDir}/${build}.yaml`, yaml.dump(oas));
+      }
+    }
   }
+}
+
+function containsPaths(oas) {
+  return oas && oas.paths && Object.keys(oas.paths).length > 0;
 }
 
 if (require.main === module) {
