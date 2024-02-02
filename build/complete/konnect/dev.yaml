@@ -1576,6 +1576,33 @@ components:
           description: >-
             The names of the headers containing the API key. You can specify
             multiple header names.
+    PartialAppAuthStrategyConfigOpenIDConnect:
+      title: AppAuthStrategyConfigOpenIDConnect
+      type: object
+      additionalProperties: true
+      properties:
+        issuer:
+          type: string
+          format: url
+          maxLength: 256
+        credential_claim:
+          type: array
+          maxItems: 10
+          items:
+            type: string
+            maxLength: 128
+        scopes:
+          type: array
+          maxItems: 50
+          items:
+            type: string
+            maxLength: 128
+        auth_methods:
+          type: array
+          maxItems: 10
+          items:
+            type: string
+            maxLength: 64
     AppAuthStrategyConfigOpenIDConnect:
       title: AppAuthStrategyConfigOpenIDConnect
       type: object
@@ -1830,7 +1857,8 @@ components:
                 - openid-connect
               properties:
                 openid-connect:
-                  $ref: '#/components/schemas/AppAuthStrategyConfigOpenIDConnect'
+                  $ref: >-
+                    #/components/schemas/PartialAppAuthStrategyConfigOpenIDConnect
             - type: object
               additionalProperties: false
               required:
