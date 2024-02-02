@@ -158,28 +158,6 @@ paths:
           $ref:  '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       tags:
         - DCR Providers
-  '/dcr-providers/{dcrProviderId}/refresh-key':
-    parameters:
-      - $ref: '#/components/parameters/DcrProviderId'
-    post:
-      x-unstable: true
-      x-internal: true
-      summary: Refresh the API Key for an HTTP DCR Provider.
-      description: |
-        Refreshes the API Key of the DCR provider if using the `http` provider type. This invalidates the
-        previous API Key. Returns 404 if the DCR Provider type is not `http`.
-      operationId: refresh-dcr-provider-api-key
-      responses:
-        '200':
-          $ref: '#/components/responses/RefreshDcrProviderApiKey'
-        '401':
-          $ref:  '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
-        '403':
-          $ref:  '../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
-        '404':
-          $ref:  '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
-      tags:
-        - DCR Providers
   '/application-auth-strategies':
     post:
       x-unstable: true
@@ -790,12 +768,6 @@ components:
               $ref: '#/components/examples/VerifyDcrProviderResponseSuccess'
             VerifyDcrProviderFailed:
               $ref: '#/components/examples/VerifyDcrProviderResponseFailed'
-    RefreshDcrProviderApiKey:
-      description: A response containing an HTTP DCR Provider along with its refreshed API Key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RefreshDcrProviderApiKeyResponse'
     CreateAppAuthStrategy:
       description: A response containing the newly created application auth strategy object.
       content:
@@ -1546,10 +1518,6 @@ components:
           type: array
           items:
             type: string
-    RefreshDcrProviderApiKeyResponse:
-      title: RefreshDcrProviderApiKeyResponse
-      oneOf:
-        - $ref: '#/components/schemas/DcrProviderHttpWithApiKey'
     AuthStrategyType:
       title: AuthStrategyType
       # description: # TODO
