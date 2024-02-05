@@ -11,6 +11,12 @@ GitHub Actions are used to perform the following tasks:
 - Lint APIs to ensure they meet our [AIP definitions](https://kong-aip.netlify.app/)
 - Generate SDKs for use internally (and externally eventually)
 
+## Useful documentation
+
+* [API design workflow](https://github.com/Kong/platform-api/blob/main/docs/api-design-workflow.md)
+* [Understanding x-internal and x-unstable](https://github.com/Kong/platform-api/blob/main/docs/openapi-annotations.md)
+* [Linting rules](https://github.com/Kong/platform-api/blob/main/docs/linting-rules.md)
+
 ## Contributing
 
 1. Edit your service in `src/<product>/definitions`.

@@ -4,6 +4,7 @@ const path = require("path");
 const traverse = require("traverse");
 const { tryMkdir } = require("./helpers/fs");
 const toolkit = require("oas-toolkit");
+const { filterSchemas } = require("./helpers/filterOas");
 
 function filterOperations(doc, callback, log) {
   doc = traverse(doc).clone();
@@ -90,6 +91,11 @@ async function main() {
     let public = filterOperations(complete, function (node) {
       return !node["x-internal"];
     });
+
+    // Remove any schemas annotated with x-internal
+    public = filterSchemas(public, function (node) {
+      return !node["x-internal"];
+    }, function(node){ return false; });
 
     // Remove unused components from each spec
 

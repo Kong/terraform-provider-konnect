@@ -9,8 +9,8 @@ There are two types of project: brand new APIs and new features in an existing A
 New APIs are the easiest kind of API to build. When building a new API, follow these steps:
 
 * Decide which API Product it will be exposed through. Possible values are `Konnect` or `Portal`.
-* Create a new `openapi.yaml` file in [platform-api](https://github.com/Kong/platform-api/tree/main) for your API. e.g. `konnect/definitions/my-new-api/v1/openapi.yaml`
-* Review the [common definitions](https://github.com/Kong/platform-api/tree/main/common/definitions) to see if there are any reusable schemas relevant to your project
+* Create a new `openapi.yaml` file in [platform-api](https://github.com/Kong/platform-api/tree/main) for your API. e.g. `src/konnect/definitions/my-new-api/v1/openapi.yaml`
+* Review the [common definitions](https://github.com/Kong/platform-api/tree/main/src/common/definitions) to see if there are any reusable schemas relevant to your project
 * Start building your API spec. Make sure to annotate all operations with `x-internal:true` and `x-unstable: true` ([learn more](https://github.com/Kong/platform-api/blob/main/docs/openapi-annotations.md)). This allows us to generate a development SDK for your service without exposing it to all customers.
 * Once your API spec has been reviewed and approved, merge to `main` to trigger downstream SDK builds.
 

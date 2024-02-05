@@ -5,32 +5,7 @@ const path = require("path");
 const traverse = require("traverse");
 const { tryMkdir } = require("./helpers/fs");
 const toolkit = require("oas-toolkit");
-
-function isEmptyOperation(node) {
-  const allowedKeys = Object.keys(node).filter((k) =>
-    ["get", "post", "put", "patch", "delete"].includes(k)
-  );
-  return allowedKeys.length == 0;
-}
-
-function filterOperations(doc, callback, log) {
-  doc = traverse(doc).clone();
-
-  return traverse(doc).forEach(function () {
-    if (!this.node || !this.node["operationId"]) {
-      return;
-    }
-
-    const result = callback(this.node);
-    if (!result) {
-      this.remove();
-
-      if (isEmptyOperation(this.parent.node)) {
-        this.parent.remove();
-      }
-    }
-  });
-}
+const { filterOperations, filterSchemas } = require("./helpers/filterOas");
 
 async function main() {
   const baseDir = path.resolve(__dirname, "..");
@@ -43,20 +18,41 @@ async function main() {
       `${baseDir}/computed/${mode}/**/openapi.yaml`
     );
     for (let f of files){
+      if (!f.includes("portal") || !f.includes("applications")){
+        //continue;
+      }
     let complete = yaml.load(await fs.readFile(f));
     let name = f.replace(`${baseDir}/computed/${mode}/`,"").replace("openapi.yaml","");
 
-    let dev = filterOperations(complete, function (node) {
+    // Remove any annotated schemas (and the parent object)
+    let dev = filterSchemas(complete, function (node) {
       return node["x-internal"] && node["x-unstable"];
-    });
+    }, function(node){ return false; }, 'dev');
 
-    let internal = filterOperations(complete, function (node) {
+    //console.log(yaml.dump(dev));
+    //return;
+
+    let internal = filterSchemas(complete, function (node) {
       return node["x-internal"] && !node["x-unstable"];
-    });
+    }, function(node){ return false; }, 'internal');
 
-    let public = filterOperations(complete, function (node) {
+    let public = filterSchemas(complete, function (node) {
       return !node["x-internal"];
-    });
+    }, function(node){ return node["x-internal"] });
+
+    // Remove any annotated operations
+    dev = filterOperations(dev, function (node) {
+      return node["x-internal"] && node["x-unstable"];
+    }, 'dev');
+
+    internal = filterOperations(internal, function (node) {
+      return node["x-internal"] && !node["x-unstable"];
+    }, 'internal');
+
+    public = filterOperations(public, function (node) {
+      return !node["x-internal"];
+    }, 'public');
+
 
     await tryMkdir(`${outputDir}/${name}`, { recursive: true });
     const builds = {
