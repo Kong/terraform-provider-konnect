@@ -5,9 +5,7 @@ mkdir -p dist
 
 # get script directory
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-$DIR/../tools/merge-oas.sh
-node $DIR/../tools/generate-sdk-openapi-files.js
-node $DIR/../tools/split-service-specs.js
+$DIR/../tools/run.sh
 
 function add_h1 {
   echo "<h1>$1</h1>" >> dist/index.html

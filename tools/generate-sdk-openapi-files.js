@@ -4,7 +4,7 @@ const path = require("path");
 const traverse = require("traverse");
 const { tryMkdir } = require("./helpers/fs");
 const toolkit = require("oas-toolkit");
-const { filterSchemas } = require("./helpers/filterOas");
+const { filterSchemas, removeProperty } = require("./helpers/filterOas");
 
 function filterOperations(doc, callback, log) {
   doc = traverse(doc).clone();
@@ -43,9 +43,17 @@ function unique(s) {
 
 async function main() {
   const baseDir = path.join(__dirname, "..");
-  const projects = ["konnect", "portal"];
+  let projects = ["konnect", "portal"];
+  if (process.argv.length > 2) {
+    projects = process.argv.slice(2);
+  }
 
   for (let mode of projects) {
+    if (mode == "internal"){
+      console.log("Skipping combined file generation: Internal APIs do not produce a combined complete.yaml file");
+      continue;
+    }
+
     const f = `${baseDir}/computed/${mode}/complete.yaml`;
     let complete = yaml.load(await fs.readFile(f));
 
@@ -79,27 +87,37 @@ async function main() {
 
     complete.security = unique(complete.security);
 
+    let dev = filterSchemas(complete, function (node) {
+      return node["x-internal"] && node["x-unstable"];
+    }, function(node){ return false; }, 'dev');
+
+    let internal = filterSchemas(complete, function (node) {
+      return node["x-internal"] && !node["x-unstable"];
+    }, function(node){ return false; }, 'internal');
+
+    let public = filterSchemas(complete, function (node) {
+      return !node["x-internal"];
+    }, function(node){ return node["x-internal"] });
+
+
     // Filter down paths to the groups that we need
-    let dev = filterOperations(complete, function (node) {
+    dev = filterOperations(dev, function (node) {
       return node["x-internal"] && node["x-unstable"];
     });
 
-    let internal = filterOperations(complete, function (node) {
+    internal = filterOperations(internal, function (node) {
       return node["x-internal"] && !node["x-unstable"];
     });
 
-    let public = filterOperations(complete, function (node) {
+    public = filterOperations(public, function (node) {
       return !node["x-internal"];
     });
 
-    // Remove any schemas annotated with x-internal
-    public = filterSchemas(public, function (node) {
-      return !node["x-internal"];
-    }, function(node){ return false; });
-
-    // Remove unused components from each spec
-
-    // Remove unused tags too
+    // Remove the `x-override`, `x-internal` and `x-unstable` fields
+    const fields = ['x-override', 'x-internal', 'x-unstable'];
+    dev = removeProperty(dev, fields);
+    internal = removeProperty(internal, fields);
+    public = removeProperty(public, fields);
 
     // Write multiple files
     const outputDir = `${baseDir}/build/complete/${mode}`;

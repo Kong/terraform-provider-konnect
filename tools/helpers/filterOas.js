@@ -17,7 +17,6 @@ function filterOperations(doc, callback, overrideKey) {
 
     // If we're explicitly adding to a specific build, don't remove it
     if (this.node['x-override'] == overrideKey){
-      this.node['x-override'] = undefined;
       return;
     }
 
@@ -28,6 +27,19 @@ function filterOperations(doc, callback, overrideKey) {
       if (isEmptyOperation(this.parent.node)) {
         this.parent.remove();
       }
+    }
+  });
+}
+
+function removeProperty(doc, fields) {
+  doc = traverse(doc).clone();
+
+  return traverse(doc).forEach(function () {
+    if (!this.node) {
+      return;
+    }
+    if (fields.includes(this.key)){
+      this.remove();
     }
   });
 }
@@ -103,5 +115,6 @@ function annotateWithOverride(doc, schemaPath, overrideKey, alreadyVisited = {})
 
 module.exports = {
   filterOperations,
-  filterSchemas
+  filterSchemas,
+  removeProperty
 }

@@ -694,7 +694,6 @@ paths:
         - portalAccessToken: []
         - {}
   /api/v2/products/{productId}/actions:
-    x-unstable: true
     parameters:
       - $ref: '#/components/parameters/ProductId'
     get:

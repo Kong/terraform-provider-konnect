@@ -37,11 +37,9 @@ paths:
         $ref: '#/components/requestBodies/Auth0Registration'
       tags:
         - SSO Auth0
-      x-internal: true
   /internal/auth0/organizations:
     get:
       operationId: get-auth0-organizations-internal
-      x-internal: true
       summary: Retrieves the list of organizations available to the given user.
       description: Retrieves the list of organizations available to the given user.
       responses:
@@ -93,7 +91,6 @@ paths:
           style: deepObject
       tags:
         - Managed System Accounts - Roles
-      x-internal: true
       security:
         - clientToken: []
     post:
@@ -117,7 +114,6 @@ paths:
         $ref: '#/components/requestBodies/AssignParameterizedRole'
       tags:
         - Managed System Accounts - Roles
-      x-internal: true
       security:
         - clientToken: []
   /users/me:
@@ -131,7 +127,6 @@ paths:
         '401':
           $ref: '#/components/responses/IdentityUnauthenticated'
       operationId: get-users-me
-      x-internal: true
       security:
         - personalAccessToken: []
         - konnectAccessToken: []
@@ -141,7 +136,6 @@ paths:
     delete:
       summary: Delete My User Account
       operationId: delete-users-me
-      x-internal: true
       security:
         - konnectAccessToken: []
       responses:
@@ -177,7 +171,6 @@ paths:
         $ref: '#/components/requestBodies/UpdateUser'
       tags:
         - Me
-      x-internal: true
       security:
         - konnectAccessToken: []
   /users/me/permissions:
@@ -187,7 +180,6 @@ paths:
         - Me
       description: Returns the permissions for the current user
       operationId: get-users-me-permissions
-      x-internal: true
       parameters:
         - schema:
             type: object
@@ -227,7 +219,6 @@ paths:
         '401':
           $ref: '#/components/responses/IdentityUnauthenticated'
       operationId: get-organizations-me
-      x-internal: true
       description: >-
         Returns the organization of the user identified in the token of the
         request.
@@ -239,7 +230,6 @@ paths:
         new owner 
 
         must be an organization admin.
-      x-internal: true
       tags:
         - Me
       responses:
@@ -263,7 +253,6 @@ paths:
         the token has exceeded its lifetime limit, or c) the token has been
         revoked.
       operationId: refresh-token
-      x-internal: true
       tags:
         - Authentication
       responses:
@@ -276,7 +265,6 @@ paths:
       summary: Log Out
       description: Clears the auth cookies.
       operationId: logout
-      x-internal: true
       tags:
         - Authentication
       responses:
@@ -287,7 +275,6 @@ paths:
       summary: Resolves an AWS Customer.
       description: This call the aws marketplace resolve customer api.
       operationId: resolveCustomer
-      x-internal: true
       tags:
         - AWS
       requestBody:
@@ -790,7 +777,6 @@ components:
         entity_region: us
         parameters:
           zoneName: zone3
-      x-internal: true
       properties:
         id:
           type: string

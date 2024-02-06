@@ -19,8 +19,6 @@ tags:
 paths:
   /dcr-providers:
     post:
-      x-unstable: true
-      x-internal: true
       summary: Create DCR Provider
       operationId: create-dcr-provider
       description: Creates a DCR provider.
@@ -38,8 +36,6 @@ paths:
       tags:
         - DCR Providers
     get:
-      x-unstable: true
-      x-internal: true
       summary: List DCR Providers
       operationId: list-dcr-providers
       description: Returns a paginated collection of DCR providers.
@@ -81,8 +77,6 @@ paths:
     parameters:
       - $ref: '#/components/parameters/DcrProviderId'
     get:
-      x-unstable: true
-      x-internal: true
       summary: Fetch DCR Provider
       description: Returns a DCR provider.
       operationId: get-dcr-provider
@@ -98,8 +92,6 @@ paths:
       tags:
         - DCR Providers
     patch:
-      x-unstable: true
-      x-internal: true
       summary: Update DCR Provider
       description: Updates a DCR provider.
       operationId: update-dcr-provider
@@ -119,8 +111,6 @@ paths:
       tags:
         - DCR Providers
     delete:
-      x-unstable: true
-      x-internal: true
       summary: Delete DCR Provider
       description: Deletes a DCR provider.
       operationId: delete-dcr-provider
@@ -139,8 +129,6 @@ paths:
     parameters:
       - $ref: '#/components/parameters/DcrProviderId'
     post:
-      x-unstable: true
-      x-internal: true
       summary: Verify DCR Provider configuration.
       description: >-
         Verifies if a DCR provider is configured properly. Check the response
@@ -159,8 +147,6 @@ paths:
         - DCR Providers
   /application-auth-strategies:
     post:
-      x-unstable: true
-      x-internal: true
       summary: Create App Auth Strategy
       operationId: create-app-auth-strategy
       description: Creates an application auth strategy.
@@ -178,8 +164,6 @@ paths:
       tags:
         - App Auth Strategies
     get:
-      x-unstable: true
-      x-internal: true
       summary: List App Auth Strategies
       operationId: list-app-auth-strategies
       description: Returns a paginated collection of application auth strategies.
@@ -222,8 +206,6 @@ paths:
     parameters:
       - $ref: '#/components/parameters/AuthStrategyId'
     get:
-      x-unstable: true
-      x-internal: true
       summary: Get App Auth Strategy
       description: Returns an application auth strategy.
       operationId: get-app-auth-strategy
@@ -239,8 +221,6 @@ paths:
       tags:
         - App Auth Strategies
     put:
-      x-unstable: true
-      x-internal: true
       summary: Replace App Auth Strategy
       operationId: replace-app-auth-strategy
       description: Replaces an application auth strategy.
@@ -258,8 +238,6 @@ paths:
       tags:
         - App Auth Strategies
     patch:
-      x-unstable: true
-      x-internal: true
       summary: Update App Auth Strategy
       operationId: update-app-auth-strategy
       description: Updates an application auth strategy.
@@ -279,8 +257,6 @@ paths:
       tags:
         - App Auth Strategies
     delete:
-      x-unstable: true
-      x-internal: true
       summary: Delete App Auth Strategy
       description: Deletes an application auth strategy.
       operationId: delete-app-auth-strategy
@@ -301,8 +277,6 @@ paths:
     parameters:
       - $ref: '#/components/parameters/PortalId'
     get:
-      x-unstable: true
-      x-internal: true
       summary: List portal product versions
       operationId: list-portal-product-versions
       description: List portal product versions
@@ -325,8 +299,6 @@ paths:
       tags:
         - Portal Product Versions
     post:
-      x-unstable: true
-      x-internal: true
       summary: Create a portal product version
       operationId: create-portal-product-version
       description: Create a portal product version
@@ -350,8 +322,6 @@ paths:
       - $ref: '#/components/parameters/ProductVersionId'
       - $ref: '#/components/parameters/PortalId'
     get:
-      x-unstable: true
-      x-internal: true
       summary: Get a portal product version
       operationId: get-portal-product-version
       description: Get a portal product version
@@ -369,8 +339,6 @@ paths:
       tags:
         - Portal Product Versions
     patch:
-      x-unstable: true
-      x-internal: true
       summary: Update a portal product version
       operationId: update-portal-product-version
       description: Update a portal product version
@@ -390,8 +358,6 @@ paths:
       tags:
         - Portal Product Versions
     delete:
-      x-unstable: true
-      x-internal: true
       summary: Delete a portal product version
       operationId: delete-portal-product-version
       description: Delete a portal product version

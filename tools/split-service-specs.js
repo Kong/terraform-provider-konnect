@@ -5,11 +5,14 @@ const path = require("path");
 const traverse = require("traverse");
 const { tryMkdir } = require("./helpers/fs");
 const toolkit = require("oas-toolkit");
-const { filterOperations, filterSchemas } = require("./helpers/filterOas");
+const { filterOperations, filterSchemas, removeProperty } = require("./helpers/filterOas");
 
 async function main() {
   const baseDir = path.resolve(__dirname, "..");
-  const projects = ["konnect", "portal", "internal"];
+  let projects = ["konnect", "portal", "internal"];
+  if (process.argv.length > 2) {
+    projects = process.argv.slice(2);
+  }
 
   for (let mode of projects) {
     const outputDir = `${baseDir}/build/services/${mode}`;
@@ -28,9 +31,6 @@ async function main() {
     let dev = filterSchemas(complete, function (node) {
       return node["x-internal"] && node["x-unstable"];
     }, function(node){ return false; }, 'dev');
-
-    //console.log(yaml.dump(dev));
-    //return;
 
     let internal = filterSchemas(complete, function (node) {
       return node["x-internal"] && !node["x-unstable"];
@@ -53,6 +53,11 @@ async function main() {
       return !node["x-internal"];
     }, 'public');
 
+    // Remove the `x-override` field
+    const fields = ['x-override', 'x-internal', 'x-unstable'];
+    dev = removeProperty(dev, fields);
+    internal = removeProperty(internal, fields);
+    public = removeProperty(public, fields);
 
     await tryMkdir(`${outputDir}/${name}`, { recursive: true });
     const builds = {

@@ -21,7 +21,7 @@ GitHub Actions are used to perform the following tasks:
 
 1. Edit your service in `src/<product>/definitions`.
 2. Run `npm ci` to install dependencies
-3. Run `./tools/run.sh`
+3. Run `./tools/run.sh`. You can use `./tools/run.sh PRODUCT_NAME` to build a specific product. Available products: `konnect`, `portal`, `internal`.
 4. Commit everything (even the `build` folder) and raise a PR
 
 ## How this repo works

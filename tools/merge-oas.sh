@@ -2,11 +2,20 @@
 shopt -s globstar
 set -e
 
-PRODUCTS=(konnect portal)
+if [[ ! -z "$1" ]]; then
+  PRODUCTS=($1)
+else
+  PRODUCTS=(konnect portal internal)
+fi
+
 for PRODUCT in "${PRODUCTS[@]}"; do
-echo "############################################"
-echo "Processing: $PRODUCT"
-echo "############################################"
+  if [ "$PRODUCT" == "internal" ]; then
+    continue
+  fi
+
+  echo "############################################"
+  echo "Processing: $PRODUCT"
+  echo "############################################"
   mkdir -p computed/$PRODUCT
 
   FILES=$(node ./tools/get-product-files.js $PRODUCT --plain);
@@ -22,8 +31,10 @@ done
 
 # Finally, bundle all internal APIs. They do not need merging
 # so we do it outside the loop
+if [[ " ${PRODUCTS[@]} " =~ " internal " ]]; then
 echo "############################################"
 echo "Processing: internal"
 echo "############################################"
 node ./tools/bundle.js internal
 node ./tools/process-computed.js internal
+fi

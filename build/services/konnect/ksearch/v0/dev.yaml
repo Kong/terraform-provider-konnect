@@ -27,8 +27,6 @@ paths:
       operationId: get-search
       summary: Search Konnect
       description: Retrieves a list of Konnect entities matching the search query provided.
-      x-internal: true
-      x-unstable: true
       tags:
         - Search
       parameters:
@@ -51,8 +49,6 @@ paths:
       operationId: get-search-types
       summary: List Search Types
       description: Retrieves a list of searchable Konnect entity types.
-      x-internal: true
-      x-unstable: true
       tags:
         - Search
       responses:

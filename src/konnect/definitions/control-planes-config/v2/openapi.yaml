@@ -6210,7 +6210,6 @@ tags:
     name: DP Certificates
   - description: Custom Plugin Schemas
     name: Custom Plugin Schemas
-x-internal: false
 security:
   - konnectAccessToken: []
   - personalAccessToken: []
