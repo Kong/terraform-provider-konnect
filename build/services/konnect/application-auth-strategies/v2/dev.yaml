@@ -1560,7 +1560,7 @@ components:
             The names of the headers containing the API key. You can specify
             multiple header names.
     PartialAppAuthStrategyConfigOpenIDConnect:
-      title: AppAuthStrategyConfigOpenIDConnect
+      title: PartialAppAuthStrategyConfigOpenIDConnect
       type: object
       additionalProperties: true
       properties:

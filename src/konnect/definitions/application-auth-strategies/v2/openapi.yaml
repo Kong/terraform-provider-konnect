@@ -1478,7 +1478,7 @@ components:
             maxLength: 256
           description: The names of the headers containing the API key. You can specify multiple header names.
     PartialAppAuthStrategyConfigOpenIDConnect:
-      title: AppAuthStrategyConfigOpenIDConnect
+      title: PartialAppAuthStrategyConfigOpenIDConnect
       # description: # TODO
       type: object
       additionalProperties: true
