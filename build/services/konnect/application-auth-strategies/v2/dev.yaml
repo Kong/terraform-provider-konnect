@@ -691,6 +691,9 @@ components:
               $ref: '#/components/examples/CreateAppAuthStrategyKeyAuthRequest'
             CreateAppAuthStrategyOpenIDConnectRequest:
               $ref: '#/components/examples/CreateAppAuthStrategyOpenIDConnectRequest'
+            CreateAppAuthStrategyOpenIDConnectDCRRequest:
+              $ref: >-
+                #/components/examples/CreateAppAuthStrategyOpenIDConnectDCRRequest
     UpdateAppAuthStrategy:
       required: true
       content:
@@ -2659,6 +2662,22 @@ components:
         configs:
           openid-connect:
             issuer: https://oidc.example.com
+            credential_claim:
+              - client_id
+            scopes:
+              - openid
+              - email
+            auth_methods:
+              - client_credentials
+              - bearer
+    CreateAppAuthStrategyOpenIDConnectDCRRequest:
+      value:
+        name: auth strategy 3
+        display_name: Enterprise Auth with DCR
+        strategy_type: openid_connect
+        configs:
+          openid-connect:
+            issuer: https://oidc-dcr.example.com
             credential_claim:
               - client_id
             scopes:
