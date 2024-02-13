@@ -10873,6 +10873,16 @@ components:
           example: A control plane to handle traffic on development environment.
         labels:
           $ref: '#/components/schemas/MeshControlPlaneLabels'
+    AuthStrategyId:
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        ID of the auth strategy that the application uses.
+      type: string
+      format: uuid
+      nullable: true
+      readOnly: true
     PortalClaimMappings:
       title: PortalClaimMappings
       description: Mappings from a portal developer atribute to an Identity Provider claim.
@@ -12136,6 +12146,8 @@ components:
             email:
               description: The email of the developer that created the application.
               type: string
+        auth_strategy_id:
+          $ref: '#/components/schemas/AuthStrategyId'
       example:
         id: b15e2460-ba40-431d-9df0-4957fcffacda
         name: App 1
