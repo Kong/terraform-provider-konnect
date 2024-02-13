@@ -287,7 +287,12 @@ paths:
         - App Auth Strategies
     delete:
       summary: Delete App Auth Strategy
-      description: Deletes an application auth strategy.
+      description: >-
+        Deletes an application auth strategy. An application auth strategy can
+        be deleted ONLY if it's not used by any product version within any
+        portal regardless of their publication statuses. If an application auth
+        strategy is still in use the request will result in an HTTP 409
+        CONFLICT.
       operationId: delete-app-auth-strategy
       responses:
         '204':
