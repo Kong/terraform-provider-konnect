@@ -1436,6 +1436,12 @@ components:
       type: string
       format: uuid
       nullable: true
+    AuthStrategyCredentialType:
+      type: string
+      enum:
+        - client_credentials
+        - self_managed_client_credentials
+        - key_auth
     ListAuthStrategiesItem:
       type: object
       additionalProperties: false
@@ -1446,19 +1452,9 @@ components:
           type: string
           example: Okta Strategy
         credential_type:
-          type: string
-          enum:
-            - client_credentials
-            - self_managed_client_credentials
-            - key_auth
-          example: client_credentials
+          $ref: '#/components/schemas/AuthStrategyCredentialType'
         auth_methods:
-          type: array
-          items:
-            description: Auth Methods enabled for this strategy
-            type: string
-          example:
-            - bearer
+          $ref: '#/components/schemas/AuthMethods'
       required:
         - id
         - credential_type
@@ -1508,8 +1504,8 @@ components:
         redirect_uri:
           type: string
           nullable: true
-        auth_strategy_id:
-          $ref: '#/components/schemas/AuthStrategyId'
+        auth_strategy:
+          $ref: '#/components/schemas/AuthStrategy'
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -1606,7 +1602,7 @@ components:
         - description
         - created_at
         - updated_at
-        - auth_strategy_id
+        - auth_strategy
       properties:
         id:
           $ref: '#/components/schemas/UUID'
@@ -1631,8 +1627,8 @@ components:
               type: string
             client_secret:
               type: string
-        auth_strategy_id:
-          $ref: '#/components/schemas/AuthStrategyId'
+        auth_strategy:
+          $ref: '#/components/schemas/AuthStrategy'
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -1686,8 +1682,8 @@ components:
           type: string
           example: https://example.com/callback
           nullable: true
-        auth_strategy_id:
-          $ref: '#/components/schemas/AuthStrategyId'
+        auth_strategy:
+          $ref: '#/components/schemas/AuthStrategy'
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -1753,6 +1749,74 @@ components:
         Cannot be set when using Dynamic Client Registration.
       type: string
       maxLength: 255
+    CredentialType:
+      type: string
+      description: type of the application auth strategy
+      enum:
+        - client_credentials
+        - self_managed_client_credentials
+        - key_auth
+      example: key_auth
+    AuthStrategyBase:
+      description: Properties common to all Application Auth Strategies
+      type: object
+      required:
+        - id
+        - name
+        - credential_type
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: b9e81174-b5bb-4638-a3c3-8afe61a0abf8
+          description: The Application Auth Strategy ID.
+          readOnly: true
+        name:
+          type: string
+          example: name
+          default: name
+        credential_type:
+          $ref: '#/components/schemas/CredentialType'
+    AuthStrategyKeyAuth:
+      description: KeyAuth Auth strategy that the application uses.
+      type: object
+      required:
+        - credential_type
+      properties:
+        credential_type:
+          type: string
+          enum:
+            - key_auth
+    AuthMethods:
+      type: array
+      items:
+        description: Auth Methods enabled for this strategy
+        type: string
+      example:
+        - bearer
+    AuthStrategyClientCredentials:
+      description: Client Credential Auth strategy that the application uses.
+      type: object
+      required:
+        - credential_type
+        - auth_methods
+      properties:
+        credential_type:
+          type: string
+          enum:
+            - client_credentials
+            - self_managed_client_credentials
+        auth_methods:
+          $ref: '#/components/schemas/AuthMethods'
+    AuthStrategy:
+      allOf:
+        - $ref: '#/components/schemas/AuthStrategyBase'
+        - type: object
+          oneOf:
+            - $ref: '#/components/schemas/AuthStrategyKeyAuth'
+            - $ref: '#/components/schemas/AuthStrategyClientCredentials'
+          discriminator:
+            propertyName: credential_type
     CreatedAt:
       type: string
       format: date-time
@@ -2330,12 +2394,6 @@ components:
           type: array
           items:
             type: string
-    CredentialType:
-      type: string
-      enum:
-        - client_credentials
-        - self_managed_client_credentials
-        - key_auth
     LatestVersion:
       type: object
       additionalProperties: false

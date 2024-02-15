@@ -404,6 +404,12 @@ components:
       type: string
       format: uuid
       nullable: true
+    AuthStrategyCredentialType:
+      type: string
+      enum:
+      - client_credentials
+      - self_managed_client_credentials
+      - key_auth
     Scopes:
       x-internal: true
       x-unstable: true
@@ -421,18 +427,9 @@ components:
           type: string
           example: 'Okta Strategy'
         credential_type:
-          type: string
-          enum:
-            - client_credentials
-            - self_managed_client_credentials
-            - key_auth
-          example: 'client_credentials'
+          $ref: '#/components/schemas/AuthStrategyCredentialType'
         auth_methods:
-          type: array
-          items:
-            description: Auth Methods enabled for this strategy
-            type: string
-          example: ['bearer']
+          $ref: '../../../common/definitions/auth_strategies.yaml#/components/schemas/AuthMethods'
       required:
         - id
         - credential_type
@@ -482,8 +479,8 @@ components:
         redirect_uri:
           type: string
           nullable: true
-        auth_strategy_id:
-          $ref: '#/components/schemas/AuthStrategyId'
+        auth_strategy:
+          $ref: '../../../common/definitions/auth_strategies.yaml#/components/schemas/AuthStrategy'
         scopes:
           $ref: '#/components/schemas/Scopes'
         created_at:
@@ -584,7 +581,7 @@ components:
         - description
         - created_at
         - updated_at
-        - auth_strategy_id
+        - auth_strategy
       properties:
         id:
           $ref: '../../../common/definitions/properties.yaml#/components/schemas/UUID'
@@ -609,8 +606,8 @@ components:
               type: string
             client_secret:
               type: string
-        auth_strategy_id:
-           $ref: '#/components/schemas/AuthStrategyId'
+        auth_strategy:
+           $ref: '../../../common/definitions/auth_strategies.yaml#/components/schemas/AuthStrategy'
         scopes:
           $ref: '#/components/schemas/Scopes'
         created_at:
@@ -668,8 +665,8 @@ components:
           type: string
           example: https://example.com/callback
           nullable: true
-        auth_strategy_id:
-          $ref: '#/components/schemas/AuthStrategyId'
+        auth_strategy:
+          $ref: '../../../common/definitions/auth_strategies.yaml#/components/schemas/AuthStrategy'
         scopes:
           $ref: '#/components/schemas/Scopes'
         created_at:
