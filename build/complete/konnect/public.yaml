@@ -10873,16 +10873,15 @@ components:
           example: A control plane to handle traffic on development environment.
         labels:
           $ref: '#/components/schemas/MeshControlPlaneLabels'
-    AuthStrategyId:
-      description: |-
-        **Pre-release Endpoint**
-        This endpoint is currently in beta and is subject to change.
-
-        ID of the auth strategy that the application uses.
-      type: string
-      format: uuid
-      nullable: true
-      readOnly: true
+    AuthStrategy:
+      allOf:
+        - $ref: '#/components/schemas/AuthStrategyBase'
+        - type: object
+          oneOf:
+            - $ref: '#/components/schemas/AuthStrategyKeyAuth'
+            - $ref: '#/components/schemas/AuthStrategyClientCredentials'
+          discriminator:
+            propertyName: credential_type
     PortalClaimMappings:
       title: PortalClaimMappings
       description: Mappings from a portal developer atribute to an Identity Provider claim.
@@ -12146,8 +12145,8 @@ components:
             email:
               description: The email of the developer that created the application.
               type: string
-        auth_strategy_id:
-          $ref: '#/components/schemas/AuthStrategyId'
+        auth_strategy:
+          $ref: '#/components/schemas/AuthStrategy'
       example:
         id: b15e2460-ba40-431d-9df0-4957fcffacda
         name: App 1
@@ -13283,6 +13282,65 @@ components:
         - dark_mode
         - custom
       example: mint_rocket
+    CredentialType:
+      type: string
+      description: type of the application auth strategy
+      enum:
+        - client_credentials
+        - self_managed_client_credentials
+        - key_auth
+      example: key_auth
+    AuthStrategyBase:
+      description: Properties common to all Application Auth Strategies
+      type: object
+      required:
+        - id
+        - name
+        - credential_type
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: b9e81174-b5bb-4638-a3c3-8afe61a0abf8
+          description: The Application Auth Strategy ID.
+          readOnly: true
+        name:
+          type: string
+          example: name
+          default: name
+        credential_type:
+          $ref: '#/components/schemas/CredentialType'
+    AuthStrategyKeyAuth:
+      description: KeyAuth Auth strategy that the application uses.
+      type: object
+      required:
+        - credential_type
+      properties:
+        credential_type:
+          type: string
+          enum:
+            - key_auth
+    AuthMethods:
+      type: array
+      items:
+        description: Auth Methods enabled for this strategy
+        type: string
+      example:
+        - bearer
+    AuthStrategyClientCredentials:
+      description: Client Credential Auth strategy that the application uses.
+      type: object
+      required:
+        - credential_type
+        - auth_methods
+      properties:
+        credential_type:
+          type: string
+          enum:
+            - client_credentials
+            - self_managed_client_credentials
+        auth_methods:
+          $ref: '#/components/schemas/AuthMethods'
     ImageDataUri:
       title: ImageDataUri
       type: string

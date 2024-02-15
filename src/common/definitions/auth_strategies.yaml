@@ -1,0 +1,69 @@
+components:
+  schemas:
+    AuthStrategy:
+      allOf:
+      - $ref: '#/components/schemas/AuthStrategyBase'
+      - type: object
+        oneOf:
+          - $ref: '#/components/schemas/AuthStrategyKeyAuth'
+          - $ref: '#/components/schemas/AuthStrategyClientCredentials'
+        discriminator:
+          propertyName: credential_type
+    AuthStrategyBase:
+      description: Properties common to all Application Auth Strategies
+      type: object
+      required:
+      - id
+      - name
+      - credential_type
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: b9e81174-b5bb-4638-a3c3-8afe61a0abf8
+          description: The Application Auth Strategy ID.
+          readOnly: true
+        name:
+          type: string
+          example: name
+          default: name
+        credential_type:
+          $ref: '#/components/schemas/CredentialType'
+    AuthStrategyKeyAuth:
+      description: KeyAuth Auth strategy that the application uses.
+      type: object
+      required:
+      - credential_type
+      properties:
+        credential_type:
+          type: string
+          enum:
+          - 'key_auth'
+    AuthStrategyClientCredentials:
+      description: Client Credential Auth strategy that the application uses.
+      type: object
+      required:
+      - credential_type
+      - auth_methods
+      properties:
+        credential_type:
+          type: string
+          enum:
+          - 'client_credentials'
+          - 'self_managed_client_credentials'
+        auth_methods:
+          $ref: '#/components/schemas/AuthMethods'
+    CredentialType:
+      type: string
+      description: type of the application auth strategy
+      enum:
+        - client_credentials
+        - self_managed_client_credentials
+        - key_auth
+      example: key_auth
+    AuthMethods:
+      type: array
+      items:
+        description: Auth Methods enabled for this strategy
+        type: string
+      example: ['bearer']

@@ -3296,13 +3296,8 @@ components:
             Example 1:
               $ref: '#/components/examples/UpdatePortalAppearanceResponseExample1'
   schemas:
-    AuthStrategyId:
-      x-unstable: true
-      description: ID of the auth strategy that the application uses.
-      type: string
-      format: uuid
-      nullable: true
-      readOnly: true
+    AuthStrategy:
+      $ref: ../../../../common/definitions/auth_strategies.yaml#/components/schemas/AuthStrategy
     PortalClaimMappings:
       title: PortalClaimMappings
       description: Mappings from a portal developer atribute to an Identity Provider claim.
@@ -4340,8 +4335,8 @@ components:
             email:
               description: The email of the developer that created the application.
               type: string
-        auth_strategy_id:
-          $ref: '#/components/schemas/AuthStrategyId'
+        auth_strategy:
+          $ref: '#/components/schemas/AuthStrategy'
       example:
         $ref: '#/components/examples/GetApplicationExampleBasic/value'
     ApplicationRegistration:
