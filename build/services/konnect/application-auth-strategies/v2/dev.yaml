@@ -922,6 +922,13 @@ components:
     PortalProductVersionDeprecated:
       type: boolean
       description: Whether the api product version on the portal is deprecated
+    AuthStrategies:
+      description: A list of authentication strategies
+      type: array
+      minItems: 0
+      maxItems: 1
+      items:
+        $ref: '#/components/schemas/AuthStrategy'
     AuthStrategyIDs:
       description: A list of authentication strategy IDs
       type: array
@@ -999,8 +1006,8 @@ components:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
           $ref: '#/components/schemas/UpdatedAt'
-        auth_strategy_ids:
-          $ref: '#/components/schemas/AuthStrategyIDs'
+        auth_strategies:
+          $ref: '#/components/schemas/AuthStrategies'
         application_registration_enabled:
           $ref: '#/components/schemas/ApplicationRegistrationEnabled'
         auto_approve_registration:
@@ -1014,7 +1021,7 @@ components:
         - auto_approve_registration
         - product_version_id
         - deprecated
-        - auth_strategy_ids
+        - auth_strategies
         - created_at
         - updated_at
     ListPortalProductVersions:
@@ -2483,6 +2490,74 @@ components:
       format: uuid
       example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
       description: Contains a unique identifier used by the API for this resource.
+    CredentialType:
+      type: string
+      description: type of the application auth strategy
+      enum:
+        - client_credentials
+        - self_managed_client_credentials
+        - key_auth
+      example: key_auth
+    AuthStrategyBase:
+      description: Properties common to all Application Auth Strategies
+      type: object
+      required:
+        - id
+        - name
+        - credential_type
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: b9e81174-b5bb-4638-a3c3-8afe61a0abf8
+          description: The Application Auth Strategy ID.
+          readOnly: true
+        name:
+          type: string
+          example: name
+          default: name
+        credential_type:
+          $ref: '#/components/schemas/CredentialType'
+    AuthStrategyKeyAuth:
+      description: KeyAuth Auth strategy that the application uses.
+      type: object
+      required:
+        - credential_type
+      properties:
+        credential_type:
+          type: string
+          enum:
+            - key_auth
+    AuthMethods:
+      type: array
+      items:
+        description: Auth Methods enabled for this strategy
+        type: string
+      example:
+        - bearer
+    AuthStrategyClientCredentials:
+      description: Client Credential Auth strategy that the application uses.
+      type: object
+      required:
+        - credential_type
+        - auth_methods
+      properties:
+        credential_type:
+          type: string
+          enum:
+            - client_credentials
+            - self_managed_client_credentials
+        auth_methods:
+          $ref: '#/components/schemas/AuthMethods'
+    AuthStrategy:
+      allOf:
+        - $ref: '#/components/schemas/AuthStrategyBase'
+        - type: object
+          oneOf:
+            - $ref: '#/components/schemas/AuthStrategyKeyAuth'
+            - $ref: '#/components/schemas/AuthStrategyClientCredentials'
+          discriminator:
+            propertyName: credential_type
   examples:
     DcrProviderOktaCreateRequest:
       summary: DCR provider Okta Create Request
@@ -2757,8 +2832,10 @@ components:
         id: 22f8380e-7798-4566-99e3-2edf2b57d289
         publish_status: published
         product_version_id: 33f8380e-7798-4566-99e3-2edf2b57d289
-        auth_strategy_ids:
-          - 44f8380e-7798-4566-99e3-2edf2b57d289
+        auth_strategies:
+          - id: 44f8380e-7798-4566-99e3-2edf2b57d289
+            name: key auth strategy
+            credential_type: key_auth
         application_registration_enabled: true
         auto_approve_registration: true
         deprecated: false
@@ -2770,8 +2847,10 @@ components:
           - id: 22f8380e-7798-4566-99e3-2edf2b57d289
             publish_status: published
             product_version_id: 33f8380e-7798-4566-99e3-2edf2b57d289
-            auth_strategy_ids:
-              - 44f8380e-7798-4566-99e3-2edf2b57d289
+            auth_strategies:
+              - id: 44f8380e-7798-4566-99e3-2edf2b57d289
+                name: key auth strategy
+                credential_type: key_auth
             application_registration_enabled: true
             auto_approve_registration: true
             deprecated: false

@@ -864,6 +864,13 @@ components:
     PortalProductVersionDeprecated:
       type: boolean
       description: Whether the api product version on the portal is deprecated
+    AuthStrategies:
+      description: A list of authentication strategies
+      type: array
+      minItems: 0
+      maxItems: 1
+      items:
+        $ref: ../../../../common/definitions/auth_strategies.yaml#/components/schemas/AuthStrategy
     AuthStrategyIDs:
       description: A list of authentication strategy IDs
       type: array
@@ -934,8 +941,8 @@ components:
           $ref: '../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
         updated_at:
           $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
-        auth_strategy_ids:
-          $ref: '#/components/schemas/AuthStrategyIDs'
+        auth_strategies:
+          $ref: '#/components/schemas/AuthStrategies'
         application_registration_enabled:
           $ref: '#/components/schemas/ApplicationRegistrationEnabled'
         auto_approve_registration:
@@ -949,7 +956,7 @@ components:
       - auto_approve_registration
       - product_version_id
       - deprecated
-      - auth_strategy_ids
+      - auth_strategies
       - created_at
       - updated_at
     ListPortalProductVersions:
@@ -2178,7 +2185,10 @@ components:
         id: 22f8380e-7798-4566-99e3-2edf2b57d289
         publish_status: published
         product_version_id: 33f8380e-7798-4566-99e3-2edf2b57d289
-        auth_strategy_ids: [44f8380e-7798-4566-99e3-2edf2b57d289]
+        auth_strategies:
+          - id: 44f8380e-7798-4566-99e3-2edf2b57d289
+            name: key auth strategy
+            credential_type: key_auth
         application_registration_enabled: true
         auto_approve_registration: true
         deprecated: false
@@ -2190,7 +2200,10 @@ components:
         - id: 22f8380e-7798-4566-99e3-2edf2b57d289
           publish_status: published
           product_version_id: 33f8380e-7798-4566-99e3-2edf2b57d289
-          auth_strategy_ids: [44f8380e-7798-4566-99e3-2edf2b57d289]
+          auth_strategies: 
+            - id: 44f8380e-7798-4566-99e3-2edf2b57d289
+              name: key auth strategy
+              credential_type: key_auth
           application_registration_enabled: true
           auto_approve_registration: true
           deprecated: false
