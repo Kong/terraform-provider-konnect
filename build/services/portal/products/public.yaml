@@ -1265,6 +1265,7 @@ components:
       type: string
       default: application/json
       enum:
+        - text/markdown
         - application/json
         - application/vnd.konnect.document-nodes+json
     NodeChildren:

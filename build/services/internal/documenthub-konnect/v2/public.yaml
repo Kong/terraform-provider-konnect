@@ -205,6 +205,10 @@ paths:
         '200':
           description: Document
           content:
+            text/markdown:
+              schema:
+                type: string
+                description: the markdown content
             application/json:
               schema:
                 $ref: '#/components/schemas/DocumentRaw'
@@ -1149,6 +1153,7 @@ components:
       type: string
       default: application/json
       enum:
+        - text/markdown
         - application/json
         - application/vnd.konnect.document-nodes+json
     NodeChildren:

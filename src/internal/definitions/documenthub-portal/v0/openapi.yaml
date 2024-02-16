@@ -30,6 +30,10 @@ paths:
         '200':
           description: Tree of documents
           content:
+            text/markdown:
+              schema:
+                type: string
+                description: the markdown content
             'application/json':
               schema:
                 $ref: '../../documenthub/common/v0/documenthub.yaml#/components/schemas/ListDocuments'

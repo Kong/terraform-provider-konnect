@@ -198,6 +198,10 @@ paths:
         '200':
           description: Document
           content:
+            text/markdown:
+              schema:
+                type: string
+                description: the markdown content
             'application/json':
               schema:
                 $ref: '#/components/schemas/DocumentRaw'
