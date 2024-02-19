@@ -1683,7 +1683,7 @@ components:
           example: https://example.com/callback
           nullable: true
         auth_strategy:
-          $ref: '#/components/schemas/AuthStrategy'
+          $ref: '#/components/schemas/PortalAuthStrategy'
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -1989,6 +1989,67 @@ components:
           example: Too Many Requests
       allOf:
         - $ref: '#/components/schemas/BaseError'
+    PortalAuthStrategyKeyAuth:
+      description: KeyAuth Auth strategy that the application uses.
+      type: object
+      required:
+        - id
+        - name
+        - credential_type
+        - key_names
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: b9e81174-b5bb-4638-a3c3-8afe61a0abf8
+          description: The Application Auth Strategy ID.
+          readOnly: true
+        name:
+          type: string
+          example: name
+          default: name
+        credential_type:
+          type: string
+          enum:
+            - key_auth
+        key_names:
+          type: array
+          items:
+            type: string
+          example:
+            - apikey
+    PortalAuthStrategyClientCredentials:
+      description: Client Credential Auth strategy that the application uses.
+      type: object
+      required:
+        - id
+        - name
+        - credential_type
+        - auth_methods
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: b9e81174-b5bb-4638-a3c3-8afe61a0abf8
+          description: The Application Auth Strategy ID.
+          readOnly: true
+        name:
+          type: string
+          example: name
+          default: name
+        credential_type:
+          type: string
+          enum:
+            - client_credentials
+            - self_managed_client_credentials
+        auth_methods:
+          $ref: '#/components/schemas/AuthMethods'
+    PortalAuthStrategy:
+      oneOf:
+        - $ref: '#/components/schemas/PortalAuthStrategyKeyAuth'
+        - $ref: '#/components/schemas/PortalAuthStrategyClientCredentials'
+      discriminator:
+        propertyName: credential_type
     RefreshedGrantedScopes:
       description: List of granted scopes, directly updated from the IDP
       type: array

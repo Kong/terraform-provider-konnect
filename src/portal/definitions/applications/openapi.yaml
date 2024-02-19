@@ -666,7 +666,7 @@ components:
           example: https://example.com/callback
           nullable: true
         auth_strategy:
-          $ref: '../../../common/definitions/auth_strategies.yaml#/components/schemas/AuthStrategy'
+          $ref: '../../../common/definitions/auth_strategies.yaml#/components/schemas/PortalAuthStrategy'
         scopes:
           $ref: '#/components/schemas/Scopes'
         created_at:
