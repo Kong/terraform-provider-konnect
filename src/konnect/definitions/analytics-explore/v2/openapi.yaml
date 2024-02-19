@@ -28,12 +28,6 @@ components:
           type: string
           enum:
             - absolute
-        start_localtime:
-          format: date-time
-          type: string
-        end_localtime:
-          format: date-time
-          type: string
         start:
           format: date-time
           type: string
@@ -89,7 +83,6 @@ components:
             - route
             - status_code
             - status_code_grouped
-            - time
           example: status_code
         type:
           type: string
@@ -167,10 +160,41 @@ components:
           description: A list of filters to apply to the query.
           items:
             $ref: "#/components/schemas/ExploreFilter"
-        granularity_ms:
-          type: number
-          description: Force time grouping into buckets of this duration in milliseconds. Only has an effect if "time" is in the "dimensions" list.
-          minimum: 60000
+        granularity:
+          type: string
+          description: |
+            Force time grouping into buckets of the specified duration.  Only has an effect if "time" is in the "dimensions" list.
+
+            If "trend" is chosen, the time range covered by the query will be twice the specified time range, and the granularity will be set such that two time buckets are returned, one for the given time range and one for the same time range prior.
+            For example:
+
+            time range: last 24 hours
+            granularity: trend
+
+            will return 2 time buckets (assuming both have data):
+
+            - 48 hours ago to 24 hours ago
+            - 24 hours ago to now
+
+            Another example:
+
+            time range: 2020-05-01 to 2020-05-15
+            granularity: trend
+
+            will return 2 time buckets:
+
+            - 2020-04-15 through 2020-04-30
+            - 2020-05-01 through 2020-05-15
+
+            The granularity of the result may be coarser than requested.  The finest allowed granularity depends on the query's time range: data farther in the past may have coarser granularity.  The exact result granularity will be reported in the response `meta.granularity_ms` field.
+
+            If granularity is not specified and "time" is in the dimensions list, a default will be chosen based on the time range requested.
+          enum:
+            - minute
+            - hour
+            - day
+            - week
+            - trend
         time_range:
           description: The time range to query.
           oneOf:
@@ -205,7 +229,7 @@ components:
               ]
             }
           ],
-          "granularity_ms": 60000,
+          "granularity": "hour",
           "metrics": ["response_latency_p99", "response_latency_p95", "response_latency_p50"]
         }
     GroupByResult:
@@ -365,6 +389,8 @@ components:
 paths:
   /explore:
     post:
+      x-internal: true
+      x-unstable: true
       tags:
         - Explore
       operationId: ExploreController_exploreV2
