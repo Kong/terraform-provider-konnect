@@ -394,7 +394,6 @@ components:
         - slug
         - status
         - title
-        - raw_content
         - filename
       properties:
         parent_document_id:
@@ -416,6 +415,10 @@ components:
           format: byte
           description: Must be a base64 encoded string
           example: YmFzZTY0LWVuY29kZWQgdGV4dCBzdHJpbmc=
+        str_md_content:
+          type: string
+          description: markdown content
+          example: '## My Markdown'
         metadata:
           type: object
           nullable: true
@@ -426,6 +429,11 @@ components:
           type: string
           description: name of the uploaded file
           example: my_doc.md
+      oneOf:
+        - required:
+            - raw_content
+        - required:
+            - str_md_content
     UpdateDocumentPayload:
       type: object
       title: UpdateDocumentPayload
@@ -454,6 +462,10 @@ components:
           format: byte
           description: base64 encoded string of the document content
           example: YmFzZTY0LWVuY29kZWQgdGV4dCBzdHJpbmc=
+        str_md_content:
+          type: string
+          description: markdown content
+          example: '## My Markdown'
         filename:
           type: string
           description: name of the uploaded file
