@@ -113,7 +113,7 @@ components:
           type: string
           nullable: true
         auth_strategy:
-          $ref: '#/components/schemas/AuthStrategy'
+          $ref: '#/components/schemas/PortalAuthStrategy'
         scopes:
           $ref: '#/components/schemas/Scopes'
         created_at:
@@ -139,13 +139,14 @@ components:
         Cannot be set when using Dynamic Client Registration.
       type: string
       maxLength: 255
-    AuthStrategyKeyAuth:
+    PortalAuthStrategyKeyAuth:
       description: KeyAuth Auth strategy that the application uses.
       type: object
       required:
         - id
         - name
         - credential_type
+        - key_names
       properties:
         id:
           type: string
@@ -161,6 +162,12 @@ components:
           type: string
           enum:
             - key_auth
+        key_names:
+          type: array
+          items:
+            type: string
+          example:
+            - apikey
     AuthMethods:
       type: array
       items:
@@ -168,7 +175,7 @@ components:
         type: string
       example:
         - bearer
-    AuthStrategyClientCredentials:
+    PortalAuthStrategyClientCredentials:
       description: Client Credential Auth strategy that the application uses.
       type: object
       required:
@@ -194,12 +201,18 @@ components:
             - self_managed_client_credentials
         auth_methods:
           $ref: '#/components/schemas/AuthMethods'
-    AuthStrategy:
+    PortalAuthStrategyOneOf:
+      type: object
       oneOf:
-        - $ref: '#/components/schemas/AuthStrategyKeyAuth'
-        - $ref: '#/components/schemas/AuthStrategyClientCredentials'
+        - $ref: '#/components/schemas/PortalAuthStrategyKeyAuth'
+        - $ref: '#/components/schemas/PortalAuthStrategyClientCredentials'
       discriminator:
         propertyName: credential_type
+    PortalAuthStrategy:
+      oneOf:
+        - type: object
+          nullable: true
+        - $ref: '#/components/schemas/PortalAuthStrategyOneOf'
     CreatedAt:
       type: string
       format: date-time

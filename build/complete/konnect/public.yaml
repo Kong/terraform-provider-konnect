@@ -8789,6 +8789,7 @@ components:
         auth_methods:
           $ref: '#/components/schemas/AuthMethods'
     AuthStrategy:
+      type: object
       oneOf:
         - $ref: '#/components/schemas/AuthStrategyKeyAuth'
         - $ref: '#/components/schemas/AuthStrategyClientCredentials'

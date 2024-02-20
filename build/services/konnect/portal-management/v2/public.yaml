@@ -3275,6 +3275,7 @@ components:
             $ref: '#/components/schemas/ConflictError'
   schemas:
     AuthStrategy:
+      type: object
       oneOf:
         - $ref: '#/components/schemas/AuthStrategyKeyAuth'
         - $ref: '#/components/schemas/AuthStrategyClientCredentials'

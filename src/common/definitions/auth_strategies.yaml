@@ -1,6 +1,7 @@
 components:
   schemas:
     AuthStrategy:
+      type: object
       oneOf:
         - $ref: '#/components/schemas/AuthStrategyKeyAuth'
         - $ref: '#/components/schemas/AuthStrategyClientCredentials'
@@ -69,6 +70,12 @@ components:
         type: string
       example: ['bearer']
     PortalAuthStrategy:
+      oneOf:
+        - type: object
+          nullable: true
+        - $ref: '#/components/schemas/PortalAuthStrategyOneOf'
+    PortalAuthStrategyOneOf:
+      type: object
       oneOf:
         - $ref: '#/components/schemas/PortalAuthStrategyKeyAuth'
         - $ref: '#/components/schemas/PortalAuthStrategyClientCredentials'

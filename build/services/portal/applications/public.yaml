@@ -572,29 +572,6 @@ components:
       type: string
       format: uuid
       nullable: true
-    AuthStrategyCredentialType:
-      type: string
-      enum:
-        - client_credentials
-        - self_managed_client_credentials
-        - key_auth
-    ListAuthStrategiesItem:
-      type: object
-      additionalProperties: false
-      properties:
-        id:
-          $ref: '#/components/schemas/AuthStrategyId'
-        name:
-          type: string
-          example: Okta Strategy
-        credential_type:
-          $ref: '#/components/schemas/AuthStrategyCredentialType'
-        auth_methods:
-          $ref: '#/components/schemas/AuthMethods'
-      required:
-        - id
-        - credential_type
-        - name
     CreateCredentialPayload:
       additionalProperties: false
       type: object
@@ -641,7 +618,7 @@ components:
           type: string
           nullable: true
         auth_strategy:
-          $ref: '#/components/schemas/AuthStrategy'
+          $ref: '#/components/schemas/PortalAuthStrategy'
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -764,7 +741,7 @@ components:
             client_secret:
               type: string
         auth_strategy:
-          $ref: '#/components/schemas/AuthStrategy'
+          $ref: '#/components/schemas/PortalAuthStrategy'
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -844,7 +821,7 @@ components:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/ListAuthStrategiesItem'
+            $ref: '#/components/schemas/PortalAuthStrategy'
     PageMeta:
       type: object
       description: >-
@@ -885,13 +862,14 @@ components:
         Cannot be set when using Dynamic Client Registration.
       type: string
       maxLength: 255
-    AuthStrategyKeyAuth:
+    PortalAuthStrategyKeyAuth:
       description: KeyAuth Auth strategy that the application uses.
       type: object
       required:
         - id
         - name
         - credential_type
+        - key_names
       properties:
         id:
           type: string
@@ -907,6 +885,12 @@ components:
           type: string
           enum:
             - key_auth
+        key_names:
+          type: array
+          items:
+            type: string
+          example:
+            - apikey
     AuthMethods:
       type: array
       items:
@@ -914,7 +898,7 @@ components:
         type: string
       example:
         - bearer
-    AuthStrategyClientCredentials:
+    PortalAuthStrategyClientCredentials:
       description: Client Credential Auth strategy that the application uses.
       type: object
       required:
@@ -940,12 +924,18 @@ components:
             - self_managed_client_credentials
         auth_methods:
           $ref: '#/components/schemas/AuthMethods'
-    AuthStrategy:
+    PortalAuthStrategyOneOf:
+      type: object
       oneOf:
-        - $ref: '#/components/schemas/AuthStrategyKeyAuth'
-        - $ref: '#/components/schemas/AuthStrategyClientCredentials'
+        - $ref: '#/components/schemas/PortalAuthStrategyKeyAuth'
+        - $ref: '#/components/schemas/PortalAuthStrategyClientCredentials'
       discriminator:
         propertyName: credential_type
+    PortalAuthStrategy:
+      oneOf:
+        - type: object
+          nullable: true
+        - $ref: '#/components/schemas/PortalAuthStrategyOneOf'
     CreatedAt:
       type: string
       format: date-time
@@ -1190,67 +1180,6 @@ components:
           example: Too Many Requests
       allOf:
         - $ref: '#/components/schemas/BaseError'
-    PortalAuthStrategyKeyAuth:
-      description: KeyAuth Auth strategy that the application uses.
-      type: object
-      required:
-        - id
-        - name
-        - credential_type
-        - key_names
-      properties:
-        id:
-          type: string
-          format: uuid
-          example: b9e81174-b5bb-4638-a3c3-8afe61a0abf8
-          description: The Application Auth Strategy ID.
-          readOnly: true
-        name:
-          type: string
-          example: name
-          default: name
-        credential_type:
-          type: string
-          enum:
-            - key_auth
-        key_names:
-          type: array
-          items:
-            type: string
-          example:
-            - apikey
-    PortalAuthStrategyClientCredentials:
-      description: Client Credential Auth strategy that the application uses.
-      type: object
-      required:
-        - id
-        - name
-        - credential_type
-        - auth_methods
-      properties:
-        id:
-          type: string
-          format: uuid
-          example: b9e81174-b5bb-4638-a3c3-8afe61a0abf8
-          description: The Application Auth Strategy ID.
-          readOnly: true
-        name:
-          type: string
-          example: name
-          default: name
-        credential_type:
-          type: string
-          enum:
-            - client_credentials
-            - self_managed_client_credentials
-        auth_methods:
-          $ref: '#/components/schemas/AuthMethods'
-    PortalAuthStrategy:
-      oneOf:
-        - $ref: '#/components/schemas/PortalAuthStrategyKeyAuth'
-        - $ref: '#/components/schemas/PortalAuthStrategyClientCredentials'
-      discriminator:
-        propertyName: credential_type
     RefreshedGrantedScopes:
       description: List of granted scopes, directly updated from the IDP
       type: array

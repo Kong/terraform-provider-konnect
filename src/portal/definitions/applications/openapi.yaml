@@ -417,23 +417,6 @@ components:
       type: array
       items:
         type: string
-    ListAuthStrategiesItem:
-      type: object
-      additionalProperties: false
-      properties:
-        id:
-          $ref: '#/components/schemas/AuthStrategyId'
-        name:
-          type: string
-          example: 'Okta Strategy'
-        credential_type:
-          $ref: '#/components/schemas/AuthStrategyCredentialType'
-        auth_methods:
-          $ref: '../../../common/definitions/auth_strategies.yaml#/components/schemas/AuthMethods'
-      required:
-        - id
-        - credential_type
-        - name
     CreateCredentialPayload:
       additionalProperties: false
       type: object
@@ -480,7 +463,7 @@ components:
           type: string
           nullable: true
         auth_strategy:
-          $ref: '../../../common/definitions/auth_strategies.yaml#/components/schemas/AuthStrategy'
+          $ref: '../../../common/definitions/auth_strategies.yaml#/components/schemas/PortalAuthStrategy'
         scopes:
           $ref: '#/components/schemas/Scopes'
         created_at:
@@ -607,7 +590,7 @@ components:
             client_secret:
               type: string
         auth_strategy:
-           $ref: '../../../common/definitions/auth_strategies.yaml#/components/schemas/AuthStrategy'
+           $ref: '../../../common/definitions/auth_strategies.yaml#/components/schemas/PortalAuthStrategy'
         scopes:
           $ref: '#/components/schemas/Scopes'
         created_at:
@@ -693,7 +676,7 @@ components:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/ListAuthStrategiesItem'
+            $ref: '../../../common/definitions/auth_strategies.yaml#/components/schemas/PortalAuthStrategy'
   examples:
     GetGrantedScopesProductVersion200Response:
       value:
