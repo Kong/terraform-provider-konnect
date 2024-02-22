@@ -924,18 +924,14 @@ components:
             - self_managed_client_credentials
         auth_methods:
           $ref: '#/components/schemas/AuthMethods'
-    PortalAuthStrategyOneOf:
+    PortalAuthStrategy:
       type: object
+      nullable: true
       oneOf:
         - $ref: '#/components/schemas/PortalAuthStrategyKeyAuth'
         - $ref: '#/components/schemas/PortalAuthStrategyClientCredentials'
       discriminator:
         propertyName: credential_type
-    PortalAuthStrategy:
-      oneOf:
-        - type: object
-          nullable: true
-        - $ref: '#/components/schemas/PortalAuthStrategyOneOf'
     CreatedAt:
       type: string
       format: date-time

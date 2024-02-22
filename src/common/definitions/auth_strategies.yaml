@@ -70,12 +70,8 @@ components:
         type: string
       example: ['bearer']
     PortalAuthStrategy:
-      oneOf:
-        - type: object
-          nullable: true
-        - $ref: '#/components/schemas/PortalAuthStrategyOneOf'
-    PortalAuthStrategyOneOf:
       type: object
+      nullable: true
       oneOf:
         - $ref: '#/components/schemas/PortalAuthStrategyKeyAuth'
         - $ref: '#/components/schemas/PortalAuthStrategyClientCredentials'
