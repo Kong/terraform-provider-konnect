@@ -2445,6 +2445,8 @@ components:
             - pending
             - rejected
             - revoked
+        auth_strategy:
+          $ref: '#/components/schemas/AuthStrategy'
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -2601,6 +2603,61 @@ components:
       example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
       description: Contains a unique identifier for a resource.
       nullable: true
+    AuthStrategyKeyAuth:
+      description: KeyAuth Auth strategy that the application uses.
+      type: object
+      required:
+        - id
+        - name
+        - credential_type
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: b9e81174-b5bb-4638-a3c3-8afe61a0abf8
+          description: The Application Auth Strategy ID.
+          readOnly: true
+        name:
+          type: string
+          example: name
+          default: name
+        credential_type:
+          type: string
+          enum:
+            - key_auth
+    AuthStrategyClientCredentials:
+      description: Client Credential Auth strategy that the application uses.
+      type: object
+      required:
+        - id
+        - name
+        - credential_type
+        - auth_methods
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: b9e81174-b5bb-4638-a3c3-8afe61a0abf8
+          description: The Application Auth Strategy ID.
+          readOnly: true
+        name:
+          type: string
+          example: name
+          default: name
+        credential_type:
+          type: string
+          enum:
+            - client_credentials
+            - self_managed_client_credentials
+        auth_methods:
+          $ref: '#/components/schemas/AuthMethods'
+    AuthStrategy:
+      type: object
+      oneOf:
+        - $ref: '#/components/schemas/AuthStrategyKeyAuth'
+        - $ref: '#/components/schemas/AuthStrategyClientCredentials'
+      discriminator:
+        propertyName: credential_type
     DocumentContentTypeEnum:
       type: string
       default: application/json

@@ -551,6 +551,8 @@ components:
             - pending
             - rejected
             - revoked
+        auth_strategy:
+          $ref: '../../../common/definitions/auth_strategies.yaml#/components/schemas/AuthStrategy'
         created_at:
           $ref: '../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
         updated_at:
