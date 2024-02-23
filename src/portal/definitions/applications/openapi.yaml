@@ -411,7 +411,6 @@ components:
       - self_managed_client_credentials
       - key_auth
     Scopes:
-      x-internal: true
       x-unstable: true
       description: The granted scopes for the application. Will only be included if supported by the application's auth strategy.
       type: array

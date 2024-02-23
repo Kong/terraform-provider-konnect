@@ -1436,6 +1436,18 @@ components:
       type: string
       format: uuid
       nullable: true
+    Scopes:
+      description: >-
+        **Pre-release Endpoint**
+
+        This endpoint is currently in beta and is subject to change.
+
+
+        The granted scopes for the application. Will only be included if
+        supported by the application's auth strategy.
+      type: array
+      items:
+        type: string
     CreateCredentialPayload:
       additionalProperties: false
       type: object
@@ -1483,6 +1495,8 @@ components:
           nullable: true
         auth_strategy:
           $ref: '#/components/schemas/PortalAuthStrategy'
+        scopes:
+          $ref: '#/components/schemas/Scopes'
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -1567,6 +1581,8 @@ components:
           maxLength: 255
         auth_strategy_id:
           $ref: '#/components/schemas/AuthStrategyId'
+        scopes:
+          $ref: '#/components/schemas/Scopes'
     ApplicationCreationResponse:
       additionalProperties: false
       type: object
@@ -1606,6 +1622,8 @@ components:
               type: string
         auth_strategy:
           $ref: '#/components/schemas/PortalAuthStrategy'
+        scopes:
+          $ref: '#/components/schemas/Scopes'
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -1632,6 +1650,8 @@ components:
           description: A brief description of the application
           type: string
           maxLength: 255
+        scopes:
+          $ref: '#/components/schemas/Scopes'
     ApplicationUpdateResponse:
       additionalProperties: false
       type: object
@@ -1661,6 +1681,8 @@ components:
           nullable: true
         auth_strategy:
           $ref: '#/components/schemas/PortalAuthStrategy'
+        scopes:
+          $ref: '#/components/schemas/Scopes'
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
