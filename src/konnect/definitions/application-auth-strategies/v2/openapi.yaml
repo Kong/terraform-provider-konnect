@@ -17,14 +17,6 @@ tags:
       Application Auth Strategies are sets of plugin configurations that represent how the gateway will perform authentication and authorization for a Product Version. 
       Called “Auth Strategy” for short in the context of portals/applications. 
       The plugins are synced to any Gateway Service that is currently linked or becomes linked to the Product Version.
-  - name: Portal Product Versions
-    description: |
-      Portal Product Versions hold metadata that describes how a Product Version is configured for a specific portal.
-        
-        They contain:
-        - Lifecyle and deprecation statuses
-        - Application registration settings like auto approve or whether application registration is enabled
-        - The authentication strategy that is enabled for Application Registration
 servers:
   - url: https://us.api.konghq.com/v2
     description: US Region Base URL
@@ -322,132 +314,8 @@ paths:
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/Conflict'
       tags:
         - App Auth Strategies
-  '/portals/{portalId}/product-versions':
-    parameters:
-      - $ref: '#/components/parameters/PortalId'
-    get:
-      x-unstable: true
-      x-internal: true
-      summary: List portal product versions
-      operationId: list-portal-product-versions
-      description: List portal product versions
-      parameters:
-        - $ref: '#/components/parameters/SortPortalProductVersions'
-        - $ref: '#/components/parameters/PortalProductVersionFilter'
-        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
-        - $ref: >-
-            ../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber
-      responses:
-        '200':
-          $ref: '#/components/responses/ListPortalProductVersions'
-        '400':
-          $ref:  '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
-        '401':
-          $ref:  '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
-        '403':
-          $ref:  '../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
-        '404':
-          $ref:  '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
-      tags:
-        - Portal Product Versions
-    post:
-      x-unstable: true
-      x-internal: true
-      summary: Create a portal product version
-      operationId: create-portal-product-version
-      description: Create a portal product version
-      requestBody:
-        $ref: '#/components/requestBodies/CreatePortalProductVersion'
-      responses:
-        '201':
-          $ref: '#/components/responses/PortalProductVersion'
-        '400':
-          $ref:  '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
-        '401':
-          $ref:  '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
-        '403':
-          $ref:  '../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
-        '404':
-          $ref:  '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
-      tags:
-        - Portal Product Versions
-  '/portals/{portalId}/product-versions/{productVersionId}':
-    parameters:
-      - $ref: '#/components/parameters/ProductVersionId'
-      - $ref: '#/components/parameters/PortalId'
-    get:
-      x-unstable: true
-      x-internal: true
-      summary: Get a portal product version
-      operationId: get-portal-product-version
-      description: Get a portal product version
-      responses:
-        '200':
-          $ref: '#/components/responses/PortalProductVersion'
-        '400':
-          $ref:  '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
-        '401':
-          $ref:  '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
-        '403':
-          $ref:  '../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
-        '404':
-          $ref:  '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
-      tags:
-        - Portal Product Versions
-    patch:
-      x-unstable: true
-      x-internal: true
-      summary: Update a portal product version
-      operationId: update-portal-product-version
-      description: Update a portal product version
-      requestBody:
-        $ref: '#/components/requestBodies/UpdatePortalProductVersion'
-      responses:
-        '200':
-          $ref: '#/components/responses/PortalProductVersion'
-        '400':
-          $ref:  '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
-        '401':
-          $ref:  '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
-        '403':
-          $ref:  '../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
-        '404':
-          $ref:  '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
-      tags:
-        - Portal Product Versions
-    delete:
-      x-unstable: true
-      x-internal: true
-      summary: Delete a portal product version
-      operationId: delete-portal-product-version
-      description: Delete a portal product version
-      responses:
-        '204':
-          description: No Content.
-        '401':
-          $ref:  '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
-        '403':
-          $ref:  '../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
-        '404':
-          $ref:  '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
-      tags:
-        - Portal Product Versions
 components:
   parameters:
-    PortalId:
-      name: portalId
-      description: portal identifier
-      in: path
-      required: true
-      schema:
-        $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
-    ProductVersionId:
-      name: productVersionId
-      description: API product version identifier
-      in: path
-      required: true
-      schema:
-        $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
     DcrProviderId:
       name: dcrProviderId
       description: DCR provider identifier
@@ -462,30 +330,6 @@ components:
       required: true
       schema:
         $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
-    SortPortalProductVersions:
-      name: 'sort'
-      description: |
-        Sorts a collection of Portal Product Versions. Supported sort attributes are:
-          - created_at
-          - updated_at
-          - publish_status
-          - product_version_id
-          - auth_strategy_ids
-          - application_registration_enabled
-          - auto_approve_registration
-          - deprecated
-      in: query
-      required: false
-      schema:
-        type: string
-    PortalProductVersionFilter:
-      name: filter
-      description: Filters a collection of Portal Product Versions.
-      required: false
-      in: query
-      style: deepObject
-      schema:
-        $ref: '#/components/schemas/PortalProductVersionFilters'
     SortDcrProviders:
       name: 'sort'
       description: |
@@ -635,24 +479,6 @@ components:
       schema:
         type: string
   requestBodies:
-    CreatePortalProductVersion:
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CreatePortalProductVersionPayload'
-          examples:
-            PortalProductVersion:
-              $ref: '#/components/examples/PortalProductVersionCreateRequest'
-    UpdatePortalProductVersion:
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/UpdatePortalProductVersionPayload'
-          examples:
-            PortalProductVersion:
-              $ref: '#/components/examples/PortalProductVersionUpdateRequest'
     CreateDcrProvider:
       required: true
       content:
@@ -704,24 +530,6 @@ components:
             UpdateAppAuthStrategyOpenIDConnectRequest:
               $ref: '#/components/examples/UpdateAppAuthStrategyOpenIDConnectRequest'
   responses:
-    ListPortalProductVersions:
-      description: A response containing a list of portal product versions
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ListPortalProductVersions'
-          examples:
-            PortalProductVersion:
-              $ref: '#/components/examples/ListPortalProductVersions'
-    PortalProductVersion:
-      description: A response containing a portal product version
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/PortalProductVersion'
-          examples:
-            PortalProductVersion:
-              $ref: '#/components/examples/PortalProductVersion'
     CreateDcrProvider:
       description: A response containing the newly created DCR provider object.
       content:
@@ -813,167 +621,6 @@ components:
             AppAuthStrategyResponseExample1:
               $ref: '#/components/examples/ListAppAuthStrategyResponseExample1'
   schemas:
-    PublishStatusFilter:
-      title: PublishStatusFilter
-      description: Filters on the given publish status
-      oneOf:
-        - $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldEqualsFilter'
-        - $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldOEQFilter'
-        - $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldNEQFilter'
-      x-examples:
-        example-1: 'published'
-        example-2:
-          eq: 'unpublished'
-        example-3:
-          neq: 'unpublished'
-    PortalProductVersionFilters:
-      title: PortalProductVersionFilters
-      type: object
-      additionalProperties: false
-      properties:
-        id:
-          $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/UuidFieldFilter'
-        publish_status:
-          $ref: '#/components/schemas/PublishStatusFilter'
-        product_version_id:
-          $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/UuidFieldFilter'
-        created_at:
-          $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/DateTimeFieldFilter'
-        updated_at:
-          $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/DateTimeFieldFilter'
-        auth_strategy_ids:
-          $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/UuidFieldFilter'
-        application_registration_enabled:
-          $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/BooleanFieldFilter'
-        auto_approve_registration:
-          $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/BooleanFieldFilter'
-        deprecated:
-          $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/BooleanFieldFilter'
-    PortalProductVersionPublishStatus:
-      type: string
-      description: Publication status of the API product version on the portal
-      enum:
-      - published
-      - unpublished
-    ApplicationRegistrationEnabled:
-      type: boolean
-      description: Whether the application registration on this portal for the api product version is enabled
-    AutoApproveRegistration:
-      type: boolean
-      description: Whether the application registration auto approval on this portal for the api product version is enabled
-    PortalProductVersionDeprecated:
-      type: boolean
-      description: Whether the api product version on the portal is deprecated
-    AuthStrategies:
-      description: A list of authentication strategies
-      type: array
-      minItems: 0
-      maxItems: 1
-      items:
-        $ref: ../../../../common/definitions/auth_strategies.yaml#/components/schemas/AuthStrategy
-    AuthStrategyIDs:
-      description: A list of authentication strategy IDs
-      type: array
-      minItems: 0
-      maxItems: 1
-      items:
-        $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID_RW'
-    CreatePortalProductVersionPayload:
-      title: CreatePortalProductVersionPayload
-      description: Payload to create a Portal Product Version
-      type: object
-      additionalProperties: false
-      properties:
-        publish_status:
-          $ref: '#/components/schemas/PortalProductVersionPublishStatus'
-        product_version_id:
-          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID_RW'
-        auth_strategy_ids:
-          $ref: '#/components/schemas/AuthStrategyIDs'
-        application_registration_enabled:
-          $ref: '#/components/schemas/ApplicationRegistrationEnabled'
-        auto_approve_registration:
-          $ref: '#/components/schemas/AutoApproveRegistration'
-        deprecated:
-          $ref: '#/components/schemas/PortalProductVersionDeprecated'
-      required:
-      - publish_status
-      - application_registration_enabled
-      - auto_approve_registration
-      - product_version_id
-      - deprecated
-      - auth_strategy_ids
-    UpdatePortalProductVersionPayload:
-      title: UpdatePortalProductVersionPayload
-      type: object
-      description: Payload to update a Portal Product Version
-      additionalProperties: false
-      properties:
-        publish_status:
-          $ref: '#/components/schemas/PortalProductVersionPublishStatus'
-        auth_strategy_ids:
-          $ref: '#/components/schemas/AuthStrategyIDs'
-        application_registration_enabled:
-          $ref: '#/components/schemas/ApplicationRegistrationEnabled'
-        auto_approve_registration:
-          $ref: '#/components/schemas/AutoApproveRegistration'
-        deprecated:
-          $ref: '#/components/schemas/PortalProductVersionDeprecated'
-    PortalProductVersion:
-      title: PortalProductVersion
-      type: object
-      description: |
-        A Portal Product Version holds metadata that describes how a Product Version is configured for a specific portal.
-        
-        It contains:
-        - Lifecyle and deprecation statuses
-        - Application registration settings like auto approve or whether application registration is enabled
-        - The Authentication Strategy (if present) that is enabled for Application Registration
-      additionalProperties: false
-      properties:
-        id:
-          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
-        publish_status:
-          $ref: '#/components/schemas/PortalProductVersionPublishStatus'
-        product_version_id:
-          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID_RW'
-        created_at:
-          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
-        updated_at:
-          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
-        auth_strategies:
-          $ref: '#/components/schemas/AuthStrategies'
-        application_registration_enabled:
-          $ref: '#/components/schemas/ApplicationRegistrationEnabled'
-        auto_approve_registration:
-          $ref: '#/components/schemas/AutoApproveRegistration'
-        deprecated:
-          $ref: '#/components/schemas/PortalProductVersionDeprecated'
-      required:
-      - id
-      - publish_status
-      - application_registration_enabled
-      - auto_approve_registration
-      - product_version_id
-      - deprecated
-      - auth_strategies
-      - created_at
-      - updated_at
-    ListPortalProductVersions:
-      title: ListPortalProductVersions
-      type: object
-      description: A paginated list response for a collection of portal product versions
-      additionalProperties: false
-      required:
-        - data
-        - meta
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/PortalProductVersion'
-        meta:
-          $ref: '../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
     DcrConfigPropertyInitialClientId:
       title: DcrConfigPropertyInitialClientId
       type: string
@@ -2180,48 +1827,3 @@ components:
             number: 1
             size: 1
             total: 10
-    PortalProductVersion:
-      value:
-        id: 22f8380e-7798-4566-99e3-2edf2b57d289
-        publish_status: published
-        product_version_id: 33f8380e-7798-4566-99e3-2edf2b57d289
-        auth_strategies:
-          - id: 44f8380e-7798-4566-99e3-2edf2b57d289
-            name: key auth strategy
-            credential_type: key_auth
-        application_registration_enabled: true
-        auto_approve_registration: true
-        deprecated: false
-        created_at: 2023-01-01T00:00:00.000Z
-        updated_at: 2023-01-01T00:00:00.000Z
-    ListPortalProductVersions:
-      value:
-        data:
-        - id: 22f8380e-7798-4566-99e3-2edf2b57d289
-          publish_status: published
-          product_version_id: 33f8380e-7798-4566-99e3-2edf2b57d289
-          auth_strategies: 
-            - id: 44f8380e-7798-4566-99e3-2edf2b57d289
-              name: key auth strategy
-              credential_type: key_auth
-          application_registration_enabled: true
-          auto_approve_registration: true
-          deprecated: false
-          created_at: 2023-01-01T00:00:00.000Z
-          updated_at: 2023-01-01T00:00:00.000Z
-        meta:
-          page:
-            number: 1
-            size: 1
-            total: 10
-    PortalProductVersionCreateRequest:
-      value:
-        product_version_id: 33f8380e-7798-4566-99e3-2edf2b57d289
-        auth_strategy_ids: [44f8380e-7798-4566-99e3-2edf2b57d289]
-        publish_status: published
-        application_registration_enabled: true
-        auto_approve_registration: true
-        deprecated: false
-    PortalProductVersionUpdateRequest:
-      value:
-        auto_approve_registration: false

@@ -1192,178 +1192,6 @@ components:
           example: Conflict
       allOf:
         - $ref: '#/components/schemas/BaseError'
-    PublishStatusFilter:
-      title: PublishStatusFilter
-      description: Filters on the given publish status
-      oneOf:
-        - $ref: '#/components/schemas/StringFieldEqualsFilter'
-        - $ref: '#/components/schemas/StringFieldOEQFilter'
-        - $ref: '#/components/schemas/StringFieldNEQFilter'
-      x-examples:
-        example-1: published
-        example-2:
-          eq: unpublished
-        example-3:
-          neq: unpublished
-    PortalProductVersionFilters:
-      title: PortalProductVersionFilters
-      type: object
-      additionalProperties: false
-      properties:
-        id:
-          $ref: '#/components/schemas/UuidFieldFilter'
-        publish_status:
-          $ref: '#/components/schemas/PublishStatusFilter'
-        product_version_id:
-          $ref: '#/components/schemas/UuidFieldFilter'
-        created_at:
-          $ref: '#/components/schemas/DateTimeFieldFilter'
-        updated_at:
-          $ref: '#/components/schemas/DateTimeFieldFilter'
-        auth_strategy_ids:
-          $ref: '#/components/schemas/UuidFieldFilter'
-        application_registration_enabled:
-          $ref: '#/components/schemas/BooleanFieldFilter'
-        auto_approve_registration:
-          $ref: '#/components/schemas/BooleanFieldFilter'
-        deprecated:
-          $ref: '#/components/schemas/BooleanFieldFilter'
-    PortalProductVersionPublishStatus:
-      type: string
-      description: Publication status of the API product version on the portal
-      enum:
-        - published
-        - unpublished
-    ApplicationRegistrationEnabled:
-      type: boolean
-      description: >-
-        Whether the application registration on this portal for the api product
-        version is enabled
-    AutoApproveRegistration:
-      type: boolean
-      description: >-
-        Whether the application registration auto approval on this portal for
-        the api product version is enabled
-    PortalProductVersionDeprecated:
-      type: boolean
-      description: Whether the api product version on the portal is deprecated
-    AuthStrategies:
-      description: A list of authentication strategies
-      type: array
-      minItems: 0
-      maxItems: 1
-      items:
-        $ref: '#/components/schemas/AuthStrategy'
-    AuthStrategyIDs:
-      description: A list of authentication strategy IDs
-      type: array
-      minItems: 0
-      maxItems: 1
-      items:
-        $ref: '#/components/schemas/UUID_RW'
-    CreatePortalProductVersionPayload:
-      title: CreatePortalProductVersionPayload
-      description: Payload to create a Portal Product Version
-      type: object
-      additionalProperties: false
-      properties:
-        publish_status:
-          $ref: '#/components/schemas/PortalProductVersionPublishStatus'
-        product_version_id:
-          $ref: '#/components/schemas/UUID_RW'
-        auth_strategy_ids:
-          $ref: '#/components/schemas/AuthStrategyIDs'
-        application_registration_enabled:
-          $ref: '#/components/schemas/ApplicationRegistrationEnabled'
-        auto_approve_registration:
-          $ref: '#/components/schemas/AutoApproveRegistration'
-        deprecated:
-          $ref: '#/components/schemas/PortalProductVersionDeprecated'
-      required:
-        - publish_status
-        - application_registration_enabled
-        - auto_approve_registration
-        - product_version_id
-        - deprecated
-        - auth_strategy_ids
-    UpdatePortalProductVersionPayload:
-      title: UpdatePortalProductVersionPayload
-      type: object
-      description: Payload to update a Portal Product Version
-      additionalProperties: false
-      properties:
-        publish_status:
-          $ref: '#/components/schemas/PortalProductVersionPublishStatus'
-        auth_strategy_ids:
-          $ref: '#/components/schemas/AuthStrategyIDs'
-        application_registration_enabled:
-          $ref: '#/components/schemas/ApplicationRegistrationEnabled'
-        auto_approve_registration:
-          $ref: '#/components/schemas/AutoApproveRegistration'
-        deprecated:
-          $ref: '#/components/schemas/PortalProductVersionDeprecated'
-    PortalProductVersion:
-      title: PortalProductVersion
-      type: object
-      description: >
-        A Portal Product Version holds metadata that describes how a Product
-        Version is configured for a specific portal.
-
-
-        It contains:
-
-        - Lifecyle and deprecation statuses
-
-        - Application registration settings like auto approve or whether
-        application registration is enabled
-
-        - The Authentication Strategy (if present) that is enabled for
-        Application Registration
-      additionalProperties: false
-      properties:
-        id:
-          $ref: '#/components/schemas/UUID'
-        publish_status:
-          $ref: '#/components/schemas/PortalProductVersionPublishStatus'
-        product_version_id:
-          $ref: '#/components/schemas/UUID_RW'
-        created_at:
-          $ref: '#/components/schemas/CreatedAt'
-        updated_at:
-          $ref: '#/components/schemas/UpdatedAt'
-        auth_strategies:
-          $ref: '#/components/schemas/AuthStrategies'
-        application_registration_enabled:
-          $ref: '#/components/schemas/ApplicationRegistrationEnabled'
-        auto_approve_registration:
-          $ref: '#/components/schemas/AutoApproveRegistration'
-        deprecated:
-          $ref: '#/components/schemas/PortalProductVersionDeprecated'
-      required:
-        - id
-        - publish_status
-        - application_registration_enabled
-        - auto_approve_registration
-        - product_version_id
-        - deprecated
-        - auth_strategies
-        - created_at
-        - updated_at
-    ListPortalProductVersions:
-      title: ListPortalProductVersions
-      type: object
-      description: A paginated list response for a collection of portal product versions
-      additionalProperties: false
-      required:
-        - data
-        - meta
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/PortalProductVersion'
-        meta:
-          $ref: '#/components/schemas/PaginatedMeta'
     DcrConfigPropertyInitialClientId:
       title: DcrConfigPropertyInitialClientId
       type: string
@@ -2372,161 +2200,13 @@ components:
           oeq: 3bbfd3a-e9ab-48a9-9881-ed589e4615d1
         example-4:
           neq: 3bbfd3a-e9ab-48a9-9881-ed589e4615d1
-    DateTimeFieldFilter:
-      title: DateTimeFieldFilter
-      description: Filters on the given datetime (RFC-3339) field value.
-      oneOf:
-        - type: string
-          format: date-time
-          description: Value strictly equals given RFC-3339 formatted timestamp in UTC
-          example: '2022-03-30T07:20:50Z'
-        - type: object
-          title: DateTimeFieldEqualsFilter
-          additionalProperties: false
-          properties:
-            eq:
-              type: string
-              format: date-time
-              description: Value strictly equals given RFC-3339 formatted timestamp in UTC
-              example: '2022-03-30T07:20:50Z'
-          required:
-            - eq
-        - type: object
-          title: DateTimeFieldLTFilter
-          additionalProperties: false
-          properties:
-            lt:
-              type: string
-              format: date-time
-              description: Value is less than the given RFC-3339 formatted timestamp in UTC
-              example: '2022-03-30T07:20:50Z'
-          required:
-            - lt
-        - type: object
-          title: DateTimeFieldLTEFilter
-          additionalProperties: false
-          properties:
-            lte:
-              type: string
-              format: date-time
-              description: >-
-                Value is less than or equal to the given RFC-3339 formatted
-                timestamp in UTC
-              example: '2022-03-30T07:20:50Z'
-          required:
-            - lte
-        - type: object
-          title: DateTimeFieldGTFilter
-          additionalProperties: false
-          properties:
-            lt:
-              type: string
-              format: date-time
-              description: >-
-                Value is greater than the given RFC-3339 formatted timestamp in
-                UTC
-              example: '2022-03-30T07:20:50Z'
-          required:
-            - gt
-        - type: object
-          title: DateTimeFieldGTEFilter
-          additionalProperties: false
-          properties:
-            lte:
-              type: string
-              format: date-time
-              description: >-
-                Value is greater than or equal to the given RFC-3339 formatted
-                timestamp in UTC
-              example: '2022-03-30T07:20:50Z'
-          required:
-            - gte
-      x-examples:
-        datetime_field_1: '2022-03-30T07:20:50Z'
-        datetime_field_2:
-          eq: '2022-03-30T07:20:50Z'
-        datetime_field_3:
-          lt: '2022-03-30T07:20:50Z'
-        datetime_field_4:
-          lte: '2022-03-30T07:20:50Z'
-        datetime_field_5:
-          gt: '2022-03-30T07:20:50Z'
-        datetime_field_6:
-          gte: '2022-03-30T07:20:50Z'
     BooleanFieldFilter:
+      example: true
       title: BooleanFieldFilter
       description: Filter by a boolean value (true/false).
       type: boolean
       x-examples:
         example-1: true
-      example: true
-    UUID_RW:
-      type: string
-      format: uuid
-      example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-      description: Contains a unique identifier used by the API for this resource.
-    AuthStrategyKeyAuth:
-      description: KeyAuth Auth strategy that the application uses.
-      type: object
-      required:
-        - id
-        - name
-        - credential_type
-      properties:
-        id:
-          type: string
-          format: uuid
-          example: b9e81174-b5bb-4638-a3c3-8afe61a0abf8
-          description: The Application Auth Strategy ID.
-          readOnly: true
-        name:
-          type: string
-          example: name
-          default: name
-        credential_type:
-          type: string
-          enum:
-            - key_auth
-    AuthMethods:
-      type: array
-      items:
-        description: Auth Methods enabled for this strategy
-        type: string
-      example:
-        - bearer
-    AuthStrategyClientCredentials:
-      description: Client Credential Auth strategy that the application uses.
-      type: object
-      required:
-        - id
-        - name
-        - credential_type
-        - auth_methods
-      properties:
-        id:
-          type: string
-          format: uuid
-          example: b9e81174-b5bb-4638-a3c3-8afe61a0abf8
-          description: The Application Auth Strategy ID.
-          readOnly: true
-        name:
-          type: string
-          example: name
-          default: name
-        credential_type:
-          type: string
-          enum:
-            - client_credentials
-            - self_managed_client_credentials
-        auth_methods:
-          $ref: '#/components/schemas/AuthMethods'
-    AuthStrategy:
-      type: object
-      oneOf:
-        - $ref: '#/components/schemas/AuthStrategyKeyAuth'
-        - $ref: '#/components/schemas/AuthStrategyClientCredentials'
-      discriminator:
-        propertyName: credential_type
     SearchResponse:
       title: SearchResponse
       description: Search response schema.
@@ -2653,6 +2333,332 @@ components:
             - $ref: '#/components/schemas/CursorPageMetaWithEstimatedTotal'
       required:
         - page
+    AuthStrategy:
+      type: object
+      oneOf:
+        - $ref: '#/components/schemas/AuthStrategyKeyAuth'
+        - $ref: '#/components/schemas/AuthStrategyClientCredentials'
+      discriminator:
+        propertyName: credential_type
+    PortalProductVersionFilters:
+      title: PortalProductVersionFilters
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          $ref: '#/components/schemas/UuidFieldFilter'
+        publish_status:
+          $ref: '#/components/schemas/PublishStatusFilter'
+        product_version_id:
+          $ref: '#/components/schemas/UuidFieldFilter'
+        created_at:
+          $ref: '#/components/schemas/DateTimeFieldFilter'
+        updated_at:
+          $ref: '#/components/schemas/DateTimeFieldFilter'
+        auth_strategy_ids:
+          $ref: '#/components/schemas/UuidFieldFilter'
+        application_registration_enabled:
+          $ref: '#/components/schemas/BooleanFieldFilter'
+        auto_approve_registration:
+          $ref: '#/components/schemas/BooleanFieldFilter'
+        deprecated:
+          $ref: '#/components/schemas/BooleanFieldFilter'
+    PortalProductVersionPublishStatus:
+      type: string
+      description: Publication status of the API product version on the portal
+      enum:
+        - published
+        - unpublished
+    PortalProductVersionDeprecated:
+      type: boolean
+      description: Whether the api product version on the portal is deprecated
+    PublishStatusFilter:
+      title: PublishStatusFilter
+      description: Filters on the given publish status
+      oneOf:
+        - $ref: '#/components/schemas/StringFieldEqualsFilter'
+        - $ref: '#/components/schemas/StringFieldOEQFilter'
+        - $ref: '#/components/schemas/StringFieldNEQFilter'
+      x-examples:
+        example-1: published
+        example-2:
+          eq: unpublished
+        example-3:
+          neq: unpublished
+    ApplicationRegistrationEnabled:
+      type: boolean
+      description: >-
+        Whether the application registration on this portal for the api product
+        version is enabled
+    AutoApproveRegistration:
+      type: boolean
+      description: >-
+        Whether the application registration auto approval on this portal for
+        the api product version is enabled
+    AuthStrategies:
+      description: A list of authentication strategies
+      type: array
+      minItems: 0
+      maxItems: 1
+      items:
+        $ref: '#/components/schemas/AuthStrategy'
+    AuthStrategyIDs:
+      description: A list of authentication strategy IDs
+      type: array
+      minItems: 0
+      maxItems: 1
+      items:
+        $ref: '#/components/schemas/UUID_RW'
+    CreatePortalProductVersionPayload:
+      title: CreatePortalProductVersionPayload
+      description: Payload to create a Portal Product Version
+      type: object
+      additionalProperties: false
+      properties:
+        publish_status:
+          $ref: '#/components/schemas/PortalProductVersionPublishStatus'
+        product_version_id:
+          $ref: '#/components/schemas/UUID_RW'
+        auth_strategy_ids:
+          $ref: '#/components/schemas/AuthStrategyIDs'
+        application_registration_enabled:
+          $ref: '#/components/schemas/ApplicationRegistrationEnabled'
+        auto_approve_registration:
+          $ref: '#/components/schemas/AutoApproveRegistration'
+        deprecated:
+          $ref: '#/components/schemas/PortalProductVersionDeprecated'
+      required:
+        - publish_status
+        - application_registration_enabled
+        - auto_approve_registration
+        - product_version_id
+        - deprecated
+        - auth_strategy_ids
+    UpdatePortalProductVersionPayload:
+      title: UpdatePortalProductVersionPayload
+      type: object
+      description: Payload to update a Portal Product Version
+      additionalProperties: false
+      properties:
+        publish_status:
+          $ref: '#/components/schemas/PortalProductVersionPublishStatus'
+        auth_strategy_ids:
+          $ref: '#/components/schemas/AuthStrategyIDs'
+        application_registration_enabled:
+          $ref: '#/components/schemas/ApplicationRegistrationEnabled'
+        auto_approve_registration:
+          $ref: '#/components/schemas/AutoApproveRegistration'
+        deprecated:
+          $ref: '#/components/schemas/PortalProductVersionDeprecated'
+    PortalProductVersion:
+      title: PortalProductVersion
+      type: object
+      description: >
+        A Portal Product Version holds metadata that describes how a Product
+        Version is configured for a specific portal.
+
+
+        It contains:
+
+        - Lifecyle and deprecation statuses
+
+        - Application registration settings like auto approve or whether
+        application registration is enabled
+
+        - The Authentication Strategy (if present) that is enabled for
+        Application Registration
+      additionalProperties: false
+      properties:
+        id:
+          $ref: '#/components/schemas/schemas-UUID'
+        publish_status:
+          $ref: '#/components/schemas/PortalProductVersionPublishStatus'
+        product_version_id:
+          $ref: '#/components/schemas/UUID_RW'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        auth_strategies:
+          $ref: '#/components/schemas/AuthStrategies'
+        application_registration_enabled:
+          $ref: '#/components/schemas/ApplicationRegistrationEnabled'
+        auto_approve_registration:
+          $ref: '#/components/schemas/AutoApproveRegistration'
+        deprecated:
+          $ref: '#/components/schemas/PortalProductVersionDeprecated'
+      required:
+        - id
+        - publish_status
+        - application_registration_enabled
+        - auto_approve_registration
+        - product_version_id
+        - deprecated
+        - auth_strategies
+        - created_at
+        - updated_at
+    ListPortalProductVersions:
+      title: ListPortalProductVersions
+      type: object
+      description: A paginated list response for a collection of portal product versions
+      additionalProperties: false
+      required:
+        - data
+        - meta
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PortalProductVersion'
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
+    schemas-UUID:
+      type: string
+      format: uuid
+      example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+      description: Contains a unique identifier used by the API for this resource.
+      readOnly: true
+    DateTimeFieldFilter:
+      title: DateTimeFieldFilter
+      description: Filters on the given datetime (RFC-3339) field value.
+      oneOf:
+        - type: string
+          format: date-time
+          description: Value strictly equals given RFC-3339 formatted timestamp in UTC
+          example: '2022-03-30T07:20:50Z'
+        - type: object
+          title: DateTimeFieldEqualsFilter
+          additionalProperties: false
+          properties:
+            eq:
+              type: string
+              format: date-time
+              description: Value strictly equals given RFC-3339 formatted timestamp in UTC
+              example: '2022-03-30T07:20:50Z'
+          required:
+            - eq
+        - type: object
+          title: DateTimeFieldLTFilter
+          additionalProperties: false
+          properties:
+            lt:
+              type: string
+              format: date-time
+              description: Value is less than the given RFC-3339 formatted timestamp in UTC
+              example: '2022-03-30T07:20:50Z'
+          required:
+            - lt
+        - type: object
+          title: DateTimeFieldLTEFilter
+          additionalProperties: false
+          properties:
+            lte:
+              type: string
+              format: date-time
+              description: >-
+                Value is less than or equal to the given RFC-3339 formatted
+                timestamp in UTC
+              example: '2022-03-30T07:20:50Z'
+          required:
+            - lte
+        - type: object
+          title: DateTimeFieldGTFilter
+          additionalProperties: false
+          properties:
+            lt:
+              type: string
+              format: date-time
+              description: >-
+                Value is greater than the given RFC-3339 formatted timestamp in
+                UTC
+              example: '2022-03-30T07:20:50Z'
+          required:
+            - gt
+        - type: object
+          title: DateTimeFieldGTEFilter
+          additionalProperties: false
+          properties:
+            lte:
+              type: string
+              format: date-time
+              description: >-
+                Value is greater than or equal to the given RFC-3339 formatted
+                timestamp in UTC
+              example: '2022-03-30T07:20:50Z'
+          required:
+            - gte
+      x-examples:
+        datetime_field_1: '2022-03-30T07:20:50Z'
+        datetime_field_2:
+          eq: '2022-03-30T07:20:50Z'
+        datetime_field_3:
+          lt: '2022-03-30T07:20:50Z'
+        datetime_field_4:
+          lte: '2022-03-30T07:20:50Z'
+        datetime_field_5:
+          gt: '2022-03-30T07:20:50Z'
+        datetime_field_6:
+          gte: '2022-03-30T07:20:50Z'
+    UUID_RW:
+      type: string
+      format: uuid
+      example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+      description: Contains a unique identifier used by the API for this resource.
+    AuthStrategyKeyAuth:
+      description: KeyAuth Auth strategy that the application uses.
+      type: object
+      required:
+        - id
+        - name
+        - credential_type
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: b9e81174-b5bb-4638-a3c3-8afe61a0abf8
+          description: The Application Auth Strategy ID.
+          readOnly: true
+        name:
+          type: string
+          example: name
+          default: name
+        credential_type:
+          type: string
+          enum:
+            - key_auth
+    AuthMethods:
+      type: array
+      items:
+        description: Auth Methods enabled for this strategy
+        type: string
+      example:
+        - bearer
+    AuthStrategyClientCredentials:
+      description: Client Credential Auth strategy that the application uses.
+      type: object
+      required:
+        - id
+        - name
+        - credential_type
+        - auth_methods
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: b9e81174-b5bb-4638-a3c3-8afe61a0abf8
+          description: The Application Auth Strategy ID.
+          readOnly: true
+        name:
+          type: string
+          example: name
+          default: name
+        credential_type:
+          type: string
+          enum:
+            - client_credentials
+            - self_managed_client_credentials
+        auth_methods:
+          $ref: '#/components/schemas/AuthMethods'
   examples:
     BadRequestExample:
       value:
@@ -2971,52 +2977,6 @@ components:
             number: 1
             size: 1
             total: 10
-    PortalProductVersion:
-      value:
-        id: 22f8380e-7798-4566-99e3-2edf2b57d289
-        publish_status: published
-        product_version_id: 33f8380e-7798-4566-99e3-2edf2b57d289
-        auth_strategies:
-          - id: 44f8380e-7798-4566-99e3-2edf2b57d289
-            name: key auth strategy
-            credential_type: key_auth
-        application_registration_enabled: true
-        auto_approve_registration: true
-        deprecated: false
-        created_at: '2023-01-01T00:00:00.000Z'
-        updated_at: '2023-01-01T00:00:00.000Z'
-    ListPortalProductVersions:
-      value:
-        data:
-          - id: 22f8380e-7798-4566-99e3-2edf2b57d289
-            publish_status: published
-            product_version_id: 33f8380e-7798-4566-99e3-2edf2b57d289
-            auth_strategies:
-              - id: 44f8380e-7798-4566-99e3-2edf2b57d289
-                name: key auth strategy
-                credential_type: key_auth
-            application_registration_enabled: true
-            auto_approve_registration: true
-            deprecated: false
-            created_at: '2023-01-01T00:00:00.000Z'
-            updated_at: '2023-01-01T00:00:00.000Z'
-        meta:
-          page:
-            number: 1
-            size: 1
-            total: 10
-    PortalProductVersionCreateRequest:
-      value:
-        product_version_id: 33f8380e-7798-4566-99e3-2edf2b57d289
-        auth_strategy_ids:
-          - 44f8380e-7798-4566-99e3-2edf2b57d289
-        publish_status: published
-        application_registration_enabled: true
-        auto_approve_registration: true
-        deprecated: false
-    PortalProductVersionUpdateRequest:
-      value:
-        auto_approve_registration: false
     403-permission-denied:
       value:
         status: 403
@@ -3072,6 +3032,52 @@ components:
           - user
           - system_account
           - team
+    PortalProductVersionExample1:
+      value:
+        id: 22f8380e-7798-4566-99e3-2edf2b57d289
+        publish_status: published
+        product_version_id: 33f8380e-7798-4566-99e3-2edf2b57d289
+        auth_strategies:
+          - id: 44f8380e-7798-4566-99e3-2edf2b57d289
+            name: key auth strategy
+            credential_type: key_auth
+        application_registration_enabled: true
+        auto_approve_registration: true
+        deprecated: false
+        created_at: '2023-01-01T00:00:00.000Z'
+        updated_at: '2023-01-01T00:00:00.000Z'
+    ListPortalProductVersionsExample1:
+      value:
+        data:
+          - id: 22f8380e-7798-4566-99e3-2edf2b57d289
+            publish_status: published
+            product_version_id: 33f8380e-7798-4566-99e3-2edf2b57d289
+            auth_strategies:
+              - id: 44f8380e-7798-4566-99e3-2edf2b57d289
+                name: key auth strategy
+                credential_type: key_auth
+            application_registration_enabled: true
+            auto_approve_registration: true
+            deprecated: false
+            created_at: '2023-01-01T00:00:00.000Z'
+            updated_at: '2023-01-01T00:00:00.000Z'
+        meta:
+          page:
+            number: 1
+            size: 1
+            total: 10
+    PortalProductVersionCreateRequestExample1:
+      value:
+        product_version_id: 33f8380e-7798-4566-99e3-2edf2b57d289
+        auth_strategy_ids:
+          - 44f8380e-7798-4566-99e3-2edf2b57d289
+        publish_status: published
+        application_registration_enabled: true
+        auto_approve_registration: true
+        deprecated: false
+    PortalProductVersionUpdateRequestExample1:
+      value:
+        auto_approve_registration: false
   responses:
     Unauthorized:
       description: Unauthorized
@@ -3190,24 +3196,6 @@ components:
                     rule:
                       type: string
             $ref: '#/components/schemas/BadRequestError'
-    ListPortalProductVersions:
-      description: A response containing a list of portal product versions
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ListPortalProductVersions'
-          examples:
-            PortalProductVersion:
-              $ref: '#/components/examples/ListPortalProductVersions'
-    PortalProductVersion:
-      description: A response containing a portal product version
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/PortalProductVersion'
-          examples:
-            PortalProductVersion:
-              $ref: '#/components/examples/PortalProductVersion'
     CreateDcrProvider:
       description: A response containing the newly created DCR provider object.
       content:
@@ -3339,6 +3327,24 @@ components:
           examples:
             Searchable Entity Types:
               $ref: '#/components/examples/Searchable-Entity-Types'
+    ListPortalProductVersions:
+      description: A response containing a list of portal product versions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ListPortalProductVersions'
+          examples:
+            PortalProductVersion:
+              $ref: '#/components/examples/ListPortalProductVersionsExample1'
+    PortalProductVersion:
+      description: A response containing a portal product version
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalProductVersion'
+          examples:
+            PortalProductVersion:
+              $ref: '#/components/examples/PortalProductVersionExample1'
   parameters:
     PageSize:
       name: page[size]
@@ -3360,22 +3366,6 @@ components:
         type: integer
         example: 1
       allowEmptyValue: true
-    PortalId:
-      name: portalId
-      description: ID of the portal.
-      in: path
-      required: true
-      schema:
-        $ref: '#/components/schemas/UUID'
-        type: string
-        format: uuid
-    ProductVersionId:
-      name: productVersionId
-      description: API product version identifier
-      in: path
-      required: true
-      schema:
-        $ref: '#/components/schemas/UUID'
     DcrProviderId:
       name: dcrProviderId
       description: DCR provider identifier
@@ -3390,31 +3380,6 @@ components:
       required: true
       schema:
         $ref: '#/components/schemas/UUID'
-    SortPortalProductVersions:
-      name: sort
-      description: >
-        Sorts a collection of Portal Product Versions. Supported sort attributes
-        are:
-          - created_at
-          - updated_at
-          - publish_status
-          - product_version_id
-          - auth_strategy_ids
-          - application_registration_enabled
-          - auto_approve_registration
-          - deprecated
-      in: query
-      required: false
-      schema:
-        type: string
-    PortalProductVersionFilter:
-      name: filter
-      description: Filters a collection of Portal Product Versions.
-      required: false
-      in: query
-      style: deepObject
-      schema:
-        $ref: '#/components/schemas/PortalProductVersionFilters'
     SortDcrProviders:
       name: sort
       description: |
@@ -3585,25 +3550,46 @@ components:
       schema:
         type: string
         example: ewogICJpZCI6ICJoZWxsbyB3b3JsZCIKfQ
+    PortalId:
+      name: portalId
+      description: portal identifier
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/schemas-UUID'
+    ProductVersionId:
+      name: productVersionId
+      description: API product version identifier
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/schemas-UUID'
+    SortPortalProductVersions:
+      name: sort
+      description: >
+        Sorts a collection of Portal Product Versions. Supported sort attributes
+        are:
+          - created_at
+          - updated_at
+          - publish_status
+          - product_version_id
+          - auth_strategy_ids
+          - application_registration_enabled
+          - auto_approve_registration
+          - deprecated
+      in: query
+      required: false
+      schema:
+        type: string
+    PortalProductVersionFilter:
+      name: filter
+      description: Filters a collection of Portal Product Versions.
+      required: false
+      in: query
+      style: deepObject
+      schema:
+        $ref: '#/components/schemas/PortalProductVersionFilters'
   requestBodies:
-    CreatePortalProductVersion:
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CreatePortalProductVersionPayload'
-          examples:
-            PortalProductVersion:
-              $ref: '#/components/examples/PortalProductVersionCreateRequest'
-    UpdatePortalProductVersion:
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/UpdatePortalProductVersionPayload'
-          examples:
-            PortalProductVersion:
-              $ref: '#/components/examples/PortalProductVersionUpdateRequest'
     CreateDcrProvider:
       required: true
       content:
@@ -3655,6 +3641,24 @@ components:
               $ref: '#/components/examples/UpdateAppAuthStrategyKeyAuthRequest'
             UpdateAppAuthStrategyOpenIDConnectRequest:
               $ref: '#/components/examples/UpdateAppAuthStrategyOpenIDConnectRequest'
+    CreatePortalProductVersion:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreatePortalProductVersionPayload'
+          examples:
+            PortalProductVersion:
+              $ref: '#/components/examples/PortalProductVersionCreateRequestExample1'
+    UpdatePortalProductVersion:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdatePortalProductVersionPayload'
+          examples:
+            PortalProductVersion:
+              $ref: '#/components/examples/PortalProductVersionUpdateRequestExample1'
   securitySchemes:
     personalAccessToken:
       type: http
@@ -3723,6 +3727,7 @@ tags:
 
       The plugins are synced to any Gateway Service that is currently linked or
       becomes linked to the Product Version.
+  - name: Search
   - name: Portal Product Versions
     description: >
       Portal Product Versions hold metadata that describes how a Product Version
@@ -3732,4 +3737,3 @@ tags:
         - Lifecyle and deprecation statuses
         - Application registration settings like auto approve or whether application registration is enabled
         - The authentication strategy that is enabled for Application Registration
-  - name: Search

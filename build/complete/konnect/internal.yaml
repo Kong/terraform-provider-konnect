@@ -576,13 +576,6 @@ components:
           example: Conflict
       allOf:
         - $ref: '#/components/schemas/BaseError'
-    BooleanFieldFilter:
-      title: BooleanFieldFilter
-      description: Filter by a boolean value (true/false).
-      type: boolean
-      x-examples:
-        example-1: true
-      example: true
     Auth0Organization:
       title: Auth0 organization schema.
       type: object
@@ -713,6 +706,13 @@ components:
           properties:
             '':
               type: object
+    BooleanFieldFilter:
+      example: true
+      title: BooleanFieldFilter
+      description: Filter by a boolean value (true/false).
+      type: boolean
+      x-examples:
+        example-1: true
   examples:
     UnauthorizedExample:
       value:

@@ -4040,7 +4040,7 @@ paths:
           $ref: '#/components/responses/Forbidden'
   /portals/{portalId}:
     parameters:
-      - $ref: '#/components/parameters/PortalId'
+      - $ref: '#/components/parameters/parameters-PortalId'
     get:
       summary: Get Portal
       description: >-
@@ -4108,7 +4108,7 @@ paths:
         by disregarding them in the code.
       operationId: get-portal-appearance
       parameters:
-        - $ref: '#/components/parameters/PortalId'
+        - $ref: '#/components/parameters/parameters-PortalId'
       tags:
         - Portal Appearance
       responses:
@@ -4131,7 +4131,7 @@ paths:
       requestBody:
         $ref: '#/components/requestBodies/UpdatePortalAppearance'
       parameters:
-        - $ref: '#/components/parameters/PortalId'
+        - $ref: '#/components/parameters/parameters-PortalId'
       tags:
         - Portal Appearance
       responses:
@@ -4167,7 +4167,7 @@ paths:
         registration.
       operationId: list-registrations
       parameters:
-        - $ref: '#/components/parameters/PortalId'
+        - $ref: '#/components/parameters/parameters-PortalId'
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageNumber'
         - $ref: '#/components/parameters/SortListAllApplicationRegistrations'
@@ -4228,7 +4228,7 @@ paths:
         `reference_id`.
       operationId: list-applications
       parameters:
-        - $ref: '#/components/parameters/PortalId'
+        - $ref: '#/components/parameters/parameters-PortalId'
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageNumber'
         - $ref: '#/components/parameters/SortApplications'
@@ -4284,7 +4284,7 @@ paths:
         of credentials and registrations for specific API product versions.
       operationId: get-application
       parameters:
-        - $ref: '#/components/parameters/PortalId'
+        - $ref: '#/components/parameters/parameters-PortalId'
         - $ref: '#/components/parameters/ApplicationId'
       tags:
         - Portal Applications
@@ -4305,7 +4305,7 @@ paths:
         and their current status (e.g., pending, approved, rejected, revoked).
       operationId: list-registrations-by-application
       parameters:
-        - $ref: '#/components/parameters/PortalId'
+        - $ref: '#/components/parameters/parameters-PortalId'
         - $ref: '#/components/parameters/ApplicationId'
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageNumber'
@@ -4352,7 +4352,7 @@ paths:
           $ref: '#/components/responses/NotFound'
   /portals/{portalId}/applications/{applicationId}/registrations/{registrationId}:
     parameters:
-      - $ref: '#/components/parameters/PortalId'
+      - $ref: '#/components/parameters/parameters-PortalId'
       - $ref: '#/components/parameters/ApplicationId'
       - $ref: '#/components/parameters/RegistrationId'
     get:
@@ -4433,7 +4433,7 @@ paths:
       tags:
         - Portal Application Registrations
       parameters:
-        - $ref: '#/components/parameters/PortalId'
+        - $ref: '#/components/parameters/parameters-PortalId'
         - $ref: '#/components/parameters/ApplicationId'
         - $ref: '#/components/parameters/RegistrationId'
       responses:
@@ -4445,7 +4445,7 @@ paths:
           $ref: '#/components/responses/Forbidden'
   /portals/{portalId}/authentication-settings:
     parameters:
-      - $ref: '#/components/parameters/PortalId'
+      - $ref: '#/components/parameters/parameters-PortalId'
     get:
       summary: Get Auth Settings
       description: >-
@@ -4504,7 +4504,7 @@ paths:
           $ref: '#/components/responses/Forbidden'
   /portals/{portalId}/developers:
     parameters:
-      - $ref: '#/components/parameters/PortalId'
+      - $ref: '#/components/parameters/parameters-PortalId'
     get:
       summary: List Developers
       description: >-
@@ -4558,7 +4558,7 @@ paths:
           style: deepObject
   /portals/{portalId}/developers/{developerId}:
     parameters:
-      - $ref: '#/components/parameters/PortalId'
+      - $ref: '#/components/parameters/parameters-PortalId'
       - $ref: '#/components/parameters/DeveloperId'
     get:
       summary: Get Developer
@@ -4569,7 +4569,7 @@ paths:
         can be limited to specific API products using RBAC.
       operationId: get-developer
       parameters:
-        - $ref: '#/components/parameters/PortalId'
+        - $ref: '#/components/parameters/parameters-PortalId'
         - $ref: '#/components/parameters/DeveloperId'
       tags:
         - Portal Developers
@@ -4637,7 +4637,7 @@ paths:
   /portals/{portalId}/developers/{developerId}/teams:
     parameters:
       - $ref: '#/components/parameters/parameters-DeveloperId'
-      - $ref: '#/components/parameters/PortalId'
+      - $ref: '#/components/parameters/parameters-PortalId'
     get:
       summary: List Developer Teams
       operationId: list-portal-developer-teams
@@ -4661,7 +4661,7 @@ paths:
         - Portal Team Membership
   /portals/{portalId}/identity-provider/team-group-mappings:
     parameters:
-      - $ref: '#/components/parameters/PortalId'
+      - $ref: '#/components/parameters/parameters-PortalId'
     get:
       summary: List Team Group Mappings
       description: >-
@@ -4727,7 +4727,7 @@ paths:
         $ref: '#/components/requestBodies/UpdatePortalTeamGroupMappings'
   /portals/{portalId}/products:
     parameters:
-      - $ref: '#/components/parameters/PortalId'
+      - $ref: '#/components/parameters/parameters-PortalId'
     get:
       summary: List Portal Products
       operationId: list-portal-products
@@ -4765,7 +4765,7 @@ paths:
           $ref: '#/components/responses/NotFound'
   /portals/{portalId}/teams:
     parameters:
-      - $ref: '#/components/parameters/PortalId'
+      - $ref: '#/components/parameters/parameters-PortalId'
     get:
       summary: List Teams
       description: >-
@@ -4832,7 +4832,7 @@ paths:
   /portals/{portalId}/teams/{teamId}:
     parameters:
       - $ref: '#/components/parameters/TeamId'
-      - $ref: '#/components/parameters/PortalId'
+      - $ref: '#/components/parameters/parameters-PortalId'
     get:
       summary: Get Team
       responses:
@@ -4885,7 +4885,7 @@ paths:
         - Portal Teams
   /portals/{portalId}/teams/{teamId}/assigned-roles:
     parameters:
-      - $ref: '#/components/parameters/PortalId'
+      - $ref: '#/components/parameters/parameters-PortalId'
       - $ref: '#/components/parameters/TeamId'
       - $ref: '#/components/parameters/PageSize'
       - $ref: '#/components/parameters/PageNumber'
@@ -4946,7 +4946,7 @@ paths:
   /portals/{portalId}/teams/{teamId}/assigned-roles/{roleId}:
     parameters:
       - $ref: '#/components/parameters/RoleId'
-      - $ref: '#/components/parameters/PortalId'
+      - $ref: '#/components/parameters/parameters-PortalId'
       - $ref: '#/components/parameters/TeamId'
     delete:
       summary: Remove Role
@@ -4967,7 +4967,7 @@ paths:
         - Portal Team Roles
   /portals/{portalId}/teams/{teamId}/developers:
     parameters:
-      - $ref: '#/components/parameters/PortalId'
+      - $ref: '#/components/parameters/parameters-PortalId'
       - $ref: '#/components/parameters/TeamId'
     get:
       summary: List Team Developers
@@ -5020,7 +5020,7 @@ paths:
         - Portal Team Membership
   /portals/{portalId}/teams/{teamId}/developers/{developerId}:
     parameters:
-      - $ref: '#/components/parameters/PortalId'
+      - $ref: '#/components/parameters/parameters-PortalId'
       - $ref: '#/components/parameters/parameters-DeveloperId'
       - $ref: '#/components/parameters/TeamId'
     delete:
@@ -5049,7 +5049,7 @@ paths:
         if a corresponding SSL certificate has been generated.
       operationId: verify-portal-domains
       parameters:
-        - $ref: '#/components/parameters/PortalId'
+        - $ref: '#/components/parameters/parameters-PortalId'
       tags:
         - Portals
       responses:
@@ -8726,75 +8726,6 @@ components:
           oeq: 3bbfd3a-e9ab-48a9-9881-ed589e4615d1
         example-4:
           neq: 3bbfd3a-e9ab-48a9-9881-ed589e4615d1
-    BooleanFieldFilter:
-      title: BooleanFieldFilter
-      description: Filter by a boolean value (true/false).
-      type: boolean
-      x-examples:
-        example-1: true
-      example: true
-    AuthStrategyKeyAuth:
-      description: KeyAuth Auth strategy that the application uses.
-      type: object
-      required:
-        - id
-        - name
-        - credential_type
-      properties:
-        id:
-          type: string
-          format: uuid
-          example: b9e81174-b5bb-4638-a3c3-8afe61a0abf8
-          description: The Application Auth Strategy ID.
-          readOnly: true
-        name:
-          type: string
-          example: name
-          default: name
-        credential_type:
-          type: string
-          enum:
-            - key_auth
-    AuthMethods:
-      type: array
-      items:
-        description: Auth Methods enabled for this strategy
-        type: string
-      example:
-        - bearer
-    AuthStrategyClientCredentials:
-      description: Client Credential Auth strategy that the application uses.
-      type: object
-      required:
-        - id
-        - name
-        - credential_type
-        - auth_methods
-      properties:
-        id:
-          type: string
-          format: uuid
-          example: b9e81174-b5bb-4638-a3c3-8afe61a0abf8
-          description: The Application Auth Strategy ID.
-          readOnly: true
-        name:
-          type: string
-          example: name
-          default: name
-        credential_type:
-          type: string
-          enum:
-            - client_credentials
-            - self_managed_client_credentials
-        auth_methods:
-          $ref: '#/components/schemas/AuthMethods'
-    AuthStrategy:
-      type: object
-      oneOf:
-        - $ref: '#/components/schemas/AuthStrategyKeyAuth'
-        - $ref: '#/components/schemas/AuthStrategyClientCredentials'
-      discriminator:
-        propertyName: credential_type
     JWK:
       title: JWK
       type: object
@@ -10485,6 +10416,13 @@ components:
           format: date-time
           description: Timestamp of when the system account access token was last used.
           readOnly: true
+    BooleanFieldFilter:
+      example: true
+      title: BooleanFieldFilter
+      description: Filter by a boolean value (true/false).
+      type: boolean
+      x-examples:
+        example-1: true
     LabelsUpdate:
       type: object
       nullable: true
@@ -10581,6 +10519,13 @@ components:
           example: A control plane to handle traffic on development environment.
         labels:
           $ref: '#/components/schemas/MeshControlPlaneLabels'
+    AuthStrategy:
+      type: object
+      oneOf:
+        - $ref: '#/components/schemas/AuthStrategyKeyAuth'
+        - $ref: '#/components/schemas/AuthStrategyClientCredentials'
+      discriminator:
+        propertyName: credential_type
     PortalClaimMappings:
       title: PortalClaimMappings
       description: Mappings from a portal developer atribute to an Identity Provider claim.
@@ -12981,6 +12926,61 @@ components:
         - dark_mode
         - custom
       example: mint_rocket
+    AuthStrategyKeyAuth:
+      description: KeyAuth Auth strategy that the application uses.
+      type: object
+      required:
+        - id
+        - name
+        - credential_type
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: b9e81174-b5bb-4638-a3c3-8afe61a0abf8
+          description: The Application Auth Strategy ID.
+          readOnly: true
+        name:
+          type: string
+          example: name
+          default: name
+        credential_type:
+          type: string
+          enum:
+            - key_auth
+    AuthMethods:
+      type: array
+      items:
+        description: Auth Methods enabled for this strategy
+        type: string
+      example:
+        - bearer
+    AuthStrategyClientCredentials:
+      description: Client Credential Auth strategy that the application uses.
+      type: object
+      required:
+        - id
+        - name
+        - credential_type
+        - auth_methods
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: b9e81174-b5bb-4638-a3c3-8afe61a0abf8
+          description: The Application Auth Strategy ID.
+          readOnly: true
+        name:
+          type: string
+          example: name
+          default: name
+        credential_type:
+          type: string
+          enum:
+            - client_credentials
+            - self_managed_client_credentials
+        auth_methods:
+          $ref: '#/components/schemas/AuthMethods'
     ImageDataUri:
       title: ImageDataUri
       type: string
@@ -19140,15 +19140,6 @@ components:
       in: query
       schema:
         $ref: '#/components/schemas/SortQuery'
-    PortalId:
-      name: portalId
-      description: ID of the portal.
-      in: path
-      required: true
-      schema:
-        $ref: '#/components/schemas/UUID'
-        type: string
-        format: uuid
     FilterByLabels:
       name: labels
       description: Filter control planes in the response by associated labels.
@@ -19534,6 +19525,14 @@ components:
       required: false
       schema:
         type: string
+    parameters-PortalId:
+      schema:
+        type: string
+        format: uuid
+      name: portalId
+      in: path
+      required: true
+      description: ID of the portal.
     TeamId:
       schema:
         type: string
