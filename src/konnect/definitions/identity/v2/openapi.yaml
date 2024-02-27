@@ -2497,6 +2497,7 @@ components:
               owner_id: 1c9c3848-5897-4f2c-beed-df6f3e3adb37
               created_at: '2023-01-23T17:22:52.150Z'
               updated_at: '2023-01-23T17:22:52.150Z'
+              state: active
             properties:
               id:
                 type: string
@@ -2522,6 +2523,12 @@ components:
                 description: Date the organization was last updated.
                 format: date-time
                 readOnly: true
+              state:
+                type: string
+                description: State of the organization
+                enum:
+                  - active
+                  - inactive
           examples:
             Example:
               value:
@@ -2531,6 +2538,7 @@ components:
                 owner_id: e02c829c-0e2d-44b5-9057-07714ea613a3
                 login_path: acme
                 updated_at: '2023-01-23T17:22:52.150Z'
+                state: active
     UserPermissions:
       description: Example response
       content:
