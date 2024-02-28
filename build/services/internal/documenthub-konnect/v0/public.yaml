@@ -116,13 +116,13 @@ paths:
         '200':
           description: The document
           content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Document'
             text/markdown:
               schema:
                 type: string
                 description: the markdown content
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Document'
         '404':
           $ref: '#/components/responses/NotFound'
       tags:
@@ -413,11 +413,15 @@ components:
         raw_content:
           type: string
           format: byte
-          description: Must be a base64 encoded string
+          description: >-
+            Must be a base64 encoded string. Either raw_content or
+            str_mdr_content are required.
           example: YmFzZTY0LWVuY29kZWQgdGV4dCBzdHJpbmc=
         str_md_content:
           type: string
-          description: markdown content
+          description: >-
+            Markdown content. Either raw_content or str_mdr_content are
+            required.
           example: '## My Markdown'
         metadata:
           type: object
@@ -429,11 +433,6 @@ components:
           type: string
           description: name of the uploaded file
           example: my_doc.md
-      oneOf:
-        - required:
-            - raw_content
-        - required:
-            - str_md_content
     UpdateDocumentPayload:
       type: object
       title: UpdateDocumentPayload
