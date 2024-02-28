@@ -285,9 +285,6 @@ paths:
           $ref: '#/components/responses/NotAvailable'
       tags:
         - products
-    description: |-
-      **Pre-release Endpoint**
-      This endpoint is currently in beta and is subject to change.
 components:
   securitySchemes:
     portalAccessToken:
