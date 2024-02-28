@@ -21,7 +21,6 @@ paths:
           $ref: '../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
       parameters:
         - $ref: '#/components/parameters/SearchIndices'
-        - $ref: '#/components/parameters/FilterByAuthStrategyEqualityIdShort'
         - $ref: '#/components/parameters/SearchQuery'
         - $ref: '#/components/parameters/SearchJoin'
         - $ref: '../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
@@ -36,14 +35,6 @@ components:
     portalAccessToken:
       $ref: '../../../common/definitions/security.yaml#/components/securitySchemes/portalAccessToken'
   parameters:
-    FilterByAuthStrategyEqualityIdShort:
-      name: 'filter[auth_strategy_id]'
-      description: Filter by direct equality comparison (short-hand) of the auth_strategy_id property with a supplied value.
-      in: query
-      required: false
-      schema:
-        type: string
-        example: 5be86298-147b-45ab-bfaf-a1bff97dce39
     SearchQuery:
       name: q
       description: Determines how to filter search results
