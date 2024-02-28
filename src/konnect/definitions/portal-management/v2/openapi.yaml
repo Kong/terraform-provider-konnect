@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Portal Management
-  version: 2.0.0
+  version: 2.1.0
   description: The management API for Portals
   contact:
     name: Kong

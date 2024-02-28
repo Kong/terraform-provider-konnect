@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: Konnect API
   description: The Konnect platform API
-  version: 2.0.0
+  version: 2.1.0
   contact:
     name: Kong
     url: https://konghq.com
