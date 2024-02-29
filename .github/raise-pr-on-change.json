@@ -105,43 +105,43 @@
   ],
   "kong/docs.konghq.com": [
     {
-      "src": "build/services/konnect/analytics-reports/public.yaml",
+      "src": "build/services/konnect/analytics-reports/v2/public.yaml",
       "dest": "api-specs/Konnect/v2/yaml/analytics-reports.yaml"
     },
     {
-      "src": "build/services/konnect/analytics-requests/public.yaml",
+      "src": "build/services/konnect/analytics-requests/v2/public.yaml",
       "dest": "api-specs/Konnect/v2/yaml/analytics-requests.yaml"
     },
     {
-      "src": "build/services/konnect/api-products/public.yaml",
+      "src": "build/services/konnect/api-products/v2/public.yaml",
       "dest": "api-specs/Konnect/v2/yaml/api-products.yaml"
     },
     {
-      "src": "build/services/konnect/audit-logs/public.yaml",
+      "src": "build/services/konnect/audit-logs/v2/public.yaml",
       "dest": "api-specs/Konnect/v2/yaml/audit-logs.yaml"
     },
     {
-      "src": "build/services/konnect/control-planes-config/public.yaml",
+      "src": "build/services/konnect/control-planes-config/v2/public.yaml",
       "dest": "api-specs/Konnect/control-planes-config/control-planes-config.yaml"
     },
     {
-      "src": "build/services/konnect/control-planes/public.yaml",
+      "src": "build/services/konnect/control-planes/v2/public.yaml",
       "dest": "api-specs/Konnect/v2/yaml/control-planes.yaml"
     },
     {
-      "src": "build/services/konnect/identity/public.yaml",
+      "src": "build/services/konnect/identity/v3/public.yaml",
       "dest": "api-specs/Konnect/v3/yaml/identity.yaml"
     },
     {
-      "src": "build/services/konnect/mesh-control-planes/public.yaml",
+      "src": "build/services/konnect/mesh-control-planes/v0/public.yaml",
       "dest": "api-specs/Konnect/v0/yaml/mesh-control-planes.yaml"
     },
     {
-      "src": "build/services/konnect/portal-management/public.yaml",
+      "src": "build/services/konnect/portal-management/v2/public.yaml",
       "dest": "api-specs/Konnect/v2/yaml/portal-management.yaml"
     },
     {
-      "src": "build/services/konnect/ksearch/public.yaml",
+      "src": "build/services/konnect/ksearch/v0/public.yaml",
       "dest": "api-specs/Konnect/v0/yaml/ksearch.yaml"
     }
   ]
