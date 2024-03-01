@@ -31,7 +31,7 @@ async function main() {
         for (const f of files) {
             const srcDir = path.dirname(f)
             const output = path.join(
-                srcDir.replace('src', 'computed').replace('definitions/', ''), 
+                srcDir.replace(`${baseDir}/src`, `${baseDir}/computed`).replace('definitions/', ''),
                 "openapi.yaml"
             );
             const args = {
