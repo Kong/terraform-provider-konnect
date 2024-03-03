@@ -3538,6 +3538,29 @@ components:
                 properties:
                   total_count:
                     type: integer
+    list-nodes-eol:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              items:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    node_id:
+                      type: string
+                    node_version:
+                      type: string
+                    message:
+                      type: string
+              page:
+                type: object
+                properties:
+                  total_count:
+                    type: integer
     get-node:
       description: Example response
       content:
@@ -3735,6 +3758,21 @@ paths:
       tags:
         - DP Nodes
       description: Returns a list of runtime instance records that are associated to this runtime group. A runtime instance record contains all the metadata information of the Kong Gateway dataplane.
+      parameters:
+        - $ref: '#/components/parameters/page_size'
+        - $ref: '#/components/parameters/page_number'
+    parameters:
+      - $ref: '#/components/parameters/runtimeGroupId'
+  '/runtime-groups/{runtimeGroupId}/nodes/eol':
+    get:
+      summary: List Runtime Instance End-of-Life Records
+      responses:
+        '200':
+          $ref: '#/components/responses/list-nodes-eol'
+      operationId: get-nodes-eol
+      tags:
+        - DP Nodes
+      description: Returns a list of records of runtime instances, whose versions are approaching End of Full Support/End of Life, that are associated to this runtime group. Each record contains a runtime's id, version, and corresponding resolution message to upgrade to the closest Long Term Support version.
       parameters:
         - $ref: '#/components/parameters/page_size'
         - $ref: '#/components/parameters/page_number'
