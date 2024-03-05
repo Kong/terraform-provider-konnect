@@ -141,7 +141,7 @@
       "dest": "api-specs/Konnect/v2/yaml/portal-management.yaml"
     },
     {
-      "src": "build/services/konnect/ksearch/v0/public.yaml",
+      "src": "build/services/konnect/ksearch/v0/dev.yaml",
       "dest": "api-specs/Konnect/v0/yaml/ksearch.yaml"
     }
   ]
