@@ -913,6 +913,16 @@ components:
             type: string
           example:
             - apikey
+    AvailableScopes:
+      description: >-
+        Possible developer selectable scopes for an application. Only present
+        when using DCR Provider that supports it.
+      type: array
+      items:
+        type: string
+      example:
+        - scope1
+        - scope2
     AuthMethods:
       type: array
       items:
@@ -935,6 +945,8 @@ components:
           example: b9e81174-b5bb-4638-a3c3-8afe61a0abf8
           description: The Application Auth Strategy ID.
           readOnly: true
+        available_scopes:
+          $ref: '#/components/schemas/AvailableScopes'
         name:
           type: string
           example: name

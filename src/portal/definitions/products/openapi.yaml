@@ -475,9 +475,7 @@ components:
         name:
           type: string
         available_scopes:
-          type: array
-          items:
-            type: string
+          $ref: '../../../common/definitions/auth_strategies.yaml#/components/schemas/AvailableScopes'
     CredentialType:
       type: string
       enum:

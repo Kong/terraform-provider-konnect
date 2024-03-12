@@ -695,9 +695,7 @@ components:
         name:
           type: string
         available_scopes:
-          type: array
-          items:
-            type: string
+          $ref: '#/components/schemas/AvailableScopes'
     CredentialType:
       type: string
       enum:
@@ -1155,6 +1153,16 @@ components:
           $ref: '#/components/schemas/PageMeta'
       required:
         - page
+    AvailableScopes:
+      description: >-
+        Possible developer selectable scopes for an application. Only present
+        when using DCR Provider that supports it.
+      type: array
+      items:
+        type: string
+      example:
+        - scope1
+        - scope2
     NullableUUID:
       type: string
       format: uuid
