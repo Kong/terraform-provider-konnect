@@ -636,6 +636,10 @@ components:
       description: |
         This is the API Key that will be sent with each HTTP request to the custom DCR server. It can be
         verified on the server to ensure that incoming requests are coming from Konnect.
+    DcrConfigPropertyDisableEventHooks:
+      title: DcrConfigPropertyDisableEventHooks
+      type: boolean
+      description: This flag disables all the event-hooks on the application flow for the DCR provider.
     DcrConfigAuth0InResponse:
       title: DcrConfigAuth0InResponse
       type: object
@@ -797,6 +801,8 @@ components:
           format: url
         api_key:
           $ref: '#/components/schemas/DcrConfigPropertyApiKey'
+        disable_event_hooks:
+          $ref: '#/components/schemas/DcrConfigPropertyDisableEventHooks'
     CreateDcrConfigHttpInRequest:
       title: CreateDcrConfigHttpInRequest
       type: object
@@ -810,6 +816,8 @@ components:
           $ref: '#/components/schemas/DcrBaseUrl'
         api_key:
           $ref: '#/components/schemas/DcrConfigPropertyApiKey'
+        disable_event_hooks:
+          $ref: '#/components/schemas/DcrConfigPropertyDisableEventHooks'
     UpdateDcrConfigHttpInRequest:
       title: CreateDcrConfigHttpInRequest
       type: object
@@ -820,6 +828,8 @@ components:
           $ref: '#/components/schemas/DcrBaseUrl'
         api_key:
           $ref: '#/components/schemas/DcrConfigPropertyApiKey'
+        disable_event_hooks:
+          $ref: '#/components/schemas/DcrConfigPropertyDisableEventHooks'
     DcrProviderType:
       title: DcrProviderType
       type: string
