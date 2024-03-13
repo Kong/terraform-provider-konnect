@@ -451,6 +451,30 @@ paths:
         '404':
           $ref: >-
             ../../../../common/definitions/errors.yaml#/components/responses/NotFound
+    delete:
+      summary: Delete Application
+      description: >-
+        Delete a single application in this portal, along with its registrations and
+        credentials.
+      operationId: delete-application
+      parameters:
+        - $ref: >-
+            ../../../../common/definitions/portal.yaml#/components/parameters/PortalId
+        - $ref: '#/components/parameters/ApplicationId'
+      tags:
+        - Portal Applications
+      responses:
+        '204':
+          description: The application has been deleted.
+        '401':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Unauthorized
+        '403':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Forbidden
+        '404':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/NotFound
   /portals/{portalId}/application-registrations:
     get:
       summary: List Application Registrations by Portal
@@ -1841,7 +1865,7 @@ components:
         - id: 22f8380e-7798-4566-99e3-2edf2b57d289
           publish_status: published
           product_version_id: 33f8380e-7798-4566-99e3-2edf2b57d289
-          auth_strategies: 
+          auth_strategies:
             - id: 44f8380e-7798-4566-99e3-2edf2b57d289
               name: key auth strategy
               credential_type: key_auth
