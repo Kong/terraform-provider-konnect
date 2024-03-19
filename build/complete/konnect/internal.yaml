@@ -66,6 +66,90 @@ paths:
         $ref: '#/components/requestBodies/Auth0Registration'
       tags:
         - SSO Auth0
+  /internal/oauth/device/authorize:
+    post:
+      operationId: post-oauth-device-authorize
+      summary: Device authorization request
+      description: >-
+        Initiates a device authorization workflow, generating and returning a
+        unique device verification code.
+
+        See https://www.rfc-editor.org/rfc/rfc8628#section-3.1 for details.
+      requestBody:
+        $ref: '#/components/requestBodies/DeviceAuthorizationRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/DeviceAuthorizationResponse'
+        '400':
+          $ref: '#/components/responses/DeviceAuthorizationGrantAuthorizeBadRequest'
+      security:
+        - {}
+      tags:
+        - Device Authorization Grant
+  /internal/oauth/device/authorize/user:
+    post:
+      operationId: post-oauth-device-authorize-user
+      summary: User device authorization request
+      description: >-
+        Marks the device code as authorized and is a means to provide the
+        interactive UI flow with the necessary request metadata for the user to
+        confirm the request.
+      requestBody:
+        $ref: '#/components/requestBodies/DeviceAuthorizationUserRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/DeviceAuthorizationUserResponse'
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+      tags:
+        - Device Authorization Grant
+  /internal/oauth/device/confirm:
+    patch:
+      operationId: patch-oauth-device-confirm
+      summary: Device confirmation request
+      description: >-
+        Confirms the authorization request by marking the device code as
+        confirmed.
+      requestBody:
+        $ref: '#/components/requestBodies/DeviceConfirmationRequest'
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+      tags:
+        - Device Authorization Grant
+  /internal/oauth/device/token:
+    post:
+      operationId: post-oauth-device-token
+      summary: Device access token request
+      description: >-
+        This endpoint provides the machine client a means of being notified when
+        a request for authorization is granted or rejected. 
+
+        It is expected for the client to try the access token request repeatedly
+        in a polling fashion based on the error code in the response.
+
+        See https://www.rfc-editor.org/rfc/rfc8628#section-3.4 for details.
+      requestBody:
+        $ref: '#/components/requestBodies/DeviceAccessTokenRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/DeviceAccessTokenResponse'
+        '400':
+          $ref: '#/components/responses/DeviceAuthorizationGrantTokenBadRequest'
+      security:
+        - {}
+      tags:
+        - Device Authorization Grant
   /internal/system-accounts/{accountId}/assigned-roles:
     parameters:
       - schema:
@@ -576,6 +660,91 @@ components:
           example: Conflict
       allOf:
         - $ref: '#/components/schemas/BaseError'
+    BaseDeviceAuthorizationGrantBadRequest:
+      title: Base Device Authorization Grant Bad Request
+      type: object
+      properties:
+        error_description:
+          type: string
+          description: >-
+            Human-readable text providing additional information, used to assist
+            the client developer in understanding the error that occurred.
+        error_uri:
+          type: string
+          description: >-
+            A URI identifying a human-readable web page with information about
+            the error, used to provide the client developer with additional
+            information about the error.
+    DeviceAuthorizationGrantAuthorizeError:
+      title: Device Authorization Grant Authorize Error
+      type: object
+      description: The error response for the device authorization grant request.
+      properties:
+        error:
+          type: string
+          description: |-
+            A single error code from the following enum.
+
+              invalid_request
+                 The request is missing a required parameter, includes an unsupported parameter value (other than grant type),
+                 repeats a parameter, includes multiple credentials, utilizes more than one mechanism for authenticating the
+                 client, or is otherwise malformed.
+
+              invalid_client
+                 Client authentication failed (e.g., unknown client, no client authentication included, or unsupported
+                 authentication method).
+
+              invalid_grant
+                 The provided authorization grant (e.g., authorization code, resource owner credentials) or refresh token is
+                 invalid, expired, revoked, does not match the redirection URI used in the authorization request, or was issued to
+                 another client.
+
+              unauthorized_client
+                 The authenticated client is not authorized to use this authorization grant type.
+
+              unsupported_grant_type
+                 The authorization grant type is not supported by the authorization server.
+
+              invalid_scope
+                 The requested scope is invalid, unknown, malformed, or exceeds the scope granted by the resource owner.
+          enum:
+            - invalid_request
+            - invalid_client
+            - invalid_grant
+            - unauthorized_client
+            - unsupported_grant_type
+            - invalid_scope
+      required:
+        - error
+    DeviceAuthorizationGrantTokenError:
+      title: Device Authorization Grant Token Error
+      type: object
+      description: The error response for the device token request.
+      properties:
+        error:
+          type: string
+          description: |-
+            A single error code from the following enum.
+
+              authorization_pending
+                 The authorization request is still pending as the end user hasn't yet completed the user-interaction steps.
+
+              slow_down
+                 A variant of "authorization_pending", the authorization request is still pending and polling should continue, but the interval MUST
+                 be increased by 5 seconds for this and all subsequent requests.
+
+              access_denied
+                 The authorization request was denied.
+
+              expired_token
+                 The "device_code" has expired, and the device authorization session has concluded.
+          enum:
+            - authorization_pending
+            - slow_down
+            - access_denied
+            - expired_token
+      required:
+        - error
     Auth0Organization:
       title: Auth0 organization schema.
       type: object
@@ -1009,6 +1178,25 @@ components:
             ParameterizedAssignedRolesCollection:
               $ref: >-
                 #/components/examples/Parameterized-Assigned-Roles-Collection-Example
+    DeviceAuthorizationGrantAuthorizeBadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/BaseDeviceAuthorizationGrantBadRequest'
+              - $ref: '#/components/schemas/DeviceAuthorizationGrantAuthorizeError'
+    DeviceAuthorizationGrantTokenBadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/BaseDeviceAuthorizationGrantBadRequest'
+              - oneOf:
+                  - $ref: >-
+                      #/components/schemas/DeviceAuthorizationGrantAuthorizeError
+                  - $ref: '#/components/schemas/DeviceAuthorizationGrantTokenError'
     IdentityBadRequest:
       description: Bad Request
       content:
@@ -1199,6 +1387,96 @@ components:
                 type: string
                 description: UUID of the organization.
                 format: uuid
+    DeviceAuthorizationResponse:
+      description: Device authorization response
+      content:
+        application/json:
+          schema:
+            type: object
+            title: Device Authorization Response
+            properties:
+              device_code:
+                type: string
+                description: The device verification code.
+              user_code:
+                type: string
+                description: The end-user verification code.
+              verification_uri:
+                type: string
+                description: The end-user verification URI on the authorization server.
+              verification_uri_complete:
+                type: string
+                description: A verification URI that includes the "user_code".
+              expires_in:
+                type: integer
+                description: The lifetime in seconds of the "device_code" and "user_code".
+              interval:
+                type: integer
+                description: >-
+                  The minimum amount of time in seconds that the client should
+                  wait between polling requests to the token endpoint.
+            required:
+              - device_code
+              - user_code
+              - verification_uri
+              - expires_in
+            example:
+              device_code: GmRhmhcxhwAzkoEqiMEg_DnyEysNkuNhszIySk9eS
+              user_code: WDJB-MJHT
+              verification_uri: https://example.com/device
+              verification_uri_complete: https://example.com/device?user_code=WDJB-MJHT
+              expires_in: 1800
+              interval: 5
+    DeviceAccessTokenResponse:
+      description: Device access token response
+      content:
+        application/json:
+          schema:
+            type: object
+            title: Device Access Token Response
+            properties:
+              access_token:
+                type: string
+                description: The access token issued by the authorization server.
+              token_type:
+                type: string
+                description: The type of the token issued.
+              expires_in:
+                type: integer
+                description: The lifetime in seconds of the access token.
+              refresh_token:
+                type: string
+                description: >-
+                  The refresh token, which can be used to obtain new access
+                  tokens using the same authorization grant.
+              scope:
+                type: string
+                description: The scope of the access token.
+            required:
+              - access_token
+              - token_type
+              - expires_in
+            example:
+              access_token: 2YotnFZFEjr1zCsicMWpAA
+              token_type: Bearer
+              expires_in: 3600
+              refresh_token: tGzv3JOkF0XG5Qx2TlKWIA
+              scope: read write
+    DeviceAuthorizationUserResponse:
+      description: User device authorization response
+      content:
+        application/json:
+          schema:
+            type: object
+            title: User Device Authorization Response
+            properties:
+              device_metadata:
+                type: object
+                description: >-
+                  The device metadata to be displayed to the user for
+                  confirmation.
+            required:
+              - device_metadata
   requestBodies:
     Auth0Registration:
       content:
@@ -1312,6 +1590,77 @@ components:
           examples:
             Example Request Body:
               $ref: '#/components/examples/AWS-Resolve-Customer-Request'
+    DeviceAuthorizationRequest:
+      description: The request schema for the device authorization request.
+      required: true
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            type: object
+            properties:
+              client_id:
+                type: string
+                description: The client identifier.
+              scope:
+                type: string
+                description: The scope of the access request.
+            required:
+              - client_id
+    DeviceAccessTokenRequest:
+      description: The request schema for the device access token request.
+      required: true
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            type: object
+            properties:
+              grant_type:
+                type: string
+                description: >-
+                  Value MUST be set to
+                  "urn:ietf:params:oauth:grant-type:device_code".
+              device_code:
+                type: string
+                description: >-
+                  The device verification code, "device_code" from the device
+                  authorization response.
+              client_id:
+                type: string
+                description: The client identifier.
+            required:
+              - grant_type
+              - device_code
+              - client_id
+    DeviceAuthorizationUserRequest:
+      description: The request schema for the user device authorization request.
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              client_id:
+                type: string
+                description: The device client identifier.
+              user_code:
+                type: string
+                description: The end-user device verification code.
+            required:
+              - client_id
+              - user_code
+    DeviceConfirmationRequest:
+      description: The request schema for the device confirmation request.
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              user_code:
+                type: string
+                description: The end-user device verification code.
+            required:
+              - user_code
   securitySchemes:
     personalAccessToken:
       type: http
@@ -1361,3 +1710,5 @@ tags:
   - name: Managed System Accounts - Roles
   - name: Authentication
   - name: AWS
+  - name: Device Authorization Grant
+  - name: SSO Auth0

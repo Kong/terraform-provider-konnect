@@ -532,3 +532,14 @@ overrides:
       validation-error-invalid-parameters-aip-193: "off"
       errors-post-not-contain-200: "off"
       paths-kebab-case-aip-122: "off"
+
+  # Device Authorization Grant APIs following RFC 8628
+  #  See https://www.rfc-editor.org/rfc/rfc8628
+  - files: # /internal/oauth/device
+      - "src/konnect/definitions/identity/v3/**/openapi.yaml#/paths/~1internal~1oauth~1device~1authorize/post/responses"
+      - "src/konnect/definitions/identity/v3/**/openapi.yaml#/paths/~1internal~1oauth~1device~1token/post/responses"
+      - "src/konnect/definitions/identity/v3/**/openapi.yaml#/components/responses/DeviceAuthorizationGrantAuthorizeBadRequest"
+      - "src/konnect/definitions/identity/v3/**/openapi.yaml#/components/responses/DeviceAuthorizationGrantTokenBadRequest"
+    rules:
+      errors-problem-json-aip-193: "off"
+      errors-post-not-contain-200: "off"
