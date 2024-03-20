@@ -360,12 +360,18 @@ overrides:
     - "src/portal/definitions/products/**/openapi.yaml#/components/schemas/Text"
     - "src/konnect/definitions/api-products/**/openapi.yaml#/components/schemas/Text"
     - "src/konnect/definitions/api-products/**/openapi.yaml#/components/schemas/ListBlock"
+    - "src/konnect/definitions/servicehub/**/openapi.yaml#/components/schemas/IntegrationDataFieldFilter"
+    - "src/konnect/definitions/servicehub/**/openapi.yaml#/components/schemas/DiscoveredEntityFilterParameters"
+    - "src/konnect/definitions/servicehub/**/openapi.yaml#/components/schemas/DiscoveryActionFilterParameters"
+    - "src/konnect/definitions/servicehub/**/openapi.yaml#/components/schemas/DiscoverySuggestionRuleFilterParameters"
+    - "src/konnect/definitions/servicehub/**/openapi.yaml#/components/schemas/SuggestedDiscoveryActionFilterParameters"
     rules:
       properties-snake-case-aip-122: "off"
   - files:
     # verify domain override
     - "src/konnect/definitions/portal-management/v2/**/openapi.yaml#/paths/~1portals~1%7BportalId%7D~1verify-domain/post/responses"
     - "src/konnect/definitions/application-auth-strategies/v2/**/openapi.yaml#/paths"
+    - "src/konnect/definitions/servicehub/**/openapi.yaml#/paths/~1discovery~1integration~1%7Bintegration%7D~1suggestion-rules~1test/post/responses"
     rules:
       errors-post-not-contain-200: "off"
   - files:
@@ -543,3 +549,11 @@ overrides:
     rules:
       errors-problem-json-aip-193: "off"
       errors-post-not-contain-200: "off"
+  - files:
+      - "src/konnect/definitions/servicehub/**/openapi.yaml#/components/schemas/EnumConfigFieldSchema"
+    rules:
+      oas3-valid-schema-example: "off"
+  - files:
+       - "src/konnect/definitions/servicehub/**/openapi.yaml#/components/schemas/Revision"
+    rules:
+      blocked-field-names: "off"

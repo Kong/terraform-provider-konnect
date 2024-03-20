@@ -20,3 +20,6 @@ src/konnect/definitions/control-planes/**           @Kong/team-konnectx-be
 src/konnect/definitions/control-planes-config/**    @Kong/team-konnectx-be
 src/konnect/definitions/runtime-groups/**           @Kong/team-konnectx-be
 src/konnect/definitions/runtime-groups-config/**    @Kong/team-konnectx-be
+
+# ServiceHub
+src/konnect/definitions/servicehub/**               @Kong/team-servicehub

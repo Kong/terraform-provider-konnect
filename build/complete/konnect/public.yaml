@@ -8514,9 +8514,7 @@ components:
           contains: some-value
     StringFieldOContainsFilter:
       title: StringFieldOContainsFilter
-      description: >-
-        Returns entities that fuzzy-match any of the comma-delimited phrases in
-        the filter string.
+      description: Filters on the union of given string values by fuzzy match.
       type: object
       additionalProperties: false
       properties:
@@ -8526,12 +8524,10 @@ components:
         - ocontains
       x-examples:
         example-1:
-          ocontains: this-value,or-that-value
+          ocontains: dev,prod
     StringFieldOEQFilter:
       title: StringFieldOEQFilter
-      description: >-
-        Returns entities that exact match any of the comma-delimited phrases in
-        the filter string.
+      description: Filters on the given comma separated string by one or more exact match.
       type: object
       additionalProperties: false
       properties:
@@ -8550,11 +8546,14 @@ components:
       properties:
         neq:
           type: string
+        oeq:
+          type: string
       required:
         - neq
       x-examples:
         example-1:
           neq: not-this-value
+          oeq: not-this-value
     StringFieldFilter:
       title: StringFieldFilter
       description: Filters on the given string field value by either exact or fuzzy match.
@@ -8596,17 +8595,37 @@ components:
           type: number
           example: 100
     CreatedAt:
-      type: string
+      type: object
       format: date-time
       example: '2022-11-04T20:10:06.927Z'
       description: An ISO-8601 timestamp representation of entity creation date.
       readOnly: true
+      title: CreatedAt
+      properties:
+        created_at:
+          $ref: '#/components/schemas/CreatedAtProperties'
+      required:
+        - created_at
     UpdatedAt:
-      type: string
+      type: object
       format: date-time
       example: '2022-11-04T20:10:06.927Z'
       description: An ISO-8601 timestamp representation of entity update date.
       readOnly: true
+      title: UpdatedAt
+      properties:
+        updated_at:
+          type: string
+          format: date-time
+          example: '2022-06-21T17:20:12Z'
+          description: >
+            The timestamp denoting when the entity was last updated.
+
+            RFC-3339 format is used with a "T" character separating date from
+            time within the field value.
+          readOnly: true
+      required:
+        - updated_at
     InvalidRules:
       description: invalid parameters rules
       type: string
@@ -8753,7 +8772,7 @@ components:
     DocumentTree:
       type: object
       title: DocumentTree
-      description: a document tree
+      description: Document tree schema used in list documents response
       required:
         - id
         - title
@@ -8797,6 +8816,56 @@ components:
               children: []
           items:
             $ref: '#/components/schemas/DocumentTree'
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              example: 6c1118d3-0fe3-4695-ae55-84d6ea020916
+              description: The document ID.
+            parent_document_id:
+              type: string
+              format: uuid
+              example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
+              description: The ID of the parent document.
+              nullable: true
+            slug:
+              $ref: '#/components/schemas/Slug'
+            title:
+              type: string
+              description: document title
+              example: How to create a document in Service Hub.
+            filename:
+              type: string
+              description: The name of the uploaded file
+              example: my_doc.md
+            metadata:
+              type: object
+              description: Contains key value pairs information about document's metadata.
+              example:
+                author: John Doe
+            children:
+              type: array
+              description: children of the document
+              items:
+                $ref: '#/components/schemas/DocumentTree'
+              example:
+                - id: d32d905a-ed33-46a3-a093-d8f536af9a8a
+                  title: Hello world
+                  status: published
+                  slug: hello-world
+                  metadata:
+                    author: John Doe
+                  children: []
+          required:
+            - id
+            - title
+            - slug
+            - filename
+            - metadata
+            - children
+        - $ref: '#/components/schemas/EntityTimeFields'
     ChildNode:
       type: object
       oneOf:
@@ -8842,6 +8911,14 @@ components:
           maximum: 6
         children:
           $ref: '#/components/schemas/NodeChildren'
+      allOf:
+        - type: object
+          properties:
+            level:
+              description: Level of the heading which maps to HTML <h> tag
+              type: number
+              minimum: 1
+              maximum: 6
     BlockQuoteBlock:
       type: object
       required:
@@ -8853,6 +8930,7 @@ components:
             - blockquote
         children:
           $ref: '#/components/schemas/NodeChildren'
+      allOf: []
     ParagraphBlock:
       type: object
       required:
@@ -8864,6 +8942,7 @@ components:
             - paragraph
         children:
           $ref: '#/components/schemas/NodeChildren'
+      allOf: []
     TextBlock:
       type: object
       required:
@@ -8875,6 +8954,7 @@ components:
             - text_block
         children:
           $ref: '#/components/schemas/NodeChildren'
+      allOf: []
     BreakBlock:
       type: object
       required:
@@ -8886,6 +8966,7 @@ components:
             - break
         children:
           $ref: '#/components/schemas/NodeChildren'
+      allOf: []
     CodeBlock:
       type: object
       required:
@@ -8899,6 +8980,11 @@ components:
           type: string
         children:
           $ref: '#/components/schemas/NodeChildren'
+      allOf:
+        - type: object
+          properties:
+            lang:
+              type: string
     ListBlock:
       type: object
       required:
@@ -8913,6 +8999,12 @@ components:
           type: boolean
         children:
           $ref: '#/components/schemas/NodeChildren'
+      allOf:
+        - type: object
+          properties:
+            isOrdered:
+              description: Defines if the list is ordered or not
+              type: boolean
     ListItemBlock:
       type: object
       required:
@@ -8924,6 +9016,7 @@ components:
             - list_item
         children:
           $ref: '#/components/schemas/NodeChildren'
+      allOf: []
     Text:
       type: object
       required:
@@ -8949,6 +9042,31 @@ components:
           type: boolean
         children:
           $ref: '#/components/schemas/NodeChildren'
+      allOf:
+        - $ref: '#/components/schemas/BaseNode'
+        - type: object
+          properties:
+            text:
+              type: string
+            hardBreak:
+              description: >
+                If this property is true the end of this block should
+
+                be a carriage return and not concatenated to the next Text
+                block.
+              type: boolean
+            softBreak:
+              description: >
+                If this property is true the end of this block should should be
+
+                concatenated with a space caracter before the next block. This
+                is
+
+                the flag showing that the parsed markdown block was at the end
+                of
+
+                the line.
+              type: boolean
     Emphasis:
       type: object
       required:
@@ -8968,6 +9086,18 @@ components:
             2 - bold
         children:
           $ref: '#/components/schemas/NodeChildren'
+      allOf:
+        - $ref: '#/components/schemas/BaseNode'
+        - type: object
+          properties:
+            level:
+              type: number
+              minimum: 1
+              maximum: 2
+              description: |
+                Level of emphasis
+                1 - italic
+                2 - bold
     Code:
       type: object
       required:
@@ -8979,6 +9109,8 @@ components:
             - code
         children:
           $ref: '#/components/schemas/NodeChildren'
+      allOf:
+        - $ref: '#/components/schemas/BaseNode'
     Link:
       type: object
       required:
@@ -8994,6 +9126,16 @@ components:
         title:
           description: Title of the link
           type: string
+      allOf:
+        - $ref: '#/components/schemas/BaseNode'
+        - type: object
+          properties:
+            href:
+              description: Target url of the link
+              type: string
+            title:
+              description: Title of the link
+              type: string
     Image:
       type: object
       required:
@@ -9012,6 +9154,19 @@ components:
         title:
           description: Title of the image
           type: string
+      allOf:
+        - $ref: '#/components/schemas/BaseNode'
+        - type: object
+          properties:
+            url:
+              description: Url of the image
+              type: string
+            alt:
+              description: Alternate tag of the image
+              type: string
+            title:
+              description: Title of the image
+              type: string
     StrikeThrough:
       type: object
       required:
@@ -9021,6 +9176,8 @@ components:
           type: string
           enum:
             - strikethrough
+      allOf:
+        - $ref: '#/components/schemas/BaseNode'
     AlignmentKind:
       type: string
       enum:
@@ -9029,10 +9186,18 @@ components:
         - center
         - none
     TableAlignments:
-      type: array
+      type: object
       nullable: true
       items:
         $ref: '#/components/schemas/AlignmentKind'
+      properties:
+        alignments:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/AlignmentKind'
+      required:
+        - alignments
     TableBlock:
       type: object
       required:
@@ -9047,6 +9212,8 @@ components:
           $ref: '#/components/schemas/TableAlignments'
         children:
           $ref: '#/components/schemas/NodeChildren'
+      allOf:
+        - $ref: '#/components/schemas/TableAlignments'
     TableHeaderBlock:
       type: object
       required:
@@ -9061,6 +9228,8 @@ components:
           $ref: '#/components/schemas/TableAlignments'
         children:
           $ref: '#/components/schemas/NodeChildren'
+      allOf:
+        - $ref: '#/components/schemas/TableAlignments'
     TableCellBlock:
       type: object
       required:
@@ -9074,6 +9243,11 @@ components:
           $ref: '#/components/schemas/AlignmentKind'
         children:
           $ref: '#/components/schemas/NodeChildren'
+      allOf:
+        - type: object
+          properties:
+            alignment:
+              $ref: '#/components/schemas/AlignmentKind'
     TableRowBlock:
       type: object
       required:
@@ -9088,6 +9262,8 @@ components:
           $ref: '#/components/schemas/TableAlignments'
         children:
           $ref: '#/components/schemas/NodeChildren'
+      allOf:
+        - $ref: '#/components/schemas/TableAlignments'
     TaskCheckbox:
       type: object
       required:
@@ -9101,6 +9277,15 @@ components:
         checked:
           type: boolean
           description: State of the checkbox
+      allOf:
+        - $ref: '#/components/schemas/BaseNode'
+        - type: object
+          properties:
+            checked:
+              type: boolean
+              description: State of the checkbox
+          required:
+            - checked
     ConflictError:
       type: object
       properties:
@@ -14666,6 +14851,32 @@ components:
         must be a data URL with base64 image data, e.g.,
         data:image/jpeg;base64,<BASE64_IMAGE_DATA>
       example: data:image/png,YW5faW1hZ2VfZmlsZQ==
+    EntityTimeFields:
+      allOf:
+        - $ref: '#/components/schemas/CreatedAt'
+        - $ref: '#/components/schemas/UpdatedAt'
+    Slug:
+      type: string
+      description: document slug
+      pattern: ^[\w-]+$
+      maxLength: 80
+    CreatedAtProperties:
+      type: string
+      format: date-time
+      example: '2022-03-30T07:20:50Z'
+      description: >
+        The timestamp denoting when the entity was created.
+
+        RFC-3339 format is used with a "T" character separating date from time
+        within the field value.
+      readOnly: true
+    BaseNode:
+      type: object
+      required:
+        - type
+      properties:
+        type:
+          type: string
   examples:
     BadRequestExample:
       value:
