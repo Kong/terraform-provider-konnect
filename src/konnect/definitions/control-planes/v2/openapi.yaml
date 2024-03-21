@@ -435,7 +435,6 @@ components:
             required:
               - meta
               - data
-          examples: {}
     ControlPlanesBadRequest:
       description: Bad Request
       content:
