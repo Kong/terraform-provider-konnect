@@ -1475,6 +1475,37 @@ components:
                 description: >-
                   The device metadata to be displayed to the user for
                   confirmation.
+                properties:
+                  client:
+                    type: string
+                    description: The requesting application human name.
+                  user_agent:
+                    type: string
+                    description: >-
+                      The device's user agent used to perform the device
+                      authorization grant request.
+                  source_ip:
+                    type: string
+                    description: >-
+                      The IP address of the device used to perform the device
+                      authorization grant request.
+                  requested_at:
+                    type: string
+                    format: date-time
+                    description: >-
+                      The time stamp for the date the device authorization
+                      request was made.
+                    example: '2022-02-07T17:46:57.52Z'
+                required:
+                  - client
+                  - user_agent
+                  - source_ip
+                  - requested_at
+                example:
+                  client: Konnect CLI
+                  user_agent: kconnectctl/0.12
+                  source_ip: 192.158.1.38
+                  requested_at: '2022-02-07T17:46:57.52Z'
             required:
               - device_metadata
   requestBodies:
