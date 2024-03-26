@@ -11,6 +11,7 @@ on:
 
 jobs:
   generate-docs:
+    timeout-minutes: 10
     name: Generates all OAS Docs Files
     runs-on: ubuntu-latest
 
