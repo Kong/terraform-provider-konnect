@@ -875,6 +875,8 @@ components:
         dcr_config:
           type: object
           description: The DCR configuration for this DCR provider.
+        labels:
+          $ref: '../../../../common/definitions/konnect_properties.yaml#/components/schemas/Labels'
         created_at:
           $ref: '../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
         updated_at:
@@ -1015,6 +1017,8 @@ components:
           type: string
           format: url
           maxLength: 256
+        labels:
+          $ref: '../../../../common/definitions/konnect_properties.yaml#/components/schemas/Labels'
     CreateDcrProviderRequestAzureAd:
       title: CreateDcrProviderRequestAzureAd
       type: object
@@ -1039,6 +1043,8 @@ components:
           type: string
           format: url
           maxLength: 256
+        labels:
+          $ref: '../../../../common/definitions/konnect_properties.yaml#/components/schemas/Labels'
     CreateDcrProviderRequestCurity:
       title: CreateDcrProviderRequestCurity
       type: object
@@ -1063,6 +1069,8 @@ components:
           type: string
           format: url
           maxLength: 256
+        labels:
+          $ref: '../../../../common/definitions/konnect_properties.yaml#/components/schemas/Labels'
     CreateDcrProviderRequestOkta:
       title: CreateDcrProviderRequestOkta
       type: object
@@ -1087,6 +1095,8 @@ components:
           type: string
           format: url
           maxLength: 256
+        labels:
+          $ref: '../../../../common/definitions/konnect_properties.yaml#/components/schemas/Labels'
     CreateDcrProviderRequestHttp:
       title: CreateDcrProviderRequestHttp
       type: object
@@ -1111,6 +1121,8 @@ components:
           type: string
           format: url
           maxLength: 256
+        labels:
+          $ref: '../../../../common/definitions/konnect_properties.yaml#/components/schemas/Labels'
     CreateDcrProviderRequest:
       title: CreateDcrProviderRequest
       description: Request body for creating a DCR provider. The provider_type cannot be updated after creation.
@@ -1137,6 +1149,8 @@ components:
           type: string
           format: url
           maxLength: 256
+        labels:
+          $ref: '../../../../common/definitions/konnect_properties.yaml#/components/schemas/LabelsUpdate'
         dcr_config:
           anyOf:
             - $ref: '#/components/schemas/UpdateDcrConfigAuth0InRequest'
