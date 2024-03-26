@@ -11,6 +11,7 @@ on:
 
 jobs:
   all-client-v2-axios-npm:
+    timeout-minutes: 10
     name: Publish Dev, Internal and Public packages to NPM
 
     runs-on: ubuntu-latest
