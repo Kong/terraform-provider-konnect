@@ -8933,14 +8933,6 @@ components:
           maximum: 6
         children:
           $ref: '#/components/schemas/NodeChildren'
-      allOf:
-        - type: object
-          properties:
-            level:
-              description: Level of the heading which maps to HTML <h> tag
-              type: number
-              minimum: 1
-              maximum: 6
     BlockQuoteBlock:
       type: object
       required:
@@ -8952,7 +8944,6 @@ components:
             - blockquote
         children:
           $ref: '#/components/schemas/NodeChildren'
-      allOf: []
     ParagraphBlock:
       type: object
       required:
@@ -8964,7 +8955,6 @@ components:
             - paragraph
         children:
           $ref: '#/components/schemas/NodeChildren'
-      allOf: []
     TextBlock:
       type: object
       required:
@@ -8976,7 +8966,6 @@ components:
             - text_block
         children:
           $ref: '#/components/schemas/NodeChildren'
-      allOf: []
     BreakBlock:
       type: object
       required:
@@ -8988,7 +8977,6 @@ components:
             - break
         children:
           $ref: '#/components/schemas/NodeChildren'
-      allOf: []
     CodeBlock:
       type: object
       required:
@@ -9002,11 +8990,6 @@ components:
           type: string
         children:
           $ref: '#/components/schemas/NodeChildren'
-      allOf:
-        - type: object
-          properties:
-            lang:
-              type: string
     ListBlock:
       type: object
       required:
@@ -9021,12 +9004,6 @@ components:
           type: boolean
         children:
           $ref: '#/components/schemas/NodeChildren'
-      allOf:
-        - type: object
-          properties:
-            isOrdered:
-              description: Defines if the list is ordered or not
-              type: boolean
     ListItemBlock:
       type: object
       required:
@@ -9038,7 +9015,6 @@ components:
             - list_item
         children:
           $ref: '#/components/schemas/NodeChildren'
-      allOf: []
     Text:
       type: object
       required:
@@ -9064,31 +9040,6 @@ components:
           type: boolean
         children:
           $ref: '#/components/schemas/NodeChildren'
-      allOf:
-        - $ref: '#/components/schemas/BaseNode'
-        - type: object
-          properties:
-            text:
-              type: string
-            hardBreak:
-              description: >
-                If this property is true the end of this block should
-
-                be a carriage return and not concatenated to the next Text
-                block.
-              type: boolean
-            softBreak:
-              description: >
-                If this property is true the end of this block should should be
-
-                concatenated with a space caracter before the next block. This
-                is
-
-                the flag showing that the parsed markdown block was at the end
-                of
-
-                the line.
-              type: boolean
     Emphasis:
       type: object
       required:
@@ -9108,18 +9059,6 @@ components:
             2 - bold
         children:
           $ref: '#/components/schemas/NodeChildren'
-      allOf:
-        - $ref: '#/components/schemas/BaseNode'
-        - type: object
-          properties:
-            level:
-              type: number
-              minimum: 1
-              maximum: 2
-              description: |
-                Level of emphasis
-                1 - italic
-                2 - bold
     Code:
       type: object
       required:
@@ -9131,8 +9070,6 @@ components:
             - code
         children:
           $ref: '#/components/schemas/NodeChildren'
-      allOf:
-        - $ref: '#/components/schemas/BaseNode'
     Link:
       type: object
       required:
@@ -9148,16 +9085,6 @@ components:
         title:
           description: Title of the link
           type: string
-      allOf:
-        - $ref: '#/components/schemas/BaseNode'
-        - type: object
-          properties:
-            href:
-              description: Target url of the link
-              type: string
-            title:
-              description: Title of the link
-              type: string
     Image:
       type: object
       required:
@@ -9176,19 +9103,6 @@ components:
         title:
           description: Title of the image
           type: string
-      allOf:
-        - $ref: '#/components/schemas/BaseNode'
-        - type: object
-          properties:
-            url:
-              description: Url of the image
-              type: string
-            alt:
-              description: Alternate tag of the image
-              type: string
-            title:
-              description: Title of the image
-              type: string
     StrikeThrough:
       type: object
       required:
@@ -9198,8 +9112,6 @@ components:
           type: string
           enum:
             - strikethrough
-      allOf:
-        - $ref: '#/components/schemas/BaseNode'
     AlignmentKind:
       type: string
       enum:
@@ -9208,18 +9120,10 @@ components:
         - center
         - none
     TableAlignments:
-      type: object
+      type: array
       nullable: true
       items:
         $ref: '#/components/schemas/AlignmentKind'
-      properties:
-        alignments:
-          type: array
-          nullable: true
-          items:
-            $ref: '#/components/schemas/AlignmentKind'
-      required:
-        - alignments
     TableBlock:
       type: object
       required:
@@ -9234,8 +9138,6 @@ components:
           $ref: '#/components/schemas/TableAlignments'
         children:
           $ref: '#/components/schemas/NodeChildren'
-      allOf:
-        - $ref: '#/components/schemas/TableAlignments'
     TableHeaderBlock:
       type: object
       required:
@@ -9250,8 +9152,6 @@ components:
           $ref: '#/components/schemas/TableAlignments'
         children:
           $ref: '#/components/schemas/NodeChildren'
-      allOf:
-        - $ref: '#/components/schemas/TableAlignments'
     TableCellBlock:
       type: object
       required:
@@ -9265,11 +9165,6 @@ components:
           $ref: '#/components/schemas/AlignmentKind'
         children:
           $ref: '#/components/schemas/NodeChildren'
-      allOf:
-        - type: object
-          properties:
-            alignment:
-              $ref: '#/components/schemas/AlignmentKind'
     TableRowBlock:
       type: object
       required:
@@ -9284,8 +9179,6 @@ components:
           $ref: '#/components/schemas/TableAlignments'
         children:
           $ref: '#/components/schemas/NodeChildren'
-      allOf:
-        - $ref: '#/components/schemas/TableAlignments'
     TaskCheckbox:
       type: object
       required:
@@ -9299,15 +9192,6 @@ components:
         checked:
           type: boolean
           description: State of the checkbox
-      allOf:
-        - $ref: '#/components/schemas/BaseNode'
-        - type: object
-          properties:
-            checked:
-              type: boolean
-              description: State of the checkbox
-          required:
-            - checked
     ConflictError:
       type: object
       properties:
@@ -14912,13 +14796,6 @@ components:
         RFC-3339 format is used with a "T" character separating date from time
         within the field value.
       readOnly: true
-    BaseNode:
-      type: object
-      required:
-        - type
-      properties:
-        type:
-          type: string
   examples:
     BadRequestExample:
       value:

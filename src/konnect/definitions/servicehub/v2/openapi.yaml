@@ -2423,7 +2423,7 @@ components:
           example: 6c1118d3-0fe3-4695-ae55-84d6ea020916
           description: The document ID.
         content:
-          $ref: '#/components/schemas/DocumentBlock'
+          $ref: '#/components/schemas/ServicehubDocumentBlock'
         metadata:
           type: object
           description: Contains key value pairs information about document's metadata.
@@ -4543,16 +4543,16 @@ components:
            - `filter[labels.env][ocontains]=dev,test`
       oneOf:
         - $ref: '#/components/schemas/StringFieldFilter'
-    BaseNode:
+    ServicehubBaseNode:
       type: object
       required:
         - type
       properties:
         type:
           type: string
-    DocumentBlock:
+    ServicehubDocumentBlock:
       allOf:
-        - $ref: '#/components/schemas/BlockNode'
+        - $ref: '#/components/schemas/ServicehubBlockNode'
         - type: object
           properties:
             version:
@@ -4565,21 +4565,21 @@ components:
             content:
               - type: text
                 text: Hello World
-    BlockNode:
+    ServicehubBlockNode:
       x-internal: true
       x-unstable: true
       allOf:
-        - $ref: '#/components/schemas/BaseNode'
+        - $ref: '#/components/schemas/ServicehubBaseNode'
         - type: object
           properties:
             children:
               description: List of children nodes of the current node
               type: array
               items:
-                $ref: '#/components/schemas/AnyNode'
-    HeadingBlock:
+                $ref: '#/components/schemas/ServicehubAnyNode'
+    ServicehubHeadingBlock:
       allOf:
-        - $ref: '#/components/schemas/BlockNode'
+        - $ref: '#/components/schemas/ServicehubBlockNode'
         - type: object
           properties:
             level:
@@ -4587,40 +4587,40 @@ components:
               type: number
               minimum: 1
               maximum: 6
-    BlockQuoteBlock:
+    ServiceHubBlockQuoteBlock:
       allOf:
-        - $ref: '#/components/schemas/BlockNode'
-    ParagraphBlock:
+        - $ref: '#/components/schemas/ServicehubBlockNode'
+    ServicehubParagraphBlock:
       allOf:
-        - $ref: '#/components/schemas/BlockNode'
-    TextBlock:
+        - $ref: '#/components/schemas/ServicehubBlockNode'
+    ServicehubTextBlock:
       allOf:
-        - $ref: '#/components/schemas/BlockNode'
-    BreakBlock:
+        - $ref: '#/components/schemas/ServicehubBlockNode'
+    ServicehubBreakBlock:
       allOf:
-        - $ref: '#/components/schemas/BlockNode'
-    CodeBlock:
+        - $ref: '#/components/schemas/ServicehubBlockNode'
+    ServicehubCodeBlock:
       allOf:
-        - $ref: '#/components/schemas/BlockNode'
+        - $ref: '#/components/schemas/ServicehubBlockNode'
         - type: object
           properties:
             lang:
               type: string
-    ListBlock:
+    ServicehubListBlock:
       allOf:
-        - $ref: '#/components/schemas/BlockNode'
+        - $ref: '#/components/schemas/ServicehubBlockNode'
         - type: object
           properties:
             isOrdered:
               description: Defines if the list is ordered or not
               type: boolean
-    ListItemBlock:
+    ServicehubListItemBlock:
       allOf:
-        - $ref: '#/components/schemas/BlockNode'
-    Text:
+        - $ref: '#/components/schemas/ServicehubBlockNode'
+    ServicehubText:
       allOf:
-        - $ref: '#/components/schemas/BaseNode'
-        - $ref: '#/components/schemas/BlockNode'
+        - $ref: '#/components/schemas/ServicehubBaseNode'
+        - $ref: '#/components/schemas/ServicehubBlockNode'
         - type: object
           properties:
             text:
@@ -4644,10 +4644,10 @@ components:
 
                 the line.
               type: boolean
-    Emphasis:
+    ServicehubEmphasis:
       allOf:
-        - $ref: '#/components/schemas/BaseNode'
-        - $ref: '#/components/schemas/BlockNode'
+        - $ref: '#/components/schemas/ServicehubBaseNode'
+        - $ref: '#/components/schemas/ServicehubBlockNode'
         - type: object
           properties:
             level:
@@ -4658,13 +4658,13 @@ components:
                 Level of emphasis
                 1 - italic
                 2 - bold
-    Code:
+    ServicehubCode:
       allOf:
-        - $ref: '#/components/schemas/BaseNode'
-        - $ref: '#/components/schemas/BlockNode'
-    Link:
+        - $ref: '#/components/schemas/ServicehubBaseNode'
+        - $ref: '#/components/schemas/ServicehubBlockNode'
+    ServicehubLink:
       allOf:
-        - $ref: '#/components/schemas/BaseNode'
+        - $ref: '#/components/schemas/ServicehubBaseNode'
         - type: object
           properties:
             href:
@@ -4673,9 +4673,9 @@ components:
             title:
               description: Title of the link
               type: string
-    Image:
+    ServicehubImage:
       allOf:
-        - $ref: '#/components/schemas/BaseNode'
+        - $ref: '#/components/schemas/ServicehubBaseNode'
         - type: object
           properties:
             url:
@@ -4687,12 +4687,12 @@ components:
             title:
               description: Title of the image
               type: string
-    StrikeThrough:
+    ServicehubStrikeThrough:
       allOf:
-        - $ref: '#/components/schemas/BaseNode'
-    TaskCheckbox:
+        - $ref: '#/components/schemas/ServicehubBaseNode'
+    ServicehubTaskCheckbox:
       allOf:
-        - $ref: '#/components/schemas/BaseNode'
+        - $ref: '#/components/schemas/ServicehubBaseNode'
         - type: object
           properties:
             checked:
@@ -4700,89 +4700,89 @@ components:
               description: State of the checkbox
           required:
             - checked
-    AlignmentKind:
+    ServicehubAlignmentKind:
       type: string
       enum:
         - left
         - right
         - center
         - none
-    TableAlignments:
+    ServicehubTableAlignments:
       type: object
       properties:
         alignments:
           type: array
           nullable: true
           items:
-            $ref: '#/components/schemas/AlignmentKind'
+            $ref: '#/components/schemas/ServicehubAlignmentKind'
       required:
         - alignments
-    TableBlock:
+    ServicehubTableBlock:
       allOf:
-        - $ref: '#/components/schemas/BlockNode'
-        - $ref: '#/components/schemas/TableAlignments'
-    TableHeaderBlock:
+        - $ref: '#/components/schemas/ServicehubBlockNode'
+        - $ref: '#/components/schemas/ServicehubTableAlignments'
+    ServicehubTableHeaderBlock:
       allOf:
-        - $ref: '#/components/schemas/BlockNode'
-        - $ref: '#/components/schemas/TableAlignments'
-    TableCellBlock:
+        - $ref: '#/components/schemas/ServicehubBlockNode'
+        - $ref: '#/components/schemas/ServicehubTableAlignments'
+    ServicehubTableCellBlock:
       allOf:
-        - $ref: '#/components/schemas/BlockNode'
+        - $ref: '#/components/schemas/ServicehubBlockNode'
         - type: object
           properties:
             alignment:
-              $ref: '#/components/schemas/AlignmentKind'
-    TableRowBlock:
+              $ref: '#/components/schemas/ServicehubAlignmentKind'
+    ServicehubTableRowBlock:
       allOf:
-        - $ref: '#/components/schemas/BlockNode'
-        - $ref: '#/components/schemas/TableAlignments'
-    AnyNode:
+        - $ref: '#/components/schemas/ServicehubBlockNode'
+        - $ref: '#/components/schemas/ServicehubTableAlignments'
+    ServicehubAnyNode:
       x-internal: true
       x-unstable: true
       oneOf:
-        - $ref: '#/components/schemas/DocumentBlock'
-        - $ref: '#/components/schemas/HeadingBlock'
-        - $ref: '#/components/schemas/BlockQuoteBlock'
-        - $ref: '#/components/schemas/ParagraphBlock'
-        - $ref: '#/components/schemas/TextBlock'
-        - $ref: '#/components/schemas/BreakBlock'
-        - $ref: '#/components/schemas/CodeBlock'
-        - $ref: '#/components/schemas/ListBlock'
-        - $ref: '#/components/schemas/ListItemBlock'
-        - $ref: '#/components/schemas/Text'
-        - $ref: '#/components/schemas/Emphasis'
-        - $ref: '#/components/schemas/Code'
-        - $ref: '#/components/schemas/Link'
-        - $ref: '#/components/schemas/Image'
-        - $ref: '#/components/schemas/StrikeThrough'
-        - $ref: '#/components/schemas/TableBlock'
-        - $ref: '#/components/schemas/TableHeaderBlock'
-        - $ref: '#/components/schemas/TableCellBlock'
-        - $ref: '#/components/schemas/TableRowBlock'
-        - $ref: '#/components/schemas/TaskCheckbox'
+        - $ref: '#/components/schemas/ServicehubDocumentBlock'
+        - $ref: '#/components/schemas/ServicehubHeadingBlock'
+        - $ref: '#/components/schemas/ServiceHubBlockQuoteBlock'
+        - $ref: '#/components/schemas/ServicehubParagraphBlock'
+        - $ref: '#/components/schemas/ServicehubTextBlock'
+        - $ref: '#/components/schemas/ServicehubBreakBlock'
+        - $ref: '#/components/schemas/ServicehubCodeBlock'
+        - $ref: '#/components/schemas/ServicehubListBlock'
+        - $ref: '#/components/schemas/ServicehubListItemBlock'
+        - $ref: '#/components/schemas/ServicehubText'
+        - $ref: '#/components/schemas/ServicehubEmphasis'
+        - $ref: '#/components/schemas/ServicehubCode'
+        - $ref: '#/components/schemas/ServicehubLink'
+        - $ref: '#/components/schemas/ServicehubImage'
+        - $ref: '#/components/schemas/ServicehubStrikeThrough'
+        - $ref: '#/components/schemas/ServicehubTableBlock'
+        - $ref: '#/components/schemas/ServicehubTableHeaderBlock'
+        - $ref: '#/components/schemas/ServicehubTableCellBlock'
+        - $ref: '#/components/schemas/ServicehubTableRowBlock'
+        - $ref: '#/components/schemas/ServicehubTaskCheckbox'
       discriminator:
         propertyName: type
         mapping:
-          document: '#/components/schemas/DocumentBlock'
-          heading: '#/components/schemas/HeadingBlock'
-          blockquote: '#/components/schemas/BlockQuoteBlock'
-          paragraph: '#/components/schemas/ParagraphBlock'
-          text_block: '#/components/schemas/TextBlock'
-          break: '#/components/schemas/BreakBlock'
-          code_block: '#/components/schemas/CodeBlock'
-          list: '#/components/schemas/ListBlock'
-          list_item: '#/components/schemas/ListItemBlock'
-          text: '#/components/schemas/Text'
-          emphasis: '#/components/schemas/Emphasis'
-          code: '#/components/schemas/Code'
-          link: '#/components/schemas/Link'
-          image: '#/components/schemas/Image'
-          strikethrough: '#/components/schemas/StrikeThrough'
-          task_checkbox: '#/components/schemas/TaskCheckbox'
-          table: '#/components/schemas/TableBlock'
-          table_header: '#/components/schemas/TableHeaderBlock'
-          table_cell: '#/components/schemas/TableCellBlock'
-          table_row: '#/components/schemas/TableRowBlock'
+          document: '#/components/schemas/ServicehubDocumentBlock'
+          heading: '#/components/schemas/ServicehubHeadingBlock'
+          blockquote: '#/components/schemas/ServiceHubBlockQuoteBlock'
+          paragraph: '#/components/schemas/ServicehubParagraphBlock'
+          text_block: '#/components/schemas/ServicehubTextBlock'
+          break: '#/components/schemas/ServicehubBreakBlock'
+          code_block: '#/components/schemas/ServicehubCodeBlock'
+          list: '#/components/schemas/ServicehubListBlock'
+          list_item: '#/components/schemas/ServicehubListItemBlock'
+          text: '#/components/schemas/ServicehubText'
+          emphasis: '#/components/schemas/ServicehubEmphasis'
+          code: '#/components/schemas/ServicehubCode'
+          link: '#/components/schemas/ServicehubLink'
+          image: '#/components/schemas/ServicehubImage'
+          strikethrough: '#/components/schemas/ServicehubStrikeThrough'
+          task_checkbox: '#/components/schemas/ServicehubTaskCheckbox'
+          table: '#/components/schemas/ServicehubTableBlock'
+          table_header: '#/components/schemas/ServicehubTableHeaderBlock'
+          table_cell: '#/components/schemas/ServicehubTableCellBlock'
+          table_row: '#/components/schemas/ServicehubTableRowBlock'
   securitySchemes:
     konnectAccessToken:
       $ref: '../../../../common/definitions/security.yaml#/components/securitySchemes/konnectAccessToken'
