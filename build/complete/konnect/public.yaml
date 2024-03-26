@@ -10689,10 +10689,10 @@ components:
         "konnect", "mesh", "kic", or "_".
       additionalProperties:
         type: string
-        pattern: ^[a-z0-9A-Z]{1}([a-z0-9A-Z\-\.\_]*[a-z0-9A-Z]+)?$
+        pattern: ^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$
         minLength: 1
         maxLength: 63
-        maxItems: 50
+      maxProperties: 50
     ProxyURL:
       title: ProxyURL
       description: >-
@@ -12050,8 +12050,12 @@ components:
         "konnect", "mesh", "kic", or "_".
       example:
         env: test
-      maxItems: 50
-      maxLength: 63
+      maxProperties: 50
+      additionalProperties:
+        type: string
+        pattern: ^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$
+        minLength: 1
+        maxLength: 63
       writeOnly: true
     MeshControlPlaneLabels:
       title: Labels
