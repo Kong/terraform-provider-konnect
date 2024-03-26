@@ -9527,6 +9527,8 @@ components:
         dcr_base_url:
           type: string
           format: url
+        disable_event_hooks:
+          $ref: '#/components/schemas/DcrConfigPropertyDisableEventHooks'
     CreateDcrConfigHttpInRequest:
       title: CreateDcrConfigHttpInRequest
       type: object
