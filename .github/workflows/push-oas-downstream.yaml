@@ -12,6 +12,7 @@ on:
 
 jobs:
   raise-pr-on-change:
+    timeout-minutes: 10
     if: github.event.pull_request.merged == true
     name: Raise PR on change
     runs-on: ubuntu-latest
