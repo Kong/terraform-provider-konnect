@@ -143,6 +143,10 @@
     {
       "src": "build/services/konnect/ksearch/v0/dev.yaml",
       "dest": "api-specs/Konnect/v0/yaml/ksearch.yaml"
+    },
+    {
+      "src": "build/services/konnect/application-auth-strategies/v2/public.yaml",
+      "dest": "api-specs/Konnect/v2/yaml/application-auth-strategies.yaml"
     }
   ]
 }
