@@ -85,6 +85,12 @@
       "dest": "apps/konnect-api/openapi/v2/portal-management/openapi.yaml"
     }
   ],
+  "kong/servicehub": [
+    {
+      "src": "computed/konnect/servicehub/v2/openapi.yaml",
+      "dest": "specs/openapi.v2.yaml"
+    }
+  ],
   "kong/documenthub": [
     {
       "src": "computed/internal/documenthub-konnect/v0/openapi.yaml",
