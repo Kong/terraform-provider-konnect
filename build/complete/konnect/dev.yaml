@@ -2617,10 +2617,7 @@ components:
         updated_at:
           $ref: '#/components/schemas/UpdatedAt'
         name:
-          description: The name of the portal, used to distinguish it from other portals.
-          type: string
-          maxLength: 255
-          minLength: 1
+          $ref: '#/components/schemas/PortalName'
         description:
           $ref: '#/components/schemas/PortalDescription'
         default_domain:
@@ -2713,9 +2710,7 @@ components:
         - name
       properties:
         name:
-          description: Name of the portal. Must be unique.
-          type: string
-          maxLength: 255
+          $ref: '#/components/schemas/PortalName'
         description:
           $ref: '#/components/schemas/PortalDescription'
         is_public:
@@ -2780,6 +2775,13 @@ components:
         custom_domain: api.example.com
         custom_client_domain: portal.example.com
         default_application_auth_strategy_id: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+    PortalName:
+      description: >-
+        The name of the portal, used to distinguish it from other portals. Name
+        must be unique.
+      type: string
+      maxLength: 255
+      minLength: 1
     PortalsLabels:
       title: Labels
       type: object

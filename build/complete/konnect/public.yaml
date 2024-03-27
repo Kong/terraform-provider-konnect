@@ -4401,6 +4401,8 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
   /portals/{portalId}/appearance:
     get:
       summary: Get Appearance Configuration
@@ -13632,10 +13634,7 @@ components:
         updated_at:
           $ref: '#/components/schemas/UpdatedAt'
         name:
-          description: The name of the portal, used to distinguish it from other portals.
-          type: string
-          maxLength: 255
-          minLength: 1
+          $ref: '#/components/schemas/PortalName'
         description:
           $ref: '#/components/schemas/PortalDescription'
         default_domain:
@@ -13719,10 +13718,19 @@ components:
       type: string
       format: uuid
       example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+    PortalName:
+      description: >-
+        The name of the portal, used to distinguish it from other portals. Name
+        must be unique.
+      type: string
+      maxLength: 255
+      minLength: 1
     UpdatePortalRequest:
       additionalProperties: false
       type: object
       properties:
+        name:
+          $ref: '#/components/schemas/PortalName'
         is_public:
           description: >-
             Whether the portal catalog can be accessed publicly without any
@@ -13775,6 +13783,7 @@ components:
         default_application_auth_strategy_id:
           $ref: '#/components/schemas/DefaultApplicationAuthStratID'
       example:
+        name: Aperture
         is_public: false
         rbac_enabled: true
         auto_approve_applications: false

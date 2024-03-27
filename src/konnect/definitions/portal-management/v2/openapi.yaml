@@ -163,6 +163,9 @@ paths:
         '404':
           $ref: >-
             ../../../../common/definitions/errors.yaml#/components/responses/NotFound
+        '409':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Conflict
   /portals/{portalId}/products:
     parameters:
       - $ref: >-
@@ -4997,10 +5000,7 @@ components:
           $ref: >-
             ../../../../common/definitions/konnect_properties.yaml#/components/schemas/UpdatedAt
         name:
-          description: The name of the portal, used to distinguish it from other portals.
-          type: string
-          maxLength: 255
-          minLength: 1
+          $ref: '#/components/schemas/PortalName'
         description:
           $ref: '#/components/schemas/PortalDescription'
         default_domain:
@@ -5064,10 +5064,7 @@ components:
         - name
       properties:
         name:
-          description: >-
-            Name of the portal. Must be unique.
-          type: string
-          maxLength: 255
+          $ref: '#/components/schemas/PortalName'
         description:
           $ref: '#/components/schemas/PortalDescription'
         is_public:
@@ -5114,10 +5111,19 @@ components:
         custom_domain: api.example.com
         custom_client_domain: portal.example.com
         default_application_auth_strategy_id: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+    PortalName:
+      description: >-
+        The name of the portal, used to distinguish it from other portals.
+        Name must be unique.
+      type: string
+      maxLength: 255
+      minLength: 1
     UpdatePortalRequest:
       additionalProperties: false
       type: object
       properties:
+        name:
+          $ref: '#/components/schemas/PortalName'
         is_public:
           description: >-
             Whether the portal catalog can be accessed publicly without any developer authentication. Developer accounts and applications cannot be created if the portal is public.
@@ -5154,6 +5160,7 @@ components:
         labels:
           $ref: '#/components/schemas/PortalsLabels'
       example:
+        name: Aperture
         is_public: false
         rbac_enabled: true
         auto_approve_applications: false
