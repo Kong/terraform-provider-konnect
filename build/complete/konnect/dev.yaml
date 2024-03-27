@@ -2109,37 +2109,17 @@ components:
           type: number
           example: 100
     CreatedAt:
-      type: object
+      type: string
       format: date-time
       example: '2022-11-04T20:10:06.927Z'
       description: An ISO-8601 timestamp representation of entity creation date.
       readOnly: true
-      title: CreatedAt
-      properties:
-        created_at:
-          $ref: '#/components/schemas/CreatedAtProperties'
-      required:
-        - created_at
     UpdatedAt:
-      type: object
+      type: string
       format: date-time
       example: '2022-11-04T20:10:06.927Z'
       description: An ISO-8601 timestamp representation of entity update date.
       readOnly: true
-      title: UpdatedAt
-      properties:
-        updated_at:
-          type: string
-          format: date-time
-          example: '2022-06-21T17:20:12Z'
-          description: >
-            The timestamp denoting when the entity was last updated.
-
-            RFC-3339 format is used with a "T" character separating date from
-            time within the field value.
-          readOnly: true
-      required:
-        - updated_at
     InvalidRules:
       description: invalid parameters rules
       type: string
@@ -3419,7 +3399,7 @@ components:
 
                 RFC-3339 format is used with a "T" character separating date
                 from time within the field value.
-        - $ref: '#/components/schemas/CreatedAt'
+        - $ref: '#/components/schemas/ServiceHubCreatedAt'
     CreateInstalledIntegrationAuthCredential:
       title: CreateInstalledIntegrationAuthCredential
       description: >-
@@ -3914,7 +3894,7 @@ components:
         outputs:
           $ref: '#/components/schemas/DiscoveryActionOutput'
         created_at:
-          $ref: '#/components/schemas/CreatedAtProperties'
+          $ref: '#/components/schemas/ServiceHubCreatedAtProperties'
     UpsertDiscoveredEntity:
       title: UpsertDiscoveredEntity
       type: object
@@ -4582,8 +4562,8 @@ components:
         maxLength: 63
     EntityTimeFields:
       allOf:
-        - $ref: '#/components/schemas/CreatedAt'
-        - $ref: '#/components/schemas/UpdatedAt'
+        - $ref: '#/components/schemas/ServiceHubCreatedAt'
+        - $ref: '#/components/schemas/ServiceHubUpdatedAt'
     Slug:
       type: string
       description: document slug
@@ -4918,7 +4898,7 @@ components:
           description: >
             When set to `null`, this rule is indicated to be the lowest priority
             rule.
-    CreatedAtProperties:
+    ServiceHubCreatedAtProperties:
       type: string
       format: date-time
       example: '2022-03-30T07:20:50Z'
@@ -4928,6 +4908,30 @@ components:
         RFC-3339 format is used with a "T" character separating date from time
         within the field value.
       readOnly: true
+    ServiceHubCreatedAt:
+      title: ServiceHubCreatedAt
+      type: object
+      properties:
+        created_at:
+          $ref: '#/components/schemas/ServiceHubCreatedAtProperties'
+      required:
+        - created_at
+    ServiceHubUpdatedAt:
+      title: ServieHubUpdatedAt
+      type: object
+      properties:
+        updated_at:
+          type: string
+          format: date-time
+          example: '2022-06-21T17:20:12Z'
+          description: >
+            The timestamp denoting when the entity was last updated.
+
+            RFC-3339 format is used with a "T" character separating date from
+            time within the field value.
+          readOnly: true
+      required:
+        - updated_at
     ServiceFilterParameters:
       title: ServiceFilterParameters
       type: object

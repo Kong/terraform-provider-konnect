@@ -2693,7 +2693,7 @@ components:
                 Timestamp denoting when the when the rolling refresh window will expire.
                 A null value indicates no known expiration time.
                 RFC-3339 format is used with a "T" character separating date from time within the field value.
-        - $ref: '#/components/schemas/CreatedAt'
+        - $ref: '#/components/schemas/ServiceHubCreatedAt'
     CreateInstalledIntegrationAuthCredential:
       title: CreateInstalledIntegrationAuthCredential
       description: Object containing the data required to create an installed integration auth credential.
@@ -3111,7 +3111,7 @@ components:
         outputs:
           $ref: '#/components/schemas/DiscoveryActionOutput'
         created_at:
-          $ref: '#/components/schemas/CreatedAtProperties'
+          $ref: '#/components/schemas/ServiceHubCreatedAtProperties'
     UpsertDiscoveredEntity:
       title: UpsertDiscoveredEntity
       type: object
@@ -3702,8 +3702,8 @@ components:
         maxLength: 63
     EntityTimeFields:
       allOf:
-        - $ref: '#/components/schemas/CreatedAt'
-        - $ref: '#/components/schemas/UpdatedAt'
+        - $ref: '#/components/schemas/ServiceHubCreatedAt'
+        - $ref: '#/components/schemas/ServiceHubUpdatedAt'
     PublishStatus:
       description: document publish status
       type: string
@@ -4018,7 +4018,7 @@ components:
           nullable: true
           description: |
             When set to `null`, this rule is indicated to be the lowest priority rule.
-    CreatedAtProperties:
+    ServiceHubCreatedAtProperties:
       type: string
       format: date-time
       example: 2022-03-30T07:20:50Z
@@ -4026,15 +4026,15 @@ components:
         The timestamp denoting when the entity was created.
         RFC-3339 format is used with a "T" character separating date from time within the field value.
       readOnly: true
-    CreatedAt:
-      title: CreatedAt
+    ServiceHubCreatedAt:
+      title: ServiceHubCreatedAt
       type: object
       properties:
         created_at:
-          $ref: '#/components/schemas/CreatedAtProperties'
+          $ref: '#/components/schemas/ServiceHubCreatedAtProperties'
       required: [created_at]
-    UpdatedAt:
-      title: UpdatedAt
+    ServiceHubUpdatedAt:
+      title: ServieHubUpdatedAt
       type: object
       properties:
         updated_at:

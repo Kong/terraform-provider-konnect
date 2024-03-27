@@ -8619,37 +8619,17 @@ components:
           type: number
           example: 100
     CreatedAt:
-      type: object
+      type: string
       format: date-time
       example: '2022-11-04T20:10:06.927Z'
       description: An ISO-8601 timestamp representation of entity creation date.
       readOnly: true
-      title: CreatedAt
-      properties:
-        created_at:
-          $ref: '#/components/schemas/CreatedAtProperties'
-      required:
-        - created_at
     UpdatedAt:
-      type: object
+      type: string
       format: date-time
       example: '2022-11-04T20:10:06.927Z'
       description: An ISO-8601 timestamp representation of entity update date.
       readOnly: true
-      title: UpdatedAt
-      properties:
-        updated_at:
-          type: string
-          format: date-time
-          example: '2022-06-21T17:20:12Z'
-          description: >
-            The timestamp denoting when the entity was last updated.
-
-            RFC-3339 format is used with a "T" character separating date from
-            time within the field value.
-          readOnly: true
-      required:
-        - updated_at
     InvalidRules:
       description: invalid parameters rules
       type: string
@@ -14799,14 +14779,14 @@ components:
       example: data:image/png,YW5faW1hZ2VfZmlsZQ==
     EntityTimeFields:
       allOf:
-        - $ref: '#/components/schemas/CreatedAt'
-        - $ref: '#/components/schemas/UpdatedAt'
+        - $ref: '#/components/schemas/ServiceHubCreatedAt'
+        - $ref: '#/components/schemas/ServiceHubUpdatedAt'
     Slug:
       type: string
       description: document slug
       pattern: ^[\w-]+$
       maxLength: 80
-    CreatedAtProperties:
+    ServiceHubCreatedAtProperties:
       type: string
       format: date-time
       example: '2022-03-30T07:20:50Z'
@@ -14816,6 +14796,30 @@ components:
         RFC-3339 format is used with a "T" character separating date from time
         within the field value.
       readOnly: true
+    ServiceHubCreatedAt:
+      title: ServiceHubCreatedAt
+      type: object
+      properties:
+        created_at:
+          $ref: '#/components/schemas/ServiceHubCreatedAtProperties'
+      required:
+        - created_at
+    ServiceHubUpdatedAt:
+      title: ServieHubUpdatedAt
+      type: object
+      properties:
+        updated_at:
+          type: string
+          format: date-time
+          example: '2022-06-21T17:20:12Z'
+          description: >
+            The timestamp denoting when the entity was last updated.
+
+            RFC-3339 format is used with a "T" character separating date from
+            time within the field value.
+          readOnly: true
+      required:
+        - updated_at
   examples:
     BadRequestExample:
       value:
