@@ -185,3 +185,14 @@ components:
           gt: '2022-03-30T07:20:50Z'
         datetime_field_6:
           gte: '2022-03-30T07:20:50Z'
+    LabelsFieldFilter:
+      allOf:
+        - title: LabelsFieldFilter
+          description: |
+            Filters on the resource's `labels` field. Filters must use dot-notation to identify
+            the label key that will be used to filter the results. For example:
+              - `filter[labels.owner]`
+              - `filter[labels.owner][neq]=kong`
+              - `filter[labels.env]=dev`
+              - `filter[labels.env][ocontains]=dev,test`
+        - $ref: '#/components/schemas/StringFieldFilter'
