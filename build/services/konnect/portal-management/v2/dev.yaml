@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Portal Management
-  version: 2.0.0
+  version: 2.1.0
   description: The management API for Portals
   contact:
     name: Kong
@@ -17,163 +17,258 @@ security:
   - personalAccessToken: []
   - systemAccountAccessToken: []
 tags:
-  - name: Portal Product Versions
-    description: >
-      Portal Product Versions hold metadata that describes how a Product Version
-      is configured for a specific portal.
-        
-        They contain:
-        - Lifecyle and deprecation statuses
-        - Application registration settings like auto approve or whether application registration is enabled
-        - The authentication strategy that is enabled for Application Registration
+  - name: Portals
+    description: APIs related to Configuration of Konnect Developer Portals.
 paths:
-  /portals/{portalId}/product-versions:
-    parameters:
-      - $ref: '#/components/parameters/PortalId'
+  /portals:
     get:
-      summary: List portal product versions
-      operationId: list-portal-product-versions
-      description: List portal product versions
+      summary: List Portals
+      description: >-
+        Lists developer portals defined in this region for this organization.
+        Each developer portal is available at a unique address and has isolated
+        appearance, configuration, developers, and applications.
+      operationId: list-portals
+      tags:
+        - Portals
       parameters:
-        - $ref: '#/components/parameters/SortPortalProductVersions'
-        - $ref: '#/components/parameters/PortalProductVersionFilter'
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/SortPortals'
       responses:
         '200':
-          $ref: '#/components/responses/ListPortalProductVersions'
+          $ref: '#/components/responses/ListPortals'
         '400':
-          $ref: '#/components/responses/BadRequest'
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+              examples:
+                ListPortalsBadRequestExample1:
+                  $ref: '#/components/examples/ListPortalsBadRequestExample1'
+                ListPortalsBadRequestExample2:
+                  $ref: '#/components/examples/ListPortalsBadRequestExample2'
+                ListPortalsBadRequestExample3:
+                  $ref: '#/components/examples/ListPortalsBadRequestExample3'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-      tags:
-        - Portal Product Versions
     post:
-      summary: Create a portal product version
-      operationId: create-portal-product-version
-      description: Create a portal product version
+      summary: Create Portal
+      description: >-
+        Creates a new developer portal scoped in this region for this
+        organization.
+      operationId: create-portal
+      tags:
+        - Portals
       requestBody:
-        $ref: '#/components/requestBodies/CreatePortalProductVersion'
+        $ref: '#/components/requestBodies/CreatePortal'
       responses:
         '201':
-          $ref: '#/components/responses/PortalProductVersion'
+          $ref: '#/components/responses/CreatePortal'
         '400':
-          $ref: '#/components/responses/BadRequest'
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+              examples:
+                UpdatePortalBadRequestExample1:
+                  $ref: '#/components/examples/UpdatePortalBadRequestExample1'
+                UpdatePortalBadRequestExample2:
+                  $ref: '#/components/examples/UpdatePortalBadRequestExample2'
+                UpdatePortalBadRequestExample3:
+                  $ref: '#/components/examples/UpdatePortalBadRequestExample3'
+                UpdatePortalBadRequestExample4:
+                  $ref: '#/components/examples/UpdatePortalBadRequestExample4'
+                UpdatePortalBadRequestExample5:
+                  $ref: '#/components/examples/UpdatePortalBadRequestExample5'
+                UpdatePortalBadRequestExample6:
+                  $ref: '#/components/examples/UpdatePortalBadRequestExample6'
+                UpdatePortalBadRequestExample7:
+                  $ref: '#/components/examples/UpdatePortalBadRequestExample7'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-      tags:
-        - Portal Product Versions
-  /portals/{portalId}/product-versions/{productVersionId}:
-    parameters:
-      - $ref: '#/components/parameters/ProductVersionId'
-      - $ref: '#/components/parameters/PortalId'
-    get:
-      summary: Get a portal product version
-      operationId: get-portal-product-version
-      description: Get a portal product version
-      responses:
-        '200':
-          $ref: '#/components/responses/PortalProductVersion'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-      tags:
-        - Portal Product Versions
-    patch:
-      summary: Update a portal product version
-      operationId: update-portal-product-version
-      description: Update a portal product version
-      requestBody:
-        $ref: '#/components/requestBodies/UpdatePortalProductVersion'
-      responses:
-        '200':
-          $ref: '#/components/responses/PortalProductVersion'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-      tags:
-        - Portal Product Versions
-    delete:
-      summary: Delete a portal product version
-      operationId: delete-portal-product-version
-      description: Delete a portal product version
-      responses:
-        '204':
-          description: No Content.
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-      tags:
-        - Portal Product Versions
 components:
   examples:
-    PortalProductVersionExample1:
+    CreatePortalExampleRbacEnabled:
       value:
-        id: 22f8380e-7798-4566-99e3-2edf2b57d289
-        publish_status: published
-        product_version_id: 33f8380e-7798-4566-99e3-2edf2b57d289
-        auth_strategies:
-          - id: 44f8380e-7798-4566-99e3-2edf2b57d289
-            name: key auth strategy
-            credential_type: key_auth
-        application_registration_enabled: true
-        auto_approve_registration: true
-        deprecated: false
-        created_at: '2023-01-01T00:00:00.000Z'
-        updated_at: '2023-01-01T00:00:00.000Z'
-    ListPortalProductVersionsExample1:
+        name: MyDevPortal
+        rbac_enabled: true
+    CreatePortalExamplePublic:
       value:
-        data:
-          - id: 22f8380e-7798-4566-99e3-2edf2b57d289
-            publish_status: published
-            product_version_id: 33f8380e-7798-4566-99e3-2edf2b57d289
-            auth_strategies:
-              - id: 44f8380e-7798-4566-99e3-2edf2b57d289
-                name: key auth strategy
-                credential_type: key_auth
-            application_registration_enabled: true
-            auto_approve_registration: true
-            deprecated: false
-            created_at: '2023-01-01T00:00:00.000Z'
-            updated_at: '2023-01-01T00:00:00.000Z'
+        name: MyDevPortal
+        is_public: true
+    CreatePortalExampleAutoApprove:
+      value:
+        name: MyDevPortal
+        auto_approve_applications: false
+        auto_approve_developers: false
+    CreatePortalExampleCustomDomains:
+      value:
+        name: MyDevPortal
+        custom_domain: api.example.com
+        custom_client_domain: portal.example.com
+    CreatePortalExample1:
+      value:
+        name: MyDevPortal
+        is_public: false
+        rbac_enabled: true
+        auto_approve_applications: false
+        auto_approve_developers: false
+        custom_domain: api.example.com
+        custom_client_domain: portal.example.com
+    ListPortalsExample1:
+      value:
         meta:
           page:
             number: 1
-            size: 1
-            total: 10
-    PortalProductVersionCreateRequestExample1:
+            size: 10
+            total: 1
+        data:
+          - id: 8f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+            created_at: '2022-02-07T17:46:57.52Z'
+            updated_at: '2022-10-08T17:00:00.52Z'
+            name: Portal A
+            description: The Portal A
+            default_domain: 123455678abcd.us.portal.konghq.com
+            is_public: false
+            rbac_enabled: true
+            auto_approve_applications: false
+            auto_approve_developers: true
+            custom_domain: api.example.com
+            custom_client_domain: portal.example.com
+    UpdatePortalResponseExample1:
       value:
-        product_version_id: 33f8380e-7798-4566-99e3-2edf2b57d289
-        auth_strategy_ids:
-          - 44f8380e-7798-4566-99e3-2edf2b57d289
-        publish_status: published
-        application_registration_enabled: true
-        auto_approve_registration: true
-        deprecated: false
-    PortalProductVersionUpdateRequestExample1:
+        id: 9f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+        created_at: '2022-02-07T17:46:57.52Z'
+        updated_at: '2022-10-08T17:00:00.52Z'
+        name: Portal A
+        description: The Portal A
+        default_domain: 123455678abcd.us.portal.konghq.com
+        is_public: false
+        rbac_enabled: true
+        auto_approve_applications: false
+        auto_approve_developers: true
+        custom_domain: api.example.com
+        custom_client_domain: portal.example.com
+    UpdatePortalBadRequestExample1:
+      summary: Unknown property
       value:
-        auto_approve_registration: false
+        status: 400
+        title: Invalid Request
+        instance: kong:trace:1433447772874964729
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: my_property
+            rule: unknown_property
+            reason: '"my_property" is not allowed'
+            source: body
+    UpdatePortalBadRequestExample2:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: kong:trace:1433447772874964729
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: is_public
+            rule: is_boolean
+            reason: value of "is_public" must be true or false
+            source: body
+    UpdatePortalBadRequestExample3:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: kong:trace:1433447772874964729
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: rbac_enabled
+            rule: is_boolean
+            reason: value of "rbac_enabled" must be true or false
+            source: body
+    UpdatePortalBadRequestExample4:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: kong:trace:1433447772874964729
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: auto_approve_applications
+            rule: is_boolean
+            reason: value of "auto_approve_applications" must be true or false
+            source: body
+    UpdatePortalBadRequestExample5:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: kong:trace:1433447772874964729
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: auto_approve_developers
+            rule: is_boolean
+            reason: value of "auto_approve_developers" must be true or false
+            source: body
+    UpdatePortalBadRequestExample6:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: kong:trace:1433447772874964729
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: custom_domain
+            rule: max_length
+            reason: value of "custom_domain" must not exceed 1024 characters
+            source: body
+    UpdatePortalBadRequestExample7:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: kong:trace:1433447772874964729
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: custom_client_domain
+            rule: max_length
+            reason: value of "custom_client_domain" must not exceed 1024 characters
+            source: body
+    ListPortalsBadRequestExample1:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: kong:trace:1433447772874964729
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: page[size]
+            rule: is_number
+            reason: '"page[size]" must be a number'
+            source: query
+    ListPortalsBadRequestExample2:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: kong:trace:1433447772874964729
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: page[number]
+            rule: is_number
+            reason: '"page[number]" must be a number'
+            source: query
+    ListPortalsBadRequestExample3:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: kong:trace:1433447772874964729
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: sort
+            rule: enum
+            choices:
+              - created_at
+              - updated_at
+            reason: must be one of [created_at, updated_at]
+            source: query
     UnauthorizedExample:
       value:
         status: 401
@@ -186,71 +281,36 @@ components:
         title: Forbidden
         instance: kong:trace:2723154947768991354
         detail: You do not have permission to perform this action
-    NotFoundExample:
-      value:
-        status: 404
-        title: Not Found
-        instance: kong:trace:6816496025408232265
-        detail: Not Found
   requestBodies:
-    CreatePortalProductVersion:
+    CreatePortal:
+      description: Create a portal.
       required: true
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/CreatePortalProductVersionPayload'
+            $ref: '#/components/schemas/CreatePortalRequest'
           examples:
-            PortalProductVersion:
-              $ref: '#/components/examples/PortalProductVersionCreateRequestExample1'
-    UpdatePortalProductVersion:
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/UpdatePortalProductVersionPayload'
-          examples:
-            PortalProductVersion:
-              $ref: '#/components/examples/PortalProductVersionUpdateRequestExample1'
+            Example 1:
+              $ref: '#/components/examples/CreatePortalExample1'
+            Public Portal:
+              $ref: '#/components/examples/CreatePortalExamplePublic'
+            Enable RBAC:
+              $ref: '#/components/examples/CreatePortalExampleRbacEnabled'
+            Auto Approve Settings:
+              $ref: '#/components/examples/CreatePortalExampleAutoApprove'
+            Custom Domains:
+              $ref: '#/components/examples/CreatePortalExampleCustomDomains'
   parameters:
-    PortalId:
-      name: portalId
-      description: portal identifier
-      in: path
-      required: true
-      schema:
-        $ref: '#/components/schemas/schemas-UUID'
-    ProductVersionId:
-      name: productVersionId
-      description: API product version identifier
-      in: path
-      required: true
-      schema:
-        $ref: '#/components/schemas/schemas-UUID'
-    SortPortalProductVersions:
+    SortPortals:
       name: sort
-      description: >
-        Sorts a collection of Portal Product Versions. Supported sort attributes
-        are:
+      description: |
+        Sorts a collection of portals. Supported sort attributes are:
           - created_at
           - updated_at
-          - publish_status
-          - product_version_id
-          - auth_strategy_ids
-          - application_registration_enabled
-          - auto_approve_registration
-          - deprecated
       in: query
       required: false
       schema:
         type: string
-    PortalProductVersionFilter:
-      name: filter
-      description: Filters a collection of Portal Product Versions.
-      required: false
-      in: query
-      style: deepObject
-      schema:
-        $ref: '#/components/schemas/PortalProductVersionFilters'
     PageSize:
       name: page[size]
       description: >-
@@ -272,24 +332,24 @@ components:
         type: integer
         example: 1
   responses:
-    ListPortalProductVersions:
-      description: A response containing a list of portal product versions
+    ListPortals:
+      description: A paginated list of portals in the current region of an organization.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ListPortalProductVersions'
+            $ref: '#/components/schemas/ListPortalsResponse'
           examples:
-            PortalProductVersion:
-              $ref: '#/components/examples/ListPortalProductVersionsExample1'
-    PortalProductVersion:
-      description: A response containing a portal product version
+            Example 1:
+              $ref: '#/components/examples/ListPortalsExample1'
+    CreatePortal:
+      description: Details about the portal that was created.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/PortalProductVersion'
+            $ref: '#/components/schemas/CreatePortalResponse'
           examples:
-            PortalProductVersion:
-              $ref: '#/components/examples/PortalProductVersionExample1'
+            Example 1:
+              $ref: '#/components/examples/UpdatePortalResponseExample1'
     Unauthorized:
       description: Unauthorized
       content:
@@ -308,201 +368,246 @@ components:
           examples:
             UnauthorizedExample:
               $ref: '#/components/examples/ForbiddenExample'
-    NotFound:
-      description: Not Found
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/NotFoundError'
-          examples:
-            NotFoundExample:
-              $ref: '#/components/examples/NotFoundExample'
-    BadRequest:
-      description: Bad Request
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/BadRequestError'
   schemas:
-    AuthStrategy:
-      type: object
-      oneOf:
-        - $ref: '#/components/schemas/AuthStrategyKeyAuth'
-        - $ref: '#/components/schemas/AuthStrategyClientCredentials'
-      discriminator:
-        propertyName: credential_type
-    PortalProductVersionFilters:
-      title: PortalProductVersionFilters
-      type: object
+    ListPortalsResponse:
       additionalProperties: false
-      properties:
-        id:
-          $ref: '#/components/schemas/UuidFieldFilter'
-        publish_status:
-          $ref: '#/components/schemas/PublishStatusFilter'
-        product_version_id:
-          $ref: '#/components/schemas/UuidFieldFilter'
-        created_at:
-          $ref: '#/components/schemas/DateTimeFieldFilter'
-        updated_at:
-          $ref: '#/components/schemas/DateTimeFieldFilter'
-        auth_strategy_ids:
-          $ref: '#/components/schemas/UuidFieldFilter'
-        application_registration_enabled:
-          $ref: '#/components/schemas/BooleanFieldFilter'
-        auto_approve_registration:
-          $ref: '#/components/schemas/BooleanFieldFilter'
-        deprecated:
-          $ref: '#/components/schemas/BooleanFieldFilter'
-    PortalProductVersionPublishStatus:
-      type: string
-      description: Publication status of the API product version on the portal
-      enum:
-        - published
-        - unpublished
-    PortalProductVersionDeprecated:
-      type: boolean
-      description: Whether the api product version on the portal is deprecated
-    PublishStatusFilter:
-      title: PublishStatusFilter
-      description: Filters on the given publish status
-      oneOf:
-        - $ref: '#/components/schemas/StringFieldEqualsFilter'
-        - $ref: '#/components/schemas/StringFieldOEQFilter'
-        - $ref: '#/components/schemas/StringFieldNEQFilter'
-      x-examples:
-        example-1: published
-        example-2:
-          eq: unpublished
-        example-3:
-          neq: unpublished
-    ApplicationRegistrationEnabled:
-      type: boolean
-      description: >-
-        Whether the application registration on this portal for the api product
-        version is enabled
-    AutoApproveRegistration:
-      type: boolean
-      description: >-
-        Whether the application registration auto approval on this portal for
-        the api product version is enabled
-    AuthStrategies:
-      description: A list of authentication strategies
-      type: array
-      minItems: 0
-      maxItems: 1
-      items:
-        $ref: '#/components/schemas/AuthStrategy'
-    AuthStrategyIDs:
-      description: A list of authentication strategy IDs
-      type: array
-      minItems: 0
-      maxItems: 1
-      items:
-        $ref: '#/components/schemas/UUID_RW'
-    CreatePortalProductVersionPayload:
-      title: CreatePortalProductVersionPayload
-      description: Payload to create a Portal Product Version
+      description: A paginated list of portals in the current region in the organization.
       type: object
-      additionalProperties: false
-      properties:
-        publish_status:
-          $ref: '#/components/schemas/PortalProductVersionPublishStatus'
-        product_version_id:
-          $ref: '#/components/schemas/UUID_RW'
-        auth_strategy_ids:
-          $ref: '#/components/schemas/AuthStrategyIDs'
-        application_registration_enabled:
-          $ref: '#/components/schemas/ApplicationRegistrationEnabled'
-        auto_approve_registration:
-          $ref: '#/components/schemas/AutoApproveRegistration'
-        deprecated:
-          $ref: '#/components/schemas/PortalProductVersionDeprecated'
-      required:
-        - publish_status
-        - application_registration_enabled
-        - auto_approve_registration
-        - product_version_id
-        - deprecated
-        - auth_strategy_ids
-    UpdatePortalProductVersionPayload:
-      title: UpdatePortalProductVersionPayload
-      type: object
-      description: Payload to update a Portal Product Version
-      additionalProperties: false
-      properties:
-        publish_status:
-          $ref: '#/components/schemas/PortalProductVersionPublishStatus'
-        auth_strategy_ids:
-          $ref: '#/components/schemas/AuthStrategyIDs'
-        application_registration_enabled:
-          $ref: '#/components/schemas/ApplicationRegistrationEnabled'
-        auto_approve_registration:
-          $ref: '#/components/schemas/AutoApproveRegistration'
-        deprecated:
-          $ref: '#/components/schemas/PortalProductVersionDeprecated'
-    PortalProductVersion:
-      title: PortalProductVersion
-      type: object
-      description: >
-        A Portal Product Version holds metadata that describes how a Product
-        Version is configured for a specific portal.
-
-
-        It contains:
-
-        - Lifecyle and deprecation statuses
-
-        - Application registration settings like auto approve or whether
-        application registration is enabled
-
-        - The Authentication Strategy (if present) that is enabled for
-        Application Registration
-      additionalProperties: false
-      properties:
-        id:
-          $ref: '#/components/schemas/schemas-UUID'
-        publish_status:
-          $ref: '#/components/schemas/PortalProductVersionPublishStatus'
-        product_version_id:
-          $ref: '#/components/schemas/UUID_RW'
-        created_at:
-          $ref: '#/components/schemas/CreatedAt'
-        updated_at:
-          $ref: '#/components/schemas/UpdatedAt'
-        auth_strategies:
-          $ref: '#/components/schemas/AuthStrategies'
-        application_registration_enabled:
-          $ref: '#/components/schemas/ApplicationRegistrationEnabled'
-        auto_approve_registration:
-          $ref: '#/components/schemas/AutoApproveRegistration'
-        deprecated:
-          $ref: '#/components/schemas/PortalProductVersionDeprecated'
-      required:
-        - id
-        - publish_status
-        - application_registration_enabled
-        - auto_approve_registration
-        - product_version_id
-        - deprecated
-        - auth_strategies
-        - created_at
-        - updated_at
-    ListPortalProductVersions:
-      title: ListPortalProductVersions
-      type: object
-      description: A paginated list response for a collection of portal product versions
-      additionalProperties: false
       required:
         - data
         - meta
       properties:
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
         data:
           type: array
           items:
-            $ref: '#/components/schemas/PortalProductVersion'
+            $ref: '#/components/schemas/Portal'
+      example:
         meta:
-          $ref: '#/components/schemas/PaginatedMeta'
+          page:
+            number: 1
+            size: 10
+            total: 1
+        data:
+          - id: 8f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+            created_at: '2022-02-07T17:46:57.52Z'
+            updated_at: '2022-10-08T17:00:00.52Z'
+            name: Portal A
+            description: The Portal A
+            default_domain: 123455678abcd.us.portal.konghq.com
+            is_public: false
+            rbac_enabled: true
+            auto_approve_applications: false
+            auto_approve_developers: true
+            custom_domain: api.example.com
+            custom_client_domain: portal.example.com
+    CreatePortalResponse:
+      $ref: '#/components/schemas/Portal'
+    Portal:
+      additionalProperties: false
+      type: object
+      required:
+        - id
+        - created_at
+        - updated_at
+        - name
+        - default_domain
+        - is_public
+        - rbac_enabled
+        - auto_approve_applications
+        - auto_approve_developers
+        - custom_domain
+        - custom_client_domain
+        - description
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        name:
+          description: The name of the portal, used to distinguish it from other portals.
+          type: string
+          maxLength: 255
+          minLength: 1
+        description:
+          $ref: '#/components/schemas/PortalDescription'
+        default_domain:
+          description: >-
+            The domain assigned to the portal by Konnect. This is the default
+            place to access the portal and its API if not using a
+            `custom_domain``.
+          type: string
+          format: hostname
+          readOnly: true
+        is_public:
+          description: >-
+            Whether the portal catalog can be accessed publicly without any
+            developer authentication. Developer accounts and applications cannot
+            be created if the portal is public.
+          type: boolean
+        rbac_enabled:
+          description: >-
+            Whether the portal resources are protected by Role Based Access
+            Control (RBAC). If enabled, developers view or register for products
+            until unless assigned to teams with access to view and consume
+            specific products.
+          type: boolean
+        auto_approve_applications:
+          description: >-
+            Whether the requests from applications to register for products will
+            be automatically approved, or if they will be set to pending until
+            approved by an admin.
+          type: boolean
+        auto_approve_developers:
+          type: boolean
+          description: >-
+            Whether the developer account registrations will be automatically
+            approved, or if they will be set to pending until approved by an
+            admin.
+        custom_domain:
+          nullable: true
+          type: string
+          format: hostname
+          description: >-
+            The custom domain to access the developer portal. A CNAME for the
+            portal's default domain must be able to be set for the custom domain
+            for it to be valid. After setting a valid CNAME, an SSL/TLS
+            certificate will be automatically manged for the custom domain, and
+            traffic will be able to use the custom domain to route to the
+            portal's web client and API.
+        custom_client_domain:
+          description: >-
+            The custom domain to access a self-hosted customized developer
+            portal client. If this is set, the Konnect-hosted portal client will
+            no longer be available. `custom_domain` must be also set for this
+            value to be set. See https://github.com/Kong/konnect-portal for
+            information on how to get started deploying and customizing your own
+            Konnect portal.
+          nullable: true
+          type: string
+          format: hostname
+        default_application_auth_strategy_id:
+          $ref: '#/components/schemas/DefaultApplicationAuthStratID'
+        labels:
+          $ref: '#/components/schemas/PortalsLabels'
+      example:
+        id: 9f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+        created_at: '2022-02-07T17:46:57.52Z'
+        updated_at: '2022-10-08T17:00:00.52Z'
+        name: Portal A
+        description: The Portal A
+        default_domain: 123455678abcd.us.portal.konghq.com
+        is_public: false
+        rbac_enabled: true
+        auto_approve_applications: false
+        auto_approve_developers: true
+        custom_domain: api.example.com
+        custom_client_domain: portal.example.com
+    PortalDescription:
+      description: The description of the portal.
+      type: string
+      maxLength: 512
+      nullable: true
+    DefaultApplicationAuthStratID:
+      description: Default strategy ID applied on applications for the portal
+      nullable: true
+      type: string
+      format: uuid
+      example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+    CreatePortalRequest:
+      additionalProperties: false
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          description: Name of the portal. Must be unique.
+          type: string
+          maxLength: 255
+        description:
+          $ref: '#/components/schemas/PortalDescription'
+        is_public:
+          description: >-
+            Whether the portal catalog can be accessed publicly without any
+            developer authentication. Developer accounts and applications cannot
+            be created if the portal is public.
+          type: boolean
+        rbac_enabled:
+          description: >-
+            Whether the portal resources are protected by Role Based Access
+            Control (RBAC). If enabled, developers view or register for products
+            until unless assigned to teams with access to view and consume
+            specific products.
+          type: boolean
+        auto_approve_applications:
+          description: >-
+            Whether the requests from applications to register for products will
+            be automatically approved, or if they will be set to pending until
+            approved by an admin.
+          type: boolean
+        auto_approve_developers:
+          description: >-
+            Whether the developer account registrations will be automatically
+            approved, or if they will be set to pending until approved by an
+            admin.
+          type: boolean
+        custom_domain:
+          description: >-
+            The custom domain to access the developer portal. A CNAME for the
+            portal's default domain must be able to be set for the custom domain
+            for it to be valid. After setting a valid CNAME, an SSL/TLS
+            certificate will be automatically manged for the custom domain, and
+            traffic will be able to use the custom domain to route to the
+            portal's web client and API.
+          type: string
+          format: hostname
+          nullable: true
+          maxLength: 1024
+        custom_client_domain:
+          description: >-
+            The custom domain to access a self-hosted customized developer
+            portal client. If this is set, the Konnect-hosted portal will no
+            longer be available.  `custom_domain` must be also set for this
+            value to be set. See https://github.com/Kong/konnect-portal for
+            information on how to get started deploying and customizing your own
+            Konnect portal.
+          type: string
+          format: hostname
+          nullable: true
+          maxLength: 1024
+        default_application_auth_strategy_id:
+          $ref: '#/components/schemas/DefaultApplicationAuthStratID'
+        labels:
+          $ref: '#/components/schemas/PortalsLabels'
+      example:
+        name: DevPortal
+        is_public: false
+        rbac_enabled: true
+        auto_approve_applications: false
+        auto_approve_developers: false
+        custom_domain: api.example.com
+        custom_client_domain: portal.example.com
+        default_application_auth_strategy_id: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+    PortalsLabels:
+      title: Labels
+      type: object
+      description: >
+        description: A maximum of 50 user-defined labels are allowed on this
+        resource.
+
+        Keys must not start with kong, konnect, insomnia, mesh, kic or _, which
+        are reserved for Kong.
+
+        Keys are case-sensitive.
+      additionalProperties:
+        type: string
+        pattern: ^[a-z0-9A-Z]{1}([a-z0-9A-Z\-._]*[a-z0-9A-Z]+)?$
+        minLength: 1
+        maxLength: 63
+      default: {}
     PageMeta:
       type: object
       description: >-
@@ -531,6 +636,12 @@ components:
           $ref: '#/components/schemas/PageMeta'
       required:
         - page
+    UUID:
+      type: string
+      format: uuid
+      example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+      description: Contains a unique identifier used for this resource.
+      readOnly: true
     CreatedAt:
       type: string
       format: date-time
@@ -730,234 +841,6 @@ components:
           example: Forbidden
       allOf:
         - $ref: '#/components/schemas/BaseError'
-    NotFoundError:
-      type: object
-      properties:
-        status:
-          example: 404
-        title:
-          example: Not Found
-        type:
-          example: https://httpstatuses.com/404
-        instance:
-          example: kong:trace:1234567890
-        detail:
-          example: Not found
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
-    schemas-UUID:
-      type: string
-      format: uuid
-      example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-      description: Contains a unique identifier used by the API for this resource.
-      readOnly: true
-    StringFieldEqualsFilter:
-      title: StringFieldEqualsFilter
-      description: Filters on the given string field value by exact match.
-      oneOf:
-        - type: string
-        - type: object
-          title: StringFieldEqualsComparison
-          additionalProperties: false
-          properties:
-            eq:
-              type: string
-          required:
-            - eq
-      x-examples:
-        example-1: equals-some-value
-        example-2:
-          eq: some-value
-    StringFieldOEQFilter:
-      title: StringFieldOEQFilter
-      description: >-
-        Returns entities that exact match any of the comma-delimited phrases in
-        the filter string.
-      type: object
-      additionalProperties: false
-      properties:
-        oeq:
-          type: string
-      required:
-        - oeq
-      x-examples:
-        example-1:
-          oeq: some-value,some-other-value
-    StringFieldNEQFilter:
-      title: StringFieldNEQFilter
-      description: Filters on the given string field value by exact match inequality.
-      type: object
-      additionalProperties: false
-      properties:
-        neq:
-          type: string
-      required:
-        - neq
-      x-examples:
-        example-1:
-          neq: not-this-value
-    UuidFieldFilter:
-      title: UuidFieldFilter
-      description: Filters on the given UUID field value by exact match.
-      oneOf:
-        - $ref: '#/components/schemas/StringFieldEqualsFilter'
-        - $ref: '#/components/schemas/StringFieldOEQFilter'
-        - $ref: '#/components/schemas/StringFieldNEQFilter'
-      x-examples:
-        example-1: 3bbfd3a-e9ab-48a9-9881-ed589e4615d1
-        example-2:
-          eq: 3bbfd3a-e9ab-48a9-9881-ed589e4615d1
-        example-3:
-          oeq: 3bbfd3a-e9ab-48a9-9881-ed589e4615d1
-        example-4:
-          neq: 3bbfd3a-e9ab-48a9-9881-ed589e4615d1
-    DateTimeFieldFilter:
-      title: DateTimeFieldFilter
-      description: Filters on the given datetime (RFC-3339) field value.
-      oneOf:
-        - type: string
-          format: date-time
-          description: Value strictly equals given RFC-3339 formatted timestamp in UTC
-          example: '2022-03-30T07:20:50Z'
-        - type: object
-          title: DateTimeFieldEqualsFilter
-          additionalProperties: false
-          properties:
-            eq:
-              type: string
-              format: date-time
-              description: Value strictly equals given RFC-3339 formatted timestamp in UTC
-              example: '2022-03-30T07:20:50Z'
-          required:
-            - eq
-        - type: object
-          title: DateTimeFieldLTFilter
-          additionalProperties: false
-          properties:
-            lt:
-              type: string
-              format: date-time
-              description: Value is less than the given RFC-3339 formatted timestamp in UTC
-              example: '2022-03-30T07:20:50Z'
-          required:
-            - lt
-        - type: object
-          title: DateTimeFieldLTEFilter
-          additionalProperties: false
-          properties:
-            lte:
-              type: string
-              format: date-time
-              description: >-
-                Value is less than or equal to the given RFC-3339 formatted
-                timestamp in UTC
-              example: '2022-03-30T07:20:50Z'
-          required:
-            - lte
-        - type: object
-          title: DateTimeFieldGTFilter
-          additionalProperties: false
-          properties:
-            lt:
-              type: string
-              format: date-time
-              description: >-
-                Value is greater than the given RFC-3339 formatted timestamp in
-                UTC
-              example: '2022-03-30T07:20:50Z'
-          required:
-            - gt
-        - type: object
-          title: DateTimeFieldGTEFilter
-          additionalProperties: false
-          properties:
-            lte:
-              type: string
-              format: date-time
-              description: >-
-                Value is greater than or equal to the given RFC-3339 formatted
-                timestamp in UTC
-              example: '2022-03-30T07:20:50Z'
-          required:
-            - gte
-      x-examples:
-        datetime_field_1: '2022-03-30T07:20:50Z'
-        datetime_field_2:
-          eq: '2022-03-30T07:20:50Z'
-        datetime_field_3:
-          lt: '2022-03-30T07:20:50Z'
-        datetime_field_4:
-          lte: '2022-03-30T07:20:50Z'
-        datetime_field_5:
-          gt: '2022-03-30T07:20:50Z'
-        datetime_field_6:
-          gte: '2022-03-30T07:20:50Z'
-    BooleanFieldFilter:
-      title: BooleanFieldFilter
-      description: Filter by a boolean value (true/false).
-      type: boolean
-      x-examples:
-        example-1: true
-    UUID_RW:
-      type: string
-      format: uuid
-      example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-      description: Contains a unique identifier used by the API for this resource.
-    AuthStrategyKeyAuth:
-      description: KeyAuth Auth strategy that the application uses.
-      type: object
-      required:
-        - id
-        - name
-        - credential_type
-      properties:
-        id:
-          type: string
-          format: uuid
-          example: b9e81174-b5bb-4638-a3c3-8afe61a0abf8
-          description: The Application Auth Strategy ID.
-          readOnly: true
-        name:
-          type: string
-          example: name
-          default: name
-        credential_type:
-          type: string
-          enum:
-            - key_auth
-    AuthMethods:
-      type: array
-      items:
-        description: Auth Methods enabled for this strategy
-        type: string
-      example:
-        - bearer
-    AuthStrategyClientCredentials:
-      description: Client Credential Auth strategy that the application uses.
-      type: object
-      required:
-        - id
-        - name
-        - credential_type
-        - auth_methods
-      properties:
-        id:
-          type: string
-          format: uuid
-          example: b9e81174-b5bb-4638-a3c3-8afe61a0abf8
-          description: The Application Auth Strategy ID.
-          readOnly: true
-        name:
-          type: string
-          example: name
-          default: name
-        credential_type:
-          type: string
-          enum:
-            - client_credentials
-            - self_managed_client_credentials
-        auth_methods:
-          $ref: '#/components/schemas/AuthMethods'
   securitySchemes:
     personalAccessToken:
       type: http

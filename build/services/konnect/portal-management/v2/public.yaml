@@ -1674,6 +1674,7 @@ components:
             created_at: '2022-02-07T17:46:57.52Z'
             updated_at: '2022-10-08T17:00:00.52Z'
             name: Portal A
+            description: The Portal A
             default_domain: 123455678abcd.us.portal.konghq.com
             is_public: false
             rbac_enabled: true
@@ -1766,6 +1767,7 @@ components:
         created_at: '2022-02-07T17:46:57.52Z'
         updated_at: '2022-10-08T17:00:00.52Z'
         name: Portal A
+        description: The Portal A
         default_domain: 123455678abcd.us.portal.konghq.com
         is_public: false
         rbac_enabled: true
@@ -1779,6 +1781,7 @@ components:
         created_at: '2022-02-07T17:46:57.52Z'
         updated_at: '2022-10-08T17:00:00.52Z'
         name: Portal A
+        description: The Portal A
         default_domain: 123455678abcd.us.portal.konghq.com
         is_public: false
         rbac_enabled: true
@@ -2329,6 +2332,7 @@ components:
           - field: custom_domain
             reason: portal needs a custom_domain to be verified
     UpdatePortalBadRequestExample1:
+      summary: Unknown property
       value:
         status: 400
         title: Invalid Request
@@ -4140,6 +4144,7 @@ components:
             created_at: '2022-02-07T17:46:57.52Z'
             updated_at: '2022-10-08T17:00:00.52Z'
             name: Portal A
+            description: The Portal A
             default_domain: 123455678abcd.us.portal.konghq.com
             is_public: false
             rbac_enabled: true
@@ -5141,6 +5146,7 @@ components:
         - auto_approve_developers
         - custom_domain
         - custom_client_domain
+        - description
       properties:
         id:
           $ref: '#/components/schemas/UUID'
@@ -5153,6 +5159,8 @@ components:
           type: string
           maxLength: 255
           minLength: 1
+        description:
+          $ref: '#/components/schemas/PortalDescription'
         default_domain:
           description: >-
             The domain assigned to the portal by Konnect. This is the default
@@ -5215,6 +5223,7 @@ components:
         created_at: '2022-02-07T17:46:57.52Z'
         updated_at: '2022-10-08T17:00:00.52Z'
         name: Portal A
+        description: The Portal A
         default_domain: 123455678abcd.us.portal.konghq.com
         is_public: false
         rbac_enabled: true
@@ -5222,6 +5231,11 @@ components:
         auto_approve_developers: true
         custom_domain: api.example.com
         custom_client_domain: portal.example.com
+    PortalDescription:
+      description: The description of the portal.
+      type: string
+      maxLength: 512
+      nullable: true
     DefaultApplicationAuthStratID:
       description: Default strategy ID applied on applications for the portal
       nullable: true
