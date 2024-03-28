@@ -194,9 +194,11 @@ components:
           type: string
           example: Test control plane
           description: The name of the control plane.
+          maxLength: 100
         description:
           type: string
           example: A control plane to handle traffic on development environment.
+          maxLength: 100
         labels:
           $ref: '#/components/schemas/MeshControlPlaneLabels'
         created_at:
@@ -220,9 +222,11 @@ components:
           example: Test control plane
           description: The name of the control plane.
           minLength: 1
+          maxLength: 100
         description:
           type: string
           example: A control plane to handle traffic on development environment.
+          maxLength: 100
         labels:
           $ref: '#/components/schemas/MeshControlPlaneLabels'
     UpdateMeshControlPlaneRequest:
@@ -234,9 +238,11 @@ components:
           type: string
           example: Test control plane
           description: The name of the control plane.
+          maxLength: 100
         description:
           type: string
           example: A control plane to handle traffic on development environment.
+          maxLength: 100
         labels:
           $ref: '#/components/schemas/MeshControlPlaneLabels'
     PageMeta:
