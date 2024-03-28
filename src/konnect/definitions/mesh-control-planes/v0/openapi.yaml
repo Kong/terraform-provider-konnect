@@ -29,6 +29,9 @@ paths:
           $ref: '#/components/responses/MeshControlPlaneForbiddenError'
       operationId: list-mesh-control-planes
       description: Returns an array of control planes objects.
+      parameters:
+        - $ref: ../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize
+        - $ref: ../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber
       tags:
         - Mesh
     post:
