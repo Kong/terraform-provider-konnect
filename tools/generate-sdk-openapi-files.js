@@ -49,15 +49,23 @@ async function main() {
   }
 
   for (let mode of projects) {
-    if (mode == "internal"){
+    if (mode == "internal") {
       console.log("Skipping combined file generation: Internal APIs do not produce a combined complete.yaml file");
       continue;
     }
 
     const f = `${baseDir}/computed/${mode}/complete.yaml`;
+
+    try {
+      await fs.access(f, fs.constants.F_OK)
+    } catch {
+      console.log(`No file found for ${mode}`);
+      continue;
+    }
+
     let complete = yaml.load(await fs.readFile(f));
 
-    if (!complete.paths) {
+    if (!complete?.paths) {
       console.log(`No paths found for ${mode}`);
       continue;
     }
@@ -89,15 +97,15 @@ async function main() {
 
     let dev = filterSchemas(complete, function (node) {
       return node["x-internal"] && node["x-unstable"];
-    }, function(node){ return false; }, 'dev');
+    }, function (node) { return false; }, 'dev');
 
     let internal = filterSchemas(complete, function (node) {
       return node["x-internal"] && !node["x-unstable"];
-    }, function(node){ return false; }, 'internal');
+    }, function (node) { return false; }, 'internal');
 
     let public = filterSchemas(complete, function (node) {
       return !node["x-internal"];
-    }, function(node){ return node["x-internal"] });
+    }, function (node) { return node["x-internal"] });
 
 
     // Filter down paths to the groups that we need
@@ -129,9 +137,9 @@ async function main() {
       public,
     };
 
-    for (let build in builds){
+    for (let build in builds) {
       let oas = builds[build];
-      if (containsPaths(oas)){
+      if (containsPaths(oas)) {
         oas = toolkit.components.removeUnusedComponents(oas);
         oas = toolkit.tags.removeUnusedTags(oas);
         await fs.writeFile(`${outputDir}/${build}.yaml`, yaml.dump(oas));
@@ -145,8 +153,10 @@ function containsPaths(oas) {
 }
 
 if (require.main === module) {
-  main().catch((e) => {
-    console.log(e);
+  main().then(() => {
+    console.log("Done");
+  }).catch((e) => {
+    console.error(e);
     throw e;
   });
 }

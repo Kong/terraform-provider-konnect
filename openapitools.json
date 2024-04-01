@@ -2,7 +2,7 @@
   "$schema": "./node_modules/@openapitools/openapi-generator-cli/config.schema.json",
   "spaces": 2,
   "generator-cli": {
-    "version": "6.2.1",
+    "version": "6.6.0",
     "generators": {
       "identity-v3-client": {
         "generatorName": "typescript-axios",

@@ -91,7 +91,8 @@ paths:
     get:
       operationId: get-audit-log-jwks
       summary: Get Audit Log JSON Web Keys
-      description: Returns the public keys used to sign audit log entries in order to verify the 
+      description:
+        Returns the public keys used to sign audit log entries in order to verify the
         validity of audit log entries.
       tags:
         - Audit Logs
@@ -119,7 +120,8 @@ components:
                 description: The end of a date-time range. Initial value is 0001-01-01T00:00:0Z.
               status:
                 type: string
-                enum: [unconfigured, accepted, pending, running, completed, failed]
+                enum:
+                  [unconfigured, accepted, pending, running, completed, failed]
                 readOnly: true
               updated_at:
                 type: string
