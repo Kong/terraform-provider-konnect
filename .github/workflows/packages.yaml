@@ -20,19 +20,11 @@ jobs:
         uses: actions/checkout@v3
 
       - uses: dorny/paths-filter@v2
-        id: identity-v2
-        with:
-          filters: |
-            spec:
-              - 'src/konnect/definitions/identity/v2/src/openapi.yaml'
-              - 'src/konnect/packages/identity/v2/npm/**'
-
-      - uses: dorny/paths-filter@v2
         id: identity-v3
         with:
           filters: |
             spec:
-              - 'src/konnect/definitions/identity/v3/src/openapi.yaml'
+              - 'src/konnect/definitions/identity/v3/openapi.yaml'
               - 'src/konnect/packages/identity/v3/npm/**'
 
       - uses: dorny/paths-filter@v2
@@ -40,7 +32,7 @@ jobs:
         with:
           filters: |
             spec:
-              - 'src/konnect/definitions/audit-logs/v2/src/openapi.yaml'
+              - 'src/konnect/definitions/audit-logs/v2/openapi.yaml'
               - 'src/konnect/packages/audit-logs/v2/npm/**'
 
   kauth-client-v3-axios-npm:
@@ -64,9 +56,9 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          npm install
+          npm ci
           cd src/konnect/packages/identity/v3/npm
-          npm install
+          npm ci
 
       - name: Bundle Apis
         run: npm run bundle-apis all-files

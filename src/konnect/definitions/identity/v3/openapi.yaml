@@ -3403,7 +3403,7 @@ components:
           type: string
           description: |-
             A single error code from the following enum.
-            
+
               invalid_request
                  The request is missing a required parameter, includes an unsupported parameter value (other than grant type),
                  repeats a parameter, includes multiple credentials, utilizes more than one mechanism for authenticating the
@@ -3423,7 +3423,7 @@ components:
 
               unsupported_grant_type
                  The authorization grant type is not supported by the authorization server.
-            
+
               invalid_scope
                  The requested scope is invalid, unknown, malformed, or exceeds the scope granted by the resource owner.
 
@@ -3443,9 +3443,9 @@ components:
       properties:
         error:
           type: string
-          description:  |-
+          description: |-
             A single error code from the following enum.
-            
+
               authorization_pending
                  The authorization request is still pending as the end user hasn't yet completed the user-interaction steps.
 
