@@ -57,7 +57,7 @@ async function main() {
     const f = `${baseDir}/computed/${mode}/complete.yaml`;
 
     try {
-      await fs.access(f, fs.constants.F_OK)
+      await fs.access(f, fs.constants.F_OK);
     } catch {
       console.log(`No file found for ${mode}`);
       continue;

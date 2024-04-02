@@ -63,7 +63,21 @@ paths:
 
         See https://www.rfc-editor.org/rfc/rfc8628#section-3.1 for details.
       requestBody:
-        $ref: '#/components/requestBodies/DeviceAuthorizationRequest'
+        description: The request schema for the device authorization request.
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                client_id:
+                  type: string
+                  description: The client identifier.
+                scope:
+                  type: string
+                  description: The scope of the access request.
+              required:
+                - client_id
       responses:
         '200':
           $ref: '#/components/responses/DeviceAuthorizationResponse'
@@ -86,7 +100,30 @@ paths:
 
         See https://www.rfc-editor.org/rfc/rfc8628#section-3.4 for details.
       requestBody:
-        $ref: '#/components/requestBodies/DeviceAccessTokenRequest'
+        description: The request schema for the device access token request.
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                grant_type:
+                  type: string
+                  description: >-
+                    Value MUST be set to
+                    "urn:ietf:params:oauth:grant-type:device_code".
+                device_code:
+                  type: string
+                  description: >-
+                    The device verification code, "device_code" from the device
+                    authorization response.
+                client_id:
+                  type: string
+                  description: The client identifier.
+              required:
+                - grant_type
+                - device_code
+                - client_id
       responses:
         '200':
           $ref: '#/components/responses/DeviceAccessTokenResponse'
@@ -914,47 +951,6 @@ components:
           examples:
             Example Request Body:
               $ref: '#/components/examples/AWS-Resolve-Customer-Request'
-    DeviceAuthorizationRequest:
-      description: The request schema for the device authorization request.
-      required: true
-      content:
-        application/x-www-form-urlencoded:
-          schema:
-            type: object
-            properties:
-              client_id:
-                type: string
-                description: The client identifier.
-              scope:
-                type: string
-                description: The scope of the access request.
-            required:
-              - client_id
-    DeviceAccessTokenRequest:
-      description: The request schema for the device access token request.
-      required: true
-      content:
-        application/x-www-form-urlencoded:
-          schema:
-            type: object
-            properties:
-              grant_type:
-                type: string
-                description: >-
-                  Value MUST be set to
-                  "urn:ietf:params:oauth:grant-type:device_code".
-              device_code:
-                type: string
-                description: >-
-                  The device verification code, "device_code" from the device
-                  authorization response.
-              client_id:
-                type: string
-                description: The client identifier.
-            required:
-              - grant_type
-              - device_code
-              - client_id
     DeviceAuthorizationUserRequest:
       description: The request schema for the user device authorization request.
       required: true
