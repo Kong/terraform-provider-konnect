@@ -1952,6 +1952,9 @@ components:
             auto_approve_developers: true
             custom_domain: api.example.com
             custom_client_domain: portal.example.com
+            application_count: 0
+            developer_count: 0
+            published_product_count: 0
     ListPortalProductsExample1:
       value:
         meta:
@@ -2043,6 +2046,9 @@ components:
         auto_approve_developers: true
         custom_domain: api.example.com
         custom_client_domain: portal.example.com
+        application_count: 0
+        developer_count: 0
+        published_product_count: 0
     UpdatePortalResponseExample1:
       value:
         $ref: '#/components/examples/GetPortalExample1/value'
@@ -5036,6 +5042,9 @@ components:
         - custom_domain
         - custom_client_domain
         - description
+        - application_count
+        - developer_count
+        - published_product_count
       properties:
         id:
           $ref: >-
@@ -5089,6 +5098,18 @@ components:
           $ref: '#/components/schemas/DefaultApplicationAuthStratID'
         labels:
           $ref: '#/components/schemas/PortalsLabels'
+        application_count:
+          type: number
+          description: >-
+            Number of applications created in the portal.
+        developer_count:
+          type: number
+          description: >-
+            Number of developers using the portal.
+        published_product_count:
+          type: number
+          description: >-
+            Number of api products published to the portal
       example:
         $ref: '#/components/examples/GetPortalExample1/value'
     PortalDescription:

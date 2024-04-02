@@ -1712,6 +1712,9 @@ components:
             auto_approve_developers: true
             custom_domain: api.example.com
             custom_client_domain: portal.example.com
+            application_count: 0
+            developer_count: 0
+            published_product_count: 0
     ListPortalProductsExample1:
       value:
         meta:
@@ -1805,6 +1808,9 @@ components:
         auto_approve_developers: true
         custom_domain: api.example.com
         custom_client_domain: portal.example.com
+        application_count: 0
+        developer_count: 0
+        published_product_count: 0
     UpdatePortalResponseExample1:
       value:
         id: 9f9fd312-a987-4628-b4c5-bb4f4fddd5f7
@@ -1819,6 +1825,9 @@ components:
         auto_approve_developers: true
         custom_domain: api.example.com
         custom_client_domain: portal.example.com
+        application_count: 0
+        developer_count: 0
+        published_product_count: 0
     VerifyPortalDomainsExample1:
       value:
         is_cname_verified: true
@@ -4191,6 +4200,9 @@ components:
             auto_approve_developers: true
             custom_domain: api.example.com
             custom_client_domain: portal.example.com
+            application_count: 0
+            developer_count: 0
+            published_product_count: 0
     ListPortalProductsResponse:
       additionalProperties: false
       description: A paginated list of API products published to a portal.
@@ -5186,6 +5198,9 @@ components:
         - custom_domain
         - custom_client_domain
         - description
+        - application_count
+        - developer_count
+        - published_product_count
       properties:
         id:
           $ref: '#/components/schemas/UUID'
@@ -5254,6 +5269,15 @@ components:
           format: hostname
         default_application_auth_strategy_id:
           $ref: '#/components/schemas/DefaultApplicationAuthStratID'
+        application_count:
+          type: number
+          description: Number of applications created in the portal.
+        developer_count:
+          type: number
+          description: Number of developers using the portal.
+        published_product_count:
+          type: number
+          description: Number of api products published to the portal
       example:
         id: 9f9fd312-a987-4628-b4c5-bb4f4fddd5f7
         created_at: '2022-02-07T17:46:57.52Z'
@@ -5267,6 +5291,9 @@ components:
         auto_approve_developers: true
         custom_domain: api.example.com
         custom_client_domain: portal.example.com
+        application_count: 0
+        developer_count: 0
+        published_product_count: 0
     PortalDescription:
       description: The description of the portal.
       type: string
