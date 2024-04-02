@@ -1064,7 +1064,7 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/SearchTypesResponse'
-  /services:
+  /servicehub/services:
     get:
       summary: List Services
       operationId: list-services
@@ -1081,7 +1081,8 @@ paths:
         '500':
           $ref: '#/components/responses/Internal'
       parameters:
-        - $ref: '#/components/parameters/LimitOffsetPage'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
         - $ref: '#/components/parameters/ServiceFilter'
         - $ref: '#/components/parameters/ServiceSort'
       tags:
@@ -1105,7 +1106,7 @@ paths:
           $ref: '#/components/responses/Internal'
       tags:
         - Service Hub Services
-  /services/{serviceId}:
+  /servicehub/services/{serviceId}:
     parameters:
       - schema:
           type: string
@@ -2366,6 +2367,24 @@ components:
       example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
       description: Contains a unique identifier used for this resource.
       readOnly: true
+    Labels:
+      title: Labels
+      type: object
+      example:
+        env: test
+      maxProperties: 50
+      description: >
+        Labels store metadata of an entity that can be used for filtering an
+        entity list or for searching across entity types. 
+
+
+        Keys must be of length 1-63 characters, and cannot start with "kong",
+        "konnect", "mesh", "kic", or "_".
+      additionalProperties:
+        type: string
+        pattern: ^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$
+        minLength: 1
+        maxLength: 63
     SearchResponse:
       title: SearchResponse
       description: Search response schema.
@@ -2906,7 +2925,7 @@ components:
               maxLength: 120
               example: User Service
             labels:
-              $ref: '#/components/schemas/ServiceHubLabels'
+              $ref: '#/components/schemas/Labels'
             integrations:
               description: An array of ServiceHub integrations associated to the service.
               items:
@@ -2947,7 +2966,7 @@ components:
           maxLength: 120
           example: User Service
         labels:
-          $ref: '#/components/schemas/ServiceHubLabels'
+          $ref: '#/components/schemas/Labels'
         metadata:
           $ref: '#/components/schemas/Metadata'
       required:
@@ -3314,11 +3333,12 @@ components:
               example:
                 id: c27a371e-6d49-4395-b822-78a37053e7b
             labels:
-              $ref: '#/components/schemas/ServiceHubLabels'
+              $ref: '#/components/schemas/Labels'
           required:
             - id
             - name
             - service_id
+            - binding
             - data
             - labels
         - $ref: '#/components/schemas/EntityTimeFields'
@@ -3341,7 +3361,7 @@ components:
           example:
             id: c27a371e-6d49-4395-b822-78a37053e7b
         labels:
-          $ref: '#/components/schemas/ServiceHubLabels'
+          $ref: '#/components/schemas/Labels'
       required:
         - binding
         - data
@@ -4546,20 +4566,6 @@ components:
           format: uri-reference
           minLength: 1
           example: '#public-slack-channel'
-    ServiceHubLabels:
-      title: Labels
-      type: object
-      example:
-        env: test
-      description: >-
-        Labels to facilitate grouping and tagged search. Keys must be of length
-        1-63 characters, and cannot start with 'kong', 'konnect', 'mesh', 'kic',
-        or '_'.
-      additionalProperties:
-        type: string
-        pattern: ^[a-z0-9A-Z]{1}([a-z0-9A-Z\-\.\_]*[a-z0-9A-Z]+)?$
-        minLength: 1
-        maxLength: 63
     LabelsPatch:
       title: LabelsPatch
       type: object
@@ -4702,7 +4708,7 @@ components:
                 - labels
               properties:
                 labels:
-                  $ref: '#/components/schemas/ServiceHubLabels'
+                  $ref: '#/components/schemas/Labels'
     CreateAndMapServiceAction:
       allOf:
         - $ref: '#/components/schemas/CreateAndMapServiceActionPayload'
@@ -4780,7 +4786,7 @@ components:
                 - labels
               properties:
                 labels:
-                  $ref: '#/components/schemas/ServiceHubLabels'
+                  $ref: '#/components/schemas/Labels'
     MapServiceActionResponse:
       title: MapServiceActionResponse
       type: object
@@ -4844,7 +4850,7 @@ components:
                 - labels
               properties:
                 labels:
-                  $ref: '#/components/schemas/ServiceHubLabels'
+                  $ref: '#/components/schemas/Labels'
     MapById:
       type: object
       additionalProperties: false
@@ -4955,15 +4961,15 @@ components:
         id:
           oneOf:
             - $ref: '#/components/schemas/StringFieldEqualsFilter'
-            - $ref: '#/components/schemas/StringFieldOEQFilter'
+            - $ref: '#/components/schemas/schemas-StringFieldOEQFilter'
         name:
-          $ref: '#/components/schemas/StringFieldFilter'
+          $ref: '#/components/schemas/schemas-StringFieldFilter'
         display_name:
-          $ref: '#/components/schemas/StringFieldFilter'
+          $ref: '#/components/schemas/schemas-StringFieldFilter'
         labels:
           $ref: '#/components/schemas/LabelsFieldFilter'
         integration:
-          $ref: '#/components/schemas/StringFieldFilter'
+          $ref: '#/components/schemas/schemas-StringFieldFilter'
         integration.data:
           $ref: '#/components/schemas/IntegrationDataFieldFilter'
         created_at:
@@ -4971,19 +4977,19 @@ components:
         updated_at:
           $ref: '#/components/schemas/DateTimeFieldFilter'
         team_owner:
-          $ref: '#/components/schemas/StringFieldFilter'
+          $ref: '#/components/schemas/schemas-StringFieldFilter'
         cost_center:
-          $ref: '#/components/schemas/StringFieldFilter'
+          $ref: '#/components/schemas/schemas-StringFieldFilter'
         slack_channel:
-          $ref: '#/components/schemas/StringFieldFilter'
+          $ref: '#/components/schemas/schemas-StringFieldFilter'
         jira_project:
-          $ref: '#/components/schemas/StringFieldFilter'
+          $ref: '#/components/schemas/schemas-StringFieldFilter'
         product_manager:
-          $ref: '#/components/schemas/StringFieldFilter'
+          $ref: '#/components/schemas/schemas-StringFieldFilter'
         git_repo:
-          $ref: '#/components/schemas/StringFieldFilter'
+          $ref: '#/components/schemas/schemas-StringFieldFilter'
         dashboard:
-          $ref: '#/components/schemas/StringFieldFilter'
+          $ref: '#/components/schemas/schemas-StringFieldFilter'
     IntegrationFilterParameters:
       title: IntegrationFilterParameters
       type: object
@@ -5023,7 +5029,7 @@ components:
            - `filter[data.control_plane_id]=760562c3-fedd-43e4-b742-fc1663fef188`
            - `filter[data.repo][neq]=svc_monorepo`
       oneOf:
-        - $ref: '#/components/schemas/StringFieldFilter'
+        - $ref: '#/components/schemas/schemas-StringFieldFilter'
     MetadataSchemaFilterParameters:
       title: MetadataSchemaFilterParameters
       type: object
@@ -5266,19 +5272,6 @@ components:
       type: boolean
       x-examples:
         example-1: true
-    LabelsFieldFilter:
-      title: LabelsFieldFilter
-      description: >
-        Filters on the resource's `labels` field. Filters must use dot-notation
-        to identify
-
-        the label key that will be used to filter the results. For example:
-           - `filter[labels.owner]`
-           - `filter[labels.owner][neq]=kong`
-           - `filter[labels.env]=dev`
-           - `filter[labels.env][ocontains]=dev,test`
-      oneOf:
-        - $ref: '#/components/schemas/StringFieldFilter'
     ServicehubBaseNode:
       type: object
       required:
@@ -5515,6 +5508,83 @@ components:
           table_header: '#/components/schemas/ServicehubTableHeaderBlock'
           table_cell: '#/components/schemas/ServicehubTableCellBlock'
           table_row: '#/components/schemas/ServicehubTableRowBlock'
+    schemas-StringFieldOEQFilter:
+      title: StringFieldOEQFilter
+      description: >-
+        Returns entities that exact match any of the comma-delimited phrases in
+        the filter string.
+      type: object
+      additionalProperties: false
+      properties:
+        oeq:
+          type: string
+      required:
+        - oeq
+      x-examples:
+        example-1:
+          oeq: some-value,some-other-value
+    schemas-StringFieldOContainsFilter:
+      title: StringFieldOContainsFilter
+      description: >-
+        Returns entities that fuzzy-match any of the comma-delimited phrases in
+        the filter string.
+      type: object
+      additionalProperties: false
+      properties:
+        ocontains:
+          type: string
+      required:
+        - ocontains
+      x-examples:
+        example-1:
+          ocontains: this-value,or-that-value
+    schemas-StringFieldNEQFilter:
+      title: StringFieldNEQFilter
+      description: Filters on the given string field value by exact match inequality.
+      type: object
+      additionalProperties: false
+      properties:
+        neq:
+          type: string
+      required:
+        - neq
+      x-examples:
+        example-1:
+          neq: not-this-value
+    schemas-StringFieldFilter:
+      title: StringFieldFilter
+      description: Filters on the given string field value by either exact or fuzzy match.
+      oneOf:
+        - $ref: '#/components/schemas/StringFieldEqualsFilter'
+        - $ref: '#/components/schemas/StringFieldContainsFilter'
+        - $ref: '#/components/schemas/schemas-StringFieldOContainsFilter'
+        - $ref: '#/components/schemas/schemas-StringFieldOEQFilter'
+        - $ref: '#/components/schemas/schemas-StringFieldNEQFilter'
+      x-examples:
+        example-1: equals-some-value
+        example-2:
+          eq: some-value
+        example-3:
+          contains: some-value
+        example-4:
+          ocontains: some-potential,value
+        example-5:
+          oeq: some-potential,value
+        example-6:
+          neq: not-this-value
+    LabelsFieldFilter:
+      allOf:
+        - title: LabelsFieldFilter
+          description: >
+            Filters on the resource's `labels` field. Filters must use
+            dot-notation to identify
+
+            the label key that will be used to filter the results. For example:
+              - `filter[labels.owner]`
+              - `filter[labels.owner][neq]=kong`
+              - `filter[labels.env]=dev`
+              - `filter[labels.env][ocontains]=dev,test`
+        - $ref: '#/components/schemas/schemas-StringFieldFilter'
     InternalError:
       allOf:
         - $ref: '#/components/schemas/BaseError'
@@ -6015,7 +6085,7 @@ components:
             additionalProperties: false
             properties:
               meta:
-                $ref: '#/components/schemas/LimitOffsetPaginatedMeta'
+                $ref: '#/components/schemas/PaginatedMeta'
               data:
                 type: array
                 items:
@@ -6364,6 +6434,15 @@ components:
       schema:
         type: integer
         example: 10
+      allowEmptyValue: true
+    PageNumber:
+      name: page[number]
+      description: Determines which page of the entities to retrieve.
+      in: query
+      required: false
+      schema:
+        type: integer
+        example: 1
       allowEmptyValue: true
     PageAfter:
       name: page[after]

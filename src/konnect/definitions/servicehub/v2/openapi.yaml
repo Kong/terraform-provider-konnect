@@ -30,7 +30,7 @@ security:
   - personalAccessToken: []
   - systemAccountAccessToken: []
 paths:
-  /services:
+  /servicehub/services:
     get:
       summary: List Services
       operationId: list-services
@@ -49,7 +49,8 @@ paths:
         '500':
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/Internal'
       parameters:
-        - $ref: '#/components/parameters/LimitOffsetPage'
+        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
         - $ref: '#/components/parameters/ServiceFilter'
         - $ref: '#/components/parameters/ServiceSort'
       tags:
@@ -75,7 +76,7 @@ paths:
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/Internal'
       tags:
         - Service Hub Services
-  /services/{serviceId}:
+  /servicehub/services/{serviceId}:
     parameters:
       - schema:
           type: string
@@ -1818,7 +1819,7 @@ components:
             additionalProperties: false
             properties:
               meta:
-                $ref: '#/components/schemas/LimitOffsetPaginatedMeta'
+                $ref: '../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
               data:
                 type: array
                 items:
@@ -2162,7 +2163,7 @@ components:
               maxLength: 120
               example: User Service
             labels:
-              $ref: '#/components/schemas/ServiceHubLabels'
+              $ref: '../../../../common/definitions/konnect_properties.yaml#/components/schemas/Labels'
             integrations:
               description: An array of ServiceHub integrations associated to the service.
               items:
@@ -2203,7 +2204,7 @@ components:
           maxLength: 120
           example: User Service
         labels:
-          $ref: '#/components/schemas/ServiceHubLabels'
+          $ref: '../../../../common/definitions/konnect_properties.yaml#/components/schemas/Labels'
         metadata:
           $ref: '#/components/schemas/Metadata'
       required:
@@ -2608,11 +2609,12 @@ components:
               example:
                 id: c27a371e-6d49-4395-b822-78a37053e7b
             labels:
-              $ref: '#/components/schemas/ServiceHubLabels'
+              $ref: '../../../../common/definitions/konnect_properties.yaml#/components/schemas/Labels'
           required:
             - id
             - name
             - service_id
+            - binding
             - data
             - labels
         - $ref: '#/components/schemas/EntityTimeFields'
@@ -2633,7 +2635,7 @@ components:
           example:
             id: c27a371e-6d49-4395-b822-78a37053e7b
         labels:
-          $ref: '#/components/schemas/ServiceHubLabels'
+          $ref: '../../../../common/definitions/konnect_properties.yaml#/components/schemas/Labels'
       required:
         - binding
         - data
@@ -3676,17 +3678,6 @@ components:
           format: uri-reference
           minLength: 1
           example: '#public-slack-channel'
-    ServiceHubLabels:
-      title: Labels
-      type: object
-      example:
-        env: 'test'
-      description: 'Labels to facilitate grouping and tagged search. Keys must be of length 1-63 characters, and cannot start with ''kong'', ''konnect'', ''mesh'', ''kic'', or ''_''.'
-      additionalProperties:
-        type: string
-        pattern: '^[a-z0-9A-Z]{1}([a-z0-9A-Z\-\.\_]*[a-z0-9A-Z]+)?$'
-        minLength: 1
-        maxLength: 63
     LabelsPatch:
       title: LabelsPatch
       type: object
@@ -3826,7 +3817,7 @@ components:
                 - labels
               properties:
                 labels:
-                  $ref: '#/components/schemas/ServiceHubLabels'
+                  $ref: '../../../../common/definitions/konnect_properties.yaml#/components/schemas/Labels'
     CreateAndMapServiceAction:
       allOf:
         - $ref: '#/components/schemas/CreateAndMapServiceActionPayload'
@@ -3902,7 +3893,7 @@ components:
                 - labels
               properties:
                 labels:
-                  $ref: '#/components/schemas/ServiceHubLabels'
+                  $ref: '../../../../common/definitions/konnect_properties.yaml#/components/schemas/Labels'
     MapServiceActionResponse:
       title: MapServiceActionResponse
       type: object
@@ -3961,7 +3952,7 @@ components:
                 - labels
               properties:
                 labels:
-                  $ref: '#/components/schemas/ServiceHubLabels'
+                  $ref: '../../../../common/definitions/konnect_properties.yaml#/components/schemas/Labels'
     MapById:
       type: object
       additionalProperties: false
@@ -4053,37 +4044,37 @@ components:
       properties:
         id:
           oneOf:
-            - $ref: '#/components/schemas/StringFieldEqualsFilter'
-            - $ref: '#/components/schemas/StringFieldOEQFilter'
+            - $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldEqualsFilter'
+            - $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldOEQFilter'
         name:
-          $ref: '#/components/schemas/StringFieldFilter'
+          $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter'
         display_name:
-          $ref: '#/components/schemas/StringFieldFilter'
+          $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter'
         labels:
-          $ref: '#/components/schemas/LabelsFieldFilter'
+          $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/LabelsFieldFilter'
         integration:
-          $ref: '#/components/schemas/StringFieldFilter'
+          $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter'
         integration.data:
           $ref: '#/components/schemas/IntegrationDataFieldFilter'
         created_at:
-          $ref: '#/components/schemas/DateTimeFieldFilter'
+          $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/DateTimeFieldFilter'
         updated_at:
-          $ref: '#/components/schemas/DateTimeFieldFilter'
-        # Metadata fitler parameters
+          $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/DateTimeFieldFilter'
+        # Metadata filter parameters
         team_owner:
-          $ref: '#/components/schemas/StringFieldFilter'
+          $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter'
         cost_center:
-          $ref: '#/components/schemas/StringFieldFilter'
+          $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter'
         slack_channel:
-          $ref: '#/components/schemas/StringFieldFilter'
+          $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter'
         jira_project:
-          $ref: '#/components/schemas/StringFieldFilter'
+          $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter'
         product_manager:
-          $ref: '#/components/schemas/StringFieldFilter'
+          $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter'
         git_repo:
-          $ref: '#/components/schemas/StringFieldFilter'
+          $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter'
         dashboard:
-          $ref: '#/components/schemas/StringFieldFilter'
+          $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter'
     IntegrationFilterParameters:
       title: IntegrationFilterParameters
       type: object
@@ -4110,7 +4101,7 @@ components:
         name:
           $ref: '#/components/schemas/StringFieldFilter'
         labels:
-          $ref: '#/components/schemas/LabelsFieldFilter'
+          $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/LabelsFieldFilter'
         data:
           $ref: '#/components/schemas/IntegrationDataFieldFilter'
     IntegrationDataFieldFilter:
@@ -4121,7 +4112,7 @@ components:
            - `filter[data.control_plane_id]=760562c3-fedd-43e4-b742-fc1663fef188`
            - `filter[data.repo][neq]=svc_monorepo`
       oneOf:
-        - $ref: '#/components/schemas/StringFieldFilter'
+        - $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter'
     MetadataSchemaFilterParameters:
       title: MetadataSchemaFilterParameters
       type: object
@@ -4532,17 +4523,6 @@ components:
           gt: '2022-03-30T07:20:50Z'
         datetime_field_6:
           gte: '2022-03-30T07:20:50Z'
-    LabelsFieldFilter:
-      title: LabelsFieldFilter
-      description: |
-        Filters on the resource's `labels` field. Filters must use dot-notation to identify
-        the label key that will be used to filter the results. For example:
-           - `filter[labels.owner]`
-           - `filter[labels.owner][neq]=kong`
-           - `filter[labels.env]=dev`
-           - `filter[labels.env][ocontains]=dev,test`
-      oneOf:
-        - $ref: '#/components/schemas/StringFieldFilter'
     ServicehubBaseNode:
       type: object
       required:
