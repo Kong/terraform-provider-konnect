@@ -81,6 +81,32 @@ paths:
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       tags:
         - Collections
+    put:
+      summary: Create or Update collection
+      description: >-
+        Create or Update the document collection.
+        collectionId must be globally unique.
+        A collectionId of a different kind (service/portal) must not already exist.
+      operationId: putCollection
+      requestBody:
+        $ref: '#/components/requestBodies/PutCollection'
+      responses:
+        '200':
+          description: The document collection has been updated
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/DocumentCollection'
+        '201':
+          description: The document collection has been created
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/DocumentCollection'
+        '409':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Conflict'
+      tags:
+        - Collections
     patch:
       summary: Update collection
       description: Update the document collection
@@ -89,7 +115,7 @@ paths:
         $ref: '#/components/requestBodies/UpdateCollection'
       responses:
         '201':
-          description: The document has been created
+          description: The document collection has been created
           content:
             'application/json':
               schema:
@@ -441,9 +467,7 @@ components:
       - updated_at
       properties:
         id:
-          type: string
-          format: uuid
-          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
         name:
           type: string
           example: my document collection
@@ -735,6 +759,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/UpdateCollectionPayload'
+    PutCollection:
+      description: collection put
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DocumentCollection'
     CreateDocument:
       description: document creation
       content:

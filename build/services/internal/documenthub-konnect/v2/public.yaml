@@ -88,6 +88,32 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Collections
+    put:
+      summary: Create or Update collection
+      description: >-
+        Create or Update the document collection. collectionId must be globally
+        unique. A collectionId of a different kind (service/portal) must not
+        already exist.
+      operationId: putCollection
+      requestBody:
+        $ref: '#/components/requestBodies/PutCollection'
+      responses:
+        '200':
+          description: The document collection has been updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentCollection'
+        '201':
+          description: The document collection has been created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentCollection'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - Collections
     patch:
       summary: Update collection
       description: Update the document collection
@@ -96,7 +122,7 @@ paths:
         $ref: '#/components/requestBodies/UpdateCollection'
       responses:
         '201':
-          description: The document has been created
+          description: The document collection has been created
           content:
             application/json:
               schema:
@@ -469,9 +495,7 @@ components:
         - updated_at
       properties:
         id:
-          type: string
-          format: uuid
-          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+          $ref: '#/components/schemas/UUID'
         name:
           type: string
           example: my document collection
@@ -971,6 +995,12 @@ components:
           $ref: '#/components/schemas/PageMeta'
       required:
         - page
+    UUID:
+      type: string
+      format: uuid
+      example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+      description: Contains a unique identifier used by the API for this resource.
+      readOnly: true
     CreatedAt:
       type: string
       format: date-time
@@ -1153,6 +1183,21 @@ components:
           example: kong:trace:1234567890
         detail:
           example: Not found
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+    ConflictError:
+      type: object
+      properties:
+        status:
+          example: 409
+        title:
+          example: Conflict
+        type:
+          example: https://httpstatuses.com/409
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Conflict
       allOf:
         - $ref: '#/components/schemas/BaseError'
     DocumentContentTypeEnum:
@@ -1493,21 +1538,6 @@ components:
             content:
               - type: text
                 text: Hello World
-    ConflictError:
-      type: object
-      properties:
-        status:
-          example: 409
-        title:
-          example: Conflict
-        type:
-          example: https://httpstatuses.com/409
-        instance:
-          example: kong:trace:1234567890
-        detail:
-          example: Conflict
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
   requestBodies:
     MoveDocument:
       description: move document
@@ -1527,6 +1557,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/UpdateCollectionPayload'
+    PutCollection:
+      description: collection put
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DocumentCollection'
     CreateDocument:
       description: document creation
       content:
