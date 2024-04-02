@@ -879,6 +879,8 @@ components:
                       id: 09b4786a-3e48-4631-8f6b-62d1d8e1a7f3
                     publish_status: unpublished
                     deprecated: false
+                    labels:
+                      env: test
                     created_at: 2023-01-01T00:00:00.000Z
                     updated_at: 2023-01-01T00:00:00.000Z
                 meta:
@@ -1178,6 +1180,7 @@ components:
         - gateway_service
         - publish_status
         - deprecated
+        - labels
         - created_at
         - updated_at
       properties:
@@ -1227,6 +1230,8 @@ components:
           type: boolean
           description: Indicates if this API product version is deprecated
           example: false
+        labels:
+          $ref: '../../../../common/definitions/konnect_properties.yaml#/components/schemas/Labels'
         auth_strategy_sync_errors:
           $ref: '#/components/schemas/AuthStrategySyncErrors'
         created_at:
@@ -1342,6 +1347,8 @@ components:
           description: Indicates if the version of the API product is deprecated.
           example: false
           default: false
+        labels:
+          $ref: '../../../../common/definitions/konnect_properties.yaml#/components/schemas/Labels'
         gateway_service:
           oneOf:
             - $ref: '#/components/schemas/GatewayServicePayload'
@@ -1488,6 +1495,8 @@ components:
           anyOf:
             - $ref: '#/components/schemas/GatewayServicePayload'
             - $ref: '#/components/schemas/LegacyGatewayServicePayload'
+        labels:
+          $ref: '../../../../common/definitions/konnect_properties.yaml#/components/schemas/LabelsUpdate'
     UpdateAPIProductVersionSpecDTO:
       title: Update API Product Version Specification Request
       description: The request schema for updating a specification for a version of an API product.
@@ -1574,6 +1583,8 @@ components:
           id: 09b4786a-3e48-4631-8f6b-62d1d8e1a7f3
         publish_status: unpublished
         deprecated: false
+        labels:
+          env: test
         created_at: 2023-01-01T00:00:00.000Z
         updated_at: 2023-01-01T00:00:00.000Z
     APIProductVersionSpecExample:

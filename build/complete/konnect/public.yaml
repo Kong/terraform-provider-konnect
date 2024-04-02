@@ -8106,6 +8106,7 @@ components:
         - gateway_service
         - publish_status
         - deprecated
+        - labels
         - created_at
         - updated_at
       properties:
@@ -8162,6 +8163,8 @@ components:
           type: boolean
           description: Indicates if this API product version is deprecated
           example: false
+        labels:
+          $ref: '#/components/schemas/Labels'
         auth_strategy_sync_errors:
           $ref: '#/components/schemas/AuthStrategySyncErrors'
         created_at:
@@ -8279,6 +8282,8 @@ components:
           description: Indicates if the version of the API product is deprecated.
           example: false
           default: false
+        labels:
+          $ref: '#/components/schemas/Labels'
         gateway_service:
           oneOf:
             - $ref: '#/components/schemas/GatewayServicePayload'
@@ -8441,6 +8446,8 @@ components:
           anyOf:
             - $ref: '#/components/schemas/GatewayServicePayload'
             - $ref: '#/components/schemas/LegacyGatewayServicePayload'
+        labels:
+          $ref: '#/components/schemas/LabelsUpdate'
     UpdateAPIProductVersionSpecDTO:
       title: Update API Product Version Specification Request
       description: >-
@@ -9177,6 +9184,44 @@ components:
         checked:
           type: boolean
           description: State of the checkbox
+    Labels:
+      title: Labels
+      type: object
+      example:
+        env: test
+      maxProperties: 50
+      description: >
+        Labels store metadata of an entity that can be used for filtering an
+        entity list or for searching across entity types. 
+
+
+        Keys must be of length 1-63 characters, and cannot start with "kong",
+        "konnect", "mesh", "kic", or "_".
+      additionalProperties:
+        type: string
+        pattern: ^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$
+        minLength: 1
+        maxLength: 63
+    LabelsUpdate:
+      type: object
+      nullable: true
+      description: >
+        Labels store metadata of an entity that can be used for filtering an
+        entity list or for searching across entity types. 
+
+
+        Keys must be of length 1-63 characters, and cannot start with "kong",
+        "konnect", "mesh", "kic", or "_".
+      example:
+        env: test
+      maxProperties: 50
+      additionalProperties:
+        type: string
+        pattern: ^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$
+        minLength: 1
+        maxLength: 63
+        nullable: true
+      writeOnly: true
     ConflictError:
       type: object
       properties:
@@ -10211,44 +10256,6 @@ components:
       example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
       description: Contains a unique identifier used for this resource.
       readOnly: true
-    Labels:
-      title: Labels
-      type: object
-      example:
-        env: test
-      maxProperties: 50
-      description: >
-        Labels store metadata of an entity that can be used for filtering an
-        entity list or for searching across entity types. 
-
-
-        Keys must be of length 1-63 characters, and cannot start with "kong",
-        "konnect", "mesh", "kic", or "_".
-      additionalProperties:
-        type: string
-        pattern: ^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$
-        minLength: 1
-        maxLength: 63
-    LabelsUpdate:
-      type: object
-      nullable: true
-      description: >
-        Labels store metadata of an entity that can be used for filtering an
-        entity list or for searching across entity types. 
-
-
-        Keys must be of length 1-63 characters, and cannot start with "kong",
-        "konnect", "mesh", "kic", or "_".
-      example:
-        env: test
-      maxProperties: 50
-      additionalProperties:
-        type: string
-        pattern: ^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$
-        minLength: 1
-        maxLength: 63
-        nullable: true
-      writeOnly: true
     UuidFieldFilter:
       title: UuidFieldFilter
       description: Filters on the given UUID field value by exact match.
@@ -15047,6 +15054,8 @@ components:
           id: 09b4786a-3e48-4631-8f6b-62d1d8e1a7f3
         publish_status: unpublished
         deprecated: false
+        labels:
+          env: test
         created_at: '2023-01-01T00:00:00.000Z'
         updated_at: '2023-01-01T00:00:00.000Z'
     APIProductVersionSpecExample:
@@ -18167,6 +18176,8 @@ components:
                       id: 09b4786a-3e48-4631-8f6b-62d1d8e1a7f3
                     publish_status: unpublished
                     deprecated: false
+                    labels:
+                      env: test
                     created_at: '2023-01-01T00:00:00.000Z'
                     updated_at: '2023-01-01T00:00:00.000Z'
                 meta:
