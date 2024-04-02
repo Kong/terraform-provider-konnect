@@ -2346,6 +2346,24 @@ components:
             - metadata
             - children
         - $ref: '#/components/schemas/EntityTimeFields'
+    Labels:
+      title: Labels
+      type: object
+      example:
+        env: test
+      maxProperties: 50
+      description: >
+        Labels store metadata of an entity that can be used for filtering an
+        entity list or for searching across entity types. 
+
+
+        Keys must be of length 1-63 characters, and cannot start with "kong",
+        "konnect", "mesh", "kic", or "_".
+      additionalProperties:
+        type: string
+        pattern: ^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$
+        minLength: 1
+        maxLength: 63
     ConflictError:
       type: object
       properties:
@@ -2367,24 +2385,6 @@ components:
       example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
       description: Contains a unique identifier used for this resource.
       readOnly: true
-    Labels:
-      title: Labels
-      type: object
-      example:
-        env: test
-      maxProperties: 50
-      description: >
-        Labels store metadata of an entity that can be used for filtering an
-        entity list or for searching across entity types. 
-
-
-        Keys must be of length 1-63 characters, and cannot start with "kong",
-        "konnect", "mesh", "kic", or "_".
-      additionalProperties:
-        type: string
-        pattern: ^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$
-        minLength: 1
-        maxLength: 63
     SearchResponse:
       title: SearchResponse
       description: Search response schema.

@@ -1092,6 +1092,7 @@ components:
         - slug
         - status
         - metadata
+        - content
         - ast
         - updated_at
         - created_at
@@ -1114,6 +1115,9 @@ components:
             - published
         metadata:
           type: object
+        content:
+          type: string
+          description: The unencoded markdown string of the api product document.
         ast:
           type: array
           items:
@@ -1407,12 +1411,7 @@ components:
           example: How to create a document in Konnect DocumentHub
         content:
           type: string
-          format: byte
-          description: Must be a base64 encoded string. Either raw_content or str_mdr_content are required.
-          example: YmFzZTY0LWVuY29kZWQgdGV4dCBzdHJpbmc=
-        str_md_content:
-          type: string
-          description: markdown content. Either raw_content or str_mdr_content are required.
+          description: Can be markdown string content or base64 encoded string
           example: '## My Markdown'
         metadata:
           type: object
@@ -1450,13 +1449,8 @@ components:
           example: How to update a document in Konnect DocumentHub
         content:
           type: string
-          format: byte
-          description: base64 encoded string of the document content
+          description: Can be markdown string content or base64 encoded string
           example: YmFzZTY0LWVuY29kZWQgdGV4dCBzdHJpbmc=
-        str_md_content:
-          type: string
-          description: markdown content.
-          example: '## My Markdown'
         metadata:
           type: object
           nullable: false
@@ -1685,6 +1679,7 @@ components:
         title: API Product Document
         slug: api-product-document
         status: published
+        content: '# API Product Document Header'
         ast:
           - children:
             - text: API Product Document Header
