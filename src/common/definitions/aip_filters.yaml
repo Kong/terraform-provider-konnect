@@ -51,6 +51,21 @@ components:
           oeq: 'some-potential,value'
         example-6:
           neq: 'not-this-value'
+    StringFieldFilterExact:
+      title: StringFieldFilterExact
+      description: Filters on the given string field value by exact match.
+      oneOf:
+        - $ref: '#/components/schemas/StringFieldEqualsFilter'
+        - $ref: '#/components/schemas/StringFieldOEQFilter'
+        - $ref: '#/components/schemas/StringFieldNEQFilter'
+      x-examples:
+        example-1: 'equals-some-value'
+        example-2:
+          eq: 'some-value'
+        example-3:
+          oeq: 'some-potential,value'
+        example-4:
+          neq: 'not-this-value'
     StringFieldEqualsFilter:
       title: StringFieldEqualsFilter
       description: Filters on the given string field value by exact match.
