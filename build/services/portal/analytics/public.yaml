@@ -56,6 +56,20 @@ paths:
         - Application Analytics
       security:
         - portalAccessToken: []
+  /api/v2/stats/config:
+    get:
+      summary: Application Analytics Config
+      operationId: get-application-analytics-config
+      description: Get config for application analytics
+      responses:
+        '200':
+          $ref: '#/components/responses/GetConfig'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      tags:
+        - Application Analytics
+      security:
+        - portalAccessToken: []
 components:
   securitySchemes:
     portalAccessToken:
@@ -432,6 +446,24 @@ components:
       description: Query response data.
       items:
         $ref: '#/components/schemas/QueryResponseRecord'
+    GetConfigResponse:
+      additionalProperties: false
+      type: object
+      required:
+        - analytics
+      properties:
+        analytics:
+          type: object
+          nullable: true
+          additionalProperties: false
+          description: Null if analytics is not enabled.
+          properties:
+            percentiles:
+              type: boolean
+              description: True if analytics percentiles are enabled.
+            retention_ms:
+              type: integer
+              description: Analytics retention in milliseconds.
     BaseError:
       type: object
       title: Error
@@ -497,6 +529,21 @@ components:
           example: Forbidden
       allOf:
         - $ref: '#/components/schemas/BaseError'
+    UnauthorizedError:
+      type: object
+      properties:
+        status:
+          example: 401
+        title:
+          example: Unauthorized
+        type:
+          example: https://httpstatuses.com/401
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Invalid credentials
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
   responses:
     QueryResponse:
       description: A response from an Application Analytics query.
@@ -520,6 +567,17 @@ components:
                 #/components/examples/ResponseExampleWithMetricAndMultipleDimensions
             Response with time dimension:
               $ref: '#/components/examples/ResponseExampleWithTimeDimension'
+    GetConfig:
+      description: Get config
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GetConfigResponse'
+          examples:
+            GetConfigNoAnalytics200response:
+              $ref: '#/components/examples/GetConfigNoAnalytics200response'
+            GetConfigAnalytics200response:
+              $ref: '#/components/examples/GetConfigAnalytics200response'
     Forbidden:
       description: Forbidden
       content:
@@ -529,6 +587,15 @@ components:
           examples:
             UnauthorizedExample:
               $ref: '#/components/examples/ForbiddenExample'
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/UnauthorizedError'
+          examples:
+            UnauthorizedExample:
+              $ref: '#/components/examples/examples-UnauthorizedExample'
   examples:
     ResponseExampleWithMetricAndDimension:
       value:
@@ -722,9 +789,23 @@ components:
           Developer to not have access to APPLICATION:
           abe525e6-6baa-4cca-ba67-36dad0194a69
         invalid_parameters: []
+    GetConfigNoAnalytics200response:
+      value:
+        analytics: null
+    GetConfigAnalytics200response:
+      value:
+        analytics:
+          percentiles: true
+          retention_ms: 31536000000
     ForbiddenExample:
       value:
         status: 403
         title: Forbidden
         instance: kong:trace:2723154947768991354
         detail: You do not have permission to perform this action
+    examples-UnauthorizedExample:
+      value:
+        status: 401
+        title: Unauthorized
+        instance: kong:trace:8347343766220159418
+        detail: Unauthorized

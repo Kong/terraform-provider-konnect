@@ -50,6 +50,20 @@ paths:
         - Application Analytics
       security:
         - portalAccessToken: []
+  /api/v2/stats/config:
+    get:
+      summary: Application Analytics Config
+      operationId: get-application-analytics-config
+      description: Get config for application analytics
+      responses:
+        '200':
+          $ref: '#/components/responses/GetConfig'
+        '401':
+          $ref: '../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+      tags:
+        - Application Analytics
+      security:
+        - portalAccessToken: []
 components:
   securitySchemes:
       portalAccessToken:
@@ -368,6 +382,24 @@ components:
       description: Query response data.
       items:
         $ref: '#/components/schemas/QueryResponseRecord'
+    GetConfigResponse:
+      additionalProperties: false
+      type: object
+      required:
+        - analytics
+      properties:
+        analytics:
+          type: object
+          nullable: true
+          additionalProperties: false
+          description: Null if analytics is not enabled.
+          properties:
+            percentiles:
+              type: boolean
+              description: True if analytics percentiles are enabled. 
+            retention_ms:
+              type: integer
+              description: Analytics retention in milliseconds.
   responses:
     QueryResponse:
       description: A response from an Application Analytics query.
@@ -390,6 +422,17 @@ components:
               $ref: '#/components/examples/ResponseExampleWithMetricAndMultipleDimensions'
             Response with time dimension: 
               $ref: '#/components/examples/ResponseExampleWithTimeDimension'
+    GetConfig:
+      description: Get config
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GetConfigResponse'
+          examples:
+            GetConfigNoAnalytics200response:
+              $ref: '#/components/examples/GetConfigNoAnalytics200response'
+            GetConfigAnalytics200response:
+              $ref: '#/components/examples/GetConfigAnalytics200response'
   examples:
     ResponseExampleWithMetricAndDimension:
       value: {
@@ -673,6 +716,14 @@ components:
         instance: kong:trace:9039922446017540182
         detail: 'Developer to not have access to APPLICATION: abe525e6-6baa-4cca-ba67-36dad0194a69'
         invalid_parameters: []
+    GetConfigNoAnalytics200response:
+      value:
+        analytics: null
+    GetConfigAnalytics200response:
+      value:
+        analytics:
+          percentiles: true
+          retention_ms: 31536000000
 tags:
   - name: Application Analytics
     description: The API for querying Application Analytics. Application Analytics is only available for private portals. 
