@@ -14,6 +14,7 @@ servers:
   - url: https://au.api.konghq.com/v2
     description: Base URL for the AU region
 tags:
+  - name: Addons
   - name: Service Hub Services
   - name: Integrations
   - name: Integration Auth Credentials
@@ -30,6 +31,29 @@ security:
   - personalAccessToken: []
   - systemAccountAccessToken: []
 paths:
+  /servicehub/addons:
+    get:
+      summary: List Addons
+      operationId: list-addons
+      x-internal: true
+      x-unstable: true
+      description: Returns a paginated collection of ServiceHub addons.
+      responses:
+        '200':
+          $ref: '#/components/responses/ListAddonsResponse'
+        '400':
+          $ref:  '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '500':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Internal'
+      parameters:
+        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/AddonFilter'
+        - $ref: '#/components/parameters/AddonSort'
+      tags:
+        - Addons
   /servicehub/services:
     get:
       summary: List Services
@@ -348,28 +372,6 @@ paths:
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/Internal'
       tags:
         - Service Documents
-  /integrations:
-    get:
-      summary: List Integrations
-      operationId: list-integrations
-      x-internal: true
-      x-unstable: true
-      description: Returns a paginated collection of ServiceHub integrations.
-      responses:
-        '200':
-          $ref: '#/components/responses/ListIntegrationsResponse'
-        '400':
-          $ref:  '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
-        '401':
-          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
-        '500':
-          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Internal'
-      parameters:
-        - $ref: '#/components/parameters/LimitOffsetPage'
-        - $ref: '#/components/parameters/IntegrationFilter'
-        - $ref: '#/components/parameters/IntegrationSort'
-      tags:
-        - Integrations
   /installed-integrations:
     get:
       summary: List Installed Integrations
@@ -1460,24 +1462,24 @@ components:
       in: query
       schema:
         $ref: '#/components/schemas/ServiceHubSortQuery'
-    IntegrationFilter:
+    AddonFilter:
       name: filter
-      description: Filters a collection of ServiceHub integrations.
+      description: Filters a collection of ServiceHub addons.
       required: false
       in: query
       schema:
-        $ref: '#/components/schemas/IntegrationFilterParameters'
+        $ref: '#/components/schemas/AddonFilterParameters'
       style: deepObject
-    IntegrationSort:
+    AddonSort:
       name: sort
       description: |
-        Sorts a collection of ServiceHub integrations. Supported sort attributes are:
+        Sorts a collection of ServiceHub addons. Supported sort attributes are:
           - name
           - display_name
       required: false
       in: query
       schema:
-        $ref: '#/components/schemas/ServiceHubSortQuery'
+        $ref:  '../../../../common/definitions/aip_filters.yaml#/components/schemas/SortQuery'
     InstalledIntegrationFilter:
       name: filter
       description: Filters a collection of installed ServiceHub integrations.
@@ -1901,8 +1903,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Document'
-    ListIntegrationsResponse:
-      description: A paginated list response for a collection of ServiceHub integrations.
+    ListAddonsResponse:
+      description: A paginated list response for a collection of ServiceHub addons.
       content:
         application/json:
           schema:
@@ -1910,11 +1912,11 @@ components:
             additionalProperties: false
             properties:
               meta:
-                $ref: '#/components/schemas/LimitOffsetPaginatedMeta'
+                $ref: '../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
               data:
                 type: array
                 items:
-                  $ref: '#/components/schemas/IntegrationManifest'
+                  $ref: '#/components/schemas/AddonManifest'
             required:
               - meta
               - data
@@ -3279,47 +3281,47 @@ components:
             A timestamp indicating when to start ingestion from.
             RFC-3339 format is used with a "T" character separating date from time within the field value.
             Omitting this property indicates ingestion will be triggered from the beginning of time until the present.
-    IntegrationManifest:
+    AddonManifest:
       type: object
       additionalProperties: false
       properties:
         built_in:
           type: boolean
-          description: Respresenting the integration is a built-in integration.
+          description: Respresenting the integration is a built-in addon.
           example: false
           readOnly: true
         name:
           type: string
-          description: The integration name. Uniquely identifies the integration.
+          description: The addon name. Uniquely identifies the addon.
           maxLength: 120
           example: gateway-manager
           readOnly: true
         display_name:
           type: string
-          description: The human-readable display name of integration.
+          description: The human-readable display name of the addon.
           minLength: 1
           maxLength: 120
           example: Gateway Manager
           readOnly: true
         description:
           type: string
-          description: The text field describing the integration
+          description: The text field describing the addon.
           minLength: 1
           maxLength: 2048
           readOnly: true
         version:
           type: string
-          description: The integration version.
+          description: The addon version.
           example: v1
           readOnly: true
         authorization:
-          $ref: '#/components/schemas/IntegrationAuthorization'
+          $ref: '#/components/schemas/AddonAuthorization'
         config_schema:
-          $ref: '#/components/schemas/IntegrationConfigSchema'
+          $ref: '#/components/schemas/AddonConfigSchema'
         bindings:
-          $ref: '#/components/schemas/IntegrationBindings'
+          $ref: '#/components/schemas/AddonBindings'
         discovery:
-          $ref: '#/components/schemas/IntegrationDiscovery'
+          $ref: '#/components/schemas/AddonDiscovery'
       required:
         - built_in
         - name
@@ -3329,9 +3331,9 @@ components:
         - config_schema
         - bindings
         - discovery
-    IntegrationAuthorization:
-      title: IntegrationAuthorization
-      description: Defines authorization for the integration.
+    AddonAuthorization:
+      title: AddonAuthorization
+      description: Defines authorization for the addon.
       oneOf:
         - nullable: true
         - $ref: '#/components/schemas/OAuthAuth'
@@ -3427,9 +3429,9 @@ components:
                   type: string
                   format: uri
                   example: https://us.api.konghq.com/servicehub-addons/github/app/authorize-installation
-    IntegrationConfigSchema:
-      title: IntegrationConfigSchema
-      description: The configuration schema for the integration.
+    AddonConfigSchema:
+      title: AddonConfigSchema
+      description: The configuration schema for the addon.
       additionalProperties:
         oneOf:
           - $ref: '#/components/schemas/StringConfigFieldSchema'
@@ -3442,7 +3444,7 @@ components:
           required: true
     StringConfigFieldSchema:
       title: StringConfigFieldSchema
-      description: Schema for an integration config field representing a user-input string value.
+      description: Schema for an addon config field representing a user-input string value.
       type: object
       additionalProperties: false
       required: [type]
@@ -3472,7 +3474,7 @@ components:
         required: true
     EnumConfigFieldSchema:
       title: EnumConfigFieldSchema
-      description: Schema for an integration config field representing a selected enum value.
+      description: Schema for an addon config field representing a selected enum value.
       type: object
       additionalProperties: false
       required: [type, choices]
@@ -3521,9 +3523,9 @@ components:
             display_name: US
           - value: eu
             display_name: EU
-    IntegrationBindings:
-      title: IntegrationBindings
-      description: Map of binding objects to represent how the integration links to a service.
+    AddonBindings:
+      title: AddonBindings
+      description: Map of binding objects to represent how an addon resource links to a service.
       type: object
       default: {}
       additionalProperties:
@@ -3562,9 +3564,9 @@ components:
           schema_type: simple
           schema:
             service_id: string
-    IntegrationDiscovery:
-      title: IntegrationDiscovery
-      description: Describes the Discovery behavior of the integration
+    AddonDiscovery:
+      title: AddonDiscovery
+      description: Describes the discovery behavior of the addon.
       nullable: true
       type: object
       additionalProperties: false
@@ -3572,10 +3574,10 @@ components:
       properties:
         enabled:
           type: boolean
-          description: Controls whether Discovery is enabled by default or not when the integration is installed.
+          description: Controls whether discovery is enabled by default or not when the addon is installed.
         integration_record_examples:
           description: |
-            Examples of possible values that the `integration_record` property can have for discovered entities for a given binding.
+            Examples of possible values that the `integration_record` property can have for resources for a given binding.
 
             Please note:
             The structure of an `integration_record` is not fixed and can vary.
@@ -4075,15 +4077,15 @@ components:
           $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter'
         dashboard:
           $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter'
-    IntegrationFilterParameters:
-      title: IntegrationFilterParameters
+    AddonFilterParameters:
+      title: AddonFilterParameters
       type: object
       additionalProperties: false
       properties:
         name:
-          $ref: '#/components/schemas/StringFieldFilter'
+          $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter'
         display_name:
-          $ref: '#/components/schemas/StringFieldFilter'
+          $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter'
     InstalledIntegrationFilterParameters:
       title: IntegrationFilterParameters
       type: object

@@ -7938,7 +7938,7 @@ components:
     SortQuery:
       title: SortQuery
       type: string
-      example: name desc
+      example: name,created_at desc
       description: >
         The `asc` suffix is optional as the default sort order is ascending.
 

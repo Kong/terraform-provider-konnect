@@ -816,26 +816,6 @@ paths:
           $ref: '#/components/responses/Internal'
       tags:
         - Integration Auth Credentials
-  /integrations:
-    get:
-      summary: List Integrations
-      operationId: list-integrations
-      description: Returns a paginated collection of ServiceHub integrations.
-      responses:
-        '200':
-          $ref: '#/components/responses/ListIntegrationsResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '500':
-          $ref: '#/components/responses/Internal'
-      parameters:
-        - $ref: '#/components/parameters/LimitOffsetPage'
-        - $ref: '#/components/parameters/IntegrationFilter'
-        - $ref: '#/components/parameters/IntegrationSort'
-      tags:
-        - Integrations
   /integrations/{integration}/proxy:
     parameters:
       - schema:
@@ -1064,6 +1044,27 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/SearchTypesResponse'
+  /servicehub/addons:
+    get:
+      summary: List Addons
+      operationId: list-addons
+      description: Returns a paginated collection of ServiceHub addons.
+      responses:
+        '200':
+          $ref: '#/components/responses/ListAddonsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/Internal'
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/AddonFilter'
+        - $ref: '#/components/parameters/AddonSort'
+      tags:
+        - Addons
   /servicehub/services:
     get:
       summary: List Services
@@ -1996,6 +1997,19 @@ components:
           $ref: '#/components/schemas/PageMeta'
       required:
         - page
+    SortQuery:
+      title: SortQuery
+      type: string
+      example: name,created_at desc
+      description: >
+        The `asc` suffix is optional as the default sort order is ascending.
+
+        The `desc` suffix is used to specify a descending order.
+
+        Multiple sort attributes may be provided via a comma separated list.
+
+        JSONPath notation may be used to specify a sub-attribute (eg: 'foo.bar
+        desc').
     StringFieldEqualsFilter:
       title: StringFieldEqualsFilter
       description: Filters on the given string field value by exact match.
@@ -4117,47 +4131,47 @@ components:
 
             Omitting this property indicates ingestion will be triggered from
             the beginning of time until the present.
-    IntegrationManifest:
+    AddonManifest:
       type: object
       additionalProperties: false
       properties:
         built_in:
           type: boolean
-          description: Respresenting the integration is a built-in integration.
+          description: Respresenting the integration is a built-in addon.
           example: false
           readOnly: true
         name:
           type: string
-          description: The integration name. Uniquely identifies the integration.
+          description: The addon name. Uniquely identifies the addon.
           maxLength: 120
           example: gateway-manager
           readOnly: true
         display_name:
           type: string
-          description: The human-readable display name of integration.
+          description: The human-readable display name of the addon.
           minLength: 1
           maxLength: 120
           example: Gateway Manager
           readOnly: true
         description:
           type: string
-          description: The text field describing the integration
+          description: The text field describing the addon.
           minLength: 1
           maxLength: 2048
           readOnly: true
         version:
           type: string
-          description: The integration version.
+          description: The addon version.
           example: v1
           readOnly: true
         authorization:
-          $ref: '#/components/schemas/IntegrationAuthorization'
+          $ref: '#/components/schemas/AddonAuthorization'
         config_schema:
-          $ref: '#/components/schemas/IntegrationConfigSchema'
+          $ref: '#/components/schemas/AddonConfigSchema'
         bindings:
-          $ref: '#/components/schemas/IntegrationBindings'
+          $ref: '#/components/schemas/AddonBindings'
         discovery:
-          $ref: '#/components/schemas/IntegrationDiscovery'
+          $ref: '#/components/schemas/AddonDiscovery'
       required:
         - built_in
         - name
@@ -4167,9 +4181,9 @@ components:
         - config_schema
         - bindings
         - discovery
-    IntegrationAuthorization:
-      title: IntegrationAuthorization
-      description: Defines authorization for the integration.
+    AddonAuthorization:
+      title: AddonAuthorization
+      description: Defines authorization for the addon.
       oneOf:
         - nullable: true
         - $ref: '#/components/schemas/OAuthAuth'
@@ -4284,9 +4298,9 @@ components:
                   format: uri
                   example: >-
                     https://us.api.konghq.com/servicehub-addons/github/app/authorize-installation
-    IntegrationConfigSchema:
-      title: IntegrationConfigSchema
-      description: The configuration schema for the integration.
+    AddonConfigSchema:
+      title: AddonConfigSchema
+      description: The configuration schema for the addon.
       additionalProperties:
         oneOf:
           - $ref: '#/components/schemas/StringConfigFieldSchema'
@@ -4299,9 +4313,7 @@ components:
           required: true
     StringConfigFieldSchema:
       title: StringConfigFieldSchema
-      description: >-
-        Schema for an integration config field representing a user-input string
-        value.
+      description: Schema for an addon config field representing a user-input string value.
       type: object
       additionalProperties: false
       required:
@@ -4334,9 +4346,7 @@ components:
         required: true
     EnumConfigFieldSchema:
       title: EnumConfigFieldSchema
-      description: >-
-        Schema for an integration config field representing a selected enum
-        value.
+      description: Schema for an addon config field representing a selected enum value.
       type: object
       additionalProperties: false
       required:
@@ -4396,10 +4406,10 @@ components:
             display_name: US
           - value: eu
             display_name: EU
-    IntegrationBindings:
-      title: IntegrationBindings
+    AddonBindings:
+      title: AddonBindings
       description: >-
-        Map of binding objects to represent how the integration links to a
+        Map of binding objects to represent how an addon resource links to a
         service.
       type: object
       default: {}
@@ -4439,9 +4449,9 @@ components:
           schema_type: simple
           schema:
             service_id: string
-    IntegrationDiscovery:
-      title: IntegrationDiscovery
-      description: Describes the Discovery behavior of the integration
+    AddonDiscovery:
+      title: AddonDiscovery
+      description: Describes the discovery behavior of the addon.
       nullable: true
       type: object
       additionalProperties: false
@@ -4452,12 +4462,12 @@ components:
         enabled:
           type: boolean
           description: >-
-            Controls whether Discovery is enabled by default or not when the
-            integration is installed.
+            Controls whether discovery is enabled by default or not when the
+            addon is installed.
         integration_record_examples:
           description: >
             Examples of possible values that the `integration_record` property
-            can have for discovered entities for a given binding.
+            can have for resources for a given binding.
 
 
             Please note:
@@ -4990,15 +5000,15 @@ components:
           $ref: '#/components/schemas/schemas-StringFieldFilter'
         dashboard:
           $ref: '#/components/schemas/schemas-StringFieldFilter'
-    IntegrationFilterParameters:
-      title: IntegrationFilterParameters
+    AddonFilterParameters:
+      title: AddonFilterParameters
       type: object
       additionalProperties: false
       properties:
         name:
-          $ref: '#/components/schemas/StringFieldFilter'
+          $ref: '#/components/schemas/schemas-StringFieldFilter'
         display_name:
-          $ref: '#/components/schemas/StringFieldFilter'
+          $ref: '#/components/schemas/schemas-StringFieldFilter'
     InstalledIntegrationFilterParameters:
       title: IntegrationFilterParameters
       type: object
@@ -5508,21 +5518,6 @@ components:
           table_header: '#/components/schemas/ServicehubTableHeaderBlock'
           table_cell: '#/components/schemas/ServicehubTableCellBlock'
           table_row: '#/components/schemas/ServicehubTableRowBlock'
-    schemas-StringFieldOEQFilter:
-      title: StringFieldOEQFilter
-      description: >-
-        Returns entities that exact match any of the comma-delimited phrases in
-        the filter string.
-      type: object
-      additionalProperties: false
-      properties:
-        oeq:
-          type: string
-      required:
-        - oeq
-      x-examples:
-        example-1:
-          oeq: some-value,some-other-value
     schemas-StringFieldOContainsFilter:
       title: StringFieldOContainsFilter
       description: >-
@@ -5538,6 +5533,21 @@ components:
       x-examples:
         example-1:
           ocontains: this-value,or-that-value
+    schemas-StringFieldOEQFilter:
+      title: StringFieldOEQFilter
+      description: >-
+        Returns entities that exact match any of the comma-delimited phrases in
+        the filter string.
+      type: object
+      additionalProperties: false
+      properties:
+        oeq:
+          type: string
+      required:
+        - oeq
+      x-examples:
+        example-1:
+          oeq: some-value,some-other-value
     schemas-StringFieldNEQFilter:
       title: StringFieldNEQFilter
       description: Filters on the given string field value by exact match inequality.
@@ -5572,6 +5582,9 @@ components:
           oeq: some-potential,value
         example-6:
           neq: not-this-value
+    InternalError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
     LabelsFieldFilter:
       allOf:
         - title: LabelsFieldFilter
@@ -5585,9 +5598,6 @@ components:
               - `filter[labels.env]=dev`
               - `filter[labels.env][ocontains]=dev,test`
         - $ref: '#/components/schemas/schemas-StringFieldFilter'
-    InternalError:
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
     NotAvailableError:
       allOf:
         - $ref: '#/components/schemas/BaseError'
@@ -6167,8 +6177,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Document'
-    ListIntegrationsResponse:
-      description: A paginated list response for a collection of ServiceHub integrations.
+    ListAddonsResponse:
+      description: A paginated list response for a collection of ServiceHub addons.
       content:
         application/json:
           schema:
@@ -6176,11 +6186,11 @@ components:
             additionalProperties: false
             properties:
               meta:
-                $ref: '#/components/schemas/LimitOffsetPaginatedMeta'
+                $ref: '#/components/schemas/PaginatedMeta'
               data:
                 type: array
                 items:
-                  $ref: '#/components/schemas/IntegrationManifest'
+                  $ref: '#/components/schemas/AddonManifest'
             required:
               - meta
               - data
@@ -6488,25 +6498,24 @@ components:
       in: query
       schema:
         $ref: '#/components/schemas/ServiceHubSortQuery'
-    IntegrationFilter:
+    AddonFilter:
       name: filter
-      description: Filters a collection of ServiceHub integrations.
+      description: Filters a collection of ServiceHub addons.
       required: false
       in: query
       schema:
-        $ref: '#/components/schemas/IntegrationFilterParameters'
+        $ref: '#/components/schemas/AddonFilterParameters'
       style: deepObject
-    IntegrationSort:
+    AddonSort:
       name: sort
-      description: >
-        Sorts a collection of ServiceHub integrations. Supported sort attributes
-        are:
+      description: |
+        Sorts a collection of ServiceHub addons. Supported sort attributes are:
           - name
           - display_name
       required: false
       in: query
       schema:
-        $ref: '#/components/schemas/ServiceHubSortQuery'
+        $ref: '#/components/schemas/SortQuery'
     InstalledIntegrationFilter:
       name: filter
       description: Filters a collection of installed ServiceHub integrations.
@@ -6961,6 +6970,7 @@ tags:
   - name: Organization Lifecycle
   - name: Portals
     description: APIs related to Configuration of Konnect Developer Portals.
+  - name: Addons
   - name: Service Hub Services
   - name: Integrations
   - name: Integration Auth Credentials
