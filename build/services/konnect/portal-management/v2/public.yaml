@@ -1895,6 +1895,8 @@ components:
             total: 2
         data:
           - id: b15e2460-ba40-431d-9df0-4957fcffacda
+            labels:
+              env: test
             name: App 1
             description: An easy to manage app in a Konnect developer portal
             reference_id: df66b180-97df-4ddb-8b45-8b7d5eac56da
@@ -1909,6 +1911,8 @@ components:
             created_at: '2022-12-22T19:09:30.712Z'
             updated_at: '2022-12-22T19:09:30.712Z'
           - id: b15e2460-ba40-431d-9df0-4957fcffacda
+            labels:
+              env: test
             name: App 1
             description: >-
               A Konnect application that is linked to an Identity Provider
@@ -1928,6 +1932,8 @@ components:
     GetApplicationExampleBasic:
       value:
         id: b15e2460-ba40-431d-9df0-4957fcffacda
+        labels:
+          env: test
         name: App 1
         description: An easy to manage app in a Konnect developer portal
         reference_id: df66b180-97df-4ddb-8b45-8b7d5eac56da
@@ -1944,6 +1950,8 @@ components:
     GetApplicationExampleDcr:
       value:
         id: b15e2460-ba40-431d-9df0-4957fcffacda
+        labels:
+          env: test
         name: App 1
         description: >-
           A Konnect application that is linked to an Identity Provider
@@ -4730,6 +4738,8 @@ components:
             total: 2
         data:
           - id: b15e2460-ba40-431d-9df0-4957fcffacda
+            labels:
+              env: test
             name: App 1
             description: An easy to manage app in a Konnect developer portal
             reference_id: df66b180-97df-4ddb-8b45-8b7d5eac56da
@@ -4744,6 +4754,8 @@ components:
             created_at: '2022-12-22T19:09:30.712Z'
             updated_at: '2022-12-22T19:09:30.712Z'
           - id: b15e2460-ba40-431d-9df0-4957fcffacda
+            labels:
+              env: test
             name: App 1
             description: >-
               A Konnect application that is linked to an Identity Provider
@@ -4991,6 +5003,7 @@ components:
         - dcr_provider
         - portal
         - developer
+        - labels
       properties:
         id:
           $ref: '#/components/schemas/UUID'
@@ -5005,6 +5018,8 @@ components:
           description: A description of the application.
           type: string
           nullable: true
+        labels:
+          $ref: '#/components/schemas/LabelsUpdate'
         reference_id:
           description: >-
             The ID used to linked the portal application to an Identity Provider
@@ -5060,6 +5075,8 @@ components:
           $ref: '#/components/schemas/AuthStrategy'
       example:
         id: b15e2460-ba40-431d-9df0-4957fcffacda
+        labels:
+          env: test
         name: App 1
         description: An easy to manage app in a Konnect developer portal
         reference_id: df66b180-97df-4ddb-8b45-8b7d5eac56da
@@ -6766,6 +6783,26 @@ components:
             - self_managed_client_credentials
         auth_methods:
           $ref: '#/components/schemas/AuthMethods'
+    LabelsUpdate:
+      type: object
+      nullable: true
+      description: >
+        Labels store metadata of an entity that can be used for filtering an
+        entity list or for searching across entity types. 
+
+
+        Keys must be of length 1-63 characters, and cannot start with "kong",
+        "konnect", "mesh", "kic", or "_".
+      example:
+        env: test
+      maxProperties: 50
+      additionalProperties:
+        type: string
+        pattern: ^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$
+        minLength: 1
+        maxLength: 63
+        nullable: true
+      writeOnly: true
     ImageDataUri:
       title: ImageDataUri
       type: string
