@@ -2291,6 +2291,12 @@ components:
                             example: 'Viewer has read-only access to an API product and its sub-entities.'
                             enum:
                               - 'Viewer has read-only access to an API product and its sub-entities.'
+              portals:
+                $ref: '#/components/schemas/PortalsRoles'
+              application_auth_strategies:
+                $ref: '#/components/schemas/ApplicationAuthStrategiesRoles'
+              dcr_providers:
+                $ref: '#/components/schemas/DCRProvidersRoles'
               audit_logs:
                 type: object
                 additionalProperties: false
@@ -3842,6 +3848,218 @@ components:
       title: BooleanFieldFilter
       description: Filter by a boolean value (true/false).
       type: boolean
+    PortalsRoles:
+      x-internal: true
+      x-unstable: true
+      title: Portals Roles
+      type: object
+      additionalProperties: false
+      required:
+        - name
+        - roles
+      properties:
+        name:
+          type: string
+          enum:
+            - Portals
+        roles:
+          type: object
+          properties:
+            admin:
+              type: object
+              additionalProperties: false
+              required:
+                - name
+                - description
+              properties:
+                name:
+                  type: string
+                  enum:
+                    - Admin
+                description:
+                  type: string
+                  example: 'This role grants full write access to portal configurations and entities.'
+                  enum:
+                    - 'This role grants full write access to portal configurations and entities.'
+            maintainer:
+              type: object
+              additionalProperties: false
+              required:
+                - name
+                - description
+              properties:
+                name:
+                  type: string
+                  enum:
+                    - Maintainer
+                description:
+                  type: string
+                  example: 'This role grants the ability to manage developers, applications, and product versions in portals.'
+                  enum:
+                    - 'This role grants the ability to manage developers, applications, and product versions in portals.'
+            creator:
+              type: object
+              additionalProperties: false
+              required:
+                - name
+                - description
+              properties:
+                name:
+                  type: string
+                  enum:
+                    - Creator
+                description:
+                  type: string
+                  example: 'This role grants access to create new portals.'
+                  enum:
+                    - 'This role grants access to create new portals.'
+            viewer:
+              type: object
+              additionalProperties: false
+              required:
+                - name
+                - description
+              properties:
+                name:
+                  type: string
+                  enum:
+                    - Viewer
+                description:
+                  type: string
+                  example: 'This role grants access to read-only permissions to portals and their entities.'
+                  enum:
+                    - 'This role grants access to read-only permissions to portals and their entities.'
+    ApplicationAuthStrategiesRoles:
+      x-internal: true
+      x-unstable: true
+      title: Application Auth Strategies Roles
+      type: object
+      additionalProperties: false
+      required:
+        - name
+        - roles
+      properties:
+        name:
+          type: string
+          enum:
+            - Application Auth Strategies
+        roles:
+          type: object
+          properties:
+            maintainer:
+              type: object
+              additionalProperties: false
+              required:
+                - name
+                - description
+              properties:
+                name:
+                  type: string
+                  enum:
+                    - Maintainer
+                description:
+                  type: string
+                  example: 'This role grants access to manage and delete application auth strategies.'
+                  enum:
+                    - 'This role grants access to manage and delete application auth strategies.'
+            creator:
+              type: object
+              additionalProperties: false
+              required:
+                - name
+                - description
+              properties:
+                name:
+                  type: string
+                  enum:
+                    - Creator
+                description:
+                  type: string
+                  example: 'This role grants access to create new application auth strategies.'
+                  enum:
+                    - 'This role grants access to create new application auth strategies.'
+            viewer:
+              type: object
+              additionalProperties: false
+              required:
+                - name
+                - description
+              properties:
+                name:
+                  type: string
+                  enum:
+                    - Viewer
+                description:
+                  type: string
+                  example: 'This role grants access to read-only permissions to application auth strategies.'
+                  enum:
+                    - 'This role grants access to read-only permissions to application auth strategies.'
+    DCRProvidersRoles:
+      x-internal: true
+      x-unstable: true
+      title: DCR Providers Roles
+      type: object
+      additionalProperties: false
+      required:
+        - name
+        - roles
+      properties:
+        name:
+          type: string
+          enum:
+            - DCR Providers
+        roles:
+          type: object
+          properties:
+            maintainer:
+              type: object
+              additionalProperties: false
+              required:
+                - name
+                - description
+              properties:
+                name:
+                  type: string
+                  enum:
+                    - Maintainer
+                description:
+                  type: string
+                  example: 'This role grants access to manage and delete DCR providers.'
+                  enum:
+                    - 'This role grants access to manage and delete DCR providers.'
+            creator:
+              type: object
+              additionalProperties: false
+              required:
+                - name
+                - description
+              properties:
+                name:
+                  type: string
+                  enum:
+                    - Creator
+                description:
+                  type: string
+                  example: 'This role grants access to create new DCR providers.'
+                  enum:
+                    - 'This role grants access to create new DCR providers.'
+            viewer:
+              type: object
+              additionalProperties: false
+              required:
+                - name
+                - description
+              properties:
+                name:
+                  type: string
+                  enum:
+                    - Viewer
+                description:
+                  type: string
+                  example: 'This role grants access to read-only permissions to DCR providers.'
+                  enum:
+                    - 'This role grants access to read-only permissions to DCR providers.'
+
   securitySchemes:
     systemAccountAccessToken:
       $ref: '../../../../common/definitions/security.yaml#/components/securitySchemes/systemAccountAccessToken'
