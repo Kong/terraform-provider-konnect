@@ -34,6 +34,15 @@ components:
       in: path
       required: true
       description: ID of the team.
+    PageId:
+      schema:
+          type: string
+          format: uuid
+          example: ebbac5b0-ac89-45c3-9d2e-c4542c657e79
+      name: pageId
+      in: path
+      required: true
+      description: ID of the page.
   schemas:
     ImageDataUri:
       title: ImageDataUri

@@ -50,6 +50,54 @@ components:
       schema:
         type: string
         example: 'good service'
+    FilterByTitleEquality:
+      name: 'filter[title][eq]'
+      description: Filter by direct equality comparison of the title property with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 'Good Page'
+    FilterByTitleEqualityShort:
+      name: 'filter[title]'
+      description: Filter by direct equality comparison (short-hand) of the title property with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 'Good Page'
+    FilterByTitleContains:
+      name: 'filter[title][contains]'
+      description: Filter by contains comparison of the title property with a supplied substring
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 'Good'
+    FilterByPathEquality:
+      name: 'filter[path][eq]'
+      description: Filter by direct equality comparison of the path property with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 'good-page'
+    FilterByPathEqualityShort:
+      name: 'filter[path]'
+      description: Filter by direct equality comparison (short-hand) of the path property with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 'good-page'
+    FilterByPathContains:
+      name: 'filter[path][contains]'
+      description: Filter by contains comparison of the path property with a supplied substring
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 'good'
     FilterByDescriptionEquality:
       name: 'filter[description][eq]'
       description: Filter by direct equality comparison of the description property with a supplied value.
