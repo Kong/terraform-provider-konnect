@@ -2851,11 +2851,16 @@ components:
             type: object
             title: User Device Authorization Response
             properties:
-              device_metadata:
+              organization_name:
+                type: string
+                description: The name of the organization.
+              user:
+                $ref: '#/components/schemas/User'
+              metadata:
                 type: object
                 description: The device metadata to be displayed to the user for confirmation.
                 properties:
-                  client:
+                  client_name:
                     type: string
                     description: The requesting application human name.
                   user_agent:
@@ -2870,17 +2875,19 @@ components:
                     description: The time stamp for the date the device authorization request was made.
                     example: '2022-02-07T17:46:57.52Z'
                 required:
-                  - client
+                  - client_name
                   - user_agent
                   - source_ip
                   - requested_at
                 example:
-                  client: Konnect CLI
+                  client_name: Konnect CLI
                   user_agent: kconnectctl/0.12
                   source_ip: 192.158.1.38
                   requested_at: '2022-02-07T17:46:57.52Z'
             required:
-              - device_metadata
+              - organization_name
+              - user
+              - metadata
 
   requestBodies:
     Auth0Registration:
@@ -3361,14 +3368,10 @@ components:
           schema:
             type: object
             properties:
-              client_id:
-                type: string
-                description: The device client identifier.
               user_code:
                 type: string
                 description: The end-user device verification code.
             required:
-              - client_id
               - user_code
     DeviceConfirmationRequest:
       description: The request schema for the device confirmation request.
