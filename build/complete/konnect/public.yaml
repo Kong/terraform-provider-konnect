@@ -8566,7 +8566,9 @@ components:
           contains: some-value
     StringFieldOContainsFilter:
       title: StringFieldOContainsFilter
-      description: Filters on the union of given string values by fuzzy match.
+      description: >-
+        Returns entities that fuzzy-match any of the comma-delimited phrases in
+        the filter string.
       type: object
       additionalProperties: false
       properties:
@@ -8576,10 +8578,12 @@ components:
         - ocontains
       x-examples:
         example-1:
-          ocontains: dev,prod
+          ocontains: this-value,or-that-value
     StringFieldOEQFilter:
       title: StringFieldOEQFilter
-      description: Filters on the given comma separated string by one or more exact match.
+      description: >-
+        Returns entities that exact match any of the comma-delimited phrases in
+        the filter string.
       type: object
       additionalProperties: false
       properties:
@@ -8598,14 +8602,11 @@ components:
       properties:
         neq:
           type: string
-        oeq:
-          type: string
       required:
         - neq
       x-examples:
         example-1:
           neq: not-this-value
-          oeq: not-this-value
     StringFieldFilter:
       title: StringFieldFilter
       description: Filters on the given string field value by either exact or fuzzy match.

@@ -199,7 +199,8 @@ paths:
           name: Accept
           schema:
             $ref: '#/components/schemas/DocumentContentTypeEnum'
-        - $ref: '#/components/parameters/LimitOffsetPage'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
       tags:
         - Service Documents
     post:
@@ -369,7 +370,8 @@ paths:
         '500':
           $ref: '#/components/responses/Internal'
       parameters:
-        - $ref: '#/components/parameters/LimitOffsetPage'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
         - $ref: '#/components/parameters/InstalledIntegrationFilter'
         - $ref: '#/components/parameters/InstalledIntegrationSort'
       tags:
@@ -499,7 +501,8 @@ paths:
         '500':
           $ref: '#/components/responses/Internal'
       parameters:
-        - $ref: '#/components/parameters/LimitOffsetPage'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
       tags:
         - Integration Auth Credentials
     post:
@@ -615,7 +618,8 @@ paths:
         '500':
           $ref: '#/components/responses/Internal'
       parameters:
-        - $ref: '#/components/parameters/LimitOffsetPage'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
         - $ref: '#/components/parameters/ServiceIntegrationFilter'
         - $ref: '#/components/parameters/ServiceIntegrationSort'
       tags:
@@ -836,7 +840,9 @@ paths:
         '500':
           $ref: '#/components/responses/Internal'
       parameters:
-        - $ref: '#/components/parameters/CursorPage'
+        - $ref: '#/components/parameters/PageBefore'
+        - $ref: '#/components/parameters/PageAfter'
+        - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/DiscoveredEntityFilter'
         - $ref: '#/components/parameters/DiscoveredEntitySort'
       tags:
@@ -940,7 +946,8 @@ paths:
         '500':
           $ref: '#/components/responses/Internal'
       parameters:
-        - $ref: '#/components/parameters/LimitOffsetPage'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
       tags:
         - Suggestion Rules
   /discovery/integration/{integration}/suggestion-rules:
@@ -991,7 +998,8 @@ paths:
         '500':
           $ref: '#/components/responses/Internal'
       parameters:
-        - $ref: '#/components/parameters/LimitOffsetPage'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
         - $ref: '#/components/parameters/DiscoverySuggestionRuleFilter'
       tags:
         - Suggestion Rules
@@ -1120,7 +1128,8 @@ paths:
         '500':
           $ref: '#/components/responses/Internal'
       parameters:
-        - $ref: '#/components/parameters/LimitOffsetPage'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
         - $ref: '#/components/parameters/SuggestedDiscoveryActionFilter'
         - $ref: '#/components/parameters/SuggestedDiscoveryActionSort'
       tags:
@@ -1213,7 +1222,9 @@ paths:
         '500':
           $ref: '#/components/responses/Internal'
       parameters:
-        - $ref: '#/components/parameters/CursorPage'
+        - $ref: '#/components/parameters/PageBefore'
+        - $ref: '#/components/parameters/PageAfter'
+        - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/DiscoveryActionFilter'
         - $ref: '#/components/parameters/DiscoveryActonSort'
       tags:
@@ -1364,27 +1375,14 @@ paths:
         '500':
           $ref: '#/components/responses/Internal'
       parameters:
-        - $ref: '#/components/parameters/LimitOffsetPage'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
         - $ref: '#/components/parameters/MetadataSchemaFilter'
         - $ref: '#/components/parameters/MetadataSchemaSort'
       tags:
         - Metadata Field
 components:
   parameters:
-    LimitOffsetPage:
-      name: page
-      description: Determines which page of the collection to retrieve.
-      required: false
-      in: query
-      schema:
-        $ref: '#/components/schemas/LimitOffsetPageParameters'
-    CursorPage:
-      name: page
-      description: Determines which page of the collection to retrieve.
-      required: false
-      in: query
-      schema:
-        $ref: '#/components/schemas/CursorPageParameters'
     ServiceFilter:
       name: filter
       description: Filters a collection of services.
@@ -1403,7 +1401,7 @@ components:
       required: false
       in: query
       schema:
-        $ref: '#/components/schemas/ServiceHubSortQuery'
+        $ref: '#/components/schemas/SortQuery'
     AddonFilter:
       name: filter
       description: Filters a collection of ServiceHub addons.
@@ -1440,7 +1438,7 @@ components:
       required: false
       in: query
       schema:
-        $ref: '#/components/schemas/ServiceHubSortQuery'
+        $ref: '#/components/schemas/SortQuery'
     ServiceIntegrationFilter:
       name: filter
       description: Filters a collection of ServiceHub integrations associated to a service.
@@ -1458,7 +1456,7 @@ components:
       required: false
       in: query
       schema:
-        $ref: '#/components/schemas/ServiceHubSortQuery'
+        $ref: '#/components/schemas/SortQuery'
     MetadataSchemaFilter:
       name: filter
       description: Filters a collection of metadata schemas.
@@ -1477,7 +1475,7 @@ components:
       required: false
       in: query
       schema:
-        $ref: '#/components/schemas/ServiceHubSortQuery'
+        $ref: '#/components/schemas/SortQuery'
     DiscoveredEntityFilter:
       name: filter
       description: Filters a collection of discovered entities.
@@ -1497,7 +1495,7 @@ components:
       required: false
       in: query
       schema:
-        $ref: '#/components/schemas/ServiceHubSortQuery'
+        $ref: '#/components/schemas/SortQuery'
     DiscoveryActionFilter:
       name: filter
       description: Filters a collection of discovery actions.
@@ -1514,7 +1512,7 @@ components:
       required: false
       in: query
       schema:
-        $ref: '#/components/schemas/ServiceHubSortQuery'
+        $ref: '#/components/schemas/SortQuery'
     DiscoverySuggestionRuleFilter:
       name: filter
       description: Filters a collection of discovery suggestion rules.
@@ -1541,7 +1539,7 @@ components:
       required: false
       in: query
       schema:
-        $ref: '#/components/schemas/ServiceHubSortQuery'
+        $ref: '#/components/schemas/SortQuery'
     PageSize:
       name: page[size]
       description: >-
@@ -1562,6 +1560,28 @@ components:
       schema:
         type: integer
         example: 1
+    PageBefore:
+      name: page[before]
+      description: >-
+        Request the next page of data, starting with the item before this
+        parameter.
+      required: false
+      in: query
+      allowEmptyValue: true
+      schema:
+        type: string
+        example: ewogICJpZCI6ICJoZWxsbyB3b3JsZCIKfQ
+    PageAfter:
+      name: page[after]
+      description: >-
+        Request the next page of data, starting with the item after this
+        parameter.
+      required: false
+      in: query
+      allowEmptyValue: true
+      schema:
+        type: string
+        example: ewogICJpZCI6ICJoZWxsbyB3b3JsZCIKfQ
   requestBodies:
     CreateServiceBody:
       description: Request body schema for creating a service.
@@ -1826,7 +1846,7 @@ components:
             additionalProperties: false
             properties:
               meta:
-                $ref: '#/components/schemas/LimitOffsetPaginatedMeta'
+                $ref: '#/components/schemas/PaginatedMeta'
               data:
                 type: array
                 items:
@@ -1840,7 +1860,7 @@ components:
             additionalProperties: false
             properties:
               meta:
-                $ref: '#/components/schemas/LimitOffsetPaginatedMeta'
+                $ref: '#/components/schemas/PaginatedMeta'
               data:
                 type: array
                 items:
@@ -1913,7 +1933,7 @@ components:
             additionalProperties: false
             properties:
               meta:
-                $ref: '#/components/schemas/LimitOffsetPaginatedMeta'
+                $ref: '#/components/schemas/PaginatedMeta'
               data:
                 type: array
                 items:
@@ -1938,7 +1958,7 @@ components:
             additionalProperties: false
             properties:
               meta:
-                $ref: '#/components/schemas/LimitOffsetPaginatedMeta'
+                $ref: '#/components/schemas/PaginatedMeta'
               data:
                 type: array
                 items:
@@ -1965,7 +1985,7 @@ components:
             additionalProperties: false
             properties:
               meta:
-                $ref: '#/components/schemas/LimitOffsetPaginatedMeta'
+                $ref: '#/components/schemas/PaginatedMeta'
               data:
                 type: array
                 items:
@@ -1996,7 +2016,7 @@ components:
             additionalProperties: false
             properties:
               meta:
-                $ref: '#/components/schemas/LimitOffsetPaginatedMeta'
+                $ref: '#/components/schemas/PaginatedMeta'
               data:
                 type: array
                 items:
@@ -2019,7 +2039,7 @@ components:
             additionalProperties: false
             properties:
               meta:
-                $ref: '#/components/schemas/LimitOffsetPaginatedMeta'
+                $ref: '#/components/schemas/PaginatedMeta'
               data:
                 type: array
                 items:
@@ -2044,7 +2064,7 @@ components:
             additionalProperties: false
             properties:
               meta:
-                $ref: '#/components/schemas/LimitOffsetPaginatedMeta'
+                $ref: '#/components/schemas/PaginatedMeta'
               data:
                 type: array
                 items:
@@ -2121,7 +2141,7 @@ components:
             additionalProperties: false
             properties:
               meta:
-                $ref: '#/components/schemas/LimitOffsetPaginatedMeta'
+                $ref: '#/components/schemas/PaginatedMeta'
               data:
                 type: array
                 items:
@@ -4304,15 +4324,15 @@ components:
         id:
           oneOf:
             - $ref: '#/components/schemas/StringFieldEqualsFilter'
-            - $ref: '#/components/schemas/schemas-StringFieldOEQFilter'
+            - $ref: '#/components/schemas/StringFieldOEQFilter'
         name:
-          $ref: '#/components/schemas/schemas-StringFieldFilter'
+          $ref: '#/components/schemas/StringFieldFilter'
         display_name:
-          $ref: '#/components/schemas/schemas-StringFieldFilter'
+          $ref: '#/components/schemas/StringFieldFilter'
         labels:
           $ref: '#/components/schemas/LabelsFieldFilter'
         integration:
-          $ref: '#/components/schemas/schemas-StringFieldFilter'
+          $ref: '#/components/schemas/StringFieldFilter'
         integration.data:
           $ref: '#/components/schemas/IntegrationDataFieldFilter'
         created_at:
@@ -4320,28 +4340,28 @@ components:
         updated_at:
           $ref: '#/components/schemas/DateTimeFieldFilter'
         team_owner:
-          $ref: '#/components/schemas/schemas-StringFieldFilter'
+          $ref: '#/components/schemas/StringFieldFilter'
         cost_center:
-          $ref: '#/components/schemas/schemas-StringFieldFilter'
+          $ref: '#/components/schemas/StringFieldFilter'
         slack_channel:
-          $ref: '#/components/schemas/schemas-StringFieldFilter'
+          $ref: '#/components/schemas/StringFieldFilter'
         jira_project:
-          $ref: '#/components/schemas/schemas-StringFieldFilter'
+          $ref: '#/components/schemas/StringFieldFilter'
         product_manager:
-          $ref: '#/components/schemas/schemas-StringFieldFilter'
+          $ref: '#/components/schemas/StringFieldFilter'
         git_repo:
-          $ref: '#/components/schemas/schemas-StringFieldFilter'
+          $ref: '#/components/schemas/StringFieldFilter'
         dashboard:
-          $ref: '#/components/schemas/schemas-StringFieldFilter'
+          $ref: '#/components/schemas/StringFieldFilter'
     AddonFilterParameters:
       title: AddonFilterParameters
       type: object
       additionalProperties: false
       properties:
         name:
-          $ref: '#/components/schemas/schemas-StringFieldFilter'
+          $ref: '#/components/schemas/StringFieldFilter'
         display_name:
-          $ref: '#/components/schemas/schemas-StringFieldFilter'
+          $ref: '#/components/schemas/StringFieldFilter'
     InstalledIntegrationFilterParameters:
       title: IntegrationFilterParameters
       type: object
@@ -4350,7 +4370,7 @@ components:
         name:
           $ref: '#/components/schemas/StringFieldFilter'
         enabled:
-          $ref: '#/components/schemas/ServiceHubBooleanFieldFilter'
+          $ref: '#/components/schemas/BooleanFieldFilter'
     ServiceIntegrationFilterParameters:
       title: ServiceIntegrationFilterParameters
       type: object
@@ -4372,7 +4392,7 @@ components:
            - `filter[data.control_plane_id]=760562c3-fedd-43e4-b742-fc1663fef188`
            - `filter[data.repo][neq]=svc_monorepo`
       oneOf:
-        - $ref: '#/components/schemas/schemas-StringFieldFilter'
+        - $ref: '#/components/schemas/StringFieldFilter'
     MetadataSchemaFilterParameters:
       title: MetadataSchemaFilterParameters
       type: object
@@ -4395,26 +4415,18 @@ components:
           $ref: '#/components/schemas/StringFieldFilter'
         id:
           oneOf:
-            - $ref: '#/components/schemas/StringFieldEqualsFilter'
-            - $ref: '#/components/schemas/StringFieldOEQFilter'
-            - $ref: '#/components/schemas/StringFieldNEQFilter'
+            - $ref: '#/components/schemas/StringFieldFilterExact'
         binding:
           oneOf:
-            - $ref: '#/components/schemas/StringFieldEqualsFilter'
-            - $ref: '#/components/schemas/StringFieldOEQFilter'
-            - $ref: '#/components/schemas/StringFieldNEQFilter'
+            - $ref: '#/components/schemas/StringFieldFilterExact'
         scope:
           oneOf:
-            - $ref: '#/components/schemas/StringFieldEqualsFilter'
-            - $ref: '#/components/schemas/StringFieldOEQFilter'
-            - $ref: '#/components/schemas/StringFieldNEQFilter'
+            - $ref: '#/components/schemas/StringFieldFilterExact'
         entity_name:
           $ref: '#/components/schemas/StringFieldFilter'
         suggestion_rule_evaluation_error.suggestion_rule_id:
           oneOf:
-            - $ref: '#/components/schemas/StringFieldEqualsFilter'
-            - $ref: '#/components/schemas/StringFieldOEQFilter'
-            - $ref: '#/components/schemas/StringFieldNEQFilter'
+            - $ref: '#/components/schemas/StringFieldFilterExact'
         created_at:
           $ref: '#/components/schemas/DateTimeFieldFilter'
         updated_at:
@@ -4426,31 +4438,21 @@ components:
       properties:
         id:
           oneOf:
-            - $ref: '#/components/schemas/StringFieldEqualsFilter'
-            - $ref: '#/components/schemas/StringFieldOEQFilter'
-            - $ref: '#/components/schemas/StringFieldNEQFilter'
+            - $ref: '#/components/schemas/StringFieldFilterExact'
         discovered_entity_id:
           oneOf:
-            - $ref: '#/components/schemas/StringFieldEqualsFilter'
-            - $ref: '#/components/schemas/StringFieldOEQFilter'
-            - $ref: '#/components/schemas/StringFieldNEQFilter'
+            - $ref: '#/components/schemas/StringFieldFilterExact'
         entity_name:
           $ref: '#/components/schemas/StringFieldFilter'
         user_id:
           oneOf:
-            - $ref: '#/components/schemas/StringFieldEqualsFilter'
-            - $ref: '#/components/schemas/StringFieldOEQFilter'
-            - $ref: '#/components/schemas/StringFieldNEQFilter'
+            - $ref: '#/components/schemas/StringFieldFilterExact'
         cause:
           oneOf:
-            - $ref: '#/components/schemas/StringFieldEqualsFilter'
-            - $ref: '#/components/schemas/StringFieldOEQFilter'
-            - $ref: '#/components/schemas/StringFieldNEQFilter'
+            - $ref: '#/components/schemas/StringFieldFilterExact'
         action.type:
           oneOf:
-            - $ref: '#/components/schemas/StringFieldEqualsFilter'
-            - $ref: '#/components/schemas/StringFieldOEQFilter'
-            - $ref: '#/components/schemas/StringFieldNEQFilter'
+            - $ref: '#/components/schemas/StringFieldFilterExact'
         created_at:
           $ref: '#/components/schemas/DateTimeFieldFilter'
     DiscoverySuggestionRuleFilterParameters:
@@ -4460,25 +4462,19 @@ components:
       properties:
         id:
           oneOf:
-            - $ref: '#/components/schemas/StringFieldEqualsFilter'
-            - $ref: '#/components/schemas/StringFieldOEQFilter'
-            - $ref: '#/components/schemas/StringFieldNEQFilter'
+            - $ref: '#/components/schemas/StringFieldFilterExact'
         name:
           $ref: '#/components/schemas/StringFieldFilter'
         active:
-          $ref: '#/components/schemas/ServiceHubBooleanFieldFilter'
+          $ref: '#/components/schemas/BooleanFieldFilter'
         auto_accept:
-          $ref: '#/components/schemas/ServiceHubBooleanFieldFilter'
+          $ref: '#/components/schemas/BooleanFieldFilter'
         binding:
           oneOf:
-            - $ref: '#/components/schemas/StringFieldEqualsFilter'
-            - $ref: '#/components/schemas/StringFieldOEQFilter'
-            - $ref: '#/components/schemas/StringFieldNEQFilter'
+            - $ref: '#/components/schemas/StringFieldFilterExact'
         action.type:
           oneOf:
-            - $ref: '#/components/schemas/StringFieldEqualsFilter'
-            - $ref: '#/components/schemas/StringFieldOEQFilter'
-            - $ref: '#/components/schemas/StringFieldNEQFilter'
+            - $ref: '#/components/schemas/StringFieldFilterExact'
         created_at:
           $ref: '#/components/schemas/DateTimeFieldFilter'
         updated_at:
@@ -4490,336 +4486,32 @@ components:
       properties:
         id:
           oneOf:
-            - $ref: '#/components/schemas/StringFieldEqualsFilter'
-            - $ref: '#/components/schemas/StringFieldOEQFilter'
-            - $ref: '#/components/schemas/StringFieldNEQFilter'
+            - $ref: '#/components/schemas/StringFieldFilterExact'
         suggestion_rule_id:
           oneOf:
-            - $ref: '#/components/schemas/StringFieldEqualsFilter'
-            - $ref: '#/components/schemas/StringFieldOEQFilter'
-            - $ref: '#/components/schemas/StringFieldNEQFilter'
+            - $ref: '#/components/schemas/StringFieldFilterExact'
         discovered_entity_id:
           oneOf:
-            - $ref: '#/components/schemas/StringFieldEqualsFilter'
-            - $ref: '#/components/schemas/StringFieldOEQFilter'
-            - $ref: '#/components/schemas/StringFieldNEQFilter'
+            - $ref: '#/components/schemas/StringFieldFilterExact'
         entity_name:
           $ref: '#/components/schemas/StringFieldFilter'
         scope:
           oneOf:
-            - $ref: '#/components/schemas/StringFieldEqualsFilter'
-            - $ref: '#/components/schemas/StringFieldOEQFilter'
-            - $ref: '#/components/schemas/StringFieldNEQFilter'
+            - $ref: '#/components/schemas/StringFieldFilterExact'
         service_id:
           oneOf:
-            - $ref: '#/components/schemas/StringFieldEqualsFilter'
-            - $ref: '#/components/schemas/StringFieldOEQFilter'
-            - $ref: '#/components/schemas/StringFieldNEQFilter'
+            - $ref: '#/components/schemas/StringFieldFilterExact'
         integration:
           $ref: '#/components/schemas/StringFieldFilter'
         ignored:
-          $ref: '#/components/schemas/ServiceHubBooleanFieldFilter'
+          $ref: '#/components/schemas/BooleanFieldFilter'
         action.type:
           oneOf:
-            - $ref: '#/components/schemas/StringFieldEqualsFilter'
-            - $ref: '#/components/schemas/StringFieldOEQFilter'
-            - $ref: '#/components/schemas/StringFieldNEQFilter'
+            - $ref: '#/components/schemas/StringFieldFilterExact'
         created_at:
           $ref: '#/components/schemas/DateTimeFieldFilter'
         updated_at:
           $ref: '#/components/schemas/DateTimeFieldFilter'
-    LimitOffsetPaginatedMeta:
-      type: object
-      title: LimitOffsetPaginatedMeta
-      description: >-
-        Contains limit-offset pagination metadata pertaining to the associated
-        collection.
-      additionalProperties: false
-      required:
-        - page
-      properties:
-        page:
-          type: object
-          description: >-
-            Contains pagination query parameters and the total number of objects
-            returned.
-          additionalProperties: false
-          required:
-            - number
-            - size
-          properties:
-            number:
-              type: integer
-              example: 2
-              description: Specifies the number of objects returned per page.
-            size:
-              type: integer
-              example: 10
-              maximum: 100
-              description: Specifies the requested size of the page.
-            total:
-              type: integer
-              maximum: 1000
-              example: 100
-              description: Integer representation of the amount of items returned.
-    CursorPaginatedMeta:
-      type: object
-      title: CursorPaginatedMeta
-      description: >-
-        Contains cursor pagination metadata pertaining to the associated
-        collection.
-      additionalProperties: false
-      required:
-        - page
-      properties:
-        page:
-          type: object
-          description: Contains cursor pagination links and metadata.
-          additionalProperties: false
-          required:
-            - size
-            - first
-            - next
-            - previous
-          properties:
-            size:
-              type: integer
-              example: 10
-              maximum: 100
-              description: Specifies the requested size of the page.
-            first:
-              type: string
-              nullable: true
-              description: Relative URI link to the first page of data
-              example: /v2/services
-            next:
-              type: string
-              nullable: true
-              description: Relative URI link to the next page of data
-              example: /v2/services?after=ewogICJpZCI6ICJoZWxsbyB3b3JsZCIKfQ
-            previous:
-              type: string
-              nullable: true
-              description: Relative URI link to the previous page of data
-              example: /v2/services?before=ewogICJpZCI6ICJoZWxsbyB3b3JsZCIKfQ
-    LimitOffsetPageParameters:
-      title: LimitOffsetPageParameters
-      type: object
-      additionalProperties: false
-      properties:
-        size:
-          description: The number of items included per page.
-          type: integer
-          example: 10
-        number:
-          description: The specific page number of the collection results.
-          type: integer
-          example: 2
-    CursorPageParameters:
-      title: CursorPageParameters
-      type: object
-      additionalProperties: false
-      properties:
-        size:
-          type: integer
-          description: The number of items included per page.
-          example: 10
-        after:
-          type: string
-          description: >-
-            Cursor param specifying the page (i.e. the next page) of data
-            returned.
-          example: ewogICJpZCI6ICJoZWxsbyB3b3JsZCIKfQ
-        before:
-          type: string
-          description: >-
-            Cursor param specifying the page (i.e. the previous page) of data
-            returned.
-          example: ewogICJpZCI6ICJoZWxsbyB3b3JsZCIKfQ
-    ServiceHubSortQuery:
-      title: SortQuery
-      type: string
-      example: name,created_at desc
-      description: >
-        The `asc` suffix is optional as the default sort order is ascending.
-
-        The `desc` suffix is used to specify a descending order.
-
-        Multiple sort attributes may be provided via a comma separated list.
-
-        JSONPath notation may be used to specify a sub-attribute (eg: 'foo.bar
-        desc').
-    StringFieldFilter:
-      title: StringFieldFilter
-      description: Filters on the given string field value by either exact or fuzzy match.
-      oneOf:
-        - $ref: '#/components/schemas/StringFieldEqualsFilter'
-        - $ref: '#/components/schemas/StringFieldContainsFilter'
-        - $ref: '#/components/schemas/StringFieldOContainsFilter'
-        - $ref: '#/components/schemas/StringFieldOEQFilter'
-        - $ref: '#/components/schemas/StringFieldNEQFilter'
-      x-examples:
-        example-1: equals-some-value
-        example-2:
-          eq: some-value
-        example-3:
-          contains: some-value
-    StringFieldEqualsFilter:
-      title: StringFieldEqualsFilter
-      description: Filters on the given string field value by exact match.
-      oneOf:
-        - type: string
-        - type: object
-          title: StringFieldEqualsComparison
-          additionalProperties: false
-          properties:
-            eq:
-              type: string
-          required:
-            - eq
-      x-examples:
-        example-1: equals-some-value
-        example-2:
-          eq: some-value
-    StringFieldContainsFilter:
-      title: StringFieldContainsFilter
-      description: Filters on the given string field value by fuzzy match.
-      type: object
-      additionalProperties: false
-      properties:
-        contains:
-          type: string
-      required:
-        - contains
-      x-examples:
-        example-1:
-          contains: some-value
-    StringFieldOContainsFilter:
-      title: StringFieldOContainsFilter
-      description: Filters on the union of given string values by fuzzy match.
-      type: object
-      additionalProperties: false
-      properties:
-        ocontains:
-          type: string
-      required:
-        - ocontains
-      x-examples:
-        example-1:
-          ocontains: dev,prod
-    StringFieldOEQFilter:
-      title: StringFieldOEQFilter
-      description: Filters on the given comma separated string by one or more exact match.
-      type: object
-      additionalProperties: false
-      properties:
-        oeq:
-          type: string
-      required:
-        - oeq
-      x-examples:
-        example-1:
-          oeq: some-value,some-other-value
-    StringFieldNEQFilter:
-      title: StringFieldNEQFilter
-      description: Filters on the given string field value by exact match inequality.
-      type: object
-      additionalProperties: false
-      properties:
-        oeq:
-          type: string
-      required:
-        - neq
-      x-examples:
-        example-1:
-          oeq: not-this-value
-    ServiceHubBooleanFieldFilter:
-      title: BooleanFieldFilter
-      description: Filter by a boolean value (true/false).
-      type: boolean
-      x-examples:
-        example-1: true
-    DateTimeFieldFilter:
-      title: DateTimeFieldFilter
-      description: Filters on the given datetime (RFC-3339) field value.
-      oneOf:
-        - type: string
-          format: date-time
-          description: Value strictly equals given RFC-3339 formatted timestamp in UTC
-          example: '2022-03-30T07:20:50Z'
-        - type: object
-          title: DateTimeFieldEqualsFilter
-          additionalProperties: false
-          properties:
-            eq:
-              type: string
-              format: date-time
-              description: Value strictly equals given RFC-3339 formatted timestamp in UTC
-              example: '2022-03-30T07:20:50Z'
-          required:
-            - eq
-        - type: object
-          title: DateTimeFieldLTFilter
-          additionalProperties: false
-          properties:
-            lt:
-              type: string
-              format: date-time
-              description: Value is less than the given RFC-3339 formatted timestamp in UTC
-              example: '2022-03-30T07:20:50Z'
-          required:
-            - lt
-        - type: object
-          title: DateTimeFieldLTEFilter
-          additionalProperties: false
-          properties:
-            lte:
-              type: string
-              format: date-time
-              description: >-
-                Value is less than or equal to the given RFC-3339 formatted
-                timestamp in UTC
-              example: '2022-03-30T07:20:50Z'
-          required:
-            - lte
-        - type: object
-          title: DateTimeFieldGTFilter
-          additionalProperties: false
-          properties:
-            lt:
-              type: string
-              format: date-time
-              description: >-
-                Value is greater than the given RFC-3339 formatted timestamp in
-                UTC
-              example: '2022-03-30T07:20:50Z'
-          required:
-            - gt
-        - type: object
-          title: DateTimeFieldGTEFilter
-          additionalProperties: false
-          properties:
-            lte:
-              type: string
-              format: date-time
-              description: >-
-                Value is greater than or equal to the given RFC-3339 formatted
-                timestamp in UTC
-              example: '2022-03-30T07:20:50Z'
-          required:
-            - gte
-      x-examples:
-        datetime_field_1: '2022-03-30T07:20:50Z'
-        datetime_field_2:
-          eq: '2022-03-30T07:20:50Z'
-        datetime_field_3:
-          lt: '2022-03-30T07:20:50Z'
-        datetime_field_4:
-          lte: '2022-03-30T07:20:50Z'
-        datetime_field_5:
-          gt: '2022-03-30T07:20:50Z'
-        datetime_field_6:
-          gte: '2022-03-30T07:20:50Z'
     ServicehubBaseNode:
       type: object
       required:
@@ -5056,7 +4748,37 @@ components:
           table_header: '#/components/schemas/ServicehubTableHeaderBlock'
           table_cell: '#/components/schemas/ServicehubTableCellBlock'
           table_row: '#/components/schemas/ServicehubTableRowBlock'
-    schemas-StringFieldOContainsFilter:
+    StringFieldEqualsFilter:
+      title: StringFieldEqualsFilter
+      description: Filters on the given string field value by exact match.
+      oneOf:
+        - type: string
+        - type: object
+          title: StringFieldEqualsComparison
+          additionalProperties: false
+          properties:
+            eq:
+              type: string
+          required:
+            - eq
+      x-examples:
+        example-1: equals-some-value
+        example-2:
+          eq: some-value
+    StringFieldContainsFilter:
+      title: StringFieldContainsFilter
+      description: Filters on the given string field value by fuzzy match.
+      type: object
+      additionalProperties: false
+      properties:
+        contains:
+          type: string
+      required:
+        - contains
+      x-examples:
+        example-1:
+          contains: some-value
+    StringFieldOContainsFilter:
       title: StringFieldOContainsFilter
       description: >-
         Returns entities that fuzzy-match any of the comma-delimited phrases in
@@ -5071,7 +4793,7 @@ components:
       x-examples:
         example-1:
           ocontains: this-value,or-that-value
-    schemas-StringFieldOEQFilter:
+    StringFieldOEQFilter:
       title: StringFieldOEQFilter
       description: >-
         Returns entities that exact match any of the comma-delimited phrases in
@@ -5086,7 +4808,7 @@ components:
       x-examples:
         example-1:
           oeq: some-value,some-other-value
-    schemas-StringFieldNEQFilter:
+    StringFieldNEQFilter:
       title: StringFieldNEQFilter
       description: Filters on the given string field value by exact match inequality.
       type: object
@@ -5099,15 +4821,15 @@ components:
       x-examples:
         example-1:
           neq: not-this-value
-    schemas-StringFieldFilter:
+    StringFieldFilter:
       title: StringFieldFilter
       description: Filters on the given string field value by either exact or fuzzy match.
       oneOf:
         - $ref: '#/components/schemas/StringFieldEqualsFilter'
         - $ref: '#/components/schemas/StringFieldContainsFilter'
-        - $ref: '#/components/schemas/schemas-StringFieldOContainsFilter'
-        - $ref: '#/components/schemas/schemas-StringFieldOEQFilter'
-        - $ref: '#/components/schemas/schemas-StringFieldNEQFilter'
+        - $ref: '#/components/schemas/StringFieldOContainsFilter'
+        - $ref: '#/components/schemas/StringFieldOEQFilter'
+        - $ref: '#/components/schemas/StringFieldNEQFilter'
       x-examples:
         example-1: equals-some-value
         example-2:
@@ -5348,7 +5070,88 @@ components:
               - `filter[labels.owner][neq]=kong`
               - `filter[labels.env]=dev`
               - `filter[labels.env][ocontains]=dev,test`
-        - $ref: '#/components/schemas/schemas-StringFieldFilter'
+        - $ref: '#/components/schemas/StringFieldFilter'
+    DateTimeFieldFilter:
+      title: DateTimeFieldFilter
+      description: Filters on the given datetime (RFC-3339) field value.
+      oneOf:
+        - type: string
+          format: date-time
+          description: Value strictly equals given RFC-3339 formatted timestamp in UTC
+          example: '2022-03-30T07:20:50Z'
+        - type: object
+          title: DateTimeFieldEqualsFilter
+          additionalProperties: false
+          properties:
+            eq:
+              type: string
+              format: date-time
+              description: Value strictly equals given RFC-3339 formatted timestamp in UTC
+              example: '2022-03-30T07:20:50Z'
+          required:
+            - eq
+        - type: object
+          title: DateTimeFieldLTFilter
+          additionalProperties: false
+          properties:
+            lt:
+              type: string
+              format: date-time
+              description: Value is less than the given RFC-3339 formatted timestamp in UTC
+              example: '2022-03-30T07:20:50Z'
+          required:
+            - lt
+        - type: object
+          title: DateTimeFieldLTEFilter
+          additionalProperties: false
+          properties:
+            lte:
+              type: string
+              format: date-time
+              description: >-
+                Value is less than or equal to the given RFC-3339 formatted
+                timestamp in UTC
+              example: '2022-03-30T07:20:50Z'
+          required:
+            - lte
+        - type: object
+          title: DateTimeFieldGTFilter
+          additionalProperties: false
+          properties:
+            lt:
+              type: string
+              format: date-time
+              description: >-
+                Value is greater than the given RFC-3339 formatted timestamp in
+                UTC
+              example: '2022-03-30T07:20:50Z'
+          required:
+            - gt
+        - type: object
+          title: DateTimeFieldGTEFilter
+          additionalProperties: false
+          properties:
+            lte:
+              type: string
+              format: date-time
+              description: >-
+                Value is greater than or equal to the given RFC-3339 formatted
+                timestamp in UTC
+              example: '2022-03-30T07:20:50Z'
+          required:
+            - gte
+      x-examples:
+        datetime_field_1: '2022-03-30T07:20:50Z'
+        datetime_field_2:
+          eq: '2022-03-30T07:20:50Z'
+        datetime_field_3:
+          lt: '2022-03-30T07:20:50Z'
+        datetime_field_4:
+          lte: '2022-03-30T07:20:50Z'
+        datetime_field_5:
+          gt: '2022-03-30T07:20:50Z'
+        datetime_field_6:
+          gte: '2022-03-30T07:20:50Z'
     Labels:
       title: Labels
       type: object
@@ -5412,9 +5215,109 @@ components:
           example: Conflict
       allOf:
         - $ref: '#/components/schemas/BaseError'
+    BooleanFieldFilter:
+      title: BooleanFieldFilter
+      description: Filter by a boolean value (true/false).
+      type: boolean
+      x-examples:
+        example-1: true
     NotAvailableError:
       allOf:
         - $ref: '#/components/schemas/BaseError'
+    StringFieldFilterExact:
+      title: StringFieldFilterExact
+      description: Filters on the given string field value by exact match.
+      oneOf:
+        - $ref: '#/components/schemas/StringFieldEqualsFilter'
+        - $ref: '#/components/schemas/StringFieldOEQFilter'
+        - $ref: '#/components/schemas/StringFieldNEQFilter'
+      x-examples:
+        example-1: equals-some-value
+        example-2:
+          eq: some-value
+        example-3:
+          oeq: some-potential,value
+        example-4:
+          neq: not-this-value
+    CursorPageMetaWithTotal:
+      type: object
+      description: >-
+        Pagination metadata with exact total. Useful when the collection size is
+        inexpensive to provide.
+      required:
+        - size
+        - next
+        - previous
+      properties:
+        first:
+          description: URI to the first page
+          type: string
+          format: uri
+        last:
+          description: URI to the last page
+          type: string
+          format: uri
+        next:
+          description: URI to the next page
+          type: string
+          format: uri
+        previous:
+          description: URI to the previous page
+          type: string
+          format: uri
+        size:
+          description: Requested page size
+          type: number
+          example: 10
+        total:
+          description: Total number of objects in the collection
+          type: number
+          example: 974
+    CursorPageMetaWithEstimatedTotal:
+      type: object
+      description: >-
+        Pagination metadata with estimated total. Useful when exact total cannot
+        be computed in reasonable time.
+      required:
+        - size
+        - next
+        - previous
+      properties:
+        first:
+          description: URI to the first page
+          type: string
+          format: uri
+        last:
+          description: URI to the last page
+          type: string
+          format: uri
+        next:
+          description: URI to the next page
+          type: string
+          format: uri
+        previous:
+          description: URI to the previous page
+          type: string
+          format: uri
+        size:
+          description: Requested page size
+          type: number
+          example: 10
+        estimated_total:
+          description: Approximate number of objects in the collection
+          type: number
+          example: 1000000000
+    CursorPaginatedMeta:
+      type: object
+      title: CursorPaginatedMeta
+      description: Returns the pagination information
+      properties:
+        page:
+          oneOf:
+            - $ref: '#/components/schemas/CursorPageMetaWithTotal'
+            - $ref: '#/components/schemas/CursorPageMetaWithEstimatedTotal'
+      required:
+        - page
   securitySchemes:
     konnectAccessToken:
       type: http
