@@ -195,6 +195,8 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/PostCredentials403Response'
         '404':
           $ref: '#/components/responses/NotFound'
       tags:
@@ -513,6 +515,15 @@ components:
           examples:
             GetGrantedScopesProductVersion422Example:
               $ref: '#/components/examples/GetGrantedScopesProductVersion422Example'
+    PostCredentials403Response:
+      description: Error returned when the number of credentials exceed the quota.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ForbiddenError'
+          examples:
+            PostCredentials403Example:
+              $ref: '#/components/examples/PostCredentials403Example'
     ListAuthStrategies:
       description: List auth strategies response
       content:
@@ -1293,6 +1304,12 @@ components:
         type: https://kongapi.info/konnect/portal/granted-scopes-unavailable
         detail: This feature is not supported by the application.
         instance: kong:trace:2724154947768991354
+    PostCredentials403Example:
+      value:
+        status: 403
+        title: Forbidden
+        detail: 'Maximum number of Credentials exceeded. Max Allowed: 20'
+        instance: kong:trace:2724154947768991355
     UnauthorizedExample:
       value:
         status: 401
