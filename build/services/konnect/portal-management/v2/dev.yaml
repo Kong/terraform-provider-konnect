@@ -1109,7 +1109,7 @@ components:
         default_application_auth_strategy_id:
           $ref: '#/components/schemas/DefaultApplicationAuthStratID'
         labels:
-          $ref: '#/components/schemas/PortalsLabels'
+          $ref: '#/components/schemas/PortalsLabelsNullable'
       example:
         name: DevPortal
         is_public: false
@@ -1139,6 +1139,25 @@ components:
         Keys are case-sensitive.
       additionalProperties:
         type: string
+        pattern: ^[a-z0-9A-Z]{1}([a-z0-9A-Z\-._]*[a-z0-9A-Z]+)?$
+        minLength: 1
+        maxLength: 63
+      default: {}
+    PortalsLabelsNullable:
+      nullable: true
+      title: Labels
+      type: object
+      description: >
+        description: A maximum of 50 user-defined labels are allowed on this
+        resource.
+
+        Keys must not start with kong, konnect, insomnia, mesh, kic or _, which
+        are reserved for Kong.
+
+        Keys are case-sensitive.
+      additionalProperties:
+        type: string
+        nullable: true
         pattern: ^[a-z0-9A-Z]{1}([a-z0-9A-Z\-._]*[a-z0-9A-Z]+)?$
         minLength: 1
         maxLength: 63
