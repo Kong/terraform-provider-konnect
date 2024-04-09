@@ -13773,6 +13773,8 @@ components:
       properties:
         name:
           $ref: '#/components/schemas/PortalName'
+        description:
+          $ref: '#/components/schemas/PortalDescription'
         is_public:
           description: >-
             Whether the portal catalog can be accessed publicly without any
