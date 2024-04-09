@@ -788,8 +788,6 @@ components:
       type: object
       title: UpdateApplicationPayload
       description: Payload required to update an application
-      required:
-        - name
       properties:
         name:
           description: The name of the application
