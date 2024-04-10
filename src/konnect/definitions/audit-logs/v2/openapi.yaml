@@ -149,6 +149,12 @@ components:
                 enum: [cef, json]
                 description: The output format of each log messages.
                 default: cef
+              skip_ssl_verification:
+                type: boolean
+                example: false
+                description: |-
+                  Indicates if the SSL certificate verification of the host endpoint should be skipped when delivering payloads.
+                default: false
               updated_at:
                 type: string
                 description: Timestamp when this webhook was last updated. Initial value is 0001-01-01T00:00:0Z.
@@ -286,6 +292,14 @@ components:
                 enum: [cef, json]
                 description: The output format of each log message.
                 default: cef
+              skip_ssl_verification:
+                type: boolean
+                example: false
+                description: |-
+                  Indicates if the SSL certificate verification of the host endpoint should be skipped when delivering payloads.
+                  We strongly recommend not setting this to 'true' as you are subject to man-in-the-middle and other attacks.
+                  This option should be considered only for self-signed SSL certificates used in a non-production environment.
+                default: false
           examples:
             Disable Webhook:
               $ref: '#/components/examples/Disable-Audit-Log-Webhook'
@@ -345,6 +359,7 @@ components:
       value:
         endpoint: https://example.com/audit-log-json
         log_format: json
+        skip_ssl_verification: false
     Disable-Audit-Log-Webhook:
       value:
         enabled: false
@@ -356,6 +371,7 @@ components:
         endpoint: https://example.com/audit-log
         enabled: true
         log_format: cef
+        skip_ssl_verification: false
         updated_at: '2023-03-21T09:29:14.52Z'
     Get-Audit-Log-Webhook-Status:
       value:
