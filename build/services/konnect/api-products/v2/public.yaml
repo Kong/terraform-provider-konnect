@@ -674,6 +674,9 @@ components:
               $ref: '#/components/examples/CreateAPIProductRequestMinimalExample'
             CreateAPIProductRequestExample:
               $ref: '#/components/examples/CreateAPIProductRequestExample'
+            CreateAPIProductAndPublishToPortalsRequestExample:
+              $ref: >-
+                #/components/examples/CreateAPIProductAndPublishToPortalsRequestExample
     UpdateAPIProductRequest:
       required: true
       content:
@@ -1360,6 +1363,18 @@ components:
           default: null
         labels:
           $ref: '#/components/schemas/APIProductLabels'
+        portal_ids:
+          type: array
+          nullable: false
+          uniqueItems: true
+          minItems: 0
+          description: >-
+            The list of portal identifiers which this API product should be
+            published to
+          items:
+            type: string
+            format: uuid
+            example: 25a2624c-49fc-4764-99e1-224ed819f200
     UpdateAPIProductDTO:
       title: Update API Product Request
       description: The request schema for updating an API product.
@@ -2490,6 +2505,15 @@ components:
       summary: Create API Product Request (Minimal)
       value:
         name: API Product
+    CreateAPIProductAndPublishToPortalsRequestExample:
+      summary: Create API Product Request
+      value:
+        name: API Product
+        description: Text describing the API product
+        labels:
+          env: test
+        portal_ids:
+          - 07087c41-495a-4599-bc98-4904f1b46654
     UpdateAPIProductRequestExample:
       summary: Update API Product Request
       value:
