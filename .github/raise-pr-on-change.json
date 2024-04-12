@@ -109,6 +109,12 @@
       "dest": "specs/openapi/portal.v2.yml"
     }
   ],
+  "kong/cloud-gateway-configurations": [
+    {
+      "src": "computed/konnect/cloud-gateways/v2/openapi.yaml",
+      "dest": "openapi.yaml"
+    }
+  ],
   "kong/docs.konghq.com": [
     {
       "src": "build/services/konnect/analytics-reports/v2/public.yaml",

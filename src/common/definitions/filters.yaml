@@ -6,6 +6,10 @@ components:
       oneOf:
         - $ref: '#/components/schemas/StringFieldEqualsFilter'
         - $ref: '#/components/schemas/StringFieldContainsFilter'
+    StringFieldEqualsFilter:
+      title: StringFieldEqualsFilter
+      description: Filter a string value by exact match.
+      type: string
     StringFieldContainsFilter:
       type: object
       title: StringFieldContainsFilter
@@ -15,10 +19,42 @@ components:
           type: string
       required:
         - contains
-    StringFieldEqualsFilter:
-      title: StringFieldEqualsFilter
-      description: Filter a string value by exact match.
-      type: string
+    StringFieldOContainsFilter:
+      title: StringFieldOContainsFilter
+      description: Filters on the union of given string values by fuzzy match.
+      type: object
+      additionalProperties: false
+      properties:
+        ocontains:
+          type: string
+      required: [ ocontains ]
+      x-examples:
+        example-1:
+          ocontains: 'dev,prod'
+    StringFieldOEQFilter:
+      title: StringFieldOEQFilter
+      description: Filters on the given comma separated string by one or more exact match.
+      type: object
+      additionalProperties: false
+      properties:
+        oeq:
+          type: string
+      required: [ oeq ]
+      x-examples:
+        example-1:
+          oeq: 'some-value,some-other-value'
+    StringFieldNEQFilter:
+      title: StringFieldNEQFilter
+      description: Filters on the given string field value by exact match inequality.
+      type: object
+      additionalProperties: false
+      properties:
+        oeq:
+          type: string
+      required: [ neq ]
+      x-examples:
+        example-1:
+          oeq: 'not-this-value'
     BooleanFieldFilter:
       example: true
       title: BooleanFieldFilter

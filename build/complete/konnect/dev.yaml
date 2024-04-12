@@ -2236,11 +2236,14 @@ components:
       properties:
         neq:
           type: string
+        oeq:
+          type: string
       required:
         - neq
       x-examples:
         example-1:
           neq: not-this-value
+          oeq: not-this-value
     StringFieldFilter:
       title: StringFieldFilter
       description: Filters on the given string field value by either exact or fuzzy match.
@@ -7258,10 +7261,10 @@ components:
     konnectAccessToken:
       type: http
       scheme: bearer
+      bearerFormat: JWT
       description: >
         The Konnect access token is meant to be used by the Konnect dashboard
         and the decK CLI authenticate with.
-      bearerFormat: JWT
 security:
   - personalAccessToken: []
   - systemAccountAccessToken: []

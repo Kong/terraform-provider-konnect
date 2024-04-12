@@ -34,6 +34,102 @@ paths:
           $ref: '#/components/responses/ResolveCustomerResponse'
         '400':
           $ref: '#/components/responses/IdentityBadRequest'
+  /cloud-gateways/provider-accounts:
+    post:
+      summary: Create Provider Account
+      description: Creates a new provider account for an organization.
+      operationId: create-provider-account
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProviderAccountRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/CreateProviderAccountResponse'
+        '400':
+          $ref: '#/components/responses/CloudGatewaysBadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/CloudGatewaysForbidden'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - Provider Accounts
+  /cloud-gateways/provider-accounts/{providerAccountId}:
+    delete:
+      summary: Delete Provider Account
+      description: Deletes a provider account by ID.
+      operationId: delete-provider-account
+      parameters:
+        - $ref: '#/components/parameters/ProviderAccountId'
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/CloudGatewaysBadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Provider Accounts
+  /cloud-gateways/resource-quotas:
+    post:
+      summary: Create Resource Quota
+      description: >
+        Creates a new resource quota, scoped to a given resource, for an
+        organization.
+      operationId: create-resource-quota
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateResourceQuotaRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/CreateResourceQuotaResponse'
+        '400':
+          $ref: '#/components/responses/CloudGatewaysBadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - Resource Quotas
+  /cloud-gateways/resource-quotas/{resourceQuotaId}:
+    patch:
+      summary: Update Resource Quota
+      description: Updates a resource quota by ID.
+      operationId: update-resource-quota
+      parameters:
+        - $ref: '#/components/parameters/ResourceQuotaId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchResourceQuotaRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/PatchResourceQuotasResponse'
+        '400':
+          $ref: '#/components/responses/CloudGatewaysBadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Resource Quotas
   /internal/auth0/organizations:
     get:
       operationId: get-auth0-organizations-internal
@@ -697,6 +793,158 @@ components:
           example: Conflict
       allOf:
         - $ref: '#/components/schemas/BaseError'
+    ProviderAccountId:
+      type: string
+      format: uuid
+      example: 929b2449-c69f-44c4-b6ad-9ecec6f811ae
+    ResourceQuotaId:
+      type: string
+      format: uuid
+      example: 9678f205-49a1-47bb-82d9-d01cafa42a0d
+      readOnly: true
+    ProviderName:
+      title: Provider Name
+      description: Name of cloud provider.
+      type: string
+      enum:
+        - aws
+      example: aws
+    ProviderAccount:
+      title: Cloud Gateway Provider Account
+      description: >-
+        Object containing mapping for organization and cloud provider to account
+        ID.
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/ProviderAccountId'
+        provider:
+          $ref: '#/components/schemas/ProviderName'
+        provider_account_id:
+          type: string
+          description: ID of the cloud provider account.
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          description: >-
+            An RFC-3339 timestamp representation of provider account creation
+            date.
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          description: >-
+            An RFC-3339 timestamp representation of provider account update
+            date.
+          readOnly: true
+      required:
+        - id
+        - provider
+        - provider_account_id
+        - created_at
+        - updated_at
+    CreateProviderAccountRequest:
+      title: CreateProviderAccountRequest
+      description: >-
+        Request schema for creating a provider account via automatic account
+        vending.
+      type: object
+      additionalProperties: false
+      properties:
+        provider:
+          $ref: '#/components/schemas/ProviderName'
+      required:
+        - provider
+    ResourceQuotaQualifier:
+      description: Enumeration of resources available for quota enforcement.
+      type: string
+      enum:
+        - count/provider-accounts.per-provider
+        - count/networks.not-offline
+        - count/data-planes-estimate
+    ResourceQuotaName:
+      type: string
+      description: The human-readable name of this resource quota.
+      readOnly: true
+      example: Active Networks
+    ResourceQuotaDescription:
+      type: string
+      description: A more verbose description of what this resource quota enforces.
+      readOnly: true
+      example: >-
+        Across the organization, the aggregate number of active networks cannot
+        exceed this value.
+    ResourceQuotaValue:
+      type: integer
+      description: >
+        The aggregate non-negative integer count of this resource that's allowed
+        for the organization.
+      example: 2
+    ResourceQuota:
+      title: Resource Quota
+      description: >-
+        Object containing information about a resource quota for an
+        organization.
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/ResourceQuotaId'
+        resource:
+          $ref: '#/components/schemas/ResourceQuotaQualifier'
+        name:
+          $ref: '#/components/schemas/ResourceQuotaName'
+        description:
+          $ref: '#/components/schemas/ResourceQuotaDescription'
+        value:
+          $ref: '#/components/schemas/ResourceQuotaValue'
+        created_at:
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          description: >-
+            An RFC-3339 timestamp representation of resource quota creation
+            date.
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          description: An RFC-3339 timestamp representation of resource quota update date.
+          readOnly: true
+      required:
+        - id
+        - resource
+        - name
+        - description
+        - value
+        - created_at
+        - updated_at
+    CreateResourceQuotaRequest:
+      title: CreateResourceQuotaRequest
+      description: Request schema for creating a resource quota for an organization.
+      type: object
+      additionalProperties: false
+      properties:
+        resource:
+          $ref: '#/components/schemas/ResourceQuotaQualifier'
+        value:
+          $ref: '#/components/schemas/ResourceQuotaValue'
+      required:
+        - resource
+        - value
+    PatchResourceQuotaRequest:
+      title: PatchResourceQuotaRequest
+      description: Request schema for patching a resource quota for an organization.
+      type: object
+      additionalProperties: false
+      properties:
+        value:
+          $ref: '#/components/schemas/ResourceQuotaValue'
+      required:
+        - value
     BaseDeviceAuthorizationGrantBadRequest:
       title: Base Device Authorization Grant Bad Request
       type: object
@@ -926,6 +1174,18 @@ components:
         title: Unauthorized
         instance: kong:trace:8347343766220159418
         detail: Unauthorized
+    ForbiddenExample:
+      value:
+        status: 403
+        title: Forbidden
+        instance: kong:trace:2723154947768991354
+        detail: You do not have permission to perform this action
+    NotFoundExample:
+      value:
+        status: 404
+        title: Not Found
+        instance: kong:trace:6816496025408232265
+        detail: Not Found
     400-request-format-is-invalid:
       value:
         status: 400
@@ -937,6 +1197,82 @@ components:
             reason: request format is invalid
           - field: body
             reason: request format is invalid
+    PermissionDeniedExample:
+      value:
+        status: 403
+        title: Forbidden
+        instance: konnect:trace:2822394689570210664
+        detail: You do not have permission to perform this action.
+    QuotaExceededExample:
+      value:
+        status: 403
+        title: Quota Exceeded
+        instance: konnect:trace:2822394689570210664
+        detail: 'Maximum number of <quota name> exceeded. Max allowed: <quota value>.'
+    NetworkNameLengthCheckBadRequestExample:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: konnect:trace:2822394689570210664
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: name
+            rule: max_length
+            reason: name must be shorter than or equal to 120 characters
+    TransitGatewayNameLengthCheckBadRequestExample:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: konnect:trace:2822394689570210664
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: name
+            rule: max_length
+            reason: name must be shorter than or equal to 120 characters
+    CustomDomainLengthCheckBadRequestExample:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: konnect:trace:2822394689570210664
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: domain
+            rule: min_length
+            reason: domain must be longer than or equal to 1 characters
+    ConfigurationApiAccessBadRequestExample:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: konnect:trace:2822394689570210664
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: api_access
+            rule: enum
+            reason: >-
+              api_access must be one of the following values: private, public,
+              private+public
+    ConfigurationDataPlaneGroupStaticRequestedInstancesBadRequestExample:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: konnect:trace:2822394689570210664
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: dataplane_groups.0.autoscale.requested_instances
+            rule: is_integer
+            reason: >-
+              dataplane_groups.0.autoscale.requested_instances must be an
+              integer number
+    ConfigurationDataPlaneGroupAutopilotBaseRpsBadRequestExample:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: konnect:trace:2822394689570210664
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: dataplane_groups.0.autoscale.base_rps
+            rule: is_integer
+            reason: dataplane_groups.0.autoscale.base_rps must be an integer number
     400-cannot-be-blank:
       value:
         status: 400
@@ -1144,6 +1480,111 @@ components:
               $ref: '#/components/examples/UnauthorizedExample'
             Unauthorized:
               $ref: '#/components/examples/403-permission-denied'
+    Forbidden:
+      description: Forbidden
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ForbiddenError'
+          examples:
+            UnauthorizedExample:
+              $ref: '#/components/examples/ForbiddenExample'
+            ForbiddenExample:
+              $ref: '#/components/examples/ForbiddenExample'
+    NotFound:
+      description: Not Found
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            example:
+              Example 1:
+                status: 404
+                title: Not Found
+                instance: konnect:trace:2287285207635123011
+                detail: The requested report was not found
+            description: The error response object.
+            properties:
+              type:
+                type: string
+                description: Documentation for this error.
+              status:
+                type: integer
+                description: The HTTP status code.
+                example: 404
+              title:
+                type: string
+                description: The error response code.
+                example: Not Found
+              instance:
+                type: string
+                example: konnect:trace:2287285207635123011
+                description: The Konnect traceback code
+              detail:
+                type: string
+                example: The requested report was not found
+                description: Details about the error.
+            $ref: '#/components/schemas/NotFoundError'
+          examples:
+            NotFoundExample:
+              $ref: '#/components/examples/NotFoundExample'
+    Conflict:
+      description: Conflict
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ConflictError'
+    CreateProviderAccountResponse:
+      description: Response format for creating a provider account.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProviderAccount'
+    CreateResourceQuotaResponse:
+      description: Response format for creating a resource quota for an organization.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ResourceQuota'
+    PatchResourceQuotasResponse:
+      description: Response format for patching a resource quota for an organization.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ResourceQuota'
+    CloudGatewaysBadRequest:
+      description: Bad Request
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/BadRequestError'
+          examples:
+            Network Name Length Exceeded:
+              $ref: '#/components/examples/NetworkNameLengthCheckBadRequestExample'
+            Transit Gateway Name Length Exceeded:
+              $ref: >-
+                #/components/examples/TransitGatewayNameLengthCheckBadRequestExample
+            Custom Domain Domain Length Too Short:
+              $ref: '#/components/examples/CustomDomainLengthCheckBadRequestExample'
+            Configuration Api Access Enum Validation:
+              $ref: '#/components/examples/ConfigurationApiAccessBadRequestExample'
+            Configuration Data-Plane Group Static Request Instances Minimum:
+              $ref: >-
+                #/components/examples/ConfigurationDataPlaneGroupStaticRequestedInstancesBadRequestExample
+            Configuration Data-Plane Group Autopilot Base RPS Minimum:
+              $ref: >-
+                #/components/examples/ConfigurationDataPlaneGroupAutopilotBaseRpsBadRequestExample
+    CloudGatewaysForbidden:
+      description: Forbidden
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ForbiddenError'
+          examples:
+            Permission Denied:
+              $ref: '#/components/examples/PermissionDeniedExample'
+            Quota Exceeded:
+              $ref: '#/components/examples/QuotaExceededExample'
     Auth0Registration:
       description: Auth0 organization registration
       content:
@@ -1552,6 +1993,21 @@ components:
               - organization_name
               - user
               - metadata
+  parameters:
+    ResourceQuotaId:
+      name: resourceQuotaId
+      in: path
+      description: The ID of the resource quota to operate on.
+      required: true
+      schema:
+        $ref: '#/components/schemas/ResourceQuotaId'
+    ProviderAccountId:
+      name: providerAccountId
+      in: path
+      description: The ID of the provider account to operate on.
+      required: true
+      schema:
+        $ref: '#/components/schemas/ProviderAccountId'
   requestBodies:
     Auth0Registration:
       content:
@@ -1727,15 +2183,17 @@ components:
     konnectAccessToken:
       type: http
       scheme: bearer
+      bearerFormat: JWT
       description: >
         The Konnect access token is meant to be used by the Konnect dashboard
         and the decK CLI authenticate with.
-      bearerFormat: JWT
 security:
   - personalAccessToken: []
   - systemAccountAccessToken: []
   - konnectAccessToken: []
 tags:
+  - name: Provider Accounts
+  - name: Resource Quotas
   - name: Me
   - name: Managed System Accounts - Roles
   - name: Authentication
