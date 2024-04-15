@@ -3500,6 +3500,10 @@ components:
                 properties:
                   total_count:
                     type: integer
+                  next_cursor:
+                    type: string
+                  has_next_page:
+                    type: boolean
     list-nodes:
       description: Example response
       content:

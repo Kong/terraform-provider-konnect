@@ -3540,6 +3540,10 @@ components:
                 properties:
                   total_count:
                     type: integer
+                  next_cursor:
+                    type: string
+                  has_next_page:
+                    type: boolean
     list-nodes-eol:
       description: Example response
       content:
@@ -4334,7 +4338,7 @@ paths:
         Create or Update Consumer using the consumer UUID. The consumer will be identified via the id attribute. If the consumer with the specified ID cannot be found, the endpoint will return a 404.
 
         When creating a new Consumer without specifying id (neither in the URL nor in the body), then it will be auto-generated.
-        
+
       operationId: upsert-consumer
       responses:
         '200':
