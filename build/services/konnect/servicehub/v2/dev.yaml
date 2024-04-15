@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
-  title: Konnect ServiceHub
-  description: The platform API for Kong Konnect ServiceHub core.
+  title: Konnect Service Hub
+  description: The platform API for Kong Konnect Service Hub core.
   version: 2.1.0
   contact:
     name: Kong
@@ -18,7 +18,8 @@ security:
   - personalAccessToken: []
   - systemAccountAccessToken: []
 tags:
-  - name: Addons
+  - name: Add-ons
+  - name: Installed Add-ons
   - name: Service Hub Services
   - name: Integrations
   - name: Integration Auth Credentials
@@ -31,11 +32,11 @@ tags:
   - name: Discovery Ingestion
   - name: Metadata Field
 paths:
-  /servicehub/addons:
+  /servicehub/add-ons:
     get:
-      summary: List Addons
-      operationId: list-addons
-      description: Returns a paginated collection of ServiceHub addons.
+      summary: List Add-ons
+      operationId: list-add-ons
+      description: Returns a paginated collection of add-ons.
       responses:
         '200':
           $ref: '#/components/responses/ListAddonsResponse'
@@ -51,7 +52,125 @@ paths:
         - $ref: '#/components/parameters/AddonFilter'
         - $ref: '#/components/parameters/AddonSort'
       tags:
-        - Addons
+        - Add-ons
+  /servicehub/installed-add-ons:
+    get:
+      summary: List Installed Add-ons
+      operationId: list-installed-add-ons
+      description: Returns a paginated collection of installed add-ons.
+      responses:
+        '200':
+          $ref: '#/components/responses/ListInstalledAddonsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/Internal'
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/InstalledAddonFilter'
+        - $ref: '#/components/parameters/InstalledAddonSort'
+      tags:
+        - Installed Add-ons
+  /servicehub/installed-add-ons/{addon}:
+    parameters:
+      - schema:
+          type: string
+          example: gateway-manager
+        name: addon
+        in: path
+        required: true
+        description: Machine name of the add-on.
+    get:
+      summary: Fetch Installed Add-on
+      operationId: get-installed-add-on
+      description: Returns information about a specific installed add-on.
+      responses:
+        '200':
+          $ref: '#/components/responses/InstalledAddonResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/Internal'
+      tags:
+        - Installed Add-ons
+    post:
+      summary: Install Add-on
+      operationId: install-add-on
+      description: Installs the given add-on.
+      requestBody:
+        $ref: '#/components/requestBodies/InstallAddonBody'
+      responses:
+        '201':
+          $ref: '#/components/responses/InstalledAddonResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/Internal'
+      tags:
+        - Installed Add-ons
+    patch:
+      summary: Update Installed Add-on
+      operationId: update-installed-add-on
+      description: Updates the given installed add-on.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateInstalledAddonBody'
+      responses:
+        '200':
+          $ref: '#/components/responses/InstalledAddonResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/Internal'
+      tags:
+        - Installed Add-ons
+    delete:
+      summary: Delete Installed Add-on
+      operationId: delete-installed-add-on
+      description: >
+        Deletes an installed add-on. Returns 404 if the add-on is not installed
+        or not found.
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/Internal'
+      tags:
+        - Installed Add-ons
   /servicehub/services:
     get:
       summary: List Services
@@ -353,124 +472,6 @@ paths:
           $ref: '#/components/responses/Internal'
       tags:
         - Service Documents
-  /installed-integrations:
-    get:
-      summary: List Installed Integrations
-      operationId: list-installed-integrations
-      description: Returns a paginated collection of installed ServiceHub integrations.
-      responses:
-        '200':
-          $ref: '#/components/responses/ListInstalledIntegrationsResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '500':
-          $ref: '#/components/responses/Internal'
-      parameters:
-        - $ref: '#/components/parameters/PageSize'
-        - $ref: '#/components/parameters/PageNumber'
-        - $ref: '#/components/parameters/InstalledIntegrationFilter'
-        - $ref: '#/components/parameters/InstalledIntegrationSort'
-      tags:
-        - Integrations
-  /installed-integrations/{integration}:
-    parameters:
-      - schema:
-          type: string
-          example: gateway-manager
-        name: integration
-        in: path
-        required: true
-        description: Machine name of the integration.
-    get:
-      summary: Fetch Installed Integration
-      operationId: get-installed-integration
-      description: Returns information about a specific installed ServiceHub integration.
-      responses:
-        '200':
-          $ref: '#/components/responses/InstalledIntegrationResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/Internal'
-      tags:
-        - Integrations
-    post:
-      summary: Install Integration
-      operationId: install-integration
-      description: Installs the given ServiceHub integration.
-      requestBody:
-        $ref: '#/components/requestBodies/InstallIntegrationBody'
-      responses:
-        '201':
-          $ref: '#/components/responses/InstalledIntegrationResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '409':
-          $ref: '#/components/responses/Conflict'
-        '500':
-          $ref: '#/components/responses/Internal'
-      tags:
-        - Integrations
-    patch:
-      summary: Update Installed Integration
-      operationId: update-installed-integration
-      description: Updates the given installed ServiceHub integration.
-      requestBody:
-        $ref: '#/components/requestBodies/UpdateInstalledIntegrationBody'
-      responses:
-        '200':
-          $ref: '#/components/responses/InstalledIntegrationResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '409':
-          $ref: '#/components/responses/Conflict'
-        '500':
-          $ref: '#/components/responses/Internal'
-      tags:
-        - Integrations
-    delete:
-      summary: Delete Installed Integration
-      operationId: delete-installed-integration
-      description: >
-        Deletes an installed ServiceHub integration. Returns 404 if the
-        integration is not installed or not found.
-      responses:
-        '204':
-          description: No Content
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/Internal'
-      tags:
-        - Integrations
   /installed-integrations/{integration}/auth-credentials:
     parameters:
       - schema:
@@ -602,7 +603,7 @@ paths:
       summary: List Integrations for Service
       operationId: list-service-integrations
       description: >-
-        Returns a paginated collection of ServiceHub integrations associated to
+        Returns a paginated collection of Service Hub integrations associated to
         the given service.
       responses:
         '200':
@@ -750,7 +751,7 @@ paths:
     post:
       summary: Integration Proxy Request
       operationId: integration-proxy-request
-      description: Proxies a request to an external API made by a ServiceHub integration.
+      description: Proxies a request to an external API made by a Service Hub integration.
       requestBody:
         $ref: '#/components/requestBodies/IntegrationProxyBody'
       responses:
@@ -1404,7 +1405,7 @@ components:
         $ref: '#/components/schemas/SortQuery'
     AddonFilter:
       name: filter
-      description: Filters a collection of ServiceHub addons.
+      description: Filters a collection of add-ons.
       required: false
       in: query
       schema:
@@ -1413,26 +1414,25 @@ components:
     AddonSort:
       name: sort
       description: |
-        Sorts a collection of ServiceHub addons. Supported sort attributes are:
+        Sorts a collection of add-ons. Supported sort attributes are:
           - name
           - display_name
       required: false
       in: query
       schema:
         $ref: '#/components/schemas/SortQuery'
-    InstalledIntegrationFilter:
+    InstalledAddonFilter:
       name: filter
-      description: Filters a collection of installed ServiceHub integrations.
+      description: Filters a collection of installed add-ons.
       required: false
       in: query
       schema:
-        $ref: '#/components/schemas/InstalledIntegrationFilterParameters'
+        $ref: '#/components/schemas/InstalledAddonFilterParameters'
       style: deepObject
-    InstalledIntegrationSort:
+    InstalledAddonSort:
       name: sort
-      description: >
-        Sorts a collection of installed ServiceHub integrations. Supported sort
-        attributes are:
+      description: |
+        Sorts a collection of installed add-ons. Supported sort attributes are:
           - name
           - enabled
       required: false
@@ -1441,7 +1441,9 @@ components:
         $ref: '#/components/schemas/SortQuery'
     ServiceIntegrationFilter:
       name: filter
-      description: Filters a collection of ServiceHub integrations associated to a service.
+      description: >-
+        Filters a collection of Service Hub integrations associated to a
+        service.
       required: false
       in: query
       schema:
@@ -1450,7 +1452,7 @@ components:
     ServiceIntegrationSort:
       name: sort
       description: >
-        Sorts a collection of ServiceHub integrations associated to a service.
+        Sorts a collection of Service Hub integrations associated to a service.
         Supported sort attributes are:
           - name
       required: false
@@ -1618,8 +1620,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/MoveDocument'
-    InstallIntegrationBody:
-      description: Request body schema for installing a ServiceHub integration.
+    InstallAddonBody:
+      description: Request body schema for installing an add-on.
       required: true
       content:
         application/json:
@@ -1629,14 +1631,14 @@ components:
             properties:
               enabled:
                 type: boolean
-                description: Whether the integration is enabled
+                description: Whether the add-on is enabled
                 example: true
               config:
-                $ref: '#/components/schemas/InstalledIntegrationConfig'
+                $ref: '#/components/schemas/InstalledAddonConfig'
             required:
               - enabled
-    UpdateInstalledIntegrationBody:
-      description: Request body schema for updating an installed ServiceHub integration.
+    UpdateInstalledAddonBody:
+      description: Request body schema for updating an installed add-on.
       required: true
       content:
         application/json:
@@ -1646,10 +1648,10 @@ components:
             properties:
               enabled:
                 type: boolean
-                description: Whether the integration is enabled
+                description: Whether the add-on is enabled
                 example: true
               config:
-                $ref: '#/components/schemas/InstalledIntegrationConfig'
+                $ref: '#/components/schemas/InstalledAddonConfig'
     CreateInstalledIntegrationAuthCredentialBody:
       description: >-
         Request body schema for creating an auth credential for an installed
@@ -1906,7 +1908,7 @@ components:
           schema:
             $ref: '#/components/schemas/Document'
     ListAddonsResponse:
-      description: A paginated list response for a collection of ServiceHub addons.
+      description: A paginated list response for a collection of add-ons.
       content:
         application/json:
           schema:
@@ -1922,10 +1924,8 @@ components:
             required:
               - meta
               - data
-    ListInstalledIntegrationsResponse:
-      description: >-
-        A paginated list response for a collection of installed ServiceHub
-        integrations.
+    ListInstalledAddonsResponse:
+      description: A paginated list response for a collection of installed add-ons.
       content:
         application/json:
           schema:
@@ -1937,16 +1937,16 @@ components:
               data:
                 type: array
                 items:
-                  $ref: '#/components/schemas/InstalledIntegration'
+                  $ref: '#/components/schemas/InstalledAddon'
             required:
               - meta
               - data
-    InstalledIntegrationResponse:
-      description: A response containing a single installed ServiceHub integration object.
+    InstalledAddonResponse:
+      description: A response containing a single installed add-on object.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/InstalledIntegration'
+            $ref: '#/components/schemas/InstalledAddon'
     ListInstalledIntegrationAuthCredentialsResponse:
       description: >-
         A paginated list response for a collection of installed integration auth
@@ -2203,7 +2203,7 @@ components:
   schemas:
     ServiceHubService:
       title: Service
-      description: The service object contains information about a ServiceHub service.
+      description: The service object contains information about a Service Hub service.
       allOf:
         - type: object
           properties:
@@ -2234,7 +2234,7 @@ components:
             labels:
               $ref: '#/components/schemas/Labels'
             integrations:
-              description: An array of ServiceHub integrations associated to the service.
+              description: An array of Service Hub integrations associated to the service.
               items:
                 $ref: '#/components/schemas/ServiceIntegration'
               readOnly: true
@@ -2251,7 +2251,7 @@ components:
         - $ref: '#/components/schemas/EntityTimeFields'
     CreateService:
       type: object
-      description: The DTO for create a Servicehub service.
+      description: The DTO for create a Service Hub service.
       additionalProperties: false
       properties:
         name:
@@ -2281,7 +2281,7 @@ components:
         - display_name
     UpdateService:
       type: object
-      description: The DTO for update a Servicehub service.
+      description: The DTO for update a Service Hub service.
       additionalProperties: false
       properties:
         name:
@@ -2727,11 +2727,9 @@ components:
         - binding
         - data
         - labels
-    InstalledIntegration:
-      title: InstalledIntegration
-      description: >-
-        The integration object contains information about an installed
-        ServiceHub integration.
+    InstalledAddon:
+      title: InstalledAddon
+      description: The add-on object containing information about an installed add-on.
       allOf:
         - type: object
           properties:
@@ -2739,20 +2737,20 @@ components:
               type: string
               format: uuid
               example: 747368bc-d836-45e6-b855-ab9a3defb3c1
-              description: The installed integration ID.
+              description: The installed add-on identifier.
               readOnly: true
             name:
               type: string
-              description: The integration name.
+              description: The add-on name.
               maxLength: 120
               example: gateway-manager
               readOnly: true
             enabled:
               type: boolean
-              description: Whether the integration is enabled.
+              description: Whether the add-on is enabled.
               example: true
             config:
-              $ref: '#/components/schemas/InstalledIntegrationConfig'
+              $ref: '#/components/schemas/InstalledAddonConfig'
           required:
             - id
             - name
@@ -3484,31 +3482,31 @@ components:
       properties:
         built_in:
           type: boolean
-          description: Respresenting the integration is a built-in addon.
+          description: Respresenting the integration is a built-in add-on.
           example: false
           readOnly: true
         name:
           type: string
-          description: The addon name. Uniquely identifies the addon.
+          description: The add-on name. Uniquely identifies the add-on.
           maxLength: 120
           example: gateway-manager
           readOnly: true
         display_name:
           type: string
-          description: The human-readable display name of the addon.
+          description: The human-readable display name of the add-on.
           minLength: 1
           maxLength: 120
           example: Gateway Manager
           readOnly: true
         description:
           type: string
-          description: The text field describing the addon.
+          description: The text field describing the add-on.
           minLength: 1
           maxLength: 2048
           readOnly: true
         version:
           type: string
-          description: The addon version.
+          description: The add-on version.
           example: v1
           readOnly: true
         authorization:
@@ -3530,7 +3528,7 @@ components:
         - discovery
     AddonAuthorization:
       title: AddonAuthorization
-      description: Defines authorization for the addon.
+      description: Defines authorization for the add-on.
       oneOf:
         - nullable: true
         - $ref: '#/components/schemas/OAuthAuth'
@@ -3633,7 +3631,7 @@ components:
                   type: string
                   format: uri
                   example: >-
-                    https://us.api.konghq.com/servicehub-addons/github/app/install
+                    https://us.api.konghq.com/servicehub-add-ons/github/app/install
             authorize_app_installation_endpoint:
               type: object
               additionalProperties: false
@@ -3644,10 +3642,10 @@ components:
                   type: string
                   format: uri
                   example: >-
-                    https://us.api.konghq.com/servicehub-addons/github/app/authorize-installation
+                    https://us.api.konghq.com/servicehub-add-ons/github/app/authorize-installation
     AddonConfigSchema:
       title: AddonConfigSchema
-      description: The configuration schema for the addon.
+      description: The configuration schema for the add-on.
       additionalProperties:
         oneOf:
           - $ref: '#/components/schemas/StringConfigFieldSchema'
@@ -3660,7 +3658,9 @@ components:
           required: true
     StringConfigFieldSchema:
       title: StringConfigFieldSchema
-      description: Schema for an addon config field representing a user-input string value.
+      description: >-
+        Schema for an add-on config field representing a user-input string
+        value.
       type: object
       additionalProperties: false
       required:
@@ -3693,7 +3693,7 @@ components:
         required: true
     EnumConfigFieldSchema:
       title: EnumConfigFieldSchema
-      description: Schema for an addon config field representing a selected enum value.
+      description: Schema for an add-on config field representing a selected enum value.
       type: object
       additionalProperties: false
       required:
@@ -3756,7 +3756,7 @@ components:
     AddonBindings:
       title: AddonBindings
       description: >-
-        Map of binding objects to represent how an addon resource links to a
+        Map of binding objects to represent how an add-on resource links to a
         service.
       type: object
       default: {}
@@ -3798,7 +3798,7 @@ components:
             service_id: string
     AddonDiscovery:
       title: AddonDiscovery
-      description: Describes the discovery behavior of the addon.
+      description: Describes the discovery behavior of the add-on.
       nullable: true
       type: object
       additionalProperties: false
@@ -3810,7 +3810,7 @@ components:
           type: boolean
           description: >-
             Controls whether discovery is enabled by default or not when the
-            addon is installed.
+            add-on is installed.
         integration_record_examples:
           description: >
             Examples of possible values that the `integration_record` property
@@ -3847,9 +3847,9 @@ components:
                 cluster_id: 22222222-2222-2222-2222-222222222222
                 tags:
                   - env: development
-    InstalledIntegrationConfig:
+    InstalledAddonConfig:
       type: object
-      description: JSON object containing the configuration values for the integration.
+      description: JSON object containing the configuration values for the add-on.
       additionalProperties: true
       default: {}
       example:
@@ -4362,8 +4362,8 @@ components:
           $ref: '#/components/schemas/StringFieldFilter'
         display_name:
           $ref: '#/components/schemas/StringFieldFilter'
-    InstalledIntegrationFilterParameters:
-      title: IntegrationFilterParameters
+    InstalledAddonFilterParameters:
+      title: InstalledAddonFilterParameters
       type: object
       additionalProperties: false
       properties:
@@ -5058,6 +5058,57 @@ components:
     InternalError:
       allOf:
         - $ref: '#/components/schemas/BaseError'
+    BooleanFieldFilter:
+      title: BooleanFieldFilter
+      description: Filter by a boolean value (true/false).
+      type: boolean
+      x-examples:
+        example-1: true
+    ForbiddenError:
+      type: object
+      properties:
+        status:
+          example: 403
+        title:
+          example: Forbidden
+        type:
+          example: https://httpstatuses.com/403
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Forbidden
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+    NotFoundError:
+      type: object
+      properties:
+        status:
+          example: 404
+        title:
+          example: Not Found
+        type:
+          example: https://httpstatuses.com/404
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Not found
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+    ConflictError:
+      type: object
+      properties:
+        status:
+          example: 409
+        title:
+          example: Conflict
+        type:
+          example: https://httpstatuses.com/409
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Conflict
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
     LabelsFieldFilter:
       allOf:
         - title: LabelsFieldFilter
@@ -5170,57 +5221,6 @@ components:
         pattern: ^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$
         minLength: 1
         maxLength: 63
-    ForbiddenError:
-      type: object
-      properties:
-        status:
-          example: 403
-        title:
-          example: Forbidden
-        type:
-          example: https://httpstatuses.com/403
-        instance:
-          example: kong:trace:1234567890
-        detail:
-          example: Forbidden
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
-    NotFoundError:
-      type: object
-      properties:
-        status:
-          example: 404
-        title:
-          example: Not Found
-        type:
-          example: https://httpstatuses.com/404
-        instance:
-          example: kong:trace:1234567890
-        detail:
-          example: Not found
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
-    ConflictError:
-      type: object
-      properties:
-        status:
-          example: 409
-        title:
-          example: Conflict
-        type:
-          example: https://httpstatuses.com/409
-        instance:
-          example: kong:trace:1234567890
-        detail:
-          example: Conflict
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
-    BooleanFieldFilter:
-      title: BooleanFieldFilter
-      description: Filter by a boolean value (true/false).
-      type: boolean
-      x-examples:
-        example-1: true
     NotAvailableError:
       allOf:
         - $ref: '#/components/schemas/BaseError'
