@@ -130,6 +130,8 @@ paths:
           $ref: '#/components/responses/IdentityUnauthenticated'
         '403':
           $ref: '#/components/responses/Unauthorized'
+      security:
+        - konnectAccessToken: []
       tags:
         - Device Authorization Grant
   /internal/oauth/device/confirm:
@@ -150,6 +152,8 @@ paths:
           $ref: '#/components/responses/IdentityUnauthenticated'
         '403':
           $ref: '#/components/responses/Unauthorized'
+      security:
+        - konnectAccessToken: []
       tags:
         - Device Authorization Grant
   /authentication-settings:
