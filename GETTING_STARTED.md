@@ -1,16 +1,10 @@
 # Getting Started
 
-If you want to try this out before it's officially released, follow these steps:
-
-1. Download the provider for your operating system from the [releases page](https://github.com/mheap/tfpkk-ci/releases)
-1. Unzip the provider
-1. (MacOS Only) Mark the provider as safe - `xattr -d com.apple.quarantine tfpkk-ci*`
-1. Run the provider in debug mode with `./tfpkk-ci_v* -debug`
-1. Take the `TF_REATTACH_PROVIDERS=` line and run it in your terminal, prefixed with `export` e.g. `export TF_REATTACH_PROVIDERS=...`
-1. Create a `main.tf` file with the contents below. Make sure to change the `personal_access_token` line to contain your own access token
-1. Run `terraform apply` in the terminal that you ran `export TF_REATTACH_PROVIDERS` in
+This provider is available on the [Terraform registry](https://registry.terraform.io/providers/Kong/konnect/latest).
 
 ## Sample manifest
+
+Place the following content in `main.tf`, set your `personal_access_token` then run `terraform apply`.
 
 ```hcl
 # Configure the provider to use your Kong Konnect account

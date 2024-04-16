@@ -1,5 +1,12 @@
 # Contributing
 
+## Releasing new versions
+
+This repository is configured to automatically build and release new versions of the provider. To release a new version, raise a pull request containing your changes to `openapi.yaml` only. Label this pull request with `patch`, `minor` or `major` and GitHub Actions will build a new version of the provider.
+
+Once the PR is merged to `main`, a new release will automatically be created and published to the Terraform registry.
+
+## Local Generation
 This provider is generated from `openapi.yaml` using Speakeasy. To test a new version, use the following steps:
 
 - Run `make speakeasy`
