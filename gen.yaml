@@ -1,0 +1,26 @@
+configVersion: 2.0.0
+generation:
+  sdkClassName: konnect
+  maintainOpenAPIOrder: true
+  usageSnippets:
+    optionalPropertyRendering: withExample
+  useClassNamesForArrayFields: true
+  fixes:
+    nameResolutionDec2023: true
+    parameterOrderingFeb2024: true
+    requestResponseComponentNamesFeb2024: true
+  auth:
+    oAuth2ClientCredentialsEnabled: false
+  baseServerURL: ""
+terraform:
+  version: 0.0.1
+  author: kong
+  imports:
+    option: openapi
+    paths:
+      callbacks: callbacks
+      errors: sdkerrors
+      operations: operations
+      shared: shared
+      webhooks: webhooks
+  packageName: konnect
