@@ -1530,8 +1530,6 @@ components:
           $ref: '#/components/schemas/UUID'
         name:
           type: string
-        labels:
-          $ref: '#/components/schemas/Labels'
         reference_id:
           $ref: '#/components/schemas/ApplicationReferenceId'
         description:
@@ -1553,7 +1551,6 @@ components:
         - name
         - reference_id
         - description
-        - labels
         - updated_at
         - created_at
     ListCredentialsResponse:
@@ -1627,8 +1624,6 @@ components:
           description: A brief description of the application
           type: string
           maxLength: 255
-        labels:
-          $ref: '#/components/schemas/Labels'
         auth_strategy_id:
           $ref: '#/components/schemas/AuthStrategyId'
         scopes:
@@ -1646,7 +1641,6 @@ components:
         - created_at
         - updated_at
         - auth_strategy
-        - labels
       properties:
         id:
           $ref: '#/components/schemas/UUID'
@@ -1657,8 +1651,6 @@ components:
         description:
           type: string
           nullable: true
-        labels:
-          $ref: '#/components/schemas/Labels'
         redirect_uri:
           type: string
           nullable: true
@@ -1701,8 +1693,6 @@ components:
           description: A brief description of the application
           type: string
           maxLength: 255
-        labels:
-          $ref: '#/components/schemas/LabelsUpdate'
         scopes:
           $ref: '#/components/schemas/Scopes'
     ApplicationUpdateResponse:
@@ -1717,7 +1707,6 @@ components:
         - description
         - updated_at
         - created_at
-        - labels
       properties:
         id:
           $ref: '#/components/schemas/UUID'
@@ -1729,8 +1718,6 @@ components:
           type: string
           example: A brief description of the application
           nullable: true
-        labels:
-          $ref: '#/components/schemas/Labels'
         redirect_uri:
           type: string
           example: https://example.com/callback
@@ -1798,24 +1785,6 @@ components:
       example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
       description: Contains a unique identifier used by the API for this resource.
       readOnly: true
-    Labels:
-      title: Labels
-      type: object
-      example:
-        env: test
-      maxProperties: 50
-      description: >
-        Labels store metadata of an entity that can be used for filtering an
-        entity list or for searching across entity types. 
-
-
-        Keys must be of length 1-63 characters, and cannot start with "kong",
-        "konnect", "mesh", "kic", or "_".
-      additionalProperties:
-        type: string
-        pattern: ^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$
-        minLength: 1
-        maxLength: 63
     ApplicationReferenceId:
       description: |
         An identifier to correlate the application with an external system.
@@ -2068,26 +2037,6 @@ components:
           example: Too Many Requests
       allOf:
         - $ref: '#/components/schemas/BaseError'
-    LabelsUpdate:
-      type: object
-      nullable: true
-      description: >
-        Labels store metadata of an entity that can be used for filtering an
-        entity list or for searching across entity types. 
-
-
-        Keys must be of length 1-63 characters, and cannot start with "kong",
-        "konnect", "mesh", "kic", or "_".
-      example:
-        env: test
-      maxProperties: 50
-      additionalProperties:
-        type: string
-        pattern: ^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$
-        minLength: 1
-        maxLength: 63
-        nullable: true
-      writeOnly: true
     RefreshedGrantedScopes:
       description: List of granted scopes, directly updated from the IDP
       type: array

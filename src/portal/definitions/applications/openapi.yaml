@@ -464,8 +464,6 @@ components:
           $ref: '../../../common/definitions/properties.yaml#/components/schemas/UUID'
         name:
           type: string
-        labels:
-          $ref: '../../../common/definitions/konnect_properties.yaml#/components/schemas/Labels'
         reference_id:
           $ref: '../common/properties.yaml#/components/schemas/ApplicationReferenceId'
         description:
@@ -487,7 +485,6 @@ components:
         - name
         - reference_id
         - description
-        - labels
         - updated_at
         - created_at
     ListCredentialsResponse:
@@ -561,8 +558,6 @@ components:
           description: A brief description of the application
           type: string
           maxLength: 255
-        labels:
-          $ref: '../../../common/definitions/konnect_properties.yaml#/components/schemas/Labels'
         auth_strategy_id:
           $ref: '#/components/schemas/AuthStrategyId'
         scopes:
@@ -580,7 +575,6 @@ components:
         - created_at
         - updated_at
         - auth_strategy
-        - labels
       properties:
         id:
           $ref: '../../../common/definitions/properties.yaml#/components/schemas/UUID'
@@ -591,8 +585,6 @@ components:
         description:
           type: string
           nullable: true
-        labels:
-          $ref: '../../../common/definitions/konnect_properties.yaml#/components/schemas/Labels'
         redirect_uri:
           type: string
           nullable: true
@@ -635,8 +627,6 @@ components:
           description: A brief description of the application
           type: string
           maxLength: 255
-        labels:
-          $ref: '../../../common/definitions/konnect_properties.yaml#/components/schemas/LabelsUpdate'
         scopes:
           $ref: '#/components/schemas/Scopes'
     ApplicationUpdateResponse:
@@ -651,7 +641,6 @@ components:
         - description
         - updated_at
         - created_at
-        - labels
       properties:
         id:
           $ref: '../../../common/definitions/properties.yaml#/components/schemas/UUID'
@@ -663,8 +652,6 @@ components:
           type: string
           example: A brief description of the application
           nullable: true
-        labels:
-          $ref: '../../../common/definitions/konnect_properties.yaml#/components/schemas/Labels'
         redirect_uri:
           type: string
           example: https://example.com/callback
