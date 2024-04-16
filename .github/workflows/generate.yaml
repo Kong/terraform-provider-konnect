@@ -1,0 +1,40 @@
+name: Generate SDK
+on:
+  pull_request:
+    paths:
+      - "gen.yaml"
+    types: [opened, synchronize]
+jobs:
+  generate:
+    permissions:
+      contents: write
+    runs-on:
+      - ubuntu-latest
+    steps:
+      - name: Install Speakeasy
+        uses: mheap/setup-go-cli@v1
+        with:
+          owner: speakeasy-api
+          repo: speakeasy
+          cli_name: speakeasy
+          package_type: zip
+
+      - name: Configure speakeasy CLI
+        run: |
+          mkdir -p ~/.speakeasy
+          echo 'speakeasy_api_key: ${{ secrets.SPEAKEASY_API_KEY }}' > ~/.speakeasy/config.yaml
+
+      - name: Checkout current repo
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: Test speakeasy CLI
+        run: make speakeasy
+
+      - name: Commit SDK changes to the PR
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: .
+          default_author: github_actions
+          message: Update provider based on openapi.yaml changes
