@@ -715,6 +715,8 @@ components:
       required:
       - document_id
       - revision_id
+      - updated_at
+      - created_at
       properties:
         document_id:
           type: string
@@ -726,6 +728,10 @@ components:
           format: uuid
           description: revision id
           example: ecfb698d-77a8-4ab5-91fa-45ee383b48ba
+        created_at:
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
     MoveDocumentRequestPayload:
       type: object
       title: Move document
