@@ -41,7 +41,7 @@ func (p *KonnectProvider) Schema(ctx context.Context, req provider.SchemaRequest
 		Description: `Konnect API: The Konnect platform API`,
 		Attributes: map[string]schema.Attribute{
 			"server_url": schema.StringAttribute{
-				MarkdownDescription: "Server URL (defaults to https://global.api.konghq.com/v2)",
+				MarkdownDescription: "Server URL (defaults to https://global.api.konghq.com)",
 				Optional:            true,
 				Required:            false,
 			},
@@ -73,7 +73,7 @@ func (p *KonnectProvider) Configure(ctx context.Context, req provider.ConfigureR
 	ServerURL := data.ServerURL.ValueString()
 
 	if ServerURL == "" {
-		ServerURL = "https://global.api.konghq.com/v2"
+		ServerURL = "https://global.api.konghq.com"
 	}
 
 	personalAccessToken := new(string)

@@ -41,7 +41,7 @@ type ControlPlane struct {
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
-	Labels interface{} `json:"labels,omitempty"`
+	Labels map[string]string `json:"labels,omitempty"`
 	// CP configuration object for related access endpoints.
 	Config *Config `json:"config,omitempty"`
 	// An ISO-8604 timestamp representation of control plane creation date.
@@ -82,7 +82,7 @@ func (o *ControlPlane) GetDescription() *string {
 	return o.Description
 }
 
-func (o *ControlPlane) GetLabels() interface{} {
+func (o *ControlPlane) GetLabels() map[string]string {
 	if o == nil {
 		return nil
 	}

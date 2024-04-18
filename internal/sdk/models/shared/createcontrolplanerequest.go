@@ -11,6 +11,7 @@ import (
 type ClusterType string
 
 const (
+	ClusterTypeClusterTypeControlPlane         ClusterType = "CLUSTER_TYPE_CONTROL_PLANE"
 	ClusterTypeClusterTypeHybrid               ClusterType = "CLUSTER_TYPE_HYBRID"
 	ClusterTypeClusterTypeK8SIngressController ClusterType = "CLUSTER_TYPE_K8S_INGRESS_CONTROLLER"
 	ClusterTypeClusterTypeControlPlaneGroup    ClusterType = "CLUSTER_TYPE_CONTROL_PLANE_GROUP"
@@ -26,6 +27,8 @@ func (e *ClusterType) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
+	case "CLUSTER_TYPE_CONTROL_PLANE":
+		fallthrough
 	case "CLUSTER_TYPE_HYBRID":
 		fallthrough
 	case "CLUSTER_TYPE_K8S_INGRESS_CONTROLLER":
@@ -84,7 +87,7 @@ type CreateControlPlaneRequest struct {
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
-	Labels interface{} `json:"labels,omitempty"`
+	Labels map[string]string `json:"labels,omitempty"`
 }
 
 func (o *CreateControlPlaneRequest) GetName() string {
@@ -129,7 +132,7 @@ func (o *CreateControlPlaneRequest) GetProxyUrls() []ProxyURL {
 	return o.ProxyUrls
 }
 
-func (o *CreateControlPlaneRequest) GetLabels() interface{} {
+func (o *CreateControlPlaneRequest) GetLabels() map[string]string {
 	if o == nil {
 		return nil
 	}

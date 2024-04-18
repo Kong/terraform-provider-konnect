@@ -3,7 +3,6 @@
 package provider
 
 import (
-	"encoding/json"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
@@ -46,9 +45,10 @@ func (r *GatewayControlPlaneResourceModel) ToSharedCreateControlPlaneRequest() *
 			Protocol: protocol,
 		})
 	}
-	var labels interface{}
-	if !r.Labels.IsUnknown() && !r.Labels.IsNull() {
-		_ = json.Unmarshal([]byte(r.Labels.ValueString()), &labels)
+	labels := make(map[string]string)
+	for labelsKey, labelsValue := range r.Labels {
+		labelsInst := labelsValue.ValueString()
+		labels[labelsKey] = labelsInst
 	}
 	out := shared.CreateControlPlaneRequest{
 		Name:         name,
@@ -73,11 +73,11 @@ func (r *GatewayControlPlaneResourceModel) RefreshFromSharedControlPlane(resp *s
 		}
 		r.Description = types.StringPointerValue(resp.Description)
 		r.ID = types.StringPointerValue(resp.ID)
-		if resp.Labels == nil {
-			r.Labels = types.StringNull()
-		} else {
-			labelsResult, _ := json.Marshal(resp.Labels)
-			r.Labels = types.StringValue(string(labelsResult))
+		if len(resp.Labels) > 0 {
+			r.Labels = make(map[string]types.String)
+			for key, value := range resp.Labels {
+				r.Labels[key] = types.StringValue(value)
+			}
 		}
 		r.Name = types.StringPointerValue(resp.Name)
 	}
@@ -113,9 +113,10 @@ func (r *GatewayControlPlaneResourceModel) ToSharedUpdateControlPlaneRequest() *
 			Protocol: protocol,
 		})
 	}
-	var labels interface{}
-	if !r.Labels.IsUnknown() && !r.Labels.IsNull() {
-		_ = json.Unmarshal([]byte(r.Labels.ValueString()), &labels)
+	labels := make(map[string]string)
+	for labelsKey, labelsValue := range r.Labels {
+		labelsInst := labelsValue.ValueString()
+		labels[labelsKey] = labelsInst
 	}
 	out := shared.UpdateControlPlaneRequest{
 		Name:        name,

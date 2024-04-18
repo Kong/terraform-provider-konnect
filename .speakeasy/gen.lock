@@ -1,25 +1,25 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: f7ff80f585c39cc7e222c1901f224593
+  docChecksum: c3e4c43395d525fd1dc5f2144900e9db
   docVersion: 2.0.0
-  speakeasyVersion: 1.253.2
-  generationVersion: 2.306.2
-  releaseVersion: 0.1.0
-  configChecksum: effeda7d873e248323fb870868eed4bd
+  speakeasyVersion: 1.258.2
+  generationVersion: 2.309.2
+  releaseVersion: 0.2.0
+  configChecksum: 528dfedf55883eb6644bbe12bc957539
 features:
   terraform:
     additionalProperties: 0.1.2
     constsAndDefaults: 0.1.4
-    core: 3.18.1
+    core: 3.18.2
     deprecations: 2.81.1
     globalSecurity: 2.81.6
     globalServerURLs: 2.82.1
     inputOutputModels: 2.83.0
-    methodServerURLs: 2.82.1
     typeOverrides: 2.81.1
     unions: 2.81.12
 generatedFiles:
+  - internal/sdk/mesh.go
   - internal/sdk/apiproducts.go
   - internal/sdk/apiproductversions.go
   - internal/sdk/appauthstrategies.go
@@ -43,7 +43,6 @@ generatedFiles:
   - internal/sdk/targets.go
   - internal/sdk/vaults.go
   - internal/sdk/controlplanegroups.go
-  - internal/sdk/mesh.go
   - internal/sdk/portals.go
   - internal/sdk/portalauthsettings.go
   - internal/sdk/portalproductversions.go
@@ -64,6 +63,10 @@ generatedFiles:
   - internal/sdk/internal/utils/retries.go
   - internal/sdk/internal/utils/security.go
   - internal/sdk/internal/utils/utils.go
+  - internal/sdk/models/operations/createcp.go
+  - internal/sdk/models/operations/getmeshcontrolplane.go
+  - internal/sdk/models/operations/deletemeshcontrolplane.go
+  - internal/sdk/models/operations/updatemeshcontrolplane.go
   - internal/sdk/models/operations/createapiproduct.go
   - internal/sdk/models/operations/getapiproduct.go
   - internal/sdk/models/operations/updateapiproduct.go
@@ -252,10 +255,6 @@ generatedFiles:
   - internal/sdk/models/operations/getvault.go
   - internal/sdk/models/operations/postcontrolplanesidgroupmembershipsadd.go
   - internal/sdk/models/operations/postcontrolplanesidgroupmembershipsremove.go
-  - internal/sdk/models/operations/createcp.go
-  - internal/sdk/models/operations/getmeshcontrolplane.go
-  - internal/sdk/models/operations/deletemeshcontrolplane.go
-  - internal/sdk/models/operations/updatemeshcontrolplane.go
   - internal/sdk/models/operations/listportals.go
   - internal/sdk/models/operations/updateportal.go
   - internal/sdk/models/operations/getportalauthenticationsettings.go
@@ -263,7 +262,6 @@ generatedFiles:
   - internal/sdk/models/operations/getportalproductversion.go
   - internal/sdk/models/operations/updateportalproductversion.go
   - internal/sdk/models/operations/deleteportalproductversion.go
-  - internal/sdk/models/shared/unsupportedmediatypeerror.go
   - internal/sdk/models/shared/forbiddenerror.go
   - internal/sdk/models/shared/unauthorizederror.go
   - internal/sdk/models/shared/badrequesterror.go
@@ -271,9 +269,13 @@ generatedFiles:
   - internal/sdk/models/shared/invalidparameterchoiceitem.go
   - internal/sdk/models/shared/invalidrules.go
   - internal/sdk/models/shared/invalidparameterdependentitem.go
+  - internal/sdk/models/shared/meshcontrolplane.go
+  - internal/sdk/models/shared/createmeshcontrolplanerequest.go
+  - internal/sdk/models/shared/notfounderror.go
+  - internal/sdk/models/shared/updatemeshcontrolplanerequest.go
+  - internal/sdk/models/shared/unsupportedmediatypeerror.go
   - internal/sdk/models/shared/apiproduct.go
   - internal/sdk/models/shared/createapiproductdto.go
-  - internal/sdk/models/shared/notfounderror.go
   - internal/sdk/models/shared/updateapiproductdto.go
   - internal/sdk/models/shared/apiproductversion.go
   - internal/sdk/models/shared/authstrategysyncerror.go
@@ -391,9 +393,6 @@ generatedFiles:
   - internal/sdk/models/shared/vault.go
   - internal/sdk/models/shared/createvault.go
   - internal/sdk/models/shared/groupmembership.go
-  - internal/sdk/models/shared/meshcontrolplane.go
-  - internal/sdk/models/shared/createmeshcontrolplanerequest.go
-  - internal/sdk/models/shared/updatemeshcontrolplanerequest.go
   - internal/sdk/models/shared/listportalsresponse.go
   - internal/sdk/models/shared/portal.go
   - internal/sdk/models/shared/paginatedmeta.go

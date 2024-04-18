@@ -17,6 +17,7 @@ func (r *PortalListDataSourceModel) RefreshFromSharedListPortalsResponse(resp *s
 		}
 		for dataCount, dataItem := range resp.Data {
 			var data1 tfTypes.Portal
+			data1.ApplicationCount = types.NumberValue(big.NewFloat(float64(dataItem.ApplicationCount)))
 			data1.AutoApproveApplications = types.BoolValue(dataItem.AutoApproveApplications)
 			data1.AutoApproveDevelopers = types.BoolValue(dataItem.AutoApproveDevelopers)
 			data1.CreatedAt = types.StringValue(dataItem.CreatedAt.Format(time.RFC3339Nano))
@@ -24,14 +25,18 @@ func (r *PortalListDataSourceModel) RefreshFromSharedListPortalsResponse(resp *s
 			data1.CustomDomain = types.StringPointerValue(dataItem.CustomDomain)
 			data1.DefaultApplicationAuthStrategyID = types.StringPointerValue(dataItem.DefaultApplicationAuthStrategyID)
 			data1.DefaultDomain = types.StringValue(dataItem.DefaultDomain)
+			data1.Description = types.StringPointerValue(dataItem.Description)
+			data1.DeveloperCount = types.NumberValue(big.NewFloat(float64(dataItem.DeveloperCount)))
 			data1.ID = types.StringValue(dataItem.ID)
 			data1.IsPublic = types.BoolValue(dataItem.IsPublic)
 			data1.Name = types.StringValue(dataItem.Name)
+			data1.PublishedProductCount = types.NumberValue(big.NewFloat(float64(dataItem.PublishedProductCount)))
 			data1.RbacEnabled = types.BoolValue(dataItem.RbacEnabled)
 			data1.UpdatedAt = types.StringValue(dataItem.UpdatedAt.Format(time.RFC3339Nano))
 			if dataCount+1 > len(r.Data) {
 				r.Data = append(r.Data, data1)
 			} else {
+				r.Data[dataCount].ApplicationCount = data1.ApplicationCount
 				r.Data[dataCount].AutoApproveApplications = data1.AutoApproveApplications
 				r.Data[dataCount].AutoApproveDevelopers = data1.AutoApproveDevelopers
 				r.Data[dataCount].CreatedAt = data1.CreatedAt
@@ -39,9 +44,12 @@ func (r *PortalListDataSourceModel) RefreshFromSharedListPortalsResponse(resp *s
 				r.Data[dataCount].CustomDomain = data1.CustomDomain
 				r.Data[dataCount].DefaultApplicationAuthStrategyID = data1.DefaultApplicationAuthStrategyID
 				r.Data[dataCount].DefaultDomain = data1.DefaultDomain
+				r.Data[dataCount].Description = data1.Description
+				r.Data[dataCount].DeveloperCount = data1.DeveloperCount
 				r.Data[dataCount].ID = data1.ID
 				r.Data[dataCount].IsPublic = data1.IsPublic
 				r.Data[dataCount].Name = data1.Name
+				r.Data[dataCount].PublishedProductCount = data1.PublishedProductCount
 				r.Data[dataCount].RbacEnabled = data1.RbacEnabled
 				r.Data[dataCount].UpdatedAt = data1.UpdatedAt
 			}

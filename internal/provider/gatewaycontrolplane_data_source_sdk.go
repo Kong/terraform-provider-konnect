@@ -3,7 +3,6 @@
 package provider
 
 import (
-	"encoding/json"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
@@ -20,11 +19,11 @@ func (r *GatewayControlPlaneDataSourceModel) RefreshFromSharedControlPlane(resp 
 		}
 		r.Description = types.StringPointerValue(resp.Description)
 		r.ID = types.StringPointerValue(resp.ID)
-		if resp.Labels == nil {
-			r.Labels = types.StringNull()
-		} else {
-			labelsResult, _ := json.Marshal(resp.Labels)
-			r.Labels = types.StringValue(string(labelsResult))
+		if len(resp.Labels) > 0 {
+			r.Labels = make(map[string]types.String)
+			for key, value := range resp.Labels {
+				r.Labels[key] = types.StringValue(value)
+			}
 		}
 		r.Name = types.StringPointerValue(resp.Name)
 	}

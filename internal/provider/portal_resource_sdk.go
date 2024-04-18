@@ -5,10 +5,23 @@ package provider
 import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	"math/big"
 	"time"
 )
 
 func (r *PortalResourceModel) ToSharedUpdatePortalRequest() *shared.UpdatePortalRequest {
+	name := new(string)
+	if !r.Name.IsUnknown() && !r.Name.IsNull() {
+		*name = r.Name.ValueString()
+	} else {
+		name = nil
+	}
+	description := new(string)
+	if !r.Description.IsUnknown() && !r.Description.IsNull() {
+		*description = r.Description.ValueString()
+	} else {
+		description = nil
+	}
 	isPublic := new(bool)
 	if !r.IsPublic.IsUnknown() && !r.IsPublic.IsNull() {
 		*isPublic = r.IsPublic.ValueBool()
@@ -52,6 +65,8 @@ func (r *PortalResourceModel) ToSharedUpdatePortalRequest() *shared.UpdatePortal
 		defaultApplicationAuthStrategyID = nil
 	}
 	out := shared.UpdatePortalRequest{
+		Name:                             name,
+		Description:                      description,
 		IsPublic:                         isPublic,
 		RbacEnabled:                      rbacEnabled,
 		AutoApproveApplications:          autoApproveApplications,
@@ -65,6 +80,7 @@ func (r *PortalResourceModel) ToSharedUpdatePortalRequest() *shared.UpdatePortal
 
 func (r *PortalResourceModel) RefreshFromSharedUpdatePortalResponse(resp *shared.UpdatePortalResponse) {
 	if resp != nil {
+		r.ApplicationCount = types.NumberValue(big.NewFloat(float64(resp.ApplicationCount)))
 		r.AutoApproveApplications = types.BoolValue(resp.AutoApproveApplications)
 		r.AutoApproveDevelopers = types.BoolValue(resp.AutoApproveDevelopers)
 		r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
@@ -72,9 +88,12 @@ func (r *PortalResourceModel) RefreshFromSharedUpdatePortalResponse(resp *shared
 		r.CustomDomain = types.StringPointerValue(resp.CustomDomain)
 		r.DefaultDomain = types.StringValue(resp.DefaultDomain)
 		r.DefaultApplicationAuthStrategyID = types.StringPointerValue(resp.DefaultApplicationAuthStrategyID)
+		r.Description = types.StringPointerValue(resp.Description)
+		r.DeveloperCount = types.NumberValue(big.NewFloat(float64(resp.DeveloperCount)))
 		r.ID = types.StringValue(resp.ID)
 		r.IsPublic = types.BoolValue(resp.IsPublic)
 		r.Name = types.StringValue(resp.Name)
+		r.PublishedProductCount = types.NumberValue(big.NewFloat(float64(resp.PublishedProductCount)))
 		r.RbacEnabled = types.BoolValue(resp.RbacEnabled)
 		r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
 	}

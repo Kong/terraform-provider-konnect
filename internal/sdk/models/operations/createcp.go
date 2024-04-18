@@ -7,11 +7,6 @@ import (
 	"net/http"
 )
 
-var CreateCpServerList = []string{
-	"https://us.api.konghq.com/v1",
-	"https://us.api.konghq.com/v1",
-}
-
 type CreateCpResponse struct {
 	// HTTP response content type for this operation
 	ContentType string

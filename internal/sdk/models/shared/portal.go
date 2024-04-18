@@ -14,8 +14,10 @@ type Portal struct {
 	CreatedAt time.Time `json:"created_at"`
 	// An ISO-8601 timestamp representation of entity update date.
 	UpdatedAt time.Time `json:"updated_at"`
-	// The name of the portal, used to distinguish it from other portals.
+	// The name of the portal, used to distinguish it from other portals. Name must be unique.
 	Name string `json:"name"`
+	// The description of the portal.
+	Description *string `json:"description"`
 	// The domain assigned to the portal by Konnect. This is the default place to access the portal and its API if not using a `custom_domain``.
 	DefaultDomain string `json:"default_domain"`
 	// Whether the portal catalog can be accessed publicly without any developer authentication. Developer accounts and applications cannot be created if the portal is public.
@@ -32,6 +34,12 @@ type Portal struct {
 	CustomClientDomain *string `json:"custom_client_domain"`
 	// Default strategy ID applied on applications for the portal
 	DefaultApplicationAuthStrategyID *string `json:"default_application_auth_strategy_id,omitempty"`
+	// Number of applications created in the portal.
+	ApplicationCount float64 `json:"application_count"`
+	// Number of developers using the portal.
+	DeveloperCount float64 `json:"developer_count"`
+	// Number of api products published to the portal
+	PublishedProductCount float64 `json:"published_product_count"`
 }
 
 func (p Portal) MarshalJSON() ([]byte, error) {
@@ -71,6 +79,13 @@ func (o *Portal) GetName() string {
 		return ""
 	}
 	return o.Name
+}
+
+func (o *Portal) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
 }
 
 func (o *Portal) GetDefaultDomain() string {
@@ -127,4 +142,25 @@ func (o *Portal) GetDefaultApplicationAuthStrategyID() *string {
 		return nil
 	}
 	return o.DefaultApplicationAuthStrategyID
+}
+
+func (o *Portal) GetApplicationCount() float64 {
+	if o == nil {
+		return 0.0
+	}
+	return o.ApplicationCount
+}
+
+func (o *Portal) GetDeveloperCount() float64 {
+	if o == nil {
+		return 0.0
+	}
+	return o.DeveloperCount
+}
+
+func (o *Portal) GetPublishedProductCount() float64 {
+	if o == nil {
+		return 0.0
+	}
+	return o.PublishedProductCount
 }

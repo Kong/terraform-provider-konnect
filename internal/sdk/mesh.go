@@ -38,7 +38,6 @@ func (s *Mesh) CreateCp(ctx context.Context, request shared.CreateMeshControlPla
 
 	o := operations.Options{}
 	supportedOptions := []string{
-		operations.SupportedOptionServerURL,
 		operations.SupportedOptionAcceptHeaderOverride,
 	}
 
@@ -47,12 +46,8 @@ func (s *Mesh) CreateCp(ctx context.Context, request shared.CreateMeshControlPla
 			return nil, fmt.Errorf("error applying option: %w", err)
 		}
 	}
-	baseURL := utils.ReplaceParameters(operations.CreateCpServerList[0], map[string]string{})
-	if o.ServerURL != nil {
-		baseURL = *o.ServerURL
-	}
-
-	opURL, err := url.JoinPath(baseURL, "/mesh/control-planes")
+	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	opURL, err := url.JoinPath(baseURL, "/v1/mesh/control-planes")
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -95,9 +90,11 @@ func (s *Mesh) CreateCp(ctx context.Context, request shared.CreateMeshControlPla
 		_, err = s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, nil, err)
 		return nil, err
 	} else if utils.MatchStatusCodes([]string{}, httpRes.StatusCode) {
-		httpRes, err = s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, httpRes, nil)
+		_httpRes, err := s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, httpRes, nil)
 		if err != nil {
 			return nil, err
+		} else if _httpRes != nil {
+			httpRes = _httpRes
 		}
 	} else {
 		httpRes, err = s.sdkConfiguration.Hooks.AfterSuccess(hooks.AfterSuccessContext{HookContext: hookCtx}, httpRes)
@@ -187,7 +184,6 @@ func (s *Mesh) GetMeshControlPlane(ctx context.Context, request operations.GetMe
 
 	o := operations.Options{}
 	supportedOptions := []string{
-		operations.SupportedOptionServerURL,
 		operations.SupportedOptionAcceptHeaderOverride,
 	}
 
@@ -196,12 +192,8 @@ func (s *Mesh) GetMeshControlPlane(ctx context.Context, request operations.GetMe
 			return nil, fmt.Errorf("error applying option: %w", err)
 		}
 	}
-	baseURL := utils.ReplaceParameters(operations.GetMeshControlPlaneServerList[0], map[string]string{})
-	if o.ServerURL != nil {
-		baseURL = *o.ServerURL
-	}
-
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/mesh/control-planes/{cpId}", request, nil)
+	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -238,9 +230,11 @@ func (s *Mesh) GetMeshControlPlane(ctx context.Context, request operations.GetMe
 		_, err = s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, nil, err)
 		return nil, err
 	} else if utils.MatchStatusCodes([]string{}, httpRes.StatusCode) {
-		httpRes, err = s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, httpRes, nil)
+		_httpRes, err := s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, httpRes, nil)
 		if err != nil {
 			return nil, err
+		} else if _httpRes != nil {
+			httpRes = _httpRes
 		}
 	} else {
 		httpRes, err = s.sdkConfiguration.Hooks.AfterSuccess(hooks.AfterSuccessContext{HookContext: hookCtx}, httpRes)
@@ -320,7 +314,7 @@ func (s *Mesh) GetMeshControlPlane(ctx context.Context, request operations.GetMe
 
 // DeleteMeshControlPlane - Delete the control plane
 // Delete the control plane
-func (s *Mesh) DeleteMeshControlPlane(ctx context.Context, request operations.DeleteMeshControlPlaneRequest, opts ...operations.Option) (*operations.DeleteMeshControlPlaneResponse, error) {
+func (s *Mesh) DeleteMeshControlPlane(ctx context.Context, request operations.DeleteMeshControlPlaneRequest) (*operations.DeleteMeshControlPlaneResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "delete-mesh-control-plane",
@@ -328,22 +322,8 @@ func (s *Mesh) DeleteMeshControlPlane(ctx context.Context, request operations.De
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
-	o := operations.Options{}
-	supportedOptions := []string{
-		operations.SupportedOptionServerURL,
-	}
-
-	for _, opt := range opts {
-		if err := opt(&o, supportedOptions...); err != nil {
-			return nil, fmt.Errorf("error applying option: %w", err)
-		}
-	}
-	baseURL := utils.ReplaceParameters(operations.DeleteMeshControlPlaneServerList[0], map[string]string{})
-	if o.ServerURL != nil {
-		baseURL = *o.ServerURL
-	}
-
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/mesh/control-planes/{cpId}", request, nil)
+	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -375,9 +355,11 @@ func (s *Mesh) DeleteMeshControlPlane(ctx context.Context, request operations.De
 		_, err = s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, nil, err)
 		return nil, err
 	} else if utils.MatchStatusCodes([]string{}, httpRes.StatusCode) {
-		httpRes, err = s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, httpRes, nil)
+		_httpRes, err := s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, httpRes, nil)
 		if err != nil {
 			return nil, err
+		} else if _httpRes != nil {
+			httpRes = _httpRes
 		}
 	} else {
 		httpRes, err = s.sdkConfiguration.Hooks.AfterSuccess(hooks.AfterSuccessContext{HookContext: hookCtx}, httpRes)
@@ -456,7 +438,6 @@ func (s *Mesh) UpdateMeshControlPlane(ctx context.Context, request operations.Up
 
 	o := operations.Options{}
 	supportedOptions := []string{
-		operations.SupportedOptionServerURL,
 		operations.SupportedOptionAcceptHeaderOverride,
 	}
 
@@ -465,12 +446,8 @@ func (s *Mesh) UpdateMeshControlPlane(ctx context.Context, request operations.Up
 			return nil, fmt.Errorf("error applying option: %w", err)
 		}
 	}
-	baseURL := utils.ReplaceParameters(operations.UpdateMeshControlPlaneServerList[0], map[string]string{})
-	if o.ServerURL != nil {
-		baseURL = *o.ServerURL
-	}
-
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/mesh/control-planes/{cpId}", request, nil)
+	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -513,9 +490,11 @@ func (s *Mesh) UpdateMeshControlPlane(ctx context.Context, request operations.Up
 		_, err = s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, nil, err)
 		return nil, err
 	} else if utils.MatchStatusCodes([]string{}, httpRes.StatusCode) {
-		httpRes, err = s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, httpRes, nil)
+		_httpRes, err := s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, httpRes, nil)
 		if err != nil {
 			return nil, err
+		} else if _httpRes != nil {
+			httpRes = _httpRes
 		}
 	} else {
 		httpRes, err = s.sdkConfiguration.Hooks.AfterSuccess(hooks.AfterSuccessContext{HookContext: hookCtx}, httpRes)

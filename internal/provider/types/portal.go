@@ -5,6 +5,7 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type Portal struct {
+	ApplicationCount                 types.Number `tfsdk:"application_count"`
 	AutoApproveApplications          types.Bool   `tfsdk:"auto_approve_applications"`
 	AutoApproveDevelopers            types.Bool   `tfsdk:"auto_approve_developers"`
 	CreatedAt                        types.String `tfsdk:"created_at"`
@@ -12,9 +13,12 @@ type Portal struct {
 	CustomDomain                     types.String `tfsdk:"custom_domain"`
 	DefaultApplicationAuthStrategyID types.String `tfsdk:"default_application_auth_strategy_id"`
 	DefaultDomain                    types.String `tfsdk:"default_domain"`
+	Description                      types.String `tfsdk:"description"`
+	DeveloperCount                   types.Number `tfsdk:"developer_count"`
 	ID                               types.String `tfsdk:"id"`
 	IsPublic                         types.Bool   `tfsdk:"is_public"`
 	Name                             types.String `tfsdk:"name"`
+	PublishedProductCount            types.Number `tfsdk:"published_product_count"`
 	RbacEnabled                      types.Bool   `tfsdk:"rbac_enabled"`
 	UpdatedAt                        types.String `tfsdk:"updated_at"`
 }
