@@ -13,6 +13,15 @@ type ListPortalsRequest struct {
 	// Determines which page of the entities to retrieve.
 	PageNumber *int64 `queryParam:"style=form,explode=true,name=page[number]"`
 	// Sorts a collection of portals. Supported sort attributes are:
+	//   - name
+	//   - description
+	//   - is_public
+	//   - rbac_enabled
+	//   - auto_approve_applications
+	//   - auto_approve_developers
+	//   - default_domain
+	//   - custom_domain
+	//   - custom_client_domain
 	//   - created_at
 	//   - updated_at
 	//

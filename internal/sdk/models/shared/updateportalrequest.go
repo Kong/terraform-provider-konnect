@@ -3,6 +3,10 @@
 package shared
 
 type UpdatePortalRequest struct {
+	// The name of the portal, used to distinguish it from other portals. Name must be unique.
+	Name *string `json:"name,omitempty"`
+	// The description of the portal.
+	Description *string `json:"description,omitempty"`
 	// Whether the portal catalog can be accessed publicly without any developer authentication. Developer accounts and applications cannot be created if the portal is public.
 	IsPublic *bool `json:"is_public,omitempty"`
 	// Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for products until unless assigned to teams with access to view and consume specific products.
@@ -17,6 +21,20 @@ type UpdatePortalRequest struct {
 	CustomClientDomain *string `json:"custom_client_domain,omitempty"`
 	// Default strategy ID applied on applications for the portal
 	DefaultApplicationAuthStrategyID *string `json:"default_application_auth_strategy_id,omitempty"`
+}
+
+func (o *UpdatePortalRequest) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *UpdatePortalRequest) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
 }
 
 func (o *UpdatePortalRequest) GetIsPublic() *bool {

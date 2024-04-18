@@ -51,6 +51,10 @@ func (r *PortalListDataSource) Schema(ctx context.Context, req datasource.Schema
 				Computed: true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
+						"application_count": schema.NumberAttribute{
+							Computed:    true,
+							Description: `Number of applications created in the portal.`,
+						},
 						"auto_approve_applications": schema.BoolAttribute{
 							Computed:    true,
 							Description: `Whether the requests from applications to register for products will be automatically approved, or if they will be set to pending until approved by an admin.`,
@@ -79,6 +83,14 @@ func (r *PortalListDataSource) Schema(ctx context.Context, req datasource.Schema
 							Computed:    true,
 							Description: `The domain assigned to the portal by Konnect. This is the default place to access the portal and its API if not using a ` + "`" + `custom_domain` + "``" + `.`,
 						},
+						"description": schema.StringAttribute{
+							Computed:    true,
+							Description: `The description of the portal.`,
+						},
+						"developer_count": schema.NumberAttribute{
+							Computed:    true,
+							Description: `Number of developers using the portal.`,
+						},
 						"id": schema.StringAttribute{
 							Computed:    true,
 							Description: `Contains a unique identifier used by the API for this resource.`,
@@ -89,7 +101,11 @@ func (r *PortalListDataSource) Schema(ctx context.Context, req datasource.Schema
 						},
 						"name": schema.StringAttribute{
 							Computed:    true,
-							Description: `The name of the portal, used to distinguish it from other portals.`,
+							Description: `The name of the portal, used to distinguish it from other portals. Name must be unique.`,
+						},
+						"published_product_count": schema.NumberAttribute{
+							Computed:    true,
+							Description: `Number of api products published to the portal`,
 						},
 						"rbac_enabled": schema.BoolAttribute{
 							Computed:    true,
@@ -134,6 +150,15 @@ func (r *PortalListDataSource) Schema(ctx context.Context, req datasource.Schema
 			"sort": schema.StringAttribute{
 				Optional: true,
 				MarkdownDescription: `Sorts a collection of portals. Supported sort attributes are:` + "\n" +
+					`  - name` + "\n" +
+					`  - description` + "\n" +
+					`  - is_public` + "\n" +
+					`  - rbac_enabled` + "\n" +
+					`  - auto_approve_applications` + "\n" +
+					`  - auto_approve_developers` + "\n" +
+					`  - default_domain` + "\n" +
+					`  - custom_domain` + "\n" +
+					`  - custom_client_domain` + "\n" +
 					`  - created_at` + "\n" +
 					`  - updated_at` + "\n" +
 					``,

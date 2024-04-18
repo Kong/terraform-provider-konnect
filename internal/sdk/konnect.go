@@ -14,10 +14,10 @@ import (
 
 // ServerList contains the list of servers available to the SDK
 var ServerList = []string{
-	"https://global.api.konghq.com/v2",
-	"https://us.api.konghq.com/v2",
-	// Production
-	"https://eu.api.konghq.com/v2",
+	"https://global.api.konghq.com",
+	"https://us.api.konghq.com",
+	"https://eu.api.konghq.com",
+	"https://au.api.konghq.com",
 }
 
 // HTTPClient provides an interface for suplying the SDK with a custom HTTP client
@@ -69,6 +69,7 @@ func (c *sdkConfiguration) GetServerDetails() (string, map[string]string) {
 //
 // https://docs.konghq.com - Documentation for Kong Gateway and its APIs
 type Konnect struct {
+	Mesh               *Mesh
 	APIProducts        *APIProducts
 	APIProductVersions *APIProductVersions
 	// Application Auth Strategies are sets of plugin configurations that represent how the gateway will perform authentication and authorization for a Product Version.
@@ -170,7 +171,6 @@ type Konnect struct {
 	//
 	Vaults             *Vaults
 	ControlPlaneGroups *ControlPlaneGroups
-	Mesh               *Mesh
 	// APIs related to Configuration of Konnect Developer Portals.
 	Portals *Portals
 	// APIs related to Konnect Developer Portal Authentication Settings.
@@ -260,8 +260,8 @@ func New(opts ...SDKOption) *Konnect {
 			Language:          "go",
 			OpenAPIDocVersion: "2.0.0",
 			SDKVersion:        "0.0.1",
-			GenVersion:        "2.306.2",
-			UserAgent:         "speakeasy-sdk/go 0.0.1 2.306.2 2.0.0 github.com/kong/terraform-provider-konnect/internal/sdk",
+			GenVersion:        "2.309.2",
+			UserAgent:         "speakeasy-sdk/go 0.0.1 2.309.2 2.0.0 github.com/kong/terraform-provider-konnect/internal/sdk",
 			Hooks:             hooks.New(),
 		},
 	}
@@ -280,6 +280,8 @@ func New(opts ...SDKOption) *Konnect {
 	if serverURL != currentServerURL {
 		sdk.sdkConfiguration.ServerURL = serverURL
 	}
+
+	sdk.Mesh = newMesh(sdk.sdkConfiguration)
 
 	sdk.APIProducts = newAPIProducts(sdk.sdkConfiguration)
 
@@ -326,8 +328,6 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.Vaults = newVaults(sdk.sdkConfiguration)
 
 	sdk.ControlPlaneGroups = newControlPlaneGroups(sdk.sdkConfiguration)
-
-	sdk.Mesh = newMesh(sdk.sdkConfiguration)
 
 	sdk.Portals = newPortals(sdk.sdkConfiguration)
 

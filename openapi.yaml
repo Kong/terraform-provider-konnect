@@ -11,15 +11,105 @@ info:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
 servers:
-  - url: https://global.api.konghq.com/v2
-  - url: https://us.api.konghq.com/v2
-  - url: https://eu.api.konghq.com/v2
-    description: Production
+  - url: https://global.api.konghq.com
+  - url: https://us.api.konghq.com
+  - url: https://eu.api.konghq.com
+  - url: https://au.api.konghq.com
 externalDocs:
   description: Documentation for Kong Gateway and its APIs
   url: https://docs.konghq.com
 paths:
-  /api-products:
+  /v1/mesh/control-planes:
+    post:
+      x-speakeasy-entity-operation: MeshControlPlane#create
+      summary: Create a new control plane
+      description: Create a new control plane
+      operationId: create-cp
+      tags:
+        - Mesh
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMeshControlPlaneRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/CreateMeshControlPlaneResponse'
+        '400':
+          $ref: '#/components/responses/CreateMeshControlPlaneValidationError'
+        '401':
+          $ref: '#/components/responses/MeshControlPlaneUnauthorizedError'
+        '403':
+          $ref: '#/components/responses/MeshControlPlaneForbiddenError'
+  /v1/mesh/control-planes/{cpId}:
+    parameters:
+      - name: cpId
+        in: path
+        required: true
+        description: Id of the Konnect resource
+        example: bf138ba2-c9b1-4229-b268-04d9d8a6410b
+        schema:
+          type: string
+          format: uuid
+        x-speakeasy-match: id
+    get:
+      x-speakeasy-entity-operation: MeshControlPlane#read
+      summary: Get the control plane
+      description: Get the control plane
+      operationId: get-mesh-control-plane
+      tags:
+        - Mesh
+      responses:
+        '200':
+          $ref: '#/components/responses/RetrieveMeshControlPlaneResponse'
+        '401':
+          $ref: '#/components/responses/MeshControlPlaneUnauthorizedError'
+        '403':
+          $ref: '#/components/responses/MeshControlPlaneForbiddenError'
+        '404':
+          $ref: '#/components/responses/MeshControlPlaneNotFoundError'
+    delete:
+      x-speakeasy-entity-operation: MeshControlPlane#delete
+      summary: Delete the control plane
+      description: Delete the control plane
+      operationId: delete-mesh-control-plane
+      tags:
+        - Mesh
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/MeshControlPlaneUnauthorizedError'
+        '403':
+          $ref: '#/components/responses/MeshControlPlaneForbiddenError'
+        '404':
+          $ref: '#/components/responses/MeshControlPlaneNotFoundError'
+    patch:
+      x-speakeasy-entity-operation: MeshControlPlane#update
+      summary: Update control plane
+      operationId: update-mesh-control-plane
+      tags:
+        - Mesh
+      responses:
+        '200':
+          $ref: '#/components/responses/UpdateMeshControlPlaneResponse'
+        '400':
+          $ref: '#/components/responses/UpdateMeshControlPlaneValidationError'
+        '401':
+          $ref: '#/components/responses/MeshControlPlaneUnauthorizedError'
+        '403':
+          $ref: '#/components/responses/MeshControlPlaneForbiddenError'
+        '404':
+          $ref: '#/components/responses/MeshControlPlaneNotFoundError'
+      description: Update an individual control plane.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateMeshControlPlaneRequest'
+  /v2/api-products:
     post:
       x-speakeasy-entity-operation: ApiProduct#create
       summary: Create API Product
@@ -49,7 +139,7 @@ paths:
         - API Products
       requestBody:
         $ref: '#/components/requestBodies/CreateAPIProductRequest'
-  /api-products/{apiProductId}/product-versions:
+  /v2/api-products/{apiProductId}/product-versions:
     parameters:
       - schema:
           type: string
@@ -85,7 +175,7 @@ paths:
         - API Product Versions
       requestBody:
         $ref: '#/components/requestBodies/CreateAPIProductVersionRequest'
-  /api-products/{apiProductId}/product-versions/{id}:
+  /v2/api-products/{apiProductId}/product-versions/{id}:
     parameters:
       - schema:
           type: string
@@ -161,7 +251,7 @@ paths:
           $ref: '#/components/responses/ApiProductNotFound'
       tags:
         - API Product Versions
-  /api-products/{id}:
+  /v2/api-products/{id}:
     parameters:
       - schema:
           type: string
@@ -229,7 +319,7 @@ paths:
           $ref: '#/components/responses/ApiProductNotFound'
       tags:
         - API Products
-  /application-auth-strategies:
+  /v2/application-auth-strategies:
     post:
       x-speakeasy-entity-operation: ApplicationAuthStrategy#create
       summary: Create App Auth Strategy
@@ -248,7 +338,7 @@ paths:
           $ref: '#/components/responses/Forbidden'
       tags:
         - App Auth Strategies
-  /application-auth-strategies/{authStrategyId}:
+  /v2/application-auth-strategies/{authStrategyId}:
     parameters:
       - $ref: '#/components/parameters/AuthStrategyId'
     get:
@@ -310,7 +400,7 @@ paths:
           $ref: '#/components/responses/Conflict'
       tags:
         - App Auth Strategies
-  /control-planes:
+  /v2/control-planes:
     parameters: []
     post:
       x-speakeasy-entity-operation: GatewayControlPlane#create
@@ -340,7 +430,7 @@ paths:
             schema:
               $ref: '#/components/schemas/CreateControlPlaneRequest'
       description: Create a control plane in the Konnect Organization.
-  /control-planes/{controlPlaneId}/core-entities/ca_certificates:
+  /v2/control-planes/{controlPlaneId}/core-entities/ca_certificates:
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
     post:
@@ -366,7 +456,7 @@ paths:
       tags:
         - CA Certificates
       x-speakeasy-entity-operation: GatewayCACertificate#create
-  /control-planes/{controlPlaneId}/core-entities/ca_certificates/{CACertificateId}:
+  /v2/control-planes/{controlPlaneId}/core-entities/ca_certificates/{CACertificateId}:
     delete:
       description: Delete a CA Certificate
       operationId: delete-ca_certificate
@@ -403,7 +493,7 @@ paths:
       x-speakeasy-entity-operation: GatewayCACertificate#read
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
-  /control-planes/{controlPlaneId}/core-entities/certificates:
+  /v2/control-planes/{controlPlaneId}/core-entities/certificates:
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
     post:
@@ -429,7 +519,7 @@ paths:
       tags:
         - Certificates
       x-speakeasy-entity-operation: GatewayCertificate#create
-  /control-planes/{controlPlaneId}/core-entities/certificates/{CertificateId}:
+  /v2/control-planes/{controlPlaneId}/core-entities/certificates/{CertificateId}:
     delete:
       description: Delete a Certificate
       operationId: delete-certificate
@@ -466,7 +556,7 @@ paths:
       x-speakeasy-entity-operation: GatewayCertificate#read
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
-  /control-planes/{controlPlaneId}/core-entities/consumer_groups:
+  /v2/control-planes/{controlPlaneId}/core-entities/consumer_groups:
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
     post:
@@ -492,7 +582,7 @@ paths:
       tags:
         - Consumer Groups
       x-speakeasy-entity-operation: GatewayConsumerGroup#create
-  /control-planes/{controlPlaneId}/core-entities/consumer_groups/{ConsumerGroupId}:
+  /v2/control-planes/{controlPlaneId}/core-entities/consumer_groups/{ConsumerGroupId}:
     delete:
       description: Delete a Consumer Group
       operationId: delete-consumer_group
@@ -529,7 +619,7 @@ paths:
       x-speakeasy-entity-operation: GatewayConsumerGroup#read
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
-  /control-planes/{controlPlaneId}/core-entities/consumers:
+  /v2/control-planes/{controlPlaneId}/core-entities/consumers:
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
     post:
@@ -555,7 +645,7 @@ paths:
       tags:
         - Consumers
       x-speakeasy-entity-operation: GatewayConsumer#create
-  /control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerId}:
+  /v2/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerId}:
     delete:
       description: Delete a Consumer
       operationId: delete-consumer
@@ -592,7 +682,7 @@ paths:
       x-speakeasy-entity-operation: GatewayConsumer#read
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
-  /control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/acls:
+  /v2/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/acls:
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
     post:
@@ -618,7 +708,7 @@ paths:
       tags:
         - ACLs
       x-speakeasy-entity-operation: GatewayACL#create
-  /control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/acls/{ACLId}:
+  /v2/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/acls/{ACLId}:
     delete:
       description: Delete a an ACL associated with a a Consumer using ID.
       operationId: delete-acl-with-consumer
@@ -653,7 +743,7 @@ paths:
       x-speakeasy-entity-operation: GatewayACL#read
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
-  /control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/basic-auth:
+  /v2/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/basic-auth:
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
     post:
@@ -679,7 +769,7 @@ paths:
       tags:
         - Basic-auth credentials
       x-speakeasy-entity-operation: GatewayBasicAuth#create
-  /control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/basic-auth/{BasicAuthId}:
+  /v2/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/basic-auth/{BasicAuthId}:
     delete:
       description: Delete a a Basic-auth credential associated with a a Consumer using ID.
       operationId: delete-basic-auth-with-consumer
@@ -716,7 +806,7 @@ paths:
       x-speakeasy-entity-operation: GatewayBasicAuth#read
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
-  /control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/hmac-auth:
+  /v2/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/hmac-auth:
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
     post:
@@ -742,7 +832,7 @@ paths:
       tags:
         - HMAC-auth credentials
       x-speakeasy-entity-operation: GatewayHMACAuth#create
-  /control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/hmac-auth/{HMACAuthId}:
+  /v2/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/hmac-auth/{HMACAuthId}:
     delete:
       description: Delete a a HMAC-auth credential associated with a a Consumer using ID.
       operationId: delete-hmac-auth-with-consumer
@@ -779,7 +869,7 @@ paths:
       x-speakeasy-entity-operation: GatewayHMACAuth#read
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
-  /control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/jwt:
+  /v2/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/jwt:
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
     post:
@@ -805,7 +895,7 @@ paths:
       tags:
         - JWTs
       x-speakeasy-entity-operation: GatewayJWT#create
-  /control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/jwt/{JWTId}:
+  /v2/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/jwt/{JWTId}:
     delete:
       description: Delete a a JWT associated with a a Consumer using ID.
       operationId: delete-jwt-with-consumer
@@ -840,7 +930,7 @@ paths:
       x-speakeasy-entity-operation: GatewayJWT#read
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
-  /control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/key-auth:
+  /v2/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/key-auth:
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
     post:
@@ -866,7 +956,7 @@ paths:
       tags:
         - API-keys
       x-speakeasy-entity-operation: GatewayKeyAuth#create
-  /control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/key-auth/{KeyAuthId}:
+  /v2/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/key-auth/{KeyAuthId}:
     delete:
       description: Delete a an API-key associated with a a Consumer using ID.
       operationId: delete-key-auth-with-consumer
@@ -901,7 +991,7 @@ paths:
       x-speakeasy-entity-operation: GatewayKeyAuth#read
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
-  /control-planes/{controlPlaneId}/core-entities/key-sets:
+  /v2/control-planes/{controlPlaneId}/core-entities/key-sets:
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
     post:
@@ -927,7 +1017,7 @@ paths:
       tags:
         - KeySets
       x-speakeasy-entity-operation: GatewayKeySet#create
-  /control-planes/{controlPlaneId}/core-entities/key-sets/{KeySetId}:
+  /v2/control-planes/{controlPlaneId}/core-entities/key-sets/{KeySetId}:
     delete:
       description: Delete a KeySet
       operationId: delete-key-set
@@ -964,7 +1054,7 @@ paths:
       x-speakeasy-entity-operation: GatewayKeySet#read
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
-  /control-planes/{controlPlaneId}/core-entities/keys:
+  /v2/control-planes/{controlPlaneId}/core-entities/keys:
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
     post:
@@ -990,7 +1080,7 @@ paths:
       tags:
         - Keys
       x-speakeasy-entity-operation: GatewayKey#create
-  /control-planes/{controlPlaneId}/core-entities/keys/{KeyId}:
+  /v2/control-planes/{controlPlaneId}/core-entities/keys/{KeyId}:
     delete:
       description: Delete a Key
       operationId: delete-key
@@ -1027,7 +1117,7 @@ paths:
       x-speakeasy-entity-operation: GatewayKey#read
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
-  /control-planes/{controlPlaneId}/core-entities/plugins:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins:
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
     post:
@@ -1053,7 +1143,7 @@ paths:
       tags:
         - Plugins
       x-speakeasy-entity-operation: GatewayPlugin#create
-  /control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}:
     delete:
       description: Delete a Plugin
       operationId: delete-plugin
@@ -1090,7 +1180,7 @@ paths:
       x-speakeasy-entity-operation: GatewayPlugin#read
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
-  /control-planes/{controlPlaneId}/core-entities/routes:
+  /v2/control-planes/{controlPlaneId}/core-entities/routes:
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
     post:
@@ -1116,7 +1206,7 @@ paths:
       tags:
         - Routes
       x-speakeasy-entity-operation: GatewayRoute#create
-  /control-planes/{controlPlaneId}/core-entities/routes/{RouteId}:
+  /v2/control-planes/{controlPlaneId}/core-entities/routes/{RouteId}:
     delete:
       description: Delete a Route
       operationId: delete-route
@@ -1153,7 +1243,7 @@ paths:
       x-speakeasy-entity-operation: GatewayRoute#read
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
-  /control-planes/{controlPlaneId}/core-entities/services:
+  /v2/control-planes/{controlPlaneId}/core-entities/services:
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
     post:
@@ -1179,7 +1269,7 @@ paths:
       tags:
         - Services
       x-speakeasy-entity-operation: GatewayService#create
-  /control-planes/{controlPlaneId}/core-entities/services/{ServiceId}:
+  /v2/control-planes/{controlPlaneId}/core-entities/services/{ServiceId}:
     delete:
       description: Delete a Service
       operationId: delete-service
@@ -1216,7 +1306,7 @@ paths:
       x-speakeasy-entity-operation: GatewayService#read
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
-  /control-planes/{controlPlaneId}/core-entities/snis:
+  /v2/control-planes/{controlPlaneId}/core-entities/snis:
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
     post:
@@ -1242,7 +1332,7 @@ paths:
       tags:
         - SNIs
       x-speakeasy-entity-operation: GatewaySNI#create
-  /control-planes/{controlPlaneId}/core-entities/snis/{SNIId}:
+  /v2/control-planes/{controlPlaneId}/core-entities/snis/{SNIId}:
     delete:
       description: Delete an SNI
       operationId: delete-sni
@@ -1279,7 +1369,7 @@ paths:
       x-speakeasy-entity-operation: GatewaySNI#read
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
-  /control-planes/{controlPlaneId}/core-entities/upstreams:
+  /v2/control-planes/{controlPlaneId}/core-entities/upstreams:
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
     post:
@@ -1305,7 +1395,7 @@ paths:
       tags:
         - Upstreams
       x-speakeasy-entity-operation: GatewayUpstream#create
-  /control-planes/{controlPlaneId}/core-entities/upstreams/{UpstreamId}:
+  /v2/control-planes/{controlPlaneId}/core-entities/upstreams/{UpstreamId}:
     delete:
       description: Delete an Upstream
       operationId: delete-upstream
@@ -1342,7 +1432,7 @@ paths:
       x-speakeasy-entity-operation: GatewayUpstream#read
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
-  /control-planes/{controlPlaneId}/core-entities/upstreams/{UpstreamIdForTarget}/targets:
+  /v2/control-planes/{controlPlaneId}/core-entities/upstreams/{UpstreamIdForTarget}/targets:
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
     post:
@@ -1368,7 +1458,7 @@ paths:
       tags:
         - Targets
       x-speakeasy-entity-operation: GatewayTarget#create
-  /control-planes/{controlPlaneId}/core-entities/upstreams/{UpstreamIdForTarget}/targets/{TargetId}:
+  /v2/control-planes/{controlPlaneId}/core-entities/upstreams/{UpstreamIdForTarget}/targets/{TargetId}:
     delete:
       description: Delete a a Target associated with a an Upstream using ID or target.
       operationId: delete-target-with-upstream
@@ -1403,7 +1493,7 @@ paths:
       x-speakeasy-entity-operation: GatewayTarget#read
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
-  /control-planes/{controlPlaneId}/core-entities/vaults:
+  /v2/control-planes/{controlPlaneId}/core-entities/vaults:
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
     post:
@@ -1429,7 +1519,7 @@ paths:
       tags:
         - Vaults
       x-speakeasy-entity-operation: GatewayVault#create
-  /control-planes/{controlPlaneId}/core-entities/vaults/{VaultId}:
+  /v2/control-planes/{controlPlaneId}/core-entities/vaults/{VaultId}:
     delete:
       description: Delete a Vault
       operationId: delete-vault
@@ -1466,7 +1556,7 @@ paths:
       x-speakeasy-entity-operation: GatewayVault#read
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
-  /control-planes/{id}:
+  /v2/control-planes/{id}:
     parameters:
       - schema:
           type: string
@@ -1546,7 +1636,7 @@ paths:
       description: Delete an individual control plane.
       tags:
         - Control Planes
-  /control-planes/{id}/group-memberships/add:
+  /v2/control-planes/{id}/group-memberships/add:
     parameters:
       - schema:
           type: string
@@ -1576,7 +1666,7 @@ paths:
       tags:
         - Control Plane Groups
       description: Adds one or more control planes as a member of a control plane group.
-  /control-planes/{id}/group-memberships/remove:
+  /v2/control-planes/{id}/group-memberships/remove:
     parameters:
       - schema:
           type: string
@@ -1608,103 +1698,7 @@ paths:
           $ref: '#/components/responses/NotFound'
         '503':
           $ref: '#/components/responses/ServiceUnavailable'
-  /mesh/control-planes:
-    servers:
-      - url: https://us.api.konghq.com/v1
-      - url: https://us.api.konghq.com/v1
-    post:
-      x-speakeasy-entity-operation: MeshControlPlane#create
-      summary: Create a new control plane
-      description: Create a new control plane
-      operationId: create-cp
-      tags:
-        - Mesh
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateMeshControlPlaneRequest'
-      responses:
-        '201':
-          $ref: '#/components/responses/CreateMeshControlPlaneResponse'
-        '400':
-          $ref: '#/components/responses/CreateMeshControlPlaneValidationError'
-        '401':
-          $ref: '#/components/responses/MeshControlPlaneUnauthorizedError'
-        '403':
-          $ref: '#/components/responses/MeshControlPlaneForbiddenError'
-  /mesh/control-planes/{cpId}:
-    servers:
-      - url: https://us.api.konghq.com/v1
-      - url: https://us.api.konghq.com/v1
-    parameters:
-      - name: cpId
-        in: path
-        required: true
-        description: Id of the Konnect resource
-        example: bf138ba2-c9b1-4229-b268-04d9d8a6410b
-        schema:
-          type: string
-          format: uuid
-        x-speakeasy-match: id
-    get:
-      x-speakeasy-entity-operation: MeshControlPlane#read
-      summary: Get the control plane
-      description: Get the control plane
-      operationId: get-mesh-control-plane
-      tags:
-        - Mesh
-      responses:
-        '200':
-          $ref: '#/components/responses/RetrieveMeshControlPlaneResponse'
-        '401':
-          $ref: '#/components/responses/MeshControlPlaneUnauthorizedError'
-        '403':
-          $ref: '#/components/responses/MeshControlPlaneForbiddenError'
-        '404':
-          $ref: '#/components/responses/MeshControlPlaneNotFoundError'
-    delete:
-      x-speakeasy-entity-operation: MeshControlPlane#delete
-      summary: Delete the control plane
-      description: Delete the control plane
-      operationId: delete-mesh-control-plane
-      tags:
-        - Mesh
-      responses:
-        '204':
-          description: No Content
-        '401':
-          $ref: '#/components/responses/MeshControlPlaneUnauthorizedError'
-        '403':
-          $ref: '#/components/responses/MeshControlPlaneForbiddenError'
-        '404':
-          $ref: '#/components/responses/MeshControlPlaneNotFoundError'
-    patch:
-      x-speakeasy-entity-operation: MeshControlPlane#update
-      summary: Update control plane
-      operationId: update-mesh-control-plane
-      tags:
-        - Mesh
-      responses:
-        '200':
-          $ref: '#/components/responses/UpdateMeshControlPlaneResponse'
-        '400':
-          $ref: '#/components/responses/UpdateMeshControlPlaneValidationError'
-        '401':
-          $ref: '#/components/responses/MeshControlPlaneUnauthorizedError'
-        '403':
-          $ref: '#/components/responses/MeshControlPlaneForbiddenError'
-        '404':
-          $ref: '#/components/responses/MeshControlPlaneNotFoundError'
-      description: Update an individual control plane.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UpdateMeshControlPlaneRequest'
-  /portals:
+  /v2/portals:
     get:
       x-speakeasy-entity-operation: PortalList#read
       summary: List Portals
@@ -1732,7 +1726,7 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
-  /portals/{portalId}:
+  /v2/portals/{portalId}:
     x-speakeasy-entity-operation: Portal#read
     parameters:
       - $ref: '#/components/parameters/parameters-PortalId'
@@ -1762,7 +1756,9 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-  /portals/{portalId}/authentication-settings:
+        '409':
+          $ref: '#/components/responses/Conflict'
+  /v2/portals/{portalId}/authentication-settings:
     parameters:
       - $ref: '#/components/parameters/parameters-PortalId'
     get:
@@ -1806,7 +1802,7 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
-  /portals/{portalId}/product-versions/{productVersionId}:
+  /v2/portals/{portalId}/product-versions/{productVersionId}:
     parameters:
       - $ref: '#/components/parameters/ProductVersionId'
       - $ref: '#/components/parameters/PortalId'
@@ -1864,7 +1860,7 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Portal Product Versions
-  /control-planes/{controlPlaneId}/core-entities/plugins#KeyAuth:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins#KeyAuth:
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
     post:
@@ -1890,7 +1886,7 @@ paths:
           description: Successfully created Plugin
         '401':
           $ref: '#/components/responses/HTTP401Error'
-  /control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#KeyAuth:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#KeyAuth:
     delete:
       description: Delete a Plugin
       operationId: delete-keyauth-plugin
@@ -1952,7 +1948,7 @@ paths:
       tags:
         - Plugins
       x-speakeasy-entity-operation: GatewayPluginKeyAuth#update
-  /control-planes/{controlPlaneId}/core-entities/plugins#CORS:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins#CORS:
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
     post:
@@ -1978,7 +1974,7 @@ paths:
           description: Successfully created Plugin
         '401':
           $ref: '#/components/responses/HTTP401Error'
-  /control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#CORS:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#CORS:
     delete:
       description: Delete a Plugin
       operationId: delete-cors-plugin
@@ -2040,7 +2036,7 @@ paths:
       tags:
         - Plugins
       x-speakeasy-entity-operation: GatewayPluginCORS#update
-  /control-planes/{controlPlaneId}/core-entities/plugins#RateLimiting:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins#RateLimiting:
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
     post:
@@ -2066,7 +2062,7 @@ paths:
           description: Successfully created Plugin
         '401':
           $ref: '#/components/responses/HTTP401Error'
-  /control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#RateLimiting:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#RateLimiting:
     delete:
       description: Delete a Plugin
       operationId: delete-ratelimiting-plugin
@@ -2128,7 +2124,7 @@ paths:
       tags:
         - Plugins
       x-speakeasy-entity-operation: GatewayPluginRateLimiting#update
-  /control-planes/{controlPlaneId}/core-entities/plugins#BasicAuth:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins#BasicAuth:
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
     post:
@@ -2154,7 +2150,7 @@ paths:
           description: Successfully created Plugin
         '401':
           $ref: '#/components/responses/HTTP401Error'
-  /control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#BasicAuth:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#BasicAuth:
     delete:
       description: Delete a Plugin
       operationId: delete-basicauth-plugin
@@ -2216,7 +2212,7 @@ paths:
       tags:
         - Plugins
       x-speakeasy-entity-operation: GatewayPluginBasicAuth#update
-  /control-planes/{controlPlaneId}/core-entities/plugins#RateLimitingAdvanced:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins#RateLimitingAdvanced:
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
     post:
@@ -2242,7 +2238,7 @@ paths:
           description: Successfully created Plugin
         '401':
           $ref: '#/components/responses/HTTP401Error'
-  /control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#RateLimitingAdvanced:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#RateLimitingAdvanced:
     delete:
       description: Delete a Plugin
       operationId: delete-ratelimitingadvanced-plugin
@@ -2304,7 +2300,7 @@ paths:
       tags:
         - Plugins
       x-speakeasy-entity-operation: GatewayPluginRateLimitingAdvanced#update
-  /control-planes/{controlPlaneId}/core-entities/plugins#OpenidConnect:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins#OpenidConnect:
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
     post:
@@ -2330,7 +2326,7 @@ paths:
           description: Successfully created Plugin
         '401':
           $ref: '#/components/responses/HTTP401Error'
-  /control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#OpenidConnect:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#OpenidConnect:
     delete:
       description: Delete a Plugin
       operationId: delete-openidconnect-plugin
@@ -2392,7 +2388,7 @@ paths:
       tags:
         - Plugins
       x-speakeasy-entity-operation: GatewayPluginOpenidConnect#update
-  /control-planes/{controlPlaneId}/core-entities/plugins#JWT:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins#JWT:
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
     post:
@@ -2418,7 +2414,7 @@ paths:
           description: Successfully created Plugin
         '401':
           $ref: '#/components/responses/HTTP401Error'
-  /control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#JWT:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#JWT:
     delete:
       description: Delete a Plugin
       operationId: delete-jwt-plugin
@@ -2480,7 +2476,7 @@ paths:
       tags:
         - Plugins
       x-speakeasy-entity-operation: GatewayPluginJWT#update
-  /control-planes/{controlPlaneId}/core-entities/plugins#Prometheus:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins#Prometheus:
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
     post:
@@ -2506,7 +2502,7 @@ paths:
           description: Successfully created Plugin
         '401':
           $ref: '#/components/responses/HTTP401Error'
-  /control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#Prometheus:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#Prometheus:
     delete:
       description: Delete a Plugin
       operationId: delete-prometheus-plugin
@@ -2568,7 +2564,7 @@ paths:
       tags:
         - Plugins
       x-speakeasy-entity-operation: GatewayPluginPrometheus#update
-  /control-planes/{controlPlaneId}/core-entities/plugins#ACL:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins#ACL:
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
     post:
@@ -2594,7 +2590,7 @@ paths:
           description: Successfully created Plugin
         '401':
           $ref: '#/components/responses/HTTP401Error'
-  /control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#ACL:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#ACL:
     delete:
       description: Delete a Plugin
       operationId: delete-acl-plugin
@@ -2656,7 +2652,7 @@ paths:
       tags:
         - Plugins
       x-speakeasy-entity-operation: GatewayPluginACL#update
-  /control-planes/{controlPlaneId}/core-entities/plugins#RequestTermination:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins#RequestTermination:
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
     post:
@@ -2682,7 +2678,7 @@ paths:
           description: Successfully created Plugin
         '401':
           $ref: '#/components/responses/HTTP401Error'
-  /control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#RequestTermination:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#RequestTermination:
     delete:
       description: Delete a Plugin
       operationId: delete-requesttermination-plugin
@@ -2744,7 +2740,7 @@ paths:
       tags:
         - Plugins
       x-speakeasy-entity-operation: GatewayPluginRequestTermination#update
-  /control-planes/{controlPlaneId}/core-entities/plugins#FileLog:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins#FileLog:
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
     post:
@@ -2770,7 +2766,7 @@ paths:
           description: Successfully created Plugin
         '401':
           $ref: '#/components/responses/HTTP401Error'
-  /control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#FileLog:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#FileLog:
     delete:
       description: Delete a Plugin
       operationId: delete-filelog-plugin
@@ -2832,7 +2828,7 @@ paths:
       tags:
         - Plugins
       x-speakeasy-entity-operation: GatewayPluginFileLog#update
-  /control-planes/{controlPlaneId}/core-entities/plugins#RequestTransformer:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins#RequestTransformer:
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
     post:
@@ -2858,7 +2854,7 @@ paths:
           description: Successfully created Plugin
         '401':
           $ref: '#/components/responses/HTTP401Error'
-  /control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#RequestTransformer:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#RequestTransformer:
     delete:
       description: Delete a Plugin
       operationId: delete-requesttransformer-plugin
@@ -2920,7 +2916,7 @@ paths:
       tags:
         - Plugins
       x-speakeasy-entity-operation: GatewayPluginRequestTransformer#update
-  /control-planes/{controlPlaneId}/core-entities/plugins#CorrelationId:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins#CorrelationId:
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
     post:
@@ -2946,7 +2942,7 @@ paths:
           description: Successfully created Plugin
         '401':
           $ref: '#/components/responses/HTTP401Error'
-  /control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#CorrelationId:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#CorrelationId:
     delete:
       description: Delete a Plugin
       operationId: delete-correlationid-plugin
@@ -3008,7 +3004,7 @@ paths:
       tags:
         - Plugins
       x-speakeasy-entity-operation: GatewayPluginCorrelationId#update
-  /control-planes/{controlPlaneId}/core-entities/plugins#ProxyCache:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins#ProxyCache:
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
     post:
@@ -3034,7 +3030,7 @@ paths:
           description: Successfully created Plugin
         '401':
           $ref: '#/components/responses/HTTP401Error'
-  /control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#ProxyCache:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#ProxyCache:
     delete:
       description: Delete a Plugin
       operationId: delete-proxycache-plugin
@@ -3096,7 +3092,7 @@ paths:
       tags:
         - Plugins
       x-speakeasy-entity-operation: GatewayPluginProxyCache#update
-  /control-planes/{controlPlaneId}/core-entities/plugins#RequestTransformerAdvanced:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins#RequestTransformerAdvanced:
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
     post:
@@ -3122,7 +3118,7 @@ paths:
           description: Successfully created Plugin
         '401':
           $ref: '#/components/responses/HTTP401Error'
-  /control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#RequestTransformerAdvanced:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#RequestTransformerAdvanced:
     delete:
       description: Delete a Plugin
       operationId: delete-requesttransformeradvanced-plugin
@@ -3184,7 +3180,7 @@ paths:
       tags:
         - Plugins
       x-speakeasy-entity-operation: GatewayPluginRequestTransformerAdvanced#update
-  /control-planes/{controlPlaneId}/core-entities/plugins#ResponseTransformer:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins#ResponseTransformer:
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
     post:
@@ -3210,7 +3206,7 @@ paths:
           description: Successfully created Plugin
         '401':
           $ref: '#/components/responses/HTTP401Error'
-  /control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#ResponseTransformer:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#ResponseTransformer:
     delete:
       description: Delete a Plugin
       operationId: delete-responsetransformer-plugin
@@ -3272,7 +3268,7 @@ paths:
       tags:
         - Plugins
       x-speakeasy-entity-operation: GatewayPluginResponseTransformer#update
-  /control-planes/{controlPlaneId}/core-entities/plugins#ResponseTransformerAdvanced:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins#ResponseTransformerAdvanced:
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
     post:
@@ -3298,7 +3294,7 @@ paths:
           description: Successfully created Plugin
         '401':
           $ref: '#/components/responses/HTTP401Error'
-  /control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#ResponseTransformerAdvanced:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#ResponseTransformerAdvanced:
     delete:
       description: Delete a Plugin
       operationId: delete-responsetransformeradvanced-plugin
@@ -3360,7 +3356,7 @@ paths:
       tags:
         - Plugins
       x-speakeasy-entity-operation: GatewayPluginResponseTransformerAdvanced#update
-  /control-planes/{controlPlaneId}/core-entities/plugins#IpRestriction:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins#IpRestriction:
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
     post:
@@ -3386,7 +3382,7 @@ paths:
           description: Successfully created Plugin
         '401':
           $ref: '#/components/responses/HTTP401Error'
-  /control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#IpRestriction:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#IpRestriction:
     delete:
       description: Delete a Plugin
       operationId: delete-iprestriction-plugin
@@ -3448,7 +3444,7 @@ paths:
       tags:
         - Plugins
       x-speakeasy-entity-operation: GatewayPluginIpRestriction#update
-  /control-planes/{controlPlaneId}/core-entities/plugins#PreFunction:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins#PreFunction:
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
     post:
@@ -3474,7 +3470,7 @@ paths:
           description: Successfully created Plugin
         '401':
           $ref: '#/components/responses/HTTP401Error'
-  /control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#PreFunction:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#PreFunction:
     delete:
       description: Delete a Plugin
       operationId: delete-prefunction-plugin
@@ -3536,7 +3532,7 @@ paths:
       tags:
         - Plugins
       x-speakeasy-entity-operation: GatewayPluginPreFunction#update
-  /control-planes/{controlPlaneId}/core-entities/plugins#Oauth2:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins#Oauth2:
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
     post:
@@ -3562,7 +3558,7 @@ paths:
           description: Successfully created Plugin
         '401':
           $ref: '#/components/responses/HTTP401Error'
-  /control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#Oauth2:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#Oauth2:
     delete:
       description: Delete a Plugin
       operationId: delete-oauth2-plugin
@@ -3624,7 +3620,7 @@ paths:
       tags:
         - Plugins
       x-speakeasy-entity-operation: GatewayPluginOauth2#update
-  /control-planes/{controlPlaneId}/core-entities/plugins#Opentelemetry:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins#Opentelemetry:
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
     post:
@@ -3650,7 +3646,7 @@ paths:
           description: Successfully created Plugin
         '401':
           $ref: '#/components/responses/HTTP401Error'
-  /control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#Opentelemetry:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#Opentelemetry:
     delete:
       description: Delete a Plugin
       operationId: delete-opentelemetry-plugin
@@ -3712,7 +3708,7 @@ paths:
       tags:
         - Plugins
       x-speakeasy-entity-operation: GatewayPluginOpentelemetry#update
-  /control-planes/{controlPlaneId}/core-entities/plugins#AIProxy:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins#AIProxy:
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
     post:
@@ -3738,7 +3734,7 @@ paths:
           description: Successfully created Plugin
         '401':
           $ref: '#/components/responses/HTTP401Error'
-  /control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#AIProxy:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#AIProxy:
     delete:
       description: Delete a Plugin
       operationId: delete-aiproxy-plugin
@@ -3800,7 +3796,7 @@ paths:
       tags:
         - Plugins
       x-speakeasy-entity-operation: GatewayPluginAIProxy#update
-  /control-planes/{controlPlaneId}/core-entities/plugins#AIPromptGuard:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins#AIPromptGuard:
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
     post:
@@ -3826,7 +3822,7 @@ paths:
           description: Successfully created Plugin
         '401':
           $ref: '#/components/responses/HTTP401Error'
-  /control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#AIPromptGuard:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#AIPromptGuard:
     delete:
       description: Delete a Plugin
       operationId: delete-aipromptguard-plugin
@@ -3888,7 +3884,7 @@ paths:
       tags:
         - Plugins
       x-speakeasy-entity-operation: GatewayPluginAIPromptGuard#update
-  /control-planes/{controlPlaneId}/core-entities/plugins#AIPromptTemplate:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins#AIPromptTemplate:
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
     post:
@@ -3914,7 +3910,7 @@ paths:
           description: Successfully created Plugin
         '401':
           $ref: '#/components/responses/HTTP401Error'
-  /control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#AIPromptTemplate:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#AIPromptTemplate:
     delete:
       description: Delete a Plugin
       operationId: delete-aiprompttemplate-plugin
@@ -3976,7 +3972,7 @@ paths:
       tags:
         - Plugins
       x-speakeasy-entity-operation: GatewayPluginAIPromptTemplate#update
-  /control-planes/{controlPlaneId}/core-entities/plugins#AIPromptDecorator:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins#AIPromptDecorator:
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
     post:
@@ -4002,7 +3998,7 @@ paths:
           description: Successfully created Plugin
         '401':
           $ref: '#/components/responses/HTTP401Error'
-  /control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#AIPromptDecorator:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#AIPromptDecorator:
     delete:
       description: Delete a Plugin
       operationId: delete-aipromptdecorator-plugin
@@ -4064,7 +4060,7 @@ paths:
       tags:
         - Plugins
       x-speakeasy-entity-operation: GatewayPluginAIPromptDecorator#update
-  /control-planes/{controlPlaneId}/core-entities/plugins#AWSLambda:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins#AWSLambda:
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
     post:
@@ -4090,7 +4086,7 @@ paths:
           description: Successfully created Plugin
         '401':
           $ref: '#/components/responses/HTTP401Error'
-  /control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#AWSLambda:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#AWSLambda:
     delete:
       description: Delete a Plugin
       operationId: delete-awslambda-plugin
@@ -4152,7 +4148,7 @@ paths:
       tags:
         - Plugins
       x-speakeasy-entity-operation: GatewayPluginAWSLambda#update
-  /control-planes/{controlPlaneId}/core-entities/plugins#JQ:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins#JQ:
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
     post:
@@ -4178,7 +4174,7 @@ paths:
           description: Successfully created Plugin
         '401':
           $ref: '#/components/responses/HTTP401Error'
-  /control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#JQ:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#JQ:
     delete:
       description: Delete a Plugin
       operationId: delete-jq-plugin
@@ -4240,7 +4236,7 @@ paths:
       tags:
         - Plugins
       x-speakeasy-entity-operation: GatewayPluginJQ#update
-  /control-planes/{controlPlaneId}/core-entities/plugins#JWTSigner:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins#JWTSigner:
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
     post:
@@ -4266,7 +4262,7 @@ paths:
           description: Successfully created Plugin
         '401':
           $ref: '#/components/responses/HTTP401Error'
-  /control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#JWTSigner:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#JWTSigner:
     delete:
       description: Delete a Plugin
       operationId: delete-jwtsigner-plugin
@@ -4328,7 +4324,7 @@ paths:
       tags:
         - Plugins
       x-speakeasy-entity-operation: GatewayPluginJWTSigner#update
-  /control-planes/{controlPlaneId}/core-entities/plugins#Saml:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins#Saml:
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
     post:
@@ -4354,7 +4350,7 @@ paths:
           description: Successfully created Plugin
         '401':
           $ref: '#/components/responses/HTTP401Error'
-  /control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#Saml:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#Saml:
     delete:
       description: Delete a Plugin
       operationId: delete-saml-plugin
@@ -4648,6 +4644,15 @@ components:
       name: sort
       description: |
         Sorts a collection of portals. Supported sort attributes are:
+          - name
+          - description
+          - is_public
+          - rbac_enabled
+          - auto_approve_applications
+          - auto_approve_developers
+          - default_domain
+          - custom_domain
+          - custom_client_domain
           - created_at
           - updated_at
       in: query
@@ -4975,8 +4980,9 @@ components:
           description: >-
             The ClusterType value of the cluster associated with the Control
             Plane.
-          example: CLUSTER_TYPE_HYBRID
+          example: CLUSTER_TYPE_CONTROL_PLANE
           enum:
+            - CLUSTER_TYPE_CONTROL_PLANE
             - CLUSTER_TYPE_HYBRID
             - CLUSTER_TYPE_K8S_INGRESS_CONTROLLER
             - CLUSTER_TYPE_CONTROL_PLANE_GROUP
@@ -5116,8 +5122,9 @@ components:
               description: >-
                 The ClusterType value of the cluster associated with the Control
                 Plane.
-              example: CLUSTER_TYPE_HYBRID
+              example: CLUSTER_TYPE_CONTROL_PLANE
               enum:
+                - CLUSTER_TYPE_CONTROL_PLANE
                 - CLUSTER_TYPE_HYBRID
                 - CLUSTER_TYPE_K8S_INGRESS_CONTROLLER
                 - CLUSTER_TYPE_CONTROL_PLANE_GROUP
@@ -5151,7 +5158,6 @@ components:
           type: string
           format: date-time
     Labels:
-      x-speakeasy-type-override: any
       title: Labels
       type: object
       example:
@@ -7076,9 +7082,11 @@ components:
           type: string
           example: Test control plane
           description: The name of the control plane.
+          maxLength: 100
         description:
           type: string
           example: A control plane to handle traffic on development environment.
+          maxLength: 250
         labels:
           $ref: '#/components/schemas/MeshControlPlaneLabels'
         created_at:
@@ -7102,9 +7110,11 @@ components:
           example: Test control plane
           description: The name of the control plane.
           minLength: 1
+          maxLength: 100
         description:
           type: string
           example: A control plane to handle traffic on development environment.
+          maxLength: 250
         labels:
           $ref: '#/components/schemas/MeshControlPlaneLabels'
     UpdateMeshControlPlaneRequest:
@@ -7116,9 +7126,11 @@ components:
           type: string
           example: Test control plane
           description: The name of the control plane.
+          maxLength: 100
         description:
           type: string
           example: A control plane to handle traffic on development environment.
+          maxLength: 250
         labels:
           $ref: '#/components/schemas/MeshControlPlaneLabels'
     APIProductLabels:
@@ -7733,6 +7745,7 @@ components:
             created_at: '2022-02-07T17:46:57.52Z'
             updated_at: '2022-10-08T17:00:00.52Z'
             name: Portal A
+            description: The Portal A
             default_domain: 123455678abcd.us.portal.konghq.com
             is_public: false
             rbac_enabled: true
@@ -7740,6 +7753,9 @@ components:
             auto_approve_developers: true
             custom_domain: api.example.com
             custom_client_domain: portal.example.com
+            application_count: 0
+            developer_count: 0
+            published_product_count: 0
     PortalProductVersionPublishStatus:
       type: string
       description: Publication status of the API product version on the portal
@@ -7856,6 +7872,10 @@ components:
         - auto_approve_developers
         - custom_domain
         - custom_client_domain
+        - description
+        - application_count
+        - developer_count
+        - published_product_count
       properties:
         id:
           $ref: '#/components/schemas/UUID'
@@ -7864,10 +7884,9 @@ components:
         updated_at:
           $ref: '#/components/schemas/UpdatedAt'
         name:
-          description: The name of the portal, used to distinguish it from other portals.
-          type: string
-          maxLength: 255
-          minLength: 1
+          $ref: '#/components/schemas/PortalName'
+        description:
+          $ref: '#/components/schemas/PortalDescription'
         default_domain:
           description: >-
             The domain assigned to the portal by Konnect. This is the default
@@ -7925,11 +7944,21 @@ components:
           format: hostname
         default_application_auth_strategy_id:
           $ref: '#/components/schemas/DefaultApplicationAuthStratID'
+        application_count:
+          type: number
+          description: Number of applications created in the portal.
+        developer_count:
+          type: number
+          description: Number of developers using the portal.
+        published_product_count:
+          type: number
+          description: Number of api products published to the portal
       example:
         id: 9f9fd312-a987-4628-b4c5-bb4f4fddd5f7
         created_at: '2022-02-07T17:46:57.52Z'
         updated_at: '2022-10-08T17:00:00.52Z'
         name: Portal A
+        description: The Portal A
         default_domain: 123455678abcd.us.portal.konghq.com
         is_public: false
         rbac_enabled: true
@@ -7937,16 +7966,35 @@ components:
         auto_approve_developers: true
         custom_domain: api.example.com
         custom_client_domain: portal.example.com
+        application_count: 0
+        developer_count: 0
+        published_product_count: 0
+    PortalDescription:
+      description: The description of the portal.
+      type: string
+      maxLength: 512
+      nullable: true
     DefaultApplicationAuthStratID:
       description: Default strategy ID applied on applications for the portal
       nullable: true
       type: string
       format: uuid
       example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+    PortalName:
+      description: >-
+        The name of the portal, used to distinguish it from other portals. Name
+        must be unique.
+      type: string
+      maxLength: 255
+      minLength: 1
     UpdatePortalRequest:
       additionalProperties: false
       type: object
       properties:
+        name:
+          $ref: '#/components/schemas/PortalName'
+        description:
+          $ref: '#/components/schemas/PortalDescription'
         is_public:
           description: >-
             Whether the portal catalog can be accessed publicly without any
@@ -7999,6 +8047,7 @@ components:
         default_application_auth_strategy_id:
           $ref: '#/components/schemas/DefaultApplicationAuthStratID'
       example:
+        name: Aperture
         is_public: false
         rbac_enabled: true
         auto_approve_applications: false
@@ -14185,12 +14234,14 @@ components:
           schema:
             $ref: '#/components/schemas/UpdateAPIProductDTO'
     CreateAPIProductVersionRequest:
+      x-speakeasy-entity: APIProductVersion
       required: true
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/CreateAPIProductVersionDTO'
     UpdateAPIProductVersionRequest:
+      x-speakeasy-entity: APIProductVersion
       required: true
       content:
         application/json:

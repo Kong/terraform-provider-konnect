@@ -30,6 +30,7 @@ type PortalResource struct {
 
 // PortalResourceModel describes the resource data model.
 type PortalResourceModel struct {
+	ApplicationCount                 types.Number `tfsdk:"application_count"`
 	AutoApproveApplications          types.Bool   `tfsdk:"auto_approve_applications"`
 	AutoApproveDevelopers            types.Bool   `tfsdk:"auto_approve_developers"`
 	CreatedAt                        types.String `tfsdk:"created_at"`
@@ -37,10 +38,13 @@ type PortalResourceModel struct {
 	CustomDomain                     types.String `tfsdk:"custom_domain"`
 	DefaultApplicationAuthStrategyID types.String `tfsdk:"default_application_auth_strategy_id"`
 	DefaultDomain                    types.String `tfsdk:"default_domain"`
+	Description                      types.String `tfsdk:"description"`
+	DeveloperCount                   types.Number `tfsdk:"developer_count"`
 	ID                               types.String `tfsdk:"id"`
 	IsPublic                         types.Bool   `tfsdk:"is_public"`
 	Name                             types.String `tfsdk:"name"`
 	PortalID                         types.String `tfsdk:"portal_id"`
+	PublishedProductCount            types.Number `tfsdk:"published_product_count"`
 	RbacEnabled                      types.Bool   `tfsdk:"rbac_enabled"`
 	UpdatedAt                        types.String `tfsdk:"updated_at"`
 }
@@ -53,6 +57,10 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "Portal Resource",
 		Attributes: map[string]schema.Attribute{
+			"application_count": schema.NumberAttribute{
+				Computed:    true,
+				Description: `Number of applications created in the portal.`,
+			},
 			"auto_approve_applications": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
@@ -89,6 +97,15 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				Computed:    true,
 				Description: `The domain assigned to the portal by Konnect. This is the default place to access the portal and its API if not using a ` + "`" + `custom_domain` + "``" + `.`,
 			},
+			"description": schema.StringAttribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `The description of the portal.`,
+			},
+			"developer_count": schema.NumberAttribute{
+				Computed:    true,
+				Description: `Number of developers using the portal.`,
+			},
 			"id": schema.StringAttribute{
 				Computed:    true,
 				Description: `Contains a unique identifier used by the API for this resource.`,
@@ -100,11 +117,16 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 			},
 			"name": schema.StringAttribute{
 				Computed:    true,
-				Description: `The name of the portal, used to distinguish it from other portals.`,
+				Optional:    true,
+				Description: `The name of the portal, used to distinguish it from other portals. Name must be unique.`,
 			},
 			"portal_id": schema.StringAttribute{
 				Required:    true,
 				Description: `ID of the portal.`,
+			},
+			"published_product_count": schema.NumberAttribute{
+				Computed:    true,
+				Description: `Number of api products published to the portal`,
 			},
 			"rbac_enabled": schema.BoolAttribute{
 				Computed:    true,

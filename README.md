@@ -1,5 +1,7 @@
 # terraform-provider-konnect
 
+> This provider is available as a [BETA](https://docs.konghq.com/konnect/availability-stages/#beta) release.
+
 This repository contains a Terraform provider for [Kong Konnect](https://konghq.com/products/kong-konnect/register?utm_source=github&utm_campaign=terraform&utm_content=terraform-provider-konnect).
 
 ## Capabilities
@@ -88,14 +90,13 @@ terraform {
   required_providers {
     konnect = {
       source  = "kong/konnect"
-      version = "TODO_ADD_VERSION"
     }
   }
 }
 
 provider "konnect" {
   personal_access_token = "kpat_YOUR_PAT"
-  server_url            = "https://us.api.konghq.com/v2"
+  server_url            = "https://us.api.konghq.com"
 }
 ```
 

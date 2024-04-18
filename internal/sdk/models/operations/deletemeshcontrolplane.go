@@ -7,11 +7,6 @@ import (
 	"net/http"
 )
 
-var DeleteMeshControlPlaneServerList = []string{
-	"https://us.api.konghq.com/v1",
-	"https://us.api.konghq.com/v1",
-}
-
 type DeleteMeshControlPlaneRequest struct {
 	// Id of the Konnect resource
 	CpID string `pathParam:"style=simple,explode=false,name=cpId"`

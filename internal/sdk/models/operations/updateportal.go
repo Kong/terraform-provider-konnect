@@ -45,6 +45,8 @@ type UpdatePortalResponse struct {
 	ForbiddenError *shared.ForbiddenError
 	// Not Found
 	NotFoundError *shared.NotFoundError
+	// Conflict
+	ConflictError *shared.ConflictError
 }
 
 func (o *UpdatePortalResponse) GetContentType() string {
@@ -101,4 +103,11 @@ func (o *UpdatePortalResponse) GetNotFoundError() *shared.NotFoundError {
 		return nil
 	}
 	return o.NotFoundError
+}
+
+func (o *UpdatePortalResponse) GetConflictError() *shared.ConflictError {
+	if o == nil {
+		return nil
+	}
+	return o.ConflictError
 }

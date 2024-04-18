@@ -29,11 +29,11 @@ type GatewayControlPlaneDataSource struct {
 
 // GatewayControlPlaneDataSourceModel describes the data model.
 type GatewayControlPlaneDataSourceModel struct {
-	Config      *tfTypes.Config `tfsdk:"config"`
-	Description types.String    `tfsdk:"description"`
-	ID          types.String    `tfsdk:"id"`
-	Labels      types.String    `tfsdk:"labels"`
-	Name        types.String    `tfsdk:"name"`
+	Config      *tfTypes.Config         `tfsdk:"config"`
+	Description types.String            `tfsdk:"description"`
+	ID          types.String            `tfsdk:"id"`
+	Labels      map[string]types.String `tfsdk:"labels"`
+	Name        types.String            `tfsdk:"name"`
 }
 
 // Metadata returns the data source type name.
@@ -69,13 +69,13 @@ func (r *GatewayControlPlaneDataSource) Schema(ctx context.Context, req datasour
 				Required:    true,
 				Description: `The control plane ID`,
 			},
-			"labels": schema.StringAttribute{
-				Computed: true,
+			"labels": schema.MapAttribute{
+				Computed:    true,
+				ElementType: types.StringType,
 				MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
 					`` + "\n" +
 					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".` + "\n" +
-					`` + "\n" +
-					`Parsed as JSON.`,
+					``,
 			},
 			"name": schema.StringAttribute{
 				Computed:    true,

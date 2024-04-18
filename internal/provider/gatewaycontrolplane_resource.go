@@ -20,7 +20,6 @@ import (
 	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
-	"github.com/kong/terraform-provider-konnect/internal/validators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -38,15 +37,15 @@ type GatewayControlPlaneResource struct {
 
 // GatewayControlPlaneResourceModel describes the resource data model.
 type GatewayControlPlaneResourceModel struct {
-	AuthType     types.String       `tfsdk:"auth_type"`
-	CloudGateway types.Bool         `tfsdk:"cloud_gateway"`
-	ClusterType  types.String       `tfsdk:"cluster_type"`
-	Config       *tfTypes.Config    `tfsdk:"config"`
-	Description  types.String       `tfsdk:"description"`
-	ID           types.String       `tfsdk:"id"`
-	Labels       types.String       `tfsdk:"labels"`
-	Name         types.String       `tfsdk:"name"`
-	ProxyUrls    []tfTypes.ProxyURL `tfsdk:"proxy_urls"`
+	AuthType     types.String            `tfsdk:"auth_type"`
+	CloudGateway types.Bool              `tfsdk:"cloud_gateway"`
+	ClusterType  types.String            `tfsdk:"cluster_type"`
+	Config       *tfTypes.Config         `tfsdk:"config"`
+	Description  types.String            `tfsdk:"description"`
+	ID           types.String            `tfsdk:"id"`
+	Labels       map[string]types.String `tfsdk:"labels"`
+	Name         types.String            `tfsdk:"name"`
+	ProxyUrls    []tfTypes.ProxyURL      `tfsdk:"proxy_urls"`
 }
 
 func (r *GatewayControlPlaneResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -79,9 +78,10 @@ func (r *GatewayControlPlaneResource) Schema(ctx context.Context, req resource.S
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
 				Optional:    true,
-				Description: `The ClusterType value of the cluster associated with the Control Plane. Requires replacement if changed. ; must be one of ["CLUSTER_TYPE_HYBRID", "CLUSTER_TYPE_K8S_INGRESS_CONTROLLER", "CLUSTER_TYPE_CONTROL_PLANE_GROUP"]`,
+				Description: `The ClusterType value of the cluster associated with the Control Plane. Requires replacement if changed. ; must be one of ["CLUSTER_TYPE_CONTROL_PLANE", "CLUSTER_TYPE_HYBRID", "CLUSTER_TYPE_K8S_INGRESS_CONTROLLER", "CLUSTER_TYPE_CONTROL_PLANE_GROUP"]`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
+						"CLUSTER_TYPE_CONTROL_PLANE",
 						"CLUSTER_TYPE_HYBRID",
 						"CLUSTER_TYPE_K8S_INGRESS_CONTROLLER",
 						"CLUSTER_TYPE_CONTROL_PLANE_GROUP",
@@ -123,17 +123,14 @@ func (r *GatewayControlPlaneResource) Schema(ctx context.Context, req resource.S
 				},
 				Description: `The control plane ID`,
 			},
-			"labels": schema.StringAttribute{
-				Computed: true,
-				Optional: true,
+			"labels": schema.MapAttribute{
+				Computed:    true,
+				Optional:    true,
+				ElementType: types.StringType,
 				MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
 					`` + "\n" +
 					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".` + "\n" +
-					`` + "\n" +
-					`Parsed as JSON.`,
-				Validators: []validator.String{
-					validators.IsValidJSON(),
-				},
+					``,
 			},
 			"name": schema.StringAttribute{
 				Required:    true,
