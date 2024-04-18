@@ -1,0 +1,19 @@
+speakeasyVersion: 1.258.0
+sources:
+    konnect: {}
+targets:
+    terraform-provider-konnect:
+        source: konnect
+        outLocation: .
+workflow:
+    workflowVersion: 1.0.0
+    speakeasyVersion: latest
+    sources:
+        konnect:
+            inputs:
+                - location: openapi.yaml
+    targets:
+        terraform-provider-konnect:
+            target: terraform
+            source: konnect
+            output: .

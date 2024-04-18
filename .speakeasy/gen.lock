@@ -3,10 +3,10 @@ id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
   docChecksum: f7ff80f585c39cc7e222c1901f224593
   docVersion: 2.0.0
-  speakeasyVersion: 1.253.2
-  generationVersion: 2.306.2
-  releaseVersion: 0.1.0
-  configChecksum: effeda7d873e248323fb870868eed4bd
+  speakeasyVersion: 1.258.0
+  generationVersion: 2.308.2
+  releaseVersion: 0.1.1
+  configChecksum: d3dfb54cb37452642ac5121cbff47931
 features:
   terraform:
     additionalProperties: 0.1.2
@@ -47,7 +47,7 @@ generatedFiles:
   - internal/sdk/portals.go
   - internal/sdk/portalauthsettings.go
   - internal/sdk/portalproductversions.go
-  - internal/sdk/konnect.go
+  - internal/sdk/terraformproviderkonnect.go
   - internal/sdk/models/errors/sdkerror.go
   - internal/sdk/types/bigint.go
   - internal/sdk/types/date.go
