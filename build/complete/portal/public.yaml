@@ -1394,6 +1394,9 @@ components:
             retention_ms:
               type: integer
               description: Analytics retention in milliseconds.
+          required:
+            - percentiles
+            - retention_ms
     BaseError:
       type: object
       title: Error

@@ -400,6 +400,9 @@ components:
             retention_ms:
               type: integer
               description: Analytics retention in milliseconds.
+          required:
+            - percentiles
+            - retention_ms
   responses:
     QueryResponse:
       description: A response from an Application Analytics query.
