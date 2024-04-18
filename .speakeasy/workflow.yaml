@@ -1,0 +1,10 @@
+workflowVersion: 1.0.0
+sources:
+    konnect-api:
+        inputs:
+            - location: openapi.yaml
+targets:
+    terraform-provider-konnect:
+        target: terraform
+        source: konnect-api
+        output: .
