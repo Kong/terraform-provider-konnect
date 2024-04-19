@@ -334,6 +334,25 @@ paths:
           $ref:  '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       tags:
         - Portal Product Versions
+    put:
+      summary: Replace a portal product version
+      operationId: replace-portal-product-version
+      description: Replace a portal product version
+      requestBody:
+        $ref: '#/components/requestBodies/ReplacePortalProductVersion'
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalProductVersion'
+        '400':
+          $ref:  '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        '401':
+          $ref:  '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref:  '../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+        '404':
+          $ref:  '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+      tags:
+        - Portal Product Versions
     delete:
       summary: Delete a portal product version
       operationId: delete-portal-product-version
@@ -2233,6 +2252,13 @@ components:
     PortalProductVersionUpdateRequestExample1:
       value:
         auto_approve_registration: false
+    PortalProductVersionReplaceRequestExample1:
+      value:
+        auth_strategy_ids: [44f8380e-7798-4566-99e3-2edf2b57d289]
+        publish_status: published
+        application_registration_enabled: true
+        auto_approve_registration: true
+        deprecated: false
     PortalProductVersionUpdateAuthStrategyExample:
       value:
         auth_strategy_ids: [44f8380e-7798-4566-99e3-2edf2b57d289]
@@ -3568,6 +3594,15 @@ components:
               $ref: '#/components/examples/PortalProductVersionUpdateRequestExample1'
             PortalProductVersionUpdateAuthStrategy:
               $ref: '#/components/examples/PortalProductVersionUpdateAuthStrategyExample'
+    ReplacePortalProductVersion:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ReplacePortalProductVersionPayload'
+          examples:
+            PortalProductVersion:
+              $ref: '#/components/examples/PortalProductVersionReplaceRequestExample1'
     UpdateApplicationRegistration:
       description: Update an application registration.
       required: true
@@ -4848,12 +4883,34 @@ components:
         deprecated:
           $ref: '#/components/schemas/PortalProductVersionDeprecated'
       required:
-      - publish_status
-      - application_registration_enabled
-      - auto_approve_registration
-      - product_version_id
-      - deprecated
-      - auth_strategy_ids
+        - publish_status
+        - application_registration_enabled
+        - auto_approve_registration
+        - product_version_id
+        - deprecated
+        - auth_strategy_ids
+    ReplacePortalProductVersionPayload:
+      title: ReplacePortalProductVersionPayload
+      type: object
+      description: Payload to update a Portal Product Version
+      additionalProperties: false
+      required:
+        - publish_status
+        - application_registration_enabled
+        - auto_approve_registration
+        - deprecated
+        - auth_strategy_ids
+      properties:
+        publish_status:
+          $ref: '#/components/schemas/PortalProductVersionPublishStatus'
+        auth_strategy_ids:
+          $ref: '#/components/schemas/AuthStrategyIDs'
+        application_registration_enabled:
+          $ref: '#/components/schemas/ApplicationRegistrationEnabled'
+        auto_approve_registration:
+          $ref: '#/components/schemas/AutoApproveRegistration'
+        deprecated:
+          $ref: '#/components/schemas/PortalProductVersionDeprecated'
     UpdatePortalProductVersionPayload:
       title: UpdatePortalProductVersionPayload
       type: object
