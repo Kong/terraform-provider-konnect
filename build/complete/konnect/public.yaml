@@ -8710,14 +8710,22 @@ components:
               example: e4d9ebb1-26b4-426a-b00e-cb67044f3baf
         publish_status:
           type: string
-          description: The publish status of the API product version
+          deprecated: true
+          description: >-
+            This field is published if the API product version is published to
+            at least one portal. This field is deprecated: Use
+            PortalProductVersion.publish_status instead.
           enum:
             - unpublished
             - published
           example: unpublished
         deprecated:
           type: boolean
-          description: Indicates if this API product version is deprecated
+          deprecated: true
+          description: >-
+            Whether this API product version is deprecated in at least one
+            portal. This field is deprecated: Use
+            PortalProductVersion.deprecated instead
           example: false
         labels:
           $ref: '#/components/schemas/Labels'
@@ -8838,7 +8846,11 @@ components:
         publish_status:
           type: string
           nullable: false
-          description: The publish status of the API product version.
+          deprecated: true
+          description: >-
+            The publish status of the API product version. Applies publish
+            status to all related portal product versions. This field is
+            deprecated: Use PortalProductVersion.publish_status instead.
           enum:
             - unpublished
             - published
@@ -8847,7 +8859,12 @@ components:
         deprecated:
           type: boolean
           nullable: false
-          description: Indicates if the version of the API product is deprecated.
+          deprecated: true
+          description: >-
+            Indicates if the version of the API product is deprecated. Applies
+            deprecation or removes deprecation from all related portal product
+            versions. This field is deprecated: Use
+            PortalProductVersion.deprecated instead.
           example: false
           default: false
         labels:
@@ -8973,14 +8990,23 @@ components:
           description: The version name of the API product version.
         publish_status:
           type: string
-          description: The publish status of the API product version.
+          deprecated: true
+          description: >-
+            The publish status of the API product version. Applies publish
+            status to all related portal product versions. This field is
+            deprecated: Use PortalProductVersion.publish_status instead.
           enum:
             - unpublished
             - published
           example: unpublished
         deprecated:
           type: boolean
-          description: Indicates if the version of the API product is deprecated.
+          deprecated: true
+          description: >-
+            Indicates if the version of the API product is deprecated. Applies
+            deprecation or removes deprecation from all related portal product
+            versions. This field is deprecated: Use
+            PortalProductVersion.deprecated instead.
           example: false
         notify:
           type: boolean
