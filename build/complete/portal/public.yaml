@@ -2736,6 +2736,8 @@ components:
         - parent_document_id
         - slug
         - title
+        - created_at
+        - updated_at
       properties:
         id:
           type: string
@@ -2756,6 +2758,10 @@ components:
           type: string
           description: the title of the document
           example: Getting Started
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
     ListDocuments:
       type: object
       additionalProperties: false

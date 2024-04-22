@@ -407,6 +407,8 @@ components:
         - id
         - slug
         - revision
+        - created_at
+        - updated_at
       properties:
         id:
           type: string
@@ -425,6 +427,10 @@ components:
           example: getting-started
         revision:
           $ref: '#/components/schemas/RevisionRaw'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
     RevisionRaw:
       type: object
       title: Revision

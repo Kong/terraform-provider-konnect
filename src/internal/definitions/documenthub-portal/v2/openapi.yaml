@@ -111,6 +111,8 @@ components:
       - parent_document_id
       - slug
       - title
+      - created_at
+      - updated_at
       properties:
         id:
           type: string
@@ -131,6 +133,10 @@ components:
           type: string
           description: the title of the document
           example: Getting Started
+        created_at:
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
     DocumentRaw:
       type: object
       title: Document
@@ -139,6 +145,8 @@ components:
       - id
       - slug
       - revision
+      - created_at
+      - updated_at
       properties:
         id:
           type: string
@@ -157,6 +165,10 @@ components:
           example: getting-started
         revision:
           $ref: '#/components/schemas/RevisionRaw'
+        created_at:
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
     RevisionRaw:
       type: object
       title: Revision
