@@ -4,7 +4,7 @@ const path = require("path");
 const traverse = require("traverse");
 const { tryMkdir } = require("./helpers/fs");
 const toolkit = require("oas-toolkit");
-const { filterSchemas, removeProperty } = require("./helpers/filterOas");
+const { splitByVisibility } = require("./helpers/filterOas");
 
 function filterOperations(doc, callback, log) {
   doc = traverse(doc).clone();
@@ -95,37 +95,7 @@ async function main() {
 
     complete.security = unique(complete.security);
 
-    let dev = filterSchemas(complete, function (node) {
-      return node["x-internal"] && node["x-unstable"];
-    }, function (node) { return false; }, 'dev');
-
-    let internal = filterSchemas(complete, function (node) {
-      return node["x-internal"] && !node["x-unstable"];
-    }, function (node) { return false; }, 'internal');
-
-    let public = filterSchemas(complete, function (node) {
-      return !node["x-internal"];
-    }, function (node) { return node["x-internal"] });
-
-
-    // Filter down paths to the groups that we need
-    dev = filterOperations(dev, function (node) {
-      return node["x-internal"] && node["x-unstable"];
-    });
-
-    internal = filterOperations(internal, function (node) {
-      return node["x-internal"] && !node["x-unstable"];
-    });
-
-    public = filterOperations(public, function (node) {
-      return !node["x-internal"];
-    });
-
-    // Remove the `x-override`, `x-internal` and `x-unstable` fields
-    const fields = ['x-override', 'x-internal', 'x-unstable'];
-    dev = removeProperty(dev, fields);
-    internal = removeProperty(internal, fields);
-    public = removeProperty(public, fields);
+    const { dev, internal, public } = splitByVisibility(complete);
 
     // Write multiple files
     const outputDir = `${baseDir}/build/complete/${mode}`;

@@ -12,3 +12,19 @@ We use a single `openapi.yaml` file for public, internal and in-development work
 * If `x-internal` and `x-unstable` are applied, it's considered in development and is rendered to `dev.yaml`
 
 These annotations can be applied to either endpoints (alongside `operationId`) or to schemas in `components.schemas`. If applied to a schema, the schema and any references to that schema will be removed from the rendered file. This allows you to add new fields to existing endpoints without publishing them publicly whilst the functionality is in development.
+
+If you want to add a new property to an endpoint that uses a shared schema, you can add an `x-property-annotations` entry at the same level as `properties` within the schema:
+
+```yaml
+MyResource:
+  type: object
+  x-property-annotations:
+    my_property: [x-unstable, x-internal]
+  properties:
+    id:
+      type: string
+    something:
+      type: string
+    my_property: # This will be removed
+      type: string
+```

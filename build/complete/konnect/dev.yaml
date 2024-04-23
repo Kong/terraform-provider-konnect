@@ -866,6 +866,67 @@ paths:
         '404':
           $ref: '#/components/responses/OrganizationNotFound'
   /portals:
+    get:
+      summary: List Portals
+      description: >-
+        Lists developer portals defined in this region for this organization.
+        Each developer portal is available at a unique address and has isolated
+        appearance, configuration, developers, and applications.
+      operationId: list-portals
+      tags:
+        - Portals
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/SortPortals'
+        - in: query
+          name: filter
+          description: Filter portals returned in the response.
+          required: false
+          style: deepObject
+          schema:
+            type: object
+            properties:
+              id:
+                $ref: '#/components/schemas/UuidFieldFilter'
+              name:
+                $ref: '#/components/schemas/StringFieldFilter'
+              description:
+                $ref: '#/components/schemas/StringFieldFilter'
+              is_public:
+                $ref: '#/components/schemas/BooleanFieldFilter'
+              rbac_enabled:
+                $ref: '#/components/schemas/BooleanFieldFilter'
+              auto_approve_developers:
+                $ref: '#/components/schemas/BooleanFieldFilter'
+              auto_approve_applications:
+                $ref: '#/components/schemas/BooleanFieldFilter'
+              default_domain:
+                $ref: '#/components/schemas/StringFieldFilter'
+              custom_domain:
+                $ref: '#/components/schemas/StringFieldFilter'
+              custom_client_domain:
+                $ref: '#/components/schemas/StringFieldFilter'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListPortals'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+              examples:
+                ListPortalsBadRequestExample1:
+                  $ref: '#/components/examples/ListPortalsBadRequestExample1'
+                ListPortalsBadRequestExample2:
+                  $ref: '#/components/examples/ListPortalsBadRequestExample2'
+                ListPortalsBadRequestExample3:
+                  $ref: '#/components/examples/ListPortalsBadRequestExample3'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
     post:
       summary: Create Portal
       description: >-
@@ -1049,6 +1110,20 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
+  /roles:
+    get:
+      summary: Get Predefined Roles
+      description: Retrieves the predefined, or system managed, roles.
+      operationId: get-predefined-roles
+      responses:
+        '200':
+          $ref: '#/components/responses/Roles'
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+      tags:
+        - Roles
   /search:
     get:
       operationId: get-search
@@ -2582,6 +2657,241 @@ components:
       type: boolean
       x-examples:
         example-1: true
+    PortalsRoles:
+      title: Portals Roles
+      type: object
+      additionalProperties: false
+      required:
+        - name
+        - roles
+      properties:
+        name:
+          type: string
+          enum:
+            - Portals
+        roles:
+          type: object
+          properties:
+            admin:
+              type: object
+              additionalProperties: false
+              required:
+                - name
+                - description
+              properties:
+                name:
+                  type: string
+                  enum:
+                    - Admin
+                description:
+                  type: string
+                  example: >-
+                    This role grants full write access to portal configurations
+                    and entities.
+                  enum:
+                    - >-
+                      This role grants full write access to portal
+                      configurations and entities.
+            maintainer:
+              type: object
+              additionalProperties: false
+              required:
+                - name
+                - description
+              properties:
+                name:
+                  type: string
+                  enum:
+                    - Maintainer
+                description:
+                  type: string
+                  example: >-
+                    This role grants the ability to manage developers,
+                    applications, and product versions in portals.
+                  enum:
+                    - >-
+                      This role grants the ability to manage developers,
+                      applications, and product versions in portals.
+            creator:
+              type: object
+              additionalProperties: false
+              required:
+                - name
+                - description
+              properties:
+                name:
+                  type: string
+                  enum:
+                    - Creator
+                description:
+                  type: string
+                  example: This role grants access to create new portals.
+                  enum:
+                    - This role grants access to create new portals.
+            viewer:
+              type: object
+              additionalProperties: false
+              required:
+                - name
+                - description
+              properties:
+                name:
+                  type: string
+                  enum:
+                    - Viewer
+                description:
+                  type: string
+                  example: >-
+                    This role grants access to read-only permissions to portals
+                    and their entities.
+                  enum:
+                    - >-
+                      This role grants access to read-only permissions to
+                      portals and their entities.
+    ApplicationAuthStrategiesRoles:
+      title: Application Auth Strategies Roles
+      type: object
+      additionalProperties: false
+      required:
+        - name
+        - roles
+      properties:
+        name:
+          type: string
+          enum:
+            - Application Auth Strategies
+        roles:
+          type: object
+          properties:
+            maintainer:
+              type: object
+              additionalProperties: false
+              required:
+                - name
+                - description
+              properties:
+                name:
+                  type: string
+                  enum:
+                    - Maintainer
+                description:
+                  type: string
+                  example: >-
+                    This role grants access to manage and delete application
+                    auth strategies.
+                  enum:
+                    - >-
+                      This role grants access to manage and delete application
+                      auth strategies.
+            creator:
+              type: object
+              additionalProperties: false
+              required:
+                - name
+                - description
+              properties:
+                name:
+                  type: string
+                  enum:
+                    - Creator
+                description:
+                  type: string
+                  example: >-
+                    This role grants access to create new application auth
+                    strategies.
+                  enum:
+                    - >-
+                      This role grants access to create new application auth
+                      strategies.
+            viewer:
+              type: object
+              additionalProperties: false
+              required:
+                - name
+                - description
+              properties:
+                name:
+                  type: string
+                  enum:
+                    - Viewer
+                description:
+                  type: string
+                  example: >-
+                    This role grants access to read-only permissions to
+                    application auth strategies.
+                  enum:
+                    - >-
+                      This role grants access to read-only permissions to
+                      application auth strategies.
+    DCRProvidersRoles:
+      title: DCR Providers Roles
+      type: object
+      additionalProperties: false
+      required:
+        - name
+        - roles
+      properties:
+        name:
+          type: string
+          enum:
+            - DCR Providers
+        roles:
+          type: object
+          properties:
+            maintainer:
+              type: object
+              additionalProperties: false
+              required:
+                - name
+                - description
+              properties:
+                name:
+                  type: string
+                  enum:
+                    - Maintainer
+                description:
+                  type: string
+                  example: This role grants access to manage and delete DCR providers.
+                  enum:
+                    - >-
+                      This role grants access to manage and delete DCR
+                      providers.
+            creator:
+              type: object
+              additionalProperties: false
+              required:
+                - name
+                - description
+              properties:
+                name:
+                  type: string
+                  enum:
+                    - Creator
+                description:
+                  type: string
+                  example: This role grants access to create new DCR providers.
+                  enum:
+                    - This role grants access to create new DCR providers.
+            viewer:
+              type: object
+              additionalProperties: false
+              required:
+                - name
+                - description
+              properties:
+                name:
+                  type: string
+                  enum:
+                    - Viewer
+                description:
+                  type: string
+                  example: >-
+                    This role grants access to read-only permissions to DCR
+                    providers.
+                  enum:
+                    - >-
+                      This role grants access to read-only permissions to DCR
+                      providers.
     SearchResponse:
       title: SearchResponse
       description: Search response schema.
@@ -2955,6 +3265,42 @@ components:
             number: 1
             size: 10
             total: 1
+    ListPortalsResponse:
+      additionalProperties: false
+      description: A paginated list of portals in the current region in the organization.
+      type: object
+      required:
+        - data
+        - meta
+      properties:
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Portal'
+      example:
+        meta:
+          page:
+            number: 1
+            size: 10
+            total: 1
+        data:
+          - id: 8f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+            created_at: '2022-02-07T17:46:57.52Z'
+            updated_at: '2022-10-08T17:00:00.52Z'
+            name: Portal A
+            description: The Portal A
+            default_domain: 123455678abcd.us.portal.konghq.com
+            is_public: false
+            rbac_enabled: true
+            auto_approve_applications: false
+            auto_approve_developers: true
+            custom_domain: api.example.com
+            custom_client_domain: portal.example.com
+            application_count: 0
+            developer_count: 0
+            published_product_count: 0
     PortalPagesFilters:
       title: PortalPagesFilters
       type: object
@@ -5866,12 +6212,115 @@ components:
         title: Not Found
         instance: kong:trace:6816496025408232265
         detail: Not Found
+    400-request-format-is-invalid:
+      value:
+        status: 400
+        title: Bad Request
+        detail: Could not parse request body
+        instance: konnect:trace:3674017986744198214
+        invalid_parameters:
+          - field: body
+            reason: request format is invalid
+          - field: body
+            reason: request format is invalid
+    400-cannot-be-blank:
+      value:
+        status: 400
+        title: Bad Request
+        instance: konnect:trace:6644808935508571943
+        invalid_parameters:
+          - field: name
+            reason: cannot be blank
+    400-invalid-id-format:
+      value:
+        status: 400
+        title: Bad Request
+        instance: konnect:trace:8988732526256293040
+        invalid_parameters:
+          - field: teamID
+            reason: invalid ID format
+    400-valid-uuid:
+      value:
+        status: 400
+        title: Bad Request
+        instance: konnect:trace:7680390984800447837
+        invalid_parameters:
+          - field: id
+            reason: must be a valid UUID v4
+    400-password-complexity:
+      value:
+        status: 400
+        title: Bad Request
+        detail: Password does not meet complexity requirements.
+        instance: konnect:trace:1738820719742148545
+        invalid_parameters:
+          - field: new_password
+            reason: 'is too short (minimum length: 8)'
+            rule: min_length
+            minimum: 8
+          - field: new_password
+            reason: must contain at least 1 digit
+            rule: min_digits
+            minimum: 1
+          - field: new_password
+            reason: must contain at least 1 lower case character
+            rule: min_lowercase
+            minimum: 1
+          - field: new_password
+            reason: must contain at least 1 upper case character
+            rule: min_uppercase
+            minimum: 1
+          - field: new_password
+            reason: must contain at least 1 special character
+            rule: min_symbols
+            minimum: 1
+    400-systems-team-modified:
+      value:
+        status: 400
+        title: Bad Request
+        instance: konnect:trace:1738820719742148545
+        invalid_parameters:
+          - field: teamID
+            reason: system teams cannot be modified
+    400-authentication-settings-cannot-be-both-disabled:
+      value:
+        status: 400
+        title: Bad Request
+        instance: konnect:trace:6644808935508571943
+        invalid_parameters:
+          - field: oidc_auth_enabled
+            reason: cannot be disabled when basic auth is also disabled
+          - field: basic_auth_enabled
+            reason: cannot be disabled when OIDC is also disabled
+    400-oidc-auth-enabled-needs-idp:
+      value:
+        status: 400
+        title: Bad Request
+        instance: konnect:trace:6644808935508571943
+        invalid_parameters:
+          - field: oidc_auth_enabled
+            reason: cannot be set before configuring an identity provider
+    400-idp-config-is-required:
+      value:
+        status: 400
+        title: Bad Request
+        detail: An IdP configuration is required
+        instance: konnect:trace:6644808935508571943
+        invalid_parameters:
+          - field: data
+            reason: cannot be set before configuring an identity provider
     403-permission-denied:
       value:
         status: 403
         title: Permission denied
         instance: konnect:trace:2822394689570210664
         detail: Only enterprise organizations can create teams
+    401-unauthenticated:
+      value:
+        status: 401
+        title: Unauthenticated
+        instance: konnect:trace:952172606039454040
+        detail: A valid token is required
     400-query-is-invalid:
       value:
         status: 400
@@ -6016,6 +6465,29 @@ components:
         content: >-
           Welcome to the About Us page. This is where you can learn about our
           company.
+    ListPortalsExample1:
+      value:
+        meta:
+          page:
+            number: 1
+            size: 10
+            total: 1
+        data:
+          - id: 8f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+            created_at: '2022-02-07T17:46:57.52Z'
+            updated_at: '2022-10-08T17:00:00.52Z'
+            name: Portal A
+            description: The Portal A
+            default_domain: 123455678abcd.us.portal.konghq.com
+            is_public: false
+            rbac_enabled: true
+            auto_approve_applications: false
+            auto_approve_developers: true
+            custom_domain: api.example.com
+            custom_client_domain: portal.example.com
+            application_count: 0
+            developer_count: 0
+            published_product_count: 0
     UpdatePortalResponseExample1:
       value:
         id: 9f9fd312-a987-4628-b4c5-bb4f4fddd5f7
@@ -6158,6 +6630,42 @@ components:
             rule: max_length
             reason: value of "title" must not exceed 512 characters
             source: body
+    ListPortalsBadRequestExample1:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: kong:trace:1433447772874964729
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: page[size]
+            rule: is_number
+            reason: '"page[size]" must be a number'
+            source: query
+    ListPortalsBadRequestExample2:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: kong:trace:1433447772874964729
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: page[number]
+            rule: is_number
+            reason: '"page[number]" must be a number'
+            source: query
+    ListPortalsBadRequestExample3:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: kong:trace:1433447772874964729
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: sort
+            rule: enum
+            choices:
+              - created_at
+              - updated_at
+            reason: must be one of [created_at, updated_at]
+            source: query
     ListPortalPagesBadRequestExample1:
       value:
         status: 400
@@ -6304,6 +6812,757 @@ components:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/ConflictError'
+    IdentityBadRequest:
+      description: Bad Request
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/BadRequestError'
+          examples:
+            Request Format is Invalid:
+              $ref: '#/components/examples/400-request-format-is-invalid'
+            Cannot be Blank:
+              $ref: '#/components/examples/400-cannot-be-blank'
+            Invalid ID format:
+              $ref: '#/components/examples/400-invalid-id-format'
+            Must be a valid UUID v4:
+              $ref: '#/components/examples/400-valid-uuid'
+            System teams cannot be modified:
+              $ref: '#/components/examples/400-systems-team-modified'
+            Password Complexity:
+              $ref: '#/components/examples/400-password-complexity'
+            Authentication Settings cannot be both Disabled:
+              $ref: >-
+                #/components/examples/400-authentication-settings-cannot-be-both-disabled
+            OIDC needs an IdP configuration:
+              $ref: '#/components/examples/400-oidc-auth-enabled-needs-idp'
+            IdP configuration is required:
+              $ref: '#/components/examples/400-idp-config-is-required'
+            Unsupported filter operation:
+              value:
+                status: 400
+                title: Bad Request
+                instance: konnect:trace:3674017986744198214
+                invalid_parameters:
+                  - field: '[filter][actions][contains]'
+                    reason: '[contains] is not a supported filter operation'
+    IdentityUnauthenticated:
+      description: Unauthenticated
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/UnauthorizedError'
+          examples:
+            Unauthorized:
+              $ref: '#/components/examples/401-unauthenticated'
+    Roles:
+      description: The predefined, or system managed, roles.
+      content:
+        application/json:
+          schema:
+            type: object
+            title: Roles Response
+            properties:
+              control_planes:
+                type: object
+                additionalProperties: false
+                required:
+                  - name
+                  - roles
+                properties:
+                  name:
+                    type: string
+                    enum:
+                      - Control Planes
+                  roles:
+                    type: object
+                    properties:
+                      admin:
+                        type: object
+                        additionalProperties: false
+                        required:
+                          - name
+                          - description
+                        properties:
+                          name:
+                            type: string
+                            enum:
+                              - Admin
+                          description:
+                            type: string
+                            example: >-
+                              This role grants full write access to all entities
+                              within a control plane.
+                            enum:
+                              - >-
+                                This role grants full write access to all
+                                entities within a control plane.
+                      certificate_admin:
+                        type: object
+                        additionalProperties: false
+                        required:
+                          - name
+                          - description
+                        properties:
+                          name:
+                            type: string
+                            enum:
+                              - Certificate Admin
+                          description:
+                            type: string
+                            example: >-
+                              This role grants full write access to administer
+                              certificates.
+                            enum:
+                              - >-
+                                This role grants full write access to administer
+                                certificates.
+                      consumer_admin:
+                        type: object
+                        additionalProperties: false
+                        required:
+                          - name
+                          - description
+                        properties:
+                          name:
+                            type: string
+                            enum:
+                              - Consumer Admin
+                          description:
+                            type: string
+                            example: >-
+                              This role grants full write access to administer
+                              consumers.
+                            enum:
+                              - >-
+                                This role grants full write access to administer
+                                consumers.
+                      creator:
+                        type: object
+                        additionalProperties: false
+                        required:
+                          - name
+                          - description
+                        properties:
+                          name:
+                            type: string
+                            enum:
+                              - Creator
+                          description:
+                            type: string
+                            example: >-
+                              Creates a new Control Plane in an organization.
+                              The creator becomes the owner of the Control Plane
+                              they create.
+                            enum:
+                              - >-
+                                Creates a new Control Plane in an organization.
+                                The creator becomes the owner of the Control
+                                Plane they create.
+                      deployer:
+                        type: object
+                        additionalProperties: false
+                        required:
+                          - name
+                          - description
+                        properties:
+                          name:
+                            type: string
+                            enum:
+                              - Deployer
+                          description:
+                            type: string
+                            example: >-
+                              This role grants full write access to administer
+                              services, routes and plugins necessary to deploy
+                              services in Service Hub.
+                            enum:
+                              - >-
+                                This role grants full write access to administer
+                                services, routes and plugins necessary to deploy
+                                services in Service Hub.
+                      gateway_service_admin:
+                        type: object
+                        additionalProperties: false
+                        required:
+                          - name
+                          - description
+                        properties:
+                          name:
+                            type: string
+                            enum:
+                              - Gateway Service Admin
+                          description:
+                            type: string
+                            example: >-
+                              This role grants full write access to administer
+                              gateway services.
+                            enum:
+                              - >-
+                                This role grants full write access to administer
+                                gateway services.
+                      plugin_admin:
+                        type: object
+                        additionalProperties: false
+                        required:
+                          - name
+                          - description
+                        properties:
+                          name:
+                            type: string
+                            enum:
+                              - Plugin Admin
+                          description:
+                            type: string
+                            example: >-
+                              This role grants full write access to administer
+                              plugins.
+                            enum:
+                              - >-
+                                This role grants full write access to administer
+                                plugins.
+                      route_admin:
+                        type: object
+                        additionalProperties: false
+                        required:
+                          - name
+                          - description
+                        properties:
+                          name:
+                            type: string
+                            enum:
+                              - Route Admin
+                          description:
+                            type: string
+                            example: >-
+                              This role grants full write access to administer
+                              routes.
+                            enum:
+                              - >-
+                                This role grants full write access to administer
+                                routes.
+                      sni_admin:
+                        type: object
+                        additionalProperties: false
+                        required:
+                          - name
+                          - description
+                        properties:
+                          name:
+                            type: string
+                            enum:
+                              - SNI Admin
+                          description:
+                            type: string
+                            example: >-
+                              This role grants full write access to administer
+                              SNIs.
+                            enum:
+                              - >-
+                                This role grants full write access to administer
+                                SNIs.
+                      upstream_admin:
+                        type: object
+                        additionalProperties: false
+                        required:
+                          - name
+                          - description
+                        properties:
+                          name:
+                            type: string
+                            enum:
+                              - Upstream Admin
+                          description:
+                            type: string
+                            example: >-
+                              This role grants full write access to administer
+                              upstreams.
+                            enum:
+                              - >-
+                                This role grants full write access to administer
+                                upstreams.
+                      viewer:
+                        type: object
+                        additionalProperties: false
+                        required:
+                          - name
+                          - description
+                        properties:
+                          name:
+                            type: string
+                            enum:
+                              - Viewer
+                          description:
+                            type: string
+                            example: >-
+                              This role grants read only access to all entities
+                              within a control plane.
+                            enum:
+                              - >-
+                                This role grants read only access to all
+                                entities within a control plane.
+              api_products:
+                type: object
+                additionalProperties: false
+                required:
+                  - name
+                  - roles
+                properties:
+                  name:
+                    type: string
+                    enum:
+                      - API Products
+                  roles:
+                    type: object
+                    properties:
+                      admin:
+                        type: object
+                        additionalProperties: false
+                        required:
+                          - name
+                          - description
+                        properties:
+                          name:
+                            type: string
+                            enum:
+                              - Admin
+                          description:
+                            type: string
+                            example: >-
+                              This role grants full write access to an API
+                              product and its versions.
+                            enum:
+                              - >-
+                                This role grants full write access to an API
+                                product and its versions.
+                      application_registration:
+                        type: object
+                        additionalProperties: false
+                        required:
+                          - name
+                          - description
+                        properties:
+                          name:
+                            type: string
+                            enum:
+                              - Application Registration
+                          description:
+                            type: string
+                            example: >-
+                              This role grants permission to enable and disable
+                              application registration on an API product.
+                            enum:
+                              - >-
+                                This role grants permission to enable and
+                                disable application registration on an API
+                                product.
+                      creator:
+                        type: object
+                        additionalProperties: false
+                        required:
+                          - name
+                          - description
+                        properties:
+                          name:
+                            type: string
+                            enum:
+                              - Creator
+                          description:
+                            type: string
+                            example: >-
+                              This access is required to create API products.
+                              This access is not for creating sub-entities such
+                              as versions, API specs, etc.
+                            enum:
+                              - >-
+                                This access is required to create API products.
+                                This access is not for creating sub-entities
+                                such as versions, API specs, etc.
+                      deployer:
+                        type: object
+                        additionalProperties: false
+                        required:
+                          - name
+                          - description
+                        properties:
+                          name:
+                            type: string
+                            enum:
+                              - Deployer
+                          description:
+                            type: string
+                            example: >-
+                              This role grants permission to deploy and remove
+                              an API product from a control plane.
+                            enum:
+                              - >-
+                                This role grants permission to deploy and remove
+                                an API product from a control plane.
+                      maintainer:
+                        type: object
+                        additionalProperties: false
+                        required:
+                          - name
+                          - description
+                        properties:
+                          name:
+                            type: string
+                            enum:
+                              - Maintainer
+                          description:
+                            type: string
+                            example: >-
+                              This role grants all write permission to manage an
+                              API product and to administer plugins.
+                            enum:
+                              - >-
+                                This role grants all write permission to manage
+                                an API product and to administer plugins.
+                      plugins_admin:
+                        type: object
+                        additionalProperties: false
+                        required:
+                          - name
+                          - description
+                        properties:
+                          name:
+                            type: string
+                            enum:
+                              - Plugins Admin
+                          description:
+                            type: string
+                            example: >-
+                              This role grants full write permission to
+                              administer plugins.
+                            enum:
+                              - >-
+                                This role grants full write permission to
+                                administer plugins.
+                      publisher:
+                        type: object
+                        additionalProperties: false
+                        required:
+                          - name
+                          - description
+                        properties:
+                          name:
+                            type: string
+                            enum:
+                              - Publisher
+                          description:
+                            type: string
+                            example: >-
+                              This role grants permission to publish an API
+                              product to one or more portals.
+                            enum:
+                              - >-
+                                This role grants permission to publish an API
+                                product to one or more portals.
+                      viewer:
+                        type: object
+                        additionalProperties: false
+                        required:
+                          - name
+                          - description
+                        properties:
+                          name:
+                            type: string
+                            enum:
+                              - Viewer
+                          description:
+                            type: string
+                            example: >-
+                              Viewer has read-only access to an API product and
+                              its sub-entities.
+                            enum:
+                              - >-
+                                Viewer has read-only access to an API product
+                                and its sub-entities.
+              portals:
+                $ref: '#/components/schemas/PortalsRoles'
+              application_auth_strategies:
+                $ref: '#/components/schemas/ApplicationAuthStrategiesRoles'
+              dcr_providers:
+                $ref: '#/components/schemas/DCRProvidersRoles'
+              audit_logs:
+                type: object
+                additionalProperties: false
+                required:
+                  - name
+                  - roles
+                properties:
+                  name:
+                    type: string
+                    enum:
+                      - Audit Logs
+                  roles:
+                    type: object
+                    properties:
+                      admin:
+                        type: object
+                        additionalProperties: false
+                        required:
+                          - name
+                          - description
+                        properties:
+                          name:
+                            type: string
+                            enum:
+                              - Admin
+                          description:
+                            type: string
+                            example: >-
+                              This role grants full write access to the Audit
+                              log configuration.
+                            enum:
+                              - >-
+                                This role grants full write access to the Audit
+                                log configuration.
+              identity:
+                type: object
+                additionalProperties: false
+                required:
+                  - name
+                  - roles
+                properties:
+                  name:
+                    type: string
+                    enum:
+                      - Identity
+                  roles:
+                    type: object
+                    properties:
+                      admin:
+                        type: object
+                        additionalProperties: false
+                        required:
+                          - name
+                          - description
+                        properties:
+                          name:
+                            type: string
+                            enum:
+                              - Admin
+                          description:
+                            type: string
+                            example: >-
+                              This role grants full write access to the Identity
+                              configuration.
+                            enum:
+                              - >-
+                                This role grants full write access to the
+                                Identity configuration.
+              mesh_control_planes:
+                type: object
+                additionalProperties: false
+                required:
+                  - name
+                  - roles
+                properties:
+                  name:
+                    type: string
+                    enum:
+                      - Mesh Control Plane
+                  roles:
+                    type: object
+                    properties:
+                      admin:
+                        type: object
+                        additionalProperties: false
+                        required:
+                          - name
+                          - description
+                        properties:
+                          name:
+                            type: string
+                            enum:
+                              - Admin
+                          description:
+                            type: string
+                            example: >-
+                              This role grants full write access to the related
+                              to Mesh control planes.
+                            enum:
+                              - >-
+                                This role grants full write access to the
+                                related to Mesh control planes.
+                      creator:
+                        type: object
+                        additionalProperties: false
+                        required:
+                          - name
+                          - description
+                        properties:
+                          name:
+                            type: string
+                            enum:
+                              - Creator
+                          description:
+                            type: string
+                            example: >-
+                              This role grants access to create new Mesh control
+                              planes.
+                            enum:
+                              - >-
+                                This role grants access to create new Mesh
+                                control planes.
+                      viewer:
+                        type: object
+                        additionalProperties: false
+                        required:
+                          - name
+                          - description
+                        properties:
+                          name:
+                            type: string
+                            enum:
+                              - Viewer
+                          description:
+                            type: string
+                            example: >-
+                              This role grants access to read-only permissions
+                              to Mesh control planes.
+                            enum:
+                              - >-
+                                This role grants access to read-only permissions
+                                to Mesh control planes.
+          examples:
+            Predefined Roles:
+              value:
+                control_planes:
+                  name: Control Planes
+                  roles:
+                    admin:
+                      name: Admin
+                      description: >-
+                        This role grants full write access to all entities
+                        within a control plane.
+                    certificate_admin:
+                      name: Certificate Admin
+                      description: >-
+                        This role grants full write access to administer
+                        certificates.
+                    consumer_admin:
+                      name: Consumer Admin
+                      description: >-
+                        This role grants full write access to administer
+                        consumers.
+                    creator:
+                      name: Creator
+                      description: >-
+                        Creates a new Control Plane in an organization. The
+                        creator becomes the owner of the Control Plane they
+                        create.
+                    deployer:
+                      name: Deployer
+                      description: >-
+                        This role grants full write access to administer
+                        services, routes and plugins necessary to deploy
+                        services in Service Hub.
+                    gateway_service_admin:
+                      name: Gateway Service Admin
+                      description: >-
+                        This role grants full write access to administer gateway
+                        services.
+                    plugin_admin:
+                      name: Plugin Admin
+                      description: >-
+                        This role grants full write access to administer
+                        plugins.
+                    route_admin:
+                      name: Route Admin
+                      description: This role grants full write access to administer routes.
+                    sni_admin:
+                      name: SNI Admin
+                      description: This role grants full write access to administer SNIs.
+                    upstream_admin:
+                      name: Upstream Admin
+                      description: >-
+                        This role grants full write access to administer
+                        upstreams.
+                    viewer:
+                      name: Viewer
+                      description: >-
+                        This role grants read only access to all entities within
+                        a control plane.
+                api_products:
+                  name: API Products
+                  roles:
+                    admin:
+                      name: Admin
+                      description: >-
+                        This role grants full write access to an API product and
+                        its versions.
+                    application_registration:
+                      name: Application Registration
+                      description: >-
+                        This role grants permission to enable and disable
+                        application registration on an API product.
+                    creator:
+                      name: Creator
+                      description: >-
+                        This access is required to create API products. This
+                        access is not for creating sub-entities such as
+                        versions, API specs, etc.
+                    deployer:
+                      name: Deployer
+                      description: >-
+                        This role grants permission to deploy and remove an API
+                        product from a control plane.
+                    maintainer:
+                      name: Maintainer
+                      description: >-
+                        This role grants all write permission to manage an API
+                        product and to administer plugins.
+                    plugins_admin:
+                      name: Plugins Admin
+                      description: >-
+                        This role grants full write permission to administer
+                        plugins.
+                    publisher:
+                      name: Publisher
+                      description: >-
+                        This role grants permission to publish an API product to
+                        one or more portals.
+                    viewer:
+                      name: Viewer
+                      description: >-
+                        Viewer has read-only access to an API product and its
+                        sub-entities.
+                audit_logs:
+                  name: Audit Logs
+                  roles:
+                    admin:
+                      name: Admin
+                      description: >-
+                        This role grants full write access to the Audit log
+                        configuration.
+                identity:
+                  name: Identity
+                  roles:
+                    admin:
+                      name: Admin
+                      description: >-
+                        This role grants full write access to the Identity
+                        configuration.
+                mesh_control_planes:
+                  name: Mesh Control Plane
+                  roles:
+                    admin:
+                      name: Admin
+                      description: >-
+                        This role grants full write access to the related to
+                        Mesh control planes.
+                    creator:
+                      name: Creator
+                      description: >-
+                        This role grants access to create new Mesh control
+                        planes.
+                    viewer:
+                      name: Viewer
+                      description: >-
+                        This role grants access to read-only permissions to Mesh
+                        control planes.
     SearchResponse:
       description: Search response for containing all matched Konnect entities.
       content:
@@ -6408,6 +7667,15 @@ components:
           examples:
             Conflict:
               $ref: '#/components/examples/409OrganizationStateConflict'
+    ListPortals:
+      description: A paginated list of portals in the current region of an organization.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ListPortalsResponse'
+          examples:
+            Example 1:
+              $ref: '#/components/examples/ListPortalsExample1'
     CreatePortal:
       description: Details about the portal that was created.
       content:
@@ -6823,6 +8091,25 @@ components:
       schema:
         type: string
         example: ewogICJpZCI6ICJoZWxsbyB3b3JsZCIKfQ
+    SortPortals:
+      name: sort
+      description: |
+        Sorts a collection of portals. Supported sort attributes are:
+          - name
+          - description
+          - is_public
+          - rbac_enabled
+          - auto_approve_applications
+          - auto_approve_developers
+          - default_domain
+          - custom_domain
+          - custom_client_domain
+          - created_at
+          - updated_at
+      in: query
+      required: false
+      schema:
+        type: string
     SortPortalPages:
       name: sort
       description: |
@@ -7361,6 +8648,7 @@ security:
   - konnectAccessToken: []
 tags:
   - name: Explore
+  - name: Roles
   - name: Search
   - name: Organization Lifecycle
   - name: Portals
