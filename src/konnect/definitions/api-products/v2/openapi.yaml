@@ -964,19 +964,6 @@ components:
             API Product Version Document Response:
               $ref: '#/components/examples/APIProductVersionSpecExample'
   schemas:
-    APIProductLabels:
-      title: 'Labels'
-      type: object
-      description: |
-        description: A maximum of 5 user-defined labels are allowed on this resource.
-        Keys must not start with kong, konnect, insomnia, mesh, kic or _, which are reserved for Kong.
-        Keys are case-sensitive.
-      additionalProperties:
-        type: string
-        pattern: '^[a-z0-9A-Z]{1}([a-z0-9A-Z\-._]*[a-z0-9A-Z]+)?$'
-        minLength: 1
-        maxLength: 63
-      default: {}
     APIProductFilterParameters:
       title: 'APIProductFilterParameters'
       type: object
@@ -1048,7 +1035,7 @@ components:
         updated_at:
           $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
         labels:
-          $ref: '#/components/schemas/APIProductLabels'
+          $ref: '../../../../common/definitions/konnect_properties.yaml#/components/schemas/Labels'
     APIProductDocumentSummary:
       title: API Product Document Summary
       type: object
@@ -1296,7 +1283,7 @@ components:
           description: The description of the API product.
           default: null
         labels:
-          $ref: '#/components/schemas/APIProductLabels'
+          $ref: '../../../../common/definitions/konnect_properties.yaml#/components/schemas/Labels'
         portal_ids:
           type: array
           nullable: false
@@ -1325,7 +1312,7 @@ components:
           example: Text describing the API product
           description: The description of the API product.
         labels:
-          $ref: '#/components/schemas/APIProductLabels'
+          $ref: '../../../../common/definitions/konnect_properties.yaml#/components/schemas/LabelsUpdate'
         portal_ids:
           type: array
           nullable: false

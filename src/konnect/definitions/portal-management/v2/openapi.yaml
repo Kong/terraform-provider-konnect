@@ -5037,7 +5037,7 @@ components:
             ../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt
         labels:
           $ref: >-
-            ../../api-products/v2/openapi.yaml#/components/schemas/APIProductLabels
+            ../../../../common/definitions/konnect_properties.yaml#/components/schemas/Labels
       example:
         id: 7cdcba18-5bdf-4936-81de-d76da02cb99b
         name: Excellent API

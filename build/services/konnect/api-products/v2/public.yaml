@@ -1013,23 +1013,6 @@ components:
             UnsupportedMediaTypeExample:
               $ref: '#/components/examples/UnsupportedMediaTypeExample'
   schemas:
-    APIProductLabels:
-      title: Labels
-      type: object
-      description: >
-        description: A maximum of 5 user-defined labels are allowed on this
-        resource.
-
-        Keys must not start with kong, konnect, insomnia, mesh, kic or _, which
-        are reserved for Kong.
-
-        Keys are case-sensitive.
-      additionalProperties:
-        type: string
-        pattern: ^[a-z0-9A-Z]{1}([a-z0-9A-Z\-._]*[a-z0-9A-Z]+)?$
-        minLength: 1
-        maxLength: 63
-      default: {}
     APIProductFilterParameters:
       title: APIProductFilterParameters
       type: object
@@ -1107,7 +1090,7 @@ components:
         updated_at:
           $ref: '#/components/schemas/UpdatedAt'
         labels:
-          $ref: '#/components/schemas/APIProductLabels'
+          $ref: '#/components/schemas/Labels'
     APIProductDocumentSummary:
       title: API Product Document Summary
       type: object
@@ -1370,7 +1353,7 @@ components:
           description: The description of the API product.
           default: null
         labels:
-          $ref: '#/components/schemas/APIProductLabels'
+          $ref: '#/components/schemas/Labels'
         portal_ids:
           type: array
           nullable: false
@@ -1401,7 +1384,7 @@ components:
           example: Text describing the API product
           description: The description of the API product.
         labels:
-          $ref: '#/components/schemas/APIProductLabels'
+          $ref: '#/components/schemas/LabelsUpdate'
         portal_ids:
           type: array
           nullable: false
@@ -1814,6 +1797,24 @@ components:
       example: '2022-11-04T20:10:06.927Z'
       description: An ISO-8601 timestamp representation of entity update date.
       readOnly: true
+    Labels:
+      title: Labels
+      type: object
+      example:
+        env: test
+      maxProperties: 50
+      description: >
+        Labels store metadata of an entity that can be used for filtering an
+        entity list or for searching across entity types. 
+
+
+        Keys must be of length 1-63 characters, and cannot start with "kong",
+        "konnect", "mesh", "kic", or "_".
+      additionalProperties:
+        type: string
+        pattern: ^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$
+        minLength: 1
+        maxLength: 63
     BaseError:
       type: object
       title: Error
@@ -2031,6 +2032,26 @@ components:
           example: UnsupportedMediaType
       allOf:
         - $ref: '#/components/schemas/BaseError'
+    LabelsUpdate:
+      type: object
+      nullable: true
+      description: >
+        Labels store metadata of an entity that can be used for filtering an
+        entity list or for searching across entity types. 
+
+
+        Keys must be of length 1-63 characters, and cannot start with "kong",
+        "konnect", "mesh", "kic", or "_".
+      example:
+        env: test
+      maxProperties: 50
+      additionalProperties:
+        type: string
+        pattern: ^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$
+        minLength: 1
+        maxLength: 63
+        nullable: true
+      writeOnly: true
     PublishStatus:
       description: document publish status
       type: string
@@ -2388,44 +2409,6 @@ components:
         checked:
           type: boolean
           description: State of the checkbox
-    Labels:
-      title: Labels
-      type: object
-      example:
-        env: test
-      maxProperties: 50
-      description: >
-        Labels store metadata of an entity that can be used for filtering an
-        entity list or for searching across entity types. 
-
-
-        Keys must be of length 1-63 characters, and cannot start with "kong",
-        "konnect", "mesh", "kic", or "_".
-      additionalProperties:
-        type: string
-        pattern: ^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$
-        minLength: 1
-        maxLength: 63
-    LabelsUpdate:
-      type: object
-      nullable: true
-      description: >
-        Labels store metadata of an entity that can be used for filtering an
-        entity list or for searching across entity types. 
-
-
-        Keys must be of length 1-63 characters, and cannot start with "kong",
-        "konnect", "mesh", "kic", or "_".
-      example:
-        env: test
-      maxProperties: 50
-      additionalProperties:
-        type: string
-        pattern: ^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$
-        minLength: 1
-        maxLength: 63
-        nullable: true
-      writeOnly: true
     ConflictError:
       type: object
       properties:

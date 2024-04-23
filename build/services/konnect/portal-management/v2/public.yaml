@@ -4535,7 +4535,7 @@ components:
         updated_at:
           $ref: '#/components/schemas/UpdatedAt'
         labels:
-          $ref: '#/components/schemas/APIProductLabels'
+          $ref: '#/components/schemas/Labels'
       example:
         id: 7cdcba18-5bdf-4936-81de-d76da02cb99b
         name: Excellent API
@@ -6679,23 +6679,24 @@ components:
           example: Conflict
       allOf:
         - $ref: '#/components/schemas/BaseError'
-    APIProductLabels:
+    Labels:
       title: Labels
       type: object
+      example:
+        env: test
+      maxProperties: 50
       description: >
-        description: A maximum of 5 user-defined labels are allowed on this
-        resource.
+        Labels store metadata of an entity that can be used for filtering an
+        entity list or for searching across entity types. 
 
-        Keys must not start with kong, konnect, insomnia, mesh, kic or _, which
-        are reserved for Kong.
 
-        Keys are case-sensitive.
+        Keys must be of length 1-63 characters, and cannot start with "kong",
+        "konnect", "mesh", "kic", or "_".
       additionalProperties:
         type: string
-        pattern: ^[a-z0-9A-Z]{1}([a-z0-9A-Z\-._]*[a-z0-9A-Z]+)?$
+        pattern: ^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$
         minLength: 1
         maxLength: 63
-      default: {}
     schemas-UUID:
       type: string
       format: uuid
