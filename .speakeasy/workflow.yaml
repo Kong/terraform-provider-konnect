@@ -1,4 +1,5 @@
 workflowVersion: 1.0.0
+speakeasyVersion: 1.253.2
 sources:
     konnect-api:
         inputs:
