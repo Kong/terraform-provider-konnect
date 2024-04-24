@@ -153,6 +153,7 @@ paths:
         - DCR Providers
   '/application-auth-strategies':
     post:
+      x-speakeasy-entity-operation: ApplicationAuthStrategy#create
       summary: Create App Auth Strategy
       operationId: create-app-auth-strategy
       description: Creates an application auth strategy.
@@ -220,6 +221,7 @@ paths:
     parameters:
       - $ref: '#/components/parameters/AuthStrategyId'
     get:
+      x-speakeasy-entity-operation: ApplicationAuthStrategy#read
       summary: Get App Auth Strategy
       description: Returns an application auth strategy.
       operationId: get-app-auth-strategy
@@ -252,6 +254,7 @@ paths:
       tags:
         - App Auth Strategies
     patch:
+      x-speakeasy-entity-operation: ApplicationAuthStrategy#update
       summary: Update App Auth Strategy
       operationId: update-app-auth-strategy
       description: Updates an application auth strategy.
@@ -271,6 +274,7 @@ paths:
       tags:
         - App Auth Strategies
     delete:
+      x-speakeasy-entity-operation: ApplicationAuthStrategy#delete
       summary: Delete App Auth Strategy
       description: >-
         Deletes an application auth strategy. An application auth strategy can be deleted ONLY if it's not used by any
@@ -306,6 +310,7 @@ components:
       required: true
       schema:
         $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
+      x-speakeasy-match: id
     SortDcrProviders:
       name: 'sort'
       description: |
@@ -1458,6 +1463,7 @@ components:
         updated_at:
           $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
     CreateAppAuthStrategyRequest:
+      x-speakeasy-entity: ApplicationAuthStrategy
       title: CreateAppAuthStrategyRequest
       description: Request body for creating an Application Auth Strategy
       type: object
@@ -1469,6 +1475,7 @@ components:
         - $ref: '#/components/schemas/AppAuthStrategyKeyAuthRequest'
         - $ref: '#/components/schemas/AppAuthStrategyOpenIDConnectRequest'
     AppAuthStrategy:
+      x-speakeasy-entity: ApplicationAuthStrategy
       title: AppAuthStrategy
       description: A set of plugin configurations that represent how the gateway will perform authentication and authorization for a Product Version. Called “Auth Strategy” for short in the context of portals/applications. The plugins are synced to any Gateway Service that is currently linked or becomes linked to the Product Version.
       type: object
@@ -1480,6 +1487,7 @@ components:
         - $ref: '#/components/schemas/AppAuthStrategyKeyAuthResponse'
         - $ref: '#/components/schemas/AppAuthStrategyOpenIDConnectResponse'
     UpdateAppAuthStrategyRequest:
+      x-speakeasy-entity: ApplicationAuthStrategy
       title: UpdateAppAuthStrategyRequest
       description: Request body for updating an Application Auth Strategy
       type: object

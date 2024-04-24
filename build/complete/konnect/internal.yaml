@@ -11,30 +11,16 @@ info:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
 servers:
-  - url: https://global.api.konghq.com/v2
-  - url: https://us.api.konghq.com/v2
-  - url: https://eu.api.konghq.com/v2
-  - url: https://au.api.konghq.com/v2
+  - url: https://global.api.konghq.com
+  - url: https://us.api.konghq.com
+  - url: https://eu.api.konghq.com
+  - url: https://au.api.konghq.com
     description: Production
 externalDocs:
   description: Documentation for Kong Gateway and its APIs
   url: https://docs.konghq.com
 paths:
-  /aws/marketplace/resolve-customer:
-    post:
-      summary: Resolves an AWS Customer.
-      description: This call the aws marketplace resolve customer api.
-      operationId: resolveCustomer
-      tags:
-        - AWS
-      requestBody:
-        $ref: '#/components/requestBodies/AWSResolveCustomerRequest'
-      responses:
-        '201':
-          $ref: '#/components/responses/ResolveCustomerResponse'
-        '400':
-          $ref: '#/components/responses/IdentityBadRequest'
-  /cloud-gateways/provider-accounts:
+  /v2/cloud-gateways/provider-accounts:
     post:
       summary: Create Provider Account
       description: Creates a new provider account for an organization.
@@ -58,7 +44,7 @@ paths:
           $ref: '#/components/responses/Conflict'
       tags:
         - Provider Accounts
-  /cloud-gateways/provider-accounts/{providerAccountId}:
+  /v2/cloud-gateways/provider-accounts/{providerAccountId}:
     delete:
       summary: Delete Provider Account
       description: Deletes a provider account by ID.
@@ -78,7 +64,7 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Provider Accounts
-  /cloud-gateways/resource-quotas:
+  /v2/cloud-gateways/resource-quotas:
     post:
       summary: Create Resource Quota
       description: >
@@ -104,7 +90,7 @@ paths:
           $ref: '#/components/responses/Conflict'
       tags:
         - Resource Quotas
-  /cloud-gateways/resource-quotas/{resourceQuotaId}:
+  /v2/cloud-gateways/resource-quotas/{resourceQuotaId}:
     patch:
       summary: Update Resource Quota
       description: Updates a resource quota by ID.
@@ -130,7 +116,21 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Resource Quotas
-  /internal/auth0/organizations:
+  /v3/aws/marketplace/resolve-customer:
+    post:
+      summary: Resolves an AWS Customer.
+      description: This call the aws marketplace resolve customer api.
+      operationId: resolveCustomer
+      tags:
+        - AWS
+      requestBody:
+        $ref: '#/components/requestBodies/AWSResolveCustomerRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/ResolveCustomerResponse'
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
+  /v3/internal/auth0/organizations:
     get:
       operationId: get-auth0-organizations-internal
       summary: Retrieves the list of organizations available to the given user.
@@ -144,7 +144,7 @@ paths:
           $ref: '#/components/responses/IdentityNotFound'
       tags:
         - SSO Auth0
-  /internal/auth0/register:
+  /v3/internal/auth0/register:
     post:
       operationId: post-auth0-register-internal
       summary: Register a new organization with an Auth0 authenticated user.
@@ -162,7 +162,7 @@ paths:
         $ref: '#/components/requestBodies/Auth0Registration'
       tags:
         - SSO Auth0
-  /internal/oauth/device/authorize:
+  /v3/internal/oauth/device/authorize:
     post:
       operationId: post-oauth-device-authorize
       summary: Device authorization request
@@ -196,7 +196,7 @@ paths:
         - {}
       tags:
         - Device Authorization Grant
-  /internal/oauth/device/authorize/user:
+  /v3/internal/oauth/device/authorize/user:
     post:
       operationId: post-oauth-device-authorize-user
       summary: User device authorization request
@@ -219,7 +219,7 @@ paths:
         - konnectAccessToken: []
       tags:
         - Device Authorization Grant
-  /internal/oauth/device/confirm:
+  /v3/internal/oauth/device/confirm:
     patch:
       operationId: patch-oauth-device-confirm
       summary: Device confirmation request
@@ -241,7 +241,7 @@ paths:
         - konnectAccessToken: []
       tags:
         - Device Authorization Grant
-  /internal/oauth/device/token:
+  /v3/internal/oauth/device/token:
     post:
       operationId: post-oauth-device-token
       summary: Device access token request
@@ -287,7 +287,7 @@ paths:
         - {}
       tags:
         - Device Authorization Grant
-  /internal/system-accounts/{accountId}/assigned-roles:
+  /v3/internal/system-accounts/{accountId}/assigned-roles:
     parameters:
       - schema:
           type: string
@@ -352,7 +352,7 @@ paths:
         - Managed System Accounts - Roles
       security:
         - clientToken: []
-  /logout:
+  /v3/logout:
     post:
       summary: Log Out
       description: Clears the auth cookies.
@@ -362,7 +362,7 @@ paths:
       responses:
         '201':
           $ref: '#/components/responses/LogoutResponse'
-  /organizations/me:
+  /v3/organizations/me:
     get:
       summary: Retrieve My Organization
       tags:
@@ -399,7 +399,7 @@ paths:
           $ref: '#/components/responses/IdentityNotFound'
       requestBody:
         $ref: '#/components/requestBodies/UpdateOrganization'
-  /refresh:
+  /v3/refresh:
     post:
       summary: Refresh Token
       description: >-
@@ -414,7 +414,7 @@ paths:
           description: No Content
         '401':
           $ref: '#/components/responses/IdentityUnauthenticated'
-  /users/me:
+  /v3/users/me:
     get:
       summary: Retrieve My User Account
       tags:
@@ -471,7 +471,7 @@ paths:
         - Me
       security:
         - konnectAccessToken: []
-  /users/me/permissions:
+  /v3/users/me/permissions:
     get:
       summary: Get My Permissions
       tags:

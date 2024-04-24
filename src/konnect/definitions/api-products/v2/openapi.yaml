@@ -24,6 +24,7 @@ security:
 paths:
   /api-products:
     post:
+      x-speakeasy-entity-operation: ApiProduct#create
       summary: Create API Product
       description: |
         An API Product packages together associated APIs and their operations, backed by thorough documentation,
@@ -92,6 +93,7 @@ paths:
         required: true
         description: API product identifier
     get:
+      x-speakeasy-entity-operation: ApiProduct#read
       summary: Fetch API product
       description: Returns an API product.
       operationId: get-api-product
@@ -107,6 +109,7 @@ paths:
       tags:
         - API Products
     patch:
+      x-speakeasy-entity-operation: ApiProduct#update
       summary: Update an individual API product
       description: Updates an API product.
       operationId: update-api-product
@@ -135,6 +138,7 @@ paths:
       requestBody:
         $ref: '#/components/requestBodies/UpdateAPIProductRequest'
     delete:
+      x-speakeasy-entity-operation: ApiProduct#delete
       summary: Delete API Product
       description: Removes an individual API product.
       operationId: delete-api-product
@@ -305,6 +309,7 @@ paths:
       in: path
       required: true
     post:
+      x-speakeasy-entity-operation: ApiProductVersion#create
       summary: Create API Product Version
       description: Creates a version of an API product.
       operationId: create-api-product-version
@@ -380,6 +385,7 @@ paths:
       in: path
       required: true
     get:
+      x-speakeasy-entity-operation: ApiProductVersion#read
       summary: Fetch API Product Version
       description: Returns a version of an API product.
       operationId: get-api-product-version
@@ -395,6 +401,7 @@ paths:
       tags:
         - API Product Versions
     patch:
+      x-speakeasy-entity-operation: ApiProductVersion#update
       summary: Update an API Product Version
       description: Updates an API product version.
       operationId: update-api-product-version
@@ -423,6 +430,7 @@ paths:
       requestBody:
         $ref: '#/components/requestBodies/UpdateAPIProductVersionRequest'
     delete:
+      x-speakeasy-entity-operation: ApiProductVersion#delete
       summary: Delete API Product Version
       description: Removes an API product version.
       operationId: delete-api-product-version
@@ -660,6 +668,7 @@ components:
             PublishAPIProductToPortalExample:
               $ref: '#/components/examples/PublishAPIProductToPortalExample'
     CreateAPIProductVersionRequest:
+      x-speakeasy-entity: APIProductVersion
       required: true
       content:
         application/json:
@@ -691,6 +700,7 @@ components:
             CreateAPIProductDocumentRequestExample:
               $ref: '#/components/examples/CreateAPIProductDocumentRequestExample'
     UpdateAPIProductVersionRequest:
+      x-speakeasy-entity: APIProductVersion
       required: true
       content:
         application/json:
@@ -988,6 +998,7 @@ components:
         Multiple sort attributes may be provided via a comma separated list.
         JSONPath notation may be used to specify a sub-attribute (eg: 'foo.bar desc').
     APIProduct:
+      x-speakeasy-entity: ApiProduct
       title: API Product
       type: object
       additionalProperties: false
@@ -1153,6 +1164,7 @@ components:
         value: plugin_sync_error_comm
         message: Unable to connect to the control plane to update plugin
     AuthStrategySyncErrors:
+      x-speakeasy-terraform-ignore: true
       readOnly: true
       type: array
       nullable: true
@@ -1164,6 +1176,7 @@ components:
           value: plugin_sync_error_comm
           message: Unable to connect to the control plane to update plugin
     APIProductVersion:
+      x-speakeasy-entity: ApiProductVersion
       title: API Product Version
       type: object
       additionalProperties: false
@@ -1213,6 +1226,7 @@ components:
               description: The identifier of the control plane that the gateway service resides in
               example: e4d9ebb1-26b4-426a-b00e-cb67044f3baf
         publish_status:
+          x-speakeasy-terraform-ignore: true
           type: string
           deprecated: true
           description: 'This field is published if the API product version is published to at least one portal. This field is deprecated: Use PortalProductVersion.publish_status instead.'
@@ -1263,6 +1277,7 @@ components:
         updated_at:
           $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
     CreateAPIProductDTO:
+      x-speakeasy-entity: ApiProduct
       title: Create API Product Request
       description: The request schema to create an API product.
       type: object
@@ -1295,6 +1310,7 @@ components:
             format: uuid
             example: 25a2624c-49fc-4764-99e1-224ed819f200
     UpdateAPIProductDTO:
+      x-speakeasy-entity: ApiProduct
       title: Update API Product Request
       description: The request schema for updating an API product.
       type: object

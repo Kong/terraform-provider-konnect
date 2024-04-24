@@ -35,6 +35,7 @@ paths:
       tags:
         - Mesh
     post:
+      x-speakeasy-entity-operation: MeshControlPlane#create
       summary: Create a new control plane
       description: Create a new control plane
       operationId: create-cp
@@ -68,7 +69,9 @@ paths:
       schema:
         type: string
         format: uuid # validation happens via KinConfig()
+      x-speakeasy-match: id
     get:
+      x-speakeasy-entity-operation: MeshControlPlane#read
       summary: Get the control plane
       description: Get the control plane
       operationId: get-mesh-control-plane
@@ -84,6 +87,7 @@ paths:
         '404':
           $ref: '#/components/responses/MeshControlPlaneNotFoundError'
     delete:
+      x-speakeasy-entity-operation: MeshControlPlane#delete
       summary: Delete the control plane
       description: Delete the control plane
       operationId: delete-mesh-control-plane
@@ -99,6 +103,7 @@ paths:
         '404':
           $ref: '#/components/responses/MeshControlPlaneNotFoundError'
     patch:
+      x-speakeasy-entity-operation: MeshControlPlane#update
       summary: Update control plane
       operationId: update-mesh-control-plane
       tags:

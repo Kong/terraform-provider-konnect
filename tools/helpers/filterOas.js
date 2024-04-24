@@ -148,6 +148,19 @@ function filterPathsToTarget(doc, target) {
 }
 
 function splitByVisibility(doc) {
+
+  // Remove speakeasy annotations
+  if (!process.env.KEEP_SPEAKEASY_ANNOTATIONS){
+    traverse(doc).forEach(function () {
+      if (!this.node) {
+        return;
+      }
+      if (this.key && this.key.startsWith("x-speakeasy")){
+        this.remove();
+      }
+    });
+  }
+
   function isDev(node){
     return node["x-internal"] && node["x-unstable"];
   }

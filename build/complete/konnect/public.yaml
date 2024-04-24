@@ -11,16 +11,123 @@ info:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
 servers:
-  - url: https://global.api.konghq.com/v2
-  - url: https://us.api.konghq.com/v2
-  - url: https://eu.api.konghq.com/v2
-  - url: https://au.api.konghq.com/v2
+  - url: https://global.api.konghq.com
+  - url: https://us.api.konghq.com
+  - url: https://eu.api.konghq.com
+  - url: https://au.api.konghq.com
     description: Production
 externalDocs:
   description: Documentation for Kong Gateway and its APIs
   url: https://docs.konghq.com
 paths:
-  /api-products:
+  /v1/mesh/control-planes:
+    get:
+      summary: List Control Planes
+      responses:
+        '200':
+          $ref: '#/components/responses/ListMeshControlPlanesResponse'
+        '401':
+          $ref: '#/components/responses/MeshControlPlaneUnauthorizedError'
+        '403':
+          $ref: '#/components/responses/MeshControlPlaneForbiddenError'
+      operationId: list-mesh-control-planes
+      description: Returns an array of control planes objects.
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+      tags:
+        - Mesh
+    post:
+      summary: Create a new control plane
+      description: Create a new control plane
+      operationId: create-cp
+      tags:
+        - Mesh
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMeshControlPlaneRequest'
+            examples:
+              Example Request Body:
+                $ref: '#/components/examples/CreateMeshControlPlaneRequestExample'
+      responses:
+        '201':
+          $ref: '#/components/responses/CreateMeshControlPlaneResponse'
+        '400':
+          $ref: '#/components/responses/CreateMeshControlPlaneValidationError'
+        '401':
+          $ref: '#/components/responses/MeshControlPlaneUnauthorizedError'
+        '403':
+          $ref: '#/components/responses/MeshControlPlaneForbiddenError'
+  /v1/mesh/control-planes/{cpId}:
+    parameters:
+      - name: cpId
+        in: path
+        required: true
+        description: Id of the Konnect resource
+        example: bf138ba2-c9b1-4229-b268-04d9d8a6410b
+        schema:
+          type: string
+          format: uuid
+    get:
+      summary: Get the control plane
+      description: Get the control plane
+      operationId: get-mesh-control-plane
+      tags:
+        - Mesh
+      responses:
+        '200':
+          $ref: '#/components/responses/RetrieveMeshControlPlaneResponse'
+        '401':
+          $ref: '#/components/responses/MeshControlPlaneUnauthorizedError'
+        '403':
+          $ref: '#/components/responses/MeshControlPlaneForbiddenError'
+        '404':
+          $ref: '#/components/responses/MeshControlPlaneNotFoundError'
+    delete:
+      summary: Delete the control plane
+      description: Delete the control plane
+      operationId: delete-mesh-control-plane
+      tags:
+        - Mesh
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/MeshControlPlaneUnauthorizedError'
+        '403':
+          $ref: '#/components/responses/MeshControlPlaneForbiddenError'
+        '404':
+          $ref: '#/components/responses/MeshControlPlaneNotFoundError'
+    patch:
+      summary: Update control plane
+      operationId: update-mesh-control-plane
+      tags:
+        - Mesh
+      responses:
+        '200':
+          $ref: '#/components/responses/UpdateMeshControlPlaneResponse'
+        '400':
+          $ref: '#/components/responses/UpdateMeshControlPlaneValidationError'
+        '401':
+          $ref: '#/components/responses/MeshControlPlaneUnauthorizedError'
+        '403':
+          $ref: '#/components/responses/MeshControlPlaneForbiddenError'
+        '404':
+          $ref: '#/components/responses/MeshControlPlaneNotFoundError'
+      description: Update an individual control plane.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateMeshControlPlaneRequest'
+            examples:
+              Example Request Body:
+                $ref: '#/components/examples/UpdateMeshControlPlaneRequestExample'
+  /v2/api-products:
     post:
       summary: Create API Product
       description: >
@@ -82,7 +189,7 @@ paths:
           $ref: '#/components/responses/ApiProductNotFound'
       tags:
         - API Products
-  /api-products/{apiProductId}/documents:
+  /v2/api-products/{apiProductId}/documents:
     parameters:
       - schema:
           type: string
@@ -149,7 +256,7 @@ paths:
           $ref: '#/components/responses/ApiProductNotFound'
       tags:
         - API Product Documentation
-  /api-products/{apiProductId}/documents/{id}:
+  /v2/api-products/{apiProductId}/documents/{id}:
     parameters:
       - schema:
           type: string
@@ -227,7 +334,7 @@ paths:
           $ref: '#/components/responses/ApiProductNotFound'
       tags:
         - API Product Documentation
-  /api-products/{apiProductId}/product-versions:
+  /v2/api-products/{apiProductId}/product-versions:
     parameters:
       - schema:
           type: string
@@ -294,7 +401,7 @@ paths:
           $ref: '#/components/responses/ApiProductNotFound'
       tags:
         - API Product Versions
-  /api-products/{apiProductId}/product-versions/{id}:
+  /v2/api-products/{apiProductId}/product-versions/{id}:
     parameters:
       - schema:
           type: string
@@ -370,7 +477,7 @@ paths:
           $ref: '#/components/responses/ApiProductNotFound'
       tags:
         - API Product Versions
-  /api-products/{apiProductId}/product-versions/{productVersionId}/specifications:
+  /v2/api-products/{apiProductId}/product-versions/{productVersionId}/specifications:
     parameters:
       - schema:
           type: string
@@ -438,7 +545,7 @@ paths:
           $ref: '#/components/responses/ApiProductNotFound'
       tags:
         - API Product Version Specification
-  /api-products/{apiProductId}/product-versions/{productVersionId}/specifications/{specificationId}:
+  /v2/api-products/{apiProductId}/product-versions/{productVersionId}/specifications/{specificationId}:
     parameters:
       - schema:
           type: string
@@ -527,7 +634,7 @@ paths:
           $ref: '#/components/responses/ApiProductNotFound'
       tags:
         - API Product Version Specification
-  /api-products/{id}:
+  /v2/api-products/{id}:
     parameters:
       - schema:
           type: string
@@ -595,7 +702,7 @@ paths:
           $ref: '#/components/responses/ApiProductNotFound'
       tags:
         - API Products
-  /api-requests:
+  /v2/api-requests:
     post:
       summary: Query API Requests
       operationId: query-requests
@@ -633,7 +740,7 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
-  /application-auth-strategies:
+  /v2/application-auth-strategies:
     post:
       summary: Create App Auth Strategy
       operationId: create-app-auth-strategy
@@ -690,7 +797,7 @@ paths:
           $ref: '#/components/responses/Forbidden'
       tags:
         - App Auth Strategies
-  /application-auth-strategies/{authStrategyId}:
+  /v2/application-auth-strategies/{authStrategyId}:
     parameters:
       - $ref: '#/components/parameters/AuthStrategyId'
     get:
@@ -766,7 +873,7 @@ paths:
           $ref: '#/components/responses/Conflict'
       tags:
         - App Auth Strategies
-  /applications/{applicationId}:
+  /v2/applications/{applicationId}:
     get:
       summary: Get Application
       description: >-
@@ -788,7 +895,7 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-  /audit-log-replay-job:
+  /v2/audit-log-replay-job:
     put:
       summary: Update Audit Log Replay Job
       description: Updates a job to re-send audit logs to an organization's webhook.
@@ -821,7 +928,7 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
-  /audit-log-webhook:
+  /v2/audit-log-webhook:
     patch:
       summary: Update Audit Log Webhook
       description: Updates the configuration for a webhook to receive audit logs.
@@ -852,7 +959,7 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
-  /audit-log-webhook/jwks.json:
+  /v2/audit-log-webhook/jwks.json:
     get:
       operationId: get-audit-log-jwks
       summary: Get Audit Log JSON Web Keys
@@ -864,7 +971,7 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/JWKS'
-  /audit-log-webhook/status:
+  /v2/audit-log-webhook/status:
     get:
       summary: Get Audit Log Webhook Status
       description: Returns status of the audit log webhook.
@@ -878,64 +985,7 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
-  /authenticate/{organizationLoginPath}:
-    get:
-      summary: SSO Callback
-      description: Callback for authenticating via an organization's IdP
-      operationId: authenticate-sso
-      tags:
-        - Authentication
-      parameters:
-        - in: path
-          name: organizationLoginPath
-          description: The login path for the organization.
-          required: true
-          schema:
-            type: string
-        - in: query
-          name: return_to
-          description: Return destination for the callback.
-          schema:
-            type: string
-      responses:
-        '302':
-          description: Found
-        '400':
-          $ref: '#/components/responses/IdentityBadRequest'
-        '401':
-          $ref: '#/components/responses/IdentityUnauthenticated'
-  /authentication-settings:
-    get:
-      summary: Get Auth Settings
-      description: >-
-        Returns authentication configuration, which determines how users can log
-        in and how they are assigned to teams.
-      operationId: get-authentication-settings
-      tags:
-        - Auth Settings
-      responses:
-        '200':
-          $ref: '#/components/responses/AuthenticationSettings'
-        '401':
-          $ref: '#/components/responses/IdentityUnauthenticated'
-    patch:
-      summary: Update Auth Settings
-      description: Updates authentication configuration.
-      operationId: update-authentication-settings
-      requestBody:
-        $ref: '#/components/requestBodies/UpdateAuthenticationSettings'
-      tags:
-        - Auth Settings
-      responses:
-        '200':
-          $ref: '#/components/responses/AuthenticationSettings'
-        '400':
-          $ref: '#/components/responses/IdentityBadRequest'
-        '401':
-          $ref: '#/components/responses/IdentityUnauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
-  /cloud-gateways/availability.json:
+  /v2/cloud-gateways/availability.json:
     get:
       operationId: get-availability-json
       summary: Get Resource Availability JSON
@@ -951,7 +1001,7 @@ paths:
             #/components/responses/RetrieveCloudGatewaysAvailabilityDocumentResponse
       tags:
         - Resource Availability
-  /cloud-gateways/configurations:
+  /v2/cloud-gateways/configurations:
     get:
       summary: List Configurations
       description: >
@@ -1004,7 +1054,7 @@ paths:
           $ref: '#/components/responses/CloudGatewaysConflict'
       tags:
         - Data-Plane Group Configurations
-  /cloud-gateways/configurations/{configurationId}:
+  /v2/cloud-gateways/configurations/{configurationId}:
     get:
       summary: Get Configuration
       description: >-
@@ -1024,7 +1074,7 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Data-Plane Group Configurations
-  /cloud-gateways/custom-domains:
+  /v2/cloud-gateways/custom-domains:
     get:
       summary: List Custom Domains
       description: >
@@ -1079,7 +1129,7 @@ paths:
           $ref: '#/components/responses/Conflict'
       tags:
         - Custom Domains
-  /cloud-gateways/custom-domains/{customDomainId}:
+  /v2/cloud-gateways/custom-domains/{customDomainId}:
     get:
       summary: Get Custom Domain
       description: >-
@@ -1120,7 +1170,7 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Custom Domains
-  /cloud-gateways/custom-domains/{customDomainId}/online-status:
+  /v2/cloud-gateways/custom-domains/{customDomainId}/online-status:
     get:
       summary: Get Custom Domain Online Status
       description: Retrieves the CNAME and SSL status of a custom domain.
@@ -1138,7 +1188,7 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Custom Domains
-  /cloud-gateways/default-resource-quotas:
+  /v2/cloud-gateways/default-resource-quotas:
     get:
       summary: List Default Resource Quotas
       description: >
@@ -1161,7 +1211,7 @@ paths:
           $ref: '#/components/responses/Forbidden'
       tags:
         - Resource Quotas
-  /cloud-gateways/networks:
+  /v2/cloud-gateways/networks:
     get:
       summary: List Networks
       description: Returns a paginated list of networks.
@@ -1204,7 +1254,7 @@ paths:
           $ref: '#/components/responses/Conflict'
       tags:
         - Networks
-  /cloud-gateways/networks/{networkId}:
+  /v2/cloud-gateways/networks/{networkId}:
     get:
       summary: Get Network
       description: Retrieves a network by ID.
@@ -1268,7 +1318,7 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Networks
-  /cloud-gateways/networks/{networkId}/configuration-references:
+  /v2/cloud-gateways/networks/{networkId}/configuration-references:
     get:
       description: List Network Configuration References
       summary: >
@@ -1292,7 +1342,7 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Networks
-  /cloud-gateways/networks/{networkId}/transit-gateways:
+  /v2/cloud-gateways/networks/{networkId}/transit-gateways:
     get:
       summary: List Transit Gateways
       description: Returns a paginated collection of transit gateways for a given network.
@@ -1342,7 +1392,7 @@ paths:
           $ref: '#/components/responses/Conflict'
       tags:
         - Transit Gateways
-  /cloud-gateways/networks/{networkId}/transit-gateways/{transitGatewayId}:
+  /v2/cloud-gateways/networks/{networkId}/transit-gateways/{transitGatewayId}:
     get:
       summary: Get Transit Gateway
       description: Retrieves a transit gateway by ID for a given network.
@@ -1381,7 +1431,7 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Transit Gateways
-  /cloud-gateways/provider-accounts:
+  /v2/cloud-gateways/provider-accounts:
     get:
       summary: List Provider Accounts
       description: >-
@@ -1403,7 +1453,7 @@ paths:
           $ref: '#/components/responses/Forbidden'
       tags:
         - Provider Accounts
-  /cloud-gateways/provider-accounts/{providerAccountId}:
+  /v2/cloud-gateways/provider-accounts/{providerAccountId}:
     get:
       summary: Get Provider Account
       description: Retrieves a provider account by ID.
@@ -1421,7 +1471,7 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Provider Accounts
-  /cloud-gateways/resource-quotas:
+  /v2/cloud-gateways/resource-quotas:
     get:
       summary: List Resource Quotas
       description: |
@@ -1441,7 +1491,7 @@ paths:
           $ref: '#/components/responses/Forbidden'
       tags:
         - Resource Quotas
-  /cloud-gateways/resource-quotas/{resourceQuotaId}:
+  /v2/cloud-gateways/resource-quotas/{resourceQuotaId}:
     get:
       summary: Get Resource Quota
       description: Retrieves a resource quota by ID.
@@ -1459,7 +1509,7 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Resource Quotas
-  /control-planes:
+  /v2/control-planes:
     get:
       summary: List Control Planes
       responses:
@@ -1524,7 +1574,7 @@ paths:
               Example Request Body:
                 $ref: '#/components/examples/CreateControlPlaneRequestExample'
       description: Create a control plane in the Konnect Organization.
-  /control-planes/{controlPlaneId}/core-entities/ca_certificates:
+  /v2/control-planes/{controlPlaneId}/core-entities/ca_certificates:
     parameters:
       - $ref: '#/components/parameters/controlPlaneId'
     get:
@@ -1570,7 +1620,7 @@ paths:
         - CA Certificates
       requestBody:
         $ref: '#/components/requestBodies/CA-cert-request'
-  /control-planes/{controlPlaneId}/core-entities/ca_certificates/{ca_certificate_id}:
+  /v2/control-planes/{controlPlaneId}/core-entities/ca_certificates/{ca_certificate_id}:
     delete:
       description: >-
         Delete the specified Certificate Authority (CA) certificate using the
@@ -1663,7 +1713,7 @@ paths:
     parameters:
       - $ref: '#/components/parameters/ca_certificate_id'
       - $ref: '#/components/parameters/controlPlaneId'
-  /control-planes/{controlPlaneId}/core-entities/certificates:
+  /v2/control-planes/{controlPlaneId}/core-entities/certificates:
     get:
       description: >-
         Retrieve a list of all available certificate/ You can use query
@@ -1711,7 +1761,7 @@ paths:
         description: >-
           The ID of your control plane. This variable is available in the
           Konnect manager
-  /control-planes/{controlPlaneId}/core-entities/certificates/{certificate_id}:
+  /v2/control-planes/{controlPlaneId}/core-entities/certificates/{certificate_id}:
     delete:
       description: |
         Delete a Certificate
@@ -1801,7 +1851,7 @@ paths:
         description: >-
           The ID of your control plane. This variable is available in the
           Konnect manager
-  /control-planes/{controlPlaneId}/core-entities/certificates/{certificate_id}/snis/{sni_id}:
+  /v2/control-planes/{controlPlaneId}/core-entities/certificates/{certificate_id}/snis/{sni_id}:
     delete:
       description: Delete a an SNI associated with a a Certificate using an ID.
       responses:
@@ -1875,7 +1925,7 @@ paths:
       - $ref: '#/components/parameters/certificate_id'
       - $ref: '#/components/parameters/sni_id'
       - $ref: '#/components/parameters/controlPlaneId'
-  /control-planes/{controlPlaneId}/core-entities/certificates/{certificate_name_or_id}/snis:
+  /v2/control-planes/{controlPlaneId}/core-entities/certificates/{certificate_name_or_id}/snis:
     get:
       description: >-
         Retrieve a paginated list of all SNIs associated with a certificate. Use
@@ -1935,7 +1985,7 @@ paths:
     parameters:
       - $ref: '#/components/parameters/certificate_name_or_id'
       - $ref: '#/components/parameters/controlPlaneId'
-  /control-planes/{controlPlaneId}/core-entities/consumer_groups:
+  /v2/control-planes/{controlPlaneId}/core-entities/consumer_groups:
     parameters:
       - $ref: '#/components/parameters/controlPlaneId'
     get:
@@ -1976,7 +2026,7 @@ paths:
         from that group. This operation does not delete existing consuemrs.
       tags:
         - consumer-groups
-  /control-planes/{controlPlaneId}/core-entities/consumer_groups/{group_id}:
+  /v2/control-planes/{controlPlaneId}/core-entities/consumer_groups/{group_id}:
     parameters:
       - $ref: '#/components/parameters/controlPlaneId'
       - $ref: '#/components/parameters/group_id'
@@ -2015,7 +2065,7 @@ paths:
       description: Delete consumer group.
       tags:
         - consumer-groups
-  /control-planes/{controlPlaneId}/core-entities/consumer_groups/{group_id}/consumers:
+  /v2/control-planes/{controlPlaneId}/core-entities/consumer_groups/{group_id}/consumers:
     parameters:
       - $ref: '#/components/parameters/controlPlaneId'
       - $ref: '#/components/parameters/group_id'
@@ -2060,7 +2110,7 @@ paths:
         consumers.consumers.
       tags:
         - consumer-groups
-  /control-planes/{controlPlaneId}/core-entities/consumers:
+  /v2/control-planes/{controlPlaneId}/core-entities/consumers:
     get:
       description: >-
         Retrieve a list of all consumers.You can use query parameters to filter
@@ -2106,7 +2156,7 @@ paths:
         $ref: '#/components/requestBodies/consumer-request'
     parameters:
       - $ref: '#/components/parameters/controlPlaneId'
-  /control-planes/{controlPlaneId}/core-entities/consumers/{consumer_id}:
+  /v2/control-planes/{controlPlaneId}/core-entities/consumers/{consumer_id}:
     delete:
       description: >-
         Delete a specific consumer from the system using the Consumer UUID. This
@@ -2164,7 +2214,7 @@ paths:
     parameters:
       - $ref: '#/components/parameters/consumer_id'
       - $ref: '#/components/parameters/controlPlaneId'
-  /control-planes/{controlPlaneId}/core-entities/consumers/{consumer_id}/consumer_groups:
+  /v2/control-planes/{controlPlaneId}/core-entities/consumers/{consumer_id}/consumer_groups:
     parameters:
       - $ref: '#/components/parameters/controlPlaneId'
       - $ref: '#/components/parameters/consumer_id'
@@ -2218,7 +2268,7 @@ paths:
       description: Remove a consumer from all groups
       tags:
         - consumer-groups
-  /control-planes/{controlPlaneId}/core-entities/consumers/{consumer_id}/plugins:
+  /v2/control-planes/{controlPlaneId}/core-entities/consumers/{consumer_id}/plugins:
     get:
       description: 'Retrieve a list of all plugins associated with a consumer. '
       parameters:
@@ -2252,7 +2302,7 @@ paths:
     parameters:
       - $ref: '#/components/parameters/consumer_id'
       - $ref: '#/components/parameters/controlPlaneId'
-  /control-planes/{controlPlaneId}/core-entities/consumers/{consumer_id}/plugins/{plugin_id_or_instance_name}:
+  /v2/control-planes/{controlPlaneId}/core-entities/consumers/{consumer_id}/plugins/{plugin_id_or_instance_name}:
     delete:
       description: Delete a a Plugin associated with a a Consumer using ID.
       responses:
@@ -2292,7 +2342,7 @@ paths:
       - $ref: '#/components/parameters/consumer_id'
       - $ref: '#/components/parameters/plugin_id_or_instance_name'
       - $ref: '#/components/parameters/controlPlaneId'
-  /control-planes/{controlPlaneId}/core-entities/key-sets:
+  /v2/control-planes/{controlPlaneId}/core-entities/key-sets:
     get:
       description: >
         Retrieve a list of all Key-sets in the system. A Key Set object holds a
@@ -2328,7 +2378,7 @@ paths:
         $ref: '#/components/requestBodies/key-set-request'
     parameters:
       - $ref: '#/components/parameters/controlPlaneId'
-  /control-planes/{controlPlaneId}/core-entities/key-sets/{key-set_id_or_name}:
+  /v2/control-planes/{controlPlaneId}/core-entities/key-sets/{key-set_id_or_name}:
     delete:
       description: Delete a Key-set.
       operationId: delete-key-set
@@ -2375,7 +2425,7 @@ paths:
     parameters:
       - $ref: '#/components/parameters/key-set_id_or_name'
       - $ref: '#/components/parameters/controlPlaneId'
-  /control-planes/{controlPlaneId}/core-entities/keys:
+  /v2/control-planes/{controlPlaneId}/core-entities/keys:
     get:
       description: List all Keys
       operationId: list-keys
@@ -2427,7 +2477,7 @@ paths:
         $ref: '#/components/requestBodies/keys-request'
     parameters:
       - $ref: '#/components/parameters/controlPlaneId'
-  /control-planes/{controlPlaneId}/core-entities/keys/{key_id_or_name}:
+  /v2/control-planes/{controlPlaneId}/core-entities/keys/{key_id_or_name}:
     delete:
       description: Delete a Key
       operationId: delete-key
@@ -2504,7 +2554,7 @@ paths:
     parameters:
       - $ref: '#/components/parameters/key_id_or_name'
       - $ref: '#/components/parameters/controlPlaneId'
-  /control-planes/{controlPlaneId}/core-entities/plugin-schemas:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugin-schemas:
     parameters:
       - $ref: '#/components/parameters/controlPlaneId'
     get:
@@ -2547,7 +2597,7 @@ paths:
       description: Upload a custom plugin schema associated with a control plane.
       requestBody:
         $ref: '#/components/requestBodies/create-plugin-schemas'
-  /control-planes/{controlPlaneId}/core-entities/plugin-schemas/{name}:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugin-schemas/{name}:
     parameters:
       - $ref: '#/components/parameters/controlPlaneId'
       - schema:
@@ -2604,7 +2654,7 @@ paths:
         - Custom Plugin Schemas
       requestBody:
         $ref: '#/components/requestBodies/create-plugin-schemas'
-  /control-planes/{controlPlaneId}/core-entities/plugins:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins:
     get:
       description: >-
         This endpoint allows you to list all the plugins. You can use query
@@ -2674,7 +2724,7 @@ paths:
         $ref: '#/components/requestBodies/plugin-request'
     parameters:
       - $ref: '#/components/parameters/controlPlaneId'
-  /control-planes/{controlPlaneId}/core-entities/plugins/{plugin_id_or_instance_name}:
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins/{plugin_id_or_instance_name}:
     delete:
       description: Delete a Plugin
       operationId: delete-plugin
@@ -2747,7 +2797,7 @@ paths:
     parameters:
       - $ref: '#/components/parameters/plugin_id_or_instance_name'
       - $ref: '#/components/parameters/controlPlaneId'
-  /control-planes/{controlPlaneId}/core-entities/routes:
+  /v2/control-planes/{controlPlaneId}/core-entities/routes:
     get:
       description: >-
         List all routes
@@ -2819,7 +2869,7 @@ paths:
         $ref: '#/components/requestBodies/route-request'
     parameters:
       - $ref: '#/components/parameters/controlPlaneId'
-  /control-planes/{controlPlaneId}/core-entities/routes/{route_id}:
+  /v2/control-planes/{controlPlaneId}/core-entities/routes/{route_id}:
     delete:
       description: Delete a route.
       operationId: delete-route
@@ -2884,7 +2934,7 @@ paths:
         name: route_id
         in: path
         required: true
-  /control-planes/{controlPlaneId}/core-entities/routes/{route_id}/plugins:
+  /v2/control-planes/{controlPlaneId}/core-entities/routes/{route_id}/plugins:
     get:
       description: List all Plugins associated with a a route
       parameters:
@@ -2928,7 +2978,7 @@ paths:
     parameters:
       - $ref: '#/components/parameters/route_id'
       - $ref: '#/components/parameters/controlPlaneId'
-  /control-planes/{controlPlaneId}/core-entities/routes/{route_id}/plugins/{plugin_id_or_instance_name}:
+  /v2/control-planes/{controlPlaneId}/core-entities/routes/{route_id}/plugins/{plugin_id_or_instance_name}:
     delete:
       description: Delete a a Plugin associated with a a route using ID.
       responses:
@@ -2980,7 +3030,7 @@ paths:
       - $ref: '#/components/parameters/route_id'
       - $ref: '#/components/parameters/plugin_id_or_instance_name'
       - $ref: '#/components/parameters/controlPlaneId'
-  /control-planes/{controlPlaneId}/core-entities/schemas/plugins/{plugin_name}:
+  /v2/control-planes/{controlPlaneId}/core-entities/schemas/plugins/{plugin_name}:
     parameters:
       - schema:
           type: string
@@ -3006,7 +3056,7 @@ paths:
         - $ref: '#/components/parameters/pagination-offset'
         - $ref: '#/components/parameters/pagination-size'
         - $ref: '#/components/parameters/pagination-tags-filter'
-  /control-planes/{controlPlaneId}/core-entities/services:
+  /v2/control-planes/{controlPlaneId}/core-entities/services:
     get:
       description: List all services
       operationId: list-services
@@ -3111,7 +3161,7 @@ paths:
         $ref: '#/components/requestBodies/service-request'
     parameters:
       - $ref: '#/components/parameters/controlPlaneId'
-  /control-planes/{controlPlaneId}/core-entities/services/{service_id}:
+  /v2/control-planes/{controlPlaneId}/core-entities/services/{service_id}:
     delete:
       description: Delete a service
       operationId: delete-service
@@ -3163,7 +3213,7 @@ paths:
     parameters:
       - $ref: '#/components/parameters/service_id'
       - $ref: '#/components/parameters/controlPlaneId'
-  /control-planes/{controlPlaneId}/core-entities/services/{service_id}/plugins:
+  /v2/control-planes/{controlPlaneId}/core-entities/services/{service_id}/plugins:
     get:
       description: List all Plugins associated with a a service
       parameters:
@@ -3211,7 +3261,7 @@ paths:
     parameters:
       - $ref: '#/components/parameters/service_id'
       - $ref: '#/components/parameters/controlPlaneId'
-  /control-planes/{controlPlaneId}/core-entities/services/{service_id}/plugins/{plugin_id_or_instance_name}:
+  /v2/control-planes/{controlPlaneId}/core-entities/services/{service_id}/plugins/{plugin_id_or_instance_name}:
     delete:
       description: Delete a a Plugin associated with a a service using ID.
       responses:
@@ -3261,7 +3311,7 @@ paths:
       - $ref: '#/components/parameters/service_id'
       - $ref: '#/components/parameters/plugin_id_or_instance_name'
       - $ref: '#/components/parameters/controlPlaneId'
-  /control-planes/{controlPlaneId}/core-entities/services/{service_id}/routes:
+  /v2/control-planes/{controlPlaneId}/core-entities/services/{service_id}/routes:
     get:
       description: List all routes associated with a a service
       parameters:
@@ -3375,7 +3425,7 @@ paths:
     parameters:
       - $ref: '#/components/parameters/service_id'
       - $ref: '#/components/parameters/controlPlaneId'
-  /control-planes/{controlPlaneId}/core-entities/services/{service_id}/routes/{route_id}:
+  /v2/control-planes/{controlPlaneId}/core-entities/services/{service_id}/routes/{route_id}:
     delete:
       description: Delete a a route associated with a a service using ID or name.
       responses:
@@ -3455,7 +3505,7 @@ paths:
       - $ref: '#/components/parameters/service_id'
       - $ref: '#/components/parameters/route_id'
       - $ref: '#/components/parameters/controlPlaneId'
-  /control-planes/{controlPlaneId}/core-entities/snis:
+  /v2/control-planes/{controlPlaneId}/core-entities/snis:
     get:
       description: List all SNIs
       operationId: list-snis
@@ -3488,7 +3538,7 @@ paths:
         $ref: '#/components/requestBodies/create-sni'
     parameters:
       - $ref: '#/components/parameters/controlPlaneId'
-  /control-planes/{controlPlaneId}/core-entities/snis/{sni_id}:
+  /v2/control-planes/{controlPlaneId}/core-entities/snis/{sni_id}:
     delete:
       description: Delete an SNI
       operationId: delete-sni
@@ -3533,7 +3583,7 @@ paths:
     parameters:
       - $ref: '#/components/parameters/sni_id'
       - $ref: '#/components/parameters/controlPlaneId'
-  /control-planes/{controlPlaneId}/core-entities/upstreams:
+  /v2/control-planes/{controlPlaneId}/core-entities/upstreams:
     get:
       description: >
         List all registered upstreams. You can filter the results by pagination
@@ -3655,7 +3705,7 @@ paths:
         $ref: '#/components/requestBodies/upstream-request'
     parameters:
       - $ref: '#/components/parameters/controlPlaneId'
-  /control-planes/{controlPlaneId}/core-entities/upstreams/{upstream_id}:
+  /v2/control-planes/{controlPlaneId}/core-entities/upstreams/{upstream_id}:
     delete:
       description: Delete an Upstream
       operationId: delete-upstream
@@ -3800,7 +3850,7 @@ paths:
     parameters:
       - $ref: '#/components/parameters/upstream_id'
       - $ref: '#/components/parameters/controlPlaneId'
-  /control-planes/{controlPlaneId}/core-entities/upstreams/{upstream_id}/targets:
+  /v2/control-planes/{controlPlaneId}/core-entities/upstreams/{upstream_id}/targets:
     get:
       description: List all Targets associated with a an Upstream
       parameters:
@@ -3867,7 +3917,7 @@ paths:
     parameters:
       - $ref: '#/components/parameters/upstream_id'
       - $ref: '#/components/parameters/controlPlaneId'
-  /control-planes/{controlPlaneId}/core-entities/upstreams/{upstream_id}/targets/{target_id}:
+  /v2/control-planes/{controlPlaneId}/core-entities/upstreams/{upstream_id}/targets/{target_id}:
     delete:
       description: Delete a a Target associated with a an Upstream using ID or target.
       responses:
@@ -3923,7 +3973,7 @@ paths:
       - $ref: '#/components/parameters/upstream_id'
       - $ref: '#/components/parameters/target_id'
       - $ref: '#/components/parameters/controlPlaneId'
-  /control-planes/{controlPlaneId}/core-entities/vaults:
+  /v2/control-planes/{controlPlaneId}/core-entities/vaults:
     get:
       description: List all Vaults
       operationId: list-vaults
@@ -3970,7 +4020,7 @@ paths:
         $ref: '#/components/requestBodies/vault-request'
     parameters:
       - $ref: '#/components/parameters/controlPlaneId'
-  /control-planes/{controlPlaneId}/core-entities/vaults/{vault_id_or_prefix}:
+  /v2/control-planes/{controlPlaneId}/core-entities/vaults/{vault_id_or_prefix}:
     delete:
       description: Delete a Vault
       operationId: delete-vault
@@ -4040,7 +4090,7 @@ paths:
     parameters:
       - $ref: '#/components/parameters/vault_id_or_prefix'
       - $ref: '#/components/parameters/controlPlaneId'
-  /control-planes/{controlPlaneId}/dp-client-certificates:
+  /v2/control-planes/{controlPlaneId}/dp-client-certificates:
     parameters:
       - $ref: '#/components/parameters/controlPlaneId'
     get:
@@ -4074,7 +4124,7 @@ paths:
         plane.
       requestBody:
         $ref: '#/components/requestBodies/create-dp-client-cert'
-  /control-planes/{controlPlaneId}/dp-client-certificates/{certificateId}:
+  /v2/control-planes/{controlPlaneId}/dp-client-certificates/{certificateId}:
     parameters:
       - $ref: '#/components/parameters/controlPlaneId'
       - schema:
@@ -4111,7 +4161,7 @@ paths:
         plane. Removing a pinned dataplane certificate would invalidate any
         dataplanes currently connected to this control plane using this
         certificate.
-  /control-planes/{controlPlaneId}/expected-config-hash:
+  /v2/control-planes/{controlPlaneId}/expected-config-hash:
     get:
       summary: Fetch Expected Config Hash
       tags:
@@ -4130,7 +4180,7 @@ paths:
         - $ref: '#/components/parameters/page_number'
     parameters:
       - $ref: '#/components/parameters/controlPlaneId'
-  /control-planes/{controlPlaneId}/nodes:
+  /v2/control-planes/{controlPlaneId}/nodes:
     get:
       summary: List Data Plane Node Records
       responses:
@@ -4148,7 +4198,7 @@ paths:
         - $ref: '#/components/parameters/page_number'
     parameters:
       - $ref: '#/components/parameters/controlPlaneId'
-  /control-planes/{controlPlaneId}/nodes/{nodeId}:
+  /v2/control-planes/{controlPlaneId}/nodes/{nodeId}:
     parameters:
       - schema:
           type: string
@@ -4183,7 +4233,7 @@ paths:
         Remove a specific data plane node record associated to this control
         plane. Deleting this record does not prevent the data plane node from
         re-connecting to the control plane.
-  /control-planes/{controlPlaneId}/nodes/eol:
+  /v2/control-planes/{controlPlaneId}/nodes/eol:
     get:
       summary: List End-of-Life Data Plane Node Records
       responses:
@@ -4203,7 +4253,7 @@ paths:
         - $ref: '#/components/parameters/page_number'
     parameters:
       - $ref: '#/components/parameters/controlPlaneId'
-  /control-planes/{id}:
+  /v2/control-planes/{id}:
     parameters:
       - schema:
           type: string
@@ -4283,7 +4333,7 @@ paths:
       description: Delete an individual control plane.
       tags:
         - Control Planes
-  /control-planes/{id}/group-member-status:
+  /v2/control-planes/{id}/group-member-status:
     parameters:
       - schema:
           type: string
@@ -4310,7 +4360,7 @@ paths:
           $ref: '#/components/responses/NotFound'
         '503':
           $ref: '#/components/responses/ServiceUnavailable'
-  /control-planes/{id}/group-memberships:
+  /v2/control-planes/{id}/group-memberships:
     parameters:
       - schema:
           type: string
@@ -4342,7 +4392,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageNumber'
-  /control-planes/{id}/group-memberships/add:
+  /v2/control-planes/{id}/group-memberships/add:
     parameters:
       - schema:
           type: string
@@ -4371,7 +4421,7 @@ paths:
       tags:
         - Control Plane Groups
       description: Adds one or more control planes as a member of a control plane group.
-  /control-planes/{id}/group-memberships/remove:
+  /v2/control-planes/{id}/group-memberships/remove:
     parameters:
       - schema:
           type: string
@@ -4402,7 +4452,7 @@ paths:
           $ref: '#/components/responses/NotFound'
         '503':
           $ref: '#/components/responses/ServiceUnavailable'
-  /control-planes/{id}/group-status:
+  /v2/control-planes/{id}/group-status:
     parameters:
       - schema:
           type: string
@@ -4431,7 +4481,7 @@ paths:
       description: >-
         Returns the status of a control plane group, including existing
         conflicts.
-  /dcr-providers:
+  /v2/dcr-providers:
     post:
       summary: Create DCR provider
       operationId: create-dcr-provider
@@ -4487,7 +4537,7 @@ paths:
           $ref: '#/components/responses/Forbidden'
       tags:
         - DCR Providers
-  /dcr-providers/{dcrProviderId}:
+  /v2/dcr-providers/{dcrProviderId}:
     parameters:
       - $ref: '#/components/parameters/DcrProviderId'
     get:
@@ -4539,7 +4589,7 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - DCR Providers
-  /dcr-providers/{dcrProviderId}/verify:
+  /v2/dcr-providers/{dcrProviderId}/verify:
     parameters:
       - $ref: '#/components/parameters/DcrProviderId'
     post:
@@ -4559,266 +4609,7 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - DCR Providers
-  /identity-provider:
-    get:
-      summary: Fetch IdP Configuration
-      operationId: get-idp-configuration
-      responses:
-        '200':
-          $ref: '#/components/responses/IdPConfiguration'
-        '400':
-          $ref: '#/components/responses/IdentityBadRequest'
-        '401':
-          $ref: '#/components/responses/IdentityUnauthenticated'
-        '403':
-          $ref: '#/components/responses/IdentityPermissionDenied'
-        '404':
-          $ref: '#/components/responses/IdentityNotFound'
-      tags:
-        - Auth Settings
-      description: Fetch the IdP configuration.
-    parameters: []
-    patch:
-      summary: Update IdP Configuration
-      operationId: update-idp-configuration
-      responses:
-        '200':
-          $ref: '#/components/responses/IdPConfiguration'
-        '400':
-          $ref: '#/components/responses/IdentityBadRequest'
-        '401':
-          $ref: '#/components/responses/IdentityUnauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
-      description: Update the IdP configuration.
-      requestBody:
-        $ref: '#/components/requestBodies/UpdateIdPConfiguration'
-      tags:
-        - Auth Settings
-  /identity-provider/team-group-mappings:
-    get:
-      summary: Fetch Team Group Mappings
-      operationId: get-team-group-mappings
-      parameters:
-        - $ref: '#/components/parameters/PageSize'
-        - $ref: '#/components/parameters/PageNumber'
-      responses:
-        '200':
-          $ref: '#/components/responses/TeamGroupMappingCollection'
-        '400':
-          $ref: '#/components/responses/IdentityBadRequest'
-        '401':
-          $ref: '#/components/responses/IdentityUnauthenticated'
-        '403':
-          $ref: '#/components/responses/IdentityPermissionDenied'
-      tags:
-        - Auth Settings
-      description: >-
-        Retrieves the mappings between Konnect Teams and Identity Provider
-        Groups.
-
-        Returns a 400 error if an Identity Provider has not yet been configured.
-    patch:
-      summary: Patch Mappings by Team ID
-      operationId: patch-team-group-mappings
-      responses:
-        '200':
-          $ref: '#/components/responses/TeamGroupMappingCollection'
-        '400':
-          $ref: '#/components/responses/IdentityBadRequest'
-        '401':
-          $ref: '#/components/responses/IdentityUnauthenticated'
-        '403':
-          $ref: '#/components/responses/IdentityPermissionDenied'
-      tags:
-        - Auth Settings
-      description: >-
-        Allows partial updates to the mappings between Konnect Teams and
-        Identity Provider Groups.
-
-        The request body must be keyed on team ID. For a given team ID, the
-        given group list is a
-
-        complete replacement. To remove all mappings for a given team, provide
-        an empty group list.
-
-
-        Returns a 400 error if an Identity Provider has not yet been configured,
-        or if a team ID in
-
-        the request body is not found or is not a UUID.
-      requestBody:
-        $ref: '#/components/requestBodies/PatchTeamGroupMappings'
-  /identity-provider/team-mappings:
-    put:
-      summary: Update Team Mappings
-      operationId: update-idp-team-mappings
-      responses:
-        '200':
-          $ref: '#/components/responses/TeamMappingCollection'
-        '400':
-          $ref: '#/components/responses/IdentityBadRequest'
-        '401':
-          $ref: '#/components/responses/IdentityPermissionDenied'
-        '404':
-          $ref: '#/components/responses/IdentityNotFound'
-        '412':
-          $ref: '#/components/responses/PreconditionFailed'
-      tags:
-        - Auth Settings
-      description: Updates the IdP group to Konnect team mapping.
-      requestBody:
-        $ref: '#/components/requestBodies/UpdateTeamMappings'
-    get:
-      summary: Fetch Team Mapping
-      operationId: get-idp-team-mappings
-      parameters:
-        - $ref: '#/components/parameters/PageSize'
-        - $ref: '#/components/parameters/PageNumber'
-      responses:
-        '200':
-          $ref: '#/components/responses/TeamMappingResponse'
-        '401':
-          $ref: '#/components/responses/IdentityUnauthenticated'
-        '403':
-          $ref: '#/components/responses/IdentityPermissionDenied'
-        '404':
-          $ref: '#/components/responses/IdentityNotFound'
-        '412':
-          $ref: '#/components/responses/PreconditionFailed'
-      tags:
-        - Auth Settings
-      description: Fetch the IdP group to Konnect team mapping.
-  /invites:
-    post:
-      summary: Invite User
-      description: >-
-        Sends an invitation email to invite a user to the Konnect organization.
-        The email contains a link with a one time token to accept the
-        invitation. Upon accepting the invitation, the user is directed to
-        https://cloud.konghq.com/login to complete registration.
-      operationId: invite-user
-      requestBody:
-        $ref: '#/components/requestBodies/InviteUser'
-      responses:
-        '201':
-          description: Created
-        '400':
-          $ref: '#/components/responses/IdentityBadRequest'
-        '409':
-          $ref: '#/components/responses/IdentityConflict'
-        '429':
-          $ref: '#/components/responses/RateLimited'
-      tags:
-        - Invites
-  /mesh/control-planes:
-    get:
-      summary: List Control Planes
-      responses:
-        '200':
-          $ref: '#/components/responses/ListMeshControlPlanesResponse'
-        '401':
-          $ref: '#/components/responses/MeshControlPlaneUnauthorizedError'
-        '403':
-          $ref: '#/components/responses/MeshControlPlaneForbiddenError'
-      operationId: list-mesh-control-planes
-      description: Returns an array of control planes objects.
-      parameters:
-        - $ref: '#/components/parameters/PageSize'
-        - $ref: '#/components/parameters/PageNumber'
-      tags:
-        - Mesh
-    post:
-      summary: Create a new control plane
-      description: Create a new control plane
-      operationId: create-cp
-      tags:
-        - Mesh
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateMeshControlPlaneRequest'
-            examples:
-              Example Request Body:
-                $ref: '#/components/examples/CreateMeshControlPlaneRequestExample'
-      responses:
-        '201':
-          $ref: '#/components/responses/CreateMeshControlPlaneResponse'
-        '400':
-          $ref: '#/components/responses/CreateMeshControlPlaneValidationError'
-        '401':
-          $ref: '#/components/responses/MeshControlPlaneUnauthorizedError'
-        '403':
-          $ref: '#/components/responses/MeshControlPlaneForbiddenError'
-  /mesh/control-planes/{cpId}:
-    parameters:
-      - name: cpId
-        in: path
-        required: true
-        description: Id of the Konnect resource
-        example: bf138ba2-c9b1-4229-b268-04d9d8a6410b
-        schema:
-          type: string
-          format: uuid
-    get:
-      summary: Get the control plane
-      description: Get the control plane
-      operationId: get-mesh-control-plane
-      tags:
-        - Mesh
-      responses:
-        '200':
-          $ref: '#/components/responses/RetrieveMeshControlPlaneResponse'
-        '401':
-          $ref: '#/components/responses/MeshControlPlaneUnauthorizedError'
-        '403':
-          $ref: '#/components/responses/MeshControlPlaneForbiddenError'
-        '404':
-          $ref: '#/components/responses/MeshControlPlaneNotFoundError'
-    delete:
-      summary: Delete the control plane
-      description: Delete the control plane
-      operationId: delete-mesh-control-plane
-      tags:
-        - Mesh
-      responses:
-        '204':
-          description: No Content
-        '401':
-          $ref: '#/components/responses/MeshControlPlaneUnauthorizedError'
-        '403':
-          $ref: '#/components/responses/MeshControlPlaneForbiddenError'
-        '404':
-          $ref: '#/components/responses/MeshControlPlaneNotFoundError'
-    patch:
-      summary: Update control plane
-      operationId: update-mesh-control-plane
-      tags:
-        - Mesh
-      responses:
-        '200':
-          $ref: '#/components/responses/UpdateMeshControlPlaneResponse'
-        '400':
-          $ref: '#/components/responses/UpdateMeshControlPlaneValidationError'
-        '401':
-          $ref: '#/components/responses/MeshControlPlaneUnauthorizedError'
-        '403':
-          $ref: '#/components/responses/MeshControlPlaneForbiddenError'
-        '404':
-          $ref: '#/components/responses/MeshControlPlaneNotFoundError'
-      description: Update an individual control plane.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UpdateMeshControlPlaneRequest'
-            examples:
-              Example Request Body:
-                $ref: '#/components/examples/UpdateMeshControlPlaneRequestExample'
-  /portal-roles:
+  /v2/portal-roles:
     get:
       summary: List Portal Roles
       operationId: list-portal-roles
@@ -4834,7 +4625,7 @@ paths:
           $ref: '#/components/responses/Forbidden'
       tags:
         - Portal Team Roles
-  /portals:
+  /v2/portals:
     get:
       summary: List Portals
       description: >-
@@ -4896,7 +4687,7 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
-  /portals/{portalId}:
+  /v2/portals/{portalId}:
     parameters:
       - $ref: '#/components/parameters/parameters-PortalId'
     get:
@@ -4958,7 +4749,7 @@ paths:
           $ref: '#/components/responses/NotFound'
         '409':
           $ref: '#/components/responses/Conflict'
-  /portals/{portalId}/appearance:
+  /v2/portals/{portalId}/appearance:
     get:
       summary: Get Appearance Configuration
       description: >-
@@ -5016,7 +4807,7 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-  /portals/{portalId}/application-registrations:
+  /v2/portals/{portalId}/application-registrations:
     get:
       summary: List Application Registrations by Portal
       description: >-
@@ -5077,7 +4868,7 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-  /portals/{portalId}/applications:
+  /v2/portals/{portalId}/applications:
     get:
       summary: List Applications
       description: >-
@@ -5134,7 +4925,7 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-  /portals/{portalId}/applications/{applicationId}:
+  /v2/portals/{portalId}/applications/{applicationId}:
     get:
       summary: Get Application by Portal
       description: >-
@@ -5177,7 +4968,7 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-  /portals/{portalId}/applications/{applicationId}/registrations:
+  /v2/portals/{portalId}/applications/{applicationId}/registrations:
     get:
       summary: List Registrations by Application
       description: >-
@@ -5230,7 +5021,7 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-  /portals/{portalId}/applications/{applicationId}/registrations/{registrationId}:
+  /v2/portals/{portalId}/applications/{applicationId}/registrations/{registrationId}:
     parameters:
       - $ref: '#/components/parameters/parameters-PortalId'
       - $ref: '#/components/parameters/ApplicationId'
@@ -5303,7 +5094,7 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-  /portals/{portalId}/applications/{applicationId}/registrations/{registrationId}/granted-scopes:
+  /v2/portals/{portalId}/applications/{applicationId}/registrations/{registrationId}/granted-scopes:
     get:
       summary: List Granted Scopes
       description: >-
@@ -5323,7 +5114,7 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
-  /portals/{portalId}/authentication-settings:
+  /v2/portals/{portalId}/authentication-settings:
     parameters:
       - $ref: '#/components/parameters/parameters-PortalId'
     get:
@@ -5382,7 +5173,7 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
-  /portals/{portalId}/developers:
+  /v2/portals/{portalId}/developers:
     parameters:
       - $ref: '#/components/parameters/parameters-PortalId'
     get:
@@ -5436,7 +5227,7 @@ paths:
           description: Filter developers returned in the response.
           required: false
           style: deepObject
-  /portals/{portalId}/developers/{developerId}:
+  /v2/portals/{portalId}/developers/{developerId}:
     parameters:
       - $ref: '#/components/parameters/parameters-PortalId'
       - $ref: '#/components/parameters/DeveloperId'
@@ -5514,7 +5305,7 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-  /portals/{portalId}/developers/{developerId}/teams:
+  /v2/portals/{portalId}/developers/{developerId}/teams:
     parameters:
       - $ref: '#/components/parameters/parameters-DeveloperId'
       - $ref: '#/components/parameters/parameters-PortalId'
@@ -5539,7 +5330,7 @@ paths:
         - $ref: '#/components/parameters/PageNumber'
       tags:
         - Portal Team Membership
-  /portals/{portalId}/identity-provider/team-group-mappings:
+  /v2/portals/{portalId}/identity-provider/team-group-mappings:
     parameters:
       - $ref: '#/components/parameters/parameters-PortalId'
     get:
@@ -5605,7 +5396,7 @@ paths:
         - Portal Auth Settings
       requestBody:
         $ref: '#/components/requestBodies/UpdatePortalTeamGroupMappings'
-  /portals/{portalId}/product-versions:
+  /v2/portals/{portalId}/product-versions:
     parameters:
       - $ref: '#/components/parameters/PortalId'
     get:
@@ -5649,7 +5440,7 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Portal Product Versions
-  /portals/{portalId}/product-versions/{productVersionId}:
+  /v2/portals/{portalId}/product-versions/{productVersionId}:
     parameters:
       - $ref: '#/components/parameters/ProductVersionId'
       - $ref: '#/components/parameters/PortalId'
@@ -5723,7 +5514,7 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Portal Product Versions
-  /portals/{portalId}/products:
+  /v2/portals/{portalId}/products:
     parameters:
       - $ref: '#/components/parameters/parameters-PortalId'
     get:
@@ -5761,7 +5552,7 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-  /portals/{portalId}/teams:
+  /v2/portals/{portalId}/teams:
     parameters:
       - $ref: '#/components/parameters/parameters-PortalId'
     get:
@@ -5827,7 +5618,7 @@ paths:
         Creates a developer team in a portal. Developers can be added to teams
         to provide RBAC access to API products. Teams can be assigned roles that
         grant permissions to perform an action on a resource.
-  /portals/{portalId}/teams/{teamId}:
+  /v2/portals/{portalId}/teams/{teamId}:
     parameters:
       - $ref: '#/components/parameters/TeamId'
       - $ref: '#/components/parameters/parameters-PortalId'
@@ -5881,7 +5672,7 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Portal Teams
-  /portals/{portalId}/teams/{teamId}/assigned-roles:
+  /v2/portals/{portalId}/teams/{teamId}/assigned-roles:
     parameters:
       - $ref: '#/components/parameters/parameters-PortalId'
       - $ref: '#/components/parameters/TeamId'
@@ -5941,7 +5732,7 @@ paths:
         $ref: '#/components/requestBodies/PortalAssignRole'
       tags:
         - Portal Team Roles
-  /portals/{portalId}/teams/{teamId}/assigned-roles/{roleId}:
+  /v2/portals/{portalId}/teams/{teamId}/assigned-roles/{roleId}:
     parameters:
       - $ref: '#/components/parameters/RoleId'
       - $ref: '#/components/parameters/parameters-PortalId'
@@ -5963,7 +5754,7 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Portal Team Roles
-  /portals/{portalId}/teams/{teamId}/developers:
+  /v2/portals/{portalId}/teams/{teamId}/developers:
     parameters:
       - $ref: '#/components/parameters/parameters-PortalId'
       - $ref: '#/components/parameters/TeamId'
@@ -6016,7 +5807,7 @@ paths:
         $ref: '#/components/requestBodies/AddDeveloperToTeam'
       tags:
         - Portal Team Membership
-  /portals/{portalId}/teams/{teamId}/developers/{developerId}:
+  /v2/portals/{portalId}/teams/{teamId}/developers/{developerId}:
     parameters:
       - $ref: '#/components/parameters/parameters-PortalId'
       - $ref: '#/components/parameters/parameters-DeveloperId'
@@ -6038,7 +5829,7 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Portal Team Membership
-  /portals/{portalId}/verify-domain:
+  /v2/portals/{portalId}/verify-domain:
     post:
       summary: Verify Custom Domains
       description: >-
@@ -6068,7 +5859,7 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-  /portals/appearance-defaults:
+  /v2/portals/appearance-defaults:
     get:
       summary: Get Default Appearance Configurations
       description: >-
@@ -6086,7 +5877,7 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-  /reports:
+  /v2/reports:
     get:
       summary: List Custom Reports
       responses:
@@ -6120,7 +5911,7 @@ paths:
           $ref: '#/components/responses/PermissionDenied'
         '429':
           $ref: '#/components/responses/TooManyRequests'
-  /reports/{reportId}:
+  /v2/reports/{reportId}:
     parameters:
       - schema:
           type: string
@@ -6183,7 +5974,7 @@ paths:
       description: Deletes a custom report. Returns 404 if the report is not found.
       tags:
         - Custom Reports
-  /reports/{reportId}/export:
+  /v2/reports/{reportId}/export:
     parameters:
       - schema:
           type: string
@@ -6253,7 +6044,216 @@ paths:
           $ref: '#/components/responses/NotFound'
         '429':
           $ref: '#/components/responses/TooManyRequests'
-  /roles:
+  /v3/authenticate/{organizationLoginPath}:
+    get:
+      summary: SSO Callback
+      description: Callback for authenticating via an organization's IdP
+      operationId: authenticate-sso
+      tags:
+        - Authentication
+      parameters:
+        - in: path
+          name: organizationLoginPath
+          description: The login path for the organization.
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: return_to
+          description: Return destination for the callback.
+          schema:
+            type: string
+      responses:
+        '302':
+          description: Found
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+  /v3/authentication-settings:
+    get:
+      summary: Get Auth Settings
+      description: >-
+        Returns authentication configuration, which determines how users can log
+        in and how they are assigned to teams.
+      operationId: get-authentication-settings
+      tags:
+        - Auth Settings
+      responses:
+        '200':
+          $ref: '#/components/responses/AuthenticationSettings'
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+    patch:
+      summary: Update Auth Settings
+      description: Updates authentication configuration.
+      operationId: update-authentication-settings
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateAuthenticationSettings'
+      tags:
+        - Auth Settings
+      responses:
+        '200':
+          $ref: '#/components/responses/AuthenticationSettings'
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+  /v3/identity-provider:
+    get:
+      summary: Fetch IdP Configuration
+      operationId: get-idp-configuration
+      responses:
+        '200':
+          $ref: '#/components/responses/IdPConfiguration'
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+        '403':
+          $ref: '#/components/responses/IdentityPermissionDenied'
+        '404':
+          $ref: '#/components/responses/IdentityNotFound'
+      tags:
+        - Auth Settings
+      description: Fetch the IdP configuration.
+    parameters: []
+    patch:
+      summary: Update IdP Configuration
+      operationId: update-idp-configuration
+      responses:
+        '200':
+          $ref: '#/components/responses/IdPConfiguration'
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+      description: Update the IdP configuration.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateIdPConfiguration'
+      tags:
+        - Auth Settings
+  /v3/identity-provider/team-group-mappings:
+    get:
+      summary: Fetch Team Group Mappings
+      operationId: get-team-group-mappings
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+      responses:
+        '200':
+          $ref: '#/components/responses/TeamGroupMappingCollection'
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+        '403':
+          $ref: '#/components/responses/IdentityPermissionDenied'
+      tags:
+        - Auth Settings
+      description: >-
+        Retrieves the mappings between Konnect Teams and Identity Provider
+        Groups.
+
+        Returns a 400 error if an Identity Provider has not yet been configured.
+    patch:
+      summary: Patch Mappings by Team ID
+      operationId: patch-team-group-mappings
+      responses:
+        '200':
+          $ref: '#/components/responses/TeamGroupMappingCollection'
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+        '403':
+          $ref: '#/components/responses/IdentityPermissionDenied'
+      tags:
+        - Auth Settings
+      description: >-
+        Allows partial updates to the mappings between Konnect Teams and
+        Identity Provider Groups.
+
+        The request body must be keyed on team ID. For a given team ID, the
+        given group list is a
+
+        complete replacement. To remove all mappings for a given team, provide
+        an empty group list.
+
+
+        Returns a 400 error if an Identity Provider has not yet been configured,
+        or if a team ID in
+
+        the request body is not found or is not a UUID.
+      requestBody:
+        $ref: '#/components/requestBodies/PatchTeamGroupMappings'
+  /v3/identity-provider/team-mappings:
+    put:
+      summary: Update Team Mappings
+      operationId: update-idp-team-mappings
+      responses:
+        '200':
+          $ref: '#/components/responses/TeamMappingCollection'
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
+        '401':
+          $ref: '#/components/responses/IdentityPermissionDenied'
+        '404':
+          $ref: '#/components/responses/IdentityNotFound'
+        '412':
+          $ref: '#/components/responses/PreconditionFailed'
+      tags:
+        - Auth Settings
+      description: Updates the IdP group to Konnect team mapping.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateTeamMappings'
+    get:
+      summary: Fetch Team Mapping
+      operationId: get-idp-team-mappings
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+      responses:
+        '200':
+          $ref: '#/components/responses/TeamMappingResponse'
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+        '403':
+          $ref: '#/components/responses/IdentityPermissionDenied'
+        '404':
+          $ref: '#/components/responses/IdentityNotFound'
+        '412':
+          $ref: '#/components/responses/PreconditionFailed'
+      tags:
+        - Auth Settings
+      description: Fetch the IdP group to Konnect team mapping.
+  /v3/invites:
+    post:
+      summary: Invite User
+      description: >-
+        Sends an invitation email to invite a user to the Konnect organization.
+        The email contains a link with a one time token to accept the
+        invitation. Upon accepting the invitation, the user is directed to
+        https://cloud.konghq.com/login to complete registration.
+      operationId: invite-user
+      requestBody:
+        $ref: '#/components/requestBodies/InviteUser'
+      responses:
+        '201':
+          description: Created
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
+        '409':
+          $ref: '#/components/responses/IdentityConflict'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+      tags:
+        - Invites
+  /v3/roles:
     get:
       summary: Get Predefined Roles
       description: Retrieves the predefined, or system managed, roles.
@@ -6267,7 +6267,7 @@ paths:
           $ref: '#/components/responses/IdentityUnauthenticated'
       tags:
         - Roles
-  /system-accounts:
+  /v3/system-accounts:
     get:
       summary: List System Accounts
       tags:
@@ -6321,7 +6321,7 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '409':
           $ref: '#/components/responses/IdentityConflict'
-  /system-accounts/{accountId}:
+  /v3/system-accounts/{accountId}:
     get:
       summary: Fetch System Account
       tags:
@@ -6384,7 +6384,7 @@ paths:
         account was not found.
       tags:
         - System Accounts
-  /system-accounts/{accountId}/access-tokens:
+  /v3/system-accounts/{accountId}/access-tokens:
     get:
       summary: List System Account Access Tokens
       tags:
@@ -6447,7 +6447,7 @@ paths:
         $ref: '#/components/requestBodies/CreateSystemAccountAccessToken'
       tags:
         - System Accounts - Access Tokens
-  /system-accounts/{accountId}/access-tokens/{tokenId}:
+  /v3/system-accounts/{accountId}/access-tokens/{tokenId}:
     get:
       summary: Fetch System Account Access Token
       responses:
@@ -6515,7 +6515,7 @@ paths:
       description: Deletes the specified token. Returns 404 if the token was not found.
       tags:
         - System Accounts - Access Tokens
-  /system-accounts/{accountId}/assigned-roles:
+  /v3/system-accounts/{accountId}/assigned-roles:
     parameters:
       - schema:
           type: string
@@ -6576,7 +6576,7 @@ paths:
         $ref: '#/components/requestBodies/AssignRole'
       tags:
         - System Accounts - Roles
-  /system-accounts/{accountId}/assigned-roles/{roleId}:
+  /v3/system-accounts/{accountId}/assigned-roles/{roleId}:
     parameters:
       - schema:
           type: string
@@ -6607,7 +6607,7 @@ paths:
         system account or assigned role were not found.
       tags:
         - System Accounts - Roles
-  /system-accounts/{accountId}/teams:
+  /v3/system-accounts/{accountId}/teams:
     parameters:
       - schema:
           type: string
@@ -6643,7 +6643,7 @@ paths:
           style: deepObject
       tags:
         - System Accounts - Team Membership
-  /teams:
+  /v3/teams:
     get:
       summary: List Teams
       responses:
@@ -6688,7 +6688,7 @@ paths:
       requestBody:
         $ref: '#/components/requestBodies/CreateTeam'
       description: 'Creates a team in the Konnect Organization. '
-  /teams/{teamId}:
+  /v3/teams/{teamId}:
     parameters:
       - schema:
           type: string
@@ -6739,7 +6739,7 @@ paths:
       description: Deletes an individual team. Returns 404 if the team is not found.
       tags:
         - Teams
-  /teams/{teamId}/assigned-roles:
+  /v3/teams/{teamId}/assigned-roles:
     parameters:
       - schema:
           type: string
@@ -6802,7 +6802,7 @@ paths:
         $ref: '#/components/requestBodies/AssignRole'
       tags:
         - Roles
-  /teams/{teamId}/assigned-roles/{roleId}:
+  /v3/teams/{teamId}/assigned-roles/{roleId}:
     parameters:
       - schema:
           type: string
@@ -6839,7 +6839,7 @@ paths:
       description: >-
         Removes an assigned role from a team. Returns 404 if the requested team
         or assigned role were not found.
-  /teams/{teamId}/system-accounts:
+  /v3/teams/{teamId}/system-accounts:
     parameters:
       - schema:
           type: string
@@ -6898,7 +6898,7 @@ paths:
         $ref: '#/components/requestBodies/AddSystemAccountToTeam'
       tags:
         - System Accounts - Team Membership
-  /teams/{teamId}/system-accounts/{accountId}:
+  /v3/teams/{teamId}/system-accounts/{accountId}:
     parameters:
       - schema:
           type: string
@@ -6929,7 +6929,7 @@ paths:
         account were not found.
       tags:
         - System Accounts - Team Membership
-  /teams/{teamId}/users:
+  /v3/teams/{teamId}/users:
     parameters:
       - schema:
           type: string
@@ -6988,7 +6988,7 @@ paths:
         $ref: '#/components/requestBodies/AddUserToTeam'
       tags:
         - Team Membership
-  /teams/{teamId}/users/{userId}:
+  /v3/teams/{teamId}/users/{userId}:
     parameters:
       - schema:
           type: string
@@ -7023,7 +7023,7 @@ paths:
         the user or team were not found.
       tags:
         - Team Membership
-  /users:
+  /v3/users:
     get:
       summary: List Users
       tags:
@@ -7054,7 +7054,7 @@ paths:
           description: Filter users returned in the response.
           required: false
           style: deepObject
-  /users/{userId}:
+  /v3/users/{userId}:
     parameters:
       - schema:
           type: string
@@ -7107,7 +7107,7 @@ paths:
         found.
       tags:
         - Users
-  /users/{userId}/assigned-roles:
+  /v3/users/{userId}/assigned-roles:
     parameters:
       - schema:
           type: string
@@ -7166,7 +7166,7 @@ paths:
         $ref: '#/components/requestBodies/AssignRole'
       tags:
         - Roles
-  /users/{userId}/assigned-roles/{roleId}:
+  /v3/users/{userId}/assigned-roles/{roleId}:
     parameters:
       - schema:
           type: string
@@ -7201,7 +7201,7 @@ paths:
       description: >-
         Removes an assigned role from a user. Returns 404 if the requested user
         or assigned role were not found.
-  /users/{userId}/teams:
+  /v3/users/{userId}/teams:
     parameters:
       - schema:
           type: string
@@ -12322,6 +12322,16 @@ components:
           type: string
       required:
         - oeq
+    GroupMembership:
+      type: object
+      properties:
+        members:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
     CreateControlPlaneRequest:
       title: CreateControlPlaneRequest
       description: The request schema for the create control plane request.
@@ -12344,6 +12354,7 @@ components:
           example: CLUSTER_TYPE_CONTROL_PLANE
           enum:
             - CLUSTER_TYPE_CONTROL_PLANE
+            - CLUSTER_TYPE_HYBRID
             - CLUSTER_TYPE_K8S_INGRESS_CONTROLLER
             - CLUSTER_TYPE_CONTROL_PLANE_GROUP
         auth_type:
@@ -12499,6 +12510,7 @@ components:
               example: CLUSTER_TYPE_CONTROL_PLANE
               enum:
                 - CLUSTER_TYPE_CONTROL_PLANE
+                - CLUSTER_TYPE_HYBRID
                 - CLUSTER_TYPE_K8S_INGRESS_CONTROLLER
                 - CLUSTER_TYPE_CONTROL_PLANE_GROUP
               readOnly: true
@@ -25042,15 +25054,7 @@ components:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              members:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: string
+            $ref: '#/components/schemas/GroupMembership'
           examples:
             Example 1:
               value:
@@ -25065,15 +25069,7 @@ components:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              members:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: string
+            $ref: '#/components/schemas/GroupMembership'
           examples:
             Example 1:
               value:

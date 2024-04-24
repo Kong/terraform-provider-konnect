@@ -24,9 +24,11 @@ for PRODUCT in "${PRODUCTS[@]}"; do
   ./node_modules/.bin/oas-toolkit check-conflicts $FILES src/common/$PRODUCT.yaml --ignorePrefix components.securitySchemes --ignorePrefix components.examples
   # Bundle here to make sure `computed` comes from `src` after we've linted
   node ./tools/bundle.js $PRODUCT
+
+  # Add beta warnings
   node ./tools/process-computed.js $PRODUCT
   echo "Creating merged $PRODUCT/complete.yaml";
-  ./node_modules/.bin/oas-toolkit merge $COMPUTED_FILES src/common/$PRODUCT.yaml --ignorePrefix components.securitySchemes --ignorePrefix components.examples > computed/$PRODUCT/complete.yaml
+  ./node_modules/.bin/oas-toolkit merge --move-path-to-operation $COMPUTED_FILES src/common/$PRODUCT.yaml > computed/$PRODUCT/complete.yaml
 done
 
 # Finally, bundle all internal APIs. They do not need merging

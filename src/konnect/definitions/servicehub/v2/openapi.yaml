@@ -214,7 +214,7 @@ paths:
       x-unstable: true
       description: Creates a service.
       requestBody:
-        $ref: '#/components/requestBodies/CreateServiceBody'
+        $ref: '#/components/requestBodies/CreateServiceHubServiceBody'
       responses:
         '201':
           $ref: '#/components/responses/ServiceResponse'
@@ -679,7 +679,7 @@ paths:
       x-unstable: true
       description: Creates an association between the given integration and service using the data binding provided in the request.
       requestBody:
-        $ref: '#/components/requestBodies/CreateServiceIntegrationBody'
+        $ref: '#/components/requestBodies/CreateServiceHubServiceIntegrationBody'
       responses:
         '201':
           $ref: '#/components/responses/ServiceIntegrationResponse'
@@ -1600,13 +1600,13 @@ components:
     # of schema properties.
     # Example: provide a $ref to the Service schema instead
     # See: https://kongstrong.slack.com/archives/C048KLCCR7T/p1674749604016679
-    CreateServiceBody:
+    CreateServiceHubServiceBody:
       description: Request body schema for creating a service.
       required: true
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/CreateService'
+            $ref: '#/components/schemas/CreateServiceHubService'
     UpdateServiceBody:
       description: Request body schema for updating a service.
       required: true
@@ -1673,7 +1673,7 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/CreateInstalledIntegrationAuthCredential'
-    CreateServiceIntegrationBody:
+    CreateServiceHubServiceIntegrationBody:
       description: Request body schema for creating a service integration.
       required: true
       content:
@@ -2181,7 +2181,7 @@ components:
             - integrations
             - metadata
         - $ref: '#/components/schemas/EntityTimeFields'
-    CreateService:
+    CreateServiceHubService:
       type: object
       description: The DTO for create a Service Hub service.
       additionalProperties: false
@@ -3810,7 +3810,7 @@ components:
             - resource
           properties:
             service:
-              $ref: '#/components/schemas/CreateService'
+              $ref: '#/components/schemas/CreateServiceHubService'
             resource:
               type: object
               additionalProperties: false

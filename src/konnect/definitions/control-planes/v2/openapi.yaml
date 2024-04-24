@@ -48,6 +48,7 @@ paths:
         - Control Planes
     parameters: []
     post:
+      x-speakeasy-entity-operation: GatewayControlPlane#create
       summary: Create Control Plane
       operationId: create-control-plane
       responses:
@@ -88,6 +89,7 @@ paths:
         required: true
         description: The control plane ID
     get:
+      x-speakeasy-entity-operation: GatewayControlPlane#read
       summary: Fetch Control Plane
       responses:
         '200':
@@ -107,6 +109,7 @@ paths:
       tags:
         - Control Planes
     patch:
+      x-speakeasy-entity-operation: GatewayControlPlane#update
       summary: Update Control Plane
       operationId: update-control-plane
       responses:
@@ -137,6 +140,7 @@ paths:
       tags:
         - Control Planes
     delete:
+      x-speakeasy-entity-operation: GatewayControlPlane#delete
       summary: Delete Control Plane
       operationId: delete-control-plane
       responses:
@@ -196,6 +200,7 @@ paths:
         required: true
         description: ID of a control plane group
     post:
+      x-speakeasy-entity-operation: GatewayControlPlaneMembership#create
       summary: Add Control Plane Group Members
       operationId: post-control-planes-id-group-memberships-add
       responses:
@@ -225,6 +230,7 @@ paths:
         required: true
         description: ID of a control plane group
     post:
+      x-speakeasy-entity-operation: GatewayControlPlaneMembership#delete
       summary: Remove Control Plane Group Members
       operationId: post-control-planes-id-group-memberships-remove
       requestBody:
@@ -591,7 +597,19 @@ components:
           schema:
             $ref: '#/components/schemas/GroupMemberStatus'
   schemas:
+    GroupMembership:
+      x-speakeasy-entity: GatewayControlPlaneMembership
+      type: object
+      properties:
+        members:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
     CreateControlPlaneRequest:
+      x-speakeasy-entity: GatewayControlPlane
       title: CreateControlPlaneRequest
       description: The request schema for the create control plane request.
       type: object
@@ -611,6 +629,7 @@ components:
           example: CLUSTER_TYPE_CONTROL_PLANE
           enum:
             - CLUSTER_TYPE_CONTROL_PLANE
+            - CLUSTER_TYPE_HYBRID
             - CLUSTER_TYPE_K8S_INGRESS_CONTROLLER
             - CLUSTER_TYPE_CONTROL_PLANE_GROUP
         auth_type:
@@ -656,6 +675,7 @@ components:
         labels:
           $ref: '#/components/schemas/Labels'
     ControlPlane:
+      x-speakeasy-entity: GatewayControlPlane
       allOf:
         - $ref: '#/components/schemas/ControlPlaneSummary'
         - type: object
@@ -663,6 +683,7 @@ components:
             labels:
               $ref: '#/components/schemas/Labels'
             config:
+              x-speakeasy-param-suppress-computed-diff: true
               type: object
               description: CP configuration object for related access endpoints.
               properties:
@@ -679,12 +700,14 @@ components:
                   description: Telemetry Endpoint.
                   readOnly: true
             created_at:
+              x-speakeasy-terraform-ignore: true
               type: string
               format: date-time
               example: '2022-11-04T20:10:06.927Z'
               description: An ISO-8604 timestamp representation of control plane creation date.
               readOnly: true
             updated_at:
+              x-speakeasy-terraform-ignore: true
               type: string
               format: date-time
               example: '2022-11-04T20:10:06.927Z'
@@ -716,6 +739,7 @@ components:
       additionalProperties: false
       properties:
         id:
+          x-speakeasy-param-suppress-computed-diff: true
           type: string
           format: uuid
           example: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
@@ -754,6 +778,7 @@ components:
               example: CLUSTER_TYPE_CONTROL_PLANE
               enum:
                 - CLUSTER_TYPE_CONTROL_PLANE
+                - CLUSTER_TYPE_HYBRID
                 - CLUSTER_TYPE_K8S_INGRESS_CONTROLLER
                 - CLUSTER_TYPE_CONTROL_PLANE_GROUP
               readOnly: true
@@ -1115,15 +1140,7 @@ components:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              members:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: string
+            $ref: "#/components/schemas/GroupMembership"
           examples:
             Example 1:
               value:
@@ -1136,15 +1153,7 @@ components:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              members:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: string
+            $ref: "#/components/schemas/GroupMembership"
           examples:
             Example 1:
               value:

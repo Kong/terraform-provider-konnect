@@ -11,16 +11,48 @@ info:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
 servers:
-  - url: https://global.api.konghq.com/v2
-  - url: https://us.api.konghq.com/v2
-  - url: https://eu.api.konghq.com/v2
-  - url: https://au.api.konghq.com/v2
+  - url: https://global.api.konghq.com
+  - url: https://us.api.konghq.com
+  - url: https://eu.api.konghq.com
+  - url: https://au.api.konghq.com
     description: Production
 externalDocs:
   description: Documentation for Kong Gateway and its APIs
   url: https://docs.konghq.com
 paths:
-  /discovery/discovered-entities:
+  /v0/search:
+    get:
+      operationId: get-search
+      summary: Search Konnect
+      description: Retrieves a list of Konnect entities matching the search query provided.
+      tags:
+        - Search
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageAfter'
+        - in: query
+          name: q
+          description: The query that defines the search criteria.
+          example: name:"John Smith"
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/SearchResponse'
+        '400':
+          $ref: '#/components/responses/SearchBadRequest'
+  /v0/search/types:
+    get:
+      operationId: get-search-types
+      summary: List Search Types
+      description: Retrieves a list of searchable Konnect entity types.
+      tags:
+        - Search
+      responses:
+        '200':
+          $ref: '#/components/responses/SearchTypesResponse'
+  /v2/discovery/discovered-entities:
     get:
       summary: List Discovered Entities
       operationId: list-discovered-entities
@@ -45,7 +77,7 @@ paths:
         - $ref: '#/components/parameters/DiscoveredEntitySort'
       tags:
         - Discovered Entities
-  /discovery/discovered-entities/{discoveredEntityId}:
+  /v2/discovery/discovered-entities/{discoveredEntityId}:
     parameters:
       - schema:
           type: string
@@ -73,7 +105,7 @@ paths:
           $ref: '#/components/responses/Internal'
       tags:
         - Discovered Entities
-  /discovery/discovery-actions:
+  /v2/discovery/discovery-actions:
     post:
       summary: Create Discovery Action
       operationId: create-discovery-action
@@ -118,7 +150,7 @@ paths:
         - $ref: '#/components/parameters/DiscoveryActonSort'
       tags:
         - Discovery Actions
-  /discovery/discovery-actions/{discoveryActionId}:
+  /v2/discovery/discovery-actions/{discoveryActionId}:
     parameters:
       - schema:
           type: string
@@ -147,7 +179,7 @@ paths:
           $ref: '#/components/responses/Internal'
       tags:
         - Discovery Actions
-  /discovery/integration/{integration}/discovered-entities:
+  /v2/discovery/integration/{integration}/discovered-entities:
     parameters:
       - schema:
           type: string
@@ -191,7 +223,7 @@ paths:
           $ref: '#/components/responses/Internal'
       tags:
         - Discovered Entities
-  /discovery/integration/{integration}/ingestion:
+  /v2/discovery/integration/{integration}/ingestion:
     parameters:
       - schema:
           type: string
@@ -238,7 +270,7 @@ paths:
           $ref: '#/components/responses/Internal'
       tags:
         - Discovery Ingestion
-  /discovery/integration/{integration}/settings:
+  /v2/discovery/integration/{integration}/settings:
     parameters:
       - schema:
           type: string
@@ -291,7 +323,7 @@ paths:
           $ref: '#/components/responses/Internal'
       tags:
         - Discovery Settings
-  /discovery/integration/{integration}/suggestion-rules:
+  /v2/discovery/integration/{integration}/suggestion-rules:
     parameters:
       - schema:
           type: string
@@ -344,7 +376,7 @@ paths:
         - $ref: '#/components/parameters/DiscoverySuggestionRuleFilter'
       tags:
         - Suggestion Rules
-  /discovery/integration/{integration}/suggestion-rules/{suggestionRuleId}:
+  /v2/discovery/integration/{integration}/suggestion-rules/{suggestionRuleId}:
     parameters:
       - schema:
           type: string
@@ -422,7 +454,7 @@ paths:
           $ref: '#/components/responses/Internal'
       tags:
         - Suggestion Rules
-  /discovery/integration/{integration}/suggestion-rules/test:
+  /v2/discovery/integration/{integration}/suggestion-rules/test:
     parameters:
       - schema:
           type: string
@@ -450,7 +482,7 @@ paths:
           $ref: '#/components/responses/Internal'
       tags:
         - Suggestion Rules
-  /discovery/integration/{integration}/system-suggestion-rules:
+  /v2/discovery/integration/{integration}/system-suggestion-rules:
     parameters:
       - schema:
           type: string
@@ -481,7 +513,7 @@ paths:
         - $ref: '#/components/parameters/PageNumber'
       tags:
         - Suggestion Rules
-  /discovery/suggested-discovery-actions:
+  /v2/discovery/suggested-discovery-actions:
     get:
       summary: List Suggested Discovery Actions
       operationId: list-suggested-discovery-action
@@ -506,7 +538,7 @@ paths:
         - $ref: '#/components/parameters/SuggestedDiscoveryActionSort'
       tags:
         - Suggested Discovery Actions
-  /discovery/suggested-discovery-actions/{suggestedDiscoveryActionId}:
+  /v2/discovery/suggested-discovery-actions/{suggestedDiscoveryActionId}:
     parameters:
       - schema:
           type: string
@@ -556,41 +588,7 @@ paths:
           $ref: '#/components/responses/Internal'
       tags:
         - Suggested Discovery Actions
-  /explore:
-    post:
-      tags:
-        - Explore
-      operationId: ExploreController_exploreV2
-      summary: Explore metrics in the analyticcs platform
-      description: >-
-        Post a query to the endpoint to retrieve aggregated metrics down to the
-        minute. Data can be requested to group by any 2 dimensions, and any
-        number of filter conditions.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ExploreV2Dto'
-      responses:
-        '200':
-          description: Aggregated results of the query
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ExploreResultV2'
-        '400':
-          description: Bad Request
-          content:
-            application/problem+json:
-              examples:
-                BadRequestExample:
-                  $ref: '#/components/examples/BadRequestExample'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-  /installed-integrations/{integration}/auth-credentials:
+  /v2/installed-integrations/{integration}/auth-credentials:
     parameters:
       - schema:
           type: string
@@ -650,7 +648,7 @@ paths:
           $ref: '#/components/responses/NotAvailable'
       tags:
         - Integration Auth Credentials
-  /installed-integrations/{integration}/auth-credentials/{authCredentialId}:
+  /v2/installed-integrations/{integration}/auth-credentials/{authCredentialId}:
     parameters:
       - schema:
           type: string
@@ -707,7 +705,7 @@ paths:
           $ref: '#/components/responses/Internal'
       tags:
         - Integration Auth Credentials
-  /integrations/{integration}/proxy:
+  /v2/integrations/{integration}/proxy:
     parameters:
       - schema:
           type: string
@@ -791,7 +789,7 @@ paths:
                 additionalProperties: true
       tags:
         - Integrations
-  /metadata/schemas:
+  /v2/metadata/schemas:
     get:
       summary: List Metadata Schemas
       operationId: list-metadata-schemas
@@ -814,58 +812,7 @@ paths:
         - $ref: '#/components/parameters/MetadataSchemaSort'
       tags:
         - Metadata Field
-  /organizations/state:
-    post:
-      summary: Sets a new state for an organization.
-      operationId: post-organization-state
-      description: |
-        Sets a new state for an organization and creates an organization state 
-        history record. An organization can be set to active or inactive.
-      tags:
-        - Organization Lifecycle
-      responses:
-        '201':
-          $ref: '#/components/responses/OrganizationStateResponse'
-        '400':
-          $ref: '#/components/responses/OrganizationStateBadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/OrganizationNotFound'
-        '409':
-          $ref: '#/components/responses/OrganizationStateConflict'
-      requestBody:
-        $ref: '#/components/requestBodies/UpdateOrganizationState'
-  /organizations/state/history:
-    get:
-      summary: Returns the state history of an organization.
-      operationId: get-organization-state-history
-      description: >
-        Returns the state history of an organization sorted in reverse
-        chronological order.
-
-        Possible states include active, inactive, deleting, and deleted. An
-        organization state 
-
-        will be transitioned to the deleting state if the organization remains
-        inactive for 90 days. 
-
-        After deletion is complete, the state will be transitioned to the final
-        deleted state. 
-      tags:
-        - Organization Lifecycle
-      responses:
-        '200':
-          $ref: '#/components/responses/OrganizationStateHistory'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/OrganizationNotFound'
-  /portals:
+  /v2/portals:
     get:
       summary: List Portals
       description: >-
@@ -965,7 +912,7 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
-  /portals/{portalId}/pages:
+  /v2/portals/{portalId}/pages:
     get:
       summary: List Portal Pages
       description: >-
@@ -1039,7 +986,7 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-  /portals/{portalId}/pages/{pageId}:
+  /v2/portals/{portalId}/pages/{pageId}:
     get:
       summary: Get Portal Page
       description: >-
@@ -1110,53 +1057,7 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-  /roles:
-    get:
-      summary: Get Predefined Roles
-      description: Retrieves the predefined, or system managed, roles.
-      operationId: get-predefined-roles
-      responses:
-        '200':
-          $ref: '#/components/responses/Roles'
-        '400':
-          $ref: '#/components/responses/IdentityBadRequest'
-        '401':
-          $ref: '#/components/responses/IdentityUnauthenticated'
-      tags:
-        - Roles
-  /search:
-    get:
-      operationId: get-search
-      summary: Search Konnect
-      description: Retrieves a list of Konnect entities matching the search query provided.
-      tags:
-        - Search
-      parameters:
-        - $ref: '#/components/parameters/PageSize'
-        - $ref: '#/components/parameters/PageAfter'
-        - in: query
-          name: q
-          description: The query that defines the search criteria.
-          example: name:"John Smith"
-          schema:
-            type: string
-          required: true
-      responses:
-        '200':
-          $ref: '#/components/responses/SearchResponse'
-        '400':
-          $ref: '#/components/responses/SearchBadRequest'
-  /search/types:
-    get:
-      operationId: get-search-types
-      summary: List Search Types
-      description: Retrieves a list of searchable Konnect entity types.
-      tags:
-        - Search
-      responses:
-        '200':
-          $ref: '#/components/responses/SearchTypesResponse'
-  /servicehub/add-ons:
+  /v2/servicehub/add-ons:
     get:
       summary: List Add-ons
       operationId: list-add-ons
@@ -1177,7 +1078,7 @@ paths:
         - $ref: '#/components/parameters/AddonSort'
       tags:
         - Add-ons
-  /servicehub/installed-add-ons:
+  /v2/servicehub/installed-add-ons:
     get:
       summary: List Installed Add-ons
       operationId: list-installed-add-ons
@@ -1200,7 +1101,7 @@ paths:
         - $ref: '#/components/parameters/InstalledAddonSort'
       tags:
         - Installed Add-ons
-  /servicehub/installed-add-ons/{addon}:
+  /v2/servicehub/installed-add-ons/{addon}:
     parameters:
       - schema:
           type: string
@@ -1295,7 +1196,7 @@ paths:
           $ref: '#/components/responses/Internal'
       tags:
         - Installed Add-ons
-  /servicehub/services:
+  /v2/servicehub/services:
     get:
       summary: List Services
       operationId: list-services
@@ -1323,7 +1224,7 @@ paths:
       operationId: create-service
       description: Creates a service.
       requestBody:
-        $ref: '#/components/requestBodies/CreateServiceBody'
+        $ref: '#/components/requestBodies/CreateServiceHubServiceBody'
       responses:
         '201':
           $ref: '#/components/responses/ServiceResponse'
@@ -1337,7 +1238,7 @@ paths:
           $ref: '#/components/responses/Internal'
       tags:
         - Service Hub Services
-  /servicehub/services/{serviceId}:
+  /v2/servicehub/services/{serviceId}:
     parameters:
       - schema:
           type: string
@@ -1408,7 +1309,7 @@ paths:
           $ref: '#/components/responses/Internal'
       tags:
         - Service Hub Services
-  /services/{serviceId}/documents:
+  /v2/services/{serviceId}/documents:
     parameters:
       - schema:
           type: string
@@ -1467,7 +1368,7 @@ paths:
           $ref: '#/components/responses/Internal'
       tags:
         - Service Documents
-  /services/{serviceId}/documents/{documentId}:
+  /v2/services/{serviceId}/documents/{documentId}:
     parameters:
       - schema:
           type: string
@@ -1553,7 +1454,7 @@ paths:
           $ref: '#/components/responses/Internal'
       tags:
         - Service Documents
-  /services/{serviceId}/documents/{documentId}/move:
+  /v2/services/{serviceId}/documents/{documentId}/move:
     parameters:
       - schema:
           type: string
@@ -1596,7 +1497,7 @@ paths:
           $ref: '#/components/responses/Internal'
       tags:
         - Service Documents
-  /services/{serviceId}/integrations:
+  /v2/services/{serviceId}/integrations:
     parameters:
       - schema:
           type: string
@@ -1633,7 +1534,7 @@ paths:
       tags:
         - Integrations
         - Service Hub Services
-  /services/{serviceId}/integrations/{integration}:
+  /v2/services/{serviceId}/integrations/{integration}:
     parameters:
       - schema:
           type: string
@@ -1657,7 +1558,7 @@ paths:
         Creates an association between the given integration and service using
         the data binding provided in the request.
       requestBody:
-        $ref: '#/components/requestBodies/CreateServiceIntegrationBody'
+        $ref: '#/components/requestBodies/CreateServiceHubServiceIntegrationBody'
       responses:
         '201':
           $ref: '#/components/responses/ServiceIntegrationResponse'
@@ -1676,7 +1577,7 @@ paths:
       tags:
         - Service Hub Services
         - Integrations
-  /services/{serviceId}/integrations/{integration}/{serviceIntegrationId}:
+  /v2/services/{serviceId}/integrations/{integration}/{serviceIntegrationId}:
     parameters:
       - schema:
           type: string
@@ -1746,6 +1647,105 @@ paths:
       tags:
         - Service Hub Services
         - Integrations
+  /v3/organizations/state:
+    post:
+      summary: Sets a new state for an organization.
+      operationId: post-organization-state
+      description: |
+        Sets a new state for an organization and creates an organization state 
+        history record. An organization can be set to active or inactive.
+      tags:
+        - Organization Lifecycle
+      responses:
+        '201':
+          $ref: '#/components/responses/OrganizationStateResponse'
+        '400':
+          $ref: '#/components/responses/OrganizationStateBadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/OrganizationNotFound'
+        '409':
+          $ref: '#/components/responses/OrganizationStateConflict'
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateOrganizationState'
+  /v3/organizations/state/history:
+    get:
+      summary: Returns the state history of an organization.
+      operationId: get-organization-state-history
+      description: >
+        Returns the state history of an organization sorted in reverse
+        chronological order.
+
+        Possible states include active, inactive, deleting, and deleted. An
+        organization state 
+
+        will be transitioned to the deleting state if the organization remains
+        inactive for 90 days. 
+
+        After deletion is complete, the state will be transitioned to the final
+        deleted state. 
+      tags:
+        - Organization Lifecycle
+      responses:
+        '200':
+          $ref: '#/components/responses/OrganizationStateHistory'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/OrganizationNotFound'
+  /v3/roles:
+    get:
+      summary: Get Predefined Roles
+      description: Retrieves the predefined, or system managed, roles.
+      operationId: get-predefined-roles
+      responses:
+        '200':
+          $ref: '#/components/responses/Roles'
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+      tags:
+        - Roles
+  /v4/explore:
+    post:
+      tags:
+        - Explore
+      operationId: ExploreController_exploreV2
+      summary: Explore metrics in the analyticcs platform
+      description: >-
+        Post a query to the endpoint to retrieve aggregated metrics down to the
+        minute. Data can be requested to group by any 2 dimensions, and any
+        number of filter conditions.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExploreV2Dto'
+      responses:
+        '200':
+          description: Aggregated results of the query
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExploreResultV2'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              examples:
+                BadRequestExample:
+                  $ref: '#/components/examples/BadRequestExample'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
 components:
   schemas:
     AbsoluteTimeRangeDtoV2:
@@ -3689,7 +3689,7 @@ components:
             - integrations
             - metadata
         - $ref: '#/components/schemas/EntityTimeFields'
-    CreateService:
+    CreateServiceHubService:
       type: object
       description: The DTO for create a Service Hub service.
       additionalProperties: false
@@ -5443,7 +5443,7 @@ components:
             - resource
           properties:
             service:
-              $ref: '#/components/schemas/CreateService'
+              $ref: '#/components/schemas/CreateServiceHubService'
             resource:
               type: object
               additionalProperties: false
@@ -8372,13 +8372,13 @@ components:
           examples:
             Example 1:
               $ref: '#/components/examples/UpdatePortalPageExample1'
-    CreateServiceBody:
+    CreateServiceHubServiceBody:
       description: Request body schema for creating a service.
       required: true
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/CreateService'
+            $ref: '#/components/schemas/CreateServiceHubService'
     UpdateServiceBody:
       description: Request body schema for updating a service.
       required: true
@@ -8448,7 +8448,7 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/CreateInstalledIntegrationAuthCredential'
-    CreateServiceIntegrationBody:
+    CreateServiceHubServiceIntegrationBody:
       description: Request body schema for creating a service integration.
       required: true
       content:
