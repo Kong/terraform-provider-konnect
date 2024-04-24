@@ -98,6 +98,32 @@ components:
       schema:
         type: string
         example: 'good'
+    FilterByPublicEquality:
+      name: 'filter[public][eq]'
+      description: >-
+        Filter by whether the pages returned are public or private. Private pages are only accessible to authenticated users.
+        For authenticated users, results will include both public and private pages if not specified.
+      in: query
+      required: false
+      schema:
+        type: string
+        enum:
+          - 'true'
+          - 'false'
+        example: 'true'
+    FilterByPublicEqualityShort:
+      name: 'filter[public]'
+      description: >-
+        Filter (short-hand) by whether the pages returned are public or private. Private pages are only accessible to authenticated users.
+        For authenticated users, results will include both public and private pages if not specified.
+      in: query
+      required: false
+      schema:
+        type: string
+        enum:
+          - 'true'
+          - 'false'
+        example: 'true'
     FilterByDescriptionEquality:
       name: 'filter[description][eq]'
       description: Filter by direct equality comparison of the description property with a supplied value.

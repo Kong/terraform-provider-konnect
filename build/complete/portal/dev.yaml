@@ -29,15 +29,8 @@ paths:
         - $ref: '#/components/parameters/FilterByPathEquality'
         - $ref: '#/components/parameters/FilterByPathEqualityShort'
         - $ref: '#/components/parameters/FilterByPathContains'
-        - in: query
-          name: public
-          description: >-
-            -< Filter by whether the pages returned are public or private.
-            Private pages are only accessible to authenticated users. For
-            authenticated users, results will include both public and private
-            pages if not specified.
-          schema:
-            type: boolean
+        - $ref: '#/components/parameters/FilterByPublicEquality'
+        - $ref: '#/components/parameters/FilterByPublicEqualityShort'
       responses:
         '200':
           $ref: '#/components/responses/ListPortalPagesResponse'
@@ -437,6 +430,36 @@ components:
       schema:
         type: string
         example: good
+    FilterByPublicEquality:
+      name: filter[public][eq]
+      description: >-
+        Filter by whether the pages returned are public or private. Private
+        pages are only accessible to authenticated users. For authenticated
+        users, results will include both public and private pages if not
+        specified.
+      in: query
+      required: false
+      schema:
+        type: string
+        enum:
+          - 'true'
+          - 'false'
+        example: 'true'
+    FilterByPublicEqualityShort:
+      name: filter[public]
+      description: >-
+        Filter (short-hand) by whether the pages returned are public or private.
+        Private pages are only accessible to authenticated users. For
+        authenticated users, results will include both public and private pages
+        if not specified.
+      in: query
+      required: false
+      schema:
+        type: string
+        enum:
+          - 'true'
+          - 'false'
+        example: 'true'
 tags:
   - name: portal
     description: The API for retrieving details about a single Konnect Portal.

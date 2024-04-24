@@ -1,5 +1,16 @@
 components:
   schemas:
+    Metadata:
+      type: object
+      description: Contains key value pairs information about entity's metadata.
+      additionalProperties: true
+      example:
+        owner: John Appleseed
+    MetadataNullable:
+      type: object
+      nullable: true
+      description: Contains key value pairs information about entity's metadata.
+      additionalProperties: true
     DocumentFormatContentTypeEnum:
       type: string
       default: application/json

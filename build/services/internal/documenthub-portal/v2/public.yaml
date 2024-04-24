@@ -32,7 +32,7 @@ paths:
           in: query
           name: filter[field]
           description: |
-            A field to filter on. Supported fields: slug.
+            A field to filter on. Supported fields: slug, metadata.
       responses:
         '200':
           description: Documents in the collection
@@ -121,6 +121,7 @@ components:
         - parent_document_id
         - slug
         - title
+        - metadata
         - created_at
         - updated_at
       properties:
@@ -143,6 +144,8 @@ components:
           type: string
           description: the title of the document
           example: Getting Started
+        metadata:
+          $ref: '#/components/schemas/Metadata'
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -204,12 +207,7 @@ components:
           type: string
           description: Markdown document
         metadata:
-          type: object
-          description: the metadata of the document
-          example:
-            title: Hello World
-            description: This is a description
-            keywords: hello, world
+          $ref: '#/components/schemas/Metadata'
         title:
           type: string
           description: the title of the document
@@ -282,12 +280,7 @@ components:
           description: the slug of the document
           example: getting-started
         metadata:
-          type: object
-          description: the metadata of the document
-          example:
-            author: Jane Doe
-            description: This is a description
-            keywords: hello, world
+          $ref: '#/components/schemas/Metadata'
         children:
           type: array
           items:
@@ -320,6 +313,12 @@ components:
           $ref: '#/components/schemas/PageMeta'
       required:
         - page
+    Metadata:
+      type: object
+      description: Contains key value pairs information about entity's metadata.
+      additionalProperties: true
+      example:
+        owner: John Appleseed
     CreatedAt:
       type: string
       format: date-time

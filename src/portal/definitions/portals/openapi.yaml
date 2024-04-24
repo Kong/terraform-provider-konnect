@@ -74,13 +74,8 @@ paths:
         - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByPathEquality'
         - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByPathEqualityShort'
         - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByPathContains'
-        - in: query
-          name: public
-          description: -<
-            Filter by whether the pages returned are public or private. Private pages are only accessible to authenticated users.
-            For authenticated users, results will include both public and private pages if not specified.
-          schema:
-            type: boolean
+        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByPublicEquality'
+        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByPublicEqualityShort'
       responses:
         '200':
           $ref: '#/components/responses/ListPortalPagesResponse'

@@ -172,6 +172,8 @@ paths:
                 $ref: '#/components/schemas/DateTimeFieldFilter'
               updated_at:
                 $ref: '#/components/schemas/DateTimeFieldFilter'
+              metadata:
+                $ref: '#/components/schemas/StringFieldFilter'
           in: query
           name: filter
           description: |
@@ -369,6 +371,7 @@ components:
         - slug
         - title
         - filename
+        - metadata
         - created_at
         - updated_at
       properties:
@@ -395,6 +398,8 @@ components:
           type: string
           description: the filename of the document
           example: myDocument.md
+        metadata:
+          $ref: '#/components/schemas/Metadata'
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -456,12 +461,7 @@ components:
           type: string
           description: Markdown document
         metadata:
-          type: object
-          description: the metadata of the document
-          example:
-            title: Hello World
-            description: This is a description
-            keywords: hello, world
+          $ref: '#/components/schemas/Metadata'
         title:
           type: string
           description: the title of the document
@@ -575,10 +575,7 @@ components:
           description: document slug
           example: path-for-seo
         metadata:
-          type: object
-          description: metadata of the document
-          example:
-            author: John Doe
+          $ref: '#/components/schemas/Metadata'
         children:
           type: array
           description: children of the document
@@ -624,9 +621,7 @@ components:
         content:
           $ref: '#/components/schemas/DocumentBlock'
         metadata:
-          type: object
-          example:
-            author: John Doe
+          $ref: '#/components/schemas/Metadata'
         title:
           type: string
           example: Hello world
@@ -703,11 +698,7 @@ components:
             required.
           example: '## My Markdown'
         metadata:
-          type: object
-          nullable: true
-          description: metadata of the document
-          example:
-            author: John Doe
+          $ref: '#/components/schemas/Metadata'
         filename:
           type: string
           description: name of the uploaded file
@@ -749,8 +740,7 @@ components:
           description: name of the uploaded file
           example: my_doc.md
         metadata:
-          type: object
-          nullable: true
+          $ref: '#/components/schemas/MetadataNullable'
     DocumentCreationResponsePayload:
       type: object
       title: Document Creation Response Payload
@@ -1218,6 +1208,12 @@ components:
       enum:
         - application/json
         - application/vnd.konnect.document-tree+json
+    Metadata:
+      type: object
+      description: Contains key value pairs information about entity's metadata.
+      additionalProperties: true
+      example:
+        owner: John Appleseed
     DocumentFormatContentTypeEnum:
       type: string
       default: application/json
@@ -1550,6 +1546,11 @@ components:
             content:
               - type: text
                 text: Hello World
+    MetadataNullable:
+      type: object
+      nullable: true
+      description: Contains key value pairs information about entity's metadata.
+      additionalProperties: true
   requestBodies:
     MoveDocument:
       description: move document

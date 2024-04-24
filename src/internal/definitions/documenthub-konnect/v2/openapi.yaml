@@ -165,6 +165,8 @@ paths:
                  $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/DateTimeFieldFilter'
               updated_at:
                  $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/DateTimeFieldFilter'
+              metadata:
+                $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter'
           in: query
           name: filter
           description: |
@@ -341,6 +343,7 @@ components:
       - slug
       - title
       - filename
+      - metadata
       - created_at
       - updated_at
       properties:
@@ -367,6 +370,8 @@ components:
           type: string
           description: the filename of the document
           example: myDocument.md
+        metadata:
+          $ref: '../../documenthub/common/v2/documenthub.yaml#/components/schemas/Metadata'
         created_at:
           $ref: '../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
         updated_at:
@@ -428,12 +433,7 @@ components:
           type: string
           description: Markdown document
         metadata:
-          type: object
-          description: the metadata of the document
-          example:
-            title: Hello World
-            description: This is a description
-            keywords: hello, world
+          $ref: '../../documenthub/common/v2/documenthub.yaml#/components/schemas/Metadata'
         title:
           type: string
           description: the title of the document
@@ -547,9 +547,7 @@ components:
           description: document slug
           example: path-for-seo
         metadata:
-          type: object
-          description: metadata of the document
-          example: { "author": "John Doe" }
+          $ref: '../../documenthub/common/v2/documenthub.yaml#/components/schemas/Metadata'
         children:
           type: array
           description: children of the document
@@ -595,8 +593,7 @@ components:
         content:
           $ref: '../../documenthub/common/v2/documenthub_nodes.yaml#/components/schemas/DocumentBlock'
         metadata:
-          type: object
-          example: { "author": "John Doe" }
+          $ref: '../../documenthub/common/v2/documenthub.yaml#/components/schemas/Metadata'
         title:
           type: string
           example: Hello world
@@ -669,10 +666,7 @@ components:
           description: Markdown content. Either raw_content or str_mdr_content are required.
           example: '## My Markdown'
         metadata:
-          type: object
-          nullable: true
-          description: metadata of the document
-          example: { "author": "John Doe" }
+          $ref: '../../documenthub/common/v2/documenthub.yaml#/components/schemas/Metadata'
         filename:
           type: string
           description: name of the uploaded file
@@ -712,8 +706,7 @@ components:
           description: name of the uploaded file
           example: my_doc.md
         metadata:
-          type: object
-          nullable: true
+          $ref: '../../documenthub/common/v2/documenthub.yaml#/components/schemas/MetadataNullable'
     DocumentCreationResponsePayload:
       type: object
       title: Document Creation Response Payload

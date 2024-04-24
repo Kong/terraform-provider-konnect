@@ -1237,6 +1237,12 @@ components:
       enum:
         - application/json
         - application/vnd.konnect.document-tree+json
+    Metadata:
+      type: object
+      description: Contains key value pairs information about entity's metadata.
+      additionalProperties: true
+      example:
+        owner: John Appleseed
     DocumentItem:
       type: object
       title: Document item
@@ -1246,6 +1252,7 @@ components:
         - parent_document_id
         - slug
         - title
+        - metadata
         - created_at
         - updated_at
       properties:
@@ -1268,6 +1275,8 @@ components:
           type: string
           description: the title of the document
           example: Getting Started
+        metadata:
+          $ref: '#/components/schemas/Metadata'
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -1314,12 +1323,7 @@ components:
           description: the slug of the document
           example: getting-started
         metadata:
-          type: object
-          description: the metadata of the document
-          example:
-            author: Jane Doe
-            description: This is a description
-            keywords: hello, world
+          $ref: '#/components/schemas/Metadata'
         children:
           type: array
           items:
