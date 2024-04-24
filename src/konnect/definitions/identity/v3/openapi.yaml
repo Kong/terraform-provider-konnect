@@ -156,6 +156,41 @@ paths:
         - konnectAccessToken: []
       tags:
         - Device Authorization Grant
+  /organizations/impersonation:
+    get:
+      summary: Get Impersonation Settings
+      description: >-
+        Returns Impersonation Settings, which determines if user impersonation
+        is allowed for an organization.
+      operationId: get-impersonation-settings
+      tags:
+        - Impersonation Settings
+      responses:
+        '200':
+          $ref: '#/components/responses/GetImpersonationSettingsResponse'
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+        '404':
+          $ref: '#/components/responses/IdentityNotFound'
+    patch:
+      summary: Update Impersonation Settings
+      description: Updates Impersonation Settings.
+      operationId: update-impersonation-settings
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateImpersonationSettingsRequest'
+      tags:
+        - Impersonation Settings
+      responses:
+        '200':
+          $ref: '#/components/responses/UpdateImpersonationSettingsResponse'
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/IdentityNotFound'
   /authentication-settings:
     get:
       summary: Get Auth Settings
@@ -1530,6 +1565,36 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Auth0Registration'
+    GetImpersonationSettingsResponse:
+      description: Response for Get Impersonation Settings endpoint
+      content:
+        application/json:
+          schema:
+            type: object
+            title: Get Impersonation Settings Response
+            properties:
+              enabled:
+                type: boolean
+                example: true
+                description: The organization has user impersonation enabled.
+          examples:
+            Get Impersonation Settings:
+              $ref: '#/components/examples/GetImpersonationSettings'
+    UpdateImpersonationSettingsResponse:
+      description: Response for Update Impersonation Settings endpoint
+      content:
+        application/json:
+          schema:
+            type: object
+            title: Update Impersonation Settings Response
+            properties:
+              enabled:
+                type: boolean
+                example: true
+                description: The organization has user impersonation enabled.
+          examples:
+            Update Impersonation Settings:
+              $ref: '#/components/examples/UpdateImpersonationSettings'
     Auth0OrganizationsCollection:
       description: A paginated list response for a collection of auth0 organizations.
       content:
@@ -2894,6 +2959,23 @@ components:
               - metadata
 
   requestBodies:
+    UpdateImpersonationSettingsRequest:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              enabled:
+                type: boolean
+                example: true
+                description: >-
+                  Indicates if user impersonation is allowed for the
+                  organization.
+          examples:
+            Update Impersonation Settings:
+              value:
+                enabled: false
+      description: The request schema for adding a system account to a team.
     Auth0Registration:
       content:
         application/json:
@@ -4329,6 +4411,12 @@ components:
         active: true
         created_at: '1992-02-07T17:46:57.52Z'
         updated_at: '2022-02-07T17:00:00.52Z'
+    GetImpersonationSettings:
+      value:
+        enabled: true
+    UpdateImpersonationSettings:
+      value:
+        enabled: false
     Assign-Roles-US:
       value:
         role_name: Viewer
@@ -4414,3 +4502,4 @@ tags:
   - name: AWS
   - name: Device Authorization Grant
   - name: SSO Auth0
+  - name: Impersonation Settings

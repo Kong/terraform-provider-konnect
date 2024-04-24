@@ -6253,6 +6253,41 @@ paths:
           $ref: '#/components/responses/RateLimited'
       tags:
         - Invites
+  /v3/organizations/impersonation:
+    get:
+      summary: Get Impersonation Settings
+      description: >-
+        Returns Impersonation Settings, which determines if user impersonation
+        is allowed for an organization.
+      operationId: get-impersonation-settings
+      tags:
+        - Impersonation Settings
+      responses:
+        '200':
+          $ref: '#/components/responses/GetImpersonationSettingsResponse'
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+        '404':
+          $ref: '#/components/responses/IdentityNotFound'
+    patch:
+      summary: Update Impersonation Settings
+      description: Updates Impersonation Settings.
+      operationId: update-impersonation-settings
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateImpersonationSettingsRequest'
+      tags:
+        - Impersonation Settings
+      responses:
+        '200':
+          $ref: '#/components/responses/UpdateImpersonationSettingsResponse'
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/IdentityNotFound'
   /v3/roles:
     get:
       summary: Get Predefined Roles
@@ -18286,6 +18321,12 @@ components:
         active: true
         created_at: '1992-02-07T17:46:57.52Z'
         updated_at: '2022-02-07T17:00:00.52Z'
+    GetImpersonationSettings:
+      value:
+        enabled: true
+    UpdateImpersonationSettings:
+      value:
+        enabled: false
     Assign-Roles-US:
       value:
         role_name: Viewer
@@ -22284,6 +22325,36 @@ components:
                       An ISO-8604 timestamp representation of custom plugin
                       schema update date.
                     example: 1422412345
+    GetImpersonationSettingsResponse:
+      description: Response for Get Impersonation Settings endpoint
+      content:
+        application/json:
+          schema:
+            type: object
+            title: Get Impersonation Settings Response
+            properties:
+              enabled:
+                type: boolean
+                example: true
+                description: The organization has user impersonation enabled.
+          examples:
+            Get Impersonation Settings:
+              $ref: '#/components/examples/GetImpersonationSettings'
+    UpdateImpersonationSettingsResponse:
+      description: Response for Update Impersonation Settings endpoint
+      content:
+        application/json:
+          schema:
+            type: object
+            title: Update Impersonation Settings Response
+            properties:
+              enabled:
+                type: boolean
+                example: true
+                description: The organization has user impersonation enabled.
+          examples:
+            Update Impersonation Settings:
+              $ref: '#/components/examples/UpdateImpersonationSettings'
     UserSingle:
       description: A get action response of a single user.
       content:
@@ -26734,6 +26805,23 @@ components:
                   \"record\", fields = { } } } } }
             required:
               - lua_schema
+    UpdateImpersonationSettingsRequest:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              enabled:
+                type: boolean
+                example: true
+                description: >-
+                  Indicates if user impersonation is allowed for the
+                  organization.
+          examples:
+            Update Impersonation Settings:
+              value:
+                enabled: false
+      description: The request schema for adding a system account to a team.
     UpdateUser:
       description: The request schema for the update user request.
       content:
@@ -27385,6 +27473,7 @@ tags:
   - name: System Accounts - Roles
   - name: System Accounts - Team Membership
   - name: Authentication
+  - name: Impersonation Settings
   - name: Mesh
   - name: Portals
     description: APIs related to Configuration of Konnect Developer Portals.
