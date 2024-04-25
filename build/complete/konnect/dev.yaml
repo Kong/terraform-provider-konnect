@@ -2169,6 +2169,7 @@ components:
       properties:
         status:
           example: 401
+          type: integer
         title:
           example: Unauthorized
         type:
@@ -2177,8 +2178,13 @@ components:
           example: kong:trace:1234567890
         detail:
           example: Invalid credentials
+        message:
+          type: string
       allOf:
         - $ref: '#/components/schemas/BaseError'
+      required:
+        - message
+        - status
     ForbiddenError:
       type: object
       properties:
