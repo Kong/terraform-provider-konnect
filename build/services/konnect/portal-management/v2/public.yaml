@@ -1723,6 +1723,7 @@ components:
             created_at: '2022-02-07T17:46:57.52Z'
             updated_at: '2022-10-08T17:00:00.52Z'
             name: Portal A
+            display_name: Developer Portal A
             description: The Portal A
             default_domain: 123455678abcd.us.portal.konghq.com
             is_public: false
@@ -1827,6 +1828,7 @@ components:
         created_at: '2022-02-07T17:46:57.52Z'
         updated_at: '2022-10-08T17:00:00.52Z'
         name: Portal A
+        display_name: Developer Portal A
         description: The Portal A
         default_domain: 123455678abcd.us.portal.konghq.com
         is_public: false
@@ -1844,6 +1846,7 @@ components:
         created_at: '2022-02-07T17:46:57.52Z'
         updated_at: '2022-10-08T17:00:00.52Z'
         name: Portal A
+        display_name: Developer Portal A
         description: The Portal A
         default_domain: 123455678abcd.us.portal.konghq.com
         is_public: false
@@ -4236,6 +4239,7 @@ components:
             created_at: '2022-02-07T17:46:57.52Z'
             updated_at: '2022-10-08T17:00:00.52Z'
             name: Portal A
+            display_name: Developer Portal A
             description: The Portal A
             default_domain: 123455678abcd.us.portal.konghq.com
             is_public: false
@@ -5265,6 +5269,7 @@ components:
         - created_at
         - updated_at
         - name
+        - display_name
         - default_domain
         - is_public
         - rbac_enabled
@@ -5285,6 +5290,8 @@ components:
           $ref: '#/components/schemas/UpdatedAt'
         name:
           $ref: '#/components/schemas/PortalName'
+        display_name:
+          $ref: '#/components/schemas/PortalDisplayName'
         description:
           $ref: '#/components/schemas/PortalDescription'
         default_domain:
@@ -5358,6 +5365,7 @@ components:
         created_at: '2022-02-07T17:46:57.52Z'
         updated_at: '2022-10-08T17:00:00.52Z'
         name: Portal A
+        display_name: Developer Portal A
         description: The Portal A
         default_domain: 123455678abcd.us.portal.konghq.com
         is_public: false
@@ -5387,12 +5395,21 @@ components:
       type: string
       maxLength: 255
       minLength: 1
+    PortalDisplayName:
+      description: >-
+        The display name of the portal. This value will be the portal's `name`
+        in Portal API.
+      type: string
+      maxLength: 255
+      minLength: 1
     UpdatePortalRequest:
       additionalProperties: false
       type: object
       properties:
         name:
           $ref: '#/components/schemas/PortalName'
+        display_name:
+          $ref: '#/components/schemas/PortalDisplayName'
         description:
           $ref: '#/components/schemas/PortalDescription'
         is_public:

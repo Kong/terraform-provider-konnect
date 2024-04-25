@@ -280,6 +280,9 @@ components:
         allowed_time_period:
           type: string
           description: Allowed time period for Analytics queries
+        name:
+          type: string
+          description: Name of the developer portal.
       required:
         - portal_id
         - org_id
@@ -290,6 +293,7 @@ components:
         - rbac_enabled
         - dcr_provider_ids
         - allowed_time_period
+        - name
     PageId:
       title: Page ID
       description: The unique identifier of the page
