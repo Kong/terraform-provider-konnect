@@ -2072,7 +2072,7 @@ components:
             additionalProperties: false
             properties:
               meta:
-                $ref: '../../../../common/definitions/metadatas.yaml#/components/schemas/CursorPaginatedMeta'
+                $ref: '../../../../common/definitions/metadatas.yaml#/components/schemas/CursorMeta'
               data:
                 type: array
                 items:
@@ -2095,7 +2095,7 @@ components:
             additionalProperties: false
             properties:
               meta:
-                $ref: '../../../../common/definitions/metadatas.yaml#/components/schemas/CursorPaginatedMeta'
+                $ref: '../../../../common/definitions/metadatas.yaml#/components/schemas/CursorMeta'
               data:
                 type: array
                 items:

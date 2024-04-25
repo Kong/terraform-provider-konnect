@@ -2908,7 +2908,7 @@ components:
           items:
             $ref: '#/components/schemas/SearchResultItem'
         meta:
-          $ref: '#/components/schemas/CursorPaginatedMeta'
+          $ref: '#/components/schemas/CursorMeta'
     SearchTypesResponse:
       title: SearchableEntityTypesResponse
       description: The collection of searchable entity types.
@@ -3013,11 +3013,8 @@ components:
         relations:
           type: object
           description: Relations for the entity.
-    CursorPageMetaWithTotal:
+    CursorMetaPage:
       type: object
-      description: >-
-        Pagination metadata with exact total. Useful when the collection size is
-        inexpensive to provide.
       required:
         - size
         - next
@@ -3026,72 +3023,33 @@ components:
         first:
           description: URI to the first page
           type: string
-          format: uri
+          format: path
         last:
           description: URI to the last page
           type: string
-          format: uri
+          format: path
         next:
           description: URI to the next page
           type: string
-          format: uri
+          format: path
+          nullable: true
         previous:
           description: URI to the previous page
           type: string
-          format: uri
+          format: path
+          nullable: true
         size:
           description: Requested page size
           type: number
           example: 10
-        total:
-          description: Total number of objects in the collection
-          type: number
-          example: 974
-    CursorPageMetaWithEstimatedTotal:
+    CursorMeta:
       type: object
-      description: >-
-        Pagination metadata with estimated total. Useful when exact total cannot
-        be computed in reasonable time.
-      required:
-        - size
-        - next
-        - previous
-      properties:
-        first:
-          description: URI to the first page
-          type: string
-          format: uri
-        last:
-          description: URI to the last page
-          type: string
-          format: uri
-        next:
-          description: URI to the next page
-          type: string
-          format: uri
-        previous:
-          description: URI to the previous page
-          type: string
-          format: uri
-        size:
-          description: Requested page size
-          type: number
-          example: 10
-        estimated_total:
-          description: Approximate number of objects in the collection
-          type: number
-          example: 1000000000
-    CursorPaginatedMeta:
-      type: object
-      title: CursorPaginatedMeta
-      description: Returns the pagination information
-      properties:
-        page:
-          oneOf:
-            - $ref: '#/components/schemas/CursorPageMetaWithTotal'
-            - $ref: '#/components/schemas/CursorPageMetaWithEstimatedTotal'
+      description: Pagination metadata.
       required:
         - page
+      properties:
+        page:
+          $ref: '#/components/schemas/CursorMetaPage'
     OrganizationState:
       type: object
       title: Organization State
@@ -7980,7 +7938,7 @@ components:
             additionalProperties: false
             properties:
               meta:
-                $ref: '#/components/schemas/CursorPaginatedMeta'
+                $ref: '#/components/schemas/CursorMeta'
               data:
                 type: array
                 items:
@@ -8003,7 +7961,7 @@ components:
             additionalProperties: false
             properties:
               meta:
-                $ref: '#/components/schemas/CursorPaginatedMeta'
+                $ref: '#/components/schemas/CursorMeta'
               data:
                 type: array
                 items:

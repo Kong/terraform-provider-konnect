@@ -92,7 +92,7 @@ components:
           items:
             $ref: '#/components/schemas/SearchResultItem'
         meta:
-          $ref: '../../../../common/definitions/metadatas.yaml#/components/schemas/CursorPaginatedMeta'
+          $ref: '../../../../common/definitions/metadatas.yaml#/components/schemas/CursorMeta'
     SearchTypesResponse:
       title: SearchableEntityTypesResponse
       description: The collection of searchable entity types.

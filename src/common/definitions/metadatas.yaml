@@ -26,81 +26,77 @@ components:
         total:
           type: number
           example: 100
-    CursorPaginatedMeta:
+    CursorMetaPage:
       type: object
-      title: CursorPaginatedMeta
-      description: Returns the pagination information
+      required:
+      - size
+      - next
+      - previous
       properties:
-        page:
-          oneOf:
-          - $ref: '#/components/schemas/CursorPageMetaWithTotal'
-          - $ref: '#/components/schemas/CursorPageMetaWithEstimatedTotal'
+        first:
+          description: URI to the first page
+          type: string
+          format: path
+        last:
+          description: URI to the last page
+          type: string
+          format: path
+        next:
+          description: URI to the next page
+          type: string
+          format: path
+          nullable: true
+        previous:
+          description: URI to the previous page
+          type: string
+          format: path
+          nullable: true
+        size:
+          description: Requested page size
+          type: number
+          example: 10
+    CursorMeta:
+      type: object
+      description: Pagination metadata.
       required:
       - page
-    CursorPageMetaWithTotal:
+      properties:
+        page:
+          $ref: '#/components/schemas/CursorMetaPage'
+    CursorMetaWithTotal:
       type: object
       description: Pagination metadata with exact total. Useful when the collection size is inexpensive to provide.
       required:
-      - size
-      - next
-      - previous
+      - page
       properties:
-        first:
-          description: URI to the first page
-          type: string
-          format: uri
-        last:
-          description: URI to the last page
-          type: string
-          format: uri
-        next:
-          description: URI to the next page
-          type: string
-          format: uri
-        previous:
-          description: URI to the previous page
-          type: string
-          format: uri
-        size:
-          description: Requested page size
-          type: number
-          example: 10
-        total:
-          description: Total number of objects in the collection
-          type: number
-          example: 974
-    CursorPageMetaWithEstimatedTotal:
+        page:
+          allOf:
+          - $ref: '#/components/schemas/CursorMetaPage'
+          - type: object
+            required:
+            - total
+            properties:
+              total:
+                description: Total number of objects in the collection
+                type: number
+                example: 974
+    CursorMetaWithEstimatedTotal:
       type: object
       description: Pagination metadata with estimated total. Useful when exact total cannot be computed in reasonable time.
       required:
-      - size
-      - next
-      - previous
+      - page
       properties:
-        first:
-          description: URI to the first page
-          type: string
-          format: uri
-        last:
-          description: URI to the last page
-          type: string
-          format: uri
-        next:
-          description: URI to the next page
-          type: string
-          format: uri
-        previous:
-          description: URI to the previous page
-          type: string
-          format: uri
-        size:
-          description: Requested page size
-          type: number
-          example: 10
-        estimated_total:
-          description: Approximate number of objects in the collection
-          type: number
-          example: 1000000000
+        page:
+          allOf:
+          - $ref: '#/components/schemas/CursorMetaPage'
+          - type: object
+            required:
+            - estimated_total
+            properties:
+              estimated_total:
+                description: Approximate number of objects in the collection
+                type: number
+                example: 1000000000
   parameters:
     PageBefore:      
       name: 'page[before]'
