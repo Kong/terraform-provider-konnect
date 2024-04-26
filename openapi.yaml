@@ -3847,6 +3847,57 @@ paths:
       x-speakeasy-entity-operation: GatewayVault#read
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
+  /v2/control-planes/{controlPlaneId}/dp-client-certificates:
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+    post:
+      x-speakeasy-entity-operation: GatewayDataPlaneClientCertificate#create
+      summary: Pin New DP Client Certificate
+      description: >-
+        Pin a new DP Client Certificate to this control plane. A pinned
+        dataplane certificate allows dataplanes configured with the certificate
+        and corresponding private key to establish connection with this control
+        plane.
+      operationId: create-dataplane-certificate
+      requestBody:
+        $ref: '#/components/requestBodies/DataPlaneClientCertificateRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/DataPlaneClientCertificateResponse'
+      tags:
+        - DP Certificates
+  /v2/control-planes/{controlPlaneId}/dp-client-certificates/{certificateId}:
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+      - $ref: '#/components/parameters/DataPlaneCertificateId'
+    get:
+      x-speakeasy-entity-operation: GatewayDataPlaneClientCertificate#read
+      summary: Fetch DP Client Certificate
+      tags:
+        - DP Certificates
+      responses:
+        '200':
+          $ref: '#/components/responses/DataPlaneClientCertificateResponse'
+      operationId: get-dataplane-certificate
+      description: >-
+        Retrieve a pinned dataplane client certificate associated to this
+        control plane. A pinned dataplane certificate allows dataplanes
+        configured with the certificate and corresponding private key to
+        establish connection with this control plane.
+    delete:
+      x-speakeasy-entity-operation: GatewayDataPlaneClientCertificate#delete
+      summary: Delete DP Client Certificate
+      operationId: delete-dataplane-certificate
+      responses:
+        '204':
+          description: No Content
+      tags:
+        - DP Certificates
+      description: >-
+        Remove a pinned dataplane client certificate associated to this control
+        plane. Removing a pinned dataplane certificate would invalidate any
+        dataplanes currently connected to this control plane using this
+        certificate.
   /v2/control-planes/{id}:
     parameters:
       - schema:
@@ -4173,6 +4224,24 @@ components:
       schema:
         type: integer
         example: 1
+    controlPlaneId:
+      name: controlPlaneId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 9524ec7d-36d9-465d-a8c5-83a3c9390458
+      description: >-
+        The UUID of your control plane. This variable is available in the
+        Konnect manager
+    DataPlaneCertificateId:
+      name: certificateId
+      in: path
+      schema:
+        type: string
+      required: true
+      x-speakeasy-match: id
     ACLId:
       description: ID of the ACL to lookup
       example: f28acbfa-c866-4587-b688-0208ac24df21
@@ -4553,6 +4622,12 @@ components:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/NotFoundError'
+    DataPlaneClientCertificateResponse:
+      description: Response body for retrieving a dp-client-certificate.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DataPlaneClientCertificate'
     HTTP401Error:
       content:
         application/json:
@@ -5202,6 +5277,25 @@ components:
           example: Not found
       allOf:
         - $ref: '#/components/schemas/BaseError'
+    DataPlaneClientCertificate:
+      type: object
+      properties:
+        item:
+          x-speakeasy-entity: GatewayDataPlaneClientCertificate
+          type: object
+          properties:
+            id:
+              type: string
+              description: Unique ID of the certificate entity.
+            created_at:
+              type: integer
+              description: Date certificate was created.
+            updated_at:
+              type: integer
+              description: Date certificate was last updated.
+            cert:
+              type: string
+              description: JSON escaped string of the certificate.
     ACL:
       allOf:
         - example:
@@ -13544,6 +13638,18 @@ components:
       description: >-
         Request body for removing a list of child control planes from a control
         plane group membership.
+    DataPlaneClientCertificateRequest:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              cert:
+                type: string
+                description: JSON escaped string of the certificate.
+            required:
+              - cert
+      description: Request body for creating a dp-client-certificate.
     CreateAPIProductRequest:
       required: true
       content:

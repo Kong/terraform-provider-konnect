@@ -14,6 +14,7 @@ This provider can manage the following resources:
 - Gateway KIC Control Plane
 - Gateway Control Plane Group
   - Control Plane Group Memberships
+- Gateway Data Plane Client Certificates
 
 ### Kong Gateway Entities
 
