@@ -780,7 +780,6 @@ components:
         - path
         - title
         - content
-        - public
       properties:
         path:
           $ref: '#/components/schemas/PagePath'
