@@ -39,7 +39,7 @@ paths:
       security:
         - portalAccessToken: []
         - {}
-  /api/v2/portal/pages/{pageId}:
+  /api/v2/portal/pages/content:
     get:
       operationId: get-portal-page
       summary: Get Portal Page
@@ -49,13 +49,13 @@ paths:
         while both private and public pages will be returned for authenticated
         users.
       parameters:
-        - name: pageId
-          in: path
-          description: The unique identifier of the page
+        - name: path
+          in: query
           required: true
+          description: The unique identifier of the page
           schema:
             type: string
-            format: uuid
+          example: /about/company
       responses:
         '200':
           $ref: '#/components/responses/GetPortalPageResponse'
