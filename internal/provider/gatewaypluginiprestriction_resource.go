@@ -183,7 +183,7 @@ func (r *GatewayPluginIPRestrictionResource) Create(ctx context.Context, req res
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	createIPRestrictionPlugin := *data.ToSharedCreateIPRestrictionPlugin()
+	createIPRestrictionPlugin := data.ToSharedCreateIPRestrictionPlugin()
 	request := operations.CreateIprestrictionPluginRequest{
 		ControlPlaneID:            controlPlaneID,
 		CreateIPRestrictionPlugin: createIPRestrictionPlugin,
@@ -233,11 +233,11 @@ func (r *GatewayPluginIPRestrictionResource) Read(ctx context.Context, req resou
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.GetIprestrictionPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.GetIprestrictionPlugin(ctx, request)
 	if err != nil {
@@ -283,12 +283,12 @@ func (r *GatewayPluginIPRestrictionResource) Update(ctx context.Context, req res
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
-	createIPRestrictionPlugin := *data.ToSharedCreateIPRestrictionPlugin()
+	controlPlaneID := data.ControlPlaneID.ValueString()
+	createIPRestrictionPlugin := data.ToSharedCreateIPRestrictionPlugin()
 	request := operations.UpdateIprestrictionPluginRequest{
-		ControlPlaneID:            controlPlaneID,
 		PluginID:                  pluginID,
+		ControlPlaneID:            controlPlaneID,
 		CreateIPRestrictionPlugin: createIPRestrictionPlugin,
 	}
 	res, err := r.client.Plugins.UpdateIprestrictionPlugin(ctx, request)
@@ -336,11 +336,11 @@ func (r *GatewayPluginIPRestrictionResource) Delete(ctx context.Context, req res
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.DeleteIprestrictionPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.DeleteIprestrictionPlugin(ctx, request)
 	if err != nil {

@@ -9,9 +9,8 @@ import (
 
 type CreateOpentelemetryPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	// Create a new Opentelemetry plugin
-	CreateOpentelemetryPlugin shared.CreateOpentelemetryPlugin `request:"mediaType=application/json"`
+	ControlPlaneID            string                            `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	CreateOpentelemetryPlugin *shared.CreateOpentelemetryPlugin `request:"mediaType=application/json"`
 }
 
 func (o *CreateOpentelemetryPluginRequest) GetControlPlaneID() string {
@@ -21,9 +20,9 @@ func (o *CreateOpentelemetryPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateOpentelemetryPluginRequest) GetCreateOpentelemetryPlugin() shared.CreateOpentelemetryPlugin {
+func (o *CreateOpentelemetryPluginRequest) GetCreateOpentelemetryPlugin() *shared.CreateOpentelemetryPlugin {
 	if o == nil {
-		return shared.CreateOpentelemetryPlugin{}
+		return nil
 	}
 	return o.CreateOpentelemetryPlugin
 }
@@ -35,7 +34,7 @@ type CreateOpentelemetryPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successfully created Plugin
+	// Opentelemetry plugin
 	OpentelemetryPlugin *shared.OpentelemetryPlugin
 	// Unauthorized
 	UnauthorizedError *shared.UnauthorizedError

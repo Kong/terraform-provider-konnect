@@ -8,19 +8,11 @@ import (
 )
 
 type UpdateRequesttransformeradvancedPluginRequest struct {
-	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
-	// Description of the Plugin
-	CreateRequestTransformerAdvancedPlugin shared.CreateRequestTransformerAdvancedPlugin `request:"mediaType=application/json"`
-}
-
-func (o *UpdateRequesttransformeradvancedPluginRequest) GetControlPlaneID() string {
-	if o == nil {
-		return ""
-	}
-	return o.ControlPlaneID
+	// The UUID of your control plane. This variable is available in the Konnect manager.
+	ControlPlaneID                         string                                         `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	CreateRequestTransformerAdvancedPlugin *shared.CreateRequestTransformerAdvancedPlugin `request:"mediaType=application/json"`
 }
 
 func (o *UpdateRequesttransformeradvancedPluginRequest) GetPluginID() string {
@@ -30,9 +22,16 @@ func (o *UpdateRequesttransformeradvancedPluginRequest) GetPluginID() string {
 	return o.PluginID
 }
 
-func (o *UpdateRequesttransformeradvancedPluginRequest) GetCreateRequestTransformerAdvancedPlugin() shared.CreateRequestTransformerAdvancedPlugin {
+func (o *UpdateRequesttransformeradvancedPluginRequest) GetControlPlaneID() string {
 	if o == nil {
-		return shared.CreateRequestTransformerAdvancedPlugin{}
+		return ""
+	}
+	return o.ControlPlaneID
+}
+
+func (o *UpdateRequesttransformeradvancedPluginRequest) GetCreateRequestTransformerAdvancedPlugin() *shared.CreateRequestTransformerAdvancedPlugin {
+	if o == nil {
+		return nil
 	}
 	return o.CreateRequestTransformerAdvancedPlugin
 }
@@ -44,7 +43,7 @@ type UpdateRequesttransformeradvancedPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successfully upserted Plugin
+	// RequestTransformerAdvanced plugin
 	RequestTransformerAdvancedPlugin *shared.RequestTransformerAdvancedPlugin
 	// Unauthorized
 	UnauthorizedError *shared.UnauthorizedError

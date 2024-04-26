@@ -100,10 +100,10 @@ type CreateIPRestrictionPluginConfig struct {
 	Allow []string `json:"allow,omitempty"`
 	// List of IPs or CIDR ranges to deny. One of `config.allow` or `config.deny` must be specified.
 	Deny []string `json:"deny,omitempty"`
-	// The HTTP status of the requests that will be rejected by the plugin.
-	Status *float64 `json:"status,omitempty"`
 	// The message to send as a response body to rejected requests.
 	Message *string `json:"message,omitempty"`
+	// The HTTP status of the requests that will be rejected by the plugin.
+	Status *float64 `json:"status,omitempty"`
 }
 
 func (o *CreateIPRestrictionPluginConfig) GetAllow() []string {
@@ -120,18 +120,18 @@ func (o *CreateIPRestrictionPluginConfig) GetDeny() []string {
 	return o.Deny
 }
 
-func (o *CreateIPRestrictionPluginConfig) GetStatus() *float64 {
-	if o == nil {
-		return nil
-	}
-	return o.Status
-}
-
 func (o *CreateIPRestrictionPluginConfig) GetMessage() *string {
 	if o == nil {
 		return nil
 	}
 	return o.Message
+}
+
+func (o *CreateIPRestrictionPluginConfig) GetStatus() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.Status
 }
 
 // CreateIPRestrictionPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.

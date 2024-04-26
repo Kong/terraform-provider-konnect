@@ -96,16 +96,16 @@ func (o *RequestTerminationPluginService) GetID() *string {
 }
 
 type RequestTerminationPluginConfig struct {
-	// The response code to send. Must be an integer between 100 and 599.
-	StatusCode *int64 `default:"503" json:"status_code"`
-	// The message to send, if using the default response generator.
-	Message *string `json:"message,omitempty"`
-	// Content type of the raw response configured with `config.body`.
-	ContentType *string `json:"content_type,omitempty"`
 	// The raw response body to send. This is mutually exclusive with the `config.message` field.
 	Body *string `json:"body,omitempty"`
+	// Content type of the raw response configured with `config.body`.
+	ContentType *string `json:"content_type,omitempty"`
 	// When set, the plugin will echo a copy of the request back to the client. The main usecase for this is debugging. It can be combined with `trigger` in order to debug requests on live systems without disturbing real traffic.
 	Echo *bool `default:"false" json:"echo"`
+	// The message to send, if using the default response generator.
+	Message *string `json:"message,omitempty"`
+	// The response code to send. Must be an integer between 100 and 599.
+	StatusCode *int64 `default:"503" json:"status_code"`
 	// A string representing an HTTP header name.
 	Trigger *string `json:"trigger,omitempty"`
 }
@@ -121,18 +121,11 @@ func (r *RequestTerminationPluginConfig) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *RequestTerminationPluginConfig) GetStatusCode() *int64 {
+func (o *RequestTerminationPluginConfig) GetBody() *string {
 	if o == nil {
 		return nil
 	}
-	return o.StatusCode
-}
-
-func (o *RequestTerminationPluginConfig) GetMessage() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Message
+	return o.Body
 }
 
 func (o *RequestTerminationPluginConfig) GetContentType() *string {
@@ -142,18 +135,25 @@ func (o *RequestTerminationPluginConfig) GetContentType() *string {
 	return o.ContentType
 }
 
-func (o *RequestTerminationPluginConfig) GetBody() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Body
-}
-
 func (o *RequestTerminationPluginConfig) GetEcho() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.Echo
+}
+
+func (o *RequestTerminationPluginConfig) GetMessage() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Message
+}
+
+func (o *RequestTerminationPluginConfig) GetStatusCode() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.StatusCode
 }
 
 func (o *RequestTerminationPluginConfig) GetTrigger() *string {

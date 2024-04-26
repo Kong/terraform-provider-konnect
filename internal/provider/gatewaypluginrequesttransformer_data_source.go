@@ -244,11 +244,11 @@ func (r *GatewayPluginRequestTransformerDataSource) Read(ctx context.Context, re
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.GetRequesttransformerPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.GetRequesttransformerPlugin(ctx, request)
 	if err != nil {

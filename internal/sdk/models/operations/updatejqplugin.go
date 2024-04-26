@@ -8,19 +8,11 @@ import (
 )
 
 type UpdateJqPluginRequest struct {
-	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
-	// Description of the Plugin
-	CreateJQPlugin shared.CreateJQPlugin `request:"mediaType=application/json"`
-}
-
-func (o *UpdateJqPluginRequest) GetControlPlaneID() string {
-	if o == nil {
-		return ""
-	}
-	return o.ControlPlaneID
+	// The UUID of your control plane. This variable is available in the Konnect manager.
+	ControlPlaneID string                 `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	CreateJQPlugin *shared.CreateJQPlugin `request:"mediaType=application/json"`
 }
 
 func (o *UpdateJqPluginRequest) GetPluginID() string {
@@ -30,9 +22,16 @@ func (o *UpdateJqPluginRequest) GetPluginID() string {
 	return o.PluginID
 }
 
-func (o *UpdateJqPluginRequest) GetCreateJQPlugin() shared.CreateJQPlugin {
+func (o *UpdateJqPluginRequest) GetControlPlaneID() string {
 	if o == nil {
-		return shared.CreateJQPlugin{}
+		return ""
+	}
+	return o.ControlPlaneID
+}
+
+func (o *UpdateJqPluginRequest) GetCreateJQPlugin() *shared.CreateJQPlugin {
+	if o == nil {
+		return nil
 	}
 	return o.CreateJQPlugin
 }
@@ -44,7 +43,7 @@ type UpdateJqPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successfully upserted Plugin
+	// JQ plugin
 	JQPlugin *shared.JQPlugin
 	// Unauthorized
 	UnauthorizedError *shared.UnauthorizedError

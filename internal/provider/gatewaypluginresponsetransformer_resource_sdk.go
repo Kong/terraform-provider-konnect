@@ -59,97 +59,97 @@ func (r *GatewayPluginResponseTransformerResourceModel) ToSharedCreateResponseTr
 			ID: id2,
 		}
 	}
-	var remove *shared.CreateResponseTransformerPluginRemove
-	if r.Config.Remove != nil {
-		var json []string = []string{}
-		for _, jsonItem := range r.Config.Remove.JSON {
-			json = append(json, jsonItem.ValueString())
-		}
-		var headers []string = []string{}
-		for _, headersItem := range r.Config.Remove.Headers {
-			headers = append(headers, headersItem.ValueString())
-		}
-		remove = &shared.CreateResponseTransformerPluginRemove{
-			JSON:    json,
-			Headers: headers,
-		}
-	}
-	var rename *shared.CreateResponseTransformerPluginRename
-	if r.Config.Rename != nil {
-		var headers1 []string = []string{}
-		for _, headersItem1 := range r.Config.Rename.Headers {
-			headers1 = append(headers1, headersItem1.ValueString())
-		}
-		rename = &shared.CreateResponseTransformerPluginRename{
-			Headers: headers1,
-		}
-	}
-	var replace *shared.CreateResponseTransformerPluginReplace
-	if r.Config.Replace != nil {
-		var json1 []string = []string{}
-		for _, jsonItem1 := range r.Config.Replace.JSON {
-			json1 = append(json1, jsonItem1.ValueString())
-		}
-		var jsonTypes []shared.CreateResponseTransformerPluginJSONTypes = []shared.CreateResponseTransformerPluginJSONTypes{}
-		for _, jsonTypesItem := range r.Config.Replace.JSONTypes {
-			jsonTypes = append(jsonTypes, shared.CreateResponseTransformerPluginJSONTypes(jsonTypesItem.ValueString()))
-		}
-		var headers2 []string = []string{}
-		for _, headersItem2 := range r.Config.Replace.Headers {
-			headers2 = append(headers2, headersItem2.ValueString())
-		}
-		replace = &shared.CreateResponseTransformerPluginReplace{
-			JSON:      json1,
-			JSONTypes: jsonTypes,
-			Headers:   headers2,
-		}
-	}
 	var add *shared.CreateResponseTransformerPluginAdd
 	if r.Config.Add != nil {
-		var json2 []string = []string{}
-		for _, jsonItem2 := range r.Config.Add.JSON {
-			json2 = append(json2, jsonItem2.ValueString())
+		var headers []string = []string{}
+		for _, headersItem := range r.Config.Add.Headers {
+			headers = append(headers, headersItem.ValueString())
 		}
-		var jsonTypes1 []shared.CreateResponseTransformerPluginConfigJSONTypes = []shared.CreateResponseTransformerPluginConfigJSONTypes{}
-		for _, jsonTypesItem1 := range r.Config.Add.JSONTypes {
-			jsonTypes1 = append(jsonTypes1, shared.CreateResponseTransformerPluginConfigJSONTypes(jsonTypesItem1.ValueString()))
+		var json []string = []string{}
+		for _, jsonItem := range r.Config.Add.JSON {
+			json = append(json, jsonItem.ValueString())
 		}
-		var headers3 []string = []string{}
-		for _, headersItem3 := range r.Config.Add.Headers {
-			headers3 = append(headers3, headersItem3.ValueString())
+		var jsonTypes []shared.CreateResponseTransformerPluginJSONTypes = []shared.CreateResponseTransformerPluginJSONTypes{}
+		for _, jsonTypesItem := range r.Config.Add.JSONTypes {
+			jsonTypes = append(jsonTypes, shared.CreateResponseTransformerPluginJSONTypes(jsonTypesItem.ValueString()))
 		}
 		add = &shared.CreateResponseTransformerPluginAdd{
-			JSON:      json2,
-			JSONTypes: jsonTypes1,
-			Headers:   headers3,
+			Headers:   headers,
+			JSON:      json,
+			JSONTypes: jsonTypes,
 		}
 	}
 	var append1 *shared.CreateResponseTransformerPluginAppend
 	if r.Config.Append != nil {
-		var json3 []string = []string{}
-		for _, jsonItem3 := range r.Config.Append.JSON {
-			json3 = append(json3, jsonItem3.ValueString())
+		var headers1 []string = []string{}
+		for _, headersItem1 := range r.Config.Append.Headers {
+			headers1 = append(headers1, headersItem1.ValueString())
 		}
-		var jsonTypes2 []shared.CreateResponseTransformerPluginConfigAppendJSONTypes = []shared.CreateResponseTransformerPluginConfigAppendJSONTypes{}
-		for _, jsonTypesItem2 := range r.Config.Append.JSONTypes {
-			jsonTypes2 = append(jsonTypes2, shared.CreateResponseTransformerPluginConfigAppendJSONTypes(jsonTypesItem2.ValueString()))
+		var json1 []string = []string{}
+		for _, jsonItem1 := range r.Config.Append.JSON {
+			json1 = append(json1, jsonItem1.ValueString())
 		}
-		var headers4 []string = []string{}
-		for _, headersItem4 := range r.Config.Append.Headers {
-			headers4 = append(headers4, headersItem4.ValueString())
+		var jsonTypes1 []shared.CreateResponseTransformerPluginConfigJSONTypes = []shared.CreateResponseTransformerPluginConfigJSONTypes{}
+		for _, jsonTypesItem1 := range r.Config.Append.JSONTypes {
+			jsonTypes1 = append(jsonTypes1, shared.CreateResponseTransformerPluginConfigJSONTypes(jsonTypesItem1.ValueString()))
 		}
 		append1 = &shared.CreateResponseTransformerPluginAppend{
+			Headers:   headers1,
+			JSON:      json1,
+			JSONTypes: jsonTypes1,
+		}
+	}
+	var remove *shared.CreateResponseTransformerPluginRemove
+	if r.Config.Remove != nil {
+		var headers2 []string = []string{}
+		for _, headersItem2 := range r.Config.Remove.Headers {
+			headers2 = append(headers2, headersItem2.ValueString())
+		}
+		var json2 []string = []string{}
+		for _, jsonItem2 := range r.Config.Remove.JSON {
+			json2 = append(json2, jsonItem2.ValueString())
+		}
+		remove = &shared.CreateResponseTransformerPluginRemove{
+			Headers: headers2,
+			JSON:    json2,
+		}
+	}
+	var rename *shared.CreateResponseTransformerPluginRename
+	if r.Config.Rename != nil {
+		var headers3 []string = []string{}
+		for _, headersItem3 := range r.Config.Rename.Headers {
+			headers3 = append(headers3, headersItem3.ValueString())
+		}
+		rename = &shared.CreateResponseTransformerPluginRename{
+			Headers: headers3,
+		}
+	}
+	var replace *shared.CreateResponseTransformerPluginReplace
+	if r.Config.Replace != nil {
+		var headers4 []string = []string{}
+		for _, headersItem4 := range r.Config.Replace.Headers {
+			headers4 = append(headers4, headersItem4.ValueString())
+		}
+		var json3 []string = []string{}
+		for _, jsonItem3 := range r.Config.Replace.JSON {
+			json3 = append(json3, jsonItem3.ValueString())
+		}
+		var jsonTypes2 []shared.CreateResponseTransformerPluginConfigReplaceJSONTypes = []shared.CreateResponseTransformerPluginConfigReplaceJSONTypes{}
+		for _, jsonTypesItem2 := range r.Config.Replace.JSONTypes {
+			jsonTypes2 = append(jsonTypes2, shared.CreateResponseTransformerPluginConfigReplaceJSONTypes(jsonTypesItem2.ValueString()))
+		}
+		replace = &shared.CreateResponseTransformerPluginReplace{
+			Headers:   headers4,
 			JSON:      json3,
 			JSONTypes: jsonTypes2,
-			Headers:   headers4,
 		}
 	}
 	config := shared.CreateResponseTransformerPluginConfig{
+		Add:     add,
+		Append:  append1,
 		Remove:  remove,
 		Rename:  rename,
 		Replace: replace,
-		Add:     add,
-		Append:  append1,
 	}
 	out := shared.CreateResponseTransformerPlugin{
 		Enabled:   enabled,

@@ -181,11 +181,11 @@ func (r *GatewayPluginKeyAuthDataSource) Read(ctx context.Context, req datasourc
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.GetKeyauthPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.GetKeyauthPlugin(ctx, request)
 	if err != nil {

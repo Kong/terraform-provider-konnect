@@ -14,7 +14,7 @@ func (r *GatewayPluginAIProxyDataSourceModel) RefreshFromSharedAIProxyPlugin(res
 		if resp.Config.Auth == nil {
 			r.Config.Auth = nil
 		} else {
-			r.Config.Auth = &tfTypes.Auth{}
+			r.Config.Auth = &tfTypes.CreateAIProxyPluginAuth{}
 			r.Config.Auth.HeaderName = types.StringPointerValue(resp.Config.Auth.HeaderName)
 			r.Config.Auth.HeaderValue = types.StringPointerValue(resp.Config.Auth.HeaderValue)
 			if resp.Config.Auth.ParamLocation != nil {
@@ -28,7 +28,7 @@ func (r *GatewayPluginAIProxyDataSourceModel) RefreshFromSharedAIProxyPlugin(res
 		if resp.Config.Logging == nil {
 			r.Config.Logging = nil
 		} else {
-			r.Config.Logging = &tfTypes.Logging{}
+			r.Config.Logging = &tfTypes.CreateAIProxyPluginLogging{}
 			r.Config.Logging.LogPayloads = types.BoolPointerValue(resp.Config.Logging.LogPayloads)
 			r.Config.Logging.LogStatistics = types.BoolPointerValue(resp.Config.Logging.LogStatistics)
 		}
@@ -36,7 +36,7 @@ func (r *GatewayPluginAIProxyDataSourceModel) RefreshFromSharedAIProxyPlugin(res
 		if resp.Config.Model.Options == nil {
 			r.Config.Model.Options = nil
 		} else {
-			r.Config.Model.Options = &tfTypes.Options{}
+			r.Config.Model.Options = &tfTypes.CreateAIProxyPluginOptions{}
 			r.Config.Model.Options.AnthropicVersion = types.StringPointerValue(resp.Config.Model.Options.AnthropicVersion)
 			r.Config.Model.Options.AzureAPIVersion = types.StringPointerValue(resp.Config.Model.Options.AzureAPIVersion)
 			r.Config.Model.Options.AzureDeploymentID = types.StringPointerValue(resp.Config.Model.Options.AzureDeploymentID)

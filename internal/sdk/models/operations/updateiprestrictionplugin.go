@@ -8,19 +8,11 @@ import (
 )
 
 type UpdateIprestrictionPluginRequest struct {
-	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
-	// Description of the Plugin
-	CreateIPRestrictionPlugin shared.CreateIPRestrictionPlugin `request:"mediaType=application/json"`
-}
-
-func (o *UpdateIprestrictionPluginRequest) GetControlPlaneID() string {
-	if o == nil {
-		return ""
-	}
-	return o.ControlPlaneID
+	// The UUID of your control plane. This variable is available in the Konnect manager.
+	ControlPlaneID            string                            `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	CreateIPRestrictionPlugin *shared.CreateIPRestrictionPlugin `request:"mediaType=application/json"`
 }
 
 func (o *UpdateIprestrictionPluginRequest) GetPluginID() string {
@@ -30,9 +22,16 @@ func (o *UpdateIprestrictionPluginRequest) GetPluginID() string {
 	return o.PluginID
 }
 
-func (o *UpdateIprestrictionPluginRequest) GetCreateIPRestrictionPlugin() shared.CreateIPRestrictionPlugin {
+func (o *UpdateIprestrictionPluginRequest) GetControlPlaneID() string {
 	if o == nil {
-		return shared.CreateIPRestrictionPlugin{}
+		return ""
+	}
+	return o.ControlPlaneID
+}
+
+func (o *UpdateIprestrictionPluginRequest) GetCreateIPRestrictionPlugin() *shared.CreateIPRestrictionPlugin {
+	if o == nil {
+		return nil
 	}
 	return o.CreateIPRestrictionPlugin
 }
@@ -44,7 +43,7 @@ type UpdateIprestrictionPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successfully upserted Plugin
+	// IpRestriction plugin
 	IPRestrictionPlugin *shared.IPRestrictionPlugin
 	// Unauthorized
 	UnauthorizedError *shared.UnauthorizedError

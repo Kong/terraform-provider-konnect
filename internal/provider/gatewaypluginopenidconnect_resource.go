@@ -1680,7 +1680,7 @@ func (r *GatewayPluginOpenidConnectResource) Create(ctx context.Context, req res
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	createOpenidConnectPlugin := *data.ToSharedCreateOpenidConnectPlugin()
+	createOpenidConnectPlugin := data.ToSharedCreateOpenidConnectPlugin()
 	request := operations.CreateOpenidconnectPluginRequest{
 		ControlPlaneID:            controlPlaneID,
 		CreateOpenidConnectPlugin: createOpenidConnectPlugin,
@@ -1730,11 +1730,11 @@ func (r *GatewayPluginOpenidConnectResource) Read(ctx context.Context, req resou
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.GetOpenidconnectPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.GetOpenidconnectPlugin(ctx, request)
 	if err != nil {
@@ -1780,12 +1780,12 @@ func (r *GatewayPluginOpenidConnectResource) Update(ctx context.Context, req res
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
-	createOpenidConnectPlugin := *data.ToSharedCreateOpenidConnectPlugin()
+	controlPlaneID := data.ControlPlaneID.ValueString()
+	createOpenidConnectPlugin := data.ToSharedCreateOpenidConnectPlugin()
 	request := operations.UpdateOpenidconnectPluginRequest{
-		ControlPlaneID:            controlPlaneID,
 		PluginID:                  pluginID,
+		ControlPlaneID:            controlPlaneID,
 		CreateOpenidConnectPlugin: createOpenidConnectPlugin,
 	}
 	res, err := r.client.Plugins.UpdateOpenidconnectPlugin(ctx, request)
@@ -1833,11 +1833,11 @@ func (r *GatewayPluginOpenidConnectResource) Delete(ctx context.Context, req res
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.DeleteOpenidconnectPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.DeleteOpenidconnectPlugin(ctx, request)
 	if err != nil {

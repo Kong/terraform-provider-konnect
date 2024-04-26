@@ -20,7 +20,7 @@ func (r *GatewayPluginProxyCacheDataSourceModel) RefreshFromSharedProxyCachePlug
 		if resp.Config.Memory == nil {
 			r.Config.Memory = nil
 		} else {
-			r.Config.Memory = &tfTypes.Memory{}
+			r.Config.Memory = &tfTypes.CreateProxyCachePluginMemory{}
 			r.Config.Memory.DictionaryName = types.StringPointerValue(resp.Config.Memory.DictionaryName)
 		}
 		r.Config.RequestMethod = []types.String{}
@@ -34,7 +34,7 @@ func (r *GatewayPluginProxyCacheDataSourceModel) RefreshFromSharedProxyCachePlug
 		if resp.Config.ResponseHeaders == nil {
 			r.Config.ResponseHeaders = nil
 		} else {
-			r.Config.ResponseHeaders = &tfTypes.ResponseHeaders{}
+			r.Config.ResponseHeaders = &tfTypes.CreateProxyCachePluginResponseHeaders{}
 			r.Config.ResponseHeaders.Age = types.BoolPointerValue(resp.Config.ResponseHeaders.Age)
 			r.Config.ResponseHeaders.XCacheKey = types.BoolPointerValue(resp.Config.ResponseHeaders.XCacheKey)
 			r.Config.ResponseHeaders.XCacheStatus = types.BoolPointerValue(resp.Config.ResponseHeaders.XCacheStatus)

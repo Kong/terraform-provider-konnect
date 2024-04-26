@@ -169,7 +169,9 @@ type Konnect struct {
 	// <br><br>
 	// Secrets rotation can be managed using [TTLs](https://docs.konghq.com/gateway/latest/kong-enterprise/secrets-management/advanced-usage/).
 	//
-	Vaults             *Vaults
+	Vaults *Vaults
+	// DP Certificates
+	DPCertificates     *DPCertificates
 	ControlPlaneGroups *ControlPlaneGroups
 	// APIs related to Configuration of Konnect Developer Portals.
 	Portals *Portals
@@ -260,8 +262,8 @@ func New(opts ...SDKOption) *Konnect {
 			Language:          "go",
 			OpenAPIDocVersion: "2.0.0",
 			SDKVersion:        "0.0.1",
-			GenVersion:        "2.309.2",
-			UserAgent:         "speakeasy-sdk/go 0.0.1 2.309.2 2.0.0 github.com/kong/terraform-provider-konnect/internal/sdk",
+			GenVersion:        "2.314.0",
+			UserAgent:         "speakeasy-sdk/go 0.0.1 2.314.0 2.0.0 github.com/kong/terraform-provider-konnect/internal/sdk",
 			Hooks:             hooks.New(),
 		},
 	}
@@ -326,6 +328,8 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.Targets = newTargets(sdk.sdkConfiguration)
 
 	sdk.Vaults = newVaults(sdk.sdkConfiguration)
+
+	sdk.DPCertificates = newDPCertificates(sdk.sdkConfiguration)
 
 	sdk.ControlPlaneGroups = newControlPlaneGroups(sdk.sdkConfiguration)
 

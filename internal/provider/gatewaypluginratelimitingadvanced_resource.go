@@ -409,7 +409,7 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Create(ctx context.Context, 
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	createRateLimitingAdvancedPlugin := *data.ToSharedCreateRateLimitingAdvancedPlugin()
+	createRateLimitingAdvancedPlugin := data.ToSharedCreateRateLimitingAdvancedPlugin()
 	request := operations.CreateRatelimitingadvancedPluginRequest{
 		ControlPlaneID:                   controlPlaneID,
 		CreateRateLimitingAdvancedPlugin: createRateLimitingAdvancedPlugin,
@@ -459,11 +459,11 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Read(ctx context.Context, re
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.GetRatelimitingadvancedPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.GetRatelimitingadvancedPlugin(ctx, request)
 	if err != nil {
@@ -509,12 +509,12 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Update(ctx context.Context, 
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
-	createRateLimitingAdvancedPlugin := *data.ToSharedCreateRateLimitingAdvancedPlugin()
+	controlPlaneID := data.ControlPlaneID.ValueString()
+	createRateLimitingAdvancedPlugin := data.ToSharedCreateRateLimitingAdvancedPlugin()
 	request := operations.UpdateRatelimitingadvancedPluginRequest{
-		ControlPlaneID:                   controlPlaneID,
 		PluginID:                         pluginID,
+		ControlPlaneID:                   controlPlaneID,
 		CreateRateLimitingAdvancedPlugin: createRateLimitingAdvancedPlugin,
 	}
 	res, err := r.client.Plugins.UpdateRatelimitingadvancedPlugin(ctx, request)
@@ -562,11 +562,11 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Delete(ctx context.Context, 
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.DeleteRatelimitingadvancedPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.DeleteRatelimitingadvancedPlugin(ctx, request)
 	if err != nil {

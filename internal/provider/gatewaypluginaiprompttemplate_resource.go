@@ -192,7 +192,7 @@ func (r *GatewayPluginAIPromptTemplateResource) Create(ctx context.Context, req 
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	createAIPromptTemplatePlugin := *data.ToSharedCreateAIPromptTemplatePlugin()
+	createAIPromptTemplatePlugin := data.ToSharedCreateAIPromptTemplatePlugin()
 	request := operations.CreateAiprompttemplatePluginRequest{
 		ControlPlaneID:               controlPlaneID,
 		CreateAIPromptTemplatePlugin: createAIPromptTemplatePlugin,
@@ -242,11 +242,11 @@ func (r *GatewayPluginAIPromptTemplateResource) Read(ctx context.Context, req re
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.GetAiprompttemplatePluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.GetAiprompttemplatePlugin(ctx, request)
 	if err != nil {
@@ -292,12 +292,12 @@ func (r *GatewayPluginAIPromptTemplateResource) Update(ctx context.Context, req 
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
-	createAIPromptTemplatePlugin := *data.ToSharedCreateAIPromptTemplatePlugin()
+	controlPlaneID := data.ControlPlaneID.ValueString()
+	createAIPromptTemplatePlugin := data.ToSharedCreateAIPromptTemplatePlugin()
 	request := operations.UpdateAiprompttemplatePluginRequest{
-		ControlPlaneID:               controlPlaneID,
 		PluginID:                     pluginID,
+		ControlPlaneID:               controlPlaneID,
 		CreateAIPromptTemplatePlugin: createAIPromptTemplatePlugin,
 	}
 	res, err := r.client.Plugins.UpdateAiprompttemplatePlugin(ctx, request)
@@ -345,11 +345,11 @@ func (r *GatewayPluginAIPromptTemplateResource) Delete(ctx context.Context, req 
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.DeleteAiprompttemplatePluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.DeleteAiprompttemplatePlugin(ctx, request)
 	if err != nil {

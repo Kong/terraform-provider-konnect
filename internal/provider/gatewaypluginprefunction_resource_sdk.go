@@ -59,57 +59,57 @@ func (r *GatewayPluginPreFunctionResourceModel) ToSharedCreatePreFunctionPlugin(
 			ID: id2,
 		}
 	}
-	var certificate []string = []string{}
-	for _, certificateItem := range r.Config.Certificate {
-		certificate = append(certificate, certificateItem.ValueString())
-	}
-	var rewrite []string = []string{}
-	for _, rewriteItem := range r.Config.Rewrite {
-		rewrite = append(rewrite, rewriteItem.ValueString())
-	}
 	var access []string = []string{}
 	for _, accessItem := range r.Config.Access {
 		access = append(access, accessItem.ValueString())
-	}
-	var headerFilter []string = []string{}
-	for _, headerFilterItem := range r.Config.HeaderFilter {
-		headerFilter = append(headerFilter, headerFilterItem.ValueString())
 	}
 	var bodyFilter []string = []string{}
 	for _, bodyFilterItem := range r.Config.BodyFilter {
 		bodyFilter = append(bodyFilter, bodyFilterItem.ValueString())
 	}
+	var certificate []string = []string{}
+	for _, certificateItem := range r.Config.Certificate {
+		certificate = append(certificate, certificateItem.ValueString())
+	}
+	var headerFilter []string = []string{}
+	for _, headerFilterItem := range r.Config.HeaderFilter {
+		headerFilter = append(headerFilter, headerFilterItem.ValueString())
+	}
 	var log []string = []string{}
 	for _, logItem := range r.Config.Log {
 		log = append(log, logItem.ValueString())
 	}
-	var wsHandshake []string = []string{}
-	for _, wsHandshakeItem := range r.Config.WsHandshake {
-		wsHandshake = append(wsHandshake, wsHandshakeItem.ValueString())
+	var rewrite []string = []string{}
+	for _, rewriteItem := range r.Config.Rewrite {
+		rewrite = append(rewrite, rewriteItem.ValueString())
 	}
 	var wsClientFrame []string = []string{}
 	for _, wsClientFrameItem := range r.Config.WsClientFrame {
 		wsClientFrame = append(wsClientFrame, wsClientFrameItem.ValueString())
 	}
-	var wsUpstreamFrame []string = []string{}
-	for _, wsUpstreamFrameItem := range r.Config.WsUpstreamFrame {
-		wsUpstreamFrame = append(wsUpstreamFrame, wsUpstreamFrameItem.ValueString())
-	}
 	var wsClose []string = []string{}
 	for _, wsCloseItem := range r.Config.WsClose {
 		wsClose = append(wsClose, wsCloseItem.ValueString())
 	}
+	var wsHandshake []string = []string{}
+	for _, wsHandshakeItem := range r.Config.WsHandshake {
+		wsHandshake = append(wsHandshake, wsHandshakeItem.ValueString())
+	}
+	var wsUpstreamFrame []string = []string{}
+	for _, wsUpstreamFrameItem := range r.Config.WsUpstreamFrame {
+		wsUpstreamFrame = append(wsUpstreamFrame, wsUpstreamFrameItem.ValueString())
+	}
 	config := shared.CreatePreFunctionPluginConfig{
-		Certificate:     certificate,
-		Rewrite:         rewrite,
 		Access:          access,
-		HeaderFilter:    headerFilter,
 		BodyFilter:      bodyFilter,
+		Certificate:     certificate,
+		HeaderFilter:    headerFilter,
 		Log:             log,
-		WsHandshake:     wsHandshake,
+		Rewrite:         rewrite,
 		WsClientFrame:   wsClientFrame,
-		WsUpstreamFrame: wsUpstreamFrame,
 		WsClose:         wsClose,
+		WsHandshake:     wsHandshake,
+		WsUpstreamFrame: wsUpstreamFrame,
 	}
 	out := shared.CreatePreFunctionPlugin{
 		Enabled:   enabled,

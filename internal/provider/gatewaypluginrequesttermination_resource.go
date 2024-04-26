@@ -194,7 +194,7 @@ func (r *GatewayPluginRequestTerminationResource) Create(ctx context.Context, re
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	createRequestTerminationPlugin := *data.ToSharedCreateRequestTerminationPlugin()
+	createRequestTerminationPlugin := data.ToSharedCreateRequestTerminationPlugin()
 	request := operations.CreateRequestterminationPluginRequest{
 		ControlPlaneID:                 controlPlaneID,
 		CreateRequestTerminationPlugin: createRequestTerminationPlugin,
@@ -244,11 +244,11 @@ func (r *GatewayPluginRequestTerminationResource) Read(ctx context.Context, req 
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.GetRequestterminationPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.GetRequestterminationPlugin(ctx, request)
 	if err != nil {
@@ -294,12 +294,12 @@ func (r *GatewayPluginRequestTerminationResource) Update(ctx context.Context, re
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
-	createRequestTerminationPlugin := *data.ToSharedCreateRequestTerminationPlugin()
+	controlPlaneID := data.ControlPlaneID.ValueString()
+	createRequestTerminationPlugin := data.ToSharedCreateRequestTerminationPlugin()
 	request := operations.UpdateRequestterminationPluginRequest{
-		ControlPlaneID:                 controlPlaneID,
 		PluginID:                       pluginID,
+		ControlPlaneID:                 controlPlaneID,
 		CreateRequestTerminationPlugin: createRequestTerminationPlugin,
 	}
 	res, err := r.client.Plugins.UpdateRequestterminationPlugin(ctx, request)
@@ -347,11 +347,11 @@ func (r *GatewayPluginRequestTerminationResource) Delete(ctx context.Context, re
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.DeleteRequestterminationPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.DeleteRequestterminationPlugin(ctx, request)
 	if err != nil {

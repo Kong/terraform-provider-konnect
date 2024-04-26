@@ -117,7 +117,7 @@ func (r *GatewayPluginResponseTransformerAdvancedDataSourceModel) RefreshFromSha
 		if resp.Config.Transform == nil {
 			r.Config.Transform = nil
 		} else {
-			r.Config.Transform = &tfTypes.Transform{}
+			r.Config.Transform = &tfTypes.CreateResponseTransformerAdvancedPluginTransform{}
 			r.Config.Transform.Functions = []types.String{}
 			for _, v := range resp.Config.Transform.Functions {
 				r.Config.Transform.Functions = append(r.Config.Transform.Functions, types.StringValue(v))

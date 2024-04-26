@@ -9,9 +9,8 @@ import (
 
 type CreateCorsPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	// Create a new CORS plugin
-	CreateCORSPlugin shared.CreateCORSPlugin `request:"mediaType=application/json"`
+	ControlPlaneID   string                   `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	CreateCORSPlugin *shared.CreateCORSPlugin `request:"mediaType=application/json"`
 }
 
 func (o *CreateCorsPluginRequest) GetControlPlaneID() string {
@@ -21,9 +20,9 @@ func (o *CreateCorsPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateCorsPluginRequest) GetCreateCORSPlugin() shared.CreateCORSPlugin {
+func (o *CreateCorsPluginRequest) GetCreateCORSPlugin() *shared.CreateCORSPlugin {
 	if o == nil {
-		return shared.CreateCORSPlugin{}
+		return nil
 	}
 	return o.CreateCORSPlugin
 }
@@ -35,7 +34,7 @@ type CreateCorsPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successfully created Plugin
+	// CORS plugin
 	CORSPlugin *shared.CORSPlugin
 	// Unauthorized
 	UnauthorizedError *shared.UnauthorizedError

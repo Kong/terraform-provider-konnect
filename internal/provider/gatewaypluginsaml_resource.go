@@ -532,7 +532,7 @@ func (r *GatewayPluginSamlResource) Create(ctx context.Context, req resource.Cre
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	createSamlPlugin := *data.ToSharedCreateSamlPlugin()
+	createSamlPlugin := data.ToSharedCreateSamlPlugin()
 	request := operations.CreateSamlPluginRequest{
 		ControlPlaneID:   controlPlaneID,
 		CreateSamlPlugin: createSamlPlugin,
@@ -582,11 +582,11 @@ func (r *GatewayPluginSamlResource) Read(ctx context.Context, req resource.ReadR
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.GetSamlPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.GetSamlPlugin(ctx, request)
 	if err != nil {
@@ -632,12 +632,12 @@ func (r *GatewayPluginSamlResource) Update(ctx context.Context, req resource.Upd
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
-	createSamlPlugin := *data.ToSharedCreateSamlPlugin()
+	controlPlaneID := data.ControlPlaneID.ValueString()
+	createSamlPlugin := data.ToSharedCreateSamlPlugin()
 	request := operations.UpdateSamlPluginRequest{
-		ControlPlaneID:   controlPlaneID,
 		PluginID:         pluginID,
+		ControlPlaneID:   controlPlaneID,
 		CreateSamlPlugin: createSamlPlugin,
 	}
 	res, err := r.client.Plugins.UpdateSamlPlugin(ctx, request)
@@ -685,11 +685,11 @@ func (r *GatewayPluginSamlResource) Delete(ctx context.Context, req resource.Del
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.DeleteSamlPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.DeleteSamlPlugin(ctx, request)
 	if err != nil {

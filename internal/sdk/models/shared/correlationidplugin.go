@@ -95,20 +95,20 @@ func (o *CorrelationIDPluginService) GetID() *string {
 	return o.ID
 }
 
-// CorrelationIDPluginGenerator - The generator to use for the correlation ID. Accepted values are `uuid`, `uuid#counter`, and `tracker`. See [Generators](#generators).
-type CorrelationIDPluginGenerator string
+// Generator - The generator to use for the correlation ID. Accepted values are `uuid`, `uuid#counter`, and `tracker`. See [Generators](#generators).
+type Generator string
 
 const (
-	CorrelationIDPluginGeneratorUUID              CorrelationIDPluginGenerator = "uuid"
-	CorrelationIDPluginGeneratorUUIDNumberCounter CorrelationIDPluginGenerator = "uuid#counter"
-	CorrelationIDPluginGeneratorTracker           CorrelationIDPluginGenerator = "tracker"
+	GeneratorUUID              Generator = "uuid"
+	GeneratorUUIDNumberCounter Generator = "uuid#counter"
+	GeneratorTracker           Generator = "tracker"
 )
 
-func (e CorrelationIDPluginGenerator) ToPointer() *CorrelationIDPluginGenerator {
+func (e Generator) ToPointer() *Generator {
 	return &e
 }
 
-func (e *CorrelationIDPluginGenerator) UnmarshalJSON(data []byte) error {
+func (e *Generator) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -119,20 +119,20 @@ func (e *CorrelationIDPluginGenerator) UnmarshalJSON(data []byte) error {
 	case "uuid#counter":
 		fallthrough
 	case "tracker":
-		*e = CorrelationIDPluginGenerator(v)
+		*e = Generator(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for CorrelationIDPluginGenerator: %v", v)
+		return fmt.Errorf("invalid value for Generator: %v", v)
 	}
 }
 
 type CorrelationIDPluginConfig struct {
-	// The HTTP header name to use for the correlation ID.
-	HeaderName *string `default:"Kong-Request-ID" json:"header_name"`
-	// The generator to use for the correlation ID. Accepted values are `uuid`, `uuid#counter`, and `tracker`. See [Generators](#generators).
-	Generator *CorrelationIDPluginGenerator `default:"uuid#counter" json:"generator"`
 	// Whether to echo the header back to downstream (the client).
 	EchoDownstream *bool `default:"false" json:"echo_downstream"`
+	// The generator to use for the correlation ID. Accepted values are `uuid`, `uuid#counter`, and `tracker`. See [Generators](#generators).
+	Generator *Generator `default:"uuid#counter" json:"generator"`
+	// The HTTP header name to use for the correlation ID.
+	HeaderName *string `default:"Kong-Request-ID" json:"header_name"`
 }
 
 func (c CorrelationIDPluginConfig) MarshalJSON() ([]byte, error) {
@@ -146,25 +146,25 @@ func (c *CorrelationIDPluginConfig) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *CorrelationIDPluginConfig) GetHeaderName() *string {
+func (o *CorrelationIDPluginConfig) GetEchoDownstream() *bool {
 	if o == nil {
 		return nil
 	}
-	return o.HeaderName
+	return o.EchoDownstream
 }
 
-func (o *CorrelationIDPluginConfig) GetGenerator() *CorrelationIDPluginGenerator {
+func (o *CorrelationIDPluginConfig) GetGenerator() *Generator {
 	if o == nil {
 		return nil
 	}
 	return o.Generator
 }
 
-func (o *CorrelationIDPluginConfig) GetEchoDownstream() *bool {
+func (o *CorrelationIDPluginConfig) GetHeaderName() *string {
 	if o == nil {
 		return nil
 	}
-	return o.EchoDownstream
+	return o.HeaderName
 }
 
 // CorrelationIDPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.

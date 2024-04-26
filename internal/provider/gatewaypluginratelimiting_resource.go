@@ -317,7 +317,7 @@ func (r *GatewayPluginRateLimitingResource) Create(ctx context.Context, req reso
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	createRateLimitingPlugin := *data.ToSharedCreateRateLimitingPlugin()
+	createRateLimitingPlugin := data.ToSharedCreateRateLimitingPlugin()
 	request := operations.CreateRatelimitingPluginRequest{
 		ControlPlaneID:           controlPlaneID,
 		CreateRateLimitingPlugin: createRateLimitingPlugin,
@@ -367,11 +367,11 @@ func (r *GatewayPluginRateLimitingResource) Read(ctx context.Context, req resour
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.GetRatelimitingPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.GetRatelimitingPlugin(ctx, request)
 	if err != nil {
@@ -417,12 +417,12 @@ func (r *GatewayPluginRateLimitingResource) Update(ctx context.Context, req reso
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
-	createRateLimitingPlugin := *data.ToSharedCreateRateLimitingPlugin()
+	controlPlaneID := data.ControlPlaneID.ValueString()
+	createRateLimitingPlugin := data.ToSharedCreateRateLimitingPlugin()
 	request := operations.UpdateRatelimitingPluginRequest{
-		ControlPlaneID:           controlPlaneID,
 		PluginID:                 pluginID,
+		ControlPlaneID:           controlPlaneID,
 		CreateRateLimitingPlugin: createRateLimitingPlugin,
 	}
 	res, err := r.client.Plugins.UpdateRatelimitingPlugin(ctx, request)
@@ -470,11 +470,11 @@ func (r *GatewayPluginRateLimitingResource) Delete(ctx context.Context, req reso
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.DeleteRatelimitingPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.DeleteRatelimitingPlugin(ctx, request)
 	if err != nil {

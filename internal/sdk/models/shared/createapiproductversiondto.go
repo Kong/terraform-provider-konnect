@@ -8,7 +8,9 @@ import (
 	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/utils"
 )
 
-// PublishStatus - The publish status of the API product version.
+// PublishStatus - The publish status of the API product version. Applies publish status to all related portal product versions. This field is deprecated: Use PortalProductVersion.publish_status instead.
+//
+// Deprecated type: This will be removed in a future release, please migrate away from it as soon as possible.
 type PublishStatus string
 
 const (
@@ -40,9 +42,13 @@ func (e *PublishStatus) UnmarshalJSON(data []byte) error {
 type CreateAPIProductVersionDTO struct {
 	// The version name of the API product version.
 	Name string `json:"name"`
-	// The publish status of the API product version.
+	// The publish status of the API product version. Applies publish status to all related portal product versions. This field is deprecated: Use PortalProductVersion.publish_status instead.
+	//
+	// Deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
 	PublishStatus *PublishStatus `default:"unpublished" json:"publish_status"`
-	// Indicates if the version of the API product is deprecated.
+	// Indicates if the version of the API product is deprecated. Applies deprecation or removes deprecation from all related portal product versions. This field is deprecated: Use PortalProductVersion.deprecated instead.
+	//
+	// Deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
 	Deprecated     *bool                  `default:"false" json:"deprecated"`
 	GatewayService *GatewayServicePayload `json:"gateway_service,omitempty"`
 }

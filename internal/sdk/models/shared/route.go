@@ -203,7 +203,7 @@ type Route struct {
 	// Whether to enable response body buffering or not. With HTTP 1.1, it may make sense to turn this off on services that send data with chunked transfer encoding.
 	ResponseBuffering *bool `default:"true" json:"response_buffering"`
 	// A list of SNIs that match this Route when using stream routing.
-	Snis []interface{} `json:"snis,omitempty"`
+	Snis []string `json:"snis,omitempty"`
 	// A list of IP sources of incoming connections that match this Route when using stream routing. Each entry is an object with fields "ip" (optionally in CIDR range notation) and/or "port".
 	Sources []RouteSources `json:"sources,omitempty"`
 	// When matching a Route via one of the `paths`, strip the matching prefix from the upstream request URL.
@@ -321,7 +321,7 @@ func (o *Route) GetResponseBuffering() *bool {
 	return o.ResponseBuffering
 }
 
-func (o *Route) GetSnis() []interface{} {
+func (o *Route) GetSnis() []string {
 	if o == nil {
 		return nil
 	}

@@ -4,7 +4,7 @@ package types
 
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
-type Auth struct {
+type CreateAIProxyPluginAuth struct {
 	HeaderName    types.String `tfsdk:"header_name"`
 	HeaderValue   types.String `tfsdk:"header_value"`
 	ParamLocation types.String `tfsdk:"param_location"`

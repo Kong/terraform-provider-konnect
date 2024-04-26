@@ -8,19 +8,11 @@ import (
 )
 
 type UpdateRatelimitingadvancedPluginRequest struct {
-	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
-	// Description of the Plugin
-	CreateRateLimitingAdvancedPlugin shared.CreateRateLimitingAdvancedPlugin `request:"mediaType=application/json"`
-}
-
-func (o *UpdateRatelimitingadvancedPluginRequest) GetControlPlaneID() string {
-	if o == nil {
-		return ""
-	}
-	return o.ControlPlaneID
+	// The UUID of your control plane. This variable is available in the Konnect manager.
+	ControlPlaneID                   string                                   `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	CreateRateLimitingAdvancedPlugin *shared.CreateRateLimitingAdvancedPlugin `request:"mediaType=application/json"`
 }
 
 func (o *UpdateRatelimitingadvancedPluginRequest) GetPluginID() string {
@@ -30,9 +22,16 @@ func (o *UpdateRatelimitingadvancedPluginRequest) GetPluginID() string {
 	return o.PluginID
 }
 
-func (o *UpdateRatelimitingadvancedPluginRequest) GetCreateRateLimitingAdvancedPlugin() shared.CreateRateLimitingAdvancedPlugin {
+func (o *UpdateRatelimitingadvancedPluginRequest) GetControlPlaneID() string {
 	if o == nil {
-		return shared.CreateRateLimitingAdvancedPlugin{}
+		return ""
+	}
+	return o.ControlPlaneID
+}
+
+func (o *UpdateRatelimitingadvancedPluginRequest) GetCreateRateLimitingAdvancedPlugin() *shared.CreateRateLimitingAdvancedPlugin {
+	if o == nil {
+		return nil
 	}
 	return o.CreateRateLimitingAdvancedPlugin
 }
@@ -44,7 +43,7 @@ type UpdateRatelimitingadvancedPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successfully upserted Plugin
+	// RateLimitingAdvanced plugin
 	RateLimitingAdvancedPlugin *shared.RateLimitingAdvancedPlugin
 	// Unauthorized
 	UnauthorizedError *shared.UnauthorizedError

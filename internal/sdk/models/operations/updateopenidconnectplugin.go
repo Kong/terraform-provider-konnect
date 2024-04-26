@@ -8,19 +8,11 @@ import (
 )
 
 type UpdateOpenidconnectPluginRequest struct {
-	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
-	// Description of the Plugin
-	CreateOpenidConnectPlugin shared.CreateOpenidConnectPlugin `request:"mediaType=application/json"`
-}
-
-func (o *UpdateOpenidconnectPluginRequest) GetControlPlaneID() string {
-	if o == nil {
-		return ""
-	}
-	return o.ControlPlaneID
+	// The UUID of your control plane. This variable is available in the Konnect manager.
+	ControlPlaneID            string                            `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	CreateOpenidConnectPlugin *shared.CreateOpenidConnectPlugin `request:"mediaType=application/json"`
 }
 
 func (o *UpdateOpenidconnectPluginRequest) GetPluginID() string {
@@ -30,9 +22,16 @@ func (o *UpdateOpenidconnectPluginRequest) GetPluginID() string {
 	return o.PluginID
 }
 
-func (o *UpdateOpenidconnectPluginRequest) GetCreateOpenidConnectPlugin() shared.CreateOpenidConnectPlugin {
+func (o *UpdateOpenidconnectPluginRequest) GetControlPlaneID() string {
 	if o == nil {
-		return shared.CreateOpenidConnectPlugin{}
+		return ""
+	}
+	return o.ControlPlaneID
+}
+
+func (o *UpdateOpenidconnectPluginRequest) GetCreateOpenidConnectPlugin() *shared.CreateOpenidConnectPlugin {
+	if o == nil {
+		return nil
 	}
 	return o.CreateOpenidConnectPlugin
 }
@@ -44,7 +43,7 @@ type UpdateOpenidconnectPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successfully upserted Plugin
+	// OpenidConnect plugin
 	OpenidConnectPlugin *shared.OpenidConnectPlugin
 	// Unauthorized
 	UnauthorizedError *shared.UnauthorizedError

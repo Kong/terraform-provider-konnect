@@ -310,11 +310,11 @@ func (r *GatewayPluginRateLimitingAdvancedDataSource) Read(ctx context.Context, 
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.GetRatelimitingadvancedPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.GetRatelimitingadvancedPlugin(ctx, request)
 	if err != nil {

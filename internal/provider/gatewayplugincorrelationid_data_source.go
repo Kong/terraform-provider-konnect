@@ -164,11 +164,11 @@ func (r *GatewayPluginCorrelationIDDataSource) Read(ctx context.Context, req dat
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.GetCorrelationidPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.GetCorrelationidPlugin(ctx, request)
 	if err != nil {

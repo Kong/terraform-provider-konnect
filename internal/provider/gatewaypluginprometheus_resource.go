@@ -191,7 +191,7 @@ func (r *GatewayPluginPrometheusResource) Create(ctx context.Context, req resour
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	createPrometheusPlugin := *data.ToSharedCreatePrometheusPlugin()
+	createPrometheusPlugin := data.ToSharedCreatePrometheusPlugin()
 	request := operations.CreatePrometheusPluginRequest{
 		ControlPlaneID:         controlPlaneID,
 		CreatePrometheusPlugin: createPrometheusPlugin,
@@ -241,11 +241,11 @@ func (r *GatewayPluginPrometheusResource) Read(ctx context.Context, req resource
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.GetPrometheusPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.GetPrometheusPlugin(ctx, request)
 	if err != nil {
@@ -291,12 +291,12 @@ func (r *GatewayPluginPrometheusResource) Update(ctx context.Context, req resour
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
-	createPrometheusPlugin := *data.ToSharedCreatePrometheusPlugin()
+	controlPlaneID := data.ControlPlaneID.ValueString()
+	createPrometheusPlugin := data.ToSharedCreatePrometheusPlugin()
 	request := operations.UpdatePrometheusPluginRequest{
-		ControlPlaneID:         controlPlaneID,
 		PluginID:               pluginID,
+		ControlPlaneID:         controlPlaneID,
 		CreatePrometheusPlugin: createPrometheusPlugin,
 	}
 	res, err := r.client.Plugins.UpdatePrometheusPlugin(ctx, request)
@@ -344,11 +344,11 @@ func (r *GatewayPluginPrometheusResource) Delete(ctx context.Context, req resour
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.DeletePrometheusPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.DeletePrometheusPlugin(ctx, request)
 	if err != nil {

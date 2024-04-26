@@ -8,17 +8,10 @@ import (
 )
 
 type GetOauth2PluginRequest struct {
-	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
-}
-
-func (o *GetOauth2PluginRequest) GetControlPlaneID() string {
-	if o == nil {
-		return ""
-	}
-	return o.ControlPlaneID
+	// The UUID of your control plane. This variable is available in the Konnect manager.
+	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
 func (o *GetOauth2PluginRequest) GetPluginID() string {
@@ -28,6 +21,13 @@ func (o *GetOauth2PluginRequest) GetPluginID() string {
 	return o.PluginID
 }
 
+func (o *GetOauth2PluginRequest) GetControlPlaneID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ControlPlaneID
+}
+
 type GetOauth2PluginResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -35,7 +35,7 @@ type GetOauth2PluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successfully fetched Plugin
+	// Oauth2 plugin
 	Oauth2Plugin *shared.Oauth2Plugin
 	// Unauthorized
 	UnauthorizedError *shared.UnauthorizedError

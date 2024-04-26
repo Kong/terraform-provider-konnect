@@ -4,7 +4,7 @@ package types
 
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
-type Redis struct {
+type CreateRateLimitingAdvancedPluginRedis struct {
 	ClusterAddresses  []types.String `tfsdk:"cluster_addresses"`
 	ConnectTimeout    types.Int64    `tfsdk:"connect_timeout"`
 	Database          types.Int64    `tfsdk:"database"`

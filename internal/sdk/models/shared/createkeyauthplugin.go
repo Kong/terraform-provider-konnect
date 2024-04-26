@@ -96,18 +96,18 @@ func (o *CreateKeyAuthPluginService) GetID() *string {
 }
 
 type CreateKeyAuthPluginConfig struct {
-	// Describes an array of parameter names where the plugin will look for a key. The key names may only contain [a-z], [A-Z], [0-9], [_] underscore, and [-] hyphen.
-	KeyNames []string `json:"key_names,omitempty"`
-	// An optional boolean value telling the plugin to show or hide the credential from the upstream service. If `true`, the plugin strips the credential from the request.
-	HideCredentials *bool `default:"false" json:"hide_credentials"`
 	// An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request will fail with an authentication failure `4xx`.
 	Anonymous *string `json:"anonymous,omitempty"`
+	// An optional boolean value telling the plugin to show or hide the credential from the upstream service. If `true`, the plugin strips the credential from the request.
+	HideCredentials *bool `default:"false" json:"hide_credentials"`
+	// If enabled, the plugin reads the request body. Supported MIME types: `application/www-form-urlencoded`, `application/json`, and `multipart/form-data`.
+	KeyInBody *bool `default:"false" json:"key_in_body"`
 	// If enabled (default), the plugin reads the request header and tries to find the key in it.
 	KeyInHeader *bool `default:"true" json:"key_in_header"`
 	// If enabled (default), the plugin reads the query parameter in the request and tries to find the key in it.
 	KeyInQuery *bool `default:"true" json:"key_in_query"`
-	// If enabled, the plugin reads the request body. Supported MIME types: `application/www-form-urlencoded`, `application/json`, and `multipart/form-data`.
-	KeyInBody *bool `default:"false" json:"key_in_body"`
+	// Describes an array of parameter names where the plugin will look for a key. The key names may only contain [a-z], [A-Z], [0-9], [_] underscore, and [-] hyphen.
+	KeyNames []string `json:"key_names,omitempty"`
 	// A boolean value that indicates whether the plugin should run (and try to authenticate) on `OPTIONS` preflight requests. If set to `false`, then `OPTIONS` requests are always allowed.
 	RunOnPreflight *bool `default:"true" json:"run_on_preflight"`
 }
@@ -123,11 +123,11 @@ func (c *CreateKeyAuthPluginConfig) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *CreateKeyAuthPluginConfig) GetKeyNames() []string {
+func (o *CreateKeyAuthPluginConfig) GetAnonymous() *string {
 	if o == nil {
 		return nil
 	}
-	return o.KeyNames
+	return o.Anonymous
 }
 
 func (o *CreateKeyAuthPluginConfig) GetHideCredentials() *bool {
@@ -137,11 +137,11 @@ func (o *CreateKeyAuthPluginConfig) GetHideCredentials() *bool {
 	return o.HideCredentials
 }
 
-func (o *CreateKeyAuthPluginConfig) GetAnonymous() *string {
+func (o *CreateKeyAuthPluginConfig) GetKeyInBody() *bool {
 	if o == nil {
 		return nil
 	}
-	return o.Anonymous
+	return o.KeyInBody
 }
 
 func (o *CreateKeyAuthPluginConfig) GetKeyInHeader() *bool {
@@ -158,11 +158,11 @@ func (o *CreateKeyAuthPluginConfig) GetKeyInQuery() *bool {
 	return o.KeyInQuery
 }
 
-func (o *CreateKeyAuthPluginConfig) GetKeyInBody() *bool {
+func (o *CreateKeyAuthPluginConfig) GetKeyNames() []string {
 	if o == nil {
 		return nil
 	}
-	return o.KeyInBody
+	return o.KeyNames
 }
 
 func (o *CreateKeyAuthPluginConfig) GetRunOnPreflight() *bool {

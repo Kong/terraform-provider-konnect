@@ -96,14 +96,14 @@ func (o *CreatePrometheusPluginService) GetID() *string {
 }
 
 type CreatePrometheusPluginConfig struct {
+	// A boolean value that determines if status code metrics should be collected. If enabled, `bandwidth_bytes` and `stream_sessions_total` metrics will be exported.
+	BandwidthMetrics *bool `default:"false" json:"bandwidth_metrics"`
+	// A boolean value that determines if status code metrics should be collected. If enabled, `kong_latency_ms`, `upstream_latency_ms` and `request_latency_ms` metrics will be exported.
+	LatencyMetrics *bool `default:"false" json:"latency_metrics"`
 	// A boolean value that determines if per-consumer metrics should be collected. If enabled, the `kong_http_requests_total` and `kong_bandwidth_bytes` metrics fill in the consumer label when available.
 	PerConsumer *bool `default:"false" json:"per_consumer"`
 	// A boolean value that determines if status code metrics should be collected. If enabled, `http_requests_total`, `stream_sessions_total` metrics will be exported.
 	StatusCodeMetrics *bool `default:"false" json:"status_code_metrics"`
-	// A boolean value that determines if status code metrics should be collected. If enabled, `kong_latency_ms`, `upstream_latency_ms` and `request_latency_ms` metrics will be exported.
-	LatencyMetrics *bool `default:"false" json:"latency_metrics"`
-	// A boolean value that determines if status code metrics should be collected. If enabled, `bandwidth_bytes` and `stream_sessions_total` metrics will be exported.
-	BandwidthMetrics *bool `default:"false" json:"bandwidth_metrics"`
 	// A boolean value that determines if status code metrics should be collected. If enabled, `upstream_target_health` metric will be exported.
 	UpstreamHealthMetrics *bool `default:"false" json:"upstream_health_metrics"`
 }
@@ -119,6 +119,20 @@ func (c *CreatePrometheusPluginConfig) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (o *CreatePrometheusPluginConfig) GetBandwidthMetrics() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.BandwidthMetrics
+}
+
+func (o *CreatePrometheusPluginConfig) GetLatencyMetrics() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.LatencyMetrics
+}
+
 func (o *CreatePrometheusPluginConfig) GetPerConsumer() *bool {
 	if o == nil {
 		return nil
@@ -131,20 +145,6 @@ func (o *CreatePrometheusPluginConfig) GetStatusCodeMetrics() *bool {
 		return nil
 	}
 	return o.StatusCodeMetrics
-}
-
-func (o *CreatePrometheusPluginConfig) GetLatencyMetrics() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.LatencyMetrics
-}
-
-func (o *CreatePrometheusPluginConfig) GetBandwidthMetrics() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.BandwidthMetrics
 }
 
 func (o *CreatePrometheusPluginConfig) GetUpstreamHealthMetrics() *bool {

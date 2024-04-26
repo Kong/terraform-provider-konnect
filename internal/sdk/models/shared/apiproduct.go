@@ -22,9 +22,9 @@ type APIProduct struct {
 	CreatedAt time.Time `json:"created_at"`
 	// An ISO-8601 timestamp representation of entity update date.
 	UpdatedAt time.Time `json:"updated_at"`
-	// description: A maximum of 5 user-defined labels are allowed on this resource.
-	// Keys must not start with kong, konnect, insomnia, mesh, kic or _, which are reserved for Kong.
-	// Keys are case-sensitive.
+	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
+	//
+	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
 	Labels map[string]string `json:"labels"`
 }

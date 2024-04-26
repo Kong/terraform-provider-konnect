@@ -18,7 +18,7 @@ func (r *GatewayPluginJQDataSourceModel) RefreshFromSharedJQPlugin(resp *shared.
 		if resp.Config.RequestJqProgramOptions == nil {
 			r.Config.RequestJqProgramOptions = nil
 		} else {
-			r.Config.RequestJqProgramOptions = &tfTypes.RequestJqProgramOptions{}
+			r.Config.RequestJqProgramOptions = &tfTypes.CreateJQPluginRequestJQProgramOptions{}
 			r.Config.RequestJqProgramOptions.ASCIIOutput = types.BoolPointerValue(resp.Config.RequestJqProgramOptions.ASCIIOutput)
 			r.Config.RequestJqProgramOptions.CompactOutput = types.BoolPointerValue(resp.Config.RequestJqProgramOptions.CompactOutput)
 			r.Config.RequestJqProgramOptions.JoinOutput = types.BoolPointerValue(resp.Config.RequestJqProgramOptions.JoinOutput)
@@ -37,7 +37,7 @@ func (r *GatewayPluginJQDataSourceModel) RefreshFromSharedJQPlugin(resp *shared.
 		if resp.Config.ResponseJqProgramOptions == nil {
 			r.Config.ResponseJqProgramOptions = nil
 		} else {
-			r.Config.ResponseJqProgramOptions = &tfTypes.RequestJqProgramOptions{}
+			r.Config.ResponseJqProgramOptions = &tfTypes.CreateJQPluginRequestJQProgramOptions{}
 			r.Config.ResponseJqProgramOptions.ASCIIOutput = types.BoolPointerValue(resp.Config.ResponseJqProgramOptions.ASCIIOutput)
 			r.Config.ResponseJqProgramOptions.CompactOutput = types.BoolPointerValue(resp.Config.ResponseJqProgramOptions.CompactOutput)
 			r.Config.ResponseJqProgramOptions.JoinOutput = types.BoolPointerValue(resp.Config.ResponseJqProgramOptions.JoinOutput)

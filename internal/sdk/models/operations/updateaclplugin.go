@@ -8,19 +8,11 @@ import (
 )
 
 type UpdateACLPluginRequest struct {
-	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
-	// Description of the Plugin
-	CreateACLPlugin shared.CreateACLPlugin `request:"mediaType=application/json"`
-}
-
-func (o *UpdateACLPluginRequest) GetControlPlaneID() string {
-	if o == nil {
-		return ""
-	}
-	return o.ControlPlaneID
+	// The UUID of your control plane. This variable is available in the Konnect manager.
+	ControlPlaneID  string                  `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	CreateACLPlugin *shared.CreateACLPlugin `request:"mediaType=application/json"`
 }
 
 func (o *UpdateACLPluginRequest) GetPluginID() string {
@@ -30,9 +22,16 @@ func (o *UpdateACLPluginRequest) GetPluginID() string {
 	return o.PluginID
 }
 
-func (o *UpdateACLPluginRequest) GetCreateACLPlugin() shared.CreateACLPlugin {
+func (o *UpdateACLPluginRequest) GetControlPlaneID() string {
 	if o == nil {
-		return shared.CreateACLPlugin{}
+		return ""
+	}
+	return o.ControlPlaneID
+}
+
+func (o *UpdateACLPluginRequest) GetCreateACLPlugin() *shared.CreateACLPlugin {
+	if o == nil {
+		return nil
 	}
 	return o.CreateACLPlugin
 }
@@ -44,7 +43,7 @@ type UpdateACLPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successfully upserted Plugin
+	// ACL plugin
 	ACLPlugin *shared.ACLPlugin
 	// Unauthorized
 	UnauthorizedError *shared.UnauthorizedError

@@ -60,58 +60,6 @@ func (r *GatewayPluginOauth2ResourceModel) ToSharedCreateOauth2Plugin() *shared.
 			ID: id2,
 		}
 	}
-	var scopes []string = []string{}
-	for _, scopesItem := range r.Config.Scopes {
-		scopes = append(scopes, scopesItem.ValueString())
-	}
-	mandatoryScope := new(bool)
-	if !r.Config.MandatoryScope.IsUnknown() && !r.Config.MandatoryScope.IsNull() {
-		*mandatoryScope = r.Config.MandatoryScope.ValueBool()
-	} else {
-		mandatoryScope = nil
-	}
-	provisionKey := new(string)
-	if !r.Config.ProvisionKey.IsUnknown() && !r.Config.ProvisionKey.IsNull() {
-		*provisionKey = r.Config.ProvisionKey.ValueString()
-	} else {
-		provisionKey = nil
-	}
-	tokenExpiration := new(float64)
-	if !r.Config.TokenExpiration.IsUnknown() && !r.Config.TokenExpiration.IsNull() {
-		*tokenExpiration, _ = r.Config.TokenExpiration.ValueBigFloat().Float64()
-	} else {
-		tokenExpiration = nil
-	}
-	enableAuthorizationCode := new(bool)
-	if !r.Config.EnableAuthorizationCode.IsUnknown() && !r.Config.EnableAuthorizationCode.IsNull() {
-		*enableAuthorizationCode = r.Config.EnableAuthorizationCode.ValueBool()
-	} else {
-		enableAuthorizationCode = nil
-	}
-	enableImplicitGrant := new(bool)
-	if !r.Config.EnableImplicitGrant.IsUnknown() && !r.Config.EnableImplicitGrant.IsNull() {
-		*enableImplicitGrant = r.Config.EnableImplicitGrant.ValueBool()
-	} else {
-		enableImplicitGrant = nil
-	}
-	enableClientCredentials := new(bool)
-	if !r.Config.EnableClientCredentials.IsUnknown() && !r.Config.EnableClientCredentials.IsNull() {
-		*enableClientCredentials = r.Config.EnableClientCredentials.ValueBool()
-	} else {
-		enableClientCredentials = nil
-	}
-	enablePasswordGrant := new(bool)
-	if !r.Config.EnablePasswordGrant.IsUnknown() && !r.Config.EnablePasswordGrant.IsNull() {
-		*enablePasswordGrant = r.Config.EnablePasswordGrant.ValueBool()
-	} else {
-		enablePasswordGrant = nil
-	}
-	hideCredentials := new(bool)
-	if !r.Config.HideCredentials.IsUnknown() && !r.Config.HideCredentials.IsNull() {
-		*hideCredentials = r.Config.HideCredentials.ValueBool()
-	} else {
-		hideCredentials = nil
-	}
 	acceptHTTPIfAlreadyTerminated := new(bool)
 	if !r.Config.AcceptHTTPIfAlreadyTerminated.IsUnknown() && !r.Config.AcceptHTTPIfAlreadyTerminated.IsNull() {
 		*acceptHTTPIfAlreadyTerminated = r.Config.AcceptHTTPIfAlreadyTerminated.ValueBool()
@@ -124,17 +72,71 @@ func (r *GatewayPluginOauth2ResourceModel) ToSharedCreateOauth2Plugin() *shared.
 	} else {
 		anonymous = nil
 	}
+	authHeaderName := new(string)
+	if !r.Config.AuthHeaderName.IsUnknown() && !r.Config.AuthHeaderName.IsNull() {
+		*authHeaderName = r.Config.AuthHeaderName.ValueString()
+	} else {
+		authHeaderName = nil
+	}
+	enableAuthorizationCode := new(bool)
+	if !r.Config.EnableAuthorizationCode.IsUnknown() && !r.Config.EnableAuthorizationCode.IsNull() {
+		*enableAuthorizationCode = r.Config.EnableAuthorizationCode.ValueBool()
+	} else {
+		enableAuthorizationCode = nil
+	}
+	enableClientCredentials := new(bool)
+	if !r.Config.EnableClientCredentials.IsUnknown() && !r.Config.EnableClientCredentials.IsNull() {
+		*enableClientCredentials = r.Config.EnableClientCredentials.ValueBool()
+	} else {
+		enableClientCredentials = nil
+	}
+	enableImplicitGrant := new(bool)
+	if !r.Config.EnableImplicitGrant.IsUnknown() && !r.Config.EnableImplicitGrant.IsNull() {
+		*enableImplicitGrant = r.Config.EnableImplicitGrant.ValueBool()
+	} else {
+		enableImplicitGrant = nil
+	}
+	enablePasswordGrant := new(bool)
+	if !r.Config.EnablePasswordGrant.IsUnknown() && !r.Config.EnablePasswordGrant.IsNull() {
+		*enablePasswordGrant = r.Config.EnablePasswordGrant.ValueBool()
+	} else {
+		enablePasswordGrant = nil
+	}
 	globalCredentials := new(bool)
 	if !r.Config.GlobalCredentials.IsUnknown() && !r.Config.GlobalCredentials.IsNull() {
 		*globalCredentials = r.Config.GlobalCredentials.ValueBool()
 	} else {
 		globalCredentials = nil
 	}
-	authHeaderName := new(string)
-	if !r.Config.AuthHeaderName.IsUnknown() && !r.Config.AuthHeaderName.IsNull() {
-		*authHeaderName = r.Config.AuthHeaderName.ValueString()
+	hideCredentials := new(bool)
+	if !r.Config.HideCredentials.IsUnknown() && !r.Config.HideCredentials.IsNull() {
+		*hideCredentials = r.Config.HideCredentials.ValueBool()
 	} else {
-		authHeaderName = nil
+		hideCredentials = nil
+	}
+	mandatoryScope := new(bool)
+	if !r.Config.MandatoryScope.IsUnknown() && !r.Config.MandatoryScope.IsNull() {
+		*mandatoryScope = r.Config.MandatoryScope.ValueBool()
+	} else {
+		mandatoryScope = nil
+	}
+	persistentRefreshToken := new(bool)
+	if !r.Config.PersistentRefreshToken.IsUnknown() && !r.Config.PersistentRefreshToken.IsNull() {
+		*persistentRefreshToken = r.Config.PersistentRefreshToken.ValueBool()
+	} else {
+		persistentRefreshToken = nil
+	}
+	pkce := new(shared.CreateOauth2PluginPkce)
+	if !r.Config.Pkce.IsUnknown() && !r.Config.Pkce.IsNull() {
+		*pkce = shared.CreateOauth2PluginPkce(r.Config.Pkce.ValueString())
+	} else {
+		pkce = nil
+	}
+	provisionKey := new(string)
+	if !r.Config.ProvisionKey.IsUnknown() && !r.Config.ProvisionKey.IsNull() {
+		*provisionKey = r.Config.ProvisionKey.ValueString()
+	} else {
+		provisionKey = nil
 	}
 	refreshTokenTTL := new(float64)
 	if !r.Config.RefreshTokenTTL.IsUnknown() && !r.Config.RefreshTokenTTL.IsNull() {
@@ -148,36 +150,34 @@ func (r *GatewayPluginOauth2ResourceModel) ToSharedCreateOauth2Plugin() *shared.
 	} else {
 		reuseRefreshToken = nil
 	}
-	persistentRefreshToken := new(bool)
-	if !r.Config.PersistentRefreshToken.IsUnknown() && !r.Config.PersistentRefreshToken.IsNull() {
-		*persistentRefreshToken = r.Config.PersistentRefreshToken.ValueBool()
-	} else {
-		persistentRefreshToken = nil
+	var scopes []string = []string{}
+	for _, scopesItem := range r.Config.Scopes {
+		scopes = append(scopes, scopesItem.ValueString())
 	}
-	pkce := new(shared.Pkce)
-	if !r.Config.Pkce.IsUnknown() && !r.Config.Pkce.IsNull() {
-		*pkce = shared.Pkce(r.Config.Pkce.ValueString())
+	tokenExpiration := new(float64)
+	if !r.Config.TokenExpiration.IsUnknown() && !r.Config.TokenExpiration.IsNull() {
+		*tokenExpiration, _ = r.Config.TokenExpiration.ValueBigFloat().Float64()
 	} else {
-		pkce = nil
+		tokenExpiration = nil
 	}
 	config := shared.CreateOauth2PluginConfig{
-		Scopes:                        scopes,
-		MandatoryScope:                mandatoryScope,
-		ProvisionKey:                  provisionKey,
-		TokenExpiration:               tokenExpiration,
-		EnableAuthorizationCode:       enableAuthorizationCode,
-		EnableImplicitGrant:           enableImplicitGrant,
-		EnableClientCredentials:       enableClientCredentials,
-		EnablePasswordGrant:           enablePasswordGrant,
-		HideCredentials:               hideCredentials,
 		AcceptHTTPIfAlreadyTerminated: acceptHTTPIfAlreadyTerminated,
 		Anonymous:                     anonymous,
-		GlobalCredentials:             globalCredentials,
 		AuthHeaderName:                authHeaderName,
-		RefreshTokenTTL:               refreshTokenTTL,
-		ReuseRefreshToken:             reuseRefreshToken,
+		EnableAuthorizationCode:       enableAuthorizationCode,
+		EnableClientCredentials:       enableClientCredentials,
+		EnableImplicitGrant:           enableImplicitGrant,
+		EnablePasswordGrant:           enablePasswordGrant,
+		GlobalCredentials:             globalCredentials,
+		HideCredentials:               hideCredentials,
+		MandatoryScope:                mandatoryScope,
 		PersistentRefreshToken:        persistentRefreshToken,
 		Pkce:                          pkce,
+		ProvisionKey:                  provisionKey,
+		RefreshTokenTTL:               refreshTokenTTL,
+		ReuseRefreshToken:             reuseRefreshToken,
+		Scopes:                        scopes,
+		TokenExpiration:               tokenExpiration,
 	}
 	out := shared.CreateOauth2Plugin{
 		Enabled:   enabled,

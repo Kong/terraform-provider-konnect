@@ -34,7 +34,7 @@ func (r *GatewayPluginRequestTransformerAdvancedDataSourceModel) RefreshFromShar
 		if resp.Config.Allow == nil {
 			r.Config.Allow = nil
 		} else {
-			r.Config.Allow = &tfTypes.Allow{}
+			r.Config.Allow = &tfTypes.CreateRequestTransformerAdvancedPluginAllow{}
 			r.Config.Allow.Body = []types.String{}
 			for _, v := range resp.Config.Allow.Body {
 				r.Config.Allow.Body = append(r.Config.Allow.Body, types.StringValue(v))
@@ -66,7 +66,7 @@ func (r *GatewayPluginRequestTransformerAdvancedDataSourceModel) RefreshFromShar
 		if resp.Config.Remove == nil {
 			r.Config.Remove = nil
 		} else {
-			r.Config.Remove = &tfTypes.Add{}
+			r.Config.Remove = &tfTypes.CreateRequestTransformerPluginAdd{}
 			r.Config.Remove.Body = []types.String{}
 			for _, v := range resp.Config.Remove.Body {
 				r.Config.Remove.Body = append(r.Config.Remove.Body, types.StringValue(v))
@@ -83,7 +83,7 @@ func (r *GatewayPluginRequestTransformerAdvancedDataSourceModel) RefreshFromShar
 		if resp.Config.Rename == nil {
 			r.Config.Rename = nil
 		} else {
-			r.Config.Rename = &tfTypes.Add{}
+			r.Config.Rename = &tfTypes.CreateRequestTransformerPluginAdd{}
 			r.Config.Rename.Body = []types.String{}
 			for _, v := range resp.Config.Rename.Body {
 				r.Config.Rename.Body = append(r.Config.Rename.Body, types.StringValue(v))

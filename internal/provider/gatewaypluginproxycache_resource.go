@@ -265,7 +265,7 @@ func (r *GatewayPluginProxyCacheResource) Create(ctx context.Context, req resour
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	createProxyCachePlugin := *data.ToSharedCreateProxyCachePlugin()
+	createProxyCachePlugin := data.ToSharedCreateProxyCachePlugin()
 	request := operations.CreateProxycachePluginRequest{
 		ControlPlaneID:         controlPlaneID,
 		CreateProxyCachePlugin: createProxyCachePlugin,
@@ -315,11 +315,11 @@ func (r *GatewayPluginProxyCacheResource) Read(ctx context.Context, req resource
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.GetProxycachePluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.GetProxycachePlugin(ctx, request)
 	if err != nil {
@@ -365,12 +365,12 @@ func (r *GatewayPluginProxyCacheResource) Update(ctx context.Context, req resour
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
-	createProxyCachePlugin := *data.ToSharedCreateProxyCachePlugin()
+	controlPlaneID := data.ControlPlaneID.ValueString()
+	createProxyCachePlugin := data.ToSharedCreateProxyCachePlugin()
 	request := operations.UpdateProxycachePluginRequest{
-		ControlPlaneID:         controlPlaneID,
 		PluginID:               pluginID,
+		ControlPlaneID:         controlPlaneID,
 		CreateProxyCachePlugin: createProxyCachePlugin,
 	}
 	res, err := r.client.Plugins.UpdateProxycachePlugin(ctx, request)
@@ -418,11 +418,11 @@ func (r *GatewayPluginProxyCacheResource) Delete(ctx context.Context, req resour
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.DeleteProxycachePluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.DeleteProxycachePlugin(ctx, request)
 	if err != nil {

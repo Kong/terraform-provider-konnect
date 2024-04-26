@@ -279,11 +279,11 @@ func (r *GatewayPluginResponseTransformerAdvancedDataSource) Read(ctx context.Co
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.GetResponsetransformeradvancedPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.GetResponsetransformeradvancedPlugin(ctx, request)
 	if err != nil {

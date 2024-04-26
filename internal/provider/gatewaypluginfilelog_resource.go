@@ -184,7 +184,7 @@ func (r *GatewayPluginFileLogResource) Create(ctx context.Context, req resource.
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	createFileLogPlugin := *data.ToSharedCreateFileLogPlugin()
+	createFileLogPlugin := data.ToSharedCreateFileLogPlugin()
 	request := operations.CreateFilelogPluginRequest{
 		ControlPlaneID:      controlPlaneID,
 		CreateFileLogPlugin: createFileLogPlugin,
@@ -234,11 +234,11 @@ func (r *GatewayPluginFileLogResource) Read(ctx context.Context, req resource.Re
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.GetFilelogPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.GetFilelogPlugin(ctx, request)
 	if err != nil {
@@ -284,12 +284,12 @@ func (r *GatewayPluginFileLogResource) Update(ctx context.Context, req resource.
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
-	createFileLogPlugin := *data.ToSharedCreateFileLogPlugin()
+	controlPlaneID := data.ControlPlaneID.ValueString()
+	createFileLogPlugin := data.ToSharedCreateFileLogPlugin()
 	request := operations.UpdateFilelogPluginRequest{
-		ControlPlaneID:      controlPlaneID,
 		PluginID:            pluginID,
+		ControlPlaneID:      controlPlaneID,
 		CreateFileLogPlugin: createFileLogPlugin,
 	}
 	res, err := r.client.Plugins.UpdateFilelogPlugin(ctx, request)
@@ -337,11 +337,11 @@ func (r *GatewayPluginFileLogResource) Delete(ctx context.Context, req resource.
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.DeleteFilelogPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.DeleteFilelogPlugin(ctx, request)
 	if err != nil {

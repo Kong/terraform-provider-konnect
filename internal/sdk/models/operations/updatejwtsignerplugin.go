@@ -8,19 +8,11 @@ import (
 )
 
 type UpdateJwtsignerPluginRequest struct {
-	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
-	// Description of the Plugin
-	CreateJWTSignerPlugin shared.CreateJWTSignerPlugin `request:"mediaType=application/json"`
-}
-
-func (o *UpdateJwtsignerPluginRequest) GetControlPlaneID() string {
-	if o == nil {
-		return ""
-	}
-	return o.ControlPlaneID
+	// The UUID of your control plane. This variable is available in the Konnect manager.
+	ControlPlaneID        string                        `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	CreateJWTSignerPlugin *shared.CreateJWTSignerPlugin `request:"mediaType=application/json"`
 }
 
 func (o *UpdateJwtsignerPluginRequest) GetPluginID() string {
@@ -30,9 +22,16 @@ func (o *UpdateJwtsignerPluginRequest) GetPluginID() string {
 	return o.PluginID
 }
 
-func (o *UpdateJwtsignerPluginRequest) GetCreateJWTSignerPlugin() shared.CreateJWTSignerPlugin {
+func (o *UpdateJwtsignerPluginRequest) GetControlPlaneID() string {
 	if o == nil {
-		return shared.CreateJWTSignerPlugin{}
+		return ""
+	}
+	return o.ControlPlaneID
+}
+
+func (o *UpdateJwtsignerPluginRequest) GetCreateJWTSignerPlugin() *shared.CreateJWTSignerPlugin {
+	if o == nil {
+		return nil
 	}
 	return o.CreateJWTSignerPlugin
 }
@@ -44,7 +43,7 @@ type UpdateJwtsignerPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successfully upserted Plugin
+	// JWTSigner plugin
 	JWTSignerPlugin *shared.JWTSignerPlugin
 	// Unauthorized
 	UnauthorizedError *shared.UnauthorizedError

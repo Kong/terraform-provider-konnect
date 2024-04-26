@@ -13,7 +13,7 @@ func (r *GatewayPluginAIPromptDecoratorDataSourceModel) RefreshFromSharedAIPromp
 		if resp.Config.Prompts == nil {
 			r.Config.Prompts = nil
 		} else {
-			r.Config.Prompts = &tfTypes.Prompts{}
+			r.Config.Prompts = &tfTypes.CreateAIPromptDecoratorPluginPrompts{}
 			if len(r.Config.Prompts.Append) > len(resp.Config.Prompts.Append) {
 				r.Config.Prompts.Append = r.Config.Prompts.Append[:len(resp.Config.Prompts.Append)]
 			}

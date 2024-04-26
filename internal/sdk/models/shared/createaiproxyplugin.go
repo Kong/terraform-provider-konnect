@@ -95,47 +95,19 @@ func (o *CreateAIProxyPluginService) GetID() *string {
 	return o.ID
 }
 
-// RouteType - The model's operation implementation, for this provider.
-type RouteType string
+// CreateAIProxyPluginParamLocation - Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body.
+type CreateAIProxyPluginParamLocation string
 
 const (
-	RouteTypeLlmV1Chat        RouteType = "llm/v1/chat"
-	RouteTypeLlmV1Completions RouteType = "llm/v1/completions"
+	CreateAIProxyPluginParamLocationQuery CreateAIProxyPluginParamLocation = "query"
+	CreateAIProxyPluginParamLocationBody  CreateAIProxyPluginParamLocation = "body"
 )
 
-func (e RouteType) ToPointer() *RouteType {
+func (e CreateAIProxyPluginParamLocation) ToPointer() *CreateAIProxyPluginParamLocation {
 	return &e
 }
 
-func (e *RouteType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "llm/v1/chat":
-		fallthrough
-	case "llm/v1/completions":
-		*e = RouteType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for RouteType: %v", v)
-	}
-}
-
-// ParamLocation - Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body.
-type ParamLocation string
-
-const (
-	ParamLocationQuery ParamLocation = "query"
-	ParamLocationBody  ParamLocation = "body"
-)
-
-func (e ParamLocation) ToPointer() *ParamLocation {
-	return &e
-}
-
-func (e *ParamLocation) UnmarshalJSON(data []byte) error {
+func (e *CreateAIProxyPluginParamLocation) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -144,78 +116,283 @@ func (e *ParamLocation) UnmarshalJSON(data []byte) error {
 	case "query":
 		fallthrough
 	case "body":
-		*e = ParamLocation(v)
+		*e = CreateAIProxyPluginParamLocation(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for ParamLocation: %v", v)
+		return fmt.Errorf("invalid value for CreateAIProxyPluginParamLocation: %v", v)
 	}
 }
 
-type Auth struct {
+type CreateAIProxyPluginAuth struct {
 	// If AI model requires authentication via Authorization or API key header, specify its name here.
 	HeaderName *string `json:"header_name,omitempty"`
 	// Specify the full auth header value for 'header_name', for example 'Bearer key' or just 'key'.
 	HeaderValue *string `json:"header_value,omitempty"`
+	// Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body.
+	ParamLocation *CreateAIProxyPluginParamLocation `json:"param_location,omitempty"`
 	// If AI model requires authentication via query parameter, specify its name here.
 	ParamName *string `json:"param_name,omitempty"`
 	// Specify the full parameter value for 'param_name'.
 	ParamValue *string `json:"param_value,omitempty"`
-	// Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body.
-	ParamLocation *ParamLocation `json:"param_location,omitempty"`
 }
 
-func (o *Auth) GetHeaderName() *string {
+func (o *CreateAIProxyPluginAuth) GetHeaderName() *string {
 	if o == nil {
 		return nil
 	}
 	return o.HeaderName
 }
 
-func (o *Auth) GetHeaderValue() *string {
+func (o *CreateAIProxyPluginAuth) GetHeaderValue() *string {
 	if o == nil {
 		return nil
 	}
 	return o.HeaderValue
 }
 
-func (o *Auth) GetParamName() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ParamName
-}
-
-func (o *Auth) GetParamValue() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ParamValue
-}
-
-func (o *Auth) GetParamLocation() *ParamLocation {
+func (o *CreateAIProxyPluginAuth) GetParamLocation() *CreateAIProxyPluginParamLocation {
 	if o == nil {
 		return nil
 	}
 	return o.ParamLocation
 }
 
-// Provider - AI provider request format - Kong translates requests to and from the specified backend compatible formats.
-type Provider string
+func (o *CreateAIProxyPluginAuth) GetParamName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ParamName
+}
+
+func (o *CreateAIProxyPluginAuth) GetParamValue() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ParamValue
+}
+
+type CreateAIProxyPluginLogging struct {
+	// If enabled, will log the request and response body into the Kong log plugin(s) output.
+	LogPayloads *bool `default:"false" json:"log_payloads"`
+	// If enabled and supported by the driver, will add model usage and token metrics into the Kong log plugin(s) output.
+	LogStatistics *bool `default:"true" json:"log_statistics"`
+}
+
+func (c CreateAIProxyPluginLogging) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateAIProxyPluginLogging) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *CreateAIProxyPluginLogging) GetLogPayloads() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.LogPayloads
+}
+
+func (o *CreateAIProxyPluginLogging) GetLogStatistics() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.LogStatistics
+}
+
+// CreateAIProxyPluginLlama2Format - If using llama2 provider, select the upstream message format.
+type CreateAIProxyPluginLlama2Format string
 
 const (
-	ProviderOpenai    Provider = "openai"
-	ProviderAzure     Provider = "azure"
-	ProviderAnthropic Provider = "anthropic"
-	ProviderCohere    Provider = "cohere"
-	ProviderMistral   Provider = "mistral"
-	ProviderLlama2    Provider = "llama2"
+	CreateAIProxyPluginLlama2FormatRaw    CreateAIProxyPluginLlama2Format = "raw"
+	CreateAIProxyPluginLlama2FormatOpenai CreateAIProxyPluginLlama2Format = "openai"
+	CreateAIProxyPluginLlama2FormatOllama CreateAIProxyPluginLlama2Format = "ollama"
 )
 
-func (e Provider) ToPointer() *Provider {
+func (e CreateAIProxyPluginLlama2Format) ToPointer() *CreateAIProxyPluginLlama2Format {
 	return &e
 }
 
-func (e *Provider) UnmarshalJSON(data []byte) error {
+func (e *CreateAIProxyPluginLlama2Format) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "raw":
+		fallthrough
+	case "openai":
+		fallthrough
+	case "ollama":
+		*e = CreateAIProxyPluginLlama2Format(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for CreateAIProxyPluginLlama2Format: %v", v)
+	}
+}
+
+// CreateAIProxyPluginMistralFormat - If using mistral provider, select the upstream message format.
+type CreateAIProxyPluginMistralFormat string
+
+const (
+	CreateAIProxyPluginMistralFormatOpenai CreateAIProxyPluginMistralFormat = "openai"
+	CreateAIProxyPluginMistralFormatOllama CreateAIProxyPluginMistralFormat = "ollama"
+)
+
+func (e CreateAIProxyPluginMistralFormat) ToPointer() *CreateAIProxyPluginMistralFormat {
+	return &e
+}
+
+func (e *CreateAIProxyPluginMistralFormat) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "openai":
+		fallthrough
+	case "ollama":
+		*e = CreateAIProxyPluginMistralFormat(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for CreateAIProxyPluginMistralFormat: %v", v)
+	}
+}
+
+// CreateAIProxyPluginOptions - Key/value settings for the model
+type CreateAIProxyPluginOptions struct {
+	// Defines the schema/API version, if using Anthropic provider.
+	AnthropicVersion *string `json:"anthropic_version,omitempty"`
+	// 'api-version' for Azure OpenAI instances.
+	AzureAPIVersion *string `default:"2023-05-15" json:"azure_api_version"`
+	// Deployment ID for Azure OpenAI instances.
+	AzureDeploymentID *string `json:"azure_deployment_id,omitempty"`
+	// Instance name for Azure OpenAI hosted models.
+	AzureInstance *string `json:"azure_instance,omitempty"`
+	// If using llama2 provider, select the upstream message format.
+	Llama2Format *CreateAIProxyPluginLlama2Format `json:"llama2_format,omitempty"`
+	// Defines the max_tokens, if using chat or completion models.
+	MaxTokens *int64 `default:"256" json:"max_tokens"`
+	// If using mistral provider, select the upstream message format.
+	MistralFormat *CreateAIProxyPluginMistralFormat `json:"mistral_format,omitempty"`
+	// Defines the matching temperature, if using chat or completion models.
+	Temperature *float64 `default:"1" json:"temperature"`
+	// Defines the top-k most likely tokens, if supported.
+	TopK *int64 `default:"0" json:"top_k"`
+	// Defines the top-p probability mass, if supported.
+	TopP *float64 `default:"1" json:"top_p"`
+	// Manually specify or override the full URL to the AI operation endpoints, when calling (self-)hosted models, or for running via a private endpoint.
+	UpstreamURL *string `json:"upstream_url,omitempty"`
+}
+
+func (c CreateAIProxyPluginOptions) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateAIProxyPluginOptions) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *CreateAIProxyPluginOptions) GetAnthropicVersion() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AnthropicVersion
+}
+
+func (o *CreateAIProxyPluginOptions) GetAzureAPIVersion() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AzureAPIVersion
+}
+
+func (o *CreateAIProxyPluginOptions) GetAzureDeploymentID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AzureDeploymentID
+}
+
+func (o *CreateAIProxyPluginOptions) GetAzureInstance() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AzureInstance
+}
+
+func (o *CreateAIProxyPluginOptions) GetLlama2Format() *CreateAIProxyPluginLlama2Format {
+	if o == nil {
+		return nil
+	}
+	return o.Llama2Format
+}
+
+func (o *CreateAIProxyPluginOptions) GetMaxTokens() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxTokens
+}
+
+func (o *CreateAIProxyPluginOptions) GetMistralFormat() *CreateAIProxyPluginMistralFormat {
+	if o == nil {
+		return nil
+	}
+	return o.MistralFormat
+}
+
+func (o *CreateAIProxyPluginOptions) GetTemperature() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.Temperature
+}
+
+func (o *CreateAIProxyPluginOptions) GetTopK() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.TopK
+}
+
+func (o *CreateAIProxyPluginOptions) GetTopP() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.TopP
+}
+
+func (o *CreateAIProxyPluginOptions) GetUpstreamURL() *string {
+	if o == nil {
+		return nil
+	}
+	return o.UpstreamURL
+}
+
+// CreateAIProxyPluginProvider - AI provider request format - Kong translates requests to and from the specified backend compatible formats.
+type CreateAIProxyPluginProvider string
+
+const (
+	CreateAIProxyPluginProviderOpenai    CreateAIProxyPluginProvider = "openai"
+	CreateAIProxyPluginProviderAzure     CreateAIProxyPluginProvider = "azure"
+	CreateAIProxyPluginProviderAnthropic CreateAIProxyPluginProvider = "anthropic"
+	CreateAIProxyPluginProviderCohere    CreateAIProxyPluginProvider = "cohere"
+	CreateAIProxyPluginProviderMistral   CreateAIProxyPluginProvider = "mistral"
+	CreateAIProxyPluginProviderLlama2    CreateAIProxyPluginProvider = "llama2"
+)
+
+func (e CreateAIProxyPluginProvider) ToPointer() *CreateAIProxyPluginProvider {
+	return &e
+}
+
+func (e *CreateAIProxyPluginProvider) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -232,282 +409,105 @@ func (e *Provider) UnmarshalJSON(data []byte) error {
 	case "mistral":
 		fallthrough
 	case "llama2":
-		*e = Provider(v)
+		*e = CreateAIProxyPluginProvider(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for Provider: %v", v)
+		return fmt.Errorf("invalid value for CreateAIProxyPluginProvider: %v", v)
 	}
 }
 
-// Llama2Format - If using llama2 provider, select the upstream message format.
-type Llama2Format string
-
-const (
-	Llama2FormatRaw    Llama2Format = "raw"
-	Llama2FormatOpenai Llama2Format = "openai"
-	Llama2FormatOllama Llama2Format = "ollama"
-)
-
-func (e Llama2Format) ToPointer() *Llama2Format {
-	return &e
-}
-
-func (e *Llama2Format) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "raw":
-		fallthrough
-	case "openai":
-		fallthrough
-	case "ollama":
-		*e = Llama2Format(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Llama2Format: %v", v)
-	}
-}
-
-// MistralFormat - If using mistral provider, select the upstream message format.
-type MistralFormat string
-
-const (
-	MistralFormatOpenai MistralFormat = "openai"
-	MistralFormatOllama MistralFormat = "ollama"
-)
-
-func (e MistralFormat) ToPointer() *MistralFormat {
-	return &e
-}
-
-func (e *MistralFormat) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "openai":
-		fallthrough
-	case "ollama":
-		*e = MistralFormat(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for MistralFormat: %v", v)
-	}
-}
-
-// Options - Key/value settings for the model
-type Options struct {
-	// Defines the max_tokens, if using chat or completion models.
-	MaxTokens *int64 `default:"256" json:"max_tokens"`
-	// Defines the matching temperature, if using chat or completion models.
-	Temperature *float64 `default:"1" json:"temperature"`
-	// Defines the top-p probability mass, if supported.
-	TopP *float64 `default:"1" json:"top_p"`
-	// Defines the top-k most likely tokens, if supported.
-	TopK *int64 `default:"0" json:"top_k"`
-	// Defines the schema/API version, if using Anthropic provider.
-	AnthropicVersion *string `json:"anthropic_version,omitempty"`
-	// Instance name for Azure OpenAI hosted models.
-	AzureInstance *string `json:"azure_instance,omitempty"`
-	// 'api-version' for Azure OpenAI instances.
-	AzureAPIVersion *string `default:"2023-05-15" json:"azure_api_version"`
-	// Deployment ID for Azure OpenAI instances.
-	AzureDeploymentID *string `json:"azure_deployment_id,omitempty"`
-	// If using llama2 provider, select the upstream message format.
-	Llama2Format *Llama2Format `json:"llama2_format,omitempty"`
-	// If using mistral provider, select the upstream message format.
-	MistralFormat *MistralFormat `json:"mistral_format,omitempty"`
-	// Manually specify or override the full URL to the AI operation endpoints, when calling (self-)hosted models, or for running via a private endpoint.
-	UpstreamURL *string `json:"upstream_url,omitempty"`
-}
-
-func (o Options) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(o, "", false)
-}
-
-func (o *Options) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (o *Options) GetMaxTokens() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.MaxTokens
-}
-
-func (o *Options) GetTemperature() *float64 {
-	if o == nil {
-		return nil
-	}
-	return o.Temperature
-}
-
-func (o *Options) GetTopP() *float64 {
-	if o == nil {
-		return nil
-	}
-	return o.TopP
-}
-
-func (o *Options) GetTopK() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.TopK
-}
-
-func (o *Options) GetAnthropicVersion() *string {
-	if o == nil {
-		return nil
-	}
-	return o.AnthropicVersion
-}
-
-func (o *Options) GetAzureInstance() *string {
-	if o == nil {
-		return nil
-	}
-	return o.AzureInstance
-}
-
-func (o *Options) GetAzureAPIVersion() *string {
-	if o == nil {
-		return nil
-	}
-	return o.AzureAPIVersion
-}
-
-func (o *Options) GetAzureDeploymentID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.AzureDeploymentID
-}
-
-func (o *Options) GetLlama2Format() *Llama2Format {
-	if o == nil {
-		return nil
-	}
-	return o.Llama2Format
-}
-
-func (o *Options) GetMistralFormat() *MistralFormat {
-	if o == nil {
-		return nil
-	}
-	return o.MistralFormat
-}
-
-func (o *Options) GetUpstreamURL() *string {
-	if o == nil {
-		return nil
-	}
-	return o.UpstreamURL
-}
-
-type Model struct {
-	// AI provider request format - Kong translates requests to and from the specified backend compatible formats.
-	Provider *Provider `json:"provider,omitempty"`
+type CreateAIProxyPluginModel struct {
 	// Model name to execute.
 	Name *string `json:"name,omitempty"`
 	// Key/value settings for the model
-	Options *Options `json:"options,omitempty"`
+	Options *CreateAIProxyPluginOptions `json:"options,omitempty"`
+	// AI provider request format - Kong translates requests to and from the specified backend compatible formats.
+	Provider *CreateAIProxyPluginProvider `json:"provider,omitempty"`
 }
 
-func (o *Model) GetProvider() *Provider {
-	if o == nil {
-		return nil
-	}
-	return o.Provider
-}
-
-func (o *Model) GetName() *string {
+func (o *CreateAIProxyPluginModel) GetName() *string {
 	if o == nil {
 		return nil
 	}
 	return o.Name
 }
 
-func (o *Model) GetOptions() *Options {
+func (o *CreateAIProxyPluginModel) GetOptions() *CreateAIProxyPluginOptions {
 	if o == nil {
 		return nil
 	}
 	return o.Options
 }
 
-type Logging struct {
-	// If enabled and supported by the driver, will add model usage and token metrics into the Kong log plugin(s) output.
-	LogStatistics *bool `default:"true" json:"log_statistics"`
-	// If enabled, will log the request and response body into the Kong log plugin(s) output.
-	LogPayloads *bool `default:"false" json:"log_payloads"`
+func (o *CreateAIProxyPluginModel) GetProvider() *CreateAIProxyPluginProvider {
+	if o == nil {
+		return nil
+	}
+	return o.Provider
 }
 
-func (l Logging) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(l, "", false)
+// CreateAIProxyPluginRouteType - The model's operation implementation, for this provider.
+type CreateAIProxyPluginRouteType string
+
+const (
+	CreateAIProxyPluginRouteTypeLlmV1Chat        CreateAIProxyPluginRouteType = "llm/v1/chat"
+	CreateAIProxyPluginRouteTypeLlmV1Completions CreateAIProxyPluginRouteType = "llm/v1/completions"
+)
+
+func (e CreateAIProxyPluginRouteType) ToPointer() *CreateAIProxyPluginRouteType {
+	return &e
 }
 
-func (l *Logging) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &l, "", false, false); err != nil {
+func (e *CreateAIProxyPluginRouteType) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
-	return nil
-}
-
-func (o *Logging) GetLogStatistics() *bool {
-	if o == nil {
+	switch v {
+	case "llm/v1/chat":
+		fallthrough
+	case "llm/v1/completions":
+		*e = CreateAIProxyPluginRouteType(v)
 		return nil
+	default:
+		return fmt.Errorf("invalid value for CreateAIProxyPluginRouteType: %v", v)
 	}
-	return o.LogStatistics
-}
-
-func (o *Logging) GetLogPayloads() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.LogPayloads
 }
 
 type CreateAIProxyPluginConfig struct {
+	Auth    *CreateAIProxyPluginAuth    `json:"auth,omitempty"`
+	Logging *CreateAIProxyPluginLogging `json:"logging,omitempty"`
+	Model   CreateAIProxyPluginModel    `json:"model"`
 	// The model's operation implementation, for this provider.
-	RouteType *RouteType `json:"route_type,omitempty"`
-	Auth      *Auth      `json:"auth,omitempty"`
-	Model     Model      `json:"model"`
-	Logging   *Logging   `json:"logging,omitempty"`
+	RouteType *CreateAIProxyPluginRouteType `json:"route_type,omitempty"`
 }
 
-func (o *CreateAIProxyPluginConfig) GetRouteType() *RouteType {
-	if o == nil {
-		return nil
-	}
-	return o.RouteType
-}
-
-func (o *CreateAIProxyPluginConfig) GetAuth() *Auth {
+func (o *CreateAIProxyPluginConfig) GetAuth() *CreateAIProxyPluginAuth {
 	if o == nil {
 		return nil
 	}
 	return o.Auth
 }
 
-func (o *CreateAIProxyPluginConfig) GetModel() Model {
-	if o == nil {
-		return Model{}
-	}
-	return o.Model
-}
-
-func (o *CreateAIProxyPluginConfig) GetLogging() *Logging {
+func (o *CreateAIProxyPluginConfig) GetLogging() *CreateAIProxyPluginLogging {
 	if o == nil {
 		return nil
 	}
 	return o.Logging
+}
+
+func (o *CreateAIProxyPluginConfig) GetModel() CreateAIProxyPluginModel {
+	if o == nil {
+		return CreateAIProxyPluginModel{}
+	}
+	return o.Model
+}
+
+func (o *CreateAIProxyPluginConfig) GetRouteType() *CreateAIProxyPluginRouteType {
+	if o == nil {
+		return nil
+	}
+	return o.RouteType
 }
 
 // CreateAIProxyPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.

@@ -95,103 +95,26 @@ func (o *OpentelemetryPluginService) GetID() *string {
 	return o.ID
 }
 
-type OpentelemetryPluginQueue struct {
-	// Maximum number of entries that can be processed at a time.
-	MaxBatchSize *int64 `default:"1" json:"max_batch_size"`
-	// Maximum number of (fractional) seconds to elapse after the first entry was queued before the queue starts calling the handler.
-	MaxCoalescingDelay *float64 `default:"1" json:"max_coalescing_delay"`
-	// Maximum number of entries that can be waiting on the queue.
-	MaxEntries *int64 `default:"10000" json:"max_entries"`
-	// Maximum number of bytes that can be waiting on a queue, requires string content.
-	MaxBytes *int64 `json:"max_bytes,omitempty"`
-	// Time in seconds before the queue gives up calling a failed handler for a batch.
-	MaxRetryTime *float64 `default:"60" json:"max_retry_time"`
-	// Time in seconds before the initial retry is made for a failing batch.
-	InitialRetryDelay *float64 `default:"0.01" json:"initial_retry_delay"`
-	// Maximum time in seconds between retries, caps exponential backoff.
-	MaxRetryDelay *float64 `default:"60" json:"max_retry_delay"`
-}
-
-func (o OpentelemetryPluginQueue) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(o, "", false)
-}
-
-func (o *OpentelemetryPluginQueue) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (o *OpentelemetryPluginQueue) GetMaxBatchSize() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.MaxBatchSize
-}
-
-func (o *OpentelemetryPluginQueue) GetMaxCoalescingDelay() *float64 {
-	if o == nil {
-		return nil
-	}
-	return o.MaxCoalescingDelay
-}
-
-func (o *OpentelemetryPluginQueue) GetMaxEntries() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.MaxEntries
-}
-
-func (o *OpentelemetryPluginQueue) GetMaxBytes() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.MaxBytes
-}
-
-func (o *OpentelemetryPluginQueue) GetMaxRetryTime() *float64 {
-	if o == nil {
-		return nil
-	}
-	return o.MaxRetryTime
-}
-
-func (o *OpentelemetryPluginQueue) GetInitialRetryDelay() *float64 {
-	if o == nil {
-		return nil
-	}
-	return o.InitialRetryDelay
-}
-
-func (o *OpentelemetryPluginQueue) GetMaxRetryDelay() *float64 {
-	if o == nil {
-		return nil
-	}
-	return o.MaxRetryDelay
-}
-
-type OpentelemetryPluginHeaderType string
+type HeaderType string
 
 const (
-	OpentelemetryPluginHeaderTypePreserve OpentelemetryPluginHeaderType = "preserve"
-	OpentelemetryPluginHeaderTypeIgnore   OpentelemetryPluginHeaderType = "ignore"
-	OpentelemetryPluginHeaderTypeB3       OpentelemetryPluginHeaderType = "b3"
-	OpentelemetryPluginHeaderTypeB3Single OpentelemetryPluginHeaderType = "b3-single"
-	OpentelemetryPluginHeaderTypeW3c      OpentelemetryPluginHeaderType = "w3c"
-	OpentelemetryPluginHeaderTypeJaeger   OpentelemetryPluginHeaderType = "jaeger"
-	OpentelemetryPluginHeaderTypeOt       OpentelemetryPluginHeaderType = "ot"
-	OpentelemetryPluginHeaderTypeAws      OpentelemetryPluginHeaderType = "aws"
-	OpentelemetryPluginHeaderTypeGcp      OpentelemetryPluginHeaderType = "gcp"
-	OpentelemetryPluginHeaderTypeDatadog  OpentelemetryPluginHeaderType = "datadog"
+	HeaderTypePreserve HeaderType = "preserve"
+	HeaderTypeIgnore   HeaderType = "ignore"
+	HeaderTypeB3       HeaderType = "b3"
+	HeaderTypeB3Single HeaderType = "b3-single"
+	HeaderTypeW3c      HeaderType = "w3c"
+	HeaderTypeJaeger   HeaderType = "jaeger"
+	HeaderTypeOt       HeaderType = "ot"
+	HeaderTypeAws      HeaderType = "aws"
+	HeaderTypeGcp      HeaderType = "gcp"
+	HeaderTypeDatadog  HeaderType = "datadog"
 )
 
-func (e OpentelemetryPluginHeaderType) ToPointer() *OpentelemetryPluginHeaderType {
+func (e HeaderType) ToPointer() *HeaderType {
 	return &e
 }
 
-func (e *OpentelemetryPluginHeaderType) UnmarshalJSON(data []byte) error {
+func (e *HeaderType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -216,34 +139,111 @@ func (e *OpentelemetryPluginHeaderType) UnmarshalJSON(data []byte) error {
 	case "gcp":
 		fallthrough
 	case "datadog":
-		*e = OpentelemetryPluginHeaderType(v)
+		*e = HeaderType(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for OpentelemetryPluginHeaderType: %v", v)
+		return fmt.Errorf("invalid value for HeaderType: %v", v)
 	}
 }
 
+type Queue struct {
+	// Time in seconds before the initial retry is made for a failing batch.
+	InitialRetryDelay *float64 `default:"0.01" json:"initial_retry_delay"`
+	// Maximum number of entries that can be processed at a time.
+	MaxBatchSize *int64 `default:"1" json:"max_batch_size"`
+	// Maximum number of bytes that can be waiting on a queue, requires string content.
+	MaxBytes *int64 `json:"max_bytes,omitempty"`
+	// Maximum number of (fractional) seconds to elapse after the first entry was queued before the queue starts calling the handler.
+	MaxCoalescingDelay *float64 `default:"1" json:"max_coalescing_delay"`
+	// Maximum number of entries that can be waiting on the queue.
+	MaxEntries *int64 `default:"10000" json:"max_entries"`
+	// Maximum time in seconds between retries, caps exponential backoff.
+	MaxRetryDelay *float64 `default:"60" json:"max_retry_delay"`
+	// Time in seconds before the queue gives up calling a failed handler for a batch.
+	MaxRetryTime *float64 `default:"60" json:"max_retry_time"`
+}
+
+func (q Queue) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(q, "", false)
+}
+
+func (q *Queue) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &q, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *Queue) GetInitialRetryDelay() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.InitialRetryDelay
+}
+
+func (o *Queue) GetMaxBatchSize() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxBatchSize
+}
+
+func (o *Queue) GetMaxBytes() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxBytes
+}
+
+func (o *Queue) GetMaxCoalescingDelay() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxCoalescingDelay
+}
+
+func (o *Queue) GetMaxEntries() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxEntries
+}
+
+func (o *Queue) GetMaxRetryDelay() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxRetryDelay
+}
+
+func (o *Queue) GetMaxRetryTime() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxRetryTime
+}
+
 type OpentelemetryPluginConfig struct {
-	// A string representing a URL, such as https://example.com/path/to/resource?q=search.
-	Endpoint *string `json:"endpoint,omitempty"`
-	// The custom headers to be added in the HTTP request sent to the OTLP server. This setting is useful for adding the authentication headers (token) for the APM backend.
-	Headers            map[string]interface{}    `json:"headers,omitempty"`
-	ResourceAttributes map[string]interface{}    `json:"resource_attributes,omitempty"`
-	Queue              *OpentelemetryPluginQueue `json:"queue,omitempty"`
-	// The number of spans to be sent in a single batch.
-	BatchSpanCount *int64 `json:"batch_span_count,omitempty"`
 	// The delay, in seconds, between two consecutive batches.
 	BatchFlushDelay *int64 `json:"batch_flush_delay,omitempty"`
+	// The number of spans to be sent in a single batch.
+	BatchSpanCount *int64 `json:"batch_span_count,omitempty"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	ConnectTimeout *int64 `default:"1000" json:"connect_timeout"`
+	// A string representing a URL, such as https://example.com/path/to/resource?q=search.
+	Endpoint   *string     `json:"endpoint,omitempty"`
+	HeaderType *HeaderType `default:"preserve" json:"header_type"`
+	// The custom headers to be added in the HTTP request sent to the OTLP server. This setting is useful for adding the authentication headers (token) for the APM backend.
+	Headers                      map[string]interface{} `json:"headers,omitempty"`
+	HTTPResponseHeaderForTraceid *string                `json:"http_response_header_for_traceid,omitempty"`
+	Queue                        *Queue                 `json:"queue,omitempty"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	SendTimeout *int64 `default:"5000" json:"send_timeout"`
-	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	ReadTimeout                  *int64                         `default:"5000" json:"read_timeout"`
-	HTTPResponseHeaderForTraceid *string                        `json:"http_response_header_for_traceid,omitempty"`
-	HeaderType                   *OpentelemetryPluginHeaderType `default:"preserve" json:"header_type"`
+	ReadTimeout        *int64                 `default:"5000" json:"read_timeout"`
+	ResourceAttributes map[string]interface{} `json:"resource_attributes,omitempty"`
 	// Tracing sampling rate for configuring the probability-based sampler. When set, this value supersedes the global `tracing_sampling_rate` setting from kong.conf.
 	SamplingRate *float64 `json:"sampling_rate,omitempty"`
+	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+	SendTimeout *int64 `default:"5000" json:"send_timeout"`
 }
 
 func (o OpentelemetryPluginConfig) MarshalJSON() ([]byte, error) {
@@ -257,32 +257,11 @@ func (o *OpentelemetryPluginConfig) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *OpentelemetryPluginConfig) GetEndpoint() *string {
+func (o *OpentelemetryPluginConfig) GetBatchFlushDelay() *int64 {
 	if o == nil {
 		return nil
 	}
-	return o.Endpoint
-}
-
-func (o *OpentelemetryPluginConfig) GetHeaders() map[string]interface{} {
-	if o == nil {
-		return nil
-	}
-	return o.Headers
-}
-
-func (o *OpentelemetryPluginConfig) GetResourceAttributes() map[string]interface{} {
-	if o == nil {
-		return nil
-	}
-	return o.ResourceAttributes
-}
-
-func (o *OpentelemetryPluginConfig) GetQueue() *OpentelemetryPluginQueue {
-	if o == nil {
-		return nil
-	}
-	return o.Queue
+	return o.BatchFlushDelay
 }
 
 func (o *OpentelemetryPluginConfig) GetBatchSpanCount() *int64 {
@@ -292,13 +271,6 @@ func (o *OpentelemetryPluginConfig) GetBatchSpanCount() *int64 {
 	return o.BatchSpanCount
 }
 
-func (o *OpentelemetryPluginConfig) GetBatchFlushDelay() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.BatchFlushDelay
-}
-
 func (o *OpentelemetryPluginConfig) GetConnectTimeout() *int64 {
 	if o == nil {
 		return nil
@@ -306,18 +278,25 @@ func (o *OpentelemetryPluginConfig) GetConnectTimeout() *int64 {
 	return o.ConnectTimeout
 }
 
-func (o *OpentelemetryPluginConfig) GetSendTimeout() *int64 {
+func (o *OpentelemetryPluginConfig) GetEndpoint() *string {
 	if o == nil {
 		return nil
 	}
-	return o.SendTimeout
+	return o.Endpoint
 }
 
-func (o *OpentelemetryPluginConfig) GetReadTimeout() *int64 {
+func (o *OpentelemetryPluginConfig) GetHeaderType() *HeaderType {
 	if o == nil {
 		return nil
 	}
-	return o.ReadTimeout
+	return o.HeaderType
+}
+
+func (o *OpentelemetryPluginConfig) GetHeaders() map[string]interface{} {
+	if o == nil {
+		return nil
+	}
+	return o.Headers
 }
 
 func (o *OpentelemetryPluginConfig) GetHTTPResponseHeaderForTraceid() *string {
@@ -327,11 +306,25 @@ func (o *OpentelemetryPluginConfig) GetHTTPResponseHeaderForTraceid() *string {
 	return o.HTTPResponseHeaderForTraceid
 }
 
-func (o *OpentelemetryPluginConfig) GetHeaderType() *OpentelemetryPluginHeaderType {
+func (o *OpentelemetryPluginConfig) GetQueue() *Queue {
 	if o == nil {
 		return nil
 	}
-	return o.HeaderType
+	return o.Queue
+}
+
+func (o *OpentelemetryPluginConfig) GetReadTimeout() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.ReadTimeout
+}
+
+func (o *OpentelemetryPluginConfig) GetResourceAttributes() map[string]interface{} {
+	if o == nil {
+		return nil
+	}
+	return o.ResourceAttributes
 }
 
 func (o *OpentelemetryPluginConfig) GetSamplingRate() *float64 {
@@ -339,6 +332,13 @@ func (o *OpentelemetryPluginConfig) GetSamplingRate() *float64 {
 		return nil
 	}
 	return o.SamplingRate
+}
+
+func (o *OpentelemetryPluginConfig) GetSendTimeout() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.SendTimeout
 }
 
 // OpentelemetryPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.

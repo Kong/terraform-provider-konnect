@@ -59,142 +59,64 @@ func (r *GatewayPluginRequestTransformerAdvancedResourceModel) ToSharedCreateReq
 			ID: id2,
 		}
 	}
-	httpMethod := new(string)
-	if !r.Config.HTTPMethod.IsUnknown() && !r.Config.HTTPMethod.IsNull() {
-		*httpMethod = r.Config.HTTPMethod.ValueString()
-	} else {
-		httpMethod = nil
-	}
-	var remove *shared.CreateRequestTransformerAdvancedPluginRemove
-	if r.Config.Remove != nil {
+	var add *shared.CreateRequestTransformerAdvancedPluginAdd
+	if r.Config.Add != nil {
 		var body []string = []string{}
-		for _, bodyItem := range r.Config.Remove.Body {
+		for _, bodyItem := range r.Config.Add.Body {
 			body = append(body, bodyItem.ValueString())
 		}
 		var headers []string = []string{}
-		for _, headersItem := range r.Config.Remove.Headers {
+		for _, headersItem := range r.Config.Add.Headers {
 			headers = append(headers, headersItem.ValueString())
 		}
+		var jsonTypes []shared.CreateRequestTransformerAdvancedPluginJSONTypes = []shared.CreateRequestTransformerAdvancedPluginJSONTypes{}
+		for _, jsonTypesItem := range r.Config.Add.JSONTypes {
+			jsonTypes = append(jsonTypes, shared.CreateRequestTransformerAdvancedPluginJSONTypes(jsonTypesItem.ValueString()))
+		}
 		var querystring []string = []string{}
-		for _, querystringItem := range r.Config.Remove.Querystring {
+		for _, querystringItem := range r.Config.Add.Querystring {
 			querystring = append(querystring, querystringItem.ValueString())
 		}
-		remove = &shared.CreateRequestTransformerAdvancedPluginRemove{
+		add = &shared.CreateRequestTransformerAdvancedPluginAdd{
 			Body:        body,
 			Headers:     headers,
+			JSONTypes:   jsonTypes,
 			Querystring: querystring,
 		}
 	}
-	var rename *shared.CreateRequestTransformerAdvancedPluginRename
-	if r.Config.Rename != nil {
+	var allow *shared.CreateRequestTransformerAdvancedPluginAllow
+	if r.Config.Allow != nil {
 		var body1 []string = []string{}
-		for _, bodyItem1 := range r.Config.Rename.Body {
+		for _, bodyItem1 := range r.Config.Allow.Body {
 			body1 = append(body1, bodyItem1.ValueString())
 		}
-		var headers1 []string = []string{}
-		for _, headersItem1 := range r.Config.Rename.Headers {
-			headers1 = append(headers1, headersItem1.ValueString())
-		}
-		var querystring1 []string = []string{}
-		for _, querystringItem1 := range r.Config.Rename.Querystring {
-			querystring1 = append(querystring1, querystringItem1.ValueString())
-		}
-		rename = &shared.CreateRequestTransformerAdvancedPluginRename{
-			Body:        body1,
-			Headers:     headers1,
-			Querystring: querystring1,
-		}
-	}
-	var replace *shared.CreateRequestTransformerAdvancedPluginReplace
-	if r.Config.Replace != nil {
-		var body2 []string = []string{}
-		for _, bodyItem2 := range r.Config.Replace.Body {
-			body2 = append(body2, bodyItem2.ValueString())
-		}
-		var headers2 []string = []string{}
-		for _, headersItem2 := range r.Config.Replace.Headers {
-			headers2 = append(headers2, headersItem2.ValueString())
-		}
-		var querystring2 []string = []string{}
-		for _, querystringItem2 := range r.Config.Replace.Querystring {
-			querystring2 = append(querystring2, querystringItem2.ValueString())
-		}
-		var jsonTypes []shared.JSONTypes = []shared.JSONTypes{}
-		for _, jsonTypesItem := range r.Config.Replace.JSONTypes {
-			jsonTypes = append(jsonTypes, shared.JSONTypes(jsonTypesItem.ValueString()))
-		}
-		uri := new(string)
-		if !r.Config.Replace.URI.IsUnknown() && !r.Config.Replace.URI.IsNull() {
-			*uri = r.Config.Replace.URI.ValueString()
-		} else {
-			uri = nil
-		}
-		replace = &shared.CreateRequestTransformerAdvancedPluginReplace{
-			Body:        body2,
-			Headers:     headers2,
-			Querystring: querystring2,
-			JSONTypes:   jsonTypes,
-			URI:         uri,
-		}
-	}
-	var add *shared.CreateRequestTransformerAdvancedPluginAdd
-	if r.Config.Add != nil {
-		var body3 []string = []string{}
-		for _, bodyItem3 := range r.Config.Add.Body {
-			body3 = append(body3, bodyItem3.ValueString())
-		}
-		var headers3 []string = []string{}
-		for _, headersItem3 := range r.Config.Add.Headers {
-			headers3 = append(headers3, headersItem3.ValueString())
-		}
-		var querystring3 []string = []string{}
-		for _, querystringItem3 := range r.Config.Add.Querystring {
-			querystring3 = append(querystring3, querystringItem3.ValueString())
-		}
-		var jsonTypes1 []shared.CreateRequestTransformerAdvancedPluginJSONTypes = []shared.CreateRequestTransformerAdvancedPluginJSONTypes{}
-		for _, jsonTypesItem1 := range r.Config.Add.JSONTypes {
-			jsonTypes1 = append(jsonTypes1, shared.CreateRequestTransformerAdvancedPluginJSONTypes(jsonTypesItem1.ValueString()))
-		}
-		add = &shared.CreateRequestTransformerAdvancedPluginAdd{
-			Body:        body3,
-			Headers:     headers3,
-			Querystring: querystring3,
-			JSONTypes:   jsonTypes1,
+		allow = &shared.CreateRequestTransformerAdvancedPluginAllow{
+			Body: body1,
 		}
 	}
 	var append1 *shared.CreateRequestTransformerAdvancedPluginAppend
 	if r.Config.Append != nil {
-		var body4 []string = []string{}
-		for _, bodyItem4 := range r.Config.Append.Body {
-			body4 = append(body4, bodyItem4.ValueString())
+		var body2 []string = []string{}
+		for _, bodyItem2 := range r.Config.Append.Body {
+			body2 = append(body2, bodyItem2.ValueString())
 		}
-		var headers4 []string = []string{}
-		for _, headersItem4 := range r.Config.Append.Headers {
-			headers4 = append(headers4, headersItem4.ValueString())
+		var headers1 []string = []string{}
+		for _, headersItem1 := range r.Config.Append.Headers {
+			headers1 = append(headers1, headersItem1.ValueString())
 		}
-		var querystring4 []string = []string{}
-		for _, querystringItem4 := range r.Config.Append.Querystring {
-			querystring4 = append(querystring4, querystringItem4.ValueString())
+		var jsonTypes1 []shared.CreateRequestTransformerAdvancedPluginConfigJSONTypes = []shared.CreateRequestTransformerAdvancedPluginConfigJSONTypes{}
+		for _, jsonTypesItem1 := range r.Config.Append.JSONTypes {
+			jsonTypes1 = append(jsonTypes1, shared.CreateRequestTransformerAdvancedPluginConfigJSONTypes(jsonTypesItem1.ValueString()))
 		}
-		var jsonTypes2 []shared.CreateRequestTransformerAdvancedPluginConfigJSONTypes = []shared.CreateRequestTransformerAdvancedPluginConfigJSONTypes{}
-		for _, jsonTypesItem2 := range r.Config.Append.JSONTypes {
-			jsonTypes2 = append(jsonTypes2, shared.CreateRequestTransformerAdvancedPluginConfigJSONTypes(jsonTypesItem2.ValueString()))
+		var querystring1 []string = []string{}
+		for _, querystringItem1 := range r.Config.Append.Querystring {
+			querystring1 = append(querystring1, querystringItem1.ValueString())
 		}
 		append1 = &shared.CreateRequestTransformerAdvancedPluginAppend{
-			Body:        body4,
-			Headers:     headers4,
-			Querystring: querystring4,
-			JSONTypes:   jsonTypes2,
-		}
-	}
-	var allow *shared.Allow
-	if r.Config.Allow != nil {
-		var body5 []string = []string{}
-		for _, bodyItem5 := range r.Config.Allow.Body {
-			body5 = append(body5, bodyItem5.ValueString())
-		}
-		allow = &shared.Allow{
-			Body: body5,
+			Body:        body2,
+			Headers:     headers1,
+			JSONTypes:   jsonTypes1,
+			Querystring: querystring1,
 		}
 	}
 	dotsInKeys := new(bool)
@@ -203,15 +125,93 @@ func (r *GatewayPluginRequestTransformerAdvancedResourceModel) ToSharedCreateReq
 	} else {
 		dotsInKeys = nil
 	}
+	httpMethod := new(string)
+	if !r.Config.HTTPMethod.IsUnknown() && !r.Config.HTTPMethod.IsNull() {
+		*httpMethod = r.Config.HTTPMethod.ValueString()
+	} else {
+		httpMethod = nil
+	}
+	var remove *shared.CreateRequestTransformerAdvancedPluginRemove
+	if r.Config.Remove != nil {
+		var body3 []string = []string{}
+		for _, bodyItem3 := range r.Config.Remove.Body {
+			body3 = append(body3, bodyItem3.ValueString())
+		}
+		var headers2 []string = []string{}
+		for _, headersItem2 := range r.Config.Remove.Headers {
+			headers2 = append(headers2, headersItem2.ValueString())
+		}
+		var querystring2 []string = []string{}
+		for _, querystringItem2 := range r.Config.Remove.Querystring {
+			querystring2 = append(querystring2, querystringItem2.ValueString())
+		}
+		remove = &shared.CreateRequestTransformerAdvancedPluginRemove{
+			Body:        body3,
+			Headers:     headers2,
+			Querystring: querystring2,
+		}
+	}
+	var rename *shared.CreateRequestTransformerAdvancedPluginRename
+	if r.Config.Rename != nil {
+		var body4 []string = []string{}
+		for _, bodyItem4 := range r.Config.Rename.Body {
+			body4 = append(body4, bodyItem4.ValueString())
+		}
+		var headers3 []string = []string{}
+		for _, headersItem3 := range r.Config.Rename.Headers {
+			headers3 = append(headers3, headersItem3.ValueString())
+		}
+		var querystring3 []string = []string{}
+		for _, querystringItem3 := range r.Config.Rename.Querystring {
+			querystring3 = append(querystring3, querystringItem3.ValueString())
+		}
+		rename = &shared.CreateRequestTransformerAdvancedPluginRename{
+			Body:        body4,
+			Headers:     headers3,
+			Querystring: querystring3,
+		}
+	}
+	var replace *shared.CreateRequestTransformerAdvancedPluginReplace
+	if r.Config.Replace != nil {
+		var body5 []string = []string{}
+		for _, bodyItem5 := range r.Config.Replace.Body {
+			body5 = append(body5, bodyItem5.ValueString())
+		}
+		var headers4 []string = []string{}
+		for _, headersItem4 := range r.Config.Replace.Headers {
+			headers4 = append(headers4, headersItem4.ValueString())
+		}
+		var jsonTypes2 []shared.CreateRequestTransformerAdvancedPluginConfigReplaceJSONTypes = []shared.CreateRequestTransformerAdvancedPluginConfigReplaceJSONTypes{}
+		for _, jsonTypesItem2 := range r.Config.Replace.JSONTypes {
+			jsonTypes2 = append(jsonTypes2, shared.CreateRequestTransformerAdvancedPluginConfigReplaceJSONTypes(jsonTypesItem2.ValueString()))
+		}
+		var querystring4 []string = []string{}
+		for _, querystringItem4 := range r.Config.Replace.Querystring {
+			querystring4 = append(querystring4, querystringItem4.ValueString())
+		}
+		uri := new(string)
+		if !r.Config.Replace.URI.IsUnknown() && !r.Config.Replace.URI.IsNull() {
+			*uri = r.Config.Replace.URI.ValueString()
+		} else {
+			uri = nil
+		}
+		replace = &shared.CreateRequestTransformerAdvancedPluginReplace{
+			Body:        body5,
+			Headers:     headers4,
+			JSONTypes:   jsonTypes2,
+			Querystring: querystring4,
+			URI:         uri,
+		}
+	}
 	config := shared.CreateRequestTransformerAdvancedPluginConfig{
+		Add:        add,
+		Allow:      allow,
+		Append:     append1,
+		DotsInKeys: dotsInKeys,
 		HTTPMethod: httpMethod,
 		Remove:     remove,
 		Rename:     rename,
 		Replace:    replace,
-		Add:        add,
-		Append:     append1,
-		Allow:      allow,
-		DotsInKeys: dotsInKeys,
 	}
 	out := shared.CreateRequestTransformerAdvancedPlugin{
 		Enabled:   enabled,
@@ -251,7 +251,7 @@ func (r *GatewayPluginRequestTransformerAdvancedResourceModel) RefreshFromShared
 		if resp.Config.Allow == nil {
 			r.Config.Allow = nil
 		} else {
-			r.Config.Allow = &tfTypes.Allow{}
+			r.Config.Allow = &tfTypes.CreateRequestTransformerAdvancedPluginAllow{}
 			r.Config.Allow.Body = []types.String{}
 			for _, v := range resp.Config.Allow.Body {
 				r.Config.Allow.Body = append(r.Config.Allow.Body, types.StringValue(v))
@@ -283,7 +283,7 @@ func (r *GatewayPluginRequestTransformerAdvancedResourceModel) RefreshFromShared
 		if resp.Config.Remove == nil {
 			r.Config.Remove = nil
 		} else {
-			r.Config.Remove = &tfTypes.Add{}
+			r.Config.Remove = &tfTypes.CreateRequestTransformerPluginAdd{}
 			r.Config.Remove.Body = []types.String{}
 			for _, v := range resp.Config.Remove.Body {
 				r.Config.Remove.Body = append(r.Config.Remove.Body, types.StringValue(v))
@@ -300,7 +300,7 @@ func (r *GatewayPluginRequestTransformerAdvancedResourceModel) RefreshFromShared
 		if resp.Config.Rename == nil {
 			r.Config.Rename = nil
 		} else {
-			r.Config.Rename = &tfTypes.Add{}
+			r.Config.Rename = &tfTypes.CreateRequestTransformerPluginAdd{}
 			r.Config.Rename.Body = []types.String{}
 			for _, v := range resp.Config.Rename.Body {
 				r.Config.Rename.Body = append(r.Config.Rename.Body, types.StringValue(v))

@@ -59,17 +59,11 @@ func (r *GatewayPluginProxyCacheResourceModel) ToSharedCreateProxyCachePlugin() 
 			ID: id2,
 		}
 	}
-	var responseCode []int64 = []int64{}
-	for _, responseCodeItem := range r.Config.ResponseCode {
-		responseCode = append(responseCode, responseCodeItem.ValueInt64())
-	}
-	var requestMethod []shared.RequestMethod = []shared.RequestMethod{}
-	for _, requestMethodItem := range r.Config.RequestMethod {
-		requestMethod = append(requestMethod, shared.RequestMethod(requestMethodItem.ValueString()))
-	}
-	var contentType []string = []string{}
-	for _, contentTypeItem := range r.Config.ContentType {
-		contentType = append(contentType, contentTypeItem.ValueString())
+	cacheControl := new(bool)
+	if !r.Config.CacheControl.IsUnknown() && !r.Config.CacheControl.IsNull() {
+		*cacheControl = r.Config.CacheControl.ValueBool()
+	} else {
+		cacheControl = nil
 	}
 	cacheTTL := new(int64)
 	if !r.Config.CacheTTL.IsUnknown() && !r.Config.CacheTTL.IsNull() {
@@ -77,17 +71,9 @@ func (r *GatewayPluginProxyCacheResourceModel) ToSharedCreateProxyCachePlugin() 
 	} else {
 		cacheTTL = nil
 	}
-	strategy := new(shared.CreateProxyCachePluginStrategy)
-	if !r.Config.Strategy.IsUnknown() && !r.Config.Strategy.IsNull() {
-		*strategy = shared.CreateProxyCachePluginStrategy(r.Config.Strategy.ValueString())
-	} else {
-		strategy = nil
-	}
-	cacheControl := new(bool)
-	if !r.Config.CacheControl.IsUnknown() && !r.Config.CacheControl.IsNull() {
-		*cacheControl = r.Config.CacheControl.ValueBool()
-	} else {
-		cacheControl = nil
+	var contentType []string = []string{}
+	for _, contentTypeItem := range r.Config.ContentType {
+		contentType = append(contentType, contentTypeItem.ValueString())
 	}
 	ignoreURICase := new(bool)
 	if !r.Config.IgnoreURICase.IsUnknown() && !r.Config.IgnoreURICase.IsNull() {
@@ -95,13 +81,7 @@ func (r *GatewayPluginProxyCacheResourceModel) ToSharedCreateProxyCachePlugin() 
 	} else {
 		ignoreURICase = nil
 	}
-	storageTTL := new(int64)
-	if !r.Config.StorageTTL.IsUnknown() && !r.Config.StorageTTL.IsNull() {
-		*storageTTL = r.Config.StorageTTL.ValueInt64()
-	} else {
-		storageTTL = nil
-	}
-	var memory *shared.Memory
+	var memory *shared.CreateProxyCachePluginMemory
 	if r.Config.Memory != nil {
 		dictionaryName := new(string)
 		if !r.Config.Memory.DictionaryName.IsUnknown() && !r.Config.Memory.DictionaryName.IsNull() {
@@ -109,25 +89,25 @@ func (r *GatewayPluginProxyCacheResourceModel) ToSharedCreateProxyCachePlugin() 
 		} else {
 			dictionaryName = nil
 		}
-		memory = &shared.Memory{
+		memory = &shared.CreateProxyCachePluginMemory{
 			DictionaryName: dictionaryName,
 		}
 	}
-	var varyQueryParams []string = []string{}
-	for _, varyQueryParamsItem := range r.Config.VaryQueryParams {
-		varyQueryParams = append(varyQueryParams, varyQueryParamsItem.ValueString())
+	var requestMethod []shared.CreateProxyCachePluginRequestMethod = []shared.CreateProxyCachePluginRequestMethod{}
+	for _, requestMethodItem := range r.Config.RequestMethod {
+		requestMethod = append(requestMethod, shared.CreateProxyCachePluginRequestMethod(requestMethodItem.ValueString()))
 	}
-	var varyHeaders []string = []string{}
-	for _, varyHeadersItem := range r.Config.VaryHeaders {
-		varyHeaders = append(varyHeaders, varyHeadersItem.ValueString())
+	var responseCode []int64 = []int64{}
+	for _, responseCodeItem := range r.Config.ResponseCode {
+		responseCode = append(responseCode, responseCodeItem.ValueInt64())
 	}
-	var responseHeaders *shared.ResponseHeaders
+	var responseHeaders *shared.CreateProxyCachePluginResponseHeaders
 	if r.Config.ResponseHeaders != nil {
-		age := new(bool)
-		if !r.Config.ResponseHeaders.Age.IsUnknown() && !r.Config.ResponseHeaders.Age.IsNull() {
-			*age = r.Config.ResponseHeaders.Age.ValueBool()
+		xCacheKey := new(bool)
+		if !r.Config.ResponseHeaders.XCacheKey.IsUnknown() && !r.Config.ResponseHeaders.XCacheKey.IsNull() {
+			*xCacheKey = r.Config.ResponseHeaders.XCacheKey.ValueBool()
 		} else {
-			age = nil
+			xCacheKey = nil
 		}
 		xCacheStatus := new(bool)
 		if !r.Config.ResponseHeaders.XCacheStatus.IsUnknown() && !r.Config.ResponseHeaders.XCacheStatus.IsNull() {
@@ -135,31 +115,51 @@ func (r *GatewayPluginProxyCacheResourceModel) ToSharedCreateProxyCachePlugin() 
 		} else {
 			xCacheStatus = nil
 		}
-		xCacheKey := new(bool)
-		if !r.Config.ResponseHeaders.XCacheKey.IsUnknown() && !r.Config.ResponseHeaders.XCacheKey.IsNull() {
-			*xCacheKey = r.Config.ResponseHeaders.XCacheKey.ValueBool()
+		age := new(bool)
+		if !r.Config.ResponseHeaders.Age.IsUnknown() && !r.Config.ResponseHeaders.Age.IsNull() {
+			*age = r.Config.ResponseHeaders.Age.ValueBool()
 		} else {
-			xCacheKey = nil
+			age = nil
 		}
-		responseHeaders = &shared.ResponseHeaders{
-			Age:          age,
-			XCacheStatus: xCacheStatus,
+		responseHeaders = &shared.CreateProxyCachePluginResponseHeaders{
 			XCacheKey:    xCacheKey,
+			XCacheStatus: xCacheStatus,
+			Age:          age,
 		}
 	}
+	storageTTL := new(int64)
+	if !r.Config.StorageTTL.IsUnknown() && !r.Config.StorageTTL.IsNull() {
+		*storageTTL = r.Config.StorageTTL.ValueInt64()
+	} else {
+		storageTTL = nil
+	}
+	strategy := new(shared.CreateProxyCachePluginStrategy)
+	if !r.Config.Strategy.IsUnknown() && !r.Config.Strategy.IsNull() {
+		*strategy = shared.CreateProxyCachePluginStrategy(r.Config.Strategy.ValueString())
+	} else {
+		strategy = nil
+	}
+	var varyHeaders []string = []string{}
+	for _, varyHeadersItem := range r.Config.VaryHeaders {
+		varyHeaders = append(varyHeaders, varyHeadersItem.ValueString())
+	}
+	var varyQueryParams []string = []string{}
+	for _, varyQueryParamsItem := range r.Config.VaryQueryParams {
+		varyQueryParams = append(varyQueryParams, varyQueryParamsItem.ValueString())
+	}
 	config := shared.CreateProxyCachePluginConfig{
-		ResponseCode:    responseCode,
-		RequestMethod:   requestMethod,
-		ContentType:     contentType,
-		CacheTTL:        cacheTTL,
-		Strategy:        strategy,
 		CacheControl:    cacheControl,
+		CacheTTL:        cacheTTL,
+		ContentType:     contentType,
 		IgnoreURICase:   ignoreURICase,
-		StorageTTL:      storageTTL,
 		Memory:          memory,
-		VaryQueryParams: varyQueryParams,
-		VaryHeaders:     varyHeaders,
+		RequestMethod:   requestMethod,
+		ResponseCode:    responseCode,
 		ResponseHeaders: responseHeaders,
+		StorageTTL:      storageTTL,
+		Strategy:        strategy,
+		VaryHeaders:     varyHeaders,
+		VaryQueryParams: varyQueryParams,
 	}
 	out := shared.CreateProxyCachePlugin{
 		Enabled:   enabled,
@@ -185,7 +185,7 @@ func (r *GatewayPluginProxyCacheResourceModel) RefreshFromSharedProxyCachePlugin
 		if resp.Config.Memory == nil {
 			r.Config.Memory = nil
 		} else {
-			r.Config.Memory = &tfTypes.Memory{}
+			r.Config.Memory = &tfTypes.CreateProxyCachePluginMemory{}
 			r.Config.Memory.DictionaryName = types.StringPointerValue(resp.Config.Memory.DictionaryName)
 		}
 		r.Config.RequestMethod = []types.String{}
@@ -199,7 +199,7 @@ func (r *GatewayPluginProxyCacheResourceModel) RefreshFromSharedProxyCachePlugin
 		if resp.Config.ResponseHeaders == nil {
 			r.Config.ResponseHeaders = nil
 		} else {
-			r.Config.ResponseHeaders = &tfTypes.ResponseHeaders{}
+			r.Config.ResponseHeaders = &tfTypes.CreateProxyCachePluginResponseHeaders{}
 			r.Config.ResponseHeaders.Age = types.BoolPointerValue(resp.Config.ResponseHeaders.Age)
 			r.Config.ResponseHeaders.XCacheKey = types.BoolPointerValue(resp.Config.ResponseHeaders.XCacheKey)
 			r.Config.ResponseHeaders.XCacheStatus = types.BoolPointerValue(resp.Config.ResponseHeaders.XCacheStatus)

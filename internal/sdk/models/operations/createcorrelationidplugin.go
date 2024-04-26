@@ -9,9 +9,8 @@ import (
 
 type CreateCorrelationidPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	// Create a new CorrelationId plugin
-	CreateCorrelationIDPlugin shared.CreateCorrelationIDPlugin `request:"mediaType=application/json"`
+	ControlPlaneID            string                            `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	CreateCorrelationIDPlugin *shared.CreateCorrelationIDPlugin `request:"mediaType=application/json"`
 }
 
 func (o *CreateCorrelationidPluginRequest) GetControlPlaneID() string {
@@ -21,9 +20,9 @@ func (o *CreateCorrelationidPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateCorrelationidPluginRequest) GetCreateCorrelationIDPlugin() shared.CreateCorrelationIDPlugin {
+func (o *CreateCorrelationidPluginRequest) GetCreateCorrelationIDPlugin() *shared.CreateCorrelationIDPlugin {
 	if o == nil {
-		return shared.CreateCorrelationIDPlugin{}
+		return nil
 	}
 	return o.CreateCorrelationIDPlugin
 }
@@ -35,7 +34,7 @@ type CreateCorrelationidPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successfully created Plugin
+	// CorrelationId plugin
 	CorrelationIDPlugin *shared.CorrelationIDPlugin
 	// Unauthorized
 	UnauthorizedError *shared.UnauthorizedError

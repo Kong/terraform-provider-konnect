@@ -9,9 +9,8 @@ import (
 
 type CreateACLPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	// Create a new ACL plugin
-	CreateACLPlugin shared.CreateACLPlugin `request:"mediaType=application/json"`
+	ControlPlaneID  string                  `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	CreateACLPlugin *shared.CreateACLPlugin `request:"mediaType=application/json"`
 }
 
 func (o *CreateACLPluginRequest) GetControlPlaneID() string {
@@ -21,9 +20,9 @@ func (o *CreateACLPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateACLPluginRequest) GetCreateACLPlugin() shared.CreateACLPlugin {
+func (o *CreateACLPluginRequest) GetCreateACLPlugin() *shared.CreateACLPlugin {
 	if o == nil {
-		return shared.CreateACLPlugin{}
+		return nil
 	}
 	return o.CreateACLPlugin
 }
@@ -35,7 +34,7 @@ type CreateACLPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successfully created Plugin
+	// ACL plugin
 	ACLPlugin *shared.ACLPlugin
 	// Unauthorized
 	UnauthorizedError *shared.UnauthorizedError

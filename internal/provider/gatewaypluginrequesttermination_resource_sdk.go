@@ -59,17 +59,11 @@ func (r *GatewayPluginRequestTerminationResourceModel) ToSharedCreateRequestTerm
 			ID: id2,
 		}
 	}
-	statusCode := new(int64)
-	if !r.Config.StatusCode.IsUnknown() && !r.Config.StatusCode.IsNull() {
-		*statusCode = r.Config.StatusCode.ValueInt64()
+	body := new(string)
+	if !r.Config.Body.IsUnknown() && !r.Config.Body.IsNull() {
+		*body = r.Config.Body.ValueString()
 	} else {
-		statusCode = nil
-	}
-	message := new(string)
-	if !r.Config.Message.IsUnknown() && !r.Config.Message.IsNull() {
-		*message = r.Config.Message.ValueString()
-	} else {
-		message = nil
+		body = nil
 	}
 	contentType := new(string)
 	if !r.Config.ContentType.IsUnknown() && !r.Config.ContentType.IsNull() {
@@ -77,17 +71,23 @@ func (r *GatewayPluginRequestTerminationResourceModel) ToSharedCreateRequestTerm
 	} else {
 		contentType = nil
 	}
-	body := new(string)
-	if !r.Config.Body.IsUnknown() && !r.Config.Body.IsNull() {
-		*body = r.Config.Body.ValueString()
-	} else {
-		body = nil
-	}
 	echo := new(bool)
 	if !r.Config.Echo.IsUnknown() && !r.Config.Echo.IsNull() {
 		*echo = r.Config.Echo.ValueBool()
 	} else {
 		echo = nil
+	}
+	message := new(string)
+	if !r.Config.Message.IsUnknown() && !r.Config.Message.IsNull() {
+		*message = r.Config.Message.ValueString()
+	} else {
+		message = nil
+	}
+	statusCode := new(int64)
+	if !r.Config.StatusCode.IsUnknown() && !r.Config.StatusCode.IsNull() {
+		*statusCode = r.Config.StatusCode.ValueInt64()
+	} else {
+		statusCode = nil
 	}
 	trigger := new(string)
 	if !r.Config.Trigger.IsUnknown() && !r.Config.Trigger.IsNull() {
@@ -96,11 +96,11 @@ func (r *GatewayPluginRequestTerminationResourceModel) ToSharedCreateRequestTerm
 		trigger = nil
 	}
 	config := shared.CreateRequestTerminationPluginConfig{
-		StatusCode:  statusCode,
-		Message:     message,
-		ContentType: contentType,
 		Body:        body,
+		ContentType: contentType,
 		Echo:        echo,
+		Message:     message,
+		StatusCode:  statusCode,
 		Trigger:     trigger,
 	}
 	out := shared.CreateRequestTerminationPlugin{

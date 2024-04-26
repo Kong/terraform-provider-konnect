@@ -60,17 +60,17 @@ func (r *GatewayPluginAWSLambdaResourceModel) ToSharedCreateAWSLambdaPlugin() *s
 			ID: id2,
 		}
 	}
-	timeout := new(float64)
-	if !r.Config.Timeout.IsUnknown() && !r.Config.Timeout.IsNull() {
-		*timeout, _ = r.Config.Timeout.ValueBigFloat().Float64()
+	awsAssumeRoleArn := new(string)
+	if !r.Config.AwsAssumeRoleArn.IsUnknown() && !r.Config.AwsAssumeRoleArn.IsNull() {
+		*awsAssumeRoleArn = r.Config.AwsAssumeRoleArn.ValueString()
 	} else {
-		timeout = nil
+		awsAssumeRoleArn = nil
 	}
-	keepalive := new(float64)
-	if !r.Config.Keepalive.IsUnknown() && !r.Config.Keepalive.IsNull() {
-		*keepalive, _ = r.Config.Keepalive.ValueBigFloat().Float64()
+	awsImdsProtocolVersion := new(shared.CreateAWSLambdaPluginAWSImdsProtocolVersion)
+	if !r.Config.AwsImdsProtocolVersion.IsUnknown() && !r.Config.AwsImdsProtocolVersion.IsNull() {
+		*awsImdsProtocolVersion = shared.CreateAWSLambdaPluginAWSImdsProtocolVersion(r.Config.AwsImdsProtocolVersion.ValueString())
 	} else {
-		keepalive = nil
+		awsImdsProtocolVersion = nil
 	}
 	awsKey := new(string)
 	if !r.Config.AwsKey.IsUnknown() && !r.Config.AwsKey.IsNull() {
@@ -78,17 +78,11 @@ func (r *GatewayPluginAWSLambdaResourceModel) ToSharedCreateAWSLambdaPlugin() *s
 	} else {
 		awsKey = nil
 	}
-	awsSecret := new(string)
-	if !r.Config.AwsSecret.IsUnknown() && !r.Config.AwsSecret.IsNull() {
-		*awsSecret = r.Config.AwsSecret.ValueString()
+	awsRegion := new(string)
+	if !r.Config.AwsRegion.IsUnknown() && !r.Config.AwsRegion.IsNull() {
+		*awsRegion = r.Config.AwsRegion.ValueString()
 	} else {
-		awsSecret = nil
-	}
-	awsAssumeRoleArn := new(string)
-	if !r.Config.AwsAssumeRoleArn.IsUnknown() && !r.Config.AwsAssumeRoleArn.IsNull() {
-		*awsAssumeRoleArn = r.Config.AwsAssumeRoleArn.ValueString()
-	} else {
-		awsAssumeRoleArn = nil
+		awsRegion = nil
 	}
 	awsRoleSessionName := new(string)
 	if !r.Config.AwsRoleSessionName.IsUnknown() && !r.Config.AwsRoleSessionName.IsNull() {
@@ -96,47 +90,23 @@ func (r *GatewayPluginAWSLambdaResourceModel) ToSharedCreateAWSLambdaPlugin() *s
 	} else {
 		awsRoleSessionName = nil
 	}
-	awsRegion := new(string)
-	if !r.Config.AwsRegion.IsUnknown() && !r.Config.AwsRegion.IsNull() {
-		*awsRegion = r.Config.AwsRegion.ValueString()
+	awsSecret := new(string)
+	if !r.Config.AwsSecret.IsUnknown() && !r.Config.AwsSecret.IsNull() {
+		*awsSecret = r.Config.AwsSecret.ValueString()
 	} else {
-		awsRegion = nil
+		awsSecret = nil
 	}
-	functionName := new(string)
-	if !r.Config.FunctionName.IsUnknown() && !r.Config.FunctionName.IsNull() {
-		*functionName = r.Config.FunctionName.ValueString()
+	awsgatewayCompatible := new(bool)
+	if !r.Config.AwsgatewayCompatible.IsUnknown() && !r.Config.AwsgatewayCompatible.IsNull() {
+		*awsgatewayCompatible = r.Config.AwsgatewayCompatible.ValueBool()
 	} else {
-		functionName = nil
+		awsgatewayCompatible = nil
 	}
-	qualifier := new(string)
-	if !r.Config.Qualifier.IsUnknown() && !r.Config.Qualifier.IsNull() {
-		*qualifier = r.Config.Qualifier.ValueString()
+	base64EncodeBody := new(bool)
+	if !r.Config.Base64EncodeBody.IsUnknown() && !r.Config.Base64EncodeBody.IsNull() {
+		*base64EncodeBody = r.Config.Base64EncodeBody.ValueBool()
 	} else {
-		qualifier = nil
-	}
-	invocationType := new(shared.InvocationType)
-	if !r.Config.InvocationType.IsUnknown() && !r.Config.InvocationType.IsNull() {
-		*invocationType = shared.InvocationType(r.Config.InvocationType.ValueString())
-	} else {
-		invocationType = nil
-	}
-	logType := new(shared.LogType)
-	if !r.Config.LogType.IsUnknown() && !r.Config.LogType.IsNull() {
-		*logType = shared.LogType(r.Config.LogType.ValueString())
-	} else {
-		logType = nil
-	}
-	host := new(string)
-	if !r.Config.Host.IsUnknown() && !r.Config.Host.IsNull() {
-		*host = r.Config.Host.ValueString()
-	} else {
-		host = nil
-	}
-	port := new(int64)
-	if !r.Config.Port.IsUnknown() && !r.Config.Port.IsNull() {
-		*port = r.Config.Port.ValueInt64()
-	} else {
-		port = nil
+		base64EncodeBody = nil
 	}
 	disableHTTPS := new(bool)
 	if !r.Config.DisableHTTPS.IsUnknown() && !r.Config.DisableHTTPS.IsNull() {
@@ -144,11 +114,17 @@ func (r *GatewayPluginAWSLambdaResourceModel) ToSharedCreateAWSLambdaPlugin() *s
 	} else {
 		disableHTTPS = nil
 	}
-	unhandledStatus := new(int64)
-	if !r.Config.UnhandledStatus.IsUnknown() && !r.Config.UnhandledStatus.IsNull() {
-		*unhandledStatus = r.Config.UnhandledStatus.ValueInt64()
+	forwardRequestBody := new(bool)
+	if !r.Config.ForwardRequestBody.IsUnknown() && !r.Config.ForwardRequestBody.IsNull() {
+		*forwardRequestBody = r.Config.ForwardRequestBody.ValueBool()
 	} else {
-		unhandledStatus = nil
+		forwardRequestBody = nil
+	}
+	forwardRequestHeaders := new(bool)
+	if !r.Config.ForwardRequestHeaders.IsUnknown() && !r.Config.ForwardRequestHeaders.IsNull() {
+		*forwardRequestHeaders = r.Config.ForwardRequestHeaders.ValueBool()
+	} else {
+		forwardRequestHeaders = nil
 	}
 	forwardRequestMethod := new(bool)
 	if !r.Config.ForwardRequestMethod.IsUnknown() && !r.Config.ForwardRequestMethod.IsNull() {
@@ -162,17 +138,23 @@ func (r *GatewayPluginAWSLambdaResourceModel) ToSharedCreateAWSLambdaPlugin() *s
 	} else {
 		forwardRequestURI = nil
 	}
-	forwardRequestHeaders := new(bool)
-	if !r.Config.ForwardRequestHeaders.IsUnknown() && !r.Config.ForwardRequestHeaders.IsNull() {
-		*forwardRequestHeaders = r.Config.ForwardRequestHeaders.ValueBool()
+	functionName := new(string)
+	if !r.Config.FunctionName.IsUnknown() && !r.Config.FunctionName.IsNull() {
+		*functionName = r.Config.FunctionName.ValueString()
 	} else {
-		forwardRequestHeaders = nil
+		functionName = nil
 	}
-	forwardRequestBody := new(bool)
-	if !r.Config.ForwardRequestBody.IsUnknown() && !r.Config.ForwardRequestBody.IsNull() {
-		*forwardRequestBody = r.Config.ForwardRequestBody.ValueBool()
+	host := new(string)
+	if !r.Config.Host.IsUnknown() && !r.Config.Host.IsNull() {
+		*host = r.Config.Host.ValueString()
 	} else {
-		forwardRequestBody = nil
+		host = nil
+	}
+	invocationType := new(shared.CreateAWSLambdaPluginInvocationType)
+	if !r.Config.InvocationType.IsUnknown() && !r.Config.InvocationType.IsNull() {
+		*invocationType = shared.CreateAWSLambdaPluginInvocationType(r.Config.InvocationType.ValueString())
+	} else {
+		invocationType = nil
 	}
 	isProxyIntegration := new(bool)
 	if !r.Config.IsProxyIntegration.IsUnknown() && !r.Config.IsProxyIntegration.IsNull() {
@@ -180,11 +162,23 @@ func (r *GatewayPluginAWSLambdaResourceModel) ToSharedCreateAWSLambdaPlugin() *s
 	} else {
 		isProxyIntegration = nil
 	}
-	awsgatewayCompatible := new(bool)
-	if !r.Config.AwsgatewayCompatible.IsUnknown() && !r.Config.AwsgatewayCompatible.IsNull() {
-		*awsgatewayCompatible = r.Config.AwsgatewayCompatible.ValueBool()
+	keepalive := new(float64)
+	if !r.Config.Keepalive.IsUnknown() && !r.Config.Keepalive.IsNull() {
+		*keepalive, _ = r.Config.Keepalive.ValueBigFloat().Float64()
 	} else {
-		awsgatewayCompatible = nil
+		keepalive = nil
+	}
+	logType := new(shared.CreateAWSLambdaPluginLogType)
+	if !r.Config.LogType.IsUnknown() && !r.Config.LogType.IsNull() {
+		*logType = shared.CreateAWSLambdaPluginLogType(r.Config.LogType.ValueString())
+	} else {
+		logType = nil
+	}
+	port := new(int64)
+	if !r.Config.Port.IsUnknown() && !r.Config.Port.IsNull() {
+		*port = r.Config.Port.ValueInt64()
+	} else {
+		port = nil
 	}
 	proxyURL := new(string)
 	if !r.Config.ProxyURL.IsUnknown() && !r.Config.ProxyURL.IsNull() {
@@ -192,50 +186,56 @@ func (r *GatewayPluginAWSLambdaResourceModel) ToSharedCreateAWSLambdaPlugin() *s
 	} else {
 		proxyURL = nil
 	}
+	qualifier := new(string)
+	if !r.Config.Qualifier.IsUnknown() && !r.Config.Qualifier.IsNull() {
+		*qualifier = r.Config.Qualifier.ValueString()
+	} else {
+		qualifier = nil
+	}
 	skipLargeBodies := new(bool)
 	if !r.Config.SkipLargeBodies.IsUnknown() && !r.Config.SkipLargeBodies.IsNull() {
 		*skipLargeBodies = r.Config.SkipLargeBodies.ValueBool()
 	} else {
 		skipLargeBodies = nil
 	}
-	base64EncodeBody := new(bool)
-	if !r.Config.Base64EncodeBody.IsUnknown() && !r.Config.Base64EncodeBody.IsNull() {
-		*base64EncodeBody = r.Config.Base64EncodeBody.ValueBool()
+	timeout := new(float64)
+	if !r.Config.Timeout.IsUnknown() && !r.Config.Timeout.IsNull() {
+		*timeout, _ = r.Config.Timeout.ValueBigFloat().Float64()
 	} else {
-		base64EncodeBody = nil
+		timeout = nil
 	}
-	awsImdsProtocolVersion := new(shared.AwsImdsProtocolVersion)
-	if !r.Config.AwsImdsProtocolVersion.IsUnknown() && !r.Config.AwsImdsProtocolVersion.IsNull() {
-		*awsImdsProtocolVersion = shared.AwsImdsProtocolVersion(r.Config.AwsImdsProtocolVersion.ValueString())
+	unhandledStatus := new(int64)
+	if !r.Config.UnhandledStatus.IsUnknown() && !r.Config.UnhandledStatus.IsNull() {
+		*unhandledStatus = r.Config.UnhandledStatus.ValueInt64()
 	} else {
-		awsImdsProtocolVersion = nil
+		unhandledStatus = nil
 	}
 	config := shared.CreateAWSLambdaPluginConfig{
-		Timeout:                timeout,
-		Keepalive:              keepalive,
-		AwsKey:                 awsKey,
-		AwsSecret:              awsSecret,
 		AwsAssumeRoleArn:       awsAssumeRoleArn,
-		AwsRoleSessionName:     awsRoleSessionName,
+		AwsImdsProtocolVersion: awsImdsProtocolVersion,
+		AwsKey:                 awsKey,
 		AwsRegion:              awsRegion,
-		FunctionName:           functionName,
-		Qualifier:              qualifier,
-		InvocationType:         invocationType,
-		LogType:                logType,
-		Host:                   host,
-		Port:                   port,
+		AwsRoleSessionName:     awsRoleSessionName,
+		AwsSecret:              awsSecret,
+		AwsgatewayCompatible:   awsgatewayCompatible,
+		Base64EncodeBody:       base64EncodeBody,
 		DisableHTTPS:           disableHTTPS,
-		UnhandledStatus:        unhandledStatus,
+		ForwardRequestBody:     forwardRequestBody,
+		ForwardRequestHeaders:  forwardRequestHeaders,
 		ForwardRequestMethod:   forwardRequestMethod,
 		ForwardRequestURI:      forwardRequestURI,
-		ForwardRequestHeaders:  forwardRequestHeaders,
-		ForwardRequestBody:     forwardRequestBody,
+		FunctionName:           functionName,
+		Host:                   host,
+		InvocationType:         invocationType,
 		IsProxyIntegration:     isProxyIntegration,
-		AwsgatewayCompatible:   awsgatewayCompatible,
+		Keepalive:              keepalive,
+		LogType:                logType,
+		Port:                   port,
 		ProxyURL:               proxyURL,
+		Qualifier:              qualifier,
 		SkipLargeBodies:        skipLargeBodies,
-		Base64EncodeBody:       base64EncodeBody,
-		AwsImdsProtocolVersion: awsImdsProtocolVersion,
+		Timeout:                timeout,
+		UnhandledStatus:        unhandledStatus,
 	}
 	out := shared.CreateAWSLambdaPlugin{
 		Enabled:   enabled,

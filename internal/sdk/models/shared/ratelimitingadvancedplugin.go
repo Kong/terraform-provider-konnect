@@ -95,24 +95,24 @@ func (o *RateLimitingAdvancedPluginService) GetID() *string {
 	return o.ID
 }
 
-// RateLimitingAdvancedPluginIdentifier - The type of identifier used to generate the rate limit key. Defines the scope used to increment the rate limiting counters. Can be `ip`, `credential`, `consumer`, `service`, `header`, `path` or `consumer-group`.
-type RateLimitingAdvancedPluginIdentifier string
+// Identifier - The type of identifier used to generate the rate limit key. Defines the scope used to increment the rate limiting counters. Can be `ip`, `credential`, `consumer`, `service`, `header`, `path` or `consumer-group`.
+type Identifier string
 
 const (
-	RateLimitingAdvancedPluginIdentifierIP            RateLimitingAdvancedPluginIdentifier = "ip"
-	RateLimitingAdvancedPluginIdentifierCredential    RateLimitingAdvancedPluginIdentifier = "credential"
-	RateLimitingAdvancedPluginIdentifierConsumer      RateLimitingAdvancedPluginIdentifier = "consumer"
-	RateLimitingAdvancedPluginIdentifierService       RateLimitingAdvancedPluginIdentifier = "service"
-	RateLimitingAdvancedPluginIdentifierHeader        RateLimitingAdvancedPluginIdentifier = "header"
-	RateLimitingAdvancedPluginIdentifierPath          RateLimitingAdvancedPluginIdentifier = "path"
-	RateLimitingAdvancedPluginIdentifierConsumerGroup RateLimitingAdvancedPluginIdentifier = "consumer-group"
+	IdentifierIP            Identifier = "ip"
+	IdentifierCredential    Identifier = "credential"
+	IdentifierConsumer      Identifier = "consumer"
+	IdentifierService       Identifier = "service"
+	IdentifierHeader        Identifier = "header"
+	IdentifierPath          Identifier = "path"
+	IdentifierConsumerGroup Identifier = "consumer-group"
 )
 
-func (e RateLimitingAdvancedPluginIdentifier) ToPointer() *RateLimitingAdvancedPluginIdentifier {
+func (e Identifier) ToPointer() *Identifier {
 	return &e
 }
 
-func (e *RateLimitingAdvancedPluginIdentifier) UnmarshalJSON(data []byte) error {
+func (e *Identifier) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -131,39 +131,236 @@ func (e *RateLimitingAdvancedPluginIdentifier) UnmarshalJSON(data []byte) error 
 	case "path":
 		fallthrough
 	case "consumer-group":
-		*e = RateLimitingAdvancedPluginIdentifier(v)
+		*e = Identifier(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for RateLimitingAdvancedPluginIdentifier: %v", v)
+		return fmt.Errorf("invalid value for Identifier: %v", v)
 	}
 }
 
-// RateLimitingAdvancedPluginWindowType - Sets the time window type to either `sliding` (default) or `fixed`. Sliding windows apply the rate limiting logic while taking into account previous hit rates (from the window that immediately precedes the current) using a dynamic weight. Fixed windows consist of buckets that are statically assigned to a definitive time range, each request is mapped to only one fixed window based on its timestamp and will affect only that window's counters.
-type RateLimitingAdvancedPluginWindowType string
+// SentinelRole - Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
+type SentinelRole string
 
 const (
-	RateLimitingAdvancedPluginWindowTypeFixed   RateLimitingAdvancedPluginWindowType = "fixed"
-	RateLimitingAdvancedPluginWindowTypeSliding RateLimitingAdvancedPluginWindowType = "sliding"
+	SentinelRoleMaster SentinelRole = "master"
+	SentinelRoleSlave  SentinelRole = "slave"
+	SentinelRoleAny    SentinelRole = "any"
 )
 
-func (e RateLimitingAdvancedPluginWindowType) ToPointer() *RateLimitingAdvancedPluginWindowType {
+func (e SentinelRole) ToPointer() *SentinelRole {
 	return &e
 }
 
-func (e *RateLimitingAdvancedPluginWindowType) UnmarshalJSON(data []byte) error {
+func (e *SentinelRole) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
 	switch v {
-	case "fixed":
+	case "master":
 		fallthrough
-	case "sliding":
-		*e = RateLimitingAdvancedPluginWindowType(v)
+	case "slave":
+		fallthrough
+	case "any":
+		*e = SentinelRole(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for RateLimitingAdvancedPluginWindowType: %v", v)
+		return fmt.Errorf("invalid value for SentinelRole: %v", v)
 	}
+}
+
+type Redis struct {
+	// Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Cluster. Each string element must be a hostname. The minimum length of the array is 1 element.
+	ClusterAddresses []string `json:"cluster_addresses,omitempty"`
+	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+	ConnectTimeout *int64 `json:"connect_timeout,omitempty"`
+	// Database to use for the Redis connection when using the `redis` strategy
+	Database *int64 `default:"0" json:"database"`
+	// A string representing a host name, such as example.com.
+	Host *string `json:"host,omitempty"`
+	// Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `keepalive_pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `keepalive_pool_size`.
+	KeepaliveBacklog *int64 `json:"keepalive_backlog,omitempty"`
+	// The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `keepalive_pool_size` nor `keepalive_backlog` is specified, no pool is created. If `keepalive_pool_size` isn't specified but `keepalive_backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.
+	KeepalivePoolSize *int64 `default:"256" json:"keepalive_pool_size"`
+	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
+	Password *string `json:"password,omitempty"`
+	// An integer representing a port number between 0 and 65535, inclusive.
+	Port *int64 `json:"port,omitempty"`
+	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+	ReadTimeout *int64 `json:"read_timeout,omitempty"`
+	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+	SendTimeout *int64 `json:"send_timeout,omitempty"`
+	// Sentinel addresses to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. Each string element must be a hostname. The minimum length of the array is 1 element.
+	SentinelAddresses []string `json:"sentinel_addresses,omitempty"`
+	// Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
+	SentinelMaster *string `json:"sentinel_master,omitempty"`
+	// Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
+	SentinelPassword *string `json:"sentinel_password,omitempty"`
+	// Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
+	SentinelRole *SentinelRole `json:"sentinel_role,omitempty"`
+	// Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
+	SentinelUsername *string `json:"sentinel_username,omitempty"`
+	// A string representing an SNI (server name indication) value for TLS.
+	ServerName *string `json:"server_name,omitempty"`
+	// If set to true, uses SSL to connect to Redis.
+	Ssl *bool `default:"false" json:"ssl"`
+	// If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
+	SslVerify *bool `default:"false" json:"ssl_verify"`
+	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+	Timeout *int64 `default:"2000" json:"timeout"`
+	// Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
+	Username *string `json:"username,omitempty"`
+}
+
+func (r Redis) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *Redis) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *Redis) GetClusterAddresses() []string {
+	if o == nil {
+		return nil
+	}
+	return o.ClusterAddresses
+}
+
+func (o *Redis) GetConnectTimeout() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectTimeout
+}
+
+func (o *Redis) GetDatabase() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.Database
+}
+
+func (o *Redis) GetHost() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Host
+}
+
+func (o *Redis) GetKeepaliveBacklog() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.KeepaliveBacklog
+}
+
+func (o *Redis) GetKeepalivePoolSize() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.KeepalivePoolSize
+}
+
+func (o *Redis) GetPassword() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Password
+}
+
+func (o *Redis) GetPort() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.Port
+}
+
+func (o *Redis) GetReadTimeout() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.ReadTimeout
+}
+
+func (o *Redis) GetSendTimeout() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.SendTimeout
+}
+
+func (o *Redis) GetSentinelAddresses() []string {
+	if o == nil {
+		return nil
+	}
+	return o.SentinelAddresses
+}
+
+func (o *Redis) GetSentinelMaster() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SentinelMaster
+}
+
+func (o *Redis) GetSentinelPassword() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SentinelPassword
+}
+
+func (o *Redis) GetSentinelRole() *SentinelRole {
+	if o == nil {
+		return nil
+	}
+	return o.SentinelRole
+}
+
+func (o *Redis) GetSentinelUsername() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SentinelUsername
+}
+
+func (o *Redis) GetServerName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ServerName
+}
+
+func (o *Redis) GetSsl() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Ssl
+}
+
+func (o *Redis) GetSslVerify() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.SslVerify
+}
+
+func (o *Redis) GetTimeout() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.Timeout
+}
+
+func (o *Redis) GetUsername() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Username
 }
 
 // RateLimitingAdvancedPluginStrategy - The rate-limiting strategy to use for retrieving and incrementing the limits. Available values are: `local` and `cluster`.
@@ -197,267 +394,70 @@ func (e *RateLimitingAdvancedPluginStrategy) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// RateLimitingAdvancedPluginSentinelRole - Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
-type RateLimitingAdvancedPluginSentinelRole string
+// WindowType - Sets the time window type to either `sliding` (default) or `fixed`. Sliding windows apply the rate limiting logic while taking into account previous hit rates (from the window that immediately precedes the current) using a dynamic weight. Fixed windows consist of buckets that are statically assigned to a definitive time range, each request is mapped to only one fixed window based on its timestamp and will affect only that window's counters.
+type WindowType string
 
 const (
-	RateLimitingAdvancedPluginSentinelRoleMaster RateLimitingAdvancedPluginSentinelRole = "master"
-	RateLimitingAdvancedPluginSentinelRoleSlave  RateLimitingAdvancedPluginSentinelRole = "slave"
-	RateLimitingAdvancedPluginSentinelRoleAny    RateLimitingAdvancedPluginSentinelRole = "any"
+	WindowTypeFixed   WindowType = "fixed"
+	WindowTypeSliding WindowType = "sliding"
 )
 
-func (e RateLimitingAdvancedPluginSentinelRole) ToPointer() *RateLimitingAdvancedPluginSentinelRole {
+func (e WindowType) ToPointer() *WindowType {
 	return &e
 }
 
-func (e *RateLimitingAdvancedPluginSentinelRole) UnmarshalJSON(data []byte) error {
+func (e *WindowType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
 	switch v {
-	case "master":
+	case "fixed":
 		fallthrough
-	case "slave":
-		fallthrough
-	case "any":
-		*e = RateLimitingAdvancedPluginSentinelRole(v)
+	case "sliding":
+		*e = WindowType(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for RateLimitingAdvancedPluginSentinelRole: %v", v)
+		return fmt.Errorf("invalid value for WindowType: %v", v)
 	}
-}
-
-type RateLimitingAdvancedPluginRedis struct {
-	// A string representing a host name, such as example.com.
-	Host *string `json:"host,omitempty"`
-	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `json:"port,omitempty"`
-	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	Timeout *int64 `default:"2000" json:"timeout"`
-	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	ConnectTimeout *int64 `json:"connect_timeout,omitempty"`
-	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	SendTimeout *int64 `json:"send_timeout,omitempty"`
-	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	ReadTimeout *int64 `json:"read_timeout,omitempty"`
-	// Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
-	Username *string `json:"username,omitempty"`
-	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
-	Password *string `json:"password,omitempty"`
-	// Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
-	SentinelUsername *string `json:"sentinel_username,omitempty"`
-	// Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
-	SentinelPassword *string `json:"sentinel_password,omitempty"`
-	// Database to use for the Redis connection when using the `redis` strategy
-	Database *int64 `default:"0" json:"database"`
-	// The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `keepalive_pool_size` nor `keepalive_backlog` is specified, no pool is created. If `keepalive_pool_size` isn't specified but `keepalive_backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.
-	KeepalivePoolSize *int64 `default:"256" json:"keepalive_pool_size"`
-	// Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `keepalive_pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `keepalive_pool_size`.
-	KeepaliveBacklog *int64 `json:"keepalive_backlog,omitempty"`
-	// Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
-	SentinelMaster *string `json:"sentinel_master,omitempty"`
-	// Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
-	SentinelRole *RateLimitingAdvancedPluginSentinelRole `json:"sentinel_role,omitempty"`
-	// Sentinel addresses to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. Each string element must be a hostname. The minimum length of the array is 1 element.
-	SentinelAddresses []string `json:"sentinel_addresses,omitempty"`
-	// Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Cluster. Each string element must be a hostname. The minimum length of the array is 1 element.
-	ClusterAddresses []string `json:"cluster_addresses,omitempty"`
-	// If set to true, uses SSL to connect to Redis.
-	Ssl *bool `default:"false" json:"ssl"`
-	// If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
-	SslVerify *bool `default:"false" json:"ssl_verify"`
-	// A string representing an SNI (server name indication) value for TLS.
-	ServerName *string `json:"server_name,omitempty"`
-}
-
-func (r RateLimitingAdvancedPluginRedis) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(r, "", false)
-}
-
-func (r *RateLimitingAdvancedPluginRedis) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (o *RateLimitingAdvancedPluginRedis) GetHost() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Host
-}
-
-func (o *RateLimitingAdvancedPluginRedis) GetPort() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.Port
-}
-
-func (o *RateLimitingAdvancedPluginRedis) GetTimeout() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.Timeout
-}
-
-func (o *RateLimitingAdvancedPluginRedis) GetConnectTimeout() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.ConnectTimeout
-}
-
-func (o *RateLimitingAdvancedPluginRedis) GetSendTimeout() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.SendTimeout
-}
-
-func (o *RateLimitingAdvancedPluginRedis) GetReadTimeout() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.ReadTimeout
-}
-
-func (o *RateLimitingAdvancedPluginRedis) GetUsername() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Username
-}
-
-func (o *RateLimitingAdvancedPluginRedis) GetPassword() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Password
-}
-
-func (o *RateLimitingAdvancedPluginRedis) GetSentinelUsername() *string {
-	if o == nil {
-		return nil
-	}
-	return o.SentinelUsername
-}
-
-func (o *RateLimitingAdvancedPluginRedis) GetSentinelPassword() *string {
-	if o == nil {
-		return nil
-	}
-	return o.SentinelPassword
-}
-
-func (o *RateLimitingAdvancedPluginRedis) GetDatabase() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.Database
-}
-
-func (o *RateLimitingAdvancedPluginRedis) GetKeepalivePoolSize() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.KeepalivePoolSize
-}
-
-func (o *RateLimitingAdvancedPluginRedis) GetKeepaliveBacklog() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.KeepaliveBacklog
-}
-
-func (o *RateLimitingAdvancedPluginRedis) GetSentinelMaster() *string {
-	if o == nil {
-		return nil
-	}
-	return o.SentinelMaster
-}
-
-func (o *RateLimitingAdvancedPluginRedis) GetSentinelRole() *RateLimitingAdvancedPluginSentinelRole {
-	if o == nil {
-		return nil
-	}
-	return o.SentinelRole
-}
-
-func (o *RateLimitingAdvancedPluginRedis) GetSentinelAddresses() []string {
-	if o == nil {
-		return nil
-	}
-	return o.SentinelAddresses
-}
-
-func (o *RateLimitingAdvancedPluginRedis) GetClusterAddresses() []string {
-	if o == nil {
-		return nil
-	}
-	return o.ClusterAddresses
-}
-
-func (o *RateLimitingAdvancedPluginRedis) GetSsl() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.Ssl
-}
-
-func (o *RateLimitingAdvancedPluginRedis) GetSslVerify() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.SslVerify
-}
-
-func (o *RateLimitingAdvancedPluginRedis) GetServerName() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ServerName
 }
 
 type RateLimitingAdvancedPluginConfig struct {
-	// The type of identifier used to generate the rate limit key. Defines the scope used to increment the rate limiting counters. Can be `ip`, `credential`, `consumer`, `service`, `header`, `path` or `consumer-group`.
-	Identifier *RateLimitingAdvancedPluginIdentifier `default:"consumer" json:"identifier"`
-	// One or more window sizes to apply a limit to (defined in seconds). There must be a matching number of window limits and sizes specified.
-	WindowSize []float64 `json:"window_size,omitempty"`
-	// Sets the time window type to either `sliding` (default) or `fixed`. Sliding windows apply the rate limiting logic while taking into account previous hit rates (from the window that immediately precedes the current) using a dynamic weight. Fixed windows consist of buckets that are statically assigned to a definitive time range, each request is mapped to only one fixed window based on its timestamp and will affect only that window's counters.
-	WindowType *RateLimitingAdvancedPluginWindowType `default:"sliding" json:"window_type"`
-	// One or more requests-per-window limits to apply. There must be a matching number of window limits and sizes specified.
-	Limit []float64 `json:"limit,omitempty"`
-	// How often to sync counter data to the central data store. A value of 0 results in synchronous behavior; a value of -1 ignores sync behavior entirely and only stores counters in node memory. A value greater than 0 will sync the counters in the specified number of seconds. The minimum allowed interval is 0.02 seconds (20ms).
-	SyncRate *float64 `json:"sync_rate,omitempty"`
-	// The rate limiting library namespace to use for this plugin instance. Counter data and sync configuration is isolated in each namespace. NOTE: For the plugin instances sharing the same namespace, all the configurations that are required for synchronizing counters, e.g. `strategy`, `redis`, `sync_rate`, `window_size`, `dictionary_name`, need to be the same.
-	Namespace *string `json:"namespace,omitempty"`
-	// The rate-limiting strategy to use for retrieving and incrementing the limits. Available values are: `local` and `cluster`.
-	Strategy *RateLimitingAdvancedPluginStrategy `default:"local" json:"strategy"`
-	// The shared dictionary where counters are stored. When the plugin is configured to synchronize counter data externally (that is `config.strategy` is `cluster` or `redis` and `config.sync_rate` isn't `-1`), this dictionary serves as a buffer to populate counters in the data store on each synchronization cycle.
-	DictionaryName *string `default:"kong_rate_limiting_counters" json:"dictionary_name"`
-	// Optionally hide informative response headers that would otherwise provide information about the current status of limits and counters.
-	HideClientHeaders *bool `default:"false" json:"hide_client_headers"`
-	// The upper bound of a jitter (random delay) in seconds to be added to the `Retry-After` header of denied requests (status = `429`) in order to prevent all the clients from coming back at the same time. The lower bound of the jitter is `0`; in this case, the `Retry-After` header is equal to the `RateLimit-Reset` header.
-	RetryAfterJitterMax *float64 `default:"0" json:"retry_after_jitter_max"`
-	// A string representing an HTTP header name.
-	HeaderName *string `json:"header_name,omitempty"`
-	// A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).
-	Path  *string                          `json:"path,omitempty"`
-	Redis *RateLimitingAdvancedPluginRedis `json:"redis,omitempty"`
-	// Determines if consumer groups are allowed to override the rate limiting settings for the given Route or Service. Flipping `enforce_consumer_groups` from `true` to `false` disables the group override, but does not clear the list of consumer groups. You can then flip `enforce_consumer_groups` to `true` to re-enforce the groups.
-	EnforceConsumerGroups *bool `default:"false" json:"enforce_consumer_groups"`
 	// List of consumer groups allowed to override the rate limiting settings for the given Route or Service. Required if `enforce_consumer_groups` is set to `true`.
 	ConsumerGroups []string `json:"consumer_groups,omitempty"`
+	// The shared dictionary where counters are stored. When the plugin is configured to synchronize counter data externally (that is `config.strategy` is `cluster` or `redis` and `config.sync_rate` isn't `-1`), this dictionary serves as a buffer to populate counters in the data store on each synchronization cycle.
+	DictionaryName *string `default:"kong_rate_limiting_counters" json:"dictionary_name"`
 	// If set to `true`, this doesn't count denied requests (status = `429`). If set to `false`, all requests, including denied ones, are counted. This parameter only affects the `sliding` window_type.
 	DisablePenalty *bool `default:"false" json:"disable_penalty"`
+	// Determines if consumer groups are allowed to override the rate limiting settings for the given Route or Service. Flipping `enforce_consumer_groups` from `true` to `false` disables the group override, but does not clear the list of consumer groups. You can then flip `enforce_consumer_groups` to `true` to re-enforce the groups.
+	EnforceConsumerGroups *bool `default:"false" json:"enforce_consumer_groups"`
 	// Set a custom error code to return when the rate limit is exceeded.
 	ErrorCode *float64 `default:"429" json:"error_code"`
 	// Set a custom error message to return when the rate limit is exceeded.
 	ErrorMessage *string `default:"API rate limit exceeded" json:"error_message"`
+	// A string representing an HTTP header name.
+	HeaderName *string `json:"header_name,omitempty"`
+	// Optionally hide informative response headers that would otherwise provide information about the current status of limits and counters.
+	HideClientHeaders *bool `default:"false" json:"hide_client_headers"`
+	// The type of identifier used to generate the rate limit key. Defines the scope used to increment the rate limiting counters. Can be `ip`, `credential`, `consumer`, `service`, `header`, `path` or `consumer-group`.
+	Identifier *Identifier `default:"consumer" json:"identifier"`
+	// One or more requests-per-window limits to apply. There must be a matching number of window limits and sizes specified.
+	Limit []float64 `json:"limit,omitempty"`
+	// The rate limiting library namespace to use for this plugin instance. Counter data and sync configuration is isolated in each namespace. NOTE: For the plugin instances sharing the same namespace, all the configurations that are required for synchronizing counters, e.g. `strategy`, `redis`, `sync_rate`, `window_size`, `dictionary_name`, need to be the same.
+	Namespace *string `json:"namespace,omitempty"`
+	// A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).
+	Path  *string `json:"path,omitempty"`
+	Redis *Redis  `json:"redis,omitempty"`
+	// The upper bound of a jitter (random delay) in seconds to be added to the `Retry-After` header of denied requests (status = `429`) in order to prevent all the clients from coming back at the same time. The lower bound of the jitter is `0`; in this case, the `Retry-After` header is equal to the `RateLimit-Reset` header.
+	RetryAfterJitterMax *float64 `default:"0" json:"retry_after_jitter_max"`
+	// The rate-limiting strategy to use for retrieving and incrementing the limits. Available values are: `local` and `cluster`.
+	Strategy *RateLimitingAdvancedPluginStrategy `default:"local" json:"strategy"`
+	// How often to sync counter data to the central data store. A value of 0 results in synchronous behavior; a value of -1 ignores sync behavior entirely and only stores counters in node memory. A value greater than 0 will sync the counters in the specified number of seconds. The minimum allowed interval is 0.02 seconds (20ms).
+	SyncRate *float64 `json:"sync_rate,omitempty"`
+	// One or more window sizes to apply a limit to (defined in seconds). There must be a matching number of window limits and sizes specified.
+	WindowSize []float64 `json:"window_size,omitempty"`
+	// Sets the time window type to either `sliding` (default) or `fixed`. Sliding windows apply the rate limiting logic while taking into account previous hit rates (from the window that immediately precedes the current) using a dynamic weight. Fixed windows consist of buckets that are statically assigned to a definitive time range, each request is mapped to only one fixed window based on its timestamp and will affect only that window's counters.
+	WindowType *WindowType `default:"sliding" json:"window_type"`
 }
 
 func (r RateLimitingAdvancedPluginConfig) MarshalJSON() ([]byte, error) {
@@ -471,53 +471,11 @@ func (r *RateLimitingAdvancedPluginConfig) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *RateLimitingAdvancedPluginConfig) GetIdentifier() *RateLimitingAdvancedPluginIdentifier {
+func (o *RateLimitingAdvancedPluginConfig) GetConsumerGroups() []string {
 	if o == nil {
 		return nil
 	}
-	return o.Identifier
-}
-
-func (o *RateLimitingAdvancedPluginConfig) GetWindowSize() []float64 {
-	if o == nil {
-		return nil
-	}
-	return o.WindowSize
-}
-
-func (o *RateLimitingAdvancedPluginConfig) GetWindowType() *RateLimitingAdvancedPluginWindowType {
-	if o == nil {
-		return nil
-	}
-	return o.WindowType
-}
-
-func (o *RateLimitingAdvancedPluginConfig) GetLimit() []float64 {
-	if o == nil {
-		return nil
-	}
-	return o.Limit
-}
-
-func (o *RateLimitingAdvancedPluginConfig) GetSyncRate() *float64 {
-	if o == nil {
-		return nil
-	}
-	return o.SyncRate
-}
-
-func (o *RateLimitingAdvancedPluginConfig) GetNamespace() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Namespace
-}
-
-func (o *RateLimitingAdvancedPluginConfig) GetStrategy() *RateLimitingAdvancedPluginStrategy {
-	if o == nil {
-		return nil
-	}
-	return o.Strategy
+	return o.ConsumerGroups
 }
 
 func (o *RateLimitingAdvancedPluginConfig) GetDictionaryName() *string {
@@ -527,39 +485,11 @@ func (o *RateLimitingAdvancedPluginConfig) GetDictionaryName() *string {
 	return o.DictionaryName
 }
 
-func (o *RateLimitingAdvancedPluginConfig) GetHideClientHeaders() *bool {
+func (o *RateLimitingAdvancedPluginConfig) GetDisablePenalty() *bool {
 	if o == nil {
 		return nil
 	}
-	return o.HideClientHeaders
-}
-
-func (o *RateLimitingAdvancedPluginConfig) GetRetryAfterJitterMax() *float64 {
-	if o == nil {
-		return nil
-	}
-	return o.RetryAfterJitterMax
-}
-
-func (o *RateLimitingAdvancedPluginConfig) GetHeaderName() *string {
-	if o == nil {
-		return nil
-	}
-	return o.HeaderName
-}
-
-func (o *RateLimitingAdvancedPluginConfig) GetPath() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Path
-}
-
-func (o *RateLimitingAdvancedPluginConfig) GetRedis() *RateLimitingAdvancedPluginRedis {
-	if o == nil {
-		return nil
-	}
-	return o.Redis
+	return o.DisablePenalty
 }
 
 func (o *RateLimitingAdvancedPluginConfig) GetEnforceConsumerGroups() *bool {
@@ -567,20 +497,6 @@ func (o *RateLimitingAdvancedPluginConfig) GetEnforceConsumerGroups() *bool {
 		return nil
 	}
 	return o.EnforceConsumerGroups
-}
-
-func (o *RateLimitingAdvancedPluginConfig) GetConsumerGroups() []string {
-	if o == nil {
-		return nil
-	}
-	return o.ConsumerGroups
-}
-
-func (o *RateLimitingAdvancedPluginConfig) GetDisablePenalty() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.DisablePenalty
 }
 
 func (o *RateLimitingAdvancedPluginConfig) GetErrorCode() *float64 {
@@ -595,6 +511,90 @@ func (o *RateLimitingAdvancedPluginConfig) GetErrorMessage() *string {
 		return nil
 	}
 	return o.ErrorMessage
+}
+
+func (o *RateLimitingAdvancedPluginConfig) GetHeaderName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.HeaderName
+}
+
+func (o *RateLimitingAdvancedPluginConfig) GetHideClientHeaders() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.HideClientHeaders
+}
+
+func (o *RateLimitingAdvancedPluginConfig) GetIdentifier() *Identifier {
+	if o == nil {
+		return nil
+	}
+	return o.Identifier
+}
+
+func (o *RateLimitingAdvancedPluginConfig) GetLimit() []float64 {
+	if o == nil {
+		return nil
+	}
+	return o.Limit
+}
+
+func (o *RateLimitingAdvancedPluginConfig) GetNamespace() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Namespace
+}
+
+func (o *RateLimitingAdvancedPluginConfig) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
+func (o *RateLimitingAdvancedPluginConfig) GetRedis() *Redis {
+	if o == nil {
+		return nil
+	}
+	return o.Redis
+}
+
+func (o *RateLimitingAdvancedPluginConfig) GetRetryAfterJitterMax() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.RetryAfterJitterMax
+}
+
+func (o *RateLimitingAdvancedPluginConfig) GetStrategy() *RateLimitingAdvancedPluginStrategy {
+	if o == nil {
+		return nil
+	}
+	return o.Strategy
+}
+
+func (o *RateLimitingAdvancedPluginConfig) GetSyncRate() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.SyncRate
+}
+
+func (o *RateLimitingAdvancedPluginConfig) GetWindowSize() []float64 {
+	if o == nil {
+		return nil
+	}
+	return o.WindowSize
+}
+
+func (o *RateLimitingAdvancedPluginConfig) GetWindowType() *WindowType {
+	if o == nil {
+		return nil
+	}
+	return o.WindowType
 }
 
 // RateLimitingAdvancedPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.

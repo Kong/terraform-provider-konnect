@@ -4,7 +4,7 @@ package types
 
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
-type Queue struct {
+type CreateOpentelemetryPluginQueue struct {
 	InitialRetryDelay  types.Number `tfsdk:"initial_retry_delay"`
 	MaxBatchSize       types.Int64  `tfsdk:"max_batch_size"`
 	MaxBytes           types.Int64  `tfsdk:"max_bytes"`

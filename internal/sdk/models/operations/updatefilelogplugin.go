@@ -8,19 +8,11 @@ import (
 )
 
 type UpdateFilelogPluginRequest struct {
-	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
-	// Description of the Plugin
-	CreateFileLogPlugin shared.CreateFileLogPlugin `request:"mediaType=application/json"`
-}
-
-func (o *UpdateFilelogPluginRequest) GetControlPlaneID() string {
-	if o == nil {
-		return ""
-	}
-	return o.ControlPlaneID
+	// The UUID of your control plane. This variable is available in the Konnect manager.
+	ControlPlaneID      string                      `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	CreateFileLogPlugin *shared.CreateFileLogPlugin `request:"mediaType=application/json"`
 }
 
 func (o *UpdateFilelogPluginRequest) GetPluginID() string {
@@ -30,9 +22,16 @@ func (o *UpdateFilelogPluginRequest) GetPluginID() string {
 	return o.PluginID
 }
 
-func (o *UpdateFilelogPluginRequest) GetCreateFileLogPlugin() shared.CreateFileLogPlugin {
+func (o *UpdateFilelogPluginRequest) GetControlPlaneID() string {
 	if o == nil {
-		return shared.CreateFileLogPlugin{}
+		return ""
+	}
+	return o.ControlPlaneID
+}
+
+func (o *UpdateFilelogPluginRequest) GetCreateFileLogPlugin() *shared.CreateFileLogPlugin {
+	if o == nil {
+		return nil
 	}
 	return o.CreateFileLogPlugin
 }
@@ -44,7 +43,7 @@ type UpdateFilelogPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successfully upserted Plugin
+	// FileLog plugin
 	FileLogPlugin *shared.FileLogPlugin
 	// Unauthorized
 	UnauthorizedError *shared.UnauthorizedError

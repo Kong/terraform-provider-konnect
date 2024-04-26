@@ -8,19 +8,11 @@ import (
 )
 
 type UpdateOauth2PluginRequest struct {
-	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
-	// Description of the Plugin
-	CreateOauth2Plugin shared.CreateOauth2Plugin `request:"mediaType=application/json"`
-}
-
-func (o *UpdateOauth2PluginRequest) GetControlPlaneID() string {
-	if o == nil {
-		return ""
-	}
-	return o.ControlPlaneID
+	// The UUID of your control plane. This variable is available in the Konnect manager.
+	ControlPlaneID     string                     `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	CreateOauth2Plugin *shared.CreateOauth2Plugin `request:"mediaType=application/json"`
 }
 
 func (o *UpdateOauth2PluginRequest) GetPluginID() string {
@@ -30,9 +22,16 @@ func (o *UpdateOauth2PluginRequest) GetPluginID() string {
 	return o.PluginID
 }
 
-func (o *UpdateOauth2PluginRequest) GetCreateOauth2Plugin() shared.CreateOauth2Plugin {
+func (o *UpdateOauth2PluginRequest) GetControlPlaneID() string {
 	if o == nil {
-		return shared.CreateOauth2Plugin{}
+		return ""
+	}
+	return o.ControlPlaneID
+}
+
+func (o *UpdateOauth2PluginRequest) GetCreateOauth2Plugin() *shared.CreateOauth2Plugin {
+	if o == nil {
+		return nil
 	}
 	return o.CreateOauth2Plugin
 }
@@ -44,7 +43,7 @@ type UpdateOauth2PluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successfully upserted Plugin
+	// Oauth2 plugin
 	Oauth2Plugin *shared.Oauth2Plugin
 	// Unauthorized
 	UnauthorizedError *shared.UnauthorizedError

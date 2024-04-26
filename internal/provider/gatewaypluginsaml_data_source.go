@@ -380,11 +380,11 @@ func (r *GatewayPluginSamlDataSource) Read(ctx context.Context, req datasource.R
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.GetSamlPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.GetSamlPlugin(ctx, request)
 	if err != nil {

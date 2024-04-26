@@ -60,131 +60,11 @@ func (r *GatewayPluginRateLimitingResourceModel) ToSharedCreateRateLimitingPlugi
 			ID: id2,
 		}
 	}
-	second := new(float64)
-	if !r.Config.Second.IsUnknown() && !r.Config.Second.IsNull() {
-		*second, _ = r.Config.Second.ValueBigFloat().Float64()
-	} else {
-		second = nil
-	}
-	minute := new(float64)
-	if !r.Config.Minute.IsUnknown() && !r.Config.Minute.IsNull() {
-		*minute, _ = r.Config.Minute.ValueBigFloat().Float64()
-	} else {
-		minute = nil
-	}
-	hour := new(float64)
-	if !r.Config.Hour.IsUnknown() && !r.Config.Hour.IsNull() {
-		*hour, _ = r.Config.Hour.ValueBigFloat().Float64()
-	} else {
-		hour = nil
-	}
 	day := new(float64)
 	if !r.Config.Day.IsUnknown() && !r.Config.Day.IsNull() {
 		*day, _ = r.Config.Day.ValueBigFloat().Float64()
 	} else {
 		day = nil
-	}
-	month := new(float64)
-	if !r.Config.Month.IsUnknown() && !r.Config.Month.IsNull() {
-		*month, _ = r.Config.Month.ValueBigFloat().Float64()
-	} else {
-		month = nil
-	}
-	year := new(float64)
-	if !r.Config.Year.IsUnknown() && !r.Config.Year.IsNull() {
-		*year, _ = r.Config.Year.ValueBigFloat().Float64()
-	} else {
-		year = nil
-	}
-	limitBy := new(shared.LimitBy)
-	if !r.Config.LimitBy.IsUnknown() && !r.Config.LimitBy.IsNull() {
-		*limitBy = shared.LimitBy(r.Config.LimitBy.ValueString())
-	} else {
-		limitBy = nil
-	}
-	headerName := new(string)
-	if !r.Config.HeaderName.IsUnknown() && !r.Config.HeaderName.IsNull() {
-		*headerName = r.Config.HeaderName.ValueString()
-	} else {
-		headerName = nil
-	}
-	path := new(string)
-	if !r.Config.Path.IsUnknown() && !r.Config.Path.IsNull() {
-		*path = r.Config.Path.ValueString()
-	} else {
-		path = nil
-	}
-	policy := new(shared.Policy)
-	if !r.Config.Policy.IsUnknown() && !r.Config.Policy.IsNull() {
-		*policy = shared.Policy(r.Config.Policy.ValueString())
-	} else {
-		policy = nil
-	}
-	faultTolerant := new(bool)
-	if !r.Config.FaultTolerant.IsUnknown() && !r.Config.FaultTolerant.IsNull() {
-		*faultTolerant = r.Config.FaultTolerant.ValueBool()
-	} else {
-		faultTolerant = nil
-	}
-	redisHost := new(string)
-	if !r.Config.RedisHost.IsUnknown() && !r.Config.RedisHost.IsNull() {
-		*redisHost = r.Config.RedisHost.ValueString()
-	} else {
-		redisHost = nil
-	}
-	redisPort := new(int64)
-	if !r.Config.RedisPort.IsUnknown() && !r.Config.RedisPort.IsNull() {
-		*redisPort = r.Config.RedisPort.ValueInt64()
-	} else {
-		redisPort = nil
-	}
-	redisPassword := new(string)
-	if !r.Config.RedisPassword.IsUnknown() && !r.Config.RedisPassword.IsNull() {
-		*redisPassword = r.Config.RedisPassword.ValueString()
-	} else {
-		redisPassword = nil
-	}
-	redisUsername := new(string)
-	if !r.Config.RedisUsername.IsUnknown() && !r.Config.RedisUsername.IsNull() {
-		*redisUsername = r.Config.RedisUsername.ValueString()
-	} else {
-		redisUsername = nil
-	}
-	redisSsl := new(bool)
-	if !r.Config.RedisSsl.IsUnknown() && !r.Config.RedisSsl.IsNull() {
-		*redisSsl = r.Config.RedisSsl.ValueBool()
-	} else {
-		redisSsl = nil
-	}
-	redisSslVerify := new(bool)
-	if !r.Config.RedisSslVerify.IsUnknown() && !r.Config.RedisSslVerify.IsNull() {
-		*redisSslVerify = r.Config.RedisSslVerify.ValueBool()
-	} else {
-		redisSslVerify = nil
-	}
-	redisServerName := new(string)
-	if !r.Config.RedisServerName.IsUnknown() && !r.Config.RedisServerName.IsNull() {
-		*redisServerName = r.Config.RedisServerName.ValueString()
-	} else {
-		redisServerName = nil
-	}
-	redisTimeout := new(float64)
-	if !r.Config.RedisTimeout.IsUnknown() && !r.Config.RedisTimeout.IsNull() {
-		*redisTimeout, _ = r.Config.RedisTimeout.ValueBigFloat().Float64()
-	} else {
-		redisTimeout = nil
-	}
-	redisDatabase := new(int64)
-	if !r.Config.RedisDatabase.IsUnknown() && !r.Config.RedisDatabase.IsNull() {
-		*redisDatabase = r.Config.RedisDatabase.ValueInt64()
-	} else {
-		redisDatabase = nil
-	}
-	hideClientHeaders := new(bool)
-	if !r.Config.HideClientHeaders.IsUnknown() && !r.Config.HideClientHeaders.IsNull() {
-		*hideClientHeaders = r.Config.HideClientHeaders.ValueBool()
-	} else {
-		hideClientHeaders = nil
 	}
 	errorCode := new(float64)
 	if !r.Config.ErrorCode.IsUnknown() && !r.Config.ErrorCode.IsNull() {
@@ -198,37 +78,157 @@ func (r *GatewayPluginRateLimitingResourceModel) ToSharedCreateRateLimitingPlugi
 	} else {
 		errorMessage = nil
 	}
+	faultTolerant := new(bool)
+	if !r.Config.FaultTolerant.IsUnknown() && !r.Config.FaultTolerant.IsNull() {
+		*faultTolerant = r.Config.FaultTolerant.ValueBool()
+	} else {
+		faultTolerant = nil
+	}
+	headerName := new(string)
+	if !r.Config.HeaderName.IsUnknown() && !r.Config.HeaderName.IsNull() {
+		*headerName = r.Config.HeaderName.ValueString()
+	} else {
+		headerName = nil
+	}
+	hideClientHeaders := new(bool)
+	if !r.Config.HideClientHeaders.IsUnknown() && !r.Config.HideClientHeaders.IsNull() {
+		*hideClientHeaders = r.Config.HideClientHeaders.ValueBool()
+	} else {
+		hideClientHeaders = nil
+	}
+	hour := new(float64)
+	if !r.Config.Hour.IsUnknown() && !r.Config.Hour.IsNull() {
+		*hour, _ = r.Config.Hour.ValueBigFloat().Float64()
+	} else {
+		hour = nil
+	}
+	limitBy := new(shared.CreateRateLimitingPluginLimitBy)
+	if !r.Config.LimitBy.IsUnknown() && !r.Config.LimitBy.IsNull() {
+		*limitBy = shared.CreateRateLimitingPluginLimitBy(r.Config.LimitBy.ValueString())
+	} else {
+		limitBy = nil
+	}
+	minute := new(float64)
+	if !r.Config.Minute.IsUnknown() && !r.Config.Minute.IsNull() {
+		*minute, _ = r.Config.Minute.ValueBigFloat().Float64()
+	} else {
+		minute = nil
+	}
+	month := new(float64)
+	if !r.Config.Month.IsUnknown() && !r.Config.Month.IsNull() {
+		*month, _ = r.Config.Month.ValueBigFloat().Float64()
+	} else {
+		month = nil
+	}
+	path := new(string)
+	if !r.Config.Path.IsUnknown() && !r.Config.Path.IsNull() {
+		*path = r.Config.Path.ValueString()
+	} else {
+		path = nil
+	}
+	policy := new(shared.CreateRateLimitingPluginPolicy)
+	if !r.Config.Policy.IsUnknown() && !r.Config.Policy.IsNull() {
+		*policy = shared.CreateRateLimitingPluginPolicy(r.Config.Policy.ValueString())
+	} else {
+		policy = nil
+	}
+	redisDatabase := new(int64)
+	if !r.Config.RedisDatabase.IsUnknown() && !r.Config.RedisDatabase.IsNull() {
+		*redisDatabase = r.Config.RedisDatabase.ValueInt64()
+	} else {
+		redisDatabase = nil
+	}
+	redisHost := new(string)
+	if !r.Config.RedisHost.IsUnknown() && !r.Config.RedisHost.IsNull() {
+		*redisHost = r.Config.RedisHost.ValueString()
+	} else {
+		redisHost = nil
+	}
+	redisPassword := new(string)
+	if !r.Config.RedisPassword.IsUnknown() && !r.Config.RedisPassword.IsNull() {
+		*redisPassword = r.Config.RedisPassword.ValueString()
+	} else {
+		redisPassword = nil
+	}
+	redisPort := new(int64)
+	if !r.Config.RedisPort.IsUnknown() && !r.Config.RedisPort.IsNull() {
+		*redisPort = r.Config.RedisPort.ValueInt64()
+	} else {
+		redisPort = nil
+	}
+	redisServerName := new(string)
+	if !r.Config.RedisServerName.IsUnknown() && !r.Config.RedisServerName.IsNull() {
+		*redisServerName = r.Config.RedisServerName.ValueString()
+	} else {
+		redisServerName = nil
+	}
+	redisSsl := new(bool)
+	if !r.Config.RedisSsl.IsUnknown() && !r.Config.RedisSsl.IsNull() {
+		*redisSsl = r.Config.RedisSsl.ValueBool()
+	} else {
+		redisSsl = nil
+	}
+	redisSslVerify := new(bool)
+	if !r.Config.RedisSslVerify.IsUnknown() && !r.Config.RedisSslVerify.IsNull() {
+		*redisSslVerify = r.Config.RedisSslVerify.ValueBool()
+	} else {
+		redisSslVerify = nil
+	}
+	redisTimeout := new(float64)
+	if !r.Config.RedisTimeout.IsUnknown() && !r.Config.RedisTimeout.IsNull() {
+		*redisTimeout, _ = r.Config.RedisTimeout.ValueBigFloat().Float64()
+	} else {
+		redisTimeout = nil
+	}
+	redisUsername := new(string)
+	if !r.Config.RedisUsername.IsUnknown() && !r.Config.RedisUsername.IsNull() {
+		*redisUsername = r.Config.RedisUsername.ValueString()
+	} else {
+		redisUsername = nil
+	}
+	second := new(float64)
+	if !r.Config.Second.IsUnknown() && !r.Config.Second.IsNull() {
+		*second, _ = r.Config.Second.ValueBigFloat().Float64()
+	} else {
+		second = nil
+	}
 	syncRate := new(float64)
 	if !r.Config.SyncRate.IsUnknown() && !r.Config.SyncRate.IsNull() {
 		*syncRate, _ = r.Config.SyncRate.ValueBigFloat().Float64()
 	} else {
 		syncRate = nil
 	}
+	year := new(float64)
+	if !r.Config.Year.IsUnknown() && !r.Config.Year.IsNull() {
+		*year, _ = r.Config.Year.ValueBigFloat().Float64()
+	} else {
+		year = nil
+	}
 	config := shared.CreateRateLimitingPluginConfig{
-		Second:            second,
-		Minute:            minute,
-		Hour:              hour,
 		Day:               day,
-		Month:             month,
-		Year:              year,
-		LimitBy:           limitBy,
-		HeaderName:        headerName,
-		Path:              path,
-		Policy:            policy,
-		FaultTolerant:     faultTolerant,
-		RedisHost:         redisHost,
-		RedisPort:         redisPort,
-		RedisPassword:     redisPassword,
-		RedisUsername:     redisUsername,
-		RedisSsl:          redisSsl,
-		RedisSslVerify:    redisSslVerify,
-		RedisServerName:   redisServerName,
-		RedisTimeout:      redisTimeout,
-		RedisDatabase:     redisDatabase,
-		HideClientHeaders: hideClientHeaders,
 		ErrorCode:         errorCode,
 		ErrorMessage:      errorMessage,
+		FaultTolerant:     faultTolerant,
+		HeaderName:        headerName,
+		HideClientHeaders: hideClientHeaders,
+		Hour:              hour,
+		LimitBy:           limitBy,
+		Minute:            minute,
+		Month:             month,
+		Path:              path,
+		Policy:            policy,
+		RedisDatabase:     redisDatabase,
+		RedisHost:         redisHost,
+		RedisPassword:     redisPassword,
+		RedisPort:         redisPort,
+		RedisServerName:   redisServerName,
+		RedisSsl:          redisSsl,
+		RedisSslVerify:    redisSslVerify,
+		RedisTimeout:      redisTimeout,
+		RedisUsername:     redisUsername,
+		Second:            second,
 		SyncRate:          syncRate,
+		Year:              year,
 	}
 	out := shared.CreateRateLimitingPlugin{
 		Enabled:   enabled,

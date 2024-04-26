@@ -8,19 +8,11 @@ import (
 )
 
 type UpdateCorrelationidPluginRequest struct {
-	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
-	// Description of the Plugin
-	CreateCorrelationIDPlugin shared.CreateCorrelationIDPlugin `request:"mediaType=application/json"`
-}
-
-func (o *UpdateCorrelationidPluginRequest) GetControlPlaneID() string {
-	if o == nil {
-		return ""
-	}
-	return o.ControlPlaneID
+	// The UUID of your control plane. This variable is available in the Konnect manager.
+	ControlPlaneID            string                            `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	CreateCorrelationIDPlugin *shared.CreateCorrelationIDPlugin `request:"mediaType=application/json"`
 }
 
 func (o *UpdateCorrelationidPluginRequest) GetPluginID() string {
@@ -30,9 +22,16 @@ func (o *UpdateCorrelationidPluginRequest) GetPluginID() string {
 	return o.PluginID
 }
 
-func (o *UpdateCorrelationidPluginRequest) GetCreateCorrelationIDPlugin() shared.CreateCorrelationIDPlugin {
+func (o *UpdateCorrelationidPluginRequest) GetControlPlaneID() string {
 	if o == nil {
-		return shared.CreateCorrelationIDPlugin{}
+		return ""
+	}
+	return o.ControlPlaneID
+}
+
+func (o *UpdateCorrelationidPluginRequest) GetCreateCorrelationIDPlugin() *shared.CreateCorrelationIDPlugin {
+	if o == nil {
+		return nil
 	}
 	return o.CreateCorrelationIDPlugin
 }
@@ -44,7 +43,7 @@ type UpdateCorrelationidPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successfully upserted Plugin
+	// CorrelationId plugin
 	CorrelationIDPlugin *shared.CorrelationIDPlugin
 	// Unauthorized
 	UnauthorizedError *shared.UnauthorizedError

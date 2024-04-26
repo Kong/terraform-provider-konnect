@@ -5,12 +5,12 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type CreateResponseTransformerAdvancedPluginConfig struct {
-	Add        *CreateResponseTransformerAdvancedPluginAdd     `tfsdk:"add"`
-	Allow      *CreateResponseTransformerAdvancedPluginAllow   `tfsdk:"allow"`
-	Append     *CreateResponseTransformerAdvancedPluginAdd     `tfsdk:"append"`
-	DotsInKeys types.Bool                                      `tfsdk:"dots_in_keys"`
-	Remove     *CreateResponseTransformerAdvancedPluginRemove  `tfsdk:"remove"`
-	Rename     *CreateResponseTransformerAdvancedPluginRename  `tfsdk:"rename"`
-	Replace    *CreateResponseTransformerAdvancedPluginReplace `tfsdk:"replace"`
-	Transform  *Transform                                      `tfsdk:"transform"`
+	Add        *CreateResponseTransformerAdvancedPluginAdd       `tfsdk:"add"`
+	Allow      *CreateResponseTransformerAdvancedPluginAllow     `tfsdk:"allow"`
+	Append     *CreateResponseTransformerAdvancedPluginAdd       `tfsdk:"append"`
+	DotsInKeys types.Bool                                        `tfsdk:"dots_in_keys"`
+	Remove     *CreateResponseTransformerAdvancedPluginRemove    `tfsdk:"remove"`
+	Rename     *CreateResponseTransformerAdvancedPluginRename    `tfsdk:"rename"`
+	Replace    *CreateResponseTransformerAdvancedPluginReplace   `tfsdk:"replace"`
+	Transform  *CreateResponseTransformerAdvancedPluginTransform `tfsdk:"transform"`
 }

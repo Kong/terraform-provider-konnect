@@ -68,23 +68,23 @@ func (r *GatewayPluginIPRestrictionResourceModel) ToSharedCreateIPRestrictionPlu
 	for _, denyItem := range r.Config.Deny {
 		deny = append(deny, denyItem.ValueString())
 	}
-	status := new(float64)
-	if !r.Config.Status.IsUnknown() && !r.Config.Status.IsNull() {
-		*status, _ = r.Config.Status.ValueBigFloat().Float64()
-	} else {
-		status = nil
-	}
 	message := new(string)
 	if !r.Config.Message.IsUnknown() && !r.Config.Message.IsNull() {
 		*message = r.Config.Message.ValueString()
 	} else {
 		message = nil
 	}
+	status := new(float64)
+	if !r.Config.Status.IsUnknown() && !r.Config.Status.IsNull() {
+		*status, _ = r.Config.Status.ValueBigFloat().Float64()
+	} else {
+		status = nil
+	}
 	config := shared.CreateIPRestrictionPluginConfig{
 		Allow:   allow,
 		Deny:    deny,
-		Status:  status,
 		Message: message,
+		Status:  status,
 	}
 	out := shared.CreateIPRestrictionPlugin{
 		Enabled:   enabled,

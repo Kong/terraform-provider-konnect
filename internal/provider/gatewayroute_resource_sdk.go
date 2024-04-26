@@ -93,11 +93,9 @@ func (r *GatewayRouteResourceModel) ToSharedCreateRoute() *shared.CreateRoute {
 	} else {
 		responseBuffering = nil
 	}
-	var snis []interface{} = []interface{}{}
+	var snis []string = []string{}
 	for _, snisItem := range r.Snis {
-		var snisTmp interface{}
-		_ = json.Unmarshal([]byte(snisItem.ValueString()), &snisTmp)
-		snis = append(snis, snisTmp)
+		snis = append(snis, snisItem.ValueString())
 	}
 	var sources []shared.Sources = []shared.Sources{}
 	for _, sourcesItem := range r.Sources {
@@ -225,12 +223,9 @@ func (r *GatewayRouteResourceModel) RefreshFromSharedRoute(resp *shared.Route) {
 			r.Service = &tfTypes.ACLConsumer{}
 			r.Service.ID = types.StringPointerValue(resp.Service.ID)
 		}
-		r.Snis = nil
-		for _, snisItem := range resp.Snis {
-			var snis1 types.String
-			snis1Result, _ := json.Marshal(snisItem)
-			snis1 = types.StringValue(string(snis1Result))
-			r.Snis = append(r.Snis, snis1)
+		r.Snis = []types.String{}
+		for _, v := range resp.Snis {
+			r.Snis = append(r.Snis, types.StringValue(v))
 		}
 		if len(r.Sources) > len(resp.Sources) {
 			r.Sources = r.Sources[:len(resp.Sources)]

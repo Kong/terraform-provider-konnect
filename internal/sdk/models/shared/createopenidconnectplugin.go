@@ -95,25 +95,25 @@ func (o *CreateOpenidConnectPluginService) GetID() *string {
 	return o.ID
 }
 
-type AuthMethods string
+type CreateOpenidConnectPluginAuthMethods string
 
 const (
-	AuthMethodsPassword          AuthMethods = "password"
-	AuthMethodsClientCredentials AuthMethods = "client_credentials"
-	AuthMethodsAuthorizationCode AuthMethods = "authorization_code"
-	AuthMethodsBearer            AuthMethods = "bearer"
-	AuthMethodsIntrospection     AuthMethods = "introspection"
-	AuthMethodsUserinfo          AuthMethods = "userinfo"
-	AuthMethodsKongOauth2        AuthMethods = "kong_oauth2"
-	AuthMethodsRefreshToken      AuthMethods = "refresh_token"
-	AuthMethodsSession           AuthMethods = "session"
+	CreateOpenidConnectPluginAuthMethodsPassword          CreateOpenidConnectPluginAuthMethods = "password"
+	CreateOpenidConnectPluginAuthMethodsClientCredentials CreateOpenidConnectPluginAuthMethods = "client_credentials"
+	CreateOpenidConnectPluginAuthMethodsAuthorizationCode CreateOpenidConnectPluginAuthMethods = "authorization_code"
+	CreateOpenidConnectPluginAuthMethodsBearer            CreateOpenidConnectPluginAuthMethods = "bearer"
+	CreateOpenidConnectPluginAuthMethodsIntrospection     CreateOpenidConnectPluginAuthMethods = "introspection"
+	CreateOpenidConnectPluginAuthMethodsUserinfo          CreateOpenidConnectPluginAuthMethods = "userinfo"
+	CreateOpenidConnectPluginAuthMethodsKongOauth2        CreateOpenidConnectPluginAuthMethods = "kong_oauth2"
+	CreateOpenidConnectPluginAuthMethodsRefreshToken      CreateOpenidConnectPluginAuthMethods = "refresh_token"
+	CreateOpenidConnectPluginAuthMethodsSession           CreateOpenidConnectPluginAuthMethods = "session"
 )
 
-func (e AuthMethods) ToPointer() *AuthMethods {
+func (e CreateOpenidConnectPluginAuthMethods) ToPointer() *CreateOpenidConnectPluginAuthMethods {
 	return &e
 }
 
-func (e *AuthMethods) UnmarshalJSON(data []byte) error {
+func (e *CreateOpenidConnectPluginAuthMethods) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -136,281 +136,103 @@ func (e *AuthMethods) UnmarshalJSON(data []byte) error {
 	case "refresh_token":
 		fallthrough
 	case "session":
-		*e = AuthMethods(v)
+		*e = CreateOpenidConnectPluginAuthMethods(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for AuthMethods: %v", v)
+		return fmt.Errorf("invalid value for CreateOpenidConnectPluginAuthMethods: %v", v)
 	}
 }
 
-type ClientAuth string
+// CreateOpenidConnectPluginAuthorizationCookieSameSite - Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks.
+type CreateOpenidConnectPluginAuthorizationCookieSameSite string
 
 const (
-	ClientAuthClientSecretBasic       ClientAuth = "client_secret_basic"
-	ClientAuthClientSecretPost        ClientAuth = "client_secret_post"
-	ClientAuthClientSecretJwt         ClientAuth = "client_secret_jwt"
-	ClientAuthPrivateKeyJwt           ClientAuth = "private_key_jwt"
-	ClientAuthTLSClientAuth           ClientAuth = "tls_client_auth"
-	ClientAuthSelfSignedTLSClientAuth ClientAuth = "self_signed_tls_client_auth"
-	ClientAuthNone                    ClientAuth = "none"
+	CreateOpenidConnectPluginAuthorizationCookieSameSiteStrict  CreateOpenidConnectPluginAuthorizationCookieSameSite = "Strict"
+	CreateOpenidConnectPluginAuthorizationCookieSameSiteLax     CreateOpenidConnectPluginAuthorizationCookieSameSite = "Lax"
+	CreateOpenidConnectPluginAuthorizationCookieSameSiteNone    CreateOpenidConnectPluginAuthorizationCookieSameSite = "None"
+	CreateOpenidConnectPluginAuthorizationCookieSameSiteDefault CreateOpenidConnectPluginAuthorizationCookieSameSite = "Default"
 )
 
-func (e ClientAuth) ToPointer() *ClientAuth {
+func (e CreateOpenidConnectPluginAuthorizationCookieSameSite) ToPointer() *CreateOpenidConnectPluginAuthorizationCookieSameSite {
 	return &e
 }
 
-func (e *ClientAuth) UnmarshalJSON(data []byte) error {
+func (e *CreateOpenidConnectPluginAuthorizationCookieSameSite) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
 	switch v {
-	case "client_secret_basic":
+	case "Strict":
 		fallthrough
-	case "client_secret_post":
+	case "Lax":
 		fallthrough
-	case "client_secret_jwt":
+	case "None":
 		fallthrough
-	case "private_key_jwt":
-		fallthrough
-	case "tls_client_auth":
-		fallthrough
-	case "self_signed_tls_client_auth":
-		fallthrough
-	case "none":
-		*e = ClientAuth(v)
+	case "Default":
+		*e = CreateOpenidConnectPluginAuthorizationCookieSameSite(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for ClientAuth: %v", v)
+		return fmt.Errorf("invalid value for CreateOpenidConnectPluginAuthorizationCookieSameSite: %v", v)
 	}
 }
 
-type ClientJwk struct {
-	Issuer        *string  `json:"issuer,omitempty"`
-	Kty           *string  `json:"kty,omitempty"`
-	Use           *string  `json:"use,omitempty"`
-	KeyOps        []string `json:"key_ops,omitempty"`
-	Alg           *string  `json:"alg,omitempty"`
-	Kid           *string  `json:"kid,omitempty"`
-	X5u           *string  `json:"x5u,omitempty"`
-	X5c           []string `json:"x5c,omitempty"`
-	X5t           *string  `json:"x5t,omitempty"`
-	X5tNumberS256 *string  `json:"x5t#S256,omitempty"`
-	K             *string  `json:"k,omitempty"`
-	X             *string  `json:"x,omitempty"`
-	Y             *string  `json:"y,omitempty"`
-	Crv           *string  `json:"crv,omitempty"`
-	N             *string  `json:"n,omitempty"`
-	E             *string  `json:"e,omitempty"`
-	D             *string  `json:"d,omitempty"`
-	P             *string  `json:"p,omitempty"`
-	Q             *string  `json:"q,omitempty"`
-	Dp            *string  `json:"dp,omitempty"`
-	Dq            *string  `json:"dq,omitempty"`
-	Qi            *string  `json:"qi,omitempty"`
-	Oth           *string  `json:"oth,omitempty"`
-	R             *string  `json:"r,omitempty"`
-	T             *string  `json:"t,omitempty"`
-}
-
-func (o *ClientJwk) GetIssuer() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Issuer
-}
-
-func (o *ClientJwk) GetKty() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Kty
-}
-
-func (o *ClientJwk) GetUse() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Use
-}
-
-func (o *ClientJwk) GetKeyOps() []string {
-	if o == nil {
-		return nil
-	}
-	return o.KeyOps
-}
-
-func (o *ClientJwk) GetAlg() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Alg
-}
-
-func (o *ClientJwk) GetKid() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Kid
-}
-
-func (o *ClientJwk) GetX5u() *string {
-	if o == nil {
-		return nil
-	}
-	return o.X5u
-}
-
-func (o *ClientJwk) GetX5c() []string {
-	if o == nil {
-		return nil
-	}
-	return o.X5c
-}
-
-func (o *ClientJwk) GetX5t() *string {
-	if o == nil {
-		return nil
-	}
-	return o.X5t
-}
-
-func (o *ClientJwk) GetX5tNumberS256() *string {
-	if o == nil {
-		return nil
-	}
-	return o.X5tNumberS256
-}
-
-func (o *ClientJwk) GetK() *string {
-	if o == nil {
-		return nil
-	}
-	return o.K
-}
-
-func (o *ClientJwk) GetX() *string {
-	if o == nil {
-		return nil
-	}
-	return o.X
-}
-
-func (o *ClientJwk) GetY() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Y
-}
-
-func (o *ClientJwk) GetCrv() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Crv
-}
-
-func (o *ClientJwk) GetN() *string {
-	if o == nil {
-		return nil
-	}
-	return o.N
-}
-
-func (o *ClientJwk) GetE() *string {
-	if o == nil {
-		return nil
-	}
-	return o.E
-}
-
-func (o *ClientJwk) GetD() *string {
-	if o == nil {
-		return nil
-	}
-	return o.D
-}
-
-func (o *ClientJwk) GetP() *string {
-	if o == nil {
-		return nil
-	}
-	return o.P
-}
-
-func (o *ClientJwk) GetQ() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Q
-}
-
-func (o *ClientJwk) GetDp() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Dp
-}
-
-func (o *ClientJwk) GetDq() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Dq
-}
-
-func (o *ClientJwk) GetQi() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Qi
-}
-
-func (o *ClientJwk) GetOth() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Oth
-}
-
-func (o *ClientJwk) GetR() *string {
-	if o == nil {
-		return nil
-	}
-	return o.R
-}
-
-func (o *ClientJwk) GetT() *string {
-	if o == nil {
-		return nil
-	}
-	return o.T
-}
-
-type ClientAlg string
+type CreateOpenidConnectPluginBearerTokenParamType string
 
 const (
-	ClientAlgHs256 ClientAlg = "HS256"
-	ClientAlgHs384 ClientAlg = "HS384"
-	ClientAlgHs512 ClientAlg = "HS512"
-	ClientAlgRs256 ClientAlg = "RS256"
-	ClientAlgRs384 ClientAlg = "RS384"
-	ClientAlgRs512 ClientAlg = "RS512"
-	ClientAlgEs256 ClientAlg = "ES256"
-	ClientAlgEs384 ClientAlg = "ES384"
-	ClientAlgEs512 ClientAlg = "ES512"
-	ClientAlgPs256 ClientAlg = "PS256"
-	ClientAlgPs384 ClientAlg = "PS384"
-	ClientAlgPs512 ClientAlg = "PS512"
-	ClientAlgEdDsa ClientAlg = "EdDSA"
+	CreateOpenidConnectPluginBearerTokenParamTypeHeader CreateOpenidConnectPluginBearerTokenParamType = "header"
+	CreateOpenidConnectPluginBearerTokenParamTypeCookie CreateOpenidConnectPluginBearerTokenParamType = "cookie"
+	CreateOpenidConnectPluginBearerTokenParamTypeQuery  CreateOpenidConnectPluginBearerTokenParamType = "query"
+	CreateOpenidConnectPluginBearerTokenParamTypeBody   CreateOpenidConnectPluginBearerTokenParamType = "body"
 )
 
-func (e ClientAlg) ToPointer() *ClientAlg {
+func (e CreateOpenidConnectPluginBearerTokenParamType) ToPointer() *CreateOpenidConnectPluginBearerTokenParamType {
 	return &e
 }
 
-func (e *ClientAlg) UnmarshalJSON(data []byte) error {
+func (e *CreateOpenidConnectPluginBearerTokenParamType) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "header":
+		fallthrough
+	case "cookie":
+		fallthrough
+	case "query":
+		fallthrough
+	case "body":
+		*e = CreateOpenidConnectPluginBearerTokenParamType(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for CreateOpenidConnectPluginBearerTokenParamType: %v", v)
+	}
+}
+
+type CreateOpenidConnectPluginClientAlg string
+
+const (
+	CreateOpenidConnectPluginClientAlgHs256 CreateOpenidConnectPluginClientAlg = "HS256"
+	CreateOpenidConnectPluginClientAlgHs384 CreateOpenidConnectPluginClientAlg = "HS384"
+	CreateOpenidConnectPluginClientAlgHs512 CreateOpenidConnectPluginClientAlg = "HS512"
+	CreateOpenidConnectPluginClientAlgRs256 CreateOpenidConnectPluginClientAlg = "RS256"
+	CreateOpenidConnectPluginClientAlgRs384 CreateOpenidConnectPluginClientAlg = "RS384"
+	CreateOpenidConnectPluginClientAlgRs512 CreateOpenidConnectPluginClientAlg = "RS512"
+	CreateOpenidConnectPluginClientAlgEs256 CreateOpenidConnectPluginClientAlg = "ES256"
+	CreateOpenidConnectPluginClientAlgEs384 CreateOpenidConnectPluginClientAlg = "ES384"
+	CreateOpenidConnectPluginClientAlgEs512 CreateOpenidConnectPluginClientAlg = "ES512"
+	CreateOpenidConnectPluginClientAlgPs256 CreateOpenidConnectPluginClientAlg = "PS256"
+	CreateOpenidConnectPluginClientAlgPs384 CreateOpenidConnectPluginClientAlg = "PS384"
+	CreateOpenidConnectPluginClientAlgPs512 CreateOpenidConnectPluginClientAlg = "PS512"
+	CreateOpenidConnectPluginClientAlgEdDsa CreateOpenidConnectPluginClientAlg = "EdDSA"
+)
+
+func (e CreateOpenidConnectPluginClientAlg) ToPointer() *CreateOpenidConnectPluginClientAlg {
+	return &e
+}
+
+func (e *CreateOpenidConnectPluginClientAlg) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -441,393 +263,301 @@ func (e *ClientAlg) UnmarshalJSON(data []byte) error {
 	case "PS512":
 		fallthrough
 	case "EdDSA":
-		*e = ClientAlg(v)
+		*e = CreateOpenidConnectPluginClientAlg(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for ClientAlg: %v", v)
+		return fmt.Errorf("invalid value for CreateOpenidConnectPluginClientAlg: %v", v)
 	}
 }
 
-// ResponseMode - The response mode passed to the authorization endpoint: - `query`: Instructs the identity provider to pass parameters in query string - `form_post`: Instructs the identity provider to pass parameters in request body - `fragment`: Instructs the identity provider to pass parameters in uri fragment (rarely useful as the plugin itself cannot read it).
-type ResponseMode string
+type CreateOpenidConnectPluginClientAuth string
 
 const (
-	ResponseModeQuery    ResponseMode = "query"
-	ResponseModeFormPost ResponseMode = "form_post"
-	ResponseModeFragment ResponseMode = "fragment"
+	CreateOpenidConnectPluginClientAuthClientSecretBasic       CreateOpenidConnectPluginClientAuth = "client_secret_basic"
+	CreateOpenidConnectPluginClientAuthClientSecretPost        CreateOpenidConnectPluginClientAuth = "client_secret_post"
+	CreateOpenidConnectPluginClientAuthClientSecretJwt         CreateOpenidConnectPluginClientAuth = "client_secret_jwt"
+	CreateOpenidConnectPluginClientAuthPrivateKeyJwt           CreateOpenidConnectPluginClientAuth = "private_key_jwt"
+	CreateOpenidConnectPluginClientAuthTLSClientAuth           CreateOpenidConnectPluginClientAuth = "tls_client_auth"
+	CreateOpenidConnectPluginClientAuthSelfSignedTLSClientAuth CreateOpenidConnectPluginClientAuth = "self_signed_tls_client_auth"
+	CreateOpenidConnectPluginClientAuthNone                    CreateOpenidConnectPluginClientAuth = "none"
 )
 
-func (e ResponseMode) ToPointer() *ResponseMode {
+func (e CreateOpenidConnectPluginClientAuth) ToPointer() *CreateOpenidConnectPluginClientAuth {
 	return &e
 }
 
-func (e *ResponseMode) UnmarshalJSON(data []byte) error {
+func (e *CreateOpenidConnectPluginClientAuth) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
 	switch v {
+	case "client_secret_basic":
+		fallthrough
+	case "client_secret_post":
+		fallthrough
+	case "client_secret_jwt":
+		fallthrough
+	case "private_key_jwt":
+		fallthrough
+	case "tls_client_auth":
+		fallthrough
+	case "self_signed_tls_client_auth":
+		fallthrough
+	case "none":
+		*e = CreateOpenidConnectPluginClientAuth(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for CreateOpenidConnectPluginClientAuth: %v", v)
+	}
+}
+
+type CreateOpenidConnectPluginClientCredentialsParamType string
+
+const (
+	CreateOpenidConnectPluginClientCredentialsParamTypeHeader CreateOpenidConnectPluginClientCredentialsParamType = "header"
+	CreateOpenidConnectPluginClientCredentialsParamTypeQuery  CreateOpenidConnectPluginClientCredentialsParamType = "query"
+	CreateOpenidConnectPluginClientCredentialsParamTypeBody   CreateOpenidConnectPluginClientCredentialsParamType = "body"
+)
+
+func (e CreateOpenidConnectPluginClientCredentialsParamType) ToPointer() *CreateOpenidConnectPluginClientCredentialsParamType {
+	return &e
+}
+
+func (e *CreateOpenidConnectPluginClientCredentialsParamType) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "header":
+		fallthrough
 	case "query":
 		fallthrough
-	case "form_post":
-		fallthrough
-	case "fragment":
-		*e = ResponseMode(v)
+	case "body":
+		*e = CreateOpenidConnectPluginClientCredentialsParamType(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for ResponseMode: %v", v)
+		return fmt.Errorf("invalid value for CreateOpenidConnectPluginClientCredentialsParamType: %v", v)
 	}
 }
 
-// PushedAuthorizationRequestEndpointAuthMethod - The pushed authorization request endpoint authentication method: `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
-type PushedAuthorizationRequestEndpointAuthMethod string
+type CreateOpenidConnectPluginClientJwk struct {
+	Alg           *string  `json:"alg,omitempty"`
+	Crv           *string  `json:"crv,omitempty"`
+	D             *string  `json:"d,omitempty"`
+	Dp            *string  `json:"dp,omitempty"`
+	Dq            *string  `json:"dq,omitempty"`
+	E             *string  `json:"e,omitempty"`
+	Issuer        *string  `json:"issuer,omitempty"`
+	K             *string  `json:"k,omitempty"`
+	KeyOps        []string `json:"key_ops,omitempty"`
+	Kid           *string  `json:"kid,omitempty"`
+	Kty           *string  `json:"kty,omitempty"`
+	N             *string  `json:"n,omitempty"`
+	Oth           *string  `json:"oth,omitempty"`
+	P             *string  `json:"p,omitempty"`
+	Q             *string  `json:"q,omitempty"`
+	Qi            *string  `json:"qi,omitempty"`
+	R             *string  `json:"r,omitempty"`
+	T             *string  `json:"t,omitempty"`
+	Use           *string  `json:"use,omitempty"`
+	X             *string  `json:"x,omitempty"`
+	X5c           []string `json:"x5c,omitempty"`
+	X5t           *string  `json:"x5t,omitempty"`
+	X5tNumberS256 *string  `json:"x5t#S256,omitempty"`
+	X5u           *string  `json:"x5u,omitempty"`
+	Y             *string  `json:"y,omitempty"`
+}
+
+func (o *CreateOpenidConnectPluginClientJwk) GetAlg() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Alg
+}
+
+func (o *CreateOpenidConnectPluginClientJwk) GetCrv() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Crv
+}
+
+func (o *CreateOpenidConnectPluginClientJwk) GetD() *string {
+	if o == nil {
+		return nil
+	}
+	return o.D
+}
+
+func (o *CreateOpenidConnectPluginClientJwk) GetDp() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Dp
+}
+
+func (o *CreateOpenidConnectPluginClientJwk) GetDq() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Dq
+}
+
+func (o *CreateOpenidConnectPluginClientJwk) GetE() *string {
+	if o == nil {
+		return nil
+	}
+	return o.E
+}
+
+func (o *CreateOpenidConnectPluginClientJwk) GetIssuer() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Issuer
+}
+
+func (o *CreateOpenidConnectPluginClientJwk) GetK() *string {
+	if o == nil {
+		return nil
+	}
+	return o.K
+}
+
+func (o *CreateOpenidConnectPluginClientJwk) GetKeyOps() []string {
+	if o == nil {
+		return nil
+	}
+	return o.KeyOps
+}
+
+func (o *CreateOpenidConnectPluginClientJwk) GetKid() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Kid
+}
+
+func (o *CreateOpenidConnectPluginClientJwk) GetKty() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Kty
+}
+
+func (o *CreateOpenidConnectPluginClientJwk) GetN() *string {
+	if o == nil {
+		return nil
+	}
+	return o.N
+}
+
+func (o *CreateOpenidConnectPluginClientJwk) GetOth() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Oth
+}
+
+func (o *CreateOpenidConnectPluginClientJwk) GetP() *string {
+	if o == nil {
+		return nil
+	}
+	return o.P
+}
+
+func (o *CreateOpenidConnectPluginClientJwk) GetQ() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Q
+}
+
+func (o *CreateOpenidConnectPluginClientJwk) GetQi() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Qi
+}
+
+func (o *CreateOpenidConnectPluginClientJwk) GetR() *string {
+	if o == nil {
+		return nil
+	}
+	return o.R
+}
+
+func (o *CreateOpenidConnectPluginClientJwk) GetT() *string {
+	if o == nil {
+		return nil
+	}
+	return o.T
+}
+
+func (o *CreateOpenidConnectPluginClientJwk) GetUse() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Use
+}
+
+func (o *CreateOpenidConnectPluginClientJwk) GetX() *string {
+	if o == nil {
+		return nil
+	}
+	return o.X
+}
+
+func (o *CreateOpenidConnectPluginClientJwk) GetX5c() []string {
+	if o == nil {
+		return nil
+	}
+	return o.X5c
+}
+
+func (o *CreateOpenidConnectPluginClientJwk) GetX5t() *string {
+	if o == nil {
+		return nil
+	}
+	return o.X5t
+}
+
+func (o *CreateOpenidConnectPluginClientJwk) GetX5tNumberS256() *string {
+	if o == nil {
+		return nil
+	}
+	return o.X5tNumberS256
+}
+
+func (o *CreateOpenidConnectPluginClientJwk) GetX5u() *string {
+	if o == nil {
+		return nil
+	}
+	return o.X5u
+}
+
+func (o *CreateOpenidConnectPluginClientJwk) GetY() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Y
+}
+
+type CreateOpenidConnectPluginConsumerBy string
 
 const (
-	PushedAuthorizationRequestEndpointAuthMethodClientSecretBasic       PushedAuthorizationRequestEndpointAuthMethod = "client_secret_basic"
-	PushedAuthorizationRequestEndpointAuthMethodClientSecretPost        PushedAuthorizationRequestEndpointAuthMethod = "client_secret_post"
-	PushedAuthorizationRequestEndpointAuthMethodClientSecretJwt         PushedAuthorizationRequestEndpointAuthMethod = "client_secret_jwt"
-	PushedAuthorizationRequestEndpointAuthMethodPrivateKeyJwt           PushedAuthorizationRequestEndpointAuthMethod = "private_key_jwt"
-	PushedAuthorizationRequestEndpointAuthMethodTLSClientAuth           PushedAuthorizationRequestEndpointAuthMethod = "tls_client_auth"
-	PushedAuthorizationRequestEndpointAuthMethodSelfSignedTLSClientAuth PushedAuthorizationRequestEndpointAuthMethod = "self_signed_tls_client_auth"
-	PushedAuthorizationRequestEndpointAuthMethodNone                    PushedAuthorizationRequestEndpointAuthMethod = "none"
+	CreateOpenidConnectPluginConsumerByID       CreateOpenidConnectPluginConsumerBy = "id"
+	CreateOpenidConnectPluginConsumerByUsername CreateOpenidConnectPluginConsumerBy = "username"
+	CreateOpenidConnectPluginConsumerByCustomID CreateOpenidConnectPluginConsumerBy = "custom_id"
 )
 
-func (e PushedAuthorizationRequestEndpointAuthMethod) ToPointer() *PushedAuthorizationRequestEndpointAuthMethod {
+func (e CreateOpenidConnectPluginConsumerBy) ToPointer() *CreateOpenidConnectPluginConsumerBy {
 	return &e
 }
 
-func (e *PushedAuthorizationRequestEndpointAuthMethod) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "client_secret_basic":
-		fallthrough
-	case "client_secret_post":
-		fallthrough
-	case "client_secret_jwt":
-		fallthrough
-	case "private_key_jwt":
-		fallthrough
-	case "tls_client_auth":
-		fallthrough
-	case "self_signed_tls_client_auth":
-		fallthrough
-	case "none":
-		*e = PushedAuthorizationRequestEndpointAuthMethod(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for PushedAuthorizationRequestEndpointAuthMethod: %v", v)
-	}
-}
-
-// AuthorizationCookieSameSite - Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks.
-type AuthorizationCookieSameSite string
-
-const (
-	AuthorizationCookieSameSiteStrict  AuthorizationCookieSameSite = "Strict"
-	AuthorizationCookieSameSiteLax     AuthorizationCookieSameSite = "Lax"
-	AuthorizationCookieSameSiteNone    AuthorizationCookieSameSite = "None"
-	AuthorizationCookieSameSiteDefault AuthorizationCookieSameSite = "Default"
-)
-
-func (e AuthorizationCookieSameSite) ToPointer() *AuthorizationCookieSameSite {
-	return &e
-}
-
-func (e *AuthorizationCookieSameSite) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "Strict":
-		fallthrough
-	case "Lax":
-		fallthrough
-	case "None":
-		fallthrough
-	case "Default":
-		*e = AuthorizationCookieSameSite(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AuthorizationCookieSameSite: %v", v)
-	}
-}
-
-// TokenEndpointAuthMethod - The token endpoint authentication method: `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
-type TokenEndpointAuthMethod string
-
-const (
-	TokenEndpointAuthMethodClientSecretBasic       TokenEndpointAuthMethod = "client_secret_basic"
-	TokenEndpointAuthMethodClientSecretPost        TokenEndpointAuthMethod = "client_secret_post"
-	TokenEndpointAuthMethodClientSecretJwt         TokenEndpointAuthMethod = "client_secret_jwt"
-	TokenEndpointAuthMethodPrivateKeyJwt           TokenEndpointAuthMethod = "private_key_jwt"
-	TokenEndpointAuthMethodTLSClientAuth           TokenEndpointAuthMethod = "tls_client_auth"
-	TokenEndpointAuthMethodSelfSignedTLSClientAuth TokenEndpointAuthMethod = "self_signed_tls_client_auth"
-	TokenEndpointAuthMethodNone                    TokenEndpointAuthMethod = "none"
-)
-
-func (e TokenEndpointAuthMethod) ToPointer() *TokenEndpointAuthMethod {
-	return &e
-}
-
-func (e *TokenEndpointAuthMethod) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "client_secret_basic":
-		fallthrough
-	case "client_secret_post":
-		fallthrough
-	case "client_secret_jwt":
-		fallthrough
-	case "private_key_jwt":
-		fallthrough
-	case "tls_client_auth":
-		fallthrough
-	case "self_signed_tls_client_auth":
-		fallthrough
-	case "none":
-		*e = TokenEndpointAuthMethod(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for TokenEndpointAuthMethod: %v", v)
-	}
-}
-
-type TokenHeadersGrants string
-
-const (
-	TokenHeadersGrantsPassword          TokenHeadersGrants = "password"
-	TokenHeadersGrantsClientCredentials TokenHeadersGrants = "client_credentials"
-	TokenHeadersGrantsAuthorizationCode TokenHeadersGrants = "authorization_code"
-	TokenHeadersGrantsRefreshToken      TokenHeadersGrants = "refresh_token"
-)
-
-func (e TokenHeadersGrants) ToPointer() *TokenHeadersGrants {
-	return &e
-}
-
-func (e *TokenHeadersGrants) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "password":
-		fallthrough
-	case "client_credentials":
-		fallthrough
-	case "authorization_code":
-		fallthrough
-	case "refresh_token":
-		*e = TokenHeadersGrants(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for TokenHeadersGrants: %v", v)
-	}
-}
-
-// IntrospectionEndpointAuthMethod - The introspection endpoint authentication method: : `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
-type IntrospectionEndpointAuthMethod string
-
-const (
-	IntrospectionEndpointAuthMethodClientSecretBasic       IntrospectionEndpointAuthMethod = "client_secret_basic"
-	IntrospectionEndpointAuthMethodClientSecretPost        IntrospectionEndpointAuthMethod = "client_secret_post"
-	IntrospectionEndpointAuthMethodClientSecretJwt         IntrospectionEndpointAuthMethod = "client_secret_jwt"
-	IntrospectionEndpointAuthMethodPrivateKeyJwt           IntrospectionEndpointAuthMethod = "private_key_jwt"
-	IntrospectionEndpointAuthMethodTLSClientAuth           IntrospectionEndpointAuthMethod = "tls_client_auth"
-	IntrospectionEndpointAuthMethodSelfSignedTLSClientAuth IntrospectionEndpointAuthMethod = "self_signed_tls_client_auth"
-	IntrospectionEndpointAuthMethodNone                    IntrospectionEndpointAuthMethod = "none"
-)
-
-func (e IntrospectionEndpointAuthMethod) ToPointer() *IntrospectionEndpointAuthMethod {
-	return &e
-}
-
-func (e *IntrospectionEndpointAuthMethod) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "client_secret_basic":
-		fallthrough
-	case "client_secret_post":
-		fallthrough
-	case "client_secret_jwt":
-		fallthrough
-	case "private_key_jwt":
-		fallthrough
-	case "tls_client_auth":
-		fallthrough
-	case "self_signed_tls_client_auth":
-		fallthrough
-	case "none":
-		*e = IntrospectionEndpointAuthMethod(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for IntrospectionEndpointAuthMethod: %v", v)
-	}
-}
-
-// IntrospectionAccept - The value of `Accept` header for introspection requests: - `application/json`: introspection response as JSON - `application/token-introspection+jwt`: introspection response as JWT (from the current IETF draft document) - `application/jwt`: introspection response as JWT (from the obsolete IETF draft document).
-type IntrospectionAccept string
-
-const (
-	IntrospectionAcceptApplicationJSON                      IntrospectionAccept = "application/json"
-	IntrospectionAcceptApplicationTokenIntrospectionPlusJwt IntrospectionAccept = "application/token-introspection+jwt"
-	IntrospectionAcceptApplicationJwt                       IntrospectionAccept = "application/jwt"
-)
-
-func (e IntrospectionAccept) ToPointer() *IntrospectionAccept {
-	return &e
-}
-
-func (e *IntrospectionAccept) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "application/json":
-		fallthrough
-	case "application/token-introspection+jwt":
-		fallthrough
-	case "application/jwt":
-		*e = IntrospectionAccept(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for IntrospectionAccept: %v", v)
-	}
-}
-
-// RevocationEndpointAuthMethod - The revocation endpoint authentication method: : `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
-type RevocationEndpointAuthMethod string
-
-const (
-	RevocationEndpointAuthMethodClientSecretBasic       RevocationEndpointAuthMethod = "client_secret_basic"
-	RevocationEndpointAuthMethodClientSecretPost        RevocationEndpointAuthMethod = "client_secret_post"
-	RevocationEndpointAuthMethodClientSecretJwt         RevocationEndpointAuthMethod = "client_secret_jwt"
-	RevocationEndpointAuthMethodPrivateKeyJwt           RevocationEndpointAuthMethod = "private_key_jwt"
-	RevocationEndpointAuthMethodTLSClientAuth           RevocationEndpointAuthMethod = "tls_client_auth"
-	RevocationEndpointAuthMethodSelfSignedTLSClientAuth RevocationEndpointAuthMethod = "self_signed_tls_client_auth"
-	RevocationEndpointAuthMethodNone                    RevocationEndpointAuthMethod = "none"
-)
-
-func (e RevocationEndpointAuthMethod) ToPointer() *RevocationEndpointAuthMethod {
-	return &e
-}
-
-func (e *RevocationEndpointAuthMethod) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "client_secret_basic":
-		fallthrough
-	case "client_secret_post":
-		fallthrough
-	case "client_secret_jwt":
-		fallthrough
-	case "private_key_jwt":
-		fallthrough
-	case "tls_client_auth":
-		fallthrough
-	case "self_signed_tls_client_auth":
-		fallthrough
-	case "none":
-		*e = RevocationEndpointAuthMethod(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for RevocationEndpointAuthMethod: %v", v)
-	}
-}
-
-// UserinfoAccept - The value of `Accept` header for user info requests: - `application/json`: user info response as JSON - `application/jwt`: user info response as JWT (from the obsolete IETF draft document).
-type UserinfoAccept string
-
-const (
-	UserinfoAcceptApplicationJSON UserinfoAccept = "application/json"
-	UserinfoAcceptApplicationJwt  UserinfoAccept = "application/jwt"
-)
-
-func (e UserinfoAccept) ToPointer() *UserinfoAccept {
-	return &e
-}
-
-func (e *UserinfoAccept) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "application/json":
-		fallthrough
-	case "application/jwt":
-		*e = UserinfoAccept(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for UserinfoAccept: %v", v)
-	}
-}
-
-// SessionCookieSameSite - Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks.
-type SessionCookieSameSite string
-
-const (
-	SessionCookieSameSiteStrict  SessionCookieSameSite = "Strict"
-	SessionCookieSameSiteLax     SessionCookieSameSite = "Lax"
-	SessionCookieSameSiteNone    SessionCookieSameSite = "None"
-	SessionCookieSameSiteDefault SessionCookieSameSite = "Default"
-)
-
-func (e SessionCookieSameSite) ToPointer() *SessionCookieSameSite {
-	return &e
-}
-
-func (e *SessionCookieSameSite) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "Strict":
-		fallthrough
-	case "Lax":
-		fallthrough
-	case "None":
-		fallthrough
-	case "Default":
-		*e = SessionCookieSameSite(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SessionCookieSameSite: %v", v)
-	}
-}
-
-type SessionRequestHeaders string
-
-const (
-	SessionRequestHeadersID              SessionRequestHeaders = "id"
-	SessionRequestHeadersAudience        SessionRequestHeaders = "audience"
-	SessionRequestHeadersSubject         SessionRequestHeaders = "subject"
-	SessionRequestHeadersTimeout         SessionRequestHeaders = "timeout"
-	SessionRequestHeadersIdlingTimeout   SessionRequestHeaders = "idling-timeout"
-	SessionRequestHeadersRollingTimeout  SessionRequestHeaders = "rolling-timeout"
-	SessionRequestHeadersAbsoluteTimeout SessionRequestHeaders = "absolute-timeout"
-)
-
-func (e SessionRequestHeaders) ToPointer() *SessionRequestHeaders {
-	return &e
-}
-
-func (e *SessionRequestHeaders) UnmarshalJSON(data []byte) error {
+func (e *CreateOpenidConnectPluginConsumerBy) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -835,304 +565,35 @@ func (e *SessionRequestHeaders) UnmarshalJSON(data []byte) error {
 	switch v {
 	case "id":
 		fallthrough
-	case "audience":
+	case "username":
 		fallthrough
-	case "subject":
-		fallthrough
-	case "timeout":
-		fallthrough
-	case "idling-timeout":
-		fallthrough
-	case "rolling-timeout":
-		fallthrough
-	case "absolute-timeout":
-		*e = SessionRequestHeaders(v)
+	case "custom_id":
+		*e = CreateOpenidConnectPluginConsumerBy(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for SessionRequestHeaders: %v", v)
+		return fmt.Errorf("invalid value for CreateOpenidConnectPluginConsumerBy: %v", v)
 	}
 }
 
-type SessionResponseHeaders string
+type CreateOpenidConnectPluginDisableSession string
 
 const (
-	SessionResponseHeadersID              SessionResponseHeaders = "id"
-	SessionResponseHeadersAudience        SessionResponseHeaders = "audience"
-	SessionResponseHeadersSubject         SessionResponseHeaders = "subject"
-	SessionResponseHeadersTimeout         SessionResponseHeaders = "timeout"
-	SessionResponseHeadersIdlingTimeout   SessionResponseHeaders = "idling-timeout"
-	SessionResponseHeadersRollingTimeout  SessionResponseHeaders = "rolling-timeout"
-	SessionResponseHeadersAbsoluteTimeout SessionResponseHeaders = "absolute-timeout"
+	CreateOpenidConnectPluginDisableSessionPassword          CreateOpenidConnectPluginDisableSession = "password"
+	CreateOpenidConnectPluginDisableSessionClientCredentials CreateOpenidConnectPluginDisableSession = "client_credentials"
+	CreateOpenidConnectPluginDisableSessionAuthorizationCode CreateOpenidConnectPluginDisableSession = "authorization_code"
+	CreateOpenidConnectPluginDisableSessionBearer            CreateOpenidConnectPluginDisableSession = "bearer"
+	CreateOpenidConnectPluginDisableSessionIntrospection     CreateOpenidConnectPluginDisableSession = "introspection"
+	CreateOpenidConnectPluginDisableSessionUserinfo          CreateOpenidConnectPluginDisableSession = "userinfo"
+	CreateOpenidConnectPluginDisableSessionKongOauth2        CreateOpenidConnectPluginDisableSession = "kong_oauth2"
+	CreateOpenidConnectPluginDisableSessionRefreshToken      CreateOpenidConnectPluginDisableSession = "refresh_token"
+	CreateOpenidConnectPluginDisableSessionSession           CreateOpenidConnectPluginDisableSession = "session"
 )
 
-func (e SessionResponseHeaders) ToPointer() *SessionResponseHeaders {
+func (e CreateOpenidConnectPluginDisableSession) ToPointer() *CreateOpenidConnectPluginDisableSession {
 	return &e
 }
 
-func (e *SessionResponseHeaders) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "id":
-		fallthrough
-	case "audience":
-		fallthrough
-	case "subject":
-		fallthrough
-	case "timeout":
-		fallthrough
-	case "idling-timeout":
-		fallthrough
-	case "rolling-timeout":
-		fallthrough
-	case "absolute-timeout":
-		*e = SessionResponseHeaders(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SessionResponseHeaders: %v", v)
-	}
-}
-
-// SessionStorage - The session storage for session data: - `cookie`: stores session data with the session cookie (the session cannot be invalidated or revoked without changing session secret, but is stateless, and doesn't require a database) - `memcache`: stores session data in memcached - `redis`: stores session data in Redis.
-type SessionStorage string
-
-const (
-	SessionStorageCookie    SessionStorage = "cookie"
-	SessionStorageMemcache  SessionStorage = "memcache"
-	SessionStorageMemcached SessionStorage = "memcached"
-	SessionStorageRedis     SessionStorage = "redis"
-)
-
-func (e SessionStorage) ToPointer() *SessionStorage {
-	return &e
-}
-
-func (e *SessionStorage) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "cookie":
-		fallthrough
-	case "memcache":
-		fallthrough
-	case "memcached":
-		fallthrough
-	case "redis":
-		*e = SessionStorage(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SessionStorage: %v", v)
-	}
-}
-
-type SessionRedisClusterNodes struct {
-	// A string representing a host name, such as example.com.
-	IP *string `default:"127.0.0.1" json:"ip"`
-	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `default:"6379" json:"port"`
-}
-
-func (s SessionRedisClusterNodes) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(s, "", false)
-}
-
-func (s *SessionRedisClusterNodes) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (o *SessionRedisClusterNodes) GetIP() *string {
-	if o == nil {
-		return nil
-	}
-	return o.IP
-}
-
-func (o *SessionRedisClusterNodes) GetPort() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.Port
-}
-
-type BearerTokenParamType string
-
-const (
-	BearerTokenParamTypeHeader BearerTokenParamType = "header"
-	BearerTokenParamTypeCookie BearerTokenParamType = "cookie"
-	BearerTokenParamTypeQuery  BearerTokenParamType = "query"
-	BearerTokenParamTypeBody   BearerTokenParamType = "body"
-)
-
-func (e BearerTokenParamType) ToPointer() *BearerTokenParamType {
-	return &e
-}
-
-func (e *BearerTokenParamType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "header":
-		fallthrough
-	case "cookie":
-		fallthrough
-	case "query":
-		fallthrough
-	case "body":
-		*e = BearerTokenParamType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for BearerTokenParamType: %v", v)
-	}
-}
-
-type ClientCredentialsParamType string
-
-const (
-	ClientCredentialsParamTypeHeader ClientCredentialsParamType = "header"
-	ClientCredentialsParamTypeQuery  ClientCredentialsParamType = "query"
-	ClientCredentialsParamTypeBody   ClientCredentialsParamType = "body"
-)
-
-func (e ClientCredentialsParamType) ToPointer() *ClientCredentialsParamType {
-	return &e
-}
-
-func (e *ClientCredentialsParamType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "header":
-		fallthrough
-	case "query":
-		fallthrough
-	case "body":
-		*e = ClientCredentialsParamType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ClientCredentialsParamType: %v", v)
-	}
-}
-
-type PasswordParamType string
-
-const (
-	PasswordParamTypeHeader PasswordParamType = "header"
-	PasswordParamTypeQuery  PasswordParamType = "query"
-	PasswordParamTypeBody   PasswordParamType = "body"
-)
-
-func (e PasswordParamType) ToPointer() *PasswordParamType {
-	return &e
-}
-
-func (e *PasswordParamType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "header":
-		fallthrough
-	case "query":
-		fallthrough
-	case "body":
-		*e = PasswordParamType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for PasswordParamType: %v", v)
-	}
-}
-
-type IDTokenParamType string
-
-const (
-	IDTokenParamTypeHeader IDTokenParamType = "header"
-	IDTokenParamTypeQuery  IDTokenParamType = "query"
-	IDTokenParamTypeBody   IDTokenParamType = "body"
-)
-
-func (e IDTokenParamType) ToPointer() *IDTokenParamType {
-	return &e
-}
-
-func (e *IDTokenParamType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "header":
-		fallthrough
-	case "query":
-		fallthrough
-	case "body":
-		*e = IDTokenParamType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for IDTokenParamType: %v", v)
-	}
-}
-
-type RefreshTokenParamType string
-
-const (
-	RefreshTokenParamTypeHeader RefreshTokenParamType = "header"
-	RefreshTokenParamTypeQuery  RefreshTokenParamType = "query"
-	RefreshTokenParamTypeBody   RefreshTokenParamType = "body"
-)
-
-func (e RefreshTokenParamType) ToPointer() *RefreshTokenParamType {
-	return &e
-}
-
-func (e *RefreshTokenParamType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "header":
-		fallthrough
-	case "query":
-		fallthrough
-	case "body":
-		*e = RefreshTokenParamType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for RefreshTokenParamType: %v", v)
-	}
-}
-
-type LoginMethods string
-
-const (
-	LoginMethodsPassword          LoginMethods = "password"
-	LoginMethodsClientCredentials LoginMethods = "client_credentials"
-	LoginMethodsAuthorizationCode LoginMethods = "authorization_code"
-	LoginMethodsBearer            LoginMethods = "bearer"
-	LoginMethodsIntrospection     LoginMethods = "introspection"
-	LoginMethodsUserinfo          LoginMethods = "userinfo"
-	LoginMethodsKongOauth2        LoginMethods = "kong_oauth2"
-	LoginMethodsRefreshToken      LoginMethods = "refresh_token"
-	LoginMethodsSession           LoginMethods = "session"
-)
-
-func (e LoginMethods) ToPointer() *LoginMethods {
-	return &e
-}
-
-func (e *LoginMethods) UnmarshalJSON(data []byte) error {
+func (e *CreateOpenidConnectPluginDisableSession) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -1155,27 +616,173 @@ func (e *LoginMethods) UnmarshalJSON(data []byte) error {
 	case "refresh_token":
 		fallthrough
 	case "session":
-		*e = LoginMethods(v)
+		*e = CreateOpenidConnectPluginDisableSession(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for LoginMethods: %v", v)
+		return fmt.Errorf("invalid value for CreateOpenidConnectPluginDisableSession: %v", v)
 	}
 }
 
-// LoginAction - What to do after successful login: - `upstream`: proxy request to upstream service - `response`: terminate request with a response - `redirect`: redirect to a different location.
-type LoginAction string
+type CreateOpenidConnectPluginIDTokenParamType string
 
 const (
-	LoginActionUpstream LoginAction = "upstream"
-	LoginActionResponse LoginAction = "response"
-	LoginActionRedirect LoginAction = "redirect"
+	CreateOpenidConnectPluginIDTokenParamTypeHeader CreateOpenidConnectPluginIDTokenParamType = "header"
+	CreateOpenidConnectPluginIDTokenParamTypeQuery  CreateOpenidConnectPluginIDTokenParamType = "query"
+	CreateOpenidConnectPluginIDTokenParamTypeBody   CreateOpenidConnectPluginIDTokenParamType = "body"
 )
 
-func (e LoginAction) ToPointer() *LoginAction {
+func (e CreateOpenidConnectPluginIDTokenParamType) ToPointer() *CreateOpenidConnectPluginIDTokenParamType {
 	return &e
 }
 
-func (e *LoginAction) UnmarshalJSON(data []byte) error {
+func (e *CreateOpenidConnectPluginIDTokenParamType) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "header":
+		fallthrough
+	case "query":
+		fallthrough
+	case "body":
+		*e = CreateOpenidConnectPluginIDTokenParamType(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for CreateOpenidConnectPluginIDTokenParamType: %v", v)
+	}
+}
+
+type CreateOpenidConnectPluginIgnoreSignature string
+
+const (
+	CreateOpenidConnectPluginIgnoreSignaturePassword          CreateOpenidConnectPluginIgnoreSignature = "password"
+	CreateOpenidConnectPluginIgnoreSignatureClientCredentials CreateOpenidConnectPluginIgnoreSignature = "client_credentials"
+	CreateOpenidConnectPluginIgnoreSignatureAuthorizationCode CreateOpenidConnectPluginIgnoreSignature = "authorization_code"
+	CreateOpenidConnectPluginIgnoreSignatureRefreshToken      CreateOpenidConnectPluginIgnoreSignature = "refresh_token"
+	CreateOpenidConnectPluginIgnoreSignatureSession           CreateOpenidConnectPluginIgnoreSignature = "session"
+	CreateOpenidConnectPluginIgnoreSignatureIntrospection     CreateOpenidConnectPluginIgnoreSignature = "introspection"
+	CreateOpenidConnectPluginIgnoreSignatureUserinfo          CreateOpenidConnectPluginIgnoreSignature = "userinfo"
+)
+
+func (e CreateOpenidConnectPluginIgnoreSignature) ToPointer() *CreateOpenidConnectPluginIgnoreSignature {
+	return &e
+}
+
+func (e *CreateOpenidConnectPluginIgnoreSignature) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "password":
+		fallthrough
+	case "client_credentials":
+		fallthrough
+	case "authorization_code":
+		fallthrough
+	case "refresh_token":
+		fallthrough
+	case "session":
+		fallthrough
+	case "introspection":
+		fallthrough
+	case "userinfo":
+		*e = CreateOpenidConnectPluginIgnoreSignature(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for CreateOpenidConnectPluginIgnoreSignature: %v", v)
+	}
+}
+
+// CreateOpenidConnectPluginIntrospectionAccept - The value of `Accept` header for introspection requests: - `application/json`: introspection response as JSON - `application/token-introspection+jwt`: introspection response as JWT (from the current IETF draft document) - `application/jwt`: introspection response as JWT (from the obsolete IETF draft document).
+type CreateOpenidConnectPluginIntrospectionAccept string
+
+const (
+	CreateOpenidConnectPluginIntrospectionAcceptApplicationJSON                      CreateOpenidConnectPluginIntrospectionAccept = "application/json"
+	CreateOpenidConnectPluginIntrospectionAcceptApplicationTokenIntrospectionPlusJwt CreateOpenidConnectPluginIntrospectionAccept = "application/token-introspection+jwt"
+	CreateOpenidConnectPluginIntrospectionAcceptApplicationJwt                       CreateOpenidConnectPluginIntrospectionAccept = "application/jwt"
+)
+
+func (e CreateOpenidConnectPluginIntrospectionAccept) ToPointer() *CreateOpenidConnectPluginIntrospectionAccept {
+	return &e
+}
+
+func (e *CreateOpenidConnectPluginIntrospectionAccept) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "application/json":
+		fallthrough
+	case "application/token-introspection+jwt":
+		fallthrough
+	case "application/jwt":
+		*e = CreateOpenidConnectPluginIntrospectionAccept(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for CreateOpenidConnectPluginIntrospectionAccept: %v", v)
+	}
+}
+
+// CreateOpenidConnectPluginIntrospectionEndpointAuthMethod - The introspection endpoint authentication method: : `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
+type CreateOpenidConnectPluginIntrospectionEndpointAuthMethod string
+
+const (
+	CreateOpenidConnectPluginIntrospectionEndpointAuthMethodClientSecretBasic       CreateOpenidConnectPluginIntrospectionEndpointAuthMethod = "client_secret_basic"
+	CreateOpenidConnectPluginIntrospectionEndpointAuthMethodClientSecretPost        CreateOpenidConnectPluginIntrospectionEndpointAuthMethod = "client_secret_post"
+	CreateOpenidConnectPluginIntrospectionEndpointAuthMethodClientSecretJwt         CreateOpenidConnectPluginIntrospectionEndpointAuthMethod = "client_secret_jwt"
+	CreateOpenidConnectPluginIntrospectionEndpointAuthMethodPrivateKeyJwt           CreateOpenidConnectPluginIntrospectionEndpointAuthMethod = "private_key_jwt"
+	CreateOpenidConnectPluginIntrospectionEndpointAuthMethodTLSClientAuth           CreateOpenidConnectPluginIntrospectionEndpointAuthMethod = "tls_client_auth"
+	CreateOpenidConnectPluginIntrospectionEndpointAuthMethodSelfSignedTLSClientAuth CreateOpenidConnectPluginIntrospectionEndpointAuthMethod = "self_signed_tls_client_auth"
+	CreateOpenidConnectPluginIntrospectionEndpointAuthMethodNone                    CreateOpenidConnectPluginIntrospectionEndpointAuthMethod = "none"
+)
+
+func (e CreateOpenidConnectPluginIntrospectionEndpointAuthMethod) ToPointer() *CreateOpenidConnectPluginIntrospectionEndpointAuthMethod {
+	return &e
+}
+
+func (e *CreateOpenidConnectPluginIntrospectionEndpointAuthMethod) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "client_secret_basic":
+		fallthrough
+	case "client_secret_post":
+		fallthrough
+	case "client_secret_jwt":
+		fallthrough
+	case "private_key_jwt":
+		fallthrough
+	case "tls_client_auth":
+		fallthrough
+	case "self_signed_tls_client_auth":
+		fallthrough
+	case "none":
+		*e = CreateOpenidConnectPluginIntrospectionEndpointAuthMethod(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for CreateOpenidConnectPluginIntrospectionEndpointAuthMethod: %v", v)
+	}
+}
+
+// CreateOpenidConnectPluginLoginAction - What to do after successful login: - `upstream`: proxy request to upstream service - `response`: terminate request with a response - `redirect`: redirect to a different location.
+type CreateOpenidConnectPluginLoginAction string
+
+const (
+	CreateOpenidConnectPluginLoginActionUpstream CreateOpenidConnectPluginLoginAction = "upstream"
+	CreateOpenidConnectPluginLoginActionResponse CreateOpenidConnectPluginLoginAction = "response"
+	CreateOpenidConnectPluginLoginActionRedirect CreateOpenidConnectPluginLoginAction = "redirect"
+)
+
+func (e CreateOpenidConnectPluginLoginAction) ToPointer() *CreateOpenidConnectPluginLoginAction {
+	return &e
+}
+
+func (e *CreateOpenidConnectPluginLoginAction) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -1186,28 +793,104 @@ func (e *LoginAction) UnmarshalJSON(data []byte) error {
 	case "response":
 		fallthrough
 	case "redirect":
-		*e = LoginAction(v)
+		*e = CreateOpenidConnectPluginLoginAction(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for LoginAction: %v", v)
+		return fmt.Errorf("invalid value for CreateOpenidConnectPluginLoginAction: %v", v)
 	}
 }
 
-type LoginTokens string
+type CreateOpenidConnectPluginLoginMethods string
 
 const (
-	LoginTokensIDToken       LoginTokens = "id_token"
-	LoginTokensAccessToken   LoginTokens = "access_token"
-	LoginTokensRefreshToken  LoginTokens = "refresh_token"
-	LoginTokensTokens        LoginTokens = "tokens"
-	LoginTokensIntrospection LoginTokens = "introspection"
+	CreateOpenidConnectPluginLoginMethodsPassword          CreateOpenidConnectPluginLoginMethods = "password"
+	CreateOpenidConnectPluginLoginMethodsClientCredentials CreateOpenidConnectPluginLoginMethods = "client_credentials"
+	CreateOpenidConnectPluginLoginMethodsAuthorizationCode CreateOpenidConnectPluginLoginMethods = "authorization_code"
+	CreateOpenidConnectPluginLoginMethodsBearer            CreateOpenidConnectPluginLoginMethods = "bearer"
+	CreateOpenidConnectPluginLoginMethodsIntrospection     CreateOpenidConnectPluginLoginMethods = "introspection"
+	CreateOpenidConnectPluginLoginMethodsUserinfo          CreateOpenidConnectPluginLoginMethods = "userinfo"
+	CreateOpenidConnectPluginLoginMethodsKongOauth2        CreateOpenidConnectPluginLoginMethods = "kong_oauth2"
+	CreateOpenidConnectPluginLoginMethodsRefreshToken      CreateOpenidConnectPluginLoginMethods = "refresh_token"
+	CreateOpenidConnectPluginLoginMethodsSession           CreateOpenidConnectPluginLoginMethods = "session"
 )
 
-func (e LoginTokens) ToPointer() *LoginTokens {
+func (e CreateOpenidConnectPluginLoginMethods) ToPointer() *CreateOpenidConnectPluginLoginMethods {
 	return &e
 }
 
-func (e *LoginTokens) UnmarshalJSON(data []byte) error {
+func (e *CreateOpenidConnectPluginLoginMethods) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "password":
+		fallthrough
+	case "client_credentials":
+		fallthrough
+	case "authorization_code":
+		fallthrough
+	case "bearer":
+		fallthrough
+	case "introspection":
+		fallthrough
+	case "userinfo":
+		fallthrough
+	case "kong_oauth2":
+		fallthrough
+	case "refresh_token":
+		fallthrough
+	case "session":
+		*e = CreateOpenidConnectPluginLoginMethods(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for CreateOpenidConnectPluginLoginMethods: %v", v)
+	}
+}
+
+// CreateOpenidConnectPluginLoginRedirectMode - Where to place `login_tokens` when using `redirect` `login_action`: - `query`: place tokens in query string - `fragment`: place tokens in url fragment (not readable by servers).
+type CreateOpenidConnectPluginLoginRedirectMode string
+
+const (
+	CreateOpenidConnectPluginLoginRedirectModeQuery    CreateOpenidConnectPluginLoginRedirectMode = "query"
+	CreateOpenidConnectPluginLoginRedirectModeFragment CreateOpenidConnectPluginLoginRedirectMode = "fragment"
+)
+
+func (e CreateOpenidConnectPluginLoginRedirectMode) ToPointer() *CreateOpenidConnectPluginLoginRedirectMode {
+	return &e
+}
+
+func (e *CreateOpenidConnectPluginLoginRedirectMode) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "query":
+		fallthrough
+	case "fragment":
+		*e = CreateOpenidConnectPluginLoginRedirectMode(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for CreateOpenidConnectPluginLoginRedirectMode: %v", v)
+	}
+}
+
+type CreateOpenidConnectPluginLoginTokens string
+
+const (
+	CreateOpenidConnectPluginLoginTokensIDToken       CreateOpenidConnectPluginLoginTokens = "id_token"
+	CreateOpenidConnectPluginLoginTokensAccessToken   CreateOpenidConnectPluginLoginTokens = "access_token"
+	CreateOpenidConnectPluginLoginTokensRefreshToken  CreateOpenidConnectPluginLoginTokens = "refresh_token"
+	CreateOpenidConnectPluginLoginTokensTokens        CreateOpenidConnectPluginLoginTokens = "tokens"
+	CreateOpenidConnectPluginLoginTokensIntrospection CreateOpenidConnectPluginLoginTokens = "introspection"
+)
+
+func (e CreateOpenidConnectPluginLoginTokens) ToPointer() *CreateOpenidConnectPluginLoginTokens {
+	return &e
+}
+
+func (e *CreateOpenidConnectPluginLoginTokens) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -1222,54 +905,26 @@ func (e *LoginTokens) UnmarshalJSON(data []byte) error {
 	case "tokens":
 		fallthrough
 	case "introspection":
-		*e = LoginTokens(v)
+		*e = CreateOpenidConnectPluginLoginTokens(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for LoginTokens: %v", v)
+		return fmt.Errorf("invalid value for CreateOpenidConnectPluginLoginTokens: %v", v)
 	}
 }
 
-// LoginRedirectMode - Where to place `login_tokens` when using `redirect` `login_action`: - `query`: place tokens in query string - `fragment`: place tokens in url fragment (not readable by servers).
-type LoginRedirectMode string
+type CreateOpenidConnectPluginLogoutMethods string
 
 const (
-	LoginRedirectModeQuery    LoginRedirectMode = "query"
-	LoginRedirectModeFragment LoginRedirectMode = "fragment"
+	CreateOpenidConnectPluginLogoutMethodsPost   CreateOpenidConnectPluginLogoutMethods = "POST"
+	CreateOpenidConnectPluginLogoutMethodsGet    CreateOpenidConnectPluginLogoutMethods = "GET"
+	CreateOpenidConnectPluginLogoutMethodsDelete CreateOpenidConnectPluginLogoutMethods = "DELETE"
 )
 
-func (e LoginRedirectMode) ToPointer() *LoginRedirectMode {
+func (e CreateOpenidConnectPluginLogoutMethods) ToPointer() *CreateOpenidConnectPluginLogoutMethods {
 	return &e
 }
 
-func (e *LoginRedirectMode) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "query":
-		fallthrough
-	case "fragment":
-		*e = LoginRedirectMode(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for LoginRedirectMode: %v", v)
-	}
-}
-
-type LogoutMethods string
-
-const (
-	LogoutMethodsPost   LogoutMethods = "POST"
-	LogoutMethodsGet    LogoutMethods = "GET"
-	LogoutMethodsDelete LogoutMethods = "DELETE"
-)
-
-func (e LogoutMethods) ToPointer() *LogoutMethods {
-	return &e
-}
-
-func (e *LogoutMethods) UnmarshalJSON(data []byte) error {
+func (e *CreateOpenidConnectPluginLogoutMethods) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -1280,147 +935,57 @@ func (e *LogoutMethods) UnmarshalJSON(data []byte) error {
 	case "GET":
 		fallthrough
 	case "DELETE":
-		*e = LogoutMethods(v)
+		*e = CreateOpenidConnectPluginLogoutMethods(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for LogoutMethods: %v", v)
+		return fmt.Errorf("invalid value for CreateOpenidConnectPluginLogoutMethods: %v", v)
 	}
 }
 
-type ConsumerBy string
+type CreateOpenidConnectPluginPasswordParamType string
 
 const (
-	ConsumerByID       ConsumerBy = "id"
-	ConsumerByUsername ConsumerBy = "username"
-	ConsumerByCustomID ConsumerBy = "custom_id"
+	CreateOpenidConnectPluginPasswordParamTypeHeader CreateOpenidConnectPluginPasswordParamType = "header"
+	CreateOpenidConnectPluginPasswordParamTypeQuery  CreateOpenidConnectPluginPasswordParamType = "query"
+	CreateOpenidConnectPluginPasswordParamTypeBody   CreateOpenidConnectPluginPasswordParamType = "body"
 )
 
-func (e ConsumerBy) ToPointer() *ConsumerBy {
+func (e CreateOpenidConnectPluginPasswordParamType) ToPointer() *CreateOpenidConnectPluginPasswordParamType {
 	return &e
 }
 
-func (e *ConsumerBy) UnmarshalJSON(data []byte) error {
+func (e *CreateOpenidConnectPluginPasswordParamType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
 	switch v {
-	case "id":
+	case "header":
 		fallthrough
-	case "username":
+	case "query":
 		fallthrough
-	case "custom_id":
-		*e = ConsumerBy(v)
+	case "body":
+		*e = CreateOpenidConnectPluginPasswordParamType(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for ConsumerBy: %v", v)
+		return fmt.Errorf("invalid value for CreateOpenidConnectPluginPasswordParamType: %v", v)
 	}
 }
 
-type IgnoreSignature string
+// CreateOpenidConnectPluginProofOfPossessionMtls - Enable mtls proof of possession. If set to strict, all tokens (from supported auth_methods: bearer, introspection, and session granted with bearer or introspection) are verified, if set to optional, only tokens that contain the certificate hash claim are verified. If the verification fails, the request will be rejected with 401.
+type CreateOpenidConnectPluginProofOfPossessionMtls string
 
 const (
-	IgnoreSignaturePassword          IgnoreSignature = "password"
-	IgnoreSignatureClientCredentials IgnoreSignature = "client_credentials"
-	IgnoreSignatureAuthorizationCode IgnoreSignature = "authorization_code"
-	IgnoreSignatureRefreshToken      IgnoreSignature = "refresh_token"
-	IgnoreSignatureSession           IgnoreSignature = "session"
-	IgnoreSignatureIntrospection     IgnoreSignature = "introspection"
-	IgnoreSignatureUserinfo          IgnoreSignature = "userinfo"
+	CreateOpenidConnectPluginProofOfPossessionMtlsOff      CreateOpenidConnectPluginProofOfPossessionMtls = "off"
+	CreateOpenidConnectPluginProofOfPossessionMtlsStrict   CreateOpenidConnectPluginProofOfPossessionMtls = "strict"
+	CreateOpenidConnectPluginProofOfPossessionMtlsOptional CreateOpenidConnectPluginProofOfPossessionMtls = "optional"
 )
 
-func (e IgnoreSignature) ToPointer() *IgnoreSignature {
+func (e CreateOpenidConnectPluginProofOfPossessionMtls) ToPointer() *CreateOpenidConnectPluginProofOfPossessionMtls {
 	return &e
 }
 
-func (e *IgnoreSignature) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "password":
-		fallthrough
-	case "client_credentials":
-		fallthrough
-	case "authorization_code":
-		fallthrough
-	case "refresh_token":
-		fallthrough
-	case "session":
-		fallthrough
-	case "introspection":
-		fallthrough
-	case "userinfo":
-		*e = IgnoreSignature(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for IgnoreSignature: %v", v)
-	}
-}
-
-type DisableSession string
-
-const (
-	DisableSessionPassword          DisableSession = "password"
-	DisableSessionClientCredentials DisableSession = "client_credentials"
-	DisableSessionAuthorizationCode DisableSession = "authorization_code"
-	DisableSessionBearer            DisableSession = "bearer"
-	DisableSessionIntrospection     DisableSession = "introspection"
-	DisableSessionUserinfo          DisableSession = "userinfo"
-	DisableSessionKongOauth2        DisableSession = "kong_oauth2"
-	DisableSessionRefreshToken      DisableSession = "refresh_token"
-	DisableSessionSession           DisableSession = "session"
-)
-
-func (e DisableSession) ToPointer() *DisableSession {
-	return &e
-}
-
-func (e *DisableSession) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "password":
-		fallthrough
-	case "client_credentials":
-		fallthrough
-	case "authorization_code":
-		fallthrough
-	case "bearer":
-		fallthrough
-	case "introspection":
-		fallthrough
-	case "userinfo":
-		fallthrough
-	case "kong_oauth2":
-		fallthrough
-	case "refresh_token":
-		fallthrough
-	case "session":
-		*e = DisableSession(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for DisableSession: %v", v)
-	}
-}
-
-// ProofOfPossessionMtls - Enable mtls proof of possession. If set to strict, all tokens (from supported auth_methods: bearer, introspection, and session granted with bearer or introspection) are verified, if set to optional, only tokens that contain the certificate hash claim are verified. If the verification fails, the request will be rejected with 401.
-type ProofOfPossessionMtls string
-
-const (
-	ProofOfPossessionMtlsOff      ProofOfPossessionMtls = "off"
-	ProofOfPossessionMtlsStrict   ProofOfPossessionMtls = "strict"
-	ProofOfPossessionMtlsOptional ProofOfPossessionMtls = "optional"
-)
-
-func (e ProofOfPossessionMtls) ToPointer() *ProofOfPossessionMtls {
-	return &e
-}
-
-func (e *ProofOfPossessionMtls) UnmarshalJSON(data []byte) error {
+func (e *CreateOpenidConnectPluginProofOfPossessionMtls) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -1431,398 +996,497 @@ func (e *ProofOfPossessionMtls) UnmarshalJSON(data []byte) error {
 	case "strict":
 		fallthrough
 	case "optional":
-		*e = ProofOfPossessionMtls(v)
+		*e = CreateOpenidConnectPluginProofOfPossessionMtls(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for ProofOfPossessionMtls: %v", v)
+		return fmt.Errorf("invalid value for CreateOpenidConnectPluginProofOfPossessionMtls: %v", v)
+	}
+}
+
+// CreateOpenidConnectPluginPushedAuthorizationRequestEndpointAuthMethod - The pushed authorization request endpoint authentication method: `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
+type CreateOpenidConnectPluginPushedAuthorizationRequestEndpointAuthMethod string
+
+const (
+	CreateOpenidConnectPluginPushedAuthorizationRequestEndpointAuthMethodClientSecretBasic       CreateOpenidConnectPluginPushedAuthorizationRequestEndpointAuthMethod = "client_secret_basic"
+	CreateOpenidConnectPluginPushedAuthorizationRequestEndpointAuthMethodClientSecretPost        CreateOpenidConnectPluginPushedAuthorizationRequestEndpointAuthMethod = "client_secret_post"
+	CreateOpenidConnectPluginPushedAuthorizationRequestEndpointAuthMethodClientSecretJwt         CreateOpenidConnectPluginPushedAuthorizationRequestEndpointAuthMethod = "client_secret_jwt"
+	CreateOpenidConnectPluginPushedAuthorizationRequestEndpointAuthMethodPrivateKeyJwt           CreateOpenidConnectPluginPushedAuthorizationRequestEndpointAuthMethod = "private_key_jwt"
+	CreateOpenidConnectPluginPushedAuthorizationRequestEndpointAuthMethodTLSClientAuth           CreateOpenidConnectPluginPushedAuthorizationRequestEndpointAuthMethod = "tls_client_auth"
+	CreateOpenidConnectPluginPushedAuthorizationRequestEndpointAuthMethodSelfSignedTLSClientAuth CreateOpenidConnectPluginPushedAuthorizationRequestEndpointAuthMethod = "self_signed_tls_client_auth"
+	CreateOpenidConnectPluginPushedAuthorizationRequestEndpointAuthMethodNone                    CreateOpenidConnectPluginPushedAuthorizationRequestEndpointAuthMethod = "none"
+)
+
+func (e CreateOpenidConnectPluginPushedAuthorizationRequestEndpointAuthMethod) ToPointer() *CreateOpenidConnectPluginPushedAuthorizationRequestEndpointAuthMethod {
+	return &e
+}
+
+func (e *CreateOpenidConnectPluginPushedAuthorizationRequestEndpointAuthMethod) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "client_secret_basic":
+		fallthrough
+	case "client_secret_post":
+		fallthrough
+	case "client_secret_jwt":
+		fallthrough
+	case "private_key_jwt":
+		fallthrough
+	case "tls_client_auth":
+		fallthrough
+	case "self_signed_tls_client_auth":
+		fallthrough
+	case "none":
+		*e = CreateOpenidConnectPluginPushedAuthorizationRequestEndpointAuthMethod(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for CreateOpenidConnectPluginPushedAuthorizationRequestEndpointAuthMethod: %v", v)
+	}
+}
+
+type CreateOpenidConnectPluginRefreshTokenParamType string
+
+const (
+	CreateOpenidConnectPluginRefreshTokenParamTypeHeader CreateOpenidConnectPluginRefreshTokenParamType = "header"
+	CreateOpenidConnectPluginRefreshTokenParamTypeQuery  CreateOpenidConnectPluginRefreshTokenParamType = "query"
+	CreateOpenidConnectPluginRefreshTokenParamTypeBody   CreateOpenidConnectPluginRefreshTokenParamType = "body"
+)
+
+func (e CreateOpenidConnectPluginRefreshTokenParamType) ToPointer() *CreateOpenidConnectPluginRefreshTokenParamType {
+	return &e
+}
+
+func (e *CreateOpenidConnectPluginRefreshTokenParamType) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "header":
+		fallthrough
+	case "query":
+		fallthrough
+	case "body":
+		*e = CreateOpenidConnectPluginRefreshTokenParamType(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for CreateOpenidConnectPluginRefreshTokenParamType: %v", v)
+	}
+}
+
+// CreateOpenidConnectPluginResponseMode - The response mode passed to the authorization endpoint: - `query`: Instructs the identity provider to pass parameters in query string - `form_post`: Instructs the identity provider to pass parameters in request body - `fragment`: Instructs the identity provider to pass parameters in uri fragment (rarely useful as the plugin itself cannot read it).
+type CreateOpenidConnectPluginResponseMode string
+
+const (
+	CreateOpenidConnectPluginResponseModeQuery    CreateOpenidConnectPluginResponseMode = "query"
+	CreateOpenidConnectPluginResponseModeFormPost CreateOpenidConnectPluginResponseMode = "form_post"
+	CreateOpenidConnectPluginResponseModeFragment CreateOpenidConnectPluginResponseMode = "fragment"
+)
+
+func (e CreateOpenidConnectPluginResponseMode) ToPointer() *CreateOpenidConnectPluginResponseMode {
+	return &e
+}
+
+func (e *CreateOpenidConnectPluginResponseMode) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "query":
+		fallthrough
+	case "form_post":
+		fallthrough
+	case "fragment":
+		*e = CreateOpenidConnectPluginResponseMode(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for CreateOpenidConnectPluginResponseMode: %v", v)
+	}
+}
+
+// CreateOpenidConnectPluginRevocationEndpointAuthMethod - The revocation endpoint authentication method: : `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
+type CreateOpenidConnectPluginRevocationEndpointAuthMethod string
+
+const (
+	CreateOpenidConnectPluginRevocationEndpointAuthMethodClientSecretBasic       CreateOpenidConnectPluginRevocationEndpointAuthMethod = "client_secret_basic"
+	CreateOpenidConnectPluginRevocationEndpointAuthMethodClientSecretPost        CreateOpenidConnectPluginRevocationEndpointAuthMethod = "client_secret_post"
+	CreateOpenidConnectPluginRevocationEndpointAuthMethodClientSecretJwt         CreateOpenidConnectPluginRevocationEndpointAuthMethod = "client_secret_jwt"
+	CreateOpenidConnectPluginRevocationEndpointAuthMethodPrivateKeyJwt           CreateOpenidConnectPluginRevocationEndpointAuthMethod = "private_key_jwt"
+	CreateOpenidConnectPluginRevocationEndpointAuthMethodTLSClientAuth           CreateOpenidConnectPluginRevocationEndpointAuthMethod = "tls_client_auth"
+	CreateOpenidConnectPluginRevocationEndpointAuthMethodSelfSignedTLSClientAuth CreateOpenidConnectPluginRevocationEndpointAuthMethod = "self_signed_tls_client_auth"
+	CreateOpenidConnectPluginRevocationEndpointAuthMethodNone                    CreateOpenidConnectPluginRevocationEndpointAuthMethod = "none"
+)
+
+func (e CreateOpenidConnectPluginRevocationEndpointAuthMethod) ToPointer() *CreateOpenidConnectPluginRevocationEndpointAuthMethod {
+	return &e
+}
+
+func (e *CreateOpenidConnectPluginRevocationEndpointAuthMethod) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "client_secret_basic":
+		fallthrough
+	case "client_secret_post":
+		fallthrough
+	case "client_secret_jwt":
+		fallthrough
+	case "private_key_jwt":
+		fallthrough
+	case "tls_client_auth":
+		fallthrough
+	case "self_signed_tls_client_auth":
+		fallthrough
+	case "none":
+		*e = CreateOpenidConnectPluginRevocationEndpointAuthMethod(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for CreateOpenidConnectPluginRevocationEndpointAuthMethod: %v", v)
+	}
+}
+
+// CreateOpenidConnectPluginSessionCookieSameSite - Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks.
+type CreateOpenidConnectPluginSessionCookieSameSite string
+
+const (
+	CreateOpenidConnectPluginSessionCookieSameSiteStrict  CreateOpenidConnectPluginSessionCookieSameSite = "Strict"
+	CreateOpenidConnectPluginSessionCookieSameSiteLax     CreateOpenidConnectPluginSessionCookieSameSite = "Lax"
+	CreateOpenidConnectPluginSessionCookieSameSiteNone    CreateOpenidConnectPluginSessionCookieSameSite = "None"
+	CreateOpenidConnectPluginSessionCookieSameSiteDefault CreateOpenidConnectPluginSessionCookieSameSite = "Default"
+)
+
+func (e CreateOpenidConnectPluginSessionCookieSameSite) ToPointer() *CreateOpenidConnectPluginSessionCookieSameSite {
+	return &e
+}
+
+func (e *CreateOpenidConnectPluginSessionCookieSameSite) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "Strict":
+		fallthrough
+	case "Lax":
+		fallthrough
+	case "None":
+		fallthrough
+	case "Default":
+		*e = CreateOpenidConnectPluginSessionCookieSameSite(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for CreateOpenidConnectPluginSessionCookieSameSite: %v", v)
+	}
+}
+
+type CreateOpenidConnectPluginSessionRedisClusterNodes struct {
+	// A string representing a host name, such as example.com.
+	IP *string `default:"127.0.0.1" json:"ip"`
+	// An integer representing a port number between 0 and 65535, inclusive.
+	Port *int64 `default:"6379" json:"port"`
+}
+
+func (c CreateOpenidConnectPluginSessionRedisClusterNodes) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateOpenidConnectPluginSessionRedisClusterNodes) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *CreateOpenidConnectPluginSessionRedisClusterNodes) GetIP() *string {
+	if o == nil {
+		return nil
+	}
+	return o.IP
+}
+
+func (o *CreateOpenidConnectPluginSessionRedisClusterNodes) GetPort() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.Port
+}
+
+type CreateOpenidConnectPluginSessionRequestHeaders string
+
+const (
+	CreateOpenidConnectPluginSessionRequestHeadersID              CreateOpenidConnectPluginSessionRequestHeaders = "id"
+	CreateOpenidConnectPluginSessionRequestHeadersAudience        CreateOpenidConnectPluginSessionRequestHeaders = "audience"
+	CreateOpenidConnectPluginSessionRequestHeadersSubject         CreateOpenidConnectPluginSessionRequestHeaders = "subject"
+	CreateOpenidConnectPluginSessionRequestHeadersTimeout         CreateOpenidConnectPluginSessionRequestHeaders = "timeout"
+	CreateOpenidConnectPluginSessionRequestHeadersIdlingTimeout   CreateOpenidConnectPluginSessionRequestHeaders = "idling-timeout"
+	CreateOpenidConnectPluginSessionRequestHeadersRollingTimeout  CreateOpenidConnectPluginSessionRequestHeaders = "rolling-timeout"
+	CreateOpenidConnectPluginSessionRequestHeadersAbsoluteTimeout CreateOpenidConnectPluginSessionRequestHeaders = "absolute-timeout"
+)
+
+func (e CreateOpenidConnectPluginSessionRequestHeaders) ToPointer() *CreateOpenidConnectPluginSessionRequestHeaders {
+	return &e
+}
+
+func (e *CreateOpenidConnectPluginSessionRequestHeaders) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "id":
+		fallthrough
+	case "audience":
+		fallthrough
+	case "subject":
+		fallthrough
+	case "timeout":
+		fallthrough
+	case "idling-timeout":
+		fallthrough
+	case "rolling-timeout":
+		fallthrough
+	case "absolute-timeout":
+		*e = CreateOpenidConnectPluginSessionRequestHeaders(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for CreateOpenidConnectPluginSessionRequestHeaders: %v", v)
+	}
+}
+
+type CreateOpenidConnectPluginSessionResponseHeaders string
+
+const (
+	CreateOpenidConnectPluginSessionResponseHeadersID              CreateOpenidConnectPluginSessionResponseHeaders = "id"
+	CreateOpenidConnectPluginSessionResponseHeadersAudience        CreateOpenidConnectPluginSessionResponseHeaders = "audience"
+	CreateOpenidConnectPluginSessionResponseHeadersSubject         CreateOpenidConnectPluginSessionResponseHeaders = "subject"
+	CreateOpenidConnectPluginSessionResponseHeadersTimeout         CreateOpenidConnectPluginSessionResponseHeaders = "timeout"
+	CreateOpenidConnectPluginSessionResponseHeadersIdlingTimeout   CreateOpenidConnectPluginSessionResponseHeaders = "idling-timeout"
+	CreateOpenidConnectPluginSessionResponseHeadersRollingTimeout  CreateOpenidConnectPluginSessionResponseHeaders = "rolling-timeout"
+	CreateOpenidConnectPluginSessionResponseHeadersAbsoluteTimeout CreateOpenidConnectPluginSessionResponseHeaders = "absolute-timeout"
+)
+
+func (e CreateOpenidConnectPluginSessionResponseHeaders) ToPointer() *CreateOpenidConnectPluginSessionResponseHeaders {
+	return &e
+}
+
+func (e *CreateOpenidConnectPluginSessionResponseHeaders) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "id":
+		fallthrough
+	case "audience":
+		fallthrough
+	case "subject":
+		fallthrough
+	case "timeout":
+		fallthrough
+	case "idling-timeout":
+		fallthrough
+	case "rolling-timeout":
+		fallthrough
+	case "absolute-timeout":
+		*e = CreateOpenidConnectPluginSessionResponseHeaders(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for CreateOpenidConnectPluginSessionResponseHeaders: %v", v)
+	}
+}
+
+// CreateOpenidConnectPluginSessionStorage - The session storage for session data: - `cookie`: stores session data with the session cookie (the session cannot be invalidated or revoked without changing session secret, but is stateless, and doesn't require a database) - `memcache`: stores session data in memcached - `redis`: stores session data in Redis.
+type CreateOpenidConnectPluginSessionStorage string
+
+const (
+	CreateOpenidConnectPluginSessionStorageCookie    CreateOpenidConnectPluginSessionStorage = "cookie"
+	CreateOpenidConnectPluginSessionStorageMemcache  CreateOpenidConnectPluginSessionStorage = "memcache"
+	CreateOpenidConnectPluginSessionStorageMemcached CreateOpenidConnectPluginSessionStorage = "memcached"
+	CreateOpenidConnectPluginSessionStorageRedis     CreateOpenidConnectPluginSessionStorage = "redis"
+)
+
+func (e CreateOpenidConnectPluginSessionStorage) ToPointer() *CreateOpenidConnectPluginSessionStorage {
+	return &e
+}
+
+func (e *CreateOpenidConnectPluginSessionStorage) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "cookie":
+		fallthrough
+	case "memcache":
+		fallthrough
+	case "memcached":
+		fallthrough
+	case "redis":
+		*e = CreateOpenidConnectPluginSessionStorage(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for CreateOpenidConnectPluginSessionStorage: %v", v)
+	}
+}
+
+// CreateOpenidConnectPluginTokenEndpointAuthMethod - The token endpoint authentication method: `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
+type CreateOpenidConnectPluginTokenEndpointAuthMethod string
+
+const (
+	CreateOpenidConnectPluginTokenEndpointAuthMethodClientSecretBasic       CreateOpenidConnectPluginTokenEndpointAuthMethod = "client_secret_basic"
+	CreateOpenidConnectPluginTokenEndpointAuthMethodClientSecretPost        CreateOpenidConnectPluginTokenEndpointAuthMethod = "client_secret_post"
+	CreateOpenidConnectPluginTokenEndpointAuthMethodClientSecretJwt         CreateOpenidConnectPluginTokenEndpointAuthMethod = "client_secret_jwt"
+	CreateOpenidConnectPluginTokenEndpointAuthMethodPrivateKeyJwt           CreateOpenidConnectPluginTokenEndpointAuthMethod = "private_key_jwt"
+	CreateOpenidConnectPluginTokenEndpointAuthMethodTLSClientAuth           CreateOpenidConnectPluginTokenEndpointAuthMethod = "tls_client_auth"
+	CreateOpenidConnectPluginTokenEndpointAuthMethodSelfSignedTLSClientAuth CreateOpenidConnectPluginTokenEndpointAuthMethod = "self_signed_tls_client_auth"
+	CreateOpenidConnectPluginTokenEndpointAuthMethodNone                    CreateOpenidConnectPluginTokenEndpointAuthMethod = "none"
+)
+
+func (e CreateOpenidConnectPluginTokenEndpointAuthMethod) ToPointer() *CreateOpenidConnectPluginTokenEndpointAuthMethod {
+	return &e
+}
+
+func (e *CreateOpenidConnectPluginTokenEndpointAuthMethod) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "client_secret_basic":
+		fallthrough
+	case "client_secret_post":
+		fallthrough
+	case "client_secret_jwt":
+		fallthrough
+	case "private_key_jwt":
+		fallthrough
+	case "tls_client_auth":
+		fallthrough
+	case "self_signed_tls_client_auth":
+		fallthrough
+	case "none":
+		*e = CreateOpenidConnectPluginTokenEndpointAuthMethod(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for CreateOpenidConnectPluginTokenEndpointAuthMethod: %v", v)
+	}
+}
+
+type CreateOpenidConnectPluginTokenHeadersGrants string
+
+const (
+	CreateOpenidConnectPluginTokenHeadersGrantsPassword          CreateOpenidConnectPluginTokenHeadersGrants = "password"
+	CreateOpenidConnectPluginTokenHeadersGrantsClientCredentials CreateOpenidConnectPluginTokenHeadersGrants = "client_credentials"
+	CreateOpenidConnectPluginTokenHeadersGrantsAuthorizationCode CreateOpenidConnectPluginTokenHeadersGrants = "authorization_code"
+	CreateOpenidConnectPluginTokenHeadersGrantsRefreshToken      CreateOpenidConnectPluginTokenHeadersGrants = "refresh_token"
+)
+
+func (e CreateOpenidConnectPluginTokenHeadersGrants) ToPointer() *CreateOpenidConnectPluginTokenHeadersGrants {
+	return &e
+}
+
+func (e *CreateOpenidConnectPluginTokenHeadersGrants) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "password":
+		fallthrough
+	case "client_credentials":
+		fallthrough
+	case "authorization_code":
+		fallthrough
+	case "refresh_token":
+		*e = CreateOpenidConnectPluginTokenHeadersGrants(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for CreateOpenidConnectPluginTokenHeadersGrants: %v", v)
+	}
+}
+
+// CreateOpenidConnectPluginUserinfoAccept - The value of `Accept` header for user info requests: - `application/json`: user info response as JSON - `application/jwt`: user info response as JWT (from the obsolete IETF draft document).
+type CreateOpenidConnectPluginUserinfoAccept string
+
+const (
+	CreateOpenidConnectPluginUserinfoAcceptApplicationJSON CreateOpenidConnectPluginUserinfoAccept = "application/json"
+	CreateOpenidConnectPluginUserinfoAcceptApplicationJwt  CreateOpenidConnectPluginUserinfoAccept = "application/jwt"
+)
+
+func (e CreateOpenidConnectPluginUserinfoAccept) ToPointer() *CreateOpenidConnectPluginUserinfoAccept {
+	return &e
+}
+
+func (e *CreateOpenidConnectPluginUserinfoAccept) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "application/json":
+		fallthrough
+	case "application/jwt":
+		*e = CreateOpenidConnectPluginUserinfoAccept(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for CreateOpenidConnectPluginUserinfoAccept: %v", v)
 	}
 }
 
 type CreateOpenidConnectPluginConfig struct {
-	// The discovery endpoint (or the issuer identifier). When there is no discovery endpoint, please also configure `config.using_pseudo_issuer=true`.
-	Issuer *string `json:"issuer,omitempty"`
-	// If the plugin uses a pseudo issuer. When set to true, the plugin will not discover the configuration from the issuer URL specified with `config.issuer`.
-	UsingPseudoIssuer *bool `default:"false" json:"using_pseudo_issuer"`
-	// Extra header names passed to the discovery endpoint.
-	DiscoveryHeadersNames []string `json:"discovery_headers_names,omitempty"`
-	// Extra header values passed to the discovery endpoint.
-	DiscoveryHeadersValues []string `json:"discovery_headers_values,omitempty"`
-	// JWKS URIs whose public keys are trusted (in addition to the keys found with the discovery).
-	ExtraJwksUris []string `json:"extra_jwks_uris,omitempty"`
-	// Specifies how long (in seconds) the plugin waits between discovery attempts. Discovery is still triggered on an as-needed basis.
-	RediscoveryLifetime *float64 `default:"30" json:"rediscovery_lifetime"`
-	// Types of credentials/grants to enable.
-	AuthMethods []AuthMethods `json:"auth_methods,omitempty"`
-	// The client id(s) that the plugin uses when it calls authenticated endpoints on the identity provider.
-	ClientID []string `json:"client_id,omitempty"`
-	// The client secret.
-	ClientSecret []string `json:"client_secret,omitempty"`
-	// The default OpenID Connect client authentication method is 'client_secret_basic' (using 'Authorization: Basic' header), 'client_secret_post' (credentials in body), 'client_secret_jwt' (signed client assertion in body), 'private_key_jwt' (private key-signed assertion), 'tls_client_auth' (client certificate), 'self_signed_tls_client_auth' (self-signed client certificate), and 'none' (no authentication).
-	ClientAuth []ClientAuth `json:"client_auth,omitempty"`
-	// The JWK used for the private_key_jwt authentication.
-	ClientJwk []ClientJwk `json:"client_jwk,omitempty"`
-	// The algorithm to use for client_secret_jwt (only HS***) or private_key_jwt authentication.
-	ClientAlg []ClientAlg `json:"client_alg,omitempty"`
-	// The client to use for this request (the selection is made with a request parameter with the same name).
-	ClientArg *string `default:"client_id" json:"client_arg"`
-	// The redirect URI passed to the authorization and token endpoints.
-	RedirectURI []string `json:"redirect_uri,omitempty"`
-	// Where to redirect the client when `login_action` is set to `redirect`.
-	LoginRedirectURI []string `json:"login_redirect_uri,omitempty"`
-	// Where to redirect the client after the logout.
-	LogoutRedirectURI []string `json:"logout_redirect_uri,omitempty"`
-	// Where to redirect the client on forbidden requests.
-	ForbiddenRedirectURI []string `json:"forbidden_redirect_uri,omitempty"`
-	// The error message for the forbidden requests (when not using the redirection).
-	ForbiddenErrorMessage *string `default:"Forbidden" json:"forbidden_error_message"`
-	// Destroy any active session for the forbidden requests.
-	ForbiddenDestroySession *bool `default:"true" json:"forbidden_destroy_session"`
-	// Destroy any active session for the unauthorized requests.
-	UnauthorizedDestroySession *bool `default:"true" json:"unauthorized_destroy_session"`
-	// Where to redirect the client on unauthorized requests.
-	UnauthorizedRedirectURI []string `json:"unauthorized_redirect_uri,omitempty"`
-	// The error message for the unauthorized requests (when not using the redirection).
-	UnauthorizedErrorMessage *string `default:"Unauthorized" json:"unauthorized_error_message"`
-	// Where to redirect the client when unexpected errors happen with the requests.
-	UnexpectedRedirectURI []string `json:"unexpected_redirect_uri,omitempty"`
-	// The response mode passed to the authorization endpoint: - `query`: Instructs the identity provider to pass parameters in query string - `form_post`: Instructs the identity provider to pass parameters in request body - `fragment`: Instructs the identity provider to pass parameters in uri fragment (rarely useful as the plugin itself cannot read it).
-	ResponseMode *ResponseMode `default:"query" json:"response_mode"`
-	// The response type passed to the authorization endpoint.
-	ResponseType []string `json:"response_type,omitempty"`
-	// The scopes passed to the authorization and token endpoints.
-	Scopes []string `json:"scopes,omitempty"`
+	// An optional string (consumer UUID or username) value that functions as an “anonymous” consumer if authentication fails. If empty (default null), requests that fail authentication will return a `4xx` HTTP status code. This value must refer to the consumer `id` or `username` attribute, and **not** its `custom_id`.
+	Anonymous *string `json:"anonymous,omitempty"`
 	// The audience passed to the authorization endpoint.
 	Audience []string `json:"audience,omitempty"`
-	// The issuers allowed to be present in the tokens (`iss` claim).
-	IssuersAllowed []string `json:"issuers_allowed,omitempty"`
-	// The scopes (`scopes_claim` claim) required to be present in the access token (or introspection results) for successful authorization. This config parameter works in both **AND** / **OR** cases.
-	ScopesRequired []string `json:"scopes_required,omitempty"`
-	// The claim that contains the scopes. If multiple values are set, it means the claim is inside a nested object of the token payload.
-	ScopesClaim []string `json:"scopes_claim,omitempty"`
-	// The audiences (`audience_claim` claim) required to be present in the access token (or introspection results) for successful authorization. This config parameter works in both **AND** / **OR** cases.
-	AudienceRequired []string `json:"audience_required,omitempty"`
 	// The claim that contains the audience. If multiple values are set, it means the claim is inside a nested object of the token payload.
 	AudienceClaim []string `json:"audience_claim,omitempty"`
-	// The groups (`groups_claim` claim) required to be present in the access token (or introspection results) for successful authorization. This config parameter works in both **AND** / **OR** cases.
-	GroupsRequired []string `json:"groups_required,omitempty"`
-	// The claim that contains the groups. If multiple values are set, it means the claim is inside a nested object of the token payload.
-	GroupsClaim []string `json:"groups_claim,omitempty"`
-	// The roles (`roles_claim` claim) required to be present in the access token (or introspection results) for successful authorization. This config parameter works in both **AND** / **OR** cases.
-	RolesRequired []string `json:"roles_required,omitempty"`
-	// The claim that contains the roles. If multiple values are set, it means the claim is inside a nested object of the token payload.
-	RolesClaim []string `json:"roles_claim,omitempty"`
-	// The allowed values for the `hd` claim.
-	Domains []string `json:"domains,omitempty"`
-	// The maximum age (in seconds) compared to the `auth_time` claim.
-	MaxAge *float64 `json:"max_age,omitempty"`
+	// The audiences (`audience_claim` claim) required to be present in the access token (or introspection results) for successful authorization. This config parameter works in both **AND** / **OR** cases.
+	AudienceRequired []string `json:"audience_required,omitempty"`
+	// Types of credentials/grants to enable.
+	AuthMethods []CreateOpenidConnectPluginAuthMethods `json:"auth_methods,omitempty"`
 	// The claim that contains authenticated groups. This setting can be used together with ACL plugin, but it also enables IdP managed groups with other applications and integrations. If multiple values are set, it means the claim is inside a nested object of the token payload.
 	AuthenticatedGroupsClaim []string `json:"authenticated_groups_claim,omitempty"`
-	// The pushed authorization endpoint. If set it overrides the value in `pushed_authorization_request_endpoint` returned by the discovery endpoint.
-	PushedAuthorizationRequestEndpoint *string `json:"pushed_authorization_request_endpoint,omitempty"`
-	// The pushed authorization request endpoint authentication method: `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
-	PushedAuthorizationRequestEndpointAuthMethod *PushedAuthorizationRequestEndpointAuthMethod `json:"pushed_authorization_request_endpoint_auth_method,omitempty"`
-	// Forcibly enable or disable the pushed authorization requests. When not set the value is determined through the discovery using the value of `require_pushed_authorization_requests` (which defaults to `false`).
-	RequirePushedAuthorizationRequests *bool `json:"require_pushed_authorization_requests,omitempty"`
-	// Forcibly enable or disable the proof key for code exchange. When not set the value is determined through the discovery using the value of `code_challenge_methods_supported`, and enabled automatically (in case the `code_challenge_methods_supported` is missing, the PKCE will not be enabled).
-	RequireProofKeyForCodeExchange *bool `json:"require_proof_key_for_code_exchange,omitempty"`
-	// The authorization endpoint. If set it overrides the value in `authorization_endpoint` returned by the discovery endpoint.
-	AuthorizationEndpoint *string `json:"authorization_endpoint,omitempty"`
-	// Extra query argument names passed to the authorization endpoint.
-	AuthorizationQueryArgsNames []string `json:"authorization_query_args_names,omitempty"`
-	// Extra query argument values passed to the authorization endpoint.
-	AuthorizationQueryArgsValues []string `json:"authorization_query_args_values,omitempty"`
-	// Extra query arguments passed from the client to the authorization endpoint.
-	AuthorizationQueryArgsClient []string `json:"authorization_query_args_client,omitempty"`
-	// Specifies how long the session used for the authorization code flow can be used in seconds until it needs to be renewed. 0 disables the checks and rolling.
-	AuthorizationRollingTimeout *float64 `default:"600" json:"authorization_rolling_timeout"`
+	// The authorization cookie Domain flag.
+	AuthorizationCookieDomain *string `json:"authorization_cookie_domain,omitempty"`
+	// Forbids JavaScript from accessing the cookie, for example, through the `Document.cookie` property.
+	AuthorizationCookieHTTPOnly *bool `default:"true" json:"authorization_cookie_http_only"`
 	// The authorization cookie name.
 	AuthorizationCookieName *string `default:"authorization" json:"authorization_cookie_name"`
 	// The authorization cookie Path flag.
 	AuthorizationCookiePath *string `default:"/" json:"authorization_cookie_path"`
-	// The authorization cookie Domain flag.
-	AuthorizationCookieDomain *string `json:"authorization_cookie_domain,omitempty"`
 	// Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks.
-	AuthorizationCookieSameSite *AuthorizationCookieSameSite `default:"Default" json:"authorization_cookie_same_site"`
-	// Forbids JavaScript from accessing the cookie, for example, through the `Document.cookie` property.
-	AuthorizationCookieHTTPOnly *bool `default:"true" json:"authorization_cookie_http_only"`
+	AuthorizationCookieSameSite *CreateOpenidConnectPluginAuthorizationCookieSameSite `default:"Default" json:"authorization_cookie_same_site"`
 	// Cookie is only sent to the server when a request is made with the https: scheme (except on localhost), and therefore is more resistant to man-in-the-middle attacks.
 	AuthorizationCookieSecure *bool `json:"authorization_cookie_secure,omitempty"`
-	// With this parameter, you can preserve request query arguments even when doing authorization code flow.
-	PreserveQueryArgs *bool `default:"false" json:"preserve_query_args"`
-	// The token endpoint. If set it overrides the value in `token_endpoint` returned by the discovery endpoint.
-	TokenEndpoint *string `json:"token_endpoint,omitempty"`
-	// The token endpoint authentication method: `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
-	TokenEndpointAuthMethod *TokenEndpointAuthMethod `json:"token_endpoint_auth_method,omitempty"`
-	// Extra header names passed to the token endpoint.
-	TokenHeadersNames []string `json:"token_headers_names,omitempty"`
-	// Extra header values passed to the token endpoint.
-	TokenHeadersValues []string `json:"token_headers_values,omitempty"`
-	// Extra headers passed from the client to the token endpoint.
-	TokenHeadersClient []string `json:"token_headers_client,omitempty"`
-	// The names of token endpoint response headers to forward to the downstream client.
-	TokenHeadersReplay []string `json:"token_headers_replay,omitempty"`
-	// Add a prefix to the token endpoint response headers before forwarding them to the downstream client.
-	TokenHeadersPrefix *string `json:"token_headers_prefix,omitempty"`
-	// Enable the sending of the token endpoint response headers only with certain grants: - `password`: with OAuth password grant - `client_credentials`: with OAuth client credentials grant - `authorization_code`: with authorization code flow - `refresh_token` with refresh token grant.
-	TokenHeadersGrants []TokenHeadersGrants `json:"token_headers_grants,omitempty"`
-	// Extra post argument names passed to the token endpoint.
-	TokenPostArgsNames []string `json:"token_post_args_names,omitempty"`
-	// Extra post argument values passed to the token endpoint.
-	TokenPostArgsValues []string `json:"token_post_args_values,omitempty"`
-	// Pass extra arguments from the client to the OpenID-Connect plugin. If arguments exist, the client can pass them using: - Query parameters - Request Body - Reqest Header  This parameter can be used with `scope` values, like this:  `config.token_post_args_client=scope`  In this case, the token would take the `scope` value from the query parameter or from the request body or from the header and send it to the token endpoint.
-	TokenPostArgsClient []string `json:"token_post_args_client,omitempty"`
-	// The introspection endpoint. If set it overrides the value in `introspection_endpoint` returned by the discovery endpoint.
-	IntrospectionEndpoint *string `json:"introspection_endpoint,omitempty"`
-	// The introspection endpoint authentication method: : `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
-	IntrospectionEndpointAuthMethod *IntrospectionEndpointAuthMethod `json:"introspection_endpoint_auth_method,omitempty"`
-	// Introspection hint parameter value passed to the introspection endpoint.
-	IntrospectionHint *string `default:"access_token" json:"introspection_hint"`
-	// Check that the introspection response has an `active` claim with a value of `true`.
-	IntrospectionCheckActive *bool `default:"true" json:"introspection_check_active"`
-	// The value of `Accept` header for introspection requests: - `application/json`: introspection response as JSON - `application/token-introspection+jwt`: introspection response as JWT (from the current IETF draft document) - `application/jwt`: introspection response as JWT (from the obsolete IETF draft document).
-	IntrospectionAccept *IntrospectionAccept `default:"application/json" json:"introspection_accept"`
-	// Extra header names passed to the introspection endpoint.
-	IntrospectionHeadersNames []string `json:"introspection_headers_names,omitempty"`
-	// Extra header values passed to the introspection endpoint.
-	IntrospectionHeadersValues []string `json:"introspection_headers_values,omitempty"`
-	// Extra headers passed from the client to the introspection endpoint.
-	IntrospectionHeadersClient []string `json:"introspection_headers_client,omitempty"`
-	// Extra post argument names passed to the introspection endpoint.
-	IntrospectionPostArgsNames []string `json:"introspection_post_args_names,omitempty"`
-	// Extra post argument values passed to the introspection endpoint.
-	IntrospectionPostArgsValues []string `json:"introspection_post_args_values,omitempty"`
-	// Extra post arguments passed from the client to the introspection endpoint.
-	IntrospectionPostArgsClient []string `json:"introspection_post_args_client,omitempty"`
-	// Specifies whether to introspect the JWT access tokens (can be used to check for revocations).
-	IntrospectJwtTokens *bool `default:"false" json:"introspect_jwt_tokens"`
-	// The revocation endpoint. If set it overrides the value in `revocation_endpoint` returned by the discovery endpoint.
-	RevocationEndpoint *string `json:"revocation_endpoint,omitempty"`
-	// The revocation endpoint authentication method: : `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
-	RevocationEndpointAuthMethod *RevocationEndpointAuthMethod `json:"revocation_endpoint_auth_method,omitempty"`
-	// The end session endpoint. If set it overrides the value in `end_session_endpoint` returned by the discovery endpoint.
-	EndSessionEndpoint *string `json:"end_session_endpoint,omitempty"`
-	// The user info endpoint. If set it overrides the value in `userinfo_endpoint` returned by the discovery endpoint.
-	UserinfoEndpoint *string `json:"userinfo_endpoint,omitempty"`
-	// The value of `Accept` header for user info requests: - `application/json`: user info response as JSON - `application/jwt`: user info response as JWT (from the obsolete IETF draft document).
-	UserinfoAccept *UserinfoAccept `default:"application/json" json:"userinfo_accept"`
-	// Extra header names passed to the user info endpoint.
-	UserinfoHeadersNames []string `json:"userinfo_headers_names,omitempty"`
-	// Extra header values passed to the user info endpoint.
-	UserinfoHeadersValues []string `json:"userinfo_headers_values,omitempty"`
-	// Extra headers passed from the client to the user info endpoint.
-	UserinfoHeadersClient []string `json:"userinfo_headers_client,omitempty"`
-	// Extra query argument names passed to the user info endpoint.
-	UserinfoQueryArgsNames []string `json:"userinfo_query_args_names,omitempty"`
-	// Extra query argument values passed to the user info endpoint.
-	UserinfoQueryArgsValues []string `json:"userinfo_query_args_values,omitempty"`
-	// Extra query arguments passed from the client to the user info endpoint.
-	UserinfoQueryArgsClient []string `json:"userinfo_query_args_client,omitempty"`
-	// The token exchange endpoint.
-	TokenExchangeEndpoint *string `json:"token_exchange_endpoint,omitempty"`
-	// The session secret.
-	SessionSecret *string `json:"session_secret,omitempty"`
-	// The session audience, which is the intended target application. For example `"my-application"`.
-	SessionAudience *string `default:"default" json:"session_audience"`
-	// The session cookie name.
-	SessionCookieName *string `default:"session" json:"session_cookie_name"`
-	// Enables or disables persistent sessions.
-	SessionRemember *bool `default:"false" json:"session_remember"`
-	// Persistent session cookie name. Use with the `remember` configuration parameter.
-	SessionRememberCookieName *string `default:"remember" json:"session_remember_cookie_name"`
-	// Specifies how long the persistent session is considered valid in seconds. 0 disables the checks and rolling.
-	SessionRememberRollingTimeout *float64 `default:"604800" json:"session_remember_rolling_timeout"`
-	// Limits how long the persistent session can be renewed in seconds, until re-authentication is required. 0 disables the checks.
-	SessionRememberAbsoluteTimeout *float64 `default:"2592000" json:"session_remember_absolute_timeout"`
-	// Specifies how long the session can be inactive until it is considered invalid in seconds. 0 disables the checks and touching.
-	SessionIdlingTimeout *float64 `default:"900" json:"session_idling_timeout"`
-	// Specifies how long the session can be used in seconds until it needs to be renewed. 0 disables the checks and rolling.
-	SessionRollingTimeout *float64 `default:"3600" json:"session_rolling_timeout"`
-	// Limits how long the session can be renewed in seconds, until re-authentication is required. 0 disables the checks.
-	SessionAbsoluteTimeout *float64 `default:"86400" json:"session_absolute_timeout"`
-	// The session cookie Path flag.
-	SessionCookiePath *string `default:"/" json:"session_cookie_path"`
-	// The session cookie Domain flag.
-	SessionCookieDomain *string `json:"session_cookie_domain,omitempty"`
-	// Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks.
-	SessionCookieSameSite *SessionCookieSameSite `default:"Lax" json:"session_cookie_same_site"`
-	// Forbids JavaScript from accessing the cookie, for example, through the `Document.cookie` property.
-	SessionCookieHTTPOnly *bool `default:"true" json:"session_cookie_http_only"`
-	// Cookie is only sent to the server when a request is made with the https: scheme (except on localhost), and therefore is more resistant to man-in-the-middle attacks.
-	SessionCookieSecure *bool `json:"session_cookie_secure,omitempty"`
-	// Set of headers to send to upstream, use id, audience, subject, timeout, idling-timeout, rolling-timeout, absolute-timeout. E.g. `[ "id", "timeout" ]` will set Session-Id and Session-Timeout request headers.
-	SessionRequestHeaders []SessionRequestHeaders `json:"session_request_headers,omitempty"`
-	// Set of headers to send to downstream, use id, audience, subject, timeout, idling-timeout, rolling-timeout, absolute-timeout. E.g. `[ "id", "timeout" ]` will set Session-Id and Session-Timeout response headers.
-	SessionResponseHeaders []SessionResponseHeaders `json:"session_response_headers,omitempty"`
-	// The session storage for session data: - `cookie`: stores session data with the session cookie (the session cannot be invalidated or revoked without changing session secret, but is stateless, and doesn't require a database) - `memcache`: stores session data in memcached - `redis`: stores session data in Redis.
-	SessionStorage *SessionStorage `default:"cookie" json:"session_storage"`
-	// Configures whether or not session metadata should be stored. This metadata includes information about the active sessions for a specific audience belonging to a specific subject.
-	SessionStoreMetadata *bool `default:"false" json:"session_store_metadata"`
-	// When set to `true`, audiences are forced to share the same subject.
-	SessionEnforceSameSubject *bool `default:"false" json:"session_enforce_same_subject"`
-	// When set to `true`, the value of subject is hashed before being stored. Only applies when `session_store_metadata` is enabled.
-	SessionHashSubject *bool `default:"false" json:"session_hash_subject"`
-	// When set to `true`, the storage key (session ID) is hashed for extra security. Hashing the storage key means it is impossible to decrypt data from the storage without a cookie.
-	SessionHashStorageKey *bool `default:"false" json:"session_hash_storage_key"`
-	// The memcached session key prefix.
-	SessionMemcachedPrefix *string `json:"session_memcached_prefix,omitempty"`
-	// The memcached unix socket path.
-	SessionMemcachedSocket *string `json:"session_memcached_socket,omitempty"`
-	// The memcached host.
-	SessionMemcachedHost *string `default:"127.0.0.1" json:"session_memcached_host"`
-	// The memcached port.
-	SessionMemcachedPort *int64 `default:"11211" json:"session_memcached_port"`
-	// The Redis session key prefix.
-	SessionRedisPrefix *string `json:"session_redis_prefix,omitempty"`
-	// The Redis unix socket path.
-	SessionRedisSocket *string `json:"session_redis_socket,omitempty"`
-	// The Redis host.
-	SessionRedisHost *string `default:"127.0.0.1" json:"session_redis_host"`
-	// The Redis port.
-	SessionRedisPort *int64 `default:"6379" json:"session_redis_port"`
-	// Username to use for Redis connection when the `redis` session storage is defined and ACL authentication is desired. If undefined, ACL authentication will not be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
-	SessionRedisUsername *string `json:"session_redis_username,omitempty"`
-	// Password to use for Redis connection when the `redis` session storage is defined. If undefined, no AUTH commands are sent to Redis.
-	SessionRedisPassword *string `json:"session_redis_password,omitempty"`
-	// Session redis connection timeout in milliseconds.
-	SessionRedisConnectTimeout *int64 `json:"session_redis_connect_timeout,omitempty"`
-	// Session redis read timeout in milliseconds.
-	SessionRedisReadTimeout *int64 `json:"session_redis_read_timeout,omitempty"`
-	// Session redis send timeout in milliseconds.
-	SessionRedisSendTimeout *int64 `json:"session_redis_send_timeout,omitempty"`
-	// Use SSL/TLS for Redis connection.
-	SessionRedisSsl *bool `default:"false" json:"session_redis_ssl"`
-	// Verify identity provider server certificate.
-	SessionRedisSslVerify *bool `default:"false" json:"session_redis_ssl_verify"`
-	// The SNI used for connecting the Redis server.
-	SessionRedisServerName *string `json:"session_redis_server_name,omitempty"`
-	// The Redis cluster node host. Takes an array of host records, with either `ip` or `host`, and `port` values.
-	SessionRedisClusterNodes []SessionRedisClusterNodes `json:"session_redis_cluster_nodes,omitempty"`
-	// The Redis cluster maximum redirects.
-	SessionRedisClusterMaxRedirections *int64 `json:"session_redis_cluster_max_redirections,omitempty"`
-	// Specifies whether to always verify tokens stored in the session.
-	Reverify *bool `default:"false" json:"reverify"`
-	// The claim to match against the JWT session cookie.
-	JwtSessionClaim *string `default:"sid" json:"jwt_session_claim"`
-	// The name of the JWT session cookie.
-	JwtSessionCookie *string `json:"jwt_session_cookie,omitempty"`
-	// Where to look for the bearer token: - `header`: search the HTTP headers - `query`: search the URL's query string - `body`: search the HTTP request body - `cookie`: search the HTTP request cookies specified with `config.bearer_token_cookie_name`.
-	BearerTokenParamType []BearerTokenParamType `json:"bearer_token_param_type,omitempty"`
+	// The authorization endpoint. If set it overrides the value in `authorization_endpoint` returned by the discovery endpoint.
+	AuthorizationEndpoint *string `json:"authorization_endpoint,omitempty"`
+	// Extra query arguments passed from the client to the authorization endpoint.
+	AuthorizationQueryArgsClient []string `json:"authorization_query_args_client,omitempty"`
+	// Extra query argument names passed to the authorization endpoint.
+	AuthorizationQueryArgsNames []string `json:"authorization_query_args_names,omitempty"`
+	// Extra query argument values passed to the authorization endpoint.
+	AuthorizationQueryArgsValues []string `json:"authorization_query_args_values,omitempty"`
+	// Specifies how long the session used for the authorization code flow can be used in seconds until it needs to be renewed. 0 disables the checks and rolling.
+	AuthorizationRollingTimeout *float64 `default:"600" json:"authorization_rolling_timeout"`
 	// The name of the cookie in which the bearer token is passed.
 	BearerTokenCookieName *string `json:"bearer_token_cookie_name,omitempty"`
-	// Where to look for the client credentials: - `header`: search the HTTP headers - `query`: search the URL's query string - `body`: search from the HTTP request body.
-	ClientCredentialsParamType []ClientCredentialsParamType `json:"client_credentials_param_type,omitempty"`
-	// Where to look for the username and password: - `header`: search the HTTP headers - `query`: search the URL's query string - `body`: search the HTTP request body.
-	PasswordParamType []PasswordParamType `json:"password_param_type,omitempty"`
-	// Where to look for the id token: - `header`: search the HTTP headers - `query`: search the URL's query string - `body`: search the HTTP request body.
-	IDTokenParamType []IDTokenParamType `json:"id_token_param_type,omitempty"`
-	// The name of the parameter used to pass the id token.
-	IDTokenParamName *string `json:"id_token_param_name,omitempty"`
-	// Where to look for the refresh token: - `header`: search the HTTP headers - `query`: search the URL's query string - `body`: search the HTTP request body.
-	RefreshTokenParamType []RefreshTokenParamType `json:"refresh_token_param_type,omitempty"`
-	// The name of the parameter used to pass the refresh token.
-	RefreshTokenParamName *string `json:"refresh_token_param_name,omitempty"`
-	// Specifies whether the plugin should try to refresh (soon to be) expired access tokens if the plugin has a `refresh_token` available.
-	RefreshTokens *bool `default:"true" json:"refresh_tokens"`
-	// The upstream header claims. If multiple values are set, it means the claim is inside a nested object of the token payload.
-	UpstreamHeadersClaims []string `json:"upstream_headers_claims,omitempty"`
-	// The upstream header names for the claim values.
-	UpstreamHeadersNames []string `json:"upstream_headers_names,omitempty"`
-	// The upstream access token header.
-	UpstreamAccessTokenHeader *string `default:"authorization:bearer" json:"upstream_access_token_header"`
-	// The upstream access token JWK header.
-	UpstreamAccessTokenJwkHeader *string `json:"upstream_access_token_jwk_header,omitempty"`
-	// The upstream id token header.
-	UpstreamIDTokenHeader *string `json:"upstream_id_token_header,omitempty"`
-	// The upstream id token JWK header.
-	UpstreamIDTokenJwkHeader *string `json:"upstream_id_token_jwk_header,omitempty"`
-	// The upstream refresh token header.
-	UpstreamRefreshTokenHeader *string `json:"upstream_refresh_token_header,omitempty"`
-	// The upstream user info header.
-	UpstreamUserInfoHeader *string `json:"upstream_user_info_header,omitempty"`
-	// The upstream user info JWT header (in case the user info returns a JWT response).
-	UpstreamUserInfoJwtHeader *string `json:"upstream_user_info_jwt_header,omitempty"`
-	// The upstream introspection header.
-	UpstreamIntrospectionHeader *string `json:"upstream_introspection_header,omitempty"`
-	// The upstream introspection JWT header.
-	UpstreamIntrospectionJwtHeader *string `json:"upstream_introspection_jwt_header,omitempty"`
-	// The upstream session id header.
-	UpstreamSessionIDHeader *string `json:"upstream_session_id_header,omitempty"`
-	// The downstream header claims. If multiple values are set, it means the claim is inside a nested object of the token payload.
-	DownstreamHeadersClaims []string `json:"downstream_headers_claims,omitempty"`
-	// The downstream header names for the claim values.
-	DownstreamHeadersNames []string `json:"downstream_headers_names,omitempty"`
-	// The downstream access token header.
-	DownstreamAccessTokenHeader *string `json:"downstream_access_token_header,omitempty"`
-	// The downstream access token JWK header.
-	DownstreamAccessTokenJwkHeader *string `json:"downstream_access_token_jwk_header,omitempty"`
-	// The downstream id token header.
-	DownstreamIDTokenHeader *string `json:"downstream_id_token_header,omitempty"`
-	// The downstream id token JWK header.
-	DownstreamIDTokenJwkHeader *string `json:"downstream_id_token_jwk_header,omitempty"`
-	// The downstream refresh token header.
-	DownstreamRefreshTokenHeader *string `json:"downstream_refresh_token_header,omitempty"`
-	// The downstream user info header.
-	DownstreamUserInfoHeader *string `json:"downstream_user_info_header,omitempty"`
-	// The downstream user info JWT header (in case the user info returns a JWT response).
-	DownstreamUserInfoJwtHeader *string `json:"downstream_user_info_jwt_header,omitempty"`
-	// The downstream introspection header.
-	DownstreamIntrospectionHeader *string `json:"downstream_introspection_header,omitempty"`
-	// The downstream introspection JWT header.
-	DownstreamIntrospectionJwtHeader *string `json:"downstream_introspection_jwt_header,omitempty"`
-	// The downstream session id header.
-	DownstreamSessionIDHeader *string `json:"downstream_session_id_header,omitempty"`
-	// Enable login functionality with specified grants.
-	LoginMethods []LoginMethods `json:"login_methods,omitempty"`
-	// What to do after successful login: - `upstream`: proxy request to upstream service - `response`: terminate request with a response - `redirect`: redirect to a different location.
-	LoginAction *LoginAction `default:"upstream" json:"login_action"`
-	// What tokens to include in `response` body or `redirect` query string or fragment: - `id_token`: include id token - `access_token`: include access token - `refresh_token`: include refresh token - `tokens`: include the full token endpoint response - `introspection`: include introspection response.
-	LoginTokens []LoginTokens `json:"login_tokens,omitempty"`
-	// Where to place `login_tokens` when using `redirect` `login_action`: - `query`: place tokens in query string - `fragment`: place tokens in url fragment (not readable by servers).
-	LoginRedirectMode *LoginRedirectMode `default:"fragment" json:"login_redirect_mode"`
-	// The request query argument that activates the logout.
-	LogoutQueryArg *string `json:"logout_query_arg,omitempty"`
-	// The request body argument that activates the logout.
-	LogoutPostArg *string `json:"logout_post_arg,omitempty"`
-	// The request URI suffix that activates the logout.
-	LogoutURISuffix *string `json:"logout_uri_suffix,omitempty"`
-	// The request methods that can activate the logout: - `POST`: HTTP POST method - `GET`: HTTP GET method - `DELETE`: HTTP DELETE method.
-	LogoutMethods []LogoutMethods `json:"logout_methods,omitempty"`
-	// Revoke tokens as part of the logout.
-	//
-	// For more granular token revocation, you can also adjust the `logout_revoke_access_token` and `logout_revoke_refresh_token` parameters.
-	LogoutRevoke *bool `default:"false" json:"logout_revoke"`
-	// Revoke the access token as part of the logout. Requires `logout_revoke` to be set to `true`.
-	LogoutRevokeAccessToken *bool `default:"true" json:"logout_revoke_access_token"`
-	// Revoke the refresh token as part of the logout. Requires `logout_revoke` to be set to `true`.
-	LogoutRevokeRefreshToken *bool `default:"true" json:"logout_revoke_refresh_token"`
-	// The claim used for consumer mapping. If multiple values are set, it means the claim is inside a nested object of the token payload.
-	ConsumerClaim []string `json:"consumer_claim,omitempty"`
-	// Consumer fields used for mapping: - `id`: try to find the matching Consumer by `id` - `username`: try to find the matching Consumer by `username` - `custom_id`: try to find the matching Consumer by `custom_id`.
-	ConsumerBy []ConsumerBy `json:"consumer_by,omitempty"`
-	// Do not terminate the request if consumer mapping fails.
-	ConsumerOptional *bool `default:"false" json:"consumer_optional"`
-	// The claim used to derive virtual credentials (e.g. to be consumed by the rate-limiting plugin), in case the consumer mapping is not used. If multiple values are set, it means the claim is inside a nested object of the token payload.
-	CredentialClaim []string `json:"credential_claim,omitempty"`
-	// An optional string (consumer UUID or username) value that functions as an “anonymous” consumer if authentication fails. If empty (default null), requests that fail authentication will return a `4xx` HTTP status code. This value must refer to the consumer `id` or `username` attribute, and **not** its `custom_id`.
-	Anonymous *string `json:"anonymous,omitempty"`
-	// Specifies whether to run this plugin on pre-flight (`OPTIONS`) requests.
-	RunOnPreflight *bool `default:"true" json:"run_on_preflight"`
-	// Allow some leeway (in seconds) on the iat claim and ttl / expiry verification.
-	Leeway *float64 `default:"0" json:"leeway"`
-	// Verify plugin configuration against discovery.
-	VerifyParameters *bool `default:"false" json:"verify_parameters"`
-	// Verify nonce on authorization code flow.
-	VerifyNonce *bool `default:"true" json:"verify_nonce"`
-	// Verify tokens for standard claims.
-	VerifyClaims *bool `default:"true" json:"verify_claims"`
-	// Verify signature of tokens.
-	VerifySignature *bool `default:"true" json:"verify_signature"`
-	// Skip the token signature verification on certain grants: - `password`: OAuth password grant - `client_credentials`: OAuth client credentials grant - `authorization_code`: authorization code flow - `refresh_token`: OAuth refresh token grant - `session`: session cookie authentication - `introspection`: OAuth introspection - `userinfo`: OpenID Connect user info endpoint authentication.
-	IgnoreSignature []IgnoreSignature `json:"ignore_signature,omitempty"`
-	// Enable shared secret, for example, HS256, signatures (when disabled they will not be accepted).
-	EnableHsSignatures *bool `default:"false" json:"enable_hs_signatures"`
-	// Disable issuing the session cookie with the specified grants.
-	DisableSession []DisableSession `json:"disable_session,omitempty"`
+	// Where to look for the bearer token: - `header`: search the HTTP headers - `query`: search the URL's query string - `body`: search the HTTP request body - `cookie`: search the HTTP request cookies specified with `config.bearer_token_cookie_name`.
+	BearerTokenParamType []CreateOpenidConnectPluginBearerTokenParamType `json:"bearer_token_param_type,omitempty"`
+	// If `consumer_by` is set to `username`, specify whether `username` can match consumers case-insensitively.
+	ByUsernameIgnoreCase *bool `default:"false" json:"by_username_ignore_case"`
+	// Cache the introspection endpoint requests.
+	CacheIntrospection *bool `default:"true" json:"cache_introspection"`
+	// Cache the token exchange endpoint requests.
+	CacheTokenExchange *bool `default:"true" json:"cache_token_exchange"`
+	// Cache the token endpoint requests.
+	CacheTokens *bool `default:"true" json:"cache_tokens"`
+	// Salt used for generating the cache key that is used for caching the token endpoint requests.
+	CacheTokensSalt *string `json:"cache_tokens_salt,omitempty"`
 	// The default cache ttl in seconds that is used in case the cached object does not specify the expiry.
 	CacheTTL *float64 `default:"3600" json:"cache_ttl"`
 	// The maximum cache ttl in seconds (enforced).
@@ -1833,66 +1497,402 @@ type CreateOpenidConnectPluginConfig struct {
 	CacheTTLNeg *float64 `json:"cache_ttl_neg,omitempty"`
 	// The resurrection ttl in seconds.
 	CacheTTLResurrect *float64 `json:"cache_ttl_resurrect,omitempty"`
-	// Cache the token endpoint requests.
-	CacheTokens *bool `default:"true" json:"cache_tokens"`
-	// Salt used for generating the cache key that is used for caching the token endpoint requests.
-	CacheTokensSalt *string `json:"cache_tokens_salt,omitempty"`
-	// Cache the introspection endpoint requests.
-	CacheIntrospection *bool `default:"true" json:"cache_introspection"`
-	// Cache the token exchange endpoint requests.
-	CacheTokenExchange *bool `default:"true" json:"cache_token_exchange"`
 	// Cache the user info requests.
 	CacheUserInfo *bool `default:"true" json:"cache_user_info"`
-	// Specify whether to use the user info endpoint to get additional claims for consumer mapping, credential mapping, authenticated groups, and upstream and downstream headers.
-	SearchUserInfo *bool `default:"false" json:"search_user_info"`
+	// The algorithm to use for client_secret_jwt (only HS***) or private_key_jwt authentication.
+	ClientAlg []CreateOpenidConnectPluginClientAlg `json:"client_alg,omitempty"`
+	// The client to use for this request (the selection is made with a request parameter with the same name).
+	ClientArg *string `default:"client_id" json:"client_arg"`
+	// The default OpenID Connect client authentication method is 'client_secret_basic' (using 'Authorization: Basic' header), 'client_secret_post' (credentials in body), 'client_secret_jwt' (signed client assertion in body), 'private_key_jwt' (private key-signed assertion), 'tls_client_auth' (client certificate), 'self_signed_tls_client_auth' (self-signed client certificate), and 'none' (no authentication).
+	ClientAuth []CreateOpenidConnectPluginClientAuth `json:"client_auth,omitempty"`
+	// Where to look for the client credentials: - `header`: search the HTTP headers - `query`: search the URL's query string - `body`: search from the HTTP request body.
+	ClientCredentialsParamType []CreateOpenidConnectPluginClientCredentialsParamType `json:"client_credentials_param_type,omitempty"`
+	// The client id(s) that the plugin uses when it calls authenticated endpoints on the identity provider.
+	ClientID []string `json:"client_id,omitempty"`
+	// The JWK used for the private_key_jwt authentication.
+	ClientJwk []CreateOpenidConnectPluginClientJwk `json:"client_jwk,omitempty"`
+	// The client secret.
+	ClientSecret []string `json:"client_secret,omitempty"`
+	// Consumer fields used for mapping: - `id`: try to find the matching Consumer by `id` - `username`: try to find the matching Consumer by `username` - `custom_id`: try to find the matching Consumer by `custom_id`.
+	ConsumerBy []CreateOpenidConnectPluginConsumerBy `json:"consumer_by,omitempty"`
+	// The claim used for consumer mapping. If multiple values are set, it means the claim is inside a nested object of the token payload.
+	ConsumerClaim []string `json:"consumer_claim,omitempty"`
+	// Do not terminate the request if consumer mapping fails.
+	ConsumerOptional *bool `default:"false" json:"consumer_optional"`
+	// The claim used to derive virtual credentials (e.g. to be consumed by the rate-limiting plugin), in case the consumer mapping is not used. If multiple values are set, it means the claim is inside a nested object of the token payload.
+	CredentialClaim []string `json:"credential_claim,omitempty"`
+	// Disable issuing the session cookie with the specified grants.
+	DisableSession []CreateOpenidConnectPluginDisableSession `json:"disable_session,omitempty"`
+	// Extra header names passed to the discovery endpoint.
+	DiscoveryHeadersNames []string `json:"discovery_headers_names,omitempty"`
+	// Extra header values passed to the discovery endpoint.
+	DiscoveryHeadersValues []string `json:"discovery_headers_values,omitempty"`
+	// Display errors on failure responses.
+	DisplayErrors *bool `default:"false" json:"display_errors"`
+	// The allowed values for the `hd` claim.
+	Domains []string `json:"domains,omitempty"`
+	// The downstream access token header.
+	DownstreamAccessTokenHeader *string `json:"downstream_access_token_header,omitempty"`
+	// The downstream access token JWK header.
+	DownstreamAccessTokenJwkHeader *string `json:"downstream_access_token_jwk_header,omitempty"`
+	// The downstream header claims. If multiple values are set, it means the claim is inside a nested object of the token payload.
+	DownstreamHeadersClaims []string `json:"downstream_headers_claims,omitempty"`
+	// The downstream header names for the claim values.
+	DownstreamHeadersNames []string `json:"downstream_headers_names,omitempty"`
+	// The downstream id token header.
+	DownstreamIDTokenHeader *string `json:"downstream_id_token_header,omitempty"`
+	// The downstream id token JWK header.
+	DownstreamIDTokenJwkHeader *string `json:"downstream_id_token_jwk_header,omitempty"`
+	// The downstream introspection header.
+	DownstreamIntrospectionHeader *string `json:"downstream_introspection_header,omitempty"`
+	// The downstream introspection JWT header.
+	DownstreamIntrospectionJwtHeader *string `json:"downstream_introspection_jwt_header,omitempty"`
+	// The downstream refresh token header.
+	DownstreamRefreshTokenHeader *string `json:"downstream_refresh_token_header,omitempty"`
+	// The downstream session id header.
+	DownstreamSessionIDHeader *string `json:"downstream_session_id_header,omitempty"`
+	// The downstream user info header.
+	DownstreamUserInfoHeader *string `json:"downstream_user_info_header,omitempty"`
+	// The downstream user info JWT header (in case the user info returns a JWT response).
+	DownstreamUserInfoJwtHeader *string `json:"downstream_user_info_jwt_header,omitempty"`
+	// Enable shared secret, for example, HS256, signatures (when disabled they will not be accepted).
+	EnableHsSignatures *bool `default:"false" json:"enable_hs_signatures"`
+	// The end session endpoint. If set it overrides the value in `end_session_endpoint` returned by the discovery endpoint.
+	EndSessionEndpoint *string `json:"end_session_endpoint,omitempty"`
+	// Specifies whether to expose the error code header, as defined in RFC 6750. If an authorization request fails, this header is sent in the response. Set to `false` to disable.
+	ExposeErrorCode *bool `default:"true" json:"expose_error_code"`
+	// JWKS URIs whose public keys are trusted (in addition to the keys found with the discovery).
+	ExtraJwksUris []string `json:"extra_jwks_uris,omitempty"`
+	// Destroy any active session for the forbidden requests.
+	ForbiddenDestroySession *bool `default:"true" json:"forbidden_destroy_session"`
+	// The error message for the forbidden requests (when not using the redirection).
+	ForbiddenErrorMessage *string `default:"Forbidden" json:"forbidden_error_message"`
+	// Where to redirect the client on forbidden requests.
+	ForbiddenRedirectURI []string `json:"forbidden_redirect_uri,omitempty"`
+	// The claim that contains the groups. If multiple values are set, it means the claim is inside a nested object of the token payload.
+	GroupsClaim []string `json:"groups_claim,omitempty"`
+	// The groups (`groups_claim` claim) required to be present in the access token (or introspection results) for successful authorization. This config parameter works in both **AND** / **OR** cases.
+	GroupsRequired []string `json:"groups_required,omitempty"`
 	// Remove the credentials used for authentication from the request. If multiple credentials are sent with the same request, the plugin will remove those that were used for successful authentication.
 	HideCredentials *bool `default:"false" json:"hide_credentials"`
-	// The HTTP version used for the requests by this plugin: - `1.1`: HTTP 1.1 (the default) - `1.0`: HTTP 1.0.
-	HTTPVersion *float64 `default:"1.1" json:"http_version"`
 	// The HTTP proxy.
 	HTTPProxy *string `json:"http_proxy,omitempty"`
 	// The HTTP proxy authorization.
 	HTTPProxyAuthorization *string `json:"http_proxy_authorization,omitempty"`
+	// The HTTP version used for the requests by this plugin: - `1.1`: HTTP 1.1 (the default) - `1.0`: HTTP 1.0.
+	HTTPVersion *float64 `default:"1.1" json:"http_version"`
 	// The HTTPS proxy.
 	HTTPSProxy *string `json:"https_proxy,omitempty"`
 	// The HTTPS proxy authorization.
 	HTTPSProxyAuthorization *string `json:"https_proxy_authorization,omitempty"`
-	// Do not use proxy with these hosts.
-	NoProxy *string `json:"no_proxy,omitempty"`
-	// Use keepalive with the HTTP client.
-	Keepalive *bool `default:"true" json:"keepalive"`
-	// Verify identity provider server certificate.
-	SslVerify *bool `default:"false" json:"ssl_verify"`
-	// Network IO timeout in milliseconds.
-	Timeout *float64 `default:"10000" json:"timeout"`
-	// Display errors on failure responses.
-	DisplayErrors *bool `default:"false" json:"display_errors"`
-	// If `consumer_by` is set to `username`, specify whether `username` can match consumers case-insensitively.
-	ByUsernameIgnoreCase *bool `default:"false" json:"by_username_ignore_case"`
-	// Distributed claims are represented by the `_claim_names` and `_claim_sources` members of the JSON object containing the claims. If this parameter is set to `true`, the plugin explicitly resolves these distributed claims.
-	ResolveDistributedClaims *bool `default:"false" json:"resolve_distributed_claims"`
-	// Specifies whether to expose the error code header, as defined in RFC 6750. If an authorization request fails, this header is sent in the response. Set to `false` to disable.
-	ExposeErrorCode *bool `default:"true" json:"expose_error_code"`
-	// Include the scope in the token cache key, so token with different scopes are considered diffrent tokens.
-	TokenCacheKeyIncludeScope *bool `default:"false" json:"token_cache_key_include_scope"`
+	// The name of the parameter used to pass the id token.
+	IDTokenParamName *string `json:"id_token_param_name,omitempty"`
+	// Where to look for the id token: - `header`: search the HTTP headers - `query`: search the URL's query string - `body`: search the HTTP request body.
+	IDTokenParamType []CreateOpenidConnectPluginIDTokenParamType `json:"id_token_param_type,omitempty"`
+	// Skip the token signature verification on certain grants: - `password`: OAuth password grant - `client_credentials`: OAuth client credentials grant - `authorization_code`: authorization code flow - `refresh_token`: OAuth refresh token grant - `session`: session cookie authentication - `introspection`: OAuth introspection - `userinfo`: OpenID Connect user info endpoint authentication.
+	IgnoreSignature []CreateOpenidConnectPluginIgnoreSignature `json:"ignore_signature,omitempty"`
+	// Specifies whether to introspect the JWT access tokens (can be used to check for revocations).
+	IntrospectJwtTokens *bool `default:"false" json:"introspect_jwt_tokens"`
+	// The value of `Accept` header for introspection requests: - `application/json`: introspection response as JSON - `application/token-introspection+jwt`: introspection response as JWT (from the current IETF draft document) - `application/jwt`: introspection response as JWT (from the obsolete IETF draft document).
+	IntrospectionAccept *CreateOpenidConnectPluginIntrospectionAccept `default:"application/json" json:"introspection_accept"`
+	// Check that the introspection response has an `active` claim with a value of `true`.
+	IntrospectionCheckActive *bool `default:"true" json:"introspection_check_active"`
+	// The introspection endpoint. If set it overrides the value in `introspection_endpoint` returned by the discovery endpoint.
+	IntrospectionEndpoint *string `json:"introspection_endpoint,omitempty"`
+	// The introspection endpoint authentication method: : `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
+	IntrospectionEndpointAuthMethod *CreateOpenidConnectPluginIntrospectionEndpointAuthMethod `json:"introspection_endpoint_auth_method,omitempty"`
+	// Extra headers passed from the client to the introspection endpoint.
+	IntrospectionHeadersClient []string `json:"introspection_headers_client,omitempty"`
+	// Extra header names passed to the introspection endpoint.
+	IntrospectionHeadersNames []string `json:"introspection_headers_names,omitempty"`
+	// Extra header values passed to the introspection endpoint.
+	IntrospectionHeadersValues []string `json:"introspection_headers_values,omitempty"`
+	// Introspection hint parameter value passed to the introspection endpoint.
+	IntrospectionHint *string `default:"access_token" json:"introspection_hint"`
+	// Extra post arguments passed from the client to the introspection endpoint.
+	IntrospectionPostArgsClient []string `json:"introspection_post_args_client,omitempty"`
+	// Extra post argument names passed to the introspection endpoint.
+	IntrospectionPostArgsNames []string `json:"introspection_post_args_names,omitempty"`
+	// Extra post argument values passed to the introspection endpoint.
+	IntrospectionPostArgsValues []string `json:"introspection_post_args_values,omitempty"`
 	// Designate token's parameter name for introspection.
 	IntrospectionTokenParamName *string `default:"token" json:"introspection_token_param_name"`
-	// Designate token's parameter name for revocation.
-	RevocationTokenParamName *string `default:"token" json:"revocation_token_param_name"`
-	// Enable mtls proof of possession. If set to strict, all tokens (from supported auth_methods: bearer, introspection, and session granted with bearer or introspection) are verified, if set to optional, only tokens that contain the certificate hash claim are verified. If the verification fails, the request will be rejected with 401.
-	ProofOfPossessionMtls *ProofOfPossessionMtls `default:"off" json:"proof_of_possession_mtls"`
-	// If set to true, only the auth_methods that are compatible with Proof of Possession (PoP) can be configured when PoP is enabled. If set to false, all auth_methods will be configurable and PoP checks will be silently skipped for those auth_methods that are not compatible with PoP.
-	ProofOfPossessionAuthMethodsValidation *bool `default:"true" json:"proof_of_possession_auth_methods_validation"`
-	// ID of the Certificate entity representing the client certificate to use for mTLS client authentication for connections between Kong and the Auth Server.
-	TLSClientAuthCertID *string `json:"tls_client_auth_cert_id,omitempty"`
-	// Verify identity provider server certificate during mTLS client authentication.
-	TLSClientAuthSslVerify *bool `default:"true" json:"tls_client_auth_ssl_verify"`
-	// Alias for the token endpoint to be used for mTLS client authentication. If set it overrides the value in `mtls_endpoint_aliases` returned by the discovery endpoint.
-	MtlsTokenEndpoint *string `json:"mtls_token_endpoint,omitempty"`
+	// The discovery endpoint (or the issuer identifier). When there is no discovery endpoint, please also configure `config.using_pseudo_issuer=true`.
+	Issuer *string `json:"issuer,omitempty"`
+	// The issuers allowed to be present in the tokens (`iss` claim).
+	IssuersAllowed []string `json:"issuers_allowed,omitempty"`
+	// The claim to match against the JWT session cookie.
+	JwtSessionClaim *string `default:"sid" json:"jwt_session_claim"`
+	// The name of the JWT session cookie.
+	JwtSessionCookie *string `json:"jwt_session_cookie,omitempty"`
+	// Use keepalive with the HTTP client.
+	Keepalive *bool `default:"true" json:"keepalive"`
+	// Allow some leeway (in seconds) on the iat claim and ttl / expiry verification.
+	Leeway *float64 `default:"0" json:"leeway"`
+	// What to do after successful login: - `upstream`: proxy request to upstream service - `response`: terminate request with a response - `redirect`: redirect to a different location.
+	LoginAction *CreateOpenidConnectPluginLoginAction `default:"upstream" json:"login_action"`
+	// Enable login functionality with specified grants.
+	LoginMethods []CreateOpenidConnectPluginLoginMethods `json:"login_methods,omitempty"`
+	// Where to place `login_tokens` when using `redirect` `login_action`: - `query`: place tokens in query string - `fragment`: place tokens in url fragment (not readable by servers).
+	LoginRedirectMode *CreateOpenidConnectPluginLoginRedirectMode `default:"fragment" json:"login_redirect_mode"`
+	// Where to redirect the client when `login_action` is set to `redirect`.
+	LoginRedirectURI []string `json:"login_redirect_uri,omitempty"`
+	// What tokens to include in `response` body or `redirect` query string or fragment: - `id_token`: include id token - `access_token`: include access token - `refresh_token`: include refresh token - `tokens`: include the full token endpoint response - `introspection`: include introspection response.
+	LoginTokens []CreateOpenidConnectPluginLoginTokens `json:"login_tokens,omitempty"`
+	// The request methods that can activate the logout: - `POST`: HTTP POST method - `GET`: HTTP GET method - `DELETE`: HTTP DELETE method.
+	LogoutMethods []CreateOpenidConnectPluginLogoutMethods `json:"logout_methods,omitempty"`
+	// The request body argument that activates the logout.
+	LogoutPostArg *string `json:"logout_post_arg,omitempty"`
+	// The request query argument that activates the logout.
+	LogoutQueryArg *string `json:"logout_query_arg,omitempty"`
+	// Where to redirect the client after the logout.
+	LogoutRedirectURI []string `json:"logout_redirect_uri,omitempty"`
+	// Revoke tokens as part of the logout.
+	//
+	// For more granular token revocation, you can also adjust the `logout_revoke_access_token` and `logout_revoke_refresh_token` parameters.
+	LogoutRevoke *bool `default:"false" json:"logout_revoke"`
+	// Revoke the access token as part of the logout. Requires `logout_revoke` to be set to `true`.
+	LogoutRevokeAccessToken *bool `default:"true" json:"logout_revoke_access_token"`
+	// Revoke the refresh token as part of the logout. Requires `logout_revoke` to be set to `true`.
+	LogoutRevokeRefreshToken *bool `default:"true" json:"logout_revoke_refresh_token"`
+	// The request URI suffix that activates the logout.
+	LogoutURISuffix *string `json:"logout_uri_suffix,omitempty"`
+	// The maximum age (in seconds) compared to the `auth_time` claim.
+	MaxAge *float64 `json:"max_age,omitempty"`
 	// Alias for the introspection endpoint to be used for mTLS client authentication. If set it overrides the value in `mtls_endpoint_aliases` returned by the discovery endpoint.
 	MtlsIntrospectionEndpoint *string `json:"mtls_introspection_endpoint,omitempty"`
 	// Alias for the introspection endpoint to be used for mTLS client authentication. If set it overrides the value in `mtls_endpoint_aliases` returned by the discovery endpoint.
 	MtlsRevocationEndpoint *string `json:"mtls_revocation_endpoint,omitempty"`
+	// Alias for the token endpoint to be used for mTLS client authentication. If set it overrides the value in `mtls_endpoint_aliases` returned by the discovery endpoint.
+	MtlsTokenEndpoint *string `json:"mtls_token_endpoint,omitempty"`
+	// Do not use proxy with these hosts.
+	NoProxy *string `json:"no_proxy,omitempty"`
+	// Where to look for the username and password: - `header`: search the HTTP headers - `query`: search the URL's query string - `body`: search the HTTP request body.
+	PasswordParamType []CreateOpenidConnectPluginPasswordParamType `json:"password_param_type,omitempty"`
+	// With this parameter, you can preserve request query arguments even when doing authorization code flow.
+	PreserveQueryArgs *bool `default:"false" json:"preserve_query_args"`
+	// If set to true, only the auth_methods that are compatible with Proof of Possession (PoP) can be configured when PoP is enabled. If set to false, all auth_methods will be configurable and PoP checks will be silently skipped for those auth_methods that are not compatible with PoP.
+	ProofOfPossessionAuthMethodsValidation *bool `default:"true" json:"proof_of_possession_auth_methods_validation"`
+	// Enable mtls proof of possession. If set to strict, all tokens (from supported auth_methods: bearer, introspection, and session granted with bearer or introspection) are verified, if set to optional, only tokens that contain the certificate hash claim are verified. If the verification fails, the request will be rejected with 401.
+	ProofOfPossessionMtls *CreateOpenidConnectPluginProofOfPossessionMtls `default:"off" json:"proof_of_possession_mtls"`
+	// The pushed authorization endpoint. If set it overrides the value in `pushed_authorization_request_endpoint` returned by the discovery endpoint.
+	PushedAuthorizationRequestEndpoint *string `json:"pushed_authorization_request_endpoint,omitempty"`
+	// The pushed authorization request endpoint authentication method: `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
+	PushedAuthorizationRequestEndpointAuthMethod *CreateOpenidConnectPluginPushedAuthorizationRequestEndpointAuthMethod `json:"pushed_authorization_request_endpoint_auth_method,omitempty"`
+	// The redirect URI passed to the authorization and token endpoints.
+	RedirectURI []string `json:"redirect_uri,omitempty"`
+	// Specifies how long (in seconds) the plugin waits between discovery attempts. Discovery is still triggered on an as-needed basis.
+	RediscoveryLifetime *float64 `default:"30" json:"rediscovery_lifetime"`
+	// The name of the parameter used to pass the refresh token.
+	RefreshTokenParamName *string `json:"refresh_token_param_name,omitempty"`
+	// Where to look for the refresh token: - `header`: search the HTTP headers - `query`: search the URL's query string - `body`: search the HTTP request body.
+	RefreshTokenParamType []CreateOpenidConnectPluginRefreshTokenParamType `json:"refresh_token_param_type,omitempty"`
+	// Specifies whether the plugin should try to refresh (soon to be) expired access tokens if the plugin has a `refresh_token` available.
+	RefreshTokens *bool `default:"true" json:"refresh_tokens"`
+	// Forcibly enable or disable the proof key for code exchange. When not set the value is determined through the discovery using the value of `code_challenge_methods_supported`, and enabled automatically (in case the `code_challenge_methods_supported` is missing, the PKCE will not be enabled).
+	RequireProofKeyForCodeExchange *bool `json:"require_proof_key_for_code_exchange,omitempty"`
+	// Forcibly enable or disable the pushed authorization requests. When not set the value is determined through the discovery using the value of `require_pushed_authorization_requests` (which defaults to `false`).
+	RequirePushedAuthorizationRequests *bool `json:"require_pushed_authorization_requests,omitempty"`
+	// Distributed claims are represented by the `_claim_names` and `_claim_sources` members of the JSON object containing the claims. If this parameter is set to `true`, the plugin explicitly resolves these distributed claims.
+	ResolveDistributedClaims *bool `default:"false" json:"resolve_distributed_claims"`
+	// The response mode passed to the authorization endpoint: - `query`: Instructs the identity provider to pass parameters in query string - `form_post`: Instructs the identity provider to pass parameters in request body - `fragment`: Instructs the identity provider to pass parameters in uri fragment (rarely useful as the plugin itself cannot read it).
+	ResponseMode *CreateOpenidConnectPluginResponseMode `default:"query" json:"response_mode"`
+	// The response type passed to the authorization endpoint.
+	ResponseType []string `json:"response_type,omitempty"`
+	// Specifies whether to always verify tokens stored in the session.
+	Reverify *bool `default:"false" json:"reverify"`
+	// The revocation endpoint. If set it overrides the value in `revocation_endpoint` returned by the discovery endpoint.
+	RevocationEndpoint *string `json:"revocation_endpoint,omitempty"`
+	// The revocation endpoint authentication method: : `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
+	RevocationEndpointAuthMethod *CreateOpenidConnectPluginRevocationEndpointAuthMethod `json:"revocation_endpoint_auth_method,omitempty"`
+	// Designate token's parameter name for revocation.
+	RevocationTokenParamName *string `default:"token" json:"revocation_token_param_name"`
+	// The claim that contains the roles. If multiple values are set, it means the claim is inside a nested object of the token payload.
+	RolesClaim []string `json:"roles_claim,omitempty"`
+	// The roles (`roles_claim` claim) required to be present in the access token (or introspection results) for successful authorization. This config parameter works in both **AND** / **OR** cases.
+	RolesRequired []string `json:"roles_required,omitempty"`
+	// Specifies whether to run this plugin on pre-flight (`OPTIONS`) requests.
+	RunOnPreflight *bool `default:"true" json:"run_on_preflight"`
+	// The scopes passed to the authorization and token endpoints.
+	Scopes []string `json:"scopes,omitempty"`
+	// The claim that contains the scopes. If multiple values are set, it means the claim is inside a nested object of the token payload.
+	ScopesClaim []string `json:"scopes_claim,omitempty"`
+	// The scopes (`scopes_claim` claim) required to be present in the access token (or introspection results) for successful authorization. This config parameter works in both **AND** / **OR** cases.
+	ScopesRequired []string `json:"scopes_required,omitempty"`
+	// Specify whether to use the user info endpoint to get additional claims for consumer mapping, credential mapping, authenticated groups, and upstream and downstream headers.
+	SearchUserInfo *bool `default:"false" json:"search_user_info"`
+	// Limits how long the session can be renewed in seconds, until re-authentication is required. 0 disables the checks.
+	SessionAbsoluteTimeout *float64 `default:"86400" json:"session_absolute_timeout"`
+	// The session audience, which is the intended target application. For example `"my-application"`.
+	SessionAudience *string `default:"default" json:"session_audience"`
+	// The session cookie Domain flag.
+	SessionCookieDomain *string `json:"session_cookie_domain,omitempty"`
+	// Forbids JavaScript from accessing the cookie, for example, through the `Document.cookie` property.
+	SessionCookieHTTPOnly *bool `default:"true" json:"session_cookie_http_only"`
+	// The session cookie name.
+	SessionCookieName *string `default:"session" json:"session_cookie_name"`
+	// The session cookie Path flag.
+	SessionCookiePath *string `default:"/" json:"session_cookie_path"`
+	// Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks.
+	SessionCookieSameSite *CreateOpenidConnectPluginSessionCookieSameSite `default:"Lax" json:"session_cookie_same_site"`
+	// Cookie is only sent to the server when a request is made with the https: scheme (except on localhost), and therefore is more resistant to man-in-the-middle attacks.
+	SessionCookieSecure *bool `json:"session_cookie_secure,omitempty"`
+	// When set to `true`, audiences are forced to share the same subject.
+	SessionEnforceSameSubject *bool `default:"false" json:"session_enforce_same_subject"`
+	// When set to `true`, the storage key (session ID) is hashed for extra security. Hashing the storage key means it is impossible to decrypt data from the storage without a cookie.
+	SessionHashStorageKey *bool `default:"false" json:"session_hash_storage_key"`
+	// When set to `true`, the value of subject is hashed before being stored. Only applies when `session_store_metadata` is enabled.
+	SessionHashSubject *bool `default:"false" json:"session_hash_subject"`
+	// Specifies how long the session can be inactive until it is considered invalid in seconds. 0 disables the checks and touching.
+	SessionIdlingTimeout *float64 `default:"900" json:"session_idling_timeout"`
+	// The memcached host.
+	SessionMemcachedHost *string `default:"127.0.0.1" json:"session_memcached_host"`
+	// The memcached port.
+	SessionMemcachedPort *int64 `default:"11211" json:"session_memcached_port"`
+	// The memcached session key prefix.
+	SessionMemcachedPrefix *string `json:"session_memcached_prefix,omitempty"`
+	// The memcached unix socket path.
+	SessionMemcachedSocket *string `json:"session_memcached_socket,omitempty"`
+	// The Redis cluster maximum redirects.
+	SessionRedisClusterMaxRedirections *int64 `json:"session_redis_cluster_max_redirections,omitempty"`
+	// The Redis cluster node host. Takes an array of host records, with either `ip` or `host`, and `port` values.
+	SessionRedisClusterNodes []CreateOpenidConnectPluginSessionRedisClusterNodes `json:"session_redis_cluster_nodes,omitempty"`
+	// Session redis connection timeout in milliseconds.
+	SessionRedisConnectTimeout *int64 `json:"session_redis_connect_timeout,omitempty"`
+	// The Redis host.
+	SessionRedisHost *string `default:"127.0.0.1" json:"session_redis_host"`
+	// Password to use for Redis connection when the `redis` session storage is defined. If undefined, no AUTH commands are sent to Redis.
+	SessionRedisPassword *string `json:"session_redis_password,omitempty"`
+	// The Redis port.
+	SessionRedisPort *int64 `default:"6379" json:"session_redis_port"`
+	// The Redis session key prefix.
+	SessionRedisPrefix *string `json:"session_redis_prefix,omitempty"`
+	// Session redis read timeout in milliseconds.
+	SessionRedisReadTimeout *int64 `json:"session_redis_read_timeout,omitempty"`
+	// Session redis send timeout in milliseconds.
+	SessionRedisSendTimeout *int64 `json:"session_redis_send_timeout,omitempty"`
+	// The SNI used for connecting the Redis server.
+	SessionRedisServerName *string `json:"session_redis_server_name,omitempty"`
+	// The Redis unix socket path.
+	SessionRedisSocket *string `json:"session_redis_socket,omitempty"`
+	// Use SSL/TLS for Redis connection.
+	SessionRedisSsl *bool `default:"false" json:"session_redis_ssl"`
+	// Verify identity provider server certificate.
+	SessionRedisSslVerify *bool `default:"false" json:"session_redis_ssl_verify"`
+	// Username to use for Redis connection when the `redis` session storage is defined and ACL authentication is desired. If undefined, ACL authentication will not be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
+	SessionRedisUsername *string `json:"session_redis_username,omitempty"`
+	// Enables or disables persistent sessions.
+	SessionRemember *bool `default:"false" json:"session_remember"`
+	// Limits how long the persistent session can be renewed in seconds, until re-authentication is required. 0 disables the checks.
+	SessionRememberAbsoluteTimeout *float64 `default:"2592000" json:"session_remember_absolute_timeout"`
+	// Persistent session cookie name. Use with the `remember` configuration parameter.
+	SessionRememberCookieName *string `default:"remember" json:"session_remember_cookie_name"`
+	// Specifies how long the persistent session is considered valid in seconds. 0 disables the checks and rolling.
+	SessionRememberRollingTimeout *float64 `default:"604800" json:"session_remember_rolling_timeout"`
+	// Set of headers to send to upstream, use id, audience, subject, timeout, idling-timeout, rolling-timeout, absolute-timeout. E.g. `[ "id", "timeout" ]` will set Session-Id and Session-Timeout request headers.
+	SessionRequestHeaders []CreateOpenidConnectPluginSessionRequestHeaders `json:"session_request_headers,omitempty"`
+	// Set of headers to send to downstream, use id, audience, subject, timeout, idling-timeout, rolling-timeout, absolute-timeout. E.g. `[ "id", "timeout" ]` will set Session-Id and Session-Timeout response headers.
+	SessionResponseHeaders []CreateOpenidConnectPluginSessionResponseHeaders `json:"session_response_headers,omitempty"`
+	// Specifies how long the session can be used in seconds until it needs to be renewed. 0 disables the checks and rolling.
+	SessionRollingTimeout *float64 `default:"3600" json:"session_rolling_timeout"`
+	// The session secret.
+	SessionSecret *string `json:"session_secret,omitempty"`
+	// The session storage for session data: - `cookie`: stores session data with the session cookie (the session cannot be invalidated or revoked without changing session secret, but is stateless, and doesn't require a database) - `memcache`: stores session data in memcached - `redis`: stores session data in Redis.
+	SessionStorage *CreateOpenidConnectPluginSessionStorage `default:"cookie" json:"session_storage"`
+	// Configures whether or not session metadata should be stored. This metadata includes information about the active sessions for a specific audience belonging to a specific subject.
+	SessionStoreMetadata *bool `default:"false" json:"session_store_metadata"`
+	// Verify identity provider server certificate.
+	SslVerify *bool `default:"false" json:"ssl_verify"`
+	// Network IO timeout in milliseconds.
+	Timeout *float64 `default:"10000" json:"timeout"`
+	// ID of the Certificate entity representing the client certificate to use for mTLS client authentication for connections between Kong and the Auth Server.
+	TLSClientAuthCertID *string `json:"tls_client_auth_cert_id,omitempty"`
+	// Verify identity provider server certificate during mTLS client authentication.
+	TLSClientAuthSslVerify *bool `default:"true" json:"tls_client_auth_ssl_verify"`
+	// Include the scope in the token cache key, so token with different scopes are considered diffrent tokens.
+	TokenCacheKeyIncludeScope *bool `default:"false" json:"token_cache_key_include_scope"`
+	// The token endpoint. If set it overrides the value in `token_endpoint` returned by the discovery endpoint.
+	TokenEndpoint *string `json:"token_endpoint,omitempty"`
+	// The token endpoint authentication method: `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
+	TokenEndpointAuthMethod *CreateOpenidConnectPluginTokenEndpointAuthMethod `json:"token_endpoint_auth_method,omitempty"`
+	// The token exchange endpoint.
+	TokenExchangeEndpoint *string `json:"token_exchange_endpoint,omitempty"`
+	// Extra headers passed from the client to the token endpoint.
+	TokenHeadersClient []string `json:"token_headers_client,omitempty"`
+	// Enable the sending of the token endpoint response headers only with certain grants: - `password`: with OAuth password grant - `client_credentials`: with OAuth client credentials grant - `authorization_code`: with authorization code flow - `refresh_token` with refresh token grant.
+	TokenHeadersGrants []CreateOpenidConnectPluginTokenHeadersGrants `json:"token_headers_grants,omitempty"`
+	// Extra header names passed to the token endpoint.
+	TokenHeadersNames []string `json:"token_headers_names,omitempty"`
+	// Add a prefix to the token endpoint response headers before forwarding them to the downstream client.
+	TokenHeadersPrefix *string `json:"token_headers_prefix,omitempty"`
+	// The names of token endpoint response headers to forward to the downstream client.
+	TokenHeadersReplay []string `json:"token_headers_replay,omitempty"`
+	// Extra header values passed to the token endpoint.
+	TokenHeadersValues []string `json:"token_headers_values,omitempty"`
+	// Pass extra arguments from the client to the OpenID-Connect plugin. If arguments exist, the client can pass them using: - Query parameters - Request Body - Reqest Header  This parameter can be used with `scope` values, like this:  `config.token_post_args_client=scope`  In this case, the token would take the `scope` value from the query parameter or from the request body or from the header and send it to the token endpoint.
+	TokenPostArgsClient []string `json:"token_post_args_client,omitempty"`
+	// Extra post argument names passed to the token endpoint.
+	TokenPostArgsNames []string `json:"token_post_args_names,omitempty"`
+	// Extra post argument values passed to the token endpoint.
+	TokenPostArgsValues []string `json:"token_post_args_values,omitempty"`
+	// Destroy any active session for the unauthorized requests.
+	UnauthorizedDestroySession *bool `default:"true" json:"unauthorized_destroy_session"`
+	// The error message for the unauthorized requests (when not using the redirection).
+	UnauthorizedErrorMessage *string `default:"Unauthorized" json:"unauthorized_error_message"`
+	// Where to redirect the client on unauthorized requests.
+	UnauthorizedRedirectURI []string `json:"unauthorized_redirect_uri,omitempty"`
+	// Where to redirect the client when unexpected errors happen with the requests.
+	UnexpectedRedirectURI []string `json:"unexpected_redirect_uri,omitempty"`
+	// The upstream access token header.
+	UpstreamAccessTokenHeader *string `default:"authorization:bearer" json:"upstream_access_token_header"`
+	// The upstream access token JWK header.
+	UpstreamAccessTokenJwkHeader *string `json:"upstream_access_token_jwk_header,omitempty"`
+	// The upstream header claims. If multiple values are set, it means the claim is inside a nested object of the token payload.
+	UpstreamHeadersClaims []string `json:"upstream_headers_claims,omitempty"`
+	// The upstream header names for the claim values.
+	UpstreamHeadersNames []string `json:"upstream_headers_names,omitempty"`
+	// The upstream id token header.
+	UpstreamIDTokenHeader *string `json:"upstream_id_token_header,omitempty"`
+	// The upstream id token JWK header.
+	UpstreamIDTokenJwkHeader *string `json:"upstream_id_token_jwk_header,omitempty"`
+	// The upstream introspection header.
+	UpstreamIntrospectionHeader *string `json:"upstream_introspection_header,omitempty"`
+	// The upstream introspection JWT header.
+	UpstreamIntrospectionJwtHeader *string `json:"upstream_introspection_jwt_header,omitempty"`
+	// The upstream refresh token header.
+	UpstreamRefreshTokenHeader *string `json:"upstream_refresh_token_header,omitempty"`
+	// The upstream session id header.
+	UpstreamSessionIDHeader *string `json:"upstream_session_id_header,omitempty"`
+	// The upstream user info header.
+	UpstreamUserInfoHeader *string `json:"upstream_user_info_header,omitempty"`
+	// The upstream user info JWT header (in case the user info returns a JWT response).
+	UpstreamUserInfoJwtHeader *string `json:"upstream_user_info_jwt_header,omitempty"`
+	// The value of `Accept` header for user info requests: - `application/json`: user info response as JSON - `application/jwt`: user info response as JWT (from the obsolete IETF draft document).
+	UserinfoAccept *CreateOpenidConnectPluginUserinfoAccept `default:"application/json" json:"userinfo_accept"`
+	// The user info endpoint. If set it overrides the value in `userinfo_endpoint` returned by the discovery endpoint.
+	UserinfoEndpoint *string `json:"userinfo_endpoint,omitempty"`
+	// Extra headers passed from the client to the user info endpoint.
+	UserinfoHeadersClient []string `json:"userinfo_headers_client,omitempty"`
+	// Extra header names passed to the user info endpoint.
+	UserinfoHeadersNames []string `json:"userinfo_headers_names,omitempty"`
+	// Extra header values passed to the user info endpoint.
+	UserinfoHeadersValues []string `json:"userinfo_headers_values,omitempty"`
+	// Extra query arguments passed from the client to the user info endpoint.
+	UserinfoQueryArgsClient []string `json:"userinfo_query_args_client,omitempty"`
+	// Extra query argument names passed to the user info endpoint.
+	UserinfoQueryArgsNames []string `json:"userinfo_query_args_names,omitempty"`
+	// Extra query argument values passed to the user info endpoint.
+	UserinfoQueryArgsValues []string `json:"userinfo_query_args_values,omitempty"`
+	// If the plugin uses a pseudo issuer. When set to true, the plugin will not discover the configuration from the issuer URL specified with `config.issuer`.
+	UsingPseudoIssuer *bool `default:"false" json:"using_pseudo_issuer"`
+	// Verify tokens for standard claims.
+	VerifyClaims *bool `default:"true" json:"verify_claims"`
+	// Verify nonce on authorization code flow.
+	VerifyNonce *bool `default:"true" json:"verify_nonce"`
+	// Verify plugin configuration against discovery.
+	VerifyParameters *bool `default:"false" json:"verify_parameters"`
+	// Verify signature of tokens.
+	VerifySignature *bool `default:"true" json:"verify_signature"`
 }
 
 func (c CreateOpenidConnectPluginConfig) MarshalJSON() ([]byte, error) {
@@ -1906,186 +1906,11 @@ func (c *CreateOpenidConnectPluginConfig) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *CreateOpenidConnectPluginConfig) GetIssuer() *string {
+func (o *CreateOpenidConnectPluginConfig) GetAnonymous() *string {
 	if o == nil {
 		return nil
 	}
-	return o.Issuer
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetUsingPseudoIssuer() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.UsingPseudoIssuer
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetDiscoveryHeadersNames() []string {
-	if o == nil {
-		return nil
-	}
-	return o.DiscoveryHeadersNames
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetDiscoveryHeadersValues() []string {
-	if o == nil {
-		return nil
-	}
-	return o.DiscoveryHeadersValues
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetExtraJwksUris() []string {
-	if o == nil {
-		return nil
-	}
-	return o.ExtraJwksUris
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetRediscoveryLifetime() *float64 {
-	if o == nil {
-		return nil
-	}
-	return o.RediscoveryLifetime
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetAuthMethods() []AuthMethods {
-	if o == nil {
-		return nil
-	}
-	return o.AuthMethods
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetClientID() []string {
-	if o == nil {
-		return nil
-	}
-	return o.ClientID
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetClientSecret() []string {
-	if o == nil {
-		return nil
-	}
-	return o.ClientSecret
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetClientAuth() []ClientAuth {
-	if o == nil {
-		return nil
-	}
-	return o.ClientAuth
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetClientJwk() []ClientJwk {
-	if o == nil {
-		return nil
-	}
-	return o.ClientJwk
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetClientAlg() []ClientAlg {
-	if o == nil {
-		return nil
-	}
-	return o.ClientAlg
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetClientArg() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ClientArg
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetRedirectURI() []string {
-	if o == nil {
-		return nil
-	}
-	return o.RedirectURI
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetLoginRedirectURI() []string {
-	if o == nil {
-		return nil
-	}
-	return o.LoginRedirectURI
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetLogoutRedirectURI() []string {
-	if o == nil {
-		return nil
-	}
-	return o.LogoutRedirectURI
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetForbiddenRedirectURI() []string {
-	if o == nil {
-		return nil
-	}
-	return o.ForbiddenRedirectURI
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetForbiddenErrorMessage() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ForbiddenErrorMessage
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetForbiddenDestroySession() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.ForbiddenDestroySession
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetUnauthorizedDestroySession() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.UnauthorizedDestroySession
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetUnauthorizedRedirectURI() []string {
-	if o == nil {
-		return nil
-	}
-	return o.UnauthorizedRedirectURI
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetUnauthorizedErrorMessage() *string {
-	if o == nil {
-		return nil
-	}
-	return o.UnauthorizedErrorMessage
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetUnexpectedRedirectURI() []string {
-	if o == nil {
-		return nil
-	}
-	return o.UnexpectedRedirectURI
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetResponseMode() *ResponseMode {
-	if o == nil {
-		return nil
-	}
-	return o.ResponseMode
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetResponseType() []string {
-	if o == nil {
-		return nil
-	}
-	return o.ResponseType
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetScopes() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Scopes
+	return o.Anonymous
 }
 
 func (o *CreateOpenidConnectPluginConfig) GetAudience() []string {
@@ -2095,25 +1920,11 @@ func (o *CreateOpenidConnectPluginConfig) GetAudience() []string {
 	return o.Audience
 }
 
-func (o *CreateOpenidConnectPluginConfig) GetIssuersAllowed() []string {
+func (o *CreateOpenidConnectPluginConfig) GetAudienceClaim() []string {
 	if o == nil {
 		return nil
 	}
-	return o.IssuersAllowed
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetScopesRequired() []string {
-	if o == nil {
-		return nil
-	}
-	return o.ScopesRequired
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetScopesClaim() []string {
-	if o == nil {
-		return nil
-	}
-	return o.ScopesClaim
+	return o.AudienceClaim
 }
 
 func (o *CreateOpenidConnectPluginConfig) GetAudienceRequired() []string {
@@ -2123,53 +1934,11 @@ func (o *CreateOpenidConnectPluginConfig) GetAudienceRequired() []string {
 	return o.AudienceRequired
 }
 
-func (o *CreateOpenidConnectPluginConfig) GetAudienceClaim() []string {
+func (o *CreateOpenidConnectPluginConfig) GetAuthMethods() []CreateOpenidConnectPluginAuthMethods {
 	if o == nil {
 		return nil
 	}
-	return o.AudienceClaim
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetGroupsRequired() []string {
-	if o == nil {
-		return nil
-	}
-	return o.GroupsRequired
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetGroupsClaim() []string {
-	if o == nil {
-		return nil
-	}
-	return o.GroupsClaim
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetRolesRequired() []string {
-	if o == nil {
-		return nil
-	}
-	return o.RolesRequired
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetRolesClaim() []string {
-	if o == nil {
-		return nil
-	}
-	return o.RolesClaim
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetDomains() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Domains
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetMaxAge() *float64 {
-	if o == nil {
-		return nil
-	}
-	return o.MaxAge
+	return o.AuthMethods
 }
 
 func (o *CreateOpenidConnectPluginConfig) GetAuthenticatedGroupsClaim() []string {
@@ -2179,67 +1948,18 @@ func (o *CreateOpenidConnectPluginConfig) GetAuthenticatedGroupsClaim() []string
 	return o.AuthenticatedGroupsClaim
 }
 
-func (o *CreateOpenidConnectPluginConfig) GetPushedAuthorizationRequestEndpoint() *string {
+func (o *CreateOpenidConnectPluginConfig) GetAuthorizationCookieDomain() *string {
 	if o == nil {
 		return nil
 	}
-	return o.PushedAuthorizationRequestEndpoint
+	return o.AuthorizationCookieDomain
 }
 
-func (o *CreateOpenidConnectPluginConfig) GetPushedAuthorizationRequestEndpointAuthMethod() *PushedAuthorizationRequestEndpointAuthMethod {
+func (o *CreateOpenidConnectPluginConfig) GetAuthorizationCookieHTTPOnly() *bool {
 	if o == nil {
 		return nil
 	}
-	return o.PushedAuthorizationRequestEndpointAuthMethod
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetRequirePushedAuthorizationRequests() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.RequirePushedAuthorizationRequests
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetRequireProofKeyForCodeExchange() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.RequireProofKeyForCodeExchange
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetAuthorizationEndpoint() *string {
-	if o == nil {
-		return nil
-	}
-	return o.AuthorizationEndpoint
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetAuthorizationQueryArgsNames() []string {
-	if o == nil {
-		return nil
-	}
-	return o.AuthorizationQueryArgsNames
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetAuthorizationQueryArgsValues() []string {
-	if o == nil {
-		return nil
-	}
-	return o.AuthorizationQueryArgsValues
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetAuthorizationQueryArgsClient() []string {
-	if o == nil {
-		return nil
-	}
-	return o.AuthorizationQueryArgsClient
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetAuthorizationRollingTimeout() *float64 {
-	if o == nil {
-		return nil
-	}
-	return o.AuthorizationRollingTimeout
+	return o.AuthorizationCookieHTTPOnly
 }
 
 func (o *CreateOpenidConnectPluginConfig) GetAuthorizationCookieName() *string {
@@ -2256,25 +1976,11 @@ func (o *CreateOpenidConnectPluginConfig) GetAuthorizationCookiePath() *string {
 	return o.AuthorizationCookiePath
 }
 
-func (o *CreateOpenidConnectPluginConfig) GetAuthorizationCookieDomain() *string {
-	if o == nil {
-		return nil
-	}
-	return o.AuthorizationCookieDomain
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetAuthorizationCookieSameSite() *AuthorizationCookieSameSite {
+func (o *CreateOpenidConnectPluginConfig) GetAuthorizationCookieSameSite() *CreateOpenidConnectPluginAuthorizationCookieSameSite {
 	if o == nil {
 		return nil
 	}
 	return o.AuthorizationCookieSameSite
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetAuthorizationCookieHTTPOnly() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.AuthorizationCookieHTTPOnly
 }
 
 func (o *CreateOpenidConnectPluginConfig) GetAuthorizationCookieSecure() *bool {
@@ -2284,564 +1990,39 @@ func (o *CreateOpenidConnectPluginConfig) GetAuthorizationCookieSecure() *bool {
 	return o.AuthorizationCookieSecure
 }
 
-func (o *CreateOpenidConnectPluginConfig) GetPreserveQueryArgs() *bool {
+func (o *CreateOpenidConnectPluginConfig) GetAuthorizationEndpoint() *string {
 	if o == nil {
 		return nil
 	}
-	return o.PreserveQueryArgs
+	return o.AuthorizationEndpoint
 }
 
-func (o *CreateOpenidConnectPluginConfig) GetTokenEndpoint() *string {
+func (o *CreateOpenidConnectPluginConfig) GetAuthorizationQueryArgsClient() []string {
 	if o == nil {
 		return nil
 	}
-	return o.TokenEndpoint
+	return o.AuthorizationQueryArgsClient
 }
 
-func (o *CreateOpenidConnectPluginConfig) GetTokenEndpointAuthMethod() *TokenEndpointAuthMethod {
+func (o *CreateOpenidConnectPluginConfig) GetAuthorizationQueryArgsNames() []string {
 	if o == nil {
 		return nil
 	}
-	return o.TokenEndpointAuthMethod
+	return o.AuthorizationQueryArgsNames
 }
 
-func (o *CreateOpenidConnectPluginConfig) GetTokenHeadersNames() []string {
+func (o *CreateOpenidConnectPluginConfig) GetAuthorizationQueryArgsValues() []string {
 	if o == nil {
 		return nil
 	}
-	return o.TokenHeadersNames
+	return o.AuthorizationQueryArgsValues
 }
 
-func (o *CreateOpenidConnectPluginConfig) GetTokenHeadersValues() []string {
+func (o *CreateOpenidConnectPluginConfig) GetAuthorizationRollingTimeout() *float64 {
 	if o == nil {
 		return nil
 	}
-	return o.TokenHeadersValues
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetTokenHeadersClient() []string {
-	if o == nil {
-		return nil
-	}
-	return o.TokenHeadersClient
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetTokenHeadersReplay() []string {
-	if o == nil {
-		return nil
-	}
-	return o.TokenHeadersReplay
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetTokenHeadersPrefix() *string {
-	if o == nil {
-		return nil
-	}
-	return o.TokenHeadersPrefix
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetTokenHeadersGrants() []TokenHeadersGrants {
-	if o == nil {
-		return nil
-	}
-	return o.TokenHeadersGrants
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetTokenPostArgsNames() []string {
-	if o == nil {
-		return nil
-	}
-	return o.TokenPostArgsNames
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetTokenPostArgsValues() []string {
-	if o == nil {
-		return nil
-	}
-	return o.TokenPostArgsValues
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetTokenPostArgsClient() []string {
-	if o == nil {
-		return nil
-	}
-	return o.TokenPostArgsClient
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetIntrospectionEndpoint() *string {
-	if o == nil {
-		return nil
-	}
-	return o.IntrospectionEndpoint
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetIntrospectionEndpointAuthMethod() *IntrospectionEndpointAuthMethod {
-	if o == nil {
-		return nil
-	}
-	return o.IntrospectionEndpointAuthMethod
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetIntrospectionHint() *string {
-	if o == nil {
-		return nil
-	}
-	return o.IntrospectionHint
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetIntrospectionCheckActive() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.IntrospectionCheckActive
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetIntrospectionAccept() *IntrospectionAccept {
-	if o == nil {
-		return nil
-	}
-	return o.IntrospectionAccept
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetIntrospectionHeadersNames() []string {
-	if o == nil {
-		return nil
-	}
-	return o.IntrospectionHeadersNames
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetIntrospectionHeadersValues() []string {
-	if o == nil {
-		return nil
-	}
-	return o.IntrospectionHeadersValues
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetIntrospectionHeadersClient() []string {
-	if o == nil {
-		return nil
-	}
-	return o.IntrospectionHeadersClient
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetIntrospectionPostArgsNames() []string {
-	if o == nil {
-		return nil
-	}
-	return o.IntrospectionPostArgsNames
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetIntrospectionPostArgsValues() []string {
-	if o == nil {
-		return nil
-	}
-	return o.IntrospectionPostArgsValues
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetIntrospectionPostArgsClient() []string {
-	if o == nil {
-		return nil
-	}
-	return o.IntrospectionPostArgsClient
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetIntrospectJwtTokens() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.IntrospectJwtTokens
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetRevocationEndpoint() *string {
-	if o == nil {
-		return nil
-	}
-	return o.RevocationEndpoint
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetRevocationEndpointAuthMethod() *RevocationEndpointAuthMethod {
-	if o == nil {
-		return nil
-	}
-	return o.RevocationEndpointAuthMethod
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetEndSessionEndpoint() *string {
-	if o == nil {
-		return nil
-	}
-	return o.EndSessionEndpoint
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetUserinfoEndpoint() *string {
-	if o == nil {
-		return nil
-	}
-	return o.UserinfoEndpoint
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetUserinfoAccept() *UserinfoAccept {
-	if o == nil {
-		return nil
-	}
-	return o.UserinfoAccept
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetUserinfoHeadersNames() []string {
-	if o == nil {
-		return nil
-	}
-	return o.UserinfoHeadersNames
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetUserinfoHeadersValues() []string {
-	if o == nil {
-		return nil
-	}
-	return o.UserinfoHeadersValues
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetUserinfoHeadersClient() []string {
-	if o == nil {
-		return nil
-	}
-	return o.UserinfoHeadersClient
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetUserinfoQueryArgsNames() []string {
-	if o == nil {
-		return nil
-	}
-	return o.UserinfoQueryArgsNames
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetUserinfoQueryArgsValues() []string {
-	if o == nil {
-		return nil
-	}
-	return o.UserinfoQueryArgsValues
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetUserinfoQueryArgsClient() []string {
-	if o == nil {
-		return nil
-	}
-	return o.UserinfoQueryArgsClient
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetTokenExchangeEndpoint() *string {
-	if o == nil {
-		return nil
-	}
-	return o.TokenExchangeEndpoint
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetSessionSecret() *string {
-	if o == nil {
-		return nil
-	}
-	return o.SessionSecret
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetSessionAudience() *string {
-	if o == nil {
-		return nil
-	}
-	return o.SessionAudience
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetSessionCookieName() *string {
-	if o == nil {
-		return nil
-	}
-	return o.SessionCookieName
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetSessionRemember() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.SessionRemember
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetSessionRememberCookieName() *string {
-	if o == nil {
-		return nil
-	}
-	return o.SessionRememberCookieName
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetSessionRememberRollingTimeout() *float64 {
-	if o == nil {
-		return nil
-	}
-	return o.SessionRememberRollingTimeout
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetSessionRememberAbsoluteTimeout() *float64 {
-	if o == nil {
-		return nil
-	}
-	return o.SessionRememberAbsoluteTimeout
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetSessionIdlingTimeout() *float64 {
-	if o == nil {
-		return nil
-	}
-	return o.SessionIdlingTimeout
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetSessionRollingTimeout() *float64 {
-	if o == nil {
-		return nil
-	}
-	return o.SessionRollingTimeout
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetSessionAbsoluteTimeout() *float64 {
-	if o == nil {
-		return nil
-	}
-	return o.SessionAbsoluteTimeout
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetSessionCookiePath() *string {
-	if o == nil {
-		return nil
-	}
-	return o.SessionCookiePath
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetSessionCookieDomain() *string {
-	if o == nil {
-		return nil
-	}
-	return o.SessionCookieDomain
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetSessionCookieSameSite() *SessionCookieSameSite {
-	if o == nil {
-		return nil
-	}
-	return o.SessionCookieSameSite
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetSessionCookieHTTPOnly() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.SessionCookieHTTPOnly
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetSessionCookieSecure() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.SessionCookieSecure
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetSessionRequestHeaders() []SessionRequestHeaders {
-	if o == nil {
-		return nil
-	}
-	return o.SessionRequestHeaders
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetSessionResponseHeaders() []SessionResponseHeaders {
-	if o == nil {
-		return nil
-	}
-	return o.SessionResponseHeaders
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetSessionStorage() *SessionStorage {
-	if o == nil {
-		return nil
-	}
-	return o.SessionStorage
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetSessionStoreMetadata() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.SessionStoreMetadata
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetSessionEnforceSameSubject() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.SessionEnforceSameSubject
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetSessionHashSubject() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.SessionHashSubject
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetSessionHashStorageKey() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.SessionHashStorageKey
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetSessionMemcachedPrefix() *string {
-	if o == nil {
-		return nil
-	}
-	return o.SessionMemcachedPrefix
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetSessionMemcachedSocket() *string {
-	if o == nil {
-		return nil
-	}
-	return o.SessionMemcachedSocket
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetSessionMemcachedHost() *string {
-	if o == nil {
-		return nil
-	}
-	return o.SessionMemcachedHost
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetSessionMemcachedPort() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.SessionMemcachedPort
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetSessionRedisPrefix() *string {
-	if o == nil {
-		return nil
-	}
-	return o.SessionRedisPrefix
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetSessionRedisSocket() *string {
-	if o == nil {
-		return nil
-	}
-	return o.SessionRedisSocket
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetSessionRedisHost() *string {
-	if o == nil {
-		return nil
-	}
-	return o.SessionRedisHost
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetSessionRedisPort() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.SessionRedisPort
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetSessionRedisUsername() *string {
-	if o == nil {
-		return nil
-	}
-	return o.SessionRedisUsername
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetSessionRedisPassword() *string {
-	if o == nil {
-		return nil
-	}
-	return o.SessionRedisPassword
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetSessionRedisConnectTimeout() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.SessionRedisConnectTimeout
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetSessionRedisReadTimeout() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.SessionRedisReadTimeout
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetSessionRedisSendTimeout() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.SessionRedisSendTimeout
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetSessionRedisSsl() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.SessionRedisSsl
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetSessionRedisSslVerify() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.SessionRedisSslVerify
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetSessionRedisServerName() *string {
-	if o == nil {
-		return nil
-	}
-	return o.SessionRedisServerName
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetSessionRedisClusterNodes() []SessionRedisClusterNodes {
-	if o == nil {
-		return nil
-	}
-	return o.SessionRedisClusterNodes
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetSessionRedisClusterMaxRedirections() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.SessionRedisClusterMaxRedirections
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetReverify() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.Reverify
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetJwtSessionClaim() *string {
-	if o == nil {
-		return nil
-	}
-	return o.JwtSessionClaim
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetJwtSessionCookie() *string {
-	if o == nil {
-		return nil
-	}
-	return o.JwtSessionCookie
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetBearerTokenParamType() []BearerTokenParamType {
-	if o == nil {
-		return nil
-	}
-	return o.BearerTokenParamType
+	return o.AuthorizationRollingTimeout
 }
 
 func (o *CreateOpenidConnectPluginConfig) GetBearerTokenCookieName() *string {
@@ -2851,396 +2032,46 @@ func (o *CreateOpenidConnectPluginConfig) GetBearerTokenCookieName() *string {
 	return o.BearerTokenCookieName
 }
 
-func (o *CreateOpenidConnectPluginConfig) GetClientCredentialsParamType() []ClientCredentialsParamType {
+func (o *CreateOpenidConnectPluginConfig) GetBearerTokenParamType() []CreateOpenidConnectPluginBearerTokenParamType {
 	if o == nil {
 		return nil
 	}
-	return o.ClientCredentialsParamType
+	return o.BearerTokenParamType
 }
 
-func (o *CreateOpenidConnectPluginConfig) GetPasswordParamType() []PasswordParamType {
+func (o *CreateOpenidConnectPluginConfig) GetByUsernameIgnoreCase() *bool {
 	if o == nil {
 		return nil
 	}
-	return o.PasswordParamType
+	return o.ByUsernameIgnoreCase
 }
 
-func (o *CreateOpenidConnectPluginConfig) GetIDTokenParamType() []IDTokenParamType {
+func (o *CreateOpenidConnectPluginConfig) GetCacheIntrospection() *bool {
 	if o == nil {
 		return nil
 	}
-	return o.IDTokenParamType
+	return o.CacheIntrospection
 }
 
-func (o *CreateOpenidConnectPluginConfig) GetIDTokenParamName() *string {
+func (o *CreateOpenidConnectPluginConfig) GetCacheTokenExchange() *bool {
 	if o == nil {
 		return nil
 	}
-	return o.IDTokenParamName
+	return o.CacheTokenExchange
 }
 
-func (o *CreateOpenidConnectPluginConfig) GetRefreshTokenParamType() []RefreshTokenParamType {
+func (o *CreateOpenidConnectPluginConfig) GetCacheTokens() *bool {
 	if o == nil {
 		return nil
 	}
-	return o.RefreshTokenParamType
+	return o.CacheTokens
 }
 
-func (o *CreateOpenidConnectPluginConfig) GetRefreshTokenParamName() *string {
+func (o *CreateOpenidConnectPluginConfig) GetCacheTokensSalt() *string {
 	if o == nil {
 		return nil
 	}
-	return o.RefreshTokenParamName
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetRefreshTokens() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.RefreshTokens
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetUpstreamHeadersClaims() []string {
-	if o == nil {
-		return nil
-	}
-	return o.UpstreamHeadersClaims
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetUpstreamHeadersNames() []string {
-	if o == nil {
-		return nil
-	}
-	return o.UpstreamHeadersNames
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetUpstreamAccessTokenHeader() *string {
-	if o == nil {
-		return nil
-	}
-	return o.UpstreamAccessTokenHeader
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetUpstreamAccessTokenJwkHeader() *string {
-	if o == nil {
-		return nil
-	}
-	return o.UpstreamAccessTokenJwkHeader
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetUpstreamIDTokenHeader() *string {
-	if o == nil {
-		return nil
-	}
-	return o.UpstreamIDTokenHeader
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetUpstreamIDTokenJwkHeader() *string {
-	if o == nil {
-		return nil
-	}
-	return o.UpstreamIDTokenJwkHeader
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetUpstreamRefreshTokenHeader() *string {
-	if o == nil {
-		return nil
-	}
-	return o.UpstreamRefreshTokenHeader
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetUpstreamUserInfoHeader() *string {
-	if o == nil {
-		return nil
-	}
-	return o.UpstreamUserInfoHeader
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetUpstreamUserInfoJwtHeader() *string {
-	if o == nil {
-		return nil
-	}
-	return o.UpstreamUserInfoJwtHeader
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetUpstreamIntrospectionHeader() *string {
-	if o == nil {
-		return nil
-	}
-	return o.UpstreamIntrospectionHeader
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetUpstreamIntrospectionJwtHeader() *string {
-	if o == nil {
-		return nil
-	}
-	return o.UpstreamIntrospectionJwtHeader
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetUpstreamSessionIDHeader() *string {
-	if o == nil {
-		return nil
-	}
-	return o.UpstreamSessionIDHeader
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetDownstreamHeadersClaims() []string {
-	if o == nil {
-		return nil
-	}
-	return o.DownstreamHeadersClaims
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetDownstreamHeadersNames() []string {
-	if o == nil {
-		return nil
-	}
-	return o.DownstreamHeadersNames
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetDownstreamAccessTokenHeader() *string {
-	if o == nil {
-		return nil
-	}
-	return o.DownstreamAccessTokenHeader
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetDownstreamAccessTokenJwkHeader() *string {
-	if o == nil {
-		return nil
-	}
-	return o.DownstreamAccessTokenJwkHeader
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetDownstreamIDTokenHeader() *string {
-	if o == nil {
-		return nil
-	}
-	return o.DownstreamIDTokenHeader
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetDownstreamIDTokenJwkHeader() *string {
-	if o == nil {
-		return nil
-	}
-	return o.DownstreamIDTokenJwkHeader
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetDownstreamRefreshTokenHeader() *string {
-	if o == nil {
-		return nil
-	}
-	return o.DownstreamRefreshTokenHeader
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetDownstreamUserInfoHeader() *string {
-	if o == nil {
-		return nil
-	}
-	return o.DownstreamUserInfoHeader
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetDownstreamUserInfoJwtHeader() *string {
-	if o == nil {
-		return nil
-	}
-	return o.DownstreamUserInfoJwtHeader
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetDownstreamIntrospectionHeader() *string {
-	if o == nil {
-		return nil
-	}
-	return o.DownstreamIntrospectionHeader
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetDownstreamIntrospectionJwtHeader() *string {
-	if o == nil {
-		return nil
-	}
-	return o.DownstreamIntrospectionJwtHeader
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetDownstreamSessionIDHeader() *string {
-	if o == nil {
-		return nil
-	}
-	return o.DownstreamSessionIDHeader
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetLoginMethods() []LoginMethods {
-	if o == nil {
-		return nil
-	}
-	return o.LoginMethods
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetLoginAction() *LoginAction {
-	if o == nil {
-		return nil
-	}
-	return o.LoginAction
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetLoginTokens() []LoginTokens {
-	if o == nil {
-		return nil
-	}
-	return o.LoginTokens
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetLoginRedirectMode() *LoginRedirectMode {
-	if o == nil {
-		return nil
-	}
-	return o.LoginRedirectMode
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetLogoutQueryArg() *string {
-	if o == nil {
-		return nil
-	}
-	return o.LogoutQueryArg
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetLogoutPostArg() *string {
-	if o == nil {
-		return nil
-	}
-	return o.LogoutPostArg
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetLogoutURISuffix() *string {
-	if o == nil {
-		return nil
-	}
-	return o.LogoutURISuffix
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetLogoutMethods() []LogoutMethods {
-	if o == nil {
-		return nil
-	}
-	return o.LogoutMethods
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetLogoutRevoke() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.LogoutRevoke
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetLogoutRevokeAccessToken() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.LogoutRevokeAccessToken
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetLogoutRevokeRefreshToken() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.LogoutRevokeRefreshToken
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetConsumerClaim() []string {
-	if o == nil {
-		return nil
-	}
-	return o.ConsumerClaim
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetConsumerBy() []ConsumerBy {
-	if o == nil {
-		return nil
-	}
-	return o.ConsumerBy
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetConsumerOptional() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.ConsumerOptional
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetCredentialClaim() []string {
-	if o == nil {
-		return nil
-	}
-	return o.CredentialClaim
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetAnonymous() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Anonymous
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetRunOnPreflight() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.RunOnPreflight
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetLeeway() *float64 {
-	if o == nil {
-		return nil
-	}
-	return o.Leeway
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetVerifyParameters() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.VerifyParameters
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetVerifyNonce() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.VerifyNonce
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetVerifyClaims() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.VerifyClaims
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetVerifySignature() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.VerifySignature
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetIgnoreSignature() []IgnoreSignature {
-	if o == nil {
-		return nil
-	}
-	return o.IgnoreSignature
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetEnableHsSignatures() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.EnableHsSignatures
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetDisableSession() []DisableSession {
-	if o == nil {
-		return nil
-	}
-	return o.DisableSession
+	return o.CacheTokensSalt
 }
 
 func (o *CreateOpenidConnectPluginConfig) GetCacheTTL() *float64 {
@@ -3278,34 +2109,6 @@ func (o *CreateOpenidConnectPluginConfig) GetCacheTTLResurrect() *float64 {
 	return o.CacheTTLResurrect
 }
 
-func (o *CreateOpenidConnectPluginConfig) GetCacheTokens() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.CacheTokens
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetCacheTokensSalt() *string {
-	if o == nil {
-		return nil
-	}
-	return o.CacheTokensSalt
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetCacheIntrospection() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.CacheIntrospection
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetCacheTokenExchange() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.CacheTokenExchange
-}
-
 func (o *CreateOpenidConnectPluginConfig) GetCacheUserInfo() *bool {
 	if o == nil {
 		return nil
@@ -3313,11 +2116,263 @@ func (o *CreateOpenidConnectPluginConfig) GetCacheUserInfo() *bool {
 	return o.CacheUserInfo
 }
 
-func (o *CreateOpenidConnectPluginConfig) GetSearchUserInfo() *bool {
+func (o *CreateOpenidConnectPluginConfig) GetClientAlg() []CreateOpenidConnectPluginClientAlg {
 	if o == nil {
 		return nil
 	}
-	return o.SearchUserInfo
+	return o.ClientAlg
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetClientArg() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ClientArg
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetClientAuth() []CreateOpenidConnectPluginClientAuth {
+	if o == nil {
+		return nil
+	}
+	return o.ClientAuth
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetClientCredentialsParamType() []CreateOpenidConnectPluginClientCredentialsParamType {
+	if o == nil {
+		return nil
+	}
+	return o.ClientCredentialsParamType
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetClientID() []string {
+	if o == nil {
+		return nil
+	}
+	return o.ClientID
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetClientJwk() []CreateOpenidConnectPluginClientJwk {
+	if o == nil {
+		return nil
+	}
+	return o.ClientJwk
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetClientSecret() []string {
+	if o == nil {
+		return nil
+	}
+	return o.ClientSecret
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetConsumerBy() []CreateOpenidConnectPluginConsumerBy {
+	if o == nil {
+		return nil
+	}
+	return o.ConsumerBy
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetConsumerClaim() []string {
+	if o == nil {
+		return nil
+	}
+	return o.ConsumerClaim
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetConsumerOptional() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ConsumerOptional
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetCredentialClaim() []string {
+	if o == nil {
+		return nil
+	}
+	return o.CredentialClaim
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetDisableSession() []CreateOpenidConnectPluginDisableSession {
+	if o == nil {
+		return nil
+	}
+	return o.DisableSession
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetDiscoveryHeadersNames() []string {
+	if o == nil {
+		return nil
+	}
+	return o.DiscoveryHeadersNames
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetDiscoveryHeadersValues() []string {
+	if o == nil {
+		return nil
+	}
+	return o.DiscoveryHeadersValues
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetDisplayErrors() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.DisplayErrors
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetDomains() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Domains
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetDownstreamAccessTokenHeader() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DownstreamAccessTokenHeader
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetDownstreamAccessTokenJwkHeader() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DownstreamAccessTokenJwkHeader
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetDownstreamHeadersClaims() []string {
+	if o == nil {
+		return nil
+	}
+	return o.DownstreamHeadersClaims
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetDownstreamHeadersNames() []string {
+	if o == nil {
+		return nil
+	}
+	return o.DownstreamHeadersNames
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetDownstreamIDTokenHeader() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DownstreamIDTokenHeader
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetDownstreamIDTokenJwkHeader() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DownstreamIDTokenJwkHeader
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetDownstreamIntrospectionHeader() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DownstreamIntrospectionHeader
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetDownstreamIntrospectionJwtHeader() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DownstreamIntrospectionJwtHeader
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetDownstreamRefreshTokenHeader() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DownstreamRefreshTokenHeader
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetDownstreamSessionIDHeader() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DownstreamSessionIDHeader
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetDownstreamUserInfoHeader() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DownstreamUserInfoHeader
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetDownstreamUserInfoJwtHeader() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DownstreamUserInfoJwtHeader
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetEnableHsSignatures() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.EnableHsSignatures
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetEndSessionEndpoint() *string {
+	if o == nil {
+		return nil
+	}
+	return o.EndSessionEndpoint
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetExposeErrorCode() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ExposeErrorCode
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetExtraJwksUris() []string {
+	if o == nil {
+		return nil
+	}
+	return o.ExtraJwksUris
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetForbiddenDestroySession() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ForbiddenDestroySession
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetForbiddenErrorMessage() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ForbiddenErrorMessage
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetForbiddenRedirectURI() []string {
+	if o == nil {
+		return nil
+	}
+	return o.ForbiddenRedirectURI
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetGroupsClaim() []string {
+	if o == nil {
+		return nil
+	}
+	return o.GroupsClaim
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetGroupsRequired() []string {
+	if o == nil {
+		return nil
+	}
+	return o.GroupsRequired
 }
 
 func (o *CreateOpenidConnectPluginConfig) GetHideCredentials() *bool {
@@ -3325,13 +2380,6 @@ func (o *CreateOpenidConnectPluginConfig) GetHideCredentials() *bool {
 		return nil
 	}
 	return o.HideCredentials
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetHTTPVersion() *float64 {
-	if o == nil {
-		return nil
-	}
-	return o.HTTPVersion
 }
 
 func (o *CreateOpenidConnectPluginConfig) GetHTTPProxy() *string {
@@ -3348,6 +2396,13 @@ func (o *CreateOpenidConnectPluginConfig) GetHTTPProxyAuthorization() *string {
 	return o.HTTPProxyAuthorization
 }
 
+func (o *CreateOpenidConnectPluginConfig) GetHTTPVersion() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.HTTPVersion
+}
+
 func (o *CreateOpenidConnectPluginConfig) GetHTTPSProxy() *string {
 	if o == nil {
 		return nil
@@ -3362,11 +2417,144 @@ func (o *CreateOpenidConnectPluginConfig) GetHTTPSProxyAuthorization() *string {
 	return o.HTTPSProxyAuthorization
 }
 
-func (o *CreateOpenidConnectPluginConfig) GetNoProxy() *string {
+func (o *CreateOpenidConnectPluginConfig) GetIDTokenParamName() *string {
 	if o == nil {
 		return nil
 	}
-	return o.NoProxy
+	return o.IDTokenParamName
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetIDTokenParamType() []CreateOpenidConnectPluginIDTokenParamType {
+	if o == nil {
+		return nil
+	}
+	return o.IDTokenParamType
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetIgnoreSignature() []CreateOpenidConnectPluginIgnoreSignature {
+	if o == nil {
+		return nil
+	}
+	return o.IgnoreSignature
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetIntrospectJwtTokens() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.IntrospectJwtTokens
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetIntrospectionAccept() *CreateOpenidConnectPluginIntrospectionAccept {
+	if o == nil {
+		return nil
+	}
+	return o.IntrospectionAccept
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetIntrospectionCheckActive() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.IntrospectionCheckActive
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetIntrospectionEndpoint() *string {
+	if o == nil {
+		return nil
+	}
+	return o.IntrospectionEndpoint
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetIntrospectionEndpointAuthMethod() *CreateOpenidConnectPluginIntrospectionEndpointAuthMethod {
+	if o == nil {
+		return nil
+	}
+	return o.IntrospectionEndpointAuthMethod
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetIntrospectionHeadersClient() []string {
+	if o == nil {
+		return nil
+	}
+	return o.IntrospectionHeadersClient
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetIntrospectionHeadersNames() []string {
+	if o == nil {
+		return nil
+	}
+	return o.IntrospectionHeadersNames
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetIntrospectionHeadersValues() []string {
+	if o == nil {
+		return nil
+	}
+	return o.IntrospectionHeadersValues
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetIntrospectionHint() *string {
+	if o == nil {
+		return nil
+	}
+	return o.IntrospectionHint
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetIntrospectionPostArgsClient() []string {
+	if o == nil {
+		return nil
+	}
+	return o.IntrospectionPostArgsClient
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetIntrospectionPostArgsNames() []string {
+	if o == nil {
+		return nil
+	}
+	return o.IntrospectionPostArgsNames
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetIntrospectionPostArgsValues() []string {
+	if o == nil {
+		return nil
+	}
+	return o.IntrospectionPostArgsValues
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetIntrospectionTokenParamName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.IntrospectionTokenParamName
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetIssuer() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Issuer
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetIssuersAllowed() []string {
+	if o == nil {
+		return nil
+	}
+	return o.IssuersAllowed
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetJwtSessionClaim() *string {
+	if o == nil {
+		return nil
+	}
+	return o.JwtSessionClaim
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetJwtSessionCookie() *string {
+	if o == nil {
+		return nil
+	}
+	return o.JwtSessionCookie
 }
 
 func (o *CreateOpenidConnectPluginConfig) GetKeepalive() *bool {
@@ -3374,6 +2562,608 @@ func (o *CreateOpenidConnectPluginConfig) GetKeepalive() *bool {
 		return nil
 	}
 	return o.Keepalive
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetLeeway() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.Leeway
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetLoginAction() *CreateOpenidConnectPluginLoginAction {
+	if o == nil {
+		return nil
+	}
+	return o.LoginAction
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetLoginMethods() []CreateOpenidConnectPluginLoginMethods {
+	if o == nil {
+		return nil
+	}
+	return o.LoginMethods
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetLoginRedirectMode() *CreateOpenidConnectPluginLoginRedirectMode {
+	if o == nil {
+		return nil
+	}
+	return o.LoginRedirectMode
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetLoginRedirectURI() []string {
+	if o == nil {
+		return nil
+	}
+	return o.LoginRedirectURI
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetLoginTokens() []CreateOpenidConnectPluginLoginTokens {
+	if o == nil {
+		return nil
+	}
+	return o.LoginTokens
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetLogoutMethods() []CreateOpenidConnectPluginLogoutMethods {
+	if o == nil {
+		return nil
+	}
+	return o.LogoutMethods
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetLogoutPostArg() *string {
+	if o == nil {
+		return nil
+	}
+	return o.LogoutPostArg
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetLogoutQueryArg() *string {
+	if o == nil {
+		return nil
+	}
+	return o.LogoutQueryArg
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetLogoutRedirectURI() []string {
+	if o == nil {
+		return nil
+	}
+	return o.LogoutRedirectURI
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetLogoutRevoke() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.LogoutRevoke
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetLogoutRevokeAccessToken() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.LogoutRevokeAccessToken
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetLogoutRevokeRefreshToken() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.LogoutRevokeRefreshToken
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetLogoutURISuffix() *string {
+	if o == nil {
+		return nil
+	}
+	return o.LogoutURISuffix
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetMaxAge() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxAge
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetMtlsIntrospectionEndpoint() *string {
+	if o == nil {
+		return nil
+	}
+	return o.MtlsIntrospectionEndpoint
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetMtlsRevocationEndpoint() *string {
+	if o == nil {
+		return nil
+	}
+	return o.MtlsRevocationEndpoint
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetMtlsTokenEndpoint() *string {
+	if o == nil {
+		return nil
+	}
+	return o.MtlsTokenEndpoint
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetNoProxy() *string {
+	if o == nil {
+		return nil
+	}
+	return o.NoProxy
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetPasswordParamType() []CreateOpenidConnectPluginPasswordParamType {
+	if o == nil {
+		return nil
+	}
+	return o.PasswordParamType
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetPreserveQueryArgs() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.PreserveQueryArgs
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetProofOfPossessionAuthMethodsValidation() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ProofOfPossessionAuthMethodsValidation
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetProofOfPossessionMtls() *CreateOpenidConnectPluginProofOfPossessionMtls {
+	if o == nil {
+		return nil
+	}
+	return o.ProofOfPossessionMtls
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetPushedAuthorizationRequestEndpoint() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PushedAuthorizationRequestEndpoint
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetPushedAuthorizationRequestEndpointAuthMethod() *CreateOpenidConnectPluginPushedAuthorizationRequestEndpointAuthMethod {
+	if o == nil {
+		return nil
+	}
+	return o.PushedAuthorizationRequestEndpointAuthMethod
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetRedirectURI() []string {
+	if o == nil {
+		return nil
+	}
+	return o.RedirectURI
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetRediscoveryLifetime() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.RediscoveryLifetime
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetRefreshTokenParamName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.RefreshTokenParamName
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetRefreshTokenParamType() []CreateOpenidConnectPluginRefreshTokenParamType {
+	if o == nil {
+		return nil
+	}
+	return o.RefreshTokenParamType
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetRefreshTokens() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RefreshTokens
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetRequireProofKeyForCodeExchange() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RequireProofKeyForCodeExchange
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetRequirePushedAuthorizationRequests() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RequirePushedAuthorizationRequests
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetResolveDistributedClaims() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ResolveDistributedClaims
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetResponseMode() *CreateOpenidConnectPluginResponseMode {
+	if o == nil {
+		return nil
+	}
+	return o.ResponseMode
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetResponseType() []string {
+	if o == nil {
+		return nil
+	}
+	return o.ResponseType
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetReverify() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Reverify
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetRevocationEndpoint() *string {
+	if o == nil {
+		return nil
+	}
+	return o.RevocationEndpoint
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetRevocationEndpointAuthMethod() *CreateOpenidConnectPluginRevocationEndpointAuthMethod {
+	if o == nil {
+		return nil
+	}
+	return o.RevocationEndpointAuthMethod
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetRevocationTokenParamName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.RevocationTokenParamName
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetRolesClaim() []string {
+	if o == nil {
+		return nil
+	}
+	return o.RolesClaim
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetRolesRequired() []string {
+	if o == nil {
+		return nil
+	}
+	return o.RolesRequired
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetRunOnPreflight() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RunOnPreflight
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetScopes() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Scopes
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetScopesClaim() []string {
+	if o == nil {
+		return nil
+	}
+	return o.ScopesClaim
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetScopesRequired() []string {
+	if o == nil {
+		return nil
+	}
+	return o.ScopesRequired
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetSearchUserInfo() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.SearchUserInfo
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetSessionAbsoluteTimeout() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.SessionAbsoluteTimeout
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetSessionAudience() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SessionAudience
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetSessionCookieDomain() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SessionCookieDomain
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetSessionCookieHTTPOnly() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.SessionCookieHTTPOnly
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetSessionCookieName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SessionCookieName
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetSessionCookiePath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SessionCookiePath
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetSessionCookieSameSite() *CreateOpenidConnectPluginSessionCookieSameSite {
+	if o == nil {
+		return nil
+	}
+	return o.SessionCookieSameSite
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetSessionCookieSecure() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.SessionCookieSecure
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetSessionEnforceSameSubject() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.SessionEnforceSameSubject
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetSessionHashStorageKey() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.SessionHashStorageKey
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetSessionHashSubject() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.SessionHashSubject
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetSessionIdlingTimeout() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.SessionIdlingTimeout
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetSessionMemcachedHost() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SessionMemcachedHost
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetSessionMemcachedPort() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.SessionMemcachedPort
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetSessionMemcachedPrefix() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SessionMemcachedPrefix
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetSessionMemcachedSocket() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SessionMemcachedSocket
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetSessionRedisClusterMaxRedirections() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.SessionRedisClusterMaxRedirections
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetSessionRedisClusterNodes() []CreateOpenidConnectPluginSessionRedisClusterNodes {
+	if o == nil {
+		return nil
+	}
+	return o.SessionRedisClusterNodes
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetSessionRedisConnectTimeout() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.SessionRedisConnectTimeout
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetSessionRedisHost() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SessionRedisHost
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetSessionRedisPassword() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SessionRedisPassword
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetSessionRedisPort() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.SessionRedisPort
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetSessionRedisPrefix() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SessionRedisPrefix
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetSessionRedisReadTimeout() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.SessionRedisReadTimeout
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetSessionRedisSendTimeout() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.SessionRedisSendTimeout
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetSessionRedisServerName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SessionRedisServerName
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetSessionRedisSocket() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SessionRedisSocket
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetSessionRedisSsl() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.SessionRedisSsl
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetSessionRedisSslVerify() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.SessionRedisSslVerify
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetSessionRedisUsername() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SessionRedisUsername
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetSessionRemember() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.SessionRemember
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetSessionRememberAbsoluteTimeout() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.SessionRememberAbsoluteTimeout
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetSessionRememberCookieName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SessionRememberCookieName
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetSessionRememberRollingTimeout() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.SessionRememberRollingTimeout
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetSessionRequestHeaders() []CreateOpenidConnectPluginSessionRequestHeaders {
+	if o == nil {
+		return nil
+	}
+	return o.SessionRequestHeaders
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetSessionResponseHeaders() []CreateOpenidConnectPluginSessionResponseHeaders {
+	if o == nil {
+		return nil
+	}
+	return o.SessionResponseHeaders
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetSessionRollingTimeout() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.SessionRollingTimeout
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetSessionSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SessionSecret
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetSessionStorage() *CreateOpenidConnectPluginSessionStorage {
+	if o == nil {
+		return nil
+	}
+	return o.SessionStorage
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetSessionStoreMetadata() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.SessionStoreMetadata
 }
 
 func (o *CreateOpenidConnectPluginConfig) GetSslVerify() *bool {
@@ -3390,69 +3180,6 @@ func (o *CreateOpenidConnectPluginConfig) GetTimeout() *float64 {
 	return o.Timeout
 }
 
-func (o *CreateOpenidConnectPluginConfig) GetDisplayErrors() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.DisplayErrors
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetByUsernameIgnoreCase() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.ByUsernameIgnoreCase
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetResolveDistributedClaims() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.ResolveDistributedClaims
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetExposeErrorCode() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.ExposeErrorCode
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetTokenCacheKeyIncludeScope() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.TokenCacheKeyIncludeScope
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetIntrospectionTokenParamName() *string {
-	if o == nil {
-		return nil
-	}
-	return o.IntrospectionTokenParamName
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetRevocationTokenParamName() *string {
-	if o == nil {
-		return nil
-	}
-	return o.RevocationTokenParamName
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetProofOfPossessionMtls() *ProofOfPossessionMtls {
-	if o == nil {
-		return nil
-	}
-	return o.ProofOfPossessionMtls
-}
-
-func (o *CreateOpenidConnectPluginConfig) GetProofOfPossessionAuthMethodsValidation() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.ProofOfPossessionAuthMethodsValidation
-}
-
 func (o *CreateOpenidConnectPluginConfig) GetTLSClientAuthCertID() *string {
 	if o == nil {
 		return nil
@@ -3467,25 +3194,298 @@ func (o *CreateOpenidConnectPluginConfig) GetTLSClientAuthSslVerify() *bool {
 	return o.TLSClientAuthSslVerify
 }
 
-func (o *CreateOpenidConnectPluginConfig) GetMtlsTokenEndpoint() *string {
+func (o *CreateOpenidConnectPluginConfig) GetTokenCacheKeyIncludeScope() *bool {
 	if o == nil {
 		return nil
 	}
-	return o.MtlsTokenEndpoint
+	return o.TokenCacheKeyIncludeScope
 }
 
-func (o *CreateOpenidConnectPluginConfig) GetMtlsIntrospectionEndpoint() *string {
+func (o *CreateOpenidConnectPluginConfig) GetTokenEndpoint() *string {
 	if o == nil {
 		return nil
 	}
-	return o.MtlsIntrospectionEndpoint
+	return o.TokenEndpoint
 }
 
-func (o *CreateOpenidConnectPluginConfig) GetMtlsRevocationEndpoint() *string {
+func (o *CreateOpenidConnectPluginConfig) GetTokenEndpointAuthMethod() *CreateOpenidConnectPluginTokenEndpointAuthMethod {
 	if o == nil {
 		return nil
 	}
-	return o.MtlsRevocationEndpoint
+	return o.TokenEndpointAuthMethod
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetTokenExchangeEndpoint() *string {
+	if o == nil {
+		return nil
+	}
+	return o.TokenExchangeEndpoint
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetTokenHeadersClient() []string {
+	if o == nil {
+		return nil
+	}
+	return o.TokenHeadersClient
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetTokenHeadersGrants() []CreateOpenidConnectPluginTokenHeadersGrants {
+	if o == nil {
+		return nil
+	}
+	return o.TokenHeadersGrants
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetTokenHeadersNames() []string {
+	if o == nil {
+		return nil
+	}
+	return o.TokenHeadersNames
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetTokenHeadersPrefix() *string {
+	if o == nil {
+		return nil
+	}
+	return o.TokenHeadersPrefix
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetTokenHeadersReplay() []string {
+	if o == nil {
+		return nil
+	}
+	return o.TokenHeadersReplay
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetTokenHeadersValues() []string {
+	if o == nil {
+		return nil
+	}
+	return o.TokenHeadersValues
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetTokenPostArgsClient() []string {
+	if o == nil {
+		return nil
+	}
+	return o.TokenPostArgsClient
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetTokenPostArgsNames() []string {
+	if o == nil {
+		return nil
+	}
+	return o.TokenPostArgsNames
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetTokenPostArgsValues() []string {
+	if o == nil {
+		return nil
+	}
+	return o.TokenPostArgsValues
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetUnauthorizedDestroySession() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.UnauthorizedDestroySession
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetUnauthorizedErrorMessage() *string {
+	if o == nil {
+		return nil
+	}
+	return o.UnauthorizedErrorMessage
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetUnauthorizedRedirectURI() []string {
+	if o == nil {
+		return nil
+	}
+	return o.UnauthorizedRedirectURI
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetUnexpectedRedirectURI() []string {
+	if o == nil {
+		return nil
+	}
+	return o.UnexpectedRedirectURI
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetUpstreamAccessTokenHeader() *string {
+	if o == nil {
+		return nil
+	}
+	return o.UpstreamAccessTokenHeader
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetUpstreamAccessTokenJwkHeader() *string {
+	if o == nil {
+		return nil
+	}
+	return o.UpstreamAccessTokenJwkHeader
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetUpstreamHeadersClaims() []string {
+	if o == nil {
+		return nil
+	}
+	return o.UpstreamHeadersClaims
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetUpstreamHeadersNames() []string {
+	if o == nil {
+		return nil
+	}
+	return o.UpstreamHeadersNames
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetUpstreamIDTokenHeader() *string {
+	if o == nil {
+		return nil
+	}
+	return o.UpstreamIDTokenHeader
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetUpstreamIDTokenJwkHeader() *string {
+	if o == nil {
+		return nil
+	}
+	return o.UpstreamIDTokenJwkHeader
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetUpstreamIntrospectionHeader() *string {
+	if o == nil {
+		return nil
+	}
+	return o.UpstreamIntrospectionHeader
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetUpstreamIntrospectionJwtHeader() *string {
+	if o == nil {
+		return nil
+	}
+	return o.UpstreamIntrospectionJwtHeader
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetUpstreamRefreshTokenHeader() *string {
+	if o == nil {
+		return nil
+	}
+	return o.UpstreamRefreshTokenHeader
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetUpstreamSessionIDHeader() *string {
+	if o == nil {
+		return nil
+	}
+	return o.UpstreamSessionIDHeader
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetUpstreamUserInfoHeader() *string {
+	if o == nil {
+		return nil
+	}
+	return o.UpstreamUserInfoHeader
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetUpstreamUserInfoJwtHeader() *string {
+	if o == nil {
+		return nil
+	}
+	return o.UpstreamUserInfoJwtHeader
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetUserinfoAccept() *CreateOpenidConnectPluginUserinfoAccept {
+	if o == nil {
+		return nil
+	}
+	return o.UserinfoAccept
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetUserinfoEndpoint() *string {
+	if o == nil {
+		return nil
+	}
+	return o.UserinfoEndpoint
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetUserinfoHeadersClient() []string {
+	if o == nil {
+		return nil
+	}
+	return o.UserinfoHeadersClient
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetUserinfoHeadersNames() []string {
+	if o == nil {
+		return nil
+	}
+	return o.UserinfoHeadersNames
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetUserinfoHeadersValues() []string {
+	if o == nil {
+		return nil
+	}
+	return o.UserinfoHeadersValues
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetUserinfoQueryArgsClient() []string {
+	if o == nil {
+		return nil
+	}
+	return o.UserinfoQueryArgsClient
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetUserinfoQueryArgsNames() []string {
+	if o == nil {
+		return nil
+	}
+	return o.UserinfoQueryArgsNames
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetUserinfoQueryArgsValues() []string {
+	if o == nil {
+		return nil
+	}
+	return o.UserinfoQueryArgsValues
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetUsingPseudoIssuer() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.UsingPseudoIssuer
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetVerifyClaims() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.VerifyClaims
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetVerifyNonce() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.VerifyNonce
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetVerifyParameters() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.VerifyParameters
+}
+
+func (o *CreateOpenidConnectPluginConfig) GetVerifySignature() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.VerifySignature
 }
 
 // CreateOpenidConnectPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.

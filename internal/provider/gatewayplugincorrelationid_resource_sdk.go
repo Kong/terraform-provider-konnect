@@ -59,28 +59,28 @@ func (r *GatewayPluginCorrelationIDResourceModel) ToSharedCreateCorrelationIDPlu
 			ID: id2,
 		}
 	}
-	headerName := new(string)
-	if !r.Config.HeaderName.IsUnknown() && !r.Config.HeaderName.IsNull() {
-		*headerName = r.Config.HeaderName.ValueString()
-	} else {
-		headerName = nil
-	}
-	generator := new(shared.Generator)
-	if !r.Config.Generator.IsUnknown() && !r.Config.Generator.IsNull() {
-		*generator = shared.Generator(r.Config.Generator.ValueString())
-	} else {
-		generator = nil
-	}
 	echoDownstream := new(bool)
 	if !r.Config.EchoDownstream.IsUnknown() && !r.Config.EchoDownstream.IsNull() {
 		*echoDownstream = r.Config.EchoDownstream.ValueBool()
 	} else {
 		echoDownstream = nil
 	}
+	generator := new(shared.CreateCorrelationIDPluginGenerator)
+	if !r.Config.Generator.IsUnknown() && !r.Config.Generator.IsNull() {
+		*generator = shared.CreateCorrelationIDPluginGenerator(r.Config.Generator.ValueString())
+	} else {
+		generator = nil
+	}
+	headerName := new(string)
+	if !r.Config.HeaderName.IsUnknown() && !r.Config.HeaderName.IsNull() {
+		*headerName = r.Config.HeaderName.ValueString()
+	} else {
+		headerName = nil
+	}
 	config := shared.CreateCorrelationIDPluginConfig{
-		HeaderName:     headerName,
-		Generator:      generator,
 		EchoDownstream: echoDownstream,
+		Generator:      generator,
+		HeaderName:     headerName,
 	}
 	out := shared.CreateCorrelationIDPlugin{
 		Enabled:   enabled,

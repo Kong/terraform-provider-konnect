@@ -95,36 +95,6 @@ func (o *CreateResponseTransformerPluginService) GetID() *string {
 	return o.ID
 }
 
-type CreateResponseTransformerPluginRemove struct {
-	JSON    []string `json:"json,omitempty"`
-	Headers []string `json:"headers,omitempty"`
-}
-
-func (o *CreateResponseTransformerPluginRemove) GetJSON() []string {
-	if o == nil {
-		return nil
-	}
-	return o.JSON
-}
-
-func (o *CreateResponseTransformerPluginRemove) GetHeaders() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Headers
-}
-
-type CreateResponseTransformerPluginRename struct {
-	Headers []string `json:"headers,omitempty"`
-}
-
-func (o *CreateResponseTransformerPluginRename) GetHeaders() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Headers
-}
-
 type CreateResponseTransformerPluginJSONTypes string
 
 const (
@@ -155,33 +125,33 @@ func (e *CreateResponseTransformerPluginJSONTypes) UnmarshalJSON(data []byte) er
 	}
 }
 
-type CreateResponseTransformerPluginReplace struct {
-	JSON []string `json:"json,omitempty"`
+type CreateResponseTransformerPluginAdd struct {
+	Headers []string `json:"headers,omitempty"`
+	JSON    []string `json:"json,omitempty"`
 	// List of JSON type names. Specify the types of the JSON values returned when appending
 	// JSON properties. Each string element can be one of: boolean, number, or string.
 	JSONTypes []CreateResponseTransformerPluginJSONTypes `json:"json_types,omitempty"`
-	Headers   []string                                   `json:"headers,omitempty"`
 }
 
-func (o *CreateResponseTransformerPluginReplace) GetJSON() []string {
+func (o *CreateResponseTransformerPluginAdd) GetHeaders() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Headers
+}
+
+func (o *CreateResponseTransformerPluginAdd) GetJSON() []string {
 	if o == nil {
 		return nil
 	}
 	return o.JSON
 }
 
-func (o *CreateResponseTransformerPluginReplace) GetJSONTypes() []CreateResponseTransformerPluginJSONTypes {
+func (o *CreateResponseTransformerPluginAdd) GetJSONTypes() []CreateResponseTransformerPluginJSONTypes {
 	if o == nil {
 		return nil
 	}
 	return o.JSONTypes
-}
-
-func (o *CreateResponseTransformerPluginReplace) GetHeaders() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Headers
 }
 
 type CreateResponseTransformerPluginConfigJSONTypes string
@@ -214,48 +184,78 @@ func (e *CreateResponseTransformerPluginConfigJSONTypes) UnmarshalJSON(data []by
 	}
 }
 
-type CreateResponseTransformerPluginAdd struct {
-	JSON []string `json:"json,omitempty"`
+type CreateResponseTransformerPluginAppend struct {
+	Headers []string `json:"headers,omitempty"`
+	JSON    []string `json:"json,omitempty"`
 	// List of JSON type names. Specify the types of the JSON values returned when appending
 	// JSON properties. Each string element can be one of: boolean, number, or string.
 	JSONTypes []CreateResponseTransformerPluginConfigJSONTypes `json:"json_types,omitempty"`
-	Headers   []string                                         `json:"headers,omitempty"`
 }
 
-func (o *CreateResponseTransformerPluginAdd) GetJSON() []string {
-	if o == nil {
-		return nil
-	}
-	return o.JSON
-}
-
-func (o *CreateResponseTransformerPluginAdd) GetJSONTypes() []CreateResponseTransformerPluginConfigJSONTypes {
-	if o == nil {
-		return nil
-	}
-	return o.JSONTypes
-}
-
-func (o *CreateResponseTransformerPluginAdd) GetHeaders() []string {
+func (o *CreateResponseTransformerPluginAppend) GetHeaders() []string {
 	if o == nil {
 		return nil
 	}
 	return o.Headers
 }
 
-type CreateResponseTransformerPluginConfigAppendJSONTypes string
+func (o *CreateResponseTransformerPluginAppend) GetJSON() []string {
+	if o == nil {
+		return nil
+	}
+	return o.JSON
+}
+
+func (o *CreateResponseTransformerPluginAppend) GetJSONTypes() []CreateResponseTransformerPluginConfigJSONTypes {
+	if o == nil {
+		return nil
+	}
+	return o.JSONTypes
+}
+
+type CreateResponseTransformerPluginRemove struct {
+	Headers []string `json:"headers,omitempty"`
+	JSON    []string `json:"json,omitempty"`
+}
+
+func (o *CreateResponseTransformerPluginRemove) GetHeaders() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Headers
+}
+
+func (o *CreateResponseTransformerPluginRemove) GetJSON() []string {
+	if o == nil {
+		return nil
+	}
+	return o.JSON
+}
+
+type CreateResponseTransformerPluginRename struct {
+	Headers []string `json:"headers,omitempty"`
+}
+
+func (o *CreateResponseTransformerPluginRename) GetHeaders() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Headers
+}
+
+type CreateResponseTransformerPluginConfigReplaceJSONTypes string
 
 const (
-	CreateResponseTransformerPluginConfigAppendJSONTypesBoolean CreateResponseTransformerPluginConfigAppendJSONTypes = "boolean"
-	CreateResponseTransformerPluginConfigAppendJSONTypesNumber  CreateResponseTransformerPluginConfigAppendJSONTypes = "number"
-	CreateResponseTransformerPluginConfigAppendJSONTypesString  CreateResponseTransformerPluginConfigAppendJSONTypes = "string"
+	CreateResponseTransformerPluginConfigReplaceJSONTypesBoolean CreateResponseTransformerPluginConfigReplaceJSONTypes = "boolean"
+	CreateResponseTransformerPluginConfigReplaceJSONTypesNumber  CreateResponseTransformerPluginConfigReplaceJSONTypes = "number"
+	CreateResponseTransformerPluginConfigReplaceJSONTypesString  CreateResponseTransformerPluginConfigReplaceJSONTypes = "string"
 )
 
-func (e CreateResponseTransformerPluginConfigAppendJSONTypes) ToPointer() *CreateResponseTransformerPluginConfigAppendJSONTypes {
+func (e CreateResponseTransformerPluginConfigReplaceJSONTypes) ToPointer() *CreateResponseTransformerPluginConfigReplaceJSONTypes {
 	return &e
 }
 
-func (e *CreateResponseTransformerPluginConfigAppendJSONTypes) UnmarshalJSON(data []byte) error {
+func (e *CreateResponseTransformerPluginConfigReplaceJSONTypes) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -266,48 +266,62 @@ func (e *CreateResponseTransformerPluginConfigAppendJSONTypes) UnmarshalJSON(dat
 	case "number":
 		fallthrough
 	case "string":
-		*e = CreateResponseTransformerPluginConfigAppendJSONTypes(v)
+		*e = CreateResponseTransformerPluginConfigReplaceJSONTypes(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for CreateResponseTransformerPluginConfigAppendJSONTypes: %v", v)
+		return fmt.Errorf("invalid value for CreateResponseTransformerPluginConfigReplaceJSONTypes: %v", v)
 	}
 }
 
-type CreateResponseTransformerPluginAppend struct {
-	JSON []string `json:"json,omitempty"`
+type CreateResponseTransformerPluginReplace struct {
+	Headers []string `json:"headers,omitempty"`
+	JSON    []string `json:"json,omitempty"`
 	// List of JSON type names. Specify the types of the JSON values returned when appending
 	// JSON properties. Each string element can be one of: boolean, number, or string.
-	JSONTypes []CreateResponseTransformerPluginConfigAppendJSONTypes `json:"json_types,omitempty"`
-	Headers   []string                                               `json:"headers,omitempty"`
+	JSONTypes []CreateResponseTransformerPluginConfigReplaceJSONTypes `json:"json_types,omitempty"`
 }
 
-func (o *CreateResponseTransformerPluginAppend) GetJSON() []string {
-	if o == nil {
-		return nil
-	}
-	return o.JSON
-}
-
-func (o *CreateResponseTransformerPluginAppend) GetJSONTypes() []CreateResponseTransformerPluginConfigAppendJSONTypes {
-	if o == nil {
-		return nil
-	}
-	return o.JSONTypes
-}
-
-func (o *CreateResponseTransformerPluginAppend) GetHeaders() []string {
+func (o *CreateResponseTransformerPluginReplace) GetHeaders() []string {
 	if o == nil {
 		return nil
 	}
 	return o.Headers
 }
 
+func (o *CreateResponseTransformerPluginReplace) GetJSON() []string {
+	if o == nil {
+		return nil
+	}
+	return o.JSON
+}
+
+func (o *CreateResponseTransformerPluginReplace) GetJSONTypes() []CreateResponseTransformerPluginConfigReplaceJSONTypes {
+	if o == nil {
+		return nil
+	}
+	return o.JSONTypes
+}
+
 type CreateResponseTransformerPluginConfig struct {
+	Add     *CreateResponseTransformerPluginAdd     `json:"add,omitempty"`
+	Append  *CreateResponseTransformerPluginAppend  `json:"append,omitempty"`
 	Remove  *CreateResponseTransformerPluginRemove  `json:"remove,omitempty"`
 	Rename  *CreateResponseTransformerPluginRename  `json:"rename,omitempty"`
 	Replace *CreateResponseTransformerPluginReplace `json:"replace,omitempty"`
-	Add     *CreateResponseTransformerPluginAdd     `json:"add,omitempty"`
-	Append  *CreateResponseTransformerPluginAppend  `json:"append,omitempty"`
+}
+
+func (o *CreateResponseTransformerPluginConfig) GetAdd() *CreateResponseTransformerPluginAdd {
+	if o == nil {
+		return nil
+	}
+	return o.Add
+}
+
+func (o *CreateResponseTransformerPluginConfig) GetAppend() *CreateResponseTransformerPluginAppend {
+	if o == nil {
+		return nil
+	}
+	return o.Append
 }
 
 func (o *CreateResponseTransformerPluginConfig) GetRemove() *CreateResponseTransformerPluginRemove {
@@ -329,20 +343,6 @@ func (o *CreateResponseTransformerPluginConfig) GetReplace() *CreateResponseTran
 		return nil
 	}
 	return o.Replace
-}
-
-func (o *CreateResponseTransformerPluginConfig) GetAdd() *CreateResponseTransformerPluginAdd {
-	if o == nil {
-		return nil
-	}
-	return o.Add
-}
-
-func (o *CreateResponseTransformerPluginConfig) GetAppend() *CreateResponseTransformerPluginAppend {
-	if o == nil {
-		return nil
-	}
-	return o.Append
 }
 
 // CreateResponseTransformerPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.

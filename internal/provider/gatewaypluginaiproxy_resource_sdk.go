@@ -60,13 +60,7 @@ func (r *GatewayPluginAIProxyResourceModel) ToSharedCreateAIProxyPlugin() *share
 			ID: id2,
 		}
 	}
-	routeType := new(shared.RouteType)
-	if !r.Config.RouteType.IsUnknown() && !r.Config.RouteType.IsNull() {
-		*routeType = shared.RouteType(r.Config.RouteType.ValueString())
-	} else {
-		routeType = nil
-	}
-	var auth *shared.Auth
+	var auth *shared.CreateAIProxyPluginAuth
 	if r.Config.Auth != nil {
 		headerName := new(string)
 		if !r.Config.Auth.HeaderName.IsUnknown() && !r.Config.Auth.HeaderName.IsNull() {
@@ -80,6 +74,12 @@ func (r *GatewayPluginAIProxyResourceModel) ToSharedCreateAIProxyPlugin() *share
 		} else {
 			headerValue = nil
 		}
+		paramLocation := new(shared.CreateAIProxyPluginParamLocation)
+		if !r.Config.Auth.ParamLocation.IsUnknown() && !r.Config.Auth.ParamLocation.IsNull() {
+			*paramLocation = shared.CreateAIProxyPluginParamLocation(r.Config.Auth.ParamLocation.ValueString())
+		} else {
+			paramLocation = nil
+		}
 		paramName := new(string)
 		if !r.Config.Auth.ParamName.IsUnknown() && !r.Config.Auth.ParamName.IsNull() {
 			*paramName = r.Config.Auth.ParamName.ValueString()
@@ -92,25 +92,32 @@ func (r *GatewayPluginAIProxyResourceModel) ToSharedCreateAIProxyPlugin() *share
 		} else {
 			paramValue = nil
 		}
-		paramLocation := new(shared.ParamLocation)
-		if !r.Config.Auth.ParamLocation.IsUnknown() && !r.Config.Auth.ParamLocation.IsNull() {
-			*paramLocation = shared.ParamLocation(r.Config.Auth.ParamLocation.ValueString())
-		} else {
-			paramLocation = nil
-		}
-		auth = &shared.Auth{
+		auth = &shared.CreateAIProxyPluginAuth{
 			HeaderName:    headerName,
 			HeaderValue:   headerValue,
+			ParamLocation: paramLocation,
 			ParamName:     paramName,
 			ParamValue:    paramValue,
-			ParamLocation: paramLocation,
 		}
 	}
-	provider := new(shared.Provider)
-	if !r.Config.Model.Provider.IsUnknown() && !r.Config.Model.Provider.IsNull() {
-		*provider = shared.Provider(r.Config.Model.Provider.ValueString())
-	} else {
-		provider = nil
+	var logging *shared.CreateAIProxyPluginLogging
+	if r.Config.Logging != nil {
+		logPayloads := new(bool)
+		if !r.Config.Logging.LogPayloads.IsUnknown() && !r.Config.Logging.LogPayloads.IsNull() {
+			*logPayloads = r.Config.Logging.LogPayloads.ValueBool()
+		} else {
+			logPayloads = nil
+		}
+		logStatistics := new(bool)
+		if !r.Config.Logging.LogStatistics.IsUnknown() && !r.Config.Logging.LogStatistics.IsNull() {
+			*logStatistics = r.Config.Logging.LogStatistics.ValueBool()
+		} else {
+			logStatistics = nil
+		}
+		logging = &shared.CreateAIProxyPluginLogging{
+			LogPayloads:   logPayloads,
+			LogStatistics: logStatistics,
+		}
 	}
 	name := new(string)
 	if !r.Config.Model.Name.IsUnknown() && !r.Config.Model.Name.IsNull() {
@@ -118,43 +125,13 @@ func (r *GatewayPluginAIProxyResourceModel) ToSharedCreateAIProxyPlugin() *share
 	} else {
 		name = nil
 	}
-	var options *shared.Options
+	var options *shared.CreateAIProxyPluginOptions
 	if r.Config.Model.Options != nil {
-		maxTokens := new(int64)
-		if !r.Config.Model.Options.MaxTokens.IsUnknown() && !r.Config.Model.Options.MaxTokens.IsNull() {
-			*maxTokens = r.Config.Model.Options.MaxTokens.ValueInt64()
-		} else {
-			maxTokens = nil
-		}
-		temperature := new(float64)
-		if !r.Config.Model.Options.Temperature.IsUnknown() && !r.Config.Model.Options.Temperature.IsNull() {
-			*temperature, _ = r.Config.Model.Options.Temperature.ValueBigFloat().Float64()
-		} else {
-			temperature = nil
-		}
-		topP := new(float64)
-		if !r.Config.Model.Options.TopP.IsUnknown() && !r.Config.Model.Options.TopP.IsNull() {
-			*topP, _ = r.Config.Model.Options.TopP.ValueBigFloat().Float64()
-		} else {
-			topP = nil
-		}
-		topK := new(int64)
-		if !r.Config.Model.Options.TopK.IsUnknown() && !r.Config.Model.Options.TopK.IsNull() {
-			*topK = r.Config.Model.Options.TopK.ValueInt64()
-		} else {
-			topK = nil
-		}
 		anthropicVersion := new(string)
 		if !r.Config.Model.Options.AnthropicVersion.IsUnknown() && !r.Config.Model.Options.AnthropicVersion.IsNull() {
 			*anthropicVersion = r.Config.Model.Options.AnthropicVersion.ValueString()
 		} else {
 			anthropicVersion = nil
-		}
-		azureInstance := new(string)
-		if !r.Config.Model.Options.AzureInstance.IsUnknown() && !r.Config.Model.Options.AzureInstance.IsNull() {
-			*azureInstance = r.Config.Model.Options.AzureInstance.ValueString()
-		} else {
-			azureInstance = nil
 		}
 		azureAPIVersion := new(string)
 		if !r.Config.Model.Options.AzureAPIVersion.IsUnknown() && !r.Config.Model.Options.AzureAPIVersion.IsNull() {
@@ -168,17 +145,47 @@ func (r *GatewayPluginAIProxyResourceModel) ToSharedCreateAIProxyPlugin() *share
 		} else {
 			azureDeploymentID = nil
 		}
-		llama2Format := new(shared.Llama2Format)
+		azureInstance := new(string)
+		if !r.Config.Model.Options.AzureInstance.IsUnknown() && !r.Config.Model.Options.AzureInstance.IsNull() {
+			*azureInstance = r.Config.Model.Options.AzureInstance.ValueString()
+		} else {
+			azureInstance = nil
+		}
+		llama2Format := new(shared.CreateAIProxyPluginLlama2Format)
 		if !r.Config.Model.Options.Llama2Format.IsUnknown() && !r.Config.Model.Options.Llama2Format.IsNull() {
-			*llama2Format = shared.Llama2Format(r.Config.Model.Options.Llama2Format.ValueString())
+			*llama2Format = shared.CreateAIProxyPluginLlama2Format(r.Config.Model.Options.Llama2Format.ValueString())
 		} else {
 			llama2Format = nil
 		}
-		mistralFormat := new(shared.MistralFormat)
+		maxTokens := new(int64)
+		if !r.Config.Model.Options.MaxTokens.IsUnknown() && !r.Config.Model.Options.MaxTokens.IsNull() {
+			*maxTokens = r.Config.Model.Options.MaxTokens.ValueInt64()
+		} else {
+			maxTokens = nil
+		}
+		mistralFormat := new(shared.CreateAIProxyPluginMistralFormat)
 		if !r.Config.Model.Options.MistralFormat.IsUnknown() && !r.Config.Model.Options.MistralFormat.IsNull() {
-			*mistralFormat = shared.MistralFormat(r.Config.Model.Options.MistralFormat.ValueString())
+			*mistralFormat = shared.CreateAIProxyPluginMistralFormat(r.Config.Model.Options.MistralFormat.ValueString())
 		} else {
 			mistralFormat = nil
+		}
+		temperature := new(float64)
+		if !r.Config.Model.Options.Temperature.IsUnknown() && !r.Config.Model.Options.Temperature.IsNull() {
+			*temperature, _ = r.Config.Model.Options.Temperature.ValueBigFloat().Float64()
+		} else {
+			temperature = nil
+		}
+		topK := new(int64)
+		if !r.Config.Model.Options.TopK.IsUnknown() && !r.Config.Model.Options.TopK.IsNull() {
+			*topK = r.Config.Model.Options.TopK.ValueInt64()
+		} else {
+			topK = nil
+		}
+		topP := new(float64)
+		if !r.Config.Model.Options.TopP.IsUnknown() && !r.Config.Model.Options.TopP.IsNull() {
+			*topP, _ = r.Config.Model.Options.TopP.ValueBigFloat().Float64()
+		} else {
+			topP = nil
 		}
 		upstreamURL := new(string)
 		if !r.Config.Model.Options.UpstreamURL.IsUnknown() && !r.Config.Model.Options.UpstreamURL.IsNull() {
@@ -186,49 +193,42 @@ func (r *GatewayPluginAIProxyResourceModel) ToSharedCreateAIProxyPlugin() *share
 		} else {
 			upstreamURL = nil
 		}
-		options = &shared.Options{
-			MaxTokens:         maxTokens,
-			Temperature:       temperature,
-			TopP:              topP,
-			TopK:              topK,
+		options = &shared.CreateAIProxyPluginOptions{
 			AnthropicVersion:  anthropicVersion,
-			AzureInstance:     azureInstance,
 			AzureAPIVersion:   azureAPIVersion,
 			AzureDeploymentID: azureDeploymentID,
+			AzureInstance:     azureInstance,
 			Llama2Format:      llama2Format,
+			MaxTokens:         maxTokens,
 			MistralFormat:     mistralFormat,
+			Temperature:       temperature,
+			TopK:              topK,
+			TopP:              topP,
 			UpstreamURL:       upstreamURL,
 		}
 	}
-	model := shared.Model{
-		Provider: provider,
+	provider := new(shared.CreateAIProxyPluginProvider)
+	if !r.Config.Model.Provider.IsUnknown() && !r.Config.Model.Provider.IsNull() {
+		*provider = shared.CreateAIProxyPluginProvider(r.Config.Model.Provider.ValueString())
+	} else {
+		provider = nil
+	}
+	model := shared.CreateAIProxyPluginModel{
 		Name:     name,
 		Options:  options,
+		Provider: provider,
 	}
-	var logging *shared.Logging
-	if r.Config.Logging != nil {
-		logStatistics := new(bool)
-		if !r.Config.Logging.LogStatistics.IsUnknown() && !r.Config.Logging.LogStatistics.IsNull() {
-			*logStatistics = r.Config.Logging.LogStatistics.ValueBool()
-		} else {
-			logStatistics = nil
-		}
-		logPayloads := new(bool)
-		if !r.Config.Logging.LogPayloads.IsUnknown() && !r.Config.Logging.LogPayloads.IsNull() {
-			*logPayloads = r.Config.Logging.LogPayloads.ValueBool()
-		} else {
-			logPayloads = nil
-		}
-		logging = &shared.Logging{
-			LogStatistics: logStatistics,
-			LogPayloads:   logPayloads,
-		}
+	routeType := new(shared.CreateAIProxyPluginRouteType)
+	if !r.Config.RouteType.IsUnknown() && !r.Config.RouteType.IsNull() {
+		*routeType = shared.CreateAIProxyPluginRouteType(r.Config.RouteType.ValueString())
+	} else {
+		routeType = nil
 	}
 	config := shared.CreateAIProxyPluginConfig{
-		RouteType: routeType,
 		Auth:      auth,
-		Model:     model,
 		Logging:   logging,
+		Model:     model,
+		RouteType: routeType,
 	}
 	out := shared.CreateAIProxyPlugin{
 		Enabled:   enabled,
@@ -247,7 +247,7 @@ func (r *GatewayPluginAIProxyResourceModel) RefreshFromSharedAIProxyPlugin(resp 
 		if resp.Config.Auth == nil {
 			r.Config.Auth = nil
 		} else {
-			r.Config.Auth = &tfTypes.Auth{}
+			r.Config.Auth = &tfTypes.CreateAIProxyPluginAuth{}
 			r.Config.Auth.HeaderName = types.StringPointerValue(resp.Config.Auth.HeaderName)
 			r.Config.Auth.HeaderValue = types.StringPointerValue(resp.Config.Auth.HeaderValue)
 			if resp.Config.Auth.ParamLocation != nil {
@@ -261,7 +261,7 @@ func (r *GatewayPluginAIProxyResourceModel) RefreshFromSharedAIProxyPlugin(resp 
 		if resp.Config.Logging == nil {
 			r.Config.Logging = nil
 		} else {
-			r.Config.Logging = &tfTypes.Logging{}
+			r.Config.Logging = &tfTypes.CreateAIProxyPluginLogging{}
 			r.Config.Logging.LogPayloads = types.BoolPointerValue(resp.Config.Logging.LogPayloads)
 			r.Config.Logging.LogStatistics = types.BoolPointerValue(resp.Config.Logging.LogStatistics)
 		}
@@ -269,7 +269,7 @@ func (r *GatewayPluginAIProxyResourceModel) RefreshFromSharedAIProxyPlugin(resp 
 		if resp.Config.Model.Options == nil {
 			r.Config.Model.Options = nil
 		} else {
-			r.Config.Model.Options = &tfTypes.Options{}
+			r.Config.Model.Options = &tfTypes.CreateAIProxyPluginOptions{}
 			r.Config.Model.Options.AnthropicVersion = types.StringPointerValue(resp.Config.Model.Options.AnthropicVersion)
 			r.Config.Model.Options.AzureAPIVersion = types.StringPointerValue(resp.Config.Model.Options.AzureAPIVersion)
 			r.Config.Model.Options.AzureDeploymentID = types.StringPointerValue(resp.Config.Model.Options.AzureDeploymentID)

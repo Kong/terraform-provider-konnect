@@ -169,11 +169,11 @@ func (r *GatewayPluginACLDataSource) Read(ctx context.Context, req datasource.Re
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.GetACLPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.GetACLPlugin(ctx, request)
 	if err != nil {

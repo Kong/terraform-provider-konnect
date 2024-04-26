@@ -95,21 +95,44 @@ func (o *CreateProxyCachePluginService) GetID() *string {
 	return o.ID
 }
 
-type RequestMethod string
+type CreateProxyCachePluginMemory struct {
+	// The name of the shared dictionary in which to hold cache entities when the memory strategy is selected. Note that this dictionary currently must be defined manually in the Kong Nginx template.
+	DictionaryName *string `default:"kong_db_cache" json:"dictionary_name"`
+}
+
+func (c CreateProxyCachePluginMemory) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateProxyCachePluginMemory) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *CreateProxyCachePluginMemory) GetDictionaryName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DictionaryName
+}
+
+type CreateProxyCachePluginRequestMethod string
 
 const (
-	RequestMethodHead  RequestMethod = "HEAD"
-	RequestMethodGet   RequestMethod = "GET"
-	RequestMethodPost  RequestMethod = "POST"
-	RequestMethodPatch RequestMethod = "PATCH"
-	RequestMethodPut   RequestMethod = "PUT"
+	CreateProxyCachePluginRequestMethodHead  CreateProxyCachePluginRequestMethod = "HEAD"
+	CreateProxyCachePluginRequestMethodGet   CreateProxyCachePluginRequestMethod = "GET"
+	CreateProxyCachePluginRequestMethodPost  CreateProxyCachePluginRequestMethod = "POST"
+	CreateProxyCachePluginRequestMethodPatch CreateProxyCachePluginRequestMethod = "PATCH"
+	CreateProxyCachePluginRequestMethodPut   CreateProxyCachePluginRequestMethod = "PUT"
 )
 
-func (e RequestMethod) ToPointer() *RequestMethod {
+func (e CreateProxyCachePluginRequestMethod) ToPointer() *CreateProxyCachePluginRequestMethod {
 	return &e
 }
 
-func (e *RequestMethod) UnmarshalJSON(data []byte) error {
+func (e *CreateProxyCachePluginRequestMethod) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -124,11 +147,50 @@ func (e *RequestMethod) UnmarshalJSON(data []byte) error {
 	case "PATCH":
 		fallthrough
 	case "PUT":
-		*e = RequestMethod(v)
+		*e = CreateProxyCachePluginRequestMethod(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for RequestMethod: %v", v)
+		return fmt.Errorf("invalid value for CreateProxyCachePluginRequestMethod: %v", v)
 	}
+}
+
+// CreateProxyCachePluginResponseHeaders - Caching related diagnostic headers that should be included in cached responses
+type CreateProxyCachePluginResponseHeaders struct {
+	XCacheKey    *bool `default:"true" json:"X-Cache-Key"`
+	XCacheStatus *bool `default:"true" json:"X-Cache-Status"`
+	Age          *bool `default:"true" json:"age"`
+}
+
+func (c CreateProxyCachePluginResponseHeaders) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateProxyCachePluginResponseHeaders) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *CreateProxyCachePluginResponseHeaders) GetXCacheKey() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.XCacheKey
+}
+
+func (o *CreateProxyCachePluginResponseHeaders) GetXCacheStatus() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.XCacheStatus
+}
+
+func (o *CreateProxyCachePluginResponseHeaders) GetAge() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Age
 }
 
 // CreateProxyCachePluginStrategy - The backing data store in which to hold cache entities.
@@ -156,91 +218,29 @@ func (e *CreateProxyCachePluginStrategy) UnmarshalJSON(data []byte) error {
 	}
 }
 
-type Memory struct {
-	// The name of the shared dictionary in which to hold cache entities when the memory strategy is selected. Note that this dictionary currently must be defined manually in the Kong Nginx template.
-	DictionaryName *string `default:"kong_db_cache" json:"dictionary_name"`
-}
-
-func (m Memory) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(m, "", false)
-}
-
-func (m *Memory) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (o *Memory) GetDictionaryName() *string {
-	if o == nil {
-		return nil
-	}
-	return o.DictionaryName
-}
-
-// ResponseHeaders - Caching related diagnostic headers that should be included in cached responses
-type ResponseHeaders struct {
-	Age          *bool `default:"true" json:"age"`
-	XCacheStatus *bool `default:"true" json:"X-Cache-Status"`
-	XCacheKey    *bool `default:"true" json:"X-Cache-Key"`
-}
-
-func (r ResponseHeaders) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(r, "", false)
-}
-
-func (r *ResponseHeaders) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (o *ResponseHeaders) GetAge() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.Age
-}
-
-func (o *ResponseHeaders) GetXCacheStatus() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.XCacheStatus
-}
-
-func (o *ResponseHeaders) GetXCacheKey() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.XCacheKey
-}
-
 type CreateProxyCachePluginConfig struct {
-	// Upstream response status code considered cacheable.
-	ResponseCode []int64 `json:"response_code,omitempty"`
-	// Downstream request methods considered cacheable.
-	RequestMethod []RequestMethod `json:"request_method,omitempty"`
-	// Upstream response content types considered cacheable. The plugin performs an **exact match** against each specified value.
-	ContentType []string `json:"content_type,omitempty"`
+	// When enabled, respect the Cache-Control behaviors defined in RFC7234.
+	CacheControl *bool `default:"false" json:"cache_control"`
 	// TTL, in seconds, of cache entities.
 	CacheTTL *int64 `default:"300" json:"cache_ttl"`
+	// Upstream response content types considered cacheable. The plugin performs an **exact match** against each specified value.
+	ContentType   []string                      `json:"content_type,omitempty"`
+	IgnoreURICase *bool                         `default:"false" json:"ignore_uri_case"`
+	Memory        *CreateProxyCachePluginMemory `json:"memory,omitempty"`
+	// Downstream request methods considered cacheable.
+	RequestMethod []CreateProxyCachePluginRequestMethod `json:"request_method,omitempty"`
+	// Upstream response status code considered cacheable.
+	ResponseCode []int64 `json:"response_code,omitempty"`
+	// Caching related diagnostic headers that should be included in cached responses
+	ResponseHeaders *CreateProxyCachePluginResponseHeaders `json:"response_headers,omitempty"`
+	// Number of seconds to keep resources in the storage backend. This value is independent of `cache_ttl` or resource TTLs defined by Cache-Control behaviors.
+	StorageTTL *int64 `json:"storage_ttl,omitempty"`
 	// The backing data store in which to hold cache entities.
 	Strategy *CreateProxyCachePluginStrategy `json:"strategy,omitempty"`
-	// When enabled, respect the Cache-Control behaviors defined in RFC7234.
-	CacheControl  *bool `default:"false" json:"cache_control"`
-	IgnoreURICase *bool `default:"false" json:"ignore_uri_case"`
-	// Number of seconds to keep resources in the storage backend. This value is independent of `cache_ttl` or resource TTLs defined by Cache-Control behaviors.
-	StorageTTL *int64  `json:"storage_ttl,omitempty"`
-	Memory     *Memory `json:"memory,omitempty"`
-	// Relevant query parameters considered for the cache key. If undefined, all params are taken into consideration.
-	VaryQueryParams []string `json:"vary_query_params,omitempty"`
 	// Relevant headers considered for the cache key. If undefined, none of the headers are taken into consideration.
 	VaryHeaders []string `json:"vary_headers,omitempty"`
-	// Caching related diagnostic headers that should be included in cached responses
-	ResponseHeaders *ResponseHeaders `json:"response_headers,omitempty"`
+	// Relevant query parameters considered for the cache key. If undefined, all params are taken into consideration.
+	VaryQueryParams []string `json:"vary_query_params,omitempty"`
 }
 
 func (c CreateProxyCachePluginConfig) MarshalJSON() ([]byte, error) {
@@ -254,25 +254,11 @@ func (c *CreateProxyCachePluginConfig) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *CreateProxyCachePluginConfig) GetResponseCode() []int64 {
+func (o *CreateProxyCachePluginConfig) GetCacheControl() *bool {
 	if o == nil {
 		return nil
 	}
-	return o.ResponseCode
-}
-
-func (o *CreateProxyCachePluginConfig) GetRequestMethod() []RequestMethod {
-	if o == nil {
-		return nil
-	}
-	return o.RequestMethod
-}
-
-func (o *CreateProxyCachePluginConfig) GetContentType() []string {
-	if o == nil {
-		return nil
-	}
-	return o.ContentType
+	return o.CacheControl
 }
 
 func (o *CreateProxyCachePluginConfig) GetCacheTTL() *int64 {
@@ -282,18 +268,11 @@ func (o *CreateProxyCachePluginConfig) GetCacheTTL() *int64 {
 	return o.CacheTTL
 }
 
-func (o *CreateProxyCachePluginConfig) GetStrategy() *CreateProxyCachePluginStrategy {
+func (o *CreateProxyCachePluginConfig) GetContentType() []string {
 	if o == nil {
 		return nil
 	}
-	return o.Strategy
-}
-
-func (o *CreateProxyCachePluginConfig) GetCacheControl() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.CacheControl
+	return o.ContentType
 }
 
 func (o *CreateProxyCachePluginConfig) GetIgnoreURICase() *bool {
@@ -303,6 +282,34 @@ func (o *CreateProxyCachePluginConfig) GetIgnoreURICase() *bool {
 	return o.IgnoreURICase
 }
 
+func (o *CreateProxyCachePluginConfig) GetMemory() *CreateProxyCachePluginMemory {
+	if o == nil {
+		return nil
+	}
+	return o.Memory
+}
+
+func (o *CreateProxyCachePluginConfig) GetRequestMethod() []CreateProxyCachePluginRequestMethod {
+	if o == nil {
+		return nil
+	}
+	return o.RequestMethod
+}
+
+func (o *CreateProxyCachePluginConfig) GetResponseCode() []int64 {
+	if o == nil {
+		return nil
+	}
+	return o.ResponseCode
+}
+
+func (o *CreateProxyCachePluginConfig) GetResponseHeaders() *CreateProxyCachePluginResponseHeaders {
+	if o == nil {
+		return nil
+	}
+	return o.ResponseHeaders
+}
+
 func (o *CreateProxyCachePluginConfig) GetStorageTTL() *int64 {
 	if o == nil {
 		return nil
@@ -310,18 +317,11 @@ func (o *CreateProxyCachePluginConfig) GetStorageTTL() *int64 {
 	return o.StorageTTL
 }
 
-func (o *CreateProxyCachePluginConfig) GetMemory() *Memory {
+func (o *CreateProxyCachePluginConfig) GetStrategy() *CreateProxyCachePluginStrategy {
 	if o == nil {
 		return nil
 	}
-	return o.Memory
-}
-
-func (o *CreateProxyCachePluginConfig) GetVaryQueryParams() []string {
-	if o == nil {
-		return nil
-	}
-	return o.VaryQueryParams
+	return o.Strategy
 }
 
 func (o *CreateProxyCachePluginConfig) GetVaryHeaders() []string {
@@ -331,11 +331,11 @@ func (o *CreateProxyCachePluginConfig) GetVaryHeaders() []string {
 	return o.VaryHeaders
 }
 
-func (o *CreateProxyCachePluginConfig) GetResponseHeaders() *ResponseHeaders {
+func (o *CreateProxyCachePluginConfig) GetVaryQueryParams() []string {
 	if o == nil {
 		return nil
 	}
-	return o.ResponseHeaders
+	return o.VaryQueryParams
 }
 
 // CreateProxyCachePlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.

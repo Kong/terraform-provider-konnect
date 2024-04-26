@@ -59,6 +59,12 @@ func (r *GatewayPluginAIPromptGuardResourceModel) ToSharedCreateAIPromptGuardPlu
 			ID: id2,
 		}
 	}
+	allowAllConversationHistory := new(bool)
+	if !r.Config.AllowAllConversationHistory.IsUnknown() && !r.Config.AllowAllConversationHistory.IsNull() {
+		*allowAllConversationHistory = r.Config.AllowAllConversationHistory.ValueBool()
+	} else {
+		allowAllConversationHistory = nil
+	}
 	var allowPatterns []string = []string{}
 	for _, allowPatternsItem := range r.Config.AllowPatterns {
 		allowPatterns = append(allowPatterns, allowPatternsItem.ValueString())
@@ -67,16 +73,10 @@ func (r *GatewayPluginAIPromptGuardResourceModel) ToSharedCreateAIPromptGuardPlu
 	for _, denyPatternsItem := range r.Config.DenyPatterns {
 		denyPatterns = append(denyPatterns, denyPatternsItem.ValueString())
 	}
-	allowAllConversationHistory := new(bool)
-	if !r.Config.AllowAllConversationHistory.IsUnknown() && !r.Config.AllowAllConversationHistory.IsNull() {
-		*allowAllConversationHistory = r.Config.AllowAllConversationHistory.ValueBool()
-	} else {
-		allowAllConversationHistory = nil
-	}
 	config := shared.CreateAIPromptGuardPluginConfig{
+		AllowAllConversationHistory: allowAllConversationHistory,
 		AllowPatterns:               allowPatterns,
 		DenyPatterns:                denyPatterns,
-		AllowAllConversationHistory: allowAllConversationHistory,
 	}
 	out := shared.CreateAIPromptGuardPlugin{
 		Enabled:   enabled,

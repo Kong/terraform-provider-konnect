@@ -8,9 +8,9 @@ type UpdateAPIProductDTO struct {
 	Name *string `json:"name,omitempty"`
 	// The description of the API product.
 	Description *string `json:"description,omitempty"`
-	// description: A maximum of 5 user-defined labels are allowed on this resource.
-	// Keys must not start with kong, konnect, insomnia, mesh, kic or _, which are reserved for Kong.
-	// Keys are case-sensitive.
+	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
+	//
+	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
 	Labels map[string]string `json:"labels,omitempty"`
 	// The list of portal identifiers which this API product should be published to

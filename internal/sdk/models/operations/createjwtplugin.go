@@ -9,9 +9,8 @@ import (
 
 type CreateJwtPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	// Create a new JWT plugin
-	CreateJWTPlugin shared.CreateJWTPlugin `request:"mediaType=application/json"`
+	ControlPlaneID  string                  `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	CreateJWTPlugin *shared.CreateJWTPlugin `request:"mediaType=application/json"`
 }
 
 func (o *CreateJwtPluginRequest) GetControlPlaneID() string {
@@ -21,9 +20,9 @@ func (o *CreateJwtPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateJwtPluginRequest) GetCreateJWTPlugin() shared.CreateJWTPlugin {
+func (o *CreateJwtPluginRequest) GetCreateJWTPlugin() *shared.CreateJWTPlugin {
 	if o == nil {
-		return shared.CreateJWTPlugin{}
+		return nil
 	}
 	return o.CreateJWTPlugin
 }
@@ -35,7 +34,7 @@ type CreateJwtPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successfully created Plugin
+	// JWT plugin
 	JWTPlugin *shared.JWTPlugin
 	// Unauthorized
 	UnauthorizedError *shared.UnauthorizedError
