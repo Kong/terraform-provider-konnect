@@ -1,17 +1,17 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: c3e4c43395d525fd1dc5f2144900e9db
+  docChecksum: dab49aa75299ac758cfc5ed457b507f4
   docVersion: 2.0.0
-  speakeasyVersion: 1.258.2
-  generationVersion: 2.309.2
-  releaseVersion: 0.2.0
-  configChecksum: 528dfedf55883eb6644bbe12bc957539
+  speakeasyVersion: 1.274.1
+  generationVersion: 2.314.0
+  releaseVersion: 0.2.1
+  configChecksum: 2376a349e8bb4ddd5d0ca12b68b962b3
 features:
   terraform:
     additionalProperties: 0.1.2
     constsAndDefaults: 0.1.4
-    core: 3.18.2
+    core: 3.18.3
     deprecations: 2.81.1
     globalSecurity: 2.81.6
     globalServerURLs: 2.82.1
@@ -42,6 +42,7 @@ generatedFiles:
   - internal/sdk/upstreams.go
   - internal/sdk/targets.go
   - internal/sdk/vaults.go
+  - internal/sdk/dpcertificates.go
   - internal/sdk/controlplanegroups.go
   - internal/sdk/portals.go
   - internal/sdk/portalauthsettings.go
@@ -119,122 +120,122 @@ generatedFiles:
   - internal/sdk/models/operations/createplugin.go
   - internal/sdk/models/operations/deleteplugin.go
   - internal/sdk/models/operations/getplugin.go
-  - internal/sdk/models/operations/createkeyauthplugin.go
-  - internal/sdk/models/operations/deletekeyauthplugin.go
-  - internal/sdk/models/operations/getkeyauthplugin.go
-  - internal/sdk/models/operations/updatekeyauthplugin.go
-  - internal/sdk/models/operations/createcorsplugin.go
-  - internal/sdk/models/operations/deletecorsplugin.go
-  - internal/sdk/models/operations/getcorsplugin.go
-  - internal/sdk/models/operations/updatecorsplugin.go
-  - internal/sdk/models/operations/createratelimitingplugin.go
-  - internal/sdk/models/operations/deleteratelimitingplugin.go
-  - internal/sdk/models/operations/getratelimitingplugin.go
-  - internal/sdk/models/operations/updateratelimitingplugin.go
-  - internal/sdk/models/operations/createbasicauthplugin.go
-  - internal/sdk/models/operations/deletebasicauthplugin.go
-  - internal/sdk/models/operations/getbasicauthplugin.go
-  - internal/sdk/models/operations/updatebasicauthplugin.go
-  - internal/sdk/models/operations/createratelimitingadvancedplugin.go
-  - internal/sdk/models/operations/deleteratelimitingadvancedplugin.go
-  - internal/sdk/models/operations/getratelimitingadvancedplugin.go
-  - internal/sdk/models/operations/updateratelimitingadvancedplugin.go
-  - internal/sdk/models/operations/createopenidconnectplugin.go
-  - internal/sdk/models/operations/deleteopenidconnectplugin.go
-  - internal/sdk/models/operations/getopenidconnectplugin.go
-  - internal/sdk/models/operations/updateopenidconnectplugin.go
-  - internal/sdk/models/operations/createjwtplugin.go
-  - internal/sdk/models/operations/deletejwtplugin.go
-  - internal/sdk/models/operations/getjwtplugin.go
-  - internal/sdk/models/operations/updatejwtplugin.go
-  - internal/sdk/models/operations/createprometheusplugin.go
-  - internal/sdk/models/operations/deleteprometheusplugin.go
-  - internal/sdk/models/operations/getprometheusplugin.go
-  - internal/sdk/models/operations/updateprometheusplugin.go
-  - internal/sdk/models/operations/createaclplugin.go
   - internal/sdk/models/operations/deleteaclplugin.go
   - internal/sdk/models/operations/getaclplugin.go
   - internal/sdk/models/operations/updateaclplugin.go
-  - internal/sdk/models/operations/createrequestterminationplugin.go
-  - internal/sdk/models/operations/deleterequestterminationplugin.go
-  - internal/sdk/models/operations/getrequestterminationplugin.go
-  - internal/sdk/models/operations/updaterequestterminationplugin.go
-  - internal/sdk/models/operations/createfilelogplugin.go
-  - internal/sdk/models/operations/deletefilelogplugin.go
-  - internal/sdk/models/operations/getfilelogplugin.go
-  - internal/sdk/models/operations/updatefilelogplugin.go
-  - internal/sdk/models/operations/createrequesttransformerplugin.go
-  - internal/sdk/models/operations/deleterequesttransformerplugin.go
-  - internal/sdk/models/operations/getrequesttransformerplugin.go
-  - internal/sdk/models/operations/updaterequesttransformerplugin.go
-  - internal/sdk/models/operations/createcorrelationidplugin.go
-  - internal/sdk/models/operations/deletecorrelationidplugin.go
-  - internal/sdk/models/operations/getcorrelationidplugin.go
-  - internal/sdk/models/operations/updatecorrelationidplugin.go
-  - internal/sdk/models/operations/createproxycacheplugin.go
-  - internal/sdk/models/operations/deleteproxycacheplugin.go
-  - internal/sdk/models/operations/getproxycacheplugin.go
-  - internal/sdk/models/operations/updateproxycacheplugin.go
-  - internal/sdk/models/operations/createrequesttransformeradvancedplugin.go
-  - internal/sdk/models/operations/deleterequesttransformeradvancedplugin.go
-  - internal/sdk/models/operations/getrequesttransformeradvancedplugin.go
-  - internal/sdk/models/operations/updaterequesttransformeradvancedplugin.go
-  - internal/sdk/models/operations/createresponsetransformerplugin.go
-  - internal/sdk/models/operations/deleteresponsetransformerplugin.go
-  - internal/sdk/models/operations/getresponsetransformerplugin.go
-  - internal/sdk/models/operations/updateresponsetransformerplugin.go
-  - internal/sdk/models/operations/createresponsetransformeradvancedplugin.go
-  - internal/sdk/models/operations/deleteresponsetransformeradvancedplugin.go
-  - internal/sdk/models/operations/getresponsetransformeradvancedplugin.go
-  - internal/sdk/models/operations/updateresponsetransformeradvancedplugin.go
-  - internal/sdk/models/operations/createiprestrictionplugin.go
-  - internal/sdk/models/operations/deleteiprestrictionplugin.go
-  - internal/sdk/models/operations/getiprestrictionplugin.go
-  - internal/sdk/models/operations/updateiprestrictionplugin.go
-  - internal/sdk/models/operations/createprefunctionplugin.go
-  - internal/sdk/models/operations/deleteprefunctionplugin.go
-  - internal/sdk/models/operations/getprefunctionplugin.go
-  - internal/sdk/models/operations/updateprefunctionplugin.go
-  - internal/sdk/models/operations/createoauth2plugin.go
-  - internal/sdk/models/operations/deleteoauth2plugin.go
-  - internal/sdk/models/operations/getoauth2plugin.go
-  - internal/sdk/models/operations/updateoauth2plugin.go
-  - internal/sdk/models/operations/createopentelemetryplugin.go
-  - internal/sdk/models/operations/deleteopentelemetryplugin.go
-  - internal/sdk/models/operations/getopentelemetryplugin.go
-  - internal/sdk/models/operations/updateopentelemetryplugin.go
-  - internal/sdk/models/operations/createaiproxyplugin.go
-  - internal/sdk/models/operations/deleteaiproxyplugin.go
-  - internal/sdk/models/operations/getaiproxyplugin.go
-  - internal/sdk/models/operations/updateaiproxyplugin.go
-  - internal/sdk/models/operations/createaipromptguardplugin.go
-  - internal/sdk/models/operations/deleteaipromptguardplugin.go
-  - internal/sdk/models/operations/getaipromptguardplugin.go
-  - internal/sdk/models/operations/updateaipromptguardplugin.go
-  - internal/sdk/models/operations/createaiprompttemplateplugin.go
-  - internal/sdk/models/operations/deleteaiprompttemplateplugin.go
-  - internal/sdk/models/operations/getaiprompttemplateplugin.go
-  - internal/sdk/models/operations/updateaiprompttemplateplugin.go
-  - internal/sdk/models/operations/createaipromptdecoratorplugin.go
   - internal/sdk/models/operations/deleteaipromptdecoratorplugin.go
   - internal/sdk/models/operations/getaipromptdecoratorplugin.go
   - internal/sdk/models/operations/updateaipromptdecoratorplugin.go
-  - internal/sdk/models/operations/createawslambdaplugin.go
+  - internal/sdk/models/operations/deleteaipromptguardplugin.go
+  - internal/sdk/models/operations/getaipromptguardplugin.go
+  - internal/sdk/models/operations/updateaipromptguardplugin.go
+  - internal/sdk/models/operations/deleteaiprompttemplateplugin.go
+  - internal/sdk/models/operations/getaiprompttemplateplugin.go
+  - internal/sdk/models/operations/updateaiprompttemplateplugin.go
+  - internal/sdk/models/operations/deleteaiproxyplugin.go
+  - internal/sdk/models/operations/getaiproxyplugin.go
+  - internal/sdk/models/operations/updateaiproxyplugin.go
   - internal/sdk/models/operations/deleteawslambdaplugin.go
   - internal/sdk/models/operations/getawslambdaplugin.go
   - internal/sdk/models/operations/updateawslambdaplugin.go
-  - internal/sdk/models/operations/createjqplugin.go
+  - internal/sdk/models/operations/deletebasicauthplugin.go
+  - internal/sdk/models/operations/getbasicauthplugin.go
+  - internal/sdk/models/operations/updatebasicauthplugin.go
+  - internal/sdk/models/operations/deletecorrelationidplugin.go
+  - internal/sdk/models/operations/getcorrelationidplugin.go
+  - internal/sdk/models/operations/updatecorrelationidplugin.go
+  - internal/sdk/models/operations/deletecorsplugin.go
+  - internal/sdk/models/operations/getcorsplugin.go
+  - internal/sdk/models/operations/updatecorsplugin.go
+  - internal/sdk/models/operations/deletefilelogplugin.go
+  - internal/sdk/models/operations/getfilelogplugin.go
+  - internal/sdk/models/operations/updatefilelogplugin.go
+  - internal/sdk/models/operations/deleteiprestrictionplugin.go
+  - internal/sdk/models/operations/getiprestrictionplugin.go
+  - internal/sdk/models/operations/updateiprestrictionplugin.go
   - internal/sdk/models/operations/deletejqplugin.go
   - internal/sdk/models/operations/getjqplugin.go
   - internal/sdk/models/operations/updatejqplugin.go
-  - internal/sdk/models/operations/createjwtsignerplugin.go
+  - internal/sdk/models/operations/deletejwtplugin.go
+  - internal/sdk/models/operations/getjwtplugin.go
+  - internal/sdk/models/operations/updatejwtplugin.go
   - internal/sdk/models/operations/deletejwtsignerplugin.go
   - internal/sdk/models/operations/getjwtsignerplugin.go
   - internal/sdk/models/operations/updatejwtsignerplugin.go
-  - internal/sdk/models/operations/createsamlplugin.go
+  - internal/sdk/models/operations/deletekeyauthplugin.go
+  - internal/sdk/models/operations/getkeyauthplugin.go
+  - internal/sdk/models/operations/updatekeyauthplugin.go
+  - internal/sdk/models/operations/deleteoauth2plugin.go
+  - internal/sdk/models/operations/getoauth2plugin.go
+  - internal/sdk/models/operations/updateoauth2plugin.go
+  - internal/sdk/models/operations/deleteopenidconnectplugin.go
+  - internal/sdk/models/operations/getopenidconnectplugin.go
+  - internal/sdk/models/operations/updateopenidconnectplugin.go
+  - internal/sdk/models/operations/deleteopentelemetryplugin.go
+  - internal/sdk/models/operations/getopentelemetryplugin.go
+  - internal/sdk/models/operations/updateopentelemetryplugin.go
+  - internal/sdk/models/operations/deleteprefunctionplugin.go
+  - internal/sdk/models/operations/getprefunctionplugin.go
+  - internal/sdk/models/operations/updateprefunctionplugin.go
+  - internal/sdk/models/operations/deleteprometheusplugin.go
+  - internal/sdk/models/operations/getprometheusplugin.go
+  - internal/sdk/models/operations/updateprometheusplugin.go
+  - internal/sdk/models/operations/deleteproxycacheplugin.go
+  - internal/sdk/models/operations/getproxycacheplugin.go
+  - internal/sdk/models/operations/updateproxycacheplugin.go
+  - internal/sdk/models/operations/deleteratelimitingplugin.go
+  - internal/sdk/models/operations/getratelimitingplugin.go
+  - internal/sdk/models/operations/updateratelimitingplugin.go
+  - internal/sdk/models/operations/deleteratelimitingadvancedplugin.go
+  - internal/sdk/models/operations/getratelimitingadvancedplugin.go
+  - internal/sdk/models/operations/updateratelimitingadvancedplugin.go
+  - internal/sdk/models/operations/deleterequestterminationplugin.go
+  - internal/sdk/models/operations/getrequestterminationplugin.go
+  - internal/sdk/models/operations/updaterequestterminationplugin.go
+  - internal/sdk/models/operations/deleterequesttransformerplugin.go
+  - internal/sdk/models/operations/getrequesttransformerplugin.go
+  - internal/sdk/models/operations/updaterequesttransformerplugin.go
+  - internal/sdk/models/operations/deleterequesttransformeradvancedplugin.go
+  - internal/sdk/models/operations/getrequesttransformeradvancedplugin.go
+  - internal/sdk/models/operations/updaterequesttransformeradvancedplugin.go
+  - internal/sdk/models/operations/deleteresponsetransformerplugin.go
+  - internal/sdk/models/operations/getresponsetransformerplugin.go
+  - internal/sdk/models/operations/updateresponsetransformerplugin.go
+  - internal/sdk/models/operations/deleteresponsetransformeradvancedplugin.go
+  - internal/sdk/models/operations/getresponsetransformeradvancedplugin.go
+  - internal/sdk/models/operations/updateresponsetransformeradvancedplugin.go
   - internal/sdk/models/operations/deletesamlplugin.go
   - internal/sdk/models/operations/getsamlplugin.go
   - internal/sdk/models/operations/updatesamlplugin.go
+  - internal/sdk/models/operations/createaclplugin.go
+  - internal/sdk/models/operations/createaipromptdecoratorplugin.go
+  - internal/sdk/models/operations/createaipromptguardplugin.go
+  - internal/sdk/models/operations/createaiprompttemplateplugin.go
+  - internal/sdk/models/operations/createaiproxyplugin.go
+  - internal/sdk/models/operations/createawslambdaplugin.go
+  - internal/sdk/models/operations/createbasicauthplugin.go
+  - internal/sdk/models/operations/createcorrelationidplugin.go
+  - internal/sdk/models/operations/createcorsplugin.go
+  - internal/sdk/models/operations/createfilelogplugin.go
+  - internal/sdk/models/operations/createiprestrictionplugin.go
+  - internal/sdk/models/operations/createjqplugin.go
+  - internal/sdk/models/operations/createjwtplugin.go
+  - internal/sdk/models/operations/createjwtsignerplugin.go
+  - internal/sdk/models/operations/createkeyauthplugin.go
+  - internal/sdk/models/operations/createoauth2plugin.go
+  - internal/sdk/models/operations/createopenidconnectplugin.go
+  - internal/sdk/models/operations/createopentelemetryplugin.go
+  - internal/sdk/models/operations/createprefunctionplugin.go
+  - internal/sdk/models/operations/createprometheusplugin.go
+  - internal/sdk/models/operations/createproxycacheplugin.go
+  - internal/sdk/models/operations/createratelimitingplugin.go
+  - internal/sdk/models/operations/createratelimitingadvancedplugin.go
+  - internal/sdk/models/operations/createrequestterminationplugin.go
+  - internal/sdk/models/operations/createrequesttransformerplugin.go
+  - internal/sdk/models/operations/createrequesttransformeradvancedplugin.go
+  - internal/sdk/models/operations/createresponsetransformerplugin.go
+  - internal/sdk/models/operations/createresponsetransformeradvancedplugin.go
+  - internal/sdk/models/operations/createsamlplugin.go
   - internal/sdk/models/operations/createroute.go
   - internal/sdk/models/operations/deleteroute.go
   - internal/sdk/models/operations/getroute.go
@@ -253,6 +254,9 @@ generatedFiles:
   - internal/sdk/models/operations/createvault.go
   - internal/sdk/models/operations/deletevault.go
   - internal/sdk/models/operations/getvault.go
+  - internal/sdk/models/operations/createdataplanecertificate.go
+  - internal/sdk/models/operations/getdataplanecertificate.go
+  - internal/sdk/models/operations/deletedataplanecertificate.go
   - internal/sdk/models/operations/postcontrolplanesidgroupmembershipsadd.go
   - internal/sdk/models/operations/postcontrolplanesidgroupmembershipsremove.go
   - internal/sdk/models/operations/listportals.go
@@ -322,62 +326,62 @@ generatedFiles:
   - internal/sdk/models/shared/createkey.go
   - internal/sdk/models/shared/plugin.go
   - internal/sdk/models/shared/createplugin.go
-  - internal/sdk/models/shared/keyauthplugin.go
-  - internal/sdk/models/shared/createkeyauthplugin.go
-  - internal/sdk/models/shared/corsplugin.go
-  - internal/sdk/models/shared/createcorsplugin.go
-  - internal/sdk/models/shared/ratelimitingplugin.go
-  - internal/sdk/models/shared/createratelimitingplugin.go
-  - internal/sdk/models/shared/basicauthplugin.go
-  - internal/sdk/models/shared/createbasicauthplugin.go
-  - internal/sdk/models/shared/ratelimitingadvancedplugin.go
-  - internal/sdk/models/shared/createratelimitingadvancedplugin.go
-  - internal/sdk/models/shared/openidconnectplugin.go
-  - internal/sdk/models/shared/createopenidconnectplugin.go
-  - internal/sdk/models/shared/jwtplugin.go
-  - internal/sdk/models/shared/createjwtplugin.go
-  - internal/sdk/models/shared/prometheusplugin.go
-  - internal/sdk/models/shared/createprometheusplugin.go
   - internal/sdk/models/shared/aclplugin.go
   - internal/sdk/models/shared/createaclplugin.go
-  - internal/sdk/models/shared/requestterminationplugin.go
-  - internal/sdk/models/shared/createrequestterminationplugin.go
-  - internal/sdk/models/shared/filelogplugin.go
-  - internal/sdk/models/shared/createfilelogplugin.go
-  - internal/sdk/models/shared/requesttransformerplugin.go
-  - internal/sdk/models/shared/createrequesttransformerplugin.go
+  - internal/sdk/models/shared/aipromptdecoratorplugin.go
+  - internal/sdk/models/shared/createaipromptdecoratorplugin.go
+  - internal/sdk/models/shared/aipromptguardplugin.go
+  - internal/sdk/models/shared/createaipromptguardplugin.go
+  - internal/sdk/models/shared/aiprompttemplateplugin.go
+  - internal/sdk/models/shared/createaiprompttemplateplugin.go
+  - internal/sdk/models/shared/aiproxyplugin.go
+  - internal/sdk/models/shared/createaiproxyplugin.go
+  - internal/sdk/models/shared/awslambdaplugin.go
+  - internal/sdk/models/shared/createawslambdaplugin.go
+  - internal/sdk/models/shared/basicauthplugin.go
+  - internal/sdk/models/shared/createbasicauthplugin.go
   - internal/sdk/models/shared/correlationidplugin.go
   - internal/sdk/models/shared/createcorrelationidplugin.go
+  - internal/sdk/models/shared/corsplugin.go
+  - internal/sdk/models/shared/createcorsplugin.go
+  - internal/sdk/models/shared/filelogplugin.go
+  - internal/sdk/models/shared/createfilelogplugin.go
+  - internal/sdk/models/shared/iprestrictionplugin.go
+  - internal/sdk/models/shared/createiprestrictionplugin.go
+  - internal/sdk/models/shared/jqplugin.go
+  - internal/sdk/models/shared/createjqplugin.go
+  - internal/sdk/models/shared/jwtplugin.go
+  - internal/sdk/models/shared/createjwtplugin.go
+  - internal/sdk/models/shared/jwtsignerplugin.go
+  - internal/sdk/models/shared/createjwtsignerplugin.go
+  - internal/sdk/models/shared/keyauthplugin.go
+  - internal/sdk/models/shared/createkeyauthplugin.go
+  - internal/sdk/models/shared/oauth2plugin.go
+  - internal/sdk/models/shared/createoauth2plugin.go
+  - internal/sdk/models/shared/openidconnectplugin.go
+  - internal/sdk/models/shared/createopenidconnectplugin.go
+  - internal/sdk/models/shared/opentelemetryplugin.go
+  - internal/sdk/models/shared/createopentelemetryplugin.go
+  - internal/sdk/models/shared/prefunctionplugin.go
+  - internal/sdk/models/shared/createprefunctionplugin.go
+  - internal/sdk/models/shared/prometheusplugin.go
+  - internal/sdk/models/shared/createprometheusplugin.go
   - internal/sdk/models/shared/proxycacheplugin.go
   - internal/sdk/models/shared/createproxycacheplugin.go
+  - internal/sdk/models/shared/ratelimitingplugin.go
+  - internal/sdk/models/shared/createratelimitingplugin.go
+  - internal/sdk/models/shared/ratelimitingadvancedplugin.go
+  - internal/sdk/models/shared/createratelimitingadvancedplugin.go
+  - internal/sdk/models/shared/requestterminationplugin.go
+  - internal/sdk/models/shared/createrequestterminationplugin.go
+  - internal/sdk/models/shared/requesttransformerplugin.go
+  - internal/sdk/models/shared/createrequesttransformerplugin.go
   - internal/sdk/models/shared/requesttransformeradvancedplugin.go
   - internal/sdk/models/shared/createrequesttransformeradvancedplugin.go
   - internal/sdk/models/shared/responsetransformerplugin.go
   - internal/sdk/models/shared/createresponsetransformerplugin.go
   - internal/sdk/models/shared/responsetransformeradvancedplugin.go
   - internal/sdk/models/shared/createresponsetransformeradvancedplugin.go
-  - internal/sdk/models/shared/iprestrictionplugin.go
-  - internal/sdk/models/shared/createiprestrictionplugin.go
-  - internal/sdk/models/shared/prefunctionplugin.go
-  - internal/sdk/models/shared/createprefunctionplugin.go
-  - internal/sdk/models/shared/oauth2plugin.go
-  - internal/sdk/models/shared/createoauth2plugin.go
-  - internal/sdk/models/shared/opentelemetryplugin.go
-  - internal/sdk/models/shared/createopentelemetryplugin.go
-  - internal/sdk/models/shared/aiproxyplugin.go
-  - internal/sdk/models/shared/createaiproxyplugin.go
-  - internal/sdk/models/shared/aipromptguardplugin.go
-  - internal/sdk/models/shared/createaipromptguardplugin.go
-  - internal/sdk/models/shared/aiprompttemplateplugin.go
-  - internal/sdk/models/shared/createaiprompttemplateplugin.go
-  - internal/sdk/models/shared/aipromptdecoratorplugin.go
-  - internal/sdk/models/shared/createaipromptdecoratorplugin.go
-  - internal/sdk/models/shared/awslambdaplugin.go
-  - internal/sdk/models/shared/createawslambdaplugin.go
-  - internal/sdk/models/shared/jqplugin.go
-  - internal/sdk/models/shared/createjqplugin.go
-  - internal/sdk/models/shared/jwtsignerplugin.go
-  - internal/sdk/models/shared/createjwtsignerplugin.go
   - internal/sdk/models/shared/samlplugin.go
   - internal/sdk/models/shared/createsamlplugin.go
   - internal/sdk/models/shared/route.go
@@ -392,6 +396,8 @@ generatedFiles:
   - internal/sdk/models/shared/createtargetwithoutparents.go
   - internal/sdk/models/shared/vault.go
   - internal/sdk/models/shared/createvault.go
+  - internal/sdk/models/shared/dataplaneclientcertificate.go
+  - internal/sdk/models/shared/dataplaneclientcertificaterequest.go
   - internal/sdk/models/shared/groupmembership.go
   - internal/sdk/models/shared/listportalsresponse.go
   - internal/sdk/models/shared/portal.go
@@ -473,15 +479,15 @@ generatedFiles:
   - internal/provider/types/pem.go
   - internal/provider/types/create_acl_plugin_config.go
   - internal/provider/types/ai_prompt_decorator_plugin_append.go
-  - internal/provider/types/prompts.go
+  - internal/provider/types/create_ai_prompt_decorator_plugin_prompts.go
   - internal/provider/types/create_ai_prompt_decorator_plugin_config.go
   - internal/provider/types/create_ai_prompt_guard_plugin_config.go
   - internal/provider/types/templates.go
   - internal/provider/types/create_ai_prompt_template_plugin_config.go
-  - internal/provider/types/auth.go
-  - internal/provider/types/logging.go
-  - internal/provider/types/options.go
-  - internal/provider/types/model.go
+  - internal/provider/types/create_ai_proxy_plugin_auth.go
+  - internal/provider/types/create_ai_proxy_plugin_logging.go
+  - internal/provider/types/create_ai_proxy_plugin_options.go
+  - internal/provider/types/create_ai_proxy_plugin_model.go
   - internal/provider/types/create_ai_proxy_plugin_config.go
   - internal/provider/types/create_aws_lambda_plugin_config.go
   - internal/provider/types/create_basic_auth_plugin_config.go
@@ -489,7 +495,7 @@ generatedFiles:
   - internal/provider/types/create_cors_plugin_config.go
   - internal/provider/types/create_file_log_plugin_config.go
   - internal/provider/types/create_ip_restriction_plugin_config.go
-  - internal/provider/types/request_jq_program_options.go
+  - internal/provider/types/create_jq_plugin_request_jq_program_options.go
   - internal/provider/types/create_jq_plugin_config.go
   - internal/provider/types/create_jwt_plugin_config.go
   - internal/provider/types/create_jwt_signer_plugin_config.go
@@ -498,22 +504,22 @@ generatedFiles:
   - internal/provider/types/client_jwk.go
   - internal/provider/types/session_redis_cluster_nodes.go
   - internal/provider/types/create_openid_connect_plugin_config.go
-  - internal/provider/types/queue.go
+  - internal/provider/types/create_opentelemetry_plugin_queue.go
   - internal/provider/types/create_opentelemetry_plugin_config.go
   - internal/provider/types/create_pre_function_plugin_config.go
   - internal/provider/types/create_prometheus_plugin_config.go
-  - internal/provider/types/memory.go
-  - internal/provider/types/response_headers.go
+  - internal/provider/types/create_proxy_cache_plugin_memory.go
+  - internal/provider/types/create_proxy_cache_plugin_response_headers.go
   - internal/provider/types/create_proxy_cache_plugin_config.go
   - internal/provider/types/create_rate_limiting_plugin_config.go
-  - internal/provider/types/redis.go
+  - internal/provider/types/create_rate_limiting_advanced_plugin_redis.go
   - internal/provider/types/create_rate_limiting_advanced_plugin_config.go
   - internal/provider/types/create_request_termination_plugin_config.go
-  - internal/provider/types/add.go
-  - internal/provider/types/replace.go
+  - internal/provider/types/create_request_transformer_plugin_add.go
+  - internal/provider/types/create_request_transformer_plugin_replace.go
   - internal/provider/types/create_request_transformer_plugin_config.go
   - internal/provider/types/create_request_transformer_advanced_plugin_add.go
-  - internal/provider/types/allow.go
+  - internal/provider/types/create_request_transformer_advanced_plugin_allow.go
   - internal/provider/types/create_request_transformer_advanced_plugin_replace.go
   - internal/provider/types/create_request_transformer_advanced_plugin_config.go
   - internal/provider/types/create_response_transformer_plugin_add.go
@@ -525,7 +531,7 @@ generatedFiles:
   - internal/provider/types/create_response_transformer_advanced_plugin_remove.go
   - internal/provider/types/create_response_transformer_advanced_plugin_rename.go
   - internal/provider/types/create_response_transformer_advanced_plugin_replace.go
-  - internal/provider/types/transform.go
+  - internal/provider/types/create_response_transformer_advanced_plugin_transform.go
   - internal/provider/types/create_response_transformer_advanced_plugin_config.go
   - internal/provider/types/create_saml_plugin_config.go
   - internal/provider/types/healthy.go
@@ -581,6 +587,9 @@ generatedFiles:
   - internal/provider/gatewaycontrolplanemembership_resource.go
   - internal/provider/gatewaycontrolplanemembership_resource_sdk.go
   - examples/resources/konnect_gateway_control_plane_membership/resource.tf
+  - internal/provider/gatewaydataplaneclientcertificate_resource.go
+  - internal/provider/gatewaydataplaneclientcertificate_resource_sdk.go
+  - examples/resources/konnect_gateway_data_plane_client_certificate/resource.tf
   - internal/provider/gatewayhmacauth_resource.go
   - internal/provider/gatewayhmacauth_resource_sdk.go
   - examples/resources/konnect_gateway_hmac_auth/resource.tf
@@ -746,6 +755,9 @@ generatedFiles:
   - internal/provider/gatewaycontrolplane_data_source.go
   - internal/provider/gatewaycontrolplane_data_source_sdk.go
   - examples/data-sources/konnect_gateway_control_plane/data-source.tf
+  - internal/provider/gatewaydataplaneclientcertificate_data_source.go
+  - internal/provider/gatewaydataplaneclientcertificate_data_source_sdk.go
+  - examples/data-sources/konnect_gateway_data_plane_client_certificate/data-source.tf
   - internal/provider/gatewayhmacauth_data_source.go
   - internal/provider/gatewayhmacauth_data_source_sdk.go
   - examples/data-sources/konnect_gateway_hmac_auth/data-source.tf

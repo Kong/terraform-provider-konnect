@@ -327,7 +327,7 @@ func (r *GatewayPluginAWSLambdaResource) Create(ctx context.Context, req resourc
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	createAWSLambdaPlugin := *data.ToSharedCreateAWSLambdaPlugin()
+	createAWSLambdaPlugin := data.ToSharedCreateAWSLambdaPlugin()
 	request := operations.CreateAwslambdaPluginRequest{
 		ControlPlaneID:        controlPlaneID,
 		CreateAWSLambdaPlugin: createAWSLambdaPlugin,
@@ -377,11 +377,11 @@ func (r *GatewayPluginAWSLambdaResource) Read(ctx context.Context, req resource.
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.GetAwslambdaPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.GetAwslambdaPlugin(ctx, request)
 	if err != nil {
@@ -427,12 +427,12 @@ func (r *GatewayPluginAWSLambdaResource) Update(ctx context.Context, req resourc
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
-	createAWSLambdaPlugin := *data.ToSharedCreateAWSLambdaPlugin()
+	controlPlaneID := data.ControlPlaneID.ValueString()
+	createAWSLambdaPlugin := data.ToSharedCreateAWSLambdaPlugin()
 	request := operations.UpdateAwslambdaPluginRequest{
-		ControlPlaneID:        controlPlaneID,
 		PluginID:              pluginID,
+		ControlPlaneID:        controlPlaneID,
 		CreateAWSLambdaPlugin: createAWSLambdaPlugin,
 	}
 	res, err := r.client.Plugins.UpdateAwslambdaPlugin(ctx, request)
@@ -480,11 +480,11 @@ func (r *GatewayPluginAWSLambdaResource) Delete(ctx context.Context, req resourc
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.DeleteAwslambdaPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.DeleteAwslambdaPlugin(ctx, request)
 	if err != nil {

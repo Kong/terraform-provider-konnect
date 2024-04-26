@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.1
+> Released on 2024/04/26
+
+### Features
+* Add support for the `konnect_gateway_data_plane_client_certificate` resource
+
 ## 0.2.0
 > Released on 2024/04/18
 

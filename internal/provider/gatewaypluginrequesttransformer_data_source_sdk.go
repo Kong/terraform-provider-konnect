@@ -13,7 +13,7 @@ func (r *GatewayPluginRequestTransformerDataSourceModel) RefreshFromSharedReques
 		if resp.Config.Add == nil {
 			r.Config.Add = nil
 		} else {
-			r.Config.Add = &tfTypes.Add{}
+			r.Config.Add = &tfTypes.CreateRequestTransformerPluginAdd{}
 			r.Config.Add.Body = []types.String{}
 			for _, v := range resp.Config.Add.Body {
 				r.Config.Add.Body = append(r.Config.Add.Body, types.StringValue(v))
@@ -30,7 +30,7 @@ func (r *GatewayPluginRequestTransformerDataSourceModel) RefreshFromSharedReques
 		if resp.Config.Append == nil {
 			r.Config.Append = nil
 		} else {
-			r.Config.Append = &tfTypes.Add{}
+			r.Config.Append = &tfTypes.CreateRequestTransformerPluginAdd{}
 			r.Config.Append.Body = []types.String{}
 			for _, v := range resp.Config.Append.Body {
 				r.Config.Append.Body = append(r.Config.Append.Body, types.StringValue(v))
@@ -48,7 +48,7 @@ func (r *GatewayPluginRequestTransformerDataSourceModel) RefreshFromSharedReques
 		if resp.Config.Remove == nil {
 			r.Config.Remove = nil
 		} else {
-			r.Config.Remove = &tfTypes.Add{}
+			r.Config.Remove = &tfTypes.CreateRequestTransformerPluginAdd{}
 			r.Config.Remove.Body = []types.String{}
 			for _, v := range resp.Config.Remove.Body {
 				r.Config.Remove.Body = append(r.Config.Remove.Body, types.StringValue(v))
@@ -65,7 +65,7 @@ func (r *GatewayPluginRequestTransformerDataSourceModel) RefreshFromSharedReques
 		if resp.Config.Rename == nil {
 			r.Config.Rename = nil
 		} else {
-			r.Config.Rename = &tfTypes.Add{}
+			r.Config.Rename = &tfTypes.CreateRequestTransformerPluginAdd{}
 			r.Config.Rename.Body = []types.String{}
 			for _, v := range resp.Config.Rename.Body {
 				r.Config.Rename.Body = append(r.Config.Rename.Body, types.StringValue(v))
@@ -82,7 +82,7 @@ func (r *GatewayPluginRequestTransformerDataSourceModel) RefreshFromSharedReques
 		if resp.Config.Replace == nil {
 			r.Config.Replace = nil
 		} else {
-			r.Config.Replace = &tfTypes.Replace{}
+			r.Config.Replace = &tfTypes.CreateRequestTransformerPluginReplace{}
 			r.Config.Replace.Body = []types.String{}
 			for _, v := range resp.Config.Replace.Body {
 				r.Config.Replace.Body = append(r.Config.Replace.Body, types.StringValue(v))

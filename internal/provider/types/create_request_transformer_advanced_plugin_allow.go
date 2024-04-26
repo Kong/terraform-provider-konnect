@@ -4,6 +4,6 @@ package types
 
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
-type Allow struct {
+type CreateRequestTransformerAdvancedPluginAllow struct {
 	Body []types.String `tfsdk:"body"`
 }

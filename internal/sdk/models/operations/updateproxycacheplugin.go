@@ -8,19 +8,11 @@ import (
 )
 
 type UpdateProxycachePluginRequest struct {
-	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
-	// Description of the Plugin
-	CreateProxyCachePlugin shared.CreateProxyCachePlugin `request:"mediaType=application/json"`
-}
-
-func (o *UpdateProxycachePluginRequest) GetControlPlaneID() string {
-	if o == nil {
-		return ""
-	}
-	return o.ControlPlaneID
+	// The UUID of your control plane. This variable is available in the Konnect manager.
+	ControlPlaneID         string                         `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	CreateProxyCachePlugin *shared.CreateProxyCachePlugin `request:"mediaType=application/json"`
 }
 
 func (o *UpdateProxycachePluginRequest) GetPluginID() string {
@@ -30,9 +22,16 @@ func (o *UpdateProxycachePluginRequest) GetPluginID() string {
 	return o.PluginID
 }
 
-func (o *UpdateProxycachePluginRequest) GetCreateProxyCachePlugin() shared.CreateProxyCachePlugin {
+func (o *UpdateProxycachePluginRequest) GetControlPlaneID() string {
 	if o == nil {
-		return shared.CreateProxyCachePlugin{}
+		return ""
+	}
+	return o.ControlPlaneID
+}
+
+func (o *UpdateProxycachePluginRequest) GetCreateProxyCachePlugin() *shared.CreateProxyCachePlugin {
+	if o == nil {
+		return nil
 	}
 	return o.CreateProxyCachePlugin
 }
@@ -44,7 +43,7 @@ type UpdateProxycachePluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successfully upserted Plugin
+	// ProxyCache plugin
 	ProxyCachePlugin *shared.ProxyCachePlugin
 	// Unauthorized
 	UnauthorizedError *shared.UnauthorizedError

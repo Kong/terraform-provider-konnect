@@ -8,19 +8,11 @@ import (
 )
 
 type UpdateResponsetransformeradvancedPluginRequest struct {
-	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
-	// Description of the Plugin
-	CreateResponseTransformerAdvancedPlugin shared.CreateResponseTransformerAdvancedPlugin `request:"mediaType=application/json"`
-}
-
-func (o *UpdateResponsetransformeradvancedPluginRequest) GetControlPlaneID() string {
-	if o == nil {
-		return ""
-	}
-	return o.ControlPlaneID
+	// The UUID of your control plane. This variable is available in the Konnect manager.
+	ControlPlaneID                          string                                          `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	CreateResponseTransformerAdvancedPlugin *shared.CreateResponseTransformerAdvancedPlugin `request:"mediaType=application/json"`
 }
 
 func (o *UpdateResponsetransformeradvancedPluginRequest) GetPluginID() string {
@@ -30,9 +22,16 @@ func (o *UpdateResponsetransformeradvancedPluginRequest) GetPluginID() string {
 	return o.PluginID
 }
 
-func (o *UpdateResponsetransformeradvancedPluginRequest) GetCreateResponseTransformerAdvancedPlugin() shared.CreateResponseTransformerAdvancedPlugin {
+func (o *UpdateResponsetransformeradvancedPluginRequest) GetControlPlaneID() string {
 	if o == nil {
-		return shared.CreateResponseTransformerAdvancedPlugin{}
+		return ""
+	}
+	return o.ControlPlaneID
+}
+
+func (o *UpdateResponsetransformeradvancedPluginRequest) GetCreateResponseTransformerAdvancedPlugin() *shared.CreateResponseTransformerAdvancedPlugin {
+	if o == nil {
+		return nil
 	}
 	return o.CreateResponseTransformerAdvancedPlugin
 }
@@ -44,7 +43,7 @@ type UpdateResponsetransformeradvancedPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successfully upserted Plugin
+	// ResponseTransformerAdvanced plugin
 	ResponseTransformerAdvancedPlugin *shared.ResponseTransformerAdvancedPlugin
 	// Unauthorized
 	UnauthorizedError *shared.UnauthorizedError

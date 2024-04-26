@@ -4,7 +4,7 @@ package types
 
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
-type ResponseHeaders struct {
+type CreateProxyCachePluginResponseHeaders struct {
 	Age          types.Bool `tfsdk:"age"`
 	XCacheKey    types.Bool `tfsdk:"x_cache_key"`
 	XCacheStatus types.Bool `tfsdk:"x_cache_status"`

@@ -95,21 +95,21 @@ func (o *CreateAIPromptTemplatePluginService) GetID() *string {
 	return o.ID
 }
 
-type Templates struct {
+type CreateAIPromptTemplatePluginTemplates struct {
 	// Unique name for the template, can be called with `{template://NAME}`
 	Name *string `json:"name,omitempty"`
 	// Template string for this request, supports mustache-style `{{"{{"}}placeholders}}`
 	Template *string `json:"template,omitempty"`
 }
 
-func (o *Templates) GetName() *string {
+func (o *CreateAIPromptTemplatePluginTemplates) GetName() *string {
 	if o == nil {
 		return nil
 	}
 	return o.Name
 }
 
-func (o *Templates) GetTemplate() *string {
+func (o *CreateAIPromptTemplatePluginTemplates) GetTemplate() *string {
 	if o == nil {
 		return nil
 	}
@@ -117,12 +117,12 @@ func (o *Templates) GetTemplate() *string {
 }
 
 type CreateAIPromptTemplatePluginConfig struct {
-	// Array of templates available to the request context.
-	Templates []Templates `json:"templates,omitempty"`
 	// Set true to allow requests that don't call or match any template.
 	AllowUntemplatedRequests *bool `default:"true" json:"allow_untemplated_requests"`
 	// Set true to add the original request to the Kong log plugin(s) output.
 	LogOriginalRequest *bool `default:"false" json:"log_original_request"`
+	// Array of templates available to the request context.
+	Templates []CreateAIPromptTemplatePluginTemplates `json:"templates,omitempty"`
 }
 
 func (c CreateAIPromptTemplatePluginConfig) MarshalJSON() ([]byte, error) {
@@ -134,13 +134,6 @@ func (c *CreateAIPromptTemplatePluginConfig) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func (o *CreateAIPromptTemplatePluginConfig) GetTemplates() []Templates {
-	if o == nil {
-		return nil
-	}
-	return o.Templates
 }
 
 func (o *CreateAIPromptTemplatePluginConfig) GetAllowUntemplatedRequests() *bool {
@@ -155,6 +148,13 @@ func (o *CreateAIPromptTemplatePluginConfig) GetLogOriginalRequest() *bool {
 		return nil
 	}
 	return o.LogOriginalRequest
+}
+
+func (o *CreateAIPromptTemplatePluginConfig) GetTemplates() []CreateAIPromptTemplatePluginTemplates {
+	if o == nil {
+		return nil
+	}
+	return o.Templates
 }
 
 // CreateAIPromptTemplatePlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.

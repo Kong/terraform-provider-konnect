@@ -95,20 +95,20 @@ func (o *CreateCorrelationIDPluginService) GetID() *string {
 	return o.ID
 }
 
-// Generator - The generator to use for the correlation ID. Accepted values are `uuid`, `uuid#counter`, and `tracker`. See [Generators](#generators).
-type Generator string
+// CreateCorrelationIDPluginGenerator - The generator to use for the correlation ID. Accepted values are `uuid`, `uuid#counter`, and `tracker`. See [Generators](#generators).
+type CreateCorrelationIDPluginGenerator string
 
 const (
-	GeneratorUUID              Generator = "uuid"
-	GeneratorUUIDNumberCounter Generator = "uuid#counter"
-	GeneratorTracker           Generator = "tracker"
+	CreateCorrelationIDPluginGeneratorUUID              CreateCorrelationIDPluginGenerator = "uuid"
+	CreateCorrelationIDPluginGeneratorUUIDNumberCounter CreateCorrelationIDPluginGenerator = "uuid#counter"
+	CreateCorrelationIDPluginGeneratorTracker           CreateCorrelationIDPluginGenerator = "tracker"
 )
 
-func (e Generator) ToPointer() *Generator {
+func (e CreateCorrelationIDPluginGenerator) ToPointer() *CreateCorrelationIDPluginGenerator {
 	return &e
 }
 
-func (e *Generator) UnmarshalJSON(data []byte) error {
+func (e *CreateCorrelationIDPluginGenerator) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -119,20 +119,20 @@ func (e *Generator) UnmarshalJSON(data []byte) error {
 	case "uuid#counter":
 		fallthrough
 	case "tracker":
-		*e = Generator(v)
+		*e = CreateCorrelationIDPluginGenerator(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for Generator: %v", v)
+		return fmt.Errorf("invalid value for CreateCorrelationIDPluginGenerator: %v", v)
 	}
 }
 
 type CreateCorrelationIDPluginConfig struct {
-	// The HTTP header name to use for the correlation ID.
-	HeaderName *string `default:"Kong-Request-ID" json:"header_name"`
-	// The generator to use for the correlation ID. Accepted values are `uuid`, `uuid#counter`, and `tracker`. See [Generators](#generators).
-	Generator *Generator `default:"uuid#counter" json:"generator"`
 	// Whether to echo the header back to downstream (the client).
 	EchoDownstream *bool `default:"false" json:"echo_downstream"`
+	// The generator to use for the correlation ID. Accepted values are `uuid`, `uuid#counter`, and `tracker`. See [Generators](#generators).
+	Generator *CreateCorrelationIDPluginGenerator `default:"uuid#counter" json:"generator"`
+	// The HTTP header name to use for the correlation ID.
+	HeaderName *string `default:"Kong-Request-ID" json:"header_name"`
 }
 
 func (c CreateCorrelationIDPluginConfig) MarshalJSON() ([]byte, error) {
@@ -146,25 +146,25 @@ func (c *CreateCorrelationIDPluginConfig) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *CreateCorrelationIDPluginConfig) GetHeaderName() *string {
+func (o *CreateCorrelationIDPluginConfig) GetEchoDownstream() *bool {
 	if o == nil {
 		return nil
 	}
-	return o.HeaderName
+	return o.EchoDownstream
 }
 
-func (o *CreateCorrelationIDPluginConfig) GetGenerator() *Generator {
+func (o *CreateCorrelationIDPluginConfig) GetGenerator() *CreateCorrelationIDPluginGenerator {
 	if o == nil {
 		return nil
 	}
 	return o.Generator
 }
 
-func (o *CreateCorrelationIDPluginConfig) GetEchoDownstream() *bool {
+func (o *CreateCorrelationIDPluginConfig) GetHeaderName() *string {
 	if o == nil {
 		return nil
 	}
-	return o.EchoDownstream
+	return o.HeaderName
 }
 
 // CreateCorrelationIDPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.

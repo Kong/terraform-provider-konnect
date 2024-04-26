@@ -59,9 +59,11 @@ func (r *GatewayPluginKeyAuthResourceModel) ToSharedCreateKeyAuthPlugin() *share
 			ID: id2,
 		}
 	}
-	var keyNames []string = []string{}
-	for _, keyNamesItem := range r.Config.KeyNames {
-		keyNames = append(keyNames, keyNamesItem.ValueString())
+	anonymous := new(string)
+	if !r.Config.Anonymous.IsUnknown() && !r.Config.Anonymous.IsNull() {
+		*anonymous = r.Config.Anonymous.ValueString()
+	} else {
+		anonymous = nil
 	}
 	hideCredentials := new(bool)
 	if !r.Config.HideCredentials.IsUnknown() && !r.Config.HideCredentials.IsNull() {
@@ -69,11 +71,11 @@ func (r *GatewayPluginKeyAuthResourceModel) ToSharedCreateKeyAuthPlugin() *share
 	} else {
 		hideCredentials = nil
 	}
-	anonymous := new(string)
-	if !r.Config.Anonymous.IsUnknown() && !r.Config.Anonymous.IsNull() {
-		*anonymous = r.Config.Anonymous.ValueString()
+	keyInBody := new(bool)
+	if !r.Config.KeyInBody.IsUnknown() && !r.Config.KeyInBody.IsNull() {
+		*keyInBody = r.Config.KeyInBody.ValueBool()
 	} else {
-		anonymous = nil
+		keyInBody = nil
 	}
 	keyInHeader := new(bool)
 	if !r.Config.KeyInHeader.IsUnknown() && !r.Config.KeyInHeader.IsNull() {
@@ -87,11 +89,9 @@ func (r *GatewayPluginKeyAuthResourceModel) ToSharedCreateKeyAuthPlugin() *share
 	} else {
 		keyInQuery = nil
 	}
-	keyInBody := new(bool)
-	if !r.Config.KeyInBody.IsUnknown() && !r.Config.KeyInBody.IsNull() {
-		*keyInBody = r.Config.KeyInBody.ValueBool()
-	} else {
-		keyInBody = nil
+	var keyNames []string = []string{}
+	for _, keyNamesItem := range r.Config.KeyNames {
+		keyNames = append(keyNames, keyNamesItem.ValueString())
 	}
 	runOnPreflight := new(bool)
 	if !r.Config.RunOnPreflight.IsUnknown() && !r.Config.RunOnPreflight.IsNull() {
@@ -100,12 +100,12 @@ func (r *GatewayPluginKeyAuthResourceModel) ToSharedCreateKeyAuthPlugin() *share
 		runOnPreflight = nil
 	}
 	config := shared.CreateKeyAuthPluginConfig{
-		KeyNames:        keyNames,
-		HideCredentials: hideCredentials,
 		Anonymous:       anonymous,
+		HideCredentials: hideCredentials,
+		KeyInBody:       keyInBody,
 		KeyInHeader:     keyInHeader,
 		KeyInQuery:      keyInQuery,
-		KeyInBody:       keyInBody,
+		KeyNames:        keyNames,
 		RunOnPreflight:  runOnPreflight,
 	}
 	out := shared.CreateKeyAuthPlugin{

@@ -59,7 +59,7 @@ func (r *APIProductVersionDataSource) Schema(ctx context.Context, req datasource
 			},
 			"deprecated": schema.BoolAttribute{
 				Computed:    true,
-				Description: `Indicates if this API product version is deprecated`,
+				Description: `Whether this API product version is deprecated in at least one portal. This field is deprecated: Use PortalProductVersion.deprecated instead`,
 			},
 			"gateway_service": schema.SingleNestedAttribute{
 				Computed: true,

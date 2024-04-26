@@ -208,7 +208,7 @@ func (r *GatewayPluginCORSResource) Create(ctx context.Context, req resource.Cre
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	createCORSPlugin := *data.ToSharedCreateCORSPlugin()
+	createCORSPlugin := data.ToSharedCreateCORSPlugin()
 	request := operations.CreateCorsPluginRequest{
 		ControlPlaneID:   controlPlaneID,
 		CreateCORSPlugin: createCORSPlugin,
@@ -258,11 +258,11 @@ func (r *GatewayPluginCORSResource) Read(ctx context.Context, req resource.ReadR
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.GetCorsPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.GetCorsPlugin(ctx, request)
 	if err != nil {
@@ -308,12 +308,12 @@ func (r *GatewayPluginCORSResource) Update(ctx context.Context, req resource.Upd
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
-	createCORSPlugin := *data.ToSharedCreateCORSPlugin()
+	controlPlaneID := data.ControlPlaneID.ValueString()
+	createCORSPlugin := data.ToSharedCreateCORSPlugin()
 	request := operations.UpdateCorsPluginRequest{
-		ControlPlaneID:   controlPlaneID,
 		PluginID:         pluginID,
+		ControlPlaneID:   controlPlaneID,
 		CreateCORSPlugin: createCORSPlugin,
 	}
 	res, err := r.client.Plugins.UpdateCorsPlugin(ctx, request)
@@ -361,11 +361,11 @@ func (r *GatewayPluginCORSResource) Delete(ctx context.Context, req resource.Del
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.DeleteCorsPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.DeleteCorsPlugin(ctx, request)
 	if err != nil {

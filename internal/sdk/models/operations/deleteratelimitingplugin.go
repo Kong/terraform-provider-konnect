@@ -8,17 +8,10 @@ import (
 )
 
 type DeleteRatelimitingPluginRequest struct {
-	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
-}
-
-func (o *DeleteRatelimitingPluginRequest) GetControlPlaneID() string {
-	if o == nil {
-		return ""
-	}
-	return o.ControlPlaneID
+	// The UUID of your control plane. This variable is available in the Konnect manager.
+	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
 func (o *DeleteRatelimitingPluginRequest) GetPluginID() string {
@@ -26,6 +19,13 @@ func (o *DeleteRatelimitingPluginRequest) GetPluginID() string {
 		return ""
 	}
 	return o.PluginID
+}
+
+func (o *DeleteRatelimitingPluginRequest) GetControlPlaneID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ControlPlaneID
 }
 
 type DeleteRatelimitingPluginResponse struct {

@@ -202,7 +202,7 @@ func (r *GatewayPluginKeyAuthResource) Create(ctx context.Context, req resource.
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	createKeyAuthPlugin := *data.ToSharedCreateKeyAuthPlugin()
+	createKeyAuthPlugin := data.ToSharedCreateKeyAuthPlugin()
 	request := operations.CreateKeyauthPluginRequest{
 		ControlPlaneID:      controlPlaneID,
 		CreateKeyAuthPlugin: createKeyAuthPlugin,
@@ -252,11 +252,11 @@ func (r *GatewayPluginKeyAuthResource) Read(ctx context.Context, req resource.Re
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.GetKeyauthPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.GetKeyauthPlugin(ctx, request)
 	if err != nil {
@@ -302,12 +302,12 @@ func (r *GatewayPluginKeyAuthResource) Update(ctx context.Context, req resource.
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
-	createKeyAuthPlugin := *data.ToSharedCreateKeyAuthPlugin()
+	controlPlaneID := data.ControlPlaneID.ValueString()
+	createKeyAuthPlugin := data.ToSharedCreateKeyAuthPlugin()
 	request := operations.UpdateKeyauthPluginRequest{
-		ControlPlaneID:      controlPlaneID,
 		PluginID:            pluginID,
+		ControlPlaneID:      controlPlaneID,
 		CreateKeyAuthPlugin: createKeyAuthPlugin,
 	}
 	res, err := r.client.Plugins.UpdateKeyauthPlugin(ctx, request)
@@ -355,11 +355,11 @@ func (r *GatewayPluginKeyAuthResource) Delete(ctx context.Context, req resource.
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.DeleteKeyauthPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.DeleteKeyauthPlugin(ctx, request)
 	if err != nil {

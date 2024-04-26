@@ -41,7 +41,9 @@ func (o *GatewayService) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-// APIProductVersionPublishStatus - The publish status of the API product version
+// APIProductVersionPublishStatus - This field is published if the API product version is published to at least one portal. This field is deprecated: Use PortalProductVersion.publish_status instead.
+//
+// Deprecated type: This will be removed in a future release, please migrate away from it as soon as possible.
 type APIProductVersionPublishStatus string
 
 const (
@@ -75,9 +77,13 @@ type APIProductVersion struct {
 	// The version of the API product
 	Name           string          `json:"name"`
 	GatewayService *GatewayService `json:"gateway_service"`
-	// The publish status of the API product version
+	// This field is published if the API product version is published to at least one portal. This field is deprecated: Use PortalProductVersion.publish_status instead.
+	//
+	// Deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
 	PublishStatus APIProductVersionPublishStatus `json:"publish_status"`
-	// Indicates if this API product version is deprecated
+	// Whether this API product version is deprecated in at least one portal. This field is deprecated: Use PortalProductVersion.deprecated instead
+	//
+	// Deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
 	Deprecated bool `json:"deprecated"`
 	// The set of errors encountered when trying to sync the auth strategies on the version
 	AuthStrategySyncErrors []AuthStrategySyncError `json:"auth_strategy_sync_errors,omitempty"`

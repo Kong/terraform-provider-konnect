@@ -217,7 +217,7 @@ func (r *GatewayPluginJWTResource) Create(ctx context.Context, req resource.Crea
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	createJWTPlugin := *data.ToSharedCreateJWTPlugin()
+	createJWTPlugin := data.ToSharedCreateJWTPlugin()
 	request := operations.CreateJwtPluginRequest{
 		ControlPlaneID:  controlPlaneID,
 		CreateJWTPlugin: createJWTPlugin,
@@ -267,11 +267,11 @@ func (r *GatewayPluginJWTResource) Read(ctx context.Context, req resource.ReadRe
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.GetJwtPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.GetJwtPlugin(ctx, request)
 	if err != nil {
@@ -317,12 +317,12 @@ func (r *GatewayPluginJWTResource) Update(ctx context.Context, req resource.Upda
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
-	createJWTPlugin := *data.ToSharedCreateJWTPlugin()
+	controlPlaneID := data.ControlPlaneID.ValueString()
+	createJWTPlugin := data.ToSharedCreateJWTPlugin()
 	request := operations.UpdateJwtPluginRequest{
-		ControlPlaneID:  controlPlaneID,
 		PluginID:        pluginID,
+		ControlPlaneID:  controlPlaneID,
 		CreateJWTPlugin: createJWTPlugin,
 	}
 	res, err := r.client.Plugins.UpdateJwtPlugin(ctx, request)
@@ -370,11 +370,11 @@ func (r *GatewayPluginJWTResource) Delete(ctx context.Context, req resource.Dele
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.DeleteJwtPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.DeleteJwtPlugin(ctx, request)
 	if err != nil {

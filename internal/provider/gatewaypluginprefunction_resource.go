@@ -211,7 +211,7 @@ func (r *GatewayPluginPreFunctionResource) Create(ctx context.Context, req resou
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	createPreFunctionPlugin := *data.ToSharedCreatePreFunctionPlugin()
+	createPreFunctionPlugin := data.ToSharedCreatePreFunctionPlugin()
 	request := operations.CreatePrefunctionPluginRequest{
 		ControlPlaneID:          controlPlaneID,
 		CreatePreFunctionPlugin: createPreFunctionPlugin,
@@ -261,11 +261,11 @@ func (r *GatewayPluginPreFunctionResource) Read(ctx context.Context, req resourc
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.GetPrefunctionPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.GetPrefunctionPlugin(ctx, request)
 	if err != nil {
@@ -311,12 +311,12 @@ func (r *GatewayPluginPreFunctionResource) Update(ctx context.Context, req resou
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
-	createPreFunctionPlugin := *data.ToSharedCreatePreFunctionPlugin()
+	controlPlaneID := data.ControlPlaneID.ValueString()
+	createPreFunctionPlugin := data.ToSharedCreatePreFunctionPlugin()
 	request := operations.UpdatePrefunctionPluginRequest{
-		ControlPlaneID:          controlPlaneID,
 		PluginID:                pluginID,
+		ControlPlaneID:          controlPlaneID,
 		CreatePreFunctionPlugin: createPreFunctionPlugin,
 	}
 	res, err := r.client.Plugins.UpdatePrefunctionPlugin(ctx, request)
@@ -364,11 +364,11 @@ func (r *GatewayPluginPreFunctionResource) Delete(ctx context.Context, req resou
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.DeletePrefunctionPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.DeletePrefunctionPlugin(ctx, request)
 	if err != nil {

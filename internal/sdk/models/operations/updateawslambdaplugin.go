@@ -8,19 +8,11 @@ import (
 )
 
 type UpdateAwslambdaPluginRequest struct {
-	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
-	// Description of the Plugin
-	CreateAWSLambdaPlugin shared.CreateAWSLambdaPlugin `request:"mediaType=application/json"`
-}
-
-func (o *UpdateAwslambdaPluginRequest) GetControlPlaneID() string {
-	if o == nil {
-		return ""
-	}
-	return o.ControlPlaneID
+	// The UUID of your control plane. This variable is available in the Konnect manager.
+	ControlPlaneID        string                        `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	CreateAWSLambdaPlugin *shared.CreateAWSLambdaPlugin `request:"mediaType=application/json"`
 }
 
 func (o *UpdateAwslambdaPluginRequest) GetPluginID() string {
@@ -30,9 +22,16 @@ func (o *UpdateAwslambdaPluginRequest) GetPluginID() string {
 	return o.PluginID
 }
 
-func (o *UpdateAwslambdaPluginRequest) GetCreateAWSLambdaPlugin() shared.CreateAWSLambdaPlugin {
+func (o *UpdateAwslambdaPluginRequest) GetControlPlaneID() string {
 	if o == nil {
-		return shared.CreateAWSLambdaPlugin{}
+		return ""
+	}
+	return o.ControlPlaneID
+}
+
+func (o *UpdateAwslambdaPluginRequest) GetCreateAWSLambdaPlugin() *shared.CreateAWSLambdaPlugin {
+	if o == nil {
+		return nil
 	}
 	return o.CreateAWSLambdaPlugin
 }
@@ -44,7 +43,7 @@ type UpdateAwslambdaPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successfully upserted Plugin
+	// AWSLambda plugin
 	AWSLambdaPlugin *shared.AWSLambdaPlugin
 	// Unauthorized
 	UnauthorizedError *shared.UnauthorizedError

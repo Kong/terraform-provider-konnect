@@ -32,7 +32,7 @@ func (r *GatewayPluginOpentelemetryDataSourceModel) RefreshFromSharedOpentelemet
 		if resp.Config.Queue == nil {
 			r.Config.Queue = nil
 		} else {
-			r.Config.Queue = &tfTypes.Queue{}
+			r.Config.Queue = &tfTypes.CreateOpentelemetryPluginQueue{}
 			if resp.Config.Queue.InitialRetryDelay != nil {
 				r.Config.Queue.InitialRetryDelay = types.NumberValue(big.NewFloat(float64(*resp.Config.Queue.InitialRetryDelay)))
 			} else {

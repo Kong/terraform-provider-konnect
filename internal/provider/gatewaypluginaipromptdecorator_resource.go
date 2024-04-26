@@ -222,7 +222,7 @@ func (r *GatewayPluginAIPromptDecoratorResource) Create(ctx context.Context, req
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	createAIPromptDecoratorPlugin := *data.ToSharedCreateAIPromptDecoratorPlugin()
+	createAIPromptDecoratorPlugin := data.ToSharedCreateAIPromptDecoratorPlugin()
 	request := operations.CreateAipromptdecoratorPluginRequest{
 		ControlPlaneID:                controlPlaneID,
 		CreateAIPromptDecoratorPlugin: createAIPromptDecoratorPlugin,
@@ -272,11 +272,11 @@ func (r *GatewayPluginAIPromptDecoratorResource) Read(ctx context.Context, req r
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.GetAipromptdecoratorPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.GetAipromptdecoratorPlugin(ctx, request)
 	if err != nil {
@@ -322,12 +322,12 @@ func (r *GatewayPluginAIPromptDecoratorResource) Update(ctx context.Context, req
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
-	createAIPromptDecoratorPlugin := *data.ToSharedCreateAIPromptDecoratorPlugin()
+	controlPlaneID := data.ControlPlaneID.ValueString()
+	createAIPromptDecoratorPlugin := data.ToSharedCreateAIPromptDecoratorPlugin()
 	request := operations.UpdateAipromptdecoratorPluginRequest{
-		ControlPlaneID:                controlPlaneID,
 		PluginID:                      pluginID,
+		ControlPlaneID:                controlPlaneID,
 		CreateAIPromptDecoratorPlugin: createAIPromptDecoratorPlugin,
 	}
 	res, err := r.client.Plugins.UpdateAipromptdecoratorPlugin(ctx, request)
@@ -375,11 +375,11 @@ func (r *GatewayPluginAIPromptDecoratorResource) Delete(ctx context.Context, req
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.DeleteAipromptdecoratorPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.DeleteAipromptdecoratorPlugin(ctx, request)
 	if err != nil {

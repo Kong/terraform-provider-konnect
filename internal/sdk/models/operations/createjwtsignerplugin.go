@@ -9,9 +9,8 @@ import (
 
 type CreateJwtsignerPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	// Create a new JWTSigner plugin
-	CreateJWTSignerPlugin shared.CreateJWTSignerPlugin `request:"mediaType=application/json"`
+	ControlPlaneID        string                        `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	CreateJWTSignerPlugin *shared.CreateJWTSignerPlugin `request:"mediaType=application/json"`
 }
 
 func (o *CreateJwtsignerPluginRequest) GetControlPlaneID() string {
@@ -21,9 +20,9 @@ func (o *CreateJwtsignerPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateJwtsignerPluginRequest) GetCreateJWTSignerPlugin() shared.CreateJWTSignerPlugin {
+func (o *CreateJwtsignerPluginRequest) GetCreateJWTSignerPlugin() *shared.CreateJWTSignerPlugin {
 	if o == nil {
-		return shared.CreateJWTSignerPlugin{}
+		return nil
 	}
 	return o.CreateJWTSignerPlugin
 }
@@ -35,7 +34,7 @@ type CreateJwtsignerPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successfully created Plugin
+	// JWTSigner plugin
 	JWTSignerPlugin *shared.JWTSignerPlugin
 	// Unauthorized
 	UnauthorizedError *shared.UnauthorizedError

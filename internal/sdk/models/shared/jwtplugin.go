@@ -95,18 +95,18 @@ func (o *JWTPluginService) GetID() *string {
 	return o.ID
 }
 
-type JWTPluginClaimsToVerify string
+type ClaimsToVerify string
 
 const (
-	JWTPluginClaimsToVerifyExp JWTPluginClaimsToVerify = "exp"
-	JWTPluginClaimsToVerifyNbf JWTPluginClaimsToVerify = "nbf"
+	ClaimsToVerifyExp ClaimsToVerify = "exp"
+	ClaimsToVerifyNbf ClaimsToVerify = "nbf"
 )
 
-func (e JWTPluginClaimsToVerify) ToPointer() *JWTPluginClaimsToVerify {
+func (e ClaimsToVerify) ToPointer() *ClaimsToVerify {
 	return &e
 }
 
-func (e *JWTPluginClaimsToVerify) UnmarshalJSON(data []byte) error {
+func (e *ClaimsToVerify) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -115,32 +115,32 @@ func (e *JWTPluginClaimsToVerify) UnmarshalJSON(data []byte) error {
 	case "exp":
 		fallthrough
 	case "nbf":
-		*e = JWTPluginClaimsToVerify(v)
+		*e = ClaimsToVerify(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for JWTPluginClaimsToVerify: %v", v)
+		return fmt.Errorf("invalid value for ClaimsToVerify: %v", v)
 	}
 }
 
 type JWTPluginConfig struct {
-	// A list of querystring parameters that Kong will inspect to retrieve JWTs.
-	URIParamNames []string `json:"uri_param_names,omitempty"`
-	// A list of cookie names that Kong will inspect to retrieve JWTs.
-	CookieNames []string `json:"cookie_names,omitempty"`
-	// The name of the claim in which the key identifying the secret must be passed. The plugin will attempt to read this claim from the JWT payload and the header, in that order.
-	KeyClaimName *string `default:"iss" json:"key_claim_name"`
-	// If true, the plugin assumes the credential’s secret to be base64 encoded. You will need to create a base64-encoded secret for your Consumer, and sign your JWT with the original secret.
-	SecretIsBase64 *bool `default:"false" json:"secret_is_base64"`
-	// A list of registered claims (according to RFC 7519) that Kong can verify as well. Accepted values: one of exp or nbf.
-	ClaimsToVerify []JWTPluginClaimsToVerify `json:"claims_to_verify,omitempty"`
 	// An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails.
 	Anonymous *string `json:"anonymous,omitempty"`
-	// A boolean value that indicates whether the plugin should run (and try to authenticate) on OPTIONS preflight requests. If set to false, then OPTIONS requests will always be allowed.
-	RunOnPreflight *bool `default:"true" json:"run_on_preflight"`
-	// A value between 0 and 31536000 (365 days) limiting the lifetime of the JWT to maximum_expiration seconds in the future.
-	MaximumExpiration *float64 `default:"0" json:"maximum_expiration"`
+	// A list of registered claims (according to RFC 7519) that Kong can verify as well. Accepted values: one of exp or nbf.
+	ClaimsToVerify []ClaimsToVerify `json:"claims_to_verify,omitempty"`
+	// A list of cookie names that Kong will inspect to retrieve JWTs.
+	CookieNames []string `json:"cookie_names,omitempty"`
 	// A list of HTTP header names that Kong will inspect to retrieve JWTs.
 	HeaderNames []string `json:"header_names,omitempty"`
+	// The name of the claim in which the key identifying the secret must be passed. The plugin will attempt to read this claim from the JWT payload and the header, in that order.
+	KeyClaimName *string `default:"iss" json:"key_claim_name"`
+	// A value between 0 and 31536000 (365 days) limiting the lifetime of the JWT to maximum_expiration seconds in the future.
+	MaximumExpiration *float64 `default:"0" json:"maximum_expiration"`
+	// A boolean value that indicates whether the plugin should run (and try to authenticate) on OPTIONS preflight requests. If set to false, then OPTIONS requests will always be allowed.
+	RunOnPreflight *bool `default:"true" json:"run_on_preflight"`
+	// If true, the plugin assumes the credential’s secret to be base64 encoded. You will need to create a base64-encoded secret for your Consumer, and sign your JWT with the original secret.
+	SecretIsBase64 *bool `default:"false" json:"secret_is_base64"`
+	// A list of querystring parameters that Kong will inspect to retrieve JWTs.
+	URIParamNames []string `json:"uri_param_names,omitempty"`
 }
 
 func (j JWTPluginConfig) MarshalJSON() ([]byte, error) {
@@ -154,11 +154,18 @@ func (j *JWTPluginConfig) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *JWTPluginConfig) GetURIParamNames() []string {
+func (o *JWTPluginConfig) GetAnonymous() *string {
 	if o == nil {
 		return nil
 	}
-	return o.URIParamNames
+	return o.Anonymous
+}
+
+func (o *JWTPluginConfig) GetClaimsToVerify() []ClaimsToVerify {
+	if o == nil {
+		return nil
+	}
+	return o.ClaimsToVerify
 }
 
 func (o *JWTPluginConfig) GetCookieNames() []string {
@@ -168,39 +175,18 @@ func (o *JWTPluginConfig) GetCookieNames() []string {
 	return o.CookieNames
 }
 
+func (o *JWTPluginConfig) GetHeaderNames() []string {
+	if o == nil {
+		return nil
+	}
+	return o.HeaderNames
+}
+
 func (o *JWTPluginConfig) GetKeyClaimName() *string {
 	if o == nil {
 		return nil
 	}
 	return o.KeyClaimName
-}
-
-func (o *JWTPluginConfig) GetSecretIsBase64() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.SecretIsBase64
-}
-
-func (o *JWTPluginConfig) GetClaimsToVerify() []JWTPluginClaimsToVerify {
-	if o == nil {
-		return nil
-	}
-	return o.ClaimsToVerify
-}
-
-func (o *JWTPluginConfig) GetAnonymous() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Anonymous
-}
-
-func (o *JWTPluginConfig) GetRunOnPreflight() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.RunOnPreflight
 }
 
 func (o *JWTPluginConfig) GetMaximumExpiration() *float64 {
@@ -210,11 +196,25 @@ func (o *JWTPluginConfig) GetMaximumExpiration() *float64 {
 	return o.MaximumExpiration
 }
 
-func (o *JWTPluginConfig) GetHeaderNames() []string {
+func (o *JWTPluginConfig) GetRunOnPreflight() *bool {
 	if o == nil {
 		return nil
 	}
-	return o.HeaderNames
+	return o.RunOnPreflight
+}
+
+func (o *JWTPluginConfig) GetSecretIsBase64() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.SecretIsBase64
+}
+
+func (o *JWTPluginConfig) GetURIParamNames() []string {
+	if o == nil {
+		return nil
+	}
+	return o.URIParamNames
 }
 
 // JWTPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.

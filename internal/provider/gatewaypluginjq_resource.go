@@ -256,7 +256,7 @@ func (r *GatewayPluginJQResource) Create(ctx context.Context, req resource.Creat
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	createJQPlugin := *data.ToSharedCreateJQPlugin()
+	createJQPlugin := data.ToSharedCreateJQPlugin()
 	request := operations.CreateJqPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		CreateJQPlugin: createJQPlugin,
@@ -306,11 +306,11 @@ func (r *GatewayPluginJQResource) Read(ctx context.Context, req resource.ReadReq
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.GetJqPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.GetJqPlugin(ctx, request)
 	if err != nil {
@@ -356,12 +356,12 @@ func (r *GatewayPluginJQResource) Update(ctx context.Context, req resource.Updat
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
-	createJQPlugin := *data.ToSharedCreateJQPlugin()
+	controlPlaneID := data.ControlPlaneID.ValueString()
+	createJQPlugin := data.ToSharedCreateJQPlugin()
 	request := operations.UpdateJqPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 		CreateJQPlugin: createJQPlugin,
 	}
 	res, err := r.client.Plugins.UpdateJqPlugin(ctx, request)
@@ -409,11 +409,11 @@ func (r *GatewayPluginJQResource) Delete(ctx context.Context, req resource.Delet
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.DeleteJqPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.DeleteJqPlugin(ctx, request)
 	if err != nil {

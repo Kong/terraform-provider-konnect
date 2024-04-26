@@ -172,7 +172,7 @@ func (r *GatewayPluginBasicAuthResource) Create(ctx context.Context, req resourc
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	createBasicAuthPlugin := *data.ToSharedCreateBasicAuthPlugin()
+	createBasicAuthPlugin := data.ToSharedCreateBasicAuthPlugin()
 	request := operations.CreateBasicauthPluginRequest{
 		ControlPlaneID:        controlPlaneID,
 		CreateBasicAuthPlugin: createBasicAuthPlugin,
@@ -222,11 +222,11 @@ func (r *GatewayPluginBasicAuthResource) Read(ctx context.Context, req resource.
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.GetBasicauthPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.GetBasicauthPlugin(ctx, request)
 	if err != nil {
@@ -272,12 +272,12 @@ func (r *GatewayPluginBasicAuthResource) Update(ctx context.Context, req resourc
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
-	createBasicAuthPlugin := *data.ToSharedCreateBasicAuthPlugin()
+	controlPlaneID := data.ControlPlaneID.ValueString()
+	createBasicAuthPlugin := data.ToSharedCreateBasicAuthPlugin()
 	request := operations.UpdateBasicauthPluginRequest{
-		ControlPlaneID:        controlPlaneID,
 		PluginID:              pluginID,
+		ControlPlaneID:        controlPlaneID,
 		CreateBasicAuthPlugin: createBasicAuthPlugin,
 	}
 	res, err := r.client.Plugins.UpdateBasicauthPlugin(ctx, request)
@@ -325,11 +325,11 @@ func (r *GatewayPluginBasicAuthResource) Delete(ctx context.Context, req resourc
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.DeleteBasicauthPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.DeleteBasicauthPlugin(ctx, request)
 	if err != nil {

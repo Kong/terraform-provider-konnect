@@ -8,19 +8,11 @@ import (
 )
 
 type UpdateAipromptdecoratorPluginRequest struct {
-	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
-	// Description of the Plugin
-	CreateAIPromptDecoratorPlugin shared.CreateAIPromptDecoratorPlugin `request:"mediaType=application/json"`
-}
-
-func (o *UpdateAipromptdecoratorPluginRequest) GetControlPlaneID() string {
-	if o == nil {
-		return ""
-	}
-	return o.ControlPlaneID
+	// The UUID of your control plane. This variable is available in the Konnect manager.
+	ControlPlaneID                string                                `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	CreateAIPromptDecoratorPlugin *shared.CreateAIPromptDecoratorPlugin `request:"mediaType=application/json"`
 }
 
 func (o *UpdateAipromptdecoratorPluginRequest) GetPluginID() string {
@@ -30,9 +22,16 @@ func (o *UpdateAipromptdecoratorPluginRequest) GetPluginID() string {
 	return o.PluginID
 }
 
-func (o *UpdateAipromptdecoratorPluginRequest) GetCreateAIPromptDecoratorPlugin() shared.CreateAIPromptDecoratorPlugin {
+func (o *UpdateAipromptdecoratorPluginRequest) GetControlPlaneID() string {
 	if o == nil {
-		return shared.CreateAIPromptDecoratorPlugin{}
+		return ""
+	}
+	return o.ControlPlaneID
+}
+
+func (o *UpdateAipromptdecoratorPluginRequest) GetCreateAIPromptDecoratorPlugin() *shared.CreateAIPromptDecoratorPlugin {
+	if o == nil {
+		return nil
 	}
 	return o.CreateAIPromptDecoratorPlugin
 }
@@ -44,7 +43,7 @@ type UpdateAipromptdecoratorPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successfully upserted Plugin
+	// AIPromptDecorator plugin
 	AIPromptDecoratorPlugin *shared.AIPromptDecoratorPlugin
 	// Unauthorized
 	UnauthorizedError *shared.UnauthorizedError

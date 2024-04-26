@@ -59,7 +59,19 @@ func (r *GatewayPluginAIPromptTemplateResourceModel) ToSharedCreateAIPromptTempl
 			ID: id2,
 		}
 	}
-	var templates []shared.Templates = []shared.Templates{}
+	allowUntemplatedRequests := new(bool)
+	if !r.Config.AllowUntemplatedRequests.IsUnknown() && !r.Config.AllowUntemplatedRequests.IsNull() {
+		*allowUntemplatedRequests = r.Config.AllowUntemplatedRequests.ValueBool()
+	} else {
+		allowUntemplatedRequests = nil
+	}
+	logOriginalRequest := new(bool)
+	if !r.Config.LogOriginalRequest.IsUnknown() && !r.Config.LogOriginalRequest.IsNull() {
+		*logOriginalRequest = r.Config.LogOriginalRequest.ValueBool()
+	} else {
+		logOriginalRequest = nil
+	}
+	var templates []shared.CreateAIPromptTemplatePluginTemplates = []shared.CreateAIPromptTemplatePluginTemplates{}
 	for _, templatesItem := range r.Config.Templates {
 		name := new(string)
 		if !templatesItem.Name.IsUnknown() && !templatesItem.Name.IsNull() {
@@ -73,27 +85,15 @@ func (r *GatewayPluginAIPromptTemplateResourceModel) ToSharedCreateAIPromptTempl
 		} else {
 			template = nil
 		}
-		templates = append(templates, shared.Templates{
+		templates = append(templates, shared.CreateAIPromptTemplatePluginTemplates{
 			Name:     name,
 			Template: template,
 		})
 	}
-	allowUntemplatedRequests := new(bool)
-	if !r.Config.AllowUntemplatedRequests.IsUnknown() && !r.Config.AllowUntemplatedRequests.IsNull() {
-		*allowUntemplatedRequests = r.Config.AllowUntemplatedRequests.ValueBool()
-	} else {
-		allowUntemplatedRequests = nil
-	}
-	logOriginalRequest := new(bool)
-	if !r.Config.LogOriginalRequest.IsUnknown() && !r.Config.LogOriginalRequest.IsNull() {
-		*logOriginalRequest = r.Config.LogOriginalRequest.ValueBool()
-	} else {
-		logOriginalRequest = nil
-	}
 	config := shared.CreateAIPromptTemplatePluginConfig{
-		Templates:                templates,
 		AllowUntemplatedRequests: allowUntemplatedRequests,
 		LogOriginalRequest:       logOriginalRequest,
+		Templates:                templates,
 	}
 	out := shared.CreateAIPromptTemplatePlugin{
 		Enabled:   enabled,

@@ -9,9 +9,8 @@ import (
 
 type CreateAiproxyPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	// Create a new AIProxy plugin
-	CreateAIProxyPlugin shared.CreateAIProxyPlugin `request:"mediaType=application/json"`
+	ControlPlaneID      string                      `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	CreateAIProxyPlugin *shared.CreateAIProxyPlugin `request:"mediaType=application/json"`
 }
 
 func (o *CreateAiproxyPluginRequest) GetControlPlaneID() string {
@@ -21,9 +20,9 @@ func (o *CreateAiproxyPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateAiproxyPluginRequest) GetCreateAIProxyPlugin() shared.CreateAIProxyPlugin {
+func (o *CreateAiproxyPluginRequest) GetCreateAIProxyPlugin() *shared.CreateAIProxyPlugin {
 	if o == nil {
-		return shared.CreateAIProxyPlugin{}
+		return nil
 	}
 	return o.CreateAIProxyPlugin
 }
@@ -35,7 +34,7 @@ type CreateAiproxyPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successfully created Plugin
+	// AIProxy plugin
 	AIProxyPlugin *shared.AIProxyPlugin
 	// Unauthorized
 	UnauthorizedError *shared.UnauthorizedError

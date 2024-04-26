@@ -60,6 +60,12 @@ func (r *GatewayPluginFileLogResourceModel) ToSharedCreateFileLogPlugin() *share
 			ID: id2,
 		}
 	}
+	customFieldsByLua := make(map[string]interface{})
+	for customFieldsByLuaKey, customFieldsByLuaValue := range r.Config.CustomFieldsByLua {
+		var customFieldsByLuaInst interface{}
+		_ = json.Unmarshal([]byte(customFieldsByLuaValue.ValueString()), &customFieldsByLuaInst)
+		customFieldsByLua[customFieldsByLuaKey] = customFieldsByLuaInst
+	}
 	path := new(string)
 	if !r.Config.Path.IsUnknown() && !r.Config.Path.IsNull() {
 		*path = r.Config.Path.ValueString()
@@ -72,16 +78,10 @@ func (r *GatewayPluginFileLogResourceModel) ToSharedCreateFileLogPlugin() *share
 	} else {
 		reopen = nil
 	}
-	customFieldsByLua := make(map[string]interface{})
-	for customFieldsByLuaKey, customFieldsByLuaValue := range r.Config.CustomFieldsByLua {
-		var customFieldsByLuaInst interface{}
-		_ = json.Unmarshal([]byte(customFieldsByLuaValue.ValueString()), &customFieldsByLuaInst)
-		customFieldsByLua[customFieldsByLuaKey] = customFieldsByLuaInst
-	}
 	config := shared.CreateFileLogPluginConfig{
+		CustomFieldsByLua: customFieldsByLua,
 		Path:              path,
 		Reopen:            reopen,
-		CustomFieldsByLua: customFieldsByLua,
 	}
 	out := shared.CreateFileLogPlugin{
 		Enabled:   enabled,

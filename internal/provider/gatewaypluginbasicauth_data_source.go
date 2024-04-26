@@ -160,11 +160,11 @@ func (r *GatewayPluginBasicAuthDataSource) Read(ctx context.Context, req datasou
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.GetBasicauthPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.GetBasicauthPlugin(ctx, request)
 	if err != nil {

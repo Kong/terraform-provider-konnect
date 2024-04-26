@@ -95,6 +95,147 @@ func (o *RequestTransformerAdvancedPluginService) GetID() *string {
 	return o.ID
 }
 
+type JSONTypes string
+
+const (
+	JSONTypesBoolean JSONTypes = "boolean"
+	JSONTypesNumber  JSONTypes = "number"
+	JSONTypesString  JSONTypes = "string"
+)
+
+func (e JSONTypes) ToPointer() *JSONTypes {
+	return &e
+}
+
+func (e *JSONTypes) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "boolean":
+		fallthrough
+	case "number":
+		fallthrough
+	case "string":
+		*e = JSONTypes(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for JSONTypes: %v", v)
+	}
+}
+
+type RequestTransformerAdvancedPluginAdd struct {
+	Body        []string    `json:"body,omitempty"`
+	Headers     []string    `json:"headers,omitempty"`
+	JSONTypes   []JSONTypes `json:"json_types,omitempty"`
+	Querystring []string    `json:"querystring,omitempty"`
+}
+
+func (o *RequestTransformerAdvancedPluginAdd) GetBody() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Body
+}
+
+func (o *RequestTransformerAdvancedPluginAdd) GetHeaders() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Headers
+}
+
+func (o *RequestTransformerAdvancedPluginAdd) GetJSONTypes() []JSONTypes {
+	if o == nil {
+		return nil
+	}
+	return o.JSONTypes
+}
+
+func (o *RequestTransformerAdvancedPluginAdd) GetQuerystring() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Querystring
+}
+
+type Allow struct {
+	Body []string `json:"body,omitempty"`
+}
+
+func (o *Allow) GetBody() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Body
+}
+
+type RequestTransformerAdvancedPluginJSONTypes string
+
+const (
+	RequestTransformerAdvancedPluginJSONTypesBoolean RequestTransformerAdvancedPluginJSONTypes = "boolean"
+	RequestTransformerAdvancedPluginJSONTypesNumber  RequestTransformerAdvancedPluginJSONTypes = "number"
+	RequestTransformerAdvancedPluginJSONTypesString  RequestTransformerAdvancedPluginJSONTypes = "string"
+)
+
+func (e RequestTransformerAdvancedPluginJSONTypes) ToPointer() *RequestTransformerAdvancedPluginJSONTypes {
+	return &e
+}
+
+func (e *RequestTransformerAdvancedPluginJSONTypes) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "boolean":
+		fallthrough
+	case "number":
+		fallthrough
+	case "string":
+		*e = RequestTransformerAdvancedPluginJSONTypes(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for RequestTransformerAdvancedPluginJSONTypes: %v", v)
+	}
+}
+
+type RequestTransformerAdvancedPluginAppend struct {
+	Body        []string                                    `json:"body,omitempty"`
+	Headers     []string                                    `json:"headers,omitempty"`
+	JSONTypes   []RequestTransformerAdvancedPluginJSONTypes `json:"json_types,omitempty"`
+	Querystring []string                                    `json:"querystring,omitempty"`
+}
+
+func (o *RequestTransformerAdvancedPluginAppend) GetBody() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Body
+}
+
+func (o *RequestTransformerAdvancedPluginAppend) GetHeaders() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Headers
+}
+
+func (o *RequestTransformerAdvancedPluginAppend) GetJSONTypes() []RequestTransformerAdvancedPluginJSONTypes {
+	if o == nil {
+		return nil
+	}
+	return o.JSONTypes
+}
+
+func (o *RequestTransformerAdvancedPluginAppend) GetQuerystring() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Querystring
+}
+
 type RequestTransformerAdvancedPluginRemove struct {
 	Body        []string `json:"body,omitempty"`
 	Headers     []string `json:"headers,omitempty"`
@@ -149,79 +290,6 @@ func (o *RequestTransformerAdvancedPluginRename) GetQuerystring() []string {
 	return o.Querystring
 }
 
-type RequestTransformerAdvancedPluginJSONTypes string
-
-const (
-	RequestTransformerAdvancedPluginJSONTypesBoolean RequestTransformerAdvancedPluginJSONTypes = "boolean"
-	RequestTransformerAdvancedPluginJSONTypesNumber  RequestTransformerAdvancedPluginJSONTypes = "number"
-	RequestTransformerAdvancedPluginJSONTypesString  RequestTransformerAdvancedPluginJSONTypes = "string"
-)
-
-func (e RequestTransformerAdvancedPluginJSONTypes) ToPointer() *RequestTransformerAdvancedPluginJSONTypes {
-	return &e
-}
-
-func (e *RequestTransformerAdvancedPluginJSONTypes) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "boolean":
-		fallthrough
-	case "number":
-		fallthrough
-	case "string":
-		*e = RequestTransformerAdvancedPluginJSONTypes(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for RequestTransformerAdvancedPluginJSONTypes: %v", v)
-	}
-}
-
-type RequestTransformerAdvancedPluginReplace struct {
-	Body        []string                                    `json:"body,omitempty"`
-	Headers     []string                                    `json:"headers,omitempty"`
-	Querystring []string                                    `json:"querystring,omitempty"`
-	JSONTypes   []RequestTransformerAdvancedPluginJSONTypes `json:"json_types,omitempty"`
-	URI         *string                                     `json:"uri,omitempty"`
-}
-
-func (o *RequestTransformerAdvancedPluginReplace) GetBody() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Body
-}
-
-func (o *RequestTransformerAdvancedPluginReplace) GetHeaders() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Headers
-}
-
-func (o *RequestTransformerAdvancedPluginReplace) GetQuerystring() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Querystring
-}
-
-func (o *RequestTransformerAdvancedPluginReplace) GetJSONTypes() []RequestTransformerAdvancedPluginJSONTypes {
-	if o == nil {
-		return nil
-	}
-	return o.JSONTypes
-}
-
-func (o *RequestTransformerAdvancedPluginReplace) GetURI() *string {
-	if o == nil {
-		return nil
-	}
-	return o.URI
-}
-
 type RequestTransformerAdvancedPluginConfigJSONTypes string
 
 const (
@@ -252,128 +320,60 @@ func (e *RequestTransformerAdvancedPluginConfigJSONTypes) UnmarshalJSON(data []b
 	}
 }
 
-type RequestTransformerAdvancedPluginAdd struct {
+type RequestTransformerAdvancedPluginReplace struct {
 	Body        []string                                          `json:"body,omitempty"`
 	Headers     []string                                          `json:"headers,omitempty"`
-	Querystring []string                                          `json:"querystring,omitempty"`
 	JSONTypes   []RequestTransformerAdvancedPluginConfigJSONTypes `json:"json_types,omitempty"`
+	Querystring []string                                          `json:"querystring,omitempty"`
+	URI         *string                                           `json:"uri,omitempty"`
 }
 
-func (o *RequestTransformerAdvancedPluginAdd) GetBody() []string {
+func (o *RequestTransformerAdvancedPluginReplace) GetBody() []string {
 	if o == nil {
 		return nil
 	}
 	return o.Body
 }
 
-func (o *RequestTransformerAdvancedPluginAdd) GetHeaders() []string {
+func (o *RequestTransformerAdvancedPluginReplace) GetHeaders() []string {
 	if o == nil {
 		return nil
 	}
 	return o.Headers
 }
 
-func (o *RequestTransformerAdvancedPluginAdd) GetQuerystring() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Querystring
-}
-
-func (o *RequestTransformerAdvancedPluginAdd) GetJSONTypes() []RequestTransformerAdvancedPluginConfigJSONTypes {
+func (o *RequestTransformerAdvancedPluginReplace) GetJSONTypes() []RequestTransformerAdvancedPluginConfigJSONTypes {
 	if o == nil {
 		return nil
 	}
 	return o.JSONTypes
 }
 
-type RequestTransformerAdvancedPluginConfigAppendJSONTypes string
-
-const (
-	RequestTransformerAdvancedPluginConfigAppendJSONTypesBoolean RequestTransformerAdvancedPluginConfigAppendJSONTypes = "boolean"
-	RequestTransformerAdvancedPluginConfigAppendJSONTypesNumber  RequestTransformerAdvancedPluginConfigAppendJSONTypes = "number"
-	RequestTransformerAdvancedPluginConfigAppendJSONTypesString  RequestTransformerAdvancedPluginConfigAppendJSONTypes = "string"
-)
-
-func (e RequestTransformerAdvancedPluginConfigAppendJSONTypes) ToPointer() *RequestTransformerAdvancedPluginConfigAppendJSONTypes {
-	return &e
-}
-
-func (e *RequestTransformerAdvancedPluginConfigAppendJSONTypes) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "boolean":
-		fallthrough
-	case "number":
-		fallthrough
-	case "string":
-		*e = RequestTransformerAdvancedPluginConfigAppendJSONTypes(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for RequestTransformerAdvancedPluginConfigAppendJSONTypes: %v", v)
-	}
-}
-
-type RequestTransformerAdvancedPluginAppend struct {
-	Body        []string                                                `json:"body,omitempty"`
-	Headers     []string                                                `json:"headers,omitempty"`
-	Querystring []string                                                `json:"querystring,omitempty"`
-	JSONTypes   []RequestTransformerAdvancedPluginConfigAppendJSONTypes `json:"json_types,omitempty"`
-}
-
-func (o *RequestTransformerAdvancedPluginAppend) GetBody() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Body
-}
-
-func (o *RequestTransformerAdvancedPluginAppend) GetHeaders() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Headers
-}
-
-func (o *RequestTransformerAdvancedPluginAppend) GetQuerystring() []string {
+func (o *RequestTransformerAdvancedPluginReplace) GetQuerystring() []string {
 	if o == nil {
 		return nil
 	}
 	return o.Querystring
 }
 
-func (o *RequestTransformerAdvancedPluginAppend) GetJSONTypes() []RequestTransformerAdvancedPluginConfigAppendJSONTypes {
+func (o *RequestTransformerAdvancedPluginReplace) GetURI() *string {
 	if o == nil {
 		return nil
 	}
-	return o.JSONTypes
-}
-
-type RequestTransformerAdvancedPluginAllow struct {
-	Body []string `json:"body,omitempty"`
-}
-
-func (o *RequestTransformerAdvancedPluginAllow) GetBody() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Body
+	return o.URI
 }
 
 type RequestTransformerAdvancedPluginConfig struct {
+	Add    *RequestTransformerAdvancedPluginAdd    `json:"add,omitempty"`
+	Allow  *Allow                                  `json:"allow,omitempty"`
+	Append *RequestTransformerAdvancedPluginAppend `json:"append,omitempty"`
+	// Specify whether dots (for example, `customers.info.phone`) should be treated as part of a property name or used to descend into nested JSON objects.  See [Arrays and nested objects](#arrays-and-nested-objects).
+	DotsInKeys *bool `default:"true" json:"dots_in_keys"`
 	// A string representing an HTTP method, such as GET, POST, PUT, or DELETE. The string must contain only uppercase letters.
 	HTTPMethod *string                                  `json:"http_method,omitempty"`
 	Remove     *RequestTransformerAdvancedPluginRemove  `json:"remove,omitempty"`
 	Rename     *RequestTransformerAdvancedPluginRename  `json:"rename,omitempty"`
 	Replace    *RequestTransformerAdvancedPluginReplace `json:"replace,omitempty"`
-	Add        *RequestTransformerAdvancedPluginAdd     `json:"add,omitempty"`
-	Append     *RequestTransformerAdvancedPluginAppend  `json:"append,omitempty"`
-	Allow      *RequestTransformerAdvancedPluginAllow   `json:"allow,omitempty"`
-	// Specify whether dots (for example, `customers.info.phone`) should be treated as part of a property name or used to descend into nested JSON objects.  See [Arrays and nested objects](#arrays-and-nested-objects).
-	DotsInKeys *bool `default:"true" json:"dots_in_keys"`
 }
 
 func (r RequestTransformerAdvancedPluginConfig) MarshalJSON() ([]byte, error) {
@@ -385,6 +385,34 @@ func (r *RequestTransformerAdvancedPluginConfig) UnmarshalJSON(data []byte) erro
 		return err
 	}
 	return nil
+}
+
+func (o *RequestTransformerAdvancedPluginConfig) GetAdd() *RequestTransformerAdvancedPluginAdd {
+	if o == nil {
+		return nil
+	}
+	return o.Add
+}
+
+func (o *RequestTransformerAdvancedPluginConfig) GetAllow() *Allow {
+	if o == nil {
+		return nil
+	}
+	return o.Allow
+}
+
+func (o *RequestTransformerAdvancedPluginConfig) GetAppend() *RequestTransformerAdvancedPluginAppend {
+	if o == nil {
+		return nil
+	}
+	return o.Append
+}
+
+func (o *RequestTransformerAdvancedPluginConfig) GetDotsInKeys() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.DotsInKeys
 }
 
 func (o *RequestTransformerAdvancedPluginConfig) GetHTTPMethod() *string {
@@ -413,34 +441,6 @@ func (o *RequestTransformerAdvancedPluginConfig) GetReplace() *RequestTransforme
 		return nil
 	}
 	return o.Replace
-}
-
-func (o *RequestTransformerAdvancedPluginConfig) GetAdd() *RequestTransformerAdvancedPluginAdd {
-	if o == nil {
-		return nil
-	}
-	return o.Add
-}
-
-func (o *RequestTransformerAdvancedPluginConfig) GetAppend() *RequestTransformerAdvancedPluginAppend {
-	if o == nil {
-		return nil
-	}
-	return o.Append
-}
-
-func (o *RequestTransformerAdvancedPluginConfig) GetAllow() *RequestTransformerAdvancedPluginAllow {
-	if o == nil {
-		return nil
-	}
-	return o.Allow
-}
-
-func (o *RequestTransformerAdvancedPluginConfig) GetDotsInKeys() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.DotsInKeys
 }
 
 // RequestTransformerAdvancedPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.

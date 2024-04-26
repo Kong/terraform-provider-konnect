@@ -59,25 +59,29 @@ func (r *GatewayPluginJQResourceModel) ToSharedCreateJQPlugin() *shared.CreateJQ
 			ID: id2,
 		}
 	}
+	var requestIfMediaType []string = []string{}
+	for _, requestIfMediaTypeItem := range r.Config.RequestIfMediaType {
+		requestIfMediaType = append(requestIfMediaType, requestIfMediaTypeItem.ValueString())
+	}
 	requestJqProgram := new(string)
 	if !r.Config.RequestJqProgram.IsUnknown() && !r.Config.RequestJqProgram.IsNull() {
 		*requestJqProgram = r.Config.RequestJqProgram.ValueString()
 	} else {
 		requestJqProgram = nil
 	}
-	var requestJqProgramOptions *shared.RequestJqProgramOptions
+	var requestJqProgramOptions *shared.CreateJQPluginRequestJQProgramOptions
 	if r.Config.RequestJqProgramOptions != nil {
+		asciiOutput := new(bool)
+		if !r.Config.RequestJqProgramOptions.ASCIIOutput.IsUnknown() && !r.Config.RequestJqProgramOptions.ASCIIOutput.IsNull() {
+			*asciiOutput = r.Config.RequestJqProgramOptions.ASCIIOutput.ValueBool()
+		} else {
+			asciiOutput = nil
+		}
 		compactOutput := new(bool)
 		if !r.Config.RequestJqProgramOptions.CompactOutput.IsUnknown() && !r.Config.RequestJqProgramOptions.CompactOutput.IsNull() {
 			*compactOutput = r.Config.RequestJqProgramOptions.CompactOutput.ValueBool()
 		} else {
 			compactOutput = nil
-		}
-		rawOutput := new(bool)
-		if !r.Config.RequestJqProgramOptions.RawOutput.IsUnknown() && !r.Config.RequestJqProgramOptions.RawOutput.IsNull() {
-			*rawOutput = r.Config.RequestJqProgramOptions.RawOutput.ValueBool()
-		} else {
-			rawOutput = nil
 		}
 		joinOutput := new(bool)
 		if !r.Config.RequestJqProgramOptions.JoinOutput.IsUnknown() && !r.Config.RequestJqProgramOptions.JoinOutput.IsNull() {
@@ -85,11 +89,11 @@ func (r *GatewayPluginJQResourceModel) ToSharedCreateJQPlugin() *shared.CreateJQ
 		} else {
 			joinOutput = nil
 		}
-		asciiOutput := new(bool)
-		if !r.Config.RequestJqProgramOptions.ASCIIOutput.IsUnknown() && !r.Config.RequestJqProgramOptions.ASCIIOutput.IsNull() {
-			*asciiOutput = r.Config.RequestJqProgramOptions.ASCIIOutput.ValueBool()
+		rawOutput := new(bool)
+		if !r.Config.RequestJqProgramOptions.RawOutput.IsUnknown() && !r.Config.RequestJqProgramOptions.RawOutput.IsNull() {
+			*rawOutput = r.Config.RequestJqProgramOptions.RawOutput.ValueBool()
 		} else {
-			asciiOutput = nil
+			rawOutput = nil
 		}
 		sortKeys := new(bool)
 		if !r.Config.RequestJqProgramOptions.SortKeys.IsUnknown() && !r.Config.RequestJqProgramOptions.SortKeys.IsNull() {
@@ -97,62 +101,12 @@ func (r *GatewayPluginJQResourceModel) ToSharedCreateJQPlugin() *shared.CreateJQ
 		} else {
 			sortKeys = nil
 		}
-		requestJqProgramOptions = &shared.RequestJqProgramOptions{
-			CompactOutput: compactOutput,
-			RawOutput:     rawOutput,
-			JoinOutput:    joinOutput,
+		requestJqProgramOptions = &shared.CreateJQPluginRequestJQProgramOptions{
 			ASCIIOutput:   asciiOutput,
+			CompactOutput: compactOutput,
+			JoinOutput:    joinOutput,
+			RawOutput:     rawOutput,
 			SortKeys:      sortKeys,
-		}
-	}
-	var requestIfMediaType []string = []string{}
-	for _, requestIfMediaTypeItem := range r.Config.RequestIfMediaType {
-		requestIfMediaType = append(requestIfMediaType, requestIfMediaTypeItem.ValueString())
-	}
-	responseJqProgram := new(string)
-	if !r.Config.ResponseJqProgram.IsUnknown() && !r.Config.ResponseJqProgram.IsNull() {
-		*responseJqProgram = r.Config.ResponseJqProgram.ValueString()
-	} else {
-		responseJqProgram = nil
-	}
-	var responseJqProgramOptions *shared.ResponseJqProgramOptions
-	if r.Config.ResponseJqProgramOptions != nil {
-		compactOutput1 := new(bool)
-		if !r.Config.ResponseJqProgramOptions.CompactOutput.IsUnknown() && !r.Config.ResponseJqProgramOptions.CompactOutput.IsNull() {
-			*compactOutput1 = r.Config.ResponseJqProgramOptions.CompactOutput.ValueBool()
-		} else {
-			compactOutput1 = nil
-		}
-		rawOutput1 := new(bool)
-		if !r.Config.ResponseJqProgramOptions.RawOutput.IsUnknown() && !r.Config.ResponseJqProgramOptions.RawOutput.IsNull() {
-			*rawOutput1 = r.Config.ResponseJqProgramOptions.RawOutput.ValueBool()
-		} else {
-			rawOutput1 = nil
-		}
-		joinOutput1 := new(bool)
-		if !r.Config.ResponseJqProgramOptions.JoinOutput.IsUnknown() && !r.Config.ResponseJqProgramOptions.JoinOutput.IsNull() {
-			*joinOutput1 = r.Config.ResponseJqProgramOptions.JoinOutput.ValueBool()
-		} else {
-			joinOutput1 = nil
-		}
-		asciiOutput1 := new(bool)
-		if !r.Config.ResponseJqProgramOptions.ASCIIOutput.IsUnknown() && !r.Config.ResponseJqProgramOptions.ASCIIOutput.IsNull() {
-			*asciiOutput1 = r.Config.ResponseJqProgramOptions.ASCIIOutput.ValueBool()
-		} else {
-			asciiOutput1 = nil
-		}
-		sortKeys1 := new(bool)
-		if !r.Config.ResponseJqProgramOptions.SortKeys.IsUnknown() && !r.Config.ResponseJqProgramOptions.SortKeys.IsNull() {
-			*sortKeys1 = r.Config.ResponseJqProgramOptions.SortKeys.ValueBool()
-		} else {
-			sortKeys1 = nil
-		}
-		responseJqProgramOptions = &shared.ResponseJqProgramOptions{
-			CompactOutput: compactOutput1,
-			RawOutput:     rawOutput1,
-			JoinOutput:    joinOutput1,
-			ASCIIOutput:   asciiOutput1,
-			SortKeys:      sortKeys1,
 		}
 	}
 	var responseIfMediaType []string = []string{}
@@ -163,14 +117,60 @@ func (r *GatewayPluginJQResourceModel) ToSharedCreateJQPlugin() *shared.CreateJQ
 	for _, responseIfStatusCodeItem := range r.Config.ResponseIfStatusCode {
 		responseIfStatusCode = append(responseIfStatusCode, responseIfStatusCodeItem.ValueInt64())
 	}
+	responseJqProgram := new(string)
+	if !r.Config.ResponseJqProgram.IsUnknown() && !r.Config.ResponseJqProgram.IsNull() {
+		*responseJqProgram = r.Config.ResponseJqProgram.ValueString()
+	} else {
+		responseJqProgram = nil
+	}
+	var responseJqProgramOptions *shared.CreateJQPluginResponseJQProgramOptions
+	if r.Config.ResponseJqProgramOptions != nil {
+		asciiOutput1 := new(bool)
+		if !r.Config.ResponseJqProgramOptions.ASCIIOutput.IsUnknown() && !r.Config.ResponseJqProgramOptions.ASCIIOutput.IsNull() {
+			*asciiOutput1 = r.Config.ResponseJqProgramOptions.ASCIIOutput.ValueBool()
+		} else {
+			asciiOutput1 = nil
+		}
+		compactOutput1 := new(bool)
+		if !r.Config.ResponseJqProgramOptions.CompactOutput.IsUnknown() && !r.Config.ResponseJqProgramOptions.CompactOutput.IsNull() {
+			*compactOutput1 = r.Config.ResponseJqProgramOptions.CompactOutput.ValueBool()
+		} else {
+			compactOutput1 = nil
+		}
+		joinOutput1 := new(bool)
+		if !r.Config.ResponseJqProgramOptions.JoinOutput.IsUnknown() && !r.Config.ResponseJqProgramOptions.JoinOutput.IsNull() {
+			*joinOutput1 = r.Config.ResponseJqProgramOptions.JoinOutput.ValueBool()
+		} else {
+			joinOutput1 = nil
+		}
+		rawOutput1 := new(bool)
+		if !r.Config.ResponseJqProgramOptions.RawOutput.IsUnknown() && !r.Config.ResponseJqProgramOptions.RawOutput.IsNull() {
+			*rawOutput1 = r.Config.ResponseJqProgramOptions.RawOutput.ValueBool()
+		} else {
+			rawOutput1 = nil
+		}
+		sortKeys1 := new(bool)
+		if !r.Config.ResponseJqProgramOptions.SortKeys.IsUnknown() && !r.Config.ResponseJqProgramOptions.SortKeys.IsNull() {
+			*sortKeys1 = r.Config.ResponseJqProgramOptions.SortKeys.ValueBool()
+		} else {
+			sortKeys1 = nil
+		}
+		responseJqProgramOptions = &shared.CreateJQPluginResponseJQProgramOptions{
+			ASCIIOutput:   asciiOutput1,
+			CompactOutput: compactOutput1,
+			JoinOutput:    joinOutput1,
+			RawOutput:     rawOutput1,
+			SortKeys:      sortKeys1,
+		}
+	}
 	config := shared.CreateJQPluginConfig{
+		RequestIfMediaType:       requestIfMediaType,
 		RequestJqProgram:         requestJqProgram,
 		RequestJqProgramOptions:  requestJqProgramOptions,
-		RequestIfMediaType:       requestIfMediaType,
-		ResponseJqProgram:        responseJqProgram,
-		ResponseJqProgramOptions: responseJqProgramOptions,
 		ResponseIfMediaType:      responseIfMediaType,
 		ResponseIfStatusCode:     responseIfStatusCode,
+		ResponseJqProgram:        responseJqProgram,
+		ResponseJqProgramOptions: responseJqProgramOptions,
 	}
 	out := shared.CreateJQPlugin{
 		Enabled:   enabled,
@@ -194,7 +194,7 @@ func (r *GatewayPluginJQResourceModel) RefreshFromSharedJQPlugin(resp *shared.JQ
 		if resp.Config.RequestJqProgramOptions == nil {
 			r.Config.RequestJqProgramOptions = nil
 		} else {
-			r.Config.RequestJqProgramOptions = &tfTypes.RequestJqProgramOptions{}
+			r.Config.RequestJqProgramOptions = &tfTypes.CreateJQPluginRequestJQProgramOptions{}
 			r.Config.RequestJqProgramOptions.ASCIIOutput = types.BoolPointerValue(resp.Config.RequestJqProgramOptions.ASCIIOutput)
 			r.Config.RequestJqProgramOptions.CompactOutput = types.BoolPointerValue(resp.Config.RequestJqProgramOptions.CompactOutput)
 			r.Config.RequestJqProgramOptions.JoinOutput = types.BoolPointerValue(resp.Config.RequestJqProgramOptions.JoinOutput)
@@ -213,7 +213,7 @@ func (r *GatewayPluginJQResourceModel) RefreshFromSharedJQPlugin(resp *shared.JQ
 		if resp.Config.ResponseJqProgramOptions == nil {
 			r.Config.ResponseJqProgramOptions = nil
 		} else {
-			r.Config.ResponseJqProgramOptions = &tfTypes.RequestJqProgramOptions{}
+			r.Config.ResponseJqProgramOptions = &tfTypes.CreateJQPluginRequestJQProgramOptions{}
 			r.Config.ResponseJqProgramOptions.ASCIIOutput = types.BoolPointerValue(resp.Config.ResponseJqProgramOptions.ASCIIOutput)
 			r.Config.ResponseJqProgramOptions.CompactOutput = types.BoolPointerValue(resp.Config.ResponseJqProgramOptions.CompactOutput)
 			r.Config.ResponseJqProgramOptions.JoinOutput = types.BoolPointerValue(resp.Config.ResponseJqProgramOptions.JoinOutput)

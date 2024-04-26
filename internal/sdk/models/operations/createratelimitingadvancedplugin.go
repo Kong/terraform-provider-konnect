@@ -9,9 +9,8 @@ import (
 
 type CreateRatelimitingadvancedPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	// Create a new RateLimitingAdvanced plugin
-	CreateRateLimitingAdvancedPlugin shared.CreateRateLimitingAdvancedPlugin `request:"mediaType=application/json"`
+	ControlPlaneID                   string                                   `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	CreateRateLimitingAdvancedPlugin *shared.CreateRateLimitingAdvancedPlugin `request:"mediaType=application/json"`
 }
 
 func (o *CreateRatelimitingadvancedPluginRequest) GetControlPlaneID() string {
@@ -21,9 +20,9 @@ func (o *CreateRatelimitingadvancedPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateRatelimitingadvancedPluginRequest) GetCreateRateLimitingAdvancedPlugin() shared.CreateRateLimitingAdvancedPlugin {
+func (o *CreateRatelimitingadvancedPluginRequest) GetCreateRateLimitingAdvancedPlugin() *shared.CreateRateLimitingAdvancedPlugin {
 	if o == nil {
-		return shared.CreateRateLimitingAdvancedPlugin{}
+		return nil
 	}
 	return o.CreateRateLimitingAdvancedPlugin
 }
@@ -35,7 +34,7 @@ type CreateRatelimitingadvancedPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successfully created Plugin
+	// RateLimitingAdvanced plugin
 	RateLimitingAdvancedPlugin *shared.RateLimitingAdvancedPlugin
 	// Unauthorized
 	UnauthorizedError *shared.UnauthorizedError

@@ -8,17 +8,10 @@ import (
 )
 
 type GetProxycachePluginRequest struct {
-	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
-}
-
-func (o *GetProxycachePluginRequest) GetControlPlaneID() string {
-	if o == nil {
-		return ""
-	}
-	return o.ControlPlaneID
+	// The UUID of your control plane. This variable is available in the Konnect manager.
+	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
 func (o *GetProxycachePluginRequest) GetPluginID() string {
@@ -28,6 +21,13 @@ func (o *GetProxycachePluginRequest) GetPluginID() string {
 	return o.PluginID
 }
 
+func (o *GetProxycachePluginRequest) GetControlPlaneID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ControlPlaneID
+}
+
 type GetProxycachePluginResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -35,7 +35,7 @@ type GetProxycachePluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successfully fetched Plugin
+	// ProxyCache plugin
 	ProxyCachePlugin *shared.ProxyCachePlugin
 	// Unauthorized
 	UnauthorizedError *shared.UnauthorizedError

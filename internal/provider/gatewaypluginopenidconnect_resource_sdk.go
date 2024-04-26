@@ -60,401 +60,43 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedCreateOpenidConnectPlu
 			ID: id2,
 		}
 	}
-	issuer := new(string)
-	if !r.Config.Issuer.IsUnknown() && !r.Config.Issuer.IsNull() {
-		*issuer = r.Config.Issuer.ValueString()
+	anonymous := new(string)
+	if !r.Config.Anonymous.IsUnknown() && !r.Config.Anonymous.IsNull() {
+		*anonymous = r.Config.Anonymous.ValueString()
 	} else {
-		issuer = nil
-	}
-	usingPseudoIssuer := new(bool)
-	if !r.Config.UsingPseudoIssuer.IsUnknown() && !r.Config.UsingPseudoIssuer.IsNull() {
-		*usingPseudoIssuer = r.Config.UsingPseudoIssuer.ValueBool()
-	} else {
-		usingPseudoIssuer = nil
-	}
-	var discoveryHeadersNames []string = []string{}
-	for _, discoveryHeadersNamesItem := range r.Config.DiscoveryHeadersNames {
-		discoveryHeadersNames = append(discoveryHeadersNames, discoveryHeadersNamesItem.ValueString())
-	}
-	var discoveryHeadersValues []string = []string{}
-	for _, discoveryHeadersValuesItem := range r.Config.DiscoveryHeadersValues {
-		discoveryHeadersValues = append(discoveryHeadersValues, discoveryHeadersValuesItem.ValueString())
-	}
-	var extraJwksUris []string = []string{}
-	for _, extraJwksUrisItem := range r.Config.ExtraJwksUris {
-		extraJwksUris = append(extraJwksUris, extraJwksUrisItem.ValueString())
-	}
-	rediscoveryLifetime := new(float64)
-	if !r.Config.RediscoveryLifetime.IsUnknown() && !r.Config.RediscoveryLifetime.IsNull() {
-		*rediscoveryLifetime, _ = r.Config.RediscoveryLifetime.ValueBigFloat().Float64()
-	} else {
-		rediscoveryLifetime = nil
-	}
-	var authMethods []shared.AuthMethods = []shared.AuthMethods{}
-	for _, authMethodsItem := range r.Config.AuthMethods {
-		authMethods = append(authMethods, shared.AuthMethods(authMethodsItem.ValueString()))
-	}
-	var clientID []string = []string{}
-	for _, clientIDItem := range r.Config.ClientID {
-		clientID = append(clientID, clientIDItem.ValueString())
-	}
-	var clientSecret []string = []string{}
-	for _, clientSecretItem := range r.Config.ClientSecret {
-		clientSecret = append(clientSecret, clientSecretItem.ValueString())
-	}
-	var clientAuth []shared.ClientAuth = []shared.ClientAuth{}
-	for _, clientAuthItem := range r.Config.ClientAuth {
-		clientAuth = append(clientAuth, shared.ClientAuth(clientAuthItem.ValueString()))
-	}
-	var clientJwk []shared.ClientJwk = []shared.ClientJwk{}
-	for _, clientJwkItem := range r.Config.ClientJwk {
-		issuer1 := new(string)
-		if !clientJwkItem.Issuer.IsUnknown() && !clientJwkItem.Issuer.IsNull() {
-			*issuer1 = clientJwkItem.Issuer.ValueString()
-		} else {
-			issuer1 = nil
-		}
-		kty := new(string)
-		if !clientJwkItem.Kty.IsUnknown() && !clientJwkItem.Kty.IsNull() {
-			*kty = clientJwkItem.Kty.ValueString()
-		} else {
-			kty = nil
-		}
-		use := new(string)
-		if !clientJwkItem.Use.IsUnknown() && !clientJwkItem.Use.IsNull() {
-			*use = clientJwkItem.Use.ValueString()
-		} else {
-			use = nil
-		}
-		var keyOps []string = []string{}
-		for _, keyOpsItem := range clientJwkItem.KeyOps {
-			keyOps = append(keyOps, keyOpsItem.ValueString())
-		}
-		alg := new(string)
-		if !clientJwkItem.Alg.IsUnknown() && !clientJwkItem.Alg.IsNull() {
-			*alg = clientJwkItem.Alg.ValueString()
-		} else {
-			alg = nil
-		}
-		kid := new(string)
-		if !clientJwkItem.Kid.IsUnknown() && !clientJwkItem.Kid.IsNull() {
-			*kid = clientJwkItem.Kid.ValueString()
-		} else {
-			kid = nil
-		}
-		x5u := new(string)
-		if !clientJwkItem.X5u.IsUnknown() && !clientJwkItem.X5u.IsNull() {
-			*x5u = clientJwkItem.X5u.ValueString()
-		} else {
-			x5u = nil
-		}
-		var x5c []string = []string{}
-		for _, x5cItem := range clientJwkItem.X5c {
-			x5c = append(x5c, x5cItem.ValueString())
-		}
-		x5t := new(string)
-		if !clientJwkItem.X5t.IsUnknown() && !clientJwkItem.X5t.IsNull() {
-			*x5t = clientJwkItem.X5t.ValueString()
-		} else {
-			x5t = nil
-		}
-		x5tNumberS256 := new(string)
-		if !clientJwkItem.X5tNumberS256.IsUnknown() && !clientJwkItem.X5tNumberS256.IsNull() {
-			*x5tNumberS256 = clientJwkItem.X5tNumberS256.ValueString()
-		} else {
-			x5tNumberS256 = nil
-		}
-		k := new(string)
-		if !clientJwkItem.K.IsUnknown() && !clientJwkItem.K.IsNull() {
-			*k = clientJwkItem.K.ValueString()
-		} else {
-			k = nil
-		}
-		x := new(string)
-		if !clientJwkItem.X.IsUnknown() && !clientJwkItem.X.IsNull() {
-			*x = clientJwkItem.X.ValueString()
-		} else {
-			x = nil
-		}
-		y := new(string)
-		if !clientJwkItem.Y.IsUnknown() && !clientJwkItem.Y.IsNull() {
-			*y = clientJwkItem.Y.ValueString()
-		} else {
-			y = nil
-		}
-		crv := new(string)
-		if !clientJwkItem.Crv.IsUnknown() && !clientJwkItem.Crv.IsNull() {
-			*crv = clientJwkItem.Crv.ValueString()
-		} else {
-			crv = nil
-		}
-		n := new(string)
-		if !clientJwkItem.N.IsUnknown() && !clientJwkItem.N.IsNull() {
-			*n = clientJwkItem.N.ValueString()
-		} else {
-			n = nil
-		}
-		e := new(string)
-		if !clientJwkItem.E.IsUnknown() && !clientJwkItem.E.IsNull() {
-			*e = clientJwkItem.E.ValueString()
-		} else {
-			e = nil
-		}
-		d := new(string)
-		if !clientJwkItem.D.IsUnknown() && !clientJwkItem.D.IsNull() {
-			*d = clientJwkItem.D.ValueString()
-		} else {
-			d = nil
-		}
-		p := new(string)
-		if !clientJwkItem.P.IsUnknown() && !clientJwkItem.P.IsNull() {
-			*p = clientJwkItem.P.ValueString()
-		} else {
-			p = nil
-		}
-		q := new(string)
-		if !clientJwkItem.Q.IsUnknown() && !clientJwkItem.Q.IsNull() {
-			*q = clientJwkItem.Q.ValueString()
-		} else {
-			q = nil
-		}
-		dp := new(string)
-		if !clientJwkItem.Dp.IsUnknown() && !clientJwkItem.Dp.IsNull() {
-			*dp = clientJwkItem.Dp.ValueString()
-		} else {
-			dp = nil
-		}
-		dq := new(string)
-		if !clientJwkItem.Dq.IsUnknown() && !clientJwkItem.Dq.IsNull() {
-			*dq = clientJwkItem.Dq.ValueString()
-		} else {
-			dq = nil
-		}
-		qi := new(string)
-		if !clientJwkItem.Qi.IsUnknown() && !clientJwkItem.Qi.IsNull() {
-			*qi = clientJwkItem.Qi.ValueString()
-		} else {
-			qi = nil
-		}
-		oth := new(string)
-		if !clientJwkItem.Oth.IsUnknown() && !clientJwkItem.Oth.IsNull() {
-			*oth = clientJwkItem.Oth.ValueString()
-		} else {
-			oth = nil
-		}
-		r1 := new(string)
-		if !clientJwkItem.R.IsUnknown() && !clientJwkItem.R.IsNull() {
-			*r1 = clientJwkItem.R.ValueString()
-		} else {
-			r1 = nil
-		}
-		t := new(string)
-		if !clientJwkItem.T.IsUnknown() && !clientJwkItem.T.IsNull() {
-			*t = clientJwkItem.T.ValueString()
-		} else {
-			t = nil
-		}
-		clientJwk = append(clientJwk, shared.ClientJwk{
-			Issuer:        issuer1,
-			Kty:           kty,
-			Use:           use,
-			KeyOps:        keyOps,
-			Alg:           alg,
-			Kid:           kid,
-			X5u:           x5u,
-			X5c:           x5c,
-			X5t:           x5t,
-			X5tNumberS256: x5tNumberS256,
-			K:             k,
-			X:             x,
-			Y:             y,
-			Crv:           crv,
-			N:             n,
-			E:             e,
-			D:             d,
-			P:             p,
-			Q:             q,
-			Dp:            dp,
-			Dq:            dq,
-			Qi:            qi,
-			Oth:           oth,
-			R:             r1,
-			T:             t,
-		})
-	}
-	var clientAlg []shared.ClientAlg = []shared.ClientAlg{}
-	for _, clientAlgItem := range r.Config.ClientAlg {
-		clientAlg = append(clientAlg, shared.ClientAlg(clientAlgItem.ValueString()))
-	}
-	clientArg := new(string)
-	if !r.Config.ClientArg.IsUnknown() && !r.Config.ClientArg.IsNull() {
-		*clientArg = r.Config.ClientArg.ValueString()
-	} else {
-		clientArg = nil
-	}
-	var redirectURI []string = []string{}
-	for _, redirectURIItem := range r.Config.RedirectURI {
-		redirectURI = append(redirectURI, redirectURIItem.ValueString())
-	}
-	var loginRedirectURI []string = []string{}
-	for _, loginRedirectURIItem := range r.Config.LoginRedirectURI {
-		loginRedirectURI = append(loginRedirectURI, loginRedirectURIItem.ValueString())
-	}
-	var logoutRedirectURI []string = []string{}
-	for _, logoutRedirectURIItem := range r.Config.LogoutRedirectURI {
-		logoutRedirectURI = append(logoutRedirectURI, logoutRedirectURIItem.ValueString())
-	}
-	var forbiddenRedirectURI []string = []string{}
-	for _, forbiddenRedirectURIItem := range r.Config.ForbiddenRedirectURI {
-		forbiddenRedirectURI = append(forbiddenRedirectURI, forbiddenRedirectURIItem.ValueString())
-	}
-	forbiddenErrorMessage := new(string)
-	if !r.Config.ForbiddenErrorMessage.IsUnknown() && !r.Config.ForbiddenErrorMessage.IsNull() {
-		*forbiddenErrorMessage = r.Config.ForbiddenErrorMessage.ValueString()
-	} else {
-		forbiddenErrorMessage = nil
-	}
-	forbiddenDestroySession := new(bool)
-	if !r.Config.ForbiddenDestroySession.IsUnknown() && !r.Config.ForbiddenDestroySession.IsNull() {
-		*forbiddenDestroySession = r.Config.ForbiddenDestroySession.ValueBool()
-	} else {
-		forbiddenDestroySession = nil
-	}
-	unauthorizedDestroySession := new(bool)
-	if !r.Config.UnauthorizedDestroySession.IsUnknown() && !r.Config.UnauthorizedDestroySession.IsNull() {
-		*unauthorizedDestroySession = r.Config.UnauthorizedDestroySession.ValueBool()
-	} else {
-		unauthorizedDestroySession = nil
-	}
-	var unauthorizedRedirectURI []string = []string{}
-	for _, unauthorizedRedirectURIItem := range r.Config.UnauthorizedRedirectURI {
-		unauthorizedRedirectURI = append(unauthorizedRedirectURI, unauthorizedRedirectURIItem.ValueString())
-	}
-	unauthorizedErrorMessage := new(string)
-	if !r.Config.UnauthorizedErrorMessage.IsUnknown() && !r.Config.UnauthorizedErrorMessage.IsNull() {
-		*unauthorizedErrorMessage = r.Config.UnauthorizedErrorMessage.ValueString()
-	} else {
-		unauthorizedErrorMessage = nil
-	}
-	var unexpectedRedirectURI []string = []string{}
-	for _, unexpectedRedirectURIItem := range r.Config.UnexpectedRedirectURI {
-		unexpectedRedirectURI = append(unexpectedRedirectURI, unexpectedRedirectURIItem.ValueString())
-	}
-	responseMode := new(shared.ResponseMode)
-	if !r.Config.ResponseMode.IsUnknown() && !r.Config.ResponseMode.IsNull() {
-		*responseMode = shared.ResponseMode(r.Config.ResponseMode.ValueString())
-	} else {
-		responseMode = nil
-	}
-	var responseType []string = []string{}
-	for _, responseTypeItem := range r.Config.ResponseType {
-		responseType = append(responseType, responseTypeItem.ValueString())
-	}
-	var scopes []string = []string{}
-	for _, scopesItem := range r.Config.Scopes {
-		scopes = append(scopes, scopesItem.ValueString())
+		anonymous = nil
 	}
 	var audience []string = []string{}
 	for _, audienceItem := range r.Config.Audience {
 		audience = append(audience, audienceItem.ValueString())
 	}
-	var issuersAllowed []string = []string{}
-	for _, issuersAllowedItem := range r.Config.IssuersAllowed {
-		issuersAllowed = append(issuersAllowed, issuersAllowedItem.ValueString())
-	}
-	var scopesRequired []string = []string{}
-	for _, scopesRequiredItem := range r.Config.ScopesRequired {
-		scopesRequired = append(scopesRequired, scopesRequiredItem.ValueString())
-	}
-	var scopesClaim []string = []string{}
-	for _, scopesClaimItem := range r.Config.ScopesClaim {
-		scopesClaim = append(scopesClaim, scopesClaimItem.ValueString())
+	var audienceClaim []string = []string{}
+	for _, audienceClaimItem := range r.Config.AudienceClaim {
+		audienceClaim = append(audienceClaim, audienceClaimItem.ValueString())
 	}
 	var audienceRequired []string = []string{}
 	for _, audienceRequiredItem := range r.Config.AudienceRequired {
 		audienceRequired = append(audienceRequired, audienceRequiredItem.ValueString())
 	}
-	var audienceClaim []string = []string{}
-	for _, audienceClaimItem := range r.Config.AudienceClaim {
-		audienceClaim = append(audienceClaim, audienceClaimItem.ValueString())
-	}
-	var groupsRequired []string = []string{}
-	for _, groupsRequiredItem := range r.Config.GroupsRequired {
-		groupsRequired = append(groupsRequired, groupsRequiredItem.ValueString())
-	}
-	var groupsClaim []string = []string{}
-	for _, groupsClaimItem := range r.Config.GroupsClaim {
-		groupsClaim = append(groupsClaim, groupsClaimItem.ValueString())
-	}
-	var rolesRequired []string = []string{}
-	for _, rolesRequiredItem := range r.Config.RolesRequired {
-		rolesRequired = append(rolesRequired, rolesRequiredItem.ValueString())
-	}
-	var rolesClaim []string = []string{}
-	for _, rolesClaimItem := range r.Config.RolesClaim {
-		rolesClaim = append(rolesClaim, rolesClaimItem.ValueString())
-	}
-	var domains []string = []string{}
-	for _, domainsItem := range r.Config.Domains {
-		domains = append(domains, domainsItem.ValueString())
-	}
-	maxAge := new(float64)
-	if !r.Config.MaxAge.IsUnknown() && !r.Config.MaxAge.IsNull() {
-		*maxAge, _ = r.Config.MaxAge.ValueBigFloat().Float64()
-	} else {
-		maxAge = nil
+	var authMethods []shared.CreateOpenidConnectPluginAuthMethods = []shared.CreateOpenidConnectPluginAuthMethods{}
+	for _, authMethodsItem := range r.Config.AuthMethods {
+		authMethods = append(authMethods, shared.CreateOpenidConnectPluginAuthMethods(authMethodsItem.ValueString()))
 	}
 	var authenticatedGroupsClaim []string = []string{}
 	for _, authenticatedGroupsClaimItem := range r.Config.AuthenticatedGroupsClaim {
 		authenticatedGroupsClaim = append(authenticatedGroupsClaim, authenticatedGroupsClaimItem.ValueString())
 	}
-	pushedAuthorizationRequestEndpoint := new(string)
-	if !r.Config.PushedAuthorizationRequestEndpoint.IsUnknown() && !r.Config.PushedAuthorizationRequestEndpoint.IsNull() {
-		*pushedAuthorizationRequestEndpoint = r.Config.PushedAuthorizationRequestEndpoint.ValueString()
+	authorizationCookieDomain := new(string)
+	if !r.Config.AuthorizationCookieDomain.IsUnknown() && !r.Config.AuthorizationCookieDomain.IsNull() {
+		*authorizationCookieDomain = r.Config.AuthorizationCookieDomain.ValueString()
 	} else {
-		pushedAuthorizationRequestEndpoint = nil
+		authorizationCookieDomain = nil
 	}
-	pushedAuthorizationRequestEndpointAuthMethod := new(shared.PushedAuthorizationRequestEndpointAuthMethod)
-	if !r.Config.PushedAuthorizationRequestEndpointAuthMethod.IsUnknown() && !r.Config.PushedAuthorizationRequestEndpointAuthMethod.IsNull() {
-		*pushedAuthorizationRequestEndpointAuthMethod = shared.PushedAuthorizationRequestEndpointAuthMethod(r.Config.PushedAuthorizationRequestEndpointAuthMethod.ValueString())
+	authorizationCookieHTTPOnly := new(bool)
+	if !r.Config.AuthorizationCookieHTTPOnly.IsUnknown() && !r.Config.AuthorizationCookieHTTPOnly.IsNull() {
+		*authorizationCookieHTTPOnly = r.Config.AuthorizationCookieHTTPOnly.ValueBool()
 	} else {
-		pushedAuthorizationRequestEndpointAuthMethod = nil
-	}
-	requirePushedAuthorizationRequests := new(bool)
-	if !r.Config.RequirePushedAuthorizationRequests.IsUnknown() && !r.Config.RequirePushedAuthorizationRequests.IsNull() {
-		*requirePushedAuthorizationRequests = r.Config.RequirePushedAuthorizationRequests.ValueBool()
-	} else {
-		requirePushedAuthorizationRequests = nil
-	}
-	requireProofKeyForCodeExchange := new(bool)
-	if !r.Config.RequireProofKeyForCodeExchange.IsUnknown() && !r.Config.RequireProofKeyForCodeExchange.IsNull() {
-		*requireProofKeyForCodeExchange = r.Config.RequireProofKeyForCodeExchange.ValueBool()
-	} else {
-		requireProofKeyForCodeExchange = nil
-	}
-	authorizationEndpoint := new(string)
-	if !r.Config.AuthorizationEndpoint.IsUnknown() && !r.Config.AuthorizationEndpoint.IsNull() {
-		*authorizationEndpoint = r.Config.AuthorizationEndpoint.ValueString()
-	} else {
-		authorizationEndpoint = nil
-	}
-	var authorizationQueryArgsNames []string = []string{}
-	for _, authorizationQueryArgsNamesItem := range r.Config.AuthorizationQueryArgsNames {
-		authorizationQueryArgsNames = append(authorizationQueryArgsNames, authorizationQueryArgsNamesItem.ValueString())
-	}
-	var authorizationQueryArgsValues []string = []string{}
-	for _, authorizationQueryArgsValuesItem := range r.Config.AuthorizationQueryArgsValues {
-		authorizationQueryArgsValues = append(authorizationQueryArgsValues, authorizationQueryArgsValuesItem.ValueString())
-	}
-	var authorizationQueryArgsClient []string = []string{}
-	for _, authorizationQueryArgsClientItem := range r.Config.AuthorizationQueryArgsClient {
-		authorizationQueryArgsClient = append(authorizationQueryArgsClient, authorizationQueryArgsClientItem.ValueString())
-	}
-	authorizationRollingTimeout := new(float64)
-	if !r.Config.AuthorizationRollingTimeout.IsUnknown() && !r.Config.AuthorizationRollingTimeout.IsNull() {
-		*authorizationRollingTimeout, _ = r.Config.AuthorizationRollingTimeout.ValueBigFloat().Float64()
-	} else {
-		authorizationRollingTimeout = nil
+		authorizationCookieHTTPOnly = nil
 	}
 	authorizationCookieName := new(string)
 	if !r.Config.AuthorizationCookieName.IsUnknown() && !r.Config.AuthorizationCookieName.IsNull() {
@@ -468,23 +110,11 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedCreateOpenidConnectPlu
 	} else {
 		authorizationCookiePath = nil
 	}
-	authorizationCookieDomain := new(string)
-	if !r.Config.AuthorizationCookieDomain.IsUnknown() && !r.Config.AuthorizationCookieDomain.IsNull() {
-		*authorizationCookieDomain = r.Config.AuthorizationCookieDomain.ValueString()
-	} else {
-		authorizationCookieDomain = nil
-	}
-	authorizationCookieSameSite := new(shared.AuthorizationCookieSameSite)
+	authorizationCookieSameSite := new(shared.CreateOpenidConnectPluginAuthorizationCookieSameSite)
 	if !r.Config.AuthorizationCookieSameSite.IsUnknown() && !r.Config.AuthorizationCookieSameSite.IsNull() {
-		*authorizationCookieSameSite = shared.AuthorizationCookieSameSite(r.Config.AuthorizationCookieSameSite.ValueString())
+		*authorizationCookieSameSite = shared.CreateOpenidConnectPluginAuthorizationCookieSameSite(r.Config.AuthorizationCookieSameSite.ValueString())
 	} else {
 		authorizationCookieSameSite = nil
-	}
-	authorizationCookieHTTPOnly := new(bool)
-	if !r.Config.AuthorizationCookieHTTPOnly.IsUnknown() && !r.Config.AuthorizationCookieHTTPOnly.IsNull() {
-		*authorizationCookieHTTPOnly = r.Config.AuthorizationCookieHTTPOnly.ValueBool()
-	} else {
-		authorizationCookieHTTPOnly = nil
 	}
 	authorizationCookieSecure := new(bool)
 	if !r.Config.AuthorizationCookieSecure.IsUnknown() && !r.Config.AuthorizationCookieSecure.IsNull() {
@@ -492,452 +122,29 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedCreateOpenidConnectPlu
 	} else {
 		authorizationCookieSecure = nil
 	}
-	preserveQueryArgs := new(bool)
-	if !r.Config.PreserveQueryArgs.IsUnknown() && !r.Config.PreserveQueryArgs.IsNull() {
-		*preserveQueryArgs = r.Config.PreserveQueryArgs.ValueBool()
+	authorizationEndpoint := new(string)
+	if !r.Config.AuthorizationEndpoint.IsUnknown() && !r.Config.AuthorizationEndpoint.IsNull() {
+		*authorizationEndpoint = r.Config.AuthorizationEndpoint.ValueString()
 	} else {
-		preserveQueryArgs = nil
+		authorizationEndpoint = nil
 	}
-	tokenEndpoint := new(string)
-	if !r.Config.TokenEndpoint.IsUnknown() && !r.Config.TokenEndpoint.IsNull() {
-		*tokenEndpoint = r.Config.TokenEndpoint.ValueString()
+	var authorizationQueryArgsClient []string = []string{}
+	for _, authorizationQueryArgsClientItem := range r.Config.AuthorizationQueryArgsClient {
+		authorizationQueryArgsClient = append(authorizationQueryArgsClient, authorizationQueryArgsClientItem.ValueString())
+	}
+	var authorizationQueryArgsNames []string = []string{}
+	for _, authorizationQueryArgsNamesItem := range r.Config.AuthorizationQueryArgsNames {
+		authorizationQueryArgsNames = append(authorizationQueryArgsNames, authorizationQueryArgsNamesItem.ValueString())
+	}
+	var authorizationQueryArgsValues []string = []string{}
+	for _, authorizationQueryArgsValuesItem := range r.Config.AuthorizationQueryArgsValues {
+		authorizationQueryArgsValues = append(authorizationQueryArgsValues, authorizationQueryArgsValuesItem.ValueString())
+	}
+	authorizationRollingTimeout := new(float64)
+	if !r.Config.AuthorizationRollingTimeout.IsUnknown() && !r.Config.AuthorizationRollingTimeout.IsNull() {
+		*authorizationRollingTimeout, _ = r.Config.AuthorizationRollingTimeout.ValueBigFloat().Float64()
 	} else {
-		tokenEndpoint = nil
-	}
-	tokenEndpointAuthMethod := new(shared.TokenEndpointAuthMethod)
-	if !r.Config.TokenEndpointAuthMethod.IsUnknown() && !r.Config.TokenEndpointAuthMethod.IsNull() {
-		*tokenEndpointAuthMethod = shared.TokenEndpointAuthMethod(r.Config.TokenEndpointAuthMethod.ValueString())
-	} else {
-		tokenEndpointAuthMethod = nil
-	}
-	var tokenHeadersNames []string = []string{}
-	for _, tokenHeadersNamesItem := range r.Config.TokenHeadersNames {
-		tokenHeadersNames = append(tokenHeadersNames, tokenHeadersNamesItem.ValueString())
-	}
-	var tokenHeadersValues []string = []string{}
-	for _, tokenHeadersValuesItem := range r.Config.TokenHeadersValues {
-		tokenHeadersValues = append(tokenHeadersValues, tokenHeadersValuesItem.ValueString())
-	}
-	var tokenHeadersClient []string = []string{}
-	for _, tokenHeadersClientItem := range r.Config.TokenHeadersClient {
-		tokenHeadersClient = append(tokenHeadersClient, tokenHeadersClientItem.ValueString())
-	}
-	var tokenHeadersReplay []string = []string{}
-	for _, tokenHeadersReplayItem := range r.Config.TokenHeadersReplay {
-		tokenHeadersReplay = append(tokenHeadersReplay, tokenHeadersReplayItem.ValueString())
-	}
-	tokenHeadersPrefix := new(string)
-	if !r.Config.TokenHeadersPrefix.IsUnknown() && !r.Config.TokenHeadersPrefix.IsNull() {
-		*tokenHeadersPrefix = r.Config.TokenHeadersPrefix.ValueString()
-	} else {
-		tokenHeadersPrefix = nil
-	}
-	var tokenHeadersGrants []shared.TokenHeadersGrants = []shared.TokenHeadersGrants{}
-	for _, tokenHeadersGrantsItem := range r.Config.TokenHeadersGrants {
-		tokenHeadersGrants = append(tokenHeadersGrants, shared.TokenHeadersGrants(tokenHeadersGrantsItem.ValueString()))
-	}
-	var tokenPostArgsNames []string = []string{}
-	for _, tokenPostArgsNamesItem := range r.Config.TokenPostArgsNames {
-		tokenPostArgsNames = append(tokenPostArgsNames, tokenPostArgsNamesItem.ValueString())
-	}
-	var tokenPostArgsValues []string = []string{}
-	for _, tokenPostArgsValuesItem := range r.Config.TokenPostArgsValues {
-		tokenPostArgsValues = append(tokenPostArgsValues, tokenPostArgsValuesItem.ValueString())
-	}
-	var tokenPostArgsClient []string = []string{}
-	for _, tokenPostArgsClientItem := range r.Config.TokenPostArgsClient {
-		tokenPostArgsClient = append(tokenPostArgsClient, tokenPostArgsClientItem.ValueString())
-	}
-	introspectionEndpoint := new(string)
-	if !r.Config.IntrospectionEndpoint.IsUnknown() && !r.Config.IntrospectionEndpoint.IsNull() {
-		*introspectionEndpoint = r.Config.IntrospectionEndpoint.ValueString()
-	} else {
-		introspectionEndpoint = nil
-	}
-	introspectionEndpointAuthMethod := new(shared.IntrospectionEndpointAuthMethod)
-	if !r.Config.IntrospectionEndpointAuthMethod.IsUnknown() && !r.Config.IntrospectionEndpointAuthMethod.IsNull() {
-		*introspectionEndpointAuthMethod = shared.IntrospectionEndpointAuthMethod(r.Config.IntrospectionEndpointAuthMethod.ValueString())
-	} else {
-		introspectionEndpointAuthMethod = nil
-	}
-	introspectionHint := new(string)
-	if !r.Config.IntrospectionHint.IsUnknown() && !r.Config.IntrospectionHint.IsNull() {
-		*introspectionHint = r.Config.IntrospectionHint.ValueString()
-	} else {
-		introspectionHint = nil
-	}
-	introspectionCheckActive := new(bool)
-	if !r.Config.IntrospectionCheckActive.IsUnknown() && !r.Config.IntrospectionCheckActive.IsNull() {
-		*introspectionCheckActive = r.Config.IntrospectionCheckActive.ValueBool()
-	} else {
-		introspectionCheckActive = nil
-	}
-	introspectionAccept := new(shared.IntrospectionAccept)
-	if !r.Config.IntrospectionAccept.IsUnknown() && !r.Config.IntrospectionAccept.IsNull() {
-		*introspectionAccept = shared.IntrospectionAccept(r.Config.IntrospectionAccept.ValueString())
-	} else {
-		introspectionAccept = nil
-	}
-	var introspectionHeadersNames []string = []string{}
-	for _, introspectionHeadersNamesItem := range r.Config.IntrospectionHeadersNames {
-		introspectionHeadersNames = append(introspectionHeadersNames, introspectionHeadersNamesItem.ValueString())
-	}
-	var introspectionHeadersValues []string = []string{}
-	for _, introspectionHeadersValuesItem := range r.Config.IntrospectionHeadersValues {
-		introspectionHeadersValues = append(introspectionHeadersValues, introspectionHeadersValuesItem.ValueString())
-	}
-	var introspectionHeadersClient []string = []string{}
-	for _, introspectionHeadersClientItem := range r.Config.IntrospectionHeadersClient {
-		introspectionHeadersClient = append(introspectionHeadersClient, introspectionHeadersClientItem.ValueString())
-	}
-	var introspectionPostArgsNames []string = []string{}
-	for _, introspectionPostArgsNamesItem := range r.Config.IntrospectionPostArgsNames {
-		introspectionPostArgsNames = append(introspectionPostArgsNames, introspectionPostArgsNamesItem.ValueString())
-	}
-	var introspectionPostArgsValues []string = []string{}
-	for _, introspectionPostArgsValuesItem := range r.Config.IntrospectionPostArgsValues {
-		introspectionPostArgsValues = append(introspectionPostArgsValues, introspectionPostArgsValuesItem.ValueString())
-	}
-	var introspectionPostArgsClient []string = []string{}
-	for _, introspectionPostArgsClientItem := range r.Config.IntrospectionPostArgsClient {
-		introspectionPostArgsClient = append(introspectionPostArgsClient, introspectionPostArgsClientItem.ValueString())
-	}
-	introspectJwtTokens := new(bool)
-	if !r.Config.IntrospectJwtTokens.IsUnknown() && !r.Config.IntrospectJwtTokens.IsNull() {
-		*introspectJwtTokens = r.Config.IntrospectJwtTokens.ValueBool()
-	} else {
-		introspectJwtTokens = nil
-	}
-	revocationEndpoint := new(string)
-	if !r.Config.RevocationEndpoint.IsUnknown() && !r.Config.RevocationEndpoint.IsNull() {
-		*revocationEndpoint = r.Config.RevocationEndpoint.ValueString()
-	} else {
-		revocationEndpoint = nil
-	}
-	revocationEndpointAuthMethod := new(shared.RevocationEndpointAuthMethod)
-	if !r.Config.RevocationEndpointAuthMethod.IsUnknown() && !r.Config.RevocationEndpointAuthMethod.IsNull() {
-		*revocationEndpointAuthMethod = shared.RevocationEndpointAuthMethod(r.Config.RevocationEndpointAuthMethod.ValueString())
-	} else {
-		revocationEndpointAuthMethod = nil
-	}
-	endSessionEndpoint := new(string)
-	if !r.Config.EndSessionEndpoint.IsUnknown() && !r.Config.EndSessionEndpoint.IsNull() {
-		*endSessionEndpoint = r.Config.EndSessionEndpoint.ValueString()
-	} else {
-		endSessionEndpoint = nil
-	}
-	userinfoEndpoint := new(string)
-	if !r.Config.UserinfoEndpoint.IsUnknown() && !r.Config.UserinfoEndpoint.IsNull() {
-		*userinfoEndpoint = r.Config.UserinfoEndpoint.ValueString()
-	} else {
-		userinfoEndpoint = nil
-	}
-	userinfoAccept := new(shared.UserinfoAccept)
-	if !r.Config.UserinfoAccept.IsUnknown() && !r.Config.UserinfoAccept.IsNull() {
-		*userinfoAccept = shared.UserinfoAccept(r.Config.UserinfoAccept.ValueString())
-	} else {
-		userinfoAccept = nil
-	}
-	var userinfoHeadersNames []string = []string{}
-	for _, userinfoHeadersNamesItem := range r.Config.UserinfoHeadersNames {
-		userinfoHeadersNames = append(userinfoHeadersNames, userinfoHeadersNamesItem.ValueString())
-	}
-	var userinfoHeadersValues []string = []string{}
-	for _, userinfoHeadersValuesItem := range r.Config.UserinfoHeadersValues {
-		userinfoHeadersValues = append(userinfoHeadersValues, userinfoHeadersValuesItem.ValueString())
-	}
-	var userinfoHeadersClient []string = []string{}
-	for _, userinfoHeadersClientItem := range r.Config.UserinfoHeadersClient {
-		userinfoHeadersClient = append(userinfoHeadersClient, userinfoHeadersClientItem.ValueString())
-	}
-	var userinfoQueryArgsNames []string = []string{}
-	for _, userinfoQueryArgsNamesItem := range r.Config.UserinfoQueryArgsNames {
-		userinfoQueryArgsNames = append(userinfoQueryArgsNames, userinfoQueryArgsNamesItem.ValueString())
-	}
-	var userinfoQueryArgsValues []string = []string{}
-	for _, userinfoQueryArgsValuesItem := range r.Config.UserinfoQueryArgsValues {
-		userinfoQueryArgsValues = append(userinfoQueryArgsValues, userinfoQueryArgsValuesItem.ValueString())
-	}
-	var userinfoQueryArgsClient []string = []string{}
-	for _, userinfoQueryArgsClientItem := range r.Config.UserinfoQueryArgsClient {
-		userinfoQueryArgsClient = append(userinfoQueryArgsClient, userinfoQueryArgsClientItem.ValueString())
-	}
-	tokenExchangeEndpoint := new(string)
-	if !r.Config.TokenExchangeEndpoint.IsUnknown() && !r.Config.TokenExchangeEndpoint.IsNull() {
-		*tokenExchangeEndpoint = r.Config.TokenExchangeEndpoint.ValueString()
-	} else {
-		tokenExchangeEndpoint = nil
-	}
-	sessionSecret := new(string)
-	if !r.Config.SessionSecret.IsUnknown() && !r.Config.SessionSecret.IsNull() {
-		*sessionSecret = r.Config.SessionSecret.ValueString()
-	} else {
-		sessionSecret = nil
-	}
-	sessionAudience := new(string)
-	if !r.Config.SessionAudience.IsUnknown() && !r.Config.SessionAudience.IsNull() {
-		*sessionAudience = r.Config.SessionAudience.ValueString()
-	} else {
-		sessionAudience = nil
-	}
-	sessionCookieName := new(string)
-	if !r.Config.SessionCookieName.IsUnknown() && !r.Config.SessionCookieName.IsNull() {
-		*sessionCookieName = r.Config.SessionCookieName.ValueString()
-	} else {
-		sessionCookieName = nil
-	}
-	sessionRemember := new(bool)
-	if !r.Config.SessionRemember.IsUnknown() && !r.Config.SessionRemember.IsNull() {
-		*sessionRemember = r.Config.SessionRemember.ValueBool()
-	} else {
-		sessionRemember = nil
-	}
-	sessionRememberCookieName := new(string)
-	if !r.Config.SessionRememberCookieName.IsUnknown() && !r.Config.SessionRememberCookieName.IsNull() {
-		*sessionRememberCookieName = r.Config.SessionRememberCookieName.ValueString()
-	} else {
-		sessionRememberCookieName = nil
-	}
-	sessionRememberRollingTimeout := new(float64)
-	if !r.Config.SessionRememberRollingTimeout.IsUnknown() && !r.Config.SessionRememberRollingTimeout.IsNull() {
-		*sessionRememberRollingTimeout, _ = r.Config.SessionRememberRollingTimeout.ValueBigFloat().Float64()
-	} else {
-		sessionRememberRollingTimeout = nil
-	}
-	sessionRememberAbsoluteTimeout := new(float64)
-	if !r.Config.SessionRememberAbsoluteTimeout.IsUnknown() && !r.Config.SessionRememberAbsoluteTimeout.IsNull() {
-		*sessionRememberAbsoluteTimeout, _ = r.Config.SessionRememberAbsoluteTimeout.ValueBigFloat().Float64()
-	} else {
-		sessionRememberAbsoluteTimeout = nil
-	}
-	sessionIdlingTimeout := new(float64)
-	if !r.Config.SessionIdlingTimeout.IsUnknown() && !r.Config.SessionIdlingTimeout.IsNull() {
-		*sessionIdlingTimeout, _ = r.Config.SessionIdlingTimeout.ValueBigFloat().Float64()
-	} else {
-		sessionIdlingTimeout = nil
-	}
-	sessionRollingTimeout := new(float64)
-	if !r.Config.SessionRollingTimeout.IsUnknown() && !r.Config.SessionRollingTimeout.IsNull() {
-		*sessionRollingTimeout, _ = r.Config.SessionRollingTimeout.ValueBigFloat().Float64()
-	} else {
-		sessionRollingTimeout = nil
-	}
-	sessionAbsoluteTimeout := new(float64)
-	if !r.Config.SessionAbsoluteTimeout.IsUnknown() && !r.Config.SessionAbsoluteTimeout.IsNull() {
-		*sessionAbsoluteTimeout, _ = r.Config.SessionAbsoluteTimeout.ValueBigFloat().Float64()
-	} else {
-		sessionAbsoluteTimeout = nil
-	}
-	sessionCookiePath := new(string)
-	if !r.Config.SessionCookiePath.IsUnknown() && !r.Config.SessionCookiePath.IsNull() {
-		*sessionCookiePath = r.Config.SessionCookiePath.ValueString()
-	} else {
-		sessionCookiePath = nil
-	}
-	sessionCookieDomain := new(string)
-	if !r.Config.SessionCookieDomain.IsUnknown() && !r.Config.SessionCookieDomain.IsNull() {
-		*sessionCookieDomain = r.Config.SessionCookieDomain.ValueString()
-	} else {
-		sessionCookieDomain = nil
-	}
-	sessionCookieSameSite := new(shared.SessionCookieSameSite)
-	if !r.Config.SessionCookieSameSite.IsUnknown() && !r.Config.SessionCookieSameSite.IsNull() {
-		*sessionCookieSameSite = shared.SessionCookieSameSite(r.Config.SessionCookieSameSite.ValueString())
-	} else {
-		sessionCookieSameSite = nil
-	}
-	sessionCookieHTTPOnly := new(bool)
-	if !r.Config.SessionCookieHTTPOnly.IsUnknown() && !r.Config.SessionCookieHTTPOnly.IsNull() {
-		*sessionCookieHTTPOnly = r.Config.SessionCookieHTTPOnly.ValueBool()
-	} else {
-		sessionCookieHTTPOnly = nil
-	}
-	sessionCookieSecure := new(bool)
-	if !r.Config.SessionCookieSecure.IsUnknown() && !r.Config.SessionCookieSecure.IsNull() {
-		*sessionCookieSecure = r.Config.SessionCookieSecure.ValueBool()
-	} else {
-		sessionCookieSecure = nil
-	}
-	var sessionRequestHeaders []shared.SessionRequestHeaders = []shared.SessionRequestHeaders{}
-	for _, sessionRequestHeadersItem := range r.Config.SessionRequestHeaders {
-		sessionRequestHeaders = append(sessionRequestHeaders, shared.SessionRequestHeaders(sessionRequestHeadersItem.ValueString()))
-	}
-	var sessionResponseHeaders []shared.SessionResponseHeaders = []shared.SessionResponseHeaders{}
-	for _, sessionResponseHeadersItem := range r.Config.SessionResponseHeaders {
-		sessionResponseHeaders = append(sessionResponseHeaders, shared.SessionResponseHeaders(sessionResponseHeadersItem.ValueString()))
-	}
-	sessionStorage := new(shared.SessionStorage)
-	if !r.Config.SessionStorage.IsUnknown() && !r.Config.SessionStorage.IsNull() {
-		*sessionStorage = shared.SessionStorage(r.Config.SessionStorage.ValueString())
-	} else {
-		sessionStorage = nil
-	}
-	sessionStoreMetadata := new(bool)
-	if !r.Config.SessionStoreMetadata.IsUnknown() && !r.Config.SessionStoreMetadata.IsNull() {
-		*sessionStoreMetadata = r.Config.SessionStoreMetadata.ValueBool()
-	} else {
-		sessionStoreMetadata = nil
-	}
-	sessionEnforceSameSubject := new(bool)
-	if !r.Config.SessionEnforceSameSubject.IsUnknown() && !r.Config.SessionEnforceSameSubject.IsNull() {
-		*sessionEnforceSameSubject = r.Config.SessionEnforceSameSubject.ValueBool()
-	} else {
-		sessionEnforceSameSubject = nil
-	}
-	sessionHashSubject := new(bool)
-	if !r.Config.SessionHashSubject.IsUnknown() && !r.Config.SessionHashSubject.IsNull() {
-		*sessionHashSubject = r.Config.SessionHashSubject.ValueBool()
-	} else {
-		sessionHashSubject = nil
-	}
-	sessionHashStorageKey := new(bool)
-	if !r.Config.SessionHashStorageKey.IsUnknown() && !r.Config.SessionHashStorageKey.IsNull() {
-		*sessionHashStorageKey = r.Config.SessionHashStorageKey.ValueBool()
-	} else {
-		sessionHashStorageKey = nil
-	}
-	sessionMemcachedPrefix := new(string)
-	if !r.Config.SessionMemcachedPrefix.IsUnknown() && !r.Config.SessionMemcachedPrefix.IsNull() {
-		*sessionMemcachedPrefix = r.Config.SessionMemcachedPrefix.ValueString()
-	} else {
-		sessionMemcachedPrefix = nil
-	}
-	sessionMemcachedSocket := new(string)
-	if !r.Config.SessionMemcachedSocket.IsUnknown() && !r.Config.SessionMemcachedSocket.IsNull() {
-		*sessionMemcachedSocket = r.Config.SessionMemcachedSocket.ValueString()
-	} else {
-		sessionMemcachedSocket = nil
-	}
-	sessionMemcachedHost := new(string)
-	if !r.Config.SessionMemcachedHost.IsUnknown() && !r.Config.SessionMemcachedHost.IsNull() {
-		*sessionMemcachedHost = r.Config.SessionMemcachedHost.ValueString()
-	} else {
-		sessionMemcachedHost = nil
-	}
-	sessionMemcachedPort := new(int64)
-	if !r.Config.SessionMemcachedPort.IsUnknown() && !r.Config.SessionMemcachedPort.IsNull() {
-		*sessionMemcachedPort = r.Config.SessionMemcachedPort.ValueInt64()
-	} else {
-		sessionMemcachedPort = nil
-	}
-	sessionRedisPrefix := new(string)
-	if !r.Config.SessionRedisPrefix.IsUnknown() && !r.Config.SessionRedisPrefix.IsNull() {
-		*sessionRedisPrefix = r.Config.SessionRedisPrefix.ValueString()
-	} else {
-		sessionRedisPrefix = nil
-	}
-	sessionRedisSocket := new(string)
-	if !r.Config.SessionRedisSocket.IsUnknown() && !r.Config.SessionRedisSocket.IsNull() {
-		*sessionRedisSocket = r.Config.SessionRedisSocket.ValueString()
-	} else {
-		sessionRedisSocket = nil
-	}
-	sessionRedisHost := new(string)
-	if !r.Config.SessionRedisHost.IsUnknown() && !r.Config.SessionRedisHost.IsNull() {
-		*sessionRedisHost = r.Config.SessionRedisHost.ValueString()
-	} else {
-		sessionRedisHost = nil
-	}
-	sessionRedisPort := new(int64)
-	if !r.Config.SessionRedisPort.IsUnknown() && !r.Config.SessionRedisPort.IsNull() {
-		*sessionRedisPort = r.Config.SessionRedisPort.ValueInt64()
-	} else {
-		sessionRedisPort = nil
-	}
-	sessionRedisUsername := new(string)
-	if !r.Config.SessionRedisUsername.IsUnknown() && !r.Config.SessionRedisUsername.IsNull() {
-		*sessionRedisUsername = r.Config.SessionRedisUsername.ValueString()
-	} else {
-		sessionRedisUsername = nil
-	}
-	sessionRedisPassword := new(string)
-	if !r.Config.SessionRedisPassword.IsUnknown() && !r.Config.SessionRedisPassword.IsNull() {
-		*sessionRedisPassword = r.Config.SessionRedisPassword.ValueString()
-	} else {
-		sessionRedisPassword = nil
-	}
-	sessionRedisConnectTimeout := new(int64)
-	if !r.Config.SessionRedisConnectTimeout.IsUnknown() && !r.Config.SessionRedisConnectTimeout.IsNull() {
-		*sessionRedisConnectTimeout = r.Config.SessionRedisConnectTimeout.ValueInt64()
-	} else {
-		sessionRedisConnectTimeout = nil
-	}
-	sessionRedisReadTimeout := new(int64)
-	if !r.Config.SessionRedisReadTimeout.IsUnknown() && !r.Config.SessionRedisReadTimeout.IsNull() {
-		*sessionRedisReadTimeout = r.Config.SessionRedisReadTimeout.ValueInt64()
-	} else {
-		sessionRedisReadTimeout = nil
-	}
-	sessionRedisSendTimeout := new(int64)
-	if !r.Config.SessionRedisSendTimeout.IsUnknown() && !r.Config.SessionRedisSendTimeout.IsNull() {
-		*sessionRedisSendTimeout = r.Config.SessionRedisSendTimeout.ValueInt64()
-	} else {
-		sessionRedisSendTimeout = nil
-	}
-	sessionRedisSsl := new(bool)
-	if !r.Config.SessionRedisSsl.IsUnknown() && !r.Config.SessionRedisSsl.IsNull() {
-		*sessionRedisSsl = r.Config.SessionRedisSsl.ValueBool()
-	} else {
-		sessionRedisSsl = nil
-	}
-	sessionRedisSslVerify := new(bool)
-	if !r.Config.SessionRedisSslVerify.IsUnknown() && !r.Config.SessionRedisSslVerify.IsNull() {
-		*sessionRedisSslVerify = r.Config.SessionRedisSslVerify.ValueBool()
-	} else {
-		sessionRedisSslVerify = nil
-	}
-	sessionRedisServerName := new(string)
-	if !r.Config.SessionRedisServerName.IsUnknown() && !r.Config.SessionRedisServerName.IsNull() {
-		*sessionRedisServerName = r.Config.SessionRedisServerName.ValueString()
-	} else {
-		sessionRedisServerName = nil
-	}
-	var sessionRedisClusterNodes []shared.SessionRedisClusterNodes = []shared.SessionRedisClusterNodes{}
-	for _, sessionRedisClusterNodesItem := range r.Config.SessionRedisClusterNodes {
-		ip := new(string)
-		if !sessionRedisClusterNodesItem.IP.IsUnknown() && !sessionRedisClusterNodesItem.IP.IsNull() {
-			*ip = sessionRedisClusterNodesItem.IP.ValueString()
-		} else {
-			ip = nil
-		}
-		port := new(int64)
-		if !sessionRedisClusterNodesItem.Port.IsUnknown() && !sessionRedisClusterNodesItem.Port.IsNull() {
-			*port = sessionRedisClusterNodesItem.Port.ValueInt64()
-		} else {
-			port = nil
-		}
-		sessionRedisClusterNodes = append(sessionRedisClusterNodes, shared.SessionRedisClusterNodes{
-			IP:   ip,
-			Port: port,
-		})
-	}
-	sessionRedisClusterMaxRedirections := new(int64)
-	if !r.Config.SessionRedisClusterMaxRedirections.IsUnknown() && !r.Config.SessionRedisClusterMaxRedirections.IsNull() {
-		*sessionRedisClusterMaxRedirections = r.Config.SessionRedisClusterMaxRedirections.ValueInt64()
-	} else {
-		sessionRedisClusterMaxRedirections = nil
-	}
-	reverify := new(bool)
-	if !r.Config.Reverify.IsUnknown() && !r.Config.Reverify.IsNull() {
-		*reverify = r.Config.Reverify.ValueBool()
-	} else {
-		reverify = nil
-	}
-	jwtSessionClaim := new(string)
-	if !r.Config.JwtSessionClaim.IsUnknown() && !r.Config.JwtSessionClaim.IsNull() {
-		*jwtSessionClaim = r.Config.JwtSessionClaim.ValueString()
-	} else {
-		jwtSessionClaim = nil
-	}
-	jwtSessionCookie := new(string)
-	if !r.Config.JwtSessionCookie.IsUnknown() && !r.Config.JwtSessionCookie.IsNull() {
-		*jwtSessionCookie = r.Config.JwtSessionCookie.ValueString()
-	} else {
-		jwtSessionCookie = nil
-	}
-	var bearerTokenParamType []shared.BearerTokenParamType = []shared.BearerTokenParamType{}
-	for _, bearerTokenParamTypeItem := range r.Config.BearerTokenParamType {
-		bearerTokenParamType = append(bearerTokenParamType, shared.BearerTokenParamType(bearerTokenParamTypeItem.ValueString()))
+		authorizationRollingTimeout = nil
 	}
 	bearerTokenCookieName := new(string)
 	if !r.Config.BearerTokenCookieName.IsUnknown() && !r.Config.BearerTokenCookieName.IsNull() {
@@ -945,309 +152,39 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedCreateOpenidConnectPlu
 	} else {
 		bearerTokenCookieName = nil
 	}
-	var clientCredentialsParamType []shared.ClientCredentialsParamType = []shared.ClientCredentialsParamType{}
-	for _, clientCredentialsParamTypeItem := range r.Config.ClientCredentialsParamType {
-		clientCredentialsParamType = append(clientCredentialsParamType, shared.ClientCredentialsParamType(clientCredentialsParamTypeItem.ValueString()))
+	var bearerTokenParamType []shared.CreateOpenidConnectPluginBearerTokenParamType = []shared.CreateOpenidConnectPluginBearerTokenParamType{}
+	for _, bearerTokenParamTypeItem := range r.Config.BearerTokenParamType {
+		bearerTokenParamType = append(bearerTokenParamType, shared.CreateOpenidConnectPluginBearerTokenParamType(bearerTokenParamTypeItem.ValueString()))
 	}
-	var passwordParamType []shared.PasswordParamType = []shared.PasswordParamType{}
-	for _, passwordParamTypeItem := range r.Config.PasswordParamType {
-		passwordParamType = append(passwordParamType, shared.PasswordParamType(passwordParamTypeItem.ValueString()))
-	}
-	var idTokenParamType []shared.IDTokenParamType = []shared.IDTokenParamType{}
-	for _, idTokenParamTypeItem := range r.Config.IDTokenParamType {
-		idTokenParamType = append(idTokenParamType, shared.IDTokenParamType(idTokenParamTypeItem.ValueString()))
-	}
-	idTokenParamName := new(string)
-	if !r.Config.IDTokenParamName.IsUnknown() && !r.Config.IDTokenParamName.IsNull() {
-		*idTokenParamName = r.Config.IDTokenParamName.ValueString()
+	byUsernameIgnoreCase := new(bool)
+	if !r.Config.ByUsernameIgnoreCase.IsUnknown() && !r.Config.ByUsernameIgnoreCase.IsNull() {
+		*byUsernameIgnoreCase = r.Config.ByUsernameIgnoreCase.ValueBool()
 	} else {
-		idTokenParamName = nil
+		byUsernameIgnoreCase = nil
 	}
-	var refreshTokenParamType []shared.RefreshTokenParamType = []shared.RefreshTokenParamType{}
-	for _, refreshTokenParamTypeItem := range r.Config.RefreshTokenParamType {
-		refreshTokenParamType = append(refreshTokenParamType, shared.RefreshTokenParamType(refreshTokenParamTypeItem.ValueString()))
-	}
-	refreshTokenParamName := new(string)
-	if !r.Config.RefreshTokenParamName.IsUnknown() && !r.Config.RefreshTokenParamName.IsNull() {
-		*refreshTokenParamName = r.Config.RefreshTokenParamName.ValueString()
+	cacheIntrospection := new(bool)
+	if !r.Config.CacheIntrospection.IsUnknown() && !r.Config.CacheIntrospection.IsNull() {
+		*cacheIntrospection = r.Config.CacheIntrospection.ValueBool()
 	} else {
-		refreshTokenParamName = nil
+		cacheIntrospection = nil
 	}
-	refreshTokens := new(bool)
-	if !r.Config.RefreshTokens.IsUnknown() && !r.Config.RefreshTokens.IsNull() {
-		*refreshTokens = r.Config.RefreshTokens.ValueBool()
+	cacheTokenExchange := new(bool)
+	if !r.Config.CacheTokenExchange.IsUnknown() && !r.Config.CacheTokenExchange.IsNull() {
+		*cacheTokenExchange = r.Config.CacheTokenExchange.ValueBool()
 	} else {
-		refreshTokens = nil
+		cacheTokenExchange = nil
 	}
-	var upstreamHeadersClaims []string = []string{}
-	for _, upstreamHeadersClaimsItem := range r.Config.UpstreamHeadersClaims {
-		upstreamHeadersClaims = append(upstreamHeadersClaims, upstreamHeadersClaimsItem.ValueString())
-	}
-	var upstreamHeadersNames []string = []string{}
-	for _, upstreamHeadersNamesItem := range r.Config.UpstreamHeadersNames {
-		upstreamHeadersNames = append(upstreamHeadersNames, upstreamHeadersNamesItem.ValueString())
-	}
-	upstreamAccessTokenHeader := new(string)
-	if !r.Config.UpstreamAccessTokenHeader.IsUnknown() && !r.Config.UpstreamAccessTokenHeader.IsNull() {
-		*upstreamAccessTokenHeader = r.Config.UpstreamAccessTokenHeader.ValueString()
+	cacheTokens := new(bool)
+	if !r.Config.CacheTokens.IsUnknown() && !r.Config.CacheTokens.IsNull() {
+		*cacheTokens = r.Config.CacheTokens.ValueBool()
 	} else {
-		upstreamAccessTokenHeader = nil
+		cacheTokens = nil
 	}
-	upstreamAccessTokenJwkHeader := new(string)
-	if !r.Config.UpstreamAccessTokenJwkHeader.IsUnknown() && !r.Config.UpstreamAccessTokenJwkHeader.IsNull() {
-		*upstreamAccessTokenJwkHeader = r.Config.UpstreamAccessTokenJwkHeader.ValueString()
+	cacheTokensSalt := new(string)
+	if !r.Config.CacheTokensSalt.IsUnknown() && !r.Config.CacheTokensSalt.IsNull() {
+		*cacheTokensSalt = r.Config.CacheTokensSalt.ValueString()
 	} else {
-		upstreamAccessTokenJwkHeader = nil
-	}
-	upstreamIDTokenHeader := new(string)
-	if !r.Config.UpstreamIDTokenHeader.IsUnknown() && !r.Config.UpstreamIDTokenHeader.IsNull() {
-		*upstreamIDTokenHeader = r.Config.UpstreamIDTokenHeader.ValueString()
-	} else {
-		upstreamIDTokenHeader = nil
-	}
-	upstreamIDTokenJwkHeader := new(string)
-	if !r.Config.UpstreamIDTokenJwkHeader.IsUnknown() && !r.Config.UpstreamIDTokenJwkHeader.IsNull() {
-		*upstreamIDTokenJwkHeader = r.Config.UpstreamIDTokenJwkHeader.ValueString()
-	} else {
-		upstreamIDTokenJwkHeader = nil
-	}
-	upstreamRefreshTokenHeader := new(string)
-	if !r.Config.UpstreamRefreshTokenHeader.IsUnknown() && !r.Config.UpstreamRefreshTokenHeader.IsNull() {
-		*upstreamRefreshTokenHeader = r.Config.UpstreamRefreshTokenHeader.ValueString()
-	} else {
-		upstreamRefreshTokenHeader = nil
-	}
-	upstreamUserInfoHeader := new(string)
-	if !r.Config.UpstreamUserInfoHeader.IsUnknown() && !r.Config.UpstreamUserInfoHeader.IsNull() {
-		*upstreamUserInfoHeader = r.Config.UpstreamUserInfoHeader.ValueString()
-	} else {
-		upstreamUserInfoHeader = nil
-	}
-	upstreamUserInfoJwtHeader := new(string)
-	if !r.Config.UpstreamUserInfoJwtHeader.IsUnknown() && !r.Config.UpstreamUserInfoJwtHeader.IsNull() {
-		*upstreamUserInfoJwtHeader = r.Config.UpstreamUserInfoJwtHeader.ValueString()
-	} else {
-		upstreamUserInfoJwtHeader = nil
-	}
-	upstreamIntrospectionHeader := new(string)
-	if !r.Config.UpstreamIntrospectionHeader.IsUnknown() && !r.Config.UpstreamIntrospectionHeader.IsNull() {
-		*upstreamIntrospectionHeader = r.Config.UpstreamIntrospectionHeader.ValueString()
-	} else {
-		upstreamIntrospectionHeader = nil
-	}
-	upstreamIntrospectionJwtHeader := new(string)
-	if !r.Config.UpstreamIntrospectionJwtHeader.IsUnknown() && !r.Config.UpstreamIntrospectionJwtHeader.IsNull() {
-		*upstreamIntrospectionJwtHeader = r.Config.UpstreamIntrospectionJwtHeader.ValueString()
-	} else {
-		upstreamIntrospectionJwtHeader = nil
-	}
-	upstreamSessionIDHeader := new(string)
-	if !r.Config.UpstreamSessionIDHeader.IsUnknown() && !r.Config.UpstreamSessionIDHeader.IsNull() {
-		*upstreamSessionIDHeader = r.Config.UpstreamSessionIDHeader.ValueString()
-	} else {
-		upstreamSessionIDHeader = nil
-	}
-	var downstreamHeadersClaims []string = []string{}
-	for _, downstreamHeadersClaimsItem := range r.Config.DownstreamHeadersClaims {
-		downstreamHeadersClaims = append(downstreamHeadersClaims, downstreamHeadersClaimsItem.ValueString())
-	}
-	var downstreamHeadersNames []string = []string{}
-	for _, downstreamHeadersNamesItem := range r.Config.DownstreamHeadersNames {
-		downstreamHeadersNames = append(downstreamHeadersNames, downstreamHeadersNamesItem.ValueString())
-	}
-	downstreamAccessTokenHeader := new(string)
-	if !r.Config.DownstreamAccessTokenHeader.IsUnknown() && !r.Config.DownstreamAccessTokenHeader.IsNull() {
-		*downstreamAccessTokenHeader = r.Config.DownstreamAccessTokenHeader.ValueString()
-	} else {
-		downstreamAccessTokenHeader = nil
-	}
-	downstreamAccessTokenJwkHeader := new(string)
-	if !r.Config.DownstreamAccessTokenJwkHeader.IsUnknown() && !r.Config.DownstreamAccessTokenJwkHeader.IsNull() {
-		*downstreamAccessTokenJwkHeader = r.Config.DownstreamAccessTokenJwkHeader.ValueString()
-	} else {
-		downstreamAccessTokenJwkHeader = nil
-	}
-	downstreamIDTokenHeader := new(string)
-	if !r.Config.DownstreamIDTokenHeader.IsUnknown() && !r.Config.DownstreamIDTokenHeader.IsNull() {
-		*downstreamIDTokenHeader = r.Config.DownstreamIDTokenHeader.ValueString()
-	} else {
-		downstreamIDTokenHeader = nil
-	}
-	downstreamIDTokenJwkHeader := new(string)
-	if !r.Config.DownstreamIDTokenJwkHeader.IsUnknown() && !r.Config.DownstreamIDTokenJwkHeader.IsNull() {
-		*downstreamIDTokenJwkHeader = r.Config.DownstreamIDTokenJwkHeader.ValueString()
-	} else {
-		downstreamIDTokenJwkHeader = nil
-	}
-	downstreamRefreshTokenHeader := new(string)
-	if !r.Config.DownstreamRefreshTokenHeader.IsUnknown() && !r.Config.DownstreamRefreshTokenHeader.IsNull() {
-		*downstreamRefreshTokenHeader = r.Config.DownstreamRefreshTokenHeader.ValueString()
-	} else {
-		downstreamRefreshTokenHeader = nil
-	}
-	downstreamUserInfoHeader := new(string)
-	if !r.Config.DownstreamUserInfoHeader.IsUnknown() && !r.Config.DownstreamUserInfoHeader.IsNull() {
-		*downstreamUserInfoHeader = r.Config.DownstreamUserInfoHeader.ValueString()
-	} else {
-		downstreamUserInfoHeader = nil
-	}
-	downstreamUserInfoJwtHeader := new(string)
-	if !r.Config.DownstreamUserInfoJwtHeader.IsUnknown() && !r.Config.DownstreamUserInfoJwtHeader.IsNull() {
-		*downstreamUserInfoJwtHeader = r.Config.DownstreamUserInfoJwtHeader.ValueString()
-	} else {
-		downstreamUserInfoJwtHeader = nil
-	}
-	downstreamIntrospectionHeader := new(string)
-	if !r.Config.DownstreamIntrospectionHeader.IsUnknown() && !r.Config.DownstreamIntrospectionHeader.IsNull() {
-		*downstreamIntrospectionHeader = r.Config.DownstreamIntrospectionHeader.ValueString()
-	} else {
-		downstreamIntrospectionHeader = nil
-	}
-	downstreamIntrospectionJwtHeader := new(string)
-	if !r.Config.DownstreamIntrospectionJwtHeader.IsUnknown() && !r.Config.DownstreamIntrospectionJwtHeader.IsNull() {
-		*downstreamIntrospectionJwtHeader = r.Config.DownstreamIntrospectionJwtHeader.ValueString()
-	} else {
-		downstreamIntrospectionJwtHeader = nil
-	}
-	downstreamSessionIDHeader := new(string)
-	if !r.Config.DownstreamSessionIDHeader.IsUnknown() && !r.Config.DownstreamSessionIDHeader.IsNull() {
-		*downstreamSessionIDHeader = r.Config.DownstreamSessionIDHeader.ValueString()
-	} else {
-		downstreamSessionIDHeader = nil
-	}
-	var loginMethods []shared.LoginMethods = []shared.LoginMethods{}
-	for _, loginMethodsItem := range r.Config.LoginMethods {
-		loginMethods = append(loginMethods, shared.LoginMethods(loginMethodsItem.ValueString()))
-	}
-	loginAction := new(shared.LoginAction)
-	if !r.Config.LoginAction.IsUnknown() && !r.Config.LoginAction.IsNull() {
-		*loginAction = shared.LoginAction(r.Config.LoginAction.ValueString())
-	} else {
-		loginAction = nil
-	}
-	var loginTokens []shared.LoginTokens = []shared.LoginTokens{}
-	for _, loginTokensItem := range r.Config.LoginTokens {
-		loginTokens = append(loginTokens, shared.LoginTokens(loginTokensItem.ValueString()))
-	}
-	loginRedirectMode := new(shared.LoginRedirectMode)
-	if !r.Config.LoginRedirectMode.IsUnknown() && !r.Config.LoginRedirectMode.IsNull() {
-		*loginRedirectMode = shared.LoginRedirectMode(r.Config.LoginRedirectMode.ValueString())
-	} else {
-		loginRedirectMode = nil
-	}
-	logoutQueryArg := new(string)
-	if !r.Config.LogoutQueryArg.IsUnknown() && !r.Config.LogoutQueryArg.IsNull() {
-		*logoutQueryArg = r.Config.LogoutQueryArg.ValueString()
-	} else {
-		logoutQueryArg = nil
-	}
-	logoutPostArg := new(string)
-	if !r.Config.LogoutPostArg.IsUnknown() && !r.Config.LogoutPostArg.IsNull() {
-		*logoutPostArg = r.Config.LogoutPostArg.ValueString()
-	} else {
-		logoutPostArg = nil
-	}
-	logoutURISuffix := new(string)
-	if !r.Config.LogoutURISuffix.IsUnknown() && !r.Config.LogoutURISuffix.IsNull() {
-		*logoutURISuffix = r.Config.LogoutURISuffix.ValueString()
-	} else {
-		logoutURISuffix = nil
-	}
-	var logoutMethods []shared.LogoutMethods = []shared.LogoutMethods{}
-	for _, logoutMethodsItem := range r.Config.LogoutMethods {
-		logoutMethods = append(logoutMethods, shared.LogoutMethods(logoutMethodsItem.ValueString()))
-	}
-	logoutRevoke := new(bool)
-	if !r.Config.LogoutRevoke.IsUnknown() && !r.Config.LogoutRevoke.IsNull() {
-		*logoutRevoke = r.Config.LogoutRevoke.ValueBool()
-	} else {
-		logoutRevoke = nil
-	}
-	logoutRevokeAccessToken := new(bool)
-	if !r.Config.LogoutRevokeAccessToken.IsUnknown() && !r.Config.LogoutRevokeAccessToken.IsNull() {
-		*logoutRevokeAccessToken = r.Config.LogoutRevokeAccessToken.ValueBool()
-	} else {
-		logoutRevokeAccessToken = nil
-	}
-	logoutRevokeRefreshToken := new(bool)
-	if !r.Config.LogoutRevokeRefreshToken.IsUnknown() && !r.Config.LogoutRevokeRefreshToken.IsNull() {
-		*logoutRevokeRefreshToken = r.Config.LogoutRevokeRefreshToken.ValueBool()
-	} else {
-		logoutRevokeRefreshToken = nil
-	}
-	var consumerClaim []string = []string{}
-	for _, consumerClaimItem := range r.Config.ConsumerClaim {
-		consumerClaim = append(consumerClaim, consumerClaimItem.ValueString())
-	}
-	var consumerBy []shared.ConsumerBy = []shared.ConsumerBy{}
-	for _, consumerByItem := range r.Config.ConsumerBy {
-		consumerBy = append(consumerBy, shared.ConsumerBy(consumerByItem.ValueString()))
-	}
-	consumerOptional := new(bool)
-	if !r.Config.ConsumerOptional.IsUnknown() && !r.Config.ConsumerOptional.IsNull() {
-		*consumerOptional = r.Config.ConsumerOptional.ValueBool()
-	} else {
-		consumerOptional = nil
-	}
-	var credentialClaim []string = []string{}
-	for _, credentialClaimItem := range r.Config.CredentialClaim {
-		credentialClaim = append(credentialClaim, credentialClaimItem.ValueString())
-	}
-	anonymous := new(string)
-	if !r.Config.Anonymous.IsUnknown() && !r.Config.Anonymous.IsNull() {
-		*anonymous = r.Config.Anonymous.ValueString()
-	} else {
-		anonymous = nil
-	}
-	runOnPreflight := new(bool)
-	if !r.Config.RunOnPreflight.IsUnknown() && !r.Config.RunOnPreflight.IsNull() {
-		*runOnPreflight = r.Config.RunOnPreflight.ValueBool()
-	} else {
-		runOnPreflight = nil
-	}
-	leeway := new(float64)
-	if !r.Config.Leeway.IsUnknown() && !r.Config.Leeway.IsNull() {
-		*leeway, _ = r.Config.Leeway.ValueBigFloat().Float64()
-	} else {
-		leeway = nil
-	}
-	verifyParameters := new(bool)
-	if !r.Config.VerifyParameters.IsUnknown() && !r.Config.VerifyParameters.IsNull() {
-		*verifyParameters = r.Config.VerifyParameters.ValueBool()
-	} else {
-		verifyParameters = nil
-	}
-	verifyNonce := new(bool)
-	if !r.Config.VerifyNonce.IsUnknown() && !r.Config.VerifyNonce.IsNull() {
-		*verifyNonce = r.Config.VerifyNonce.ValueBool()
-	} else {
-		verifyNonce = nil
-	}
-	verifyClaims := new(bool)
-	if !r.Config.VerifyClaims.IsUnknown() && !r.Config.VerifyClaims.IsNull() {
-		*verifyClaims = r.Config.VerifyClaims.ValueBool()
-	} else {
-		verifyClaims = nil
-	}
-	verifySignature := new(bool)
-	if !r.Config.VerifySignature.IsUnknown() && !r.Config.VerifySignature.IsNull() {
-		*verifySignature = r.Config.VerifySignature.ValueBool()
-	} else {
-		verifySignature = nil
-	}
-	var ignoreSignature []shared.IgnoreSignature = []shared.IgnoreSignature{}
-	for _, ignoreSignatureItem := range r.Config.IgnoreSignature {
-		ignoreSignature = append(ignoreSignature, shared.IgnoreSignature(ignoreSignatureItem.ValueString()))
-	}
-	enableHsSignatures := new(bool)
-	if !r.Config.EnableHsSignatures.IsUnknown() && !r.Config.EnableHsSignatures.IsNull() {
-		*enableHsSignatures = r.Config.EnableHsSignatures.ValueBool()
-	} else {
-		enableHsSignatures = nil
-	}
-	var disableSession []shared.DisableSession = []shared.DisableSession{}
-	for _, disableSessionItem := range r.Config.DisableSession {
-		disableSession = append(disableSession, shared.DisableSession(disableSessionItem.ValueString()))
+		cacheTokensSalt = nil
 	}
 	cacheTTL := new(float64)
 	if !r.Config.CacheTTL.IsUnknown() && !r.Config.CacheTTL.IsNull() {
@@ -1279,53 +216,373 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedCreateOpenidConnectPlu
 	} else {
 		cacheTTLResurrect = nil
 	}
-	cacheTokens := new(bool)
-	if !r.Config.CacheTokens.IsUnknown() && !r.Config.CacheTokens.IsNull() {
-		*cacheTokens = r.Config.CacheTokens.ValueBool()
-	} else {
-		cacheTokens = nil
-	}
-	cacheTokensSalt := new(string)
-	if !r.Config.CacheTokensSalt.IsUnknown() && !r.Config.CacheTokensSalt.IsNull() {
-		*cacheTokensSalt = r.Config.CacheTokensSalt.ValueString()
-	} else {
-		cacheTokensSalt = nil
-	}
-	cacheIntrospection := new(bool)
-	if !r.Config.CacheIntrospection.IsUnknown() && !r.Config.CacheIntrospection.IsNull() {
-		*cacheIntrospection = r.Config.CacheIntrospection.ValueBool()
-	} else {
-		cacheIntrospection = nil
-	}
-	cacheTokenExchange := new(bool)
-	if !r.Config.CacheTokenExchange.IsUnknown() && !r.Config.CacheTokenExchange.IsNull() {
-		*cacheTokenExchange = r.Config.CacheTokenExchange.ValueBool()
-	} else {
-		cacheTokenExchange = nil
-	}
 	cacheUserInfo := new(bool)
 	if !r.Config.CacheUserInfo.IsUnknown() && !r.Config.CacheUserInfo.IsNull() {
 		*cacheUserInfo = r.Config.CacheUserInfo.ValueBool()
 	} else {
 		cacheUserInfo = nil
 	}
-	searchUserInfo := new(bool)
-	if !r.Config.SearchUserInfo.IsUnknown() && !r.Config.SearchUserInfo.IsNull() {
-		*searchUserInfo = r.Config.SearchUserInfo.ValueBool()
+	var clientAlg []shared.CreateOpenidConnectPluginClientAlg = []shared.CreateOpenidConnectPluginClientAlg{}
+	for _, clientAlgItem := range r.Config.ClientAlg {
+		clientAlg = append(clientAlg, shared.CreateOpenidConnectPluginClientAlg(clientAlgItem.ValueString()))
+	}
+	clientArg := new(string)
+	if !r.Config.ClientArg.IsUnknown() && !r.Config.ClientArg.IsNull() {
+		*clientArg = r.Config.ClientArg.ValueString()
 	} else {
-		searchUserInfo = nil
+		clientArg = nil
+	}
+	var clientAuth []shared.CreateOpenidConnectPluginClientAuth = []shared.CreateOpenidConnectPluginClientAuth{}
+	for _, clientAuthItem := range r.Config.ClientAuth {
+		clientAuth = append(clientAuth, shared.CreateOpenidConnectPluginClientAuth(clientAuthItem.ValueString()))
+	}
+	var clientCredentialsParamType []shared.CreateOpenidConnectPluginClientCredentialsParamType = []shared.CreateOpenidConnectPluginClientCredentialsParamType{}
+	for _, clientCredentialsParamTypeItem := range r.Config.ClientCredentialsParamType {
+		clientCredentialsParamType = append(clientCredentialsParamType, shared.CreateOpenidConnectPluginClientCredentialsParamType(clientCredentialsParamTypeItem.ValueString()))
+	}
+	var clientID []string = []string{}
+	for _, clientIDItem := range r.Config.ClientID {
+		clientID = append(clientID, clientIDItem.ValueString())
+	}
+	var clientJwk []shared.CreateOpenidConnectPluginClientJwk = []shared.CreateOpenidConnectPluginClientJwk{}
+	for _, clientJwkItem := range r.Config.ClientJwk {
+		alg := new(string)
+		if !clientJwkItem.Alg.IsUnknown() && !clientJwkItem.Alg.IsNull() {
+			*alg = clientJwkItem.Alg.ValueString()
+		} else {
+			alg = nil
+		}
+		crv := new(string)
+		if !clientJwkItem.Crv.IsUnknown() && !clientJwkItem.Crv.IsNull() {
+			*crv = clientJwkItem.Crv.ValueString()
+		} else {
+			crv = nil
+		}
+		d := new(string)
+		if !clientJwkItem.D.IsUnknown() && !clientJwkItem.D.IsNull() {
+			*d = clientJwkItem.D.ValueString()
+		} else {
+			d = nil
+		}
+		dp := new(string)
+		if !clientJwkItem.Dp.IsUnknown() && !clientJwkItem.Dp.IsNull() {
+			*dp = clientJwkItem.Dp.ValueString()
+		} else {
+			dp = nil
+		}
+		dq := new(string)
+		if !clientJwkItem.Dq.IsUnknown() && !clientJwkItem.Dq.IsNull() {
+			*dq = clientJwkItem.Dq.ValueString()
+		} else {
+			dq = nil
+		}
+		e := new(string)
+		if !clientJwkItem.E.IsUnknown() && !clientJwkItem.E.IsNull() {
+			*e = clientJwkItem.E.ValueString()
+		} else {
+			e = nil
+		}
+		issuer := new(string)
+		if !clientJwkItem.Issuer.IsUnknown() && !clientJwkItem.Issuer.IsNull() {
+			*issuer = clientJwkItem.Issuer.ValueString()
+		} else {
+			issuer = nil
+		}
+		k := new(string)
+		if !clientJwkItem.K.IsUnknown() && !clientJwkItem.K.IsNull() {
+			*k = clientJwkItem.K.ValueString()
+		} else {
+			k = nil
+		}
+		var keyOps []string = []string{}
+		for _, keyOpsItem := range clientJwkItem.KeyOps {
+			keyOps = append(keyOps, keyOpsItem.ValueString())
+		}
+		kid := new(string)
+		if !clientJwkItem.Kid.IsUnknown() && !clientJwkItem.Kid.IsNull() {
+			*kid = clientJwkItem.Kid.ValueString()
+		} else {
+			kid = nil
+		}
+		kty := new(string)
+		if !clientJwkItem.Kty.IsUnknown() && !clientJwkItem.Kty.IsNull() {
+			*kty = clientJwkItem.Kty.ValueString()
+		} else {
+			kty = nil
+		}
+		n := new(string)
+		if !clientJwkItem.N.IsUnknown() && !clientJwkItem.N.IsNull() {
+			*n = clientJwkItem.N.ValueString()
+		} else {
+			n = nil
+		}
+		oth := new(string)
+		if !clientJwkItem.Oth.IsUnknown() && !clientJwkItem.Oth.IsNull() {
+			*oth = clientJwkItem.Oth.ValueString()
+		} else {
+			oth = nil
+		}
+		p := new(string)
+		if !clientJwkItem.P.IsUnknown() && !clientJwkItem.P.IsNull() {
+			*p = clientJwkItem.P.ValueString()
+		} else {
+			p = nil
+		}
+		q := new(string)
+		if !clientJwkItem.Q.IsUnknown() && !clientJwkItem.Q.IsNull() {
+			*q = clientJwkItem.Q.ValueString()
+		} else {
+			q = nil
+		}
+		qi := new(string)
+		if !clientJwkItem.Qi.IsUnknown() && !clientJwkItem.Qi.IsNull() {
+			*qi = clientJwkItem.Qi.ValueString()
+		} else {
+			qi = nil
+		}
+		r1 := new(string)
+		if !clientJwkItem.R.IsUnknown() && !clientJwkItem.R.IsNull() {
+			*r1 = clientJwkItem.R.ValueString()
+		} else {
+			r1 = nil
+		}
+		t := new(string)
+		if !clientJwkItem.T.IsUnknown() && !clientJwkItem.T.IsNull() {
+			*t = clientJwkItem.T.ValueString()
+		} else {
+			t = nil
+		}
+		use := new(string)
+		if !clientJwkItem.Use.IsUnknown() && !clientJwkItem.Use.IsNull() {
+			*use = clientJwkItem.Use.ValueString()
+		} else {
+			use = nil
+		}
+		x := new(string)
+		if !clientJwkItem.X.IsUnknown() && !clientJwkItem.X.IsNull() {
+			*x = clientJwkItem.X.ValueString()
+		} else {
+			x = nil
+		}
+		var x5c []string = []string{}
+		for _, x5cItem := range clientJwkItem.X5c {
+			x5c = append(x5c, x5cItem.ValueString())
+		}
+		x5t := new(string)
+		if !clientJwkItem.X5t.IsUnknown() && !clientJwkItem.X5t.IsNull() {
+			*x5t = clientJwkItem.X5t.ValueString()
+		} else {
+			x5t = nil
+		}
+		x5tNumberS256 := new(string)
+		if !clientJwkItem.X5tNumberS256.IsUnknown() && !clientJwkItem.X5tNumberS256.IsNull() {
+			*x5tNumberS256 = clientJwkItem.X5tNumberS256.ValueString()
+		} else {
+			x5tNumberS256 = nil
+		}
+		x5u := new(string)
+		if !clientJwkItem.X5u.IsUnknown() && !clientJwkItem.X5u.IsNull() {
+			*x5u = clientJwkItem.X5u.ValueString()
+		} else {
+			x5u = nil
+		}
+		y := new(string)
+		if !clientJwkItem.Y.IsUnknown() && !clientJwkItem.Y.IsNull() {
+			*y = clientJwkItem.Y.ValueString()
+		} else {
+			y = nil
+		}
+		clientJwk = append(clientJwk, shared.CreateOpenidConnectPluginClientJwk{
+			Alg:           alg,
+			Crv:           crv,
+			D:             d,
+			Dp:            dp,
+			Dq:            dq,
+			E:             e,
+			Issuer:        issuer,
+			K:             k,
+			KeyOps:        keyOps,
+			Kid:           kid,
+			Kty:           kty,
+			N:             n,
+			Oth:           oth,
+			P:             p,
+			Q:             q,
+			Qi:            qi,
+			R:             r1,
+			T:             t,
+			Use:           use,
+			X:             x,
+			X5c:           x5c,
+			X5t:           x5t,
+			X5tNumberS256: x5tNumberS256,
+			X5u:           x5u,
+			Y:             y,
+		})
+	}
+	var clientSecret []string = []string{}
+	for _, clientSecretItem := range r.Config.ClientSecret {
+		clientSecret = append(clientSecret, clientSecretItem.ValueString())
+	}
+	var consumerBy []shared.CreateOpenidConnectPluginConsumerBy = []shared.CreateOpenidConnectPluginConsumerBy{}
+	for _, consumerByItem := range r.Config.ConsumerBy {
+		consumerBy = append(consumerBy, shared.CreateOpenidConnectPluginConsumerBy(consumerByItem.ValueString()))
+	}
+	var consumerClaim []string = []string{}
+	for _, consumerClaimItem := range r.Config.ConsumerClaim {
+		consumerClaim = append(consumerClaim, consumerClaimItem.ValueString())
+	}
+	consumerOptional := new(bool)
+	if !r.Config.ConsumerOptional.IsUnknown() && !r.Config.ConsumerOptional.IsNull() {
+		*consumerOptional = r.Config.ConsumerOptional.ValueBool()
+	} else {
+		consumerOptional = nil
+	}
+	var credentialClaim []string = []string{}
+	for _, credentialClaimItem := range r.Config.CredentialClaim {
+		credentialClaim = append(credentialClaim, credentialClaimItem.ValueString())
+	}
+	var disableSession []shared.CreateOpenidConnectPluginDisableSession = []shared.CreateOpenidConnectPluginDisableSession{}
+	for _, disableSessionItem := range r.Config.DisableSession {
+		disableSession = append(disableSession, shared.CreateOpenidConnectPluginDisableSession(disableSessionItem.ValueString()))
+	}
+	var discoveryHeadersNames []string = []string{}
+	for _, discoveryHeadersNamesItem := range r.Config.DiscoveryHeadersNames {
+		discoveryHeadersNames = append(discoveryHeadersNames, discoveryHeadersNamesItem.ValueString())
+	}
+	var discoveryHeadersValues []string = []string{}
+	for _, discoveryHeadersValuesItem := range r.Config.DiscoveryHeadersValues {
+		discoveryHeadersValues = append(discoveryHeadersValues, discoveryHeadersValuesItem.ValueString())
+	}
+	displayErrors := new(bool)
+	if !r.Config.DisplayErrors.IsUnknown() && !r.Config.DisplayErrors.IsNull() {
+		*displayErrors = r.Config.DisplayErrors.ValueBool()
+	} else {
+		displayErrors = nil
+	}
+	var domains []string = []string{}
+	for _, domainsItem := range r.Config.Domains {
+		domains = append(domains, domainsItem.ValueString())
+	}
+	downstreamAccessTokenHeader := new(string)
+	if !r.Config.DownstreamAccessTokenHeader.IsUnknown() && !r.Config.DownstreamAccessTokenHeader.IsNull() {
+		*downstreamAccessTokenHeader = r.Config.DownstreamAccessTokenHeader.ValueString()
+	} else {
+		downstreamAccessTokenHeader = nil
+	}
+	downstreamAccessTokenJwkHeader := new(string)
+	if !r.Config.DownstreamAccessTokenJwkHeader.IsUnknown() && !r.Config.DownstreamAccessTokenJwkHeader.IsNull() {
+		*downstreamAccessTokenJwkHeader = r.Config.DownstreamAccessTokenJwkHeader.ValueString()
+	} else {
+		downstreamAccessTokenJwkHeader = nil
+	}
+	var downstreamHeadersClaims []string = []string{}
+	for _, downstreamHeadersClaimsItem := range r.Config.DownstreamHeadersClaims {
+		downstreamHeadersClaims = append(downstreamHeadersClaims, downstreamHeadersClaimsItem.ValueString())
+	}
+	var downstreamHeadersNames []string = []string{}
+	for _, downstreamHeadersNamesItem := range r.Config.DownstreamHeadersNames {
+		downstreamHeadersNames = append(downstreamHeadersNames, downstreamHeadersNamesItem.ValueString())
+	}
+	downstreamIDTokenHeader := new(string)
+	if !r.Config.DownstreamIDTokenHeader.IsUnknown() && !r.Config.DownstreamIDTokenHeader.IsNull() {
+		*downstreamIDTokenHeader = r.Config.DownstreamIDTokenHeader.ValueString()
+	} else {
+		downstreamIDTokenHeader = nil
+	}
+	downstreamIDTokenJwkHeader := new(string)
+	if !r.Config.DownstreamIDTokenJwkHeader.IsUnknown() && !r.Config.DownstreamIDTokenJwkHeader.IsNull() {
+		*downstreamIDTokenJwkHeader = r.Config.DownstreamIDTokenJwkHeader.ValueString()
+	} else {
+		downstreamIDTokenJwkHeader = nil
+	}
+	downstreamIntrospectionHeader := new(string)
+	if !r.Config.DownstreamIntrospectionHeader.IsUnknown() && !r.Config.DownstreamIntrospectionHeader.IsNull() {
+		*downstreamIntrospectionHeader = r.Config.DownstreamIntrospectionHeader.ValueString()
+	} else {
+		downstreamIntrospectionHeader = nil
+	}
+	downstreamIntrospectionJwtHeader := new(string)
+	if !r.Config.DownstreamIntrospectionJwtHeader.IsUnknown() && !r.Config.DownstreamIntrospectionJwtHeader.IsNull() {
+		*downstreamIntrospectionJwtHeader = r.Config.DownstreamIntrospectionJwtHeader.ValueString()
+	} else {
+		downstreamIntrospectionJwtHeader = nil
+	}
+	downstreamRefreshTokenHeader := new(string)
+	if !r.Config.DownstreamRefreshTokenHeader.IsUnknown() && !r.Config.DownstreamRefreshTokenHeader.IsNull() {
+		*downstreamRefreshTokenHeader = r.Config.DownstreamRefreshTokenHeader.ValueString()
+	} else {
+		downstreamRefreshTokenHeader = nil
+	}
+	downstreamSessionIDHeader := new(string)
+	if !r.Config.DownstreamSessionIDHeader.IsUnknown() && !r.Config.DownstreamSessionIDHeader.IsNull() {
+		*downstreamSessionIDHeader = r.Config.DownstreamSessionIDHeader.ValueString()
+	} else {
+		downstreamSessionIDHeader = nil
+	}
+	downstreamUserInfoHeader := new(string)
+	if !r.Config.DownstreamUserInfoHeader.IsUnknown() && !r.Config.DownstreamUserInfoHeader.IsNull() {
+		*downstreamUserInfoHeader = r.Config.DownstreamUserInfoHeader.ValueString()
+	} else {
+		downstreamUserInfoHeader = nil
+	}
+	downstreamUserInfoJwtHeader := new(string)
+	if !r.Config.DownstreamUserInfoJwtHeader.IsUnknown() && !r.Config.DownstreamUserInfoJwtHeader.IsNull() {
+		*downstreamUserInfoJwtHeader = r.Config.DownstreamUserInfoJwtHeader.ValueString()
+	} else {
+		downstreamUserInfoJwtHeader = nil
+	}
+	enableHsSignatures := new(bool)
+	if !r.Config.EnableHsSignatures.IsUnknown() && !r.Config.EnableHsSignatures.IsNull() {
+		*enableHsSignatures = r.Config.EnableHsSignatures.ValueBool()
+	} else {
+		enableHsSignatures = nil
+	}
+	endSessionEndpoint := new(string)
+	if !r.Config.EndSessionEndpoint.IsUnknown() && !r.Config.EndSessionEndpoint.IsNull() {
+		*endSessionEndpoint = r.Config.EndSessionEndpoint.ValueString()
+	} else {
+		endSessionEndpoint = nil
+	}
+	exposeErrorCode := new(bool)
+	if !r.Config.ExposeErrorCode.IsUnknown() && !r.Config.ExposeErrorCode.IsNull() {
+		*exposeErrorCode = r.Config.ExposeErrorCode.ValueBool()
+	} else {
+		exposeErrorCode = nil
+	}
+	var extraJwksUris []string = []string{}
+	for _, extraJwksUrisItem := range r.Config.ExtraJwksUris {
+		extraJwksUris = append(extraJwksUris, extraJwksUrisItem.ValueString())
+	}
+	forbiddenDestroySession := new(bool)
+	if !r.Config.ForbiddenDestroySession.IsUnknown() && !r.Config.ForbiddenDestroySession.IsNull() {
+		*forbiddenDestroySession = r.Config.ForbiddenDestroySession.ValueBool()
+	} else {
+		forbiddenDestroySession = nil
+	}
+	forbiddenErrorMessage := new(string)
+	if !r.Config.ForbiddenErrorMessage.IsUnknown() && !r.Config.ForbiddenErrorMessage.IsNull() {
+		*forbiddenErrorMessage = r.Config.ForbiddenErrorMessage.ValueString()
+	} else {
+		forbiddenErrorMessage = nil
+	}
+	var forbiddenRedirectURI []string = []string{}
+	for _, forbiddenRedirectURIItem := range r.Config.ForbiddenRedirectURI {
+		forbiddenRedirectURI = append(forbiddenRedirectURI, forbiddenRedirectURIItem.ValueString())
+	}
+	var groupsClaim []string = []string{}
+	for _, groupsClaimItem := range r.Config.GroupsClaim {
+		groupsClaim = append(groupsClaim, groupsClaimItem.ValueString())
+	}
+	var groupsRequired []string = []string{}
+	for _, groupsRequiredItem := range r.Config.GroupsRequired {
+		groupsRequired = append(groupsRequired, groupsRequiredItem.ValueString())
 	}
 	hideCredentials := new(bool)
 	if !r.Config.HideCredentials.IsUnknown() && !r.Config.HideCredentials.IsNull() {
 		*hideCredentials = r.Config.HideCredentials.ValueBool()
 	} else {
 		hideCredentials = nil
-	}
-	httpVersion := new(float64)
-	if !r.Config.HTTPVersion.IsUnknown() && !r.Config.HTTPVersion.IsNull() {
-		*httpVersion, _ = r.Config.HTTPVersion.ValueBigFloat().Float64()
-	} else {
-		httpVersion = nil
 	}
 	httpProxy := new(string)
 	if !r.Config.HTTPProxy.IsUnknown() && !r.Config.HTTPProxy.IsNull() {
@@ -1339,6 +596,12 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedCreateOpenidConnectPlu
 	} else {
 		httpProxyAuthorization = nil
 	}
+	httpVersion := new(float64)
+	if !r.Config.HTTPVersion.IsUnknown() && !r.Config.HTTPVersion.IsNull() {
+		*httpVersion, _ = r.Config.HTTPVersion.ValueBigFloat().Float64()
+	} else {
+		httpVersion = nil
+	}
 	httpsProxy := new(string)
 	if !r.Config.HTTPSProxy.IsUnknown() && !r.Config.HTTPSProxy.IsNull() {
 		*httpsProxy = r.Config.HTTPSProxy.ValueString()
@@ -1351,59 +614,79 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedCreateOpenidConnectPlu
 	} else {
 		httpsProxyAuthorization = nil
 	}
-	noProxy := new(string)
-	if !r.Config.NoProxy.IsUnknown() && !r.Config.NoProxy.IsNull() {
-		*noProxy = r.Config.NoProxy.ValueString()
+	idTokenParamName := new(string)
+	if !r.Config.IDTokenParamName.IsUnknown() && !r.Config.IDTokenParamName.IsNull() {
+		*idTokenParamName = r.Config.IDTokenParamName.ValueString()
 	} else {
-		noProxy = nil
+		idTokenParamName = nil
 	}
-	keepalive := new(bool)
-	if !r.Config.Keepalive.IsUnknown() && !r.Config.Keepalive.IsNull() {
-		*keepalive = r.Config.Keepalive.ValueBool()
-	} else {
-		keepalive = nil
+	var idTokenParamType []shared.CreateOpenidConnectPluginIDTokenParamType = []shared.CreateOpenidConnectPluginIDTokenParamType{}
+	for _, idTokenParamTypeItem := range r.Config.IDTokenParamType {
+		idTokenParamType = append(idTokenParamType, shared.CreateOpenidConnectPluginIDTokenParamType(idTokenParamTypeItem.ValueString()))
 	}
-	sslVerify := new(bool)
-	if !r.Config.SslVerify.IsUnknown() && !r.Config.SslVerify.IsNull() {
-		*sslVerify = r.Config.SslVerify.ValueBool()
-	} else {
-		sslVerify = nil
+	var ignoreSignature []shared.CreateOpenidConnectPluginIgnoreSignature = []shared.CreateOpenidConnectPluginIgnoreSignature{}
+	for _, ignoreSignatureItem := range r.Config.IgnoreSignature {
+		ignoreSignature = append(ignoreSignature, shared.CreateOpenidConnectPluginIgnoreSignature(ignoreSignatureItem.ValueString()))
 	}
-	timeout := new(float64)
-	if !r.Config.Timeout.IsUnknown() && !r.Config.Timeout.IsNull() {
-		*timeout, _ = r.Config.Timeout.ValueBigFloat().Float64()
+	introspectJwtTokens := new(bool)
+	if !r.Config.IntrospectJwtTokens.IsUnknown() && !r.Config.IntrospectJwtTokens.IsNull() {
+		*introspectJwtTokens = r.Config.IntrospectJwtTokens.ValueBool()
 	} else {
-		timeout = nil
+		introspectJwtTokens = nil
 	}
-	displayErrors := new(bool)
-	if !r.Config.DisplayErrors.IsUnknown() && !r.Config.DisplayErrors.IsNull() {
-		*displayErrors = r.Config.DisplayErrors.ValueBool()
+	introspectionAccept := new(shared.CreateOpenidConnectPluginIntrospectionAccept)
+	if !r.Config.IntrospectionAccept.IsUnknown() && !r.Config.IntrospectionAccept.IsNull() {
+		*introspectionAccept = shared.CreateOpenidConnectPluginIntrospectionAccept(r.Config.IntrospectionAccept.ValueString())
 	} else {
-		displayErrors = nil
+		introspectionAccept = nil
 	}
-	byUsernameIgnoreCase := new(bool)
-	if !r.Config.ByUsernameIgnoreCase.IsUnknown() && !r.Config.ByUsernameIgnoreCase.IsNull() {
-		*byUsernameIgnoreCase = r.Config.ByUsernameIgnoreCase.ValueBool()
+	introspectionCheckActive := new(bool)
+	if !r.Config.IntrospectionCheckActive.IsUnknown() && !r.Config.IntrospectionCheckActive.IsNull() {
+		*introspectionCheckActive = r.Config.IntrospectionCheckActive.ValueBool()
 	} else {
-		byUsernameIgnoreCase = nil
+		introspectionCheckActive = nil
 	}
-	resolveDistributedClaims := new(bool)
-	if !r.Config.ResolveDistributedClaims.IsUnknown() && !r.Config.ResolveDistributedClaims.IsNull() {
-		*resolveDistributedClaims = r.Config.ResolveDistributedClaims.ValueBool()
+	introspectionEndpoint := new(string)
+	if !r.Config.IntrospectionEndpoint.IsUnknown() && !r.Config.IntrospectionEndpoint.IsNull() {
+		*introspectionEndpoint = r.Config.IntrospectionEndpoint.ValueString()
 	} else {
-		resolveDistributedClaims = nil
+		introspectionEndpoint = nil
 	}
-	exposeErrorCode := new(bool)
-	if !r.Config.ExposeErrorCode.IsUnknown() && !r.Config.ExposeErrorCode.IsNull() {
-		*exposeErrorCode = r.Config.ExposeErrorCode.ValueBool()
+	introspectionEndpointAuthMethod := new(shared.CreateOpenidConnectPluginIntrospectionEndpointAuthMethod)
+	if !r.Config.IntrospectionEndpointAuthMethod.IsUnknown() && !r.Config.IntrospectionEndpointAuthMethod.IsNull() {
+		*introspectionEndpointAuthMethod = shared.CreateOpenidConnectPluginIntrospectionEndpointAuthMethod(r.Config.IntrospectionEndpointAuthMethod.ValueString())
 	} else {
-		exposeErrorCode = nil
+		introspectionEndpointAuthMethod = nil
 	}
-	tokenCacheKeyIncludeScope := new(bool)
-	if !r.Config.TokenCacheKeyIncludeScope.IsUnknown() && !r.Config.TokenCacheKeyIncludeScope.IsNull() {
-		*tokenCacheKeyIncludeScope = r.Config.TokenCacheKeyIncludeScope.ValueBool()
+	var introspectionHeadersClient []string = []string{}
+	for _, introspectionHeadersClientItem := range r.Config.IntrospectionHeadersClient {
+		introspectionHeadersClient = append(introspectionHeadersClient, introspectionHeadersClientItem.ValueString())
+	}
+	var introspectionHeadersNames []string = []string{}
+	for _, introspectionHeadersNamesItem := range r.Config.IntrospectionHeadersNames {
+		introspectionHeadersNames = append(introspectionHeadersNames, introspectionHeadersNamesItem.ValueString())
+	}
+	var introspectionHeadersValues []string = []string{}
+	for _, introspectionHeadersValuesItem := range r.Config.IntrospectionHeadersValues {
+		introspectionHeadersValues = append(introspectionHeadersValues, introspectionHeadersValuesItem.ValueString())
+	}
+	introspectionHint := new(string)
+	if !r.Config.IntrospectionHint.IsUnknown() && !r.Config.IntrospectionHint.IsNull() {
+		*introspectionHint = r.Config.IntrospectionHint.ValueString()
 	} else {
-		tokenCacheKeyIncludeScope = nil
+		introspectionHint = nil
+	}
+	var introspectionPostArgsClient []string = []string{}
+	for _, introspectionPostArgsClientItem := range r.Config.IntrospectionPostArgsClient {
+		introspectionPostArgsClient = append(introspectionPostArgsClient, introspectionPostArgsClientItem.ValueString())
+	}
+	var introspectionPostArgsNames []string = []string{}
+	for _, introspectionPostArgsNamesItem := range r.Config.IntrospectionPostArgsNames {
+		introspectionPostArgsNames = append(introspectionPostArgsNames, introspectionPostArgsNamesItem.ValueString())
+	}
+	var introspectionPostArgsValues []string = []string{}
+	for _, introspectionPostArgsValuesItem := range r.Config.IntrospectionPostArgsValues {
+		introspectionPostArgsValues = append(introspectionPostArgsValues, introspectionPostArgsValuesItem.ValueString())
 	}
 	introspectionTokenParamName := new(string)
 	if !r.Config.IntrospectionTokenParamName.IsUnknown() && !r.Config.IntrospectionTokenParamName.IsNull() {
@@ -1411,41 +694,113 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedCreateOpenidConnectPlu
 	} else {
 		introspectionTokenParamName = nil
 	}
-	revocationTokenParamName := new(string)
-	if !r.Config.RevocationTokenParamName.IsUnknown() && !r.Config.RevocationTokenParamName.IsNull() {
-		*revocationTokenParamName = r.Config.RevocationTokenParamName.ValueString()
+	issuer1 := new(string)
+	if !r.Config.Issuer.IsUnknown() && !r.Config.Issuer.IsNull() {
+		*issuer1 = r.Config.Issuer.ValueString()
 	} else {
-		revocationTokenParamName = nil
+		issuer1 = nil
 	}
-	proofOfPossessionMtls := new(shared.ProofOfPossessionMtls)
-	if !r.Config.ProofOfPossessionMtls.IsUnknown() && !r.Config.ProofOfPossessionMtls.IsNull() {
-		*proofOfPossessionMtls = shared.ProofOfPossessionMtls(r.Config.ProofOfPossessionMtls.ValueString())
-	} else {
-		proofOfPossessionMtls = nil
+	var issuersAllowed []string = []string{}
+	for _, issuersAllowedItem := range r.Config.IssuersAllowed {
+		issuersAllowed = append(issuersAllowed, issuersAllowedItem.ValueString())
 	}
-	proofOfPossessionAuthMethodsValidation := new(bool)
-	if !r.Config.ProofOfPossessionAuthMethodsValidation.IsUnknown() && !r.Config.ProofOfPossessionAuthMethodsValidation.IsNull() {
-		*proofOfPossessionAuthMethodsValidation = r.Config.ProofOfPossessionAuthMethodsValidation.ValueBool()
+	jwtSessionClaim := new(string)
+	if !r.Config.JwtSessionClaim.IsUnknown() && !r.Config.JwtSessionClaim.IsNull() {
+		*jwtSessionClaim = r.Config.JwtSessionClaim.ValueString()
 	} else {
-		proofOfPossessionAuthMethodsValidation = nil
+		jwtSessionClaim = nil
 	}
-	tlsClientAuthCertID := new(string)
-	if !r.Config.TLSClientAuthCertID.IsUnknown() && !r.Config.TLSClientAuthCertID.IsNull() {
-		*tlsClientAuthCertID = r.Config.TLSClientAuthCertID.ValueString()
+	jwtSessionCookie := new(string)
+	if !r.Config.JwtSessionCookie.IsUnknown() && !r.Config.JwtSessionCookie.IsNull() {
+		*jwtSessionCookie = r.Config.JwtSessionCookie.ValueString()
 	} else {
-		tlsClientAuthCertID = nil
+		jwtSessionCookie = nil
 	}
-	tlsClientAuthSslVerify := new(bool)
-	if !r.Config.TLSClientAuthSslVerify.IsUnknown() && !r.Config.TLSClientAuthSslVerify.IsNull() {
-		*tlsClientAuthSslVerify = r.Config.TLSClientAuthSslVerify.ValueBool()
+	keepalive := new(bool)
+	if !r.Config.Keepalive.IsUnknown() && !r.Config.Keepalive.IsNull() {
+		*keepalive = r.Config.Keepalive.ValueBool()
 	} else {
-		tlsClientAuthSslVerify = nil
+		keepalive = nil
 	}
-	mtlsTokenEndpoint := new(string)
-	if !r.Config.MtlsTokenEndpoint.IsUnknown() && !r.Config.MtlsTokenEndpoint.IsNull() {
-		*mtlsTokenEndpoint = r.Config.MtlsTokenEndpoint.ValueString()
+	leeway := new(float64)
+	if !r.Config.Leeway.IsUnknown() && !r.Config.Leeway.IsNull() {
+		*leeway, _ = r.Config.Leeway.ValueBigFloat().Float64()
 	} else {
-		mtlsTokenEndpoint = nil
+		leeway = nil
+	}
+	loginAction := new(shared.CreateOpenidConnectPluginLoginAction)
+	if !r.Config.LoginAction.IsUnknown() && !r.Config.LoginAction.IsNull() {
+		*loginAction = shared.CreateOpenidConnectPluginLoginAction(r.Config.LoginAction.ValueString())
+	} else {
+		loginAction = nil
+	}
+	var loginMethods []shared.CreateOpenidConnectPluginLoginMethods = []shared.CreateOpenidConnectPluginLoginMethods{}
+	for _, loginMethodsItem := range r.Config.LoginMethods {
+		loginMethods = append(loginMethods, shared.CreateOpenidConnectPluginLoginMethods(loginMethodsItem.ValueString()))
+	}
+	loginRedirectMode := new(shared.CreateOpenidConnectPluginLoginRedirectMode)
+	if !r.Config.LoginRedirectMode.IsUnknown() && !r.Config.LoginRedirectMode.IsNull() {
+		*loginRedirectMode = shared.CreateOpenidConnectPluginLoginRedirectMode(r.Config.LoginRedirectMode.ValueString())
+	} else {
+		loginRedirectMode = nil
+	}
+	var loginRedirectURI []string = []string{}
+	for _, loginRedirectURIItem := range r.Config.LoginRedirectURI {
+		loginRedirectURI = append(loginRedirectURI, loginRedirectURIItem.ValueString())
+	}
+	var loginTokens []shared.CreateOpenidConnectPluginLoginTokens = []shared.CreateOpenidConnectPluginLoginTokens{}
+	for _, loginTokensItem := range r.Config.LoginTokens {
+		loginTokens = append(loginTokens, shared.CreateOpenidConnectPluginLoginTokens(loginTokensItem.ValueString()))
+	}
+	var logoutMethods []shared.CreateOpenidConnectPluginLogoutMethods = []shared.CreateOpenidConnectPluginLogoutMethods{}
+	for _, logoutMethodsItem := range r.Config.LogoutMethods {
+		logoutMethods = append(logoutMethods, shared.CreateOpenidConnectPluginLogoutMethods(logoutMethodsItem.ValueString()))
+	}
+	logoutPostArg := new(string)
+	if !r.Config.LogoutPostArg.IsUnknown() && !r.Config.LogoutPostArg.IsNull() {
+		*logoutPostArg = r.Config.LogoutPostArg.ValueString()
+	} else {
+		logoutPostArg = nil
+	}
+	logoutQueryArg := new(string)
+	if !r.Config.LogoutQueryArg.IsUnknown() && !r.Config.LogoutQueryArg.IsNull() {
+		*logoutQueryArg = r.Config.LogoutQueryArg.ValueString()
+	} else {
+		logoutQueryArg = nil
+	}
+	var logoutRedirectURI []string = []string{}
+	for _, logoutRedirectURIItem := range r.Config.LogoutRedirectURI {
+		logoutRedirectURI = append(logoutRedirectURI, logoutRedirectURIItem.ValueString())
+	}
+	logoutRevoke := new(bool)
+	if !r.Config.LogoutRevoke.IsUnknown() && !r.Config.LogoutRevoke.IsNull() {
+		*logoutRevoke = r.Config.LogoutRevoke.ValueBool()
+	} else {
+		logoutRevoke = nil
+	}
+	logoutRevokeAccessToken := new(bool)
+	if !r.Config.LogoutRevokeAccessToken.IsUnknown() && !r.Config.LogoutRevokeAccessToken.IsNull() {
+		*logoutRevokeAccessToken = r.Config.LogoutRevokeAccessToken.ValueBool()
+	} else {
+		logoutRevokeAccessToken = nil
+	}
+	logoutRevokeRefreshToken := new(bool)
+	if !r.Config.LogoutRevokeRefreshToken.IsUnknown() && !r.Config.LogoutRevokeRefreshToken.IsNull() {
+		*logoutRevokeRefreshToken = r.Config.LogoutRevokeRefreshToken.ValueBool()
+	} else {
+		logoutRevokeRefreshToken = nil
+	}
+	logoutURISuffix := new(string)
+	if !r.Config.LogoutURISuffix.IsUnknown() && !r.Config.LogoutURISuffix.IsNull() {
+		*logoutURISuffix = r.Config.LogoutURISuffix.ValueString()
+	} else {
+		logoutURISuffix = nil
+	}
+	maxAge := new(float64)
+	if !r.Config.MaxAge.IsUnknown() && !r.Config.MaxAge.IsNull() {
+		*maxAge, _ = r.Config.MaxAge.ValueBigFloat().Float64()
+	} else {
+		maxAge = nil
 	}
 	mtlsIntrospectionEndpoint := new(string)
 	if !r.Config.MtlsIntrospectionEndpoint.IsUnknown() && !r.Config.MtlsIntrospectionEndpoint.IsNull() {
@@ -1459,233 +814,878 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedCreateOpenidConnectPlu
 	} else {
 		mtlsRevocationEndpoint = nil
 	}
+	mtlsTokenEndpoint := new(string)
+	if !r.Config.MtlsTokenEndpoint.IsUnknown() && !r.Config.MtlsTokenEndpoint.IsNull() {
+		*mtlsTokenEndpoint = r.Config.MtlsTokenEndpoint.ValueString()
+	} else {
+		mtlsTokenEndpoint = nil
+	}
+	noProxy := new(string)
+	if !r.Config.NoProxy.IsUnknown() && !r.Config.NoProxy.IsNull() {
+		*noProxy = r.Config.NoProxy.ValueString()
+	} else {
+		noProxy = nil
+	}
+	var passwordParamType []shared.CreateOpenidConnectPluginPasswordParamType = []shared.CreateOpenidConnectPluginPasswordParamType{}
+	for _, passwordParamTypeItem := range r.Config.PasswordParamType {
+		passwordParamType = append(passwordParamType, shared.CreateOpenidConnectPluginPasswordParamType(passwordParamTypeItem.ValueString()))
+	}
+	preserveQueryArgs := new(bool)
+	if !r.Config.PreserveQueryArgs.IsUnknown() && !r.Config.PreserveQueryArgs.IsNull() {
+		*preserveQueryArgs = r.Config.PreserveQueryArgs.ValueBool()
+	} else {
+		preserveQueryArgs = nil
+	}
+	proofOfPossessionAuthMethodsValidation := new(bool)
+	if !r.Config.ProofOfPossessionAuthMethodsValidation.IsUnknown() && !r.Config.ProofOfPossessionAuthMethodsValidation.IsNull() {
+		*proofOfPossessionAuthMethodsValidation = r.Config.ProofOfPossessionAuthMethodsValidation.ValueBool()
+	} else {
+		proofOfPossessionAuthMethodsValidation = nil
+	}
+	proofOfPossessionMtls := new(shared.CreateOpenidConnectPluginProofOfPossessionMtls)
+	if !r.Config.ProofOfPossessionMtls.IsUnknown() && !r.Config.ProofOfPossessionMtls.IsNull() {
+		*proofOfPossessionMtls = shared.CreateOpenidConnectPluginProofOfPossessionMtls(r.Config.ProofOfPossessionMtls.ValueString())
+	} else {
+		proofOfPossessionMtls = nil
+	}
+	pushedAuthorizationRequestEndpoint := new(string)
+	if !r.Config.PushedAuthorizationRequestEndpoint.IsUnknown() && !r.Config.PushedAuthorizationRequestEndpoint.IsNull() {
+		*pushedAuthorizationRequestEndpoint = r.Config.PushedAuthorizationRequestEndpoint.ValueString()
+	} else {
+		pushedAuthorizationRequestEndpoint = nil
+	}
+	pushedAuthorizationRequestEndpointAuthMethod := new(shared.CreateOpenidConnectPluginPushedAuthorizationRequestEndpointAuthMethod)
+	if !r.Config.PushedAuthorizationRequestEndpointAuthMethod.IsUnknown() && !r.Config.PushedAuthorizationRequestEndpointAuthMethod.IsNull() {
+		*pushedAuthorizationRequestEndpointAuthMethod = shared.CreateOpenidConnectPluginPushedAuthorizationRequestEndpointAuthMethod(r.Config.PushedAuthorizationRequestEndpointAuthMethod.ValueString())
+	} else {
+		pushedAuthorizationRequestEndpointAuthMethod = nil
+	}
+	var redirectURI []string = []string{}
+	for _, redirectURIItem := range r.Config.RedirectURI {
+		redirectURI = append(redirectURI, redirectURIItem.ValueString())
+	}
+	rediscoveryLifetime := new(float64)
+	if !r.Config.RediscoveryLifetime.IsUnknown() && !r.Config.RediscoveryLifetime.IsNull() {
+		*rediscoveryLifetime, _ = r.Config.RediscoveryLifetime.ValueBigFloat().Float64()
+	} else {
+		rediscoveryLifetime = nil
+	}
+	refreshTokenParamName := new(string)
+	if !r.Config.RefreshTokenParamName.IsUnknown() && !r.Config.RefreshTokenParamName.IsNull() {
+		*refreshTokenParamName = r.Config.RefreshTokenParamName.ValueString()
+	} else {
+		refreshTokenParamName = nil
+	}
+	var refreshTokenParamType []shared.CreateOpenidConnectPluginRefreshTokenParamType = []shared.CreateOpenidConnectPluginRefreshTokenParamType{}
+	for _, refreshTokenParamTypeItem := range r.Config.RefreshTokenParamType {
+		refreshTokenParamType = append(refreshTokenParamType, shared.CreateOpenidConnectPluginRefreshTokenParamType(refreshTokenParamTypeItem.ValueString()))
+	}
+	refreshTokens := new(bool)
+	if !r.Config.RefreshTokens.IsUnknown() && !r.Config.RefreshTokens.IsNull() {
+		*refreshTokens = r.Config.RefreshTokens.ValueBool()
+	} else {
+		refreshTokens = nil
+	}
+	requireProofKeyForCodeExchange := new(bool)
+	if !r.Config.RequireProofKeyForCodeExchange.IsUnknown() && !r.Config.RequireProofKeyForCodeExchange.IsNull() {
+		*requireProofKeyForCodeExchange = r.Config.RequireProofKeyForCodeExchange.ValueBool()
+	} else {
+		requireProofKeyForCodeExchange = nil
+	}
+	requirePushedAuthorizationRequests := new(bool)
+	if !r.Config.RequirePushedAuthorizationRequests.IsUnknown() && !r.Config.RequirePushedAuthorizationRequests.IsNull() {
+		*requirePushedAuthorizationRequests = r.Config.RequirePushedAuthorizationRequests.ValueBool()
+	} else {
+		requirePushedAuthorizationRequests = nil
+	}
+	resolveDistributedClaims := new(bool)
+	if !r.Config.ResolveDistributedClaims.IsUnknown() && !r.Config.ResolveDistributedClaims.IsNull() {
+		*resolveDistributedClaims = r.Config.ResolveDistributedClaims.ValueBool()
+	} else {
+		resolveDistributedClaims = nil
+	}
+	responseMode := new(shared.CreateOpenidConnectPluginResponseMode)
+	if !r.Config.ResponseMode.IsUnknown() && !r.Config.ResponseMode.IsNull() {
+		*responseMode = shared.CreateOpenidConnectPluginResponseMode(r.Config.ResponseMode.ValueString())
+	} else {
+		responseMode = nil
+	}
+	var responseType []string = []string{}
+	for _, responseTypeItem := range r.Config.ResponseType {
+		responseType = append(responseType, responseTypeItem.ValueString())
+	}
+	reverify := new(bool)
+	if !r.Config.Reverify.IsUnknown() && !r.Config.Reverify.IsNull() {
+		*reverify = r.Config.Reverify.ValueBool()
+	} else {
+		reverify = nil
+	}
+	revocationEndpoint := new(string)
+	if !r.Config.RevocationEndpoint.IsUnknown() && !r.Config.RevocationEndpoint.IsNull() {
+		*revocationEndpoint = r.Config.RevocationEndpoint.ValueString()
+	} else {
+		revocationEndpoint = nil
+	}
+	revocationEndpointAuthMethod := new(shared.CreateOpenidConnectPluginRevocationEndpointAuthMethod)
+	if !r.Config.RevocationEndpointAuthMethod.IsUnknown() && !r.Config.RevocationEndpointAuthMethod.IsNull() {
+		*revocationEndpointAuthMethod = shared.CreateOpenidConnectPluginRevocationEndpointAuthMethod(r.Config.RevocationEndpointAuthMethod.ValueString())
+	} else {
+		revocationEndpointAuthMethod = nil
+	}
+	revocationTokenParamName := new(string)
+	if !r.Config.RevocationTokenParamName.IsUnknown() && !r.Config.RevocationTokenParamName.IsNull() {
+		*revocationTokenParamName = r.Config.RevocationTokenParamName.ValueString()
+	} else {
+		revocationTokenParamName = nil
+	}
+	var rolesClaim []string = []string{}
+	for _, rolesClaimItem := range r.Config.RolesClaim {
+		rolesClaim = append(rolesClaim, rolesClaimItem.ValueString())
+	}
+	var rolesRequired []string = []string{}
+	for _, rolesRequiredItem := range r.Config.RolesRequired {
+		rolesRequired = append(rolesRequired, rolesRequiredItem.ValueString())
+	}
+	runOnPreflight := new(bool)
+	if !r.Config.RunOnPreflight.IsUnknown() && !r.Config.RunOnPreflight.IsNull() {
+		*runOnPreflight = r.Config.RunOnPreflight.ValueBool()
+	} else {
+		runOnPreflight = nil
+	}
+	var scopes []string = []string{}
+	for _, scopesItem := range r.Config.Scopes {
+		scopes = append(scopes, scopesItem.ValueString())
+	}
+	var scopesClaim []string = []string{}
+	for _, scopesClaimItem := range r.Config.ScopesClaim {
+		scopesClaim = append(scopesClaim, scopesClaimItem.ValueString())
+	}
+	var scopesRequired []string = []string{}
+	for _, scopesRequiredItem := range r.Config.ScopesRequired {
+		scopesRequired = append(scopesRequired, scopesRequiredItem.ValueString())
+	}
+	searchUserInfo := new(bool)
+	if !r.Config.SearchUserInfo.IsUnknown() && !r.Config.SearchUserInfo.IsNull() {
+		*searchUserInfo = r.Config.SearchUserInfo.ValueBool()
+	} else {
+		searchUserInfo = nil
+	}
+	sessionAbsoluteTimeout := new(float64)
+	if !r.Config.SessionAbsoluteTimeout.IsUnknown() && !r.Config.SessionAbsoluteTimeout.IsNull() {
+		*sessionAbsoluteTimeout, _ = r.Config.SessionAbsoluteTimeout.ValueBigFloat().Float64()
+	} else {
+		sessionAbsoluteTimeout = nil
+	}
+	sessionAudience := new(string)
+	if !r.Config.SessionAudience.IsUnknown() && !r.Config.SessionAudience.IsNull() {
+		*sessionAudience = r.Config.SessionAudience.ValueString()
+	} else {
+		sessionAudience = nil
+	}
+	sessionCookieDomain := new(string)
+	if !r.Config.SessionCookieDomain.IsUnknown() && !r.Config.SessionCookieDomain.IsNull() {
+		*sessionCookieDomain = r.Config.SessionCookieDomain.ValueString()
+	} else {
+		sessionCookieDomain = nil
+	}
+	sessionCookieHTTPOnly := new(bool)
+	if !r.Config.SessionCookieHTTPOnly.IsUnknown() && !r.Config.SessionCookieHTTPOnly.IsNull() {
+		*sessionCookieHTTPOnly = r.Config.SessionCookieHTTPOnly.ValueBool()
+	} else {
+		sessionCookieHTTPOnly = nil
+	}
+	sessionCookieName := new(string)
+	if !r.Config.SessionCookieName.IsUnknown() && !r.Config.SessionCookieName.IsNull() {
+		*sessionCookieName = r.Config.SessionCookieName.ValueString()
+	} else {
+		sessionCookieName = nil
+	}
+	sessionCookiePath := new(string)
+	if !r.Config.SessionCookiePath.IsUnknown() && !r.Config.SessionCookiePath.IsNull() {
+		*sessionCookiePath = r.Config.SessionCookiePath.ValueString()
+	} else {
+		sessionCookiePath = nil
+	}
+	sessionCookieSameSite := new(shared.CreateOpenidConnectPluginSessionCookieSameSite)
+	if !r.Config.SessionCookieSameSite.IsUnknown() && !r.Config.SessionCookieSameSite.IsNull() {
+		*sessionCookieSameSite = shared.CreateOpenidConnectPluginSessionCookieSameSite(r.Config.SessionCookieSameSite.ValueString())
+	} else {
+		sessionCookieSameSite = nil
+	}
+	sessionCookieSecure := new(bool)
+	if !r.Config.SessionCookieSecure.IsUnknown() && !r.Config.SessionCookieSecure.IsNull() {
+		*sessionCookieSecure = r.Config.SessionCookieSecure.ValueBool()
+	} else {
+		sessionCookieSecure = nil
+	}
+	sessionEnforceSameSubject := new(bool)
+	if !r.Config.SessionEnforceSameSubject.IsUnknown() && !r.Config.SessionEnforceSameSubject.IsNull() {
+		*sessionEnforceSameSubject = r.Config.SessionEnforceSameSubject.ValueBool()
+	} else {
+		sessionEnforceSameSubject = nil
+	}
+	sessionHashStorageKey := new(bool)
+	if !r.Config.SessionHashStorageKey.IsUnknown() && !r.Config.SessionHashStorageKey.IsNull() {
+		*sessionHashStorageKey = r.Config.SessionHashStorageKey.ValueBool()
+	} else {
+		sessionHashStorageKey = nil
+	}
+	sessionHashSubject := new(bool)
+	if !r.Config.SessionHashSubject.IsUnknown() && !r.Config.SessionHashSubject.IsNull() {
+		*sessionHashSubject = r.Config.SessionHashSubject.ValueBool()
+	} else {
+		sessionHashSubject = nil
+	}
+	sessionIdlingTimeout := new(float64)
+	if !r.Config.SessionIdlingTimeout.IsUnknown() && !r.Config.SessionIdlingTimeout.IsNull() {
+		*sessionIdlingTimeout, _ = r.Config.SessionIdlingTimeout.ValueBigFloat().Float64()
+	} else {
+		sessionIdlingTimeout = nil
+	}
+	sessionMemcachedHost := new(string)
+	if !r.Config.SessionMemcachedHost.IsUnknown() && !r.Config.SessionMemcachedHost.IsNull() {
+		*sessionMemcachedHost = r.Config.SessionMemcachedHost.ValueString()
+	} else {
+		sessionMemcachedHost = nil
+	}
+	sessionMemcachedPort := new(int64)
+	if !r.Config.SessionMemcachedPort.IsUnknown() && !r.Config.SessionMemcachedPort.IsNull() {
+		*sessionMemcachedPort = r.Config.SessionMemcachedPort.ValueInt64()
+	} else {
+		sessionMemcachedPort = nil
+	}
+	sessionMemcachedPrefix := new(string)
+	if !r.Config.SessionMemcachedPrefix.IsUnknown() && !r.Config.SessionMemcachedPrefix.IsNull() {
+		*sessionMemcachedPrefix = r.Config.SessionMemcachedPrefix.ValueString()
+	} else {
+		sessionMemcachedPrefix = nil
+	}
+	sessionMemcachedSocket := new(string)
+	if !r.Config.SessionMemcachedSocket.IsUnknown() && !r.Config.SessionMemcachedSocket.IsNull() {
+		*sessionMemcachedSocket = r.Config.SessionMemcachedSocket.ValueString()
+	} else {
+		sessionMemcachedSocket = nil
+	}
+	sessionRedisClusterMaxRedirections := new(int64)
+	if !r.Config.SessionRedisClusterMaxRedirections.IsUnknown() && !r.Config.SessionRedisClusterMaxRedirections.IsNull() {
+		*sessionRedisClusterMaxRedirections = r.Config.SessionRedisClusterMaxRedirections.ValueInt64()
+	} else {
+		sessionRedisClusterMaxRedirections = nil
+	}
+	var sessionRedisClusterNodes []shared.CreateOpenidConnectPluginSessionRedisClusterNodes = []shared.CreateOpenidConnectPluginSessionRedisClusterNodes{}
+	for _, sessionRedisClusterNodesItem := range r.Config.SessionRedisClusterNodes {
+		ip := new(string)
+		if !sessionRedisClusterNodesItem.IP.IsUnknown() && !sessionRedisClusterNodesItem.IP.IsNull() {
+			*ip = sessionRedisClusterNodesItem.IP.ValueString()
+		} else {
+			ip = nil
+		}
+		port := new(int64)
+		if !sessionRedisClusterNodesItem.Port.IsUnknown() && !sessionRedisClusterNodesItem.Port.IsNull() {
+			*port = sessionRedisClusterNodesItem.Port.ValueInt64()
+		} else {
+			port = nil
+		}
+		sessionRedisClusterNodes = append(sessionRedisClusterNodes, shared.CreateOpenidConnectPluginSessionRedisClusterNodes{
+			IP:   ip,
+			Port: port,
+		})
+	}
+	sessionRedisConnectTimeout := new(int64)
+	if !r.Config.SessionRedisConnectTimeout.IsUnknown() && !r.Config.SessionRedisConnectTimeout.IsNull() {
+		*sessionRedisConnectTimeout = r.Config.SessionRedisConnectTimeout.ValueInt64()
+	} else {
+		sessionRedisConnectTimeout = nil
+	}
+	sessionRedisHost := new(string)
+	if !r.Config.SessionRedisHost.IsUnknown() && !r.Config.SessionRedisHost.IsNull() {
+		*sessionRedisHost = r.Config.SessionRedisHost.ValueString()
+	} else {
+		sessionRedisHost = nil
+	}
+	sessionRedisPassword := new(string)
+	if !r.Config.SessionRedisPassword.IsUnknown() && !r.Config.SessionRedisPassword.IsNull() {
+		*sessionRedisPassword = r.Config.SessionRedisPassword.ValueString()
+	} else {
+		sessionRedisPassword = nil
+	}
+	sessionRedisPort := new(int64)
+	if !r.Config.SessionRedisPort.IsUnknown() && !r.Config.SessionRedisPort.IsNull() {
+		*sessionRedisPort = r.Config.SessionRedisPort.ValueInt64()
+	} else {
+		sessionRedisPort = nil
+	}
+	sessionRedisPrefix := new(string)
+	if !r.Config.SessionRedisPrefix.IsUnknown() && !r.Config.SessionRedisPrefix.IsNull() {
+		*sessionRedisPrefix = r.Config.SessionRedisPrefix.ValueString()
+	} else {
+		sessionRedisPrefix = nil
+	}
+	sessionRedisReadTimeout := new(int64)
+	if !r.Config.SessionRedisReadTimeout.IsUnknown() && !r.Config.SessionRedisReadTimeout.IsNull() {
+		*sessionRedisReadTimeout = r.Config.SessionRedisReadTimeout.ValueInt64()
+	} else {
+		sessionRedisReadTimeout = nil
+	}
+	sessionRedisSendTimeout := new(int64)
+	if !r.Config.SessionRedisSendTimeout.IsUnknown() && !r.Config.SessionRedisSendTimeout.IsNull() {
+		*sessionRedisSendTimeout = r.Config.SessionRedisSendTimeout.ValueInt64()
+	} else {
+		sessionRedisSendTimeout = nil
+	}
+	sessionRedisServerName := new(string)
+	if !r.Config.SessionRedisServerName.IsUnknown() && !r.Config.SessionRedisServerName.IsNull() {
+		*sessionRedisServerName = r.Config.SessionRedisServerName.ValueString()
+	} else {
+		sessionRedisServerName = nil
+	}
+	sessionRedisSocket := new(string)
+	if !r.Config.SessionRedisSocket.IsUnknown() && !r.Config.SessionRedisSocket.IsNull() {
+		*sessionRedisSocket = r.Config.SessionRedisSocket.ValueString()
+	} else {
+		sessionRedisSocket = nil
+	}
+	sessionRedisSsl := new(bool)
+	if !r.Config.SessionRedisSsl.IsUnknown() && !r.Config.SessionRedisSsl.IsNull() {
+		*sessionRedisSsl = r.Config.SessionRedisSsl.ValueBool()
+	} else {
+		sessionRedisSsl = nil
+	}
+	sessionRedisSslVerify := new(bool)
+	if !r.Config.SessionRedisSslVerify.IsUnknown() && !r.Config.SessionRedisSslVerify.IsNull() {
+		*sessionRedisSslVerify = r.Config.SessionRedisSslVerify.ValueBool()
+	} else {
+		sessionRedisSslVerify = nil
+	}
+	sessionRedisUsername := new(string)
+	if !r.Config.SessionRedisUsername.IsUnknown() && !r.Config.SessionRedisUsername.IsNull() {
+		*sessionRedisUsername = r.Config.SessionRedisUsername.ValueString()
+	} else {
+		sessionRedisUsername = nil
+	}
+	sessionRemember := new(bool)
+	if !r.Config.SessionRemember.IsUnknown() && !r.Config.SessionRemember.IsNull() {
+		*sessionRemember = r.Config.SessionRemember.ValueBool()
+	} else {
+		sessionRemember = nil
+	}
+	sessionRememberAbsoluteTimeout := new(float64)
+	if !r.Config.SessionRememberAbsoluteTimeout.IsUnknown() && !r.Config.SessionRememberAbsoluteTimeout.IsNull() {
+		*sessionRememberAbsoluteTimeout, _ = r.Config.SessionRememberAbsoluteTimeout.ValueBigFloat().Float64()
+	} else {
+		sessionRememberAbsoluteTimeout = nil
+	}
+	sessionRememberCookieName := new(string)
+	if !r.Config.SessionRememberCookieName.IsUnknown() && !r.Config.SessionRememberCookieName.IsNull() {
+		*sessionRememberCookieName = r.Config.SessionRememberCookieName.ValueString()
+	} else {
+		sessionRememberCookieName = nil
+	}
+	sessionRememberRollingTimeout := new(float64)
+	if !r.Config.SessionRememberRollingTimeout.IsUnknown() && !r.Config.SessionRememberRollingTimeout.IsNull() {
+		*sessionRememberRollingTimeout, _ = r.Config.SessionRememberRollingTimeout.ValueBigFloat().Float64()
+	} else {
+		sessionRememberRollingTimeout = nil
+	}
+	var sessionRequestHeaders []shared.CreateOpenidConnectPluginSessionRequestHeaders = []shared.CreateOpenidConnectPluginSessionRequestHeaders{}
+	for _, sessionRequestHeadersItem := range r.Config.SessionRequestHeaders {
+		sessionRequestHeaders = append(sessionRequestHeaders, shared.CreateOpenidConnectPluginSessionRequestHeaders(sessionRequestHeadersItem.ValueString()))
+	}
+	var sessionResponseHeaders []shared.CreateOpenidConnectPluginSessionResponseHeaders = []shared.CreateOpenidConnectPluginSessionResponseHeaders{}
+	for _, sessionResponseHeadersItem := range r.Config.SessionResponseHeaders {
+		sessionResponseHeaders = append(sessionResponseHeaders, shared.CreateOpenidConnectPluginSessionResponseHeaders(sessionResponseHeadersItem.ValueString()))
+	}
+	sessionRollingTimeout := new(float64)
+	if !r.Config.SessionRollingTimeout.IsUnknown() && !r.Config.SessionRollingTimeout.IsNull() {
+		*sessionRollingTimeout, _ = r.Config.SessionRollingTimeout.ValueBigFloat().Float64()
+	} else {
+		sessionRollingTimeout = nil
+	}
+	sessionSecret := new(string)
+	if !r.Config.SessionSecret.IsUnknown() && !r.Config.SessionSecret.IsNull() {
+		*sessionSecret = r.Config.SessionSecret.ValueString()
+	} else {
+		sessionSecret = nil
+	}
+	sessionStorage := new(shared.CreateOpenidConnectPluginSessionStorage)
+	if !r.Config.SessionStorage.IsUnknown() && !r.Config.SessionStorage.IsNull() {
+		*sessionStorage = shared.CreateOpenidConnectPluginSessionStorage(r.Config.SessionStorage.ValueString())
+	} else {
+		sessionStorage = nil
+	}
+	sessionStoreMetadata := new(bool)
+	if !r.Config.SessionStoreMetadata.IsUnknown() && !r.Config.SessionStoreMetadata.IsNull() {
+		*sessionStoreMetadata = r.Config.SessionStoreMetadata.ValueBool()
+	} else {
+		sessionStoreMetadata = nil
+	}
+	sslVerify := new(bool)
+	if !r.Config.SslVerify.IsUnknown() && !r.Config.SslVerify.IsNull() {
+		*sslVerify = r.Config.SslVerify.ValueBool()
+	} else {
+		sslVerify = nil
+	}
+	timeout := new(float64)
+	if !r.Config.Timeout.IsUnknown() && !r.Config.Timeout.IsNull() {
+		*timeout, _ = r.Config.Timeout.ValueBigFloat().Float64()
+	} else {
+		timeout = nil
+	}
+	tlsClientAuthCertID := new(string)
+	if !r.Config.TLSClientAuthCertID.IsUnknown() && !r.Config.TLSClientAuthCertID.IsNull() {
+		*tlsClientAuthCertID = r.Config.TLSClientAuthCertID.ValueString()
+	} else {
+		tlsClientAuthCertID = nil
+	}
+	tlsClientAuthSslVerify := new(bool)
+	if !r.Config.TLSClientAuthSslVerify.IsUnknown() && !r.Config.TLSClientAuthSslVerify.IsNull() {
+		*tlsClientAuthSslVerify = r.Config.TLSClientAuthSslVerify.ValueBool()
+	} else {
+		tlsClientAuthSslVerify = nil
+	}
+	tokenCacheKeyIncludeScope := new(bool)
+	if !r.Config.TokenCacheKeyIncludeScope.IsUnknown() && !r.Config.TokenCacheKeyIncludeScope.IsNull() {
+		*tokenCacheKeyIncludeScope = r.Config.TokenCacheKeyIncludeScope.ValueBool()
+	} else {
+		tokenCacheKeyIncludeScope = nil
+	}
+	tokenEndpoint := new(string)
+	if !r.Config.TokenEndpoint.IsUnknown() && !r.Config.TokenEndpoint.IsNull() {
+		*tokenEndpoint = r.Config.TokenEndpoint.ValueString()
+	} else {
+		tokenEndpoint = nil
+	}
+	tokenEndpointAuthMethod := new(shared.CreateOpenidConnectPluginTokenEndpointAuthMethod)
+	if !r.Config.TokenEndpointAuthMethod.IsUnknown() && !r.Config.TokenEndpointAuthMethod.IsNull() {
+		*tokenEndpointAuthMethod = shared.CreateOpenidConnectPluginTokenEndpointAuthMethod(r.Config.TokenEndpointAuthMethod.ValueString())
+	} else {
+		tokenEndpointAuthMethod = nil
+	}
+	tokenExchangeEndpoint := new(string)
+	if !r.Config.TokenExchangeEndpoint.IsUnknown() && !r.Config.TokenExchangeEndpoint.IsNull() {
+		*tokenExchangeEndpoint = r.Config.TokenExchangeEndpoint.ValueString()
+	} else {
+		tokenExchangeEndpoint = nil
+	}
+	var tokenHeadersClient []string = []string{}
+	for _, tokenHeadersClientItem := range r.Config.TokenHeadersClient {
+		tokenHeadersClient = append(tokenHeadersClient, tokenHeadersClientItem.ValueString())
+	}
+	var tokenHeadersGrants []shared.CreateOpenidConnectPluginTokenHeadersGrants = []shared.CreateOpenidConnectPluginTokenHeadersGrants{}
+	for _, tokenHeadersGrantsItem := range r.Config.TokenHeadersGrants {
+		tokenHeadersGrants = append(tokenHeadersGrants, shared.CreateOpenidConnectPluginTokenHeadersGrants(tokenHeadersGrantsItem.ValueString()))
+	}
+	var tokenHeadersNames []string = []string{}
+	for _, tokenHeadersNamesItem := range r.Config.TokenHeadersNames {
+		tokenHeadersNames = append(tokenHeadersNames, tokenHeadersNamesItem.ValueString())
+	}
+	tokenHeadersPrefix := new(string)
+	if !r.Config.TokenHeadersPrefix.IsUnknown() && !r.Config.TokenHeadersPrefix.IsNull() {
+		*tokenHeadersPrefix = r.Config.TokenHeadersPrefix.ValueString()
+	} else {
+		tokenHeadersPrefix = nil
+	}
+	var tokenHeadersReplay []string = []string{}
+	for _, tokenHeadersReplayItem := range r.Config.TokenHeadersReplay {
+		tokenHeadersReplay = append(tokenHeadersReplay, tokenHeadersReplayItem.ValueString())
+	}
+	var tokenHeadersValues []string = []string{}
+	for _, tokenHeadersValuesItem := range r.Config.TokenHeadersValues {
+		tokenHeadersValues = append(tokenHeadersValues, tokenHeadersValuesItem.ValueString())
+	}
+	var tokenPostArgsClient []string = []string{}
+	for _, tokenPostArgsClientItem := range r.Config.TokenPostArgsClient {
+		tokenPostArgsClient = append(tokenPostArgsClient, tokenPostArgsClientItem.ValueString())
+	}
+	var tokenPostArgsNames []string = []string{}
+	for _, tokenPostArgsNamesItem := range r.Config.TokenPostArgsNames {
+		tokenPostArgsNames = append(tokenPostArgsNames, tokenPostArgsNamesItem.ValueString())
+	}
+	var tokenPostArgsValues []string = []string{}
+	for _, tokenPostArgsValuesItem := range r.Config.TokenPostArgsValues {
+		tokenPostArgsValues = append(tokenPostArgsValues, tokenPostArgsValuesItem.ValueString())
+	}
+	unauthorizedDestroySession := new(bool)
+	if !r.Config.UnauthorizedDestroySession.IsUnknown() && !r.Config.UnauthorizedDestroySession.IsNull() {
+		*unauthorizedDestroySession = r.Config.UnauthorizedDestroySession.ValueBool()
+	} else {
+		unauthorizedDestroySession = nil
+	}
+	unauthorizedErrorMessage := new(string)
+	if !r.Config.UnauthorizedErrorMessage.IsUnknown() && !r.Config.UnauthorizedErrorMessage.IsNull() {
+		*unauthorizedErrorMessage = r.Config.UnauthorizedErrorMessage.ValueString()
+	} else {
+		unauthorizedErrorMessage = nil
+	}
+	var unauthorizedRedirectURI []string = []string{}
+	for _, unauthorizedRedirectURIItem := range r.Config.UnauthorizedRedirectURI {
+		unauthorizedRedirectURI = append(unauthorizedRedirectURI, unauthorizedRedirectURIItem.ValueString())
+	}
+	var unexpectedRedirectURI []string = []string{}
+	for _, unexpectedRedirectURIItem := range r.Config.UnexpectedRedirectURI {
+		unexpectedRedirectURI = append(unexpectedRedirectURI, unexpectedRedirectURIItem.ValueString())
+	}
+	upstreamAccessTokenHeader := new(string)
+	if !r.Config.UpstreamAccessTokenHeader.IsUnknown() && !r.Config.UpstreamAccessTokenHeader.IsNull() {
+		*upstreamAccessTokenHeader = r.Config.UpstreamAccessTokenHeader.ValueString()
+	} else {
+		upstreamAccessTokenHeader = nil
+	}
+	upstreamAccessTokenJwkHeader := new(string)
+	if !r.Config.UpstreamAccessTokenJwkHeader.IsUnknown() && !r.Config.UpstreamAccessTokenJwkHeader.IsNull() {
+		*upstreamAccessTokenJwkHeader = r.Config.UpstreamAccessTokenJwkHeader.ValueString()
+	} else {
+		upstreamAccessTokenJwkHeader = nil
+	}
+	var upstreamHeadersClaims []string = []string{}
+	for _, upstreamHeadersClaimsItem := range r.Config.UpstreamHeadersClaims {
+		upstreamHeadersClaims = append(upstreamHeadersClaims, upstreamHeadersClaimsItem.ValueString())
+	}
+	var upstreamHeadersNames []string = []string{}
+	for _, upstreamHeadersNamesItem := range r.Config.UpstreamHeadersNames {
+		upstreamHeadersNames = append(upstreamHeadersNames, upstreamHeadersNamesItem.ValueString())
+	}
+	upstreamIDTokenHeader := new(string)
+	if !r.Config.UpstreamIDTokenHeader.IsUnknown() && !r.Config.UpstreamIDTokenHeader.IsNull() {
+		*upstreamIDTokenHeader = r.Config.UpstreamIDTokenHeader.ValueString()
+	} else {
+		upstreamIDTokenHeader = nil
+	}
+	upstreamIDTokenJwkHeader := new(string)
+	if !r.Config.UpstreamIDTokenJwkHeader.IsUnknown() && !r.Config.UpstreamIDTokenJwkHeader.IsNull() {
+		*upstreamIDTokenJwkHeader = r.Config.UpstreamIDTokenJwkHeader.ValueString()
+	} else {
+		upstreamIDTokenJwkHeader = nil
+	}
+	upstreamIntrospectionHeader := new(string)
+	if !r.Config.UpstreamIntrospectionHeader.IsUnknown() && !r.Config.UpstreamIntrospectionHeader.IsNull() {
+		*upstreamIntrospectionHeader = r.Config.UpstreamIntrospectionHeader.ValueString()
+	} else {
+		upstreamIntrospectionHeader = nil
+	}
+	upstreamIntrospectionJwtHeader := new(string)
+	if !r.Config.UpstreamIntrospectionJwtHeader.IsUnknown() && !r.Config.UpstreamIntrospectionJwtHeader.IsNull() {
+		*upstreamIntrospectionJwtHeader = r.Config.UpstreamIntrospectionJwtHeader.ValueString()
+	} else {
+		upstreamIntrospectionJwtHeader = nil
+	}
+	upstreamRefreshTokenHeader := new(string)
+	if !r.Config.UpstreamRefreshTokenHeader.IsUnknown() && !r.Config.UpstreamRefreshTokenHeader.IsNull() {
+		*upstreamRefreshTokenHeader = r.Config.UpstreamRefreshTokenHeader.ValueString()
+	} else {
+		upstreamRefreshTokenHeader = nil
+	}
+	upstreamSessionIDHeader := new(string)
+	if !r.Config.UpstreamSessionIDHeader.IsUnknown() && !r.Config.UpstreamSessionIDHeader.IsNull() {
+		*upstreamSessionIDHeader = r.Config.UpstreamSessionIDHeader.ValueString()
+	} else {
+		upstreamSessionIDHeader = nil
+	}
+	upstreamUserInfoHeader := new(string)
+	if !r.Config.UpstreamUserInfoHeader.IsUnknown() && !r.Config.UpstreamUserInfoHeader.IsNull() {
+		*upstreamUserInfoHeader = r.Config.UpstreamUserInfoHeader.ValueString()
+	} else {
+		upstreamUserInfoHeader = nil
+	}
+	upstreamUserInfoJwtHeader := new(string)
+	if !r.Config.UpstreamUserInfoJwtHeader.IsUnknown() && !r.Config.UpstreamUserInfoJwtHeader.IsNull() {
+		*upstreamUserInfoJwtHeader = r.Config.UpstreamUserInfoJwtHeader.ValueString()
+	} else {
+		upstreamUserInfoJwtHeader = nil
+	}
+	userinfoAccept := new(shared.CreateOpenidConnectPluginUserinfoAccept)
+	if !r.Config.UserinfoAccept.IsUnknown() && !r.Config.UserinfoAccept.IsNull() {
+		*userinfoAccept = shared.CreateOpenidConnectPluginUserinfoAccept(r.Config.UserinfoAccept.ValueString())
+	} else {
+		userinfoAccept = nil
+	}
+	userinfoEndpoint := new(string)
+	if !r.Config.UserinfoEndpoint.IsUnknown() && !r.Config.UserinfoEndpoint.IsNull() {
+		*userinfoEndpoint = r.Config.UserinfoEndpoint.ValueString()
+	} else {
+		userinfoEndpoint = nil
+	}
+	var userinfoHeadersClient []string = []string{}
+	for _, userinfoHeadersClientItem := range r.Config.UserinfoHeadersClient {
+		userinfoHeadersClient = append(userinfoHeadersClient, userinfoHeadersClientItem.ValueString())
+	}
+	var userinfoHeadersNames []string = []string{}
+	for _, userinfoHeadersNamesItem := range r.Config.UserinfoHeadersNames {
+		userinfoHeadersNames = append(userinfoHeadersNames, userinfoHeadersNamesItem.ValueString())
+	}
+	var userinfoHeadersValues []string = []string{}
+	for _, userinfoHeadersValuesItem := range r.Config.UserinfoHeadersValues {
+		userinfoHeadersValues = append(userinfoHeadersValues, userinfoHeadersValuesItem.ValueString())
+	}
+	var userinfoQueryArgsClient []string = []string{}
+	for _, userinfoQueryArgsClientItem := range r.Config.UserinfoQueryArgsClient {
+		userinfoQueryArgsClient = append(userinfoQueryArgsClient, userinfoQueryArgsClientItem.ValueString())
+	}
+	var userinfoQueryArgsNames []string = []string{}
+	for _, userinfoQueryArgsNamesItem := range r.Config.UserinfoQueryArgsNames {
+		userinfoQueryArgsNames = append(userinfoQueryArgsNames, userinfoQueryArgsNamesItem.ValueString())
+	}
+	var userinfoQueryArgsValues []string = []string{}
+	for _, userinfoQueryArgsValuesItem := range r.Config.UserinfoQueryArgsValues {
+		userinfoQueryArgsValues = append(userinfoQueryArgsValues, userinfoQueryArgsValuesItem.ValueString())
+	}
+	usingPseudoIssuer := new(bool)
+	if !r.Config.UsingPseudoIssuer.IsUnknown() && !r.Config.UsingPseudoIssuer.IsNull() {
+		*usingPseudoIssuer = r.Config.UsingPseudoIssuer.ValueBool()
+	} else {
+		usingPseudoIssuer = nil
+	}
+	verifyClaims := new(bool)
+	if !r.Config.VerifyClaims.IsUnknown() && !r.Config.VerifyClaims.IsNull() {
+		*verifyClaims = r.Config.VerifyClaims.ValueBool()
+	} else {
+		verifyClaims = nil
+	}
+	verifyNonce := new(bool)
+	if !r.Config.VerifyNonce.IsUnknown() && !r.Config.VerifyNonce.IsNull() {
+		*verifyNonce = r.Config.VerifyNonce.ValueBool()
+	} else {
+		verifyNonce = nil
+	}
+	verifyParameters := new(bool)
+	if !r.Config.VerifyParameters.IsUnknown() && !r.Config.VerifyParameters.IsNull() {
+		*verifyParameters = r.Config.VerifyParameters.ValueBool()
+	} else {
+		verifyParameters = nil
+	}
+	verifySignature := new(bool)
+	if !r.Config.VerifySignature.IsUnknown() && !r.Config.VerifySignature.IsNull() {
+		*verifySignature = r.Config.VerifySignature.ValueBool()
+	} else {
+		verifySignature = nil
+	}
 	config := shared.CreateOpenidConnectPluginConfig{
-		Issuer:                             issuer,
-		UsingPseudoIssuer:                  usingPseudoIssuer,
-		DiscoveryHeadersNames:              discoveryHeadersNames,
-		DiscoveryHeadersValues:             discoveryHeadersValues,
-		ExtraJwksUris:                      extraJwksUris,
-		RediscoveryLifetime:                rediscoveryLifetime,
-		AuthMethods:                        authMethods,
-		ClientID:                           clientID,
-		ClientSecret:                       clientSecret,
-		ClientAuth:                         clientAuth,
-		ClientJwk:                          clientJwk,
-		ClientAlg:                          clientAlg,
-		ClientArg:                          clientArg,
+		Anonymous:                              anonymous,
+		Audience:                               audience,
+		AudienceClaim:                          audienceClaim,
+		AudienceRequired:                       audienceRequired,
+		AuthMethods:                            authMethods,
+		AuthenticatedGroupsClaim:               authenticatedGroupsClaim,
+		AuthorizationCookieDomain:              authorizationCookieDomain,
+		AuthorizationCookieHTTPOnly:            authorizationCookieHTTPOnly,
+		AuthorizationCookieName:                authorizationCookieName,
+		AuthorizationCookiePath:                authorizationCookiePath,
+		AuthorizationCookieSameSite:            authorizationCookieSameSite,
+		AuthorizationCookieSecure:              authorizationCookieSecure,
+		AuthorizationEndpoint:                  authorizationEndpoint,
+		AuthorizationQueryArgsClient:           authorizationQueryArgsClient,
+		AuthorizationQueryArgsNames:            authorizationQueryArgsNames,
+		AuthorizationQueryArgsValues:           authorizationQueryArgsValues,
+		AuthorizationRollingTimeout:            authorizationRollingTimeout,
+		BearerTokenCookieName:                  bearerTokenCookieName,
+		BearerTokenParamType:                   bearerTokenParamType,
+		ByUsernameIgnoreCase:                   byUsernameIgnoreCase,
+		CacheIntrospection:                     cacheIntrospection,
+		CacheTokenExchange:                     cacheTokenExchange,
+		CacheTokens:                            cacheTokens,
+		CacheTokensSalt:                        cacheTokensSalt,
+		CacheTTL:                               cacheTTL,
+		CacheTTLMax:                            cacheTTLMax,
+		CacheTTLMin:                            cacheTTLMin,
+		CacheTTLNeg:                            cacheTTLNeg,
+		CacheTTLResurrect:                      cacheTTLResurrect,
+		CacheUserInfo:                          cacheUserInfo,
+		ClientAlg:                              clientAlg,
+		ClientArg:                              clientArg,
+		ClientAuth:                             clientAuth,
+		ClientCredentialsParamType:             clientCredentialsParamType,
+		ClientID:                               clientID,
+		ClientJwk:                              clientJwk,
+		ClientSecret:                           clientSecret,
+		ConsumerBy:                             consumerBy,
+		ConsumerClaim:                          consumerClaim,
+		ConsumerOptional:                       consumerOptional,
+		CredentialClaim:                        credentialClaim,
+		DisableSession:                         disableSession,
+		DiscoveryHeadersNames:                  discoveryHeadersNames,
+		DiscoveryHeadersValues:                 discoveryHeadersValues,
+		DisplayErrors:                          displayErrors,
+		Domains:                                domains,
+		DownstreamAccessTokenHeader:            downstreamAccessTokenHeader,
+		DownstreamAccessTokenJwkHeader:         downstreamAccessTokenJwkHeader,
+		DownstreamHeadersClaims:                downstreamHeadersClaims,
+		DownstreamHeadersNames:                 downstreamHeadersNames,
+		DownstreamIDTokenHeader:                downstreamIDTokenHeader,
+		DownstreamIDTokenJwkHeader:             downstreamIDTokenJwkHeader,
+		DownstreamIntrospectionHeader:          downstreamIntrospectionHeader,
+		DownstreamIntrospectionJwtHeader:       downstreamIntrospectionJwtHeader,
+		DownstreamRefreshTokenHeader:           downstreamRefreshTokenHeader,
+		DownstreamSessionIDHeader:              downstreamSessionIDHeader,
+		DownstreamUserInfoHeader:               downstreamUserInfoHeader,
+		DownstreamUserInfoJwtHeader:            downstreamUserInfoJwtHeader,
+		EnableHsSignatures:                     enableHsSignatures,
+		EndSessionEndpoint:                     endSessionEndpoint,
+		ExposeErrorCode:                        exposeErrorCode,
+		ExtraJwksUris:                          extraJwksUris,
+		ForbiddenDestroySession:                forbiddenDestroySession,
+		ForbiddenErrorMessage:                  forbiddenErrorMessage,
+		ForbiddenRedirectURI:                   forbiddenRedirectURI,
+		GroupsClaim:                            groupsClaim,
+		GroupsRequired:                         groupsRequired,
+		HideCredentials:                        hideCredentials,
+		HTTPProxy:                              httpProxy,
+		HTTPProxyAuthorization:                 httpProxyAuthorization,
+		HTTPVersion:                            httpVersion,
+		HTTPSProxy:                             httpsProxy,
+		HTTPSProxyAuthorization:                httpsProxyAuthorization,
+		IDTokenParamName:                       idTokenParamName,
+		IDTokenParamType:                       idTokenParamType,
+		IgnoreSignature:                        ignoreSignature,
+		IntrospectJwtTokens:                    introspectJwtTokens,
+		IntrospectionAccept:                    introspectionAccept,
+		IntrospectionCheckActive:               introspectionCheckActive,
+		IntrospectionEndpoint:                  introspectionEndpoint,
+		IntrospectionEndpointAuthMethod:        introspectionEndpointAuthMethod,
+		IntrospectionHeadersClient:             introspectionHeadersClient,
+		IntrospectionHeadersNames:              introspectionHeadersNames,
+		IntrospectionHeadersValues:             introspectionHeadersValues,
+		IntrospectionHint:                      introspectionHint,
+		IntrospectionPostArgsClient:            introspectionPostArgsClient,
+		IntrospectionPostArgsNames:             introspectionPostArgsNames,
+		IntrospectionPostArgsValues:            introspectionPostArgsValues,
+		IntrospectionTokenParamName:            introspectionTokenParamName,
+		Issuer:                                 issuer1,
+		IssuersAllowed:                         issuersAllowed,
+		JwtSessionClaim:                        jwtSessionClaim,
+		JwtSessionCookie:                       jwtSessionCookie,
+		Keepalive:                              keepalive,
+		Leeway:                                 leeway,
+		LoginAction:                            loginAction,
+		LoginMethods:                           loginMethods,
+		LoginRedirectMode:                      loginRedirectMode,
+		LoginRedirectURI:                       loginRedirectURI,
+		LoginTokens:                            loginTokens,
+		LogoutMethods:                          logoutMethods,
+		LogoutPostArg:                          logoutPostArg,
+		LogoutQueryArg:                         logoutQueryArg,
+		LogoutRedirectURI:                      logoutRedirectURI,
+		LogoutRevoke:                           logoutRevoke,
+		LogoutRevokeAccessToken:                logoutRevokeAccessToken,
+		LogoutRevokeRefreshToken:               logoutRevokeRefreshToken,
+		LogoutURISuffix:                        logoutURISuffix,
+		MaxAge:                                 maxAge,
+		MtlsIntrospectionEndpoint:              mtlsIntrospectionEndpoint,
+		MtlsRevocationEndpoint:                 mtlsRevocationEndpoint,
+		MtlsTokenEndpoint:                      mtlsTokenEndpoint,
+		NoProxy:                                noProxy,
+		PasswordParamType:                      passwordParamType,
+		PreserveQueryArgs:                      preserveQueryArgs,
+		ProofOfPossessionAuthMethodsValidation: proofOfPossessionAuthMethodsValidation,
+		ProofOfPossessionMtls:                  proofOfPossessionMtls,
+		PushedAuthorizationRequestEndpoint:     pushedAuthorizationRequestEndpoint,
+		PushedAuthorizationRequestEndpointAuthMethod: pushedAuthorizationRequestEndpointAuthMethod,
 		RedirectURI:                        redirectURI,
-		LoginRedirectURI:                   loginRedirectURI,
-		LogoutRedirectURI:                  logoutRedirectURI,
-		ForbiddenRedirectURI:               forbiddenRedirectURI,
-		ForbiddenErrorMessage:              forbiddenErrorMessage,
-		ForbiddenDestroySession:            forbiddenDestroySession,
-		UnauthorizedDestroySession:         unauthorizedDestroySession,
-		UnauthorizedRedirectURI:            unauthorizedRedirectURI,
-		UnauthorizedErrorMessage:           unauthorizedErrorMessage,
-		UnexpectedRedirectURI:              unexpectedRedirectURI,
+		RediscoveryLifetime:                rediscoveryLifetime,
+		RefreshTokenParamName:              refreshTokenParamName,
+		RefreshTokenParamType:              refreshTokenParamType,
+		RefreshTokens:                      refreshTokens,
+		RequireProofKeyForCodeExchange:     requireProofKeyForCodeExchange,
+		RequirePushedAuthorizationRequests: requirePushedAuthorizationRequests,
+		ResolveDistributedClaims:           resolveDistributedClaims,
 		ResponseMode:                       responseMode,
 		ResponseType:                       responseType,
-		Scopes:                             scopes,
-		Audience:                           audience,
-		IssuersAllowed:                     issuersAllowed,
-		ScopesRequired:                     scopesRequired,
-		ScopesClaim:                        scopesClaim,
-		AudienceRequired:                   audienceRequired,
-		AudienceClaim:                      audienceClaim,
-		GroupsRequired:                     groupsRequired,
-		GroupsClaim:                        groupsClaim,
-		RolesRequired:                      rolesRequired,
+		Reverify:                           reverify,
+		RevocationEndpoint:                 revocationEndpoint,
+		RevocationEndpointAuthMethod:       revocationEndpointAuthMethod,
+		RevocationTokenParamName:           revocationTokenParamName,
 		RolesClaim:                         rolesClaim,
-		Domains:                            domains,
-		MaxAge:                             maxAge,
-		AuthenticatedGroupsClaim:           authenticatedGroupsClaim,
-		PushedAuthorizationRequestEndpoint: pushedAuthorizationRequestEndpoint,
-		PushedAuthorizationRequestEndpointAuthMethod: pushedAuthorizationRequestEndpointAuthMethod,
-		RequirePushedAuthorizationRequests:           requirePushedAuthorizationRequests,
-		RequireProofKeyForCodeExchange:               requireProofKeyForCodeExchange,
-		AuthorizationEndpoint:                        authorizationEndpoint,
-		AuthorizationQueryArgsNames:                  authorizationQueryArgsNames,
-		AuthorizationQueryArgsValues:                 authorizationQueryArgsValues,
-		AuthorizationQueryArgsClient:                 authorizationQueryArgsClient,
-		AuthorizationRollingTimeout:                  authorizationRollingTimeout,
-		AuthorizationCookieName:                      authorizationCookieName,
-		AuthorizationCookiePath:                      authorizationCookiePath,
-		AuthorizationCookieDomain:                    authorizationCookieDomain,
-		AuthorizationCookieSameSite:                  authorizationCookieSameSite,
-		AuthorizationCookieHTTPOnly:                  authorizationCookieHTTPOnly,
-		AuthorizationCookieSecure:                    authorizationCookieSecure,
-		PreserveQueryArgs:                            preserveQueryArgs,
-		TokenEndpoint:                                tokenEndpoint,
-		TokenEndpointAuthMethod:                      tokenEndpointAuthMethod,
-		TokenHeadersNames:                            tokenHeadersNames,
-		TokenHeadersValues:                           tokenHeadersValues,
-		TokenHeadersClient:                           tokenHeadersClient,
-		TokenHeadersReplay:                           tokenHeadersReplay,
-		TokenHeadersPrefix:                           tokenHeadersPrefix,
-		TokenHeadersGrants:                           tokenHeadersGrants,
-		TokenPostArgsNames:                           tokenPostArgsNames,
-		TokenPostArgsValues:                          tokenPostArgsValues,
-		TokenPostArgsClient:                          tokenPostArgsClient,
-		IntrospectionEndpoint:                        introspectionEndpoint,
-		IntrospectionEndpointAuthMethod:              introspectionEndpointAuthMethod,
-		IntrospectionHint:                            introspectionHint,
-		IntrospectionCheckActive:                     introspectionCheckActive,
-		IntrospectionAccept:                          introspectionAccept,
-		IntrospectionHeadersNames:                    introspectionHeadersNames,
-		IntrospectionHeadersValues:                   introspectionHeadersValues,
-		IntrospectionHeadersClient:                   introspectionHeadersClient,
-		IntrospectionPostArgsNames:                   introspectionPostArgsNames,
-		IntrospectionPostArgsValues:                  introspectionPostArgsValues,
-		IntrospectionPostArgsClient:                  introspectionPostArgsClient,
-		IntrospectJwtTokens:                          introspectJwtTokens,
-		RevocationEndpoint:                           revocationEndpoint,
-		RevocationEndpointAuthMethod:                 revocationEndpointAuthMethod,
-		EndSessionEndpoint:                           endSessionEndpoint,
-		UserinfoEndpoint:                             userinfoEndpoint,
-		UserinfoAccept:                               userinfoAccept,
-		UserinfoHeadersNames:                         userinfoHeadersNames,
-		UserinfoHeadersValues:                        userinfoHeadersValues,
-		UserinfoHeadersClient:                        userinfoHeadersClient,
-		UserinfoQueryArgsNames:                       userinfoQueryArgsNames,
-		UserinfoQueryArgsValues:                      userinfoQueryArgsValues,
-		UserinfoQueryArgsClient:                      userinfoQueryArgsClient,
-		TokenExchangeEndpoint:                        tokenExchangeEndpoint,
-		SessionSecret:                                sessionSecret,
-		SessionAudience:                              sessionAudience,
-		SessionCookieName:                            sessionCookieName,
-		SessionRemember:                              sessionRemember,
-		SessionRememberCookieName:                    sessionRememberCookieName,
-		SessionRememberRollingTimeout:                sessionRememberRollingTimeout,
-		SessionRememberAbsoluteTimeout:               sessionRememberAbsoluteTimeout,
-		SessionIdlingTimeout:                         sessionIdlingTimeout,
-		SessionRollingTimeout:                        sessionRollingTimeout,
-		SessionAbsoluteTimeout:                       sessionAbsoluteTimeout,
-		SessionCookiePath:                            sessionCookiePath,
-		SessionCookieDomain:                          sessionCookieDomain,
-		SessionCookieSameSite:                        sessionCookieSameSite,
-		SessionCookieHTTPOnly:                        sessionCookieHTTPOnly,
-		SessionCookieSecure:                          sessionCookieSecure,
-		SessionRequestHeaders:                        sessionRequestHeaders,
-		SessionResponseHeaders:                       sessionResponseHeaders,
-		SessionStorage:                               sessionStorage,
-		SessionStoreMetadata:                         sessionStoreMetadata,
-		SessionEnforceSameSubject:                    sessionEnforceSameSubject,
-		SessionHashSubject:                           sessionHashSubject,
-		SessionHashStorageKey:                        sessionHashStorageKey,
-		SessionMemcachedPrefix:                       sessionMemcachedPrefix,
-		SessionMemcachedSocket:                       sessionMemcachedSocket,
-		SessionMemcachedHost:                         sessionMemcachedHost,
-		SessionMemcachedPort:                         sessionMemcachedPort,
-		SessionRedisPrefix:                           sessionRedisPrefix,
-		SessionRedisSocket:                           sessionRedisSocket,
-		SessionRedisHost:                             sessionRedisHost,
-		SessionRedisPort:                             sessionRedisPort,
-		SessionRedisUsername:                         sessionRedisUsername,
-		SessionRedisPassword:                         sessionRedisPassword,
-		SessionRedisConnectTimeout:                   sessionRedisConnectTimeout,
-		SessionRedisReadTimeout:                      sessionRedisReadTimeout,
-		SessionRedisSendTimeout:                      sessionRedisSendTimeout,
-		SessionRedisSsl:                              sessionRedisSsl,
-		SessionRedisSslVerify:                        sessionRedisSslVerify,
-		SessionRedisServerName:                       sessionRedisServerName,
-		SessionRedisClusterNodes:                     sessionRedisClusterNodes,
-		SessionRedisClusterMaxRedirections:           sessionRedisClusterMaxRedirections,
-		Reverify:                                     reverify,
-		JwtSessionClaim:                              jwtSessionClaim,
-		JwtSessionCookie:                             jwtSessionCookie,
-		BearerTokenParamType:                         bearerTokenParamType,
-		BearerTokenCookieName:                        bearerTokenCookieName,
-		ClientCredentialsParamType:                   clientCredentialsParamType,
-		PasswordParamType:                            passwordParamType,
-		IDTokenParamType:                             idTokenParamType,
-		IDTokenParamName:                             idTokenParamName,
-		RefreshTokenParamType:                        refreshTokenParamType,
-		RefreshTokenParamName:                        refreshTokenParamName,
-		RefreshTokens:                                refreshTokens,
-		UpstreamHeadersClaims:                        upstreamHeadersClaims,
-		UpstreamHeadersNames:                         upstreamHeadersNames,
-		UpstreamAccessTokenHeader:                    upstreamAccessTokenHeader,
-		UpstreamAccessTokenJwkHeader:                 upstreamAccessTokenJwkHeader,
-		UpstreamIDTokenHeader:                        upstreamIDTokenHeader,
-		UpstreamIDTokenJwkHeader:                     upstreamIDTokenJwkHeader,
-		UpstreamRefreshTokenHeader:                   upstreamRefreshTokenHeader,
-		UpstreamUserInfoHeader:                       upstreamUserInfoHeader,
-		UpstreamUserInfoJwtHeader:                    upstreamUserInfoJwtHeader,
-		UpstreamIntrospectionHeader:                  upstreamIntrospectionHeader,
-		UpstreamIntrospectionJwtHeader:               upstreamIntrospectionJwtHeader,
-		UpstreamSessionIDHeader:                      upstreamSessionIDHeader,
-		DownstreamHeadersClaims:                      downstreamHeadersClaims,
-		DownstreamHeadersNames:                       downstreamHeadersNames,
-		DownstreamAccessTokenHeader:                  downstreamAccessTokenHeader,
-		DownstreamAccessTokenJwkHeader:               downstreamAccessTokenJwkHeader,
-		DownstreamIDTokenHeader:                      downstreamIDTokenHeader,
-		DownstreamIDTokenJwkHeader:                   downstreamIDTokenJwkHeader,
-		DownstreamRefreshTokenHeader:                 downstreamRefreshTokenHeader,
-		DownstreamUserInfoHeader:                     downstreamUserInfoHeader,
-		DownstreamUserInfoJwtHeader:                  downstreamUserInfoJwtHeader,
-		DownstreamIntrospectionHeader:                downstreamIntrospectionHeader,
-		DownstreamIntrospectionJwtHeader:             downstreamIntrospectionJwtHeader,
-		DownstreamSessionIDHeader:                    downstreamSessionIDHeader,
-		LoginMethods:                                 loginMethods,
-		LoginAction:                                  loginAction,
-		LoginTokens:                                  loginTokens,
-		LoginRedirectMode:                            loginRedirectMode,
-		LogoutQueryArg:                               logoutQueryArg,
-		LogoutPostArg:                                logoutPostArg,
-		LogoutURISuffix:                              logoutURISuffix,
-		LogoutMethods:                                logoutMethods,
-		LogoutRevoke:                                 logoutRevoke,
-		LogoutRevokeAccessToken:                      logoutRevokeAccessToken,
-		LogoutRevokeRefreshToken:                     logoutRevokeRefreshToken,
-		ConsumerClaim:                                consumerClaim,
-		ConsumerBy:                                   consumerBy,
-		ConsumerOptional:                             consumerOptional,
-		CredentialClaim:                              credentialClaim,
-		Anonymous:                                    anonymous,
-		RunOnPreflight:                               runOnPreflight,
-		Leeway:                                       leeway,
-		VerifyParameters:                             verifyParameters,
-		VerifyNonce:                                  verifyNonce,
-		VerifyClaims:                                 verifyClaims,
-		VerifySignature:                              verifySignature,
-		IgnoreSignature:                              ignoreSignature,
-		EnableHsSignatures:                           enableHsSignatures,
-		DisableSession:                               disableSession,
-		CacheTTL:                                     cacheTTL,
-		CacheTTLMax:                                  cacheTTLMax,
-		CacheTTLMin:                                  cacheTTLMin,
-		CacheTTLNeg:                                  cacheTTLNeg,
-		CacheTTLResurrect:                            cacheTTLResurrect,
-		CacheTokens:                                  cacheTokens,
-		CacheTokensSalt:                              cacheTokensSalt,
-		CacheIntrospection:                           cacheIntrospection,
-		CacheTokenExchange:                           cacheTokenExchange,
-		CacheUserInfo:                                cacheUserInfo,
-		SearchUserInfo:                               searchUserInfo,
-		HideCredentials:                              hideCredentials,
-		HTTPVersion:                                  httpVersion,
-		HTTPProxy:                                    httpProxy,
-		HTTPProxyAuthorization:                       httpProxyAuthorization,
-		HTTPSProxy:                                   httpsProxy,
-		HTTPSProxyAuthorization:                      httpsProxyAuthorization,
-		NoProxy:                                      noProxy,
-		Keepalive:                                    keepalive,
-		SslVerify:                                    sslVerify,
-		Timeout:                                      timeout,
-		DisplayErrors:                                displayErrors,
-		ByUsernameIgnoreCase:                         byUsernameIgnoreCase,
-		ResolveDistributedClaims:                     resolveDistributedClaims,
-		ExposeErrorCode:                              exposeErrorCode,
-		TokenCacheKeyIncludeScope:                    tokenCacheKeyIncludeScope,
-		IntrospectionTokenParamName:                  introspectionTokenParamName,
-		RevocationTokenParamName:                     revocationTokenParamName,
-		ProofOfPossessionMtls:                        proofOfPossessionMtls,
-		ProofOfPossessionAuthMethodsValidation:       proofOfPossessionAuthMethodsValidation,
-		TLSClientAuthCertID:                          tlsClientAuthCertID,
-		TLSClientAuthSslVerify:                       tlsClientAuthSslVerify,
-		MtlsTokenEndpoint:                            mtlsTokenEndpoint,
-		MtlsIntrospectionEndpoint:                    mtlsIntrospectionEndpoint,
-		MtlsRevocationEndpoint:                       mtlsRevocationEndpoint,
+		RolesRequired:                      rolesRequired,
+		RunOnPreflight:                     runOnPreflight,
+		Scopes:                             scopes,
+		ScopesClaim:                        scopesClaim,
+		ScopesRequired:                     scopesRequired,
+		SearchUserInfo:                     searchUserInfo,
+		SessionAbsoluteTimeout:             sessionAbsoluteTimeout,
+		SessionAudience:                    sessionAudience,
+		SessionCookieDomain:                sessionCookieDomain,
+		SessionCookieHTTPOnly:              sessionCookieHTTPOnly,
+		SessionCookieName:                  sessionCookieName,
+		SessionCookiePath:                  sessionCookiePath,
+		SessionCookieSameSite:              sessionCookieSameSite,
+		SessionCookieSecure:                sessionCookieSecure,
+		SessionEnforceSameSubject:          sessionEnforceSameSubject,
+		SessionHashStorageKey:              sessionHashStorageKey,
+		SessionHashSubject:                 sessionHashSubject,
+		SessionIdlingTimeout:               sessionIdlingTimeout,
+		SessionMemcachedHost:               sessionMemcachedHost,
+		SessionMemcachedPort:               sessionMemcachedPort,
+		SessionMemcachedPrefix:             sessionMemcachedPrefix,
+		SessionMemcachedSocket:             sessionMemcachedSocket,
+		SessionRedisClusterMaxRedirections: sessionRedisClusterMaxRedirections,
+		SessionRedisClusterNodes:           sessionRedisClusterNodes,
+		SessionRedisConnectTimeout:         sessionRedisConnectTimeout,
+		SessionRedisHost:                   sessionRedisHost,
+		SessionRedisPassword:               sessionRedisPassword,
+		SessionRedisPort:                   sessionRedisPort,
+		SessionRedisPrefix:                 sessionRedisPrefix,
+		SessionRedisReadTimeout:            sessionRedisReadTimeout,
+		SessionRedisSendTimeout:            sessionRedisSendTimeout,
+		SessionRedisServerName:             sessionRedisServerName,
+		SessionRedisSocket:                 sessionRedisSocket,
+		SessionRedisSsl:                    sessionRedisSsl,
+		SessionRedisSslVerify:              sessionRedisSslVerify,
+		SessionRedisUsername:               sessionRedisUsername,
+		SessionRemember:                    sessionRemember,
+		SessionRememberAbsoluteTimeout:     sessionRememberAbsoluteTimeout,
+		SessionRememberCookieName:          sessionRememberCookieName,
+		SessionRememberRollingTimeout:      sessionRememberRollingTimeout,
+		SessionRequestHeaders:              sessionRequestHeaders,
+		SessionResponseHeaders:             sessionResponseHeaders,
+		SessionRollingTimeout:              sessionRollingTimeout,
+		SessionSecret:                      sessionSecret,
+		SessionStorage:                     sessionStorage,
+		SessionStoreMetadata:               sessionStoreMetadata,
+		SslVerify:                          sslVerify,
+		Timeout:                            timeout,
+		TLSClientAuthCertID:                tlsClientAuthCertID,
+		TLSClientAuthSslVerify:             tlsClientAuthSslVerify,
+		TokenCacheKeyIncludeScope:          tokenCacheKeyIncludeScope,
+		TokenEndpoint:                      tokenEndpoint,
+		TokenEndpointAuthMethod:            tokenEndpointAuthMethod,
+		TokenExchangeEndpoint:              tokenExchangeEndpoint,
+		TokenHeadersClient:                 tokenHeadersClient,
+		TokenHeadersGrants:                 tokenHeadersGrants,
+		TokenHeadersNames:                  tokenHeadersNames,
+		TokenHeadersPrefix:                 tokenHeadersPrefix,
+		TokenHeadersReplay:                 tokenHeadersReplay,
+		TokenHeadersValues:                 tokenHeadersValues,
+		TokenPostArgsClient:                tokenPostArgsClient,
+		TokenPostArgsNames:                 tokenPostArgsNames,
+		TokenPostArgsValues:                tokenPostArgsValues,
+		UnauthorizedDestroySession:         unauthorizedDestroySession,
+		UnauthorizedErrorMessage:           unauthorizedErrorMessage,
+		UnauthorizedRedirectURI:            unauthorizedRedirectURI,
+		UnexpectedRedirectURI:              unexpectedRedirectURI,
+		UpstreamAccessTokenHeader:          upstreamAccessTokenHeader,
+		UpstreamAccessTokenJwkHeader:       upstreamAccessTokenJwkHeader,
+		UpstreamHeadersClaims:              upstreamHeadersClaims,
+		UpstreamHeadersNames:               upstreamHeadersNames,
+		UpstreamIDTokenHeader:              upstreamIDTokenHeader,
+		UpstreamIDTokenJwkHeader:           upstreamIDTokenJwkHeader,
+		UpstreamIntrospectionHeader:        upstreamIntrospectionHeader,
+		UpstreamIntrospectionJwtHeader:     upstreamIntrospectionJwtHeader,
+		UpstreamRefreshTokenHeader:         upstreamRefreshTokenHeader,
+		UpstreamSessionIDHeader:            upstreamSessionIDHeader,
+		UpstreamUserInfoHeader:             upstreamUserInfoHeader,
+		UpstreamUserInfoJwtHeader:          upstreamUserInfoJwtHeader,
+		UserinfoAccept:                     userinfoAccept,
+		UserinfoEndpoint:                   userinfoEndpoint,
+		UserinfoHeadersClient:              userinfoHeadersClient,
+		UserinfoHeadersNames:               userinfoHeadersNames,
+		UserinfoHeadersValues:              userinfoHeadersValues,
+		UserinfoQueryArgsClient:            userinfoQueryArgsClient,
+		UserinfoQueryArgsNames:             userinfoQueryArgsNames,
+		UserinfoQueryArgsValues:            userinfoQueryArgsValues,
+		UsingPseudoIssuer:                  usingPseudoIssuer,
+		VerifyClaims:                       verifyClaims,
+		VerifyNonce:                        verifyNonce,
+		VerifyParameters:                   verifyParameters,
+		VerifySignature:                    verifySignature,
 	}
 	out := shared.CreateOpenidConnectPlugin{
 		Enabled:   enabled,

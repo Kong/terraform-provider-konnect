@@ -95,157 +95,171 @@ func (o *CreateRequestTransformerPluginService) GetID() *string {
 	return o.ID
 }
 
-type Remove struct {
+type CreateRequestTransformerPluginAdd struct {
 	Body        []string `json:"body,omitempty"`
 	Headers     []string `json:"headers,omitempty"`
 	Querystring []string `json:"querystring,omitempty"`
 }
 
-func (o *Remove) GetBody() []string {
+func (o *CreateRequestTransformerPluginAdd) GetBody() []string {
 	if o == nil {
 		return nil
 	}
 	return o.Body
 }
 
-func (o *Remove) GetHeaders() []string {
+func (o *CreateRequestTransformerPluginAdd) GetHeaders() []string {
 	if o == nil {
 		return nil
 	}
 	return o.Headers
 }
 
-func (o *Remove) GetQuerystring() []string {
+func (o *CreateRequestTransformerPluginAdd) GetQuerystring() []string {
 	if o == nil {
 		return nil
 	}
 	return o.Querystring
 }
 
-type Rename struct {
+type CreateRequestTransformerPluginAppend struct {
 	Body        []string `json:"body,omitempty"`
 	Headers     []string `json:"headers,omitempty"`
 	Querystring []string `json:"querystring,omitempty"`
 }
 
-func (o *Rename) GetBody() []string {
+func (o *CreateRequestTransformerPluginAppend) GetBody() []string {
 	if o == nil {
 		return nil
 	}
 	return o.Body
 }
 
-func (o *Rename) GetHeaders() []string {
+func (o *CreateRequestTransformerPluginAppend) GetHeaders() []string {
 	if o == nil {
 		return nil
 	}
 	return o.Headers
 }
 
-func (o *Rename) GetQuerystring() []string {
+func (o *CreateRequestTransformerPluginAppend) GetQuerystring() []string {
 	if o == nil {
 		return nil
 	}
 	return o.Querystring
 }
 
-type Replace struct {
+type CreateRequestTransformerPluginRemove struct {
+	Body        []string `json:"body,omitempty"`
+	Headers     []string `json:"headers,omitempty"`
+	Querystring []string `json:"querystring,omitempty"`
+}
+
+func (o *CreateRequestTransformerPluginRemove) GetBody() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Body
+}
+
+func (o *CreateRequestTransformerPluginRemove) GetHeaders() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Headers
+}
+
+func (o *CreateRequestTransformerPluginRemove) GetQuerystring() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Querystring
+}
+
+type CreateRequestTransformerPluginRename struct {
+	Body        []string `json:"body,omitempty"`
+	Headers     []string `json:"headers,omitempty"`
+	Querystring []string `json:"querystring,omitempty"`
+}
+
+func (o *CreateRequestTransformerPluginRename) GetBody() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Body
+}
+
+func (o *CreateRequestTransformerPluginRename) GetHeaders() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Headers
+}
+
+func (o *CreateRequestTransformerPluginRename) GetQuerystring() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Querystring
+}
+
+type CreateRequestTransformerPluginReplace struct {
 	Body        []string `json:"body,omitempty"`
 	Headers     []string `json:"headers,omitempty"`
 	Querystring []string `json:"querystring,omitempty"`
 	URI         *string  `json:"uri,omitempty"`
 }
 
-func (o *Replace) GetBody() []string {
+func (o *CreateRequestTransformerPluginReplace) GetBody() []string {
 	if o == nil {
 		return nil
 	}
 	return o.Body
 }
 
-func (o *Replace) GetHeaders() []string {
+func (o *CreateRequestTransformerPluginReplace) GetHeaders() []string {
 	if o == nil {
 		return nil
 	}
 	return o.Headers
 }
 
-func (o *Replace) GetQuerystring() []string {
+func (o *CreateRequestTransformerPluginReplace) GetQuerystring() []string {
 	if o == nil {
 		return nil
 	}
 	return o.Querystring
 }
 
-func (o *Replace) GetURI() *string {
+func (o *CreateRequestTransformerPluginReplace) GetURI() *string {
 	if o == nil {
 		return nil
 	}
 	return o.URI
 }
 
-type Add struct {
-	Body        []string `json:"body,omitempty"`
-	Headers     []string `json:"headers,omitempty"`
-	Querystring []string `json:"querystring,omitempty"`
-}
-
-func (o *Add) GetBody() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Body
-}
-
-func (o *Add) GetHeaders() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Headers
-}
-
-func (o *Add) GetQuerystring() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Querystring
-}
-
-type Append struct {
-	Body        []string `json:"body,omitempty"`
-	Headers     []string `json:"headers,omitempty"`
-	Querystring []string `json:"querystring,omitempty"`
-}
-
-func (o *Append) GetBody() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Body
-}
-
-func (o *Append) GetHeaders() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Headers
-}
-
-func (o *Append) GetQuerystring() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Querystring
-}
-
 type CreateRequestTransformerPluginConfig struct {
+	Add    *CreateRequestTransformerPluginAdd    `json:"add,omitempty"`
+	Append *CreateRequestTransformerPluginAppend `json:"append,omitempty"`
 	// A string representing an HTTP method, such as GET, POST, PUT, or DELETE. The string must contain only uppercase letters.
-	HTTPMethod *string  `json:"http_method,omitempty"`
-	Remove     *Remove  `json:"remove,omitempty"`
-	Rename     *Rename  `json:"rename,omitempty"`
-	Replace    *Replace `json:"replace,omitempty"`
-	Add        *Add     `json:"add,omitempty"`
-	Append     *Append  `json:"append,omitempty"`
+	HTTPMethod *string                                `json:"http_method,omitempty"`
+	Remove     *CreateRequestTransformerPluginRemove  `json:"remove,omitempty"`
+	Rename     *CreateRequestTransformerPluginRename  `json:"rename,omitempty"`
+	Replace    *CreateRequestTransformerPluginReplace `json:"replace,omitempty"`
+}
+
+func (o *CreateRequestTransformerPluginConfig) GetAdd() *CreateRequestTransformerPluginAdd {
+	if o == nil {
+		return nil
+	}
+	return o.Add
+}
+
+func (o *CreateRequestTransformerPluginConfig) GetAppend() *CreateRequestTransformerPluginAppend {
+	if o == nil {
+		return nil
+	}
+	return o.Append
 }
 
 func (o *CreateRequestTransformerPluginConfig) GetHTTPMethod() *string {
@@ -255,39 +269,25 @@ func (o *CreateRequestTransformerPluginConfig) GetHTTPMethod() *string {
 	return o.HTTPMethod
 }
 
-func (o *CreateRequestTransformerPluginConfig) GetRemove() *Remove {
+func (o *CreateRequestTransformerPluginConfig) GetRemove() *CreateRequestTransformerPluginRemove {
 	if o == nil {
 		return nil
 	}
 	return o.Remove
 }
 
-func (o *CreateRequestTransformerPluginConfig) GetRename() *Rename {
+func (o *CreateRequestTransformerPluginConfig) GetRename() *CreateRequestTransformerPluginRename {
 	if o == nil {
 		return nil
 	}
 	return o.Rename
 }
 
-func (o *CreateRequestTransformerPluginConfig) GetReplace() *Replace {
+func (o *CreateRequestTransformerPluginConfig) GetReplace() *CreateRequestTransformerPluginReplace {
 	if o == nil {
 		return nil
 	}
 	return o.Replace
-}
-
-func (o *CreateRequestTransformerPluginConfig) GetAdd() *Add {
-	if o == nil {
-		return nil
-	}
-	return o.Add
-}
-
-func (o *CreateRequestTransformerPluginConfig) GetAppend() *Append {
-	if o == nil {
-		return nil
-	}
-	return o.Append
 }
 
 // CreateRequestTransformerPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.

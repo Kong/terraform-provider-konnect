@@ -95,24 +95,24 @@ func (o *CreateRateLimitingPluginService) GetID() *string {
 	return o.ID
 }
 
-// LimitBy - The entity that is used when aggregating the limits.
-type LimitBy string
+// CreateRateLimitingPluginLimitBy - The entity that is used when aggregating the limits.
+type CreateRateLimitingPluginLimitBy string
 
 const (
-	LimitByConsumer      LimitBy = "consumer"
-	LimitByCredential    LimitBy = "credential"
-	LimitByIP            LimitBy = "ip"
-	LimitByService       LimitBy = "service"
-	LimitByHeader        LimitBy = "header"
-	LimitByPath          LimitBy = "path"
-	LimitByConsumerGroup LimitBy = "consumer-group"
+	CreateRateLimitingPluginLimitByConsumer      CreateRateLimitingPluginLimitBy = "consumer"
+	CreateRateLimitingPluginLimitByCredential    CreateRateLimitingPluginLimitBy = "credential"
+	CreateRateLimitingPluginLimitByIP            CreateRateLimitingPluginLimitBy = "ip"
+	CreateRateLimitingPluginLimitByService       CreateRateLimitingPluginLimitBy = "service"
+	CreateRateLimitingPluginLimitByHeader        CreateRateLimitingPluginLimitBy = "header"
+	CreateRateLimitingPluginLimitByPath          CreateRateLimitingPluginLimitBy = "path"
+	CreateRateLimitingPluginLimitByConsumerGroup CreateRateLimitingPluginLimitBy = "consumer-group"
 )
 
-func (e LimitBy) ToPointer() *LimitBy {
+func (e CreateRateLimitingPluginLimitBy) ToPointer() *CreateRateLimitingPluginLimitBy {
 	return &e
 }
 
-func (e *LimitBy) UnmarshalJSON(data []byte) error {
+func (e *CreateRateLimitingPluginLimitBy) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -131,27 +131,27 @@ func (e *LimitBy) UnmarshalJSON(data []byte) error {
 	case "path":
 		fallthrough
 	case "consumer-group":
-		*e = LimitBy(v)
+		*e = CreateRateLimitingPluginLimitBy(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for LimitBy: %v", v)
+		return fmt.Errorf("invalid value for CreateRateLimitingPluginLimitBy: %v", v)
 	}
 }
 
-// Policy - The rate-limiting policies to use for retrieving and incrementing the limits.
-type Policy string
+// CreateRateLimitingPluginPolicy - The rate-limiting policies to use for retrieving and incrementing the limits.
+type CreateRateLimitingPluginPolicy string
 
 const (
-	PolicyLocal   Policy = "local"
-	PolicyCluster Policy = "cluster"
-	PolicyRedis   Policy = "redis"
+	CreateRateLimitingPluginPolicyLocal   CreateRateLimitingPluginPolicy = "local"
+	CreateRateLimitingPluginPolicyCluster CreateRateLimitingPluginPolicy = "cluster"
+	CreateRateLimitingPluginPolicyRedis   CreateRateLimitingPluginPolicy = "redis"
 )
 
-func (e Policy) ToPointer() *Policy {
+func (e CreateRateLimitingPluginPolicy) ToPointer() *CreateRateLimitingPluginPolicy {
 	return &e
 }
 
-func (e *Policy) UnmarshalJSON(data []byte) error {
+func (e *CreateRateLimitingPluginPolicy) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -162,62 +162,62 @@ func (e *Policy) UnmarshalJSON(data []byte) error {
 	case "cluster":
 		fallthrough
 	case "redis":
-		*e = Policy(v)
+		*e = CreateRateLimitingPluginPolicy(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for Policy: %v", v)
+		return fmt.Errorf("invalid value for CreateRateLimitingPluginPolicy: %v", v)
 	}
 }
 
 type CreateRateLimitingPluginConfig struct {
-	// The number of HTTP requests that can be made per second.
-	Second *float64 `json:"second,omitempty"`
-	// The number of HTTP requests that can be made per minute.
-	Minute *float64 `json:"minute,omitempty"`
-	// The number of HTTP requests that can be made per hour.
-	Hour *float64 `json:"hour,omitempty"`
 	// The number of HTTP requests that can be made per day.
 	Day *float64 `json:"day,omitempty"`
-	// The number of HTTP requests that can be made per month.
-	Month *float64 `json:"month,omitempty"`
-	// The number of HTTP requests that can be made per year.
-	Year *float64 `json:"year,omitempty"`
-	// The entity that is used when aggregating the limits.
-	LimitBy *LimitBy `default:"consumer" json:"limit_by"`
-	// A string representing an HTTP header name.
-	HeaderName *string `json:"header_name,omitempty"`
-	// A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).
-	Path *string `json:"path,omitempty"`
-	// The rate-limiting policies to use for retrieving and incrementing the limits.
-	Policy *Policy `default:"local" json:"policy"`
-	// A boolean value that determines if the requests should be proxied even if Kong has troubles connecting a third-party data store. If `true`, requests will be proxied anyway, effectively disabling the rate-limiting function until the data store is working again. If `false`, then the clients will see `500` errors.
-	FaultTolerant *bool `default:"true" json:"fault_tolerant"`
-	// A string representing a host name, such as example.com.
-	RedisHost *string `json:"redis_host,omitempty"`
-	// An integer representing a port number between 0 and 65535, inclusive.
-	RedisPort *int64 `default:"6379" json:"redis_port"`
-	// When using the `redis` policy, this property specifies the password to connect to the Redis server.
-	RedisPassword *string `json:"redis_password,omitempty"`
-	// When using the `redis` policy, this property specifies the username to connect to the Redis server when ACL authentication is desired.
-	RedisUsername *string `json:"redis_username,omitempty"`
-	// When using the `redis` policy, this property specifies if SSL is used to connect to the Redis server.
-	RedisSsl *bool `default:"false" json:"redis_ssl"`
-	// When using the `redis` policy with `redis_ssl` set to `true`, this property specifies it server SSL certificate is validated. Note that you need to configure the lua_ssl_trusted_certificate to specify the CA (or server) certificate used by your Redis server. You may also need to configure lua_ssl_verify_depth accordingly.
-	RedisSslVerify *bool `default:"false" json:"redis_ssl_verify"`
-	// A string representing an SNI (server name indication) value for TLS.
-	RedisServerName *string `json:"redis_server_name,omitempty"`
-	// When using the `redis` policy, this property specifies the timeout in milliseconds of any command submitted to the Redis server.
-	RedisTimeout *float64 `default:"2000" json:"redis_timeout"`
-	// When using the `redis` policy, this property specifies the Redis database to use.
-	RedisDatabase *int64 `default:"0" json:"redis_database"`
-	// Optionally hide informative response headers.
-	HideClientHeaders *bool `default:"false" json:"hide_client_headers"`
 	// Set a custom error code to return when the rate limit is exceeded.
 	ErrorCode *float64 `default:"429" json:"error_code"`
 	// Set a custom error message to return when the rate limit is exceeded.
 	ErrorMessage *string `default:"API rate limit exceeded" json:"error_message"`
+	// A boolean value that determines if the requests should be proxied even if Kong has troubles connecting a third-party data store. If `true`, requests will be proxied anyway, effectively disabling the rate-limiting function until the data store is working again. If `false`, then the clients will see `500` errors.
+	FaultTolerant *bool `default:"true" json:"fault_tolerant"`
+	// A string representing an HTTP header name.
+	HeaderName *string `json:"header_name,omitempty"`
+	// Optionally hide informative response headers.
+	HideClientHeaders *bool `default:"false" json:"hide_client_headers"`
+	// The number of HTTP requests that can be made per hour.
+	Hour *float64 `json:"hour,omitempty"`
+	// The entity that is used when aggregating the limits.
+	LimitBy *CreateRateLimitingPluginLimitBy `default:"consumer" json:"limit_by"`
+	// The number of HTTP requests that can be made per minute.
+	Minute *float64 `json:"minute,omitempty"`
+	// The number of HTTP requests that can be made per month.
+	Month *float64 `json:"month,omitempty"`
+	// A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).
+	Path *string `json:"path,omitempty"`
+	// The rate-limiting policies to use for retrieving and incrementing the limits.
+	Policy *CreateRateLimitingPluginPolicy `default:"local" json:"policy"`
+	// When using the `redis` policy, this property specifies the Redis database to use.
+	RedisDatabase *int64 `default:"0" json:"redis_database"`
+	// A string representing a host name, such as example.com.
+	RedisHost *string `json:"redis_host,omitempty"`
+	// When using the `redis` policy, this property specifies the password to connect to the Redis server.
+	RedisPassword *string `json:"redis_password,omitempty"`
+	// An integer representing a port number between 0 and 65535, inclusive.
+	RedisPort *int64 `default:"6379" json:"redis_port"`
+	// A string representing an SNI (server name indication) value for TLS.
+	RedisServerName *string `json:"redis_server_name,omitempty"`
+	// When using the `redis` policy, this property specifies if SSL is used to connect to the Redis server.
+	RedisSsl *bool `default:"false" json:"redis_ssl"`
+	// When using the `redis` policy with `redis_ssl` set to `true`, this property specifies it server SSL certificate is validated. Note that you need to configure the lua_ssl_trusted_certificate to specify the CA (or server) certificate used by your Redis server. You may also need to configure lua_ssl_verify_depth accordingly.
+	RedisSslVerify *bool `default:"false" json:"redis_ssl_verify"`
+	// When using the `redis` policy, this property specifies the timeout in milliseconds of any command submitted to the Redis server.
+	RedisTimeout *float64 `default:"2000" json:"redis_timeout"`
+	// When using the `redis` policy, this property specifies the username to connect to the Redis server when ACL authentication is desired.
+	RedisUsername *string `json:"redis_username,omitempty"`
+	// The number of HTTP requests that can be made per second.
+	Second *float64 `json:"second,omitempty"`
 	// How often to sync counter data to the central data store. A value of -1 results in synchronous behavior.
 	SyncRate *float64 `default:"-1" json:"sync_rate"`
+	// The number of HTTP requests that can be made per year.
+	Year *float64 `json:"year,omitempty"`
 }
 
 func (c CreateRateLimitingPluginConfig) MarshalJSON() ([]byte, error) {
@@ -231,151 +231,11 @@ func (c *CreateRateLimitingPluginConfig) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *CreateRateLimitingPluginConfig) GetSecond() *float64 {
-	if o == nil {
-		return nil
-	}
-	return o.Second
-}
-
-func (o *CreateRateLimitingPluginConfig) GetMinute() *float64 {
-	if o == nil {
-		return nil
-	}
-	return o.Minute
-}
-
-func (o *CreateRateLimitingPluginConfig) GetHour() *float64 {
-	if o == nil {
-		return nil
-	}
-	return o.Hour
-}
-
 func (o *CreateRateLimitingPluginConfig) GetDay() *float64 {
 	if o == nil {
 		return nil
 	}
 	return o.Day
-}
-
-func (o *CreateRateLimitingPluginConfig) GetMonth() *float64 {
-	if o == nil {
-		return nil
-	}
-	return o.Month
-}
-
-func (o *CreateRateLimitingPluginConfig) GetYear() *float64 {
-	if o == nil {
-		return nil
-	}
-	return o.Year
-}
-
-func (o *CreateRateLimitingPluginConfig) GetLimitBy() *LimitBy {
-	if o == nil {
-		return nil
-	}
-	return o.LimitBy
-}
-
-func (o *CreateRateLimitingPluginConfig) GetHeaderName() *string {
-	if o == nil {
-		return nil
-	}
-	return o.HeaderName
-}
-
-func (o *CreateRateLimitingPluginConfig) GetPath() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Path
-}
-
-func (o *CreateRateLimitingPluginConfig) GetPolicy() *Policy {
-	if o == nil {
-		return nil
-	}
-	return o.Policy
-}
-
-func (o *CreateRateLimitingPluginConfig) GetFaultTolerant() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.FaultTolerant
-}
-
-func (o *CreateRateLimitingPluginConfig) GetRedisHost() *string {
-	if o == nil {
-		return nil
-	}
-	return o.RedisHost
-}
-
-func (o *CreateRateLimitingPluginConfig) GetRedisPort() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.RedisPort
-}
-
-func (o *CreateRateLimitingPluginConfig) GetRedisPassword() *string {
-	if o == nil {
-		return nil
-	}
-	return o.RedisPassword
-}
-
-func (o *CreateRateLimitingPluginConfig) GetRedisUsername() *string {
-	if o == nil {
-		return nil
-	}
-	return o.RedisUsername
-}
-
-func (o *CreateRateLimitingPluginConfig) GetRedisSsl() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.RedisSsl
-}
-
-func (o *CreateRateLimitingPluginConfig) GetRedisSslVerify() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.RedisSslVerify
-}
-
-func (o *CreateRateLimitingPluginConfig) GetRedisServerName() *string {
-	if o == nil {
-		return nil
-	}
-	return o.RedisServerName
-}
-
-func (o *CreateRateLimitingPluginConfig) GetRedisTimeout() *float64 {
-	if o == nil {
-		return nil
-	}
-	return o.RedisTimeout
-}
-
-func (o *CreateRateLimitingPluginConfig) GetRedisDatabase() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.RedisDatabase
-}
-
-func (o *CreateRateLimitingPluginConfig) GetHideClientHeaders() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.HideClientHeaders
 }
 
 func (o *CreateRateLimitingPluginConfig) GetErrorCode() *float64 {
@@ -392,11 +252,151 @@ func (o *CreateRateLimitingPluginConfig) GetErrorMessage() *string {
 	return o.ErrorMessage
 }
 
+func (o *CreateRateLimitingPluginConfig) GetFaultTolerant() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.FaultTolerant
+}
+
+func (o *CreateRateLimitingPluginConfig) GetHeaderName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.HeaderName
+}
+
+func (o *CreateRateLimitingPluginConfig) GetHideClientHeaders() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.HideClientHeaders
+}
+
+func (o *CreateRateLimitingPluginConfig) GetHour() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.Hour
+}
+
+func (o *CreateRateLimitingPluginConfig) GetLimitBy() *CreateRateLimitingPluginLimitBy {
+	if o == nil {
+		return nil
+	}
+	return o.LimitBy
+}
+
+func (o *CreateRateLimitingPluginConfig) GetMinute() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.Minute
+}
+
+func (o *CreateRateLimitingPluginConfig) GetMonth() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.Month
+}
+
+func (o *CreateRateLimitingPluginConfig) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
+func (o *CreateRateLimitingPluginConfig) GetPolicy() *CreateRateLimitingPluginPolicy {
+	if o == nil {
+		return nil
+	}
+	return o.Policy
+}
+
+func (o *CreateRateLimitingPluginConfig) GetRedisDatabase() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.RedisDatabase
+}
+
+func (o *CreateRateLimitingPluginConfig) GetRedisHost() *string {
+	if o == nil {
+		return nil
+	}
+	return o.RedisHost
+}
+
+func (o *CreateRateLimitingPluginConfig) GetRedisPassword() *string {
+	if o == nil {
+		return nil
+	}
+	return o.RedisPassword
+}
+
+func (o *CreateRateLimitingPluginConfig) GetRedisPort() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.RedisPort
+}
+
+func (o *CreateRateLimitingPluginConfig) GetRedisServerName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.RedisServerName
+}
+
+func (o *CreateRateLimitingPluginConfig) GetRedisSsl() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RedisSsl
+}
+
+func (o *CreateRateLimitingPluginConfig) GetRedisSslVerify() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RedisSslVerify
+}
+
+func (o *CreateRateLimitingPluginConfig) GetRedisTimeout() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.RedisTimeout
+}
+
+func (o *CreateRateLimitingPluginConfig) GetRedisUsername() *string {
+	if o == nil {
+		return nil
+	}
+	return o.RedisUsername
+}
+
+func (o *CreateRateLimitingPluginConfig) GetSecond() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.Second
+}
+
 func (o *CreateRateLimitingPluginConfig) GetSyncRate() *float64 {
 	if o == nil {
 		return nil
 	}
 	return o.SyncRate
+}
+
+func (o *CreateRateLimitingPluginConfig) GetYear() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.Year
 }
 
 // CreateRateLimitingPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.

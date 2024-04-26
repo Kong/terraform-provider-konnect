@@ -185,7 +185,7 @@ func (r *GatewayPluginACLResource) Create(ctx context.Context, req resource.Crea
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	createACLPlugin := *data.ToSharedCreateACLPlugin()
+	createACLPlugin := data.ToSharedCreateACLPlugin()
 	request := operations.CreateACLPluginRequest{
 		ControlPlaneID:  controlPlaneID,
 		CreateACLPlugin: createACLPlugin,
@@ -235,11 +235,11 @@ func (r *GatewayPluginACLResource) Read(ctx context.Context, req resource.ReadRe
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.GetACLPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.GetACLPlugin(ctx, request)
 	if err != nil {
@@ -285,12 +285,12 @@ func (r *GatewayPluginACLResource) Update(ctx context.Context, req resource.Upda
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
-	createACLPlugin := *data.ToSharedCreateACLPlugin()
+	controlPlaneID := data.ControlPlaneID.ValueString()
+	createACLPlugin := data.ToSharedCreateACLPlugin()
 	request := operations.UpdateACLPluginRequest{
-		ControlPlaneID:  controlPlaneID,
 		PluginID:        pluginID,
+		ControlPlaneID:  controlPlaneID,
 		CreateACLPlugin: createACLPlugin,
 	}
 	res, err := r.client.Plugins.UpdateACLPlugin(ctx, request)
@@ -338,11 +338,11 @@ func (r *GatewayPluginACLResource) Delete(ctx context.Context, req resource.Dele
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.DeleteACLPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.DeleteACLPlugin(ctx, request)
 	if err != nil {

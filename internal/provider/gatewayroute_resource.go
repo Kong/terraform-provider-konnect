@@ -6,7 +6,6 @@ import (
 	"context"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
-	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/mapvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -297,9 +296,6 @@ func (r *GatewayRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `A list of SNIs that match this Route when using stream routing. Requires replacement if changed. `,
-				Validators: []validator.List{
-					listvalidator.ValueStringsAre(validators.IsValidJSON()),
-				},
 			},
 			"sources": schema.ListNestedAttribute{
 				Computed: true,

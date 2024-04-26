@@ -229,11 +229,11 @@ func (r *GatewayPluginOpentelemetryDataSource) Read(ctx context.Context, req dat
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.GetOpentelemetryPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.GetOpentelemetryPlugin(ctx, request)
 	if err != nil {

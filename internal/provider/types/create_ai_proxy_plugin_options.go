@@ -4,7 +4,7 @@ package types
 
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
-type Options struct {
+type CreateAIProxyPluginOptions struct {
 	AnthropicVersion  types.String `tfsdk:"anthropic_version"`
 	AzureAPIVersion   types.String `tfsdk:"azure_api_version"`
 	AzureDeploymentID types.String `tfsdk:"azure_deployment_id"`

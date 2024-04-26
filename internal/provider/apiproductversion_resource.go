@@ -65,7 +65,7 @@ func (r *APIProductVersionResource) Schema(ctx context.Context, req resource.Sch
 				Computed:    true,
 				Optional:    true,
 				Default:     booldefault.StaticBool(false),
-				Description: `Indicates if the version of the API product is deprecated. Default: false`,
+				Description: `Indicates if the version of the API product is deprecated. Applies deprecation or removes deprecation from all related portal product versions. This field is deprecated: Use PortalProductVersion.deprecated instead. Default: false`,
 			},
 			"gateway_service": schema.SingleNestedAttribute{
 				Computed: true,

@@ -95,52 +95,6 @@ func (o *CreateResponseTransformerAdvancedPluginService) GetID() *string {
 	return o.ID
 }
 
-type CreateResponseTransformerAdvancedPluginRemove struct {
-	JSON     []string `json:"json,omitempty"`
-	Headers  []string `json:"headers,omitempty"`
-	IfStatus []string `json:"if_status,omitempty"`
-}
-
-func (o *CreateResponseTransformerAdvancedPluginRemove) GetJSON() []string {
-	if o == nil {
-		return nil
-	}
-	return o.JSON
-}
-
-func (o *CreateResponseTransformerAdvancedPluginRemove) GetHeaders() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Headers
-}
-
-func (o *CreateResponseTransformerAdvancedPluginRemove) GetIfStatus() []string {
-	if o == nil {
-		return nil
-	}
-	return o.IfStatus
-}
-
-type CreateResponseTransformerAdvancedPluginRename struct {
-	Headers  []string `json:"headers,omitempty"`
-	IfStatus []string `json:"if_status,omitempty"`
-}
-
-func (o *CreateResponseTransformerAdvancedPluginRename) GetHeaders() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Headers
-}
-
-func (o *CreateResponseTransformerAdvancedPluginRename) GetIfStatus() []string {
-	if o == nil {
-		return nil
-	}
-	return o.IfStatus
-}
-
 type CreateResponseTransformerAdvancedPluginJSONTypes string
 
 const (
@@ -171,48 +125,50 @@ func (e *CreateResponseTransformerAdvancedPluginJSONTypes) UnmarshalJSON(data []
 	}
 }
 
-type CreateResponseTransformerAdvancedPluginReplace struct {
-	// String with which to replace the entire response body.
-	Body      *string                                            `json:"body,omitempty"`
-	JSON      []string                                           `json:"json,omitempty"`
-	JSONTypes []CreateResponseTransformerAdvancedPluginJSONTypes `json:"json_types,omitempty"`
+type CreateResponseTransformerAdvancedPluginAdd struct {
 	Headers   []string                                           `json:"headers,omitempty"`
 	IfStatus  []string                                           `json:"if_status,omitempty"`
+	JSON      []string                                           `json:"json,omitempty"`
+	JSONTypes []CreateResponseTransformerAdvancedPluginJSONTypes `json:"json_types,omitempty"`
 }
 
-func (o *CreateResponseTransformerAdvancedPluginReplace) GetBody() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Body
-}
-
-func (o *CreateResponseTransformerAdvancedPluginReplace) GetJSON() []string {
-	if o == nil {
-		return nil
-	}
-	return o.JSON
-}
-
-func (o *CreateResponseTransformerAdvancedPluginReplace) GetJSONTypes() []CreateResponseTransformerAdvancedPluginJSONTypes {
-	if o == nil {
-		return nil
-	}
-	return o.JSONTypes
-}
-
-func (o *CreateResponseTransformerAdvancedPluginReplace) GetHeaders() []string {
+func (o *CreateResponseTransformerAdvancedPluginAdd) GetHeaders() []string {
 	if o == nil {
 		return nil
 	}
 	return o.Headers
 }
 
-func (o *CreateResponseTransformerAdvancedPluginReplace) GetIfStatus() []string {
+func (o *CreateResponseTransformerAdvancedPluginAdd) GetIfStatus() []string {
 	if o == nil {
 		return nil
 	}
 	return o.IfStatus
+}
+
+func (o *CreateResponseTransformerAdvancedPluginAdd) GetJSON() []string {
+	if o == nil {
+		return nil
+	}
+	return o.JSON
+}
+
+func (o *CreateResponseTransformerAdvancedPluginAdd) GetJSONTypes() []CreateResponseTransformerAdvancedPluginJSONTypes {
+	if o == nil {
+		return nil
+	}
+	return o.JSONTypes
+}
+
+type CreateResponseTransformerAdvancedPluginAllow struct {
+	JSON []string `json:"json,omitempty"`
+}
+
+func (o *CreateResponseTransformerAdvancedPluginAllow) GetJSON() []string {
+	if o == nil {
+		return nil
+	}
+	return o.JSON
 }
 
 type CreateResponseTransformerAdvancedPluginConfigJSONTypes string
@@ -245,90 +201,11 @@ func (e *CreateResponseTransformerAdvancedPluginConfigJSONTypes) UnmarshalJSON(d
 	}
 }
 
-type CreateResponseTransformerAdvancedPluginAdd struct {
-	JSON      []string                                                 `json:"json,omitempty"`
-	JSONTypes []CreateResponseTransformerAdvancedPluginConfigJSONTypes `json:"json_types,omitempty"`
+type CreateResponseTransformerAdvancedPluginAppend struct {
 	Headers   []string                                                 `json:"headers,omitempty"`
 	IfStatus  []string                                                 `json:"if_status,omitempty"`
-}
-
-func (o *CreateResponseTransformerAdvancedPluginAdd) GetJSON() []string {
-	if o == nil {
-		return nil
-	}
-	return o.JSON
-}
-
-func (o *CreateResponseTransformerAdvancedPluginAdd) GetJSONTypes() []CreateResponseTransformerAdvancedPluginConfigJSONTypes {
-	if o == nil {
-		return nil
-	}
-	return o.JSONTypes
-}
-
-func (o *CreateResponseTransformerAdvancedPluginAdd) GetHeaders() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Headers
-}
-
-func (o *CreateResponseTransformerAdvancedPluginAdd) GetIfStatus() []string {
-	if o == nil {
-		return nil
-	}
-	return o.IfStatus
-}
-
-type CreateResponseTransformerAdvancedPluginConfigAppendJSONTypes string
-
-const (
-	CreateResponseTransformerAdvancedPluginConfigAppendJSONTypesBoolean CreateResponseTransformerAdvancedPluginConfigAppendJSONTypes = "boolean"
-	CreateResponseTransformerAdvancedPluginConfigAppendJSONTypesNumber  CreateResponseTransformerAdvancedPluginConfigAppendJSONTypes = "number"
-	CreateResponseTransformerAdvancedPluginConfigAppendJSONTypesString  CreateResponseTransformerAdvancedPluginConfigAppendJSONTypes = "string"
-)
-
-func (e CreateResponseTransformerAdvancedPluginConfigAppendJSONTypes) ToPointer() *CreateResponseTransformerAdvancedPluginConfigAppendJSONTypes {
-	return &e
-}
-
-func (e *CreateResponseTransformerAdvancedPluginConfigAppendJSONTypes) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "boolean":
-		fallthrough
-	case "number":
-		fallthrough
-	case "string":
-		*e = CreateResponseTransformerAdvancedPluginConfigAppendJSONTypes(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for CreateResponseTransformerAdvancedPluginConfigAppendJSONTypes: %v", v)
-	}
-}
-
-type CreateResponseTransformerAdvancedPluginAppend struct {
-	JSON      []string                                                       `json:"json,omitempty"`
-	JSONTypes []CreateResponseTransformerAdvancedPluginConfigAppendJSONTypes `json:"json_types,omitempty"`
-	Headers   []string                                                       `json:"headers,omitempty"`
-	IfStatus  []string                                                       `json:"if_status,omitempty"`
-}
-
-func (o *CreateResponseTransformerAdvancedPluginAppend) GetJSON() []string {
-	if o == nil {
-		return nil
-	}
-	return o.JSON
-}
-
-func (o *CreateResponseTransformerAdvancedPluginAppend) GetJSONTypes() []CreateResponseTransformerAdvancedPluginConfigAppendJSONTypes {
-	if o == nil {
-		return nil
-	}
-	return o.JSONTypes
+	JSON      []string                                                 `json:"json,omitempty"`
+	JSONTypes []CreateResponseTransformerAdvancedPluginConfigJSONTypes `json:"json_types,omitempty"`
 }
 
 func (o *CreateResponseTransformerAdvancedPluginAppend) GetHeaders() []string {
@@ -345,38 +222,161 @@ func (o *CreateResponseTransformerAdvancedPluginAppend) GetIfStatus() []string {
 	return o.IfStatus
 }
 
-type CreateResponseTransformerAdvancedPluginAllow struct {
-	JSON []string `json:"json,omitempty"`
-}
-
-func (o *CreateResponseTransformerAdvancedPluginAllow) GetJSON() []string {
+func (o *CreateResponseTransformerAdvancedPluginAppend) GetJSON() []string {
 	if o == nil {
 		return nil
 	}
 	return o.JSON
 }
 
-type Transform struct {
-	Functions []string `json:"functions,omitempty"`
-	IfStatus  []string `json:"if_status,omitempty"`
-	JSON      []string `json:"json,omitempty"`
-}
-
-func (o *Transform) GetFunctions() []string {
+func (o *CreateResponseTransformerAdvancedPluginAppend) GetJSONTypes() []CreateResponseTransformerAdvancedPluginConfigJSONTypes {
 	if o == nil {
 		return nil
 	}
-	return o.Functions
+	return o.JSONTypes
 }
 
-func (o *Transform) GetIfStatus() []string {
+type CreateResponseTransformerAdvancedPluginRemove struct {
+	Headers  []string `json:"headers,omitempty"`
+	IfStatus []string `json:"if_status,omitempty"`
+	JSON     []string `json:"json,omitempty"`
+}
+
+func (o *CreateResponseTransformerAdvancedPluginRemove) GetHeaders() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Headers
+}
+
+func (o *CreateResponseTransformerAdvancedPluginRemove) GetIfStatus() []string {
 	if o == nil {
 		return nil
 	}
 	return o.IfStatus
 }
 
-func (o *Transform) GetJSON() []string {
+func (o *CreateResponseTransformerAdvancedPluginRemove) GetJSON() []string {
+	if o == nil {
+		return nil
+	}
+	return o.JSON
+}
+
+type CreateResponseTransformerAdvancedPluginRename struct {
+	Headers  []string `json:"headers,omitempty"`
+	IfStatus []string `json:"if_status,omitempty"`
+}
+
+func (o *CreateResponseTransformerAdvancedPluginRename) GetHeaders() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Headers
+}
+
+func (o *CreateResponseTransformerAdvancedPluginRename) GetIfStatus() []string {
+	if o == nil {
+		return nil
+	}
+	return o.IfStatus
+}
+
+type CreateResponseTransformerAdvancedPluginConfigReplaceJSONTypes string
+
+const (
+	CreateResponseTransformerAdvancedPluginConfigReplaceJSONTypesBoolean CreateResponseTransformerAdvancedPluginConfigReplaceJSONTypes = "boolean"
+	CreateResponseTransformerAdvancedPluginConfigReplaceJSONTypesNumber  CreateResponseTransformerAdvancedPluginConfigReplaceJSONTypes = "number"
+	CreateResponseTransformerAdvancedPluginConfigReplaceJSONTypesString  CreateResponseTransformerAdvancedPluginConfigReplaceJSONTypes = "string"
+)
+
+func (e CreateResponseTransformerAdvancedPluginConfigReplaceJSONTypes) ToPointer() *CreateResponseTransformerAdvancedPluginConfigReplaceJSONTypes {
+	return &e
+}
+
+func (e *CreateResponseTransformerAdvancedPluginConfigReplaceJSONTypes) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "boolean":
+		fallthrough
+	case "number":
+		fallthrough
+	case "string":
+		*e = CreateResponseTransformerAdvancedPluginConfigReplaceJSONTypes(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for CreateResponseTransformerAdvancedPluginConfigReplaceJSONTypes: %v", v)
+	}
+}
+
+type CreateResponseTransformerAdvancedPluginReplace struct {
+	// String with which to replace the entire response body.
+	Body      *string                                                         `json:"body,omitempty"`
+	Headers   []string                                                        `json:"headers,omitempty"`
+	IfStatus  []string                                                        `json:"if_status,omitempty"`
+	JSON      []string                                                        `json:"json,omitempty"`
+	JSONTypes []CreateResponseTransformerAdvancedPluginConfigReplaceJSONTypes `json:"json_types,omitempty"`
+}
+
+func (o *CreateResponseTransformerAdvancedPluginReplace) GetBody() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Body
+}
+
+func (o *CreateResponseTransformerAdvancedPluginReplace) GetHeaders() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Headers
+}
+
+func (o *CreateResponseTransformerAdvancedPluginReplace) GetIfStatus() []string {
+	if o == nil {
+		return nil
+	}
+	return o.IfStatus
+}
+
+func (o *CreateResponseTransformerAdvancedPluginReplace) GetJSON() []string {
+	if o == nil {
+		return nil
+	}
+	return o.JSON
+}
+
+func (o *CreateResponseTransformerAdvancedPluginReplace) GetJSONTypes() []CreateResponseTransformerAdvancedPluginConfigReplaceJSONTypes {
+	if o == nil {
+		return nil
+	}
+	return o.JSONTypes
+}
+
+type CreateResponseTransformerAdvancedPluginTransform struct {
+	Functions []string `json:"functions,omitempty"`
+	IfStatus  []string `json:"if_status,omitempty"`
+	JSON      []string `json:"json,omitempty"`
+}
+
+func (o *CreateResponseTransformerAdvancedPluginTransform) GetFunctions() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Functions
+}
+
+func (o *CreateResponseTransformerAdvancedPluginTransform) GetIfStatus() []string {
+	if o == nil {
+		return nil
+	}
+	return o.IfStatus
+}
+
+func (o *CreateResponseTransformerAdvancedPluginTransform) GetJSON() []string {
 	if o == nil {
 		return nil
 	}
@@ -384,15 +384,15 @@ func (o *Transform) GetJSON() []string {
 }
 
 type CreateResponseTransformerAdvancedPluginConfig struct {
-	Remove    *CreateResponseTransformerAdvancedPluginRemove  `json:"remove,omitempty"`
-	Rename    *CreateResponseTransformerAdvancedPluginRename  `json:"rename,omitempty"`
-	Replace   *CreateResponseTransformerAdvancedPluginReplace `json:"replace,omitempty"`
-	Add       *CreateResponseTransformerAdvancedPluginAdd     `json:"add,omitempty"`
-	Append    *CreateResponseTransformerAdvancedPluginAppend  `json:"append,omitempty"`
-	Allow     *CreateResponseTransformerAdvancedPluginAllow   `json:"allow,omitempty"`
-	Transform *Transform                                      `json:"transform,omitempty"`
+	Add    *CreateResponseTransformerAdvancedPluginAdd    `json:"add,omitempty"`
+	Allow  *CreateResponseTransformerAdvancedPluginAllow  `json:"allow,omitempty"`
+	Append *CreateResponseTransformerAdvancedPluginAppend `json:"append,omitempty"`
 	// Whether dots (for example, `customers.info.phone`) should be treated as part of a property name or used to descend into nested JSON objects..
-	DotsInKeys *bool `default:"true" json:"dots_in_keys"`
+	DotsInKeys *bool                                             `default:"true" json:"dots_in_keys"`
+	Remove     *CreateResponseTransformerAdvancedPluginRemove    `json:"remove,omitempty"`
+	Rename     *CreateResponseTransformerAdvancedPluginRename    `json:"rename,omitempty"`
+	Replace    *CreateResponseTransformerAdvancedPluginReplace   `json:"replace,omitempty"`
+	Transform  *CreateResponseTransformerAdvancedPluginTransform `json:"transform,omitempty"`
 }
 
 func (c CreateResponseTransformerAdvancedPluginConfig) MarshalJSON() ([]byte, error) {
@@ -404,6 +404,34 @@ func (c *CreateResponseTransformerAdvancedPluginConfig) UnmarshalJSON(data []byt
 		return err
 	}
 	return nil
+}
+
+func (o *CreateResponseTransformerAdvancedPluginConfig) GetAdd() *CreateResponseTransformerAdvancedPluginAdd {
+	if o == nil {
+		return nil
+	}
+	return o.Add
+}
+
+func (o *CreateResponseTransformerAdvancedPluginConfig) GetAllow() *CreateResponseTransformerAdvancedPluginAllow {
+	if o == nil {
+		return nil
+	}
+	return o.Allow
+}
+
+func (o *CreateResponseTransformerAdvancedPluginConfig) GetAppend() *CreateResponseTransformerAdvancedPluginAppend {
+	if o == nil {
+		return nil
+	}
+	return o.Append
+}
+
+func (o *CreateResponseTransformerAdvancedPluginConfig) GetDotsInKeys() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.DotsInKeys
 }
 
 func (o *CreateResponseTransformerAdvancedPluginConfig) GetRemove() *CreateResponseTransformerAdvancedPluginRemove {
@@ -427,39 +455,11 @@ func (o *CreateResponseTransformerAdvancedPluginConfig) GetReplace() *CreateResp
 	return o.Replace
 }
 
-func (o *CreateResponseTransformerAdvancedPluginConfig) GetAdd() *CreateResponseTransformerAdvancedPluginAdd {
-	if o == nil {
-		return nil
-	}
-	return o.Add
-}
-
-func (o *CreateResponseTransformerAdvancedPluginConfig) GetAppend() *CreateResponseTransformerAdvancedPluginAppend {
-	if o == nil {
-		return nil
-	}
-	return o.Append
-}
-
-func (o *CreateResponseTransformerAdvancedPluginConfig) GetAllow() *CreateResponseTransformerAdvancedPluginAllow {
-	if o == nil {
-		return nil
-	}
-	return o.Allow
-}
-
-func (o *CreateResponseTransformerAdvancedPluginConfig) GetTransform() *Transform {
+func (o *CreateResponseTransformerAdvancedPluginConfig) GetTransform() *CreateResponseTransformerAdvancedPluginTransform {
 	if o == nil {
 		return nil
 	}
 	return o.Transform
-}
-
-func (o *CreateResponseTransformerAdvancedPluginConfig) GetDotsInKeys() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.DotsInKeys
 }
 
 // CreateResponseTransformerAdvancedPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.

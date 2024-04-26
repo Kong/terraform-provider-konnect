@@ -4,7 +4,7 @@ package types
 
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
-type RequestJqProgramOptions struct {
+type CreateJQPluginRequestJQProgramOptions struct {
 	ASCIIOutput   types.Bool `tfsdk:"ascii_output"`
 	CompactOutput types.Bool `tfsdk:"compact_output"`
 	JoinOutput    types.Bool `tfsdk:"join_output"`

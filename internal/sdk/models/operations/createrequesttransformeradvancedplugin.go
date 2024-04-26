@@ -9,9 +9,8 @@ import (
 
 type CreateRequesttransformeradvancedPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	// Create a new RequestTransformerAdvanced plugin
-	CreateRequestTransformerAdvancedPlugin shared.CreateRequestTransformerAdvancedPlugin `request:"mediaType=application/json"`
+	ControlPlaneID                         string                                         `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	CreateRequestTransformerAdvancedPlugin *shared.CreateRequestTransformerAdvancedPlugin `request:"mediaType=application/json"`
 }
 
 func (o *CreateRequesttransformeradvancedPluginRequest) GetControlPlaneID() string {
@@ -21,9 +20,9 @@ func (o *CreateRequesttransformeradvancedPluginRequest) GetControlPlaneID() stri
 	return o.ControlPlaneID
 }
 
-func (o *CreateRequesttransformeradvancedPluginRequest) GetCreateRequestTransformerAdvancedPlugin() shared.CreateRequestTransformerAdvancedPlugin {
+func (o *CreateRequesttransformeradvancedPluginRequest) GetCreateRequestTransformerAdvancedPlugin() *shared.CreateRequestTransformerAdvancedPlugin {
 	if o == nil {
-		return shared.CreateRequestTransformerAdvancedPlugin{}
+		return nil
 	}
 	return o.CreateRequestTransformerAdvancedPlugin
 }
@@ -35,7 +34,7 @@ type CreateRequesttransformeradvancedPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successfully created Plugin
+	// RequestTransformerAdvanced plugin
 	RequestTransformerAdvancedPlugin *shared.RequestTransformerAdvancedPlugin
 	// Unauthorized
 	UnauthorizedError *shared.UnauthorizedError

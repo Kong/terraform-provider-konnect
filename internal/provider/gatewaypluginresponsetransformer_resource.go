@@ -257,7 +257,7 @@ func (r *GatewayPluginResponseTransformerResource) Create(ctx context.Context, r
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	createResponseTransformerPlugin := *data.ToSharedCreateResponseTransformerPlugin()
+	createResponseTransformerPlugin := data.ToSharedCreateResponseTransformerPlugin()
 	request := operations.CreateResponsetransformerPluginRequest{
 		ControlPlaneID:                  controlPlaneID,
 		CreateResponseTransformerPlugin: createResponseTransformerPlugin,
@@ -307,11 +307,11 @@ func (r *GatewayPluginResponseTransformerResource) Read(ctx context.Context, req
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.GetResponsetransformerPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.GetResponsetransformerPlugin(ctx, request)
 	if err != nil {
@@ -357,12 +357,12 @@ func (r *GatewayPluginResponseTransformerResource) Update(ctx context.Context, r
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
-	createResponseTransformerPlugin := *data.ToSharedCreateResponseTransformerPlugin()
+	controlPlaneID := data.ControlPlaneID.ValueString()
+	createResponseTransformerPlugin := data.ToSharedCreateResponseTransformerPlugin()
 	request := operations.UpdateResponsetransformerPluginRequest{
-		ControlPlaneID:                  controlPlaneID,
 		PluginID:                        pluginID,
+		ControlPlaneID:                  controlPlaneID,
 		CreateResponseTransformerPlugin: createResponseTransformerPlugin,
 	}
 	res, err := r.client.Plugins.UpdateResponsetransformerPlugin(ctx, request)
@@ -410,11 +410,11 @@ func (r *GatewayPluginResponseTransformerResource) Delete(ctx context.Context, r
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.DeleteResponsetransformerPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.DeleteResponsetransformerPlugin(ctx, request)
 	if err != nil {

@@ -95,20 +95,48 @@ func (o *AWSLambdaPluginService) GetID() *string {
 	return o.ID
 }
 
-// AWSLambdaPluginInvocationType - The InvocationType to use when invoking the function. Available types are RequestResponse, Event, DryRun.
-type AWSLambdaPluginInvocationType string
+// AwsImdsProtocolVersion - Identifier to select the IMDS protocol version to use: `v1` or `v2`.
+type AwsImdsProtocolVersion string
 
 const (
-	AWSLambdaPluginInvocationTypeRequestResponse AWSLambdaPluginInvocationType = "RequestResponse"
-	AWSLambdaPluginInvocationTypeEvent           AWSLambdaPluginInvocationType = "Event"
-	AWSLambdaPluginInvocationTypeDryRun          AWSLambdaPluginInvocationType = "DryRun"
+	AwsImdsProtocolVersionV1 AwsImdsProtocolVersion = "v1"
+	AwsImdsProtocolVersionV2 AwsImdsProtocolVersion = "v2"
 )
 
-func (e AWSLambdaPluginInvocationType) ToPointer() *AWSLambdaPluginInvocationType {
+func (e AwsImdsProtocolVersion) ToPointer() *AwsImdsProtocolVersion {
 	return &e
 }
 
-func (e *AWSLambdaPluginInvocationType) UnmarshalJSON(data []byte) error {
+func (e *AwsImdsProtocolVersion) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "v1":
+		fallthrough
+	case "v2":
+		*e = AwsImdsProtocolVersion(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for AwsImdsProtocolVersion: %v", v)
+	}
+}
+
+// The InvocationType to use when invoking the function. Available types are RequestResponse, Event, DryRun.
+type InvocationType string
+
+const (
+	InvocationTypeRequestResponse InvocationType = "RequestResponse"
+	InvocationTypeEvent           InvocationType = "Event"
+	InvocationTypeDryRun          InvocationType = "DryRun"
+)
+
+func (e InvocationType) ToPointer() *InvocationType {
+	return &e
+}
+
+func (e *InvocationType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -119,26 +147,26 @@ func (e *AWSLambdaPluginInvocationType) UnmarshalJSON(data []byte) error {
 	case "Event":
 		fallthrough
 	case "DryRun":
-		*e = AWSLambdaPluginInvocationType(v)
+		*e = InvocationType(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for AWSLambdaPluginInvocationType: %v", v)
+		return fmt.Errorf("invalid value for InvocationType: %v", v)
 	}
 }
 
-// AWSLambdaPluginLogType - The LogType to use when invoking the function. By default, None and Tail are supported.
-type AWSLambdaPluginLogType string
+// The LogType to use when invoking the function. By default, None and Tail are supported.
+type LogType string
 
 const (
-	AWSLambdaPluginLogTypeTail AWSLambdaPluginLogType = "Tail"
-	AWSLambdaPluginLogTypeNone AWSLambdaPluginLogType = "None"
+	LogTypeTail LogType = "Tail"
+	LogTypeNone LogType = "None"
 )
 
-func (e AWSLambdaPluginLogType) ToPointer() *AWSLambdaPluginLogType {
+func (e LogType) ToPointer() *LogType {
 	return &e
 }
 
-func (e *AWSLambdaPluginLogType) UnmarshalJSON(data []byte) error {
+func (e *LogType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -147,91 +175,63 @@ func (e *AWSLambdaPluginLogType) UnmarshalJSON(data []byte) error {
 	case "Tail":
 		fallthrough
 	case "None":
-		*e = AWSLambdaPluginLogType(v)
+		*e = LogType(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for AWSLambdaPluginLogType: %v", v)
-	}
-}
-
-// AWSLambdaPluginAWSImdsProtocolVersion - Identifier to select the IMDS protocol version to use: `v1` or `v2`.
-type AWSLambdaPluginAWSImdsProtocolVersion string
-
-const (
-	AWSLambdaPluginAWSImdsProtocolVersionV1 AWSLambdaPluginAWSImdsProtocolVersion = "v1"
-	AWSLambdaPluginAWSImdsProtocolVersionV2 AWSLambdaPluginAWSImdsProtocolVersion = "v2"
-)
-
-func (e AWSLambdaPluginAWSImdsProtocolVersion) ToPointer() *AWSLambdaPluginAWSImdsProtocolVersion {
-	return &e
-}
-
-func (e *AWSLambdaPluginAWSImdsProtocolVersion) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "v1":
-		fallthrough
-	case "v2":
-		*e = AWSLambdaPluginAWSImdsProtocolVersion(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AWSLambdaPluginAWSImdsProtocolVersion: %v", v)
+		return fmt.Errorf("invalid value for LogType: %v", v)
 	}
 }
 
 type AWSLambdaPluginConfig struct {
-	// An optional timeout in milliseconds when invoking the function.
-	Timeout *float64 `default:"60000" json:"timeout"`
-	// An optional value in milliseconds that defines how long an idle connection lives before being closed.
-	Keepalive *float64 `default:"60000" json:"keepalive"`
-	// The AWS key credential to be used when invoking the function.
-	AwsKey *string `json:"aws_key,omitempty"`
-	// The AWS secret credential to be used when invoking the function.
-	AwsSecret *string `json:"aws_secret,omitempty"`
 	// The target AWS IAM role ARN used to invoke the Lambda function.
 	AwsAssumeRoleArn *string `json:"aws_assume_role_arn,omitempty"`
-	// The identifier of the assumed role session.
-	AwsRoleSessionName *string `default:"kong" json:"aws_role_session_name"`
+	// Identifier to select the IMDS protocol version to use: `v1` or `v2`.
+	AwsImdsProtocolVersion *AwsImdsProtocolVersion `default:"v1" json:"aws_imds_protocol_version"`
+	// The AWS key credential to be used when invoking the function.
+	AwsKey *string `json:"aws_key,omitempty"`
 	// A string representing a host name, such as example.com.
 	AwsRegion *string `json:"aws_region,omitempty"`
-	// The AWS Lambda function name to invoke.
-	FunctionName *string `json:"function_name,omitempty"`
-	// The qualifier to use when invoking the function.
-	Qualifier *string `json:"qualifier,omitempty"`
-	// The InvocationType to use when invoking the function. Available types are RequestResponse, Event, DryRun.
-	InvocationType *AWSLambdaPluginInvocationType `default:"RequestResponse" json:"invocation_type"`
-	// The LogType to use when invoking the function. By default, None and Tail are supported.
-	LogType *AWSLambdaPluginLogType `default:"Tail" json:"log_type"`
-	// A string representing a host name, such as example.com.
-	Host *string `json:"host,omitempty"`
-	// An integer representing a port number between 0 and 65535, inclusive.
-	Port         *int64 `default:"443" json:"port"`
-	DisableHTTPS *bool  `default:"false" json:"disable_https"`
-	// The response status code to use (instead of the default 200, 202, or 204) in the case of an Unhandled Function Error.
-	UnhandledStatus *int64 `json:"unhandled_status,omitempty"`
+	// The identifier of the assumed role session.
+	AwsRoleSessionName *string `default:"kong" json:"aws_role_session_name"`
+	// The AWS secret credential to be used when invoking the function.
+	AwsSecret *string `json:"aws_secret,omitempty"`
+	// An optional value that defines whether the plugin should wrap requests into the Amazon API gateway.
+	AwsgatewayCompatible *bool `default:"false" json:"awsgateway_compatible"`
+	// An optional value that Base64-encodes the request body.
+	Base64EncodeBody *bool `default:"true" json:"base64_encode_body"`
+	DisableHTTPS     *bool `default:"false" json:"disable_https"`
+	// An optional value that defines whether the request body is sent in the request_body field of the JSON-encoded request. If the body arguments can be parsed, they are sent in the separate request_body_args field of the request.
+	ForwardRequestBody *bool `default:"false" json:"forward_request_body"`
+	// An optional value that defines whether the original HTTP request headers are sent as a map in the request_headers field of the JSON-encoded request.
+	ForwardRequestHeaders *bool `default:"false" json:"forward_request_headers"`
 	// An optional value that defines whether the original HTTP request method verb is sent in the request_method field of the JSON-encoded request.
 	ForwardRequestMethod *bool `default:"false" json:"forward_request_method"`
 	// An optional value that defines whether the original HTTP request URI is sent in the request_uri field of the JSON-encoded request.
 	ForwardRequestURI *bool `default:"false" json:"forward_request_uri"`
-	// An optional value that defines whether the original HTTP request headers are sent as a map in the request_headers field of the JSON-encoded request.
-	ForwardRequestHeaders *bool `default:"false" json:"forward_request_headers"`
-	// An optional value that defines whether the request body is sent in the request_body field of the JSON-encoded request. If the body arguments can be parsed, they are sent in the separate request_body_args field of the request.
-	ForwardRequestBody *bool `default:"false" json:"forward_request_body"`
+	// The AWS Lambda function name to invoke.
+	FunctionName *string `json:"function_name,omitempty"`
+	// A string representing a host name, such as example.com.
+	Host *string `json:"host,omitempty"`
+	// The InvocationType to use when invoking the function. Available types are RequestResponse, Event, DryRun.
+	InvocationType *InvocationType `default:"RequestResponse" json:"invocation_type"`
 	// An optional value that defines whether the response format to receive from the Lambda to this format.
 	IsProxyIntegration *bool `default:"false" json:"is_proxy_integration"`
-	// An optional value that defines whether the plugin should wrap requests into the Amazon API gateway.
-	AwsgatewayCompatible *bool `default:"false" json:"awsgateway_compatible"`
+	// An optional value in milliseconds that defines how long an idle connection lives before being closed.
+	Keepalive *float64 `default:"60000" json:"keepalive"`
+	// The LogType to use when invoking the function. By default, None and Tail are supported.
+	LogType *LogType `default:"Tail" json:"log_type"`
+	// An integer representing a port number between 0 and 65535, inclusive.
+	Port *int64 `default:"443" json:"port"`
 	// A string representing a URL, such as https://example.com/path/to/resource?q=search.
 	ProxyURL *string `json:"proxy_url,omitempty"`
+	// The qualifier to use when invoking the function.
+	Qualifier *string `json:"qualifier,omitempty"`
 	// An optional value that defines whether Kong should send large bodies that are buffered to disk
 	SkipLargeBodies *bool `default:"true" json:"skip_large_bodies"`
-	// An optional value that Base64-encodes the request body.
-	Base64EncodeBody *bool `default:"true" json:"base64_encode_body"`
-	// Identifier to select the IMDS protocol version to use: `v1` or `v2`.
-	AwsImdsProtocolVersion *AWSLambdaPluginAWSImdsProtocolVersion `default:"v1" json:"aws_imds_protocol_version"`
+	// An optional timeout in milliseconds when invoking the function.
+	Timeout *float64 `default:"60000" json:"timeout"`
+	// The response status code to use (instead of the default 200, 202, or 204) in the case of an Unhandled Function Error.
+	UnhandledStatus *int64 `json:"unhandled_status,omitempty"`
 }
 
 func (a AWSLambdaPluginConfig) MarshalJSON() ([]byte, error) {
@@ -245,18 +245,18 @@ func (a *AWSLambdaPluginConfig) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *AWSLambdaPluginConfig) GetTimeout() *float64 {
+func (o *AWSLambdaPluginConfig) GetAwsAssumeRoleArn() *string {
 	if o == nil {
 		return nil
 	}
-	return o.Timeout
+	return o.AwsAssumeRoleArn
 }
 
-func (o *AWSLambdaPluginConfig) GetKeepalive() *float64 {
+func (o *AWSLambdaPluginConfig) GetAwsImdsProtocolVersion() *AwsImdsProtocolVersion {
 	if o == nil {
 		return nil
 	}
-	return o.Keepalive
+	return o.AwsImdsProtocolVersion
 }
 
 func (o *AWSLambdaPluginConfig) GetAwsKey() *string {
@@ -266,18 +266,11 @@ func (o *AWSLambdaPluginConfig) GetAwsKey() *string {
 	return o.AwsKey
 }
 
-func (o *AWSLambdaPluginConfig) GetAwsSecret() *string {
+func (o *AWSLambdaPluginConfig) GetAwsRegion() *string {
 	if o == nil {
 		return nil
 	}
-	return o.AwsSecret
-}
-
-func (o *AWSLambdaPluginConfig) GetAwsAssumeRoleArn() *string {
-	if o == nil {
-		return nil
-	}
-	return o.AwsAssumeRoleArn
+	return o.AwsRegion
 }
 
 func (o *AWSLambdaPluginConfig) GetAwsRoleSessionName() *string {
@@ -287,53 +280,25 @@ func (o *AWSLambdaPluginConfig) GetAwsRoleSessionName() *string {
 	return o.AwsRoleSessionName
 }
 
-func (o *AWSLambdaPluginConfig) GetAwsRegion() *string {
+func (o *AWSLambdaPluginConfig) GetAwsSecret() *string {
 	if o == nil {
 		return nil
 	}
-	return o.AwsRegion
+	return o.AwsSecret
 }
 
-func (o *AWSLambdaPluginConfig) GetFunctionName() *string {
+func (o *AWSLambdaPluginConfig) GetAwsgatewayCompatible() *bool {
 	if o == nil {
 		return nil
 	}
-	return o.FunctionName
+	return o.AwsgatewayCompatible
 }
 
-func (o *AWSLambdaPluginConfig) GetQualifier() *string {
+func (o *AWSLambdaPluginConfig) GetBase64EncodeBody() *bool {
 	if o == nil {
 		return nil
 	}
-	return o.Qualifier
-}
-
-func (o *AWSLambdaPluginConfig) GetInvocationType() *AWSLambdaPluginInvocationType {
-	if o == nil {
-		return nil
-	}
-	return o.InvocationType
-}
-
-func (o *AWSLambdaPluginConfig) GetLogType() *AWSLambdaPluginLogType {
-	if o == nil {
-		return nil
-	}
-	return o.LogType
-}
-
-func (o *AWSLambdaPluginConfig) GetHost() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Host
-}
-
-func (o *AWSLambdaPluginConfig) GetPort() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.Port
+	return o.Base64EncodeBody
 }
 
 func (o *AWSLambdaPluginConfig) GetDisableHTTPS() *bool {
@@ -343,11 +308,18 @@ func (o *AWSLambdaPluginConfig) GetDisableHTTPS() *bool {
 	return o.DisableHTTPS
 }
 
-func (o *AWSLambdaPluginConfig) GetUnhandledStatus() *int64 {
+func (o *AWSLambdaPluginConfig) GetForwardRequestBody() *bool {
 	if o == nil {
 		return nil
 	}
-	return o.UnhandledStatus
+	return o.ForwardRequestBody
+}
+
+func (o *AWSLambdaPluginConfig) GetForwardRequestHeaders() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ForwardRequestHeaders
 }
 
 func (o *AWSLambdaPluginConfig) GetForwardRequestMethod() *bool {
@@ -364,18 +336,25 @@ func (o *AWSLambdaPluginConfig) GetForwardRequestURI() *bool {
 	return o.ForwardRequestURI
 }
 
-func (o *AWSLambdaPluginConfig) GetForwardRequestHeaders() *bool {
+func (o *AWSLambdaPluginConfig) GetFunctionName() *string {
 	if o == nil {
 		return nil
 	}
-	return o.ForwardRequestHeaders
+	return o.FunctionName
 }
 
-func (o *AWSLambdaPluginConfig) GetForwardRequestBody() *bool {
+func (o *AWSLambdaPluginConfig) GetHost() *string {
 	if o == nil {
 		return nil
 	}
-	return o.ForwardRequestBody
+	return o.Host
+}
+
+func (o *AWSLambdaPluginConfig) GetInvocationType() *InvocationType {
+	if o == nil {
+		return nil
+	}
+	return o.InvocationType
 }
 
 func (o *AWSLambdaPluginConfig) GetIsProxyIntegration() *bool {
@@ -385,11 +364,25 @@ func (o *AWSLambdaPluginConfig) GetIsProxyIntegration() *bool {
 	return o.IsProxyIntegration
 }
 
-func (o *AWSLambdaPluginConfig) GetAwsgatewayCompatible() *bool {
+func (o *AWSLambdaPluginConfig) GetKeepalive() *float64 {
 	if o == nil {
 		return nil
 	}
-	return o.AwsgatewayCompatible
+	return o.Keepalive
+}
+
+func (o *AWSLambdaPluginConfig) GetLogType() *LogType {
+	if o == nil {
+		return nil
+	}
+	return o.LogType
+}
+
+func (o *AWSLambdaPluginConfig) GetPort() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.Port
 }
 
 func (o *AWSLambdaPluginConfig) GetProxyURL() *string {
@@ -399,6 +392,13 @@ func (o *AWSLambdaPluginConfig) GetProxyURL() *string {
 	return o.ProxyURL
 }
 
+func (o *AWSLambdaPluginConfig) GetQualifier() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Qualifier
+}
+
 func (o *AWSLambdaPluginConfig) GetSkipLargeBodies() *bool {
 	if o == nil {
 		return nil
@@ -406,18 +406,18 @@ func (o *AWSLambdaPluginConfig) GetSkipLargeBodies() *bool {
 	return o.SkipLargeBodies
 }
 
-func (o *AWSLambdaPluginConfig) GetBase64EncodeBody() *bool {
+func (o *AWSLambdaPluginConfig) GetTimeout() *float64 {
 	if o == nil {
 		return nil
 	}
-	return o.Base64EncodeBody
+	return o.Timeout
 }
 
-func (o *AWSLambdaPluginConfig) GetAwsImdsProtocolVersion() *AWSLambdaPluginAWSImdsProtocolVersion {
+func (o *AWSLambdaPluginConfig) GetUnhandledStatus() *int64 {
 	if o == nil {
 		return nil
 	}
-	return o.AwsImdsProtocolVersion
+	return o.UnhandledStatus
 }
 
 // AWSLambdaPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.

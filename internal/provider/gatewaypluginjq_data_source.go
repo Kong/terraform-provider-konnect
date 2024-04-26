@@ -210,11 +210,11 @@ func (r *GatewayPluginJQDataSource) Read(ctx context.Context, req datasource.Rea
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.GetJqPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.GetJqPlugin(ctx, request)
 	if err != nil {

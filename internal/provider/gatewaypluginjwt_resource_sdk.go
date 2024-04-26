@@ -60,13 +60,23 @@ func (r *GatewayPluginJWTResourceModel) ToSharedCreateJWTPlugin() *shared.Create
 			ID: id2,
 		}
 	}
-	var uriParamNames []string = []string{}
-	for _, uriParamNamesItem := range r.Config.URIParamNames {
-		uriParamNames = append(uriParamNames, uriParamNamesItem.ValueString())
+	anonymous := new(string)
+	if !r.Config.Anonymous.IsUnknown() && !r.Config.Anonymous.IsNull() {
+		*anonymous = r.Config.Anonymous.ValueString()
+	} else {
+		anonymous = nil
+	}
+	var claimsToVerify []shared.CreateJWTPluginClaimsToVerify = []shared.CreateJWTPluginClaimsToVerify{}
+	for _, claimsToVerifyItem := range r.Config.ClaimsToVerify {
+		claimsToVerify = append(claimsToVerify, shared.CreateJWTPluginClaimsToVerify(claimsToVerifyItem.ValueString()))
 	}
 	var cookieNames []string = []string{}
 	for _, cookieNamesItem := range r.Config.CookieNames {
 		cookieNames = append(cookieNames, cookieNamesItem.ValueString())
+	}
+	var headerNames []string = []string{}
+	for _, headerNamesItem := range r.Config.HeaderNames {
+		headerNames = append(headerNames, headerNamesItem.ValueString())
 	}
 	keyClaimName := new(string)
 	if !r.Config.KeyClaimName.IsUnknown() && !r.Config.KeyClaimName.IsNull() {
@@ -74,21 +84,11 @@ func (r *GatewayPluginJWTResourceModel) ToSharedCreateJWTPlugin() *shared.Create
 	} else {
 		keyClaimName = nil
 	}
-	secretIsBase64 := new(bool)
-	if !r.Config.SecretIsBase64.IsUnknown() && !r.Config.SecretIsBase64.IsNull() {
-		*secretIsBase64 = r.Config.SecretIsBase64.ValueBool()
+	maximumExpiration := new(float64)
+	if !r.Config.MaximumExpiration.IsUnknown() && !r.Config.MaximumExpiration.IsNull() {
+		*maximumExpiration, _ = r.Config.MaximumExpiration.ValueBigFloat().Float64()
 	} else {
-		secretIsBase64 = nil
-	}
-	var claimsToVerify []shared.ClaimsToVerify = []shared.ClaimsToVerify{}
-	for _, claimsToVerifyItem := range r.Config.ClaimsToVerify {
-		claimsToVerify = append(claimsToVerify, shared.ClaimsToVerify(claimsToVerifyItem.ValueString()))
-	}
-	anonymous := new(string)
-	if !r.Config.Anonymous.IsUnknown() && !r.Config.Anonymous.IsNull() {
-		*anonymous = r.Config.Anonymous.ValueString()
-	} else {
-		anonymous = nil
+		maximumExpiration = nil
 	}
 	runOnPreflight := new(bool)
 	if !r.Config.RunOnPreflight.IsUnknown() && !r.Config.RunOnPreflight.IsNull() {
@@ -96,26 +96,26 @@ func (r *GatewayPluginJWTResourceModel) ToSharedCreateJWTPlugin() *shared.Create
 	} else {
 		runOnPreflight = nil
 	}
-	maximumExpiration := new(float64)
-	if !r.Config.MaximumExpiration.IsUnknown() && !r.Config.MaximumExpiration.IsNull() {
-		*maximumExpiration, _ = r.Config.MaximumExpiration.ValueBigFloat().Float64()
+	secretIsBase64 := new(bool)
+	if !r.Config.SecretIsBase64.IsUnknown() && !r.Config.SecretIsBase64.IsNull() {
+		*secretIsBase64 = r.Config.SecretIsBase64.ValueBool()
 	} else {
-		maximumExpiration = nil
+		secretIsBase64 = nil
 	}
-	var headerNames []string = []string{}
-	for _, headerNamesItem := range r.Config.HeaderNames {
-		headerNames = append(headerNames, headerNamesItem.ValueString())
+	var uriParamNames []string = []string{}
+	for _, uriParamNamesItem := range r.Config.URIParamNames {
+		uriParamNames = append(uriParamNames, uriParamNamesItem.ValueString())
 	}
 	config := shared.CreateJWTPluginConfig{
-		URIParamNames:     uriParamNames,
-		CookieNames:       cookieNames,
-		KeyClaimName:      keyClaimName,
-		SecretIsBase64:    secretIsBase64,
-		ClaimsToVerify:    claimsToVerify,
 		Anonymous:         anonymous,
-		RunOnPreflight:    runOnPreflight,
-		MaximumExpiration: maximumExpiration,
+		ClaimsToVerify:    claimsToVerify,
+		CookieNames:       cookieNames,
 		HeaderNames:       headerNames,
+		KeyClaimName:      keyClaimName,
+		MaximumExpiration: maximumExpiration,
+		RunOnPreflight:    runOnPreflight,
+		SecretIsBase64:    secretIsBase64,
+		URIParamNames:     uriParamNames,
 	}
 	out := shared.CreateJWTPlugin{
 		Enabled:   enabled,

@@ -8,17 +8,10 @@ import (
 )
 
 type DeleteOauth2PluginRequest struct {
-	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
-}
-
-func (o *DeleteOauth2PluginRequest) GetControlPlaneID() string {
-	if o == nil {
-		return ""
-	}
-	return o.ControlPlaneID
+	// The UUID of your control plane. This variable is available in the Konnect manager.
+	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
 func (o *DeleteOauth2PluginRequest) GetPluginID() string {
@@ -26,6 +19,13 @@ func (o *DeleteOauth2PluginRequest) GetPluginID() string {
 		return ""
 	}
 	return o.PluginID
+}
+
+func (o *DeleteOauth2PluginRequest) GetControlPlaneID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ControlPlaneID
 }
 
 type DeleteOauth2PluginResponse struct {

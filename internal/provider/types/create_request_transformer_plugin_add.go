@@ -4,7 +4,7 @@ package types
 
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
-type Add struct {
+type CreateRequestTransformerPluginAdd struct {
 	Body        []types.String `tfsdk:"body"`
 	Headers     []types.String `tfsdk:"headers"`
 	Querystring []types.String `tfsdk:"querystring"`

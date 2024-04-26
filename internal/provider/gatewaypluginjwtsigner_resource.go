@@ -606,7 +606,7 @@ func (r *GatewayPluginJWTSignerResource) Create(ctx context.Context, req resourc
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	createJWTSignerPlugin := *data.ToSharedCreateJWTSignerPlugin()
+	createJWTSignerPlugin := data.ToSharedCreateJWTSignerPlugin()
 	request := operations.CreateJwtsignerPluginRequest{
 		ControlPlaneID:        controlPlaneID,
 		CreateJWTSignerPlugin: createJWTSignerPlugin,
@@ -656,11 +656,11 @@ func (r *GatewayPluginJWTSignerResource) Read(ctx context.Context, req resource.
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.GetJwtsignerPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.GetJwtsignerPlugin(ctx, request)
 	if err != nil {
@@ -706,12 +706,12 @@ func (r *GatewayPluginJWTSignerResource) Update(ctx context.Context, req resourc
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
-	createJWTSignerPlugin := *data.ToSharedCreateJWTSignerPlugin()
+	controlPlaneID := data.ControlPlaneID.ValueString()
+	createJWTSignerPlugin := data.ToSharedCreateJWTSignerPlugin()
 	request := operations.UpdateJwtsignerPluginRequest{
-		ControlPlaneID:        controlPlaneID,
 		PluginID:              pluginID,
+		ControlPlaneID:        controlPlaneID,
 		CreateJWTSignerPlugin: createJWTSignerPlugin,
 	}
 	res, err := r.client.Plugins.UpdateJwtsignerPlugin(ctx, request)
@@ -759,11 +759,11 @@ func (r *GatewayPluginJWTSignerResource) Delete(ctx context.Context, req resourc
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.DeleteJwtsignerPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.DeleteJwtsignerPlugin(ctx, request)
 	if err != nil {

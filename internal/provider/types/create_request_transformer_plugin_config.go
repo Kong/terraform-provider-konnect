@@ -5,10 +5,10 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type CreateRequestTransformerPluginConfig struct {
-	Add        *Add         `tfsdk:"add"`
-	Append     *Add         `tfsdk:"append"`
-	HTTPMethod types.String `tfsdk:"http_method"`
-	Remove     *Add         `tfsdk:"remove"`
-	Rename     *Add         `tfsdk:"rename"`
-	Replace    *Replace     `tfsdk:"replace"`
+	Add        *CreateRequestTransformerPluginAdd     `tfsdk:"add"`
+	Append     *CreateRequestTransformerPluginAdd     `tfsdk:"append"`
+	HTTPMethod types.String                           `tfsdk:"http_method"`
+	Remove     *CreateRequestTransformerPluginAdd     `tfsdk:"remove"`
+	Rename     *CreateRequestTransformerPluginAdd     `tfsdk:"rename"`
+	Replace    *CreateRequestTransformerPluginReplace `tfsdk:"replace"`
 }

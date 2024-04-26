@@ -8,19 +8,11 @@ import (
 )
 
 type UpdatePrefunctionPluginRequest struct {
-	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
-	// Description of the Plugin
-	CreatePreFunctionPlugin shared.CreatePreFunctionPlugin `request:"mediaType=application/json"`
-}
-
-func (o *UpdatePrefunctionPluginRequest) GetControlPlaneID() string {
-	if o == nil {
-		return ""
-	}
-	return o.ControlPlaneID
+	// The UUID of your control plane. This variable is available in the Konnect manager.
+	ControlPlaneID          string                          `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	CreatePreFunctionPlugin *shared.CreatePreFunctionPlugin `request:"mediaType=application/json"`
 }
 
 func (o *UpdatePrefunctionPluginRequest) GetPluginID() string {
@@ -30,9 +22,16 @@ func (o *UpdatePrefunctionPluginRequest) GetPluginID() string {
 	return o.PluginID
 }
 
-func (o *UpdatePrefunctionPluginRequest) GetCreatePreFunctionPlugin() shared.CreatePreFunctionPlugin {
+func (o *UpdatePrefunctionPluginRequest) GetControlPlaneID() string {
 	if o == nil {
-		return shared.CreatePreFunctionPlugin{}
+		return ""
+	}
+	return o.ControlPlaneID
+}
+
+func (o *UpdatePrefunctionPluginRequest) GetCreatePreFunctionPlugin() *shared.CreatePreFunctionPlugin {
+	if o == nil {
+		return nil
 	}
 	return o.CreatePreFunctionPlugin
 }
@@ -44,7 +43,7 @@ type UpdatePrefunctionPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successfully upserted Plugin
+	// PreFunction plugin
 	PreFunctionPlugin *shared.PreFunctionPlugin
 	// Unauthorized
 	UnauthorizedError *shared.UnauthorizedError

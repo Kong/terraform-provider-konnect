@@ -96,12 +96,12 @@ func (o *CreateAIPromptGuardPluginService) GetID() *string {
 }
 
 type CreateAIPromptGuardPluginConfig struct {
+	// If true, will ignore all previous chat prompts from the conversation history.
+	AllowAllConversationHistory *bool `default:"false" json:"allow_all_conversation_history"`
 	// Array of valid patterns, or valid questions from the 'user' role in chat.
 	AllowPatterns []string `json:"allow_patterns,omitempty"`
 	// Array of invalid patterns, or invalid questions from the 'user' role in chat.
 	DenyPatterns []string `json:"deny_patterns,omitempty"`
-	// If true, will ignore all previous chat prompts from the conversation history.
-	AllowAllConversationHistory *bool `default:"false" json:"allow_all_conversation_history"`
 }
 
 func (c CreateAIPromptGuardPluginConfig) MarshalJSON() ([]byte, error) {
@@ -113,6 +113,13 @@ func (c *CreateAIPromptGuardPluginConfig) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (o *CreateAIPromptGuardPluginConfig) GetAllowAllConversationHistory() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.AllowAllConversationHistory
 }
 
 func (o *CreateAIPromptGuardPluginConfig) GetAllowPatterns() []string {
@@ -127,13 +134,6 @@ func (o *CreateAIPromptGuardPluginConfig) GetDenyPatterns() []string {
 		return nil
 	}
 	return o.DenyPatterns
-}
-
-func (o *CreateAIPromptGuardPluginConfig) GetAllowAllConversationHistory() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.AllowAllConversationHistory
 }
 
 // CreateAIPromptGuardPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.

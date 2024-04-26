@@ -220,11 +220,11 @@ func (r *GatewayPluginProxyCacheDataSource) Read(ctx context.Context, req dataso
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.GetProxycachePluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.GetProxycachePlugin(ctx, request)
 	if err != nil {

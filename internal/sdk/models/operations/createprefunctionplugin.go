@@ -9,9 +9,8 @@ import (
 
 type CreatePrefunctionPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	// Create a new PreFunction plugin
-	CreatePreFunctionPlugin shared.CreatePreFunctionPlugin `request:"mediaType=application/json"`
+	ControlPlaneID          string                          `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	CreatePreFunctionPlugin *shared.CreatePreFunctionPlugin `request:"mediaType=application/json"`
 }
 
 func (o *CreatePrefunctionPluginRequest) GetControlPlaneID() string {
@@ -21,9 +20,9 @@ func (o *CreatePrefunctionPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreatePrefunctionPluginRequest) GetCreatePreFunctionPlugin() shared.CreatePreFunctionPlugin {
+func (o *CreatePrefunctionPluginRequest) GetCreatePreFunctionPlugin() *shared.CreatePreFunctionPlugin {
 	if o == nil {
-		return shared.CreatePreFunctionPlugin{}
+		return nil
 	}
 	return o.CreatePreFunctionPlugin
 }
@@ -35,7 +34,7 @@ type CreatePrefunctionPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successfully created Plugin
+	// PreFunction plugin
 	PreFunctionPlugin *shared.PreFunctionPlugin
 	// Unauthorized
 	UnauthorizedError *shared.UnauthorizedError

@@ -8,19 +8,11 @@ import (
 )
 
 type UpdateRequestterminationPluginRequest struct {
-	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
-	// Description of the Plugin
-	CreateRequestTerminationPlugin shared.CreateRequestTerminationPlugin `request:"mediaType=application/json"`
-}
-
-func (o *UpdateRequestterminationPluginRequest) GetControlPlaneID() string {
-	if o == nil {
-		return ""
-	}
-	return o.ControlPlaneID
+	// The UUID of your control plane. This variable is available in the Konnect manager.
+	ControlPlaneID                 string                                 `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	CreateRequestTerminationPlugin *shared.CreateRequestTerminationPlugin `request:"mediaType=application/json"`
 }
 
 func (o *UpdateRequestterminationPluginRequest) GetPluginID() string {
@@ -30,9 +22,16 @@ func (o *UpdateRequestterminationPluginRequest) GetPluginID() string {
 	return o.PluginID
 }
 
-func (o *UpdateRequestterminationPluginRequest) GetCreateRequestTerminationPlugin() shared.CreateRequestTerminationPlugin {
+func (o *UpdateRequestterminationPluginRequest) GetControlPlaneID() string {
 	if o == nil {
-		return shared.CreateRequestTerminationPlugin{}
+		return ""
+	}
+	return o.ControlPlaneID
+}
+
+func (o *UpdateRequestterminationPluginRequest) GetCreateRequestTerminationPlugin() *shared.CreateRequestTerminationPlugin {
+	if o == nil {
+		return nil
 	}
 	return o.CreateRequestTerminationPlugin
 }
@@ -44,7 +43,7 @@ type UpdateRequestterminationPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successfully upserted Plugin
+	// RequestTermination plugin
 	RequestTerminationPlugin *shared.RequestTerminationPlugin
 	// Unauthorized
 	UnauthorizedError *shared.UnauthorizedError

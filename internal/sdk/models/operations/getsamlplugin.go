@@ -8,17 +8,10 @@ import (
 )
 
 type GetSamlPluginRequest struct {
-	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
-}
-
-func (o *GetSamlPluginRequest) GetControlPlaneID() string {
-	if o == nil {
-		return ""
-	}
-	return o.ControlPlaneID
+	// The UUID of your control plane. This variable is available in the Konnect manager.
+	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
 func (o *GetSamlPluginRequest) GetPluginID() string {
@@ -28,6 +21,13 @@ func (o *GetSamlPluginRequest) GetPluginID() string {
 	return o.PluginID
 }
 
+func (o *GetSamlPluginRequest) GetControlPlaneID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ControlPlaneID
+}
+
 type GetSamlPluginResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -35,7 +35,7 @@ type GetSamlPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successfully fetched Plugin
+	// Saml plugin
 	SamlPlugin *shared.SamlPlugin
 	// Unauthorized
 	UnauthorizedError *shared.UnauthorizedError

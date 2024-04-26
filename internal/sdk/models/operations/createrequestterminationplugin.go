@@ -9,9 +9,8 @@ import (
 
 type CreateRequestterminationPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	// Create a new RequestTermination plugin
-	CreateRequestTerminationPlugin shared.CreateRequestTerminationPlugin `request:"mediaType=application/json"`
+	ControlPlaneID                 string                                 `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	CreateRequestTerminationPlugin *shared.CreateRequestTerminationPlugin `request:"mediaType=application/json"`
 }
 
 func (o *CreateRequestterminationPluginRequest) GetControlPlaneID() string {
@@ -21,9 +20,9 @@ func (o *CreateRequestterminationPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateRequestterminationPluginRequest) GetCreateRequestTerminationPlugin() shared.CreateRequestTerminationPlugin {
+func (o *CreateRequestterminationPluginRequest) GetCreateRequestTerminationPlugin() *shared.CreateRequestTerminationPlugin {
 	if o == nil {
-		return shared.CreateRequestTerminationPlugin{}
+		return nil
 	}
 	return o.CreateRequestTerminationPlugin
 }
@@ -35,7 +34,7 @@ type CreateRequestterminationPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successfully created Plugin
+	// RequestTermination plugin
 	RequestTerminationPlugin *shared.RequestTerminationPlugin
 	// Unauthorized
 	UnauthorizedError *shared.UnauthorizedError

@@ -5,8 +5,8 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type CreateAIProxyPluginConfig struct {
-	Auth      *Auth        `tfsdk:"auth"`
-	Logging   *Logging     `tfsdk:"logging"`
-	Model     Model        `tfsdk:"model"`
-	RouteType types.String `tfsdk:"route_type"`
+	Auth      *CreateAIProxyPluginAuth    `tfsdk:"auth"`
+	Logging   *CreateAIProxyPluginLogging `tfsdk:"logging"`
+	Model     CreateAIProxyPluginModel    `tfsdk:"model"`
+	RouteType types.String                `tfsdk:"route_type"`
 }

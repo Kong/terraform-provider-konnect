@@ -192,11 +192,11 @@ func (r *GatewayPluginPreFunctionDataSource) Read(ctx context.Context, req datas
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.GetPrefunctionPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.GetPrefunctionPlugin(ctx, request)
 	if err != nil {

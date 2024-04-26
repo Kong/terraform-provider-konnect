@@ -95,108 +95,108 @@ func (o *JQPluginService) GetID() *string {
 	return o.ID
 }
 
-type JQPluginRequestJQProgramOptions struct {
-	CompactOutput *bool `default:"true" json:"compact_output"`
-	RawOutput     *bool `default:"false" json:"raw_output"`
-	JoinOutput    *bool `default:"false" json:"join_output"`
+type RequestJqProgramOptions struct {
 	ASCIIOutput   *bool `default:"false" json:"ascii_output"`
+	CompactOutput *bool `default:"true" json:"compact_output"`
+	JoinOutput    *bool `default:"false" json:"join_output"`
+	RawOutput     *bool `default:"false" json:"raw_output"`
 	SortKeys      *bool `default:"false" json:"sort_keys"`
 }
 
-func (j JQPluginRequestJQProgramOptions) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(j, "", false)
+func (r RequestJqProgramOptions) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
 }
 
-func (j *JQPluginRequestJQProgramOptions) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &j, "", false, false); err != nil {
+func (r *RequestJqProgramOptions) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *JQPluginRequestJQProgramOptions) GetCompactOutput() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.CompactOutput
-}
-
-func (o *JQPluginRequestJQProgramOptions) GetRawOutput() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.RawOutput
-}
-
-func (o *JQPluginRequestJQProgramOptions) GetJoinOutput() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.JoinOutput
-}
-
-func (o *JQPluginRequestJQProgramOptions) GetASCIIOutput() *bool {
+func (o *RequestJqProgramOptions) GetASCIIOutput() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.ASCIIOutput
 }
 
-func (o *JQPluginRequestJQProgramOptions) GetSortKeys() *bool {
+func (o *RequestJqProgramOptions) GetCompactOutput() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.CompactOutput
+}
+
+func (o *RequestJqProgramOptions) GetJoinOutput() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.JoinOutput
+}
+
+func (o *RequestJqProgramOptions) GetRawOutput() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RawOutput
+}
+
+func (o *RequestJqProgramOptions) GetSortKeys() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.SortKeys
 }
 
-type JQPluginResponseJQProgramOptions struct {
-	CompactOutput *bool `default:"true" json:"compact_output"`
-	RawOutput     *bool `default:"false" json:"raw_output"`
-	JoinOutput    *bool `default:"false" json:"join_output"`
+type ResponseJqProgramOptions struct {
 	ASCIIOutput   *bool `default:"false" json:"ascii_output"`
+	CompactOutput *bool `default:"true" json:"compact_output"`
+	JoinOutput    *bool `default:"false" json:"join_output"`
+	RawOutput     *bool `default:"false" json:"raw_output"`
 	SortKeys      *bool `default:"false" json:"sort_keys"`
 }
 
-func (j JQPluginResponseJQProgramOptions) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(j, "", false)
+func (r ResponseJqProgramOptions) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
 }
 
-func (j *JQPluginResponseJQProgramOptions) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &j, "", false, false); err != nil {
+func (r *ResponseJqProgramOptions) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *JQPluginResponseJQProgramOptions) GetCompactOutput() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.CompactOutput
-}
-
-func (o *JQPluginResponseJQProgramOptions) GetRawOutput() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.RawOutput
-}
-
-func (o *JQPluginResponseJQProgramOptions) GetJoinOutput() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.JoinOutput
-}
-
-func (o *JQPluginResponseJQProgramOptions) GetASCIIOutput() *bool {
+func (o *ResponseJqProgramOptions) GetASCIIOutput() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.ASCIIOutput
 }
 
-func (o *JQPluginResponseJQProgramOptions) GetSortKeys() *bool {
+func (o *ResponseJqProgramOptions) GetCompactOutput() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.CompactOutput
+}
+
+func (o *ResponseJqProgramOptions) GetJoinOutput() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.JoinOutput
+}
+
+func (o *ResponseJqProgramOptions) GetRawOutput() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RawOutput
+}
+
+func (o *ResponseJqProgramOptions) GetSortKeys() *bool {
 	if o == nil {
 		return nil
 	}
@@ -204,27 +204,13 @@ func (o *JQPluginResponseJQProgramOptions) GetSortKeys() *bool {
 }
 
 type JQPluginConfig struct {
-	RequestJqProgram         *string                           `json:"request_jq_program,omitempty"`
-	RequestJqProgramOptions  *JQPluginRequestJQProgramOptions  `json:"request_jq_program_options,omitempty"`
-	RequestIfMediaType       []string                          `json:"request_if_media_type,omitempty"`
-	ResponseJqProgram        *string                           `json:"response_jq_program,omitempty"`
-	ResponseJqProgramOptions *JQPluginResponseJQProgramOptions `json:"response_jq_program_options,omitempty"`
-	ResponseIfMediaType      []string                          `json:"response_if_media_type,omitempty"`
-	ResponseIfStatusCode     []int64                           `json:"response_if_status_code,omitempty"`
-}
-
-func (o *JQPluginConfig) GetRequestJqProgram() *string {
-	if o == nil {
-		return nil
-	}
-	return o.RequestJqProgram
-}
-
-func (o *JQPluginConfig) GetRequestJqProgramOptions() *JQPluginRequestJQProgramOptions {
-	if o == nil {
-		return nil
-	}
-	return o.RequestJqProgramOptions
+	RequestIfMediaType       []string                  `json:"request_if_media_type,omitempty"`
+	RequestJqProgram         *string                   `json:"request_jq_program,omitempty"`
+	RequestJqProgramOptions  *RequestJqProgramOptions  `json:"request_jq_program_options,omitempty"`
+	ResponseIfMediaType      []string                  `json:"response_if_media_type,omitempty"`
+	ResponseIfStatusCode     []int64                   `json:"response_if_status_code,omitempty"`
+	ResponseJqProgram        *string                   `json:"response_jq_program,omitempty"`
+	ResponseJqProgramOptions *ResponseJqProgramOptions `json:"response_jq_program_options,omitempty"`
 }
 
 func (o *JQPluginConfig) GetRequestIfMediaType() []string {
@@ -234,18 +220,18 @@ func (o *JQPluginConfig) GetRequestIfMediaType() []string {
 	return o.RequestIfMediaType
 }
 
-func (o *JQPluginConfig) GetResponseJqProgram() *string {
+func (o *JQPluginConfig) GetRequestJqProgram() *string {
 	if o == nil {
 		return nil
 	}
-	return o.ResponseJqProgram
+	return o.RequestJqProgram
 }
 
-func (o *JQPluginConfig) GetResponseJqProgramOptions() *JQPluginResponseJQProgramOptions {
+func (o *JQPluginConfig) GetRequestJqProgramOptions() *RequestJqProgramOptions {
 	if o == nil {
 		return nil
 	}
-	return o.ResponseJqProgramOptions
+	return o.RequestJqProgramOptions
 }
 
 func (o *JQPluginConfig) GetResponseIfMediaType() []string {
@@ -260,6 +246,20 @@ func (o *JQPluginConfig) GetResponseIfStatusCode() []int64 {
 		return nil
 	}
 	return o.ResponseIfStatusCode
+}
+
+func (o *JQPluginConfig) GetResponseJqProgram() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ResponseJqProgram
+}
+
+func (o *JQPluginConfig) GetResponseJqProgramOptions() *ResponseJqProgramOptions {
+	if o == nil {
+		return nil
+	}
+	return o.ResponseJqProgramOptions
 }
 
 // JQPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.

@@ -95,6 +95,147 @@ func (o *CreateRequestTransformerAdvancedPluginService) GetID() *string {
 	return o.ID
 }
 
+type CreateRequestTransformerAdvancedPluginJSONTypes string
+
+const (
+	CreateRequestTransformerAdvancedPluginJSONTypesBoolean CreateRequestTransformerAdvancedPluginJSONTypes = "boolean"
+	CreateRequestTransformerAdvancedPluginJSONTypesNumber  CreateRequestTransformerAdvancedPluginJSONTypes = "number"
+	CreateRequestTransformerAdvancedPluginJSONTypesString  CreateRequestTransformerAdvancedPluginJSONTypes = "string"
+)
+
+func (e CreateRequestTransformerAdvancedPluginJSONTypes) ToPointer() *CreateRequestTransformerAdvancedPluginJSONTypes {
+	return &e
+}
+
+func (e *CreateRequestTransformerAdvancedPluginJSONTypes) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "boolean":
+		fallthrough
+	case "number":
+		fallthrough
+	case "string":
+		*e = CreateRequestTransformerAdvancedPluginJSONTypes(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for CreateRequestTransformerAdvancedPluginJSONTypes: %v", v)
+	}
+}
+
+type CreateRequestTransformerAdvancedPluginAdd struct {
+	Body        []string                                          `json:"body,omitempty"`
+	Headers     []string                                          `json:"headers,omitempty"`
+	JSONTypes   []CreateRequestTransformerAdvancedPluginJSONTypes `json:"json_types,omitempty"`
+	Querystring []string                                          `json:"querystring,omitempty"`
+}
+
+func (o *CreateRequestTransformerAdvancedPluginAdd) GetBody() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Body
+}
+
+func (o *CreateRequestTransformerAdvancedPluginAdd) GetHeaders() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Headers
+}
+
+func (o *CreateRequestTransformerAdvancedPluginAdd) GetJSONTypes() []CreateRequestTransformerAdvancedPluginJSONTypes {
+	if o == nil {
+		return nil
+	}
+	return o.JSONTypes
+}
+
+func (o *CreateRequestTransformerAdvancedPluginAdd) GetQuerystring() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Querystring
+}
+
+type CreateRequestTransformerAdvancedPluginAllow struct {
+	Body []string `json:"body,omitempty"`
+}
+
+func (o *CreateRequestTransformerAdvancedPluginAllow) GetBody() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Body
+}
+
+type CreateRequestTransformerAdvancedPluginConfigJSONTypes string
+
+const (
+	CreateRequestTransformerAdvancedPluginConfigJSONTypesBoolean CreateRequestTransformerAdvancedPluginConfigJSONTypes = "boolean"
+	CreateRequestTransformerAdvancedPluginConfigJSONTypesNumber  CreateRequestTransformerAdvancedPluginConfigJSONTypes = "number"
+	CreateRequestTransformerAdvancedPluginConfigJSONTypesString  CreateRequestTransformerAdvancedPluginConfigJSONTypes = "string"
+)
+
+func (e CreateRequestTransformerAdvancedPluginConfigJSONTypes) ToPointer() *CreateRequestTransformerAdvancedPluginConfigJSONTypes {
+	return &e
+}
+
+func (e *CreateRequestTransformerAdvancedPluginConfigJSONTypes) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "boolean":
+		fallthrough
+	case "number":
+		fallthrough
+	case "string":
+		*e = CreateRequestTransformerAdvancedPluginConfigJSONTypes(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for CreateRequestTransformerAdvancedPluginConfigJSONTypes: %v", v)
+	}
+}
+
+type CreateRequestTransformerAdvancedPluginAppend struct {
+	Body        []string                                                `json:"body,omitempty"`
+	Headers     []string                                                `json:"headers,omitempty"`
+	JSONTypes   []CreateRequestTransformerAdvancedPluginConfigJSONTypes `json:"json_types,omitempty"`
+	Querystring []string                                                `json:"querystring,omitempty"`
+}
+
+func (o *CreateRequestTransformerAdvancedPluginAppend) GetBody() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Body
+}
+
+func (o *CreateRequestTransformerAdvancedPluginAppend) GetHeaders() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Headers
+}
+
+func (o *CreateRequestTransformerAdvancedPluginAppend) GetJSONTypes() []CreateRequestTransformerAdvancedPluginConfigJSONTypes {
+	if o == nil {
+		return nil
+	}
+	return o.JSONTypes
+}
+
+func (o *CreateRequestTransformerAdvancedPluginAppend) GetQuerystring() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Querystring
+}
+
 type CreateRequestTransformerAdvancedPluginRemove struct {
 	Body        []string `json:"body,omitempty"`
 	Headers     []string `json:"headers,omitempty"`
@@ -149,19 +290,19 @@ func (o *CreateRequestTransformerAdvancedPluginRename) GetQuerystring() []string
 	return o.Querystring
 }
 
-type JSONTypes string
+type CreateRequestTransformerAdvancedPluginConfigReplaceJSONTypes string
 
 const (
-	JSONTypesBoolean JSONTypes = "boolean"
-	JSONTypesNumber  JSONTypes = "number"
-	JSONTypesString  JSONTypes = "string"
+	CreateRequestTransformerAdvancedPluginConfigReplaceJSONTypesBoolean CreateRequestTransformerAdvancedPluginConfigReplaceJSONTypes = "boolean"
+	CreateRequestTransformerAdvancedPluginConfigReplaceJSONTypesNumber  CreateRequestTransformerAdvancedPluginConfigReplaceJSONTypes = "number"
+	CreateRequestTransformerAdvancedPluginConfigReplaceJSONTypesString  CreateRequestTransformerAdvancedPluginConfigReplaceJSONTypes = "string"
 )
 
-func (e JSONTypes) ToPointer() *JSONTypes {
+func (e CreateRequestTransformerAdvancedPluginConfigReplaceJSONTypes) ToPointer() *CreateRequestTransformerAdvancedPluginConfigReplaceJSONTypes {
 	return &e
 }
 
-func (e *JSONTypes) UnmarshalJSON(data []byte) error {
+func (e *CreateRequestTransformerAdvancedPluginConfigReplaceJSONTypes) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -172,19 +313,19 @@ func (e *JSONTypes) UnmarshalJSON(data []byte) error {
 	case "number":
 		fallthrough
 	case "string":
-		*e = JSONTypes(v)
+		*e = CreateRequestTransformerAdvancedPluginConfigReplaceJSONTypes(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for JSONTypes: %v", v)
+		return fmt.Errorf("invalid value for CreateRequestTransformerAdvancedPluginConfigReplaceJSONTypes: %v", v)
 	}
 }
 
 type CreateRequestTransformerAdvancedPluginReplace struct {
-	Body        []string    `json:"body,omitempty"`
-	Headers     []string    `json:"headers,omitempty"`
-	Querystring []string    `json:"querystring,omitempty"`
-	JSONTypes   []JSONTypes `json:"json_types,omitempty"`
-	URI         *string     `json:"uri,omitempty"`
+	Body        []string                                                       `json:"body,omitempty"`
+	Headers     []string                                                       `json:"headers,omitempty"`
+	JSONTypes   []CreateRequestTransformerAdvancedPluginConfigReplaceJSONTypes `json:"json_types,omitempty"`
+	Querystring []string                                                       `json:"querystring,omitempty"`
+	URI         *string                                                        `json:"uri,omitempty"`
 }
 
 func (o *CreateRequestTransformerAdvancedPluginReplace) GetBody() []string {
@@ -201,18 +342,18 @@ func (o *CreateRequestTransformerAdvancedPluginReplace) GetHeaders() []string {
 	return o.Headers
 }
 
+func (o *CreateRequestTransformerAdvancedPluginReplace) GetJSONTypes() []CreateRequestTransformerAdvancedPluginConfigReplaceJSONTypes {
+	if o == nil {
+		return nil
+	}
+	return o.JSONTypes
+}
+
 func (o *CreateRequestTransformerAdvancedPluginReplace) GetQuerystring() []string {
 	if o == nil {
 		return nil
 	}
 	return o.Querystring
-}
-
-func (o *CreateRequestTransformerAdvancedPluginReplace) GetJSONTypes() []JSONTypes {
-	if o == nil {
-		return nil
-	}
-	return o.JSONTypes
 }
 
 func (o *CreateRequestTransformerAdvancedPluginReplace) GetURI() *string {
@@ -222,158 +363,17 @@ func (o *CreateRequestTransformerAdvancedPluginReplace) GetURI() *string {
 	return o.URI
 }
 
-type CreateRequestTransformerAdvancedPluginJSONTypes string
-
-const (
-	CreateRequestTransformerAdvancedPluginJSONTypesBoolean CreateRequestTransformerAdvancedPluginJSONTypes = "boolean"
-	CreateRequestTransformerAdvancedPluginJSONTypesNumber  CreateRequestTransformerAdvancedPluginJSONTypes = "number"
-	CreateRequestTransformerAdvancedPluginJSONTypesString  CreateRequestTransformerAdvancedPluginJSONTypes = "string"
-)
-
-func (e CreateRequestTransformerAdvancedPluginJSONTypes) ToPointer() *CreateRequestTransformerAdvancedPluginJSONTypes {
-	return &e
-}
-
-func (e *CreateRequestTransformerAdvancedPluginJSONTypes) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "boolean":
-		fallthrough
-	case "number":
-		fallthrough
-	case "string":
-		*e = CreateRequestTransformerAdvancedPluginJSONTypes(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for CreateRequestTransformerAdvancedPluginJSONTypes: %v", v)
-	}
-}
-
-type CreateRequestTransformerAdvancedPluginAdd struct {
-	Body        []string                                          `json:"body,omitempty"`
-	Headers     []string                                          `json:"headers,omitempty"`
-	Querystring []string                                          `json:"querystring,omitempty"`
-	JSONTypes   []CreateRequestTransformerAdvancedPluginJSONTypes `json:"json_types,omitempty"`
-}
-
-func (o *CreateRequestTransformerAdvancedPluginAdd) GetBody() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Body
-}
-
-func (o *CreateRequestTransformerAdvancedPluginAdd) GetHeaders() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Headers
-}
-
-func (o *CreateRequestTransformerAdvancedPluginAdd) GetQuerystring() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Querystring
-}
-
-func (o *CreateRequestTransformerAdvancedPluginAdd) GetJSONTypes() []CreateRequestTransformerAdvancedPluginJSONTypes {
-	if o == nil {
-		return nil
-	}
-	return o.JSONTypes
-}
-
-type CreateRequestTransformerAdvancedPluginConfigJSONTypes string
-
-const (
-	CreateRequestTransformerAdvancedPluginConfigJSONTypesBoolean CreateRequestTransformerAdvancedPluginConfigJSONTypes = "boolean"
-	CreateRequestTransformerAdvancedPluginConfigJSONTypesNumber  CreateRequestTransformerAdvancedPluginConfigJSONTypes = "number"
-	CreateRequestTransformerAdvancedPluginConfigJSONTypesString  CreateRequestTransformerAdvancedPluginConfigJSONTypes = "string"
-)
-
-func (e CreateRequestTransformerAdvancedPluginConfigJSONTypes) ToPointer() *CreateRequestTransformerAdvancedPluginConfigJSONTypes {
-	return &e
-}
-
-func (e *CreateRequestTransformerAdvancedPluginConfigJSONTypes) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "boolean":
-		fallthrough
-	case "number":
-		fallthrough
-	case "string":
-		*e = CreateRequestTransformerAdvancedPluginConfigJSONTypes(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for CreateRequestTransformerAdvancedPluginConfigJSONTypes: %v", v)
-	}
-}
-
-type CreateRequestTransformerAdvancedPluginAppend struct {
-	Body        []string                                                `json:"body,omitempty"`
-	Headers     []string                                                `json:"headers,omitempty"`
-	Querystring []string                                                `json:"querystring,omitempty"`
-	JSONTypes   []CreateRequestTransformerAdvancedPluginConfigJSONTypes `json:"json_types,omitempty"`
-}
-
-func (o *CreateRequestTransformerAdvancedPluginAppend) GetBody() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Body
-}
-
-func (o *CreateRequestTransformerAdvancedPluginAppend) GetHeaders() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Headers
-}
-
-func (o *CreateRequestTransformerAdvancedPluginAppend) GetQuerystring() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Querystring
-}
-
-func (o *CreateRequestTransformerAdvancedPluginAppend) GetJSONTypes() []CreateRequestTransformerAdvancedPluginConfigJSONTypes {
-	if o == nil {
-		return nil
-	}
-	return o.JSONTypes
-}
-
-type Allow struct {
-	Body []string `json:"body,omitempty"`
-}
-
-func (o *Allow) GetBody() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Body
-}
-
 type CreateRequestTransformerAdvancedPluginConfig struct {
+	Add    *CreateRequestTransformerAdvancedPluginAdd    `json:"add,omitempty"`
+	Allow  *CreateRequestTransformerAdvancedPluginAllow  `json:"allow,omitempty"`
+	Append *CreateRequestTransformerAdvancedPluginAppend `json:"append,omitempty"`
+	// Specify whether dots (for example, `customers.info.phone`) should be treated as part of a property name or used to descend into nested JSON objects.  See [Arrays and nested objects](#arrays-and-nested-objects).
+	DotsInKeys *bool `default:"true" json:"dots_in_keys"`
 	// A string representing an HTTP method, such as GET, POST, PUT, or DELETE. The string must contain only uppercase letters.
 	HTTPMethod *string                                        `json:"http_method,omitempty"`
 	Remove     *CreateRequestTransformerAdvancedPluginRemove  `json:"remove,omitempty"`
 	Rename     *CreateRequestTransformerAdvancedPluginRename  `json:"rename,omitempty"`
 	Replace    *CreateRequestTransformerAdvancedPluginReplace `json:"replace,omitempty"`
-	Add        *CreateRequestTransformerAdvancedPluginAdd     `json:"add,omitempty"`
-	Append     *CreateRequestTransformerAdvancedPluginAppend  `json:"append,omitempty"`
-	Allow      *Allow                                         `json:"allow,omitempty"`
-	// Specify whether dots (for example, `customers.info.phone`) should be treated as part of a property name or used to descend into nested JSON objects.  See [Arrays and nested objects](#arrays-and-nested-objects).
-	DotsInKeys *bool `default:"true" json:"dots_in_keys"`
 }
 
 func (c CreateRequestTransformerAdvancedPluginConfig) MarshalJSON() ([]byte, error) {
@@ -385,6 +385,34 @@ func (c *CreateRequestTransformerAdvancedPluginConfig) UnmarshalJSON(data []byte
 		return err
 	}
 	return nil
+}
+
+func (o *CreateRequestTransformerAdvancedPluginConfig) GetAdd() *CreateRequestTransformerAdvancedPluginAdd {
+	if o == nil {
+		return nil
+	}
+	return o.Add
+}
+
+func (o *CreateRequestTransformerAdvancedPluginConfig) GetAllow() *CreateRequestTransformerAdvancedPluginAllow {
+	if o == nil {
+		return nil
+	}
+	return o.Allow
+}
+
+func (o *CreateRequestTransformerAdvancedPluginConfig) GetAppend() *CreateRequestTransformerAdvancedPluginAppend {
+	if o == nil {
+		return nil
+	}
+	return o.Append
+}
+
+func (o *CreateRequestTransformerAdvancedPluginConfig) GetDotsInKeys() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.DotsInKeys
 }
 
 func (o *CreateRequestTransformerAdvancedPluginConfig) GetHTTPMethod() *string {
@@ -413,34 +441,6 @@ func (o *CreateRequestTransformerAdvancedPluginConfig) GetReplace() *CreateReque
 		return nil
 	}
 	return o.Replace
-}
-
-func (o *CreateRequestTransformerAdvancedPluginConfig) GetAdd() *CreateRequestTransformerAdvancedPluginAdd {
-	if o == nil {
-		return nil
-	}
-	return o.Add
-}
-
-func (o *CreateRequestTransformerAdvancedPluginConfig) GetAppend() *CreateRequestTransformerAdvancedPluginAppend {
-	if o == nil {
-		return nil
-	}
-	return o.Append
-}
-
-func (o *CreateRequestTransformerAdvancedPluginConfig) GetAllow() *Allow {
-	if o == nil {
-		return nil
-	}
-	return o.Allow
-}
-
-func (o *CreateRequestTransformerAdvancedPluginConfig) GetDotsInKeys() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.DotsInKeys
 }
 
 // CreateRequestTransformerAdvancedPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.

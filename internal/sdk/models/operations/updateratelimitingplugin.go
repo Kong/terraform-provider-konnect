@@ -8,19 +8,11 @@ import (
 )
 
 type UpdateRatelimitingPluginRequest struct {
-	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
-	// Description of the Plugin
-	CreateRateLimitingPlugin shared.CreateRateLimitingPlugin `request:"mediaType=application/json"`
-}
-
-func (o *UpdateRatelimitingPluginRequest) GetControlPlaneID() string {
-	if o == nil {
-		return ""
-	}
-	return o.ControlPlaneID
+	// The UUID of your control plane. This variable is available in the Konnect manager.
+	ControlPlaneID           string                           `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	CreateRateLimitingPlugin *shared.CreateRateLimitingPlugin `request:"mediaType=application/json"`
 }
 
 func (o *UpdateRatelimitingPluginRequest) GetPluginID() string {
@@ -30,9 +22,16 @@ func (o *UpdateRatelimitingPluginRequest) GetPluginID() string {
 	return o.PluginID
 }
 
-func (o *UpdateRatelimitingPluginRequest) GetCreateRateLimitingPlugin() shared.CreateRateLimitingPlugin {
+func (o *UpdateRatelimitingPluginRequest) GetControlPlaneID() string {
 	if o == nil {
-		return shared.CreateRateLimitingPlugin{}
+		return ""
+	}
+	return o.ControlPlaneID
+}
+
+func (o *UpdateRatelimitingPluginRequest) GetCreateRateLimitingPlugin() *shared.CreateRateLimitingPlugin {
+	if o == nil {
+		return nil
 	}
 	return o.CreateRateLimitingPlugin
 }
@@ -44,7 +43,7 @@ type UpdateRatelimitingPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successfully upserted Plugin
+	// RateLimiting plugin
 	RateLimitingPlugin *shared.RateLimitingPlugin
 	// Unauthorized
 	UnauthorizedError *shared.UnauthorizedError

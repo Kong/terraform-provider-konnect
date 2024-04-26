@@ -40,7 +40,7 @@ func (r *GatewayPluginRateLimitingAdvancedDataSourceModel) RefreshFromSharedRate
 		if resp.Config.Redis == nil {
 			r.Config.Redis = nil
 		} else {
-			r.Config.Redis = &tfTypes.Redis{}
+			r.Config.Redis = &tfTypes.CreateRateLimitingAdvancedPluginRedis{}
 			r.Config.Redis.ClusterAddresses = []types.String{}
 			for _, v := range resp.Config.Redis.ClusterAddresses {
 				r.Config.Redis.ClusterAddresses = append(r.Config.Redis.ClusterAddresses, types.StringValue(v))

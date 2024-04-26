@@ -295,7 +295,7 @@ func (r *GatewayPluginOpentelemetryResource) Create(ctx context.Context, req res
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	createOpentelemetryPlugin := *data.ToSharedCreateOpentelemetryPlugin()
+	createOpentelemetryPlugin := data.ToSharedCreateOpentelemetryPlugin()
 	request := operations.CreateOpentelemetryPluginRequest{
 		ControlPlaneID:            controlPlaneID,
 		CreateOpentelemetryPlugin: createOpentelemetryPlugin,
@@ -345,11 +345,11 @@ func (r *GatewayPluginOpentelemetryResource) Read(ctx context.Context, req resou
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.GetOpentelemetryPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.GetOpentelemetryPlugin(ctx, request)
 	if err != nil {
@@ -395,12 +395,12 @@ func (r *GatewayPluginOpentelemetryResource) Update(ctx context.Context, req res
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
-	createOpentelemetryPlugin := *data.ToSharedCreateOpentelemetryPlugin()
+	controlPlaneID := data.ControlPlaneID.ValueString()
+	createOpentelemetryPlugin := data.ToSharedCreateOpentelemetryPlugin()
 	request := operations.UpdateOpentelemetryPluginRequest{
-		ControlPlaneID:            controlPlaneID,
 		PluginID:                  pluginID,
+		ControlPlaneID:            controlPlaneID,
 		CreateOpentelemetryPlugin: createOpentelemetryPlugin,
 	}
 	res, err := r.client.Plugins.UpdateOpentelemetryPlugin(ctx, request)
@@ -448,11 +448,11 @@ func (r *GatewayPluginOpentelemetryResource) Delete(ctx context.Context, req res
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.DeleteOpentelemetryPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.DeleteOpentelemetryPlugin(ctx, request)
 	if err != nil {

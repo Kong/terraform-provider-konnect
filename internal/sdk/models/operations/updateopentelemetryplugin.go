@@ -8,19 +8,11 @@ import (
 )
 
 type UpdateOpentelemetryPluginRequest struct {
-	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
-	// Description of the Plugin
-	CreateOpentelemetryPlugin shared.CreateOpentelemetryPlugin `request:"mediaType=application/json"`
-}
-
-func (o *UpdateOpentelemetryPluginRequest) GetControlPlaneID() string {
-	if o == nil {
-		return ""
-	}
-	return o.ControlPlaneID
+	// The UUID of your control plane. This variable is available in the Konnect manager.
+	ControlPlaneID            string                            `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	CreateOpentelemetryPlugin *shared.CreateOpentelemetryPlugin `request:"mediaType=application/json"`
 }
 
 func (o *UpdateOpentelemetryPluginRequest) GetPluginID() string {
@@ -30,9 +22,16 @@ func (o *UpdateOpentelemetryPluginRequest) GetPluginID() string {
 	return o.PluginID
 }
 
-func (o *UpdateOpentelemetryPluginRequest) GetCreateOpentelemetryPlugin() shared.CreateOpentelemetryPlugin {
+func (o *UpdateOpentelemetryPluginRequest) GetControlPlaneID() string {
 	if o == nil {
-		return shared.CreateOpentelemetryPlugin{}
+		return ""
+	}
+	return o.ControlPlaneID
+}
+
+func (o *UpdateOpentelemetryPluginRequest) GetCreateOpentelemetryPlugin() *shared.CreateOpentelemetryPlugin {
+	if o == nil {
+		return nil
 	}
 	return o.CreateOpentelemetryPlugin
 }
@@ -44,7 +43,7 @@ type UpdateOpentelemetryPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successfully upserted Plugin
+	// Opentelemetry plugin
 	OpentelemetryPlugin *shared.OpentelemetryPlugin
 	// Unauthorized
 	UnauthorizedError *shared.UnauthorizedError

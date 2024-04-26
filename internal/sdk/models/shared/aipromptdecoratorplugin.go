@@ -95,6 +95,66 @@ func (o *AIPromptDecoratorPluginService) GetID() *string {
 	return o.ID
 }
 
+type Role string
+
+const (
+	RoleSystem    Role = "system"
+	RoleAssistant Role = "assistant"
+	RoleUser      Role = "user"
+)
+
+func (e Role) ToPointer() *Role {
+	return &e
+}
+
+func (e *Role) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "system":
+		fallthrough
+	case "assistant":
+		fallthrough
+	case "user":
+		*e = Role(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for Role: %v", v)
+	}
+}
+
+type AIPromptDecoratorPluginAppend struct {
+	Content *string `json:"content,omitempty"`
+	Role    *Role   `default:"system" json:"role"`
+}
+
+func (a AIPromptDecoratorPluginAppend) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIPromptDecoratorPluginAppend) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *AIPromptDecoratorPluginAppend) GetContent() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Content
+}
+
+func (o *AIPromptDecoratorPluginAppend) GetRole() *Role {
+	if o == nil {
+		return nil
+	}
+	return o.Role
+}
+
 type AIPromptDecoratorPluginRole string
 
 const (
@@ -125,122 +185,62 @@ func (e *AIPromptDecoratorPluginRole) UnmarshalJSON(data []byte) error {
 	}
 }
 
-type AIPromptDecoratorPluginPrepend struct {
-	Role    *AIPromptDecoratorPluginRole `default:"system" json:"role"`
+type Prepend struct {
 	Content *string                      `json:"content,omitempty"`
+	Role    *AIPromptDecoratorPluginRole `default:"system" json:"role"`
 }
 
-func (a AIPromptDecoratorPluginPrepend) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
+func (p Prepend) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
 }
 
-func (a *AIPromptDecoratorPluginPrepend) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+func (p *Prepend) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AIPromptDecoratorPluginPrepend) GetRole() *AIPromptDecoratorPluginRole {
-	if o == nil {
-		return nil
-	}
-	return o.Role
-}
-
-func (o *AIPromptDecoratorPluginPrepend) GetContent() *string {
+func (o *Prepend) GetContent() *string {
 	if o == nil {
 		return nil
 	}
 	return o.Content
 }
 
-type AIPromptDecoratorPluginConfigRole string
-
-const (
-	AIPromptDecoratorPluginConfigRoleSystem    AIPromptDecoratorPluginConfigRole = "system"
-	AIPromptDecoratorPluginConfigRoleAssistant AIPromptDecoratorPluginConfigRole = "assistant"
-	AIPromptDecoratorPluginConfigRoleUser      AIPromptDecoratorPluginConfigRole = "user"
-)
-
-func (e AIPromptDecoratorPluginConfigRole) ToPointer() *AIPromptDecoratorPluginConfigRole {
-	return &e
-}
-
-func (e *AIPromptDecoratorPluginConfigRole) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "system":
-		fallthrough
-	case "assistant":
-		fallthrough
-	case "user":
-		*e = AIPromptDecoratorPluginConfigRole(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AIPromptDecoratorPluginConfigRole: %v", v)
-	}
-}
-
-type AIPromptDecoratorPluginAppend struct {
-	Role    *AIPromptDecoratorPluginConfigRole `default:"system" json:"role"`
-	Content *string                            `json:"content,omitempty"`
-}
-
-func (a AIPromptDecoratorPluginAppend) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
-}
-
-func (a *AIPromptDecoratorPluginAppend) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (o *AIPromptDecoratorPluginAppend) GetRole() *AIPromptDecoratorPluginConfigRole {
+func (o *Prepend) GetRole() *AIPromptDecoratorPluginRole {
 	if o == nil {
 		return nil
 	}
 	return o.Role
 }
 
-func (o *AIPromptDecoratorPluginAppend) GetContent() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Content
-}
-
-type AIPromptDecoratorPluginPrompts struct {
-	// Insert chat messages at the beginning of the chat message array. This array preserves exact order when adding messages.
-	Prepend []AIPromptDecoratorPluginPrepend `json:"prepend,omitempty"`
+type Prompts struct {
 	// Insert chat messages at the end of the chat message array. This array preserves exact order when adding messages.
 	Append []AIPromptDecoratorPluginAppend `json:"append,omitempty"`
+	// Insert chat messages at the beginning of the chat message array. This array preserves exact order when adding messages.
+	Prepend []Prepend `json:"prepend,omitempty"`
 }
 
-func (o *AIPromptDecoratorPluginPrompts) GetPrepend() []AIPromptDecoratorPluginPrepend {
-	if o == nil {
-		return nil
-	}
-	return o.Prepend
-}
-
-func (o *AIPromptDecoratorPluginPrompts) GetAppend() []AIPromptDecoratorPluginAppend {
+func (o *Prompts) GetAppend() []AIPromptDecoratorPluginAppend {
 	if o == nil {
 		return nil
 	}
 	return o.Append
 }
 
-type AIPromptDecoratorPluginConfig struct {
-	Prompts *AIPromptDecoratorPluginPrompts `json:"prompts,omitempty"`
+func (o *Prompts) GetPrepend() []Prepend {
+	if o == nil {
+		return nil
+	}
+	return o.Prepend
 }
 
-func (o *AIPromptDecoratorPluginConfig) GetPrompts() *AIPromptDecoratorPluginPrompts {
+type AIPromptDecoratorPluginConfig struct {
+	Prompts *Prompts `json:"prompts,omitempty"`
+}
+
+func (o *AIPromptDecoratorPluginConfig) GetPrompts() *Prompts {
 	if o == nil {
 		return nil
 	}

@@ -273,7 +273,7 @@ func (r *GatewayPluginOauth2Resource) Create(ctx context.Context, req resource.C
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	createOauth2Plugin := *data.ToSharedCreateOauth2Plugin()
+	createOauth2Plugin := data.ToSharedCreateOauth2Plugin()
 	request := operations.CreateOauth2PluginRequest{
 		ControlPlaneID:     controlPlaneID,
 		CreateOauth2Plugin: createOauth2Plugin,
@@ -323,11 +323,11 @@ func (r *GatewayPluginOauth2Resource) Read(ctx context.Context, req resource.Rea
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.GetOauth2PluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.GetOauth2Plugin(ctx, request)
 	if err != nil {
@@ -373,12 +373,12 @@ func (r *GatewayPluginOauth2Resource) Update(ctx context.Context, req resource.U
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
-	createOauth2Plugin := *data.ToSharedCreateOauth2Plugin()
+	controlPlaneID := data.ControlPlaneID.ValueString()
+	createOauth2Plugin := data.ToSharedCreateOauth2Plugin()
 	request := operations.UpdateOauth2PluginRequest{
-		ControlPlaneID:     controlPlaneID,
 		PluginID:           pluginID,
+		ControlPlaneID:     controlPlaneID,
 		CreateOauth2Plugin: createOauth2Plugin,
 	}
 	res, err := r.client.Plugins.UpdateOauth2Plugin(ctx, request)
@@ -426,11 +426,11 @@ func (r *GatewayPluginOauth2Resource) Delete(ctx context.Context, req resource.D
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.DeleteOauth2PluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.DeleteOauth2Plugin(ctx, request)
 	if err != nil {

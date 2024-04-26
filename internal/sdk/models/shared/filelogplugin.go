@@ -96,12 +96,12 @@ func (o *FileLogPluginService) GetID() *string {
 }
 
 type FileLogPluginConfig struct {
+	// Lua code as a key-value map
+	CustomFieldsByLua map[string]interface{} `json:"custom_fields_by_lua,omitempty"`
 	// The file path of the output log file. The plugin creates the log file if it doesn't exist yet.
 	Path *string `json:"path,omitempty"`
 	// Determines whether the log file is closed and reopened on every request.
 	Reopen *bool `default:"false" json:"reopen"`
-	// Lua code as a key-value map
-	CustomFieldsByLua map[string]interface{} `json:"custom_fields_by_lua,omitempty"`
 }
 
 func (f FileLogPluginConfig) MarshalJSON() ([]byte, error) {
@@ -113,6 +113,13 @@ func (f *FileLogPluginConfig) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (o *FileLogPluginConfig) GetCustomFieldsByLua() map[string]interface{} {
+	if o == nil {
+		return nil
+	}
+	return o.CustomFieldsByLua
 }
 
 func (o *FileLogPluginConfig) GetPath() *string {
@@ -127,13 +134,6 @@ func (o *FileLogPluginConfig) GetReopen() *bool {
 		return nil
 	}
 	return o.Reopen
-}
-
-func (o *FileLogPluginConfig) GetCustomFieldsByLua() map[string]interface{} {
-	if o == nil {
-		return nil
-	}
-	return o.CustomFieldsByLua
 }
 
 // FileLogPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.

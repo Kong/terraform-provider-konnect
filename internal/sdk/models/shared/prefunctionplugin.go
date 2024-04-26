@@ -96,30 +96,16 @@ func (o *PreFunctionPluginService) GetID() *string {
 }
 
 type PreFunctionPluginConfig struct {
-	Certificate     []string `json:"certificate,omitempty"`
-	Rewrite         []string `json:"rewrite,omitempty"`
 	Access          []string `json:"access,omitempty"`
-	HeaderFilter    []string `json:"header_filter,omitempty"`
 	BodyFilter      []string `json:"body_filter,omitempty"`
+	Certificate     []string `json:"certificate,omitempty"`
+	HeaderFilter    []string `json:"header_filter,omitempty"`
 	Log             []string `json:"log,omitempty"`
-	WsHandshake     []string `json:"ws_handshake,omitempty"`
+	Rewrite         []string `json:"rewrite,omitempty"`
 	WsClientFrame   []string `json:"ws_client_frame,omitempty"`
-	WsUpstreamFrame []string `json:"ws_upstream_frame,omitempty"`
 	WsClose         []string `json:"ws_close,omitempty"`
-}
-
-func (o *PreFunctionPluginConfig) GetCertificate() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Certificate
-}
-
-func (o *PreFunctionPluginConfig) GetRewrite() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Rewrite
+	WsHandshake     []string `json:"ws_handshake,omitempty"`
+	WsUpstreamFrame []string `json:"ws_upstream_frame,omitempty"`
 }
 
 func (o *PreFunctionPluginConfig) GetAccess() []string {
@@ -129,18 +115,25 @@ func (o *PreFunctionPluginConfig) GetAccess() []string {
 	return o.Access
 }
 
-func (o *PreFunctionPluginConfig) GetHeaderFilter() []string {
-	if o == nil {
-		return nil
-	}
-	return o.HeaderFilter
-}
-
 func (o *PreFunctionPluginConfig) GetBodyFilter() []string {
 	if o == nil {
 		return nil
 	}
 	return o.BodyFilter
+}
+
+func (o *PreFunctionPluginConfig) GetCertificate() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Certificate
+}
+
+func (o *PreFunctionPluginConfig) GetHeaderFilter() []string {
+	if o == nil {
+		return nil
+	}
+	return o.HeaderFilter
 }
 
 func (o *PreFunctionPluginConfig) GetLog() []string {
@@ -150,11 +143,11 @@ func (o *PreFunctionPluginConfig) GetLog() []string {
 	return o.Log
 }
 
-func (o *PreFunctionPluginConfig) GetWsHandshake() []string {
+func (o *PreFunctionPluginConfig) GetRewrite() []string {
 	if o == nil {
 		return nil
 	}
-	return o.WsHandshake
+	return o.Rewrite
 }
 
 func (o *PreFunctionPluginConfig) GetWsClientFrame() []string {
@@ -164,18 +157,25 @@ func (o *PreFunctionPluginConfig) GetWsClientFrame() []string {
 	return o.WsClientFrame
 }
 
-func (o *PreFunctionPluginConfig) GetWsUpstreamFrame() []string {
-	if o == nil {
-		return nil
-	}
-	return o.WsUpstreamFrame
-}
-
 func (o *PreFunctionPluginConfig) GetWsClose() []string {
 	if o == nil {
 		return nil
 	}
 	return o.WsClose
+}
+
+func (o *PreFunctionPluginConfig) GetWsHandshake() []string {
+	if o == nil {
+		return nil
+	}
+	return o.WsHandshake
+}
+
+func (o *PreFunctionPluginConfig) GetWsUpstreamFrame() []string {
+	if o == nil {
+		return nil
+	}
+	return o.WsUpstreamFrame
 }
 
 // PreFunctionPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.

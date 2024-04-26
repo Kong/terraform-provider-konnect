@@ -189,7 +189,7 @@ func (r *GatewayPluginCorrelationIDResource) Create(ctx context.Context, req res
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	createCorrelationIDPlugin := *data.ToSharedCreateCorrelationIDPlugin()
+	createCorrelationIDPlugin := data.ToSharedCreateCorrelationIDPlugin()
 	request := operations.CreateCorrelationidPluginRequest{
 		ControlPlaneID:            controlPlaneID,
 		CreateCorrelationIDPlugin: createCorrelationIDPlugin,
@@ -239,11 +239,11 @@ func (r *GatewayPluginCorrelationIDResource) Read(ctx context.Context, req resou
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.GetCorrelationidPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.GetCorrelationidPlugin(ctx, request)
 	if err != nil {
@@ -289,12 +289,12 @@ func (r *GatewayPluginCorrelationIDResource) Update(ctx context.Context, req res
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
-	createCorrelationIDPlugin := *data.ToSharedCreateCorrelationIDPlugin()
+	controlPlaneID := data.ControlPlaneID.ValueString()
+	createCorrelationIDPlugin := data.ToSharedCreateCorrelationIDPlugin()
 	request := operations.UpdateCorrelationidPluginRequest{
-		ControlPlaneID:            controlPlaneID,
 		PluginID:                  pluginID,
+		ControlPlaneID:            controlPlaneID,
 		CreateCorrelationIDPlugin: createCorrelationIDPlugin,
 	}
 	res, err := r.client.Plugins.UpdateCorrelationidPlugin(ctx, request)
@@ -342,11 +342,11 @@ func (r *GatewayPluginCorrelationIDResource) Delete(ctx context.Context, req res
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.DeleteCorrelationidPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.DeleteCorrelationidPlugin(ctx, request)
 	if err != nil {

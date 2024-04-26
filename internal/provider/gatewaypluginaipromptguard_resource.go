@@ -179,7 +179,7 @@ func (r *GatewayPluginAIPromptGuardResource) Create(ctx context.Context, req res
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	createAIPromptGuardPlugin := *data.ToSharedCreateAIPromptGuardPlugin()
+	createAIPromptGuardPlugin := data.ToSharedCreateAIPromptGuardPlugin()
 	request := operations.CreateAipromptguardPluginRequest{
 		ControlPlaneID:            controlPlaneID,
 		CreateAIPromptGuardPlugin: createAIPromptGuardPlugin,
@@ -229,11 +229,11 @@ func (r *GatewayPluginAIPromptGuardResource) Read(ctx context.Context, req resou
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.GetAipromptguardPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.GetAipromptguardPlugin(ctx, request)
 	if err != nil {
@@ -279,12 +279,12 @@ func (r *GatewayPluginAIPromptGuardResource) Update(ctx context.Context, req res
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
-	createAIPromptGuardPlugin := *data.ToSharedCreateAIPromptGuardPlugin()
+	controlPlaneID := data.ControlPlaneID.ValueString()
+	createAIPromptGuardPlugin := data.ToSharedCreateAIPromptGuardPlugin()
 	request := operations.UpdateAipromptguardPluginRequest{
-		ControlPlaneID:            controlPlaneID,
 		PluginID:                  pluginID,
+		ControlPlaneID:            controlPlaneID,
 		CreateAIPromptGuardPlugin: createAIPromptGuardPlugin,
 	}
 	res, err := r.client.Plugins.UpdateAipromptguardPlugin(ctx, request)
@@ -332,11 +332,11 @@ func (r *GatewayPluginAIPromptGuardResource) Delete(ctx context.Context, req res
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.DeleteAipromptguardPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.DeleteAipromptguardPlugin(ctx, request)
 	if err != nil {

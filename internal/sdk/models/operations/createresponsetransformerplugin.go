@@ -9,9 +9,8 @@ import (
 
 type CreateResponsetransformerPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	// Create a new ResponseTransformer plugin
-	CreateResponseTransformerPlugin shared.CreateResponseTransformerPlugin `request:"mediaType=application/json"`
+	ControlPlaneID                  string                                  `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	CreateResponseTransformerPlugin *shared.CreateResponseTransformerPlugin `request:"mediaType=application/json"`
 }
 
 func (o *CreateResponsetransformerPluginRequest) GetControlPlaneID() string {
@@ -21,9 +20,9 @@ func (o *CreateResponsetransformerPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateResponsetransformerPluginRequest) GetCreateResponseTransformerPlugin() shared.CreateResponseTransformerPlugin {
+func (o *CreateResponsetransformerPluginRequest) GetCreateResponseTransformerPlugin() *shared.CreateResponseTransformerPlugin {
 	if o == nil {
-		return shared.CreateResponseTransformerPlugin{}
+		return nil
 	}
 	return o.CreateResponseTransformerPlugin
 }
@@ -35,7 +34,7 @@ type CreateResponsetransformerPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successfully created Plugin
+	// ResponseTransformer plugin
 	ResponseTransformerPlugin *shared.ResponseTransformerPlugin
 	// Unauthorized
 	UnauthorizedError *shared.UnauthorizedError

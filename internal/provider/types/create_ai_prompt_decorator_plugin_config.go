@@ -3,5 +3,5 @@
 package types
 
 type CreateAIPromptDecoratorPluginConfig struct {
-	Prompts *Prompts `tfsdk:"prompts"`
+	Prompts *CreateAIPromptDecoratorPluginPrompts `tfsdk:"prompts"`
 }

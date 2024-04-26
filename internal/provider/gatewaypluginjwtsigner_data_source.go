@@ -447,11 +447,11 @@ func (r *GatewayPluginJWTSignerDataSource) Read(ctx context.Context, req datasou
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	pluginID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.GetJwtsignerPluginRequest{
-		ControlPlaneID: controlPlaneID,
 		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Plugins.GetJwtsignerPlugin(ctx, request)
 	if err != nil {
