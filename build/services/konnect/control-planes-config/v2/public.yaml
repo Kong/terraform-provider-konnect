@@ -1,26 +1,36 @@
-openapi: 3.0.2
+openapi: 3.1.0
 info:
   contact:
     email: support@konghq.com
     name: Kong Inc
     url: https://konghq.com
-  description: The API for configuring Konnect Control Planes.
+  description: >-
+    OpenAPI 3.0 spec for Kong Gateway's Admin API.
+
+
+    You can lean more about Kong Gateway at
+    [docs.konghq.com](https://docs.konghq.com)
+
+    .Give Kong a star at [Kong/kong](https://github.com/kong/kong) repository.
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
   title: Konnect Control Planes Configuration
-  version: 2.0.0
+  version: 0.0.1
 servers:
   - url: https://us.api.konghq.com/v2
-    description: US Region Konnect Platform Base URL
   - url: https://eu.api.konghq.com/v2
-    description: EU Region Konnect Platform Base URL
   - url: https://au.api.konghq.com/v2
-    description: AU Region Konnect Platform Base URL
 security:
   - konnectAccessToken: []
   - personalAccessToken: []
 tags:
+  - description: DP Nodes
+    name: DP Nodes
+  - description: DP Certificates
+    name: DP Certificates
+  - description: Custom Plugin Schemas
+    name: Custom Plugin Schemas
   - description: >
       Service entities are abstractions of your microservice interfaces or
       formal APIs. For example, a service could be a data transformation
@@ -216,16 +226,273 @@ tags:
   - name: JWTs
   - name: HMAC-auth credentials
   - name: ACLs
-  - description: DP Nodes
-    name: DP Nodes
-  - description: DP Certificates
-    name: DP Certificates
-  - description: Custom Plugin Schemas
-    name: Custom Plugin Schemas
 externalDocs:
   description: Documentation for Kong Gateway and its APIs
   url: https://docs.konghq.com
 paths:
+  /control-planes/{controlPlaneId}/expected-config-hash:
+    get:
+      summary: Fetch Expected Config Hash
+      tags:
+        - DP Nodes
+      responses:
+        '200':
+          $ref: '#/components/responses/get-expected-config-hash'
+      operationId: get-expected-config-hash
+      description: >-
+        Retrieve the expected config hash for this control plane. The expected
+        config hash can be used to verify if the config hash of a data plane
+        node is up to date with the control plane. The config hash will be the
+        same if they are in sync.
+      parameters:
+        - $ref: '#/components/parameters/page_size'
+        - $ref: '#/components/parameters/page_number'
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+  /control-planes/{controlPlaneId}/dp-client-certificates:
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+    get:
+      summary: List DP Client Certificates
+      responses:
+        '200':
+          $ref: '#/components/responses/list-dp-client-certs'
+      operationId: get-dp-client-certificates
+      tags:
+        - DP Certificates
+      description: >-
+        Returns a list of pinned dataplane client certificates that are
+        associated to this control plane. A pinned dataplane certificate allows
+        dataplanes configured with the certificate and corresponding private key
+        to establish connection with this control plane.
+      parameters:
+        - $ref: '#/components/parameters/page_size'
+        - $ref: '#/components/parameters/page_number'
+    post:
+      summary: Pin New DP Client Certificate
+      operationId: post-dp-client-certificates
+      responses:
+        '201':
+          $ref: '#/components/responses/get-dp-client-cert'
+      tags:
+        - DP Certificates
+      description: >-
+        Pin a new DP Client Certificate to this control plane. A pinned
+        dataplane certificate allows dataplanes configured with the certificate
+        and corresponding private key to establish connection with this control
+        plane.
+      requestBody:
+        $ref: '#/components/requestBodies/create-dp-client-cert'
+  /control-planes/{controlPlaneId}/dp-client-certificates/{certificateId}:
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+      - schema:
+          type: string
+        name: certificateId
+        in: path
+        required: true
+    get:
+      summary: Fetch DP Client Certificate
+      tags:
+        - DP Certificates
+      responses:
+        '200':
+          $ref: '#/components/responses/get-dp-client-cert'
+      operationId: get-dp-client-certificates-cert_id
+      description: >-
+        Retrieve a pinned dataplane client certificate associated to this
+        control plane. A pinned dataplane certificate allows dataplanes
+        configured with the certificate and corresponding private key to
+        establish connection with this control plane.
+      parameters:
+        - $ref: '#/components/parameters/page_size'
+        - $ref: '#/components/parameters/page_number'
+    delete:
+      summary: Delete DP Client Certificate
+      operationId: delete-dp-client-certificates-cert_id
+      responses:
+        '204':
+          description: No Content
+      tags:
+        - DP Certificates
+      description: >-
+        Remove a pinned dataplane client certificate associated to this control
+        plane. Removing a pinned dataplane certificate would invalidate any
+        dataplanes currently connected to this control plane using this
+        certificate.
+  /control-planes/{controlPlaneId}/nodes:
+    get:
+      summary: List Data Plane Node Records
+      responses:
+        '200':
+          $ref: '#/components/responses/list-nodes'
+      operationId: get-nodes
+      tags:
+        - DP Nodes
+      description: >-
+        Returns a list of data plane node records that are associated to this
+        control plane. A data plane node record contains metadata information
+        for the data plane running Kong Gateway.
+      parameters:
+        - $ref: '#/components/parameters/page_size'
+        - $ref: '#/components/parameters/page_number'
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+  /control-planes/{controlPlaneId}/nodes/eol:
+    get:
+      summary: List End-of-Life Data Plane Node Records
+      responses:
+        '200':
+          $ref: '#/components/responses/list-nodes-eol'
+      operationId: get-nodes-eol
+      tags:
+        - DP Nodes
+      description: >-
+        Returns a list of records of data plane nodes, whose versions are
+        approaching End of Full Support/End of Life, that are associated with
+        this control plane. Each record contains a data plane node's id,
+        version, and corresponding resolution message to upgrade to the closest
+        Long Term Support version.
+      parameters:
+        - $ref: '#/components/parameters/page_size'
+        - $ref: '#/components/parameters/page_number'
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+  /control-planes/{controlPlaneId}/nodes/{nodeId}:
+    parameters:
+      - schema:
+          type: string
+        name: nodeId
+        in: path
+        required: true
+      - $ref: '#/components/parameters/controlPlaneId'
+    get:
+      summary: Fetch Data Plane Node Record
+      responses:
+        '200':
+          $ref: '#/components/responses/get-node'
+      operationId: get-nodes-node_id
+      tags:
+        - DP Nodes
+      description: >-
+        Retrieve a specific data plane node record associated to this control
+        plane. A data plane node record contains all the metadata information of
+        the Kong Gateway dataplane.
+      parameters:
+        - $ref: '#/components/parameters/pagination-size'
+        - $ref: '#/components/parameters/pagination-tags-filter'
+    delete:
+      summary: Delete Data Plane Node Record
+      operationId: delete-nodes-node_id
+      responses:
+        '204':
+          description: No Content
+      tags:
+        - DP Nodes
+      description: >-
+        Remove a specific data plane node record associated to this control
+        plane. Deleting this record does not prevent the data plane node from
+        re-connecting to the control plane.
+  /control-planes/{controlPlaneId}/core-entities/plugin-schemas:
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+    get:
+      summary: List custom plugin schemas associated with a control plane
+      responses:
+        '200':
+          $ref: '#/components/responses/list-plugin-schemas'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      operationId: list-plugin-schemas
+      description: >-
+        Returns an array of custom plugins schemas associated with a control
+        plane.
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageAfter'
+        - $ref: '#/components/parameters/PageBefore'
+      tags:
+        - Custom Plugin Schemas
+    post:
+      summary: Upload custom plugin schema
+      operationId: create-plugin-schemas
+      responses:
+        '201':
+          $ref: '#/components/responses/plugin-schemas'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - Custom Plugin Schemas
+      description: Upload a custom plugin schema associated with a control plane.
+      requestBody:
+        $ref: '#/components/requestBodies/create-plugin-schemas'
+  /control-planes/{controlPlaneId}/core-entities/plugin-schemas/{name}:
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+      - schema:
+          type: string
+          example: myplugin
+        name: name
+        in: path
+        required: true
+        description: The custom plugin name
+    get:
+      summary: Fetch custom plugin schema
+      responses:
+        '200':
+          $ref: '#/components/responses/plugin-schemas'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      operationId: get-plugin-schema
+      description: Returns information about a custom plugin from a given name.
+      tags:
+        - Custom Plugin Schemas
+    delete:
+      summary: Delete custom plugin schema
+      operationId: delete-plugin-schemas
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      description: Delete an individual custom plugin schema.
+      tags:
+        - Custom Plugin Schemas
+    put:
+      summary: Create or update a custom plugin schema
+      operationId: update-plugin-schemas
+      responses:
+        '200':
+          $ref: '#/components/responses/plugin-schemas'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      description: Create or update an individual custom plugin schema.
+      tags:
+        - Custom Plugin Schemas
+      requestBody:
+        $ref: '#/components/requestBodies/create-plugin-schemas'
   /control-planes/{controlPlaneId}/core-entities/acls:
     get:
       description: List all ACLs
@@ -2761,271 +3028,51 @@ paths:
       summary: Upsert a Vault
       tags:
         - Vaults
-  /control-planes/{controlPlaneId}/expected-config-hash:
-    get:
-      summary: Fetch Expected Config Hash
-      tags:
-        - DP Nodes
-      responses:
-        '200':
-          $ref: '#/components/responses/get-expected-config-hash'
-      operationId: get-expected-config-hash
-      description: >-
-        Retrieve the expected config hash for this control plane. The expected
-        config hash can be used to verify if the config hash of a data plane
-        node is up to date with the control plane. The config hash will be the
-        same if they are in sync.
-      parameters:
-        - $ref: '#/components/parameters/page_size'
-        - $ref: '#/components/parameters/page_number'
-    parameters:
-      - $ref: '#/components/parameters/controlPlaneId'
-  /control-planes/{controlPlaneId}/dp-client-certificates:
-    parameters:
-      - $ref: '#/components/parameters/controlPlaneId'
-    get:
-      summary: List DP Client Certificates
-      responses:
-        '200':
-          $ref: '#/components/responses/list-dp-client-certs'
-      operationId: get-dp-client-certificates
-      tags:
-        - DP Certificates
-      description: >-
-        Returns a list of pinned dataplane client certificates that are
-        associated to this control plane. A pinned dataplane certificate allows
-        dataplanes configured with the certificate and corresponding private key
-        to establish connection with this control plane.
-      parameters:
-        - $ref: '#/components/parameters/page_size'
-        - $ref: '#/components/parameters/page_number'
-    post:
-      summary: Pin New DP Client Certificate
-      operationId: post-dp-client-certificates
-      responses:
-        '201':
-          $ref: '#/components/responses/get-dp-client-cert'
-      tags:
-        - DP Certificates
-      description: >-
-        Pin a new DP Client Certificate to this control plane. A pinned
-        dataplane certificate allows dataplanes configured with the certificate
-        and corresponding private key to establish connection with this control
-        plane.
-      requestBody:
-        $ref: '#/components/requestBodies/create-dp-client-cert'
-  /control-planes/{controlPlaneId}/dp-client-certificates/{certificateId}:
-    parameters:
-      - $ref: '#/components/parameters/controlPlaneId'
-      - schema:
-          type: string
-        name: certificateId
-        in: path
-        required: true
-    get:
-      summary: Fetch DP Client Certificate
-      tags:
-        - DP Certificates
-      responses:
-        '200':
-          $ref: '#/components/responses/get-dp-client-cert'
-      operationId: get-dp-client-certificates-cert_id
-      description: >-
-        Retrieve a pinned dataplane client certificate associated to this
-        control plane. A pinned dataplane certificate allows dataplanes
-        configured with the certificate and corresponding private key to
-        establish connection with this control plane.
-      parameters:
-        - $ref: '#/components/parameters/page_size'
-        - $ref: '#/components/parameters/page_number'
-    delete:
-      summary: Delete DP Client Certificate
-      operationId: delete-dp-client-certificates-cert_id
-      responses:
-        '204':
-          description: No Content
-      tags:
-        - DP Certificates
-      description: >-
-        Remove a pinned dataplane client certificate associated to this control
-        plane. Removing a pinned dataplane certificate would invalidate any
-        dataplanes currently connected to this control plane using this
-        certificate.
-  /control-planes/{controlPlaneId}/nodes:
-    get:
-      summary: List Data Plane Node Records
-      responses:
-        '200':
-          $ref: '#/components/responses/list-nodes'
-      operationId: get-nodes
-      tags:
-        - DP Nodes
-      description: >-
-        Returns a list of data plane node records that are associated to this
-        control plane. A data plane node record contains metadata information
-        for the data plane running Kong Gateway.
-      parameters:
-        - $ref: '#/components/parameters/page_size'
-        - $ref: '#/components/parameters/page_number'
-    parameters:
-      - $ref: '#/components/parameters/controlPlaneId'
-  /control-planes/{controlPlaneId}/nodes/eol:
-    get:
-      summary: List End-of-Life Data Plane Node Records
-      responses:
-        '200':
-          $ref: '#/components/responses/list-nodes-eol'
-      operationId: get-nodes-eol
-      tags:
-        - DP Nodes
-      description: >-
-        Returns a list of records of data plane nodes, whose versions are
-        approaching End of Full Support/End of Life, that are associated with
-        this control plane. Each record contains a data plane node's id,
-        version, and corresponding resolution message to upgrade to the closest
-        Long Term Support version.
-      parameters:
-        - $ref: '#/components/parameters/page_size'
-        - $ref: '#/components/parameters/page_number'
-    parameters:
-      - $ref: '#/components/parameters/controlPlaneId'
-  /control-planes/{controlPlaneId}/nodes/{nodeId}:
-    parameters:
-      - schema:
-          type: string
-        name: nodeId
-        in: path
-        required: true
-      - $ref: '#/components/parameters/controlPlaneId'
-    get:
-      summary: Fetch Data Plane Node Record
-      responses:
-        '200':
-          $ref: '#/components/responses/get-node'
-      operationId: get-nodes-node_id
-      tags:
-        - DP Nodes
-      description: >-
-        Retrieve a specific data plane node record associated to this control
-        plane. A data plane node record contains all the metadata information of
-        the Kong Gateway dataplane.
-      parameters:
-        - $ref: '#/components/parameters/pagination-size'
-        - $ref: '#/components/parameters/pagination-tags-filter'
-    delete:
-      summary: Delete Data Plane Node Record
-      operationId: delete-nodes-node_id
-      responses:
-        '204':
-          description: No Content
-      tags:
-        - DP Nodes
-      description: >-
-        Remove a specific data plane node record associated to this control
-        plane. Deleting this record does not prevent the data plane node from
-        re-connecting to the control plane.
-  /control-planes/{controlPlaneId}/core-entities/plugin-schemas:
-    parameters:
-      - $ref: '#/components/parameters/controlPlaneId'
-    get:
-      summary: List custom plugin schemas associated with a control plane
-      responses:
-        '200':
-          $ref: '#/components/responses/list-plugin-schemas'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-      operationId: list-plugin-schemas
-      description: >-
-        Returns an array of custom plugins schemas associated with a control
-        plane.
-      parameters:
-        - $ref: '#/components/parameters/PageSize'
-        - $ref: '#/components/parameters/PageAfter'
-        - $ref: '#/components/parameters/PageBefore'
-      tags:
-        - Custom Plugin Schemas
-    post:
-      summary: Upload custom plugin schema
-      operationId: create-plugin-schemas
-      responses:
-        '201':
-          $ref: '#/components/responses/plugin-schemas'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '409':
-          $ref: '#/components/responses/Conflict'
-      tags:
-        - Custom Plugin Schemas
-      description: Upload a custom plugin schema associated with a control plane.
-      requestBody:
-        $ref: '#/components/requestBodies/create-plugin-schemas'
-  /control-planes/{controlPlaneId}/core-entities/plugin-schemas/{name}:
-    parameters:
-      - $ref: '#/components/parameters/controlPlaneId'
-      - schema:
-          type: string
-          example: myplugin
-        name: name
-        in: path
-        required: true
-        description: The custom plugin name
-    get:
-      summary: Fetch custom plugin schema
-      responses:
-        '200':
-          $ref: '#/components/responses/plugin-schemas'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-      operationId: get-plugin-schema
-      description: Returns information about a custom plugin from a given name.
-      tags:
-        - Custom Plugin Schemas
-    delete:
-      summary: Delete custom plugin schema
-      operationId: delete-plugin-schemas
-      responses:
-        '204':
-          description: No Content
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-      description: Delete an individual custom plugin schema.
-      tags:
-        - Custom Plugin Schemas
-    put:
-      summary: Create or update a custom plugin schema
-      operationId: update-plugin-schemas
-      responses:
-        '200':
-          $ref: '#/components/responses/plugin-schemas'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-      description: Create or update an individual custom plugin schema.
-      tags:
-        - Custom Plugin Schemas
-      requestBody:
-        $ref: '#/components/requestBodies/create-plugin-schemas'
 components:
   parameters:
+    pagination-size:
+      description: Number of resources to be returned.
+      in: query
+      name: size
+      schema:
+        default: 100
+        maximum: 1000
+        minimum: 1
+        type: integer
+    pagination-tags-filter:
+      description: >-
+        A list of tags to filter the list of resources on. Multiple tags can be
+        concatenated using ',' to mean AND or using '/' to mean OR.
+      example: tag1,tag2
+      in: query
+      name: tags
+      schema:
+        type: string
+    controlPlaneId:
+      name: controlPlaneId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 9524ec7d-36d9-465d-a8c5-83a3c9390458
+      description: >-
+        The UUID of your control plane. This variable is available in the
+        Konnect manager
+    page_size:
+      name: page_size
+      in: query
+      required: false
+      schema:
+        type: integer
+      description: The number of items to include in a page.
+    page_number:
+      name: page_number
+      in: query
+      required: false
+      schema:
+        type: integer
+      description: The specific page number in the collection results.
     ACLId:
       description: ID of the ACL to lookup
       example: f28acbfa-c866-4587-b688-0208ac24df21
@@ -3224,49 +3271,6 @@ components:
       required: true
       schema:
         type: string
-    pagination-size:
-      description: Number of resources to be returned.
-      in: query
-      name: size
-      schema:
-        default: 100
-        maximum: 1000
-        minimum: 1
-        type: integer
-    pagination-tags-filter:
-      description: >-
-        A list of tags to filter the list of resources on. Multiple tags can be
-        concatenated using ',' to mean AND or using '/' to mean OR.
-      example: tag1,tag2
-      in: query
-      name: tags
-      schema:
-        type: string
-    controlPlaneId:
-      name: controlPlaneId
-      in: path
-      required: true
-      schema:
-        type: string
-        format: uuid
-        example: 9524ec7d-36d9-465d-a8c5-83a3c9390458
-      description: >-
-        The UUID of your control plane. This variable is available in the
-        Konnect manager
-    page_size:
-      name: page_size
-      in: query
-      required: false
-      schema:
-        type: integer
-      description: The number of items to include in a page.
-    page_number:
-      name: page_number
-      in: query
-      required: false
-      schema:
-        type: integer
-      description: The specific page number in the collection results.
     PageSize:
       name: page[size]
       description: >-
@@ -3300,29 +3304,44 @@ components:
       schema:
         type: string
         example: ewogICJpZCI6ICJoZWxsbyB3b3JsZCIKfQ
-  responses:
-    HTTP401Error:
+  requestBodies:
+    create-dp-client-cert:
       content:
         application/json:
-          examples:
-            DuplicateApiKey:
-              summary: Duplicate API key found
-              value:
-                message: Duplicate API key found
-                status: 401
-            InvalidAuthCred:
-              summary: Invalid authentication credentials
-              value:
-                message: Unauthorized
-                status: 401
-            NoAPIKey:
-              summary: No API key found
-              value:
-                message: No API key found in request
-                status: 401
           schema:
-            $ref: '#/components/schemas/UnauthorizedError'
-      description: Unauthorized
+            type: object
+            properties:
+              cert:
+                type: string
+                description: JSON escaped string of the certificate.
+            required:
+              - cert
+          examples:
+            Sample DP Client Certificate:
+              value:
+                cert: "-----BEGIN CERTIFICATE-----\r\n*****\r\n-----END CERTIFICATE-----\r\n"
+      description: Request body for creating a dp-client-certificate.
+    create-plugin-schemas:
+      content:
+        application/json:
+          schema:
+            type: object
+            x-examples:
+              Example 1:
+                lua_schema: >-
+                  return { name = \"myplugin\", fields = { { config = { type =
+                  \"record\", fields = { } } } } }
+            properties:
+              lua_schema:
+                type: string
+                description: |
+                  The custom plugin schema; `jq -Rs '.' schema.lua`.
+                example: >-
+                  return { name = \"myplugin\", fields = { { config = { type =
+                  \"record\", fields = { } } } } }
+            required:
+              - lua_schema
+  responses:
     get-dp-client-cert:
       description: Response body for retrieving a dp-client-certificate.
       content:
@@ -3563,6 +3582,28 @@ components:
                       An ISO-8604 timestamp representation of custom plugin
                       schema update date.
                     example: 1422412345
+    HTTP401Error:
+      content:
+        application/json:
+          examples:
+            DuplicateApiKey:
+              summary: Duplicate API key found
+              value:
+                message: Duplicate API key found
+                status: 401
+            InvalidAuthCred:
+              summary: Invalid authentication credentials
+              value:
+                message: Unauthorized
+                status: 401
+            NoAPIKey:
+              summary: No API key found
+              value:
+                message: No API key found in request
+                status: 401
+          schema:
+            $ref: '#/components/schemas/UnauthorizedError'
+      description: Unauthorized
     BadRequest:
       description: Bad Request
       content:
@@ -3602,6 +3643,21 @@ components:
           examples:
             NotFoundExample:
               $ref: '#/components/examples/NotFoundExample'
+  securitySchemes:
+    konnectAccessToken:
+      type: http
+      scheme: bearer
+      description: >-
+        The Konnect access token is meant to be used by the Konnect dashboard
+        and the decK CLI to authenticate with.
+    personalAccessToken:
+      type: http
+      scheme: bearer
+      description: >-
+        The personal access token is meant to be used as an alternative to
+        basic-auth when accessing Konnect via APIs. You can generate a Personal
+        Access Token (PAT) from the personal access token page in the Konnect
+        dashboard.
   schemas:
     ACL:
       allOf:
@@ -5389,60 +5445,6 @@ components:
           example: Not found
       allOf:
         - $ref: '#/components/schemas/BaseError'
-  securitySchemes:
-    konnectAccessToken:
-      description: >-
-        The Konnect access token is meant to be used by the Konnect dashboard
-        and the decK CLI to
-
-        authenticate with.
-      scheme: bearer
-      type: http
-    personalAccessToken:
-      description: >-
-        The personal access token is meant to be used as an alternative to
-        basic-auth when accessing Konnect via APIs. You can generate a Personal
-        Access Token (PAT) from the personal access token page in the Konnect
-        dashboard.
-      scheme: bearer
-      type: http
-  requestBodies:
-    create-dp-client-cert:
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              cert:
-                type: string
-                description: JSON escaped string of the certificate.
-            required:
-              - cert
-          examples:
-            Sample DP Client Certificate:
-              value:
-                cert: "-----BEGIN CERTIFICATE-----\r\n*****\r\n-----END CERTIFICATE-----\r\n"
-      description: Request body for creating a dp-client-certificate.
-    create-plugin-schemas:
-      content:
-        application/json:
-          schema:
-            type: object
-            x-examples:
-              Example 1:
-                lua_schema: >-
-                  return { name = \"myplugin\", fields = { { config = { type =
-                  \"record\", fields = { } } } } }
-            properties:
-              lua_schema:
-                type: string
-                description: |
-                  The custom plugin schema; `jq -Rs '.' schema.lua`.
-                example: >-
-                  return { name = \"myplugin\", fields = { { config = { type =
-                  \"record\", fields = { } } } } }
-            required:
-              - lua_schema
   examples:
     UnauthorizedExample:
       value:

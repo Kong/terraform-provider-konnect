@@ -3,11 +3,12 @@ const path = require("path");
 const yaml = require("js-yaml");
 const fs = require("fs").promises;
 const traverse = require("traverse");
+const getProducts = require("./get-products");
 
 const baseDir = path.resolve(__dirname, "..");
 
 async function main() {
-  let projects = ["konnect", "portal", "internal"];
+  let projects = getProducts();
   if (process.argv.length > 2) {
     projects = process.argv.slice(2);
   }

@@ -16,3 +16,13 @@ products:
     match:
       - "internal/definitions/**/openapi.yaml"
     notMatch: []
+
+  terraform:
+    match:
+      - "konnect/definitions/control-planes/v2/openapi.yaml"
+      - "konnect/definitions/control-planes-config/v2/openapi.yaml"
+      - "konnect/definitions/mesh-control-planes/v0/openapi.yaml"
+      - "konnect/definitions/api-products/v2/openapi.yaml"
+      - "konnect/definitions/portal-management/v2/openapi.yaml"
+      - "konnect/definitions/application-auth-strategies/v2/openapi.yaml"
+    notMatch: []

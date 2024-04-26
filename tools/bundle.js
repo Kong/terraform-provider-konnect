@@ -3,15 +3,16 @@ const { handleBundle: redocBundle } = require('@redocly/cli/lib/commands/bundle'
 const { loadConfigAndHandleErrors: redocConfig } = require('@redocly/cli/lib/utils');
 const path = require('path')
 const getProductFiles = require("./get-product-files");
+const getProducts = require("./get-products");
 
 const baseDir = path.resolve(__dirname, '..')
 const redocConfigurationPath = path.join(baseDir, 'redocly.yaml')
 
-// Loop over all `src` folders in `konnect`/`portal`/`internal` projects definitions to
+// Loop over all `src` folders in project definitions to
 // generate the `computed` folder to be consumed by the api tooling
 async function main() {
     let allFiles = false
-    let projects = ["konnect", "portal", "internal"];
+    let projects = getProducts();
     if (process.argv.length > 2) {
         const arg = process.argv.slice(2)
         if (arg[0] === 'all-files') {

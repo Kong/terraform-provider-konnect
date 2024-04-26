@@ -8,7 +8,6 @@ components:
             required: true
             schema:
                 type: string
-            x-speakeasy-match: id
         BasicAuthId:
             description: ID of the Basic-auth credential to lookup
             example: 80db1b58-ca7c-4d21-b92a-64eb07725872
@@ -17,7 +16,6 @@ components:
             required: true
             schema:
                 type: string
-            x-speakeasy-match: id
         CACertificateId:
             description: ID of the CA Certificate to lookup
             example: 3c31f18a-f27a-4f9b-8cd4-bf841554612f
@@ -26,7 +24,6 @@ components:
             required: true
             schema:
                 type: string
-            x-speakeasy-match: id
         CertificateId:
             description: ID of the Certificate to lookup
             example: ddf3cdaa-3329-4961-822a-ce6dbd38eff7
@@ -35,7 +32,6 @@ components:
             required: true
             schema:
                 type: string
-            x-speakeasy-match: id
         ConsumerGroupId:
             description: ID of the Consumer Group to lookup
             example: ""
@@ -44,7 +40,6 @@ components:
             required: true
             schema:
                 type: string
-            x-speakeasy-match: id
         ConsumerId:
             description: ID of the Consumer to lookup
             example: c1059869-6fa7-4329-a5f5-5946d14ca2c5
@@ -53,7 +48,6 @@ components:
             required: true
             schema:
                 type: string
-            x-speakeasy-match: id
         ConsumerIdForNestedEntities:
             description: Consumer ID for nested entities
             example: f28acbfa-c866-4587-b688-0208ac24df21
@@ -62,7 +56,6 @@ components:
             required: true
             schema:
                 type: string
-            x-speakeasy-match: consumer_id
         ControlPlaneId:
             description: The UUID of your control plane. This variable is available in the Konnect manager.
             example: 9524ec7d-36d9-465d-a8c5-83a3c9390458
@@ -80,7 +73,6 @@ components:
             required: true
             schema:
                 type: string
-            x-speakeasy-match: id
         JWTId:
             description: ID of the JWT to lookup
             example: 4a7f5faa-8c96-46d6-8214-c87573ef2ac4
@@ -89,7 +81,6 @@ components:
             required: true
             schema:
                 type: string
-            x-speakeasy-match: id
         KeyAuthId:
             description: ID of the API-key to lookup
             example: ""
@@ -98,7 +89,6 @@ components:
             required: true
             schema:
                 type: string
-            x-speakeasy-match: id
         KeyId:
             description: ID of the Key to lookup
             example: bba22c06-a632-42be-a018-1b9ff357b5b9
@@ -107,7 +97,6 @@ components:
             required: true
             schema:
                 type: string
-            x-speakeasy-match: id
         KeySetId:
             description: ID of the KeySet to lookup
             example: 6cc34248-50b4-4a81-9201-3bdf7a83f712
@@ -116,7 +105,6 @@ components:
             required: true
             schema:
                 type: string
-            x-speakeasy-match: id
         PaginationOffset:
             description: Offset from which to return the next set of resources. Use the value of the 'offset' field from the response of a list operation as input here to paginate through all the resources
             in: query
@@ -147,7 +135,6 @@ components:
             required: true
             schema:
                 type: string
-            x-speakeasy-match: id
         RouteId:
             description: ID of the Route to lookup
             example: a4326a41-aa12-44e3-93e4-6b6e58bfb9d7
@@ -156,7 +143,6 @@ components:
             required: true
             schema:
                 type: string
-            x-speakeasy-match: id
         SNIId:
             description: ID of the SNI to lookup
             example: 64c17a1a-b7d7-4a65-a5a4-42e4a7016e7f
@@ -165,7 +151,6 @@ components:
             required: true
             schema:
                 type: string
-            x-speakeasy-match: id
         ServiceId:
             description: ID of the Service to lookup
             example: 7fca84d6-7d37-4a74-a7b0-93e576089a41
@@ -174,7 +159,6 @@ components:
             required: true
             schema:
                 type: string
-            x-speakeasy-match: id
         TargetId:
             description: ID of the Target to lookup
             example: 5a078780-5d4c-4aae-984a-bdc6f52113d8
@@ -183,7 +167,6 @@ components:
             required: true
             schema:
                 type: string
-            x-speakeasy-match: id
         UpstreamId:
             description: ID of the Upstream to lookup
             example: 426d620c-7058-4ae6-aacc-f85a3204a2c5
@@ -192,7 +175,6 @@ components:
             required: true
             schema:
                 type: string
-            x-speakeasy-match: id
         UpstreamIdForTarget:
             description: ID or target of the Target to lookup
             example: 5a078780-5d4c-4aae-984a-bdc6f52113d8
@@ -201,7 +183,6 @@ components:
             required: true
             schema:
                 type: string
-            x-speakeasy-match: upstream_id
         VaultId:
             description: ID of the Vault to lookup
             example: 9d4d6d19-77c6-428e-a965-9bc9647633e9
@@ -210,7 +191,6 @@ components:
             required: true
             schema:
                 type: string
-            x-speakeasy-match: id
     responses:
         HTTP401Error:
             content:
@@ -249,7 +229,6 @@ components:
                     id:
                         type: string
                   type: object
-                  x-speakeasy-entity: GatewayACL
                 - $ref: '#/components/schemas/CreateACL'
         BaseService:
             description: Service entities, as the name implies, are abstractions of each of your own upstream services. Examples of Services would be a data transformation microservice, a billing API, etc. The main attribute of a Service is its URL (where Kong should proxy traffic to), which can be set as a single string or by specifying its `protocol`, `host`, `port` and `path` individually. Services are associated to Routes (a Service can have many Routes associated with it). Routes are entry-points in Kong and define rules to match client requests. Once a Route is matched, Kong proxies the request to its associated Service. See the [Proxy Reference][proxy-reference] for a detailed explanation of how Kong proxies traffic.
@@ -273,7 +252,6 @@ components:
                     id:
                         type: string
                   type: object
-                  x-speakeasy-entity: GatewayBasicAuth
                 - $ref: '#/components/schemas/CreateBasicAuth'
         CACertificate:
             allOf:
@@ -290,7 +268,6 @@ components:
                     id:
                         type: string
                   type: object
-                  x-speakeasy-entity: GatewayCACertificate
                 - $ref: '#/components/schemas/CreateCACertificate'
         Certificate:
             allOf:
@@ -311,7 +288,6 @@ components:
                     id:
                         type: string
                   type: object
-                  x-speakeasy-entity: GatewayCertificate
                 - $ref: '#/components/schemas/CreateCertificate'
         Consumer:
             allOf:
@@ -328,7 +304,6 @@ components:
                     id:
                         type: string
                   type: object
-                  x-speakeasy-entity: GatewayConsumer
                 - $ref: '#/components/schemas/CreateConsumer'
         ConsumerGroup:
             allOf:
@@ -339,7 +314,6 @@ components:
                     id:
                         type: string
                   type: object
-                  x-speakeasy-entity: GatewayConsumerGroup
                 - $ref: '#/components/schemas/CreateConsumerGroup'
         CreateACL:
             allOf:
@@ -362,7 +336,6 @@ components:
                         type: string
                     type: array
             type: object
-            x-speakeasy-entity: GatewayACL
         CreateBasicAuth:
             allOf:
                 - $ref: '#/components/schemas/CreateBasicAuthWithoutParents'
@@ -386,7 +359,6 @@ components:
                 username:
                     type: string
             type: object
-            x-speakeasy-entity: GatewayBasicAuth
         CreateCACertificate:
             allOf:
                 - $ref: '#/components/schemas/CreateCACertificateWithoutParents'
@@ -408,7 +380,6 @@ components:
                         type: string
                     type: array
             type: object
-            x-speakeasy-entity: GatewayCACertificate
         CreateCertificate:
             allOf:
                 - $ref: '#/components/schemas/CreateCertificateWithoutParents'
@@ -437,7 +408,6 @@ components:
                         type: string
                     type: array
             type: object
-            x-speakeasy-entity: GatewayCertificate
         CreateConsumer:
             allOf:
                 - $ref: '#/components/schemas/CreateConsumerWithoutParents'
@@ -458,7 +428,6 @@ components:
                         type: string
                     type: array
             type: object
-            x-speakeasy-entity: GatewayConsumerGroup
         CreateConsumerWithoutParents:
             properties:
                 custom_id:
@@ -473,7 +442,6 @@ components:
                     description: The unique username of the Consumer. You must send either this field or `custom_id` with the request.
                     type: string
             type: object
-            x-speakeasy-entity: GatewayConsumer
         CreateHMACAuth:
             allOf:
                 - $ref: '#/components/schemas/CreateHMACAuthWithoutParents'
@@ -497,7 +465,6 @@ components:
                 username:
                     type: string
             type: object
-            x-speakeasy-entity: GatewayHMACAuth
         CreateJWT:
             allOf:
                 - $ref: '#/components/schemas/CreateJWTWithoutParents'
@@ -535,7 +502,6 @@ components:
                         type: string
                     type: array
             type: object
-            x-speakeasy-entity: GatewayJWT
         CreateKey:
             allOf:
                 - $ref: '#/components/schemas/CreateKeyWithoutParents'
@@ -564,7 +530,6 @@ components:
                         type: string
                     type: array
             type: object
-            x-speakeasy-entity: GatewayKeyAuth
         CreateKeySet:
             allOf:
                 - $ref: '#/components/schemas/CreateKeySetWithoutParents'
@@ -578,7 +543,6 @@ components:
                         type: string
                     type: array
             type: object
-            x-speakeasy-entity: GatewayKeySet
         CreateKeyWithoutParents:
             properties:
                 jwk:
@@ -612,7 +576,6 @@ components:
                         type: string
                     type: array
             type: object
-            x-speakeasy-entity: GatewayKey
         CreatePlugin:
             allOf:
                 - $ref: '#/components/schemas/CreatePluginWithoutParents'
@@ -688,7 +651,6 @@ components:
                         type: string
                     type: array
             type: object
-            x-speakeasy-entity: GatewayPlugin
         CreateRoute:
             allOf:
                 - $ref: '#/components/schemas/CreateRouteWithoutParents'
@@ -814,7 +776,6 @@ components:
                         type: string
                     type: array
             type: object
-            x-speakeasy-entity: GatewayRoute
         CreateSNI:
             allOf:
                 - $ref: '#/components/schemas/CreateSNIWithoutParents'
@@ -843,7 +804,6 @@ components:
                         type: string
                     type: array
             type: object
-            x-speakeasy-entity: GatewaySNI
         CreateService:
             allOf:
                 - properties:
@@ -851,7 +811,6 @@ components:
                         description: Helper field to set `protocol`, `host`, `port` and `path` using a URL. This field is write-only and is not returned in responses.
                         type: string
                   type: object
-                  x-speakeasy-entity: GatewayService
                 - $ref: '#/components/schemas/CreateServiceWithoutParents'
         CreateServiceWithoutParents:
             properties:
@@ -928,7 +887,6 @@ components:
                     description: The timeout in milliseconds between two successive write operations for transmitting a request to the upstream server.
                     type: integer
             type: object
-            x-speakeasy-entity: GatewayService
         CreateTarget:
             allOf:
                 - $ref: '#/components/schemas/CreateTargetWithoutParents'
@@ -957,7 +915,6 @@ components:
                     description: The weight this target gets within the upstream loadbalancer (`0`-`65535`). If the hostname resolves to an SRV record, the `weight` value will be overridden by the value from the DNS record.
                     type: integer
             type: object
-            x-speakeasy-entity: GatewayTarget
         CreateUpstream:
             allOf:
                 - $ref: '#/components/schemas/CreateUpstreamWithoutParents'
@@ -1195,7 +1152,6 @@ components:
                     description: If set, the balancer will use SRV hostname(if DNS Answer has SRV record) as the proxy upstream `Host`.
                     type: boolean
             type: object
-            x-speakeasy-entity: GatewayUpstream
         CreateVault:
             allOf:
                 - $ref: '#/components/schemas/CreateVaultWithoutParents'
@@ -1221,7 +1177,6 @@ components:
                         type: string
                     type: array
             type: object
-            x-speakeasy-entity: GatewayVault
         HMACAuth:
             allOf:
                 - example:
@@ -1237,7 +1192,6 @@ components:
                     id:
                         type: string
                   type: object
-                  x-speakeasy-entity: GatewayHMACAuth
                 - $ref: '#/components/schemas/CreateHMACAuth'
         JWT:
             allOf:
@@ -1255,7 +1209,6 @@ components:
                     id:
                         type: string
                   type: object
-                  x-speakeasy-entity: GatewayJWT
                 - $ref: '#/components/schemas/CreateJWT'
         Key:
             allOf:
@@ -1279,7 +1232,6 @@ components:
                         description: Unix epoch when the resource was last updated.
                         type: integer
                   type: object
-                  x-speakeasy-entity: GatewayKey
                 - $ref: '#/components/schemas/CreateKey'
         KeyAuth:
             allOf:
@@ -1295,7 +1247,6 @@ components:
                     id:
                         type: string
                   type: object
-                  x-speakeasy-entity: GatewayKeyAuth
                 - $ref: '#/components/schemas/CreateKeyAuth'
         KeySet:
             allOf:
@@ -1314,7 +1265,6 @@ components:
                         description: Unix epoch when the resource was last updated.
                         type: integer
                   type: object
-                  x-speakeasy-entity: GatewayKeySet
                 - $ref: '#/components/schemas/CreateKeySet'
         PaginationOffsetResponse:
             description: Offset is used to paginate through the API. Provide this value to the next list operation to fetch the next page
@@ -1349,7 +1299,6 @@ components:
                     - enabled
                     - protocols
                   type: object
-                  x-speakeasy-entity: GatewayPlugin
                 - $ref: '#/components/schemas/CreatePlugin'
         Route:
             allOf:
@@ -1374,7 +1323,6 @@ components:
                         description: Unix epoch when the resource was last updated.
                         type: integer
                   type: object
-                  x-speakeasy-entity: GatewayRoute
                 - $ref: '#/components/schemas/CreateRoute'
         SNI:
             allOf:
@@ -1390,7 +1338,6 @@ components:
                     id:
                         type: string
                   type: object
-                  x-speakeasy-entity: GatewaySNI
                 - $ref: '#/components/schemas/CreateSNI'
         Service:
             allOf:
@@ -1425,7 +1372,6 @@ components:
                     - updated_at
                     - write_timeout
                   type: object
-                  x-speakeasy-entity: GatewayService
                 - $ref: '#/components/schemas/BaseService'
         Target:
             allOf:
@@ -1442,7 +1388,6 @@ components:
                     id:
                         type: string
                   type: object
-                  x-speakeasy-entity: GatewayTarget
                 - $ref: '#/components/schemas/CreateTarget'
         UnauthorizedError:
             properties:
@@ -1531,7 +1476,6 @@ components:
                     id:
                         type: string
                   type: object
-                  x-speakeasy-entity: GatewayUpstream
                 - $ref: '#/components/schemas/CreateUpstream'
         Vault:
             allOf:
@@ -1554,7 +1498,6 @@ components:
                         description: Unix epoch when the resource was last updated.
                         type: integer
                   type: object
-                  x-speakeasy-entity: GatewayVault
                 - $ref: '#/components/schemas/CreateVault'
     securitySchemes:
         konnectAccessToken:
@@ -1583,7 +1526,7 @@ info:
         url: https://www.apache.org/licenses/LICENSE-2.0.html
     title: Konnect Control Planes Configuration
     version: 0.0.1
-openapi: 3.0.0
+openapi: 3.1.0
 paths:
     /control-planes/{controlPlaneId}/core-entities/acls:
         get:
@@ -1694,7 +1637,6 @@ paths:
             summary: Create a new CA Certificate
             tags:
                 - CA Certificates
-            x-speakeasy-entity-operation: GatewayCACertificate#create
     /control-planes/{controlPlaneId}/core-entities/ca_certificates/{CACertificateId}:
         delete:
             description: Delete a CA Certificate
@@ -1709,7 +1651,6 @@ paths:
             summary: Delete a CA Certificate
             tags:
                 - CA Certificates
-            x-speakeasy-entity-operation: GatewayCACertificate#delete
         get:
             description: Get a CA Certificate using ID.
             operationId: get-ca_certificate
@@ -1729,7 +1670,6 @@ paths:
             summary: Fetch a CA Certificate
             tags:
                 - CA Certificates
-            x-speakeasy-entity-operation: GatewayCACertificate#read
         parameters:
             - $ref: '#/components/parameters/ControlPlaneId'
         put:
@@ -1807,7 +1747,6 @@ paths:
             summary: Create a new Certificate
             tags:
                 - Certificates
-            x-speakeasy-entity-operation: GatewayCertificate#create
     /control-planes/{controlPlaneId}/core-entities/certificates/{CertificateId}:
         delete:
             description: Delete a Certificate
@@ -1822,7 +1761,6 @@ paths:
             summary: Delete a Certificate
             tags:
                 - Certificates
-            x-speakeasy-entity-operation: GatewayCertificate#delete
         get:
             description: Get a Certificate using ID.
             operationId: get-certificate
@@ -1842,7 +1780,6 @@ paths:
             summary: Fetch a Certificate
             tags:
                 - Certificates
-            x-speakeasy-entity-operation: GatewayCertificate#read
         parameters:
             - $ref: '#/components/parameters/ControlPlaneId'
         put:
@@ -2026,7 +1963,6 @@ paths:
             summary: Create a new Consumer Group
             tags:
                 - Consumer Groups
-            x-speakeasy-entity-operation: GatewayConsumerGroup#create
     /control-planes/{controlPlaneId}/core-entities/consumer_groups/{ConsumerGroupId}:
         delete:
             description: Delete a Consumer Group
@@ -2041,7 +1977,6 @@ paths:
             summary: Delete a Consumer Group
             tags:
                 - Consumer Groups
-            x-speakeasy-entity-operation: GatewayConsumerGroup#delete
         get:
             description: Get a Consumer Group using ID.
             operationId: get-consumer_group
@@ -2061,7 +1996,6 @@ paths:
             summary: Fetch a Consumer Group
             tags:
                 - Consumer Groups
-            x-speakeasy-entity-operation: GatewayConsumerGroup#read
         parameters:
             - $ref: '#/components/parameters/ControlPlaneId'
         put:
@@ -2139,7 +2073,6 @@ paths:
             summary: Create a new Consumer
             tags:
                 - Consumers
-            x-speakeasy-entity-operation: GatewayConsumer#create
     /control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerId}:
         delete:
             description: Delete a Consumer
@@ -2154,7 +2087,6 @@ paths:
             summary: Delete a Consumer
             tags:
                 - Consumers
-            x-speakeasy-entity-operation: GatewayConsumer#delete
         get:
             description: Get a Consumer using ID or username.
             operationId: get-consumer
@@ -2174,7 +2106,6 @@ paths:
             summary: Fetch a Consumer
             tags:
                 - Consumers
-            x-speakeasy-entity-operation: GatewayConsumer#read
         parameters:
             - $ref: '#/components/parameters/ControlPlaneId'
         put:
@@ -2251,7 +2182,6 @@ paths:
             summary: Create a new ACL associated with a Consumer
             tags:
                 - ACLs
-            x-speakeasy-entity-operation: GatewayACL#create
     /control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/acls/{ACLId}:
         delete:
             description: Delete a an ACL associated with a a Consumer using ID.
@@ -2265,7 +2195,6 @@ paths:
             summary: Delete a an ACL associated with a a Consumer
             tags:
                 - ACLs
-            x-speakeasy-entity-operation: GatewayACL#delete
         get:
             description: Get an ACL associated with a Consumer using ID.
             operationId: get-acl-with-consumer
@@ -2284,7 +2213,6 @@ paths:
             summary: Fetch an ACL associated with a Consumer
             tags:
                 - ACLs
-            x-speakeasy-entity-operation: GatewayACL#read
         parameters:
             - $ref: '#/components/parameters/ControlPlaneId'
         put:
@@ -2360,7 +2288,6 @@ paths:
             summary: Create a new Basic-auth credential associated with a Consumer
             tags:
                 - Basic-auth credentials
-            x-speakeasy-entity-operation: GatewayBasicAuth#create
     /control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/basic-auth/{BasicAuthId}:
         delete:
             description: Delete a a Basic-auth credential associated with a a Consumer using ID.
@@ -2374,7 +2301,6 @@ paths:
             summary: Delete a a Basic-auth credential associated with a a Consumer
             tags:
                 - Basic-auth credentials
-            x-speakeasy-entity-operation: GatewayBasicAuth#delete
         get:
             description: Get a Basic-auth credential associated with a Consumer using ID.
             operationId: get-basic-auth-with-consumer
@@ -2393,7 +2319,6 @@ paths:
             summary: Fetch a Basic-auth credential associated with a Consumer
             tags:
                 - Basic-auth credentials
-            x-speakeasy-entity-operation: GatewayBasicAuth#read
         parameters:
             - $ref: '#/components/parameters/ControlPlaneId'
         put:
@@ -2469,7 +2394,6 @@ paths:
             summary: Create a new HMAC-auth credential associated with a Consumer
             tags:
                 - HMAC-auth credentials
-            x-speakeasy-entity-operation: GatewayHMACAuth#create
     /control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/hmac-auth/{HMACAuthId}:
         delete:
             description: Delete a a HMAC-auth credential associated with a a Consumer using ID.
@@ -2483,7 +2407,6 @@ paths:
             summary: Delete a a HMAC-auth credential associated with a a Consumer
             tags:
                 - HMAC-auth credentials
-            x-speakeasy-entity-operation: GatewayHMACAuth#delete
         get:
             description: Get a HMAC-auth credential associated with a Consumer using ID.
             operationId: get-hmac-auth-with-consumer
@@ -2502,7 +2425,6 @@ paths:
             summary: Fetch a HMAC-auth credential associated with a Consumer
             tags:
                 - HMAC-auth credentials
-            x-speakeasy-entity-operation: GatewayHMACAuth#read
         parameters:
             - $ref: '#/components/parameters/ControlPlaneId'
         put:
@@ -2578,7 +2500,6 @@ paths:
             summary: Create a new JWT associated with a Consumer
             tags:
                 - JWTs
-            x-speakeasy-entity-operation: GatewayJWT#create
     /control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/jwt/{JWTId}:
         delete:
             description: Delete a a JWT associated with a a Consumer using ID.
@@ -2592,7 +2513,6 @@ paths:
             summary: Delete a a JWT associated with a a Consumer
             tags:
                 - JWTs
-            x-speakeasy-entity-operation: GatewayJWT#delete
         get:
             description: Get a JWT associated with a Consumer using ID.
             operationId: get-jwt-with-consumer
@@ -2611,7 +2531,6 @@ paths:
             summary: Fetch a JWT associated with a Consumer
             tags:
                 - JWTs
-            x-speakeasy-entity-operation: GatewayJWT#read
         parameters:
             - $ref: '#/components/parameters/ControlPlaneId'
         put:
@@ -2687,7 +2606,6 @@ paths:
             summary: Create a new API-key associated with a Consumer
             tags:
                 - API-keys
-            x-speakeasy-entity-operation: GatewayKeyAuth#create
     /control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/key-auth/{KeyAuthId}:
         delete:
             description: Delete a an API-key associated with a a Consumer using ID.
@@ -2701,7 +2619,6 @@ paths:
             summary: Delete a an API-key associated with a a Consumer
             tags:
                 - API-keys
-            x-speakeasy-entity-operation: GatewayKeyAuth#delete
         get:
             description: Get an API-key associated with a Consumer using ID.
             operationId: get-key-auth-with-consumer
@@ -2720,7 +2637,6 @@ paths:
             summary: Fetch an API-key associated with a Consumer
             tags:
                 - API-keys
-            x-speakeasy-entity-operation: GatewayKeyAuth#read
         parameters:
             - $ref: '#/components/parameters/ControlPlaneId'
         put:
@@ -2884,7 +2800,6 @@ paths:
             summary: Create a new KeySet
             tags:
                 - KeySets
-            x-speakeasy-entity-operation: GatewayKeySet#create
     /control-planes/{controlPlaneId}/core-entities/key-sets/{KeySetId}:
         delete:
             description: Delete a KeySet
@@ -2899,7 +2814,6 @@ paths:
             summary: Delete a KeySet
             tags:
                 - KeySets
-            x-speakeasy-entity-operation: GatewayKeySet#delete
         get:
             description: Get a KeySet using ID or name.
             operationId: get-key-set
@@ -2919,7 +2833,6 @@ paths:
             summary: Fetch a KeySet
             tags:
                 - KeySets
-            x-speakeasy-entity-operation: GatewayKeySet#read
         parameters:
             - $ref: '#/components/parameters/ControlPlaneId'
         put:
@@ -2997,7 +2910,6 @@ paths:
             summary: Create a new Key
             tags:
                 - Keys
-            x-speakeasy-entity-operation: GatewayKey#create
     /control-planes/{controlPlaneId}/core-entities/keys/{KeyId}:
         delete:
             description: Delete a Key
@@ -3012,7 +2924,6 @@ paths:
             summary: Delete a Key
             tags:
                 - Keys
-            x-speakeasy-entity-operation: GatewayKey#delete
         get:
             description: Get a Key using ID or name.
             operationId: get-key
@@ -3032,7 +2943,6 @@ paths:
             summary: Fetch a Key
             tags:
                 - Keys
-            x-speakeasy-entity-operation: GatewayKey#read
         parameters:
             - $ref: '#/components/parameters/ControlPlaneId'
         put:
@@ -3110,7 +3020,6 @@ paths:
             summary: Create a new Plugin
             tags:
                 - Plugins
-            x-speakeasy-entity-operation: GatewayPlugin#create
     /control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}:
         delete:
             description: Delete a Plugin
@@ -3125,7 +3034,6 @@ paths:
             summary: Delete a Plugin
             tags:
                 - Plugins
-            x-speakeasy-entity-operation: GatewayPlugin#delete
         get:
             description: Get a Plugin using ID.
             operationId: get-plugin
@@ -3145,7 +3053,6 @@ paths:
             summary: Fetch a Plugin
             tags:
                 - Plugins
-            x-speakeasy-entity-operation: GatewayPlugin#read
         parameters:
             - $ref: '#/components/parameters/ControlPlaneId'
         put:
@@ -3223,7 +3130,6 @@ paths:
             summary: Create a new Route
             tags:
                 - Routes
-            x-speakeasy-entity-operation: GatewayRoute#create
     /control-planes/{controlPlaneId}/core-entities/routes/{RouteId}:
         delete:
             description: Delete a Route
@@ -3238,7 +3144,6 @@ paths:
             summary: Delete a Route
             tags:
                 - Routes
-            x-speakeasy-entity-operation: GatewayRoute#delete
         get:
             description: Get a Route using ID or name.
             operationId: get-route
@@ -3258,7 +3163,6 @@ paths:
             summary: Fetch a Route
             tags:
                 - Routes
-            x-speakeasy-entity-operation: GatewayRoute#read
         parameters:
             - $ref: '#/components/parameters/ControlPlaneId'
         put:
@@ -3442,7 +3346,6 @@ paths:
             summary: Create a new Service
             tags:
                 - Services
-            x-speakeasy-entity-operation: GatewayService#create
     /control-planes/{controlPlaneId}/core-entities/services/{ServiceId}:
         delete:
             description: Delete a Service
@@ -3457,7 +3360,6 @@ paths:
             summary: Delete a Service
             tags:
                 - Services
-            x-speakeasy-entity-operation: GatewayService#delete
         get:
             description: Get a Service using ID or name.
             operationId: get-service
@@ -3477,7 +3379,6 @@ paths:
             summary: Fetch a Service
             tags:
                 - Services
-            x-speakeasy-entity-operation: GatewayService#read
         parameters:
             - $ref: '#/components/parameters/ControlPlaneId'
         put:
@@ -3767,7 +3668,6 @@ paths:
             summary: Create a new SNI
             tags:
                 - SNIs
-            x-speakeasy-entity-operation: GatewaySNI#create
     /control-planes/{controlPlaneId}/core-entities/snis/{SNIId}:
         delete:
             description: Delete an SNI
@@ -3782,7 +3682,6 @@ paths:
             summary: Delete an SNI
             tags:
                 - SNIs
-            x-speakeasy-entity-operation: GatewaySNI#delete
         get:
             description: Get an SNI using ID or name.
             operationId: get-sni
@@ -3802,7 +3701,6 @@ paths:
             summary: Fetch an SNI
             tags:
                 - SNIs
-            x-speakeasy-entity-operation: GatewaySNI#read
         parameters:
             - $ref: '#/components/parameters/ControlPlaneId'
         put:
@@ -3880,7 +3778,6 @@ paths:
             summary: Create a new Upstream
             tags:
                 - Upstreams
-            x-speakeasy-entity-operation: GatewayUpstream#create
     /control-planes/{controlPlaneId}/core-entities/upstreams/{UpstreamId}:
         delete:
             description: Delete an Upstream
@@ -3895,7 +3792,6 @@ paths:
             summary: Delete an Upstream
             tags:
                 - Upstreams
-            x-speakeasy-entity-operation: GatewayUpstream#delete
         get:
             description: Get an Upstream using ID or name.
             operationId: get-upstream
@@ -3915,7 +3811,6 @@ paths:
             summary: Fetch an Upstream
             tags:
                 - Upstreams
-            x-speakeasy-entity-operation: GatewayUpstream#read
         parameters:
             - $ref: '#/components/parameters/ControlPlaneId'
         put:
@@ -3992,7 +3887,6 @@ paths:
             summary: Create a new Target associated with an Upstream
             tags:
                 - Targets
-            x-speakeasy-entity-operation: GatewayTarget#create
     /control-planes/{controlPlaneId}/core-entities/upstreams/{UpstreamIdForTarget}/targets/{TargetId}:
         delete:
             description: Delete a a Target associated with a an Upstream using ID or target.
@@ -4006,7 +3900,6 @@ paths:
             summary: Delete a a Target associated with a an Upstream
             tags:
                 - Targets
-            x-speakeasy-entity-operation: GatewayTarget#delete
         get:
             description: Get a Target associated with an Upstream using ID or target.
             operationId: get-target-with-upstream
@@ -4025,7 +3918,6 @@ paths:
             summary: Fetch a Target associated with an Upstream
             tags:
                 - Targets
-            x-speakeasy-entity-operation: GatewayTarget#read
         parameters:
             - $ref: '#/components/parameters/ControlPlaneId'
         put:
@@ -4102,7 +3994,6 @@ paths:
             summary: Create a new Vault
             tags:
                 - Vaults
-            x-speakeasy-entity-operation: GatewayVault#create
     /control-planes/{controlPlaneId}/core-entities/vaults/{VaultId}:
         delete:
             description: Delete a Vault
@@ -4117,7 +4008,6 @@ paths:
             summary: Delete a Vault
             tags:
                 - Vaults
-            x-speakeasy-entity-operation: GatewayVault#delete
         get:
             description: Get a Vault using ID or prefix.
             operationId: get-vault
@@ -4137,7 +4027,6 @@ paths:
             summary: Fetch a Vault
             tags:
                 - Vaults
-            x-speakeasy-entity-operation: GatewayVault#read
         parameters:
             - $ref: '#/components/parameters/ControlPlaneId'
         put:

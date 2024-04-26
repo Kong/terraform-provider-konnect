@@ -5,10 +5,11 @@ const path = require("path");
 const { tryMkdir } = require("./helpers/fs");
 const toolkit = require("oas-toolkit");
 const { splitByVisibility } = require("./helpers/filterOas");
+const getProducts = require("./get-products");
 
 async function main() {
   const baseDir = path.resolve(__dirname, "..");
-  let projects = ["konnect", "portal", "internal"];
+  let projects = getProducts();
   if (process.argv.length > 2) {
     projects = process.argv.slice(2);
   }

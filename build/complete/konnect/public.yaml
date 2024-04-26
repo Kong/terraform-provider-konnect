@@ -22066,28 +22066,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/GroupMemberStatus'
-    HTTP401Error:
-      content:
-        application/json:
-          examples:
-            DuplicateApiKey:
-              summary: Duplicate API key found
-              value:
-                message: Duplicate API key found
-                status: 401
-            InvalidAuthCred:
-              summary: Invalid authentication credentials
-              value:
-                message: Unauthorized
-                status: 401
-            NoAPIKey:
-              summary: No API key found
-              value:
-                message: No API key found in request
-                status: 401
-          schema:
-            $ref: '#/components/schemas/UnauthorizedError'
-      description: Unauthorized
     get-dp-client-cert:
       description: Response body for retrieving a dp-client-certificate.
       content:
@@ -22328,6 +22306,28 @@ components:
                       An ISO-8604 timestamp representation of custom plugin
                       schema update date.
                     example: 1422412345
+    HTTP401Error:
+      content:
+        application/json:
+          examples:
+            DuplicateApiKey:
+              summary: Duplicate API key found
+              value:
+                message: Duplicate API key found
+                status: 401
+            InvalidAuthCred:
+              summary: Invalid authentication credentials
+              value:
+                message: Unauthorized
+                status: 401
+            NoAPIKey:
+              summary: No API key found
+              value:
+                message: No API key found in request
+                status: 401
+          schema:
+            $ref: '#/components/schemas/UnauthorizedError'
+      description: Unauthorized
     GetImpersonationSettingsResponse:
       description: Response for Get Impersonation Settings endpoint
       content:
@@ -24367,6 +24367,49 @@ components:
       schema:
         type: string
         example: test
+    pagination-size:
+      description: Number of resources to be returned.
+      in: query
+      name: size
+      schema:
+        default: 100
+        maximum: 1000
+        minimum: 1
+        type: integer
+    pagination-tags-filter:
+      description: >-
+        A list of tags to filter the list of resources on. Multiple tags can be
+        concatenated using ',' to mean AND or using '/' to mean OR.
+      example: tag1,tag2
+      in: query
+      name: tags
+      schema:
+        type: string
+    controlPlaneId:
+      name: controlPlaneId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 9524ec7d-36d9-465d-a8c5-83a3c9390458
+      description: >-
+        The UUID of your control plane. This variable is available in the
+        Konnect manager
+    page_size:
+      name: page_size
+      in: query
+      required: false
+      schema:
+        type: integer
+      description: The number of items to include in a page.
+    page_number:
+      name: page_number
+      in: query
+      required: false
+      schema:
+        type: integer
+      description: The specific page number in the collection results.
     ACLId:
       description: ID of the ACL to lookup
       example: f28acbfa-c866-4587-b688-0208ac24df21
@@ -24565,49 +24608,6 @@ components:
       required: true
       schema:
         type: string
-    pagination-size:
-      description: Number of resources to be returned.
-      in: query
-      name: size
-      schema:
-        default: 100
-        maximum: 1000
-        minimum: 1
-        type: integer
-    pagination-tags-filter:
-      description: >-
-        A list of tags to filter the list of resources on. Multiple tags can be
-        concatenated using ',' to mean AND or using '/' to mean OR.
-      example: tag1,tag2
-      in: query
-      name: tags
-      schema:
-        type: string
-    controlPlaneId:
-      name: controlPlaneId
-      in: path
-      required: true
-      schema:
-        type: string
-        format: uuid
-        example: 9524ec7d-36d9-465d-a8c5-83a3c9390458
-      description: >-
-        The UUID of your control plane. This variable is available in the
-        Konnect manager
-    page_size:
-      name: page_size
-      in: query
-      required: false
-      schema:
-        type: integer
-      description: The number of items to include in a page.
-    page_number:
-      name: page_number
-      in: query
-      required: false
-      schema:
-        type: integer
-      description: The specific page number in the collection results.
     PageAfter:
       name: page[after]
       description: >-
@@ -25879,6 +25879,12 @@ tags:
   - name: Resource Availability
   - name: Control Planes
   - name: Control Plane Groups
+  - description: DP Nodes
+    name: DP Nodes
+  - description: DP Certificates
+    name: DP Certificates
+  - description: Custom Plugin Schemas
+    name: Custom Plugin Schemas
   - description: >
       Service entities are abstractions of your microservice interfaces or
       formal APIs. For example, a service could be a data transformation
@@ -26074,12 +26080,6 @@ tags:
   - name: JWTs
   - name: HMAC-auth credentials
   - name: ACLs
-  - description: DP Nodes
-    name: DP Nodes
-  - description: DP Certificates
-    name: DP Certificates
-  - description: Custom Plugin Schemas
-    name: Custom Plugin Schemas
   - name: Auth Settings
   - name: Invites
   - name: Roles

@@ -1,0 +1,35 @@
+overlay: 1.0.0
+info:
+  title: Konnect Control Plane Config Overlay
+  version: 0.0.0
+actions:
+  - target: $["components"]["parameters"]["pagination-tags-filter"]
+    update:
+      x-speakeasy-name-override: filter-tags
+
+  # Service
+  - target: $["components"]["schemas"]["CreateService"]["properties"]["url"]
+    update:
+      x-speakeasy-ignore: true
+  
+  # Route
+  - target: $["components"]["schemas"]["CreateRouteWithoutParents"]["properties"]["methods"]
+    update:
+      items:
+        type: string
+
+  # Plugin
+  # This triggers a bug in Koko right now
+  - target: $["components"]["schemas"]["CreatePluginWithoutParents"]["properties"]["ordering"]
+    remove: true
+
+  # Vault
+  - target: $["components"]["schemas"]["CreateVaultWithoutParents"]["properties"]["config"]
+    update:
+      x-speakeasy-type-override: any
+
+  # Credentials
+  - target: $["components"]["schemas"]["CreateBasicAuthWithoutParents"]["properties"]["password"]
+    update:
+      writeOnly: true 
+      x-speakeasy-param-sensitive: true

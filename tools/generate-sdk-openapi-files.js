@@ -1,36 +1,10 @@
 const fs = require("fs").promises;
 const yaml = require("js-yaml");
 const path = require("path");
-const traverse = require("traverse");
 const { tryMkdir } = require("./helpers/fs");
 const toolkit = require("oas-toolkit");
 const { splitByVisibility } = require("./helpers/filterOas");
-
-function filterOperations(doc, callback, log) {
-  doc = traverse(doc).clone();
-
-  return traverse(doc).forEach(function () {
-    if (!this.node || !this.node["operationId"]) {
-      return;
-    }
-
-    const result = callback(this.node);
-    if (!result) {
-      this.remove();
-
-      if (isEmptyOperation(this.parent.node)) {
-        this.parent.remove();
-      }
-    }
-  });
-}
-
-function isEmptyOperation(node) {
-  const allowedKeys = Object.keys(node).filter((k) =>
-    ["get", "post", "put", "patch", "delete"].includes(k)
-  );
-  return allowedKeys.length == 0;
-}
+const getProducts = require("./get-products");
 
 function unique(s) {
   if (!s) {
@@ -43,7 +17,7 @@ function unique(s) {
 
 async function main() {
   const baseDir = path.join(__dirname, "..");
-  let projects = ["konnect", "portal"];
+  let projects = getProducts();
   if (process.argv.length > 2) {
     projects = process.argv.slice(2);
   }

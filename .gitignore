@@ -1,6 +1,9 @@
 # Generated at runtime
 src/konnect/definitions/control-planes-config/v2/openapi.yaml
 
+# Not committed to repo
+build/complete/terraform
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

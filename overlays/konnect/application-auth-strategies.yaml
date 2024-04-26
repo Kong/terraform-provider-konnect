@@ -1,0 +1,22 @@
+overlay: 1.0.0
+info:
+  title: Konnect Application Auth Strategy Overlay
+  version: 0.0.0
+actions:
+
+  - target: $["components"]["schemas"]["AuthStrategy"]["discriminator"]
+    update:
+      mapping:
+        key_auth: '#/components/schemas/AuthStrategyKeyAuth'
+        client_credentials: '#/components/schemas/AuthStrategyClientCredentials'
+        self_managed_client_credentials: '#/components/schemas/AuthStrategyClientCredentials'
+  - target: $["components"]["schemas"]["AppAuthStrategy"]["discriminator"]
+    update:
+      mapping:
+        key_auth: '#/components/schemas/AppAuthStrategyKeyAuthResponse'
+        openid_connect: '#/components/schemas/AppAuthStrategyOpenIDConnectResponse'
+  - target: $["components"]["schemas"]["CreateAppAuthStrategyRequest"]["discriminator"]
+    update:
+      mapping:
+        key_auth: '#/components/schemas/AppAuthStrategyKeyAuthRequest'
+        openid_connect: '#/components/schemas/AppAuthStrategyOpenIDConnectRequest'

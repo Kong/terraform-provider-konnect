@@ -1,0 +1,30 @@
+overlay: 1.0.0
+info:
+  title: Konnect API Products overlay
+  version: 0.0.0
+actions:
+  - target: $["components"]["schemas"]["CreateAPIProductVersionDTO"]["properties"]
+    update:
+      gateway_service:
+        $ref: "#/components/schemas/GatewayServicePayload"
+  - target: $["components"]["schemas"]["UpdateAPIProductVersionDTO"]["properties"]
+    update:
+      gateway_service:
+        $ref: "#/components/schemas/GatewayServicePayload"
+  # portal_ids isn't sent by the provider due to omitempty unless it's marked as required
+  - target: $["components"]["schemas"]["CreateAPIProductDTO"]["required"]
+    update:
+      - portal_ids
+  - target: $["components"]["schemas"]["UpdateAPIProductDTO"]
+    update:
+      required:
+        - portal_ids
+  # Labels aren't allowed on APIProductVersions
+  - target: $["components"]["schemas"]["APIProductVersion"]["properties"]["labels"]
+    remove: true
+  - target: $["components"]["schemas"]["APIProductVersion"]["required"][5]
+    remove: true
+  - target: $["components"]["schemas"]["CreateAPIProductVersionDTO"]["properties"]["labels"]
+    remove: true
+  - target: $["components"]["schemas"]["UpdateAPIProductVersionDTO"]["properties"]["labels"]
+    remove: true

@@ -2,9 +2,14 @@
 
 # Merge the generated and hand maintained OAS files for Control Planes Config
 FILES=(
-  "src/konnect/definitions/control-planes-config/v2/generated.yaml"
   "src/konnect/definitions/control-planes-config/v2/konnect.yaml"
 )
+
+if [[ $1 == "terraform" ]]; then
+  FILES+=("src/konnect/definitions/control-planes-config/v2/generated-with-plugins.yaml")
+else
+  FILES+=("src/konnect/definitions/control-planes-config/v2/generated.yaml")
+fi
 
 ./node_modules/.bin/oas-toolkit check-conflicts ${FILES[@]} --ignorePrefix components.securitySchemes --ignorePrefix components.examples
 ./node_modules/.bin/oas-toolkit merge ${FILES[@]} > src/konnect/definitions/control-planes-config/v2/openapi.yaml
