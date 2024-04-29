@@ -3178,6 +3178,7 @@ components:
       title: PortalPageResponse
       description: Details about a page in a portal.
       additionalProperties: false
+      type: object
       required:
         - id
         - path
@@ -3205,6 +3206,7 @@ components:
       title: ListPortalPagesResponse
       description: A paginated list of custom pages in a portal.
       additionalProperties: false
+      type: object
       required:
         - data
         - meta

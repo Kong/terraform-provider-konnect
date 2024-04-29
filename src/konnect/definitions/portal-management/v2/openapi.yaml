@@ -936,6 +936,52 @@ paths:
         '404':
           $ref: >-
             ../../../../common/definitions/errors.yaml#/components/responses/NotFound
+  /portals/{portalId}/appearance/logo:
+    get:
+      summary: Get Portal Logo
+      description: >-
+        Returns the portal logo or returns the default
+      operationId: get-portal-logo
+      parameters:
+        - $ref: >-
+            ../../../../common/definitions/portal.yaml#/components/parameters/PortalId
+      tags:
+        - Portal Appearance
+      responses:
+        '200':
+          $ref: '#/components/responses/GetPortalLogoResponse'
+        '401':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Unauthorized
+        '403':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Forbidden
+        '404':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/NotFound
+  /portals/{portalId}/appearance/catalog-cover:
+    get:
+      summary: Get Portal Catalog Cover
+      description: >-
+        Returns the portal catalog cover or returns the default
+      operationId: get-portal-catalog-cover
+      parameters:
+        - $ref: >-
+            ../../../../common/definitions/portal.yaml#/components/parameters/PortalId
+      tags:
+        - Portal Appearance
+      responses:
+        '200':
+          $ref: '#/components/responses/GetPortalCatalogCoverResponse'
+        '401':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Unauthorized
+        '403':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Forbidden
+        '404':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/NotFound
   /portals/{portalId}/pages:
     get:
       x-internal: true
@@ -3483,6 +3529,14 @@ components:
             rule: unknown_property
             reason: '"filter[my_attribute]" is not allowed'
             source: query
+    GetPortalLogoResponseExample1:
+      value: data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+    GetPortalLogoResponseExample2:
+      value: data:image/jpg;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+    GetPortalCatalogCoverResponseExample1:
+      value: data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+    GetPortalCatalogCoverResponseExample2:
+      value: data:image/jpg;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
   requestBodies:
     PortalUpdateTeam:
       description: Update a team in a portal.
@@ -4083,6 +4137,36 @@ components:
           examples:
             Example 1:
               $ref: '#/components/examples/UpdatePortalAppearanceResponseExample1'
+    GetPortalLogoResponse:
+      description: Logo of the portal. Can be either png or jpg
+      content:
+        image/png:
+          schema:
+            $ref: '#/components/schemas/GetPortalAppearanceLogoResponse'
+          examples:
+            Example 1:
+              $ref: '#/components/examples/GetPortalLogoResponseExample1'
+        image/jpg:
+          schema:
+            $ref: '#/components/schemas/GetPortalAppearanceLogoResponse'
+          examples:
+            Example 2:
+              $ref: '#/components/examples/GetPortalLogoResponseExample2'
+    GetPortalCatalogCoverResponse:
+      description: Catalog Cover of the portal. Can be either png or jpg
+      content:
+        image/png:
+          schema:
+            $ref: '#/components/schemas/GetPortalAppearanceCatalogCoverResponse'
+          examples:
+            Example 1:
+              $ref: '#/components/examples/GetPortalCatalogCoverResponseExample1'
+        image/jpg:
+          schema:
+            $ref: '#/components/schemas/GetPortalAppearanceCatalogCoverResponse'
+          examples:
+            Example 2:
+              $ref: '#/components/examples/GetPortalCatalogCoverResponseExample2'
     PortalPage:
       description: Details about a page in a portal.
       content:
@@ -4195,6 +4279,7 @@ components:
       title: PortalPageResponse
       description: Details about a page in a portal.
       additionalProperties: false
+      type: object
       required:
         - id
         - path
@@ -4225,6 +4310,7 @@ components:
       title: ListPortalPagesResponse
       description: A paginated list of custom pages in a portal.
       additionalProperties: false
+      type: object
       required:
         - data
         - meta
@@ -5247,6 +5333,16 @@ components:
             filename: logo.png
           catalog_cover:
             data: data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+    GetPortalAppearanceLogoResponse:
+      title: GetPortalAppearanceLogoResponse
+      type: string
+      format: binary
+      example: data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+    GetPortalAppearanceCatalogCoverResponse:
+      title: GetPortalAppearanceLogoResponse
+      type: string
+      format: binary
+      example: data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
     ListDevelopersResponse:
       additionalProperties: false
       type: object
