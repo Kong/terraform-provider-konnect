@@ -1,0 +1,512 @@
+openapi: 3.0.3
+info:
+  title: Konnect Serverless Cloud Gateways Manager
+  description: Serverless Cloud Gateways Manager API
+  version: 0.0.1
+  contact:
+    name: Kong
+    url: https://konghq.com
+servers:
+  - url: https://global.api.konghq.com/v0
+    description: US Public API
+security:
+  - personalAccessToken: []
+  - systemAccountAccessToken: []
+tags:
+  - name: Serverless Cloud Gateways
+paths:
+  /serverless-cloud-gateways:
+    get:
+      summary: List Serverless cloud gateways
+      parameters:
+        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/FilterSCGWByLabels'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListServerlessCloudGatewaysResponse'
+        '401':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Unauthorized
+        '403':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Forbidden
+      operationId: list-serverless-cloud-gateway
+      description: Returns an array of serverless cloud gateways objects.
+      x-unstable: true
+      tags:
+        - Serverless Cloud Gateways
+    post:
+      summary: Create a new serverless cloud gateway
+      description: Create a new serverless cloud gateway
+      operationId: create-serverless-cloud-gateway
+      x-unstable: true
+      tags:
+        - Serverless Cloud Gateways
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateServerlessCloudGatewayRequest'
+            examples:
+              Example Request Body:
+                $ref: '#/components/examples/CreateServerlessCloudGatewayRequestExample'
+      responses:
+        '201':
+          $ref: '#/components/responses/CreateServerlessCloudGatewayResponse'
+        '400':
+          $ref: ../../../../common/definitions/errors.yaml#/components/responses/BadRequest
+        '401':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Unauthorized
+        '403':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Forbidden
+  /serverless-cloud-gateways/{controlPlaneId}:
+    parameters:
+      - name: controlPlaneId
+        in: path
+        required: true
+        description: Id of the Serverless Cloud Gateway control plane
+        example: bf138ba2-c9b1-4229-b268-04d9d8a6410b
+        schema:
+          type: string
+          format: uuid
+    get:
+      summary: Get the serverless cloud gateway
+      description: Get the serverless cloud gateway
+      operationId: get-serverless-cloud-gateway
+      x-unstable: true
+      tags:
+        - Serverless Cloud Gateways
+      responses:
+        '200':
+          $ref: '#/components/responses/RetrieveServerlessCloudGatewayResponse'
+        '401':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Unauthorized
+        '403':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Forbidden
+        '404':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/NotFound
+    patch:
+      summary: Update the serverless cloud gateway
+      operationId: update-serverless-cloud-gateway
+      x-internal: true
+      x-unstable: true
+      responses:
+        '200':
+          $ref: '#/components/responses/UpdateServerlessCloudGatewayResponse'
+        '400':
+          $ref: ../../../../common/definitions/errors.yaml#/components/responses/BadRequest
+        '401':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Unauthorized
+        '403':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Forbidden
+        '404':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/NotFound
+      description: Update an individual serverless cloud gateway.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateServerlessCloudGatewayRequest'
+            examples:
+              Example Request Body:
+                $ref: '#/components/examples/UpdateServerlessCloudGatewayRequestExample'
+      tags:
+        - Serverless Cloud Gateways
+    delete:
+      summary: Delete the serverless cloud gateway
+      description: Delete the serverless cloud gateway
+      operationId: delete-serverless-cloud-gateway
+      x-unstable: true
+      tags:
+        - Serverless Cloud Gateways
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Unauthorized
+        '403':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Forbidden
+        '404':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/NotFound
+components:
+  parameters:
+    FilterSCGWByLabels:
+      name: labels
+      description: Filter serverless cloud gateways in the response by associated labels.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 'filter[labels][eq]=env:prod'
+  securitySchemes:
+    personalAccessToken:
+      $ref: >-
+        ../../../../common/definitions/security.yaml#/components/securitySchemes/personalAccessToken
+    systemAccountAccessToken:
+      $ref: >-
+        ../../../../common/definitions/security.yaml#/components/securitySchemes/systemAccountAccessToken
+  schemas:
+    ServerlessCloudGateway:
+      type: object
+      title: ServerlessCloudGateway
+      description: A serverless cloud gateway
+      required:
+        - control_plane
+        - gateway_endpoint
+        - updated_at
+        - created_at
+      properties:
+        control_plane:
+          $ref: '#/components/schemas/ServerlessControlPlane'
+        gateway_endpoint:
+          type: string
+          format: hostname
+          description: Endpoint for the serverless cloud gateway.
+          example: us-kong-4594857kpl.kongcloud.dev
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          example: '2023-01-11T02:30:42.227Z'
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          example: '2023-01-11T02:30:42.227Z'
+          readOnly: true
+        labels:
+          $ref: '#/components/schemas/SCGWLabels'
+    CreateServerlessCloudGatewayRequest:
+      type: object
+      title: CreateServerlessCloudGatewayRequest
+      description: Schema to create a serverless cloud gateway.
+      required:
+        - control_plane
+        - cluster_cert
+        - cluster_cert_key
+      additionalProperties: false
+      properties:
+        control_plane:
+          $ref: '#/components/schemas/ServerlessControlPlane'
+        cluster_cert:
+          type: string
+          description: The cluster certificate (public key).
+          example: >
+            -----BEGIN CERTIFICATE-----
+            MIICRDCCAa2gAwIBAgIBADANBgkqhkiG9w0BAQ0FADA/MQswCQYDVQQGEwJ1czEL
+            MAkGA1UECAwCVFgxDTALBgNVBAoMBFRlc3QxFDASBgNVBAMMC2V4YW1wbGUuY29t
+            MB4XDTI0MDQyNjA5NTA1OVoXDTI1MDQyNjA5NTA1OVowPzELMAkGA1UEBhMCdXMx
+            CzAJBgNVBAgMAlRYMQ0wCwYDVQQKDARUZXN0MRQwEgYDVQQDDAtleGFtcGxlLmNv
+            bTCBnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEA8FaJZmPsthBT1XkTyqUJiuQV
+            4p4KaLpNMioNQtIdeGKFXelmZlVfW0bfLGBgFmkwo19KIzFtOlITUjb0Qqlub2Dn
+            TIPoDs7rXA8aw6umJu73Z6647U3+alxNCpwTuYOY2CJQ+HWEIuOuwAdtQkndEp9r
+            7ZWA2xLatQKBYEvEmykCAwEAAaNQME4wHQYDVR0OBBYEFGUznNeZK74vlA4bqKHb
+            706tyMwcMB8GA1UdIwQYMBaAFGUznNeZK74vlA4bqKHb706tyMwcMAwGA1UdEwQF
+            MAMBAf8wDQYJKoZIhvcNAQENBQADgYEARmnu/2vUcmJYLlg86MN0prXGC3CGXsem
+            fDtPF4SBPxfchdG7HJKywTloIiCBKGEQALkCHiJcQJNcSHmzH3/Qk+SrOJNH01gt
+            HsKA4SNFJZR5fCRpT6USCukyE2Wlr+PWPscrFCWbLXhK4Ql/t0oog1255B10HqKk
+            1qDkNrzCd/o=
+            -----END CERTIFICATE-----
+        cluster_cert_key:
+          type: string
+          description: The cluster certificate key (private key).
+          example: >
+            -----BEGIN PRIVATE KEY-----
+            MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAAoGBAPBWiWZj7LYQU9V5
+            E8qlCYrkFeKeCmi6TTIqDULSHXhihV3pZmZVX1tG3yxgYBZpMKNfSiMxbTpSE1I2
+            9EKpbm9g50yD6A7O61wPGsOrpibu92euuO1N/mpcTQqcE7mDmNgiUPh1hCLjrsAH
+            bUJJ3RKfa+2VgNsS2rUCgWBLxJspAgMBAAECgYEAvA7qqozL/1ZdUu/P1cQ36E86
+            9L03ZeVJXFRdVgj2eGqW8vob3z00RUb6gE3VQhQDNALvDwSw9G6eoblQfgz31Hju
+            sb+j6bGOm2BqzYrx6rpcgme7k9ScV0tEbtiBNX0E/ToHvNywHtdOBvDocN2wh42Z
+            6bS9um51H+SXR036mgUCQQD4T7WrJHL97Hj8TtHnTw895xWKaGn94H7ZQa2lo1nk
+            7CQ4Oi8rFX5tDdyV7UU6fekBWuhpmIhSGJhyHD7UThBjAkEA98ef9ey2Qx+j+R8S
+            tgpgJAF3LVNJJicEHCS/Vltgc84X/vidVAMa2+TYPxPrrUjxBr0STCeB5wZhvvsB
+            D8cOAwJBAJ5JqaQPUx1dDe7Ai/vooO20Dj4xu0c0QYha3sfU7qwIgDo7lO/g/ruj
+            93a3TscvlkXf3oHZ0ySKOzual86ciMMCQQDGOLgaWHVy+4QFTzt70I8bHuUFqKRT
+            VlEuZqN/ZXijDFQcES5jwFwjYE8zHy+ioEDaIDXcIJsGhA98Zndx9M+bAkA4IFdx
+            4YIDhuk1MJAYPqVQs5szEF/0BGymLNVYlIox48bZg+TH3uXwTVRVySxvpRa8dd3O
+            0gHs3EIV6GFUl7ev
+            -----END PRIVATE KEY-----
+        labels:
+          $ref: '#/components/schemas/SCGWLabels'
+    UpdateServerlessCloudGatewayRequest:
+      type: object
+      title: UpdateServerlessCloudGatewayRequest
+      description: Schema to update a serverless cloud gateway.
+      additionalProperties: false
+      properties:
+        cp_prefix:
+          type: string
+          description: The prefix of the serverless cloud gateway CP.
+          example: 518da50bf7
+        cp_region:
+          $ref: '#/components/schemas/CpRegion'
+        labels:
+          $ref: '#/components/schemas/SCGWLabels'
+    SCGWLabels:
+      title: Labels
+      type: object
+      example:
+        env: 'test'
+      description: 'Labels to facilitate tagged search on serverless cloud gateways. Keys must be of length 1-63 characters, and cannot start with ''kong'', ''konnect'', ''mesh'', ''kic'', or ''_''.'
+      additionalProperties:
+        type: string
+        pattern: '^[a-z0-9A-Z]{1}([a-z0-9A-Z\-\.\_]*[a-z0-9A-Z]+)?$'
+        minLength: 1
+        maxLength: 63
+    CpRegion:
+      title: Control plane region
+      type: string
+      description: The control plane region.
+      example: us
+      enum:
+        - us
+        - eu
+        - au
+      x-enum-varnames: [US, Europe, Aus]
+    ServerlessControlPlane:
+      type: object
+      title: Control plane
+      x-go-name: ControlPlane
+      required:
+        - id
+        - prefix
+        - region
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: ID of the serverless cloud gateway CP.
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        prefix:
+          type: string
+          description: The prefix of the serverless cloud gateway CP.
+          example: 518da50bf7
+        region:
+          $ref: '#/components/schemas/CpRegion'
+  responses:
+    RetrieveServerlessCloudGatewayResponse:
+      description: A response to retrieving a serverless cloud gateway.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ServerlessCloudGateway'
+          examples:
+            Single serverless cloud gateway response:
+              $ref: '#/components/examples/RetrieveServerlessCloudGatewayResponseExample'
+    CreateServerlessCloudGatewayResponse:
+      description: A response to creating a serverless cloud gateway.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ServerlessCloudGateway'
+          examples:
+            Create Serverless cloud gateway Response:
+              $ref: '#/components/examples/CreateServerlessCloudGatewayResponseExample'
+    UpdateServerlessCloudGatewayResponse:
+      description: A response to updating a serverless cloud gateway.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ServerlessCloudGateway'
+          examples:
+            Update Serverless cloud gateway Response:
+              $ref: '#/components/examples/ServerlessCloudGatewayExample'
+    ListServerlessCloudGatewaysResponse:
+      description: A paginated list response for a collection of serverless cloud gateways.
+      content:
+        application/json:
+          schema:
+            title: ListServerlessCloudGatewaysResponse
+            type: object
+            properties:
+              meta:
+                $ref: '../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ServerlessCloudGateway'
+          examples:
+            Serverless cloud gateway Collection:
+              $ref: '#/components/examples/ListServerlessCloudGatewaysResponseExample'
+  examples:
+    ServerlessCloudGatewayExample:
+      value:
+        control_plane:
+          id: d32d905a-ed33-46a3-a093-d8f536af9a8a
+          prefix: 518da50bf7
+          region: eu
+        gateway_endpoint: kong-518da50bf7euab123.kongcloud.dev
+        created_at: '2023-01-11T02:30:42.227Z'
+        updated_at:  '2023-01-11T02:30:42.227Z'
+        labels:
+          test: 'true'
+    CreateServerlessCloudGatewayRequestExample:
+      value:
+        control_plane:
+          id: d32d905a-ed33-46a3-a093-d8f536af9a8a
+          prefix: 518da50bf7
+          region: eu
+        cluster_cert: >
+          -----BEGIN CERTIFICATE-----
+          MIICRDCCAa2gAwIBAgIBADANBgkqhkiG9w0BAQ0FADA/MQswCQYDVQQGEwJ1czEL
+          MAkGA1UECAwCVFgxDTALBgNVBAoMBFRlc3QxFDASBgNVBAMMC2V4YW1wbGUuY29t
+          MB4XDTI0MDQyNjA5NTA1OVoXDTI1MDQyNjA5NTA1OVowPzELMAkGA1UEBhMCdXMx
+          CzAJBgNVBAgMAlRYMQ0wCwYDVQQKDARUZXN0MRQwEgYDVQQDDAtleGFtcGxlLmNv
+          bTCBnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEA8FaJZmPsthBT1XkTyqUJiuQV
+          4p4KaLpNMioNQtIdeGKFXelmZlVfW0bfLGBgFmkwo19KIzFtOlITUjb0Qqlub2Dn
+          TIPoDs7rXA8aw6umJu73Z6647U3+alxNCpwTuYOY2CJQ+HWEIuOuwAdtQkndEp9r
+          7ZWA2xLatQKBYEvEmykCAwEAAaNQME4wHQYDVR0OBBYEFGUznNeZK74vlA4bqKHb
+          706tyMwcMB8GA1UdIwQYMBaAFGUznNeZK74vlA4bqKHb706tyMwcMAwGA1UdEwQF
+          MAMBAf8wDQYJKoZIhvcNAQENBQADgYEARmnu/2vUcmJYLlg86MN0prXGC3CGXsem
+          fDtPF4SBPxfchdG7HJKywTloIiCBKGEQALkCHiJcQJNcSHmzH3/Qk+SrOJNH01gt
+          HsKA4SNFJZR5fCRpT6USCukyE2Wlr+PWPscrFCWbLXhK4Ql/t0oog1255B10HqKk
+          1qDkNrzCd/o=
+          -----END CERTIFICATE-----
+        cluster_cert_key: >
+          -----BEGIN PRIVATE KEY-----
+          MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAAoGBAPBWiWZj7LYQU9V5
+          E8qlCYrkFeKeCmi6TTIqDULSHXhihV3pZmZVX1tG3yxgYBZpMKNfSiMxbTpSE1I2
+          9EKpbm9g50yD6A7O61wPGsOrpibu92euuO1N/mpcTQqcE7mDmNgiUPh1hCLjrsAH
+          bUJJ3RKfa+2VgNsS2rUCgWBLxJspAgMBAAECgYEAvA7qqozL/1ZdUu/P1cQ36E86
+          9L03ZeVJXFRdVgj2eGqW8vob3z00RUb6gE3VQhQDNALvDwSw9G6eoblQfgz31Hju
+          sb+j6bGOm2BqzYrx6rpcgme7k9ScV0tEbtiBNX0E/ToHvNywHtdOBvDocN2wh42Z
+          6bS9um51H+SXR036mgUCQQD4T7WrJHL97Hj8TtHnTw895xWKaGn94H7ZQa2lo1nk
+          7CQ4Oi8rFX5tDdyV7UU6fekBWuhpmIhSGJhyHD7UThBjAkEA98ef9ey2Qx+j+R8S
+          tgpgJAF3LVNJJicEHCS/Vltgc84X/vidVAMa2+TYPxPrrUjxBr0STCeB5wZhvvsB
+          D8cOAwJBAJ5JqaQPUx1dDe7Ai/vooO20Dj4xu0c0QYha3sfU7qwIgDo7lO/g/ruj
+          93a3TscvlkXf3oHZ0ySKOzual86ciMMCQQDGOLgaWHVy+4QFTzt70I8bHuUFqKRT
+          VlEuZqN/ZXijDFQcES5jwFwjYE8zHy+ioEDaIDXcIJsGhA98Zndx9M+bAkA4IFdx
+          4YIDhuk1MJAYPqVQs5szEF/0BGymLNVYlIox48bZg+TH3uXwTVRVySxvpRa8dd3O
+          0gHs3EIV6GFUl7ev
+          -----END PRIVATE KEY-----
+        labels:
+          test: 'true'
+    UpdateServerlessCloudGatewayRequestExample:
+      value:
+        labels:
+          test: 'true'
+    CreateServerlessCloudGatewayResponseExample:
+      value: 
+        control_plane:
+          id: d32d905a-ed33-46a3-a093-d8f536af9a8a
+          prefix: 518da50bf7
+          region: eu
+        gateway_endpoint: kong-518da50bf7euab123.kongcloud.dev
+        created_at: '2022-11-04T20:10:06.927Z'
+        updated_at: '2022-11-04T20:10:06.927Z'
+    RetrieveServerlessCloudGatewayResponseExample:
+      value: 
+        control_plane:
+          id: d32d905a-ed33-46a3-a093-d8f536af9a8a
+          prefix: 518da50bf7
+          region: eu
+        gateway_endpoint: kong-518da50bf7euab123.kongcloud.dev
+        created_at: '2022-11-04T20:10:06.927Z'
+        updated_at: '2022-11-04T20:10:06.927Z'
+    UpdateServerlessCloudGatewayResponseExample:
+      value:
+        control_plane:
+          id: d32d905a-ed33-46a3-a093-d8f536af9a8a
+          prefix: 518da50bf7
+          region: eu
+        gateway_endpoint: kong-518da50bf7euab123.kongcloud.dev
+        created_at: '2022-11-04T20:10:06.927Z'
+        updated_at: '2022-11-04T20:10:06.927Z'
+    ListServerlessCloudGatewaysResponseExample:
+      value:
+        meta:
+          page:
+            total: 2
+            size: 100
+            number: 1
+        data:
+          - control_plane:
+              id: d32d905a-ed33-46a3-a093-d8f536af9a8a
+              prefix: 518da50bf7
+              region: eu
+            gateway_endpoint: kong-518da50bf7euab123.kongcloud.dev
+            created_at: '2022-11-04T20:10:06.927Z'
+            updated_at: '2022-11-04T20:10:06.927Z'
+            labels:
+              env: prod
+          - control_plane:
+              id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+              prefix: 628pl51cg1
+              region: eu
+            gateway_endpoint: kong-628pl51cg1euab123.kongcloud.dev
+            created_at: '2023-12-04T20:10:06.927Z'
+            updated_at: '2024-09-01T21:10:06.927Z'
+            labels:
+                env: test
+    400RequestFormatInvalidExample:
+      value:
+        status: 400
+        title: Bad Request
+        instance: 'konnect:trace:3674017986744198214'
+        invalid_parameters:
+          - field: body
+            reason: request format is invalid
+    400CannotBeBlankExample:
+      value:
+        status: 400
+        title: Bad Request
+        instance: 'konnect:trace:6644808935508571943'
+        invalid_parameters:
+          - field: cp_id
+            reason: cannot be blank
+    400InvalidIDFormatExample:
+      value:
+        status: 400
+        title: Bad Request
+        instance: 'konnect:trace:8988732526256293040'
+        invalid_parameters:
+          - field: cp_id
+            reason: invalid ID format
+    400UsageLimitsReachedExample:
+      value:
+        status: 400
+        title: Bad Request
+        instance: 'konnect:trace:8988732526256293040'
+        detail: Cannot create an additional serverless cloud gateway because usage limits have been reached.
+    400UnknownPropertyExample:
+      value:
+        status: 400
+        title: Bad Request
+        instance: 'konnect:trace:8988732526256293040'
+        invalid_parameters:
+          - field: test
+            rule: unknownProperty
+            reason: property test should not exist
+    401UnauthenticatedExample:
+      value:
+        status: 401
+        title: Unauthenticated
+        instance: 'konnect:trace:952172606039454040'
+        detail: A valid token is required
+    403PermissionDeniedExample:
+      value:
+        status: 403
+        title: Permission denied
+        instance: 'konnect:trace:2822394689570210664'
+        detail: Insufficient role-set to create serverless cloud gateways.
+    404NotFoundExample:
+      value:
+        status: 404
+        title: Not Found
+        instance: 'konnect:trace:2287285207635123011'
+        detail: The requested serverless cloud gateway was not found.
