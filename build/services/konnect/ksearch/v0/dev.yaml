@@ -199,6 +199,9 @@ components:
         relations:
           type: object
           description: Relations for the entity.
+        attributes:
+          type: object
+          description: Attributes for the entity.
     CursorMetaPage:
       type: object
       required:

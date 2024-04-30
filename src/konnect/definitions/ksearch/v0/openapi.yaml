@@ -55,11 +55,11 @@ paths:
 components:
   responses:
     SearchResponse:
-      description: Search response for containing all matched Konnect entities. 
+      description: Search response for containing all matched Konnect entities.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/SearchResponse'      
+            $ref: '#/components/schemas/SearchResponse'
           examples:
             Successful Search Response:
               $ref: '#/components/examples/Successful-Search-Example'
@@ -73,7 +73,7 @@ components:
             Request Format is Invalid:
               $ref: '#/components/examples/400-query-is-invalid'
     SearchTypesResponse:
-      description: Search response for containing all searchable Konnect types. 
+      description: Search response for containing all searchable Konnect types.
       content:
         application/json:
           schema:
@@ -185,10 +185,10 @@ components:
         type:
           type: string
           description: Konnect entity type.
-        name: 
+        name:
           type: string
           description: Name of the entity.
-        description: 
+        description:
           type: string
           description: Description of the entity.
         labels:
@@ -197,6 +197,9 @@ components:
         relations:
           type: object
           description: Relations for the entity.
+        attributes:
+          type: object
+          description: Attributes for the entity.
   securitySchemes:
     systemAccountAccessToken:
       $ref: '../../../../common/definitions/security.yaml#/components/securitySchemes/systemAccountAccessToken'
@@ -215,9 +218,9 @@ components:
           - field: q
             reason: invalid query
             source: query
-    Successful-Search-Example: 
-      value: 
-        data: 
+    Successful-Search-Example:
+      value:
+        data:
           - id: c0010105-e840-4824-b7ee-787f22267c36
             type: team
             name: Sonar Readings
@@ -226,7 +229,7 @@ components:
             attributes:
               created_at: '2022-07-31T09:15:15.04Z'
               updated_at: '2023-02-11T18:47:03.34Z'
-          - id: c0010105-e840-4824-b7ee-787f22267c37 
+          - id: c0010105-e840-4824-b7ee-787f22267c37
             type: user
             name: Jason Developer
             attributes:
@@ -234,7 +237,7 @@ components:
               email: 'jason.developer@test.com'
               preferred_name: ''
               updated_at: '2023-09-08T22:39:51.53Z'
-          - id: c0010105-e840-4824-b7ee-787f22267c38 
+          - id: c0010105-e840-4824-b7ee-787f22267c38
             type: user
             name: Sonia Engineer
             attributes:
