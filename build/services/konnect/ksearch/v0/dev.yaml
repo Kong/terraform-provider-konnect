@@ -84,6 +84,28 @@ components:
             Searchable Entity Types:
               $ref: '#/components/examples/Searchable-Entity-Types'
   schemas:
+    SearchCursorMeta:
+      type: object
+      description: Pagination metadata.
+      required:
+        - page
+      properties:
+        page:
+          $ref: '#/components/schemas/SearchCursorMetaPage'
+    SearchCursorMetaPage:
+      type: object
+      required:
+        - size
+      properties:
+        next:
+          description: URI to the next page
+          type: string
+          format: path
+          nullable: true
+        size:
+          description: Requested page size
+          type: number
+          example: 10
     SearchResponse:
       title: SearchResponse
       description: Search response schema.
@@ -94,7 +116,7 @@ components:
           items:
             $ref: '#/components/schemas/SearchResultItem'
         meta:
-          $ref: '#/components/schemas/CursorMeta'
+          $ref: '#/components/schemas/SearchCursorMeta'
     SearchTypesResponse:
       title: SearchableEntityTypesResponse
       description: The collection of searchable entity types.
@@ -202,43 +224,6 @@ components:
         attributes:
           type: object
           description: Attributes for the entity.
-    CursorMetaPage:
-      type: object
-      required:
-        - size
-        - next
-        - previous
-      properties:
-        first:
-          description: URI to the first page
-          type: string
-          format: path
-        last:
-          description: URI to the last page
-          type: string
-          format: path
-        next:
-          description: URI to the next page
-          type: string
-          format: path
-          nullable: true
-        previous:
-          description: URI to the previous page
-          type: string
-          format: path
-          nullable: true
-        size:
-          description: Requested page size
-          type: number
-          example: 10
-    CursorMeta:
-      type: object
-      description: Pagination metadata.
-      required:
-        - page
-      properties:
-        page:
-          $ref: '#/components/schemas/CursorMetaPage'
     BaseError:
       type: object
       title: Error
