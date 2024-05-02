@@ -451,7 +451,7 @@ overrides:
       - "src/konnect/definitions/identity/v3/**/openapi.yaml#/components/examples/400-oidc-auth-enabled-needs-idp"
       - "src/konnect/definitions/identity/v3/**/openapi.yaml#/components/responses/IdentityBadRequest"
       ## Ksearch
-      - "src/konnect/definitions/ksearch/v0/**/openapi.yaml#/components/examples/Successful-Search-Example"
+      - "src/konnect/definitions/ksearch/v1/**/openapi.yaml#/components/examples/Successful-Search-Example"
     rules:
       oas3-valid-media-example: "off"
   - files:
