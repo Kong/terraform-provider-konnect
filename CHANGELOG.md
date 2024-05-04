@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.2
+> Released on 2024/05/04
+
+### Features
+* Add support for the `konnect_system_account`, `konnect_system_account_access_token`, `konnect_system_account_role` and `konnect_system_account_team` resources
+
 ## 0.2.1
 > Released on 2024/04/26
 

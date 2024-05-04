@@ -82,6 +82,13 @@ This provider can manage the following resources:
 - Application Auth Strategy
 - Portal Product Version
 
+### Organization
+
+- System Account
+- System Account Access Tokens
+- System Account Roles
+- System Account Teams
+
 ## Usage
 
 The provider can be installed from the Terraform registry. Before using the provider, you must configure a `personal_access_token`. If you are running in a non-US region, you must also set the `server_url` configuration option.

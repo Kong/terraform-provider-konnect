@@ -15,6 +15,7 @@ type Portal struct {
 	DefaultDomain                    types.String `tfsdk:"default_domain"`
 	Description                      types.String `tfsdk:"description"`
 	DeveloperCount                   types.Number `tfsdk:"developer_count"`
+	DisplayName                      types.String `tfsdk:"display_name"`
 	ID                               types.String `tfsdk:"id"`
 	IsPublic                         types.Bool   `tfsdk:"is_public"`
 	Name                             types.String `tfsdk:"name"`

@@ -170,6 +170,10 @@ func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resou
 		NewPortalResource,
 		NewPortalAuthResource,
 		NewPortalProductVersionResource,
+		NewSystemAccountResource,
+		NewSystemAccountAccessTokenResource,
+		NewSystemAccountRoleResource,
+		NewSystemAccountTeamResource,
 	}
 }
 
@@ -231,6 +235,8 @@ func (p *KonnectProvider) DataSources(ctx context.Context) []func() datasource.D
 		NewPortalAuthDataSource,
 		NewPortalListDataSource,
 		NewPortalProductVersionDataSource,
+		NewSystemAccountDataSource,
+		NewSystemAccountAccessTokenDataSource,
 	}
 }
 

@@ -3,8 +3,12 @@
 package provider
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
+	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
@@ -33,13 +37,14 @@ type APIProductVersionResource struct {
 
 // APIProductVersionResourceModel describes the resource data model.
 type APIProductVersionResourceModel struct {
-	APIProductID   types.String                   `tfsdk:"api_product_id"`
-	CreatedAt      types.String                   `tfsdk:"created_at"`
-	Deprecated     types.Bool                     `tfsdk:"deprecated"`
-	GatewayService *tfTypes.GatewayServicePayload `tfsdk:"gateway_service"`
-	ID             types.String                   `tfsdk:"id"`
-	Name           types.String                   `tfsdk:"name"`
-	UpdatedAt      types.String                   `tfsdk:"updated_at"`
+	APIProductID   types.String                      `tfsdk:"api_product_id"`
+	CreatedAt      types.String                      `tfsdk:"created_at"`
+	Deprecated     types.Bool                        `tfsdk:"deprecated"`
+	GatewayService *tfTypes.GatewayServicePayload    `tfsdk:"gateway_service"`
+	ID             types.String                      `tfsdk:"id"`
+	Name           types.String                      `tfsdk:"name"`
+	Portals        []tfTypes.APIProductVersionPortal `tfsdk:"portals"`
+	UpdatedAt      types.String                      `tfsdk:"updated_at"`
 }
 
 func (r *APIProductVersionResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -100,6 +105,52 @@ func (r *APIProductVersionResource) Schema(ctx context.Context, req resource.Sch
 			"name": schema.StringAttribute{
 				Required:    true,
 				Description: `The version name of the API product version.`,
+			},
+			"portals": schema.ListNestedAttribute{
+				Computed: true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"application_registration_enabled": schema.BoolAttribute{
+							Computed: true,
+						},
+						"auth_strategies": schema.ListNestedAttribute{
+							Computed: true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"id": schema.StringAttribute{
+										Computed: true,
+									},
+									"name": schema.StringAttribute{
+										Computed: true,
+									},
+								},
+							},
+						},
+						"deprecated": schema.BoolAttribute{
+							Computed: true,
+						},
+						"portal_id": schema.StringAttribute{
+							Computed: true,
+						},
+						"portal_name": schema.StringAttribute{
+							Computed: true,
+						},
+						"portal_product_version_id": schema.StringAttribute{
+							Computed: true,
+						},
+						"publish_status": schema.StringAttribute{
+							Computed:    true,
+							Description: `must be one of ["published", "unpublished"]`,
+							Validators: []validator.String{
+								stringvalidator.OneOf(
+									"published",
+									"unpublished",
+								),
+							},
+						},
+					},
+				},
+				Description: `The list of portals which this API product version is configured for`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed:    true,
@@ -358,5 +409,27 @@ func (r *APIProductVersionResource) Delete(ctx context.Context, req resource.Del
 }
 
 func (r *APIProductVersionResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	resp.Diagnostics.AddError("Not Implemented", "No available import state operation is available for resource api_product_version. Reason: composite imports strings not supported.")
+	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
+	dec.DisallowUnknownFields()
+	var data struct {
+		APIProductID string `json:"api_product_id"`
+		ID           string `json:"id"`
+	}
+
+	if err := dec.Decode(&data); err != nil {
+		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "api_product_id": "d32d905a-ed33-46a3-a093-d8f536af9a8a",  "id": "9f5061ce-78f6-4452-9108-ad7c02821fd5"}': `+err.Error())
+		return
+	}
+
+	if len(data.APIProductID) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field api_product_id is required but was not found in the json encoded ID. It's expected to be a value alike '"d32d905a-ed33-46a3-a093-d8f536af9a8a"`)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("api_product_id"), data.APIProductID)...)
+	if len(data.ID) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '"9f5061ce-78f6-4452-9108-ad7c02821fd5"`)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)
+
 }
