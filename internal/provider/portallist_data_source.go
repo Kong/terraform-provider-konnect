@@ -91,6 +91,10 @@ func (r *PortalListDataSource) Schema(ctx context.Context, req datasource.Schema
 							Computed:    true,
 							Description: `Number of developers using the portal.`,
 						},
+						"display_name": schema.StringAttribute{
+							Computed:    true,
+							Description: `The display name of the portal. This value will be the portal's ` + "`" + `name` + "`" + ` in Portal API.`,
+						},
 						"id": schema.StringAttribute{
 							Computed:    true,
 							Description: `Contains a unique identifier used by the API for this resource.`,

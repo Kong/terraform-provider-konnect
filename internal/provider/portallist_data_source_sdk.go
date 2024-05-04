@@ -27,6 +27,7 @@ func (r *PortalListDataSourceModel) RefreshFromSharedListPortalsResponse(resp *s
 			data1.DefaultDomain = types.StringValue(dataItem.DefaultDomain)
 			data1.Description = types.StringPointerValue(dataItem.Description)
 			data1.DeveloperCount = types.NumberValue(big.NewFloat(float64(dataItem.DeveloperCount)))
+			data1.DisplayName = types.StringValue(dataItem.DisplayName)
 			data1.ID = types.StringValue(dataItem.ID)
 			data1.IsPublic = types.BoolValue(dataItem.IsPublic)
 			data1.Name = types.StringValue(dataItem.Name)
@@ -46,6 +47,7 @@ func (r *PortalListDataSourceModel) RefreshFromSharedListPortalsResponse(resp *s
 				r.Data[dataCount].DefaultDomain = data1.DefaultDomain
 				r.Data[dataCount].Description = data1.Description
 				r.Data[dataCount].DeveloperCount = data1.DeveloperCount
+				r.Data[dataCount].DisplayName = data1.DisplayName
 				r.Data[dataCount].ID = data1.ID
 				r.Data[dataCount].IsPublic = data1.IsPublic
 				r.Data[dataCount].Name = data1.Name

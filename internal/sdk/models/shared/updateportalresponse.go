@@ -16,6 +16,8 @@ type UpdatePortalResponse struct {
 	UpdatedAt time.Time `json:"updated_at"`
 	// The name of the portal, used to distinguish it from other portals. Name must be unique.
 	Name string `json:"name"`
+	// The display name of the portal. This value will be the portal's `name` in Portal API.
+	DisplayName string `json:"display_name"`
 	// The description of the portal.
 	Description *string `json:"description"`
 	// The domain assigned to the portal by Konnect. This is the default place to access the portal and its API if not using a `custom_domain``.
@@ -79,6 +81,13 @@ func (o *UpdatePortalResponse) GetName() string {
 		return ""
 	}
 	return o.Name
+}
+
+func (o *UpdatePortalResponse) GetDisplayName() string {
+	if o == nil {
+		return ""
+	}
+	return o.DisplayName
 }
 
 func (o *UpdatePortalResponse) GetDescription() *string {

@@ -16,6 +16,12 @@ func (r *PortalResourceModel) ToSharedUpdatePortalRequest() *shared.UpdatePortal
 	} else {
 		name = nil
 	}
+	displayName := new(string)
+	if !r.DisplayName.IsUnknown() && !r.DisplayName.IsNull() {
+		*displayName = r.DisplayName.ValueString()
+	} else {
+		displayName = nil
+	}
 	description := new(string)
 	if !r.Description.IsUnknown() && !r.Description.IsNull() {
 		*description = r.Description.ValueString()
@@ -66,6 +72,7 @@ func (r *PortalResourceModel) ToSharedUpdatePortalRequest() *shared.UpdatePortal
 	}
 	out := shared.UpdatePortalRequest{
 		Name:                             name,
+		DisplayName:                      displayName,
 		Description:                      description,
 		IsPublic:                         isPublic,
 		RbacEnabled:                      rbacEnabled,
@@ -90,6 +97,7 @@ func (r *PortalResourceModel) RefreshFromSharedUpdatePortalResponse(resp *shared
 		r.DefaultApplicationAuthStrategyID = types.StringPointerValue(resp.DefaultApplicationAuthStrategyID)
 		r.Description = types.StringPointerValue(resp.Description)
 		r.DeveloperCount = types.NumberValue(big.NewFloat(float64(resp.DeveloperCount)))
+		r.DisplayName = types.StringValue(resp.DisplayName)
 		r.ID = types.StringValue(resp.ID)
 		r.IsPublic = types.BoolValue(resp.IsPublic)
 		r.Name = types.StringValue(resp.Name)

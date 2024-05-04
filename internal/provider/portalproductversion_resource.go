@@ -3,7 +3,9 @@
 package provider
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
@@ -469,5 +471,27 @@ func (r *PortalProductVersionResource) Delete(ctx context.Context, req resource.
 }
 
 func (r *PortalProductVersionResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	resp.Diagnostics.AddError("Not Implemented", "No available import state operation is available for resource portal_product_version. Reason: composite imports strings not supported.")
+	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
+	dec.DisallowUnknownFields()
+	var data struct {
+		PortalID         string `json:"portal_id"`
+		ProductVersionID string `json:"product_version_id"`
+	}
+
+	if err := dec.Decode(&data); err != nil {
+		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "portal_id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7",  "product_version_id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"}': `+err.Error())
+		return
+	}
+
+	if len(data.PortalID) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field portal_id is required but was not found in the json encoded ID. It's expected to be a value alike '"5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"`)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("portal_id"), data.PortalID)...)
+	if len(data.ProductVersionID) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field product_version_id is required but was not found in the json encoded ID. It's expected to be a value alike '"5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"`)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("product_version_id"), data.ProductVersionID)...)
+
 }

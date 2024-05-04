@@ -29,13 +29,14 @@ type APIProductVersionDataSource struct {
 
 // APIProductVersionDataSourceModel describes the data model.
 type APIProductVersionDataSourceModel struct {
-	APIProductID   types.String            `tfsdk:"api_product_id"`
-	CreatedAt      types.String            `tfsdk:"created_at"`
-	Deprecated     types.Bool              `tfsdk:"deprecated"`
-	GatewayService *tfTypes.GatewayService `tfsdk:"gateway_service"`
-	ID             types.String            `tfsdk:"id"`
-	Name           types.String            `tfsdk:"name"`
-	UpdatedAt      types.String            `tfsdk:"updated_at"`
+	APIProductID   types.String                      `tfsdk:"api_product_id"`
+	CreatedAt      types.String                      `tfsdk:"created_at"`
+	Deprecated     types.Bool                        `tfsdk:"deprecated"`
+	GatewayService *tfTypes.GatewayService           `tfsdk:"gateway_service"`
+	ID             types.String                      `tfsdk:"id"`
+	Name           types.String                      `tfsdk:"name"`
+	Portals        []tfTypes.APIProductVersionPortal `tfsdk:"portals"`
+	UpdatedAt      types.String                      `tfsdk:"updated_at"`
 }
 
 // Metadata returns the data source type name.
@@ -85,6 +86,46 @@ func (r *APIProductVersionDataSource) Schema(ctx context.Context, req datasource
 			"name": schema.StringAttribute{
 				Computed:    true,
 				Description: `The version of the API product`,
+			},
+			"portals": schema.ListNestedAttribute{
+				Computed: true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"application_registration_enabled": schema.BoolAttribute{
+							Computed: true,
+						},
+						"auth_strategies": schema.ListNestedAttribute{
+							Computed: true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"id": schema.StringAttribute{
+										Computed: true,
+									},
+									"name": schema.StringAttribute{
+										Computed: true,
+									},
+								},
+							},
+						},
+						"deprecated": schema.BoolAttribute{
+							Computed: true,
+						},
+						"portal_id": schema.StringAttribute{
+							Computed: true,
+						},
+						"portal_name": schema.StringAttribute{
+							Computed: true,
+						},
+						"portal_product_version_id": schema.StringAttribute{
+							Computed: true,
+						},
+						"publish_status": schema.StringAttribute{
+							Computed:    true,
+							Description: `must be one of ["published", "unpublished"]`,
+						},
+					},
+				},
+				Description: `The list of portals which this API product version is configured for`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed:    true,

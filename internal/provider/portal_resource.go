@@ -40,6 +40,7 @@ type PortalResourceModel struct {
 	DefaultDomain                    types.String `tfsdk:"default_domain"`
 	Description                      types.String `tfsdk:"description"`
 	DeveloperCount                   types.Number `tfsdk:"developer_count"`
+	DisplayName                      types.String `tfsdk:"display_name"`
 	ID                               types.String `tfsdk:"id"`
 	IsPublic                         types.Bool   `tfsdk:"is_public"`
 	Name                             types.String `tfsdk:"name"`
@@ -105,6 +106,11 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 			"developer_count": schema.NumberAttribute{
 				Computed:    true,
 				Description: `Number of developers using the portal.`,
+			},
+			"display_name": schema.StringAttribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `The display name of the portal. This value will be the portal's ` + "`" + `name` + "`" + ` in Portal API.`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,

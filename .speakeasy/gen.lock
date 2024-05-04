@@ -1,21 +1,22 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: dab49aa75299ac758cfc5ed457b507f4
+  docChecksum: f381737cd5b6eeaa4103af5a43cf871b
   docVersion: 2.0.0
-  speakeasyVersion: 1.274.1
-  generationVersion: 2.314.0
-  releaseVersion: 0.2.1
-  configChecksum: 2376a349e8bb4ddd5d0ca12b68b962b3
+  speakeasyVersion: 1.279.0
+  generationVersion: 2.322.5
+  releaseVersion: 0.2.2
+  configChecksum: 2759dc629ecf22791a5721ff73619bd7
 features:
   terraform:
     additionalProperties: 0.1.2
     constsAndDefaults: 0.1.4
-    core: 3.18.3
+    core: 3.19.1
     deprecations: 2.81.1
     globalSecurity: 2.81.6
     globalServerURLs: 2.82.1
     inputOutputModels: 2.83.0
+    nameOverrides: 2.81.2
     typeOverrides: 2.81.1
     unions: 2.81.12
 generatedFiles:
@@ -47,6 +48,10 @@ generatedFiles:
   - internal/sdk/portals.go
   - internal/sdk/portalauthsettings.go
   - internal/sdk/portalproductversions.go
+  - internal/sdk/systemaccounts.go
+  - internal/sdk/systemaccountsaccesstokens.go
+  - internal/sdk/systemaccountsroles.go
+  - internal/sdk/systemaccountsteammembership.go
   - internal/sdk/konnect.go
   - internal/sdk/models/errors/sdkerror.go
   - internal/sdk/types/bigint.go
@@ -266,6 +271,18 @@ generatedFiles:
   - internal/sdk/models/operations/getportalproductversion.go
   - internal/sdk/models/operations/updateportalproductversion.go
   - internal/sdk/models/operations/deleteportalproductversion.go
+  - internal/sdk/models/operations/postsystemaccounts.go
+  - internal/sdk/models/operations/getsystemaccountsid.go
+  - internal/sdk/models/operations/patchsystemaccountsid.go
+  - internal/sdk/models/operations/deletesystemaccountsid.go
+  - internal/sdk/models/operations/postsystemaccountsidaccesstokens.go
+  - internal/sdk/models/operations/getsystemaccountsidaccesstokensid.go
+  - internal/sdk/models/operations/patchsystemaccountsidaccesstokensid.go
+  - internal/sdk/models/operations/deletesystemaccountsidaccesstokensid.go
+  - internal/sdk/models/operations/postsystemaccountsaccountidassignedroles.go
+  - internal/sdk/models/operations/deletesystemaccountsaccountidassignedrolesroleid.go
+  - internal/sdk/models/operations/postteamsteamidsystemaccounts.go
+  - internal/sdk/models/operations/deleteteamsteamidsystemaccountsaccountid.go
   - internal/sdk/models/shared/forbiddenerror.go
   - internal/sdk/models/shared/unauthorizederror.go
   - internal/sdk/models/shared/badrequesterror.go
@@ -282,6 +299,9 @@ generatedFiles:
   - internal/sdk/models/shared/createapiproductdto.go
   - internal/sdk/models/shared/updateapiproductdto.go
   - internal/sdk/models/shared/apiproductversion.go
+  - internal/sdk/models/shared/apiproductversionportal.go
+  - internal/sdk/models/shared/apiproductversionauthstrategy.go
+  - internal/sdk/models/shared/apiproductversionpublishstatus.go
   - internal/sdk/models/shared/authstrategysyncerror.go
   - internal/sdk/models/shared/createapiproductversiondto.go
   - internal/sdk/models/shared/gatewayservicepayload.go
@@ -415,6 +435,16 @@ generatedFiles:
   - internal/sdk/models/shared/authstrategyclientcredentials.go
   - internal/sdk/models/shared/portalproductversionpublishstatus.go
   - internal/sdk/models/shared/updateportalproductversionpayload.go
+  - internal/sdk/models/shared/systemaccount.go
+  - internal/sdk/models/shared/createsystemaccount.go
+  - internal/sdk/models/shared/updatesystemaccount.go
+  - internal/sdk/models/shared/systemaccountaccesstokencreated.go
+  - internal/sdk/models/shared/createsystemaccountaccesstoken.go
+  - internal/sdk/models/shared/systemaccountaccesstoken.go
+  - internal/sdk/models/shared/updatesystemaccountaccesstoken.go
+  - internal/sdk/models/shared/assignedrole.go
+  - internal/sdk/models/shared/assignrole.go
+  - internal/sdk/models/shared/addsystemaccounttoteam.go
   - internal/sdk/models/shared/security.go
   - internal/sdk/.gitignore
   - internal/sdk/models/operations/options.go
@@ -466,6 +496,8 @@ generatedFiles:
   - terraform-registry-manifest.json
   - tools/tools.go
   - internal/provider/types/gateway_service_payload.go
+  - internal/provider/types/api_product_version_auth_strategy.go
+  - internal/provider/types/api_product_version_portal.go
   - internal/provider/types/app_auth_strategy_config_key_auth.go
   - internal/provider/types/app_auth_strategy_key_auth_request_configs.go
   - internal/provider/types/dcr_provider.go
@@ -554,177 +586,246 @@ generatedFiles:
   - USAGE.md
   - internal/provider/provider.go
   - examples/provider/provider.tf
+  - examples/resources/konnect_api_product/import.sh
   - internal/provider/apiproduct_resource.go
   - internal/provider/apiproduct_resource_sdk.go
   - examples/resources/konnect_api_product/resource.tf
+  - examples/resources/konnect_api_product_version/import.sh
   - internal/provider/apiproductversion_resource.go
   - internal/provider/apiproductversion_resource_sdk.go
   - examples/resources/konnect_api_product_version/resource.tf
+  - examples/resources/konnect_application_auth_strategy/import.sh
   - internal/provider/applicationauthstrategy_resource.go
   - internal/provider/applicationauthstrategy_resource_sdk.go
   - examples/resources/konnect_application_auth_strategy/resource.tf
+  - examples/resources/konnect_gateway_acl/import.sh
   - internal/provider/gatewayacl_resource.go
   - internal/provider/gatewayacl_resource_sdk.go
   - examples/resources/konnect_gateway_acl/resource.tf
+  - examples/resources/konnect_gateway_basic_auth/import.sh
   - internal/provider/gatewaybasicauth_resource.go
   - internal/provider/gatewaybasicauth_resource_sdk.go
   - examples/resources/konnect_gateway_basic_auth/resource.tf
+  - examples/resources/konnect_gateway_ca_certificate/import.sh
   - internal/provider/gatewaycacertificate_resource.go
   - internal/provider/gatewaycacertificate_resource_sdk.go
   - examples/resources/konnect_gateway_ca_certificate/resource.tf
+  - examples/resources/konnect_gateway_certificate/import.sh
   - internal/provider/gatewaycertificate_resource.go
   - internal/provider/gatewaycertificate_resource_sdk.go
   - examples/resources/konnect_gateway_certificate/resource.tf
+  - examples/resources/konnect_gateway_consumer/import.sh
   - internal/provider/gatewayconsumer_resource.go
   - internal/provider/gatewayconsumer_resource_sdk.go
   - examples/resources/konnect_gateway_consumer/resource.tf
+  - examples/resources/konnect_gateway_consumer_group/import.sh
   - internal/provider/gatewayconsumergroup_resource.go
   - internal/provider/gatewayconsumergroup_resource_sdk.go
   - examples/resources/konnect_gateway_consumer_group/resource.tf
+  - examples/resources/konnect_gateway_control_plane/import.sh
   - internal/provider/gatewaycontrolplane_resource.go
   - internal/provider/gatewaycontrolplane_resource_sdk.go
   - examples/resources/konnect_gateway_control_plane/resource.tf
   - internal/provider/gatewaycontrolplanemembership_resource.go
   - internal/provider/gatewaycontrolplanemembership_resource_sdk.go
   - examples/resources/konnect_gateway_control_plane_membership/resource.tf
+  - examples/resources/konnect_gateway_data_plane_client_certificate/import.sh
   - internal/provider/gatewaydataplaneclientcertificate_resource.go
   - internal/provider/gatewaydataplaneclientcertificate_resource_sdk.go
   - examples/resources/konnect_gateway_data_plane_client_certificate/resource.tf
+  - examples/resources/konnect_gateway_hmac_auth/import.sh
   - internal/provider/gatewayhmacauth_resource.go
   - internal/provider/gatewayhmacauth_resource_sdk.go
   - examples/resources/konnect_gateway_hmac_auth/resource.tf
+  - examples/resources/konnect_gateway_jwt/import.sh
   - internal/provider/gatewayjwt_resource.go
   - internal/provider/gatewayjwt_resource_sdk.go
   - examples/resources/konnect_gateway_jwt/resource.tf
+  - examples/resources/konnect_gateway_key/import.sh
   - internal/provider/gatewaykey_resource.go
   - internal/provider/gatewaykey_resource_sdk.go
   - examples/resources/konnect_gateway_key/resource.tf
+  - examples/resources/konnect_gateway_key_auth/import.sh
   - internal/provider/gatewaykeyauth_resource.go
   - internal/provider/gatewaykeyauth_resource_sdk.go
   - examples/resources/konnect_gateway_key_auth/resource.tf
+  - examples/resources/konnect_gateway_key_set/import.sh
   - internal/provider/gatewaykeyset_resource.go
   - internal/provider/gatewaykeyset_resource_sdk.go
   - examples/resources/konnect_gateway_key_set/resource.tf
+  - examples/resources/konnect_gateway_plugin/import.sh
   - internal/provider/gatewayplugin_resource.go
   - internal/provider/gatewayplugin_resource_sdk.go
   - examples/resources/konnect_gateway_plugin/resource.tf
+  - examples/resources/konnect_gateway_plugin_acl/import.sh
   - internal/provider/gatewaypluginacl_resource.go
   - internal/provider/gatewaypluginacl_resource_sdk.go
   - examples/resources/konnect_gateway_plugin_acl/resource.tf
+  - examples/resources/konnect_gateway_plugin_ai_prompt_decorator/import.sh
   - internal/provider/gatewaypluginaipromptdecorator_resource.go
   - internal/provider/gatewaypluginaipromptdecorator_resource_sdk.go
   - examples/resources/konnect_gateway_plugin_ai_prompt_decorator/resource.tf
+  - examples/resources/konnect_gateway_plugin_ai_prompt_guard/import.sh
   - internal/provider/gatewaypluginaipromptguard_resource.go
   - internal/provider/gatewaypluginaipromptguard_resource_sdk.go
   - examples/resources/konnect_gateway_plugin_ai_prompt_guard/resource.tf
+  - examples/resources/konnect_gateway_plugin_ai_prompt_template/import.sh
   - internal/provider/gatewaypluginaiprompttemplate_resource.go
   - internal/provider/gatewaypluginaiprompttemplate_resource_sdk.go
   - examples/resources/konnect_gateway_plugin_ai_prompt_template/resource.tf
+  - examples/resources/konnect_gateway_plugin_ai_proxy/import.sh
   - internal/provider/gatewaypluginaiproxy_resource.go
   - internal/provider/gatewaypluginaiproxy_resource_sdk.go
   - examples/resources/konnect_gateway_plugin_ai_proxy/resource.tf
+  - examples/resources/konnect_gateway_plugin_aws_lambda/import.sh
   - internal/provider/gatewaypluginawslambda_resource.go
   - internal/provider/gatewaypluginawslambda_resource_sdk.go
   - examples/resources/konnect_gateway_plugin_aws_lambda/resource.tf
+  - examples/resources/konnect_gateway_plugin_basic_auth/import.sh
   - internal/provider/gatewaypluginbasicauth_resource.go
   - internal/provider/gatewaypluginbasicauth_resource_sdk.go
   - examples/resources/konnect_gateway_plugin_basic_auth/resource.tf
+  - examples/resources/konnect_gateway_plugin_correlation_id/import.sh
   - internal/provider/gatewayplugincorrelationid_resource.go
   - internal/provider/gatewayplugincorrelationid_resource_sdk.go
   - examples/resources/konnect_gateway_plugin_correlation_id/resource.tf
+  - examples/resources/konnect_gateway_plugin_cors/import.sh
   - internal/provider/gatewayplugincors_resource.go
   - internal/provider/gatewayplugincors_resource_sdk.go
   - examples/resources/konnect_gateway_plugin_cors/resource.tf
+  - examples/resources/konnect_gateway_plugin_file_log/import.sh
   - internal/provider/gatewaypluginfilelog_resource.go
   - internal/provider/gatewaypluginfilelog_resource_sdk.go
   - examples/resources/konnect_gateway_plugin_file_log/resource.tf
+  - examples/resources/konnect_gateway_plugin_ip_restriction/import.sh
   - internal/provider/gatewaypluginiprestriction_resource.go
   - internal/provider/gatewaypluginiprestriction_resource_sdk.go
   - examples/resources/konnect_gateway_plugin_ip_restriction/resource.tf
+  - examples/resources/konnect_gateway_plugin_jq/import.sh
   - internal/provider/gatewaypluginjq_resource.go
   - internal/provider/gatewaypluginjq_resource_sdk.go
   - examples/resources/konnect_gateway_plugin_jq/resource.tf
+  - examples/resources/konnect_gateway_plugin_jwt/import.sh
   - internal/provider/gatewaypluginjwt_resource.go
   - internal/provider/gatewaypluginjwt_resource_sdk.go
   - examples/resources/konnect_gateway_plugin_jwt/resource.tf
+  - examples/resources/konnect_gateway_plugin_jwt_signer/import.sh
   - internal/provider/gatewaypluginjwtsigner_resource.go
   - internal/provider/gatewaypluginjwtsigner_resource_sdk.go
   - examples/resources/konnect_gateway_plugin_jwt_signer/resource.tf
+  - examples/resources/konnect_gateway_plugin_key_auth/import.sh
   - internal/provider/gatewaypluginkeyauth_resource.go
   - internal/provider/gatewaypluginkeyauth_resource_sdk.go
   - examples/resources/konnect_gateway_plugin_key_auth/resource.tf
+  - examples/resources/konnect_gateway_plugin_oauth2/import.sh
   - internal/provider/gatewaypluginoauth2_resource.go
   - internal/provider/gatewaypluginoauth2_resource_sdk.go
   - examples/resources/konnect_gateway_plugin_oauth2/resource.tf
+  - examples/resources/konnect_gateway_plugin_openid_connect/import.sh
   - internal/provider/gatewaypluginopenidconnect_resource.go
   - internal/provider/gatewaypluginopenidconnect_resource_sdk.go
   - examples/resources/konnect_gateway_plugin_openid_connect/resource.tf
+  - examples/resources/konnect_gateway_plugin_opentelemetry/import.sh
   - internal/provider/gatewaypluginopentelemetry_resource.go
   - internal/provider/gatewaypluginopentelemetry_resource_sdk.go
   - examples/resources/konnect_gateway_plugin_opentelemetry/resource.tf
+  - examples/resources/konnect_gateway_plugin_pre_function/import.sh
   - internal/provider/gatewaypluginprefunction_resource.go
   - internal/provider/gatewaypluginprefunction_resource_sdk.go
   - examples/resources/konnect_gateway_plugin_pre_function/resource.tf
+  - examples/resources/konnect_gateway_plugin_prometheus/import.sh
   - internal/provider/gatewaypluginprometheus_resource.go
   - internal/provider/gatewaypluginprometheus_resource_sdk.go
   - examples/resources/konnect_gateway_plugin_prometheus/resource.tf
+  - examples/resources/konnect_gateway_plugin_proxy_cache/import.sh
   - internal/provider/gatewaypluginproxycache_resource.go
   - internal/provider/gatewaypluginproxycache_resource_sdk.go
   - examples/resources/konnect_gateway_plugin_proxy_cache/resource.tf
+  - examples/resources/konnect_gateway_plugin_rate_limiting/import.sh
   - internal/provider/gatewaypluginratelimiting_resource.go
   - internal/provider/gatewaypluginratelimiting_resource_sdk.go
   - examples/resources/konnect_gateway_plugin_rate_limiting/resource.tf
+  - examples/resources/konnect_gateway_plugin_rate_limiting_advanced/import.sh
   - internal/provider/gatewaypluginratelimitingadvanced_resource.go
   - internal/provider/gatewaypluginratelimitingadvanced_resource_sdk.go
   - examples/resources/konnect_gateway_plugin_rate_limiting_advanced/resource.tf
+  - examples/resources/konnect_gateway_plugin_request_termination/import.sh
   - internal/provider/gatewaypluginrequesttermination_resource.go
   - internal/provider/gatewaypluginrequesttermination_resource_sdk.go
   - examples/resources/konnect_gateway_plugin_request_termination/resource.tf
+  - examples/resources/konnect_gateway_plugin_request_transformer/import.sh
   - internal/provider/gatewaypluginrequesttransformer_resource.go
   - internal/provider/gatewaypluginrequesttransformer_resource_sdk.go
   - examples/resources/konnect_gateway_plugin_request_transformer/resource.tf
+  - examples/resources/konnect_gateway_plugin_request_transformer_advanced/import.sh
   - internal/provider/gatewaypluginrequesttransformeradvanced_resource.go
   - internal/provider/gatewaypluginrequesttransformeradvanced_resource_sdk.go
   - examples/resources/konnect_gateway_plugin_request_transformer_advanced/resource.tf
+  - examples/resources/konnect_gateway_plugin_response_transformer/import.sh
   - internal/provider/gatewaypluginresponsetransformer_resource.go
   - internal/provider/gatewaypluginresponsetransformer_resource_sdk.go
   - examples/resources/konnect_gateway_plugin_response_transformer/resource.tf
+  - examples/resources/konnect_gateway_plugin_response_transformer_advanced/import.sh
   - internal/provider/gatewaypluginresponsetransformeradvanced_resource.go
   - internal/provider/gatewaypluginresponsetransformeradvanced_resource_sdk.go
   - examples/resources/konnect_gateway_plugin_response_transformer_advanced/resource.tf
+  - examples/resources/konnect_gateway_plugin_saml/import.sh
   - internal/provider/gatewaypluginsaml_resource.go
   - internal/provider/gatewaypluginsaml_resource_sdk.go
   - examples/resources/konnect_gateway_plugin_saml/resource.tf
+  - examples/resources/konnect_gateway_route/import.sh
   - internal/provider/gatewayroute_resource.go
   - internal/provider/gatewayroute_resource_sdk.go
   - examples/resources/konnect_gateway_route/resource.tf
+  - examples/resources/konnect_gateway_service/import.sh
   - internal/provider/gatewayservice_resource.go
   - internal/provider/gatewayservice_resource_sdk.go
   - examples/resources/konnect_gateway_service/resource.tf
+  - examples/resources/konnect_gateway_sni/import.sh
   - internal/provider/gatewaysni_resource.go
   - internal/provider/gatewaysni_resource_sdk.go
   - examples/resources/konnect_gateway_sni/resource.tf
+  - examples/resources/konnect_gateway_target/import.sh
   - internal/provider/gatewaytarget_resource.go
   - internal/provider/gatewaytarget_resource_sdk.go
   - examples/resources/konnect_gateway_target/resource.tf
+  - examples/resources/konnect_gateway_upstream/import.sh
   - internal/provider/gatewayupstream_resource.go
   - internal/provider/gatewayupstream_resource_sdk.go
   - examples/resources/konnect_gateway_upstream/resource.tf
+  - examples/resources/konnect_gateway_vault/import.sh
   - internal/provider/gatewayvault_resource.go
   - internal/provider/gatewayvault_resource_sdk.go
   - examples/resources/konnect_gateway_vault/resource.tf
+  - examples/resources/konnect_mesh_control_plane/import.sh
   - internal/provider/meshcontrolplane_resource.go
   - internal/provider/meshcontrolplane_resource_sdk.go
   - examples/resources/konnect_mesh_control_plane/resource.tf
   - internal/provider/portal_resource.go
   - internal/provider/portal_resource_sdk.go
   - examples/resources/konnect_portal/resource.tf
+  - examples/resources/konnect_portal_auth/import.sh
   - internal/provider/portalauth_resource.go
   - internal/provider/portalauth_resource_sdk.go
   - examples/resources/konnect_portal_auth/resource.tf
+  - examples/resources/konnect_portal_product_version/import.sh
   - internal/provider/portalproductversion_resource.go
   - internal/provider/portalproductversion_resource_sdk.go
   - examples/resources/konnect_portal_product_version/resource.tf
+  - examples/resources/konnect_system_account/import.sh
+  - internal/provider/systemaccount_resource.go
+  - internal/provider/systemaccount_resource_sdk.go
+  - examples/resources/konnect_system_account/resource.tf
+  - examples/resources/konnect_system_account_access_token/import.sh
+  - internal/provider/systemaccountaccesstoken_resource.go
+  - internal/provider/systemaccountaccesstoken_resource_sdk.go
+  - examples/resources/konnect_system_account_access_token/resource.tf
+  - internal/provider/systemaccountrole_resource.go
+  - internal/provider/systemaccountrole_resource_sdk.go
+  - examples/resources/konnect_system_account_role/resource.tf
+  - internal/provider/systemaccountteam_resource.go
+  - internal/provider/systemaccountteam_resource_sdk.go
+  - examples/resources/konnect_system_account_team/resource.tf
   - internal/provider/apiproduct_data_source.go
   - internal/provider/apiproduct_data_source_sdk.go
   - examples/data-sources/konnect_api_product/data-source.tf
@@ -893,4 +994,10 @@ generatedFiles:
   - internal/provider/portalproductversion_data_source.go
   - internal/provider/portalproductversion_data_source_sdk.go
   - examples/data-sources/konnect_portal_product_version/data-source.tf
+  - internal/provider/systemaccount_data_source.go
+  - internal/provider/systemaccount_data_source_sdk.go
+  - examples/data-sources/konnect_system_account/data-source.tf
+  - internal/provider/systemaccountaccesstoken_data_source.go
+  - internal/provider/systemaccountaccesstoken_data_source_sdk.go
+  - examples/data-sources/konnect_system_account_access_token/data-source.tf
   - .gitattributes

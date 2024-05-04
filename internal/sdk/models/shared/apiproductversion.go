@@ -41,21 +41,21 @@ func (o *GatewayService) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-// APIProductVersionPublishStatus - This field is published if the API product version is published to at least one portal. This field is deprecated: Use PortalProductVersion.publish_status instead.
+// APIProductVersionPublishStatus1 - This field is published if the API product version is published to at least one portal. This field is deprecated: Use PortalProductVersion.publish_status instead.
 //
 // Deprecated type: This will be removed in a future release, please migrate away from it as soon as possible.
-type APIProductVersionPublishStatus string
+type APIProductVersionPublishStatus1 string
 
 const (
-	APIProductVersionPublishStatusUnpublished APIProductVersionPublishStatus = "unpublished"
-	APIProductVersionPublishStatusPublished   APIProductVersionPublishStatus = "published"
+	APIProductVersionPublishStatus1Unpublished APIProductVersionPublishStatus1 = "unpublished"
+	APIProductVersionPublishStatus1Published   APIProductVersionPublishStatus1 = "published"
 )
 
-func (e APIProductVersionPublishStatus) ToPointer() *APIProductVersionPublishStatus {
+func (e APIProductVersionPublishStatus1) ToPointer() *APIProductVersionPublishStatus1 {
 	return &e
 }
 
-func (e *APIProductVersionPublishStatus) UnmarshalJSON(data []byte) error {
+func (e *APIProductVersionPublishStatus1) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -64,10 +64,10 @@ func (e *APIProductVersionPublishStatus) UnmarshalJSON(data []byte) error {
 	case "unpublished":
 		fallthrough
 	case "published":
-		*e = APIProductVersionPublishStatus(v)
+		*e = APIProductVersionPublishStatus1(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for APIProductVersionPublishStatus: %v", v)
+		return fmt.Errorf("invalid value for APIProductVersionPublishStatus1: %v", v)
 	}
 }
 
@@ -80,13 +80,15 @@ type APIProductVersion struct {
 	// This field is published if the API product version is published to at least one portal. This field is deprecated: Use PortalProductVersion.publish_status instead.
 	//
 	// Deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
-	PublishStatus APIProductVersionPublishStatus `json:"publish_status"`
+	PublishStatus APIProductVersionPublishStatus1 `json:"publish_status"`
 	// Whether this API product version is deprecated in at least one portal. This field is deprecated: Use PortalProductVersion.deprecated instead
 	//
 	// Deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
 	Deprecated bool `json:"deprecated"`
 	// The set of errors encountered when trying to sync the auth strategies on the version
 	AuthStrategySyncErrors []AuthStrategySyncError `json:"auth_strategy_sync_errors,omitempty"`
+	// The list of portals which this API product version is configured for
+	Portals []APIProductVersionPortal `json:"portals"`
 	// An ISO-8601 timestamp representation of entity creation date.
 	CreatedAt time.Time `json:"created_at"`
 	// An ISO-8601 timestamp representation of entity update date.
@@ -125,9 +127,9 @@ func (o *APIProductVersion) GetGatewayService() *GatewayService {
 	return o.GatewayService
 }
 
-func (o *APIProductVersion) GetPublishStatus() APIProductVersionPublishStatus {
+func (o *APIProductVersion) GetPublishStatus() APIProductVersionPublishStatus1 {
 	if o == nil {
-		return APIProductVersionPublishStatus("")
+		return APIProductVersionPublishStatus1("")
 	}
 	return o.PublishStatus
 }
@@ -144,6 +146,13 @@ func (o *APIProductVersion) GetAuthStrategySyncErrors() []AuthStrategySyncError 
 		return nil
 	}
 	return o.AuthStrategySyncErrors
+}
+
+func (o *APIProductVersion) GetPortals() []APIProductVersionPortal {
+	if o == nil {
+		return []APIProductVersionPortal{}
+	}
+	return o.Portals
 }
 
 func (o *APIProductVersion) GetCreatedAt() time.Time {

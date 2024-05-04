@@ -5,6 +5,8 @@ package shared
 type UpdatePortalRequest struct {
 	// The name of the portal, used to distinguish it from other portals. Name must be unique.
 	Name *string `json:"name,omitempty"`
+	// The display name of the portal. This value will be the portal's `name` in Portal API.
+	DisplayName *string `json:"display_name,omitempty"`
 	// The description of the portal.
 	Description *string `json:"description,omitempty"`
 	// Whether the portal catalog can be accessed publicly without any developer authentication. Developer accounts and applications cannot be created if the portal is public.
@@ -28,6 +30,13 @@ func (o *UpdatePortalRequest) GetName() *string {
 		return nil
 	}
 	return o.Name
+}
+
+func (o *UpdatePortalRequest) GetDisplayName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DisplayName
 }
 
 func (o *UpdatePortalRequest) GetDescription() *string {

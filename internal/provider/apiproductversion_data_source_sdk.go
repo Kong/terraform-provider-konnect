@@ -23,6 +23,40 @@ func (r *APIProductVersionDataSourceModel) RefreshFromSharedAPIProductVersion(re
 		}
 		r.ID = types.StringValue(resp.ID)
 		r.Name = types.StringValue(resp.Name)
+		if len(r.Portals) > len(resp.Portals) {
+			r.Portals = r.Portals[:len(resp.Portals)]
+		}
+		for portalsCount, portalsItem := range resp.Portals {
+			var portals1 tfTypes.APIProductVersionPortal
+			portals1.ApplicationRegistrationEnabled = types.BoolValue(portalsItem.ApplicationRegistrationEnabled)
+			for authStrategiesCount, authStrategiesItem := range portalsItem.AuthStrategies {
+				var authStrategies1 tfTypes.APIProductVersionAuthStrategy
+				authStrategies1.ID = types.StringValue(authStrategiesItem.ID)
+				authStrategies1.Name = types.StringValue(authStrategiesItem.Name)
+				if authStrategiesCount+1 > len(portals1.AuthStrategies) {
+					portals1.AuthStrategies = append(portals1.AuthStrategies, authStrategies1)
+				} else {
+					portals1.AuthStrategies[authStrategiesCount].ID = authStrategies1.ID
+					portals1.AuthStrategies[authStrategiesCount].Name = authStrategies1.Name
+				}
+			}
+			portals1.Deprecated = types.BoolValue(portalsItem.Deprecated)
+			portals1.PortalID = types.StringValue(portalsItem.PortalID)
+			portals1.PortalName = types.StringValue(portalsItem.PortalName)
+			portals1.PortalProductVersionID = types.StringValue(portalsItem.PortalProductVersionID)
+			portals1.PublishStatus = types.StringValue(string(portalsItem.PublishStatus))
+			if portalsCount+1 > len(r.Portals) {
+				r.Portals = append(r.Portals, portals1)
+			} else {
+				r.Portals[portalsCount].ApplicationRegistrationEnabled = portals1.ApplicationRegistrationEnabled
+				r.Portals[portalsCount].AuthStrategies = portals1.AuthStrategies
+				r.Portals[portalsCount].Deprecated = portals1.Deprecated
+				r.Portals[portalsCount].PortalID = portals1.PortalID
+				r.Portals[portalsCount].PortalName = portals1.PortalName
+				r.Portals[portalsCount].PortalProductVersionID = portals1.PortalProductVersionID
+				r.Portals[portalsCount].PublishStatus = portals1.PublishStatus
+			}
+		}
 		r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
 	}
 }

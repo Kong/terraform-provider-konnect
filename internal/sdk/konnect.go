@@ -134,6 +134,7 @@ type Konnect struct {
 	//
 	//
 	//
+	//
 	//   <br>
 	//   A route can't have both `tls` and `tls_passthrough` protocols at same time.
 	//   <br><br>
@@ -184,7 +185,11 @@ type Konnect struct {
 	//   - Application registration settings like auto approve or whether application registration is enabled
 	//   - The authentication strategy that is enabled for Application Registration
 	//
-	PortalProductVersions *PortalProductVersions
+	PortalProductVersions        *PortalProductVersions
+	SystemAccounts               *SystemAccounts
+	SystemAccountsAccessTokens   *SystemAccountsAccessTokens
+	SystemAccountsRoles          *SystemAccountsRoles
+	SystemAccountsTeamMembership *SystemAccountsTeamMembership
 
 	sdkConfiguration sdkConfiguration
 }
@@ -262,8 +267,8 @@ func New(opts ...SDKOption) *Konnect {
 			Language:          "go",
 			OpenAPIDocVersion: "2.0.0",
 			SDKVersion:        "0.0.1",
-			GenVersion:        "2.314.0",
-			UserAgent:         "speakeasy-sdk/go 0.0.1 2.314.0 2.0.0 github.com/kong/terraform-provider-konnect/internal/sdk",
+			GenVersion:        "2.322.5",
+			UserAgent:         "speakeasy-sdk/go 0.0.1 2.322.5 2.0.0 github.com/kong/terraform-provider-konnect/internal/sdk",
 			Hooks:             hooks.New(),
 		},
 	}
@@ -338,6 +343,14 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.PortalAuthSettings = newPortalAuthSettings(sdk.sdkConfiguration)
 
 	sdk.PortalProductVersions = newPortalProductVersions(sdk.sdkConfiguration)
+
+	sdk.SystemAccounts = newSystemAccounts(sdk.sdkConfiguration)
+
+	sdk.SystemAccountsAccessTokens = newSystemAccountsAccessTokens(sdk.sdkConfiguration)
+
+	sdk.SystemAccountsRoles = newSystemAccountsRoles(sdk.sdkConfiguration)
+
+	sdk.SystemAccountsTeamMembership = newSystemAccountsTeamMembership(sdk.sdkConfiguration)
 
 	return sdk
 }
