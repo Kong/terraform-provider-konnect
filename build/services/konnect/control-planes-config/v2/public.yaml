@@ -256,8 +256,8 @@ paths:
       summary: List DP Client Certificates
       responses:
         '200':
-          $ref: '#/components/responses/list-dp-client-certs'
-      operationId: get-dp-client-certificates
+          $ref: '#/components/responses/ListDataPlaneCertificatesResponse'
+      operationId: list-dp-client-certificates
       tags:
         - DP Certificates
       description: >-
@@ -270,46 +270,39 @@ paths:
         - $ref: '#/components/parameters/page_number'
     post:
       summary: Pin New DP Client Certificate
-      operationId: post-dp-client-certificates
-      responses:
-        '201':
-          $ref: '#/components/responses/get-dp-client-cert'
-      tags:
-        - DP Certificates
       description: >-
         Pin a new DP Client Certificate to this control plane. A pinned
         dataplane certificate allows dataplanes configured with the certificate
         and corresponding private key to establish connection with this control
         plane.
+      operationId: create-dataplane-certificate
       requestBody:
-        $ref: '#/components/requestBodies/create-dp-client-cert'
+        $ref: '#/components/requestBodies/DataPlaneClientCertificateRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/DataPlaneClientCertificateResponse'
+      tags:
+        - DP Certificates
   /control-planes/{controlPlaneId}/dp-client-certificates/{certificateId}:
     parameters:
       - $ref: '#/components/parameters/controlPlaneId'
-      - schema:
-          type: string
-        name: certificateId
-        in: path
-        required: true
+      - $ref: '#/components/parameters/DataPlaneCertificateId'
     get:
       summary: Fetch DP Client Certificate
       tags:
         - DP Certificates
       responses:
         '200':
-          $ref: '#/components/responses/get-dp-client-cert'
-      operationId: get-dp-client-certificates-cert_id
+          $ref: '#/components/responses/DataPlaneClientCertificateResponse'
+      operationId: get-dataplane-certificate
       description: >-
         Retrieve a pinned dataplane client certificate associated to this
         control plane. A pinned dataplane certificate allows dataplanes
         configured with the certificate and corresponding private key to
         establish connection with this control plane.
-      parameters:
-        - $ref: '#/components/parameters/page_size'
-        - $ref: '#/components/parameters/page_number'
     delete:
       summary: Delete DP Client Certificate
-      operationId: delete-dp-client-certificates-cert_id
+      operationId: delete-dataplane-certificate
       responses:
         '204':
           description: No Content
@@ -326,7 +319,7 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/list-nodes'
-      operationId: get-nodes
+      operationId: list-dataplane-nodes
       tags:
         - DP Nodes
       description: >-
@@ -3073,6 +3066,12 @@ components:
       schema:
         type: integer
       description: The specific page number in the collection results.
+    DataPlaneCertificateId:
+      name: certificateId
+      in: path
+      schema:
+        type: string
+      required: true
     ACLId:
       description: ID of the ACL to lookup
       example: f28acbfa-c866-4587-b688-0208ac24df21
@@ -3304,361 +3303,25 @@ components:
       schema:
         type: string
         example: ewogICJpZCI6ICJoZWxsbyB3b3JsZCIKfQ
-  requestBodies:
-    create-dp-client-cert:
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              cert:
-                type: string
-                description: JSON escaped string of the certificate.
-            required:
-              - cert
-          examples:
-            Sample DP Client Certificate:
-              value:
-                cert: "-----BEGIN CERTIFICATE-----\r\n*****\r\n-----END CERTIFICATE-----\r\n"
-      description: Request body for creating a dp-client-certificate.
-    create-plugin-schemas:
-      content:
-        application/json:
-          schema:
-            type: object
-            x-examples:
-              Example 1:
-                lua_schema: >-
-                  return { name = \"myplugin\", fields = { { config = { type =
-                  \"record\", fields = { } } } } }
-            properties:
-              lua_schema:
-                type: string
-                description: |
-                  The custom plugin schema; `jq -Rs '.' schema.lua`.
-                example: >-
-                  return { name = \"myplugin\", fields = { { config = { type =
-                  \"record\", fields = { } } } } }
-            required:
-              - lua_schema
-  responses:
-    get-dp-client-cert:
-      description: Response body for retrieving a dp-client-certificate.
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              item:
-                type: object
-                properties:
-                  id:
-                    type: string
-                    description: Unique ID of the certificate entity.
-                  created_at:
-                    type: integer
-                    description: Date certificate was created.
-                  updated_at:
-                    type: integer
-                    description: Date certificate was last updated.
-                  cert:
-                    type: string
-                    description: JSON escaped string of the certificate.
-    get-expected-config-hash:
-      description: >-
-        Response body for retrieving the expected config hash of the control
-        plane.
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              expected_hash:
-                type: string
-                description: The expected configuration hash.
-              created_at:
-                type: integer
-                description: Date the control plane configuration was created.
-              updated_at:
-                type: integer
-                description: Date the control plane configuration was last updated.
-    list-dp-client-certs:
-      description: Example response
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              items:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                      description: Unique ID of the certificate entity.
-                    created_at:
-                      type: integer
-                      description: Date certificate was created.
-                    updated_at:
-                      type: integer
-                      description: Date certificate was last updated.
-                    cert:
-                      type: string
-                      description: JSON escaped string of the certificate.
-              page:
-                type: object
-                properties:
-                  total_count:
-                    type: integer
-    list-nodes:
-      description: Example response
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              items:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                    version:
-                      type: string
-                    hostname:
-                      type: string
-                    last_ping:
-                      type: integer
-                    type:
-                      type: string
-                    created_at:
-                      type: integer
-                    updated_at:
-                      type: integer
-                    config_hash:
-                      type: string
-                    compatibility_status:
-                      type: object
-                      properties:
-                        state:
-                          type: string
-              page:
-                type: object
-                properties:
-                  total_count:
-                    type: integer
-                  next_cursor:
-                    type: string
-                  has_next_page:
-                    type: boolean
-    list-nodes-eol:
-      description: Example response
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              items:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    node_id:
-                      type: string
-                    node_version:
-                      type: string
-                    message:
-                      type: string
-              page:
-                type: object
-                properties:
-                  total_count:
-                    type: integer
-    get-node:
-      description: Example response
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              item:
-                type: object
-                properties:
-                  id:
-                    type: string
-                  version:
-                    type: string
-                  hostname:
-                    type: string
-                  last_ping:
-                    type: integer
-                  type:
-                    type: string
-                  created_at:
-                    type: integer
-                  updated_at:
-                    type: integer
-                  config_hash:
-                    type: string
-                  compatibility_status:
-                    type: object
-                    properties:
-                      state:
-                        type: string
-    list-plugin-schemas:
-      description: A paginated list response for a collection of custom plugin schemas.
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              items:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    lua_schema:
-                      type: string
-                      description: The custom plugin schema; `jq -Rs '.' schema.lua`.
-                      example: >-
-                        return { name = \"myplugin\", fields = { { config = {
-                        type = \"record\", fields = { } } } } }
-                    name:
-                      type: string
-                      description: >-
-                        The custom plugin name determined by the custom plugin
-                        schema.
-                      example: myplugin
-                    created_at:
-                      type: integer
-                      description: >-
-                        An ISO-8604 timestamp representation of custom plugin
-                        schema creation date.
-                      example: 1422386534
-                    updated_at:
-                      type: integer
-                      description: >-
-                        An ISO-8604 timestamp representation of custom plugin
-                        schema update date.
-                      example: 1422412345
-              page:
-                type: object
-                properties:
-                  total_count:
-                    type: integer
-    plugin-schemas:
-      description: A response for a single custom plugin schema.
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              item:
-                type: object
-                properties:
-                  lua_schema:
-                    type: string
-                    description: The custom plugin schema; `jq -Rs '.' schema.lua`.
-                    example: >-
-                      return { name = \"myplugin\", fields = { { config = { type
-                      = \"record\", fields = { } } } } }
-                  name:
-                    type: string
-                    description: >-
-                      The custom plugin name determined by the custom plugin
-                      schema.
-                    example: myplugin
-                  created_at:
-                    type: integer
-                    description: >-
-                      An ISO-8604 timestamp representation of custom plugin
-                      schema creation date.
-                    example: 1422386534
-                  updated_at:
-                    type: integer
-                    description: >-
-                      An ISO-8604 timestamp representation of custom plugin
-                      schema update date.
-                    example: 1422412345
-    HTTP401Error:
-      content:
-        application/json:
-          examples:
-            DuplicateApiKey:
-              summary: Duplicate API key found
-              value:
-                message: Duplicate API key found
-                status: 401
-            InvalidAuthCred:
-              summary: Invalid authentication credentials
-              value:
-                message: Unauthorized
-                status: 401
-            NoAPIKey:
-              summary: No API key found
-              value:
-                message: No API key found in request
-                status: 401
-          schema:
-            $ref: '#/components/schemas/UnauthorizedError'
-      description: Unauthorized
-    BadRequest:
-      description: Bad Request
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/BadRequestError'
-    Unauthorized:
-      description: Unauthorized
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/schemas-UnauthorizedError'
-          examples:
-            UnauthorizedExample:
-              $ref: '#/components/examples/UnauthorizedExample'
-    Forbidden:
-      description: Forbidden
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ForbiddenError'
-          examples:
-            UnauthorizedExample:
-              $ref: '#/components/examples/ForbiddenExample'
-    Conflict:
-      description: Conflict
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ConflictError'
-    NotFound:
-      description: Not Found
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/NotFoundError'
-          examples:
-            NotFoundExample:
-              $ref: '#/components/examples/NotFoundExample'
-  securitySchemes:
-    konnectAccessToken:
-      type: http
-      scheme: bearer
-      description: >-
-        The Konnect access token is meant to be used by the Konnect dashboard
-        and the decK CLI to authenticate with.
-    personalAccessToken:
-      type: http
-      scheme: bearer
-      description: >-
-        The personal access token is meant to be used as an alternative to
-        basic-auth when accessing Konnect via APIs. You can generate a Personal
-        Access Token (PAT) from the personal access token page in the Konnect
-        dashboard.
   schemas:
+    DataPlaneClientCertificate:
+      type: object
+      properties:
+        item:
+          type: object
+          properties:
+            id:
+              type: string
+              description: Unique ID of the certificate entity.
+            created_at:
+              type: integer
+              description: Date certificate was created.
+            updated_at:
+              type: integer
+              description: Date certificate was last updated.
+            cert:
+              type: string
+              description: JSON escaped string of the certificate.
     ACL:
       allOf:
         - example:
@@ -5445,6 +5108,331 @@ components:
           example: Not found
       allOf:
         - $ref: '#/components/schemas/BaseError'
+  requestBodies:
+    DataPlaneClientCertificateRequest:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              cert:
+                type: string
+                description: JSON escaped string of the certificate.
+            required:
+              - cert
+          examples:
+            Sample DP Client Certificate:
+              value:
+                cert: "-----BEGIN CERTIFICATE-----\r\n*****\r\n-----END CERTIFICATE-----\r\n"
+      description: Request body for creating a dp-client-certificate.
+    create-plugin-schemas:
+      content:
+        application/json:
+          schema:
+            type: object
+            x-examples:
+              Example 1:
+                lua_schema: >-
+                  return { name = \"myplugin\", fields = { { config = { type =
+                  \"record\", fields = { } } } } }
+            properties:
+              lua_schema:
+                type: string
+                description: |
+                  The custom plugin schema; `jq -Rs '.' schema.lua`.
+                example: >-
+                  return { name = \"myplugin\", fields = { { config = { type =
+                  \"record\", fields = { } } } } }
+            required:
+              - lua_schema
+  responses:
+    DataPlaneClientCertificateResponse:
+      description: Response body for retrieving a dp-client-certificate.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DataPlaneClientCertificate'
+    get-expected-config-hash:
+      description: >-
+        Response body for retrieving the expected config hash of the control
+        plane.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              expected_hash:
+                type: string
+                description: The expected configuration hash.
+              created_at:
+                type: integer
+                description: Date the control plane configuration was created.
+              updated_at:
+                type: integer
+                description: Date the control plane configuration was last updated.
+    ListDataPlaneCertificatesResponse:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              items:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DataPlaneClientCertificate'
+              page:
+                type: object
+                properties:
+                  total_count:
+                    type: integer
+    list-nodes:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              items:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    version:
+                      type: string
+                    hostname:
+                      type: string
+                    last_ping:
+                      type: integer
+                    type:
+                      type: string
+                    created_at:
+                      type: integer
+                    updated_at:
+                      type: integer
+                    config_hash:
+                      type: string
+                    compatibility_status:
+                      type: object
+                      properties:
+                        state:
+                          type: string
+              page:
+                type: object
+                properties:
+                  total_count:
+                    type: integer
+                  next_cursor:
+                    type: string
+                  has_next_page:
+                    type: boolean
+    list-nodes-eol:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              items:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    node_id:
+                      type: string
+                    node_version:
+                      type: string
+                    message:
+                      type: string
+              page:
+                type: object
+                properties:
+                  total_count:
+                    type: integer
+    get-node:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              item:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  version:
+                    type: string
+                  hostname:
+                    type: string
+                  last_ping:
+                    type: integer
+                  type:
+                    type: string
+                  created_at:
+                    type: integer
+                  updated_at:
+                    type: integer
+                  config_hash:
+                    type: string
+                  compatibility_status:
+                    type: object
+                    properties:
+                      state:
+                        type: string
+    list-plugin-schemas:
+      description: A paginated list response for a collection of custom plugin schemas.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              items:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    lua_schema:
+                      type: string
+                      description: The custom plugin schema; `jq -Rs '.' schema.lua`.
+                      example: >-
+                        return { name = \"myplugin\", fields = { { config = {
+                        type = \"record\", fields = { } } } } }
+                    name:
+                      type: string
+                      description: >-
+                        The custom plugin name determined by the custom plugin
+                        schema.
+                      example: myplugin
+                    created_at:
+                      type: integer
+                      description: >-
+                        An ISO-8604 timestamp representation of custom plugin
+                        schema creation date.
+                      example: 1422386534
+                    updated_at:
+                      type: integer
+                      description: >-
+                        An ISO-8604 timestamp representation of custom plugin
+                        schema update date.
+                      example: 1422412345
+              page:
+                type: object
+                properties:
+                  total_count:
+                    type: integer
+    plugin-schemas:
+      description: A response for a single custom plugin schema.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              item:
+                type: object
+                properties:
+                  lua_schema:
+                    type: string
+                    description: The custom plugin schema; `jq -Rs '.' schema.lua`.
+                    example: >-
+                      return { name = \"myplugin\", fields = { { config = { type
+                      = \"record\", fields = { } } } } }
+                  name:
+                    type: string
+                    description: >-
+                      The custom plugin name determined by the custom plugin
+                      schema.
+                    example: myplugin
+                  created_at:
+                    type: integer
+                    description: >-
+                      An ISO-8604 timestamp representation of custom plugin
+                      schema creation date.
+                    example: 1422386534
+                  updated_at:
+                    type: integer
+                    description: >-
+                      An ISO-8604 timestamp representation of custom plugin
+                      schema update date.
+                    example: 1422412345
+    HTTP401Error:
+      content:
+        application/json:
+          examples:
+            DuplicateApiKey:
+              summary: Duplicate API key found
+              value:
+                message: Duplicate API key found
+                status: 401
+            InvalidAuthCred:
+              summary: Invalid authentication credentials
+              value:
+                message: Unauthorized
+                status: 401
+            NoAPIKey:
+              summary: No API key found
+              value:
+                message: No API key found in request
+                status: 401
+          schema:
+            $ref: '#/components/schemas/UnauthorizedError'
+      description: Unauthorized
+    BadRequest:
+      description: Bad Request
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/BadRequestError'
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/schemas-UnauthorizedError'
+          examples:
+            UnauthorizedExample:
+              $ref: '#/components/examples/UnauthorizedExample'
+    Forbidden:
+      description: Forbidden
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ForbiddenError'
+          examples:
+            UnauthorizedExample:
+              $ref: '#/components/examples/ForbiddenExample'
+    Conflict:
+      description: Conflict
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ConflictError'
+    NotFound:
+      description: Not Found
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/NotFoundError'
+          examples:
+            NotFoundExample:
+              $ref: '#/components/examples/NotFoundExample'
+  securitySchemes:
+    konnectAccessToken:
+      type: http
+      scheme: bearer
+      description: >-
+        The Konnect access token is meant to be used by the Konnect dashboard
+        and the decK CLI to authenticate with.
+    personalAccessToken:
+      type: http
+      scheme: bearer
+      description: >-
+        The personal access token is meant to be used as an alternative to
+        basic-auth when accessing Konnect via APIs. You can generate a Personal
+        Access Token (PAT) from the personal access token page in the Konnect
+        dashboard.
   examples:
     UnauthorizedExample:
       value:

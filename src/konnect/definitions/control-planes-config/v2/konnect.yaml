@@ -53,8 +53,8 @@ paths:
       summary: List DP Client Certificates
       responses:
         '200':
-          $ref: '#/components/responses/list-dp-client-certs'
-      operationId: get-dp-client-certificates
+          $ref: '#/components/responses/ListDataPlaneCertificatesResponse'
+      operationId: list-dp-client-certificates
       tags:
         - DP Certificates
       description: >-
@@ -66,47 +66,44 @@ paths:
         - $ref: '#/components/parameters/page_size'
         - $ref: '#/components/parameters/page_number'
     post:
+      x-speakeasy-entity-operation: GatewayDataPlaneClientCertificate#create
       summary: Pin New DP Client Certificate
-      operationId: post-dp-client-certificates
-      responses:
-        '201':
-          $ref: '#/components/responses/get-dp-client-cert'
-      tags:
-        - DP Certificates
       description: >-
         Pin a new DP Client Certificate to this control plane. A pinned
         dataplane certificate allows dataplanes configured with the certificate
         and corresponding private key to establish connection with this control
         plane.
+      operationId: create-dataplane-certificate
       requestBody:
-        $ref: '#/components/requestBodies/create-dp-client-cert'
+        $ref: '#/components/requestBodies/DataPlaneClientCertificateRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/DataPlaneClientCertificateResponse'
+      tags:
+        - DP Certificates
   /control-planes/{controlPlaneId}/dp-client-certificates/{certificateId}:
     parameters:
       - $ref: '#/components/parameters/controlPlaneId'
-      - schema:
-          type: string
-        name: certificateId
-        in: path
-        required: true
+      - $ref: '#/components/parameters/DataPlaneCertificateId'
+
     get:
+      x-speakeasy-entity-operation: GatewayDataPlaneClientCertificate#read
       summary: Fetch DP Client Certificate
       tags:
         - DP Certificates
       responses:
         '200':
-          $ref: '#/components/responses/get-dp-client-cert'
-      operationId: get-dp-client-certificates-cert_id
+          $ref: '#/components/responses/DataPlaneClientCertificateResponse'
+      operationId: get-dataplane-certificate
       description: >-
         Retrieve a pinned dataplane client certificate associated to this
         control plane. A pinned dataplane certificate allows dataplanes
         configured with the certificate and corresponding private key to
         establish connection with this control plane.
-      parameters:
-        - $ref: '#/components/parameters/page_size'
-        - $ref: '#/components/parameters/page_number'
     delete:
+      x-speakeasy-entity-operation: GatewayDataPlaneClientCertificate#delete
       summary: Delete DP Client Certificate
-      operationId: delete-dp-client-certificates-cert_id
+      operationId: delete-dataplane-certificate
       responses:
         '204':
           description: No Content
@@ -123,7 +120,7 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/list-nodes'
-      operationId: get-nodes
+      operationId: list-dataplane-nodes
       tags:
         - DP Nodes
       description: >-
@@ -355,8 +352,36 @@ components:
       schema:
         type: integer
       description: The specific page number in the collection results.
+    DataPlaneCertificateId:
+      name: certificateId
+      in: path
+      schema:
+        type: string
+      required: true
+      x-speakeasy-match: id
+  schemas:
+    DataPlaneClientCertificate:
+      type: object
+      properties:
+        item:
+          x-speakeasy-entity: GatewayDataPlaneClientCertificate
+          type: object
+          properties:
+            id:
+              type: string
+              description: Unique ID of the certificate entity.
+            created_at:
+              type: integer
+              description: Date certificate was created.
+            updated_at:
+              type: integer
+              description: Date certificate was last updated.
+            cert:
+              type: string
+              description: JSON escaped string of the certificate.
+
   requestBodies:
-    create-dp-client-cert:
+    DataPlaneClientCertificateRequest:
       content:
         application/json:
           schema:
@@ -393,28 +418,12 @@ components:
             required:
               - lua_schema
   responses:
-    get-dp-client-cert:
+    DataPlaneClientCertificateResponse:
       description: Response body for retrieving a dp-client-certificate.
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              item:
-                type: object
-                properties:
-                  id:
-                    type: string
-                    description: Unique ID of the certificate entity.
-                  created_at:
-                    type: integer
-                    description: Date certificate was created.
-                  updated_at:
-                    type: integer
-                    description: Date certificate was last updated.
-                  cert:
-                    type: string
-                    description: JSON escaped string of the certificate.
+            $ref: "#/components/schemas/DataPlaneClientCertificate"
     get-expected-config-hash:
       description: >-
         Response body for retrieving the expected config hash of the control
@@ -433,7 +442,7 @@ components:
               updated_at:
                 type: integer
                 description: Date the control plane configuration was last updated.
-    list-dp-client-certs:
+    ListDataPlaneCertificatesResponse:
       description: Example response
       content:
         application/json:
@@ -443,20 +452,7 @@ components:
               items:
                 type: array
                 items:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                      description: Unique ID of the certificate entity.
-                    created_at:
-                      type: integer
-                      description: Date certificate was created.
-                    updated_at:
-                      type: integer
-                      description: Date certificate was last updated.
-                    cert:
-                      type: string
-                      description: JSON escaped string of the certificate.
+                  $ref: "#/components/schemas/DataPlaneClientCertificate"
               page:
                 type: object
                 properties:
