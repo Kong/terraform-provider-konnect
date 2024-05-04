@@ -4202,6 +4202,323 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Portal Product Versions
+  /v3/system-accounts:
+    post:
+      x-speakeasy-entity-operation: SystemAccount#create
+      summary: Create System Account
+      operationId: post-system-accounts
+      tags:
+        - System Accounts
+      description: >-
+        Creates a system account. Returns a 409 if a system account with the
+        same name already exists.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateSystemAccount'
+      responses:
+        '201':
+          $ref: '#/components/responses/SystemAccountSingle'
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          $ref: '#/components/responses/IdentityConflict'
+  /v3/system-accounts/{accountId}:
+    get:
+      x-speakeasy-entity-operation: SystemAccount#read
+      summary: Fetch System Account
+      tags:
+        - System Accounts
+      responses:
+        '200':
+          $ref: '#/components/responses/SystemAccountSingle'
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/IdentityNotFound'
+      operationId: get-system-accounts-id
+      description: >-
+        Returns the system account (SA) for the SA ID specified as a path
+        parameter.
+    parameters:
+      - schema:
+          type: string
+        name: accountId
+        in: path
+        required: true
+        description: ID of the system account.
+        x-speakeasy-match: id
+    patch:
+      x-speakeasy-entity-operation: SystemAccount#update
+      summary: Update System Account
+      operationId: patch-system-accounts-id
+      responses:
+        '200':
+          $ref: '#/components/responses/SystemAccountSingle'
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/IdentityNotFound'
+        '409':
+          $ref: '#/components/responses/IdentityConflict'
+      description: >-
+        Updates the specified system account. Returns a 409 if the updated name
+        is the same as another system account in the organization.
+      tags:
+        - System Accounts
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateSystemAccount'
+    delete:
+      x-speakeasy-entity-operation: SystemAccount#delete
+      summary: Delete System Account
+      operationId: delete-system-accounts-id
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/IdentityNotFound'
+      description: >-
+        Deletes the specified system account. Returns 404 if the requested
+        account was not found.
+      tags:
+        - System Accounts
+  /v3/system-accounts/{accountId}/access-tokens:
+    parameters:
+      - schema:
+          type: string
+        name: accountId
+        in: path
+        required: true
+        description: ID of the system account.
+    post:
+      x-speakeasy-entity-operation: SystemAccountAccessToken#create
+      summary: Create System Account Access Token
+      operationId: post-system-accounts-id-access-tokens
+      responses:
+        '201':
+          $ref: '#/components/responses/SystemAccountAccessTokenCreated'
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/IdentityNotFound'
+        '409':
+          $ref: '#/components/responses/IdentityConflict'
+      description: >-
+        Creates an access token for the specified system account (SA). The
+        access token can be used for authenticating API and CLI requests. The
+        token will only be displayed once on creation. Returns a 409 if the
+        system account already has a token with the same name.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateSystemAccountAccessToken'
+      tags:
+        - System Accounts - Access Tokens
+  /v3/system-accounts/{accountId}/access-tokens/{tokenId}:
+    get:
+      x-speakeasy-entity-operation: SystemAccountAccessToken#read
+      summary: Fetch System Account Access Token
+      responses:
+        '200':
+          $ref: '#/components/responses/SystemAccountAccessTokenSingle'
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/IdentityNotFound'
+      operationId: get-system-accounts-id-access-tokens-id
+      description: >-
+        Returns the system account (SA) access token for the SA Access Token ID
+        specified as a path parameter.
+      parameters: []
+      tags:
+        - System Accounts - Access Tokens
+    parameters:
+      - schema:
+          type: string
+        name: accountId
+        in: path
+        required: true
+        description: ID of the system account.
+      - schema:
+          type: string
+        name: tokenId
+        in: path
+        required: true
+        description: ID of the system account access token.
+        x-speakeasy-match: id
+    patch:
+      x-speakeasy-entity-operation: SystemAccountAccessToken#update
+      summary: Update System Account Access Token
+      operationId: patch-system-accounts-id-access-tokens-id
+      responses:
+        '200':
+          $ref: '#/components/responses/SystemAccountAccessTokenSingle'
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/IdentityNotFound'
+        '409':
+          $ref: '#/components/responses/IdentityConflict'
+      description: >-
+        Updates the specified access token. Returns a 409 if the updated name is
+        the same as another token belonging to the specified system user.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateSystemAccountAccessToken'
+      tags:
+        - System Accounts - Access Tokens
+    delete:
+      x-speakeasy-entity-operation: SystemAccountAccessToken#delete
+      summary: Delete System Account Access Token
+      operationId: delete-system-accounts-id-access-tokens-id
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/IdentityNotFound'
+      description: Deletes the specified token. Returns 404 if the token was not found.
+      tags:
+        - System Accounts - Access Tokens
+  /v3/system-accounts/{accountId}/assigned-roles:
+    parameters:
+      - schema:
+          type: string
+        name: accountId
+        in: path
+        required: true
+        description: ID of the system account.
+    post:
+      x-speakeasy-entity-operation: SystemAccountRole#create
+      summary: Create Assigned Role for System Account
+      operationId: post-system-accounts-accountId-assigned-roles
+      responses:
+        '201':
+          $ref: '#/components/responses/AssignedRoleSingle'
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/IdentityNotFound'
+        '409':
+          $ref: '#/components/responses/IdentityConflict'
+      description: >-
+        Assigns a role to a system account. Returns 409 if role is already
+        assigned.
+      requestBody:
+        $ref: '#/components/requestBodies/AssignRole'
+      tags:
+        - System Accounts - Roles
+  /v3/system-accounts/{accountId}/assigned-roles/{roleId}:
+    parameters:
+      - schema:
+          type: string
+        name: accountId
+        in: path
+        required: true
+        description: ID of the system account.
+      - schema:
+          type: string
+        name: roleId
+        in: path
+        required: true
+        description: ID of the role.
+        x-speakeasy-match: id
+    delete:
+      x-speakeasy-entity-operation: SystemAccountRole#delete
+      summary: Delete Assigned Role from System Account
+      operationId: delete-system-accounts-accountId-assigned-roles-roleId
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/IdentityNotFound'
+      description: >-
+        Removes an assigned role from a system account. Returns 404 if the
+        system account or assigned role were not found.
+      tags:
+        - System Accounts - Roles
+  /v3/teams/{teamId}/system-accounts:
+    parameters:
+      - schema:
+          type: string
+        name: teamId
+        in: path
+        required: true
+        description: ID of the team.
+    post:
+      x-speakeasy-entity-operation: SystemAccountTeam#create
+      summary: Add System Account to a Team
+      operationId: post-teams-teamId-system-accounts
+      responses:
+        '201':
+          description: Created
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/IdentityNotFound'
+        '409':
+          $ref: '#/components/responses/IdentityConflict'
+      description: >-
+        Adds a system account to a team. Returns a 409 if the system account is
+        already a member of the team.
+      requestBody:
+        $ref: '#/components/requestBodies/AddSystemAccountToTeam'
+      tags:
+        - System Accounts - Team Membership
+  /v3/teams/{teamId}/system-accounts/{accountId}:
+    parameters:
+      - schema:
+          type: string
+        name: teamId
+        in: path
+        required: true
+        description: ID of the team.
+      - schema:
+          type: string
+        name: accountId
+        in: path
+        required: true
+        description: ID of the system account.
+    delete:
+      x-speakeasy-entity-operation: SystemAccountTeam#delete
+      summary: Remove System Account From Team
+      operationId: delete-teams-teamId-system-accounts-accountId
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/IdentityNotFound'
+      description: >-
+        Removes a system account from a team. Returns 404 if the team or system
+        account were not found.
+      tags:
+        - System Accounts - Team Membership
 components:
   parameters:
     PageSize:
@@ -4762,6 +5079,96 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/UpdateAppAuthStrategyResponse'
+    AssignedRoleSingle:
+      description: A get action response of a single assigned role.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AssignedRole'
+    IdentityConflict:
+      description: Conflict
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ConflictError'
+    IdentityUnauthenticated:
+      description: Unauthenticated
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/UnauthorizedError'
+    IdentityNotFound:
+      description: Not Found
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/NotFoundError'
+    SystemAccountSingle:
+      description: A response including a single system account.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SystemAccount'
+    SystemAccountAccessTokenSingle:
+      description: A response including a single system account access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SystemAccountAccessToken'
+    SystemAccountAccessTokenCreated:
+      description: >-
+        A response including a single system account access token with the
+        token.
+      content:
+        application/json:
+          schema:
+            x-speakeasy-entity: SystemAccountAccessToken
+            type: object
+            title: System Account Access Token Created Response
+            example:
+              id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+              name: Sample Access Token
+              created_at: '2022-08-01T14:16:09Z'
+              updated_at: '2022-08-02T08:35:49Z'
+              expires_at: '2022-12-31T12:52:23Z'
+              last_used_at: '2022-10-24T13:05:42Z'
+            properties:
+              id:
+                type: string
+                description: ID of the system account access token.
+                format: uuid
+                readOnly: true
+              name:
+                type: string
+                description: Name of the system account access token.
+              created_at:
+                type: string
+                description: Timestamp of when the system account access token was created.
+                format: date-time
+                readOnly: true
+              updated_at:
+                type: string
+                description: >-
+                  Timestamp of when the system account access token was last
+                  updated.
+                format: date-time
+                readOnly: true
+              expires_at:
+                type: string
+                description: Timestamp of when the system account access token will expire.
+                format: date-time
+                readOnly: true
+              last_used_at:
+                type: string
+                description: >-
+                  Timestamp of when the system account access token was last
+                  used.
+                format: date-time
+                readOnly: true
+              token:
+                type: string
+                description: The token of the system account access token.
+                readOnly: true
   schemas:
     GroupMembership:
       x-speakeasy-entity: GatewayControlPlaneMembership
@@ -12160,6 +12567,74 @@ components:
           maxLength: 250
         labels:
           $ref: '#/components/schemas/MeshControlPlaneLabels'
+    APIProductVersionPublishStatus:
+      title: APIProductVersionPublishStatus
+      type: string
+      enum:
+        - published
+        - unpublished
+      example: published
+    APIProductVersionPortals:
+      title: APIProductVersionPortals
+      type: array
+      minItems: 0
+      description: The list of portals which this API product version is configured for
+      items:
+        $ref: '#/components/schemas/APIProductVersionPortal'
+    APIProductVersionPortal:
+      title: APIProductVersionPortal
+      type: object
+      additionalProperties: false
+      required:
+        - portal_id
+        - portal_name
+        - portal_product_version_id
+        - publish_status
+        - deprecated
+        - application_registration_enabled
+        - auth_strategies
+      properties:
+        portal_id:
+          type: string
+          format: uuid
+          example: 35a2624c-49fc-4764-99e1-224ed819f200
+        portal_name:
+          type: string
+          example: Developer Portal
+        portal_product_version_id:
+          type: string
+          format: uuid
+          example: 35a2624c-49fc-4764-99e1-224ed819f200
+        publish_status:
+          $ref: '#/components/schemas/APIProductVersionPublishStatus'
+        deprecated:
+          type: boolean
+          example: false
+        application_registration_enabled:
+          type: boolean
+          example: true
+        auth_strategies:
+          type: array
+          items:
+            $ref: '#/components/schemas/APIProductVersionAuthStrategy'
+    APIProductVersionAuthStrategy:
+      title: APIProductVersionAuthStrategy
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 9f5061ce-78f6-4452-9108-ad7c02821fd5
+        name:
+          type: string
+          example: Key Auth
+      example:
+        id: 9f5061ce-78f6-4452-9108-ad7c02821fd5
+        name: Key Auth
     APIProduct:
       x-speakeasy-entity: ApiProduct
       title: API Product
@@ -12274,6 +12749,7 @@ components:
         - gateway_service
         - publish_status
         - deprecated
+        - portals
         - created_at
         - updated_at
       properties:
@@ -12341,6 +12817,8 @@ components:
           example: false
         auth_strategy_sync_errors:
           $ref: '#/components/schemas/AuthStrategySyncErrors'
+        portals:
+          $ref: '#/components/schemas/APIProductVersionPortals'
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -12801,6 +13279,7 @@ components:
             created_at: '2022-02-07T17:46:57.52Z'
             updated_at: '2022-10-08T17:00:00.52Z'
             name: Portal A
+            display_name: Developer Portal A
             description: The Portal A
             default_domain: 123455678abcd.us.portal.konghq.com
             is_public: false
@@ -12921,6 +13400,7 @@ components:
         - created_at
         - updated_at
         - name
+        - display_name
         - default_domain
         - is_public
         - rbac_enabled
@@ -12941,6 +13421,8 @@ components:
           $ref: '#/components/schemas/UpdatedAt'
         name:
           $ref: '#/components/schemas/PortalName'
+        display_name:
+          $ref: '#/components/schemas/PortalDisplayName'
         description:
           $ref: '#/components/schemas/PortalDescription'
         default_domain:
@@ -13014,6 +13496,7 @@ components:
         created_at: '2022-02-07T17:46:57.52Z'
         updated_at: '2022-10-08T17:00:00.52Z'
         name: Portal A
+        display_name: Developer Portal A
         description: The Portal A
         default_domain: 123455678abcd.us.portal.konghq.com
         is_public: false
@@ -13043,12 +13526,21 @@ components:
       type: string
       maxLength: 255
       minLength: 1
+    PortalDisplayName:
+      description: >-
+        The display name of the portal. This value will be the portal's `name`
+        in Portal API.
+      type: string
+      maxLength: 255
+      minLength: 1
     UpdatePortalRequest:
       additionalProperties: false
       type: object
       properties:
         name:
           $ref: '#/components/schemas/PortalName'
+        display_name:
+          $ref: '#/components/schemas/PortalDisplayName'
         description:
           $ref: '#/components/schemas/PortalDescription'
         is_public:
@@ -13582,6 +14074,121 @@ components:
         The display name of the Auth strategy. This is used to identify the Auth
         strategy in the Portal UI.
       maxLength: 256
+    AssignedRole:
+      title: AssignedRole
+      type: object
+      description: An assigned role is a role that has been assigned to a user or team.
+      example:
+        id: 54cc6168-ebb1-4300-8168-d62a0dd08fc8
+        role_name: Viewer
+        entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
+        entity_type_name: Control Planes
+        entity_region: us
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: eaf7adf1-32c8-4bbf-b960-d1f8456afe67
+          description: The ID of the role assignment.
+        role_name:
+          type: string
+          example: Viewer
+          description: Name of the role being assigned.
+        entity_id:
+          type: string
+          format: uuid
+          example: 817d0422-45c9-4d88-8d64-45aef05c1ae7
+          description: A RBAC entity ID.
+        entity_type_name:
+          type: string
+          example: Control Planes
+          description: Name of the entity type the role is being assigned to.
+        entity_region:
+          type: string
+          enum:
+            - us
+            - eu
+            - au
+            - '*'
+          example: eu
+          description: Region of the entity.
+    SystemAccount:
+      x-speakeasy-entity: SystemAccount
+      title: System Account
+      type: object
+      example:
+        id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+        name: Example System Account
+        description: This is a sample system account description.
+        created_at: '2022-08-24T14:15:22Z'
+        updated_at: '2022-10-05T10:33:49Z'
+        konnect_managed: false
+      description: Schema of the system account.
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: ID of the system account.
+          readOnly: true
+        name:
+          type: string
+          description: Name of the system account.
+        description:
+          type: string
+          description: Description of the system account.
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp of when the system account was created.
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          description: Timestamp of when the system account was last updated.
+          readOnly: true
+        konnect_managed:
+          type: boolean
+          description: The system account is managed by Konnect (true/false).
+    SystemAccountAccessToken:
+      x-speakeasy-entity: SystemAccountAccessToken
+      title: System Account Access Token
+      example:
+        id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+        name: Sample Access Token
+        created_at: '2022-08-01T14:16:09Z'
+        updated_at: '2022-08-02T08:35:49Z'
+        expires_at: '2022-12-31T12:52:23Z'
+        last_used_at: '2022-10-24T13:05:42Z'
+      description: Schema of the system account access token.
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: ID of the system account access token.
+          readOnly: true
+        name:
+          type: string
+          description: Name of the system account access token.
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp of when the system account access token was created.
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          description: Timestamp of when the system account access token was last updated.
+          readOnly: true
+        expires_at:
+          type: string
+          format: date-time
+          description: Timestamp of when the system account access token will expire.
+        last_used_at:
+          type: string
+          format: date-time
+          description: Timestamp of when the system account access token was last used.
+          readOnly: true
   securitySchemes:
     personalAccessToken:
       type: http
@@ -13618,9 +14225,10 @@ components:
     konnectAccessToken:
       type: http
       scheme: bearer
-      description: >-
+      description: >
         The Konnect access token is meant to be used by the Konnect dashboard
-        and the decK CLI to authenticate with.
+        and the decK CLI authenticate with.
+      bearerFormat: JWT
   requestBodies:
     GroupMemebershipAdd:
       content:
@@ -13707,6 +14315,112 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/UpdateAppAuthStrategyRequest'
+    AssignRole:
+      content:
+        application/json:
+          schema:
+            x-speakeasy-entity: SystemAccountRole
+            type: object
+            description: >-
+              An assigned role is a role that has been assigned to a user or
+              team.
+            properties:
+              role_name:
+                type: string
+                example: Viewer
+                description: The desired role.
+              entity_id:
+                type: string
+                format: uuid
+                example: e67490ce-44dc-4cbd-b65e-b52c746fc26a
+                description: The ID of the entity.
+              entity_type_name:
+                type: string
+                example: Control Planes
+                description: The type of entity.
+              entity_region:
+                type: string
+                enum:
+                  - us
+                  - eu
+                  - au
+                  - '*'
+                example: eu
+                description: The region of the team.
+      description: The request schema for assigning a role.
+    CreateSystemAccount:
+      content:
+        application/json:
+          schema:
+            x-speakeasy-entity: SystemAccount
+            type: object
+            required:
+              - name
+              - description
+            properties:
+              name:
+                type: string
+                description: Name of the system account.
+              description:
+                type: string
+                description: >-
+                  Description of the system account. Useful when the system
+                  account name is not sufficient to differentiate one system
+                  account from another.
+              konnect_managed:
+                type: boolean
+                description: The system account is managed by Konnect (true/false).
+      description: The request schema to create a system account.
+    UpdateSystemAccount:
+      content:
+        application/json:
+          schema:
+            x-speakeasy-entity: SystemAccount
+            type: object
+            properties:
+              name:
+                type: string
+                description: Name of the system account.
+              description:
+                type: string
+                description: Description of the system account.
+      description: The request schema for the update system account request.
+    UpdateSystemAccountAccessToken:
+      content:
+        application/json:
+          schema:
+            x-speakeasy-entity: SystemAccountAccessToken
+            type: object
+            properties:
+              name:
+                type: string
+                description: Name of the system account access token.
+    CreateSystemAccountAccessToken:
+      content:
+        application/json:
+          schema:
+            x-speakeasy-entity: SystemAccountAccessToken
+            type: object
+            properties:
+              name:
+                type: string
+              expires_at:
+                type: string
+                format: date-time
+      description: The request body to create a system account access token.
+    AddSystemAccountToTeam:
+      content:
+        application/json:
+          schema:
+            x-speakeasy-entity: SystemAccountTeam
+            type: object
+            properties:
+              id:
+                x-speakeasy-name-override: account_id
+                type: string
+                description: ID of the system account.
+                format: uuid
+      description: The request schema for adding a system account to a team.
 security:
   - personalAccessToken: []
   - systemAccountAccessToken: []
@@ -13784,6 +14498,7 @@ tags:
       - `ws`: At least one of `hosts`, `headers`, or `paths`
 
       - `wss`: At least one of `hosts`, `headers`, `paths`, or `snis`
+
 
 
 
@@ -13977,3 +14692,15 @@ tags:
 
       The plugins are synced to any Gateway Service that is currently linked or
       becomes linked to the Product Version.
+  - name: Auth Settings
+  - name: Invites
+  - name: Roles
+  - name: Team Membership
+  - name: Teams
+  - name: Users
+  - name: System Accounts
+  - name: System Accounts - Access Tokens
+  - name: System Accounts - Roles
+  - name: System Accounts - Team Membership
+  - name: Authentication
+  - name: Impersonation Settings
