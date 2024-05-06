@@ -4399,6 +4399,10 @@ components:
     PortalProductVersionDeprecated:
       type: boolean
       description: Whether the api product version on the portal is deprecated
+    NotifyDevelopers:
+      title: NotifyDevelopers
+      description: Whether to notify developers who are affected by this change
+      type: boolean
     PublishStatusFilter:
       title: PublishStatusFilter
       description: Filters on the given publish status
@@ -4483,6 +4487,8 @@ components:
           $ref: '#/components/schemas/AutoApproveRegistration'
         deprecated:
           $ref: '#/components/schemas/PortalProductVersionDeprecated'
+        notify_developers:
+          $ref: '#/components/schemas/NotifyDevelopers'
     UpdatePortalProductVersionPayload:
       title: UpdatePortalProductVersionPayload
       type: object
@@ -4499,6 +4505,8 @@ components:
           $ref: '#/components/schemas/AutoApproveRegistration'
         deprecated:
           $ref: '#/components/schemas/PortalProductVersionDeprecated'
+        notify_developers:
+          $ref: '#/components/schemas/NotifyDevelopers'
     PortalProductVersion:
       title: PortalProductVersion
       type: object

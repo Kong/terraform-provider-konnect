@@ -4930,6 +4930,10 @@ components:
     PortalProductVersionDeprecated:
       type: boolean
       description: Whether the api product version on the portal is deprecated
+    NotifyDevelopers:
+      title: NotifyDevelopers
+      description: Whether to notify developers who are affected by this change
+      type: boolean
     PublishStatusFilter:
       title: PublishStatusFilter
       description: Filters on the given publish status
@@ -5011,6 +5015,8 @@ components:
           $ref: '#/components/schemas/AutoApproveRegistration'
         deprecated:
           $ref: '#/components/schemas/PortalProductVersionDeprecated'
+        notify_developers:
+          $ref: '#/components/schemas/NotifyDevelopers'
     UpdatePortalProductVersionPayload:
       x-speakeasy-entity: PortalProductVersion
       title: UpdatePortalProductVersionPayload
@@ -5028,6 +5034,8 @@ components:
           $ref: '#/components/schemas/AutoApproveRegistration'
         deprecated:
           $ref: '#/components/schemas/PortalProductVersionDeprecated'
+        notify_developers:
+          $ref: '#/components/schemas/NotifyDevelopers'
     PortalProductVersion:
       x-speakeasy-entity: PortalProductVersion
       title: PortalProductVersion
