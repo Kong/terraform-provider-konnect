@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Always clear computed
+rm -rf computed
+
 if [[ ! -z "$1" ]]; then
     PRODUCTS=($1)
     for PRODUCT in "${PRODUCTS[@]}"; do

@@ -917,6 +917,53 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
+  /v2/portals/{portalId}:
+    parameters:
+      - $ref: '#/components/parameters/parameters-PortalId'
+    delete:
+      summary: Delete Portal
+      description: >-
+        Deletes a single portal, along with all related entities. Will not allow
+        deletion if there are developers registered to portal or if there are
+        portal product versions with application registration enabled, unless
+        force=true query param is included in the request.
+      operationId: delete-portal
+      tags:
+        - Portals
+      parameters:
+        - schema:
+            type: string
+            default: 'false'
+            enum:
+              - 'true'
+              - 'false'
+          name: force
+          in: query
+          description: >-
+            If true, delete specified portal and all related entities, even if
+            there are developers registered to portal or if there are portal
+            product versions with application registration enabled. If false, do
+            not allow deletion if there are developers registered to portal or
+            if there are portal product versions with application registration
+            enabled.          
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+              examples:
+                DeletePortalBadRequestExample1:
+                  $ref: '#/components/examples/DeletePortalBadRequestExample1'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
   /v2/portals/{portalId}/pages:
     get:
       summary: List Portal Pages
@@ -6489,6 +6536,21 @@ components:
             rule: max_length
             reason: value of "custom_client_domain" must not exceed 1024 characters
             source: body
+    DeletePortalBadRequestExample1:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: kong:trace:1433447772874964729
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: force
+            rule: required
+            reason: >-
+              This Portal has 30 developers, 10 gateway-linked API product
+              versions with active auth strategies. These must be individually
+              removed before deletion or the force=true query param can be used
+              to automatically delete associated entities.”
+            source: query
     UpdatePortalPageBadRequestExample1:
       value:
         status: 400
