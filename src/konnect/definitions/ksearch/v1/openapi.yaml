@@ -167,6 +167,7 @@ components:
           description: An optional hint at the contents and format of string types.
         items:
           type: object
+          nullable: true
           properties:
             type:
               type: string
