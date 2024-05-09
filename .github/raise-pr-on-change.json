@@ -153,8 +153,8 @@
       "dest": "api-specs/Konnect/v2/yaml/portal-management.yaml"
     },
     {
-      "src": "build/services/konnect/ksearch/v0/dev.yaml",
-      "dest": "api-specs/Konnect/v0/yaml/ksearch.yaml"
+      "src": "build/services/konnect/ksearch/v1/public.yaml",
+      "dest": "api-specs/Konnect/v1/yaml/ksearch.yaml"
     },
     {
       "src": "build/services/konnect/application-auth-strategies/v2/public.yaml",
