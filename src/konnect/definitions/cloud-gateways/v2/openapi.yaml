@@ -1262,7 +1262,7 @@ components:
         provider:
           $ref: '#/components/schemas/ProviderName'
         region:
-          $ref: '#/components/schemas/ProviderRegionName'
+          $ref: '#/components/schemas/ProviderRegionId'
         cloud_gateway_network_id:
           $ref: '#/components/schemas/NetworkId'
         autoscale:
@@ -1289,7 +1289,7 @@ components:
         provider:
           $ref: '#/components/schemas/ProviderName'
         region:
-          $ref: '#/components/schemas/ProviderRegionName'
+          $ref: '#/components/schemas/ProviderRegionId'
         autoscale:
           $ref: '#/components/schemas/ConfigurationDataPlaneGroupAutoscale'
         cloud_gateway_network_id:
@@ -1407,7 +1407,7 @@ components:
         provider:
           $ref: '#/components/schemas/ProviderName'
         region:
-          $ref: '#/components/schemas/ProviderRegionName'
+          $ref: '#/components/schemas/ProviderRegionId'
         cloud_gateway_network_id:
           $ref: '#/components/schemas/NetworkId'
         autoscale:
@@ -1538,7 +1538,7 @@ components:
         cloud_gateway_provider_account_id:
           $ref: '#/components/schemas/ProviderAccountId'
         region:
-          $ref: '#/components/schemas/ProviderRegionName'
+          $ref: '#/components/schemas/ProviderRegionId'
         availability_zones:
           $ref: '#/components/schemas/NetworkAvailabilityZones'
         cidr_block:
@@ -1605,7 +1605,7 @@ components:
         cloud_gateway_provider_account_id:
           $ref: '#/components/schemas/ProviderAccountId'
         region:
-          $ref: '#/components/schemas/ProviderRegionName'
+          $ref: '#/components/schemas/ProviderRegionId'
         availability_zones:
           $ref: '#/components/schemas/NetworkAvailabilityZones'
         cidr_block:
