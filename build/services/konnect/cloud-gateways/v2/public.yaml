@@ -66,9 +66,22 @@ paths:
       summary: Create Configuration
       description: >
         Creates a new configuration for a control-plane (restricted by permitted
-        control-plane deploy-data-plane-group
+        control-plane permissions for
 
-        action).
+        configurations). This request will replace any existing configuration
+        for the requested control_plane_id and
+
+        control_plane_geo by performing a diff. From this diff, new resources
+        detected in the requested configuration
+
+        will be added, resources not found in the request configuration but in
+        the previous will be deleted, and
+
+        resources found in both will be updated to the requested configuration.
+        Networks referenced in this request that
+
+        are in an offline state will automatically initialize (i.e. move to an
+        initializing state).
       operationId: create-configuration
       requestBody:
         required: true
@@ -2003,7 +2016,8 @@ components:
         - ssl
     CreateConfigurationRequest:
       title: CreateConfigurationRequest
-      description: Request schema for creating a configuration.
+      description: |
+        Request schema for creating a configuration.
       type: object
       additionalProperties: false
       properties:
