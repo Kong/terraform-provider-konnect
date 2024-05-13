@@ -21,6 +21,39 @@ function removeProperty(doc, fields) {
   });
 }
 
+
+function removeFromExamples(doc, node, key, isRef = false){
+  // If it's a pointer to a single example
+  if (isRef){
+    delete node.value[key];
+  }
+
+  // Handle $ref
+  if (node.example && node.example.$ref){
+    return withNodeByRef(doc, node.example.$ref, function (n){
+      removeFromExamples(doc, n, key, true);
+    });
+  }
+
+  // If it's an inline single example
+  if (node.example){
+    delete node.example[key];
+  }
+
+  // If it's an inline multiple example
+  if (node.examples) {
+    for (let e of Object.keys(node.examples)){
+      if (node.examples[e].$ref){
+        return withNodeByRef(doc, node.examples[e].$ref, function (n){
+          removeFromExamples(doc, n, key, true);
+        });
+      } else {
+        delete node.examples[e].value[key];
+      }
+    }
+  }
+}
+
 function annotateWithTarget(doc, targetIsValid, callback, targetKey) {
   return traverse(doc).forEach(function (node) {
     if (!this.node) {
@@ -52,17 +85,33 @@ function removeSchemasNotIn(doc, target) {
     }
 
     if (shouldRemove) {
-      removeReferencesTo(doc, t.path.join('/'));
+      removeReferencesTo(doc, t.path.join('/'), t.node);
     }
   });
 }
 
-function removeReferencesTo(doc, schemaPath) {
+function withNodeByRef(doc, schemaPath, callback) {
+  return traverse(doc).forEach(function () {
+    if (!this.node) {
+      return;
+    }
+    const path = this.path.join('/');
+    if (`#/${path}` == schemaPath) {
+      return callback(this.node);
+    }
+  });
+}
+
+function removeReferencesTo(doc, schemaPath, originalNode) {
   return traverse(doc).forEach(function () {
     if (!this.node) {
       return;
     }
     if (this.node['$ref'] && this.node['$ref'] == `#/${schemaPath}`) {
+      // Response Examples
+      if (this.path.slice(0,2).join('.') == 'components.responses'){
+        removeFromExamples(doc, this.parent.parent.parent.node, this.key);
+      }
       this.remove();
     }
   });
@@ -116,6 +165,18 @@ function forEachSchema(doc, callback) {
       return;
     }
     if (this.path.length !== 3) {
+      return;
+    }
+    callback(this);
+  });
+}
+
+function forEachResponse(doc, callback) {
+  return traverse(doc).forEach(function () {
+    if (!this.node || !this.path.join('.').includes("components.responses")) {
+      return;
+    }
+    if (this.path.length !== 6) {
       return;
     }
     callback(this);
@@ -228,6 +289,7 @@ function splitByVisibility(doc) {
     return !v.includes('x-internal') && !v.includes('x-unstable');
   }
 
+  // Handle property annotations in schemas
   forEachSchema(dev, function (t) {
     const a = t.node['x-property-annotations'];
     if (!a){ return; }
@@ -252,7 +314,41 @@ function splitByVisibility(doc) {
     const a = t.node['x-property-annotations'];
     if (!a){ return; }
     for (let k in a) {
-      if (propertyIsPublic(a[k])){
+      if (!propertyIsPublic(a[k])){
+        delete t.node.properties[k];
+      }
+    }
+  });
+
+  // Handle property annotations in responses
+  forEachResponse(dev, function (t) {
+    const a = t.node['x-property-annotations'];
+    if (!a){ return; }
+    for (let k in a) {
+      if (propertyIsInternal(a[k]) ){
+        removeFromExamples(dev, t.parent.node, k);
+        delete t.node.properties[k];
+      }
+    }
+  });
+
+  forEachResponse(internal, function (t) {
+    const a = t.node['x-property-annotations'];
+    if (!a){ return; }
+    for (let k in a) {
+      if (propertyIsDev(a[k])){
+        removeFromExamples(internal, t.parent.node, k);
+        delete t.node.properties[k];
+      }
+    }
+  });
+
+  forEachResponse(public, function (t) {
+    const a = t.node['x-property-annotations'];
+    if (!a){ return; }
+    for (let k in a) {
+      if (!propertyIsPublic(a[k])){
+        removeFromExamples(public, t.parent.node, k);
         delete t.node.properties[k];
       }
     }
