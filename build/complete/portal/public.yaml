@@ -1448,35 +1448,35 @@ components:
             provided as "Sentence case" for direct use in the UI.
           readOnly: true
     ForbiddenError:
-      type: object
-      properties:
-        status:
-          example: 403
-        title:
-          example: Forbidden
-        type:
-          example: https://httpstatuses.com/403
-        instance:
-          example: kong:trace:1234567890
-        detail:
-          example: Forbidden
       allOf:
         - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 403
+            title:
+              example: Forbidden
+            type:
+              example: https://httpstatuses.com/403
+            instance:
+              example: kong:trace:1234567890
+            detail:
+              example: Forbidden
     UnauthorizedError:
-      type: object
-      properties:
-        status:
-          example: 401
-        title:
-          example: Unauthorized
-        type:
-          example: https://httpstatuses.com/401
-        instance:
-          example: kong:trace:1234567890
-        detail:
-          example: Invalid credentials
       allOf:
         - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 401
+            title:
+              example: Unauthorized
+            type:
+              example: https://httpstatuses.com/401
+            instance:
+              example: kong:trace:1234567890
+            detail:
+              example: Invalid credentials
     AuthStrategyId:
       description: >-
         ID of the auth strategy to use for the application. If null or not
@@ -1977,89 +1977,79 @@ components:
           - $ref: '#/components/schemas/InvalidParameterChoiceItem'
           - $ref: '#/components/schemas/InvalidParameterDependentItem'
     BadRequestError:
-      type: object
-      required:
-        - invalid_parameters
-      properties:
-        status:
-          example: 400
-        title:
-          example: Bad Request
-        type:
-          example: https://httpstatuses.com/400
-        instance:
-          example: kong:trace:1234567890
-        detail:
-          example: Invalid request body
-        invalid_parameters:
-          $ref: '#/components/schemas/InvalidParameters'
       allOf:
         - $ref: '#/components/schemas/BaseError'
+        - type: object
+          required:
+            - invalid_parameters
+          properties:
+            invalid_parameters:
+              $ref: '#/components/schemas/InvalidParameters'
     NotFoundError:
-      type: object
-      properties:
-        status:
-          example: 404
-        title:
-          example: Not Found
-        type:
-          example: https://httpstatuses.com/404
-        instance:
-          example: kong:trace:1234567890
-        detail:
-          example: Not found
       allOf:
         - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 404
+            title:
+              example: Not Found
+            type:
+              example: https://httpstatuses.com/404
+            instance:
+              example: kong:trace:1234567890
+            detail:
+              example: Not found
     ConflictError:
-      type: object
-      properties:
-        status:
-          example: 409
-        title:
-          example: Conflict
-        type:
-          example: https://httpstatuses.com/409
-        instance:
-          example: kong:trace:1234567890
-        detail:
-          example: Conflict
       allOf:
         - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 409
+            title:
+              example: Conflict
+            type:
+              example: https://httpstatuses.com/409
+            instance:
+              example: kong:trace:1234567890
+            detail:
+              example: Conflict
     TooManyRequestsError:
-      type: object
-      properties:
-        status:
-          example: 429
-        title:
-          example: Too Many Requests
-        type:
-          example: https://httpstatuses.com/429
-        instance:
-          example: kong:trace:1234567890
-        detail:
-          example: Too Many Requests
       allOf:
         - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 429
+            title:
+              example: Too Many Requests
+            type:
+              example: https://httpstatuses.com/429
+            instance:
+              example: kong:trace:1234567890
+            detail:
+              example: Too Many Requests
     RefreshedGrantedScopes:
       description: List of granted scopes, directly updated from the IDP
       type: array
       items:
         type: string
     UnprocessableContentError:
-      type: object
-      properties:
-        status:
-          example: 422
-        title:
-          example: Unprocessable Content
-        type:
-          example: https://httpstatuses.com/422
-        instance:
-          example: kong:trace:1234567891
-        detail:
-          example: Unprocessable Content
       allOf:
         - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 422
+            title:
+              example: Unprocessable Content
+            type:
+              example: https://httpstatuses.com/422
+            instance:
+              example: kong:trace:1234567891
+            detail:
+              example: Unprocessable Content
     AuthenticateRequest:
       type: object
       additionalProperties: false
@@ -2139,20 +2129,20 @@ components:
           example: c8efd006-d8e1-4743-b91b-f163b9eae06a
           readOnly: true
     GoneError:
-      type: object
-      properties:
-        status:
-          example: 410
-        title:
-          example: Gone
-        type:
-          example: https://httpstatuses.com/410
-        instance:
-          example: kong:trace:1234567890
-        detail:
-          example: Gone
       allOf:
         - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 410
+            title:
+              example: Gone
+            type:
+              example: https://httpstatuses.com/410
+            instance:
+              example: kong:trace:1234567890
+            detail:
+              example: Gone
     Developer:
       title: Developer
       type: object
@@ -3166,9 +3156,6 @@ components:
             content:
               - type: text
                 text: Hello World
-    NotAvailableError:
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
     CreateRegistrationPayload:
       additionalProperties: false
       type: object
@@ -3672,7 +3659,7 @@ components:
       content:
         application/problem+json:
           schema:
-            $ref: '#/components/schemas/NotAvailableError'
+            $ref: '#/components/schemas/BaseError'
     CreateRegistration:
       description: Registration creation response.
       content:

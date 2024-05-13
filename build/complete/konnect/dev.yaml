@@ -2217,41 +2217,35 @@ components:
             provided as "Sentence case" for direct use in the UI.
           readOnly: true
     UnauthorizedError:
-      type: object
-      properties:
-        status:
-          example: 401
-          type: integer
-        title:
-          example: Unauthorized
-        type:
-          example: https://httpstatuses.com/401
-        instance:
-          example: kong:trace:1234567890
-        detail:
-          example: Invalid credentials
-        message:
-          type: string
       allOf:
         - $ref: '#/components/schemas/BaseError'
-      required:
-        - message
-        - status
+        - type: object
+          properties:
+            status:
+              example: 401
+            title:
+              example: Unauthorized
+            type:
+              example: https://httpstatuses.com/401
+            instance:
+              example: kong:trace:1234567890
+            detail:
+              example: Invalid credentials
     ForbiddenError:
-      type: object
-      properties:
-        status:
-          example: 403
-        title:
-          example: Forbidden
-        type:
-          example: https://httpstatuses.com/403
-        instance:
-          example: kong:trace:1234567890
-        detail:
-          example: Forbidden
       allOf:
         - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 403
+            title:
+              example: Forbidden
+            type:
+              example: https://httpstatuses.com/403
+            instance:
+              example: kong:trace:1234567890
+            detail:
+              example: Forbidden
     PaginatedMeta:
       type: object
       example:
@@ -2536,39 +2530,29 @@ components:
           - $ref: '#/components/schemas/InvalidParameterChoiceItem'
           - $ref: '#/components/schemas/InvalidParameterDependentItem'
     BadRequestError:
-      type: object
-      required:
-        - invalid_parameters
-      properties:
-        status:
-          example: 400
-        title:
-          example: Bad Request
-        type:
-          example: https://httpstatuses.com/400
-        instance:
-          example: kong:trace:1234567890
-        detail:
-          example: Invalid request body
-        invalid_parameters:
-          $ref: '#/components/schemas/InvalidParameters'
       allOf:
         - $ref: '#/components/schemas/BaseError'
+        - type: object
+          required:
+            - invalid_parameters
+          properties:
+            invalid_parameters:
+              $ref: '#/components/schemas/InvalidParameters'
     NotFoundError:
-      type: object
-      properties:
-        status:
-          example: 404
-        title:
-          example: Not Found
-        type:
-          example: https://httpstatuses.com/404
-        instance:
-          example: kong:trace:1234567890
-        detail:
-          example: Not found
       allOf:
         - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 404
+            title:
+              example: Not Found
+            type:
+              example: https://httpstatuses.com/404
+            instance:
+              example: kong:trace:1234567890
+            detail:
+              example: Not found
     PublishStatus:
       description: document publish status
       type: string
@@ -2673,20 +2657,20 @@ components:
             - children
         - $ref: '#/components/schemas/EntityTimeFields'
     ConflictError:
-      type: object
-      properties:
-        status:
-          example: 409
-        title:
-          example: Conflict
-        type:
-          example: https://httpstatuses.com/409
-        instance:
-          example: kong:trace:1234567890
-        detail:
-          example: Conflict
       allOf:
         - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 409
+            title:
+              example: Conflict
+            type:
+              example: https://httpstatuses.com/409
+            instance:
+              example: kong:trace:1234567890
+            detail:
+              example: Conflict
     UUID:
       type: string
       format: uuid
@@ -6098,9 +6082,6 @@ components:
           table_header: '#/components/schemas/ServicehubTableHeaderBlock'
           table_cell: '#/components/schemas/ServicehubTableCellBlock'
           table_row: '#/components/schemas/ServicehubTableRowBlock'
-    InternalError:
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
     LabelsFieldFilter:
       allOf:
         - title: LabelsFieldFilter
@@ -6114,9 +6095,6 @@ components:
               - `filter[labels.env]=dev`
               - `filter[labels.env][ocontains]=dev,test`
         - $ref: '#/components/schemas/StringFieldFilter'
-    NotAvailableError:
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
     StringFieldFilterExact:
       title: StringFieldFilterExact
       description: Filters on the given string field value by exact match.
@@ -7981,13 +7959,13 @@ components:
       content:
         application/problem+json:
           schema:
-            $ref: '#/components/schemas/InternalError'
+            $ref: '#/components/schemas/BaseError'
     NotAvailable:
       description: Service not available
       content:
         application/problem+json:
           schema:
-            $ref: '#/components/schemas/NotAvailableError'
+            $ref: '#/components/schemas/BaseError'
   parameters:
     PageSize:
       name: page[size]

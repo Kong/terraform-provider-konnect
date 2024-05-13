@@ -232,7 +232,7 @@ components:
                                 message: No API key found in request
                                 status: 401
                     schema:
-                        $ref: '#/components/schemas/UnauthorizedError'
+                        $ref: '#/components/schemas/GatewayUnauthorizedError'
             description: Unauthorized
     schemas:
         ACL:
@@ -1897,6 +1897,16 @@ components:
                     type: string
             required:
                 - config
+        GatewayUnauthorizedError:
+            properties:
+                message:
+                    type: string
+                status:
+                    type: integer
+            required:
+                - message
+                - status
+            type: object
         HMACAuth:
             allOf:
                 - example:
@@ -5475,16 +5485,6 @@ components:
                   type: object
                   x-speakeasy-entity: GatewayTarget
                 - $ref: '#/components/schemas/CreateTarget'
-        UnauthorizedError:
-            properties:
-                message:
-                    type: string
-                status:
-                    type: integer
-            required:
-                - message
-                - status
-            type: object
         Upstream:
             allOf:
                 - example:
@@ -7159,7 +7159,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ACLPlugin'
-                    description: ACL plugin
+                    description: Created ACL plugin
                 "401":
                     $ref: '#/components/responses/HTTP401Error'
             summary: Create a ACL plugin
@@ -7183,7 +7183,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/AIPromptDecoratorPlugin'
-                    description: AIPromptDecorator plugin
+                    description: Created AIPromptDecorator plugin
                 "401":
                     $ref: '#/components/responses/HTTP401Error'
             summary: Create a AIPromptDecorator plugin
@@ -7207,7 +7207,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/AIPromptGuardPlugin'
-                    description: AIPromptGuard plugin
+                    description: Created AIPromptGuard plugin
                 "401":
                     $ref: '#/components/responses/HTTP401Error'
             summary: Create a AIPromptGuard plugin
@@ -7231,7 +7231,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/AIPromptTemplatePlugin'
-                    description: AIPromptTemplate plugin
+                    description: Created AIPromptTemplate plugin
                 "401":
                     $ref: '#/components/responses/HTTP401Error'
             summary: Create a AIPromptTemplate plugin
@@ -7255,7 +7255,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/AIProxyPlugin'
-                    description: AIProxy plugin
+                    description: Created AIProxy plugin
                 "401":
                     $ref: '#/components/responses/HTTP401Error'
             summary: Create a AIProxy plugin
@@ -7279,7 +7279,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/AWSLambdaPlugin'
-                    description: AWSLambda plugin
+                    description: Created AWSLambda plugin
                 "401":
                     $ref: '#/components/responses/HTTP401Error'
             summary: Create a AWSLambda plugin
@@ -7303,7 +7303,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/BasicAuthPlugin'
-                    description: BasicAuth plugin
+                    description: Created BasicAuth plugin
                 "401":
                     $ref: '#/components/responses/HTTP401Error'
             summary: Create a BasicAuth plugin
@@ -7327,7 +7327,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/CORSPlugin'
-                    description: CORS plugin
+                    description: Created CORS plugin
                 "401":
                     $ref: '#/components/responses/HTTP401Error'
             summary: Create a CORS plugin
@@ -7351,7 +7351,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/CorrelationIdPlugin'
-                    description: CorrelationId plugin
+                    description: Created CorrelationId plugin
                 "401":
                     $ref: '#/components/responses/HTTP401Error'
             summary: Create a CorrelationId plugin
@@ -7375,7 +7375,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/FileLogPlugin'
-                    description: FileLog plugin
+                    description: Created FileLog plugin
                 "401":
                     $ref: '#/components/responses/HTTP401Error'
             summary: Create a FileLog plugin
@@ -7399,7 +7399,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/IpRestrictionPlugin'
-                    description: IpRestriction plugin
+                    description: Created IpRestriction plugin
                 "401":
                     $ref: '#/components/responses/HTTP401Error'
             summary: Create a IpRestriction plugin
@@ -7423,7 +7423,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/JQPlugin'
-                    description: JQ plugin
+                    description: Created JQ plugin
                 "401":
                     $ref: '#/components/responses/HTTP401Error'
             summary: Create a JQ plugin
@@ -7447,7 +7447,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/JWTPlugin'
-                    description: JWT plugin
+                    description: Created JWT plugin
                 "401":
                     $ref: '#/components/responses/HTTP401Error'
             summary: Create a JWT plugin
@@ -7471,7 +7471,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/JWTSignerPlugin'
-                    description: JWTSigner plugin
+                    description: Created JWTSigner plugin
                 "401":
                     $ref: '#/components/responses/HTTP401Error'
             summary: Create a JWTSigner plugin
@@ -7495,7 +7495,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/KeyAuthPlugin'
-                    description: KeyAuth plugin
+                    description: Created KeyAuth plugin
                 "401":
                     $ref: '#/components/responses/HTTP401Error'
             summary: Create a KeyAuth plugin
@@ -7519,7 +7519,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Oauth2Plugin'
-                    description: Oauth2 plugin
+                    description: Created Oauth2 plugin
                 "401":
                     $ref: '#/components/responses/HTTP401Error'
             summary: Create a Oauth2 plugin
@@ -7543,7 +7543,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/OpenidConnectPlugin'
-                    description: OpenidConnect plugin
+                    description: Created OpenidConnect plugin
                 "401":
                     $ref: '#/components/responses/HTTP401Error'
             summary: Create a OpenidConnect plugin
@@ -7567,7 +7567,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/OpentelemetryPlugin'
-                    description: Opentelemetry plugin
+                    description: Created Opentelemetry plugin
                 "401":
                     $ref: '#/components/responses/HTTP401Error'
             summary: Create a Opentelemetry plugin
@@ -7591,7 +7591,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/PreFunctionPlugin'
-                    description: PreFunction plugin
+                    description: Created PreFunction plugin
                 "401":
                     $ref: '#/components/responses/HTTP401Error'
             summary: Create a PreFunction plugin
@@ -7615,7 +7615,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/PrometheusPlugin'
-                    description: Prometheus plugin
+                    description: Created Prometheus plugin
                 "401":
                     $ref: '#/components/responses/HTTP401Error'
             summary: Create a Prometheus plugin
@@ -7639,7 +7639,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ProxyCachePlugin'
-                    description: ProxyCache plugin
+                    description: Created ProxyCache plugin
                 "401":
                     $ref: '#/components/responses/HTTP401Error'
             summary: Create a ProxyCache plugin
@@ -7663,7 +7663,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/RateLimitingPlugin'
-                    description: RateLimiting plugin
+                    description: Created RateLimiting plugin
                 "401":
                     $ref: '#/components/responses/HTTP401Error'
             summary: Create a RateLimiting plugin
@@ -7687,7 +7687,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/RateLimitingAdvancedPlugin'
-                    description: RateLimitingAdvanced plugin
+                    description: Created RateLimitingAdvanced plugin
                 "401":
                     $ref: '#/components/responses/HTTP401Error'
             summary: Create a RateLimitingAdvanced plugin
@@ -7711,7 +7711,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/RequestTerminationPlugin'
-                    description: RequestTermination plugin
+                    description: Created RequestTermination plugin
                 "401":
                     $ref: '#/components/responses/HTTP401Error'
             summary: Create a RequestTermination plugin
@@ -7735,7 +7735,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/RequestTransformerPlugin'
-                    description: RequestTransformer plugin
+                    description: Created RequestTransformer plugin
                 "401":
                     $ref: '#/components/responses/HTTP401Error'
             summary: Create a RequestTransformer plugin
@@ -7759,7 +7759,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/RequestTransformerAdvancedPlugin'
-                    description: RequestTransformerAdvanced plugin
+                    description: Created RequestTransformerAdvanced plugin
                 "401":
                     $ref: '#/components/responses/HTTP401Error'
             summary: Create a RequestTransformerAdvanced plugin
@@ -7783,7 +7783,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ResponseTransformerPlugin'
-                    description: ResponseTransformer plugin
+                    description: Created ResponseTransformer plugin
                 "401":
                     $ref: '#/components/responses/HTTP401Error'
             summary: Create a ResponseTransformer plugin
@@ -7807,7 +7807,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ResponseTransformerAdvancedPlugin'
-                    description: ResponseTransformerAdvanced plugin
+                    description: Created ResponseTransformerAdvanced plugin
                 "401":
                     $ref: '#/components/responses/HTTP401Error'
             summary: Create a ResponseTransformerAdvanced plugin
@@ -7831,7 +7831,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/SamlPlugin'
-                    description: Saml plugin
+                    description: Created Saml plugin
                 "401":
                     $ref: '#/components/responses/HTTP401Error'
             summary: Create a Saml plugin

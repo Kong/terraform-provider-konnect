@@ -1,9 +1,22 @@
 extends:
   - "spectral:oas"
+functionsDir: "./spectral-rules"
+functions:
+  - siblings
 rules:
   # ---------------------------------------------------------------------------
   # Schema rules
   # ---------------------------------------------------------------------------
+
+  no-siblings:
+    severity: error
+    given:
+      - $..[?(@property === 'allOf')]
+      - $..[?(@property === 'oneOf')]
+      - $..[?(@property === 'anyOf')]
+    then:
+      function: siblings
+
   info-version-semver:
     severity: error
     recommended: true
@@ -246,33 +259,32 @@ rules:
   errors-require-type-aip-193:
     severity: error
     given:
-      - $..401.content.*.schema
-      - $..402.content.*.schema
-      - $..403.content.*.schema
-      - $..404.content.*.schema
-      - $..405.content.*.schema
-      - $..406.content.*.schema
-      - $..407.content.*.schema
-      - $..408.content.*.schema
-      - $..409.content.*.schema
-      - $..410.content.*.schema
-      - $..411.content.*.schema
-      - $..412.content.*.schema
-      - $..413.content.*.schema
-      - $..414.content.*.schema
-      - $..415.content.*.schema
-      - $..416.content.*.schema
-      - $..417.content.*.schema
-      - $..418.content.*.schema
-      - $..422.content.*.schema
-      - $..425.content.*.schema
-      - $..426.content.*.schema
-      - $..428.content.*.schema
-      - $..429.content.*.schema
-      - $..431.content.*.schema
-      - $..451.content.*.schema
+      - $..401.content.*.schema..properties
+      - $..402.content.*.schema..properties
+      - $..403.content.*.schema..properties
+      - $..404.content.*.schema..properties
+      - $..405.content.*.schema..properties
+      - $..406.content.*.schema..properties
+      - $..407.content.*.schema..properties
+      - $..408.content.*.schema..properties
+      - $..409.content.*.schema..properties
+      - $..410.content.*.schema..properties
+      - $..411.content.*.schema..properties
+      - $..412.content.*.schema..properties
+      - $..413.content.*.schema..properties
+      - $..414.content.*.schema..properties
+      - $..415.content.*.schema..properties
+      - $..416.content.*.schema..properties
+      - $..417.content.*.schema..properties
+      - $..418.content.*.schema..properties
+      - $..422.content.*.schema..properties
+      - $..425.content.*.schema..properties
+      - $..426.content.*.schema..properties
+      - $..428.content.*.schema..properties
+      - $..429.content.*.schema..properties
+      - $..431.content.*.schema..properties
+      - $..451.content.*.schema..properties
     then:
-      field: properties
       function: schema
       functionOptions:
         allErrors: true
@@ -287,9 +299,10 @@ rules:
   validation-error-invalid-parameters-aip-193:
     severity: error
     given:
-      - $..400.content.*.schema
+      # The weird selector here is due to Spectral not supporting the [1:] slice selector
+      - $..400.content.*.schema.allOf[1,2,3,4,5,6,7,8,9].properties
+      - $..400.content.*.schema.properties
     then:
-      field: properties
       function: schema
       functionOptions:
         allErrors: true
