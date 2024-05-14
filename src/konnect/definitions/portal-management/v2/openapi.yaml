@@ -365,7 +365,6 @@ paths:
       tags:
         - Portal Product Versions
     patch:
-      x-speakeasy-entity-operation: PortalProductVersion#create,update
       summary: Update a portal product version
       operationId: update-portal-product-version
       description: Update a portal product version
@@ -385,6 +384,7 @@ paths:
       tags:
         - Portal Product Versions
     put:
+      x-speakeasy-entity-operation: PortalProductVersion#create,update
       summary: Replace a portal product version
       operationId: replace-portal-product-version
       description: Replace a portal product version
