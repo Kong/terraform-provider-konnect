@@ -36,7 +36,7 @@ type DeleteCaCertificateResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *DeleteCaCertificateResponse) GetContentType() string {
@@ -60,9 +60,9 @@ func (o *DeleteCaCertificateResponse) GetRawResponse() *http.Response {
 	return o.RawResponse
 }
 
-func (o *DeleteCaCertificateResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *DeleteCaCertificateResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

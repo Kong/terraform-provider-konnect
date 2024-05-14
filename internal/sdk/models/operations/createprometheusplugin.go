@@ -34,10 +34,10 @@ type CreatePrometheusPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Prometheus plugin
+	// Created Prometheus plugin
 	PrometheusPlugin *shared.PrometheusPlugin
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *CreatePrometheusPluginResponse) GetContentType() string {
@@ -68,9 +68,9 @@ func (o *CreatePrometheusPluginResponse) GetPrometheusPlugin() *shared.Prometheu
 	return o.PrometheusPlugin
 }
 
-func (o *CreatePrometheusPluginResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *CreatePrometheusPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

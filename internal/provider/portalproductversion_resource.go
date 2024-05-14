@@ -44,6 +44,7 @@ type PortalProductVersionResourceModel struct {
 	CreatedAt                      types.String           `tfsdk:"created_at"`
 	Deprecated                     types.Bool             `tfsdk:"deprecated"`
 	ID                             types.String           `tfsdk:"id"`
+	NotifyDevelopers               types.Bool             `tfsdk:"notify_developers"`
 	PortalID                       types.String           `tfsdk:"portal_id"`
 	ProductVersionID               types.String           `tfsdk:"product_version_id"`
 	PublishStatus                  types.String           `tfsdk:"publish_status"`
@@ -59,8 +60,7 @@ func (r *PortalProductVersionResource) Schema(ctx context.Context, req resource.
 		MarkdownDescription: "PortalProductVersion Resource",
 		Attributes: map[string]schema.Attribute{
 			"application_registration_enabled": schema.BoolAttribute{
-				Computed:    true,
-				Optional:    true,
+				Required:    true,
 				Description: `Whether the application registration on this portal for the api product version is enabled`,
 			},
 			"auth_strategies": schema.ListNestedAttribute{
@@ -137,7 +137,7 @@ func (r *PortalProductVersionResource) Schema(ctx context.Context, req resource.
 				},
 			},
 			"auth_strategy_ids": schema.ListAttribute{
-				Optional:    true,
+				Required:    true,
 				ElementType: types.StringType,
 				Description: `A list of authentication strategy IDs`,
 				Validators: []validator.List{
@@ -145,8 +145,7 @@ func (r *PortalProductVersionResource) Schema(ctx context.Context, req resource.
 				},
 			},
 			"auto_approve_registration": schema.BoolAttribute{
-				Computed:    true,
-				Optional:    true,
+				Required:    true,
 				Description: `Whether the application registration auto approval on this portal for the api product version is enabled`,
 			},
 			"created_at": schema.StringAttribute{
@@ -157,13 +156,16 @@ func (r *PortalProductVersionResource) Schema(ctx context.Context, req resource.
 				},
 			},
 			"deprecated": schema.BoolAttribute{
-				Computed:    true,
-				Optional:    true,
+				Required:    true,
 				Description: `Whether the api product version on the portal is deprecated`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
 				Description: `Contains a unique identifier used by the API for this resource.`,
+			},
+			"notify_developers": schema.BoolAttribute{
+				Optional:    true,
+				Description: `Whether to notify developers who are affected by this change`,
 			},
 			"portal_id": schema.StringAttribute{
 				Required:    true,
@@ -174,8 +176,7 @@ func (r *PortalProductVersionResource) Schema(ctx context.Context, req resource.
 				Description: `API product version identifier`,
 			},
 			"publish_status": schema.StringAttribute{
-				Computed:    true,
-				Optional:    true,
+				Required:    true,
 				Description: `Publication status of the API product version on the portal. must be one of ["published", "unpublished"]`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
@@ -235,13 +236,13 @@ func (r *PortalProductVersionResource) Create(ctx context.Context, req resource.
 
 	productVersionID := data.ProductVersionID.ValueString()
 	portalID := data.PortalID.ValueString()
-	updatePortalProductVersionPayload := *data.ToSharedUpdatePortalProductVersionPayload()
-	request := operations.UpdatePortalProductVersionRequest{
-		ProductVersionID:                  productVersionID,
-		PortalID:                          portalID,
-		UpdatePortalProductVersionPayload: updatePortalProductVersionPayload,
+	replacePortalProductVersionPayload := *data.ToSharedReplacePortalProductVersionPayload()
+	request := operations.ReplacePortalProductVersionRequest{
+		ProductVersionID:                   productVersionID,
+		PortalID:                           portalID,
+		ReplacePortalProductVersionPayload: replacePortalProductVersionPayload,
 	}
-	res, err := r.client.PortalProductVersions.UpdatePortalProductVersion(ctx, request)
+	res, err := r.client.PortalProductVersions.ReplacePortalProductVersion(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -366,13 +367,13 @@ func (r *PortalProductVersionResource) Update(ctx context.Context, req resource.
 
 	productVersionID := data.ProductVersionID.ValueString()
 	portalID := data.PortalID.ValueString()
-	updatePortalProductVersionPayload := *data.ToSharedUpdatePortalProductVersionPayload()
-	request := operations.UpdatePortalProductVersionRequest{
-		ProductVersionID:                  productVersionID,
-		PortalID:                          portalID,
-		UpdatePortalProductVersionPayload: updatePortalProductVersionPayload,
+	replacePortalProductVersionPayload := *data.ToSharedReplacePortalProductVersionPayload()
+	request := operations.ReplacePortalProductVersionRequest{
+		ProductVersionID:                   productVersionID,
+		PortalID:                           portalID,
+		ReplacePortalProductVersionPayload: replacePortalProductVersionPayload,
 	}
-	res, err := r.client.PortalProductVersions.UpdatePortalProductVersion(ctx, request)
+	res, err := r.client.PortalProductVersions.ReplacePortalProductVersion(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

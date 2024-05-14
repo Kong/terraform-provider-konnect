@@ -38,7 +38,7 @@ type CreateCaCertificateResponse struct {
 	// Successfully created CA Certificate
 	CACertificate *shared.CACertificate
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *CreateCaCertificateResponse) GetContentType() string {
@@ -69,9 +69,9 @@ func (o *CreateCaCertificateResponse) GetCACertificate() *shared.CACertificate {
 	return o.CACertificate
 }
 
-func (o *CreateCaCertificateResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *CreateCaCertificateResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

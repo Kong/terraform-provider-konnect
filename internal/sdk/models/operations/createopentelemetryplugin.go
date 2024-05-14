@@ -34,10 +34,10 @@ type CreateOpentelemetryPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Opentelemetry plugin
+	// Created Opentelemetry plugin
 	OpentelemetryPlugin *shared.OpentelemetryPlugin
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *CreateOpentelemetryPluginResponse) GetContentType() string {
@@ -68,9 +68,9 @@ func (o *CreateOpentelemetryPluginResponse) GetOpentelemetryPlugin() *shared.Ope
 	return o.OpentelemetryPlugin
 }
 
-func (o *CreateOpentelemetryPluginResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *CreateOpentelemetryPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

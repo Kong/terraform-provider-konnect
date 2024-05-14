@@ -46,7 +46,7 @@ type UpdateKeyauthPluginResponse struct {
 	// KeyAuth plugin
 	KeyAuthPlugin *shared.KeyAuthPlugin
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *UpdateKeyauthPluginResponse) GetContentType() string {
@@ -77,9 +77,9 @@ func (o *UpdateKeyauthPluginResponse) GetKeyAuthPlugin() *shared.KeyAuthPlugin {
 	return o.KeyAuthPlugin
 }
 
-func (o *UpdateKeyauthPluginResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *UpdateKeyauthPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

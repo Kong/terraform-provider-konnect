@@ -38,7 +38,7 @@ type GetCorrelationidPluginResponse struct {
 	// CorrelationId plugin
 	CorrelationIDPlugin *shared.CorrelationIDPlugin
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *GetCorrelationidPluginResponse) GetContentType() string {
@@ -69,9 +69,9 @@ func (o *GetCorrelationidPluginResponse) GetCorrelationIDPlugin() *shared.Correl
 	return o.CorrelationIDPlugin
 }
 
-func (o *GetCorrelationidPluginResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *GetCorrelationidPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

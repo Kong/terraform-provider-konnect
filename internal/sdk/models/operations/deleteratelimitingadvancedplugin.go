@@ -36,7 +36,7 @@ type DeleteRatelimitingadvancedPluginResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *DeleteRatelimitingadvancedPluginResponse) GetContentType() string {
@@ -60,9 +60,9 @@ func (o *DeleteRatelimitingadvancedPluginResponse) GetRawResponse() *http.Respon
 	return o.RawResponse
 }
 
-func (o *DeleteRatelimitingadvancedPluginResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *DeleteRatelimitingadvancedPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

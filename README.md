@@ -16,6 +16,13 @@ This provider can manage the following resources:
   - Control Plane Group Memberships
 - Gateway Data Plane Client Certificates
 
+### Cloud Gateways
+
+- Cloud Gateway Configuration
+- Custom Domain
+- Network
+- Transit Gateway
+
 ### Kong Gateway Entities
 
 - Service

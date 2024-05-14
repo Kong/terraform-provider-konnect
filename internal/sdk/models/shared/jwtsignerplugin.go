@@ -381,7 +381,7 @@ type JWTSignerPluginConfig struct {
 	// If you want to add or subtract (using a negative value) expiry time (in seconds) of the original access token, you can specify a value that is added to the original access token's `exp` claim.
 	AccessTokenUpstreamLeeway *float64 `default:"0" json:"access_token_upstream_leeway"`
 	// Add customized claims if they are not present yet.
-	AddClaims map[string]interface{} `json:"add_claims,omitempty"`
+	AddClaims map[string]any `json:"add_claims,omitempty"`
 	// Whether to cache access token introspection results.
 	CacheAccessTokenIntrospection *bool `default:"true" json:"cache_access_token_introspection"`
 	// Whether to cache channel token introspection results.
@@ -445,7 +445,7 @@ type JWTSignerPluginConfig struct {
 	// When authentication or authorization fails, or there is an unexpected error, the plugin sends an `WWW-Authenticate` header with the `realm` attribute value.
 	Realm *string `json:"realm,omitempty"`
 	// Set customized claims. If a claim is already present, it will be overwritten.
-	SetClaims map[string]interface{} `json:"set_claims,omitempty"`
+	SetClaims map[string]any `json:"set_claims,omitempty"`
 	// Use this parameter to enable and disable further checks on a payload before the new token is signed. If you set this to `true`, the expiry or scopes are not checked on a payload.
 	TrustAccessTokenIntrospection *bool `default:"true" json:"trust_access_token_introspection"`
 	// Providing an opaque channel token for plugin introspection, and verifying expiry and scopes on introspection results may make further payload checks unnecessary before the plugin signs a new token. This also applies when using a JWT token with introspection JSON as per config.channel_token_introspection_jwt_claim. Use this parameter to manage additional payload checks before signing a new token. With true (default), payload's expiry or scopes aren't checked.
@@ -650,7 +650,7 @@ func (o *JWTSignerPluginConfig) GetAccessTokenUpstreamLeeway() *float64 {
 	return o.AccessTokenUpstreamLeeway
 }
 
-func (o *JWTSignerPluginConfig) GetAddClaims() map[string]interface{} {
+func (o *JWTSignerPluginConfig) GetAddClaims() map[string]any {
 	if o == nil {
 		return nil
 	}
@@ -874,7 +874,7 @@ func (o *JWTSignerPluginConfig) GetRealm() *string {
 	return o.Realm
 }
 
-func (o *JWTSignerPluginConfig) GetSetClaims() map[string]interface{} {
+func (o *JWTSignerPluginConfig) GetSetClaims() map[string]any {
 	if o == nil {
 		return nil
 	}

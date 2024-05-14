@@ -36,7 +36,7 @@ type DeleteServiceResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *DeleteServiceResponse) GetContentType() string {
@@ -60,9 +60,9 @@ func (o *DeleteServiceResponse) GetRawResponse() *http.Response {
 	return o.RawResponse
 }
 
-func (o *DeleteServiceResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *DeleteServiceResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

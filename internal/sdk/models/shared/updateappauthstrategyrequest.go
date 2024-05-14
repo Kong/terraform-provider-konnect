@@ -73,14 +73,14 @@ func CreateConfigsTwo(two Two) Configs {
 
 func (u *Configs) UnmarshalJSON(data []byte) error {
 
-	one := One{}
+	var one One = One{}
 	if err := utils.UnmarshalJSON(data, &one, "", true, true); err == nil {
 		u.One = &one
 		u.Type = ConfigsTypeOne
 		return nil
 	}
 
-	two := Two{}
+	var two Two = Two{}
 	if err := utils.UnmarshalJSON(data, &two, "", true, true); err == nil {
 		u.Two = &two
 		u.Type = ConfigsTypeTwo

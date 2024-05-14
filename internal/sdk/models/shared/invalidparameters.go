@@ -10,15 +10,26 @@ import (
 type InvalidParametersType string
 
 const (
+	InvalidParametersTypeInvalidParameterStandard      InvalidParametersType = "InvalidParameterStandard"
 	InvalidParametersTypeInvalidParameterChoiceItem    InvalidParametersType = "InvalidParameterChoiceItem"
 	InvalidParametersTypeInvalidParameterDependentItem InvalidParametersType = "InvalidParameterDependentItem"
 )
 
 type InvalidParameters struct {
+	InvalidParameterStandard      *InvalidParameterStandard
 	InvalidParameterChoiceItem    *InvalidParameterChoiceItem
 	InvalidParameterDependentItem *InvalidParameterDependentItem
 
 	Type InvalidParametersType
+}
+
+func CreateInvalidParametersInvalidParameterStandard(invalidParameterStandard InvalidParameterStandard) InvalidParameters {
+	typ := InvalidParametersTypeInvalidParameterStandard
+
+	return InvalidParameters{
+		InvalidParameterStandard: &invalidParameterStandard,
+		Type:                     typ,
+	}
 }
 
 func CreateInvalidParametersInvalidParameterChoiceItem(invalidParameterChoiceItem InvalidParameterChoiceItem) InvalidParameters {
@@ -41,14 +52,21 @@ func CreateInvalidParametersInvalidParameterDependentItem(invalidParameterDepend
 
 func (u *InvalidParameters) UnmarshalJSON(data []byte) error {
 
-	invalidParameterChoiceItem := InvalidParameterChoiceItem{}
+	var invalidParameterStandard InvalidParameterStandard = InvalidParameterStandard{}
+	if err := utils.UnmarshalJSON(data, &invalidParameterStandard, "", true, true); err == nil {
+		u.InvalidParameterStandard = &invalidParameterStandard
+		u.Type = InvalidParametersTypeInvalidParameterStandard
+		return nil
+	}
+
+	var invalidParameterChoiceItem InvalidParameterChoiceItem = InvalidParameterChoiceItem{}
 	if err := utils.UnmarshalJSON(data, &invalidParameterChoiceItem, "", true, true); err == nil {
 		u.InvalidParameterChoiceItem = &invalidParameterChoiceItem
 		u.Type = InvalidParametersTypeInvalidParameterChoiceItem
 		return nil
 	}
 
-	invalidParameterDependentItem := InvalidParameterDependentItem{}
+	var invalidParameterDependentItem InvalidParameterDependentItem = InvalidParameterDependentItem{}
 	if err := utils.UnmarshalJSON(data, &invalidParameterDependentItem, "", true, true); err == nil {
 		u.InvalidParameterDependentItem = &invalidParameterDependentItem
 		u.Type = InvalidParametersTypeInvalidParameterDependentItem
@@ -59,6 +77,10 @@ func (u *InvalidParameters) UnmarshalJSON(data []byte) error {
 }
 
 func (u InvalidParameters) MarshalJSON() ([]byte, error) {
+	if u.InvalidParameterStandard != nil {
+		return utils.MarshalJSON(u.InvalidParameterStandard, "", true)
+	}
+
 	if u.InvalidParameterChoiceItem != nil {
 		return utils.MarshalJSON(u.InvalidParameterChoiceItem, "", true)
 	}

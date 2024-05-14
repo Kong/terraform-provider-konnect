@@ -117,7 +117,7 @@ func (a AppAuthStrategyOpenIDConnectResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AppAuthStrategyOpenIDConnectResponse) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, true); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
 		return err
 	}
 	return nil
@@ -292,7 +292,7 @@ func (a AppAuthStrategyKeyAuthResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AppAuthStrategyKeyAuthResponse) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, true); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
 		return err
 	}
 	return nil

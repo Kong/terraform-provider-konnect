@@ -38,7 +38,7 @@ type GetConsumerGroupResponse struct {
 	// Successfully fetched Consumer Group
 	ConsumerGroup *shared.ConsumerGroup
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *GetConsumerGroupResponse) GetContentType() string {
@@ -69,9 +69,9 @@ func (o *GetConsumerGroupResponse) GetConsumerGroup() *shared.ConsumerGroup {
 	return o.ConsumerGroup
 }
 
-func (o *GetConsumerGroupResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *GetConsumerGroupResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

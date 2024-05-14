@@ -38,7 +38,7 @@ type GetSniResponse struct {
 	// Successfully fetched SNI
 	Sni *shared.Sni
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *GetSniResponse) GetContentType() string {
@@ -69,9 +69,9 @@ func (o *GetSniResponse) GetSni() *shared.Sni {
 	return o.Sni
 }
 
-func (o *GetSniResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *GetSniResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

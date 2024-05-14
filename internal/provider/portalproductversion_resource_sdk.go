@@ -9,41 +9,28 @@ import (
 	"time"
 )
 
-func (r *PortalProductVersionResourceModel) ToSharedUpdatePortalProductVersionPayload() *shared.UpdatePortalProductVersionPayload {
-	publishStatus := new(shared.PortalProductVersionPublishStatus)
-	if !r.PublishStatus.IsUnknown() && !r.PublishStatus.IsNull() {
-		*publishStatus = shared.PortalProductVersionPublishStatus(r.PublishStatus.ValueString())
-	} else {
-		publishStatus = nil
-	}
+func (r *PortalProductVersionResourceModel) ToSharedReplacePortalProductVersionPayload() *shared.ReplacePortalProductVersionPayload {
+	publishStatus := shared.PortalProductVersionPublishStatus(r.PublishStatus.ValueString())
 	var authStrategyIds []string = []string{}
 	for _, authStrategyIdsItem := range r.AuthStrategyIds {
 		authStrategyIds = append(authStrategyIds, authStrategyIdsItem.ValueString())
 	}
-	applicationRegistrationEnabled := new(bool)
-	if !r.ApplicationRegistrationEnabled.IsUnknown() && !r.ApplicationRegistrationEnabled.IsNull() {
-		*applicationRegistrationEnabled = r.ApplicationRegistrationEnabled.ValueBool()
+	applicationRegistrationEnabled := r.ApplicationRegistrationEnabled.ValueBool()
+	autoApproveRegistration := r.AutoApproveRegistration.ValueBool()
+	deprecated := r.Deprecated.ValueBool()
+	notifyDevelopers := new(bool)
+	if !r.NotifyDevelopers.IsUnknown() && !r.NotifyDevelopers.IsNull() {
+		*notifyDevelopers = r.NotifyDevelopers.ValueBool()
 	} else {
-		applicationRegistrationEnabled = nil
+		notifyDevelopers = nil
 	}
-	autoApproveRegistration := new(bool)
-	if !r.AutoApproveRegistration.IsUnknown() && !r.AutoApproveRegistration.IsNull() {
-		*autoApproveRegistration = r.AutoApproveRegistration.ValueBool()
-	} else {
-		autoApproveRegistration = nil
-	}
-	deprecated := new(bool)
-	if !r.Deprecated.IsUnknown() && !r.Deprecated.IsNull() {
-		*deprecated = r.Deprecated.ValueBool()
-	} else {
-		deprecated = nil
-	}
-	out := shared.UpdatePortalProductVersionPayload{
+	out := shared.ReplacePortalProductVersionPayload{
 		PublishStatus:                  publishStatus,
 		AuthStrategyIds:                authStrategyIds,
 		ApplicationRegistrationEnabled: applicationRegistrationEnabled,
 		AutoApproveRegistration:        autoApproveRegistration,
 		Deprecated:                     deprecated,
+		NotifyDevelopers:               notifyDevelopers,
 	}
 	return &out
 }

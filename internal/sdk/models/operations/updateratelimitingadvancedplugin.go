@@ -46,7 +46,7 @@ type UpdateRatelimitingadvancedPluginResponse struct {
 	// RateLimitingAdvanced plugin
 	RateLimitingAdvancedPlugin *shared.RateLimitingAdvancedPlugin
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *UpdateRatelimitingadvancedPluginResponse) GetContentType() string {
@@ -77,9 +77,9 @@ func (o *UpdateRatelimitingadvancedPluginResponse) GetRateLimitingAdvancedPlugin
 	return o.RateLimitingAdvancedPlugin
 }
 
-func (o *UpdateRatelimitingadvancedPluginResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *UpdateRatelimitingadvancedPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

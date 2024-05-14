@@ -38,7 +38,7 @@ type CreateKeySetResponse struct {
 	// Successfully created KeySet
 	KeySet *shared.KeySet
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *CreateKeySetResponse) GetContentType() string {
@@ -69,9 +69,9 @@ func (o *CreateKeySetResponse) GetKeySet() *shared.KeySet {
 	return o.KeySet
 }
 
-func (o *CreateKeySetResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *CreateKeySetResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

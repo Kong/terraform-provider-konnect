@@ -34,10 +34,10 @@ type CreateIprestrictionPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// IpRestriction plugin
+	// Created IpRestriction plugin
 	IPRestrictionPlugin *shared.IPRestrictionPlugin
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *CreateIprestrictionPluginResponse) GetContentType() string {
@@ -68,9 +68,9 @@ func (o *CreateIprestrictionPluginResponse) GetIPRestrictionPlugin() *shared.IPR
 	return o.IPRestrictionPlugin
 }
 
-func (o *CreateIprestrictionPluginResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *CreateIprestrictionPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

@@ -4,42 +4,42 @@ package shared
 
 // ConflictError - standard error
 type ConflictError struct {
-	Status   interface{} `json:"status"`
-	Title    interface{} `json:"title"`
-	Type     interface{} `json:"type,omitempty"`
-	Instance interface{} `json:"instance"`
-	Detail   interface{} `json:"detail"`
+	Status   any `json:"status"`
+	Title    any `json:"title"`
+	Type     any `json:"type,omitempty"`
+	Instance any `json:"instance"`
+	Detail   any `json:"detail"`
 }
 
-func (o *ConflictError) GetStatus() interface{} {
+func (o *ConflictError) GetStatus() any {
 	if o == nil {
 		return nil
 	}
 	return o.Status
 }
 
-func (o *ConflictError) GetTitle() interface{} {
+func (o *ConflictError) GetTitle() any {
 	if o == nil {
 		return nil
 	}
 	return o.Title
 }
 
-func (o *ConflictError) GetType() interface{} {
+func (o *ConflictError) GetType() any {
 	if o == nil {
 		return nil
 	}
 	return o.Type
 }
 
-func (o *ConflictError) GetInstance() interface{} {
+func (o *ConflictError) GetInstance() any {
 	if o == nil {
 		return nil
 	}
 	return o.Instance
 }
 
-func (o *ConflictError) GetDetail() interface{} {
+func (o *ConflictError) GetDetail() any {
 	if o == nil {
 		return nil
 	}

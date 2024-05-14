@@ -34,10 +34,10 @@ type CreateJqPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// JQ plugin
+	// Created JQ plugin
 	JQPlugin *shared.JQPlugin
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *CreateJqPluginResponse) GetContentType() string {
@@ -68,9 +68,9 @@ func (o *CreateJqPluginResponse) GetJQPlugin() *shared.JQPlugin {
 	return o.JQPlugin
 }
 
-func (o *CreateJqPluginResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *CreateJqPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

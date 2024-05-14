@@ -34,10 +34,10 @@ type CreateOpenidconnectPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// OpenidConnect plugin
+	// Created OpenidConnect plugin
 	OpenidConnectPlugin *shared.OpenidConnectPlugin
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *CreateOpenidconnectPluginResponse) GetContentType() string {
@@ -68,9 +68,9 @@ func (o *CreateOpenidconnectPluginResponse) GetOpenidConnectPlugin() *shared.Ope
 	return o.OpenidConnectPlugin
 }
 
-func (o *CreateOpenidconnectPluginResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *CreateOpenidconnectPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

@@ -38,7 +38,7 @@ type GetFilelogPluginResponse struct {
 	// FileLog plugin
 	FileLogPlugin *shared.FileLogPlugin
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *GetFilelogPluginResponse) GetContentType() string {
@@ -69,9 +69,9 @@ func (o *GetFilelogPluginResponse) GetFileLogPlugin() *shared.FileLogPlugin {
 	return o.FileLogPlugin
 }
 
-func (o *GetFilelogPluginResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *GetFilelogPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

@@ -1,5 +1,16 @@
 # Changelog
 
+# Changelog
+
+## 0.2.3
+> Released on 2024/05/14
+
+### Features
+* Add support for the `konnect_cloud_gateway_configuration`, `konnect_cloud_gateway_custom_domain`, `konnect_cloud_gateway_network` and `konnect_cloud_gateway_transit_gateway` resources
+
+### Bug Fixes
+* Fix `konnect_portal_product_version` creation bug
+
 ## 0.2.2
 > Released on 2024/05/04
 

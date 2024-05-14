@@ -34,10 +34,10 @@ type CreateAiprompttemplatePluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// AIPromptTemplate plugin
+	// Created AIPromptTemplate plugin
 	AIPromptTemplatePlugin *shared.AIPromptTemplatePlugin
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *CreateAiprompttemplatePluginResponse) GetContentType() string {
@@ -68,9 +68,9 @@ func (o *CreateAiprompttemplatePluginResponse) GetAIPromptTemplatePlugin() *shar
 	return o.AIPromptTemplatePlugin
 }
 
-func (o *CreateAiprompttemplatePluginResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *CreateAiprompttemplatePluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

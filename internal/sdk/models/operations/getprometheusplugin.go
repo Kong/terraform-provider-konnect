@@ -38,7 +38,7 @@ type GetPrometheusPluginResponse struct {
 	// Prometheus plugin
 	PrometheusPlugin *shared.PrometheusPlugin
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *GetPrometheusPluginResponse) GetContentType() string {
@@ -69,9 +69,9 @@ func (o *GetPrometheusPluginResponse) GetPrometheusPlugin() *shared.PrometheusPl
 	return o.PrometheusPlugin
 }
 
-func (o *GetPrometheusPluginResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *GetPrometheusPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

@@ -46,7 +46,7 @@ type UpdateOpentelemetryPluginResponse struct {
 	// Opentelemetry plugin
 	OpentelemetryPlugin *shared.OpentelemetryPlugin
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *UpdateOpentelemetryPluginResponse) GetContentType() string {
@@ -77,9 +77,9 @@ func (o *UpdateOpentelemetryPluginResponse) GetOpentelemetryPlugin() *shared.Ope
 	return o.OpentelemetryPlugin
 }
 
-func (o *UpdateOpentelemetryPluginResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *UpdateOpentelemetryPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

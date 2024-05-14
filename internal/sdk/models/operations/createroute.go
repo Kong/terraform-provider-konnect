@@ -38,7 +38,7 @@ type CreateRouteResponse struct {
 	// Successfully created Route
 	Route *shared.Route
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *CreateRouteResponse) GetContentType() string {
@@ -69,9 +69,9 @@ func (o *CreateRouteResponse) GetRoute() *shared.Route {
 	return o.Route
 }
 
-func (o *CreateRouteResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *CreateRouteResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

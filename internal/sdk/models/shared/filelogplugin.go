@@ -97,7 +97,7 @@ func (o *FileLogPluginService) GetID() *string {
 
 type FileLogPluginConfig struct {
 	// Lua code as a key-value map
-	CustomFieldsByLua map[string]interface{} `json:"custom_fields_by_lua,omitempty"`
+	CustomFieldsByLua map[string]any `json:"custom_fields_by_lua,omitempty"`
 	// The file path of the output log file. The plugin creates the log file if it doesn't exist yet.
 	Path *string `json:"path,omitempty"`
 	// Determines whether the log file is closed and reopened on every request.
@@ -115,7 +115,7 @@ func (f *FileLogPluginConfig) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *FileLogPluginConfig) GetCustomFieldsByLua() map[string]interface{} {
+func (o *FileLogPluginConfig) GetCustomFieldsByLua() map[string]any {
 	if o == nil {
 		return nil
 	}

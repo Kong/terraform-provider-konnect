@@ -34,10 +34,10 @@ type CreateCorsPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// CORS plugin
+	// Created CORS plugin
 	CORSPlugin *shared.CORSPlugin
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *CreateCorsPluginResponse) GetContentType() string {
@@ -68,9 +68,9 @@ func (o *CreateCorsPluginResponse) GetCORSPlugin() *shared.CORSPlugin {
 	return o.CORSPlugin
 }
 
-func (o *CreateCorsPluginResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *CreateCorsPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

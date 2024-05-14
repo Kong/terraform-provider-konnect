@@ -38,7 +38,7 @@ type GetAipromptguardPluginResponse struct {
 	// AIPromptGuard plugin
 	AIPromptGuardPlugin *shared.AIPromptGuardPlugin
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *GetAipromptguardPluginResponse) GetContentType() string {
@@ -69,9 +69,9 @@ func (o *GetAipromptguardPluginResponse) GetAIPromptGuardPlugin() *shared.AIProm
 	return o.AIPromptGuardPlugin
 }
 
-func (o *GetAipromptguardPluginResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *GetAipromptguardPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

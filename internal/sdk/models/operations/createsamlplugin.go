@@ -34,10 +34,10 @@ type CreateSamlPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Saml plugin
+	// Created Saml plugin
 	SamlPlugin *shared.SamlPlugin
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *CreateSamlPluginResponse) GetContentType() string {
@@ -68,9 +68,9 @@ func (o *CreateSamlPluginResponse) GetSamlPlugin() *shared.SamlPlugin {
 	return o.SamlPlugin
 }
 
-func (o *CreateSamlPluginResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *CreateSamlPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

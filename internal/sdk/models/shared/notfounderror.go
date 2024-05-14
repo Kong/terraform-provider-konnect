@@ -4,42 +4,42 @@ package shared
 
 // NotFoundError - standard error
 type NotFoundError struct {
-	Status   interface{} `json:"status"`
-	Title    interface{} `json:"title"`
-	Type     interface{} `json:"type,omitempty"`
-	Instance interface{} `json:"instance"`
-	Detail   interface{} `json:"detail"`
+	Status   any `json:"status"`
+	Title    any `json:"title"`
+	Type     any `json:"type,omitempty"`
+	Instance any `json:"instance"`
+	Detail   any `json:"detail"`
 }
 
-func (o *NotFoundError) GetStatus() interface{} {
+func (o *NotFoundError) GetStatus() any {
 	if o == nil {
 		return nil
 	}
 	return o.Status
 }
 
-func (o *NotFoundError) GetTitle() interface{} {
+func (o *NotFoundError) GetTitle() any {
 	if o == nil {
 		return nil
 	}
 	return o.Title
 }
 
-func (o *NotFoundError) GetType() interface{} {
+func (o *NotFoundError) GetType() any {
 	if o == nil {
 		return nil
 	}
 	return o.Type
 }
 
-func (o *NotFoundError) GetInstance() interface{} {
+func (o *NotFoundError) GetInstance() any {
 	if o == nil {
 		return nil
 	}
 	return o.Instance
 }
 
-func (o *NotFoundError) GetDetail() interface{} {
+func (o *NotFoundError) GetDetail() any {
 	if o == nil {
 		return nil
 	}

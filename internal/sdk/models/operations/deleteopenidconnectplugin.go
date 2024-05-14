@@ -36,7 +36,7 @@ type DeleteOpenidconnectPluginResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *DeleteOpenidconnectPluginResponse) GetContentType() string {
@@ -60,9 +60,9 @@ func (o *DeleteOpenidconnectPluginResponse) GetRawResponse() *http.Response {
 	return o.RawResponse
 }
 
-func (o *DeleteOpenidconnectPluginResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *DeleteOpenidconnectPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

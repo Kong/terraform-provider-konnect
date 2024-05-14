@@ -7,7 +7,7 @@ type InvalidParameterChoiceItem struct {
 	// invalid parameters rules
 	Rule    *InvalidRules `json:"rule,omitempty"`
 	Reason  string        `json:"reason"`
-	Choices []interface{} `json:"choices,omitempty"`
+	Choices []any         `json:"choices,omitempty"`
 }
 
 func (o *InvalidParameterChoiceItem) GetField() string {
@@ -31,7 +31,7 @@ func (o *InvalidParameterChoiceItem) GetReason() string {
 	return o.Reason
 }
 
-func (o *InvalidParameterChoiceItem) GetChoices() []interface{} {
+func (o *InvalidParameterChoiceItem) GetChoices() []any {
 	if o == nil {
 		return nil
 	}

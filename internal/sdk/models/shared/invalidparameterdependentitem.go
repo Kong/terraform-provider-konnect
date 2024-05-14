@@ -35,9 +35,9 @@ func (e *Rule) UnmarshalJSON(data []byte) error {
 type InvalidParameterDependentItem struct {
 	Field string `json:"field"`
 	// invalid parameters rules
-	Rule       *Rule         `json:"rule"`
-	Reason     string        `json:"reason"`
-	Dependents []interface{} `json:"dependents"`
+	Rule       *Rule  `json:"rule"`
+	Reason     string `json:"reason"`
+	Dependents []any  `json:"dependents"`
 }
 
 func (o *InvalidParameterDependentItem) GetField() string {
@@ -61,7 +61,7 @@ func (o *InvalidParameterDependentItem) GetReason() string {
 	return o.Reason
 }
 
-func (o *InvalidParameterDependentItem) GetDependents() []interface{} {
+func (o *InvalidParameterDependentItem) GetDependents() []any {
 	if o == nil {
 		return nil
 	}

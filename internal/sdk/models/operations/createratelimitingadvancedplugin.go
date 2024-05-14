@@ -34,10 +34,10 @@ type CreateRatelimitingadvancedPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// RateLimitingAdvanced plugin
+	// Created RateLimitingAdvanced plugin
 	RateLimitingAdvancedPlugin *shared.RateLimitingAdvancedPlugin
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *CreateRatelimitingadvancedPluginResponse) GetContentType() string {
@@ -68,9 +68,9 @@ func (o *CreateRatelimitingadvancedPluginResponse) GetRateLimitingAdvancedPlugin
 	return o.RateLimitingAdvancedPlugin
 }
 
-func (o *CreateRatelimitingadvancedPluginResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *CreateRatelimitingadvancedPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

@@ -36,7 +36,7 @@ type DeleteAipromptguardPluginResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *DeleteAipromptguardPluginResponse) GetContentType() string {
@@ -60,9 +60,9 @@ func (o *DeleteAipromptguardPluginResponse) GetRawResponse() *http.Response {
 	return o.RawResponse
 }
 
-func (o *DeleteAipromptguardPluginResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *DeleteAipromptguardPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

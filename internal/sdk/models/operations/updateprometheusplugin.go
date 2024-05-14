@@ -46,7 +46,7 @@ type UpdatePrometheusPluginResponse struct {
 	// Prometheus plugin
 	PrometheusPlugin *shared.PrometheusPlugin
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *UpdatePrometheusPluginResponse) GetContentType() string {
@@ -77,9 +77,9 @@ func (o *UpdatePrometheusPluginResponse) GetPrometheusPlugin() *shared.Prometheu
 	return o.PrometheusPlugin
 }
 
-func (o *UpdatePrometheusPluginResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *UpdatePrometheusPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

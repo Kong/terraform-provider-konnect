@@ -46,7 +46,7 @@ type UpdateAiproxyPluginResponse struct {
 	// AIProxy plugin
 	AIProxyPlugin *shared.AIProxyPlugin
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *UpdateAiproxyPluginResponse) GetContentType() string {
@@ -77,9 +77,9 @@ func (o *UpdateAiproxyPluginResponse) GetAIProxyPlugin() *shared.AIProxyPlugin {
 	return o.AIProxyPlugin
 }
 
-func (o *UpdateAiproxyPluginResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *UpdateAiproxyPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

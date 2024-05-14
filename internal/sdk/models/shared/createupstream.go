@@ -272,15 +272,15 @@ func (o *Unhealthy) GetTimeouts() *int64 {
 }
 
 type Active struct {
-	Concurrency            *int64                 `default:"10" json:"concurrency"`
-	Headers                map[string]interface{} `json:"headers,omitempty"`
-	Healthy                *Healthy               `json:"healthy,omitempty"`
-	HTTPPath               *string                `default:"/" json:"http_path"`
-	HTTPSSni               *string                `json:"https_sni,omitempty"`
-	HTTPSVerifyCertificate *bool                  `default:"true" json:"https_verify_certificate"`
-	Timeout                *float64               `default:"1" json:"timeout"`
-	Type                   *Type                  `default:"http" json:"type"`
-	Unhealthy              *Unhealthy             `json:"unhealthy,omitempty"`
+	Concurrency            *int64         `default:"10" json:"concurrency"`
+	Headers                map[string]any `json:"headers,omitempty"`
+	Healthy                *Healthy       `json:"healthy,omitempty"`
+	HTTPPath               *string        `default:"/" json:"http_path"`
+	HTTPSSni               *string        `json:"https_sni,omitempty"`
+	HTTPSVerifyCertificate *bool          `default:"true" json:"https_verify_certificate"`
+	Timeout                *float64       `default:"1" json:"timeout"`
+	Type                   *Type          `default:"http" json:"type"`
+	Unhealthy              *Unhealthy     `json:"unhealthy,omitempty"`
 }
 
 func (a Active) MarshalJSON() ([]byte, error) {
@@ -301,7 +301,7 @@ func (o *Active) GetConcurrency() *int64 {
 	return o.Concurrency
 }
 
-func (o *Active) GetHeaders() map[string]interface{} {
+func (o *Active) GetHeaders() map[string]any {
 	if o == nil {
 		return nil
 	}

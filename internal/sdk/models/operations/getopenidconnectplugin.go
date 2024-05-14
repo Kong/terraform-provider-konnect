@@ -38,7 +38,7 @@ type GetOpenidconnectPluginResponse struct {
 	// OpenidConnect plugin
 	OpenidConnectPlugin *shared.OpenidConnectPlugin
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *GetOpenidconnectPluginResponse) GetContentType() string {
@@ -69,9 +69,9 @@ func (o *GetOpenidconnectPluginResponse) GetOpenidConnectPlugin() *shared.Openid
 	return o.OpenidConnectPlugin
 }
 
-func (o *GetOpenidconnectPluginResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *GetOpenidconnectPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

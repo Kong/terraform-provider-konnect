@@ -34,10 +34,10 @@ type CreateRequestterminationPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// RequestTermination plugin
+	// Created RequestTermination plugin
 	RequestTerminationPlugin *shared.RequestTerminationPlugin
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *CreateRequestterminationPluginResponse) GetContentType() string {
@@ -68,9 +68,9 @@ func (o *CreateRequestterminationPluginResponse) GetRequestTerminationPlugin() *
 	return o.RequestTerminationPlugin
 }
 
-func (o *CreateRequestterminationPluginResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *CreateRequestterminationPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }
