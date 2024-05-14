@@ -34,10 +34,10 @@ type CreateFilelogPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// FileLog plugin
+	// Created FileLog plugin
 	FileLogPlugin *shared.FileLogPlugin
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *CreateFilelogPluginResponse) GetContentType() string {
@@ -68,9 +68,9 @@ func (o *CreateFilelogPluginResponse) GetFileLogPlugin() *shared.FileLogPlugin {
 	return o.FileLogPlugin
 }
 
-func (o *CreateFilelogPluginResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *CreateFilelogPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

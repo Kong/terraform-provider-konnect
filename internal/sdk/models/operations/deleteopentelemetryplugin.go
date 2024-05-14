@@ -36,7 +36,7 @@ type DeleteOpentelemetryPluginResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *DeleteOpentelemetryPluginResponse) GetContentType() string {
@@ -60,9 +60,9 @@ func (o *DeleteOpentelemetryPluginResponse) GetRawResponse() *http.Response {
 	return o.RawResponse
 }
 
-func (o *DeleteOpentelemetryPluginResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *DeleteOpentelemetryPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

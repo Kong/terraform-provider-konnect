@@ -34,10 +34,10 @@ type CreatePrefunctionPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// PreFunction plugin
+	// Created PreFunction plugin
 	PreFunctionPlugin *shared.PreFunctionPlugin
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *CreatePrefunctionPluginResponse) GetContentType() string {
@@ -68,9 +68,9 @@ func (o *CreatePrefunctionPluginResponse) GetPreFunctionPlugin() *shared.PreFunc
 	return o.PreFunctionPlugin
 }
 
-func (o *CreatePrefunctionPluginResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *CreatePrefunctionPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

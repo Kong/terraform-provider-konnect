@@ -34,10 +34,10 @@ type CreateAwslambdaPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// AWSLambda plugin
+	// Created AWSLambda plugin
 	AWSLambdaPlugin *shared.AWSLambdaPlugin
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *CreateAwslambdaPluginResponse) GetContentType() string {
@@ -68,9 +68,9 @@ func (o *CreateAwslambdaPluginResponse) GetAWSLambdaPlugin() *shared.AWSLambdaPl
 	return o.AWSLambdaPlugin
 }
 
-func (o *CreateAwslambdaPluginResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *CreateAwslambdaPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

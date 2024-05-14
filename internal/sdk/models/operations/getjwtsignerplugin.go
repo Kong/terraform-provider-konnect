@@ -38,7 +38,7 @@ type GetJwtsignerPluginResponse struct {
 	// JWTSigner plugin
 	JWTSignerPlugin *shared.JWTSignerPlugin
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *GetJwtsignerPluginResponse) GetContentType() string {
@@ -69,9 +69,9 @@ func (o *GetJwtsignerPluginResponse) GetJWTSignerPlugin() *shared.JWTSignerPlugi
 	return o.JWTSignerPlugin
 }
 
-func (o *GetJwtsignerPluginResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *GetJwtsignerPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

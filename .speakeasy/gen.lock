@@ -1,29 +1,37 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: f381737cd5b6eeaa4103af5a43cf871b
+  docChecksum: 57b43fc5cc7955d7204213f59e8a4111
   docVersion: 2.0.0
-  speakeasyVersion: 1.279.0
-  generationVersion: 2.322.5
-  releaseVersion: 0.2.2
-  configChecksum: 2759dc629ecf22791a5721ff73619bd7
+  speakeasyVersion: 1.287.0
+  generationVersion: 2.331.0
+  releaseVersion: 0.2.3
+  configChecksum: 95ea855704e3ee774597a2125ab2260c
 features:
   terraform:
+    additionalDependencies: 0.1.0
     additionalProperties: 0.1.2
     constsAndDefaults: 0.1.4
-    core: 3.19.1
+    core: 3.21.0
     deprecations: 2.81.1
     globalSecurity: 2.81.6
     globalServerURLs: 2.82.1
     inputOutputModels: 2.83.0
     nameOverrides: 2.81.2
+    nullables: 0.0.0
+    retries: 2.81.1
     typeOverrides: 2.81.1
-    unions: 2.81.12
+    unions: 2.81.13
 generatedFiles:
   - internal/sdk/mesh.go
   - internal/sdk/apiproducts.go
   - internal/sdk/apiproductversions.go
   - internal/sdk/appauthstrategies.go
+  - internal/sdk/dataplanegroupconfigurations.go
+  - internal/sdk/customdomains.go
+  - internal/sdk/networks.go
+  - internal/sdk/transitgateways.go
+  - internal/sdk/provideraccounts.go
   - internal/sdk/controlplanes.go
   - internal/sdk/cacertificates.go
   - internal/sdk/certificates.go
@@ -85,6 +93,19 @@ generatedFiles:
   - internal/sdk/models/operations/getappauthstrategy.go
   - internal/sdk/models/operations/updateappauthstrategy.go
   - internal/sdk/models/operations/deleteappauthstrategy.go
+  - internal/sdk/models/operations/createconfiguration.go
+  - internal/sdk/models/operations/getconfiguration.go
+  - internal/sdk/models/operations/createcustomdomains.go
+  - internal/sdk/models/operations/getcustomdomain.go
+  - internal/sdk/models/operations/deletecustomdomain.go
+  - internal/sdk/models/operations/createnetwork.go
+  - internal/sdk/models/operations/getnetwork.go
+  - internal/sdk/models/operations/updatenetwork.go
+  - internal/sdk/models/operations/deletenetwork.go
+  - internal/sdk/models/operations/createtransitgateway.go
+  - internal/sdk/models/operations/gettransitgateway.go
+  - internal/sdk/models/operations/deletetransitgateway.go
+  - internal/sdk/models/operations/listprovideraccounts.go
   - internal/sdk/models/operations/createcontrolplane.go
   - internal/sdk/models/operations/getcontrolplane.go
   - internal/sdk/models/operations/updatecontrolplane.go
@@ -269,7 +290,7 @@ generatedFiles:
   - internal/sdk/models/operations/getportalauthenticationsettings.go
   - internal/sdk/models/operations/updateportalauthenticationsettings.go
   - internal/sdk/models/operations/getportalproductversion.go
-  - internal/sdk/models/operations/updateportalproductversion.go
+  - internal/sdk/models/operations/replaceportalproductversion.go
   - internal/sdk/models/operations/deleteportalproductversion.go
   - internal/sdk/models/operations/postsystemaccounts.go
   - internal/sdk/models/operations/getsystemaccountsid.go
@@ -287,8 +308,9 @@ generatedFiles:
   - internal/sdk/models/shared/unauthorizederror.go
   - internal/sdk/models/shared/badrequesterror.go
   - internal/sdk/models/shared/invalidparameters.go
-  - internal/sdk/models/shared/invalidparameterchoiceitem.go
+  - internal/sdk/models/shared/invalidparameterstandard.go
   - internal/sdk/models/shared/invalidrules.go
+  - internal/sdk/models/shared/invalidparameterchoiceitem.go
   - internal/sdk/models/shared/invalidparameterdependentitem.go
   - internal/sdk/models/shared/meshcontrolplane.go
   - internal/sdk/models/shared/createmeshcontrolplanerequest.go
@@ -316,12 +338,44 @@ generatedFiles:
   - internal/sdk/models/shared/updateappauthstrategyrequest.go
   - internal/sdk/models/shared/partialappauthstrategyconfigopenidconnect.go
   - internal/sdk/models/shared/conflicterror.go
+  - internal/sdk/models/shared/configurationmanifest.go
+  - internal/sdk/models/shared/controlplanegeo.go
+  - internal/sdk/models/shared/configurationdataplanegroup.go
+  - internal/sdk/models/shared/configurationdataplanegroupautoscale.go
+  - internal/sdk/models/shared/configurationdataplanegroupautoscalestatic.go
+  - internal/sdk/models/shared/instancetypename.go
+  - internal/sdk/models/shared/configurationdataplanegroupautoscaleautopilot.go
+  - internal/sdk/models/shared/providername.go
+  - internal/sdk/models/shared/configurationdataplanegroupconfig.go
+  - internal/sdk/models/shared/apiaccess.go
+  - internal/sdk/models/shared/createconfigurationrequest.go
+  - internal/sdk/models/shared/createconfigurationdataplanegroup.go
+  - internal/sdk/models/shared/customdomain.go
+  - internal/sdk/models/shared/customdomainstate.go
+  - internal/sdk/models/shared/createcustomdomainrequest.go
+  - internal/sdk/models/shared/network.go
+  - internal/sdk/models/shared/networkprovidermetadata.go
+  - internal/sdk/models/shared/networkstate.go
+  - internal/sdk/models/shared/networkfirewallconfig.go
+  - internal/sdk/models/shared/createnetworkrequest.go
+  - internal/sdk/models/shared/patchnetworkrequest.go
+  - internal/sdk/models/shared/transitgateway.go
+  - internal/sdk/models/shared/transitgatewaystate.go
+  - internal/sdk/models/shared/transitgatewaydnsconfig.go
+  - internal/sdk/models/shared/transitgatewayattachmentconfig.go
+  - internal/sdk/models/shared/awstransitgatewayattachmentconfig.go
+  - internal/sdk/models/shared/createtransitgatewayrequest.go
+  - internal/sdk/models/shared/listprovideraccountsresponse.go
+  - internal/sdk/models/shared/provideraccount.go
+  - internal/sdk/models/shared/paginatedmeta.go
+  - internal/sdk/models/shared/pagemeta.go
   - internal/sdk/models/shared/serviceunavailable.go
   - internal/sdk/models/shared/internalservererror.go
   - internal/sdk/models/shared/controlplane.go
   - internal/sdk/models/shared/createcontrolplanerequest.go
   - internal/sdk/models/shared/proxyurl.go
   - internal/sdk/models/shared/updatecontrolplanerequest.go
+  - internal/sdk/models/shared/gatewayunauthorizederror.go
   - internal/sdk/models/shared/cacertificate.go
   - internal/sdk/models/shared/createcacertificate.go
   - internal/sdk/models/shared/certificate.go
@@ -421,8 +475,6 @@ generatedFiles:
   - internal/sdk/models/shared/groupmembership.go
   - internal/sdk/models/shared/listportalsresponse.go
   - internal/sdk/models/shared/portal.go
-  - internal/sdk/models/shared/paginatedmeta.go
-  - internal/sdk/models/shared/pagemeta.go
   - internal/sdk/models/shared/updateportalresponse.go
   - internal/sdk/models/shared/updateportalrequest.go
   - internal/sdk/models/shared/portalauthenticationsettingsresponse.go
@@ -434,7 +486,7 @@ generatedFiles:
   - internal/sdk/models/shared/authstrategykeyauth.go
   - internal/sdk/models/shared/authstrategyclientcredentials.go
   - internal/sdk/models/shared/portalproductversionpublishstatus.go
-  - internal/sdk/models/shared/updateportalproductversionpayload.go
+  - internal/sdk/models/shared/replaceportalproductversionpayload.go
   - internal/sdk/models/shared/systemaccount.go
   - internal/sdk/models/shared/createsystemaccount.go
   - internal/sdk/models/shared/updatesystemaccount.go
@@ -505,6 +557,17 @@ generatedFiles:
   - internal/provider/types/app_auth_strategy_config_open_id_connect.go
   - internal/provider/types/app_auth_strategy_open_id_connect_request_configs.go
   - internal/provider/types/app_auth_strategy_open_id_connect_request.go
+  - internal/provider/types/configuration_data_plane_group_autoscale_autopilot.go
+  - internal/provider/types/configuration_data_plane_group_autoscale_static.go
+  - internal/provider/types/configuration_data_plane_group_autoscale.go
+  - internal/provider/types/configuration_data_plane_group_config.go
+  - internal/provider/types/configuration_data_plane_group.go
+  - internal/provider/types/custom_domain_state_metadata.go
+  - internal/provider/types/network_firewall_config.go
+  - internal/provider/types/network_provider_metadata.go
+  - internal/provider/types/transit_gateway_dns_config.go
+  - internal/provider/types/aws_transit_gateway_attachment_config.go
+  - internal/provider/types/transit_gateway_attachment_config.go
   - internal/provider/types/acl_consumer.go
   - internal/provider/types/config.go
   - internal/provider/types/proxy_url.go
@@ -580,9 +643,10 @@ generatedFiles:
   - internal/provider/types/auth_strategy.go
   - internal/provider/types/gateway_service.go
   - internal/provider/types/app_auth_strategy_open_id_connect_response_app_auth_strategy_open_id_connect_response.go
-  - internal/provider/types/portal.go
+  - internal/provider/types/provider_account.go
   - internal/provider/types/page_meta.go
   - internal/provider/types/paginated_meta.go
+  - internal/provider/types/portal.go
   - USAGE.md
   - internal/provider/provider.go
   - examples/provider/provider.tf
@@ -598,6 +662,22 @@ generatedFiles:
   - internal/provider/applicationauthstrategy_resource.go
   - internal/provider/applicationauthstrategy_resource_sdk.go
   - examples/resources/konnect_application_auth_strategy/resource.tf
+  - examples/resources/konnect_cloud_gateway_configuration/import.sh
+  - internal/provider/cloudgatewayconfiguration_resource.go
+  - internal/provider/cloudgatewayconfiguration_resource_sdk.go
+  - examples/resources/konnect_cloud_gateway_configuration/resource.tf
+  - examples/resources/konnect_cloud_gateway_custom_domain/import.sh
+  - internal/provider/cloudgatewaycustomdomain_resource.go
+  - internal/provider/cloudgatewaycustomdomain_resource_sdk.go
+  - examples/resources/konnect_cloud_gateway_custom_domain/resource.tf
+  - examples/resources/konnect_cloud_gateway_network/import.sh
+  - internal/provider/cloudgatewaynetwork_resource.go
+  - internal/provider/cloudgatewaynetwork_resource_sdk.go
+  - examples/resources/konnect_cloud_gateway_network/resource.tf
+  - examples/resources/konnect_cloud_gateway_transit_gateway/import.sh
+  - internal/provider/cloudgatewaytransitgateway_resource.go
+  - internal/provider/cloudgatewaytransitgateway_resource_sdk.go
+  - examples/resources/konnect_cloud_gateway_transit_gateway/resource.tf
   - examples/resources/konnect_gateway_acl/import.sh
   - internal/provider/gatewayacl_resource.go
   - internal/provider/gatewayacl_resource_sdk.go
@@ -835,6 +915,21 @@ generatedFiles:
   - internal/provider/applicationauthstrategy_data_source.go
   - internal/provider/applicationauthstrategy_data_source_sdk.go
   - examples/data-sources/konnect_application_auth_strategy/data-source.tf
+  - internal/provider/cloudgatewayconfiguration_data_source.go
+  - internal/provider/cloudgatewayconfiguration_data_source_sdk.go
+  - examples/data-sources/konnect_cloud_gateway_configuration/data-source.tf
+  - internal/provider/cloudgatewaycustomdomain_data_source.go
+  - internal/provider/cloudgatewaycustomdomain_data_source_sdk.go
+  - examples/data-sources/konnect_cloud_gateway_custom_domain/data-source.tf
+  - internal/provider/cloudgatewaynetwork_data_source.go
+  - internal/provider/cloudgatewaynetwork_data_source_sdk.go
+  - examples/data-sources/konnect_cloud_gateway_network/data-source.tf
+  - internal/provider/cloudgatewayprovideraccountlist_data_source.go
+  - internal/provider/cloudgatewayprovideraccountlist_data_source_sdk.go
+  - examples/data-sources/konnect_cloud_gateway_provider_account_list/data-source.tf
+  - internal/provider/cloudgatewaytransitgateway_data_source.go
+  - internal/provider/cloudgatewaytransitgateway_data_source_sdk.go
+  - examples/data-sources/konnect_cloud_gateway_transit_gateway/data-source.tf
   - internal/provider/gatewayacl_data_source.go
   - internal/provider/gatewayacl_data_source_sdk.go
   - examples/data-sources/konnect_gateway_acl/data-source.tf

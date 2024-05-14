@@ -38,7 +38,7 @@ type CreateServiceResponse struct {
 	// Successfully created Service
 	Service *shared.Service
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *CreateServiceResponse) GetContentType() string {
@@ -69,9 +69,9 @@ func (o *CreateServiceResponse) GetService() *shared.Service {
 	return o.Service
 }
 
-func (o *CreateServiceResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *CreateServiceResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

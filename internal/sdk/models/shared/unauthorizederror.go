@@ -4,52 +4,44 @@ package shared
 
 // UnauthorizedError - standard error
 type UnauthorizedError struct {
-	Status   int64       `json:"status"`
-	Title    interface{} `json:"title"`
-	Type     interface{} `json:"type,omitempty"`
-	Instance interface{} `json:"instance"`
-	Detail   interface{} `json:"detail"`
-	Message  string      `json:"message"`
+	Status   any `json:"status"`
+	Title    any `json:"title"`
+	Type     any `json:"type,omitempty"`
+	Instance any `json:"instance"`
+	Detail   any `json:"detail"`
 }
 
-func (o *UnauthorizedError) GetStatus() int64 {
+func (o *UnauthorizedError) GetStatus() any {
 	if o == nil {
-		return 0
+		return nil
 	}
 	return o.Status
 }
 
-func (o *UnauthorizedError) GetTitle() interface{} {
+func (o *UnauthorizedError) GetTitle() any {
 	if o == nil {
 		return nil
 	}
 	return o.Title
 }
 
-func (o *UnauthorizedError) GetType() interface{} {
+func (o *UnauthorizedError) GetType() any {
 	if o == nil {
 		return nil
 	}
 	return o.Type
 }
 
-func (o *UnauthorizedError) GetInstance() interface{} {
+func (o *UnauthorizedError) GetInstance() any {
 	if o == nil {
 		return nil
 	}
 	return o.Instance
 }
 
-func (o *UnauthorizedError) GetDetail() interface{} {
+func (o *UnauthorizedError) GetDetail() any {
 	if o == nil {
 		return nil
 	}
 	return o.Detail
-}
-
-func (o *UnauthorizedError) GetMessage() string {
-	if o == nil {
-		return ""
-	}
-	return o.Message
 }

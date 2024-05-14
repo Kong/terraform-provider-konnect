@@ -38,7 +38,7 @@ type CreateVaultResponse struct {
 	// Successfully created Vault
 	Vault *shared.Vault
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *CreateVaultResponse) GetContentType() string {
@@ -69,9 +69,9 @@ func (o *CreateVaultResponse) GetVault() *shared.Vault {
 	return o.Vault
 }
 
-func (o *CreateVaultResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *CreateVaultResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

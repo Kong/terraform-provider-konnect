@@ -46,7 +46,7 @@ type UpdateBasicauthPluginResponse struct {
 	// BasicAuth plugin
 	BasicAuthPlugin *shared.BasicAuthPlugin
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *UpdateBasicauthPluginResponse) GetContentType() string {
@@ -77,9 +77,9 @@ func (o *UpdateBasicauthPluginResponse) GetBasicAuthPlugin() *shared.BasicAuthPl
 	return o.BasicAuthPlugin
 }
 
-func (o *UpdateBasicauthPluginResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *UpdateBasicauthPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

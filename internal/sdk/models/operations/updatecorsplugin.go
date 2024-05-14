@@ -46,7 +46,7 @@ type UpdateCorsPluginResponse struct {
 	// CORS plugin
 	CORSPlugin *shared.CORSPlugin
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *UpdateCorsPluginResponse) GetContentType() string {
@@ -77,9 +77,9 @@ func (o *UpdateCorsPluginResponse) GetCORSPlugin() *shared.CORSPlugin {
 	return o.CORSPlugin
 }
 
-func (o *UpdateCorsPluginResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *UpdateCorsPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

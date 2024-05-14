@@ -38,7 +38,7 @@ type GetOauth2PluginResponse struct {
 	// Oauth2 plugin
 	Oauth2Plugin *shared.Oauth2Plugin
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *GetOauth2PluginResponse) GetContentType() string {
@@ -69,9 +69,9 @@ func (o *GetOauth2PluginResponse) GetOauth2Plugin() *shared.Oauth2Plugin {
 	return o.Oauth2Plugin
 }
 
-func (o *GetOauth2PluginResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *GetOauth2PluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

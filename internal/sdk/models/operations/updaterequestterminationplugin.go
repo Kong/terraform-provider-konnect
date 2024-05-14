@@ -46,7 +46,7 @@ type UpdateRequestterminationPluginResponse struct {
 	// RequestTermination plugin
 	RequestTerminationPlugin *shared.RequestTerminationPlugin
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *UpdateRequestterminationPluginResponse) GetContentType() string {
@@ -77,9 +77,9 @@ func (o *UpdateRequestterminationPluginResponse) GetRequestTerminationPlugin() *
 	return o.RequestTerminationPlugin
 }
 
-func (o *UpdateRequestterminationPluginResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *UpdateRequestterminationPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

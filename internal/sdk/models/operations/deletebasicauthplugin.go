@@ -36,7 +36,7 @@ type DeleteBasicauthPluginResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *DeleteBasicauthPluginResponse) GetContentType() string {
@@ -60,9 +60,9 @@ func (o *DeleteBasicauthPluginResponse) GetRawResponse() *http.Response {
 	return o.RawResponse
 }
 
-func (o *DeleteBasicauthPluginResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *DeleteBasicauthPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

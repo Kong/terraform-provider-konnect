@@ -46,7 +46,7 @@ type UpdateResponsetransformeradvancedPluginResponse struct {
 	// ResponseTransformerAdvanced plugin
 	ResponseTransformerAdvancedPlugin *shared.ResponseTransformerAdvancedPlugin
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *UpdateResponsetransformeradvancedPluginResponse) GetContentType() string {
@@ -77,9 +77,9 @@ func (o *UpdateResponsetransformeradvancedPluginResponse) GetResponseTransformer
 	return o.ResponseTransformerAdvancedPlugin
 }
 
-func (o *UpdateResponsetransformeradvancedPluginResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *UpdateResponsetransformeradvancedPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

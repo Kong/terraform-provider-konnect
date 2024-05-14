@@ -46,7 +46,7 @@ type UpdatePrefunctionPluginResponse struct {
 	// PreFunction plugin
 	PreFunctionPlugin *shared.PreFunctionPlugin
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *UpdatePrefunctionPluginResponse) GetContentType() string {
@@ -77,9 +77,9 @@ func (o *UpdatePrefunctionPluginResponse) GetPreFunctionPlugin() *shared.PreFunc
 	return o.PreFunctionPlugin
 }
 
-func (o *UpdatePrefunctionPluginResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *UpdatePrefunctionPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

@@ -36,7 +36,7 @@ type DeleteAwslambdaPluginResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *DeleteAwslambdaPluginResponse) GetContentType() string {
@@ -60,9 +60,9 @@ func (o *DeleteAwslambdaPluginResponse) GetRawResponse() *http.Response {
 	return o.RawResponse
 }
 
-func (o *DeleteAwslambdaPluginResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *DeleteAwslambdaPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

@@ -34,10 +34,10 @@ type CreateACLPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// ACL plugin
+	// Created ACL plugin
 	ACLPlugin *shared.ACLPlugin
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *CreateACLPluginResponse) GetContentType() string {
@@ -68,9 +68,9 @@ func (o *CreateACLPluginResponse) GetACLPlugin() *shared.ACLPlugin {
 	return o.ACLPlugin
 }
 
-func (o *CreateACLPluginResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *CreateACLPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

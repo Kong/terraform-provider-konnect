@@ -34,10 +34,10 @@ type CreateProxycachePluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// ProxyCache plugin
+	// Created ProxyCache plugin
 	ProxyCachePlugin *shared.ProxyCachePlugin
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *CreateProxycachePluginResponse) GetContentType() string {
@@ -68,9 +68,9 @@ func (o *CreateProxycachePluginResponse) GetProxyCachePlugin() *shared.ProxyCach
 	return o.ProxyCachePlugin
 }
 
-func (o *CreateProxycachePluginResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *CreateProxycachePluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

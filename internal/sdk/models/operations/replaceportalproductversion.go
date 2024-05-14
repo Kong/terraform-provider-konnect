@@ -7,36 +7,36 @@ import (
 	"net/http"
 )
 
-type UpdatePortalProductVersionRequest struct {
+type ReplacePortalProductVersionRequest struct {
 	// API product version identifier
 	ProductVersionID string `pathParam:"style=simple,explode=false,name=productVersionId"`
 	// portal identifier
-	PortalID                          string                                   `pathParam:"style=simple,explode=false,name=portalId"`
-	UpdatePortalProductVersionPayload shared.UpdatePortalProductVersionPayload `request:"mediaType=application/json"`
+	PortalID                           string                                    `pathParam:"style=simple,explode=false,name=portalId"`
+	ReplacePortalProductVersionPayload shared.ReplacePortalProductVersionPayload `request:"mediaType=application/json"`
 }
 
-func (o *UpdatePortalProductVersionRequest) GetProductVersionID() string {
+func (o *ReplacePortalProductVersionRequest) GetProductVersionID() string {
 	if o == nil {
 		return ""
 	}
 	return o.ProductVersionID
 }
 
-func (o *UpdatePortalProductVersionRequest) GetPortalID() string {
+func (o *ReplacePortalProductVersionRequest) GetPortalID() string {
 	if o == nil {
 		return ""
 	}
 	return o.PortalID
 }
 
-func (o *UpdatePortalProductVersionRequest) GetUpdatePortalProductVersionPayload() shared.UpdatePortalProductVersionPayload {
+func (o *ReplacePortalProductVersionRequest) GetReplacePortalProductVersionPayload() shared.ReplacePortalProductVersionPayload {
 	if o == nil {
-		return shared.UpdatePortalProductVersionPayload{}
+		return shared.ReplacePortalProductVersionPayload{}
 	}
-	return o.UpdatePortalProductVersionPayload
+	return o.ReplacePortalProductVersionPayload
 }
 
-type UpdatePortalProductVersionResponse struct {
+type ReplacePortalProductVersionResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
 	// HTTP response status code for this operation
@@ -55,56 +55,56 @@ type UpdatePortalProductVersionResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *UpdatePortalProductVersionResponse) GetContentType() string {
+func (o *ReplacePortalProductVersionResponse) GetContentType() string {
 	if o == nil {
 		return ""
 	}
 	return o.ContentType
 }
 
-func (o *UpdatePortalProductVersionResponse) GetStatusCode() int {
+func (o *ReplacePortalProductVersionResponse) GetStatusCode() int {
 	if o == nil {
 		return 0
 	}
 	return o.StatusCode
 }
 
-func (o *UpdatePortalProductVersionResponse) GetRawResponse() *http.Response {
+func (o *ReplacePortalProductVersionResponse) GetRawResponse() *http.Response {
 	if o == nil {
 		return nil
 	}
 	return o.RawResponse
 }
 
-func (o *UpdatePortalProductVersionResponse) GetPortalProductVersion() *shared.PortalProductVersion {
+func (o *ReplacePortalProductVersionResponse) GetPortalProductVersion() *shared.PortalProductVersion {
 	if o == nil {
 		return nil
 	}
 	return o.PortalProductVersion
 }
 
-func (o *UpdatePortalProductVersionResponse) GetBadRequestError() *shared.BadRequestError {
+func (o *ReplacePortalProductVersionResponse) GetBadRequestError() *shared.BadRequestError {
 	if o == nil {
 		return nil
 	}
 	return o.BadRequestError
 }
 
-func (o *UpdatePortalProductVersionResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *ReplacePortalProductVersionResponse) GetUnauthorizedError() *shared.UnauthorizedError {
 	if o == nil {
 		return nil
 	}
 	return o.UnauthorizedError
 }
 
-func (o *UpdatePortalProductVersionResponse) GetForbiddenError() *shared.ForbiddenError {
+func (o *ReplacePortalProductVersionResponse) GetForbiddenError() *shared.ForbiddenError {
 	if o == nil {
 		return nil
 	}
 	return o.ForbiddenError
 }
 
-func (o *UpdatePortalProductVersionResponse) GetNotFoundError() *shared.NotFoundError {
+func (o *ReplacePortalProductVersionResponse) GetNotFoundError() *shared.NotFoundError {
 	if o == nil {
 		return nil
 	}

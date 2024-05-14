@@ -38,7 +38,7 @@ type GetAwslambdaPluginResponse struct {
 	// AWSLambda plugin
 	AWSLambdaPlugin *shared.AWSLambdaPlugin
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *GetAwslambdaPluginResponse) GetContentType() string {
@@ -69,9 +69,9 @@ func (o *GetAwslambdaPluginResponse) GetAWSLambdaPlugin() *shared.AWSLambdaPlugi
 	return o.AWSLambdaPlugin
 }
 
-func (o *GetAwslambdaPluginResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *GetAwslambdaPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

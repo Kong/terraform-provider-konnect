@@ -38,7 +38,7 @@ type CreateUpstreamResponse struct {
 	// Successfully created Upstream
 	Upstream *shared.Upstream
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *CreateUpstreamResponse) GetContentType() string {
@@ -69,9 +69,9 @@ func (o *CreateUpstreamResponse) GetUpstream() *shared.Upstream {
 	return o.Upstream
 }
 
-func (o *CreateUpstreamResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *CreateUpstreamResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

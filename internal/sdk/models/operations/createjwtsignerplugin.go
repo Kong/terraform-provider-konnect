@@ -34,10 +34,10 @@ type CreateJwtsignerPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// JWTSigner plugin
+	// Created JWTSigner plugin
 	JWTSignerPlugin *shared.JWTSignerPlugin
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *CreateJwtsignerPluginResponse) GetContentType() string {
@@ -68,9 +68,9 @@ func (o *CreateJwtsignerPluginResponse) GetJWTSignerPlugin() *shared.JWTSignerPl
 	return o.JWTSignerPlugin
 }
 
-func (o *CreateJwtsignerPluginResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *CreateJwtsignerPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

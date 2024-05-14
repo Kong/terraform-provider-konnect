@@ -46,7 +46,7 @@ type UpdateIprestrictionPluginResponse struct {
 	// IpRestriction plugin
 	IPRestrictionPlugin *shared.IPRestrictionPlugin
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *UpdateIprestrictionPluginResponse) GetContentType() string {
@@ -77,9 +77,9 @@ func (o *UpdateIprestrictionPluginResponse) GetIPRestrictionPlugin() *shared.IPR
 	return o.IPRestrictionPlugin
 }
 
-func (o *UpdateIprestrictionPluginResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *UpdateIprestrictionPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

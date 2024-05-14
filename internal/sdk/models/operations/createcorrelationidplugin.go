@@ -34,10 +34,10 @@ type CreateCorrelationidPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// CorrelationId plugin
+	// Created CorrelationId plugin
 	CorrelationIDPlugin *shared.CorrelationIDPlugin
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *CreateCorrelationidPluginResponse) GetContentType() string {
@@ -68,9 +68,9 @@ func (o *CreateCorrelationidPluginResponse) GetCorrelationIDPlugin() *shared.Cor
 	return o.CorrelationIDPlugin
 }
 
-func (o *CreateCorrelationidPluginResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *CreateCorrelationidPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

@@ -38,7 +38,7 @@ type GetRatelimitingPluginResponse struct {
 	// RateLimiting plugin
 	RateLimitingPlugin *shared.RateLimitingPlugin
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *GetRatelimitingPluginResponse) GetContentType() string {
@@ -69,9 +69,9 @@ func (o *GetRatelimitingPluginResponse) GetRateLimitingPlugin() *shared.RateLimi
 	return o.RateLimitingPlugin
 }
 
-func (o *GetRatelimitingPluginResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *GetRatelimitingPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

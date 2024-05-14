@@ -46,7 +46,7 @@ type UpdateSamlPluginResponse struct {
 	// Saml plugin
 	SamlPlugin *shared.SamlPlugin
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *UpdateSamlPluginResponse) GetContentType() string {
@@ -77,9 +77,9 @@ func (o *UpdateSamlPluginResponse) GetSamlPlugin() *shared.SamlPlugin {
 	return o.SamlPlugin
 }
 
-func (o *UpdateSamlPluginResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *UpdateSamlPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

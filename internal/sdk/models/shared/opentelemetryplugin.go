@@ -234,12 +234,12 @@ type OpentelemetryPluginConfig struct {
 	Endpoint   *string     `json:"endpoint,omitempty"`
 	HeaderType *HeaderType `default:"preserve" json:"header_type"`
 	// The custom headers to be added in the HTTP request sent to the OTLP server. This setting is useful for adding the authentication headers (token) for the APM backend.
-	Headers                      map[string]interface{} `json:"headers,omitempty"`
-	HTTPResponseHeaderForTraceid *string                `json:"http_response_header_for_traceid,omitempty"`
-	Queue                        *Queue                 `json:"queue,omitempty"`
+	Headers                      map[string]any `json:"headers,omitempty"`
+	HTTPResponseHeaderForTraceid *string        `json:"http_response_header_for_traceid,omitempty"`
+	Queue                        *Queue         `json:"queue,omitempty"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	ReadTimeout        *int64                 `default:"5000" json:"read_timeout"`
-	ResourceAttributes map[string]interface{} `json:"resource_attributes,omitempty"`
+	ReadTimeout        *int64         `default:"5000" json:"read_timeout"`
+	ResourceAttributes map[string]any `json:"resource_attributes,omitempty"`
 	// Tracing sampling rate for configuring the probability-based sampler. When set, this value supersedes the global `tracing_sampling_rate` setting from kong.conf.
 	SamplingRate *float64 `json:"sampling_rate,omitempty"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
@@ -292,7 +292,7 @@ func (o *OpentelemetryPluginConfig) GetHeaderType() *HeaderType {
 	return o.HeaderType
 }
 
-func (o *OpentelemetryPluginConfig) GetHeaders() map[string]interface{} {
+func (o *OpentelemetryPluginConfig) GetHeaders() map[string]any {
 	if o == nil {
 		return nil
 	}
@@ -320,7 +320,7 @@ func (o *OpentelemetryPluginConfig) GetReadTimeout() *int64 {
 	return o.ReadTimeout
 }
 
-func (o *OpentelemetryPluginConfig) GetResourceAttributes() map[string]interface{} {
+func (o *OpentelemetryPluginConfig) GetResourceAttributes() map[string]any {
 	if o == nil {
 		return nil
 	}

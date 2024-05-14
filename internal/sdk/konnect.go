@@ -76,8 +76,13 @@ type Konnect struct {
 	// Called “Auth Strategy” for short in the context of portals/applications.
 	// The plugins are synced to any Gateway Service that is currently linked or becomes linked to the Product Version.
 	//
-	AppAuthStrategies *AppAuthStrategies
-	ControlPlanes     *ControlPlanes
+	AppAuthStrategies            *AppAuthStrategies
+	DataPlaneGroupConfigurations *DataPlaneGroupConfigurations
+	CustomDomains                *CustomDomains
+	Networks                     *Networks
+	TransitGateways              *TransitGateways
+	ProviderAccounts             *ProviderAccounts
+	ControlPlanes                *ControlPlanes
 	// A CA certificate object represents a trusted certificate authority.
 	// These objects are used by Kong Gateway to verify the validity of a client or server certificate.
 	CACertificates *CACertificates
@@ -130,6 +135,7 @@ type Konnect struct {
 	// - `grpcs`: At least one of `hosts`, `headers`, `paths`, or `snis`
 	// - `ws`: At least one of `hosts`, `headers`, or `paths`
 	// - `wss`: At least one of `hosts`, `headers`, `paths`, or `snis`
+	//
 	//
 	//
 	//
@@ -267,8 +273,8 @@ func New(opts ...SDKOption) *Konnect {
 			Language:          "go",
 			OpenAPIDocVersion: "2.0.0",
 			SDKVersion:        "0.0.1",
-			GenVersion:        "2.322.5",
-			UserAgent:         "speakeasy-sdk/go 0.0.1 2.322.5 2.0.0 github.com/kong/terraform-provider-konnect/internal/sdk",
+			GenVersion:        "2.331.0",
+			UserAgent:         "speakeasy-sdk/go 0.0.1 2.331.0 2.0.0 github.com/kong/terraform-provider-konnect/internal/sdk",
 			Hooks:             hooks.New(),
 		},
 	}
@@ -295,6 +301,16 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.APIProductVersions = newAPIProductVersions(sdk.sdkConfiguration)
 
 	sdk.AppAuthStrategies = newAppAuthStrategies(sdk.sdkConfiguration)
+
+	sdk.DataPlaneGroupConfigurations = newDataPlaneGroupConfigurations(sdk.sdkConfiguration)
+
+	sdk.CustomDomains = newCustomDomains(sdk.sdkConfiguration)
+
+	sdk.Networks = newNetworks(sdk.sdkConfiguration)
+
+	sdk.TransitGateways = newTransitGateways(sdk.sdkConfiguration)
+
+	sdk.ProviderAccounts = newProviderAccounts(sdk.sdkConfiguration)
 
 	sdk.ControlPlanes = newControlPlanes(sdk.sdkConfiguration)
 

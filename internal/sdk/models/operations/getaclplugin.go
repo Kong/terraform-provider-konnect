@@ -38,7 +38,7 @@ type GetACLPluginResponse struct {
 	// ACL plugin
 	ACLPlugin *shared.ACLPlugin
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *GetACLPluginResponse) GetContentType() string {
@@ -69,9 +69,9 @@ func (o *GetACLPluginResponse) GetACLPlugin() *shared.ACLPlugin {
 	return o.ACLPlugin
 }
 
-func (o *GetACLPluginResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *GetACLPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

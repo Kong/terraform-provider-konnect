@@ -38,7 +38,7 @@ type CreatePluginResponse struct {
 	// Successfully created Plugin
 	Plugin *shared.Plugin
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *CreatePluginResponse) GetContentType() string {
@@ -69,9 +69,9 @@ func (o *CreatePluginResponse) GetPlugin() *shared.Plugin {
 	return o.Plugin
 }
 
-func (o *CreatePluginResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *CreatePluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

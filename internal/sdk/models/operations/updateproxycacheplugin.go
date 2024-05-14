@@ -46,7 +46,7 @@ type UpdateProxycachePluginResponse struct {
 	// ProxyCache plugin
 	ProxyCachePlugin *shared.ProxyCachePlugin
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *UpdateProxycachePluginResponse) GetContentType() string {
@@ -77,9 +77,9 @@ func (o *UpdateProxycachePluginResponse) GetProxyCachePlugin() *shared.ProxyCach
 	return o.ProxyCachePlugin
 }
 
-func (o *UpdateProxycachePluginResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *UpdateProxycachePluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

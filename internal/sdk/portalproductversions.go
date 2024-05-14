@@ -183,12 +183,12 @@ func (s *PortalProductVersions) GetPortalProductVersion(ctx context.Context, req
 	return res, nil
 }
 
-// UpdatePortalProductVersion - Update a portal product version
-// Update a portal product version
-func (s *PortalProductVersions) UpdatePortalProductVersion(ctx context.Context, request operations.UpdatePortalProductVersionRequest, opts ...operations.Option) (*operations.UpdatePortalProductVersionResponse, error) {
+// ReplacePortalProductVersion - Replace a portal product version
+// Replace a portal product version
+func (s *PortalProductVersions) ReplacePortalProductVersion(ctx context.Context, request operations.ReplacePortalProductVersionRequest, opts ...operations.Option) (*operations.ReplacePortalProductVersionResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
-		OperationID:    "update-portal-product-version",
+		OperationID:    "replace-portal-product-version",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
 	}
@@ -209,12 +209,12 @@ func (s *PortalProductVersions) UpdatePortalProductVersion(ctx context.Context, 
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "UpdatePortalProductVersionPayload", "json", `request:"mediaType=application/json"`)
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "ReplacePortalProductVersionPayload", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
 	}
 
-	req, err := http.NewRequestWithContext(ctx, "PATCH", opURL, bodyReader)
+	req, err := http.NewRequestWithContext(ctx, "PUT", opURL, bodyReader)
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
@@ -260,7 +260,7 @@ func (s *PortalProductVersions) UpdatePortalProductVersion(ctx context.Context, 
 		}
 	}
 
-	res := &operations.UpdatePortalProductVersionResponse{
+	res := &operations.ReplacePortalProductVersionResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,

@@ -38,7 +38,7 @@ type GetKeyResponse struct {
 	// Successfully fetched Key
 	Key *shared.Key
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *GetKeyResponse) GetContentType() string {
@@ -69,9 +69,9 @@ func (o *GetKeyResponse) GetKey() *shared.Key {
 	return o.Key
 }
 
-func (o *GetKeyResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *GetKeyResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

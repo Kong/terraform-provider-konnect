@@ -46,7 +46,7 @@ type UpdateJwtPluginResponse struct {
 	// JWT plugin
 	JWTPlugin *shared.JWTPlugin
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *UpdateJwtPluginResponse) GetContentType() string {
@@ -77,9 +77,9 @@ func (o *UpdateJwtPluginResponse) GetJWTPlugin() *shared.JWTPlugin {
 	return o.JWTPlugin
 }
 
-func (o *UpdateJwtPluginResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *UpdateJwtPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

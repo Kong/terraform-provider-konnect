@@ -38,7 +38,7 @@ type GetJqPluginResponse struct {
 	// JQ plugin
 	JQPlugin *shared.JQPlugin
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *GetJqPluginResponse) GetContentType() string {
@@ -69,9 +69,9 @@ func (o *GetJqPluginResponse) GetJQPlugin() *shared.JQPlugin {
 	return o.JQPlugin
 }
 
-func (o *GetJqPluginResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *GetJqPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

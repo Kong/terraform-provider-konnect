@@ -36,7 +36,7 @@ type DeleteRequesttransformeradvancedPluginResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *DeleteRequesttransformeradvancedPluginResponse) GetContentType() string {
@@ -60,9 +60,9 @@ func (o *DeleteRequesttransformeradvancedPluginResponse) GetRawResponse() *http.
 	return o.RawResponse
 }
 
-func (o *DeleteRequesttransformeradvancedPluginResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *DeleteRequesttransformeradvancedPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

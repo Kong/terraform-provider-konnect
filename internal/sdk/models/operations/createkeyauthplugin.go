@@ -34,10 +34,10 @@ type CreateKeyauthPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// KeyAuth plugin
+	// Created KeyAuth plugin
 	KeyAuthPlugin *shared.KeyAuthPlugin
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *CreateKeyauthPluginResponse) GetContentType() string {
@@ -68,9 +68,9 @@ func (o *CreateKeyauthPluginResponse) GetKeyAuthPlugin() *shared.KeyAuthPlugin {
 	return o.KeyAuthPlugin
 }
 
-func (o *CreateKeyauthPluginResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *CreateKeyauthPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

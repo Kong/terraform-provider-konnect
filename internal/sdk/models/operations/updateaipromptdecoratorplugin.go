@@ -46,7 +46,7 @@ type UpdateAipromptdecoratorPluginResponse struct {
 	// AIPromptDecorator plugin
 	AIPromptDecoratorPlugin *shared.AIPromptDecoratorPlugin
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *UpdateAipromptdecoratorPluginResponse) GetContentType() string {
@@ -77,9 +77,9 @@ func (o *UpdateAipromptdecoratorPluginResponse) GetAIPromptDecoratorPlugin() *sh
 	return o.AIPromptDecoratorPlugin
 }
 
-func (o *UpdateAipromptdecoratorPluginResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *UpdateAipromptdecoratorPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

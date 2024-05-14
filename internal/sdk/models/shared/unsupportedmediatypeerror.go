@@ -4,42 +4,42 @@ package shared
 
 // UnsupportedMediaTypeError - standard error
 type UnsupportedMediaTypeError struct {
-	Status   interface{} `json:"status"`
-	Title    interface{} `json:"title"`
-	Type     interface{} `json:"type,omitempty"`
-	Instance interface{} `json:"instance"`
-	Detail   interface{} `json:"detail"`
+	Status   any `json:"status"`
+	Title    any `json:"title"`
+	Type     any `json:"type,omitempty"`
+	Instance any `json:"instance"`
+	Detail   any `json:"detail"`
 }
 
-func (o *UnsupportedMediaTypeError) GetStatus() interface{} {
+func (o *UnsupportedMediaTypeError) GetStatus() any {
 	if o == nil {
 		return nil
 	}
 	return o.Status
 }
 
-func (o *UnsupportedMediaTypeError) GetTitle() interface{} {
+func (o *UnsupportedMediaTypeError) GetTitle() any {
 	if o == nil {
 		return nil
 	}
 	return o.Title
 }
 
-func (o *UnsupportedMediaTypeError) GetType() interface{} {
+func (o *UnsupportedMediaTypeError) GetType() any {
 	if o == nil {
 		return nil
 	}
 	return o.Type
 }
 
-func (o *UnsupportedMediaTypeError) GetInstance() interface{} {
+func (o *UnsupportedMediaTypeError) GetInstance() any {
 	if o == nil {
 		return nil
 	}
 	return o.Instance
 }
 
-func (o *UnsupportedMediaTypeError) GetDetail() interface{} {
+func (o *UnsupportedMediaTypeError) GetDetail() any {
 	if o == nil {
 		return nil
 	}

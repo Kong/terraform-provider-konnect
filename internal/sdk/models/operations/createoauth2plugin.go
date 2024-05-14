@@ -34,10 +34,10 @@ type CreateOauth2PluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Oauth2 plugin
+	// Created Oauth2 plugin
 	Oauth2Plugin *shared.Oauth2Plugin
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *CreateOauth2PluginResponse) GetContentType() string {
@@ -68,9 +68,9 @@ func (o *CreateOauth2PluginResponse) GetOauth2Plugin() *shared.Oauth2Plugin {
 	return o.Oauth2Plugin
 }
 
-func (o *CreateOauth2PluginResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *CreateOauth2PluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }

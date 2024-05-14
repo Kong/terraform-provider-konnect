@@ -11,11 +11,11 @@ import (
 // Once authenticated, an application will be granted access to any Product Version it is registered for that is configured for the same Auth Strategy.
 // An OIDC strategy may be used in conjunction with a DCR provider to automatically create the IdP application.
 type AppAuthStrategyConfigOpenIDConnect struct {
-	Issuer               string      `json:"issuer"`
-	CredentialClaim      []string    `json:"credential_claim"`
-	Scopes               []string    `json:"scopes"`
-	AuthMethods          []string    `json:"auth_methods"`
-	AdditionalProperties interface{} `additionalProperties:"true" json:"-"`
+	Issuer               string   `json:"issuer"`
+	CredentialClaim      []string `json:"credential_claim"`
+	Scopes               []string `json:"scopes"`
+	AuthMethods          []string `json:"auth_methods"`
+	AdditionalProperties any      `additionalProperties:"true" json:"-"`
 }
 
 func (a AppAuthStrategyConfigOpenIDConnect) MarshalJSON() ([]byte, error) {
@@ -57,7 +57,7 @@ func (o *AppAuthStrategyConfigOpenIDConnect) GetAuthMethods() []string {
 	return o.AuthMethods
 }
 
-func (o *AppAuthStrategyConfigOpenIDConnect) GetAdditionalProperties() interface{} {
+func (o *AppAuthStrategyConfigOpenIDConnect) GetAdditionalProperties() any {
 	if o == nil {
 		return nil
 	}

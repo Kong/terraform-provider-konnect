@@ -42,9 +42,9 @@ func (e *Value) UnmarshalJSON(data []byte) error {
 }
 
 type Details struct {
-	Type                 *string     `json:"type,omitempty"`
-	Message              []string    `json:"message,omitempty"`
-	AdditionalProperties interface{} `additionalProperties:"true" json:"-"`
+	Type                 *string  `json:"type,omitempty"`
+	Message              []string `json:"message,omitempty"`
+	AdditionalProperties any      `additionalProperties:"true" json:"-"`
 }
 
 func (d Details) MarshalJSON() ([]byte, error) {
@@ -72,7 +72,7 @@ func (o *Details) GetMessage() []string {
 	return o.Message
 }
 
-func (o *Details) GetAdditionalProperties() interface{} {
+func (o *Details) GetAdditionalProperties() any {
 	if o == nil {
 		return nil
 	}
@@ -80,8 +80,8 @@ func (o *Details) GetAdditionalProperties() interface{} {
 }
 
 type Info struct {
-	Details              []Details   `json:"details,omitempty"`
-	AdditionalProperties interface{} `additionalProperties:"true" json:"-"`
+	Details              []Details `json:"details,omitempty"`
+	AdditionalProperties any       `additionalProperties:"true" json:"-"`
 }
 
 func (i Info) MarshalJSON() ([]byte, error) {
@@ -102,7 +102,7 @@ func (o *Info) GetDetails() []Details {
 	return o.Details
 }
 
-func (o *Info) GetAdditionalProperties() interface{} {
+func (o *Info) GetAdditionalProperties() any {
 	if o == nil {
 		return nil
 	}

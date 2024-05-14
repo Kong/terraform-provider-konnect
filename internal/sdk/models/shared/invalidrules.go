@@ -11,27 +11,33 @@ import (
 type InvalidRules string
 
 const (
-	InvalidRulesRequired        InvalidRules = "required"
-	InvalidRulesEnum            InvalidRules = "enum"
-	InvalidRulesMinLength       InvalidRules = "min_length"
-	InvalidRulesMaxLength       InvalidRules = "max_length"
-	InvalidRulesMinDigits       InvalidRules = "min_digits"
-	InvalidRulesMinLowercase    InvalidRules = "min_lowercase"
-	InvalidRulesMinUppercase    InvalidRules = "min_uppercase"
-	InvalidRulesMinSymbols      InvalidRules = "min_symbols"
-	InvalidRulesIsArray         InvalidRules = "is_array"
-	InvalidRulesIsBase64        InvalidRules = "is_base64"
-	InvalidRulesIsBoolean       InvalidRules = "is_boolean"
-	InvalidRulesIsDateTime      InvalidRules = "is_date_time"
-	InvalidRulesIsInteger       InvalidRules = "is_integer"
-	InvalidRulesIsNull          InvalidRules = "is_null"
-	InvalidRulesIsNumber        InvalidRules = "is_number"
-	InvalidRulesIsObject        InvalidRules = "is_object"
-	InvalidRulesIsString        InvalidRules = "is_string"
-	InvalidRulesIsUUID          InvalidRules = "is_uuid"
-	InvalidRulesUnknownProperty InvalidRules = "unknown_property"
-	InvalidRulesIsLabel         InvalidRules = "is_label"
-	InvalidRulesMatchesRegex    InvalidRules = "matches_regex"
+	InvalidRulesRequired                               InvalidRules = "required"
+	InvalidRulesEnum                                   InvalidRules = "enum"
+	InvalidRulesMinLength                              InvalidRules = "min_length"
+	InvalidRulesMaxLength                              InvalidRules = "max_length"
+	InvalidRulesMinDigits                              InvalidRules = "min_digits"
+	InvalidRulesMinLowercase                           InvalidRules = "min_lowercase"
+	InvalidRulesMinUppercase                           InvalidRules = "min_uppercase"
+	InvalidRulesMinSymbols                             InvalidRules = "min_symbols"
+	InvalidRulesIsArray                                InvalidRules = "is_array"
+	InvalidRulesIsBase64                               InvalidRules = "is_base64"
+	InvalidRulesIsBoolean                              InvalidRules = "is_boolean"
+	InvalidRulesIsDateTime                             InvalidRules = "is_date_time"
+	InvalidRulesIsInteger                              InvalidRules = "is_integer"
+	InvalidRulesIsNull                                 InvalidRules = "is_null"
+	InvalidRulesIsNumber                               InvalidRules = "is_number"
+	InvalidRulesIsObject                               InvalidRules = "is_object"
+	InvalidRulesIsString                               InvalidRules = "is_string"
+	InvalidRulesIsUUID                                 InvalidRules = "is_uuid"
+	InvalidRulesIsFqdn                                 InvalidRules = "is_fqdn"
+	InvalidRulesIsArn                                  InvalidRules = "is_arn"
+	InvalidRulesUnknownProperty                        InvalidRules = "unknown_property"
+	InvalidRulesIsLabel                                InvalidRules = "is_label"
+	InvalidRulesMatchesRegex                           InvalidRules = "matches_regex"
+	InvalidRulesInvalid                                InvalidRules = "invalid"
+	InvalidRulesIsSupportedNetworkAvailabilityZoneList InvalidRules = "is_supported_network_availability_zone_list"
+	InvalidRulesIsSupportedNetworkCidrBlock            InvalidRules = "is_supported_network_cidr_block"
+	InvalidRulesIsSupportedProviderRegion              InvalidRules = "is_supported_provider_region"
 )
 
 func (e InvalidRules) ToPointer() *InvalidRules {
@@ -80,11 +86,23 @@ func (e *InvalidRules) UnmarshalJSON(data []byte) error {
 		fallthrough
 	case "is_uuid":
 		fallthrough
+	case "is_fqdn":
+		fallthrough
+	case "is_arn":
+		fallthrough
 	case "unknown_property":
 		fallthrough
 	case "is_label":
 		fallthrough
 	case "matches_regex":
+		fallthrough
+	case "invalid":
+		fallthrough
+	case "is_supported_network_availability_zone_list":
+		fallthrough
+	case "is_supported_network_cidr_block":
+		fallthrough
+	case "is_supported_provider_region":
 		*e = InvalidRules(v)
 		return nil
 	default:

@@ -14,7 +14,11 @@ generation:
   baseServerURL: ""
 terraform:
   version: 0.2.3
+  additionalDataSources: []
+  additionalDependencies: {}
+  additionalResources: []
   author: kong
+  environmentVariables: []
   imports:
     option: openapi
     paths:

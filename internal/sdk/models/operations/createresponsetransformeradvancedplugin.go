@@ -34,10 +34,10 @@ type CreateResponsetransformeradvancedPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// ResponseTransformerAdvanced plugin
+	// Created ResponseTransformerAdvanced plugin
 	ResponseTransformerAdvancedPlugin *shared.ResponseTransformerAdvancedPlugin
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
 func (o *CreateResponsetransformeradvancedPluginResponse) GetContentType() string {
@@ -68,9 +68,9 @@ func (o *CreateResponsetransformeradvancedPluginResponse) GetResponseTransformer
 	return o.ResponseTransformerAdvancedPlugin
 }
 
-func (o *CreateResponsetransformeradvancedPluginResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *CreateResponsetransformeradvancedPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.GatewayUnauthorizedError
 }
