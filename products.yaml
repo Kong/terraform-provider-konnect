@@ -25,4 +25,5 @@ products:
       - "konnect/definitions/api-products/v2/openapi.yaml"
       - "konnect/definitions/portal-management/v2/openapi.yaml"
       - "konnect/definitions/application-auth-strategies/v2/openapi.yaml"
+      - "konnect/definitions/identity/v3/openapi.yaml"
     notMatch: []

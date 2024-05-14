@@ -1,0 +1,7 @@
+overlay: 1.0.0
+info:
+  title: Konnect Portal Management Overlay
+  version: 0.0.0
+actions:
+  - target: $["paths"]["/v3/teams"]["get"]["parameters"][?(@.name=='filter')]
+    remove: true

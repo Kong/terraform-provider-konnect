@@ -893,6 +893,7 @@ paths:
           required: false
           style: deepObject
     post:
+      x-speakeasy-entity-operation: SystemAccount#create
       summary: Create System Account
       operationId: post-system-accounts
       tags:
@@ -912,6 +913,7 @@ paths:
           $ref: '#/components/responses/IdentityConflict'
   '/system-accounts/{accountId}':
     get:
+      x-speakeasy-entity-operation: SystemAccount#read
       summary: Fetch System Account
       tags:
         - System Accounts
@@ -934,7 +936,9 @@ paths:
         in: path
         required: true
         description: ID of the system account.
+        x-speakeasy-match: id
     patch:
+      x-speakeasy-entity-operation: SystemAccount#update
       summary: Update System Account
       operationId: patch-system-accounts-id
       responses:
@@ -955,6 +959,7 @@ paths:
       requestBody:
         $ref: '#/components/requestBodies/UpdateSystemAccount'
     delete:
+      x-speakeasy-entity-operation: SystemAccount#delete
       summary: Delete System Account
       operationId: delete-system-accounts-id
       responses:
@@ -1010,6 +1015,7 @@ paths:
         required: true
         description: ID of the system account.
     post:
+      x-speakeasy-entity-operation: SystemAccountAccessToken#create
       summary: Create System Account Access Token
       operationId: post-system-accounts-id-access-tokens
       responses:
@@ -1031,6 +1037,7 @@ paths:
         - System Accounts - Access Tokens
   '/system-accounts/{accountId}/access-tokens/{tokenId}':
     get:
+      x-speakeasy-entity-operation: SystemAccountAccessToken#read
       summary: Fetch System Account Access Token
       responses:
         '200':
@@ -1060,7 +1067,9 @@ paths:
         in: path
         required: true
         description: ID of the system account access token.
+        x-speakeasy-match: id
     patch:
+      x-speakeasy-entity-operation: SystemAccountAccessToken#update
       summary: Update System Account Access Token
       operationId: patch-system-accounts-id-access-tokens-id
       responses:
@@ -1081,6 +1090,7 @@ paths:
       tags:
         - System Accounts - Access Tokens
     delete:
+      x-speakeasy-entity-operation: SystemAccountAccessToken#delete
       summary: Delete System Account Access Token
       operationId: delete-system-accounts-id-access-tokens-id
       responses:
@@ -1200,6 +1210,7 @@ paths:
       tags:
         - System Accounts - Roles
     post:
+      x-speakeasy-entity-operation: SystemAccountRole#create
       summary: Create Assigned Role for System Account
       operationId: post-system-accounts-accountId-assigned-roles
       responses:
@@ -1233,7 +1244,9 @@ paths:
         in: path
         required: true
         description: ID of the role.
+        x-speakeasy-match: id
     delete:
+      x-speakeasy-entity-operation: SystemAccountRole#delete
       summary: Delete Assigned Role from System Account
       operationId: delete-system-accounts-accountId-assigned-roles-roleId
       responses:
@@ -1286,6 +1299,7 @@ paths:
       tags:
         - System Accounts - Team Membership
     post:
+      x-speakeasy-entity-operation: SystemAccountTeam#create
       summary: Add System Account to a Team
       operationId: post-teams-teamId-system-accounts
       responses:
@@ -1319,6 +1333,7 @@ paths:
         required: true
         description: ID of the system account.
     delete:
+      x-speakeasy-entity-operation: SystemAccountTeam#delete
       summary: Remove System Account From Team
       operationId: delete-teams-teamId-system-accounts-accountId
       responses:
@@ -2670,6 +2685,7 @@ components:
       content:
         application/json:
           schema:
+            x-speakeasy-entity: SystemAccountAccessToken
             type: object
             title: System Account Access Token Created Response
             example:
@@ -3144,6 +3160,7 @@ components:
       content:
         application/json:
           schema:
+            x-speakeasy-entity: SystemAccountRole
             type: object
             description: An assigned role is a role that has been assigned to a user or team.
             properties:
@@ -3266,6 +3283,7 @@ components:
       content:
         application/json:
           schema:
+            x-speakeasy-entity: SystemAccount
             type: object
             required:
               - name
@@ -3291,6 +3309,7 @@ components:
       content:
         application/json:
           schema:
+            x-speakeasy-entity: SystemAccount
             type: object
             properties:
               name:
@@ -3304,6 +3323,7 @@ components:
       content:
         application/json:
           schema:
+            x-speakeasy-entity: SystemAccountAccessToken
             type: object
             properties:
               name:
@@ -3313,6 +3333,7 @@ components:
       content:
         application/json:
           schema:
+            x-speakeasy-entity: SystemAccountAccessToken
             type: object
             properties:
               name:
@@ -3330,9 +3351,11 @@ components:
       content:
         application/json:
           schema:
+            x-speakeasy-entity: SystemAccountTeam
             type: object
             properties:
               id:
+                x-speakeasy-name-override: account_id
                 type: string
                 description: ID of the system account.
                 format: uuid
@@ -3858,6 +3881,7 @@ components:
             '':
               type: object
     SystemAccount:
+      x-speakeasy-entity: SystemAccount
       title: System Account
       type: object
       example:
@@ -3894,6 +3918,7 @@ components:
           type: boolean
           description: The system account is managed by Konnect (true/false).
     SystemAccountAccessToken:
+      x-speakeasy-entity: SystemAccountAccessToken
       title: System Account Access Token
       example:
         id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
