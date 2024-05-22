@@ -150,7 +150,7 @@ paths:
             product versions with application registration enabled. If false, do
             not allow deletion if there are developers registered to portal or
             if there are portal product versions with application registration
-            enabled.          
+            enabled.
       responses:
         '204':
           description: No Content
@@ -169,6 +169,32 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
+  /portals/{portalId}/publish:
+    parameters:
+      - $ref: '#/components/parameters/parameters-PortalId'
+    post:
+      summary: Publish Multiples Products
+      operationId: publish-api-products
+      description: Publish or Unpublish multiple API Products to this developer portal.
+      requestBody:
+        $ref: '#/components/requestBodies/PublishAPIProducts'
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - API Products
   /portals/{portalId}/pages:
     get:
       summary: List Portal Pages
@@ -635,6 +661,19 @@ components:
               $ref: '#/components/examples/CreatePortalExampleAutoApprove'
             Custom Domains:
               $ref: '#/components/examples/CreatePortalExampleCustomDomains'
+    PublishAPIProducts:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PublishAPIProductPayload'
+          example:
+            api_products:
+              820772b2-0c93-4a9c-8c5e-c2ccc63b3340:
+                publish_status: published
+              9b4f4829-d540-4a3a-aefc-839852bdb3e8:
+                publish_status: unpublished
+              edf3d192-3591-4b03-ac0b-69bad1fcba05: null
     CreatePortalPage:
       description: Create a page in a portal.
       required: true
@@ -986,6 +1025,28 @@ components:
           $ref: '#/components/schemas/DateTimeFieldFilter'
         updated_at:
           $ref: '#/components/schemas/DateTimeFieldFilter'
+    PublishAPIProductPayload:
+      title: PublishAPIProductPayload,
+      description: Payload to publish/unpublish multiple API products
+      additionalProperties: false
+      type: object
+      required:
+        - api_products
+      properties:
+        api_products:
+          nullable: false
+          type: object
+          additionalProperties:
+            type: object
+            nullable: true
+            properties:
+              publish_status:
+                type: string
+                enum:
+                  - published
+                  - unpublished
+            required:
+              - publish_status
     CreatePortalResponse:
       $ref: '#/components/schemas/Portal'
     Portal:
