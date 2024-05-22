@@ -3422,6 +3422,10 @@ components:
               example: kong:trace:1234567890
             detail:
               example: Conflict
+    StringFieldEqualsFilter:
+      title: StringFieldEqualsFilter
+      description: Filter a string value by exact match.
+      type: string
     ForbiddenError:
       allOf:
         - $ref: '#/components/schemas/BaseError'
@@ -3437,10 +3441,6 @@ components:
               example: kong:trace:1234567890
             detail:
               example: Forbidden
-    StringFieldEqualsFilter:
-      title: StringFieldEqualsFilter
-      description: Filter a string value by exact match.
-      type: string
     StringFieldContainsFilter:
       type: object
       title: StringFieldContainsFilter
