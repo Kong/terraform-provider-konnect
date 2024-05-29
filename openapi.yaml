@@ -2066,6 +2066,87 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Custom Plugin Schemas
+  '/v2/control-planes/{controlPlaneId}/core-entities/plugins':
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+    post:
+      operationId: create-plugin
+      summary: Create a new Plugin
+      description: Create a new Plugin
+      requestBody:
+        description: Description of the new Plugin for creation
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Plugin'
+      responses:
+        '201':
+          description: Successfully created Plugin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Plugin'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Plugins
+  '/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}':
+    delete:
+      operationId: delete-plugin
+      summary: Delete a Plugin
+      description: Delete a Plugin
+      parameters:
+        - $ref: '#/components/parameters/PluginId'
+      responses:
+        '204':
+          description: Successfully deleted Plugin or the resource didn't exist
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Plugins
+    get:
+      operationId: get-plugin
+      summary: Fetch a Plugin
+      description: Get a Plugin using ID.
+      responses:
+        '200':
+          description: Successfully fetched Plugin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Plugin'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+        '404':
+          description: Resource does not exist
+      tags:
+        - Plugins
+    parameters:
+      - $ref: '#/components/parameters/PluginId'
+      - $ref: '#/components/parameters/controlPlaneId'
+    put:
+      operationId: upsert-plugin
+      summary: Upsert a Plugin
+      description: Create or Update Plugin using ID.
+      requestBody:
+        description: Description of the Plugin
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Plugin'
+      responses:
+        '200':
+          description: Successfully upserted Plugin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Plugin'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Plugins
   '/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#ACL':
     delete:
       x-speakeasy-entity-operation: GatewayPluginACL#delete
@@ -4679,6 +4760,34 @@ paths:
           $ref: '#/components/responses/HTTP401Error'
       tags:
         - Routes
+  '/v2/control-planes/{controlPlaneId}/core-entities/schemas/plugins/{pluginName}':
+    get:
+      operationId: fetch-plugin-schema
+      summary: Fetch plugin schema
+      description: Get the schema for a plugin
+      responses:
+        '200':
+          description: The schema for the plugin
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  fields:
+                    type: array
+                    items:
+                      additionalProperties: true
+                      type: object
+      tags:
+        - Plugins
+    parameters:
+      - name: pluginName
+        in: path
+        description: The name of the plugin
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/controlPlaneId'
   '/v2/control-planes/{controlPlaneId}/core-entities/services':
     parameters:
       - $ref: '#/components/parameters/controlPlaneId'
