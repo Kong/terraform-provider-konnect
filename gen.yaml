@@ -16,7 +16,10 @@ terraform:
   version: 0.6.3
   additionalDataSources: []
   additionalDependencies: {}
-  additionalResources: []
+  additionalResources:
+    - importAlias: custom
+      importLocation: github.com/kong/terraform-provider-konnect/src
+      resource: custom.NewCustomPluginResource
   allowUnknownFieldsInWeakUnions: false
   author: kong
   environmentVariables:
