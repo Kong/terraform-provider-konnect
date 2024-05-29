@@ -1505,7 +1505,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreatePlugin'
+              $ref: '#/components/schemas/Plugin'
         description: Description of the new Plugin for creation
         required: true
       responses:
@@ -1520,7 +1520,6 @@ paths:
       summary: Create a new Plugin
       tags:
         - Plugins
-      x-speakeasy-entity-operation: GatewayPlugin#create
   /v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}:
     delete:
       description: Delete a Plugin
@@ -1535,7 +1534,6 @@ paths:
       summary: Delete a Plugin
       tags:
         - Plugins
-      x-speakeasy-entity-operation: GatewayPlugin#delete
     get:
       description: Get a Plugin using ID.
       operationId: get-plugin
@@ -1555,9 +1553,32 @@ paths:
       summary: Fetch a Plugin
       tags:
         - Plugins
-      x-speakeasy-entity-operation: GatewayPlugin#read
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
+    put:
+      description: Create or Update Plugin using ID.
+      operationId: upsert-plugin
+      parameters:
+        - $ref: '#/components/parameters/PluginId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Plugin'
+        description: Description of the Plugin
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Plugin'
+          description: Successfully upserted Plugin
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      summary: Upsert a Plugin
+      tags:
+        - Plugins
   /v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#ACL:
     delete:
       description: Delete a ACL plugin
