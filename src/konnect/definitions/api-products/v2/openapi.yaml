@@ -1899,7 +1899,7 @@ components:
         invalid_parameters:
         - field: name
           rule: min_length
-          choices: []
+          minimum: 1
           reason: name must be longer than or equal to 1 characters
     APIProductDocumentBadRequestExample:
       value:
@@ -1910,7 +1910,6 @@ components:
         invalid_parameters:
         - field: slug
           rule: matches_regex
-          choices: []
           reason: "slug must match /^[\\w-]+$/ regular expression"
     APIProductVersionSpecContentBadRequestExample:
       value:
@@ -1921,7 +1920,7 @@ components:
         invalid_parameters:
         - field: content
           rule: min_length
-          choices: []
+          minimum: 1
           reason: content must be longer than or equal to 1 characters
     UnauthorizedExample:
       value:

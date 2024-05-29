@@ -20,8 +20,9 @@ function apply_overlay() {
 apply_overlay overlays/konnect/control-planes-config.yaml
 apply_overlay overlays/konnect/application-auth-strategies.yaml
 apply_overlay overlays/konnect/api-products.yaml
-apply_overlay overlays/konnect/portal-management.yaml
 apply_overlay overlays/konnect/identity.yaml
+apply_overlay overlays/konnect/cloud-gateways.yaml
+apply_overlay overlays/konnect/complex-filters.yaml
 
 # Remove non-annotated fields
 node $DIR/filter-terraform-operations.js

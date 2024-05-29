@@ -1,7 +1,0 @@
-overlay: 1.0.0
-info:
-  title: Konnect Portal Management Overlay
-  version: 0.0.0
-actions:
-  - target: $["paths"]["/v2/portals"]["get"]["parameters"][?(@.name=='filter')]
-    remove: true

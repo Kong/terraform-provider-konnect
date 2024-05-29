@@ -58,6 +58,7 @@ paths:
       tags:
         - Data-Plane Group Configurations
     put:
+      x-speakeasy-entity-operation: CloudGatewayConfiguration#create,update
       summary: Create Configuration
       description: |
         Creates a new configuration for a control-plane (restricted by permitted control-plane permissions for
@@ -90,6 +91,7 @@ paths:
         - Data-Plane Group Configurations
   /cloud-gateways/configurations/{configurationId}:
     get:
+      x-speakeasy-entity-operation: CloudGatewayConfiguration#get
       summary: Get Configuration
       description: Retrieves a configuration by ID (restricted by permitted control-plane read).
       operationId: get-configuration
@@ -127,6 +129,7 @@ paths:
       tags:
         - Networks
     post:
+      x-speakeasy-entity-operation: CloudGatewayNetwork#create
       summary: Create Network
       description: Creates a new network for a given provider account.
       operationId: create-network
@@ -151,6 +154,7 @@ paths:
         - Networks
   /cloud-gateways/networks/{networkId}:
     get:
+      x-speakeasy-entity-operation: CloudGatewayNetwork#read
       summary: Get Network
       description: Retrieves a network by ID.
       operationId: get-network
@@ -168,6 +172,7 @@ paths:
       tags:
         - Networks
     patch:
+      x-speakeasy-entity-operation: CloudGatewayNetwork#update
       summary: Update Network
       description: Updates a network by ID.
       operationId: update-network
@@ -195,6 +200,17 @@ paths:
       tags:
         - Networks
     delete:
+      x-speakeasy-entity-operation: CloudGatewayNetwork#delete
+      x-speakeasy-retries:
+        strategy: backoff
+        backoff:
+          initialInterval: 10000
+          maxInterval: 60000
+          maxElapsedTime: 1800000
+          exponent: 1.5
+        statusCodes:
+          - 400
+        retryConnectionErrors: false
       summary: Delete Network
       description: Deletes a network by ID.
       operationId: delete-network
@@ -237,6 +253,17 @@ paths:
       tags:
         - Transit Gateways
     post:
+      x-speakeasy-entity-operation: CloudGatewayTransitGateway#create
+      x-speakeasy-retries:
+        strategy: backoff
+        backoff:
+          initialInterval: 30000
+          maxInterval: 60000
+          maxElapsedTime: 3600000
+          exponent: 1.5
+        statusCodes:
+          - 400
+        retryConnectionErrors: false
       summary: Create Transit Gateway
       description: Creates a new transit gateway for a given network.
       operationId: create-transit-gateway
@@ -265,6 +292,7 @@ paths:
         - Transit Gateways
   /cloud-gateways/networks/{networkId}/transit-gateways/{transitGatewayId}:
     get:
+      x-speakeasy-entity-operation: CloudGatewayTransitGateway#read
       summary: Get Transit Gateway
       description: Retrieves a transit gateway by ID for a given network.
       operationId: get-transit-gateway
@@ -283,6 +311,17 @@ paths:
       tags:
         - Transit Gateways
     delete:
+      x-speakeasy-entity-operation: CloudGatewayTransitGateway#delete
+      x-speakeasy-retries:
+        strategy: backoff
+        backoff:
+          initialInterval: 10000
+          maxInterval: 60000
+          maxElapsedTime: 1800000
+          exponent: 1.5
+        statusCodes:
+          - 400
+        retryConnectionErrors: false
       summary: Delete Transit Gateway
       description: Deletes a transit gateway by ID for a given network.
       operationId: delete-transit-gateway
@@ -327,6 +366,7 @@ paths:
         - Networks
   /cloud-gateways/provider-accounts:
     get:
+      x-speakeasy-entity-operation: CloudGatewayProviderAccountList#read
       summary: List Provider Accounts
       description: Returns a a paginated collection of provider accounts for an organization.
       operationId: list-provider-accounts
@@ -432,6 +472,7 @@ paths:
       tags:
         - Custom Domains
     post:
+      x-speakeasy-entity-operation: CloudGatewayCustomDomain#create
       summary: Create Custom Domain
       description: |
         Creates a new custom domain for a control-plane (restricted by permitted control-plane associate-custom-domain
@@ -460,6 +501,7 @@ paths:
         - Custom Domains
   /cloud-gateways/custom-domains/{customDomainId}:
     get:
+      x-speakeasy-entity-operation: CloudGatewayCustomDomain#read
       summary: Get Custom Domain
       description: Retrieves a custom domain by ID (restricted by permitted control-plane reads).
       operationId: get-custom-domain
@@ -477,6 +519,17 @@ paths:
       tags:
         - Custom Domains
     delete:
+      x-speakeasy-entity-operation: CloudGatewayCustomDomain#delete
+      x-speakeasy-retries:
+        strategy: backoff
+        backoff:
+          initialInterval: 10000
+          maxInterval: 60000
+          maxElapsedTime: 1800000
+          exponent: 1.5
+        statusCodes:
+          - 400
+        retryConnectionErrors: false
       summary: Delete Custom Domain
       description: Deletes a custom domain by ID (restricted by permitted control-plane reads).
       operationId: delete-custom-domain
@@ -679,6 +732,7 @@ components:
       required: true
       schema:
         $ref: '#/components/schemas/ConfigurationId'
+      x-speakeasy-match: id
     CustomDomainId:
       name: customDomainId
       description: ID of the custom domain to operate on.
@@ -686,6 +740,7 @@ components:
       in: path
       schema:
         $ref: '#/components/schemas/CustomDomainId'
+      x-speakeasy-match: id
     NetworkId:
       name: networkId
       in: path
@@ -693,6 +748,7 @@ components:
       required: true
       schema:
         $ref: '#/components/schemas/NetworkId'
+      x-speakeasy-match: id
     TransitGatewayId:
       name: transitGatewayId
       in: path
@@ -700,6 +756,7 @@ components:
       required: true
       schema:
         $ref: '#/components/schemas/TransitGatewayId'
+      x-speakeasy-match: id
     ResourceQuotaId:
       name: resourceQuotaId
       in: path
@@ -836,6 +893,7 @@ components:
       content:
         application/json:
           schema:
+            x-speakeasy-entity: CloudGatewayProviderAccountList
             title: 'ListCloudGatewayProviderAccountsResponse'
             type: object
             properties:
@@ -1347,6 +1405,7 @@ components:
     NetworkConfigurationReference:
       $ref: '#/components/schemas/ConfigurationManifest'
     ConfigurationManifest:
+      x-speakeasy-entity: CloudGatewayConfiguration
       title: Configuration
       description: Object containing information about a control-plane's cloud-gateways configuration.
       type: object
@@ -1521,6 +1580,7 @@ components:
         - 'use2-az2'
         - 'use2-az3'
     Network:
+      x-speakeasy-entity: CloudGatewayNetwork
       title: Network
       description: Object containing information about a network to be used in configurations.
       type: object
@@ -1595,6 +1655,7 @@ components:
         - created_at
         - updated_at
     CreateNetworkRequest:
+      x-speakeasy-entity: CloudGatewayNetwork
       title: 'CreateNetworkRequest'
       description: Request schema for creating a network.
       type: object
@@ -1621,6 +1682,7 @@ components:
         - availability_zones
         - cidr_block
     PatchNetworkRequest:
+      x-speakeasy-entity: CloudGatewayNetwork
       title: 'PatchNetworkRequest'
       description: Request schema for updating a network.
       type: object
@@ -1733,6 +1795,7 @@ components:
         - '100.64.0.0/10'
         - '172.16.0.0/12'
     TransitGateway:
+      x-speakeasy-entity: CloudGatewayTransitGateway
       title: Transit Gateway
       description: Object containing information about a transit gateway.
       type: object
@@ -1822,8 +1885,9 @@ components:
       title: Custom Domain Name
       type: string
       description: Domain name of the custom domain.
-      example: 'https://example.com'
+      example: 'example.com'
     CustomDomain:
+      x-speakeasy-entity: CloudGatewayCustomDomain
       title: Custom Domain
       description: Object containing information about a custom domain for a control-plane.
       type: object
@@ -2398,6 +2462,7 @@ components:
         invalid_parameters:
           - field: domain
             rule: min_length
+            minimum: 1
             reason: 'domain must be longer than or equal to 1 characters'
     ConfigurationApiAccessBadRequestExample:
       value:
@@ -2408,6 +2473,10 @@ components:
         invalid_parameters:
           - field: api_access
             rule: enum
+            choices:
+              - private
+              - public
+              - private+public
             reason: 'api_access must be one of the following values: private, public, private+public'
     ConfigurationDataPlaneGroupStaticRequestedInstancesBadRequestExample:
       value:

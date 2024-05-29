@@ -1,0 +1,27 @@
+overlay: 1.0.0
+info:
+  title: Konnect Cloud Gateways Overlay
+  version: 0.0.0
+actions:
+
+  - target: $["paths"]["/v2/cloud-gateways/networks/{networkId}/transit-gateways"]["post"]["parameters"][0]['$ref']
+    remove: true
+  - target: $["paths"]["/v2/cloud-gateways/networks/{networkId}/transit-gateways"]["post"]["parameters"][0]
+    update:
+      name: networkId
+      in: path
+      description: The network to operate on.
+      required: true
+      schema:
+        $ref: '#/components/schemas/NetworkId'
+
+  - target: $["paths"]["/v2/cloud-gateways/networks/{networkId}/transit-gateways/{transitGatewayId}"]["get","delete"]["parameters"][0]['$ref']
+    remove: true
+  - target: $["paths"]["/v2/cloud-gateways/networks/{networkId}/transit-gateways/{transitGatewayId}"]["get","delete"]["parameters"][0]
+    update:
+      name: networkId
+      in: path
+      description: The network to operate on.
+      required: true
+      schema:
+        $ref: '#/components/schemas/NetworkId'

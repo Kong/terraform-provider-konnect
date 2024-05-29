@@ -23,8 +23,9 @@
                         ]
                     },
                     {
-                        "field": "ssh_key",
-                        "reason": "invalid SSH key provided"
+                        "field": "custom_domain",
+                        "rule": "is_fqdn",
+                        "reason": "someexamplesite is not a valid domain"
                     }
                 ]
             }
