@@ -2,11 +2,8 @@ package custom
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
-	"time"
 
-	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -18,6 +15,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/src/utils"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -26,30 +24,6 @@ var _ resource.ResourceWithImportState = &CustomPluginResource{}
 
 func NewCustomPluginResource() resource.Resource {
 	return &CustomPluginResource{}
-}
-
-type CustomPluginResourceModel struct {
-	ID             types.String  `tfsdk:"id"`
-	Name           types.String  `tfsdk:"name"`
-	Config         types.Dynamic `tfsdk:"config"`
-	ControlPlaneID types.String  `tfsdk:"control_plane_id"`
-}
-
-func (r *CustomPluginResourceModel) ToSharedPluginInput() (shared.PluginInput, error) {
-	config := r.Config.UnderlyingValue()
-
-	// Use .String() to convert the dynamic value to a string,
-	// then unmarshal the JSON string into a map[string]any
-	var configJson map[string]any
-	err := json.Unmarshal([]byte(config.String()), &configJson)
-	if err != nil {
-		return shared.PluginInput{}, err
-	}
-
-	return shared.PluginInput{
-		Name:   sdk.String(r.Name.ValueString()),
-		Config: configJson,
-	}, nil
 }
 
 type CustomPluginResource struct {
@@ -125,177 +99,26 @@ func (r *CustomPluginResource) Create(ctx context.Context, req resource.CreateRe
 		return
 	}
 
-	controlPlaneID := plugin.ControlPlaneID.ValueString()
 	pluginData, err := plugin.ToSharedPluginInput()
 	if err != nil {
 		resp.Diagnostics.AddError("failed to convert PluginInput", err.Error())
 		return
 	}
 
-	request := operations.CreatePluginRequest{
-		ControlPlaneID: controlPlaneID,
+	res, err := r.client.Plugins.CreatePlugin(ctx, operations.CreatePluginRequest{
+		ControlPlaneID: plugin.ControlPlaneID.ValueString(),
 		Plugin:         pluginData,
-	}
-	res, err := r.client.Plugins.CreatePlugin(ctx, request)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+	})
+
+	checkPluginResponse(res, err, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
 		return
 	}
-	if res == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
-		return
-	}
-	if res.Plugin == nil {
-		resp.Diagnostics.AddError("unexpected response from API.", "No response body")
-		return
-	}
+
 	plugin.RefreshFromResponse(ctx, r.client, resp.Diagnostics, res.Plugin)
 	refreshPlan(ctx, plan, &plugin, resp.Diagnostics)
 
-	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plugin)...)
-}
-
-func merge(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse, target interface{}) {
-	var plan types.Object
-	var state types.Object
-
-	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	val, err := state.ToTerraformValue(ctx)
-	if err != nil {
-		resp.Diagnostics.Append(diag.NewErrorDiagnostic("Object Conversion Error", "An unexpected error was encountered trying to convert object. This is always an error in the provider. Please report the following to the provider developer:\n\n"+err.Error()))
-		return
-	}
-	resp.Diagnostics.Append(tfReflect.Into(ctx, types.ObjectType{AttrTypes: state.AttributeTypes(ctx)}, val, target, tfReflect.Options{
-		UnhandledNullAsEmpty:    true,
-		UnhandledUnknownAsEmpty: true,
-	}, path.Empty())...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	refreshPlan(ctx, plan, target, resp.Diagnostics)
-}
-
-func refreshPlan(ctx context.Context, plan types.Object, target interface{}, diagnostics diag.Diagnostics) {
-	obj := types.ObjectType{AttrTypes: plan.AttributeTypes(ctx)}
-	val, err := plan.ToTerraformValue(ctx)
-	if err != nil {
-		diagnostics.Append(diag.NewErrorDiagnostic("Object Conversion Error", "An unexpected error was encountered trying to convert object. This is always an error in the provider. Please report the following to the provider developer:\n\n"+err.Error()))
-		return
-	}
-	diagnostics.Append(tfReflect.Into(ctx, obj, val, target, tfReflect.Options{
-		UnhandledNullAsEmpty:    true,
-		UnhandledUnknownAsEmpty: true,
-		SourceType:              tfReflect.SourceTypePlan,
-	}, path.Empty())...)
-}
-
-func (r *CustomPluginResourceModel) RefreshFromResponse_WORKING(ctx context.Context, diags diag.Diagnostics, resp *shared.Plugin) {
-	r.ID = types.StringPointerValue(resp.ID)
-	r.Name = types.StringPointerValue(resp.Name)
-
-	c, d := types.MapValueFrom(ctx, types.DynamicType, resp.Config)
-	if d != nil {
-		diags.Append(d...)
-	}
-
-	r.Config = types.DynamicValue(c)
-}
-
-type PluginSchema struct {
-	Fields []map[string]PluginField `json:"fields"`
-}
-type PluginField struct {
-	Type    string                   `json:"type"`
-	Default interface{}              `json:"default"`
-	Fields  []map[string]PluginField `json:"fields"`
-}
-
-func pruneConfigValues(ctx context.Context, config map[string]interface{}, configSchema []map[string]PluginField) {
-	for _, fieldConfig := range configSchema {
-		for fieldKey, field := range fieldConfig {
-			configValue, ok := config[fieldKey]
-			if ok {
-				// If field type is record, then recurse
-				if field.Type == "record" {
-					childConfigValue := configValue.(map[string]interface{})
-					pruneConfigValues(ctx, childConfigValue, field.Fields)
-					// If all fields of child config are defaults, then remove entire child config from parent
-					if len(childConfigValue) == 0 {
-						delete(config, fieldKey)
-					}
-				} else if areConfigValuesEqual(ctx, fieldKey, configValue, field.Default) {
-					delete(config, fieldKey)
-				}
-			}
-		}
-	}
-}
-
-func areConfigValuesEqual(ctx context.Context, key string, configValue interface{}, schemaDefault interface{}) bool {
-	configValueJSON, _ := json.Marshal(configValue)
-	configValueString := string(configValueJSON[:])
-	schemaFieldDefaultJSON, _ := json.Marshal(schemaDefault)
-	schemaFieldString := string(schemaFieldDefaultJSON[:])
-	return configValueString == schemaFieldString
-}
-
-func extractPluginConfigSchema(fields []map[string]any, diags diag.Diagnostics) (PluginSchema, diag.Diagnostics) {
-	// Each field is a map with a single key
-	var configSchema any
-	for _, value := range fields {
-		valueMap, ok := value["config"]
-		if ok {
-			configSchema, ok = valueMap.(PluginSchema)
-			if !ok {
-				diags.AddError("failed to extract plugin config schema", fmt.Sprintf("expected PluginSchema, got %T", valueMap))
-				return PluginSchema{}, diags
-			}
-			break
-		}
-	}
-
-	return configSchema.(PluginSchema), diags
-}
-
-func (r *CustomPluginResourceModel) RefreshFromResponse(ctx context.Context, client *sdk.Konnect, diags diag.Diagnostics, resp *shared.Plugin) {
-	r.ID = types.StringPointerValue(resp.ID)
-	r.Name = types.StringPointerValue(resp.Name)
-
-	// Remove
-	schema, err := client.Plugins.FetchPluginSchema(ctx, operations.FetchPluginSchemaRequest{
-		PluginName:     r.Name.ValueString(),
-		ControlPlaneID: r.ControlPlaneID.ValueString(),
-	})
-
-	if err != nil {
-		diags.AddError("failed to fetch plugin schema", err.Error())
-		return
-	}
-
-	config, diag := extractPluginConfigSchema(schema.Object.Fields, diags)
-	if diag.HasError() {
-		diags.Append(diag...)
-		return
-	}
-
-	// Find the schema
-	pruneConfigValues(ctx, resp.Config, config.Fields)
-
-	_, c, diag := convertToTerraformType(resp.Config)
-	if diag.HasError() {
-		diags.Append(diag...)
-	}
-
-	r.Config = types.DynamicValue(c)
 }
 
 func (r *CustomPluginResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
@@ -317,11 +140,12 @@ func (r *CustomPluginResource) Read(ctx context.Context, req resource.ReadReques
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	request := operations.GetPluginRequest{
+
+	res, err := r.client.Plugins.GetPlugin(ctx, operations.GetPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		PluginID:       data.ID.ValueString(),
-	}
-	res, err := r.client.Plugins.GetPlugin(ctx, request)
+	})
+
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -337,18 +161,10 @@ func (r *CustomPluginResource) Read(ctx context.Context, req resource.ReadReques
 		resp.State.RemoveResource(ctx)
 		return
 	}
-	if res.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), "")
-		return
-	}
 	if res.Plugin == nil {
 		resp.Diagnostics.AddError("unexpected response from API. No response body", "")
 		return
 	}
-
-	// Remove any fields that are not in the plan
-	// TODO: This is a temporary workaround until the framework provides a better way to handle this
-	// TODO: Add plugin schema endpoint to the generated SDK
 
 	data.RefreshFromResponse(ctx, r.client, resp.Diagnostics, res.Plugin)
 
@@ -378,41 +194,29 @@ func (r *CustomPluginResource) Update(ctx context.Context, req resource.UpdateRe
 		return
 	}
 
-	merge(ctx, req, resp, &data)
+	// Merge state + plan
+	utils.Merge(ctx, req, resp, &data)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	plugin, err := data.ToSharedPluginInput()
 	if err != nil {
 		resp.Diagnostics.AddError("failed to convert PluginInput", err.Error())
 		return
 	}
 
-	request := operations.UpsertPluginRequest{
-		ControlPlaneID: controlPlaneID,
+	res, err := r.client.Plugins.UpsertPlugin(ctx, operations.UpsertPluginRequest{
+		ControlPlaneID: data.ControlPlaneID.ValueString(),
 		PluginID:       data.ID.ValueString(),
 		Plugin:         plugin,
-	}
-	res, err := r.client.Plugins.UpsertPlugin(ctx, request)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+	})
+
+	checkPluginResponse(res, err, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
 		return
 	}
-	if res == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
-		return
-	}
-	if res.StatusCode != 200 {
-		resp.Diagnostics.AddError("unexpected response from API.", fmt.Sprintf("Got an unexpected response code %v", res.StatusCode))
-		return
-	}
-	if res.Plugin == nil {
-		resp.Diagnostics.AddError("unexpected response from API.", "No response body")
-		return
-	}
+
 	data.RefreshFromResponse(ctx, r.client, resp.Diagnostics, res.Plugin)
 	refreshPlan(ctx, plan, &data, resp.Diagnostics)
-
-	data.ID = types.StringPointerValue(res.Plugin.ID)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -436,25 +240,18 @@ func (r *CustomPluginResource) Delete(ctx context.Context, req resource.DeleteRe
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
-	request := operations.DeletePluginRequest{
-		ControlPlaneID: controlPlaneID,
+	res, err := r.client.Plugins.DeletePlugin(ctx, operations.DeletePluginRequest{
+		ControlPlaneID: data.ControlPlaneID.ValueString(),
 		PluginID:       data.ID.ValueString(),
-	}
-	res, err := r.client.Plugins.DeletePlugin(ctx, request)
+	})
+
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res != nil && res.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", "")
-		}
 		return
 	}
+
 	if res == nil {
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
-		return
-	}
-	if res.StatusCode != 204 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), "")
 		return
 	}
 }
@@ -463,60 +260,83 @@ func (r *CustomPluginResource) ImportState(ctx context.Context, req resource.Imp
 	resp.Diagnostics.AddError("Not Implemented", "No available import state operation is available for resource gateway_custom_plugin.")
 }
 
-func convertToTerraformType(dynamicValue any) (attr.Type, attr.Value, diag.Diagnostics) {
-	var diags diag.Diagnostics
-	switch value := dynamicValue.(type) {
-	case string:
-		return types.StringType, types.StringValue(value), diags
-	case int:
-		return types.Int64Type, types.Int64Value(int64(value)), diags
-	case int64:
-		return types.Int64Type, types.Int64Value(value), diags
-	case float32:
-		return types.Float64Type, types.Float64Value(float64(value)), diags
-	case float64:
-		return types.Float64Type, types.Float64Value(value), diags
-	case bool:
-		return types.BoolType, types.BoolValue(value), diags
-	case time.Time:
-		return types.StringType, types.StringValue(value.Format(time.RFC3339)), diags
-	case nil:
-		return types.DynamicType, types.DynamicNull(), diags
-	case []any:
-		elementTypes := make([]attr.Type, len(value))
-		elementValues := make([]attr.Value, len(value))
-		for i, dynamicElementValue := range value {
-			elementType, elementValue, elementDiags := convertToTerraformType(dynamicElementValue)
-			elementTypes[i] = elementType
-			elementValues[i] = elementValue
-			diags.Append(elementDiags...)
-		}
-		if diags.HasError() {
-			return nil, nil, diags
-		}
-		result, tupleDiags := types.TupleValue(elementTypes, elementValues)
-		diags.Append(tupleDiags...)
-		return types.TupleType{ElemTypes: elementTypes}, result, diags
-	case map[string]any:
-		attributeTypes := make(map[string]attr.Type, len(value))
-		attributeValues := make(map[string]attr.Value, len(value))
-		for attributeName, dynamicAttributeValue := range value {
-			attributeType, attributeValue, attributeDiags := convertToTerraformType(dynamicAttributeValue)
-			attributeTypes[attributeName] = attributeType
-			attributeValues[attributeName] = attributeValue
-			diags.Append(attributeDiags...)
-		}
-		if diags.HasError() {
-			return nil, nil, diags
-		}
-		result, objectDiags := types.ObjectValue(attributeTypes, attributeValues)
-		diags.Append(objectDiags...)
-		return types.ObjectType{AttrTypes: attributeTypes}, result, diags
+func (r *CustomPluginResourceModel) RefreshFromResponse(ctx context.Context, client *sdk.Konnect, diags diag.Diagnostics, resp *shared.Plugin) {
+	r.ID = types.StringPointerValue(resp.ID)
+	r.Name = types.StringPointerValue(resp.Name)
+
+	// Remove default values from the config
+	// Fetch plugin schema + default values
+	schema, err := client.Plugins.FetchPluginSchema(ctx, operations.FetchPluginSchemaRequest{
+		PluginName:     r.Name.ValueString(),
+		ControlPlaneID: r.ControlPlaneID.ValueString(),
+	})
+
+	if err != nil {
+		diags.AddError("failed to fetch plugin schema", err.Error())
+		return
+	}
+
+	// Extract the plugin schema from the response
+	config, diag := utils.ExtractPluginConfigSchema(schema.Object.Fields, diags)
+	if diag.HasError() {
+		diags.Append(diag...)
+		return
+	}
+
+	// Remove default values
+	utils.PruneConfigValues(ctx, resp.Config, config.Fields)
+
+	// Convert to Terraform types
+	_, c, diag := utils.ConvertToTerraformType(resp.Config)
+	if diag.HasError() {
+		diags.Append(diag...)
+	}
+
+	r.Config = types.DynamicValue(c)
+}
+
+func refreshPlan(ctx context.Context, plan types.Object, target interface{}, diagnostics diag.Diagnostics) {
+	obj := types.ObjectType{AttrTypes: plan.AttributeTypes(ctx)}
+	val, err := plan.ToTerraformValue(ctx)
+	if err != nil {
+		diagnostics.Append(diag.NewErrorDiagnostic("Object Conversion Error", "An unexpected error was encountered trying to convert object. This is always an error in the provider. Please report the following to the provider developer:\n\n"+err.Error()))
+		return
+	}
+	diagnostics.Append(tfReflect.Into(ctx, obj, val, target, tfReflect.Options{
+		UnhandledNullAsEmpty:    true,
+		UnhandledUnknownAsEmpty: true,
+		SourceType:              tfReflect.SourceTypePlan,
+	}, path.Empty())...)
+}
+
+func checkPluginResponse(res any, err error, diagnostics *diag.Diagnostics) {
+	if err != nil {
+		diagnostics.AddError("failure to invoke API", err.Error())
+		return
+	}
+
+	if res == nil {
+		diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
+		return
+	}
+
+	plugin := getPluginFromResponse(res)
+
+	if plugin == nil {
+		diagnostics.AddError("could not cast API response to plugin", fmt.Sprintf("%T", res))
+		return
+	}
+}
+
+func getPluginFromResponse(res any) *shared.Plugin {
+	switch t := res.(type) {
+	case *operations.GetPluginResponse:
+		return t.Plugin
+	case *operations.UpsertPluginResponse:
+		return t.Plugin
+	case *operations.CreatePluginResponse:
+		return t.Plugin
 	default:
-		diags.AddError(
-			"Invalid type to convert to Terraform type",
-			fmt.Sprintf("Unable to convert value %v (type %T) to Terraform type", value, value),
-		)
-		return nil, nil, diags
+		return nil
 	}
 }
