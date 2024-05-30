@@ -3933,6 +3933,34 @@ paths:
       x-speakeasy-entity-operation: GatewayRoute#read
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
+  /v2/control-planes/{controlPlaneId}/core-entities/schemas/plugins/{pluginName}:
+    get:
+      description: Get the schema for a plugin
+      operationId: fetch-plugin-schema
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  fields:
+                    items:
+                      additionalProperties: true
+                      type: object
+                    type: array
+                type: object
+          description: The schema for the plugin
+      summary: Fetch plugin schema
+      tags:
+        - Plugins
+    parameters:
+      - description: The name of the plugin
+        in: path
+        name: pluginName
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/ControlPlaneId'
   /v2/control-planes/{controlPlaneId}/core-entities/services:
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
