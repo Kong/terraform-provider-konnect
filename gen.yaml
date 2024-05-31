@@ -18,7 +18,13 @@ terraform:
   additionalDependencies: {}
   additionalResources: []
   author: kong
-  environmentVariables: []
+  environmentVariables:
+    - env: KONNECT_TOKEN
+      providerAttribute: personal_access_token
+    - env: KONNECT_SPAT
+      providerAttribute: system_account_access_token
+    - env: KONNECT_SERVER_URL
+      providerAttribute: server_url
   imports:
     option: openapi
     paths:
