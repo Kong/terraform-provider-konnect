@@ -13,13 +13,19 @@ generation:
     oAuth2ClientCredentialsEnabled: false
   baseServerURL: ""
 terraform:
-  version: 0.2.4
+  version: 0.2.5
   additionalDataSources: []
   additionalDependencies: {}
   additionalResources: []
   allowUnknownFieldsInWeakUnions: false
   author: kong
-  environmentVariables: []
+  environmentVariables:
+    - env: KONNECT_TOKEN
+      providerAttribute: personal_access_token
+    - env: KONNECT_SPAT
+      providerAttribute: system_account_access_token
+    - env: KONNECT_SERVER_URL
+      providerAttribute: server_url
   imports:
     option: openapi
     paths:
