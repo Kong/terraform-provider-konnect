@@ -12,6 +12,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
 	"net/http"
+	"os"
 )
 
 var _ provider.Provider = &KonnectProvider{}
@@ -72,6 +73,9 @@ func (p *KonnectProvider) Configure(ctx context.Context, req provider.ConfigureR
 
 	ServerURL := data.ServerURL.ValueString()
 
+	if ServerURL == "" && len(os.Getenv("KONNECT_SERVER_URL")) > 0 {
+		ServerURL = os.Getenv("KONNECT_SERVER_URL")
+	}
 	if ServerURL == "" {
 		ServerURL = "https://global.api.konghq.com"
 	}
@@ -80,13 +84,21 @@ func (p *KonnectProvider) Configure(ctx context.Context, req provider.ConfigureR
 	if !data.PersonalAccessToken.IsUnknown() && !data.PersonalAccessToken.IsNull() {
 		*personalAccessToken = data.PersonalAccessToken.ValueString()
 	} else {
-		personalAccessToken = nil
+		if len(os.Getenv("KONNECT_TOKEN")) > 0 {
+			*personalAccessToken = os.Getenv("KONNECT_TOKEN")
+		} else {
+			personalAccessToken = nil
+		}
 	}
 	systemAccountAccessToken := new(string)
 	if !data.SystemAccountAccessToken.IsUnknown() && !data.SystemAccountAccessToken.IsNull() {
 		*systemAccountAccessToken = data.SystemAccountAccessToken.ValueString()
 	} else {
-		systemAccountAccessToken = nil
+		if len(os.Getenv("KONNECT_SPAT")) > 0 {
+			*systemAccountAccessToken = os.Getenv("KONNECT_SPAT")
+		} else {
+			systemAccountAccessToken = nil
+		}
 	}
 	konnectAccessToken := new(string)
 	if !data.KonnectAccessToken.IsUnknown() && !data.KonnectAccessToken.IsNull() {
