@@ -20,3 +20,7 @@ This provider is generated from `openapi.yaml` using Speakeasy. To test a new ve
 The `openapi.yaml` file in this repository is generated from Kong's platform-api repository (this repository is not OSS). Any changes made directly to `openapi.yaml` will be lost.
 
 Please raise an issue if you have suggested changes to `openapi.yaml`.
+
+## Automated Testing
+
+The `make test` target runs some end to end tests against an org that @mheap owns. The tests need some refactoring (system account team IDs need to be dynamic) before anyone else can run them.
