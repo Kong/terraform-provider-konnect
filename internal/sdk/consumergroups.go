@@ -132,6 +132,7 @@ func (s *ConsumerGroups) CreateConsumerGroup(ctx context.Context, request operat
 	}
 
 	return res, nil
+
 }
 
 // DeleteConsumerGroup - Delete a Consumer Group
@@ -222,6 +223,7 @@ func (s *ConsumerGroups) DeleteConsumerGroup(ctx context.Context, request operat
 	}
 
 	return res, nil
+
 }
 
 // GetConsumerGroup - Fetch a Consumer Group
@@ -324,4 +326,5 @@ func (s *ConsumerGroups) GetConsumerGroup(ctx context.Context, request operation
 	}
 
 	return res, nil
+
 }

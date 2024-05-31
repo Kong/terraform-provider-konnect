@@ -112,7 +112,8 @@ func (p *KonnectProvider) Configure(ctx context.Context, req provider.ConfigureR
 }
 
 func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resource {
-	return []func() resource.Resource{NewAPIProductResource,
+	return []func() resource.Resource{
+		NewAPIProductResource,
 		NewAPIProductVersionResource,
 		NewApplicationAuthStrategyResource,
 		NewCloudGatewayConfigurationResource,
@@ -181,7 +182,8 @@ func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resou
 }
 
 func (p *KonnectProvider) DataSources(ctx context.Context) []func() datasource.DataSource {
-	return []func() datasource.DataSource{NewAPIProductDataSource,
+	return []func() datasource.DataSource{
+		NewAPIProductDataSource,
 		NewAPIProductVersionDataSource,
 		NewApplicationAuthStrategyDataSource,
 		NewCloudGatewayConfigurationDataSource,

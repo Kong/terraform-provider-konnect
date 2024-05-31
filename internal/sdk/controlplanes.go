@@ -206,6 +206,7 @@ func (s *ControlPlanes) CreateControlPlane(ctx context.Context, request shared.C
 	}
 
 	return res, nil
+
 }
 
 // GetControlPlane - Fetch Control Plane
@@ -370,6 +371,7 @@ func (s *ControlPlanes) GetControlPlane(ctx context.Context, request operations.
 	}
 
 	return res, nil
+
 }
 
 // UpdateControlPlane - Update Control Plane
@@ -552,6 +554,7 @@ func (s *ControlPlanes) UpdateControlPlane(ctx context.Context, request operatio
 	}
 
 	return res, nil
+
 }
 
 // DeleteControlPlane - Delete Control Plane
@@ -702,4 +705,5 @@ func (s *ControlPlanes) DeleteControlPlane(ctx context.Context, request operatio
 	}
 
 	return res, nil
+
 }

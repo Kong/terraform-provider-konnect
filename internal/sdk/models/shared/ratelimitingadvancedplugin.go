@@ -26,7 +26,6 @@ const (
 func (e RateLimitingAdvancedPluginProtocols) ToPointer() *RateLimitingAdvancedPluginProtocols {
 	return &e
 }
-
 func (e *RateLimitingAdvancedPluginProtocols) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -111,7 +110,6 @@ const (
 func (e Identifier) ToPointer() *Identifier {
 	return &e
 }
-
 func (e *Identifier) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -150,7 +148,6 @@ const (
 func (e SentinelRole) ToPointer() *SentinelRole {
 	return &e
 }
-
 func (e *SentinelRole) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -375,7 +372,6 @@ const (
 func (e RateLimitingAdvancedPluginStrategy) ToPointer() *RateLimitingAdvancedPluginStrategy {
 	return &e
 }
-
 func (e *RateLimitingAdvancedPluginStrategy) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -405,7 +401,6 @@ const (
 func (e WindowType) ToPointer() *WindowType {
 	return &e
 }
-
 func (e *WindowType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {

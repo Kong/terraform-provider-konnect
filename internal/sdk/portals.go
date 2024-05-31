@@ -169,6 +169,7 @@ func (s *Portals) ListPortals(ctx context.Context, request operations.ListPortal
 	}
 
 	return res, nil
+
 }
 
 // UpdatePortal - Update Portal
@@ -339,4 +340,5 @@ func (s *Portals) UpdatePortal(ctx context.Context, request operations.UpdatePor
 	}
 
 	return res, nil
+
 }

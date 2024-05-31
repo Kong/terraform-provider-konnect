@@ -12,6 +12,7 @@ import (
 func (r *GatewayRouteDataSourceModel) RefreshFromSharedRoute(resp *shared.Route) {
 	if resp != nil {
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
+		r.Destinations = []tfTypes.SessionRedisClusterNodes{}
 		if len(r.Destinations) > len(resp.Destinations) {
 			r.Destinations = r.Destinations[:len(resp.Destinations)]
 		}
@@ -75,6 +76,7 @@ func (r *GatewayRouteDataSourceModel) RefreshFromSharedRoute(resp *shared.Route)
 		for _, v := range resp.Snis {
 			r.Snis = append(r.Snis, types.StringValue(v))
 		}
+		r.Sources = []tfTypes.SessionRedisClusterNodes{}
 		if len(r.Sources) > len(resp.Sources) {
 			r.Sources = r.Sources[:len(resp.Sources)]
 		}

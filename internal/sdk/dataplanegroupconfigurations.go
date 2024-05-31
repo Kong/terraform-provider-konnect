@@ -199,6 +199,7 @@ func (s *DataPlaneGroupConfigurations) CreateConfiguration(ctx context.Context, 
 	}
 
 	return res, nil
+
 }
 
 // GetConfiguration - Get Configuration
@@ -339,4 +340,5 @@ func (s *DataPlaneGroupConfigurations) GetConfiguration(ctx context.Context, req
 	}
 
 	return res, nil
+
 }

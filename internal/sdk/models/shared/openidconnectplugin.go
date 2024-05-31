@@ -26,7 +26,6 @@ const (
 func (e OpenidConnectPluginProtocols) ToPointer() *OpenidConnectPluginProtocols {
 	return &e
 }
-
 func (e *OpenidConnectPluginProtocols) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -112,7 +111,6 @@ const (
 func (e AuthMethods) ToPointer() *AuthMethods {
 	return &e
 }
-
 func (e *AuthMethods) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -156,7 +154,6 @@ const (
 func (e AuthorizationCookieSameSite) ToPointer() *AuthorizationCookieSameSite {
 	return &e
 }
-
 func (e *AuthorizationCookieSameSite) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -189,7 +186,6 @@ const (
 func (e BearerTokenParamType) ToPointer() *BearerTokenParamType {
 	return &e
 }
-
 func (e *BearerTokenParamType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -231,7 +227,6 @@ const (
 func (e ClientAlg) ToPointer() *ClientAlg {
 	return &e
 }
-
 func (e *ClientAlg) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -285,7 +280,6 @@ const (
 func (e ClientAuth) ToPointer() *ClientAuth {
 	return &e
 }
-
 func (e *ClientAuth) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -323,7 +317,6 @@ const (
 func (e ClientCredentialsParamType) ToPointer() *ClientCredentialsParamType {
 	return &e
 }
-
 func (e *ClientCredentialsParamType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -556,7 +549,6 @@ const (
 func (e ConsumerBy) ToPointer() *ConsumerBy {
 	return &e
 }
-
 func (e *ConsumerBy) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -592,7 +584,6 @@ const (
 func (e DisableSession) ToPointer() *DisableSession {
 	return &e
 }
-
 func (e *DisableSession) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -634,7 +625,6 @@ const (
 func (e IDTokenParamType) ToPointer() *IDTokenParamType {
 	return &e
 }
-
 func (e *IDTokenParamType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -668,7 +658,6 @@ const (
 func (e IgnoreSignature) ToPointer() *IgnoreSignature {
 	return &e
 }
-
 func (e *IgnoreSignature) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -707,7 +696,6 @@ const (
 func (e IntrospectionAccept) ToPointer() *IntrospectionAccept {
 	return &e
 }
-
 func (e *IntrospectionAccept) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -742,7 +730,6 @@ const (
 func (e IntrospectionEndpointAuthMethod) ToPointer() *IntrospectionEndpointAuthMethod {
 	return &e
 }
-
 func (e *IntrospectionEndpointAuthMethod) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -781,7 +768,6 @@ const (
 func (e LoginAction) ToPointer() *LoginAction {
 	return &e
 }
-
 func (e *LoginAction) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -817,7 +803,6 @@ const (
 func (e LoginMethods) ToPointer() *LoginMethods {
 	return &e
 }
-
 func (e *LoginMethods) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -859,7 +844,6 @@ const (
 func (e LoginRedirectMode) ToPointer() *LoginRedirectMode {
 	return &e
 }
-
 func (e *LoginRedirectMode) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -889,7 +873,6 @@ const (
 func (e LoginTokens) ToPointer() *LoginTokens {
 	return &e
 }
-
 func (e *LoginTokens) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -923,7 +906,6 @@ const (
 func (e LogoutMethods) ToPointer() *LogoutMethods {
 	return &e
 }
-
 func (e *LogoutMethods) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -953,7 +935,6 @@ const (
 func (e PasswordParamType) ToPointer() *PasswordParamType {
 	return &e
 }
-
 func (e *PasswordParamType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -984,7 +965,6 @@ const (
 func (e ProofOfPossessionMtls) ToPointer() *ProofOfPossessionMtls {
 	return &e
 }
-
 func (e *ProofOfPossessionMtls) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -1019,7 +999,6 @@ const (
 func (e PushedAuthorizationRequestEndpointAuthMethod) ToPointer() *PushedAuthorizationRequestEndpointAuthMethod {
 	return &e
 }
-
 func (e *PushedAuthorizationRequestEndpointAuthMethod) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -1057,7 +1036,6 @@ const (
 func (e RefreshTokenParamType) ToPointer() *RefreshTokenParamType {
 	return &e
 }
-
 func (e *RefreshTokenParamType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -1088,7 +1066,6 @@ const (
 func (e ResponseMode) ToPointer() *ResponseMode {
 	return &e
 }
-
 func (e *ResponseMode) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -1123,7 +1100,6 @@ const (
 func (e RevocationEndpointAuthMethod) ToPointer() *RevocationEndpointAuthMethod {
 	return &e
 }
-
 func (e *RevocationEndpointAuthMethod) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -1163,7 +1139,6 @@ const (
 func (e SessionCookieSameSite) ToPointer() *SessionCookieSameSite {
 	return &e
 }
-
 func (e *SessionCookieSameSite) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -1231,7 +1206,6 @@ const (
 func (e SessionRequestHeaders) ToPointer() *SessionRequestHeaders {
 	return &e
 }
-
 func (e *SessionRequestHeaders) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -1273,7 +1247,6 @@ const (
 func (e SessionResponseHeaders) ToPointer() *SessionResponseHeaders {
 	return &e
 }
-
 func (e *SessionResponseHeaders) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -1313,7 +1286,6 @@ const (
 func (e SessionStorage) ToPointer() *SessionStorage {
 	return &e
 }
-
 func (e *SessionStorage) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -1350,7 +1322,6 @@ const (
 func (e TokenEndpointAuthMethod) ToPointer() *TokenEndpointAuthMethod {
 	return &e
 }
-
 func (e *TokenEndpointAuthMethod) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -1389,7 +1360,6 @@ const (
 func (e TokenHeadersGrants) ToPointer() *TokenHeadersGrants {
 	return &e
 }
-
 func (e *TokenHeadersGrants) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -1421,7 +1391,6 @@ const (
 func (e UserinfoAccept) ToPointer() *UserinfoAccept {
 	return &e
 }
-
 func (e *UserinfoAccept) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {

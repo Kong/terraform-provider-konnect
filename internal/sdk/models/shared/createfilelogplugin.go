@@ -26,7 +26,6 @@ const (
 func (e CreateFileLogPluginProtocols) ToPointer() *CreateFileLogPluginProtocols {
 	return &e
 }
-
 func (e *CreateFileLogPluginProtocols) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {

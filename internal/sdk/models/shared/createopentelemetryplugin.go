@@ -26,7 +26,6 @@ const (
 func (e CreateOpentelemetryPluginProtocols) ToPointer() *CreateOpentelemetryPluginProtocols {
 	return &e
 }
-
 func (e *CreateOpentelemetryPluginProtocols) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -113,7 +112,6 @@ const (
 func (e CreateOpentelemetryPluginHeaderType) ToPointer() *CreateOpentelemetryPluginHeaderType {
 	return &e
 }
-
 func (e *CreateOpentelemetryPluginHeaderType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {

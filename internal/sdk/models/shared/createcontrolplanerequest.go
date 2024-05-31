@@ -20,7 +20,6 @@ const (
 func (e ClusterType) ToPointer() *ClusterType {
 	return &e
 }
-
 func (e *ClusterType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -52,7 +51,6 @@ const (
 func (e AuthType) ToPointer() *AuthType {
 	return &e
 }
-
 func (e *AuthType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {

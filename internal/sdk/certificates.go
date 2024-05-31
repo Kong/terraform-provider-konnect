@@ -135,6 +135,7 @@ func (s *Certificates) CreateCertificate(ctx context.Context, request operations
 	}
 
 	return res, nil
+
 }
 
 // DeleteCertificate - Delete a Certificate
@@ -225,6 +226,7 @@ func (s *Certificates) DeleteCertificate(ctx context.Context, request operations
 	}
 
 	return res, nil
+
 }
 
 // GetCertificate - Fetch a Certificate
@@ -327,4 +329,5 @@ func (s *Certificates) GetCertificate(ctx context.Context, request operations.Ge
 	}
 
 	return res, nil
+
 }

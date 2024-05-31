@@ -74,8 +74,8 @@ func (u *AuthStrategy) UnmarshalJSON(data []byte) error {
 	switch dis.CredentialType {
 	case "key_auth":
 		authStrategyKeyAuth := new(AuthStrategyKeyAuth)
-		if err := utils.UnmarshalJSON(data, &authStrategyKeyAuth, "", true, true); err != nil {
-			return fmt.Errorf("could not unmarshal expected type: %w", err)
+		if err := utils.UnmarshalJSON(data, &authStrategyKeyAuth, "", true, false); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (CredentialType == key_auth) type AuthStrategyKeyAuth within AuthStrategy: %w", string(data), err)
 		}
 
 		u.AuthStrategyKeyAuth = authStrategyKeyAuth
@@ -83,8 +83,8 @@ func (u *AuthStrategy) UnmarshalJSON(data []byte) error {
 		return nil
 	case "client_credentials":
 		authStrategyClientCredentials := new(AuthStrategyClientCredentials)
-		if err := utils.UnmarshalJSON(data, &authStrategyClientCredentials, "", true, true); err != nil {
-			return fmt.Errorf("could not unmarshal expected type: %w", err)
+		if err := utils.UnmarshalJSON(data, &authStrategyClientCredentials, "", true, false); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (CredentialType == client_credentials) type AuthStrategyClientCredentials within AuthStrategy: %w", string(data), err)
 		}
 
 		u.AuthStrategyClientCredentials = authStrategyClientCredentials
@@ -92,8 +92,8 @@ func (u *AuthStrategy) UnmarshalJSON(data []byte) error {
 		return nil
 	case "self_managed_client_credentials":
 		authStrategyClientCredentials := new(AuthStrategyClientCredentials)
-		if err := utils.UnmarshalJSON(data, &authStrategyClientCredentials, "", true, true); err != nil {
-			return fmt.Errorf("could not unmarshal expected type: %w", err)
+		if err := utils.UnmarshalJSON(data, &authStrategyClientCredentials, "", true, false); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (CredentialType == self_managed_client_credentials) type AuthStrategyClientCredentials within AuthStrategy: %w", string(data), err)
 		}
 
 		u.AuthStrategyClientCredentials = authStrategyClientCredentials
@@ -101,7 +101,7 @@ func (u *AuthStrategy) UnmarshalJSON(data []byte) error {
 		return nil
 	}
 
-	return errors.New("could not unmarshal into supported union types")
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for AuthStrategy", string(data))
 }
 
 func (u AuthStrategy) MarshalJSON() ([]byte, error) {
@@ -113,5 +113,5 @@ func (u AuthStrategy) MarshalJSON() ([]byte, error) {
 		return utils.MarshalJSON(u.AuthStrategyClientCredentials, "", true)
 	}
 
-	return nil, errors.New("could not marshal union type: all fields are null")
+	return nil, errors.New("could not marshal union type AuthStrategy: all fields are null")
 }

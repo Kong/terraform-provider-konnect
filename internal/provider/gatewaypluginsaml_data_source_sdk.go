@@ -73,6 +73,7 @@ func (r *GatewayPluginSamlDataSourceModel) RefreshFromSharedSamlPlugin(resp *sha
 		r.Config.SessionMemcachedPrefix = types.StringPointerValue(resp.Config.SessionMemcachedPrefix)
 		r.Config.SessionMemcachedSocket = types.StringPointerValue(resp.Config.SessionMemcachedSocket)
 		r.Config.SessionRedisClusterMaxRedirections = types.Int64PointerValue(resp.Config.SessionRedisClusterMaxRedirections)
+		r.Config.SessionRedisClusterNodes = []tfTypes.SessionRedisClusterNodes{}
 		if len(r.Config.SessionRedisClusterNodes) > len(resp.Config.SessionRedisClusterNodes) {
 			r.Config.SessionRedisClusterNodes = r.Config.SessionRedisClusterNodes[:len(resp.Config.SessionRedisClusterNodes)]
 		}

@@ -17,6 +17,7 @@ terraform:
   additionalDataSources: []
   additionalDependencies: {}
   additionalResources: []
+  allowUnknownFieldsInWeakUnions: false
   author: kong
   environmentVariables: []
   imports:

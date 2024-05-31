@@ -26,7 +26,6 @@ const (
 func (e PreFunctionPluginProtocols) ToPointer() *PreFunctionPluginProtocols {
 	return &e
 }
-
 func (e *PreFunctionPluginProtocols) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {

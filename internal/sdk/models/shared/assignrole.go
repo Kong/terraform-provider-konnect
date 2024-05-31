@@ -20,7 +20,6 @@ const (
 func (e EntityRegion) ToPointer() *EntityRegion {
 	return &e
 }
-
 func (e *EntityRegion) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {

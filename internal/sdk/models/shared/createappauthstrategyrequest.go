@@ -18,7 +18,6 @@ const (
 func (e AppAuthStrategyOpenIDConnectRequestStrategyType) ToPointer() *AppAuthStrategyOpenIDConnectRequestStrategyType {
 	return &e
 }
-
 func (e *AppAuthStrategyOpenIDConnectRequestStrategyType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -108,7 +107,6 @@ const (
 func (e StrategyType) ToPointer() *StrategyType {
 	return &e
 }
-
 func (e *StrategyType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -233,8 +231,8 @@ func (u *CreateAppAuthStrategyRequest) UnmarshalJSON(data []byte) error {
 	switch dis.StrategyType {
 	case "key_auth":
 		appAuthStrategyKeyAuthRequest := new(AppAuthStrategyKeyAuthRequest)
-		if err := utils.UnmarshalJSON(data, &appAuthStrategyKeyAuthRequest, "", true, true); err != nil {
-			return fmt.Errorf("could not unmarshal expected type: %w", err)
+		if err := utils.UnmarshalJSON(data, &appAuthStrategyKeyAuthRequest, "", true, false); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (StrategyType == key_auth) type AppAuthStrategyKeyAuthRequest within CreateAppAuthStrategyRequest: %w", string(data), err)
 		}
 
 		u.AppAuthStrategyKeyAuthRequest = appAuthStrategyKeyAuthRequest
@@ -242,8 +240,8 @@ func (u *CreateAppAuthStrategyRequest) UnmarshalJSON(data []byte) error {
 		return nil
 	case "openid_connect":
 		appAuthStrategyOpenIDConnectRequest := new(AppAuthStrategyOpenIDConnectRequest)
-		if err := utils.UnmarshalJSON(data, &appAuthStrategyOpenIDConnectRequest, "", true, true); err != nil {
-			return fmt.Errorf("could not unmarshal expected type: %w", err)
+		if err := utils.UnmarshalJSON(data, &appAuthStrategyOpenIDConnectRequest, "", true, false); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (StrategyType == openid_connect) type AppAuthStrategyOpenIDConnectRequest within CreateAppAuthStrategyRequest: %w", string(data), err)
 		}
 
 		u.AppAuthStrategyOpenIDConnectRequest = appAuthStrategyOpenIDConnectRequest
@@ -251,7 +249,7 @@ func (u *CreateAppAuthStrategyRequest) UnmarshalJSON(data []byte) error {
 		return nil
 	}
 
-	return errors.New("could not unmarshal into supported union types")
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for CreateAppAuthStrategyRequest", string(data))
 }
 
 func (u CreateAppAuthStrategyRequest) MarshalJSON() ([]byte, error) {
@@ -263,5 +261,5 @@ func (u CreateAppAuthStrategyRequest) MarshalJSON() ([]byte, error) {
 		return utils.MarshalJSON(u.AppAuthStrategyOpenIDConnectRequest, "", true)
 	}
 
-	return nil, errors.New("could not marshal union type: all fields are null")
+	return nil, errors.New("could not marshal union type CreateAppAuthStrategyRequest: all fields are null")
 }

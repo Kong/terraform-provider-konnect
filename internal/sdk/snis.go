@@ -133,6 +133,7 @@ func (s *SNIs) CreateSni(ctx context.Context, request operations.CreateSniReques
 	}
 
 	return res, nil
+
 }
 
 // DeleteSni - Delete an SNI
@@ -223,6 +224,7 @@ func (s *SNIs) DeleteSni(ctx context.Context, request operations.DeleteSniReques
 	}
 
 	return res, nil
+
 }
 
 // GetSni - Fetch an SNI
@@ -325,4 +327,5 @@ func (s *SNIs) GetSni(ctx context.Context, request operations.GetSniRequest) (*o
 	}
 
 	return res, nil
+
 }

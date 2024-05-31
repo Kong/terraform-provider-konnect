@@ -26,7 +26,6 @@ const (
 func (e AIProxyPluginProtocols) ToPointer() *AIProxyPluginProtocols {
 	return &e
 }
-
 func (e *AIProxyPluginProtocols) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -106,7 +105,6 @@ const (
 func (e ParamLocation) ToPointer() *ParamLocation {
 	return &e
 }
-
 func (e *ParamLocation) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -215,7 +213,6 @@ const (
 func (e Llama2Format) ToPointer() *Llama2Format {
 	return &e
 }
-
 func (e *Llama2Format) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -245,7 +242,6 @@ const (
 func (e MistralFormat) ToPointer() *MistralFormat {
 	return &e
 }
-
 func (e *MistralFormat) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -391,7 +387,6 @@ const (
 func (e Provider) ToPointer() *Provider {
 	return &e
 }
-
 func (e *Provider) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -457,7 +452,6 @@ const (
 func (e RouteType) ToPointer() *RouteType {
 	return &e
 }
-
 func (e *RouteType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {

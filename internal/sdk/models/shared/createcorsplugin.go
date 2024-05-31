@@ -26,7 +26,6 @@ const (
 func (e CreateCORSPluginProtocols) ToPointer() *CreateCORSPluginProtocols {
 	return &e
 }
-
 func (e *CreateCORSPluginProtocols) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -112,7 +111,6 @@ const (
 func (e CreateCORSPluginMethods) ToPointer() *CreateCORSPluginMethods {
 	return &e
 }
-
 func (e *CreateCORSPluginMethods) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {

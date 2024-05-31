@@ -140,6 +140,7 @@ func (s *PortalAuthSettings) GetPortalAuthenticationSettings(ctx context.Context
 	}
 
 	return res, nil
+
 }
 
 // UpdatePortalAuthenticationSettings - Update Auth Settings
@@ -286,4 +287,5 @@ func (s *PortalAuthSettings) UpdatePortalAuthenticationSettings(ctx context.Cont
 	}
 
 	return res, nil
+
 }

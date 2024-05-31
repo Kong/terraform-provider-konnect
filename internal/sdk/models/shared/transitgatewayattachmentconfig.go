@@ -4,6 +4,7 @@ package shared
 
 import (
 	"errors"
+	"fmt"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/utils"
 )
 
@@ -37,7 +38,7 @@ func (u *TransitGatewayAttachmentConfig) UnmarshalJSON(data []byte) error {
 		return nil
 	}
 
-	return errors.New("could not unmarshal into supported union types")
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for TransitGatewayAttachmentConfig", string(data))
 }
 
 func (u TransitGatewayAttachmentConfig) MarshalJSON() ([]byte, error) {
@@ -45,5 +46,5 @@ func (u TransitGatewayAttachmentConfig) MarshalJSON() ([]byte, error) {
 		return utils.MarshalJSON(u.AwsTransitGatewayAttachmentConfig, "", true)
 	}
 
-	return nil, errors.New("could not marshal union type: all fields are null")
+	return nil, errors.New("could not marshal union type TransitGatewayAttachmentConfig: all fields are null")
 }

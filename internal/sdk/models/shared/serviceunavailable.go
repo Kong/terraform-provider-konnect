@@ -17,7 +17,6 @@ const (
 func (e ServiceUnavailableStatus) ToPointer() *ServiceUnavailableStatus {
 	return &e
 }
-
 func (e *ServiceUnavailableStatus) UnmarshalJSON(data []byte) error {
 	var v int64
 	if err := json.Unmarshal(data, &v); err != nil {

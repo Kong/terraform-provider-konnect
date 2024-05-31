@@ -26,7 +26,6 @@ const (
 func (e ResponseTransformerAdvancedPluginProtocols) ToPointer() *ResponseTransformerAdvancedPluginProtocols {
 	return &e
 }
-
 func (e *ResponseTransformerAdvancedPluginProtocols) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -106,7 +105,6 @@ const (
 func (e ResponseTransformerAdvancedPluginJSONTypes) ToPointer() *ResponseTransformerAdvancedPluginJSONTypes {
 	return &e
 }
-
 func (e *ResponseTransformerAdvancedPluginJSONTypes) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -182,7 +180,6 @@ const (
 func (e ResponseTransformerAdvancedPluginConfigJSONTypes) ToPointer() *ResponseTransformerAdvancedPluginConfigJSONTypes {
 	return &e
 }
-
 func (e *ResponseTransformerAdvancedPluginConfigJSONTypes) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -293,7 +290,6 @@ const (
 func (e ResponseTransformerAdvancedPluginConfigReplaceJSONTypes) ToPointer() *ResponseTransformerAdvancedPluginConfigReplaceJSONTypes {
 	return &e
 }
-
 func (e *ResponseTransformerAdvancedPluginConfigReplaceJSONTypes) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {

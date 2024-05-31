@@ -173,6 +173,7 @@ func (s *AppAuthStrategies) CreateAppAuthStrategy(ctx context.Context, request s
 	}
 
 	return res, nil
+
 }
 
 // GetAppAuthStrategy - Get App Auth Strategy
@@ -313,6 +314,7 @@ func (s *AppAuthStrategies) GetAppAuthStrategy(ctx context.Context, request oper
 	}
 
 	return res, nil
+
 }
 
 // UpdateAppAuthStrategy - Update App Auth Strategy
@@ -471,6 +473,7 @@ func (s *AppAuthStrategies) UpdateAppAuthStrategy(ctx context.Context, request o
 	}
 
 	return res, nil
+
 }
 
 // DeleteAppAuthStrategy - Delete App Auth Strategy
@@ -597,4 +600,5 @@ func (s *AppAuthStrategies) DeleteAppAuthStrategy(ctx context.Context, request o
 	}
 
 	return res, nil
+
 }

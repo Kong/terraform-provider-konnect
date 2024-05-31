@@ -26,7 +26,6 @@ const (
 func (e JQPluginProtocols) ToPointer() *JQPluginProtocols {
 	return &e
 }
-
 func (e *JQPluginProtocols) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {

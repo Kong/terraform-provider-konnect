@@ -19,7 +19,6 @@ const (
 func (e InstanceTypeName) ToPointer() *InstanceTypeName {
 	return &e
 }
-
 func (e *InstanceTypeName) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {

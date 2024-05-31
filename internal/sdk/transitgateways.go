@@ -225,6 +225,7 @@ func (s *TransitGateways) CreateTransitGateway(ctx context.Context, request oper
 	}
 
 	return res, nil
+
 }
 
 // GetTransitGateway - Get Transit Gateway
@@ -365,6 +366,7 @@ func (s *TransitGateways) GetTransitGateway(ctx context.Context, request operati
 	}
 
 	return res, nil
+
 }
 
 // DeleteTransitGateway - Delete Transit Gateway
@@ -531,4 +533,5 @@ func (s *TransitGateways) DeleteTransitGateway(ctx context.Context, request oper
 	}
 
 	return res, nil
+
 }

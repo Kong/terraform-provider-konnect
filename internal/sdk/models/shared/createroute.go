@@ -41,7 +41,6 @@ const (
 func (e HTTPSRedirectStatusCode) ToPointer() *HTTPSRedirectStatusCode {
 	return &e
 }
-
 func (e *HTTPSRedirectStatusCode) UnmarshalJSON(data []byte) error {
 	var v int64
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -75,7 +74,6 @@ const (
 func (e PathHandling) ToPointer() *PathHandling {
 	return &e
 }
-
 func (e *PathHandling) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -110,7 +108,6 @@ const (
 func (e CreateRouteProtocols) ToPointer() *CreateRouteProtocols {
 	return &e
 }
-
 func (e *CreateRouteProtocols) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {

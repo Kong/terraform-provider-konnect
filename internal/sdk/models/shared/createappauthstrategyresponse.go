@@ -19,7 +19,6 @@ const (
 func (e AppAuthStrategyOpenIDConnectResponseStrategyType) ToPointer() *AppAuthStrategyOpenIDConnectResponseStrategyType {
 	return &e
 }
-
 func (e *AppAuthStrategyOpenIDConnectResponseStrategyType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -195,7 +194,6 @@ const (
 func (e AppAuthStrategyKeyAuthResponseStrategyType) ToPointer() *AppAuthStrategyKeyAuthResponseStrategyType {
 	return &e
 }
-
 func (e *AppAuthStrategyKeyAuthResponseStrategyType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -414,8 +412,8 @@ func (u *CreateAppAuthStrategyResponse) UnmarshalJSON(data []byte) error {
 	switch dis.StrategyType {
 	case "key_auth":
 		appAuthStrategyKeyAuthResponse := new(AppAuthStrategyKeyAuthResponse)
-		if err := utils.UnmarshalJSON(data, &appAuthStrategyKeyAuthResponse, "", true, true); err != nil {
-			return fmt.Errorf("could not unmarshal expected type: %w", err)
+		if err := utils.UnmarshalJSON(data, &appAuthStrategyKeyAuthResponse, "", true, false); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (StrategyType == key_auth) type AppAuthStrategyKeyAuthResponse within CreateAppAuthStrategyResponse: %w", string(data), err)
 		}
 
 		u.AppAuthStrategyKeyAuthResponse = appAuthStrategyKeyAuthResponse
@@ -423,8 +421,8 @@ func (u *CreateAppAuthStrategyResponse) UnmarshalJSON(data []byte) error {
 		return nil
 	case "openid_connect":
 		appAuthStrategyOpenIDConnectResponse := new(AppAuthStrategyOpenIDConnectResponse)
-		if err := utils.UnmarshalJSON(data, &appAuthStrategyOpenIDConnectResponse, "", true, true); err != nil {
-			return fmt.Errorf("could not unmarshal expected type: %w", err)
+		if err := utils.UnmarshalJSON(data, &appAuthStrategyOpenIDConnectResponse, "", true, false); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (StrategyType == openid_connect) type AppAuthStrategyOpenIDConnectResponse within CreateAppAuthStrategyResponse: %w", string(data), err)
 		}
 
 		u.AppAuthStrategyOpenIDConnectResponse = appAuthStrategyOpenIDConnectResponse
@@ -432,7 +430,7 @@ func (u *CreateAppAuthStrategyResponse) UnmarshalJSON(data []byte) error {
 		return nil
 	}
 
-	return errors.New("could not unmarshal into supported union types")
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for CreateAppAuthStrategyResponse", string(data))
 }
 
 func (u CreateAppAuthStrategyResponse) MarshalJSON() ([]byte, error) {
@@ -444,5 +442,5 @@ func (u CreateAppAuthStrategyResponse) MarshalJSON() ([]byte, error) {
 		return utils.MarshalJSON(u.AppAuthStrategyOpenIDConnectResponse, "", true)
 	}
 
-	return nil, errors.New("could not marshal union type: all fields are null")
+	return nil, errors.New("could not marshal union type CreateAppAuthStrategyResponse: all fields are null")
 }

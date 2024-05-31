@@ -167,6 +167,7 @@ func (s *ControlPlaneGroups) PostControlPlanesIDGroupMembershipsAdd(ctx context.
 	}
 
 	return res, nil
+
 }
 
 // PostControlPlanesIDGroupMembershipsRemove - Remove Control Plane Group Members
@@ -311,4 +312,5 @@ func (s *ControlPlaneGroups) PostControlPlanesIDGroupMembershipsRemove(ctx conte
 	}
 
 	return res, nil
+
 }

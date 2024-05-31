@@ -16,7 +16,6 @@ const (
 func (e ConfigurationDataPlaneGroupAutoscaleAutopilotKind) ToPointer() *ConfigurationDataPlaneGroupAutoscaleAutopilotKind {
 	return &e
 }
-
 func (e *ConfigurationDataPlaneGroupAutoscaleAutopilotKind) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {

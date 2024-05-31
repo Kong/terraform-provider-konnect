@@ -118,6 +118,7 @@ func (s *JWTs) CreateJwtWithConsumer(ctx context.Context, request operations.Cre
 	}
 
 	return res, nil
+
 }
 
 // DeleteJwtWithConsumer - Delete a a JWT associated with a a Consumer
@@ -196,6 +197,7 @@ func (s *JWTs) DeleteJwtWithConsumer(ctx context.Context, request operations.Del
 	}
 
 	return res, nil
+
 }
 
 // GetJwtWithConsumer - Fetch a JWT associated with a Consumer
@@ -286,4 +288,5 @@ func (s *JWTs) GetJwtWithConsumer(ctx context.Context, request operations.GetJwt
 	}
 
 	return res, nil
+
 }

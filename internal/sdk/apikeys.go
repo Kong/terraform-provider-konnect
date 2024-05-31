@@ -118,6 +118,7 @@ func (s *APIKeys) CreateKeyAuthWithConsumer(ctx context.Context, request operati
 	}
 
 	return res, nil
+
 }
 
 // DeleteKeyAuthWithConsumer - Delete a an API-key associated with a a Consumer
@@ -196,6 +197,7 @@ func (s *APIKeys) DeleteKeyAuthWithConsumer(ctx context.Context, request operati
 	}
 
 	return res, nil
+
 }
 
 // GetKeyAuthWithConsumer - Fetch an API-key associated with a Consumer
@@ -286,4 +288,5 @@ func (s *APIKeys) GetKeyAuthWithConsumer(ctx context.Context, request operations
 	}
 
 	return res, nil
+
 }

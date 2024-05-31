@@ -16,6 +16,7 @@ func (r *CloudGatewayTransitGatewayDataSourceModel) RefreshFromSharedTransitGate
 			r.CidrBlocks = append(r.CidrBlocks, types.StringValue(v))
 		}
 		r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
+		r.DNSConfig = []tfTypes.TransitGatewayDNSConfig{}
 		if len(r.DNSConfig) > len(resp.DNSConfig) {
 			r.DNSConfig = r.DNSConfig[:len(resp.DNSConfig)]
 		}

@@ -26,7 +26,6 @@ const (
 func (e CreateSamlPluginProtocols) ToPointer() *CreateSamlPluginProtocols {
 	return &e
 }
-
 func (e *CreateSamlPluginProtocols) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -108,7 +107,6 @@ const (
 func (e CreateSamlPluginNameidFormat) ToPointer() *CreateSamlPluginNameidFormat {
 	return &e
 }
-
 func (e *CreateSamlPluginNameidFormat) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -140,7 +138,6 @@ const (
 func (e CreateSamlPluginRequestDigestAlgorithm) ToPointer() *CreateSamlPluginRequestDigestAlgorithm {
 	return &e
 }
-
 func (e *CreateSamlPluginRequestDigestAlgorithm) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -169,7 +166,6 @@ const (
 func (e CreateSamlPluginRequestSignatureAlgorithm) ToPointer() *CreateSamlPluginRequestSignatureAlgorithm {
 	return &e
 }
-
 func (e *CreateSamlPluginRequestSignatureAlgorithm) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -199,7 +195,6 @@ const (
 func (e CreateSamlPluginResponseDigestAlgorithm) ToPointer() *CreateSamlPluginResponseDigestAlgorithm {
 	return &e
 }
-
 func (e *CreateSamlPluginResponseDigestAlgorithm) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -228,7 +223,6 @@ const (
 func (e CreateSamlPluginResponseSignatureAlgorithm) ToPointer() *CreateSamlPluginResponseSignatureAlgorithm {
 	return &e
 }
-
 func (e *CreateSamlPluginResponseSignatureAlgorithm) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -260,7 +254,6 @@ const (
 func (e CreateSamlPluginSessionCookieSameSite) ToPointer() *CreateSamlPluginSessionCookieSameSite {
 	return &e
 }
-
 func (e *CreateSamlPluginSessionCookieSameSite) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -328,7 +321,6 @@ const (
 func (e CreateSamlPluginSessionRequestHeaders) ToPointer() *CreateSamlPluginSessionRequestHeaders {
 	return &e
 }
-
 func (e *CreateSamlPluginSessionRequestHeaders) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -370,7 +362,6 @@ const (
 func (e CreateSamlPluginSessionResponseHeaders) ToPointer() *CreateSamlPluginSessionResponseHeaders {
 	return &e
 }
-
 func (e *CreateSamlPluginSessionResponseHeaders) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -410,7 +401,6 @@ const (
 func (e CreateSamlPluginSessionStorage) ToPointer() *CreateSamlPluginSessionStorage {
 	return &e
 }
-
 func (e *CreateSamlPluginSessionStorage) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {

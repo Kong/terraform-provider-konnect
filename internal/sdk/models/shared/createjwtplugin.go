@@ -26,7 +26,6 @@ const (
 func (e CreateJWTPluginProtocols) ToPointer() *CreateJWTPluginProtocols {
 	return &e
 }
-
 func (e *CreateJWTPluginProtocols) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -105,7 +104,6 @@ const (
 func (e CreateJWTPluginClaimsToVerify) ToPointer() *CreateJWTPluginClaimsToVerify {
 	return &e
 }
-
 func (e *CreateJWTPluginClaimsToVerify) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {

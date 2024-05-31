@@ -90,6 +90,7 @@ func (r *CloudGatewayConfigurationResourceModel) RefreshFromSharedConfigurationM
 		r.ControlPlaneGeo = types.StringValue(string(resp.ControlPlaneGeo))
 		r.ControlPlaneID = types.StringValue(resp.ControlPlaneID)
 		r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
+		r.DataplaneGroupConfig = []tfTypes.ConfigurationDataPlaneGroupConfig{}
 		if len(r.DataplaneGroupConfig) > len(resp.DataplaneGroupConfig) {
 			r.DataplaneGroupConfig = r.DataplaneGroupConfig[:len(resp.DataplaneGroupConfig)]
 		}
@@ -119,6 +120,7 @@ func (r *CloudGatewayConfigurationResourceModel) RefreshFromSharedConfigurationM
 				r.DataplaneGroupConfig[dataplaneGroupConfigCount].Region = dataplaneGroupConfig1.Region
 			}
 		}
+		r.DataplaneGroups = []tfTypes.ConfigurationDataPlaneGroup{}
 		if len(r.DataplaneGroups) > len(resp.DataplaneGroups) {
 			r.DataplaneGroups = r.DataplaneGroups[:len(resp.DataplaneGroups)]
 		}

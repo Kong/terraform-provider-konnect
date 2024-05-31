@@ -238,16 +238,10 @@ func WithClient(client HTTPClient) SDKOption {
 	}
 }
 
-func withSecurity(security interface{}) func(context.Context) (interface{}, error) {
-	return func(context.Context) (interface{}, error) {
-		return security, nil
-	}
-}
-
 // WithSecurity configures the SDK to use the provided security details
 func WithSecurity(security shared.Security) SDKOption {
 	return func(sdk *Konnect) {
-		sdk.sdkConfiguration.Security = withSecurity(security)
+		sdk.sdkConfiguration.Security = utils.AsSecuritySource(security)
 	}
 }
 
@@ -273,8 +267,8 @@ func New(opts ...SDKOption) *Konnect {
 			Language:          "go",
 			OpenAPIDocVersion: "2.0.0",
 			SDKVersion:        "0.0.1",
-			GenVersion:        "2.331.0",
-			UserAgent:         "speakeasy-sdk/go 0.0.1 2.331.0 2.0.0 github.com/kong/terraform-provider-konnect/internal/sdk",
+			GenVersion:        "2.338.7",
+			UserAgent:         "speakeasy-sdk/go 0.0.1 2.338.7 2.0.0 github.com/kong/terraform-provider-konnect/internal/sdk",
 			Hooks:             hooks.New(),
 		},
 	}

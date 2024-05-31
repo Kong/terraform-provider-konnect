@@ -22,7 +22,6 @@ const (
 func (e CustomDomainState) ToPointer() *CustomDomainState {
 	return &e
 }
-
 func (e *CustomDomainState) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {

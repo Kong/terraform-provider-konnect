@@ -26,7 +26,6 @@ const (
 func (e BasicAuthPluginProtocols) ToPointer() *BasicAuthPluginProtocols {
 	return &e
 }
-
 func (e *BasicAuthPluginProtocols) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {

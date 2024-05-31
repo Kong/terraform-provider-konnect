@@ -17,7 +17,6 @@ const (
 func (e APIProductVersionPublishStatus) ToPointer() *APIProductVersionPublishStatus {
 	return &e
 }
-
 func (e *APIProductVersionPublishStatus) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {

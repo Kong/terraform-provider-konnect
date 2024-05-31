@@ -26,7 +26,6 @@ const (
 func (e CreateRequestTransformerPluginProtocols) ToPointer() *CreateRequestTransformerPluginProtocols {
 	return &e
 }
-
 func (e *CreateRequestTransformerPluginProtocols) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {

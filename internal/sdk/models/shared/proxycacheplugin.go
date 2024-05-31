@@ -26,7 +26,6 @@ const (
 func (e ProxyCachePluginProtocols) ToPointer() *ProxyCachePluginProtocols {
 	return &e
 }
-
 func (e *ProxyCachePluginProtocols) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -131,7 +130,6 @@ const (
 func (e RequestMethod) ToPointer() *RequestMethod {
 	return &e
 }
-
 func (e *RequestMethod) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -203,7 +201,6 @@ const (
 func (e Strategy) ToPointer() *Strategy {
 	return &e
 }
-
 func (e *Strategy) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {

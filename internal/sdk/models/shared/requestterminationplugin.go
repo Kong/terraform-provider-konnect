@@ -26,7 +26,6 @@ const (
 func (e RequestTerminationPluginProtocols) ToPointer() *RequestTerminationPluginProtocols {
 	return &e
 }
-
 func (e *RequestTerminationPluginProtocols) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {

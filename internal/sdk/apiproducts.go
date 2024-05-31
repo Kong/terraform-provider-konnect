@@ -183,6 +183,7 @@ func (s *APIProducts) CreateAPIProduct(ctx context.Context, request shared.Creat
 	}
 
 	return res, nil
+
 }
 
 // GetAPIProduct - Fetch API product
@@ -323,6 +324,7 @@ func (s *APIProducts) GetAPIProduct(ctx context.Context, request operations.GetA
 	}
 
 	return res, nil
+
 }
 
 // UpdateAPIProduct - Update an individual API product
@@ -493,6 +495,7 @@ func (s *APIProducts) UpdateAPIProduct(ctx context.Context, request operations.U
 	}
 
 	return res, nil
+
 }
 
 // DeleteAPIProduct - Delete API Product
@@ -607,4 +610,5 @@ func (s *APIProducts) DeleteAPIProduct(ctx context.Context, request operations.D
 	}
 
 	return res, nil
+
 }
