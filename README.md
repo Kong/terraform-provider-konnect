@@ -115,6 +115,14 @@ provider "konnect" {
 }
 ```
 
+You may also configure the `provider` block using environment variables:
+
+- `personal_access_token` = `KONNECT_TOKEN`
+- `system_account_access_token` = `KONNECT_SPAT`
+- `server_url` = `KONNECT_SERVER_URL`
+
+e.g. `KONNECT_TOKEN=kpat_YOUR_PAT terraform apply`
+
 ## Examples
 
 The examples directory contains sample usage for all supported resources. For a full list of supported parameters for each resource, see the [Konnect API documentation](https://docs.konghq.com/api/).

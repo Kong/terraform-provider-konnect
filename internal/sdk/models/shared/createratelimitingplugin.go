@@ -26,7 +26,6 @@ const (
 func (e CreateRateLimitingPluginProtocols) ToPointer() *CreateRateLimitingPluginProtocols {
 	return &e
 }
-
 func (e *CreateRateLimitingPluginProtocols) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -111,7 +110,6 @@ const (
 func (e CreateRateLimitingPluginLimitBy) ToPointer() *CreateRateLimitingPluginLimitBy {
 	return &e
 }
-
 func (e *CreateRateLimitingPluginLimitBy) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -150,7 +148,6 @@ const (
 func (e CreateRateLimitingPluginPolicy) ToPointer() *CreateRateLimitingPluginPolicy {
 	return &e
 }
-
 func (e *CreateRateLimitingPluginPolicy) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {

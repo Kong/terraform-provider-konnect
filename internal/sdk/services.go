@@ -137,6 +137,7 @@ func (s *Services) CreateService(ctx context.Context, request operations.CreateS
 	}
 
 	return res, nil
+
 }
 
 // DeleteService - Delete a Service
@@ -227,6 +228,7 @@ func (s *Services) DeleteService(ctx context.Context, request operations.DeleteS
 	}
 
 	return res, nil
+
 }
 
 // GetService - Fetch a Service
@@ -329,4 +331,5 @@ func (s *Services) GetService(ctx context.Context, request operations.GetService
 	}
 
 	return res, nil
+
 }

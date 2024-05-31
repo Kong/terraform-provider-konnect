@@ -4,6 +4,7 @@ package shared
 
 import (
 	"errors"
+	"fmt"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/utils"
 )
 
@@ -87,7 +88,7 @@ func (u *Configs) UnmarshalJSON(data []byte) error {
 		return nil
 	}
 
-	return errors.New("could not unmarshal into supported union types")
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for Configs", string(data))
 }
 
 func (u Configs) MarshalJSON() ([]byte, error) {
@@ -99,7 +100,7 @@ func (u Configs) MarshalJSON() ([]byte, error) {
 		return utils.MarshalJSON(u.Two, "", true)
 	}
 
-	return nil, errors.New("could not marshal union type: all fields are null")
+	return nil, errors.New("could not marshal union type Configs: all fields are null")
 }
 
 // UpdateAppAuthStrategyRequest - Request body for updating an Application Auth Strategy

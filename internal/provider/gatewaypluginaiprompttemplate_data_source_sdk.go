@@ -12,6 +12,7 @@ func (r *GatewayPluginAIPromptTemplateDataSourceModel) RefreshFromSharedAIPrompt
 	if resp != nil {
 		r.Config.AllowUntemplatedRequests = types.BoolPointerValue(resp.Config.AllowUntemplatedRequests)
 		r.Config.LogOriginalRequest = types.BoolPointerValue(resp.Config.LogOriginalRequest)
+		r.Config.Templates = []tfTypes.Templates{}
 		if len(r.Config.Templates) > len(resp.Config.Templates) {
 			r.Config.Templates = r.Config.Templates[:len(resp.Config.Templates)]
 		}

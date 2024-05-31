@@ -26,7 +26,6 @@ const (
 func (e ACLPluginProtocols) ToPointer() *ACLPluginProtocols {
 	return &e
 }
-
 func (e *ACLPluginProtocols) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {

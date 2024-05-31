@@ -20,7 +20,6 @@ const (
 func (e CreateUpstreamAlgorithm) ToPointer() *CreateUpstreamAlgorithm {
 	return &e
 }
-
 func (e *CreateUpstreamAlgorithm) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -68,7 +67,6 @@ const (
 func (e HashFallback) ToPointer() *HashFallback {
 	return &e
 }
-
 func (e *HashFallback) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -114,7 +112,6 @@ const (
 func (e HashOn) ToPointer() *HashOn {
 	return &e
 }
-
 func (e *HashOn) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -194,7 +191,6 @@ const (
 func (e Type) ToPointer() *Type {
 	return &e
 }
-
 func (e *Type) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -400,7 +396,6 @@ const (
 func (e CreateUpstreamType) ToPointer() *CreateUpstreamType {
 	return &e
 }
-
 func (e *CreateUpstreamType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {

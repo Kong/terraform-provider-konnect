@@ -14,6 +14,7 @@ func (r *GatewayPluginAIPromptDecoratorDataSourceModel) RefreshFromSharedAIPromp
 			r.Config.Prompts = nil
 		} else {
 			r.Config.Prompts = &tfTypes.CreateAIPromptDecoratorPluginPrompts{}
+			r.Config.Prompts.Append = []tfTypes.AIPromptDecoratorPluginAppend{}
 			if len(r.Config.Prompts.Append) > len(resp.Config.Prompts.Append) {
 				r.Config.Prompts.Append = r.Config.Prompts.Append[:len(resp.Config.Prompts.Append)]
 			}
@@ -32,6 +33,7 @@ func (r *GatewayPluginAIPromptDecoratorDataSourceModel) RefreshFromSharedAIPromp
 					r.Config.Prompts.Append[appendCount].Role = append2.Role
 				}
 			}
+			r.Config.Prompts.Prepend = []tfTypes.AIPromptDecoratorPluginAppend{}
 			if len(r.Config.Prompts.Prepend) > len(resp.Config.Prompts.Prepend) {
 				r.Config.Prompts.Prepend = r.Config.Prompts.Prepend[:len(resp.Config.Prompts.Prepend)]
 			}

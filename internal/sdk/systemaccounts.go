@@ -160,6 +160,7 @@ func (s *SystemAccounts) PostSystemAccounts(ctx context.Context, request *shared
 	}
 
 	return res, nil
+
 }
 
 // GetSystemAccountsID - Fetch System Account
@@ -290,6 +291,7 @@ func (s *SystemAccounts) GetSystemAccountsID(ctx context.Context, request operat
 	}
 
 	return res, nil
+
 }
 
 // PatchSystemAccountsID - Update System Account
@@ -438,6 +440,7 @@ func (s *SystemAccounts) PatchSystemAccountsID(ctx context.Context, request oper
 	}
 
 	return res, nil
+
 }
 
 // DeleteSystemAccountsID - Delete System Account
@@ -542,4 +545,5 @@ func (s *SystemAccounts) DeleteSystemAccountsID(ctx context.Context, request ope
 	}
 
 	return res, nil
+
 }

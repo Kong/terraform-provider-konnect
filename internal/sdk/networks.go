@@ -183,6 +183,7 @@ func (s *Networks) CreateNetwork(ctx context.Context, request shared.CreateNetwo
 	}
 
 	return res, nil
+
 }
 
 // GetNetwork - Get Network
@@ -323,6 +324,7 @@ func (s *Networks) GetNetwork(ctx context.Context, request operations.GetNetwork
 	}
 
 	return res, nil
+
 }
 
 // UpdateNetwork - Update Network
@@ -493,6 +495,7 @@ func (s *Networks) UpdateNetwork(ctx context.Context, request operations.UpdateN
 	}
 
 	return res, nil
+
 }
 
 // DeleteNetwork - Delete Network
@@ -659,4 +662,5 @@ func (s *Networks) DeleteNetwork(ctx context.Context, request operations.DeleteN
 	}
 
 	return res, nil
+
 }

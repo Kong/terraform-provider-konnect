@@ -12,6 +12,7 @@ import (
 
 func (r *CloudGatewayProviderAccountListDataSourceModel) RefreshFromSharedListProviderAccountsResponse(resp *shared.ListProviderAccountsResponse) {
 	if resp != nil {
+		r.Data = []tfTypes.ProviderAccount{}
 		if len(r.Data) > len(resp.Data) {
 			r.Data = r.Data[:len(resp.Data)]
 		}

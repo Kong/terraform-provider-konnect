@@ -26,7 +26,6 @@ const (
 func (e JWTSignerPluginProtocols) ToPointer() *JWTSignerPluginProtocols {
 	return &e
 }
-
 func (e *JWTSignerPluginProtocols) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -106,7 +105,6 @@ const (
 func (e AccessTokenConsumerBy) ToPointer() *AccessTokenConsumerBy {
 	return &e
 }
-
 func (e *AccessTokenConsumerBy) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -136,7 +134,6 @@ const (
 func (e AccessTokenIntrospectionConsumerBy) ToPointer() *AccessTokenIntrospectionConsumerBy {
 	return &e
 }
-
 func (e *AccessTokenIntrospectionConsumerBy) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -176,7 +173,6 @@ const (
 func (e AccessTokenSigningAlgorithm) ToPointer() *AccessTokenSigningAlgorithm {
 	return &e
 }
-
 func (e *AccessTokenSigningAlgorithm) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -224,7 +220,6 @@ const (
 func (e ChannelTokenConsumerBy) ToPointer() *ChannelTokenConsumerBy {
 	return &e
 }
-
 func (e *ChannelTokenConsumerBy) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -254,7 +249,6 @@ const (
 func (e ChannelTokenIntrospectionConsumerBy) ToPointer() *ChannelTokenIntrospectionConsumerBy {
 	return &e
 }
-
 func (e *ChannelTokenIntrospectionConsumerBy) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -294,7 +288,6 @@ const (
 func (e ChannelTokenSigningAlgorithm) ToPointer() *ChannelTokenSigningAlgorithm {
 	return &e
 }
-
 func (e *ChannelTokenSigningAlgorithm) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {

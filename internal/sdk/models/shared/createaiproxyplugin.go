@@ -26,7 +26,6 @@ const (
 func (e CreateAIProxyPluginProtocols) ToPointer() *CreateAIProxyPluginProtocols {
 	return &e
 }
-
 func (e *CreateAIProxyPluginProtocols) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -106,7 +105,6 @@ const (
 func (e CreateAIProxyPluginParamLocation) ToPointer() *CreateAIProxyPluginParamLocation {
 	return &e
 }
-
 func (e *CreateAIProxyPluginParamLocation) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -215,7 +213,6 @@ const (
 func (e CreateAIProxyPluginLlama2Format) ToPointer() *CreateAIProxyPluginLlama2Format {
 	return &e
 }
-
 func (e *CreateAIProxyPluginLlama2Format) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -245,7 +242,6 @@ const (
 func (e CreateAIProxyPluginMistralFormat) ToPointer() *CreateAIProxyPluginMistralFormat {
 	return &e
 }
-
 func (e *CreateAIProxyPluginMistralFormat) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -391,7 +387,6 @@ const (
 func (e CreateAIProxyPluginProvider) ToPointer() *CreateAIProxyPluginProvider {
 	return &e
 }
-
 func (e *CreateAIProxyPluginProvider) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -457,7 +452,6 @@ const (
 func (e CreateAIProxyPluginRouteType) ToPointer() *CreateAIProxyPluginRouteType {
 	return &e
 }
-
 func (e *CreateAIProxyPluginRouteType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {

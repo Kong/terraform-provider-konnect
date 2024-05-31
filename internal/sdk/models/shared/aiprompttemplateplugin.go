@@ -26,7 +26,6 @@ const (
 func (e AIPromptTemplatePluginProtocols) ToPointer() *AIPromptTemplatePluginProtocols {
 	return &e
 }
-
 func (e *AIPromptTemplatePluginProtocols) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {

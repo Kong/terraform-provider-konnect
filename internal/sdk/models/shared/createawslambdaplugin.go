@@ -26,7 +26,6 @@ const (
 func (e CreateAWSLambdaPluginProtocols) ToPointer() *CreateAWSLambdaPluginProtocols {
 	return &e
 }
-
 func (e *CreateAWSLambdaPluginProtocols) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -106,7 +105,6 @@ const (
 func (e CreateAWSLambdaPluginAWSImdsProtocolVersion) ToPointer() *CreateAWSLambdaPluginAWSImdsProtocolVersion {
 	return &e
 }
-
 func (e *CreateAWSLambdaPluginAWSImdsProtocolVersion) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -135,7 +133,6 @@ const (
 func (e CreateAWSLambdaPluginInvocationType) ToPointer() *CreateAWSLambdaPluginInvocationType {
 	return &e
 }
-
 func (e *CreateAWSLambdaPluginInvocationType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -165,7 +162,6 @@ const (
 func (e CreateAWSLambdaPluginLogType) ToPointer() *CreateAWSLambdaPluginLogType {
 	return &e
 }
-
 func (e *CreateAWSLambdaPluginLogType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {

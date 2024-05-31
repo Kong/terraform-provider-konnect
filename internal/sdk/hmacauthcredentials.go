@@ -118,6 +118,7 @@ func (s *HMACAuthCredentials) CreateHmacAuthWithConsumer(ctx context.Context, re
 	}
 
 	return res, nil
+
 }
 
 // DeleteHmacAuthWithConsumer - Delete a a HMAC-auth credential associated with a a Consumer
@@ -196,6 +197,7 @@ func (s *HMACAuthCredentials) DeleteHmacAuthWithConsumer(ctx context.Context, re
 	}
 
 	return res, nil
+
 }
 
 // GetHmacAuthWithConsumer - Fetch a HMAC-auth credential associated with a Consumer
@@ -286,4 +288,5 @@ func (s *HMACAuthCredentials) GetHmacAuthWithConsumer(ctx context.Context, reque
 	}
 
 	return res, nil
+
 }

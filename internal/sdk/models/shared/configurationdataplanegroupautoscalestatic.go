@@ -16,7 +16,6 @@ const (
 func (e Kind) ToPointer() *Kind {
 	return &e
 }
-
 func (e *Kind) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {

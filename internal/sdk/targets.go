@@ -118,6 +118,7 @@ func (s *Targets) CreateTargetWithUpstream(ctx context.Context, request operatio
 	}
 
 	return res, nil
+
 }
 
 // DeleteTargetWithUpstream - Delete a a Target associated with a an Upstream
@@ -196,6 +197,7 @@ func (s *Targets) DeleteTargetWithUpstream(ctx context.Context, request operatio
 	}
 
 	return res, nil
+
 }
 
 // GetTargetWithUpstream - Fetch a Target associated with an Upstream
@@ -286,4 +288,5 @@ func (s *Targets) GetTargetWithUpstream(ctx context.Context, request operations.
 	}
 
 	return res, nil
+
 }

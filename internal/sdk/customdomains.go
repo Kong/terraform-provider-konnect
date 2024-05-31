@@ -196,6 +196,7 @@ func (s *CustomDomains) CreateCustomDomains(ctx context.Context, request shared.
 	}
 
 	return res, nil
+
 }
 
 // GetCustomDomain - Get Custom Domain
@@ -336,6 +337,7 @@ func (s *CustomDomains) GetCustomDomain(ctx context.Context, request operations.
 	}
 
 	return res, nil
+
 }
 
 // DeleteCustomDomain - Delete Custom Domain
@@ -502,4 +504,5 @@ func (s *CustomDomains) DeleteCustomDomain(ctx context.Context, request operatio
 	}
 
 	return res, nil
+
 }

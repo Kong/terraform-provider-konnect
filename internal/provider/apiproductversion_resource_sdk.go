@@ -48,12 +48,14 @@ func (r *APIProductVersionResourceModel) RefreshFromSharedAPIProductVersion(resp
 		}
 		r.ID = types.StringValue(resp.ID)
 		r.Name = types.StringValue(resp.Name)
+		r.Portals = []tfTypes.APIProductVersionPortal{}
 		if len(r.Portals) > len(resp.Portals) {
 			r.Portals = r.Portals[:len(resp.Portals)]
 		}
 		for portalsCount, portalsItem := range resp.Portals {
 			var portals1 tfTypes.APIProductVersionPortal
 			portals1.ApplicationRegistrationEnabled = types.BoolValue(portalsItem.ApplicationRegistrationEnabled)
+			portals1.AuthStrategies = []tfTypes.APIProductVersionAuthStrategy{}
 			for authStrategiesCount, authStrategiesItem := range portalsItem.AuthStrategies {
 				var authStrategies1 tfTypes.APIProductVersionAuthStrategy
 				authStrategies1.ID = types.StringValue(authStrategiesItem.ID)

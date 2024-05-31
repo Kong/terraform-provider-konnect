@@ -131,6 +131,7 @@ func (s *Keys) CreateKey(ctx context.Context, request operations.CreateKeyReques
 	}
 
 	return res, nil
+
 }
 
 // DeleteKey - Delete a Key
@@ -221,6 +222,7 @@ func (s *Keys) DeleteKey(ctx context.Context, request operations.DeleteKeyReques
 	}
 
 	return res, nil
+
 }
 
 // GetKey - Fetch a Key
@@ -323,4 +325,5 @@ func (s *Keys) GetKey(ctx context.Context, request operations.GetKeyRequest) (*o
 	}
 
 	return res, nil
+
 }

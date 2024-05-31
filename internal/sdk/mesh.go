@@ -170,6 +170,7 @@ func (s *Mesh) CreateCp(ctx context.Context, request shared.CreateMeshControlPla
 	}
 
 	return res, nil
+
 }
 
 // GetMeshControlPlane - Get the control plane
@@ -310,6 +311,7 @@ func (s *Mesh) GetMeshControlPlane(ctx context.Context, request operations.GetMe
 	}
 
 	return res, nil
+
 }
 
 // DeleteMeshControlPlane - Delete the control plane
@@ -424,6 +426,7 @@ func (s *Mesh) DeleteMeshControlPlane(ctx context.Context, request operations.De
 	}
 
 	return res, nil
+
 }
 
 // UpdateMeshControlPlane - Update control plane
@@ -582,4 +585,5 @@ func (s *Mesh) UpdateMeshControlPlane(ctx context.Context, request operations.Up
 	}
 
 	return res, nil
+
 }

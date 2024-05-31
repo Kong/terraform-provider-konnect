@@ -12,6 +12,7 @@ import (
 func (r *PortalProductVersionDataSourceModel) RefreshFromSharedPortalProductVersion(resp *shared.PortalProductVersion) {
 	if resp != nil {
 		r.ApplicationRegistrationEnabled = types.BoolValue(resp.ApplicationRegistrationEnabled)
+		r.AuthStrategies = []tfTypes.AuthStrategy{}
 		if len(r.AuthStrategies) > len(resp.AuthStrategies) {
 			r.AuthStrategies = r.AuthStrategies[:len(resp.AuthStrategies)]
 		}

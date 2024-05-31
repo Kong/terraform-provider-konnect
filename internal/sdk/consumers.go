@@ -132,6 +132,7 @@ func (s *Consumers) CreateConsumer(ctx context.Context, request operations.Creat
 	}
 
 	return res, nil
+
 }
 
 // DeleteConsumer - Delete a Consumer
@@ -222,6 +223,7 @@ func (s *Consumers) DeleteConsumer(ctx context.Context, request operations.Delet
 	}
 
 	return res, nil
+
 }
 
 // GetConsumer - Fetch a Consumer
@@ -324,4 +326,5 @@ func (s *Consumers) GetConsumer(ctx context.Context, request operations.GetConsu
 	}
 
 	return res, nil
+
 }

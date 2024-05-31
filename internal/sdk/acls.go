@@ -118,6 +118,7 @@ func (s *ACLs) CreateACLWithConsumer(ctx context.Context, request operations.Cre
 	}
 
 	return res, nil
+
 }
 
 // DeleteACLWithConsumer - Delete a an ACL associated with a a Consumer
@@ -196,6 +197,7 @@ func (s *ACLs) DeleteACLWithConsumer(ctx context.Context, request operations.Del
 	}
 
 	return res, nil
+
 }
 
 // GetACLWithConsumer - Fetch an ACL associated with a Consumer
@@ -286,4 +288,5 @@ func (s *ACLs) GetACLWithConsumer(ctx context.Context, request operations.GetACL
 	}
 
 	return res, nil
+
 }

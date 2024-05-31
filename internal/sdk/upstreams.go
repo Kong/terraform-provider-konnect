@@ -134,6 +134,7 @@ func (s *Upstreams) CreateUpstream(ctx context.Context, request operations.Creat
 	}
 
 	return res, nil
+
 }
 
 // DeleteUpstream - Delete an Upstream
@@ -224,6 +225,7 @@ func (s *Upstreams) DeleteUpstream(ctx context.Context, request operations.Delet
 	}
 
 	return res, nil
+
 }
 
 // GetUpstream - Fetch an Upstream
@@ -326,4 +328,5 @@ func (s *Upstreams) GetUpstream(ctx context.Context, request operations.GetUpstr
 	}
 
 	return res, nil
+
 }

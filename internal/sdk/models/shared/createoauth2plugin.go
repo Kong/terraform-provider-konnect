@@ -26,7 +26,6 @@ const (
 func (e CreateOauth2PluginProtocols) ToPointer() *CreateOauth2PluginProtocols {
 	return &e
 }
-
 func (e *CreateOauth2PluginProtocols) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -107,7 +106,6 @@ const (
 func (e CreateOauth2PluginPkce) ToPointer() *CreateOauth2PluginPkce {
 	return &e
 }
-
 func (e *CreateOauth2PluginPkce) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {

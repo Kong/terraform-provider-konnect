@@ -26,7 +26,6 @@ const (
 func (e CreateJWTSignerPluginProtocols) ToPointer() *CreateJWTSignerPluginProtocols {
 	return &e
 }
-
 func (e *CreateJWTSignerPluginProtocols) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -106,7 +105,6 @@ const (
 func (e CreateJWTSignerPluginAccessTokenConsumerBy) ToPointer() *CreateJWTSignerPluginAccessTokenConsumerBy {
 	return &e
 }
-
 func (e *CreateJWTSignerPluginAccessTokenConsumerBy) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -136,7 +134,6 @@ const (
 func (e CreateJWTSignerPluginAccessTokenIntrospectionConsumerBy) ToPointer() *CreateJWTSignerPluginAccessTokenIntrospectionConsumerBy {
 	return &e
 }
-
 func (e *CreateJWTSignerPluginAccessTokenIntrospectionConsumerBy) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -176,7 +173,6 @@ const (
 func (e CreateJWTSignerPluginAccessTokenSigningAlgorithm) ToPointer() *CreateJWTSignerPluginAccessTokenSigningAlgorithm {
 	return &e
 }
-
 func (e *CreateJWTSignerPluginAccessTokenSigningAlgorithm) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -224,7 +220,6 @@ const (
 func (e CreateJWTSignerPluginChannelTokenConsumerBy) ToPointer() *CreateJWTSignerPluginChannelTokenConsumerBy {
 	return &e
 }
-
 func (e *CreateJWTSignerPluginChannelTokenConsumerBy) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -254,7 +249,6 @@ const (
 func (e CreateJWTSignerPluginChannelTokenIntrospectionConsumerBy) ToPointer() *CreateJWTSignerPluginChannelTokenIntrospectionConsumerBy {
 	return &e
 }
-
 func (e *CreateJWTSignerPluginChannelTokenIntrospectionConsumerBy) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -294,7 +288,6 @@ const (
 func (e CreateJWTSignerPluginChannelTokenSigningAlgorithm) ToPointer() *CreateJWTSignerPluginChannelTokenSigningAlgorithm {
 	return &e
 }
-
 func (e *CreateJWTSignerPluginChannelTokenSigningAlgorithm) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {

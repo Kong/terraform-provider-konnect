@@ -1,6 +1,13 @@
 # Changelog
 
-# Changelog
+## 0.2.4
+> Released on 2024/05/31
+
+### Features
+* Allow users to set provider attributes via environment variables
+  * `personal_access_token` = `KONNECT_TOKEN`
+  * `system_account_access_token` = `KONNECT_SPAT`
+  * `server_url` = `KONNECT_SERVER_URL`
 
 ## 0.2.3
 > Released on 2024/05/14

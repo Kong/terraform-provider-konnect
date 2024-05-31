@@ -145,6 +145,7 @@ func (s *SystemAccountsTeamMembership) PostTeamsTeamIDSystemAccounts(ctx context
 	}
 
 	return res, nil
+
 }
 
 // DeleteTeamsTeamIDSystemAccountsAccountID - Remove System Account From Team
@@ -249,4 +250,5 @@ func (s *SystemAccountsTeamMembership) DeleteTeamsTeamIDSystemAccountsAccountID(
 	}
 
 	return res, nil
+
 }

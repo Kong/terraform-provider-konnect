@@ -136,6 +136,7 @@ func (s *Plugins) CreatePlugin(ctx context.Context, request operations.CreatePlu
 	}
 
 	return res, nil
+
 }
 
 // DeletePlugin - Delete a Plugin
@@ -226,6 +227,7 @@ func (s *Plugins) DeletePlugin(ctx context.Context, request operations.DeletePlu
 	}
 
 	return res, nil
+
 }
 
 // GetPlugin - Fetch a Plugin
@@ -328,6 +330,7 @@ func (s *Plugins) GetPlugin(ctx context.Context, request operations.GetPluginReq
 	}
 
 	return res, nil
+
 }
 
 // DeleteACLPlugin - Delete a ACL plugin
@@ -418,6 +421,7 @@ func (s *Plugins) DeleteACLPlugin(ctx context.Context, request operations.Delete
 	}
 
 	return res, nil
+
 }
 
 // GetACLPlugin - Get a ACL plugin
@@ -520,6 +524,7 @@ func (s *Plugins) GetACLPlugin(ctx context.Context, request operations.GetACLPlu
 	}
 
 	return res, nil
+
 }
 
 // UpdateACLPlugin - Update a ACL plugin
@@ -627,6 +632,7 @@ func (s *Plugins) UpdateACLPlugin(ctx context.Context, request operations.Update
 	}
 
 	return res, nil
+
 }
 
 // DeleteAipromptdecoratorPlugin - Delete a AIPromptDecorator plugin
@@ -717,6 +723,7 @@ func (s *Plugins) DeleteAipromptdecoratorPlugin(ctx context.Context, request ope
 	}
 
 	return res, nil
+
 }
 
 // GetAipromptdecoratorPlugin - Get a AIPromptDecorator plugin
@@ -819,6 +826,7 @@ func (s *Plugins) GetAipromptdecoratorPlugin(ctx context.Context, request operat
 	}
 
 	return res, nil
+
 }
 
 // UpdateAipromptdecoratorPlugin - Update a AIPromptDecorator plugin
@@ -926,6 +934,7 @@ func (s *Plugins) UpdateAipromptdecoratorPlugin(ctx context.Context, request ope
 	}
 
 	return res, nil
+
 }
 
 // DeleteAipromptguardPlugin - Delete a AIPromptGuard plugin
@@ -1016,6 +1025,7 @@ func (s *Plugins) DeleteAipromptguardPlugin(ctx context.Context, request operati
 	}
 
 	return res, nil
+
 }
 
 // GetAipromptguardPlugin - Get a AIPromptGuard plugin
@@ -1118,6 +1128,7 @@ func (s *Plugins) GetAipromptguardPlugin(ctx context.Context, request operations
 	}
 
 	return res, nil
+
 }
 
 // UpdateAipromptguardPlugin - Update a AIPromptGuard plugin
@@ -1225,6 +1236,7 @@ func (s *Plugins) UpdateAipromptguardPlugin(ctx context.Context, request operati
 	}
 
 	return res, nil
+
 }
 
 // DeleteAiprompttemplatePlugin - Delete a AIPromptTemplate plugin
@@ -1315,6 +1327,7 @@ func (s *Plugins) DeleteAiprompttemplatePlugin(ctx context.Context, request oper
 	}
 
 	return res, nil
+
 }
 
 // GetAiprompttemplatePlugin - Get a AIPromptTemplate plugin
@@ -1417,6 +1430,7 @@ func (s *Plugins) GetAiprompttemplatePlugin(ctx context.Context, request operati
 	}
 
 	return res, nil
+
 }
 
 // UpdateAiprompttemplatePlugin - Update a AIPromptTemplate plugin
@@ -1524,6 +1538,7 @@ func (s *Plugins) UpdateAiprompttemplatePlugin(ctx context.Context, request oper
 	}
 
 	return res, nil
+
 }
 
 // DeleteAiproxyPlugin - Delete a AIProxy plugin
@@ -1614,6 +1629,7 @@ func (s *Plugins) DeleteAiproxyPlugin(ctx context.Context, request operations.De
 	}
 
 	return res, nil
+
 }
 
 // GetAiproxyPlugin - Get a AIProxy plugin
@@ -1716,6 +1732,7 @@ func (s *Plugins) GetAiproxyPlugin(ctx context.Context, request operations.GetAi
 	}
 
 	return res, nil
+
 }
 
 // UpdateAiproxyPlugin - Update a AIProxy plugin
@@ -1823,6 +1840,7 @@ func (s *Plugins) UpdateAiproxyPlugin(ctx context.Context, request operations.Up
 	}
 
 	return res, nil
+
 }
 
 // DeleteAwslambdaPlugin - Delete a AWSLambda plugin
@@ -1913,6 +1931,7 @@ func (s *Plugins) DeleteAwslambdaPlugin(ctx context.Context, request operations.
 	}
 
 	return res, nil
+
 }
 
 // GetAwslambdaPlugin - Get a AWSLambda plugin
@@ -2015,6 +2034,7 @@ func (s *Plugins) GetAwslambdaPlugin(ctx context.Context, request operations.Get
 	}
 
 	return res, nil
+
 }
 
 // UpdateAwslambdaPlugin - Update a AWSLambda plugin
@@ -2122,6 +2142,7 @@ func (s *Plugins) UpdateAwslambdaPlugin(ctx context.Context, request operations.
 	}
 
 	return res, nil
+
 }
 
 // DeleteBasicauthPlugin - Delete a BasicAuth plugin
@@ -2212,6 +2233,7 @@ func (s *Plugins) DeleteBasicauthPlugin(ctx context.Context, request operations.
 	}
 
 	return res, nil
+
 }
 
 // GetBasicauthPlugin - Get a BasicAuth plugin
@@ -2314,6 +2336,7 @@ func (s *Plugins) GetBasicauthPlugin(ctx context.Context, request operations.Get
 	}
 
 	return res, nil
+
 }
 
 // UpdateBasicauthPlugin - Update a BasicAuth plugin
@@ -2421,6 +2444,7 @@ func (s *Plugins) UpdateBasicauthPlugin(ctx context.Context, request operations.
 	}
 
 	return res, nil
+
 }
 
 // DeleteCorrelationidPlugin - Delete a CorrelationId plugin
@@ -2511,6 +2535,7 @@ func (s *Plugins) DeleteCorrelationidPlugin(ctx context.Context, request operati
 	}
 
 	return res, nil
+
 }
 
 // GetCorrelationidPlugin - Get a CorrelationId plugin
@@ -2613,6 +2638,7 @@ func (s *Plugins) GetCorrelationidPlugin(ctx context.Context, request operations
 	}
 
 	return res, nil
+
 }
 
 // UpdateCorrelationidPlugin - Update a CorrelationId plugin
@@ -2720,6 +2746,7 @@ func (s *Plugins) UpdateCorrelationidPlugin(ctx context.Context, request operati
 	}
 
 	return res, nil
+
 }
 
 // DeleteCorsPlugin - Delete a CORS plugin
@@ -2810,6 +2837,7 @@ func (s *Plugins) DeleteCorsPlugin(ctx context.Context, request operations.Delet
 	}
 
 	return res, nil
+
 }
 
 // GetCorsPlugin - Get a CORS plugin
@@ -2912,6 +2940,7 @@ func (s *Plugins) GetCorsPlugin(ctx context.Context, request operations.GetCorsP
 	}
 
 	return res, nil
+
 }
 
 // UpdateCorsPlugin - Update a CORS plugin
@@ -3019,6 +3048,7 @@ func (s *Plugins) UpdateCorsPlugin(ctx context.Context, request operations.Updat
 	}
 
 	return res, nil
+
 }
 
 // DeleteFilelogPlugin - Delete a FileLog plugin
@@ -3109,6 +3139,7 @@ func (s *Plugins) DeleteFilelogPlugin(ctx context.Context, request operations.De
 	}
 
 	return res, nil
+
 }
 
 // GetFilelogPlugin - Get a FileLog plugin
@@ -3211,6 +3242,7 @@ func (s *Plugins) GetFilelogPlugin(ctx context.Context, request operations.GetFi
 	}
 
 	return res, nil
+
 }
 
 // UpdateFilelogPlugin - Update a FileLog plugin
@@ -3318,6 +3350,7 @@ func (s *Plugins) UpdateFilelogPlugin(ctx context.Context, request operations.Up
 	}
 
 	return res, nil
+
 }
 
 // DeleteIprestrictionPlugin - Delete a IpRestriction plugin
@@ -3408,6 +3441,7 @@ func (s *Plugins) DeleteIprestrictionPlugin(ctx context.Context, request operati
 	}
 
 	return res, nil
+
 }
 
 // GetIprestrictionPlugin - Get a IpRestriction plugin
@@ -3510,6 +3544,7 @@ func (s *Plugins) GetIprestrictionPlugin(ctx context.Context, request operations
 	}
 
 	return res, nil
+
 }
 
 // UpdateIprestrictionPlugin - Update a IpRestriction plugin
@@ -3617,6 +3652,7 @@ func (s *Plugins) UpdateIprestrictionPlugin(ctx context.Context, request operati
 	}
 
 	return res, nil
+
 }
 
 // DeleteJqPlugin - Delete a JQ plugin
@@ -3707,6 +3743,7 @@ func (s *Plugins) DeleteJqPlugin(ctx context.Context, request operations.DeleteJ
 	}
 
 	return res, nil
+
 }
 
 // GetJqPlugin - Get a JQ plugin
@@ -3809,6 +3846,7 @@ func (s *Plugins) GetJqPlugin(ctx context.Context, request operations.GetJqPlugi
 	}
 
 	return res, nil
+
 }
 
 // UpdateJqPlugin - Update a JQ plugin
@@ -3916,6 +3954,7 @@ func (s *Plugins) UpdateJqPlugin(ctx context.Context, request operations.UpdateJ
 	}
 
 	return res, nil
+
 }
 
 // DeleteJwtPlugin - Delete a JWT plugin
@@ -4006,6 +4045,7 @@ func (s *Plugins) DeleteJwtPlugin(ctx context.Context, request operations.Delete
 	}
 
 	return res, nil
+
 }
 
 // GetJwtPlugin - Get a JWT plugin
@@ -4108,6 +4148,7 @@ func (s *Plugins) GetJwtPlugin(ctx context.Context, request operations.GetJwtPlu
 	}
 
 	return res, nil
+
 }
 
 // UpdateJwtPlugin - Update a JWT plugin
@@ -4215,6 +4256,7 @@ func (s *Plugins) UpdateJwtPlugin(ctx context.Context, request operations.Update
 	}
 
 	return res, nil
+
 }
 
 // DeleteJwtsignerPlugin - Delete a JWTSigner plugin
@@ -4305,6 +4347,7 @@ func (s *Plugins) DeleteJwtsignerPlugin(ctx context.Context, request operations.
 	}
 
 	return res, nil
+
 }
 
 // GetJwtsignerPlugin - Get a JWTSigner plugin
@@ -4407,6 +4450,7 @@ func (s *Plugins) GetJwtsignerPlugin(ctx context.Context, request operations.Get
 	}
 
 	return res, nil
+
 }
 
 // UpdateJwtsignerPlugin - Update a JWTSigner plugin
@@ -4514,6 +4558,7 @@ func (s *Plugins) UpdateJwtsignerPlugin(ctx context.Context, request operations.
 	}
 
 	return res, nil
+
 }
 
 // DeleteKeyauthPlugin - Delete a KeyAuth plugin
@@ -4604,6 +4649,7 @@ func (s *Plugins) DeleteKeyauthPlugin(ctx context.Context, request operations.De
 	}
 
 	return res, nil
+
 }
 
 // GetKeyauthPlugin - Get a KeyAuth plugin
@@ -4706,6 +4752,7 @@ func (s *Plugins) GetKeyauthPlugin(ctx context.Context, request operations.GetKe
 	}
 
 	return res, nil
+
 }
 
 // UpdateKeyauthPlugin - Update a KeyAuth plugin
@@ -4813,6 +4860,7 @@ func (s *Plugins) UpdateKeyauthPlugin(ctx context.Context, request operations.Up
 	}
 
 	return res, nil
+
 }
 
 // DeleteOauth2Plugin - Delete a Oauth2 plugin
@@ -4903,6 +4951,7 @@ func (s *Plugins) DeleteOauth2Plugin(ctx context.Context, request operations.Del
 	}
 
 	return res, nil
+
 }
 
 // GetOauth2Plugin - Get a Oauth2 plugin
@@ -5005,6 +5054,7 @@ func (s *Plugins) GetOauth2Plugin(ctx context.Context, request operations.GetOau
 	}
 
 	return res, nil
+
 }
 
 // UpdateOauth2Plugin - Update a Oauth2 plugin
@@ -5112,6 +5162,7 @@ func (s *Plugins) UpdateOauth2Plugin(ctx context.Context, request operations.Upd
 	}
 
 	return res, nil
+
 }
 
 // DeleteOpenidconnectPlugin - Delete a OpenidConnect plugin
@@ -5202,6 +5253,7 @@ func (s *Plugins) DeleteOpenidconnectPlugin(ctx context.Context, request operati
 	}
 
 	return res, nil
+
 }
 
 // GetOpenidconnectPlugin - Get a OpenidConnect plugin
@@ -5304,6 +5356,7 @@ func (s *Plugins) GetOpenidconnectPlugin(ctx context.Context, request operations
 	}
 
 	return res, nil
+
 }
 
 // UpdateOpenidconnectPlugin - Update a OpenidConnect plugin
@@ -5411,6 +5464,7 @@ func (s *Plugins) UpdateOpenidconnectPlugin(ctx context.Context, request operati
 	}
 
 	return res, nil
+
 }
 
 // DeleteOpentelemetryPlugin - Delete a Opentelemetry plugin
@@ -5501,6 +5555,7 @@ func (s *Plugins) DeleteOpentelemetryPlugin(ctx context.Context, request operati
 	}
 
 	return res, nil
+
 }
 
 // GetOpentelemetryPlugin - Get a Opentelemetry plugin
@@ -5603,6 +5658,7 @@ func (s *Plugins) GetOpentelemetryPlugin(ctx context.Context, request operations
 	}
 
 	return res, nil
+
 }
 
 // UpdateOpentelemetryPlugin - Update a Opentelemetry plugin
@@ -5710,6 +5766,7 @@ func (s *Plugins) UpdateOpentelemetryPlugin(ctx context.Context, request operati
 	}
 
 	return res, nil
+
 }
 
 // DeletePrefunctionPlugin - Delete a PreFunction plugin
@@ -5800,6 +5857,7 @@ func (s *Plugins) DeletePrefunctionPlugin(ctx context.Context, request operation
 	}
 
 	return res, nil
+
 }
 
 // GetPrefunctionPlugin - Get a PreFunction plugin
@@ -5902,6 +5960,7 @@ func (s *Plugins) GetPrefunctionPlugin(ctx context.Context, request operations.G
 	}
 
 	return res, nil
+
 }
 
 // UpdatePrefunctionPlugin - Update a PreFunction plugin
@@ -6009,6 +6068,7 @@ func (s *Plugins) UpdatePrefunctionPlugin(ctx context.Context, request operation
 	}
 
 	return res, nil
+
 }
 
 // DeletePrometheusPlugin - Delete a Prometheus plugin
@@ -6099,6 +6159,7 @@ func (s *Plugins) DeletePrometheusPlugin(ctx context.Context, request operations
 	}
 
 	return res, nil
+
 }
 
 // GetPrometheusPlugin - Get a Prometheus plugin
@@ -6201,6 +6262,7 @@ func (s *Plugins) GetPrometheusPlugin(ctx context.Context, request operations.Ge
 	}
 
 	return res, nil
+
 }
 
 // UpdatePrometheusPlugin - Update a Prometheus plugin
@@ -6308,6 +6370,7 @@ func (s *Plugins) UpdatePrometheusPlugin(ctx context.Context, request operations
 	}
 
 	return res, nil
+
 }
 
 // DeleteProxycachePlugin - Delete a ProxyCache plugin
@@ -6398,6 +6461,7 @@ func (s *Plugins) DeleteProxycachePlugin(ctx context.Context, request operations
 	}
 
 	return res, nil
+
 }
 
 // GetProxycachePlugin - Get a ProxyCache plugin
@@ -6500,6 +6564,7 @@ func (s *Plugins) GetProxycachePlugin(ctx context.Context, request operations.Ge
 	}
 
 	return res, nil
+
 }
 
 // UpdateProxycachePlugin - Update a ProxyCache plugin
@@ -6607,6 +6672,7 @@ func (s *Plugins) UpdateProxycachePlugin(ctx context.Context, request operations
 	}
 
 	return res, nil
+
 }
 
 // DeleteRatelimitingPlugin - Delete a RateLimiting plugin
@@ -6697,6 +6763,7 @@ func (s *Plugins) DeleteRatelimitingPlugin(ctx context.Context, request operatio
 	}
 
 	return res, nil
+
 }
 
 // GetRatelimitingPlugin - Get a RateLimiting plugin
@@ -6799,6 +6866,7 @@ func (s *Plugins) GetRatelimitingPlugin(ctx context.Context, request operations.
 	}
 
 	return res, nil
+
 }
 
 // UpdateRatelimitingPlugin - Update a RateLimiting plugin
@@ -6906,6 +6974,7 @@ func (s *Plugins) UpdateRatelimitingPlugin(ctx context.Context, request operatio
 	}
 
 	return res, nil
+
 }
 
 // DeleteRatelimitingadvancedPlugin - Delete a RateLimitingAdvanced plugin
@@ -6996,6 +7065,7 @@ func (s *Plugins) DeleteRatelimitingadvancedPlugin(ctx context.Context, request 
 	}
 
 	return res, nil
+
 }
 
 // GetRatelimitingadvancedPlugin - Get a RateLimitingAdvanced plugin
@@ -7098,6 +7168,7 @@ func (s *Plugins) GetRatelimitingadvancedPlugin(ctx context.Context, request ope
 	}
 
 	return res, nil
+
 }
 
 // UpdateRatelimitingadvancedPlugin - Update a RateLimitingAdvanced plugin
@@ -7205,6 +7276,7 @@ func (s *Plugins) UpdateRatelimitingadvancedPlugin(ctx context.Context, request 
 	}
 
 	return res, nil
+
 }
 
 // DeleteRequestterminationPlugin - Delete a RequestTermination plugin
@@ -7295,6 +7367,7 @@ func (s *Plugins) DeleteRequestterminationPlugin(ctx context.Context, request op
 	}
 
 	return res, nil
+
 }
 
 // GetRequestterminationPlugin - Get a RequestTermination plugin
@@ -7397,6 +7470,7 @@ func (s *Plugins) GetRequestterminationPlugin(ctx context.Context, request opera
 	}
 
 	return res, nil
+
 }
 
 // UpdateRequestterminationPlugin - Update a RequestTermination plugin
@@ -7504,6 +7578,7 @@ func (s *Plugins) UpdateRequestterminationPlugin(ctx context.Context, request op
 	}
 
 	return res, nil
+
 }
 
 // DeleteRequesttransformerPlugin - Delete a RequestTransformer plugin
@@ -7594,6 +7669,7 @@ func (s *Plugins) DeleteRequesttransformerPlugin(ctx context.Context, request op
 	}
 
 	return res, nil
+
 }
 
 // GetRequesttransformerPlugin - Get a RequestTransformer plugin
@@ -7696,6 +7772,7 @@ func (s *Plugins) GetRequesttransformerPlugin(ctx context.Context, request opera
 	}
 
 	return res, nil
+
 }
 
 // UpdateRequesttransformerPlugin - Update a RequestTransformer plugin
@@ -7803,6 +7880,7 @@ func (s *Plugins) UpdateRequesttransformerPlugin(ctx context.Context, request op
 	}
 
 	return res, nil
+
 }
 
 // DeleteRequesttransformeradvancedPlugin - Delete a RequestTransformerAdvanced plugin
@@ -7893,6 +7971,7 @@ func (s *Plugins) DeleteRequesttransformeradvancedPlugin(ctx context.Context, re
 	}
 
 	return res, nil
+
 }
 
 // GetRequesttransformeradvancedPlugin - Get a RequestTransformerAdvanced plugin
@@ -7995,6 +8074,7 @@ func (s *Plugins) GetRequesttransformeradvancedPlugin(ctx context.Context, reque
 	}
 
 	return res, nil
+
 }
 
 // UpdateRequesttransformeradvancedPlugin - Update a RequestTransformerAdvanced plugin
@@ -8102,6 +8182,7 @@ func (s *Plugins) UpdateRequesttransformeradvancedPlugin(ctx context.Context, re
 	}
 
 	return res, nil
+
 }
 
 // DeleteResponsetransformerPlugin - Delete a ResponseTransformer plugin
@@ -8192,6 +8273,7 @@ func (s *Plugins) DeleteResponsetransformerPlugin(ctx context.Context, request o
 	}
 
 	return res, nil
+
 }
 
 // GetResponsetransformerPlugin - Get a ResponseTransformer plugin
@@ -8294,6 +8376,7 @@ func (s *Plugins) GetResponsetransformerPlugin(ctx context.Context, request oper
 	}
 
 	return res, nil
+
 }
 
 // UpdateResponsetransformerPlugin - Update a ResponseTransformer plugin
@@ -8401,6 +8484,7 @@ func (s *Plugins) UpdateResponsetransformerPlugin(ctx context.Context, request o
 	}
 
 	return res, nil
+
 }
 
 // DeleteResponsetransformeradvancedPlugin - Delete a ResponseTransformerAdvanced plugin
@@ -8491,6 +8575,7 @@ func (s *Plugins) DeleteResponsetransformeradvancedPlugin(ctx context.Context, r
 	}
 
 	return res, nil
+
 }
 
 // GetResponsetransformeradvancedPlugin - Get a ResponseTransformerAdvanced plugin
@@ -8593,6 +8678,7 @@ func (s *Plugins) GetResponsetransformeradvancedPlugin(ctx context.Context, requ
 	}
 
 	return res, nil
+
 }
 
 // UpdateResponsetransformeradvancedPlugin - Update a ResponseTransformerAdvanced plugin
@@ -8700,6 +8786,7 @@ func (s *Plugins) UpdateResponsetransformeradvancedPlugin(ctx context.Context, r
 	}
 
 	return res, nil
+
 }
 
 // DeleteSamlPlugin - Delete a Saml plugin
@@ -8790,6 +8877,7 @@ func (s *Plugins) DeleteSamlPlugin(ctx context.Context, request operations.Delet
 	}
 
 	return res, nil
+
 }
 
 // GetSamlPlugin - Get a Saml plugin
@@ -8892,6 +8980,7 @@ func (s *Plugins) GetSamlPlugin(ctx context.Context, request operations.GetSamlP
 	}
 
 	return res, nil
+
 }
 
 // UpdateSamlPlugin - Update a Saml plugin
@@ -8999,6 +9088,7 @@ func (s *Plugins) UpdateSamlPlugin(ctx context.Context, request operations.Updat
 	}
 
 	return res, nil
+
 }
 
 // CreateACLPlugin - Create a ACL plugin
@@ -9106,6 +9196,7 @@ func (s *Plugins) CreateACLPlugin(ctx context.Context, request operations.Create
 	}
 
 	return res, nil
+
 }
 
 // CreateAipromptdecoratorPlugin - Create a AIPromptDecorator plugin
@@ -9213,6 +9304,7 @@ func (s *Plugins) CreateAipromptdecoratorPlugin(ctx context.Context, request ope
 	}
 
 	return res, nil
+
 }
 
 // CreateAipromptguardPlugin - Create a AIPromptGuard plugin
@@ -9320,6 +9412,7 @@ func (s *Plugins) CreateAipromptguardPlugin(ctx context.Context, request operati
 	}
 
 	return res, nil
+
 }
 
 // CreateAiprompttemplatePlugin - Create a AIPromptTemplate plugin
@@ -9427,6 +9520,7 @@ func (s *Plugins) CreateAiprompttemplatePlugin(ctx context.Context, request oper
 	}
 
 	return res, nil
+
 }
 
 // CreateAiproxyPlugin - Create a AIProxy plugin
@@ -9534,6 +9628,7 @@ func (s *Plugins) CreateAiproxyPlugin(ctx context.Context, request operations.Cr
 	}
 
 	return res, nil
+
 }
 
 // CreateAwslambdaPlugin - Create a AWSLambda plugin
@@ -9641,6 +9736,7 @@ func (s *Plugins) CreateAwslambdaPlugin(ctx context.Context, request operations.
 	}
 
 	return res, nil
+
 }
 
 // CreateBasicauthPlugin - Create a BasicAuth plugin
@@ -9748,6 +9844,7 @@ func (s *Plugins) CreateBasicauthPlugin(ctx context.Context, request operations.
 	}
 
 	return res, nil
+
 }
 
 // CreateCorrelationidPlugin - Create a CorrelationId plugin
@@ -9855,6 +9952,7 @@ func (s *Plugins) CreateCorrelationidPlugin(ctx context.Context, request operati
 	}
 
 	return res, nil
+
 }
 
 // CreateCorsPlugin - Create a CORS plugin
@@ -9962,6 +10060,7 @@ func (s *Plugins) CreateCorsPlugin(ctx context.Context, request operations.Creat
 	}
 
 	return res, nil
+
 }
 
 // CreateFilelogPlugin - Create a FileLog plugin
@@ -10069,6 +10168,7 @@ func (s *Plugins) CreateFilelogPlugin(ctx context.Context, request operations.Cr
 	}
 
 	return res, nil
+
 }
 
 // CreateIprestrictionPlugin - Create a IpRestriction plugin
@@ -10176,6 +10276,7 @@ func (s *Plugins) CreateIprestrictionPlugin(ctx context.Context, request operati
 	}
 
 	return res, nil
+
 }
 
 // CreateJqPlugin - Create a JQ plugin
@@ -10283,6 +10384,7 @@ func (s *Plugins) CreateJqPlugin(ctx context.Context, request operations.CreateJ
 	}
 
 	return res, nil
+
 }
 
 // CreateJwtPlugin - Create a JWT plugin
@@ -10390,6 +10492,7 @@ func (s *Plugins) CreateJwtPlugin(ctx context.Context, request operations.Create
 	}
 
 	return res, nil
+
 }
 
 // CreateJwtsignerPlugin - Create a JWTSigner plugin
@@ -10497,6 +10600,7 @@ func (s *Plugins) CreateJwtsignerPlugin(ctx context.Context, request operations.
 	}
 
 	return res, nil
+
 }
 
 // CreateKeyauthPlugin - Create a KeyAuth plugin
@@ -10604,6 +10708,7 @@ func (s *Plugins) CreateKeyauthPlugin(ctx context.Context, request operations.Cr
 	}
 
 	return res, nil
+
 }
 
 // CreateOauth2Plugin - Create a Oauth2 plugin
@@ -10711,6 +10816,7 @@ func (s *Plugins) CreateOauth2Plugin(ctx context.Context, request operations.Cre
 	}
 
 	return res, nil
+
 }
 
 // CreateOpenidconnectPlugin - Create a OpenidConnect plugin
@@ -10818,6 +10924,7 @@ func (s *Plugins) CreateOpenidconnectPlugin(ctx context.Context, request operati
 	}
 
 	return res, nil
+
 }
 
 // CreateOpentelemetryPlugin - Create a Opentelemetry plugin
@@ -10925,6 +11032,7 @@ func (s *Plugins) CreateOpentelemetryPlugin(ctx context.Context, request operati
 	}
 
 	return res, nil
+
 }
 
 // CreatePrefunctionPlugin - Create a PreFunction plugin
@@ -11032,6 +11140,7 @@ func (s *Plugins) CreatePrefunctionPlugin(ctx context.Context, request operation
 	}
 
 	return res, nil
+
 }
 
 // CreatePrometheusPlugin - Create a Prometheus plugin
@@ -11139,6 +11248,7 @@ func (s *Plugins) CreatePrometheusPlugin(ctx context.Context, request operations
 	}
 
 	return res, nil
+
 }
 
 // CreateProxycachePlugin - Create a ProxyCache plugin
@@ -11246,6 +11356,7 @@ func (s *Plugins) CreateProxycachePlugin(ctx context.Context, request operations
 	}
 
 	return res, nil
+
 }
 
 // CreateRatelimitingPlugin - Create a RateLimiting plugin
@@ -11353,6 +11464,7 @@ func (s *Plugins) CreateRatelimitingPlugin(ctx context.Context, request operatio
 	}
 
 	return res, nil
+
 }
 
 // CreateRatelimitingadvancedPlugin - Create a RateLimitingAdvanced plugin
@@ -11460,6 +11572,7 @@ func (s *Plugins) CreateRatelimitingadvancedPlugin(ctx context.Context, request 
 	}
 
 	return res, nil
+
 }
 
 // CreateRequestterminationPlugin - Create a RequestTermination plugin
@@ -11567,6 +11680,7 @@ func (s *Plugins) CreateRequestterminationPlugin(ctx context.Context, request op
 	}
 
 	return res, nil
+
 }
 
 // CreateRequesttransformerPlugin - Create a RequestTransformer plugin
@@ -11674,6 +11788,7 @@ func (s *Plugins) CreateRequesttransformerPlugin(ctx context.Context, request op
 	}
 
 	return res, nil
+
 }
 
 // CreateRequesttransformeradvancedPlugin - Create a RequestTransformerAdvanced plugin
@@ -11781,6 +11896,7 @@ func (s *Plugins) CreateRequesttransformeradvancedPlugin(ctx context.Context, re
 	}
 
 	return res, nil
+
 }
 
 // CreateResponsetransformerPlugin - Create a ResponseTransformer plugin
@@ -11888,6 +12004,7 @@ func (s *Plugins) CreateResponsetransformerPlugin(ctx context.Context, request o
 	}
 
 	return res, nil
+
 }
 
 // CreateResponsetransformeradvancedPlugin - Create a ResponseTransformerAdvanced plugin
@@ -11995,6 +12112,7 @@ func (s *Plugins) CreateResponsetransformeradvancedPlugin(ctx context.Context, r
 	}
 
 	return res, nil
+
 }
 
 // CreateSamlPlugin - Create a Saml plugin
@@ -12102,4 +12220,5 @@ func (s *Plugins) CreateSamlPlugin(ctx context.Context, request operations.Creat
 	}
 
 	return res, nil
+
 }

@@ -19,7 +19,6 @@ const (
 func (e APIAccess) ToPointer() *APIAccess {
 	return &e
 }
-
 func (e *APIAccess) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {

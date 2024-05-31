@@ -26,7 +26,6 @@ const (
 func (e CreateAIPromptDecoratorPluginProtocols) ToPointer() *CreateAIPromptDecoratorPluginProtocols {
 	return &e
 }
-
 func (e *CreateAIPromptDecoratorPluginProtocols) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -106,7 +105,6 @@ const (
 func (e CreateAIPromptDecoratorPluginRole) ToPointer() *CreateAIPromptDecoratorPluginRole {
 	return &e
 }
-
 func (e *CreateAIPromptDecoratorPluginRole) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -166,7 +164,6 @@ const (
 func (e CreateAIPromptDecoratorPluginConfigRole) ToPointer() *CreateAIPromptDecoratorPluginConfigRole {
 	return &e
 }
-
 func (e *CreateAIPromptDecoratorPluginConfigRole) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {

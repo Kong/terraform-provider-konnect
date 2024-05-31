@@ -118,6 +118,7 @@ func (s *BasicAuthCredentials) CreateBasicAuthWithConsumer(ctx context.Context, 
 	}
 
 	return res, nil
+
 }
 
 // DeleteBasicAuthWithConsumer - Delete a a Basic-auth credential associated with a a Consumer
@@ -196,6 +197,7 @@ func (s *BasicAuthCredentials) DeleteBasicAuthWithConsumer(ctx context.Context, 
 	}
 
 	return res, nil
+
 }
 
 // GetBasicAuthWithConsumer - Fetch a Basic-auth credential associated with a Consumer
@@ -286,4 +288,5 @@ func (s *BasicAuthCredentials) GetBasicAuthWithConsumer(ctx context.Context, req
 	}
 
 	return res, nil
+
 }

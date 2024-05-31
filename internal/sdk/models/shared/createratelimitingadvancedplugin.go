@@ -26,7 +26,6 @@ const (
 func (e CreateRateLimitingAdvancedPluginProtocols) ToPointer() *CreateRateLimitingAdvancedPluginProtocols {
 	return &e
 }
-
 func (e *CreateRateLimitingAdvancedPluginProtocols) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -111,7 +110,6 @@ const (
 func (e CreateRateLimitingAdvancedPluginIdentifier) ToPointer() *CreateRateLimitingAdvancedPluginIdentifier {
 	return &e
 }
-
 func (e *CreateRateLimitingAdvancedPluginIdentifier) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -150,7 +148,6 @@ const (
 func (e CreateRateLimitingAdvancedPluginSentinelRole) ToPointer() *CreateRateLimitingAdvancedPluginSentinelRole {
 	return &e
 }
-
 func (e *CreateRateLimitingAdvancedPluginSentinelRole) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -375,7 +372,6 @@ const (
 func (e CreateRateLimitingAdvancedPluginStrategy) ToPointer() *CreateRateLimitingAdvancedPluginStrategy {
 	return &e
 }
-
 func (e *CreateRateLimitingAdvancedPluginStrategy) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -405,7 +401,6 @@ const (
 func (e CreateRateLimitingAdvancedPluginWindowType) ToPointer() *CreateRateLimitingAdvancedPluginWindowType {
 	return &e
 }
-
 func (e *CreateRateLimitingAdvancedPluginWindowType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {

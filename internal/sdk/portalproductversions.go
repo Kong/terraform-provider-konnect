@@ -181,6 +181,7 @@ func (s *PortalProductVersions) GetPortalProductVersion(ctx context.Context, req
 	}
 
 	return res, nil
+
 }
 
 // ReplacePortalProductVersion - Replace a portal product version
@@ -339,6 +340,7 @@ func (s *PortalProductVersions) ReplacePortalProductVersion(ctx context.Context,
 	}
 
 	return res, nil
+
 }
 
 // DeletePortalProductVersion - Delete a portal product version
@@ -453,4 +455,5 @@ func (s *PortalProductVersions) DeletePortalProductVersion(ctx context.Context, 
 	}
 
 	return res, nil
+
 }

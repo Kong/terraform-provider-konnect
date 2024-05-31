@@ -26,7 +26,6 @@ const (
 func (e CreatePrometheusPluginProtocols) ToPointer() *CreatePrometheusPluginProtocols {
 	return &e
 }
-
 func (e *CreatePrometheusPluginProtocols) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {

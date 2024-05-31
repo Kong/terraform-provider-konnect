@@ -26,7 +26,6 @@ const (
 func (e CreateAIPromptGuardPluginProtocols) ToPointer() *CreateAIPromptGuardPluginProtocols {
 	return &e
 }
-
 func (e *CreateAIPromptGuardPluginProtocols) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {

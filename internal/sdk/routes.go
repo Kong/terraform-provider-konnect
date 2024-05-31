@@ -154,6 +154,7 @@ func (s *Routes) CreateRoute(ctx context.Context, request operations.CreateRoute
 	}
 
 	return res, nil
+
 }
 
 // DeleteRoute - Delete a Route
@@ -244,6 +245,7 @@ func (s *Routes) DeleteRoute(ctx context.Context, request operations.DeleteRoute
 	}
 
 	return res, nil
+
 }
 
 // GetRoute - Fetch a Route
@@ -346,4 +348,5 @@ func (s *Routes) GetRoute(ctx context.Context, request operations.GetRouteReques
 	}
 
 	return res, nil
+
 }

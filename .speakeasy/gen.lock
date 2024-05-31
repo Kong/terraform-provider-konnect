@@ -3,16 +3,16 @@ id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
   docChecksum: 57b43fc5cc7955d7204213f59e8a4111
   docVersion: 2.0.0
-  speakeasyVersion: 1.287.0
-  generationVersion: 2.331.0
-  releaseVersion: 0.2.3
-  configChecksum: 95ea855704e3ee774597a2125ab2260c
+  speakeasyVersion: 1.299.4
+  generationVersion: 2.338.7
+  releaseVersion: 0.2.4
+  configChecksum: 0d4108667c33961683e0a696aa82c808
 features:
   terraform:
     additionalDependencies: 0.1.0
     additionalProperties: 0.1.2
     constsAndDefaults: 0.1.4
-    core: 3.21.0
+    core: 3.21.1
     deprecations: 2.81.1
     globalSecurity: 2.81.6
     globalServerURLs: 2.82.1
@@ -21,7 +21,7 @@ features:
     nullables: 0.0.0
     retries: 2.81.1
     typeOverrides: 2.81.1
-    unions: 2.81.13
+    unions: 2.81.14
 generatedFiles:
   - internal/sdk/mesh.go
   - internal/sdk/apiproducts.go

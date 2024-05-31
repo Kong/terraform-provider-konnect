@@ -113,6 +113,7 @@ func (r *GatewayPluginOpenidConnectDataSourceModel) RefreshFromSharedOpenidConne
 		for _, v := range resp.Config.ClientID {
 			r.Config.ClientID = append(r.Config.ClientID, types.StringValue(v))
 		}
+		r.Config.ClientJwk = []tfTypes.ClientJwk{}
 		if len(r.Config.ClientJwk) > len(resp.Config.ClientJwk) {
 			r.Config.ClientJwk = r.Config.ClientJwk[:len(resp.Config.ClientJwk)]
 		}
@@ -471,6 +472,7 @@ func (r *GatewayPluginOpenidConnectDataSourceModel) RefreshFromSharedOpenidConne
 		r.Config.SessionMemcachedPrefix = types.StringPointerValue(resp.Config.SessionMemcachedPrefix)
 		r.Config.SessionMemcachedSocket = types.StringPointerValue(resp.Config.SessionMemcachedSocket)
 		r.Config.SessionRedisClusterMaxRedirections = types.Int64PointerValue(resp.Config.SessionRedisClusterMaxRedirections)
+		r.Config.SessionRedisClusterNodes = []tfTypes.SessionRedisClusterNodes{}
 		if len(r.Config.SessionRedisClusterNodes) > len(resp.Config.SessionRedisClusterNodes) {
 			r.Config.SessionRedisClusterNodes = r.Config.SessionRedisClusterNodes[:len(resp.Config.SessionRedisClusterNodes)]
 		}

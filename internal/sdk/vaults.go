@@ -137,6 +137,7 @@ func (s *Vaults) CreateVault(ctx context.Context, request operations.CreateVault
 	}
 
 	return res, nil
+
 }
 
 // DeleteVault - Delete a Vault
@@ -227,6 +228,7 @@ func (s *Vaults) DeleteVault(ctx context.Context, request operations.DeleteVault
 	}
 
 	return res, nil
+
 }
 
 // GetVault - Fetch a Vault
@@ -329,4 +331,5 @@ func (s *Vaults) GetVault(ctx context.Context, request operations.GetVaultReques
 	}
 
 	return res, nil
+
 }

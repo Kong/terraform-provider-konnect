@@ -26,7 +26,6 @@ const (
 func (e CorrelationIDPluginProtocols) ToPointer() *CorrelationIDPluginProtocols {
 	return &e
 }
-
 func (e *CorrelationIDPluginProtocols) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -107,7 +106,6 @@ const (
 func (e Generator) ToPointer() *Generator {
 	return &e
 }
-
 func (e *Generator) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {

@@ -12,6 +12,7 @@ import (
 
 func (r *PortalListDataSourceModel) RefreshFromSharedListPortalsResponse(resp *shared.ListPortalsResponse) {
 	if resp != nil {
+		r.Data = []tfTypes.Portal{}
 		if len(r.Data) > len(resp.Data) {
 			r.Data = r.Data[:len(resp.Data)]
 		}

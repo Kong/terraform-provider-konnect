@@ -26,7 +26,6 @@ const (
 func (e CreateOpenidConnectPluginProtocols) ToPointer() *CreateOpenidConnectPluginProtocols {
 	return &e
 }
-
 func (e *CreateOpenidConnectPluginProtocols) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -112,7 +111,6 @@ const (
 func (e CreateOpenidConnectPluginAuthMethods) ToPointer() *CreateOpenidConnectPluginAuthMethods {
 	return &e
 }
-
 func (e *CreateOpenidConnectPluginAuthMethods) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -156,7 +154,6 @@ const (
 func (e CreateOpenidConnectPluginAuthorizationCookieSameSite) ToPointer() *CreateOpenidConnectPluginAuthorizationCookieSameSite {
 	return &e
 }
-
 func (e *CreateOpenidConnectPluginAuthorizationCookieSameSite) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -189,7 +186,6 @@ const (
 func (e CreateOpenidConnectPluginBearerTokenParamType) ToPointer() *CreateOpenidConnectPluginBearerTokenParamType {
 	return &e
 }
-
 func (e *CreateOpenidConnectPluginBearerTokenParamType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -231,7 +227,6 @@ const (
 func (e CreateOpenidConnectPluginClientAlg) ToPointer() *CreateOpenidConnectPluginClientAlg {
 	return &e
 }
-
 func (e *CreateOpenidConnectPluginClientAlg) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -285,7 +280,6 @@ const (
 func (e CreateOpenidConnectPluginClientAuth) ToPointer() *CreateOpenidConnectPluginClientAuth {
 	return &e
 }
-
 func (e *CreateOpenidConnectPluginClientAuth) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -323,7 +317,6 @@ const (
 func (e CreateOpenidConnectPluginClientCredentialsParamType) ToPointer() *CreateOpenidConnectPluginClientCredentialsParamType {
 	return &e
 }
-
 func (e *CreateOpenidConnectPluginClientCredentialsParamType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -556,7 +549,6 @@ const (
 func (e CreateOpenidConnectPluginConsumerBy) ToPointer() *CreateOpenidConnectPluginConsumerBy {
 	return &e
 }
-
 func (e *CreateOpenidConnectPluginConsumerBy) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -592,7 +584,6 @@ const (
 func (e CreateOpenidConnectPluginDisableSession) ToPointer() *CreateOpenidConnectPluginDisableSession {
 	return &e
 }
-
 func (e *CreateOpenidConnectPluginDisableSession) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -634,7 +625,6 @@ const (
 func (e CreateOpenidConnectPluginIDTokenParamType) ToPointer() *CreateOpenidConnectPluginIDTokenParamType {
 	return &e
 }
-
 func (e *CreateOpenidConnectPluginIDTokenParamType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -668,7 +658,6 @@ const (
 func (e CreateOpenidConnectPluginIgnoreSignature) ToPointer() *CreateOpenidConnectPluginIgnoreSignature {
 	return &e
 }
-
 func (e *CreateOpenidConnectPluginIgnoreSignature) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -707,7 +696,6 @@ const (
 func (e CreateOpenidConnectPluginIntrospectionAccept) ToPointer() *CreateOpenidConnectPluginIntrospectionAccept {
 	return &e
 }
-
 func (e *CreateOpenidConnectPluginIntrospectionAccept) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -742,7 +730,6 @@ const (
 func (e CreateOpenidConnectPluginIntrospectionEndpointAuthMethod) ToPointer() *CreateOpenidConnectPluginIntrospectionEndpointAuthMethod {
 	return &e
 }
-
 func (e *CreateOpenidConnectPluginIntrospectionEndpointAuthMethod) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -781,7 +768,6 @@ const (
 func (e CreateOpenidConnectPluginLoginAction) ToPointer() *CreateOpenidConnectPluginLoginAction {
 	return &e
 }
-
 func (e *CreateOpenidConnectPluginLoginAction) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -817,7 +803,6 @@ const (
 func (e CreateOpenidConnectPluginLoginMethods) ToPointer() *CreateOpenidConnectPluginLoginMethods {
 	return &e
 }
-
 func (e *CreateOpenidConnectPluginLoginMethods) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -859,7 +844,6 @@ const (
 func (e CreateOpenidConnectPluginLoginRedirectMode) ToPointer() *CreateOpenidConnectPluginLoginRedirectMode {
 	return &e
 }
-
 func (e *CreateOpenidConnectPluginLoginRedirectMode) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -889,7 +873,6 @@ const (
 func (e CreateOpenidConnectPluginLoginTokens) ToPointer() *CreateOpenidConnectPluginLoginTokens {
 	return &e
 }
-
 func (e *CreateOpenidConnectPluginLoginTokens) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -923,7 +906,6 @@ const (
 func (e CreateOpenidConnectPluginLogoutMethods) ToPointer() *CreateOpenidConnectPluginLogoutMethods {
 	return &e
 }
-
 func (e *CreateOpenidConnectPluginLogoutMethods) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -953,7 +935,6 @@ const (
 func (e CreateOpenidConnectPluginPasswordParamType) ToPointer() *CreateOpenidConnectPluginPasswordParamType {
 	return &e
 }
-
 func (e *CreateOpenidConnectPluginPasswordParamType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -984,7 +965,6 @@ const (
 func (e CreateOpenidConnectPluginProofOfPossessionMtls) ToPointer() *CreateOpenidConnectPluginProofOfPossessionMtls {
 	return &e
 }
-
 func (e *CreateOpenidConnectPluginProofOfPossessionMtls) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -1019,7 +999,6 @@ const (
 func (e CreateOpenidConnectPluginPushedAuthorizationRequestEndpointAuthMethod) ToPointer() *CreateOpenidConnectPluginPushedAuthorizationRequestEndpointAuthMethod {
 	return &e
 }
-
 func (e *CreateOpenidConnectPluginPushedAuthorizationRequestEndpointAuthMethod) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -1057,7 +1036,6 @@ const (
 func (e CreateOpenidConnectPluginRefreshTokenParamType) ToPointer() *CreateOpenidConnectPluginRefreshTokenParamType {
 	return &e
 }
-
 func (e *CreateOpenidConnectPluginRefreshTokenParamType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -1088,7 +1066,6 @@ const (
 func (e CreateOpenidConnectPluginResponseMode) ToPointer() *CreateOpenidConnectPluginResponseMode {
 	return &e
 }
-
 func (e *CreateOpenidConnectPluginResponseMode) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -1123,7 +1100,6 @@ const (
 func (e CreateOpenidConnectPluginRevocationEndpointAuthMethod) ToPointer() *CreateOpenidConnectPluginRevocationEndpointAuthMethod {
 	return &e
 }
-
 func (e *CreateOpenidConnectPluginRevocationEndpointAuthMethod) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -1163,7 +1139,6 @@ const (
 func (e CreateOpenidConnectPluginSessionCookieSameSite) ToPointer() *CreateOpenidConnectPluginSessionCookieSameSite {
 	return &e
 }
-
 func (e *CreateOpenidConnectPluginSessionCookieSameSite) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -1231,7 +1206,6 @@ const (
 func (e CreateOpenidConnectPluginSessionRequestHeaders) ToPointer() *CreateOpenidConnectPluginSessionRequestHeaders {
 	return &e
 }
-
 func (e *CreateOpenidConnectPluginSessionRequestHeaders) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -1273,7 +1247,6 @@ const (
 func (e CreateOpenidConnectPluginSessionResponseHeaders) ToPointer() *CreateOpenidConnectPluginSessionResponseHeaders {
 	return &e
 }
-
 func (e *CreateOpenidConnectPluginSessionResponseHeaders) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -1313,7 +1286,6 @@ const (
 func (e CreateOpenidConnectPluginSessionStorage) ToPointer() *CreateOpenidConnectPluginSessionStorage {
 	return &e
 }
-
 func (e *CreateOpenidConnectPluginSessionStorage) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -1350,7 +1322,6 @@ const (
 func (e CreateOpenidConnectPluginTokenEndpointAuthMethod) ToPointer() *CreateOpenidConnectPluginTokenEndpointAuthMethod {
 	return &e
 }
-
 func (e *CreateOpenidConnectPluginTokenEndpointAuthMethod) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -1389,7 +1360,6 @@ const (
 func (e CreateOpenidConnectPluginTokenHeadersGrants) ToPointer() *CreateOpenidConnectPluginTokenHeadersGrants {
 	return &e
 }
-
 func (e *CreateOpenidConnectPluginTokenHeadersGrants) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -1421,7 +1391,6 @@ const (
 func (e CreateOpenidConnectPluginUserinfoAccept) ToPointer() *CreateOpenidConnectPluginUserinfoAccept {
 	return &e
 }
-
 func (e *CreateOpenidConnectPluginUserinfoAccept) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {

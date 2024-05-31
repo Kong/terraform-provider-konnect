@@ -17,7 +17,6 @@ const (
 func (e CredentialType) ToPointer() *CredentialType {
 	return &e
 }
-
 func (e *CredentialType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {

@@ -26,7 +26,6 @@ const (
 func (e KeyAuthPluginProtocols) ToPointer() *KeyAuthPluginProtocols {
 	return &e
 }
-
 func (e *KeyAuthPluginProtocols) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {

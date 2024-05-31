@@ -26,7 +26,6 @@ const (
 func (e AWSLambdaPluginProtocols) ToPointer() *AWSLambdaPluginProtocols {
 	return &e
 }
-
 func (e *AWSLambdaPluginProtocols) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -106,7 +105,6 @@ const (
 func (e AwsImdsProtocolVersion) ToPointer() *AwsImdsProtocolVersion {
 	return &e
 }
-
 func (e *AwsImdsProtocolVersion) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -135,7 +133,6 @@ const (
 func (e InvocationType) ToPointer() *InvocationType {
 	return &e
 }
-
 func (e *InvocationType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -165,7 +162,6 @@ const (
 func (e LogType) ToPointer() *LogType {
 	return &e
 }
-
 func (e *LogType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
