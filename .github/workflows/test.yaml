@@ -1,0 +1,20 @@
+name: Run Tests
+
+on: [workflow_dispatch]
+
+jobs:
+  e2e-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v4
+        with:
+          go-version-file: "go.mod"
+          cache: true
+      - uses: hashicorp/setup-terraform@v3
+      - name: Run tests
+        env:
+          KONNECT_SPAT: ${{ secrets.KONNECT_SPAT }}
+        run: |
+          make test
+          make test-cleanup
