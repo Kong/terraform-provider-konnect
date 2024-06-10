@@ -230,7 +230,7 @@ paths:
         Scopes shared between product versions will be returned, even if not
         currently registered for given product version.
 
-        Will return 409 if this feature is not supported by the application.
+        Will return 422 if this feature is not supported by the application.
       operationId: get-application-product-version-granted-scopes
       parameters:
         - $ref: '#/components/parameters/ApplicationId'

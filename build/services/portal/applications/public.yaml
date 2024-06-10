@@ -260,7 +260,7 @@ paths:
         Scopes shared between product versions will be returned, even if not
         currently registered for given product version.
 
-        Will return 409 if this feature is not supported by the application.
+        Will return 422 if this feature is not supported by the application.
       operationId: get-application-product-version-granted-scopes
       parameters:
         - $ref: '#/components/parameters/ApplicationId'
@@ -1337,3 +1337,9 @@ components:
         title: Not Found
         instance: kong:trace:6816496025408232265
         detail: Not Found
+x-errors:
+  granted-scopes-unavailable:
+    description: |
+      The IDP used does not support granted scopes.
+    resolution: |
+      Switch to an IDP that allows you to grant specific scopes.

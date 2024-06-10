@@ -159,6 +159,10 @@
     {
       "src": "build/services/konnect/application-auth-strategies/v2/public.yaml",
       "dest": "api-specs/Konnect/v2/yaml/application-auth-strategies.yaml"
+    },
+    {
+      "src": "build/complete/portal/public.yaml",
+      "dest": "api-specs/portal.yaml"
     }
   ]
 }

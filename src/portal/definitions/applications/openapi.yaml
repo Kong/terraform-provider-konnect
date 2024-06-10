@@ -234,7 +234,7 @@ paths:
       description: |
        Retrieves the granted scopes of a specified application and product version directly from the IDP.
        Scopes shared between product versions will be returned, even if not currently registered for given product version.
-       Will return 409 if this feature is not supported by the application.
+       Will return 422 if this feature is not supported by the application.
       operationId: get-application-product-version-granted-scopes
       parameters:
         - $ref: '../common/parameters.yaml#/components/parameters/ApplicationId'
@@ -711,3 +711,12 @@ tags:
       developer consuming the API.
   - name: credentials
     description: The API for Konnect Portal developer credentials within a private portal (i.e. requires registration/authentication).
+x-errors:
+  granted-scopes-unavailable:
+    description: |
+      The IDP used does not support granted scopes.
+    resolution: |
+      Switch to an IDP that allows you to grant specific scopes.
+    # link:
+    #    url: https://example.com
+    #    text: Learn More
