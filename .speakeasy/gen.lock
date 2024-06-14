@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: bd5cd6e08d248801e993a4cbc736f8e8
+  docChecksum: f84cf3df7e82e6b819982b3074135350
   docVersion: 2.0.0
   speakeasyVersion: 1.308.1
   generationVersion: 2.342.6
-  releaseVersion: 0.3.0
-  configChecksum: 99d7138314ecbf30d395e747094bf5fe
+  releaseVersion: 0.3.1
+  configChecksum: 39bf26231f8e4ad014e7be9971ec0825
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -21,6 +21,7 @@ features:
     nameOverrides: 2.81.2
     nullables: 0.0.0
     retries: 2.81.1
+    typeOverrides: 2.81.1
     unions: 2.81.15
 generatedFiles:
   - internal/sdk/mesh.go
@@ -461,6 +462,7 @@ generatedFiles:
   - internal/sdk/models/shared/target.go
   - internal/sdk/models/shared/targetwithoutparents.go
   - internal/sdk/models/shared/vault.go
+  - internal/sdk/models/shared/vaultinput.go
   - internal/sdk/models/shared/dataplaneclientcertificate.go
   - internal/sdk/models/shared/dataplaneclientcertificaterequest.go
   - internal/sdk/models/shared/groupmembership.go
@@ -630,7 +632,6 @@ generatedFiles:
   - internal/provider/types/upstream_unhealthy.go
   - internal/provider/types/passive.go
   - internal/provider/types/healthchecks.go
-  - internal/provider/types/vault_config.go
   - internal/provider/types/portal_claim_mappings.go
   - internal/provider/types/portal_oidc_config.go
   - internal/provider/types/auth_strategy_client_credentials.go

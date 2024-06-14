@@ -11,17 +11,16 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/internal/planmodifiers/listplanmodifier"
-	speakeasy_objectplanmodifier "github.com/kong/terraform-provider-konnect/internal/planmodifiers/objectplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/internal/planmodifiers/stringplanmodifier"
-	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
+	"github.com/kong/terraform-provider-konnect/internal/validators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -39,15 +38,15 @@ type GatewayVaultResource struct {
 
 // GatewayVaultResourceModel describes the resource data model.
 type GatewayVaultResourceModel struct {
-	Config         *tfTypes.VaultConfig `tfsdk:"config"`
-	ControlPlaneID types.String         `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64          `tfsdk:"created_at"`
-	Description    types.String         `tfsdk:"description"`
-	ID             types.String         `tfsdk:"id"`
-	Name           types.String         `tfsdk:"name"`
-	Prefix         types.String         `tfsdk:"prefix"`
-	Tags           []types.String       `tfsdk:"tags"`
-	UpdatedAt      types.Int64          `tfsdk:"updated_at"`
+	Config         types.String   `tfsdk:"config"`
+	ControlPlaneID types.String   `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64    `tfsdk:"created_at"`
+	Description    types.String   `tfsdk:"description"`
+	ID             types.String   `tfsdk:"id"`
+	Name           types.String   `tfsdk:"name"`
+	Prefix         types.String   `tfsdk:"prefix"`
+	Tags           []types.String `tfsdk:"tags"`
+	UpdatedAt      types.Int64    `tfsdk:"updated_at"`
 }
 
 func (r *GatewayVaultResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -58,15 +57,17 @@ func (r *GatewayVaultResource) Schema(ctx context.Context, req resource.SchemaRe
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayVault Resource",
 		Attributes: map[string]schema.Attribute{
-			"config": schema.SingleNestedAttribute{
+			"config": schema.StringAttribute{
 				Computed: true,
-				PlanModifiers: []planmodifier.Object{
-					objectplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Optional:    true,
-				Attributes:  map[string]schema.Attribute{},
-				Description: `The configuration properties for the Vault which can be found on the vaults' documentation page. Requires replacement if changed. `,
+				Description: `The configuration properties for the Vault which can be found on the vaults' documentation page. Parsed as JSON.`,
+				Validators: []validator.String{
+					validators.IsValidJSON(),
+				},
 			},
 			"control_plane_id": schema.StringAttribute{
 				PlanModifiers: []planmodifier.String{
