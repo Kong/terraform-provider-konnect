@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.3.0
+> Released on 2024/06/14
+
+### Features
+* Update all schemas to Kong Gateway 3.7.x
+
+### Bug Fixes
+* Do not send default values from the provider as they'll be applied on the server automatically
+  * This allows terraform-provider-konnect 0.3.0 to be used with Kong Gateway 3.6 and below
+
 ## 0.2.4
 > Released on 2024/05/31
 
