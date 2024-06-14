@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.1
+> Released on 2024/06/14
+
+### Bug Fixes
+* Ensure that `konnect_gateway_vault.config` is sent via the provider
+
 ## 0.3.0
 > Released on 2024/06/14
 
