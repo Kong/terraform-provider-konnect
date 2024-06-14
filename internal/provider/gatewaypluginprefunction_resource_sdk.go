@@ -9,11 +9,72 @@ import (
 )
 
 func (r *GatewayPluginPreFunctionResourceModel) ToSharedCreatePreFunctionPlugin() *shared.CreatePreFunctionPlugin {
+	var config *shared.CreatePreFunctionPluginConfig
+	if r.Config != nil {
+		var access []string = []string{}
+		for _, accessItem := range r.Config.Access {
+			access = append(access, accessItem.ValueString())
+		}
+		var bodyFilter []string = []string{}
+		for _, bodyFilterItem := range r.Config.BodyFilter {
+			bodyFilter = append(bodyFilter, bodyFilterItem.ValueString())
+		}
+		var certificate []string = []string{}
+		for _, certificateItem := range r.Config.Certificate {
+			certificate = append(certificate, certificateItem.ValueString())
+		}
+		var headerFilter []string = []string{}
+		for _, headerFilterItem := range r.Config.HeaderFilter {
+			headerFilter = append(headerFilter, headerFilterItem.ValueString())
+		}
+		var log []string = []string{}
+		for _, logItem := range r.Config.Log {
+			log = append(log, logItem.ValueString())
+		}
+		var rewrite []string = []string{}
+		for _, rewriteItem := range r.Config.Rewrite {
+			rewrite = append(rewrite, rewriteItem.ValueString())
+		}
+		var wsClientFrame []string = []string{}
+		for _, wsClientFrameItem := range r.Config.WsClientFrame {
+			wsClientFrame = append(wsClientFrame, wsClientFrameItem.ValueString())
+		}
+		var wsClose []string = []string{}
+		for _, wsCloseItem := range r.Config.WsClose {
+			wsClose = append(wsClose, wsCloseItem.ValueString())
+		}
+		var wsHandshake []string = []string{}
+		for _, wsHandshakeItem := range r.Config.WsHandshake {
+			wsHandshake = append(wsHandshake, wsHandshakeItem.ValueString())
+		}
+		var wsUpstreamFrame []string = []string{}
+		for _, wsUpstreamFrameItem := range r.Config.WsUpstreamFrame {
+			wsUpstreamFrame = append(wsUpstreamFrame, wsUpstreamFrameItem.ValueString())
+		}
+		config = &shared.CreatePreFunctionPluginConfig{
+			Access:          access,
+			BodyFilter:      bodyFilter,
+			Certificate:     certificate,
+			HeaderFilter:    headerFilter,
+			Log:             log,
+			Rewrite:         rewrite,
+			WsClientFrame:   wsClientFrame,
+			WsClose:         wsClose,
+			WsHandshake:     wsHandshake,
+			WsUpstreamFrame: wsUpstreamFrame,
+		}
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
 	} else {
 		enabled = nil
+	}
+	instanceName := new(string)
+	if !r.InstanceName.IsUnknown() && !r.InstanceName.IsNull() {
+		*instanceName = r.InstanceName.ValueString()
+	} else {
+		instanceName = nil
 	}
 	var protocols []shared.CreatePreFunctionPluginProtocols = []shared.CreatePreFunctionPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
@@ -35,135 +96,102 @@ func (r *GatewayPluginPreFunctionResourceModel) ToSharedCreatePreFunctionPlugin(
 			ID: id,
 		}
 	}
-	var route *shared.CreatePreFunctionPluginRoute
-	if r.Route != nil {
+	var consumerGroup *shared.CreatePreFunctionPluginConsumerGroup
+	if r.ConsumerGroup != nil {
 		id1 := new(string)
-		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
-			*id1 = r.Route.ID.ValueString()
+		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
+			*id1 = r.ConsumerGroup.ID.ValueString()
 		} else {
 			id1 = nil
 		}
-		route = &shared.CreatePreFunctionPluginRoute{
+		consumerGroup = &shared.CreatePreFunctionPluginConsumerGroup{
 			ID: id1,
+		}
+	}
+	var route *shared.CreatePreFunctionPluginRoute
+	if r.Route != nil {
+		id2 := new(string)
+		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
+			*id2 = r.Route.ID.ValueString()
+		} else {
+			id2 = nil
+		}
+		route = &shared.CreatePreFunctionPluginRoute{
+			ID: id2,
 		}
 	}
 	var service *shared.CreatePreFunctionPluginService
 	if r.Service != nil {
-		id2 := new(string)
+		id3 := new(string)
 		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
-			*id2 = r.Service.ID.ValueString()
+			*id3 = r.Service.ID.ValueString()
 		} else {
-			id2 = nil
+			id3 = nil
 		}
 		service = &shared.CreatePreFunctionPluginService{
-			ID: id2,
+			ID: id3,
 		}
 	}
-	var access []string = []string{}
-	for _, accessItem := range r.Config.Access {
-		access = append(access, accessItem.ValueString())
-	}
-	var bodyFilter []string = []string{}
-	for _, bodyFilterItem := range r.Config.BodyFilter {
-		bodyFilter = append(bodyFilter, bodyFilterItem.ValueString())
-	}
-	var certificate []string = []string{}
-	for _, certificateItem := range r.Config.Certificate {
-		certificate = append(certificate, certificateItem.ValueString())
-	}
-	var headerFilter []string = []string{}
-	for _, headerFilterItem := range r.Config.HeaderFilter {
-		headerFilter = append(headerFilter, headerFilterItem.ValueString())
-	}
-	var log []string = []string{}
-	for _, logItem := range r.Config.Log {
-		log = append(log, logItem.ValueString())
-	}
-	var rewrite []string = []string{}
-	for _, rewriteItem := range r.Config.Rewrite {
-		rewrite = append(rewrite, rewriteItem.ValueString())
-	}
-	var wsClientFrame []string = []string{}
-	for _, wsClientFrameItem := range r.Config.WsClientFrame {
-		wsClientFrame = append(wsClientFrame, wsClientFrameItem.ValueString())
-	}
-	var wsClose []string = []string{}
-	for _, wsCloseItem := range r.Config.WsClose {
-		wsClose = append(wsClose, wsCloseItem.ValueString())
-	}
-	var wsHandshake []string = []string{}
-	for _, wsHandshakeItem := range r.Config.WsHandshake {
-		wsHandshake = append(wsHandshake, wsHandshakeItem.ValueString())
-	}
-	var wsUpstreamFrame []string = []string{}
-	for _, wsUpstreamFrameItem := range r.Config.WsUpstreamFrame {
-		wsUpstreamFrame = append(wsUpstreamFrame, wsUpstreamFrameItem.ValueString())
-	}
-	config := shared.CreatePreFunctionPluginConfig{
-		Access:          access,
-		BodyFilter:      bodyFilter,
-		Certificate:     certificate,
-		HeaderFilter:    headerFilter,
-		Log:             log,
-		Rewrite:         rewrite,
-		WsClientFrame:   wsClientFrame,
-		WsClose:         wsClose,
-		WsHandshake:     wsHandshake,
-		WsUpstreamFrame: wsUpstreamFrame,
-	}
 	out := shared.CreatePreFunctionPlugin{
-		Enabled:   enabled,
-		Protocols: protocols,
-		Tags:      tags,
-		Consumer:  consumer,
-		Route:     route,
-		Service:   service,
-		Config:    config,
+		Config:        config,
+		Enabled:       enabled,
+		InstanceName:  instanceName,
+		Protocols:     protocols,
+		Tags:          tags,
+		Consumer:      consumer,
+		ConsumerGroup: consumerGroup,
+		Route:         route,
+		Service:       service,
 	}
 	return &out
 }
 
 func (r *GatewayPluginPreFunctionResourceModel) RefreshFromSharedPreFunctionPlugin(resp *shared.PreFunctionPlugin) {
 	if resp != nil {
-		r.Config.Access = []types.String{}
-		for _, v := range resp.Config.Access {
-			r.Config.Access = append(r.Config.Access, types.StringValue(v))
-		}
-		r.Config.BodyFilter = []types.String{}
-		for _, v := range resp.Config.BodyFilter {
-			r.Config.BodyFilter = append(r.Config.BodyFilter, types.StringValue(v))
-		}
-		r.Config.Certificate = []types.String{}
-		for _, v := range resp.Config.Certificate {
-			r.Config.Certificate = append(r.Config.Certificate, types.StringValue(v))
-		}
-		r.Config.HeaderFilter = []types.String{}
-		for _, v := range resp.Config.HeaderFilter {
-			r.Config.HeaderFilter = append(r.Config.HeaderFilter, types.StringValue(v))
-		}
-		r.Config.Log = []types.String{}
-		for _, v := range resp.Config.Log {
-			r.Config.Log = append(r.Config.Log, types.StringValue(v))
-		}
-		r.Config.Rewrite = []types.String{}
-		for _, v := range resp.Config.Rewrite {
-			r.Config.Rewrite = append(r.Config.Rewrite, types.StringValue(v))
-		}
-		r.Config.WsClientFrame = []types.String{}
-		for _, v := range resp.Config.WsClientFrame {
-			r.Config.WsClientFrame = append(r.Config.WsClientFrame, types.StringValue(v))
-		}
-		r.Config.WsClose = []types.String{}
-		for _, v := range resp.Config.WsClose {
-			r.Config.WsClose = append(r.Config.WsClose, types.StringValue(v))
-		}
-		r.Config.WsHandshake = []types.String{}
-		for _, v := range resp.Config.WsHandshake {
-			r.Config.WsHandshake = append(r.Config.WsHandshake, types.StringValue(v))
-		}
-		r.Config.WsUpstreamFrame = []types.String{}
-		for _, v := range resp.Config.WsUpstreamFrame {
-			r.Config.WsUpstreamFrame = append(r.Config.WsUpstreamFrame, types.StringValue(v))
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.CreatePreFunctionPluginConfig{}
+			r.Config.Access = []types.String{}
+			for _, v := range resp.Config.Access {
+				r.Config.Access = append(r.Config.Access, types.StringValue(v))
+			}
+			r.Config.BodyFilter = []types.String{}
+			for _, v := range resp.Config.BodyFilter {
+				r.Config.BodyFilter = append(r.Config.BodyFilter, types.StringValue(v))
+			}
+			r.Config.Certificate = []types.String{}
+			for _, v := range resp.Config.Certificate {
+				r.Config.Certificate = append(r.Config.Certificate, types.StringValue(v))
+			}
+			r.Config.HeaderFilter = []types.String{}
+			for _, v := range resp.Config.HeaderFilter {
+				r.Config.HeaderFilter = append(r.Config.HeaderFilter, types.StringValue(v))
+			}
+			r.Config.Log = []types.String{}
+			for _, v := range resp.Config.Log {
+				r.Config.Log = append(r.Config.Log, types.StringValue(v))
+			}
+			r.Config.Rewrite = []types.String{}
+			for _, v := range resp.Config.Rewrite {
+				r.Config.Rewrite = append(r.Config.Rewrite, types.StringValue(v))
+			}
+			r.Config.WsClientFrame = []types.String{}
+			for _, v := range resp.Config.WsClientFrame {
+				r.Config.WsClientFrame = append(r.Config.WsClientFrame, types.StringValue(v))
+			}
+			r.Config.WsClose = []types.String{}
+			for _, v := range resp.Config.WsClose {
+				r.Config.WsClose = append(r.Config.WsClose, types.StringValue(v))
+			}
+			r.Config.WsHandshake = []types.String{}
+			for _, v := range resp.Config.WsHandshake {
+				r.Config.WsHandshake = append(r.Config.WsHandshake, types.StringValue(v))
+			}
+			r.Config.WsUpstreamFrame = []types.String{}
+			for _, v := range resp.Config.WsUpstreamFrame {
+				r.Config.WsUpstreamFrame = append(r.Config.WsUpstreamFrame, types.StringValue(v))
+			}
 		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
@@ -171,9 +199,16 @@ func (r *GatewayPluginPreFunctionResourceModel) RefreshFromSharedPreFunctionPlug
 			r.Consumer = &tfTypes.ACLConsumer{}
 			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
 		}
+		if resp.ConsumerGroup == nil {
+			r.ConsumerGroup = nil
+		} else {
+			r.ConsumerGroup = &tfTypes.ACLConsumer{}
+			r.ConsumerGroup.ID = types.StringPointerValue(resp.ConsumerGroup.ID)
+		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
+		r.InstanceName = types.StringPointerValue(resp.InstanceName)
 		r.Protocols = []types.String{}
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))
@@ -194,5 +229,6 @@ func (r *GatewayPluginPreFunctionResourceModel) RefreshFromSharedPreFunctionPlug
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}
+		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
 }

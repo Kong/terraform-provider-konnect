@@ -8,7 +8,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
 )
 
-func (r *GatewayKeyAuthResourceModel) ToSharedCreateKeyAuthWithoutParents() *shared.CreateKeyAuthWithoutParents {
+func (r *GatewayKeyAuthResourceModel) ToSharedKeyAuthWithoutParents() *shared.KeyAuthWithoutParents {
 	key := new(string)
 	if !r.Key.IsUnknown() && !r.Key.IsNull() {
 		*key = r.Key.ValueString()
@@ -19,7 +19,7 @@ func (r *GatewayKeyAuthResourceModel) ToSharedCreateKeyAuthWithoutParents() *sha
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	out := shared.CreateKeyAuthWithoutParents{
+	out := shared.KeyAuthWithoutParents{
 		Key:  key,
 		Tags: tags,
 	}

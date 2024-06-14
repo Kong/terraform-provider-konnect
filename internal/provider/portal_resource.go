@@ -114,7 +114,7 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
-				Description: `Contains a unique identifier used by the API for this resource.`,
+				Description: `Contains a unique identifier used for this resource.`,
 			},
 			"is_public": schema.BoolAttribute{
 				Computed:    true,
@@ -210,8 +210,8 @@ func (r *PortalResource) Create(ctx context.Context, req resource.CreateRequest,
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.UpdatePortalResponse == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.UpdatePortalResponse != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedUpdatePortalResponse(res.UpdatePortalResponse)
@@ -281,8 +281,8 @@ func (r *PortalResource) Update(ctx context.Context, req resource.UpdateRequest,
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.UpdatePortalResponse == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.UpdatePortalResponse != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedUpdatePortalResponse(res.UpdatePortalResponse)

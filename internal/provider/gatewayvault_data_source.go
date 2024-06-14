@@ -9,6 +9,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
 )
@@ -28,15 +29,15 @@ type GatewayVaultDataSource struct {
 
 // GatewayVaultDataSourceModel describes the data model.
 type GatewayVaultDataSourceModel struct {
-	Config         types.String   `tfsdk:"config"`
-	ControlPlaneID types.String   `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64    `tfsdk:"created_at"`
-	Description    types.String   `tfsdk:"description"`
-	ID             types.String   `tfsdk:"id"`
-	Name           types.String   `tfsdk:"name"`
-	Prefix         types.String   `tfsdk:"prefix"`
-	Tags           []types.String `tfsdk:"tags"`
-	UpdatedAt      types.Int64    `tfsdk:"updated_at"`
+	Config         *tfTypes.VaultConfig `tfsdk:"config"`
+	ControlPlaneID types.String         `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64          `tfsdk:"created_at"`
+	Description    types.String         `tfsdk:"description"`
+	ID             types.String         `tfsdk:"id"`
+	Name           types.String         `tfsdk:"name"`
+	Prefix         types.String         `tfsdk:"prefix"`
+	Tags           []types.String       `tfsdk:"tags"`
+	UpdatedAt      types.Int64          `tfsdk:"updated_at"`
 }
 
 // Metadata returns the data source type name.
@@ -50,9 +51,10 @@ func (r *GatewayVaultDataSource) Schema(ctx context.Context, req datasource.Sche
 		MarkdownDescription: "GatewayVault DataSource",
 
 		Attributes: map[string]schema.Attribute{
-			"config": schema.StringAttribute{
+			"config": schema.SingleNestedAttribute{
 				Computed:    true,
-				Description: `The configuration properties for the Vault which can be found on the vaults' documentation page. Parsed as JSON.`,
+				Attributes:  map[string]schema.Attribute{},
+				Description: `The configuration properties for the Vault which can be found on the vaults' documentation page.`,
 			},
 			"control_plane_id": schema.StringAttribute{
 				Required:    true,
@@ -155,8 +157,8 @@ func (r *GatewayVaultDataSource) Read(ctx context.Context, req datasource.ReadRe
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.Vault == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.Vault != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedVault(res.Vault)

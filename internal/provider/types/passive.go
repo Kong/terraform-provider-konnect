@@ -5,7 +5,7 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type Passive struct {
-	Healthy   *CreateUpstreamHealthy   `tfsdk:"healthy"`
-	Type      types.String             `tfsdk:"type"`
-	Unhealthy *CreateUpstreamUnhealthy `tfsdk:"unhealthy"`
+	Healthy   *UpstreamHealthy   `tfsdk:"healthy"`
+	Type      types.String       `tfsdk:"type"`
+	Unhealthy *UpstreamUnhealthy `tfsdk:"unhealthy"`
 }

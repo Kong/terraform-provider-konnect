@@ -7,7 +7,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
 )
 
-func (r *GatewayConsumerResourceModel) ToSharedCreateConsumer() *shared.CreateConsumer {
+func (r *GatewayConsumerResourceModel) ToSharedConsumerInput() *shared.ConsumerInput {
 	customID := new(string)
 	if !r.CustomID.IsUnknown() && !r.CustomID.IsNull() {
 		*customID = r.CustomID.ValueString()
@@ -24,7 +24,7 @@ func (r *GatewayConsumerResourceModel) ToSharedCreateConsumer() *shared.CreateCo
 	} else {
 		username = nil
 	}
-	out := shared.CreateConsumer{
+	out := shared.ConsumerInput{
 		CustomID: customID,
 		Tags:     tags,
 		Username: username,
@@ -41,6 +41,7 @@ func (r *GatewayConsumerResourceModel) RefreshFromSharedConsumer(resp *shared.Co
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}
+		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 		r.Username = types.StringPointerValue(resp.Username)
 	}
 }

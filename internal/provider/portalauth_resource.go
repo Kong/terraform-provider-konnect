@@ -8,7 +8,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
@@ -71,22 +70,13 @@ func (r *PortalAuthResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"email": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Default:     stringdefault.StaticString("email"),
-						Description: `Default: "email"`,
+						Optional: true,
 					},
 					"groups": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Default:     stringdefault.StaticString("groups"),
-						Description: `Default: "groups"`,
+						Optional: true,
 					},
 					"name": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Default:     stringdefault.StaticString("name"),
-						Description: `Default: "name"`,
+						Optional: true,
 					},
 				},
 				Description: `Mappings from a portal developer atribute to an Identity Provider claim.`,
@@ -208,8 +198,8 @@ func (r *PortalAuthResource) Create(ctx context.Context, req resource.CreateRequ
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.PortalAuthenticationSettingsResponse == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.PortalAuthenticationSettingsResponse != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedPortalAuthenticationSettingsResponse(res.PortalAuthenticationSettingsResponse)
@@ -234,8 +224,8 @@ func (r *PortalAuthResource) Create(ctx context.Context, req resource.CreateRequ
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
 		return
 	}
-	if res1.PortalAuthenticationSettingsResponse == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res1.RawResponse))
+	if !(res1.PortalAuthenticationSettingsResponse != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
 	data.RefreshFromSharedPortalAuthenticationSettingsResponse(res1.PortalAuthenticationSettingsResponse)
@@ -287,8 +277,8 @@ func (r *PortalAuthResource) Read(ctx context.Context, req resource.ReadRequest,
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.PortalAuthenticationSettingsResponse == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.PortalAuthenticationSettingsResponse != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedPortalAuthenticationSettingsResponse(res.PortalAuthenticationSettingsResponse)
@@ -333,8 +323,8 @@ func (r *PortalAuthResource) Update(ctx context.Context, req resource.UpdateRequ
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.PortalAuthenticationSettingsResponse == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.PortalAuthenticationSettingsResponse != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedPortalAuthenticationSettingsResponse(res.PortalAuthenticationSettingsResponse)
@@ -359,8 +349,8 @@ func (r *PortalAuthResource) Update(ctx context.Context, req resource.UpdateRequ
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
 		return
 	}
-	if res1.PortalAuthenticationSettingsResponse == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res1.RawResponse))
+	if !(res1.PortalAuthenticationSettingsResponse != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
 	data.RefreshFromSharedPortalAuthenticationSettingsResponse(res1.PortalAuthenticationSettingsResponse)

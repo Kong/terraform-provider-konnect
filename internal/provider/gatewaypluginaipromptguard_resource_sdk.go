@@ -9,11 +9,39 @@ import (
 )
 
 func (r *GatewayPluginAIPromptGuardResourceModel) ToSharedCreateAIPromptGuardPlugin() *shared.CreateAIPromptGuardPlugin {
+	var config *shared.CreateAIPromptGuardPluginConfig
+	if r.Config != nil {
+		allowAllConversationHistory := new(bool)
+		if !r.Config.AllowAllConversationHistory.IsUnknown() && !r.Config.AllowAllConversationHistory.IsNull() {
+			*allowAllConversationHistory = r.Config.AllowAllConversationHistory.ValueBool()
+		} else {
+			allowAllConversationHistory = nil
+		}
+		var allowPatterns []string = []string{}
+		for _, allowPatternsItem := range r.Config.AllowPatterns {
+			allowPatterns = append(allowPatterns, allowPatternsItem.ValueString())
+		}
+		var denyPatterns []string = []string{}
+		for _, denyPatternsItem := range r.Config.DenyPatterns {
+			denyPatterns = append(denyPatterns, denyPatternsItem.ValueString())
+		}
+		config = &shared.CreateAIPromptGuardPluginConfig{
+			AllowAllConversationHistory: allowAllConversationHistory,
+			AllowPatterns:               allowPatterns,
+			DenyPatterns:                denyPatterns,
+		}
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
 	} else {
 		enabled = nil
+	}
+	instanceName := new(string)
+	if !r.InstanceName.IsUnknown() && !r.InstanceName.IsNull() {
+		*instanceName = r.InstanceName.ValueString()
+	} else {
+		instanceName = nil
 	}
 	var protocols []shared.CreateAIPromptGuardPluginProtocols = []shared.CreateAIPromptGuardPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
@@ -35,71 +63,71 @@ func (r *GatewayPluginAIPromptGuardResourceModel) ToSharedCreateAIPromptGuardPlu
 			ID: id,
 		}
 	}
-	var route *shared.CreateAIPromptGuardPluginRoute
-	if r.Route != nil {
+	var consumerGroup *shared.CreateAIPromptGuardPluginConsumerGroup
+	if r.ConsumerGroup != nil {
 		id1 := new(string)
-		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
-			*id1 = r.Route.ID.ValueString()
+		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
+			*id1 = r.ConsumerGroup.ID.ValueString()
 		} else {
 			id1 = nil
 		}
-		route = &shared.CreateAIPromptGuardPluginRoute{
+		consumerGroup = &shared.CreateAIPromptGuardPluginConsumerGroup{
 			ID: id1,
+		}
+	}
+	var route *shared.CreateAIPromptGuardPluginRoute
+	if r.Route != nil {
+		id2 := new(string)
+		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
+			*id2 = r.Route.ID.ValueString()
+		} else {
+			id2 = nil
+		}
+		route = &shared.CreateAIPromptGuardPluginRoute{
+			ID: id2,
 		}
 	}
 	var service *shared.CreateAIPromptGuardPluginService
 	if r.Service != nil {
-		id2 := new(string)
+		id3 := new(string)
 		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
-			*id2 = r.Service.ID.ValueString()
+			*id3 = r.Service.ID.ValueString()
 		} else {
-			id2 = nil
+			id3 = nil
 		}
 		service = &shared.CreateAIPromptGuardPluginService{
-			ID: id2,
+			ID: id3,
 		}
 	}
-	allowAllConversationHistory := new(bool)
-	if !r.Config.AllowAllConversationHistory.IsUnknown() && !r.Config.AllowAllConversationHistory.IsNull() {
-		*allowAllConversationHistory = r.Config.AllowAllConversationHistory.ValueBool()
-	} else {
-		allowAllConversationHistory = nil
-	}
-	var allowPatterns []string = []string{}
-	for _, allowPatternsItem := range r.Config.AllowPatterns {
-		allowPatterns = append(allowPatterns, allowPatternsItem.ValueString())
-	}
-	var denyPatterns []string = []string{}
-	for _, denyPatternsItem := range r.Config.DenyPatterns {
-		denyPatterns = append(denyPatterns, denyPatternsItem.ValueString())
-	}
-	config := shared.CreateAIPromptGuardPluginConfig{
-		AllowAllConversationHistory: allowAllConversationHistory,
-		AllowPatterns:               allowPatterns,
-		DenyPatterns:                denyPatterns,
-	}
 	out := shared.CreateAIPromptGuardPlugin{
-		Enabled:   enabled,
-		Protocols: protocols,
-		Tags:      tags,
-		Consumer:  consumer,
-		Route:     route,
-		Service:   service,
-		Config:    config,
+		Config:        config,
+		Enabled:       enabled,
+		InstanceName:  instanceName,
+		Protocols:     protocols,
+		Tags:          tags,
+		Consumer:      consumer,
+		ConsumerGroup: consumerGroup,
+		Route:         route,
+		Service:       service,
 	}
 	return &out
 }
 
 func (r *GatewayPluginAIPromptGuardResourceModel) RefreshFromSharedAIPromptGuardPlugin(resp *shared.AIPromptGuardPlugin) {
 	if resp != nil {
-		r.Config.AllowAllConversationHistory = types.BoolPointerValue(resp.Config.AllowAllConversationHistory)
-		r.Config.AllowPatterns = []types.String{}
-		for _, v := range resp.Config.AllowPatterns {
-			r.Config.AllowPatterns = append(r.Config.AllowPatterns, types.StringValue(v))
-		}
-		r.Config.DenyPatterns = []types.String{}
-		for _, v := range resp.Config.DenyPatterns {
-			r.Config.DenyPatterns = append(r.Config.DenyPatterns, types.StringValue(v))
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.CreateAIPromptGuardPluginConfig{}
+			r.Config.AllowAllConversationHistory = types.BoolPointerValue(resp.Config.AllowAllConversationHistory)
+			r.Config.AllowPatterns = []types.String{}
+			for _, v := range resp.Config.AllowPatterns {
+				r.Config.AllowPatterns = append(r.Config.AllowPatterns, types.StringValue(v))
+			}
+			r.Config.DenyPatterns = []types.String{}
+			for _, v := range resp.Config.DenyPatterns {
+				r.Config.DenyPatterns = append(r.Config.DenyPatterns, types.StringValue(v))
+			}
 		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
@@ -107,9 +135,16 @@ func (r *GatewayPluginAIPromptGuardResourceModel) RefreshFromSharedAIPromptGuard
 			r.Consumer = &tfTypes.ACLConsumer{}
 			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
 		}
+		if resp.ConsumerGroup == nil {
+			r.ConsumerGroup = nil
+		} else {
+			r.ConsumerGroup = &tfTypes.ACLConsumer{}
+			r.ConsumerGroup.ID = types.StringPointerValue(resp.ConsumerGroup.ID)
+		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
+		r.InstanceName = types.StringPointerValue(resp.InstanceName)
 		r.Protocols = []types.String{}
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))
@@ -130,5 +165,6 @@ func (r *GatewayPluginAIPromptGuardResourceModel) RefreshFromSharedAIPromptGuard
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}
+		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
 }

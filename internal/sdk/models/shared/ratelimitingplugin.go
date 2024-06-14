@@ -6,93 +6,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/internal/sdk/types"
 )
-
-type RateLimitingPluginProtocols string
-
-const (
-	RateLimitingPluginProtocolsGrpc           RateLimitingPluginProtocols = "grpc"
-	RateLimitingPluginProtocolsGrpcs          RateLimitingPluginProtocols = "grpcs"
-	RateLimitingPluginProtocolsHTTP           RateLimitingPluginProtocols = "http"
-	RateLimitingPluginProtocolsHTTPS          RateLimitingPluginProtocols = "https"
-	RateLimitingPluginProtocolsTCP            RateLimitingPluginProtocols = "tcp"
-	RateLimitingPluginProtocolsTLS            RateLimitingPluginProtocols = "tls"
-	RateLimitingPluginProtocolsTLSPassthrough RateLimitingPluginProtocols = "tls_passthrough"
-	RateLimitingPluginProtocolsUDP            RateLimitingPluginProtocols = "udp"
-	RateLimitingPluginProtocolsWs             RateLimitingPluginProtocols = "ws"
-	RateLimitingPluginProtocolsWss            RateLimitingPluginProtocols = "wss"
-)
-
-func (e RateLimitingPluginProtocols) ToPointer() *RateLimitingPluginProtocols {
-	return &e
-}
-func (e *RateLimitingPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		fallthrough
-	case "tcp":
-		fallthrough
-	case "tls":
-		fallthrough
-	case "tls_passthrough":
-		fallthrough
-	case "udp":
-		fallthrough
-	case "ws":
-		fallthrough
-	case "wss":
-		*e = RateLimitingPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for RateLimitingPluginProtocols: %v", v)
-	}
-}
-
-// RateLimitingPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-type RateLimitingPluginConsumer struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *RateLimitingPluginConsumer) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-// RateLimitingPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-type RateLimitingPluginRoute struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *RateLimitingPluginRoute) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-// RateLimitingPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-type RateLimitingPluginService struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *RateLimitingPluginService) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
 
 // LimitBy - The entity that is used when aggregating the limits.
 type LimitBy string
@@ -166,23 +81,108 @@ func (e *Policy) UnmarshalJSON(data []byte) error {
 	}
 }
 
+// Redis configuration
+type Redis struct {
+	// Database to use for the Redis connection when using the `redis` strategy
+	Database *int64 `json:"database,omitempty"`
+	// A string representing a host name, such as example.com.
+	Host *string `json:"host,omitempty"`
+	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
+	Password *string `json:"password,omitempty"`
+	// An integer representing a port number between 0 and 65535, inclusive.
+	Port *int64 `json:"port,omitempty"`
+	// A string representing an SNI (server name indication) value for TLS.
+	ServerName *string `json:"server_name,omitempty"`
+	// If set to true, uses SSL to connect to Redis.
+	Ssl *bool `json:"ssl,omitempty"`
+	// If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
+	SslVerify *bool `json:"ssl_verify,omitempty"`
+	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+	Timeout *int64 `json:"timeout,omitempty"`
+	// Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
+	Username *string `json:"username,omitempty"`
+}
+
+func (o *Redis) GetDatabase() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.Database
+}
+
+func (o *Redis) GetHost() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Host
+}
+
+func (o *Redis) GetPassword() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Password
+}
+
+func (o *Redis) GetPort() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.Port
+}
+
+func (o *Redis) GetServerName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ServerName
+}
+
+func (o *Redis) GetSsl() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Ssl
+}
+
+func (o *Redis) GetSslVerify() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.SslVerify
+}
+
+func (o *Redis) GetTimeout() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.Timeout
+}
+
+func (o *Redis) GetUsername() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Username
+}
+
 type RateLimitingPluginConfig struct {
 	// The number of HTTP requests that can be made per day.
 	Day *float64 `json:"day,omitempty"`
 	// Set a custom error code to return when the rate limit is exceeded.
-	ErrorCode *float64 `default:"429" json:"error_code"`
+	ErrorCode *float64 `json:"error_code,omitempty"`
 	// Set a custom error message to return when the rate limit is exceeded.
-	ErrorMessage *string `default:"API rate limit exceeded" json:"error_message"`
+	ErrorMessage *string `json:"error_message,omitempty"`
 	// A boolean value that determines if the requests should be proxied even if Kong has troubles connecting a third-party data store. If `true`, requests will be proxied anyway, effectively disabling the rate-limiting function until the data store is working again. If `false`, then the clients will see `500` errors.
-	FaultTolerant *bool `default:"true" json:"fault_tolerant"`
+	FaultTolerant *bool `json:"fault_tolerant,omitempty"`
 	// A string representing an HTTP header name.
 	HeaderName *string `json:"header_name,omitempty"`
 	// Optionally hide informative response headers.
-	HideClientHeaders *bool `default:"false" json:"hide_client_headers"`
+	HideClientHeaders *bool `json:"hide_client_headers,omitempty"`
 	// The number of HTTP requests that can be made per hour.
 	Hour *float64 `json:"hour,omitempty"`
 	// The entity that is used when aggregating the limits.
-	LimitBy *LimitBy `default:"consumer" json:"limit_by"`
+	LimitBy *LimitBy `json:"limit_by,omitempty"`
 	// The number of HTTP requests that can be made per minute.
 	Minute *float64 `json:"minute,omitempty"`
 	// The number of HTTP requests that can be made per month.
@@ -190,42 +190,15 @@ type RateLimitingPluginConfig struct {
 	// A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).
 	Path *string `json:"path,omitempty"`
 	// The rate-limiting policies to use for retrieving and incrementing the limits.
-	Policy *Policy `default:"local" json:"policy"`
-	// When using the `redis` policy, this property specifies the Redis database to use.
-	RedisDatabase *int64 `default:"0" json:"redis_database"`
-	// A string representing a host name, such as example.com.
-	RedisHost *string `json:"redis_host,omitempty"`
-	// When using the `redis` policy, this property specifies the password to connect to the Redis server.
-	RedisPassword *string `json:"redis_password,omitempty"`
-	// An integer representing a port number between 0 and 65535, inclusive.
-	RedisPort *int64 `default:"6379" json:"redis_port"`
-	// A string representing an SNI (server name indication) value for TLS.
-	RedisServerName *string `json:"redis_server_name,omitempty"`
-	// When using the `redis` policy, this property specifies if SSL is used to connect to the Redis server.
-	RedisSsl *bool `default:"false" json:"redis_ssl"`
-	// When using the `redis` policy with `redis_ssl` set to `true`, this property specifies it server SSL certificate is validated. Note that you need to configure the lua_ssl_trusted_certificate to specify the CA (or server) certificate used by your Redis server. You may also need to configure lua_ssl_verify_depth accordingly.
-	RedisSslVerify *bool `default:"false" json:"redis_ssl_verify"`
-	// When using the `redis` policy, this property specifies the timeout in milliseconds of any command submitted to the Redis server.
-	RedisTimeout *float64 `default:"2000" json:"redis_timeout"`
-	// When using the `redis` policy, this property specifies the username to connect to the Redis server when ACL authentication is desired.
-	RedisUsername *string `json:"redis_username,omitempty"`
+	Policy *Policy `json:"policy,omitempty"`
+	// Redis configuration
+	Redis *Redis `json:"redis,omitempty"`
 	// The number of HTTP requests that can be made per second.
 	Second *float64 `json:"second,omitempty"`
 	// How often to sync counter data to the central data store. A value of -1 results in synchronous behavior.
-	SyncRate *float64 `default:"-1" json:"sync_rate"`
+	SyncRate *float64 `json:"sync_rate,omitempty"`
 	// The number of HTTP requests that can be made per year.
 	Year *float64 `json:"year,omitempty"`
-}
-
-func (r RateLimitingPluginConfig) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(r, "", false)
-}
-
-func (r *RateLimitingPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
-		return err
-	}
-	return nil
 }
 
 func (o *RateLimitingPluginConfig) GetDay() *float64 {
@@ -312,67 +285,11 @@ func (o *RateLimitingPluginConfig) GetPolicy() *Policy {
 	return o.Policy
 }
 
-func (o *RateLimitingPluginConfig) GetRedisDatabase() *int64 {
+func (o *RateLimitingPluginConfig) GetRedis() *Redis {
 	if o == nil {
 		return nil
 	}
-	return o.RedisDatabase
-}
-
-func (o *RateLimitingPluginConfig) GetRedisHost() *string {
-	if o == nil {
-		return nil
-	}
-	return o.RedisHost
-}
-
-func (o *RateLimitingPluginConfig) GetRedisPassword() *string {
-	if o == nil {
-		return nil
-	}
-	return o.RedisPassword
-}
-
-func (o *RateLimitingPluginConfig) GetRedisPort() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.RedisPort
-}
-
-func (o *RateLimitingPluginConfig) GetRedisServerName() *string {
-	if o == nil {
-		return nil
-	}
-	return o.RedisServerName
-}
-
-func (o *RateLimitingPluginConfig) GetRedisSsl() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.RedisSsl
-}
-
-func (o *RateLimitingPluginConfig) GetRedisSslVerify() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.RedisSslVerify
-}
-
-func (o *RateLimitingPluginConfig) GetRedisTimeout() *float64 {
-	if o == nil {
-		return nil
-	}
-	return o.RedisTimeout
-}
-
-func (o *RateLimitingPluginConfig) GetRedisUsername() *string {
-	if o == nil {
-		return nil
-	}
-	return o.RedisUsername
+	return o.Redis
 }
 
 func (o *RateLimitingPluginConfig) GetSecond() *float64 {
@@ -396,25 +313,125 @@ func (o *RateLimitingPluginConfig) GetYear() *float64 {
 	return o.Year
 }
 
-// RateLimitingPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
+type RateLimitingPluginProtocols string
+
+const (
+	RateLimitingPluginProtocolsGrpc           RateLimitingPluginProtocols = "grpc"
+	RateLimitingPluginProtocolsGrpcs          RateLimitingPluginProtocols = "grpcs"
+	RateLimitingPluginProtocolsHTTP           RateLimitingPluginProtocols = "http"
+	RateLimitingPluginProtocolsHTTPS          RateLimitingPluginProtocols = "https"
+	RateLimitingPluginProtocolsTCP            RateLimitingPluginProtocols = "tcp"
+	RateLimitingPluginProtocolsTLS            RateLimitingPluginProtocols = "tls"
+	RateLimitingPluginProtocolsTLSPassthrough RateLimitingPluginProtocols = "tls_passthrough"
+	RateLimitingPluginProtocolsUDP            RateLimitingPluginProtocols = "udp"
+	RateLimitingPluginProtocolsWs             RateLimitingPluginProtocols = "ws"
+	RateLimitingPluginProtocolsWss            RateLimitingPluginProtocols = "wss"
+)
+
+func (e RateLimitingPluginProtocols) ToPointer() *RateLimitingPluginProtocols {
+	return &e
+}
+func (e *RateLimitingPluginProtocols) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "grpc":
+		fallthrough
+	case "grpcs":
+		fallthrough
+	case "http":
+		fallthrough
+	case "https":
+		fallthrough
+	case "tcp":
+		fallthrough
+	case "tls":
+		fallthrough
+	case "tls_passthrough":
+		fallthrough
+	case "udp":
+		fallthrough
+	case "ws":
+		fallthrough
+	case "wss":
+		*e = RateLimitingPluginProtocols(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for RateLimitingPluginProtocols: %v", v)
+	}
+}
+
+// RateLimitingPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+type RateLimitingPluginConsumer struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *RateLimitingPluginConsumer) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+type RateLimitingPluginConsumerGroup struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *RateLimitingPluginConsumerGroup) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+// RateLimitingPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
+type RateLimitingPluginRoute struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *RateLimitingPluginRoute) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+// RateLimitingPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+type RateLimitingPluginService struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *RateLimitingPluginService) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
 type RateLimitingPlugin struct {
+	Config *RateLimitingPluginConfig `json:"config,omitempty"`
+	// Unix epoch when the resource was created.
+	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool  `default:"true" json:"enabled"`
-	name    string `const:"rate-limiting" json:"name"`
+	Enabled      *bool   `json:"enabled,omitempty"`
+	ID           *string `json:"id,omitempty"`
+	InstanceName *string `json:"instance_name,omitempty"`
+	name         *string `const:"rate-limiting" json:"name,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []RateLimitingPluginProtocols `json:"protocols"`
+	Protocols []RateLimitingPluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
+	// Unix epoch when the resource was last updated.
+	UpdatedAt *int64 `json:"updated_at,omitempty"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer *RateLimitingPluginConsumer `json:"consumer,omitempty"`
+	Consumer      *RateLimitingPluginConsumer      `json:"consumer,omitempty"`
+	ConsumerGroup *RateLimitingPluginConsumerGroup `json:"consumer_group,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
 	Route *RateLimitingPluginRoute `json:"route,omitempty"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 	Service *RateLimitingPluginService `json:"service,omitempty"`
-	// Unix epoch when the resource was created.
-	CreatedAt *int64                   `json:"created_at,omitempty"`
-	ID        *string                  `json:"id,omitempty"`
-	Config    RateLimitingPluginConfig `json:"config"`
 }
 
 func (r RateLimitingPlugin) MarshalJSON() ([]byte, error) {
@@ -428,6 +445,20 @@ func (r *RateLimitingPlugin) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (o *RateLimitingPlugin) GetConfig() *RateLimitingPluginConfig {
+	if o == nil {
+		return nil
+	}
+	return o.Config
+}
+
+func (o *RateLimitingPlugin) GetCreatedAt() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.CreatedAt
+}
+
 func (o *RateLimitingPlugin) GetEnabled() *bool {
 	if o == nil {
 		return nil
@@ -435,13 +466,27 @@ func (o *RateLimitingPlugin) GetEnabled() *bool {
 	return o.Enabled
 }
 
-func (o *RateLimitingPlugin) GetName() string {
-	return "rate-limiting"
+func (o *RateLimitingPlugin) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *RateLimitingPlugin) GetInstanceName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.InstanceName
+}
+
+func (o *RateLimitingPlugin) GetName() *string {
+	return types.String("rate-limiting")
 }
 
 func (o *RateLimitingPlugin) GetProtocols() []RateLimitingPluginProtocols {
 	if o == nil {
-		return []RateLimitingPluginProtocols{}
+		return nil
 	}
 	return o.Protocols
 }
@@ -453,11 +498,25 @@ func (o *RateLimitingPlugin) GetTags() []string {
 	return o.Tags
 }
 
+func (o *RateLimitingPlugin) GetUpdatedAt() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.UpdatedAt
+}
+
 func (o *RateLimitingPlugin) GetConsumer() *RateLimitingPluginConsumer {
 	if o == nil {
 		return nil
 	}
 	return o.Consumer
+}
+
+func (o *RateLimitingPlugin) GetConsumerGroup() *RateLimitingPluginConsumerGroup {
+	if o == nil {
+		return nil
+	}
+	return o.ConsumerGroup
 }
 
 func (o *RateLimitingPlugin) GetRoute() *RateLimitingPluginRoute {
@@ -472,25 +531,4 @@ func (o *RateLimitingPlugin) GetService() *RateLimitingPluginService {
 		return nil
 	}
 	return o.Service
-}
-
-func (o *RateLimitingPlugin) GetCreatedAt() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.CreatedAt
-}
-
-func (o *RateLimitingPlugin) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-func (o *RateLimitingPlugin) GetConfig() RateLimitingPluginConfig {
-	if o == nil {
-		return RateLimitingPluginConfig{}
-	}
-	return o.Config
 }

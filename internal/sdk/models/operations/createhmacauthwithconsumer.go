@@ -13,7 +13,7 @@ type CreateHmacAuthWithConsumerRequest struct {
 	// Consumer ID for nested entities
 	ConsumerIDForNestedEntities string `pathParam:"style=simple,explode=false,name=ConsumerIdForNestedEntities"`
 	// Description of new HMAC-auth credential for creation
-	CreateHMACAuthWithoutParents shared.CreateHMACAuthWithoutParents `request:"mediaType=application/json"`
+	HMACAuthWithoutParents shared.HMACAuthWithoutParents `request:"mediaType=application/json"`
 }
 
 func (o *CreateHmacAuthWithConsumerRequest) GetControlPlaneID() string {
@@ -30,11 +30,11 @@ func (o *CreateHmacAuthWithConsumerRequest) GetConsumerIDForNestedEntities() str
 	return o.ConsumerIDForNestedEntities
 }
 
-func (o *CreateHmacAuthWithConsumerRequest) GetCreateHMACAuthWithoutParents() shared.CreateHMACAuthWithoutParents {
+func (o *CreateHmacAuthWithConsumerRequest) GetHMACAuthWithoutParents() shared.HMACAuthWithoutParents {
 	if o == nil {
-		return shared.CreateHMACAuthWithoutParents{}
+		return shared.HMACAuthWithoutParents{}
 	}
-	return o.CreateHMACAuthWithoutParents
+	return o.HMACAuthWithoutParents
 }
 
 type CreateHmacAuthWithConsumerResponse struct {

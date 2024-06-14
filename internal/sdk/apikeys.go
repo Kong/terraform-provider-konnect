@@ -41,7 +41,7 @@ func (s *APIKeys) CreateKeyAuthWithConsumer(ctx context.Context, request operati
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "CreateKeyAuthWithoutParents", "json", `request:"mediaType=application/json"`)
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "KeyAuthWithoutParents", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
 	}

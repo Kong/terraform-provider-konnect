@@ -49,6 +49,7 @@ type GatewayUpstreamDataSourceModel struct {
 	Name                   types.String          `tfsdk:"name"`
 	Slots                  types.Int64           `tfsdk:"slots"`
 	Tags                   []types.String        `tfsdk:"tags"`
+	UpdatedAt              types.Int64           `tfsdk:"updated_at"`
 	UseSrvName             types.Bool            `tfsdk:"use_srv_name"`
 }
 
@@ -65,7 +66,7 @@ func (r *GatewayUpstreamDataSource) Schema(ctx context.Context, req datasource.S
 		Attributes: map[string]schema.Attribute{
 			"algorithm": schema.StringAttribute{
 				Computed:    true,
-				Description: `Which load balancing algorithm to use. must be one of ["consistent-hashing", "least-connections", "round-robin"]`,
+				Description: `Which load balancing algorithm to use. must be one of ["consistent-hashing", "least-connections", "round-robin", "latency"]`,
 			},
 			"client_certificate": schema.SingleNestedAttribute{
 				Computed: true,
@@ -256,6 +257,10 @@ func (r *GatewayUpstreamDataSource) Schema(ctx context.Context, req datasource.S
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Upstream for grouping and filtering.`,
 			},
+			"updated_at": schema.Int64Attribute{
+				Computed:    true,
+				Description: `Unix epoch when the resource was last updated.`,
+			},
 			"use_srv_name": schema.BoolAttribute{
 				Computed:    true,
 				Description: `If set, the balancer will use SRV hostname(if DNS Answer has SRV record) as the proxy upstream ` + "`" + `Host` + "`" + `.`,
@@ -328,8 +333,8 @@ func (r *GatewayUpstreamDataSource) Read(ctx context.Context, req datasource.Rea
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.Upstream == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.Upstream != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedUpstream(res.Upstream)

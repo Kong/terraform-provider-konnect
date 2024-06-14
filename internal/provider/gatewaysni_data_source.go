@@ -29,12 +29,13 @@ type GatewaySNIDataSource struct {
 
 // GatewaySNIDataSourceModel describes the data model.
 type GatewaySNIDataSourceModel struct {
-	Certificate    tfTypes.ACLConsumer `tfsdk:"certificate"`
-	ControlPlaneID types.String        `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64         `tfsdk:"created_at"`
-	ID             types.String        `tfsdk:"id"`
-	Name           types.String        `tfsdk:"name"`
-	Tags           []types.String      `tfsdk:"tags"`
+	Certificate    *tfTypes.ACLConsumer `tfsdk:"certificate"`
+	ControlPlaneID types.String         `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64          `tfsdk:"created_at"`
+	ID             types.String         `tfsdk:"id"`
+	Name           types.String         `tfsdk:"name"`
+	Tags           []types.String       `tfsdk:"tags"`
+	UpdatedAt      types.Int64          `tfsdk:"updated_at"`
 }
 
 // Metadata returns the data source type name.
@@ -77,6 +78,10 @@ func (r *GatewaySNIDataSource) Schema(ctx context.Context, req datasource.Schema
 				Computed:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the SNIs for grouping and filtering.`,
+			},
+			"updated_at": schema.Int64Attribute{
+				Computed:    true,
+				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
 	}
@@ -146,8 +151,8 @@ func (r *GatewaySNIDataSource) Read(ctx context.Context, req datasource.ReadRequ
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.Sni == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.Sni != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedSni(res.Sni)

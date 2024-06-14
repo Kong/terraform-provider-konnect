@@ -4,9 +4,7 @@ package types
 
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
-type CreateUpstreamUnhealthy struct {
-	HTTPFailures types.Int64   `tfsdk:"http_failures"`
+type UpstreamHealthy struct {
 	HTTPStatuses []types.Int64 `tfsdk:"http_statuses"`
-	TCPFailures  types.Int64   `tfsdk:"tcp_failures"`
-	Timeouts     types.Int64   `tfsdk:"timeouts"`
+	Successes    types.Int64   `tfsdk:"successes"`
 }

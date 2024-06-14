@@ -4,6 +4,7 @@ package provider
 
 import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
 	"math/big"
 	"time"
@@ -24,6 +25,21 @@ func (r *APIProductDataSourceModel) RefreshFromSharedAPIProduct(resp *shared.API
 		r.PortalIds = []types.String{}
 		for _, v := range resp.PortalIds {
 			r.PortalIds = append(r.PortalIds, types.StringValue(v))
+		}
+		r.Portals = []tfTypes.APIProductPortal{}
+		if len(r.Portals) > len(resp.Portals) {
+			r.Portals = r.Portals[:len(resp.Portals)]
+		}
+		for portalsCount, portalsItem := range resp.Portals {
+			var portals1 tfTypes.APIProductPortal
+			portals1.PortalID = types.StringValue(portalsItem.PortalID)
+			portals1.PortalName = types.StringValue(portalsItem.PortalName)
+			if portalsCount+1 > len(r.Portals) {
+				r.Portals = append(r.Portals, portals1)
+			} else {
+				r.Portals[portalsCount].PortalID = portals1.PortalID
+				r.Portals[portalsCount].PortalName = portals1.PortalName
+			}
 		}
 		r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
 		r.VersionCount = types.NumberValue(big.NewFloat(float64(resp.VersionCount)))

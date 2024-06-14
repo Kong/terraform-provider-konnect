@@ -9,7 +9,7 @@ import (
 
 func (r *GatewayCACertificateDataSourceModel) RefreshFromSharedCACertificate(resp *shared.CACertificate) {
 	if resp != nil {
-		r.Cert = types.StringValue(resp.Cert)
+		r.Cert = types.StringPointerValue(resp.Cert)
 		r.CertDigest = types.StringPointerValue(resp.CertDigest)
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.ID = types.StringPointerValue(resp.ID)
@@ -17,5 +17,6 @@ func (r *GatewayCACertificateDataSourceModel) RefreshFromSharedCACertificate(res
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}
+		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
 }

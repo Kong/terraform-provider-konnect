@@ -12,6 +12,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/internal/validators"
@@ -32,14 +33,15 @@ type APIProductResource struct {
 
 // APIProductResourceModel describes the resource data model.
 type APIProductResourceModel struct {
-	CreatedAt    types.String            `tfsdk:"created_at"`
-	Description  types.String            `tfsdk:"description"`
-	ID           types.String            `tfsdk:"id"`
-	Labels       map[string]types.String `tfsdk:"labels"`
-	Name         types.String            `tfsdk:"name"`
-	PortalIds    []types.String          `tfsdk:"portal_ids"`
-	UpdatedAt    types.String            `tfsdk:"updated_at"`
-	VersionCount types.Number            `tfsdk:"version_count"`
+	CreatedAt    types.String               `tfsdk:"created_at"`
+	Description  types.String               `tfsdk:"description"`
+	ID           types.String               `tfsdk:"id"`
+	Labels       map[string]types.String    `tfsdk:"labels"`
+	Name         types.String               `tfsdk:"name"`
+	PortalIds    []types.String             `tfsdk:"portal_ids"`
+	Portals      []tfTypes.APIProductPortal `tfsdk:"portals"`
+	UpdatedAt    types.String               `tfsdk:"updated_at"`
+	VersionCount types.Number               `tfsdk:"version_count"`
 }
 
 func (r *APIProductResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -60,7 +62,7 @@ func (r *APIProductResource) Schema(ctx context.Context, req resource.SchemaRequ
 			"description": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The description of the API product. Default: null`,
+				Description: `The description of the API product.`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
@@ -86,6 +88,20 @@ func (r *APIProductResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Validators: []validator.List{
 					listvalidator.UniqueValues(),
 				},
+			},
+			"portals": schema.ListNestedAttribute{
+				Computed: true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"portal_id": schema.StringAttribute{
+							Computed: true,
+						},
+						"portal_name": schema.StringAttribute{
+							Computed: true,
+						},
+					},
+				},
+				Description: `The list of portals which this API product is published to`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed:    true,
@@ -157,8 +173,8 @@ func (r *APIProductResource) Create(ctx context.Context, req resource.CreateRequ
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.APIProduct == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.APIProduct != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedAPIProduct(res.APIProduct)
@@ -210,8 +226,8 @@ func (r *APIProductResource) Read(ctx context.Context, req resource.ReadRequest,
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.APIProduct == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.APIProduct != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedAPIProduct(res.APIProduct)
@@ -256,8 +272,8 @@ func (r *APIProductResource) Update(ctx context.Context, req resource.UpdateRequ
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.APIProduct == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.APIProduct != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedAPIProduct(res.APIProduct)

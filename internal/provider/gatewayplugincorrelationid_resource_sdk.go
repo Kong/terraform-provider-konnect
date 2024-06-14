@@ -9,11 +9,43 @@ import (
 )
 
 func (r *GatewayPluginCorrelationIDResourceModel) ToSharedCreateCorrelationIDPlugin() *shared.CreateCorrelationIDPlugin {
+	var config *shared.CreateCorrelationIDPluginConfig
+	if r.Config != nil {
+		echoDownstream := new(bool)
+		if !r.Config.EchoDownstream.IsUnknown() && !r.Config.EchoDownstream.IsNull() {
+			*echoDownstream = r.Config.EchoDownstream.ValueBool()
+		} else {
+			echoDownstream = nil
+		}
+		generator := new(shared.CreateCorrelationIDPluginGenerator)
+		if !r.Config.Generator.IsUnknown() && !r.Config.Generator.IsNull() {
+			*generator = shared.CreateCorrelationIDPluginGenerator(r.Config.Generator.ValueString())
+		} else {
+			generator = nil
+		}
+		headerName := new(string)
+		if !r.Config.HeaderName.IsUnknown() && !r.Config.HeaderName.IsNull() {
+			*headerName = r.Config.HeaderName.ValueString()
+		} else {
+			headerName = nil
+		}
+		config = &shared.CreateCorrelationIDPluginConfig{
+			EchoDownstream: echoDownstream,
+			Generator:      generator,
+			HeaderName:     headerName,
+		}
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
 	} else {
 		enabled = nil
+	}
+	instanceName := new(string)
+	if !r.InstanceName.IsUnknown() && !r.InstanceName.IsNull() {
+		*instanceName = r.InstanceName.ValueString()
+	} else {
+		instanceName = nil
 	}
 	var protocols []shared.CreateCorrelationIDPluginProtocols = []shared.CreateCorrelationIDPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
@@ -35,83 +67,86 @@ func (r *GatewayPluginCorrelationIDResourceModel) ToSharedCreateCorrelationIDPlu
 			ID: id,
 		}
 	}
-	var route *shared.CreateCorrelationIDPluginRoute
-	if r.Route != nil {
+	var consumerGroup *shared.CreateCorrelationIDPluginConsumerGroup
+	if r.ConsumerGroup != nil {
 		id1 := new(string)
-		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
-			*id1 = r.Route.ID.ValueString()
+		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
+			*id1 = r.ConsumerGroup.ID.ValueString()
 		} else {
 			id1 = nil
 		}
-		route = &shared.CreateCorrelationIDPluginRoute{
+		consumerGroup = &shared.CreateCorrelationIDPluginConsumerGroup{
 			ID: id1,
+		}
+	}
+	var route *shared.CreateCorrelationIDPluginRoute
+	if r.Route != nil {
+		id2 := new(string)
+		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
+			*id2 = r.Route.ID.ValueString()
+		} else {
+			id2 = nil
+		}
+		route = &shared.CreateCorrelationIDPluginRoute{
+			ID: id2,
 		}
 	}
 	var service *shared.CreateCorrelationIDPluginService
 	if r.Service != nil {
-		id2 := new(string)
+		id3 := new(string)
 		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
-			*id2 = r.Service.ID.ValueString()
+			*id3 = r.Service.ID.ValueString()
 		} else {
-			id2 = nil
+			id3 = nil
 		}
 		service = &shared.CreateCorrelationIDPluginService{
-			ID: id2,
+			ID: id3,
 		}
 	}
-	echoDownstream := new(bool)
-	if !r.Config.EchoDownstream.IsUnknown() && !r.Config.EchoDownstream.IsNull() {
-		*echoDownstream = r.Config.EchoDownstream.ValueBool()
-	} else {
-		echoDownstream = nil
-	}
-	generator := new(shared.CreateCorrelationIDPluginGenerator)
-	if !r.Config.Generator.IsUnknown() && !r.Config.Generator.IsNull() {
-		*generator = shared.CreateCorrelationIDPluginGenerator(r.Config.Generator.ValueString())
-	} else {
-		generator = nil
-	}
-	headerName := new(string)
-	if !r.Config.HeaderName.IsUnknown() && !r.Config.HeaderName.IsNull() {
-		*headerName = r.Config.HeaderName.ValueString()
-	} else {
-		headerName = nil
-	}
-	config := shared.CreateCorrelationIDPluginConfig{
-		EchoDownstream: echoDownstream,
-		Generator:      generator,
-		HeaderName:     headerName,
-	}
 	out := shared.CreateCorrelationIDPlugin{
-		Enabled:   enabled,
-		Protocols: protocols,
-		Tags:      tags,
-		Consumer:  consumer,
-		Route:     route,
-		Service:   service,
-		Config:    config,
+		Config:        config,
+		Enabled:       enabled,
+		InstanceName:  instanceName,
+		Protocols:     protocols,
+		Tags:          tags,
+		Consumer:      consumer,
+		ConsumerGroup: consumerGroup,
+		Route:         route,
+		Service:       service,
 	}
 	return &out
 }
 
 func (r *GatewayPluginCorrelationIDResourceModel) RefreshFromSharedCorrelationIDPlugin(resp *shared.CorrelationIDPlugin) {
 	if resp != nil {
-		r.Config.EchoDownstream = types.BoolPointerValue(resp.Config.EchoDownstream)
-		if resp.Config.Generator != nil {
-			r.Config.Generator = types.StringValue(string(*resp.Config.Generator))
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.Generator = types.StringNull()
+			r.Config = &tfTypes.CreateCorrelationIDPluginConfig{}
+			r.Config.EchoDownstream = types.BoolPointerValue(resp.Config.EchoDownstream)
+			if resp.Config.Generator != nil {
+				r.Config.Generator = types.StringValue(string(*resp.Config.Generator))
+			} else {
+				r.Config.Generator = types.StringNull()
+			}
+			r.Config.HeaderName = types.StringPointerValue(resp.Config.HeaderName)
 		}
-		r.Config.HeaderName = types.StringPointerValue(resp.Config.HeaderName)
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
 			r.Consumer = &tfTypes.ACLConsumer{}
 			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
 		}
+		if resp.ConsumerGroup == nil {
+			r.ConsumerGroup = nil
+		} else {
+			r.ConsumerGroup = &tfTypes.ACLConsumer{}
+			r.ConsumerGroup.ID = types.StringPointerValue(resp.ConsumerGroup.ID)
+		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
+		r.InstanceName = types.StringPointerValue(resp.InstanceName)
 		r.Protocols = []types.String{}
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))
@@ -132,5 +167,6 @@ func (r *GatewayPluginCorrelationIDResourceModel) RefreshFromSharedCorrelationID
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}
+		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
 }

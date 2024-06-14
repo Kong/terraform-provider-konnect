@@ -13,7 +13,7 @@ type CreateBasicAuthWithConsumerRequest struct {
 	// Consumer ID for nested entities
 	ConsumerIDForNestedEntities string `pathParam:"style=simple,explode=false,name=ConsumerIdForNestedEntities"`
 	// Description of new Basic-auth credential for creation
-	CreateBasicAuthWithoutParents shared.CreateBasicAuthWithoutParents `request:"mediaType=application/json"`
+	BasicAuthWithoutParents shared.BasicAuthWithoutParents `request:"mediaType=application/json"`
 }
 
 func (o *CreateBasicAuthWithConsumerRequest) GetControlPlaneID() string {
@@ -30,11 +30,11 @@ func (o *CreateBasicAuthWithConsumerRequest) GetConsumerIDForNestedEntities() st
 	return o.ConsumerIDForNestedEntities
 }
 
-func (o *CreateBasicAuthWithConsumerRequest) GetCreateBasicAuthWithoutParents() shared.CreateBasicAuthWithoutParents {
+func (o *CreateBasicAuthWithConsumerRequest) GetBasicAuthWithoutParents() shared.BasicAuthWithoutParents {
 	if o == nil {
-		return shared.CreateBasicAuthWithoutParents{}
+		return shared.BasicAuthWithoutParents{}
 	}
-	return o.CreateBasicAuthWithoutParents
+	return o.BasicAuthWithoutParents
 }
 
 type CreateBasicAuthWithConsumerResponse struct {

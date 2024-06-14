@@ -6,111 +6,15 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/internal/sdk/types"
 )
-
-type JQPluginProtocols string
-
-const (
-	JQPluginProtocolsGrpc           JQPluginProtocols = "grpc"
-	JQPluginProtocolsGrpcs          JQPluginProtocols = "grpcs"
-	JQPluginProtocolsHTTP           JQPluginProtocols = "http"
-	JQPluginProtocolsHTTPS          JQPluginProtocols = "https"
-	JQPluginProtocolsTCP            JQPluginProtocols = "tcp"
-	JQPluginProtocolsTLS            JQPluginProtocols = "tls"
-	JQPluginProtocolsTLSPassthrough JQPluginProtocols = "tls_passthrough"
-	JQPluginProtocolsUDP            JQPluginProtocols = "udp"
-	JQPluginProtocolsWs             JQPluginProtocols = "ws"
-	JQPluginProtocolsWss            JQPluginProtocols = "wss"
-)
-
-func (e JQPluginProtocols) ToPointer() *JQPluginProtocols {
-	return &e
-}
-func (e *JQPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		fallthrough
-	case "tcp":
-		fallthrough
-	case "tls":
-		fallthrough
-	case "tls_passthrough":
-		fallthrough
-	case "udp":
-		fallthrough
-	case "ws":
-		fallthrough
-	case "wss":
-		*e = JQPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for JQPluginProtocols: %v", v)
-	}
-}
-
-// JQPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-type JQPluginConsumer struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *JQPluginConsumer) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-// JQPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-type JQPluginRoute struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *JQPluginRoute) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-// JQPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-type JQPluginService struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *JQPluginService) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
 
 type RequestJqProgramOptions struct {
-	ASCIIOutput   *bool `default:"false" json:"ascii_output"`
-	CompactOutput *bool `default:"true" json:"compact_output"`
-	JoinOutput    *bool `default:"false" json:"join_output"`
-	RawOutput     *bool `default:"false" json:"raw_output"`
-	SortKeys      *bool `default:"false" json:"sort_keys"`
-}
-
-func (r RequestJqProgramOptions) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(r, "", false)
-}
-
-func (r *RequestJqProgramOptions) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
-		return err
-	}
-	return nil
+	ASCIIOutput   *bool `json:"ascii_output,omitempty"`
+	CompactOutput *bool `json:"compact_output,omitempty"`
+	JoinOutput    *bool `json:"join_output,omitempty"`
+	RawOutput     *bool `json:"raw_output,omitempty"`
+	SortKeys      *bool `json:"sort_keys,omitempty"`
 }
 
 func (o *RequestJqProgramOptions) GetASCIIOutput() *bool {
@@ -149,22 +53,11 @@ func (o *RequestJqProgramOptions) GetSortKeys() *bool {
 }
 
 type ResponseJqProgramOptions struct {
-	ASCIIOutput   *bool `default:"false" json:"ascii_output"`
-	CompactOutput *bool `default:"true" json:"compact_output"`
-	JoinOutput    *bool `default:"false" json:"join_output"`
-	RawOutput     *bool `default:"false" json:"raw_output"`
-	SortKeys      *bool `default:"false" json:"sort_keys"`
-}
-
-func (r ResponseJqProgramOptions) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(r, "", false)
-}
-
-func (r *ResponseJqProgramOptions) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
-		return err
-	}
-	return nil
+	ASCIIOutput   *bool `json:"ascii_output,omitempty"`
+	CompactOutput *bool `json:"compact_output,omitempty"`
+	JoinOutput    *bool `json:"join_output,omitempty"`
+	RawOutput     *bool `json:"raw_output,omitempty"`
+	SortKeys      *bool `json:"sort_keys,omitempty"`
 }
 
 func (o *ResponseJqProgramOptions) GetASCIIOutput() *bool {
@@ -261,25 +154,125 @@ func (o *JQPluginConfig) GetResponseJqProgramOptions() *ResponseJqProgramOptions
 	return o.ResponseJqProgramOptions
 }
 
-// JQPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
+type JQPluginProtocols string
+
+const (
+	JQPluginProtocolsGrpc           JQPluginProtocols = "grpc"
+	JQPluginProtocolsGrpcs          JQPluginProtocols = "grpcs"
+	JQPluginProtocolsHTTP           JQPluginProtocols = "http"
+	JQPluginProtocolsHTTPS          JQPluginProtocols = "https"
+	JQPluginProtocolsTCP            JQPluginProtocols = "tcp"
+	JQPluginProtocolsTLS            JQPluginProtocols = "tls"
+	JQPluginProtocolsTLSPassthrough JQPluginProtocols = "tls_passthrough"
+	JQPluginProtocolsUDP            JQPluginProtocols = "udp"
+	JQPluginProtocolsWs             JQPluginProtocols = "ws"
+	JQPluginProtocolsWss            JQPluginProtocols = "wss"
+)
+
+func (e JQPluginProtocols) ToPointer() *JQPluginProtocols {
+	return &e
+}
+func (e *JQPluginProtocols) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "grpc":
+		fallthrough
+	case "grpcs":
+		fallthrough
+	case "http":
+		fallthrough
+	case "https":
+		fallthrough
+	case "tcp":
+		fallthrough
+	case "tls":
+		fallthrough
+	case "tls_passthrough":
+		fallthrough
+	case "udp":
+		fallthrough
+	case "ws":
+		fallthrough
+	case "wss":
+		*e = JQPluginProtocols(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for JQPluginProtocols: %v", v)
+	}
+}
+
+// JQPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+type JQPluginConsumer struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *JQPluginConsumer) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+type JQPluginConsumerGroup struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *JQPluginConsumerGroup) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+// JQPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
+type JQPluginRoute struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *JQPluginRoute) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+// JQPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+type JQPluginService struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *JQPluginService) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
 type JQPlugin struct {
+	Config *JQPluginConfig `json:"config,omitempty"`
+	// Unix epoch when the resource was created.
+	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool  `default:"true" json:"enabled"`
-	name    string `const:"jq" json:"name"`
+	Enabled      *bool   `json:"enabled,omitempty"`
+	ID           *string `json:"id,omitempty"`
+	InstanceName *string `json:"instance_name,omitempty"`
+	name         *string `const:"jq" json:"name,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []JQPluginProtocols `json:"protocols"`
+	Protocols []JQPluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
+	// Unix epoch when the resource was last updated.
+	UpdatedAt *int64 `json:"updated_at,omitempty"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer *JQPluginConsumer `json:"consumer,omitempty"`
+	Consumer      *JQPluginConsumer      `json:"consumer,omitempty"`
+	ConsumerGroup *JQPluginConsumerGroup `json:"consumer_group,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
 	Route *JQPluginRoute `json:"route,omitempty"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 	Service *JQPluginService `json:"service,omitempty"`
-	// Unix epoch when the resource was created.
-	CreatedAt *int64         `json:"created_at,omitempty"`
-	ID        *string        `json:"id,omitempty"`
-	Config    JQPluginConfig `json:"config"`
 }
 
 func (j JQPlugin) MarshalJSON() ([]byte, error) {
@@ -293,6 +286,20 @@ func (j *JQPlugin) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (o *JQPlugin) GetConfig() *JQPluginConfig {
+	if o == nil {
+		return nil
+	}
+	return o.Config
+}
+
+func (o *JQPlugin) GetCreatedAt() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.CreatedAt
+}
+
 func (o *JQPlugin) GetEnabled() *bool {
 	if o == nil {
 		return nil
@@ -300,13 +307,27 @@ func (o *JQPlugin) GetEnabled() *bool {
 	return o.Enabled
 }
 
-func (o *JQPlugin) GetName() string {
-	return "jq"
+func (o *JQPlugin) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *JQPlugin) GetInstanceName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.InstanceName
+}
+
+func (o *JQPlugin) GetName() *string {
+	return types.String("jq")
 }
 
 func (o *JQPlugin) GetProtocols() []JQPluginProtocols {
 	if o == nil {
-		return []JQPluginProtocols{}
+		return nil
 	}
 	return o.Protocols
 }
@@ -318,11 +339,25 @@ func (o *JQPlugin) GetTags() []string {
 	return o.Tags
 }
 
+func (o *JQPlugin) GetUpdatedAt() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.UpdatedAt
+}
+
 func (o *JQPlugin) GetConsumer() *JQPluginConsumer {
 	if o == nil {
 		return nil
 	}
 	return o.Consumer
+}
+
+func (o *JQPlugin) GetConsumerGroup() *JQPluginConsumerGroup {
+	if o == nil {
+		return nil
+	}
+	return o.ConsumerGroup
 }
 
 func (o *JQPlugin) GetRoute() *JQPluginRoute {
@@ -337,25 +372,4 @@ func (o *JQPlugin) GetService() *JQPluginService {
 		return nil
 	}
 	return o.Service
-}
-
-func (o *JQPlugin) GetCreatedAt() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.CreatedAt
-}
-
-func (o *JQPlugin) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-func (o *JQPlugin) GetConfig() JQPluginConfig {
-	if o == nil {
-		return JQPluginConfig{}
-	}
-	return o.Config
 }

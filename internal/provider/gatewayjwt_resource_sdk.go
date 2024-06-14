@@ -8,7 +8,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
 )
 
-func (r *GatewayJWTResourceModel) ToSharedCreateJWTWithoutParents() *shared.CreateJWTWithoutParents {
+func (r *GatewayJWTResourceModel) ToSharedJWTWithoutParents() *shared.JWTWithoutParents {
 	algorithm := new(shared.Algorithm)
 	if !r.Algorithm.IsUnknown() && !r.Algorithm.IsNull() {
 		*algorithm = shared.Algorithm(r.Algorithm.ValueString())
@@ -37,7 +37,7 @@ func (r *GatewayJWTResourceModel) ToSharedCreateJWTWithoutParents() *shared.Crea
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	out := shared.CreateJWTWithoutParents{
+	out := shared.JWTWithoutParents{
 		Algorithm:    algorithm,
 		Key:          key,
 		RsaPublicKey: rsaPublicKey,

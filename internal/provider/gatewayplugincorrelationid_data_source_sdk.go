@@ -10,22 +10,34 @@ import (
 
 func (r *GatewayPluginCorrelationIDDataSourceModel) RefreshFromSharedCorrelationIDPlugin(resp *shared.CorrelationIDPlugin) {
 	if resp != nil {
-		r.Config.EchoDownstream = types.BoolPointerValue(resp.Config.EchoDownstream)
-		if resp.Config.Generator != nil {
-			r.Config.Generator = types.StringValue(string(*resp.Config.Generator))
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.Generator = types.StringNull()
+			r.Config = &tfTypes.CreateCorrelationIDPluginConfig{}
+			r.Config.EchoDownstream = types.BoolPointerValue(resp.Config.EchoDownstream)
+			if resp.Config.Generator != nil {
+				r.Config.Generator = types.StringValue(string(*resp.Config.Generator))
+			} else {
+				r.Config.Generator = types.StringNull()
+			}
+			r.Config.HeaderName = types.StringPointerValue(resp.Config.HeaderName)
 		}
-		r.Config.HeaderName = types.StringPointerValue(resp.Config.HeaderName)
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
 			r.Consumer = &tfTypes.ACLConsumer{}
 			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
 		}
+		if resp.ConsumerGroup == nil {
+			r.ConsumerGroup = nil
+		} else {
+			r.ConsumerGroup = &tfTypes.ACLConsumer{}
+			r.ConsumerGroup.ID = types.StringPointerValue(resp.ConsumerGroup.ID)
+		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
+		r.InstanceName = types.StringPointerValue(resp.InstanceName)
 		r.Protocols = []types.String{}
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))
@@ -46,5 +58,6 @@ func (r *GatewayPluginCorrelationIDDataSourceModel) RefreshFromSharedCorrelation
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}
+		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
 }

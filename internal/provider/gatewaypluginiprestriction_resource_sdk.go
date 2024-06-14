@@ -10,11 +10,46 @@ import (
 )
 
 func (r *GatewayPluginIPRestrictionResourceModel) ToSharedCreateIPRestrictionPlugin() *shared.CreateIPRestrictionPlugin {
+	var config *shared.CreateIPRestrictionPluginConfig
+	if r.Config != nil {
+		var allow []string = []string{}
+		for _, allowItem := range r.Config.Allow {
+			allow = append(allow, allowItem.ValueString())
+		}
+		var deny []string = []string{}
+		for _, denyItem := range r.Config.Deny {
+			deny = append(deny, denyItem.ValueString())
+		}
+		message := new(string)
+		if !r.Config.Message.IsUnknown() && !r.Config.Message.IsNull() {
+			*message = r.Config.Message.ValueString()
+		} else {
+			message = nil
+		}
+		status := new(float64)
+		if !r.Config.Status.IsUnknown() && !r.Config.Status.IsNull() {
+			*status, _ = r.Config.Status.ValueBigFloat().Float64()
+		} else {
+			status = nil
+		}
+		config = &shared.CreateIPRestrictionPluginConfig{
+			Allow:   allow,
+			Deny:    deny,
+			Message: message,
+			Status:  status,
+		}
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
 	} else {
 		enabled = nil
+	}
+	instanceName := new(string)
+	if !r.InstanceName.IsUnknown() && !r.InstanceName.IsNull() {
+		*instanceName = r.InstanceName.ValueString()
+	} else {
+		instanceName = nil
 	}
 	var protocols []shared.CreateIPRestrictionPluginProtocols = []shared.CreateIPRestrictionPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
@@ -36,83 +71,76 @@ func (r *GatewayPluginIPRestrictionResourceModel) ToSharedCreateIPRestrictionPlu
 			ID: id,
 		}
 	}
-	var route *shared.CreateIPRestrictionPluginRoute
-	if r.Route != nil {
+	var consumerGroup *shared.CreateIPRestrictionPluginConsumerGroup
+	if r.ConsumerGroup != nil {
 		id1 := new(string)
-		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
-			*id1 = r.Route.ID.ValueString()
+		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
+			*id1 = r.ConsumerGroup.ID.ValueString()
 		} else {
 			id1 = nil
 		}
-		route = &shared.CreateIPRestrictionPluginRoute{
+		consumerGroup = &shared.CreateIPRestrictionPluginConsumerGroup{
 			ID: id1,
+		}
+	}
+	var route *shared.CreateIPRestrictionPluginRoute
+	if r.Route != nil {
+		id2 := new(string)
+		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
+			*id2 = r.Route.ID.ValueString()
+		} else {
+			id2 = nil
+		}
+		route = &shared.CreateIPRestrictionPluginRoute{
+			ID: id2,
 		}
 	}
 	var service *shared.CreateIPRestrictionPluginService
 	if r.Service != nil {
-		id2 := new(string)
+		id3 := new(string)
 		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
-			*id2 = r.Service.ID.ValueString()
+			*id3 = r.Service.ID.ValueString()
 		} else {
-			id2 = nil
+			id3 = nil
 		}
 		service = &shared.CreateIPRestrictionPluginService{
-			ID: id2,
+			ID: id3,
 		}
 	}
-	var allow []string = []string{}
-	for _, allowItem := range r.Config.Allow {
-		allow = append(allow, allowItem.ValueString())
-	}
-	var deny []string = []string{}
-	for _, denyItem := range r.Config.Deny {
-		deny = append(deny, denyItem.ValueString())
-	}
-	message := new(string)
-	if !r.Config.Message.IsUnknown() && !r.Config.Message.IsNull() {
-		*message = r.Config.Message.ValueString()
-	} else {
-		message = nil
-	}
-	status := new(float64)
-	if !r.Config.Status.IsUnknown() && !r.Config.Status.IsNull() {
-		*status, _ = r.Config.Status.ValueBigFloat().Float64()
-	} else {
-		status = nil
-	}
-	config := shared.CreateIPRestrictionPluginConfig{
-		Allow:   allow,
-		Deny:    deny,
-		Message: message,
-		Status:  status,
-	}
 	out := shared.CreateIPRestrictionPlugin{
-		Enabled:   enabled,
-		Protocols: protocols,
-		Tags:      tags,
-		Consumer:  consumer,
-		Route:     route,
-		Service:   service,
-		Config:    config,
+		Config:        config,
+		Enabled:       enabled,
+		InstanceName:  instanceName,
+		Protocols:     protocols,
+		Tags:          tags,
+		Consumer:      consumer,
+		ConsumerGroup: consumerGroup,
+		Route:         route,
+		Service:       service,
 	}
 	return &out
 }
 
 func (r *GatewayPluginIPRestrictionResourceModel) RefreshFromSharedIPRestrictionPlugin(resp *shared.IPRestrictionPlugin) {
 	if resp != nil {
-		r.Config.Allow = []types.String{}
-		for _, v := range resp.Config.Allow {
-			r.Config.Allow = append(r.Config.Allow, types.StringValue(v))
-		}
-		r.Config.Deny = []types.String{}
-		for _, v := range resp.Config.Deny {
-			r.Config.Deny = append(r.Config.Deny, types.StringValue(v))
-		}
-		r.Config.Message = types.StringPointerValue(resp.Config.Message)
-		if resp.Config.Status != nil {
-			r.Config.Status = types.NumberValue(big.NewFloat(float64(*resp.Config.Status)))
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.Status = types.NumberNull()
+			r.Config = &tfTypes.CreateIPRestrictionPluginConfig{}
+			r.Config.Allow = []types.String{}
+			for _, v := range resp.Config.Allow {
+				r.Config.Allow = append(r.Config.Allow, types.StringValue(v))
+			}
+			r.Config.Deny = []types.String{}
+			for _, v := range resp.Config.Deny {
+				r.Config.Deny = append(r.Config.Deny, types.StringValue(v))
+			}
+			r.Config.Message = types.StringPointerValue(resp.Config.Message)
+			if resp.Config.Status != nil {
+				r.Config.Status = types.NumberValue(big.NewFloat(float64(*resp.Config.Status)))
+			} else {
+				r.Config.Status = types.NumberNull()
+			}
 		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
@@ -120,9 +148,16 @@ func (r *GatewayPluginIPRestrictionResourceModel) RefreshFromSharedIPRestriction
 			r.Consumer = &tfTypes.ACLConsumer{}
 			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
 		}
+		if resp.ConsumerGroup == nil {
+			r.ConsumerGroup = nil
+		} else {
+			r.ConsumerGroup = &tfTypes.ACLConsumer{}
+			r.ConsumerGroup.ID = types.StringPointerValue(resp.ConsumerGroup.ID)
+		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
+		r.InstanceName = types.StringPointerValue(resp.InstanceName)
 		r.Protocols = []types.String{}
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))
@@ -143,5 +178,6 @@ func (r *GatewayPluginIPRestrictionResourceModel) RefreshFromSharedIPRestriction
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}
+		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
 }

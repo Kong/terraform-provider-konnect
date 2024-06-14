@@ -4,7 +4,7 @@ package types
 
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
-type CreateUpstreamHealthy struct {
-	HTTPStatuses []types.Int64 `tfsdk:"http_statuses"`
-	Successes    types.Int64   `tfsdk:"successes"`
+type APIProductPortal struct {
+	PortalID   types.String `tfsdk:"portal_id"`
+	PortalName types.String `tfsdk:"portal_name"`
 }

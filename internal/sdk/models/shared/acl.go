@@ -14,12 +14,19 @@ func (o *ACLConsumer) GetID() *string {
 }
 
 type ACL struct {
-	Group    *string      `json:"group,omitempty"`
-	Tags     []string     `json:"tags,omitempty"`
-	Consumer *ACLConsumer `json:"consumer,omitempty"`
 	// Unix epoch when the resource was created.
-	CreatedAt *int64  `json:"created_at,omitempty"`
-	ID        *string `json:"id,omitempty"`
+	CreatedAt *int64       `json:"created_at,omitempty"`
+	Group     *string      `json:"group,omitempty"`
+	ID        *string      `json:"id,omitempty"`
+	Tags      []string     `json:"tags,omitempty"`
+	Consumer  *ACLConsumer `json:"consumer,omitempty"`
+}
+
+func (o *ACL) GetCreatedAt() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.CreatedAt
 }
 
 func (o *ACL) GetGroup() *string {
@@ -27,6 +34,13 @@ func (o *ACL) GetGroup() *string {
 		return nil
 	}
 	return o.Group
+}
+
+func (o *ACL) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
 }
 
 func (o *ACL) GetTags() []string {
@@ -41,18 +55,4 @@ func (o *ACL) GetConsumer() *ACLConsumer {
 		return nil
 	}
 	return o.Consumer
-}
-
-func (o *ACL) GetCreatedAt() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.CreatedAt
-}
-
-func (o *ACL) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
 }

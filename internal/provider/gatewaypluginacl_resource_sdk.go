@@ -9,11 +9,46 @@ import (
 )
 
 func (r *GatewayPluginACLResourceModel) ToSharedCreateACLPlugin() *shared.CreateACLPlugin {
+	var config *shared.CreateACLPluginConfig
+	if r.Config != nil {
+		var allow []string = []string{}
+		for _, allowItem := range r.Config.Allow {
+			allow = append(allow, allowItem.ValueString())
+		}
+		var deny []string = []string{}
+		for _, denyItem := range r.Config.Deny {
+			deny = append(deny, denyItem.ValueString())
+		}
+		hideGroupsHeader := new(bool)
+		if !r.Config.HideGroupsHeader.IsUnknown() && !r.Config.HideGroupsHeader.IsNull() {
+			*hideGroupsHeader = r.Config.HideGroupsHeader.ValueBool()
+		} else {
+			hideGroupsHeader = nil
+		}
+		includeConsumerGroups := new(bool)
+		if !r.Config.IncludeConsumerGroups.IsUnknown() && !r.Config.IncludeConsumerGroups.IsNull() {
+			*includeConsumerGroups = r.Config.IncludeConsumerGroups.ValueBool()
+		} else {
+			includeConsumerGroups = nil
+		}
+		config = &shared.CreateACLPluginConfig{
+			Allow:                 allow,
+			Deny:                  deny,
+			HideGroupsHeader:      hideGroupsHeader,
+			IncludeConsumerGroups: includeConsumerGroups,
+		}
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
 	} else {
 		enabled = nil
+	}
+	instanceName := new(string)
+	if !r.InstanceName.IsUnknown() && !r.InstanceName.IsNull() {
+		*instanceName = r.InstanceName.ValueString()
+	} else {
+		instanceName = nil
 	}
 	var protocols []shared.CreateACLPluginProtocols = []shared.CreateACLPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
@@ -35,89 +70,89 @@ func (r *GatewayPluginACLResourceModel) ToSharedCreateACLPlugin() *shared.Create
 			ID: id,
 		}
 	}
-	var route *shared.CreateACLPluginRoute
-	if r.Route != nil {
+	var consumerGroup *shared.CreateACLPluginConsumerGroup
+	if r.ConsumerGroup != nil {
 		id1 := new(string)
-		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
-			*id1 = r.Route.ID.ValueString()
+		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
+			*id1 = r.ConsumerGroup.ID.ValueString()
 		} else {
 			id1 = nil
 		}
-		route = &shared.CreateACLPluginRoute{
+		consumerGroup = &shared.CreateACLPluginConsumerGroup{
 			ID: id1,
+		}
+	}
+	var route *shared.CreateACLPluginRoute
+	if r.Route != nil {
+		id2 := new(string)
+		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
+			*id2 = r.Route.ID.ValueString()
+		} else {
+			id2 = nil
+		}
+		route = &shared.CreateACLPluginRoute{
+			ID: id2,
 		}
 	}
 	var service *shared.CreateACLPluginService
 	if r.Service != nil {
-		id2 := new(string)
+		id3 := new(string)
 		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
-			*id2 = r.Service.ID.ValueString()
+			*id3 = r.Service.ID.ValueString()
 		} else {
-			id2 = nil
+			id3 = nil
 		}
 		service = &shared.CreateACLPluginService{
-			ID: id2,
+			ID: id3,
 		}
 	}
-	var allow []string = []string{}
-	for _, allowItem := range r.Config.Allow {
-		allow = append(allow, allowItem.ValueString())
-	}
-	var deny []string = []string{}
-	for _, denyItem := range r.Config.Deny {
-		deny = append(deny, denyItem.ValueString())
-	}
-	hideGroupsHeader := new(bool)
-	if !r.Config.HideGroupsHeader.IsUnknown() && !r.Config.HideGroupsHeader.IsNull() {
-		*hideGroupsHeader = r.Config.HideGroupsHeader.ValueBool()
-	} else {
-		hideGroupsHeader = nil
-	}
-	includeConsumerGroups := new(bool)
-	if !r.Config.IncludeConsumerGroups.IsUnknown() && !r.Config.IncludeConsumerGroups.IsNull() {
-		*includeConsumerGroups = r.Config.IncludeConsumerGroups.ValueBool()
-	} else {
-		includeConsumerGroups = nil
-	}
-	config := shared.CreateACLPluginConfig{
-		Allow:                 allow,
-		Deny:                  deny,
-		HideGroupsHeader:      hideGroupsHeader,
-		IncludeConsumerGroups: includeConsumerGroups,
-	}
 	out := shared.CreateACLPlugin{
-		Enabled:   enabled,
-		Protocols: protocols,
-		Tags:      tags,
-		Consumer:  consumer,
-		Route:     route,
-		Service:   service,
-		Config:    config,
+		Config:        config,
+		Enabled:       enabled,
+		InstanceName:  instanceName,
+		Protocols:     protocols,
+		Tags:          tags,
+		Consumer:      consumer,
+		ConsumerGroup: consumerGroup,
+		Route:         route,
+		Service:       service,
 	}
 	return &out
 }
 
 func (r *GatewayPluginACLResourceModel) RefreshFromSharedACLPlugin(resp *shared.ACLPlugin) {
 	if resp != nil {
-		r.Config.Allow = []types.String{}
-		for _, v := range resp.Config.Allow {
-			r.Config.Allow = append(r.Config.Allow, types.StringValue(v))
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.CreateACLPluginConfig{}
+			r.Config.Allow = []types.String{}
+			for _, v := range resp.Config.Allow {
+				r.Config.Allow = append(r.Config.Allow, types.StringValue(v))
+			}
+			r.Config.Deny = []types.String{}
+			for _, v := range resp.Config.Deny {
+				r.Config.Deny = append(r.Config.Deny, types.StringValue(v))
+			}
+			r.Config.HideGroupsHeader = types.BoolPointerValue(resp.Config.HideGroupsHeader)
+			r.Config.IncludeConsumerGroups = types.BoolPointerValue(resp.Config.IncludeConsumerGroups)
 		}
-		r.Config.Deny = []types.String{}
-		for _, v := range resp.Config.Deny {
-			r.Config.Deny = append(r.Config.Deny, types.StringValue(v))
-		}
-		r.Config.HideGroupsHeader = types.BoolPointerValue(resp.Config.HideGroupsHeader)
-		r.Config.IncludeConsumerGroups = types.BoolPointerValue(resp.Config.IncludeConsumerGroups)
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
 			r.Consumer = &tfTypes.ACLConsumer{}
 			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
 		}
+		if resp.ConsumerGroup == nil {
+			r.ConsumerGroup = nil
+		} else {
+			r.ConsumerGroup = &tfTypes.ACLConsumer{}
+			r.ConsumerGroup.ID = types.StringPointerValue(resp.ConsumerGroup.ID)
+		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
+		r.InstanceName = types.StringPointerValue(resp.InstanceName)
 		r.Protocols = []types.String{}
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))
@@ -138,5 +173,6 @@ func (r *GatewayPluginACLResourceModel) RefreshFromSharedACLPlugin(resp *shared.
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}
+		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
 }

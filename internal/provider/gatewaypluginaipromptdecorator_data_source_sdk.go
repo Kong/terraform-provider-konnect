@@ -10,46 +10,51 @@ import (
 
 func (r *GatewayPluginAIPromptDecoratorDataSourceModel) RefreshFromSharedAIPromptDecoratorPlugin(resp *shared.AIPromptDecoratorPlugin) {
 	if resp != nil {
-		if resp.Config.Prompts == nil {
-			r.Config.Prompts = nil
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.Prompts = &tfTypes.CreateAIPromptDecoratorPluginPrompts{}
-			r.Config.Prompts.Append = []tfTypes.AIPromptDecoratorPluginAppend{}
-			if len(r.Config.Prompts.Append) > len(resp.Config.Prompts.Append) {
-				r.Config.Prompts.Append = r.Config.Prompts.Append[:len(resp.Config.Prompts.Append)]
-			}
-			for appendCount, appendItem := range resp.Config.Prompts.Append {
-				var append2 tfTypes.AIPromptDecoratorPluginAppend
-				append2.Content = types.StringPointerValue(appendItem.Content)
-				if appendItem.Role != nil {
-					append2.Role = types.StringValue(string(*appendItem.Role))
-				} else {
-					append2.Role = types.StringNull()
+			r.Config = &tfTypes.CreateAIPromptDecoratorPluginConfig{}
+			if resp.Config.Prompts == nil {
+				r.Config.Prompts = nil
+			} else {
+				r.Config.Prompts = &tfTypes.CreateAIPromptDecoratorPluginPrompts{}
+				r.Config.Prompts.Append = []tfTypes.AIPromptDecoratorPluginAppend{}
+				if len(r.Config.Prompts.Append) > len(resp.Config.Prompts.Append) {
+					r.Config.Prompts.Append = r.Config.Prompts.Append[:len(resp.Config.Prompts.Append)]
 				}
-				if appendCount+1 > len(r.Config.Prompts.Append) {
-					r.Config.Prompts.Append = append(r.Config.Prompts.Append, append2)
-				} else {
-					r.Config.Prompts.Append[appendCount].Content = append2.Content
-					r.Config.Prompts.Append[appendCount].Role = append2.Role
+				for appendCount, appendItem := range resp.Config.Prompts.Append {
+					var append2 tfTypes.AIPromptDecoratorPluginAppend
+					append2.Content = types.StringValue(appendItem.Content)
+					if appendItem.Role != nil {
+						append2.Role = types.StringValue(string(*appendItem.Role))
+					} else {
+						append2.Role = types.StringNull()
+					}
+					if appendCount+1 > len(r.Config.Prompts.Append) {
+						r.Config.Prompts.Append = append(r.Config.Prompts.Append, append2)
+					} else {
+						r.Config.Prompts.Append[appendCount].Content = append2.Content
+						r.Config.Prompts.Append[appendCount].Role = append2.Role
+					}
 				}
-			}
-			r.Config.Prompts.Prepend = []tfTypes.AIPromptDecoratorPluginAppend{}
-			if len(r.Config.Prompts.Prepend) > len(resp.Config.Prompts.Prepend) {
-				r.Config.Prompts.Prepend = r.Config.Prompts.Prepend[:len(resp.Config.Prompts.Prepend)]
-			}
-			for prependCount, prependItem := range resp.Config.Prompts.Prepend {
-				var prepend1 tfTypes.AIPromptDecoratorPluginAppend
-				prepend1.Content = types.StringPointerValue(prependItem.Content)
-				if prependItem.Role != nil {
-					prepend1.Role = types.StringValue(string(*prependItem.Role))
-				} else {
-					prepend1.Role = types.StringNull()
+				r.Config.Prompts.Prepend = []tfTypes.AIPromptDecoratorPluginAppend{}
+				if len(r.Config.Prompts.Prepend) > len(resp.Config.Prompts.Prepend) {
+					r.Config.Prompts.Prepend = r.Config.Prompts.Prepend[:len(resp.Config.Prompts.Prepend)]
 				}
-				if prependCount+1 > len(r.Config.Prompts.Prepend) {
-					r.Config.Prompts.Prepend = append(r.Config.Prompts.Prepend, prepend1)
-				} else {
-					r.Config.Prompts.Prepend[prependCount].Content = prepend1.Content
-					r.Config.Prompts.Prepend[prependCount].Role = prepend1.Role
+				for prependCount, prependItem := range resp.Config.Prompts.Prepend {
+					var prepend1 tfTypes.AIPromptDecoratorPluginAppend
+					prepend1.Content = types.StringValue(prependItem.Content)
+					if prependItem.Role != nil {
+						prepend1.Role = types.StringValue(string(*prependItem.Role))
+					} else {
+						prepend1.Role = types.StringNull()
+					}
+					if prependCount+1 > len(r.Config.Prompts.Prepend) {
+						r.Config.Prompts.Prepend = append(r.Config.Prompts.Prepend, prepend1)
+					} else {
+						r.Config.Prompts.Prepend[prependCount].Content = prepend1.Content
+						r.Config.Prompts.Prepend[prependCount].Role = prepend1.Role
+					}
 				}
 			}
 		}
@@ -59,9 +64,16 @@ func (r *GatewayPluginAIPromptDecoratorDataSourceModel) RefreshFromSharedAIPromp
 			r.Consumer = &tfTypes.ACLConsumer{}
 			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
 		}
+		if resp.ConsumerGroup == nil {
+			r.ConsumerGroup = nil
+		} else {
+			r.ConsumerGroup = &tfTypes.ACLConsumer{}
+			r.ConsumerGroup.ID = types.StringPointerValue(resp.ConsumerGroup.ID)
+		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
+		r.InstanceName = types.StringPointerValue(resp.InstanceName)
 		r.Protocols = []types.String{}
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))
@@ -82,5 +94,6 @@ func (r *GatewayPluginAIPromptDecoratorDataSourceModel) RefreshFromSharedAIPromp
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}
+		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
 }

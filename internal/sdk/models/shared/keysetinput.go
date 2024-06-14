@@ -2,19 +2,19 @@
 
 package shared
 
-type CreateConsumerGroup struct {
-	Name string   `json:"name"`
+type KeySetInput struct {
+	Name *string  `json:"name,omitempty"`
 	Tags []string `json:"tags,omitempty"`
 }
 
-func (o *CreateConsumerGroup) GetName() string {
+func (o *KeySetInput) GetName() *string {
 	if o == nil {
-		return ""
+		return nil
 	}
 	return o.Name
 }
 
-func (o *CreateConsumerGroup) GetTags() []string {
+func (o *KeySetInput) GetTags() []string {
 	if o == nil {
 		return nil
 	}

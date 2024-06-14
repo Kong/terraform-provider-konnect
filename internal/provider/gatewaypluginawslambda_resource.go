@@ -11,17 +11,12 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/numberdefault"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
-	"math/big"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -39,16 +34,19 @@ type GatewayPluginAWSLambdaResource struct {
 
 // GatewayPluginAWSLambdaResourceModel describes the resource data model.
 type GatewayPluginAWSLambdaResourceModel struct {
-	Config         tfTypes.CreateAWSLambdaPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer                `tfsdk:"consumer"`
-	ControlPlaneID types.String                        `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                         `tfsdk:"created_at"`
-	Enabled        types.Bool                          `tfsdk:"enabled"`
-	ID             types.String                        `tfsdk:"id"`
-	Protocols      []types.String                      `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer                `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer                `tfsdk:"service"`
-	Tags           []types.String                      `tfsdk:"tags"`
+	Config         *tfTypes.CreateAWSLambdaPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer                 `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer                 `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                         `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                          `tfsdk:"created_at"`
+	Enabled        types.Bool                           `tfsdk:"enabled"`
+	ID             types.String                         `tfsdk:"id"`
+	InstanceName   types.String                         `tfsdk:"instance_name"`
+	Protocols      []types.String                       `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer                 `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer                 `tfsdk:"service"`
+	Tags           []types.String                       `tfsdk:"tags"`
+	UpdatedAt      types.Int64                          `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginAWSLambdaResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -60,7 +58,8 @@ func (r *GatewayPluginAWSLambdaResource) Schema(ctx context.Context, req resourc
 		MarkdownDescription: "GatewayPluginAWSLambda Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"aws_assume_role_arn": schema.StringAttribute{
 						Computed:    true,
@@ -70,8 +69,7 @@ func (r *GatewayPluginAWSLambdaResource) Schema(ctx context.Context, req resourc
 					"aws_imds_protocol_version": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     stringdefault.StaticString("v1"),
-						Description: `Identifier to select the IMDS protocol version to use: ` + "`" + `v1` + "`" + ` or ` + "`" + `v2` + "`" + `. must be one of ["v1", "v2"]; Default: "v1"`,
+						Description: `Identifier to select the IMDS protocol version to use: ` + "`" + `v1` + "`" + ` or ` + "`" + `v2` + "`" + `. must be one of ["v1", "v2"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"v1",
@@ -92,8 +90,7 @@ func (r *GatewayPluginAWSLambdaResource) Schema(ctx context.Context, req resourc
 					"aws_role_session_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     stringdefault.StaticString("kong"),
-						Description: `The identifier of the assumed role session. Default: "kong"`,
+						Description: `The identifier of the assumed role session.`,
 					},
 					"aws_secret": schema.StringAttribute{
 						Computed:    true,
@@ -103,49 +100,41 @@ func (r *GatewayPluginAWSLambdaResource) Schema(ctx context.Context, req resourc
 					"awsgateway_compatible": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `An optional value that defines whether the plugin should wrap requests into the Amazon API gateway. Default: false`,
+						Description: `An optional value that defines whether the plugin should wrap requests into the Amazon API gateway.`,
 					},
 					"base64_encode_body": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(true),
-						Description: `An optional value that Base64-encodes the request body. Default: true`,
+						Description: `An optional value that Base64-encodes the request body.`,
 					},
 					"disable_https": schema.BoolAttribute{
-						Computed:    true,
-						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `Default: false`,
+						Computed: true,
+						Optional: true,
 					},
 					"forward_request_body": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `An optional value that defines whether the request body is sent in the request_body field of the JSON-encoded request. If the body arguments can be parsed, they are sent in the separate request_body_args field of the request. . Default: false`,
+						Description: `An optional value that defines whether the request body is sent in the request_body field of the JSON-encoded request. If the body arguments can be parsed, they are sent in the separate request_body_args field of the request. `,
 					},
 					"forward_request_headers": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `An optional value that defines whether the original HTTP request headers are sent as a map in the request_headers field of the JSON-encoded request. Default: false`,
+						Description: `An optional value that defines whether the original HTTP request headers are sent as a map in the request_headers field of the JSON-encoded request.`,
 					},
 					"forward_request_method": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `An optional value that defines whether the original HTTP request method verb is sent in the request_method field of the JSON-encoded request. Default: false`,
+						Description: `An optional value that defines whether the original HTTP request method verb is sent in the request_method field of the JSON-encoded request.`,
 					},
 					"forward_request_uri": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `An optional value that defines whether the original HTTP request URI is sent in the request_uri field of the JSON-encoded request. Default: false`,
+						Description: `An optional value that defines whether the original HTTP request URI is sent in the request_uri field of the JSON-encoded request.`,
 					},
 					"function_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The AWS Lambda function name to invoke.`,
+						Description: `The AWS Lambda function to invoke. Both function name and function ARN (including partial) are supported.`,
 					},
 					"host": schema.StringAttribute{
 						Computed:    true,
@@ -155,8 +144,7 @@ func (r *GatewayPluginAWSLambdaResource) Schema(ctx context.Context, req resourc
 					"invocation_type": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     stringdefault.StaticString("RequestResponse"),
-						Description: `The InvocationType to use when invoking the function. Available types are RequestResponse, Event, DryRun. must be one of ["RequestResponse", "Event", "DryRun"]; Default: "RequestResponse"`,
+						Description: `The InvocationType to use when invoking the function. Available types are RequestResponse, Event, DryRun. must be one of ["RequestResponse", "Event", "DryRun"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"RequestResponse",
@@ -168,20 +156,17 @@ func (r *GatewayPluginAWSLambdaResource) Schema(ctx context.Context, req resourc
 					"is_proxy_integration": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `An optional value that defines whether the response format to receive from the Lambda to this format. Default: false`,
+						Description: `An optional value that defines whether the response format to receive from the Lambda to this format.`,
 					},
 					"keepalive": schema.NumberAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     numberdefault.StaticBigFloat(big.NewFloat(60000)),
-						Description: `An optional value in milliseconds that defines how long an idle connection lives before being closed. Default: 60000`,
+						Description: `An optional value in milliseconds that defines how long an idle connection lives before being closed.`,
 					},
 					"log_type": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     stringdefault.StaticString("Tail"),
-						Description: `The LogType to use when invoking the function. By default, None and Tail are supported. must be one of ["Tail", "None"]; Default: "Tail"`,
+						Description: `The LogType to use when invoking the function. By default, None and Tail are supported. must be one of ["Tail", "None"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"Tail",
@@ -192,8 +177,7 @@ func (r *GatewayPluginAWSLambdaResource) Schema(ctx context.Context, req resourc
 					"port": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     int64default.StaticInt64(443),
-						Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 443`,
+						Description: `An integer representing a port number between 0 and 65535, inclusive.`,
 					},
 					"proxy_url": schema.StringAttribute{
 						Computed:    true,
@@ -208,14 +192,12 @@ func (r *GatewayPluginAWSLambdaResource) Schema(ctx context.Context, req resourc
 					"skip_large_bodies": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(true),
-						Description: `An optional value that defines whether Kong should send large bodies that are buffered to disk. Default: true`,
+						Description: `An optional value that defines whether Kong should send large bodies that are buffered to disk`,
 					},
 					"timeout": schema.NumberAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     numberdefault.StaticBigFloat(big.NewFloat(60000)),
-						Description: `An optional timeout in milliseconds when invoking the function. Default: 60000`,
+						Description: `An optional timeout in milliseconds when invoking the function.`,
 					},
 					"unhandled_status": schema.Int64Attribute{
 						Computed:    true,
@@ -235,6 +217,16 @@ func (r *GatewayPluginAWSLambdaResource) Schema(ctx context.Context, req resourc
 				},
 				Description: `If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.`,
 			},
+			"consumer_group": schema.SingleNestedAttribute{
+				Computed: true,
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"id": schema.StringAttribute{
+						Computed: true,
+						Optional: true,
+					},
+				},
+			},
 			"control_plane_id": schema.StringAttribute{
 				Required:    true,
 				Description: `The UUID of your control plane. This variable is available in the Konnect manager.`,
@@ -246,12 +238,15 @@ func (r *GatewayPluginAWSLambdaResource) Schema(ctx context.Context, req resourc
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Default:     booldefault.StaticBool(true),
-				Description: `Whether the plugin is applied. Default: true`,
+				Description: `Whether the plugin is applied.`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
 				Description: `ID of the Plugin to lookup`,
+			},
+			"instance_name": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,
@@ -286,6 +281,10 @@ func (r *GatewayPluginAWSLambdaResource) Schema(ctx context.Context, req resourc
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Plugin for grouping and filtering.`,
+			},
+			"updated_at": schema.Int64Attribute{
+				Computed:    true,
+				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
 	}
@@ -351,8 +350,8 @@ func (r *GatewayPluginAWSLambdaResource) Create(ctx context.Context, req resourc
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.AWSLambdaPlugin == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.AWSLambdaPlugin != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedAWSLambdaPlugin(res.AWSLambdaPlugin)
@@ -406,8 +405,8 @@ func (r *GatewayPluginAWSLambdaResource) Read(ctx context.Context, req resource.
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.AWSLambdaPlugin == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.AWSLambdaPlugin != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedAWSLambdaPlugin(res.AWSLambdaPlugin)
@@ -454,8 +453,8 @@ func (r *GatewayPluginAWSLambdaResource) Update(ctx context.Context, req resourc
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.AWSLambdaPlugin == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.AWSLambdaPlugin != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedAWSLambdaPlugin(res.AWSLambdaPlugin)

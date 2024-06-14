@@ -20,7 +20,15 @@ type CreateJWTSignerPluginConfig struct {
 	AccessTokenIntrospectionTimeout         types.Number            `tfsdk:"access_token_introspection_timeout"`
 	AccessTokenIssuer                       types.String            `tfsdk:"access_token_issuer"`
 	AccessTokenJwksURI                      types.String            `tfsdk:"access_token_jwks_uri"`
+	AccessTokenJwksURIClientCertificate     types.String            `tfsdk:"access_token_jwks_uri_client_certificate"`
+	AccessTokenJwksURIClientPassword        types.String            `tfsdk:"access_token_jwks_uri_client_password"`
+	AccessTokenJwksURIClientUsername        types.String            `tfsdk:"access_token_jwks_uri_client_username"`
+	AccessTokenJwksURIRotatePeriod          types.Number            `tfsdk:"access_token_jwks_uri_rotate_period"`
 	AccessTokenKeyset                       types.String            `tfsdk:"access_token_keyset"`
+	AccessTokenKeysetClientCertificate      types.String            `tfsdk:"access_token_keyset_client_certificate"`
+	AccessTokenKeysetClientPassword         types.String            `tfsdk:"access_token_keyset_client_password"`
+	AccessTokenKeysetClientUsername         types.String            `tfsdk:"access_token_keyset_client_username"`
+	AccessTokenKeysetRotatePeriod           types.Number            `tfsdk:"access_token_keyset_rotate_period"`
 	AccessTokenLeeway                       types.Number            `tfsdk:"access_token_leeway"`
 	AccessTokenOptional                     types.Bool              `tfsdk:"access_token_optional"`
 	AccessTokenRequestHeader                types.String            `tfsdk:"access_token_request_header"`
@@ -29,6 +37,8 @@ type CreateJWTSignerPluginConfig struct {
 	AccessTokenSigningAlgorithm             types.String            `tfsdk:"access_token_signing_algorithm"`
 	AccessTokenUpstreamHeader               types.String            `tfsdk:"access_token_upstream_header"`
 	AccessTokenUpstreamLeeway               types.Number            `tfsdk:"access_token_upstream_leeway"`
+	AddAccessTokenClaims                    map[string]types.String `tfsdk:"add_access_token_claims"`
+	AddChannelTokenClaims                   map[string]types.String `tfsdk:"add_channel_token_claims"`
 	AddClaims                               map[string]types.String `tfsdk:"add_claims"`
 	CacheAccessTokenIntrospection           types.Bool              `tfsdk:"cache_access_token_introspection"`
 	CacheChannelTokenIntrospection          types.Bool              `tfsdk:"cache_channel_token_introspection"`
@@ -47,7 +57,15 @@ type CreateJWTSignerPluginConfig struct {
 	ChannelTokenIntrospectionTimeout        types.Number            `tfsdk:"channel_token_introspection_timeout"`
 	ChannelTokenIssuer                      types.String            `tfsdk:"channel_token_issuer"`
 	ChannelTokenJwksURI                     types.String            `tfsdk:"channel_token_jwks_uri"`
+	ChannelTokenJwksURIClientCertificate    types.String            `tfsdk:"channel_token_jwks_uri_client_certificate"`
+	ChannelTokenJwksURIClientPassword       types.String            `tfsdk:"channel_token_jwks_uri_client_password"`
+	ChannelTokenJwksURIClientUsername       types.String            `tfsdk:"channel_token_jwks_uri_client_username"`
+	ChannelTokenJwksURIRotatePeriod         types.Number            `tfsdk:"channel_token_jwks_uri_rotate_period"`
 	ChannelTokenKeyset                      types.String            `tfsdk:"channel_token_keyset"`
+	ChannelTokenKeysetClientCertificate     types.String            `tfsdk:"channel_token_keyset_client_certificate"`
+	ChannelTokenKeysetClientPassword        types.String            `tfsdk:"channel_token_keyset_client_password"`
+	ChannelTokenKeysetClientUsername        types.String            `tfsdk:"channel_token_keyset_client_username"`
+	ChannelTokenKeysetRotatePeriod          types.Number            `tfsdk:"channel_token_keyset_rotate_period"`
 	ChannelTokenLeeway                      types.Number            `tfsdk:"channel_token_leeway"`
 	ChannelTokenOptional                    types.Bool              `tfsdk:"channel_token_optional"`
 	ChannelTokenRequestHeader               types.String            `tfsdk:"channel_token_request_header"`
@@ -60,7 +78,13 @@ type CreateJWTSignerPluginConfig struct {
 	EnableChannelTokenIntrospection         types.Bool              `tfsdk:"enable_channel_token_introspection"`
 	EnableHsSignatures                      types.Bool              `tfsdk:"enable_hs_signatures"`
 	EnableInstrumentation                   types.Bool              `tfsdk:"enable_instrumentation"`
+	OriginalAccessTokenUpstreamHeader       types.String            `tfsdk:"original_access_token_upstream_header"`
+	OriginalChannelTokenUpstreamHeader      types.String            `tfsdk:"original_channel_token_upstream_header"`
 	Realm                                   types.String            `tfsdk:"realm"`
+	RemoveAccessTokenClaims                 []types.String          `tfsdk:"remove_access_token_claims"`
+	RemoveChannelTokenClaims                []types.String          `tfsdk:"remove_channel_token_claims"`
+	SetAccessTokenClaims                    map[string]types.String `tfsdk:"set_access_token_claims"`
+	SetChannelTokenClaims                   map[string]types.String `tfsdk:"set_channel_token_claims"`
 	SetClaims                               map[string]types.String `tfsdk:"set_claims"`
 	TrustAccessTokenIntrospection           types.Bool              `tfsdk:"trust_access_token_introspection"`
 	TrustChannelTokenIntrospection          types.Bool              `tfsdk:"trust_channel_token_introspection"`

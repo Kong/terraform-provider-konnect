@@ -29,16 +29,19 @@ type GatewayPluginRateLimitingDataSource struct {
 
 // GatewayPluginRateLimitingDataSourceModel describes the data model.
 type GatewayPluginRateLimitingDataSourceModel struct {
-	Config         tfTypes.CreateRateLimitingPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer                   `tfsdk:"consumer"`
-	ControlPlaneID types.String                           `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                            `tfsdk:"created_at"`
-	Enabled        types.Bool                             `tfsdk:"enabled"`
-	ID             types.String                           `tfsdk:"id"`
-	Protocols      []types.String                         `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer                   `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer                   `tfsdk:"service"`
-	Tags           []types.String                         `tfsdk:"tags"`
+	Config         *tfTypes.CreateRateLimitingPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer                    `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer                    `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                            `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                             `tfsdk:"created_at"`
+	Enabled        types.Bool                              `tfsdk:"enabled"`
+	ID             types.String                            `tfsdk:"id"`
+	InstanceName   types.String                            `tfsdk:"instance_name"`
+	Protocols      []types.String                          `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer                    `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer                    `tfsdk:"service"`
+	Tags           []types.String                          `tfsdk:"tags"`
+	UpdatedAt      types.Int64                             `tfsdk:"updated_at"`
 }
 
 // Metadata returns the data source type name.
@@ -103,41 +106,47 @@ func (r *GatewayPluginRateLimitingDataSource) Schema(ctx context.Context, req da
 						Computed:    true,
 						Description: `The rate-limiting policies to use for retrieving and incrementing the limits. must be one of ["local", "cluster", "redis"]`,
 					},
-					"redis_database": schema.Int64Attribute{
-						Computed:    true,
-						Description: `When using the ` + "`" + `redis` + "`" + ` policy, this property specifies the Redis database to use.`,
-					},
-					"redis_host": schema.StringAttribute{
-						Computed:    true,
-						Description: `A string representing a host name, such as example.com.`,
-					},
-					"redis_password": schema.StringAttribute{
-						Computed:    true,
-						Description: `When using the ` + "`" + `redis` + "`" + ` policy, this property specifies the password to connect to the Redis server.`,
-					},
-					"redis_port": schema.Int64Attribute{
-						Computed:    true,
-						Description: `An integer representing a port number between 0 and 65535, inclusive.`,
-					},
-					"redis_server_name": schema.StringAttribute{
-						Computed:    true,
-						Description: `A string representing an SNI (server name indication) value for TLS.`,
-					},
-					"redis_ssl": schema.BoolAttribute{
-						Computed:    true,
-						Description: `When using the ` + "`" + `redis` + "`" + ` policy, this property specifies if SSL is used to connect to the Redis server.`,
-					},
-					"redis_ssl_verify": schema.BoolAttribute{
-						Computed:    true,
-						Description: `When using the ` + "`" + `redis` + "`" + ` policy with ` + "`" + `redis_ssl` + "`" + ` set to ` + "`" + `true` + "`" + `, this property specifies it server SSL certificate is validated. Note that you need to configure the lua_ssl_trusted_certificate to specify the CA (or server) certificate used by your Redis server. You may also need to configure lua_ssl_verify_depth accordingly.`,
-					},
-					"redis_timeout": schema.NumberAttribute{
-						Computed:    true,
-						Description: `When using the ` + "`" + `redis` + "`" + ` policy, this property specifies the timeout in milliseconds of any command submitted to the Redis server.`,
-					},
-					"redis_username": schema.StringAttribute{
-						Computed:    true,
-						Description: `When using the ` + "`" + `redis` + "`" + ` policy, this property specifies the username to connect to the Redis server when ACL authentication is desired.`,
+					"redis": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"database": schema.Int64Attribute{
+								Computed:    true,
+								Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy`,
+							},
+							"host": schema.StringAttribute{
+								Computed:    true,
+								Description: `A string representing a host name, such as example.com.`,
+							},
+							"password": schema.StringAttribute{
+								Computed:    true,
+								Description: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.`,
+							},
+							"port": schema.Int64Attribute{
+								Computed:    true,
+								Description: `An integer representing a port number between 0 and 65535, inclusive.`,
+							},
+							"server_name": schema.StringAttribute{
+								Computed:    true,
+								Description: `A string representing an SNI (server name indication) value for TLS.`,
+							},
+							"ssl": schema.BoolAttribute{
+								Computed:    true,
+								Description: `If set to true, uses SSL to connect to Redis.`,
+							},
+							"ssl_verify": schema.BoolAttribute{
+								Computed:    true,
+								Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly.`,
+							},
+							"timeout": schema.Int64Attribute{
+								Computed:    true,
+								Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
+							},
+							"username": schema.StringAttribute{
+								Computed:    true,
+								Description: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.`,
+							},
+						},
+						Description: `Redis configuration`,
 					},
 					"second": schema.NumberAttribute{
 						Computed:    true,
@@ -162,6 +171,14 @@ func (r *GatewayPluginRateLimitingDataSource) Schema(ctx context.Context, req da
 				},
 				Description: `If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.`,
 			},
+			"consumer_group": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"id": schema.StringAttribute{
+						Computed: true,
+					},
+				},
+			},
 			"control_plane_id": schema.StringAttribute{
 				Required:    true,
 				Description: `The UUID of your control plane. This variable is available in the Konnect manager.`,
@@ -177,6 +194,9 @@ func (r *GatewayPluginRateLimitingDataSource) Schema(ctx context.Context, req da
 			"id": schema.StringAttribute{
 				Required:    true,
 				Description: `ID of the Plugin to lookup`,
+			},
+			"instance_name": schema.StringAttribute{
+				Computed: true,
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,
@@ -205,6 +225,10 @@ func (r *GatewayPluginRateLimitingDataSource) Schema(ctx context.Context, req da
 				Computed:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Plugin for grouping and filtering.`,
+			},
+			"updated_at": schema.Int64Attribute{
+				Computed:    true,
+				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
 	}
@@ -274,8 +298,8 @@ func (r *GatewayPluginRateLimitingDataSource) Read(ctx context.Context, req data
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.RateLimitingPlugin == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.RateLimitingPlugin != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedRateLimitingPlugin(res.RateLimitingPlugin)

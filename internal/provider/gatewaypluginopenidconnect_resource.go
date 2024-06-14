@@ -11,17 +11,12 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/numberdefault"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
-	"math/big"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -39,16 +34,19 @@ type GatewayPluginOpenidConnectResource struct {
 
 // GatewayPluginOpenidConnectResourceModel describes the resource data model.
 type GatewayPluginOpenidConnectResourceModel struct {
-	Config         tfTypes.CreateOpenidConnectPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer                    `tfsdk:"consumer"`
-	ControlPlaneID types.String                            `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                             `tfsdk:"created_at"`
-	Enabled        types.Bool                              `tfsdk:"enabled"`
-	ID             types.String                            `tfsdk:"id"`
-	Protocols      []types.String                          `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer                    `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer                    `tfsdk:"service"`
-	Tags           []types.String                          `tfsdk:"tags"`
+	Config         *tfTypes.CreateOpenidConnectPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer                     `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer                     `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                             `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                              `tfsdk:"created_at"`
+	Enabled        types.Bool                               `tfsdk:"enabled"`
+	ID             types.String                             `tfsdk:"id"`
+	InstanceName   types.String                             `tfsdk:"instance_name"`
+	Protocols      []types.String                           `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer                     `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer                     `tfsdk:"service"`
+	Tags           []types.String                           `tfsdk:"tags"`
+	UpdatedAt      types.Int64                              `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginOpenidConnectResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -60,7 +58,8 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 		MarkdownDescription: "GatewayPluginOpenidConnect Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"anonymous": schema.StringAttribute{
 						Computed:    true,
@@ -105,26 +104,22 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"authorization_cookie_http_only": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(true),
-						Description: `Forbids JavaScript from accessing the cookie, for example, through the ` + "`" + `Document.cookie` + "`" + ` property. Default: true`,
+						Description: `Forbids JavaScript from accessing the cookie, for example, through the ` + "`" + `Document.cookie` + "`" + ` property.`,
 					},
 					"authorization_cookie_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     stringdefault.StaticString("authorization"),
-						Description: `The authorization cookie name. Default: "authorization"`,
+						Description: `The authorization cookie name.`,
 					},
 					"authorization_cookie_path": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     stringdefault.StaticString("/"),
-						Description: `The authorization cookie Path flag. Default: "/"`,
+						Description: `The authorization cookie Path flag.`,
 					},
 					"authorization_cookie_same_site": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     stringdefault.StaticString("Default"),
-						Description: `Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks. must be one of ["Strict", "Lax", "None", "Default"]; Default: "Default"`,
+						Description: `Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks. must be one of ["Strict", "Lax", "None", "Default"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"Strict",
@@ -165,8 +160,7 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"authorization_rolling_timeout": schema.NumberAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     numberdefault.StaticBigFloat(big.NewFloat(600)),
-						Description: `Specifies how long the session used for the authorization code flow can be used in seconds until it needs to be renewed. 0 disables the checks and rolling. Default: 600`,
+						Description: `Specifies how long the session used for the authorization code flow can be used in seconds until it needs to be renewed. 0 disables the checks and rolling.`,
 					},
 					"bearer_token_cookie_name": schema.StringAttribute{
 						Computed:    true,
@@ -182,26 +176,22 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"by_username_ignore_case": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `If ` + "`" + `consumer_by` + "`" + ` is set to ` + "`" + `username` + "`" + `, specify whether ` + "`" + `username` + "`" + ` can match consumers case-insensitively. Default: false`,
+						Description: `If ` + "`" + `consumer_by` + "`" + ` is set to ` + "`" + `username` + "`" + `, specify whether ` + "`" + `username` + "`" + ` can match consumers case-insensitively.`,
 					},
 					"cache_introspection": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(true),
-						Description: `Cache the introspection endpoint requests. Default: true`,
+						Description: `Cache the introspection endpoint requests.`,
 					},
 					"cache_token_exchange": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(true),
-						Description: `Cache the token exchange endpoint requests. Default: true`,
+						Description: `Cache the token exchange endpoint requests.`,
 					},
 					"cache_tokens": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(true),
-						Description: `Cache the token endpoint requests. Default: true`,
+						Description: `Cache the token endpoint requests.`,
 					},
 					"cache_tokens_salt": schema.StringAttribute{
 						Computed:    true,
@@ -211,8 +201,7 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"cache_ttl": schema.NumberAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     numberdefault.StaticBigFloat(big.NewFloat(3600)),
-						Description: `The default cache ttl in seconds that is used in case the cached object does not specify the expiry. Default: 3600`,
+						Description: `The default cache ttl in seconds that is used in case the cached object does not specify the expiry.`,
 					},
 					"cache_ttl_max": schema.NumberAttribute{
 						Computed:    true,
@@ -237,8 +226,7 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"cache_user_info": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(true),
-						Description: `Cache the user info requests. Default: true`,
+						Description: `Cache the user info requests.`,
 					},
 					"client_alg": schema.ListAttribute{
 						Computed:    true,
@@ -249,8 +237,7 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"client_arg": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     stringdefault.StaticString("client_id"),
-						Description: `The client to use for this request (the selection is made with a request parameter with the same name). Default: "client_id"`,
+						Description: `The client to use for this request (the selection is made with a request parameter with the same name).`,
 					},
 					"client_auth": schema.ListAttribute{
 						Computed:    true,
@@ -402,8 +389,7 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"consumer_optional": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `Do not terminate the request if consumer mapping fails. Default: false`,
+						Description: `Do not terminate the request if consumer mapping fails.`,
 					},
 					"credential_claim": schema.ListAttribute{
 						Computed:    true,
@@ -432,8 +418,7 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"display_errors": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `Display errors on failure responses. Default: false`,
+						Description: `Display errors on failure responses.`,
 					},
 					"domains": schema.ListAttribute{
 						Computed:    true,
@@ -503,11 +488,20 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						Optional:    true,
 						Description: `The downstream user info JWT header (in case the user info returns a JWT response).`,
 					},
+					"dpop_proof_lifetime": schema.NumberAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `Specifies the lifetime in seconds of the DPoP proof. It determines how long the same proof can be used after creation. The creation time is determined by the nonce creation time if a nonce is used, and the iat claim otherwise.`,
+					},
+					"dpop_use_nonce": schema.BoolAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `Specifies whether to challenge the client with a nonce value for DPoP proof. When enabled it will also be used to calculate the DPoP proof lifetime.`,
+					},
 					"enable_hs_signatures": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `Enable shared secret, for example, HS256, signatures (when disabled they will not be accepted). Default: false`,
+						Description: `Enable shared secret, for example, HS256, signatures (when disabled they will not be accepted).`,
 					},
 					"end_session_endpoint": schema.StringAttribute{
 						Computed:    true,
@@ -517,8 +511,7 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"expose_error_code": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(true),
-						Description: `Specifies whether to expose the error code header, as defined in RFC 6750. If an authorization request fails, this header is sent in the response. Set to ` + "`" + `false` + "`" + ` to disable. Default: true`,
+						Description: `Specifies whether to expose the error code header, as defined in RFC 6750. If an authorization request fails, this header is sent in the response. Set to ` + "`" + `false` + "`" + ` to disable.`,
 					},
 					"extra_jwks_uris": schema.ListAttribute{
 						Computed:    true,
@@ -529,14 +522,12 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"forbidden_destroy_session": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(true),
-						Description: `Destroy any active session for the forbidden requests. Default: true`,
+						Description: `Destroy any active session for the forbidden requests.`,
 					},
 					"forbidden_error_message": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     stringdefault.StaticString("Forbidden"),
-						Description: `The error message for the forbidden requests (when not using the redirection). Default: "Forbidden"`,
+						Description: `The error message for the forbidden requests (when not using the redirection).`,
 					},
 					"forbidden_redirect_uri": schema.ListAttribute{
 						Computed:    true,
@@ -559,8 +550,7 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"hide_credentials": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `Remove the credentials used for authentication from the request. If multiple credentials are sent with the same request, the plugin will remove those that were used for successful authentication. Default: false`,
+						Description: `Remove the credentials used for authentication from the request. If multiple credentials are sent with the same request, the plugin will remove those that were used for successful authentication.`,
 					},
 					"http_proxy": schema.StringAttribute{
 						Computed:    true,
@@ -575,8 +565,7 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"http_version": schema.NumberAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     numberdefault.StaticBigFloat(big.NewFloat(1.1)),
-						Description: `The HTTP version used for the requests by this plugin: - ` + "`" + `1.1` + "`" + `: HTTP 1.1 (the default) - ` + "`" + `1.0` + "`" + `: HTTP 1.0. Default: 1.1`,
+						Description: `The HTTP version used for the requests by this plugin: - ` + "`" + `1.1` + "`" + `: HTTP 1.1 (the default) - ` + "`" + `1.0` + "`" + `: HTTP 1.0.`,
 					},
 					"https_proxy": schema.StringAttribute{
 						Computed:    true,
@@ -608,14 +597,12 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"introspect_jwt_tokens": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `Specifies whether to introspect the JWT access tokens (can be used to check for revocations). Default: false`,
+						Description: `Specifies whether to introspect the JWT access tokens (can be used to check for revocations).`,
 					},
 					"introspection_accept": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     stringdefault.StaticString("application/json"),
-						Description: `The value of ` + "`" + `Accept` + "`" + ` header for introspection requests: - ` + "`" + `application/json` + "`" + `: introspection response as JSON - ` + "`" + `application/token-introspection+jwt` + "`" + `: introspection response as JWT (from the current IETF draft document) - ` + "`" + `application/jwt` + "`" + `: introspection response as JWT (from the obsolete IETF draft document). must be one of ["application/json", "application/token-introspection+jwt", "application/jwt"]; Default: "application/json"`,
+						Description: `The value of ` + "`" + `Accept` + "`" + ` header for introspection requests: - ` + "`" + `application/json` + "`" + `: introspection response as JSON - ` + "`" + `application/token-introspection+jwt` + "`" + `: introspection response as JWT (from the current IETF draft document) - ` + "`" + `application/jwt` + "`" + `: introspection response as JWT (from the obsolete IETF draft document). must be one of ["application/json", "application/token-introspection+jwt", "application/jwt"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"application/json",
@@ -627,8 +614,7 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"introspection_check_active": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(true),
-						Description: `Check that the introspection response has an ` + "`" + `active` + "`" + ` claim with a value of ` + "`" + `true` + "`" + `. Default: true`,
+						Description: `Check that the introspection response has an ` + "`" + `active` + "`" + ` claim with a value of ` + "`" + `true` + "`" + `.`,
 					},
 					"introspection_endpoint": schema.StringAttribute{
 						Computed:    true,
@@ -672,8 +658,7 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"introspection_hint": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     stringdefault.StaticString("access_token"),
-						Description: `Introspection hint parameter value passed to the introspection endpoint. Default: "access_token"`,
+						Description: `Introspection hint parameter value passed to the introspection endpoint.`,
 					},
 					"introspection_post_args_client": schema.ListAttribute{
 						Computed:    true,
@@ -696,8 +681,7 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"introspection_token_param_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     stringdefault.StaticString("token"),
-						Description: `Designate token's parameter name for introspection. Default: "token"`,
+						Description: `Designate token's parameter name for introspection.`,
 					},
 					"issuer": schema.StringAttribute{
 						Computed:    true,
@@ -713,8 +697,7 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"jwt_session_claim": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     stringdefault.StaticString("sid"),
-						Description: `The claim to match against the JWT session cookie. Default: "sid"`,
+						Description: `The claim to match against the JWT session cookie.`,
 					},
 					"jwt_session_cookie": schema.StringAttribute{
 						Computed:    true,
@@ -724,20 +707,17 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"keepalive": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(true),
-						Description: `Use keepalive with the HTTP client. Default: true`,
+						Description: `Use keepalive with the HTTP client.`,
 					},
 					"leeway": schema.NumberAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     numberdefault.StaticBigFloat(big.NewFloat(0)),
-						Description: `Allow some leeway (in seconds) on the iat claim and ttl / expiry verification. Default: 0`,
+						Description: `Defines leeway time (in seconds) for ` + "`" + `auth_time` + "`" + `, ` + "`" + `exp` + "`" + `, ` + "`" + `iat` + "`" + `, and ` + "`" + `nbf` + "`" + ` claims`,
 					},
 					"login_action": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     stringdefault.StaticString("upstream"),
-						Description: `What to do after successful login: - ` + "`" + `upstream` + "`" + `: proxy request to upstream service - ` + "`" + `response` + "`" + `: terminate request with a response - ` + "`" + `redirect` + "`" + `: redirect to a different location. must be one of ["upstream", "response", "redirect"]; Default: "upstream"`,
+						Description: `What to do after successful login: - ` + "`" + `upstream` + "`" + `: proxy request to upstream service - ` + "`" + `response` + "`" + `: terminate request with a response - ` + "`" + `redirect` + "`" + `: redirect to a different location. must be one of ["upstream", "response", "redirect"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"upstream",
@@ -755,8 +735,7 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"login_redirect_mode": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     stringdefault.StaticString("fragment"),
-						Description: `Where to place ` + "`" + `login_tokens` + "`" + ` when using ` + "`" + `redirect` + "`" + ` ` + "`" + `login_action` + "`" + `: - ` + "`" + `query` + "`" + `: place tokens in query string - ` + "`" + `fragment` + "`" + `: place tokens in url fragment (not readable by servers). must be one of ["query", "fragment"]; Default: "fragment"`,
+						Description: `Where to place ` + "`" + `login_tokens` + "`" + ` when using ` + "`" + `redirect` + "`" + ` ` + "`" + `login_action` + "`" + `: - ` + "`" + `query` + "`" + `: place tokens in query string - ` + "`" + `fragment` + "`" + `: place tokens in url fragment (not readable by servers). must be one of ["query", "fragment"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"query",
@@ -801,23 +780,19 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"logout_revoke": schema.BoolAttribute{
 						Computed: true,
 						Optional: true,
-						Default:  booldefault.StaticBool(false),
 						MarkdownDescription: `Revoke tokens as part of the logout.` + "\n" +
 							`` + "\n" +
-							`For more granular token revocation, you can also adjust the ` + "`" + `logout_revoke_access_token` + "`" + ` and ` + "`" + `logout_revoke_refresh_token` + "`" + ` parameters.` + "\n" +
-							`Default: false`,
+							`For more granular token revocation, you can also adjust the ` + "`" + `logout_revoke_access_token` + "`" + ` and ` + "`" + `logout_revoke_refresh_token` + "`" + ` parameters.`,
 					},
 					"logout_revoke_access_token": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(true),
-						Description: `Revoke the access token as part of the logout. Requires ` + "`" + `logout_revoke` + "`" + ` to be set to ` + "`" + `true` + "`" + `. Default: true`,
+						Description: `Revoke the access token as part of the logout. Requires ` + "`" + `logout_revoke` + "`" + ` to be set to ` + "`" + `true` + "`" + `.`,
 					},
 					"logout_revoke_refresh_token": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(true),
-						Description: `Revoke the refresh token as part of the logout. Requires ` + "`" + `logout_revoke` + "`" + ` to be set to ` + "`" + `true` + "`" + `. Default: true`,
+						Description: `Revoke the refresh token as part of the logout. Requires ` + "`" + `logout_revoke` + "`" + ` to be set to ` + "`" + `true` + "`" + `.`,
 					},
 					"logout_uri_suffix": schema.StringAttribute{
 						Computed:    true,
@@ -858,20 +833,29 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"preserve_query_args": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `With this parameter, you can preserve request query arguments even when doing authorization code flow. Default: false`,
+						Description: `With this parameter, you can preserve request query arguments even when doing authorization code flow.`,
 					},
 					"proof_of_possession_auth_methods_validation": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(true),
-						Description: `If set to true, only the auth_methods that are compatible with Proof of Possession (PoP) can be configured when PoP is enabled. If set to false, all auth_methods will be configurable and PoP checks will be silently skipped for those auth_methods that are not compatible with PoP. Default: true`,
+						Description: `If set to true, only the auth_methods that are compatible with Proof of Possession (PoP) can be configured when PoP is enabled. If set to false, all auth_methods will be configurable and PoP checks will be silently skipped for those auth_methods that are not compatible with PoP.`,
+					},
+					"proof_of_possession_dpop": schema.StringAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `Enable Demonstrating Proof-of-Possession (DPoP). If set to strict, all request are verified despite the presence of the DPoP key claim (cnf.jkt). If set to optional, only tokens bound with DPoP's key are verified with the proof. must be one of ["off", "strict", "optional"]`,
+						Validators: []validator.String{
+							stringvalidator.OneOf(
+								"off",
+								"strict",
+								"optional",
+							),
+						},
 					},
 					"proof_of_possession_mtls": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     stringdefault.StaticString("off"),
-						Description: `Enable mtls proof of possession. If set to strict, all tokens (from supported auth_methods: bearer, introspection, and session granted with bearer or introspection) are verified, if set to optional, only tokens that contain the certificate hash claim are verified. If the verification fails, the request will be rejected with 401. must be one of ["off", "strict", "optional"]; Default: "off"`,
+						Description: `Enable mtls proof of possession. If set to strict, all tokens (from supported auth_methods: bearer, introspection, and session granted with bearer or introspection) are verified, if set to optional, only tokens that contain the certificate hash claim are verified. If the verification fails, the request will be rejected with 401. must be one of ["off", "strict", "optional"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"off",
@@ -910,8 +894,7 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"rediscovery_lifetime": schema.NumberAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     numberdefault.StaticBigFloat(big.NewFloat(30)),
-						Description: `Specifies how long (in seconds) the plugin waits between discovery attempts. Discovery is still triggered on an as-needed basis. Default: 30`,
+						Description: `Specifies how long (in seconds) the plugin waits between discovery attempts. Discovery is still triggered on an as-needed basis.`,
 					},
 					"refresh_token_param_name": schema.StringAttribute{
 						Computed:    true,
@@ -927,8 +910,7 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"refresh_tokens": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(true),
-						Description: `Specifies whether the plugin should try to refresh (soon to be) expired access tokens if the plugin has a ` + "`" + `refresh_token` + "`" + ` available. Default: true`,
+						Description: `Specifies whether the plugin should try to refresh (soon to be) expired access tokens if the plugin has a ` + "`" + `refresh_token` + "`" + ` available.`,
 					},
 					"require_proof_key_for_code_exchange": schema.BoolAttribute{
 						Computed:    true,
@@ -940,22 +922,29 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						Optional:    true,
 						Description: `Forcibly enable or disable the pushed authorization requests. When not set the value is determined through the discovery using the value of ` + "`" + `require_pushed_authorization_requests` + "`" + ` (which defaults to ` + "`" + `false` + "`" + `).`,
 					},
+					"require_signed_request_object": schema.BoolAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `Forcibly enable or disable the usage of signed request object on authorization or pushed authorization endpoint. When not set the value is determined through the discovery using the value of ` + "`" + `require_signed_request_object` + "`" + `, and enabled automatically (in case the ` + "`" + `require_signed_request_object` + "`" + ` is missing, the feature will not be enabled).`,
+					},
 					"resolve_distributed_claims": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `Distributed claims are represented by the ` + "`" + `_claim_names` + "`" + ` and ` + "`" + `_claim_sources` + "`" + ` members of the JSON object containing the claims. If this parameter is set to ` + "`" + `true` + "`" + `, the plugin explicitly resolves these distributed claims. Default: false`,
+						Description: `Distributed claims are represented by the ` + "`" + `_claim_names` + "`" + ` and ` + "`" + `_claim_sources` + "`" + ` members of the JSON object containing the claims. If this parameter is set to ` + "`" + `true` + "`" + `, the plugin explicitly resolves these distributed claims.`,
 					},
 					"response_mode": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     stringdefault.StaticString("query"),
-						Description: `The response mode passed to the authorization endpoint: - ` + "`" + `query` + "`" + `: Instructs the identity provider to pass parameters in query string - ` + "`" + `form_post` + "`" + `: Instructs the identity provider to pass parameters in request body - ` + "`" + `fragment` + "`" + `: Instructs the identity provider to pass parameters in uri fragment (rarely useful as the plugin itself cannot read it). must be one of ["query", "form_post", "fragment"]; Default: "query"`,
+						Description: `Response mode passed to the authorization endpoint: - ` + "`" + `query` + "`" + `: for parameters in query string - ` + "`" + `form_post` + "`" + `: for parameters in request body - ` + "`" + `fragment` + "`" + `: for parameters in uri fragment (rarely useful as the plugin itself cannot read it) - ` + "`" + `query.jwt` + "`" + `, ` + "`" + `form_post.jwt` + "`" + `, ` + "`" + `fragment.jwt` + "`" + `: similar to ` + "`" + `query` + "`" + `, ` + "`" + `form_post` + "`" + ` and ` + "`" + `fragment` + "`" + ` but the parameters are encoded in a JWT - ` + "`" + `jwt` + "`" + `: shortcut that indicates the default encoding for the requested response type. must be one of ["query", "form_post", "fragment", "query.jwt", "form_post.jwt", "fragment.jwt", "jwt"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"query",
 								"form_post",
 								"fragment",
+								"query.jwt",
+								"form_post.jwt",
+								"fragment.jwt",
+								"jwt",
 							),
 						},
 					},
@@ -968,8 +957,7 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"reverify": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `Specifies whether to always verify tokens stored in the session. Default: false`,
+						Description: `Specifies whether to always verify tokens stored in the session.`,
 					},
 					"revocation_endpoint": schema.StringAttribute{
 						Computed:    true,
@@ -995,8 +983,7 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"revocation_token_param_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     stringdefault.StaticString("token"),
-						Description: `Designate token's parameter name for revocation. Default: "token"`,
+						Description: `Designate token's parameter name for revocation.`,
 					},
 					"roles_claim": schema.ListAttribute{
 						Computed:    true,
@@ -1013,8 +1000,7 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"run_on_preflight": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(true),
-						Description: `Specifies whether to run this plugin on pre-flight (` + "`" + `OPTIONS` + "`" + `) requests. Default: true`,
+						Description: `Specifies whether to run this plugin on pre-flight (` + "`" + `OPTIONS` + "`" + `) requests.`,
 					},
 					"scopes": schema.ListAttribute{
 						Computed:    true,
@@ -1037,20 +1023,17 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"search_user_info": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `Specify whether to use the user info endpoint to get additional claims for consumer mapping, credential mapping, authenticated groups, and upstream and downstream headers. Default: false`,
+						Description: `Specify whether to use the user info endpoint to get additional claims for consumer mapping, credential mapping, authenticated groups, and upstream and downstream headers.`,
 					},
 					"session_absolute_timeout": schema.NumberAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     numberdefault.StaticBigFloat(big.NewFloat(86400)),
-						Description: `Limits how long the session can be renewed in seconds, until re-authentication is required. 0 disables the checks. Default: 86400`,
+						Description: `Limits how long the session can be renewed in seconds, until re-authentication is required. 0 disables the checks.`,
 					},
 					"session_audience": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     stringdefault.StaticString("default"),
-						Description: `The session audience, which is the intended target application. For example ` + "`" + `"my-application"` + "`" + `. Default: "default"`,
+						Description: `The session audience, which is the intended target application. For example ` + "`" + `"my-application"` + "`" + `.`,
 					},
 					"session_cookie_domain": schema.StringAttribute{
 						Computed:    true,
@@ -1060,26 +1043,22 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"session_cookie_http_only": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(true),
-						Description: `Forbids JavaScript from accessing the cookie, for example, through the ` + "`" + `Document.cookie` + "`" + ` property. Default: true`,
+						Description: `Forbids JavaScript from accessing the cookie, for example, through the ` + "`" + `Document.cookie` + "`" + ` property.`,
 					},
 					"session_cookie_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     stringdefault.StaticString("session"),
-						Description: `The session cookie name. Default: "session"`,
+						Description: `The session cookie name.`,
 					},
 					"session_cookie_path": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     stringdefault.StaticString("/"),
-						Description: `The session cookie Path flag. Default: "/"`,
+						Description: `The session cookie Path flag.`,
 					},
 					"session_cookie_same_site": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     stringdefault.StaticString("Lax"),
-						Description: `Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks. must be one of ["Strict", "Lax", "None", "Default"]; Default: "Lax"`,
+						Description: `Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks. must be one of ["Strict", "Lax", "None", "Default"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"Strict",
@@ -1097,38 +1076,32 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"session_enforce_same_subject": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `When set to ` + "`" + `true` + "`" + `, audiences are forced to share the same subject. Default: false`,
+						Description: `When set to ` + "`" + `true` + "`" + `, audiences are forced to share the same subject.`,
 					},
 					"session_hash_storage_key": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `When set to ` + "`" + `true` + "`" + `, the storage key (session ID) is hashed for extra security. Hashing the storage key means it is impossible to decrypt data from the storage without a cookie. Default: false`,
+						Description: `When set to ` + "`" + `true` + "`" + `, the storage key (session ID) is hashed for extra security. Hashing the storage key means it is impossible to decrypt data from the storage without a cookie.`,
 					},
 					"session_hash_subject": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `When set to ` + "`" + `true` + "`" + `, the value of subject is hashed before being stored. Only applies when ` + "`" + `session_store_metadata` + "`" + ` is enabled. Default: false`,
+						Description: `When set to ` + "`" + `true` + "`" + `, the value of subject is hashed before being stored. Only applies when ` + "`" + `session_store_metadata` + "`" + ` is enabled.`,
 					},
 					"session_idling_timeout": schema.NumberAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     numberdefault.StaticBigFloat(big.NewFloat(900)),
-						Description: `Specifies how long the session can be inactive until it is considered invalid in seconds. 0 disables the checks and touching. Default: 900`,
+						Description: `Specifies how long the session can be inactive until it is considered invalid in seconds. 0 disables the checks and touching.`,
 					},
 					"session_memcached_host": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     stringdefault.StaticString("127.0.0.1"),
-						Description: `The memcached host. Default: "127.0.0.1"`,
+						Description: `The memcached host.`,
 					},
 					"session_memcached_port": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     int64default.StaticInt64(11211),
-						Description: `The memcached port. Default: 11211`,
+						Description: `The memcached port.`,
 					},
 					"session_memcached_prefix": schema.StringAttribute{
 						Computed:    true,
@@ -1153,14 +1126,12 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 								"ip": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Default:     stringdefault.StaticString("127.0.0.1"),
-									Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+									Description: `A string representing a host name, such as example.com.`,
 								},
 								"port": schema.Int64Attribute{
 									Computed:    true,
 									Optional:    true,
-									Default:     int64default.StaticInt64(6379),
-									Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+									Description: `An integer representing a port number between 0 and 65535, inclusive.`,
 								},
 							},
 						},
@@ -1174,8 +1145,7 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"session_redis_host": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     stringdefault.StaticString("127.0.0.1"),
-						Description: `The Redis host. Default: "127.0.0.1"`,
+						Description: `The Redis host.`,
 					},
 					"session_redis_password": schema.StringAttribute{
 						Computed:    true,
@@ -1185,8 +1155,7 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"session_redis_port": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     int64default.StaticInt64(6379),
-						Description: `The Redis port. Default: 6379`,
+						Description: `The Redis port.`,
 					},
 					"session_redis_prefix": schema.StringAttribute{
 						Computed:    true,
@@ -1216,14 +1185,12 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"session_redis_ssl": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `Use SSL/TLS for Redis connection. Default: false`,
+						Description: `Use SSL/TLS for Redis connection.`,
 					},
 					"session_redis_ssl_verify": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `Verify identity provider server certificate. Default: false`,
+						Description: `Verify identity provider server certificate.`,
 					},
 					"session_redis_username": schema.StringAttribute{
 						Computed:    true,
@@ -1233,26 +1200,22 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"session_remember": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `Enables or disables persistent sessions. Default: false`,
+						Description: `Enables or disables persistent sessions.`,
 					},
 					"session_remember_absolute_timeout": schema.NumberAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     numberdefault.StaticBigFloat(big.NewFloat(2592000)),
-						Description: `Limits how long the persistent session can be renewed in seconds, until re-authentication is required. 0 disables the checks. Default: 2592000`,
+						Description: `Limits how long the persistent session can be renewed in seconds, until re-authentication is required. 0 disables the checks.`,
 					},
 					"session_remember_cookie_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     stringdefault.StaticString("remember"),
-						Description: `Persistent session cookie name. Use with the ` + "`" + `remember` + "`" + ` configuration parameter. Default: "remember"`,
+						Description: `Persistent session cookie name. Use with the ` + "`" + `remember` + "`" + ` configuration parameter.`,
 					},
 					"session_remember_rolling_timeout": schema.NumberAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     numberdefault.StaticBigFloat(big.NewFloat(604800)),
-						Description: `Specifies how long the persistent session is considered valid in seconds. 0 disables the checks and rolling. Default: 604800`,
+						Description: `Specifies how long the persistent session is considered valid in seconds. 0 disables the checks and rolling.`,
 					},
 					"session_request_headers": schema.ListAttribute{
 						Computed:    true,
@@ -1269,8 +1232,7 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"session_rolling_timeout": schema.NumberAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     numberdefault.StaticBigFloat(big.NewFloat(3600)),
-						Description: `Specifies how long the session can be used in seconds until it needs to be renewed. 0 disables the checks and rolling. Default: 3600`,
+						Description: `Specifies how long the session can be used in seconds until it needs to be renewed. 0 disables the checks and rolling.`,
 					},
 					"session_secret": schema.StringAttribute{
 						Computed:    true,
@@ -1280,8 +1242,7 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"session_storage": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     stringdefault.StaticString("cookie"),
-						Description: `The session storage for session data: - ` + "`" + `cookie` + "`" + `: stores session data with the session cookie (the session cannot be invalidated or revoked without changing session secret, but is stateless, and doesn't require a database) - ` + "`" + `memcache` + "`" + `: stores session data in memcached - ` + "`" + `redis` + "`" + `: stores session data in Redis. must be one of ["cookie", "memcache", "memcached", "redis"]; Default: "cookie"`,
+						Description: `The session storage for session data: - ` + "`" + `cookie` + "`" + `: stores session data with the session cookie (the session cannot be invalidated or revoked without changing session secret, but is stateless, and doesn't require a database) - ` + "`" + `memcache` + "`" + `: stores session data in memcached - ` + "`" + `redis` + "`" + `: stores session data in Redis. must be one of ["cookie", "memcache", "memcached", "redis"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"cookie",
@@ -1294,20 +1255,17 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"session_store_metadata": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `Configures whether or not session metadata should be stored. This metadata includes information about the active sessions for a specific audience belonging to a specific subject. Default: false`,
+						Description: `Configures whether or not session metadata should be stored. This metadata includes information about the active sessions for a specific audience belonging to a specific subject.`,
 					},
 					"ssl_verify": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `Verify identity provider server certificate. Default: false`,
+						Description: `Verify identity provider server certificate. If set to ` + "`" + `true` + "`" + `, the plugin uses the CA certificate set in the ` + "`" + `kong.conf` + "`" + ` config parameter ` + "`" + `lua_ssl_trusted_certificate` + "`" + `.`,
 					},
 					"timeout": schema.NumberAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     numberdefault.StaticBigFloat(big.NewFloat(10000)),
-						Description: `Network IO timeout in milliseconds. Default: 10000`,
+						Description: `Network IO timeout in milliseconds.`,
 					},
 					"tls_client_auth_cert_id": schema.StringAttribute{
 						Computed:    true,
@@ -1317,14 +1275,12 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"tls_client_auth_ssl_verify": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(true),
-						Description: `Verify identity provider server certificate during mTLS client authentication. Default: true`,
+						Description: `Verify identity provider server certificate during mTLS client authentication.`,
 					},
 					"token_cache_key_include_scope": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `Include the scope in the token cache key, so token with different scopes are considered diffrent tokens. Default: false`,
+						Description: `Include the scope in the token cache key, so token with different scopes are considered diffrent tokens.`,
 					},
 					"token_endpoint": schema.StringAttribute{
 						Computed:    true,
@@ -1391,7 +1347,7 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
-						Description: `Pass extra arguments from the client to the OpenID-Connect plugin. If arguments exist, the client can pass them using: - Query parameters - Request Body - Reqest Header  This parameter can be used with ` + "`" + `scope` + "`" + ` values, like this:  ` + "`" + `config.token_post_args_client=scope` + "`" + `  In this case, the token would take the ` + "`" + `scope` + "`" + ` value from the query parameter or from the request body or from the header and send it to the token endpoint.`,
+						Description: `Pass extra arguments from the client to the OpenID-Connect plugin. If arguments exist, the client can pass them using: - Query parameters - Request Body - Request Header  This parameter can be used with ` + "`" + `scope` + "`" + ` values, like this:  ` + "`" + `config.token_post_args_client=scope` + "`" + `  In this case, the token would take the ` + "`" + `scope` + "`" + ` value from the query parameter or from the request body or from the header and send it to the token endpoint.`,
 					},
 					"token_post_args_names": schema.ListAttribute{
 						Computed:    true,
@@ -1408,14 +1364,12 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"unauthorized_destroy_session": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(true),
-						Description: `Destroy any active session for the unauthorized requests. Default: true`,
+						Description: `Destroy any active session for the unauthorized requests.`,
 					},
 					"unauthorized_error_message": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     stringdefault.StaticString("Unauthorized"),
-						Description: `The error message for the unauthorized requests (when not using the redirection). Default: "Unauthorized"`,
+						Description: `The error message for the unauthorized requests (when not using the redirection).`,
 					},
 					"unauthorized_redirect_uri": schema.ListAttribute{
 						Computed:    true,
@@ -1432,8 +1386,7 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"upstream_access_token_header": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     stringdefault.StaticString("authorization:bearer"),
-						Description: `The upstream access token header. Default: "authorization:bearer"`,
+						Description: `The upstream access token header.`,
 					},
 					"upstream_access_token_jwk_header": schema.StringAttribute{
 						Computed:    true,
@@ -1495,8 +1448,7 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"userinfo_accept": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     stringdefault.StaticString("application/json"),
-						Description: `The value of ` + "`" + `Accept` + "`" + ` header for user info requests: - ` + "`" + `application/json` + "`" + `: user info response as JSON - ` + "`" + `application/jwt` + "`" + `: user info response as JWT (from the obsolete IETF draft document). must be one of ["application/json", "application/jwt"]; Default: "application/json"`,
+						Description: `The value of ` + "`" + `Accept` + "`" + ` header for user info requests: - ` + "`" + `application/json` + "`" + `: user info response as JSON - ` + "`" + `application/jwt` + "`" + `: user info response as JWT (from the obsolete IETF draft document). must be one of ["application/json", "application/jwt"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"application/json",
@@ -1548,32 +1500,27 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"using_pseudo_issuer": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `If the plugin uses a pseudo issuer. When set to true, the plugin will not discover the configuration from the issuer URL specified with ` + "`" + `config.issuer` + "`" + `. Default: false`,
+						Description: `If the plugin uses a pseudo issuer. When set to true, the plugin will not discover the configuration from the issuer URL specified with ` + "`" + `config.issuer` + "`" + `.`,
 					},
 					"verify_claims": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(true),
-						Description: `Verify tokens for standard claims. Default: true`,
+						Description: `Verify tokens for standard claims.`,
 					},
 					"verify_nonce": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(true),
-						Description: `Verify nonce on authorization code flow. Default: true`,
+						Description: `Verify nonce on authorization code flow.`,
 					},
 					"verify_parameters": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `Verify plugin configuration against discovery. Default: false`,
+						Description: `Verify plugin configuration against discovery.`,
 					},
 					"verify_signature": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(true),
-						Description: `Verify signature of tokens. Default: true`,
+						Description: `Verify signature of tokens.`,
 					},
 				},
 			},
@@ -1588,6 +1535,16 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 				},
 				Description: `If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.`,
 			},
+			"consumer_group": schema.SingleNestedAttribute{
+				Computed: true,
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"id": schema.StringAttribute{
+						Computed: true,
+						Optional: true,
+					},
+				},
+			},
 			"control_plane_id": schema.StringAttribute{
 				Required:    true,
 				Description: `The UUID of your control plane. This variable is available in the Konnect manager.`,
@@ -1599,12 +1556,15 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Default:     booldefault.StaticBool(true),
-				Description: `Whether the plugin is applied. Default: true`,
+				Description: `Whether the plugin is applied.`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
 				Description: `ID of the Plugin to lookup`,
+			},
+			"instance_name": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,
@@ -1639,6 +1599,10 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Plugin for grouping and filtering.`,
+			},
+			"updated_at": schema.Int64Attribute{
+				Computed:    true,
+				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
 	}
@@ -1704,8 +1668,8 @@ func (r *GatewayPluginOpenidConnectResource) Create(ctx context.Context, req res
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.OpenidConnectPlugin == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.OpenidConnectPlugin != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedOpenidConnectPlugin(res.OpenidConnectPlugin)
@@ -1759,8 +1723,8 @@ func (r *GatewayPluginOpenidConnectResource) Read(ctx context.Context, req resou
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.OpenidConnectPlugin == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.OpenidConnectPlugin != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedOpenidConnectPlugin(res.OpenidConnectPlugin)
@@ -1807,8 +1771,8 @@ func (r *GatewayPluginOpenidConnectResource) Update(ctx context.Context, req res
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.OpenidConnectPlugin == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.OpenidConnectPlugin != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedOpenidConnectPlugin(res.OpenidConnectPlugin)

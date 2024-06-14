@@ -3,18 +3,17 @@
 package provider
 
 import (
-	"encoding/json"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
 )
 
 func (r *GatewayVaultDataSourceModel) RefreshFromSharedVault(resp *shared.Vault) {
 	if resp != nil {
 		if resp.Config == nil {
-			r.Config = types.StringNull()
+			r.Config = nil
 		} else {
-			configResult, _ := json.Marshal(resp.Config)
-			r.Config = types.StringValue(string(configResult))
+			r.Config = &tfTypes.VaultConfig{}
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Description = types.StringPointerValue(resp.Description)

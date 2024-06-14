@@ -29,16 +29,19 @@ type GatewayPluginOpenidConnectDataSource struct {
 
 // GatewayPluginOpenidConnectDataSourceModel describes the data model.
 type GatewayPluginOpenidConnectDataSourceModel struct {
-	Config         tfTypes.CreateOpenidConnectPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer                    `tfsdk:"consumer"`
-	ControlPlaneID types.String                            `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                             `tfsdk:"created_at"`
-	Enabled        types.Bool                              `tfsdk:"enabled"`
-	ID             types.String                            `tfsdk:"id"`
-	Protocols      []types.String                          `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer                    `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer                    `tfsdk:"service"`
-	Tags           []types.String                          `tfsdk:"tags"`
+	Config         *tfTypes.CreateOpenidConnectPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer                     `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer                     `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                             `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                              `tfsdk:"created_at"`
+	Enabled        types.Bool                               `tfsdk:"enabled"`
+	ID             types.String                             `tfsdk:"id"`
+	InstanceName   types.String                             `tfsdk:"instance_name"`
+	Protocols      []types.String                           `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer                     `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer                     `tfsdk:"service"`
+	Tags           []types.String                           `tfsdk:"tags"`
+	UpdatedAt      types.Int64                              `tfsdk:"updated_at"`
 }
 
 // Metadata returns the data source type name.
@@ -391,6 +394,14 @@ func (r *GatewayPluginOpenidConnectDataSource) Schema(ctx context.Context, req d
 						Computed:    true,
 						Description: `The downstream user info JWT header (in case the user info returns a JWT response).`,
 					},
+					"dpop_proof_lifetime": schema.NumberAttribute{
+						Computed:    true,
+						Description: `Specifies the lifetime in seconds of the DPoP proof. It determines how long the same proof can be used after creation. The creation time is determined by the nonce creation time if a nonce is used, and the iat claim otherwise.`,
+					},
+					"dpop_use_nonce": schema.BoolAttribute{
+						Computed:    true,
+						Description: `Specifies whether to challenge the client with a nonce value for DPoP proof. When enabled it will also be used to calculate the DPoP proof lifetime.`,
+					},
 					"enable_hs_signatures": schema.BoolAttribute{
 						Computed:    true,
 						Description: `Enable shared secret, for example, HS256, signatures (when disabled they will not be accepted).`,
@@ -550,7 +561,7 @@ func (r *GatewayPluginOpenidConnectDataSource) Schema(ctx context.Context, req d
 					},
 					"leeway": schema.NumberAttribute{
 						Computed:    true,
-						Description: `Allow some leeway (in seconds) on the iat claim and ttl / expiry verification.`,
+						Description: `Defines leeway time (in seconds) for ` + "`" + `auth_time` + "`" + `, ` + "`" + `exp` + "`" + `, ` + "`" + `iat` + "`" + `, and ` + "`" + `nbf` + "`" + ` claims`,
 					},
 					"login_action": schema.StringAttribute{
 						Computed:    true,
@@ -644,6 +655,10 @@ func (r *GatewayPluginOpenidConnectDataSource) Schema(ctx context.Context, req d
 						Computed:    true,
 						Description: `If set to true, only the auth_methods that are compatible with Proof of Possession (PoP) can be configured when PoP is enabled. If set to false, all auth_methods will be configurable and PoP checks will be silently skipped for those auth_methods that are not compatible with PoP.`,
 					},
+					"proof_of_possession_dpop": schema.StringAttribute{
+						Computed:    true,
+						Description: `Enable Demonstrating Proof-of-Possession (DPoP). If set to strict, all request are verified despite the presence of the DPoP key claim (cnf.jkt). If set to optional, only tokens bound with DPoP's key are verified with the proof. must be one of ["off", "strict", "optional"]`,
+					},
 					"proof_of_possession_mtls": schema.StringAttribute{
 						Computed:    true,
 						Description: `Enable mtls proof of possession. If set to strict, all tokens (from supported auth_methods: bearer, introspection, and session granted with bearer or introspection) are verified, if set to optional, only tokens that contain the certificate hash claim are verified. If the verification fails, the request will be rejected with 401. must be one of ["off", "strict", "optional"]`,
@@ -686,13 +701,17 @@ func (r *GatewayPluginOpenidConnectDataSource) Schema(ctx context.Context, req d
 						Computed:    true,
 						Description: `Forcibly enable or disable the pushed authorization requests. When not set the value is determined through the discovery using the value of ` + "`" + `require_pushed_authorization_requests` + "`" + ` (which defaults to ` + "`" + `false` + "`" + `).`,
 					},
+					"require_signed_request_object": schema.BoolAttribute{
+						Computed:    true,
+						Description: `Forcibly enable or disable the usage of signed request object on authorization or pushed authorization endpoint. When not set the value is determined through the discovery using the value of ` + "`" + `require_signed_request_object` + "`" + `, and enabled automatically (in case the ` + "`" + `require_signed_request_object` + "`" + ` is missing, the feature will not be enabled).`,
+					},
 					"resolve_distributed_claims": schema.BoolAttribute{
 						Computed:    true,
 						Description: `Distributed claims are represented by the ` + "`" + `_claim_names` + "`" + ` and ` + "`" + `_claim_sources` + "`" + ` members of the JSON object containing the claims. If this parameter is set to ` + "`" + `true` + "`" + `, the plugin explicitly resolves these distributed claims.`,
 					},
 					"response_mode": schema.StringAttribute{
 						Computed:    true,
-						Description: `The response mode passed to the authorization endpoint: - ` + "`" + `query` + "`" + `: Instructs the identity provider to pass parameters in query string - ` + "`" + `form_post` + "`" + `: Instructs the identity provider to pass parameters in request body - ` + "`" + `fragment` + "`" + `: Instructs the identity provider to pass parameters in uri fragment (rarely useful as the plugin itself cannot read it). must be one of ["query", "form_post", "fragment"]`,
+						Description: `Response mode passed to the authorization endpoint: - ` + "`" + `query` + "`" + `: for parameters in query string - ` + "`" + `form_post` + "`" + `: for parameters in request body - ` + "`" + `fragment` + "`" + `: for parameters in uri fragment (rarely useful as the plugin itself cannot read it) - ` + "`" + `query.jwt` + "`" + `, ` + "`" + `form_post.jwt` + "`" + `, ` + "`" + `fragment.jwt` + "`" + `: similar to ` + "`" + `query` + "`" + `, ` + "`" + `form_post` + "`" + ` and ` + "`" + `fragment` + "`" + ` but the parameters are encoded in a JWT - ` + "`" + `jwt` + "`" + `: shortcut that indicates the default encoding for the requested response type. must be one of ["query", "form_post", "fragment", "query.jwt", "form_post.jwt", "fragment.jwt", "jwt"]`,
 					},
 					"response_type": schema.ListAttribute{
 						Computed:    true,
@@ -924,7 +943,7 @@ func (r *GatewayPluginOpenidConnectDataSource) Schema(ctx context.Context, req d
 					},
 					"ssl_verify": schema.BoolAttribute{
 						Computed:    true,
-						Description: `Verify identity provider server certificate.`,
+						Description: `Verify identity provider server certificate. If set to ` + "`" + `true` + "`" + `, the plugin uses the CA certificate set in the ` + "`" + `kong.conf` + "`" + ` config parameter ` + "`" + `lua_ssl_trusted_certificate` + "`" + `.`,
 					},
 					"timeout": schema.NumberAttribute{
 						Computed:    true,
@@ -986,7 +1005,7 @@ func (r *GatewayPluginOpenidConnectDataSource) Schema(ctx context.Context, req d
 					"token_post_args_client": schema.ListAttribute{
 						Computed:    true,
 						ElementType: types.StringType,
-						Description: `Pass extra arguments from the client to the OpenID-Connect plugin. If arguments exist, the client can pass them using: - Query parameters - Request Body - Reqest Header  This parameter can be used with ` + "`" + `scope` + "`" + ` values, like this:  ` + "`" + `config.token_post_args_client=scope` + "`" + `  In this case, the token would take the ` + "`" + `scope` + "`" + ` value from the query parameter or from the request body or from the header and send it to the token endpoint.`,
+						Description: `Pass extra arguments from the client to the OpenID-Connect plugin. If arguments exist, the client can pass them using: - Query parameters - Request Body - Request Header  This parameter can be used with ` + "`" + `scope` + "`" + ` values, like this:  ` + "`" + `config.token_post_args_client=scope` + "`" + `  In this case, the token would take the ` + "`" + `scope` + "`" + ` value from the query parameter or from the request body or from the header and send it to the token endpoint.`,
 					},
 					"token_post_args_names": schema.ListAttribute{
 						Computed:    true,
@@ -1135,6 +1154,14 @@ func (r *GatewayPluginOpenidConnectDataSource) Schema(ctx context.Context, req d
 				},
 				Description: `If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.`,
 			},
+			"consumer_group": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"id": schema.StringAttribute{
+						Computed: true,
+					},
+				},
+			},
 			"control_plane_id": schema.StringAttribute{
 				Required:    true,
 				Description: `The UUID of your control plane. This variable is available in the Konnect manager.`,
@@ -1150,6 +1177,9 @@ func (r *GatewayPluginOpenidConnectDataSource) Schema(ctx context.Context, req d
 			"id": schema.StringAttribute{
 				Required:    true,
 				Description: `ID of the Plugin to lookup`,
+			},
+			"instance_name": schema.StringAttribute{
+				Computed: true,
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,
@@ -1178,6 +1208,10 @@ func (r *GatewayPluginOpenidConnectDataSource) Schema(ctx context.Context, req d
 				Computed:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Plugin for grouping and filtering.`,
+			},
+			"updated_at": schema.Int64Attribute{
+				Computed:    true,
+				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
 	}
@@ -1247,8 +1281,8 @@ func (r *GatewayPluginOpenidConnectDataSource) Read(ctx context.Context, req dat
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.OpenidConnectPlugin == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.OpenidConnectPlugin != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedOpenidConnectPlugin(res.OpenidConnectPlugin)

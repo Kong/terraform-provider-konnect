@@ -2,12 +2,42 @@
 
 package shared
 
+import (
+	"encoding/json"
+	"fmt"
+)
+
+// InvalidParameterChoiceItemRule - invalid parameters rules
+type InvalidParameterChoiceItemRule string
+
+const (
+	InvalidParameterChoiceItemRuleEnum InvalidParameterChoiceItemRule = "enum"
+)
+
+func (e InvalidParameterChoiceItemRule) ToPointer() *InvalidParameterChoiceItemRule {
+	return &e
+}
+func (e *InvalidParameterChoiceItemRule) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "enum":
+		*e = InvalidParameterChoiceItemRule(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for InvalidParameterChoiceItemRule: %v", v)
+	}
+}
+
 type InvalidParameterChoiceItem struct {
 	Field string `json:"field"`
 	// invalid parameters rules
-	Rule    *InvalidRules `json:"rule,omitempty"`
-	Reason  string        `json:"reason"`
-	Choices []any         `json:"choices,omitempty"`
+	Rule    InvalidParameterChoiceItemRule `json:"rule"`
+	Reason  string                         `json:"reason"`
+	Choices []any                          `json:"choices"`
+	Source  *string                        `json:"source,omitempty"`
 }
 
 func (o *InvalidParameterChoiceItem) GetField() string {
@@ -17,9 +47,9 @@ func (o *InvalidParameterChoiceItem) GetField() string {
 	return o.Field
 }
 
-func (o *InvalidParameterChoiceItem) GetRule() *InvalidRules {
+func (o *InvalidParameterChoiceItem) GetRule() InvalidParameterChoiceItemRule {
 	if o == nil {
-		return nil
+		return InvalidParameterChoiceItemRule("")
 	}
 	return o.Rule
 }
@@ -33,7 +63,14 @@ func (o *InvalidParameterChoiceItem) GetReason() string {
 
 func (o *InvalidParameterChoiceItem) GetChoices() []any {
 	if o == nil {
-		return nil
+		return []any{}
 	}
 	return o.Choices
+}
+
+func (o *InvalidParameterChoiceItem) GetSource() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Source
 }

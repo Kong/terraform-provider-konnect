@@ -157,11 +157,11 @@ func (r *GatewayHMACAuthResource) Create(ctx context.Context, req resource.Creat
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
 	consumerIDForNestedEntities := data.ConsumerID.ValueString()
-	createHMACAuthWithoutParents := *data.ToSharedCreateHMACAuthWithoutParents()
+	hmacAuthWithoutParents := *data.ToSharedHMACAuthWithoutParents()
 	request := operations.CreateHmacAuthWithConsumerRequest{
-		ControlPlaneID:               controlPlaneID,
-		ConsumerIDForNestedEntities:  consumerIDForNestedEntities,
-		CreateHMACAuthWithoutParents: createHMACAuthWithoutParents,
+		ControlPlaneID:              controlPlaneID,
+		ConsumerIDForNestedEntities: consumerIDForNestedEntities,
+		HMACAuthWithoutParents:      hmacAuthWithoutParents,
 	}
 	res, err := r.client.HMACAuthCredentials.CreateHmacAuthWithConsumer(ctx, request)
 	if err != nil {
@@ -179,8 +179,8 @@ func (r *GatewayHMACAuthResource) Create(ctx context.Context, req resource.Creat
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.HMACAuth == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.HMACAuth != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedHMACAuth(res.HMACAuth)
@@ -236,8 +236,8 @@ func (r *GatewayHMACAuthResource) Read(ctx context.Context, req resource.ReadReq
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.HMACAuth == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.HMACAuth != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedHMACAuth(res.HMACAuth)

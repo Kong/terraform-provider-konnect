@@ -10,11 +10,70 @@ import (
 )
 
 func (r *GatewayPluginCORSResourceModel) ToSharedCreateCORSPlugin() *shared.CreateCORSPlugin {
+	var config *shared.CreateCORSPluginConfig
+	if r.Config != nil {
+		credentials := new(bool)
+		if !r.Config.Credentials.IsUnknown() && !r.Config.Credentials.IsNull() {
+			*credentials = r.Config.Credentials.ValueBool()
+		} else {
+			credentials = nil
+		}
+		var exposedHeaders []string = []string{}
+		for _, exposedHeadersItem := range r.Config.ExposedHeaders {
+			exposedHeaders = append(exposedHeaders, exposedHeadersItem.ValueString())
+		}
+		var headers []string = []string{}
+		for _, headersItem := range r.Config.Headers {
+			headers = append(headers, headersItem.ValueString())
+		}
+		maxAge := new(float64)
+		if !r.Config.MaxAge.IsUnknown() && !r.Config.MaxAge.IsNull() {
+			*maxAge, _ = r.Config.MaxAge.ValueBigFloat().Float64()
+		} else {
+			maxAge = nil
+		}
+		var methods []shared.CreateCORSPluginMethods = []shared.CreateCORSPluginMethods{}
+		for _, methodsItem := range r.Config.Methods {
+			methods = append(methods, shared.CreateCORSPluginMethods(methodsItem.ValueString()))
+		}
+		var origins []string = []string{}
+		for _, originsItem := range r.Config.Origins {
+			origins = append(origins, originsItem.ValueString())
+		}
+		preflightContinue := new(bool)
+		if !r.Config.PreflightContinue.IsUnknown() && !r.Config.PreflightContinue.IsNull() {
+			*preflightContinue = r.Config.PreflightContinue.ValueBool()
+		} else {
+			preflightContinue = nil
+		}
+		privateNetwork := new(bool)
+		if !r.Config.PrivateNetwork.IsUnknown() && !r.Config.PrivateNetwork.IsNull() {
+			*privateNetwork = r.Config.PrivateNetwork.ValueBool()
+		} else {
+			privateNetwork = nil
+		}
+		config = &shared.CreateCORSPluginConfig{
+			Credentials:       credentials,
+			ExposedHeaders:    exposedHeaders,
+			Headers:           headers,
+			MaxAge:            maxAge,
+			Methods:           methods,
+			Origins:           origins,
+			PreflightContinue: preflightContinue,
+			PrivateNetwork:    privateNetwork,
+		}
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
 	} else {
 		enabled = nil
+	}
+	instanceName := new(string)
+	if !r.InstanceName.IsUnknown() && !r.InstanceName.IsNull() {
+		*instanceName = r.InstanceName.ValueString()
+	} else {
+		instanceName = nil
 	}
 	var protocols []shared.CreateCORSPluginProtocols = []shared.CreateCORSPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
@@ -36,127 +95,103 @@ func (r *GatewayPluginCORSResourceModel) ToSharedCreateCORSPlugin() *shared.Crea
 			ID: id,
 		}
 	}
-	var route *shared.CreateCORSPluginRoute
-	if r.Route != nil {
+	var consumerGroup *shared.CreateCORSPluginConsumerGroup
+	if r.ConsumerGroup != nil {
 		id1 := new(string)
-		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
-			*id1 = r.Route.ID.ValueString()
+		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
+			*id1 = r.ConsumerGroup.ID.ValueString()
 		} else {
 			id1 = nil
 		}
-		route = &shared.CreateCORSPluginRoute{
+		consumerGroup = &shared.CreateCORSPluginConsumerGroup{
 			ID: id1,
+		}
+	}
+	var route *shared.CreateCORSPluginRoute
+	if r.Route != nil {
+		id2 := new(string)
+		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
+			*id2 = r.Route.ID.ValueString()
+		} else {
+			id2 = nil
+		}
+		route = &shared.CreateCORSPluginRoute{
+			ID: id2,
 		}
 	}
 	var service *shared.CreateCORSPluginService
 	if r.Service != nil {
-		id2 := new(string)
+		id3 := new(string)
 		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
-			*id2 = r.Service.ID.ValueString()
+			*id3 = r.Service.ID.ValueString()
 		} else {
-			id2 = nil
+			id3 = nil
 		}
 		service = &shared.CreateCORSPluginService{
-			ID: id2,
+			ID: id3,
 		}
 	}
-	credentials := new(bool)
-	if !r.Config.Credentials.IsUnknown() && !r.Config.Credentials.IsNull() {
-		*credentials = r.Config.Credentials.ValueBool()
-	} else {
-		credentials = nil
-	}
-	var exposedHeaders []string = []string{}
-	for _, exposedHeadersItem := range r.Config.ExposedHeaders {
-		exposedHeaders = append(exposedHeaders, exposedHeadersItem.ValueString())
-	}
-	var headers []string = []string{}
-	for _, headersItem := range r.Config.Headers {
-		headers = append(headers, headersItem.ValueString())
-	}
-	maxAge := new(float64)
-	if !r.Config.MaxAge.IsUnknown() && !r.Config.MaxAge.IsNull() {
-		*maxAge, _ = r.Config.MaxAge.ValueBigFloat().Float64()
-	} else {
-		maxAge = nil
-	}
-	var methods []shared.CreateCORSPluginMethods = []shared.CreateCORSPluginMethods{}
-	for _, methodsItem := range r.Config.Methods {
-		methods = append(methods, shared.CreateCORSPluginMethods(methodsItem.ValueString()))
-	}
-	var origins []string = []string{}
-	for _, originsItem := range r.Config.Origins {
-		origins = append(origins, originsItem.ValueString())
-	}
-	preflightContinue := new(bool)
-	if !r.Config.PreflightContinue.IsUnknown() && !r.Config.PreflightContinue.IsNull() {
-		*preflightContinue = r.Config.PreflightContinue.ValueBool()
-	} else {
-		preflightContinue = nil
-	}
-	privateNetwork := new(bool)
-	if !r.Config.PrivateNetwork.IsUnknown() && !r.Config.PrivateNetwork.IsNull() {
-		*privateNetwork = r.Config.PrivateNetwork.ValueBool()
-	} else {
-		privateNetwork = nil
-	}
-	config := shared.CreateCORSPluginConfig{
-		Credentials:       credentials,
-		ExposedHeaders:    exposedHeaders,
-		Headers:           headers,
-		MaxAge:            maxAge,
-		Methods:           methods,
-		Origins:           origins,
-		PreflightContinue: preflightContinue,
-		PrivateNetwork:    privateNetwork,
-	}
 	out := shared.CreateCORSPlugin{
-		Enabled:   enabled,
-		Protocols: protocols,
-		Tags:      tags,
-		Consumer:  consumer,
-		Route:     route,
-		Service:   service,
-		Config:    config,
+		Config:        config,
+		Enabled:       enabled,
+		InstanceName:  instanceName,
+		Protocols:     protocols,
+		Tags:          tags,
+		Consumer:      consumer,
+		ConsumerGroup: consumerGroup,
+		Route:         route,
+		Service:       service,
 	}
 	return &out
 }
 
 func (r *GatewayPluginCORSResourceModel) RefreshFromSharedCORSPlugin(resp *shared.CORSPlugin) {
 	if resp != nil {
-		r.Config.Credentials = types.BoolPointerValue(resp.Config.Credentials)
-		r.Config.ExposedHeaders = []types.String{}
-		for _, v := range resp.Config.ExposedHeaders {
-			r.Config.ExposedHeaders = append(r.Config.ExposedHeaders, types.StringValue(v))
-		}
-		r.Config.Headers = []types.String{}
-		for _, v := range resp.Config.Headers {
-			r.Config.Headers = append(r.Config.Headers, types.StringValue(v))
-		}
-		if resp.Config.MaxAge != nil {
-			r.Config.MaxAge = types.NumberValue(big.NewFloat(float64(*resp.Config.MaxAge)))
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.MaxAge = types.NumberNull()
+			r.Config = &tfTypes.CreateCORSPluginConfig{}
+			r.Config.Credentials = types.BoolPointerValue(resp.Config.Credentials)
+			r.Config.ExposedHeaders = []types.String{}
+			for _, v := range resp.Config.ExposedHeaders {
+				r.Config.ExposedHeaders = append(r.Config.ExposedHeaders, types.StringValue(v))
+			}
+			r.Config.Headers = []types.String{}
+			for _, v := range resp.Config.Headers {
+				r.Config.Headers = append(r.Config.Headers, types.StringValue(v))
+			}
+			if resp.Config.MaxAge != nil {
+				r.Config.MaxAge = types.NumberValue(big.NewFloat(float64(*resp.Config.MaxAge)))
+			} else {
+				r.Config.MaxAge = types.NumberNull()
+			}
+			r.Config.Methods = []types.String{}
+			for _, v := range resp.Config.Methods {
+				r.Config.Methods = append(r.Config.Methods, types.StringValue(string(v)))
+			}
+			r.Config.Origins = []types.String{}
+			for _, v := range resp.Config.Origins {
+				r.Config.Origins = append(r.Config.Origins, types.StringValue(v))
+			}
+			r.Config.PreflightContinue = types.BoolPointerValue(resp.Config.PreflightContinue)
+			r.Config.PrivateNetwork = types.BoolPointerValue(resp.Config.PrivateNetwork)
 		}
-		r.Config.Methods = []types.String{}
-		for _, v := range resp.Config.Methods {
-			r.Config.Methods = append(r.Config.Methods, types.StringValue(string(v)))
-		}
-		r.Config.Origins = []types.String{}
-		for _, v := range resp.Config.Origins {
-			r.Config.Origins = append(r.Config.Origins, types.StringValue(v))
-		}
-		r.Config.PreflightContinue = types.BoolPointerValue(resp.Config.PreflightContinue)
-		r.Config.PrivateNetwork = types.BoolPointerValue(resp.Config.PrivateNetwork)
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
 			r.Consumer = &tfTypes.ACLConsumer{}
 			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
 		}
+		if resp.ConsumerGroup == nil {
+			r.ConsumerGroup = nil
+		} else {
+			r.ConsumerGroup = &tfTypes.ACLConsumer{}
+			r.ConsumerGroup.ID = types.StringPointerValue(resp.ConsumerGroup.ID)
+		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
+		r.InstanceName = types.StringPointerValue(resp.InstanceName)
 		r.Protocols = []types.String{}
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))
@@ -177,5 +212,6 @@ func (r *GatewayPluginCORSResourceModel) RefreshFromSharedCORSPlugin(resp *share
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}
+		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
 }

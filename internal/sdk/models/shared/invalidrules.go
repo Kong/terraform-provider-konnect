@@ -12,13 +12,7 @@ type InvalidRules string
 
 const (
 	InvalidRulesRequired                               InvalidRules = "required"
-	InvalidRulesEnum                                   InvalidRules = "enum"
-	InvalidRulesMinLength                              InvalidRules = "min_length"
 	InvalidRulesMaxLength                              InvalidRules = "max_length"
-	InvalidRulesMinDigits                              InvalidRules = "min_digits"
-	InvalidRulesMinLowercase                           InvalidRules = "min_lowercase"
-	InvalidRulesMinUppercase                           InvalidRules = "min_uppercase"
-	InvalidRulesMinSymbols                             InvalidRules = "min_symbols"
 	InvalidRulesIsArray                                InvalidRules = "is_array"
 	InvalidRulesIsBase64                               InvalidRules = "is_base64"
 	InvalidRulesIsBoolean                              InvalidRules = "is_boolean"
@@ -51,19 +45,7 @@ func (e *InvalidRules) UnmarshalJSON(data []byte) error {
 	switch v {
 	case "required":
 		fallthrough
-	case "enum":
-		fallthrough
-	case "min_length":
-		fallthrough
 	case "max_length":
-		fallthrough
-	case "min_digits":
-		fallthrough
-	case "min_lowercase":
-		fallthrough
-	case "min_uppercase":
-		fallthrough
-	case "min_symbols":
 		fallthrough
 	case "is_array":
 		fallthrough

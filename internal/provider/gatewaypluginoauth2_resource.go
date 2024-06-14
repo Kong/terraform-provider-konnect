@@ -11,16 +11,12 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/numberdefault"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
-	"math/big"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -38,16 +34,19 @@ type GatewayPluginOauth2Resource struct {
 
 // GatewayPluginOauth2ResourceModel describes the resource data model.
 type GatewayPluginOauth2ResourceModel struct {
-	Config         tfTypes.CreateOauth2PluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer             `tfsdk:"consumer"`
-	ControlPlaneID types.String                     `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                      `tfsdk:"created_at"`
-	Enabled        types.Bool                       `tfsdk:"enabled"`
-	ID             types.String                     `tfsdk:"id"`
-	Protocols      []types.String                   `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer             `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer             `tfsdk:"service"`
-	Tags           []types.String                   `tfsdk:"tags"`
+	Config         *tfTypes.CreateOauth2PluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer              `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer              `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                      `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                       `tfsdk:"created_at"`
+	Enabled        types.Bool                        `tfsdk:"enabled"`
+	ID             types.String                      `tfsdk:"id"`
+	InstanceName   types.String                      `tfsdk:"instance_name"`
+	Protocols      []types.String                    `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer              `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer              `tfsdk:"service"`
+	Tags           []types.String                    `tfsdk:"tags"`
+	UpdatedAt      types.Int64                       `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginOauth2Resource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -59,13 +58,13 @@ func (r *GatewayPluginOauth2Resource) Schema(ctx context.Context, req resource.S
 		MarkdownDescription: "GatewayPluginOauth2 Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"accept_http_if_already_terminated": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `Accepts HTTPs requests that have already been terminated by a proxy or load balancer. Default: false`,
+						Description: `Accepts HTTPs requests that have already been terminated by a proxy or load balancer.`,
 					},
 					"anonymous": schema.StringAttribute{
 						Computed:    true,
@@ -75,62 +74,51 @@ func (r *GatewayPluginOauth2Resource) Schema(ctx context.Context, req resource.S
 					"auth_header_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     stringdefault.StaticString("authorization"),
-						Description: `The name of the header that is supposed to carry the access token. Default: "authorization"`,
+						Description: `The name of the header that is supposed to carry the access token.`,
 					},
 					"enable_authorization_code": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `An optional boolean value to enable the three-legged Authorization Code flow (RFC 6742 Section 4.1). Default: false`,
+						Description: `An optional boolean value to enable the three-legged Authorization Code flow (RFC 6742 Section 4.1).`,
 					},
 					"enable_client_credentials": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `An optional boolean value to enable the Client Credentials Grant flow (RFC 6742 Section 4.4). Default: false`,
+						Description: `An optional boolean value to enable the Client Credentials Grant flow (RFC 6742 Section 4.4).`,
 					},
 					"enable_implicit_grant": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `An optional boolean value to enable the Implicit Grant flow which allows to provision a token as a result of the authorization process (RFC 6742 Section 4.2). Default: false`,
+						Description: `An optional boolean value to enable the Implicit Grant flow which allows to provision a token as a result of the authorization process (RFC 6742 Section 4.2).`,
 					},
 					"enable_password_grant": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `An optional boolean value to enable the Resource Owner Password Credentials Grant flow (RFC 6742 Section 4.3). Default: false`,
+						Description: `An optional boolean value to enable the Resource Owner Password Credentials Grant flow (RFC 6742 Section 4.3).`,
 					},
 					"global_credentials": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `An optional boolean value that allows using the same OAuth credentials generated by the plugin with any other service whose OAuth 2.0 plugin configuration also has ` + "`" + `config.global_credentials=true` + "`" + `. Default: false`,
+						Description: `An optional boolean value that allows using the same OAuth credentials generated by the plugin with any other service whose OAuth 2.0 plugin configuration also has ` + "`" + `config.global_credentials=true` + "`" + `.`,
 					},
 					"hide_credentials": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `An optional boolean value telling the plugin to show or hide the credential from the upstream service. Default: false`,
+						Description: `An optional boolean value telling the plugin to show or hide the credential from the upstream service.`,
 					},
 					"mandatory_scope": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `An optional boolean value telling the plugin to require at least one ` + "`" + `scope` + "`" + ` to be authorized by the end user. Default: false`,
+						Description: `An optional boolean value telling the plugin to require at least one ` + "`" + `scope` + "`" + ` to be authorized by the end user.`,
 					},
 					"persistent_refresh_token": schema.BoolAttribute{
-						Computed:    true,
-						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `Default: false`,
+						Computed: true,
+						Optional: true,
 					},
 					"pkce": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     stringdefault.StaticString("lax"),
-						Description: `Specifies a mode of how the Proof Key for Code Exchange (PKCE) should be handled by the plugin. must be one of ["none", "lax", "strict"]; Default: "lax"`,
+						Description: `Specifies a mode of how the Proof Key for Code Exchange (PKCE) should be handled by the plugin. must be one of ["none", "lax", "strict"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"none",
@@ -147,14 +135,12 @@ func (r *GatewayPluginOauth2Resource) Schema(ctx context.Context, req resource.S
 					"refresh_token_ttl": schema.NumberAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     numberdefault.StaticBigFloat(big.NewFloat(1209600)),
-						Description: `Time-to-live value for data. Default: 1209600`,
+						Description: `Time-to-live value for data`,
 					},
 					"reuse_refresh_token": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `An optional boolean value that indicates whether an OAuth refresh token is reused when refreshing an access token. Default: false`,
+						Description: `An optional boolean value that indicates whether an OAuth refresh token is reused when refreshing an access token.`,
 					},
 					"scopes": schema.ListAttribute{
 						Computed:    true,
@@ -165,8 +151,7 @@ func (r *GatewayPluginOauth2Resource) Schema(ctx context.Context, req resource.S
 					"token_expiration": schema.NumberAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     numberdefault.StaticBigFloat(big.NewFloat(7200)),
-						Description: `An optional integer value telling the plugin how many seconds a token should last, after which the client will need to refresh the token. Set to ` + "`" + `0` + "`" + ` to disable the expiration. Default: 7200`,
+						Description: `An optional integer value telling the plugin how many seconds a token should last, after which the client will need to refresh the token. Set to ` + "`" + `0` + "`" + ` to disable the expiration.`,
 					},
 				},
 			},
@@ -181,6 +166,16 @@ func (r *GatewayPluginOauth2Resource) Schema(ctx context.Context, req resource.S
 				},
 				Description: `If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.`,
 			},
+			"consumer_group": schema.SingleNestedAttribute{
+				Computed: true,
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"id": schema.StringAttribute{
+						Computed: true,
+						Optional: true,
+					},
+				},
+			},
 			"control_plane_id": schema.StringAttribute{
 				Required:    true,
 				Description: `The UUID of your control plane. This variable is available in the Konnect manager.`,
@@ -192,12 +187,15 @@ func (r *GatewayPluginOauth2Resource) Schema(ctx context.Context, req resource.S
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Default:     booldefault.StaticBool(true),
-				Description: `Whether the plugin is applied. Default: true`,
+				Description: `Whether the plugin is applied.`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
 				Description: `ID of the Plugin to lookup`,
+			},
+			"instance_name": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,
@@ -232,6 +230,10 @@ func (r *GatewayPluginOauth2Resource) Schema(ctx context.Context, req resource.S
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Plugin for grouping and filtering.`,
+			},
+			"updated_at": schema.Int64Attribute{
+				Computed:    true,
+				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
 	}
@@ -297,8 +299,8 @@ func (r *GatewayPluginOauth2Resource) Create(ctx context.Context, req resource.C
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.Oauth2Plugin == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.Oauth2Plugin != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedOauth2Plugin(res.Oauth2Plugin)
@@ -352,8 +354,8 @@ func (r *GatewayPluginOauth2Resource) Read(ctx context.Context, req resource.Rea
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.Oauth2Plugin == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.Oauth2Plugin != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedOauth2Plugin(res.Oauth2Plugin)
@@ -400,8 +402,8 @@ func (r *GatewayPluginOauth2Resource) Update(ctx context.Context, req resource.U
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.Oauth2Plugin == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.Oauth2Plugin != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedOauth2Plugin(res.Oauth2Plugin)

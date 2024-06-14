@@ -5,7 +5,6 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/utils"
 )
 
 type Algorithm string
@@ -19,6 +18,11 @@ const (
 	AlgorithmRs512 Algorithm = "RS512"
 	AlgorithmEs256 Algorithm = "ES256"
 	AlgorithmEs384 Algorithm = "ES384"
+	AlgorithmEs512 Algorithm = "ES512"
+	AlgorithmPs256 Algorithm = "PS256"
+	AlgorithmPs384 Algorithm = "PS384"
+	AlgorithmPs512 Algorithm = "PS512"
+	AlgorithmEdDsa Algorithm = "EdDSA"
 )
 
 func (e Algorithm) ToPointer() *Algorithm {
@@ -45,6 +49,16 @@ func (e *Algorithm) UnmarshalJSON(data []byte) error {
 	case "ES256":
 		fallthrough
 	case "ES384":
+		fallthrough
+	case "ES512":
+		fallthrough
+	case "PS256":
+		fallthrough
+	case "PS384":
+		fallthrough
+	case "PS512":
+		fallthrough
+	case "EdDSA":
 		*e = Algorithm(v)
 		return nil
 	default:
@@ -52,54 +66,43 @@ func (e *Algorithm) UnmarshalJSON(data []byte) error {
 	}
 }
 
-type CreateJWTWithoutParents struct {
-	Algorithm    *Algorithm `default:"HS256" json:"algorithm"`
+type JWTWithoutParents struct {
+	Algorithm    *Algorithm `json:"algorithm,omitempty"`
 	Key          *string    `json:"key,omitempty"`
 	RsaPublicKey *string    `json:"rsa_public_key,omitempty"`
 	Secret       *string    `json:"secret,omitempty"`
 	Tags         []string   `json:"tags,omitempty"`
 }
 
-func (c CreateJWTWithoutParents) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
-}
-
-func (c *CreateJWTWithoutParents) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (o *CreateJWTWithoutParents) GetAlgorithm() *Algorithm {
+func (o *JWTWithoutParents) GetAlgorithm() *Algorithm {
 	if o == nil {
 		return nil
 	}
 	return o.Algorithm
 }
 
-func (o *CreateJWTWithoutParents) GetKey() *string {
+func (o *JWTWithoutParents) GetKey() *string {
 	if o == nil {
 		return nil
 	}
 	return o.Key
 }
 
-func (o *CreateJWTWithoutParents) GetRsaPublicKey() *string {
+func (o *JWTWithoutParents) GetRsaPublicKey() *string {
 	if o == nil {
 		return nil
 	}
 	return o.RsaPublicKey
 }
 
-func (o *CreateJWTWithoutParents) GetSecret() *string {
+func (o *JWTWithoutParents) GetSecret() *string {
 	if o == nil {
 		return nil
 	}
 	return o.Secret
 }
 
-func (o *CreateJWTWithoutParents) GetTags() []string {
+func (o *JWTWithoutParents) GetTags() []string {
 	if o == nil {
 		return nil
 	}

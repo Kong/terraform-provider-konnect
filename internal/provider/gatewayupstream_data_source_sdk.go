@@ -111,7 +111,7 @@ func (r *GatewayUpstreamDataSourceModel) RefreshFromSharedUpstream(resp *shared.
 				if resp.Healthchecks.Passive.Healthy == nil {
 					r.Healthchecks.Passive.Healthy = nil
 				} else {
-					r.Healthchecks.Passive.Healthy = &tfTypes.CreateUpstreamHealthy{}
+					r.Healthchecks.Passive.Healthy = &tfTypes.UpstreamHealthy{}
 					r.Healthchecks.Passive.Healthy.HTTPStatuses = []types.Int64{}
 					for _, v := range resp.Healthchecks.Passive.Healthy.HTTPStatuses {
 						r.Healthchecks.Passive.Healthy.HTTPStatuses = append(r.Healthchecks.Passive.Healthy.HTTPStatuses, types.Int64Value(v))
@@ -126,7 +126,7 @@ func (r *GatewayUpstreamDataSourceModel) RefreshFromSharedUpstream(resp *shared.
 				if resp.Healthchecks.Passive.Unhealthy == nil {
 					r.Healthchecks.Passive.Unhealthy = nil
 				} else {
-					r.Healthchecks.Passive.Unhealthy = &tfTypes.CreateUpstreamUnhealthy{}
+					r.Healthchecks.Passive.Unhealthy = &tfTypes.UpstreamUnhealthy{}
 					r.Healthchecks.Passive.Unhealthy.HTTPFailures = types.Int64PointerValue(resp.Healthchecks.Passive.Unhealthy.HTTPFailures)
 					r.Healthchecks.Passive.Unhealthy.HTTPStatuses = []types.Int64{}
 					for _, v := range resp.Healthchecks.Passive.Unhealthy.HTTPStatuses {
@@ -144,12 +144,13 @@ func (r *GatewayUpstreamDataSourceModel) RefreshFromSharedUpstream(resp *shared.
 		}
 		r.HostHeader = types.StringPointerValue(resp.HostHeader)
 		r.ID = types.StringPointerValue(resp.ID)
-		r.Name = types.StringValue(resp.Name)
+		r.Name = types.StringPointerValue(resp.Name)
 		r.Slots = types.Int64PointerValue(resp.Slots)
 		r.Tags = []types.String{}
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}
+		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 		r.UseSrvName = types.BoolPointerValue(resp.UseSrvName)
 	}
 }

@@ -43,7 +43,7 @@ func (s *CACertificates) CreateCaCertificate(ctx context.Context, request operat
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "CreateCACertificate", "json", `request:"mediaType=application/json"`)
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "CACertificate", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
 	}

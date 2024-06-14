@@ -84,11 +84,12 @@ func (r *GatewayKeyResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Description: `A JSON Web Key represented as a string. Requires replacement if changed. `,
 			},
 			"kid": schema.StringAttribute{
+				Computed: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Required:    true,
+				Optional:    true,
 				Description: `A unique identifier for a key. Requires replacement if changed. `,
 			},
 			"name": schema.StringAttribute{
@@ -206,10 +207,10 @@ func (r *GatewayKeyResource) Create(ctx context.Context, req resource.CreateRequ
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	createKey := *data.ToSharedCreateKey()
+	key := *data.ToSharedKeyInput()
 	request := operations.CreateKeyRequest{
 		ControlPlaneID: controlPlaneID,
-		CreateKey:      createKey,
+		Key:            key,
 	}
 	res, err := r.client.Keys.CreateKey(ctx, request)
 	if err != nil {
@@ -227,8 +228,8 @@ func (r *GatewayKeyResource) Create(ctx context.Context, req resource.CreateRequ
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.Key == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.Key != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedKey(res.Key)
@@ -282,8 +283,8 @@ func (r *GatewayKeyResource) Read(ctx context.Context, req resource.ReadRequest,
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.Key == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.Key != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedKey(res.Key)

@@ -41,6 +41,7 @@ type GatewayConsumerGroupResourceModel struct {
 	ID             types.String   `tfsdk:"id"`
 	Name           types.String   `tfsdk:"name"`
 	Tags           []types.String `tfsdk:"tags"`
+	UpdatedAt      types.Int64    `tfsdk:"updated_at"`
 }
 
 func (r *GatewayConsumerGroupResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -67,11 +68,12 @@ func (r *GatewayConsumerGroupResource) Schema(ctx context.Context, req resource.
 				Description: `ID of the Consumer Group to lookup`,
 			},
 			"name": schema.StringAttribute{
+				Computed: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Required:    true,
+				Optional:    true,
 				Description: `Requires replacement if changed. `,
 			},
 			"tags": schema.ListAttribute{
@@ -83,6 +85,10 @@ func (r *GatewayConsumerGroupResource) Schema(ctx context.Context, req resource.
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `Requires replacement if changed. `,
+			},
+			"updated_at": schema.Int64Attribute{
+				Computed:    true,
+				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
 	}
@@ -127,10 +133,10 @@ func (r *GatewayConsumerGroupResource) Create(ctx context.Context, req resource.
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	createConsumerGroup := *data.ToSharedCreateConsumerGroup()
+	consumerGroup := *data.ToSharedConsumerGroupInput()
 	request := operations.CreateConsumerGroupRequest{
-		ControlPlaneID:      controlPlaneID,
-		CreateConsumerGroup: createConsumerGroup,
+		ControlPlaneID: controlPlaneID,
+		ConsumerGroup:  consumerGroup,
 	}
 	res, err := r.client.ConsumerGroups.CreateConsumerGroup(ctx, request)
 	if err != nil {
@@ -148,8 +154,8 @@ func (r *GatewayConsumerGroupResource) Create(ctx context.Context, req resource.
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.ConsumerGroup == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.ConsumerGroup != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedConsumerGroup(res.ConsumerGroup)
@@ -203,8 +209,8 @@ func (r *GatewayConsumerGroupResource) Read(ctx context.Context, req resource.Re
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.ConsumerGroup == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.ConsumerGroup != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedConsumerGroup(res.ConsumerGroup)

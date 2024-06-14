@@ -13,7 +13,7 @@ type CreateACLWithConsumerRequest struct {
 	// Consumer ID for nested entities
 	ConsumerIDForNestedEntities string `pathParam:"style=simple,explode=false,name=ConsumerIdForNestedEntities"`
 	// Description of new ACL for creation
-	CreateACLWithoutParents shared.CreateACLWithoutParents `request:"mediaType=application/json"`
+	ACLWithoutParents shared.ACLWithoutParents `request:"mediaType=application/json"`
 }
 
 func (o *CreateACLWithConsumerRequest) GetControlPlaneID() string {
@@ -30,11 +30,11 @@ func (o *CreateACLWithConsumerRequest) GetConsumerIDForNestedEntities() string {
 	return o.ConsumerIDForNestedEntities
 }
 
-func (o *CreateACLWithConsumerRequest) GetCreateACLWithoutParents() shared.CreateACLWithoutParents {
+func (o *CreateACLWithConsumerRequest) GetACLWithoutParents() shared.ACLWithoutParents {
 	if o == nil {
-		return shared.CreateACLWithoutParents{}
+		return shared.ACLWithoutParents{}
 	}
-	return o.CreateACLWithoutParents
+	return o.ACLWithoutParents
 }
 
 type CreateACLWithConsumerResponse struct {

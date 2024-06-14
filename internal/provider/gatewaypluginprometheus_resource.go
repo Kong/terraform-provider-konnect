@@ -10,7 +10,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
@@ -33,16 +32,19 @@ type GatewayPluginPrometheusResource struct {
 
 // GatewayPluginPrometheusResourceModel describes the resource data model.
 type GatewayPluginPrometheusResourceModel struct {
-	Config         tfTypes.CreatePrometheusPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer                 `tfsdk:"consumer"`
-	ControlPlaneID types.String                         `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                          `tfsdk:"created_at"`
-	Enabled        types.Bool                           `tfsdk:"enabled"`
-	ID             types.String                         `tfsdk:"id"`
-	Protocols      []types.String                       `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer                 `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer                 `tfsdk:"service"`
-	Tags           []types.String                       `tfsdk:"tags"`
+	Config         *tfTypes.CreatePrometheusPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer                  `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer                  `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                          `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                           `tfsdk:"created_at"`
+	Enabled        types.Bool                            `tfsdk:"enabled"`
+	ID             types.String                          `tfsdk:"id"`
+	InstanceName   types.String                          `tfsdk:"instance_name"`
+	Protocols      []types.String                        `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer                  `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer                  `tfsdk:"service"`
+	Tags           []types.String                        `tfsdk:"tags"`
+	UpdatedAt      types.Int64                           `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginPrometheusResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -54,37 +56,33 @@ func (r *GatewayPluginPrometheusResource) Schema(ctx context.Context, req resour
 		MarkdownDescription: "GatewayPluginPrometheus Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"bandwidth_metrics": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `A boolean value that determines if status code metrics should be collected. If enabled, ` + "`" + `bandwidth_bytes` + "`" + ` and ` + "`" + `stream_sessions_total` + "`" + ` metrics will be exported. Default: false`,
+						Description: `A boolean value that determines if bandwidth metrics should be collected. If enabled, ` + "`" + `bandwidth_bytes` + "`" + ` and ` + "`" + `stream_sessions_total` + "`" + ` metrics will be exported.`,
 					},
 					"latency_metrics": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `A boolean value that determines if status code metrics should be collected. If enabled, ` + "`" + `kong_latency_ms` + "`" + `, ` + "`" + `upstream_latency_ms` + "`" + ` and ` + "`" + `request_latency_ms` + "`" + ` metrics will be exported. Default: false`,
+						Description: `A boolean value that determines if latency metrics should be collected. If enabled, ` + "`" + `kong_latency_ms` + "`" + `, ` + "`" + `upstream_latency_ms` + "`" + ` and ` + "`" + `request_latency_ms` + "`" + ` metrics will be exported.`,
 					},
 					"per_consumer": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `A boolean value that determines if per-consumer metrics should be collected. If enabled, the ` + "`" + `kong_http_requests_total` + "`" + ` and ` + "`" + `kong_bandwidth_bytes` + "`" + ` metrics fill in the consumer label when available. Default: false`,
+						Description: `A boolean value that determines if per-consumer metrics should be collected. If enabled, the ` + "`" + `kong_http_requests_total` + "`" + ` and ` + "`" + `kong_bandwidth_bytes` + "`" + ` metrics fill in the consumer label when available.`,
 					},
 					"status_code_metrics": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `A boolean value that determines if status code metrics should be collected. If enabled, ` + "`" + `http_requests_total` + "`" + `, ` + "`" + `stream_sessions_total` + "`" + ` metrics will be exported. Default: false`,
+						Description: `A boolean value that determines if status code metrics should be collected. If enabled, ` + "`" + `http_requests_total` + "`" + `, ` + "`" + `stream_sessions_total` + "`" + ` metrics will be exported.`,
 					},
 					"upstream_health_metrics": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `A boolean value that determines if status code metrics should be collected. If enabled, ` + "`" + `upstream_target_health` + "`" + ` metric will be exported. Default: false`,
+						Description: `A boolean value that determines if upstream metrics should be collected. If enabled, ` + "`" + `upstream_target_health` + "`" + ` metric will be exported.`,
 					},
 				},
 			},
@@ -99,6 +97,16 @@ func (r *GatewayPluginPrometheusResource) Schema(ctx context.Context, req resour
 				},
 				Description: `If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.`,
 			},
+			"consumer_group": schema.SingleNestedAttribute{
+				Computed: true,
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"id": schema.StringAttribute{
+						Computed: true,
+						Optional: true,
+					},
+				},
+			},
 			"control_plane_id": schema.StringAttribute{
 				Required:    true,
 				Description: `The UUID of your control plane. This variable is available in the Konnect manager.`,
@@ -110,12 +118,15 @@ func (r *GatewayPluginPrometheusResource) Schema(ctx context.Context, req resour
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Default:     booldefault.StaticBool(true),
-				Description: `Whether the plugin is applied. Default: true`,
+				Description: `Whether the plugin is applied.`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
 				Description: `ID of the Plugin to lookup`,
+			},
+			"instance_name": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,
@@ -150,6 +161,10 @@ func (r *GatewayPluginPrometheusResource) Schema(ctx context.Context, req resour
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Plugin for grouping and filtering.`,
+			},
+			"updated_at": schema.Int64Attribute{
+				Computed:    true,
+				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
 	}
@@ -215,8 +230,8 @@ func (r *GatewayPluginPrometheusResource) Create(ctx context.Context, req resour
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.PrometheusPlugin == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.PrometheusPlugin != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedPrometheusPlugin(res.PrometheusPlugin)
@@ -270,8 +285,8 @@ func (r *GatewayPluginPrometheusResource) Read(ctx context.Context, req resource
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.PrometheusPlugin == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.PrometheusPlugin != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedPrometheusPlugin(res.PrometheusPlugin)
@@ -318,8 +333,8 @@ func (r *GatewayPluginPrometheusResource) Update(ctx context.Context, req resour
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.PrometheusPlugin == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.PrometheusPlugin != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedPrometheusPlugin(res.PrometheusPlugin)

@@ -11,11 +11,177 @@ import (
 )
 
 func (r *GatewayPluginOpentelemetryResourceModel) ToSharedCreateOpentelemetryPlugin() *shared.CreateOpentelemetryPlugin {
+	var config *shared.CreateOpentelemetryPluginConfig
+	if r.Config != nil {
+		batchFlushDelay := new(int64)
+		if !r.Config.BatchFlushDelay.IsUnknown() && !r.Config.BatchFlushDelay.IsNull() {
+			*batchFlushDelay = r.Config.BatchFlushDelay.ValueInt64()
+		} else {
+			batchFlushDelay = nil
+		}
+		batchSpanCount := new(int64)
+		if !r.Config.BatchSpanCount.IsUnknown() && !r.Config.BatchSpanCount.IsNull() {
+			*batchSpanCount = r.Config.BatchSpanCount.ValueInt64()
+		} else {
+			batchSpanCount = nil
+		}
+		connectTimeout := new(int64)
+		if !r.Config.ConnectTimeout.IsUnknown() && !r.Config.ConnectTimeout.IsNull() {
+			*connectTimeout = r.Config.ConnectTimeout.ValueInt64()
+		} else {
+			connectTimeout = nil
+		}
+		endpoint := new(string)
+		if !r.Config.Endpoint.IsUnknown() && !r.Config.Endpoint.IsNull() {
+			*endpoint = r.Config.Endpoint.ValueString()
+		} else {
+			endpoint = nil
+		}
+		headerType := new(shared.CreateOpentelemetryPluginHeaderType)
+		if !r.Config.HeaderType.IsUnknown() && !r.Config.HeaderType.IsNull() {
+			*headerType = shared.CreateOpentelemetryPluginHeaderType(r.Config.HeaderType.ValueString())
+		} else {
+			headerType = nil
+		}
+		headers := make(map[string]interface{})
+		for headersKey, headersValue := range r.Config.Headers {
+			var headersInst interface{}
+			_ = json.Unmarshal([]byte(headersValue.ValueString()), &headersInst)
+			headers[headersKey] = headersInst
+		}
+		httpResponseHeaderForTraceid := new(string)
+		if !r.Config.HTTPResponseHeaderForTraceid.IsUnknown() && !r.Config.HTTPResponseHeaderForTraceid.IsNull() {
+			*httpResponseHeaderForTraceid = r.Config.HTTPResponseHeaderForTraceid.ValueString()
+		} else {
+			httpResponseHeaderForTraceid = nil
+		}
+		var propagation *shared.CreateOpentelemetryPluginPropagation
+		if r.Config.Propagation != nil {
+			var clear []string = []string{}
+			for _, clearItem := range r.Config.Propagation.Clear {
+				clear = append(clear, clearItem.ValueString())
+			}
+			defaultFormat := shared.CreateOpentelemetryPluginDefaultFormat(r.Config.Propagation.DefaultFormat.ValueString())
+			var extract []shared.CreateOpentelemetryPluginExtract = []shared.CreateOpentelemetryPluginExtract{}
+			for _, extractItem := range r.Config.Propagation.Extract {
+				extract = append(extract, shared.CreateOpentelemetryPluginExtract(extractItem.ValueString()))
+			}
+			var inject []shared.CreateOpentelemetryPluginInject = []shared.CreateOpentelemetryPluginInject{}
+			for _, injectItem := range r.Config.Propagation.Inject {
+				inject = append(inject, shared.CreateOpentelemetryPluginInject(injectItem.ValueString()))
+			}
+			propagation = &shared.CreateOpentelemetryPluginPropagation{
+				Clear:         clear,
+				DefaultFormat: defaultFormat,
+				Extract:       extract,
+				Inject:        inject,
+			}
+		}
+		var queue *shared.CreateOpentelemetryPluginQueue
+		if r.Config.Queue != nil {
+			initialRetryDelay := new(float64)
+			if !r.Config.Queue.InitialRetryDelay.IsUnknown() && !r.Config.Queue.InitialRetryDelay.IsNull() {
+				*initialRetryDelay, _ = r.Config.Queue.InitialRetryDelay.ValueBigFloat().Float64()
+			} else {
+				initialRetryDelay = nil
+			}
+			maxBatchSize := new(int64)
+			if !r.Config.Queue.MaxBatchSize.IsUnknown() && !r.Config.Queue.MaxBatchSize.IsNull() {
+				*maxBatchSize = r.Config.Queue.MaxBatchSize.ValueInt64()
+			} else {
+				maxBatchSize = nil
+			}
+			maxBytes := new(int64)
+			if !r.Config.Queue.MaxBytes.IsUnknown() && !r.Config.Queue.MaxBytes.IsNull() {
+				*maxBytes = r.Config.Queue.MaxBytes.ValueInt64()
+			} else {
+				maxBytes = nil
+			}
+			maxCoalescingDelay := new(float64)
+			if !r.Config.Queue.MaxCoalescingDelay.IsUnknown() && !r.Config.Queue.MaxCoalescingDelay.IsNull() {
+				*maxCoalescingDelay, _ = r.Config.Queue.MaxCoalescingDelay.ValueBigFloat().Float64()
+			} else {
+				maxCoalescingDelay = nil
+			}
+			maxEntries := new(int64)
+			if !r.Config.Queue.MaxEntries.IsUnknown() && !r.Config.Queue.MaxEntries.IsNull() {
+				*maxEntries = r.Config.Queue.MaxEntries.ValueInt64()
+			} else {
+				maxEntries = nil
+			}
+			maxRetryDelay := new(float64)
+			if !r.Config.Queue.MaxRetryDelay.IsUnknown() && !r.Config.Queue.MaxRetryDelay.IsNull() {
+				*maxRetryDelay, _ = r.Config.Queue.MaxRetryDelay.ValueBigFloat().Float64()
+			} else {
+				maxRetryDelay = nil
+			}
+			maxRetryTime := new(float64)
+			if !r.Config.Queue.MaxRetryTime.IsUnknown() && !r.Config.Queue.MaxRetryTime.IsNull() {
+				*maxRetryTime, _ = r.Config.Queue.MaxRetryTime.ValueBigFloat().Float64()
+			} else {
+				maxRetryTime = nil
+			}
+			queue = &shared.CreateOpentelemetryPluginQueue{
+				InitialRetryDelay:  initialRetryDelay,
+				MaxBatchSize:       maxBatchSize,
+				MaxBytes:           maxBytes,
+				MaxCoalescingDelay: maxCoalescingDelay,
+				MaxEntries:         maxEntries,
+				MaxRetryDelay:      maxRetryDelay,
+				MaxRetryTime:       maxRetryTime,
+			}
+		}
+		readTimeout := new(int64)
+		if !r.Config.ReadTimeout.IsUnknown() && !r.Config.ReadTimeout.IsNull() {
+			*readTimeout = r.Config.ReadTimeout.ValueInt64()
+		} else {
+			readTimeout = nil
+		}
+		resourceAttributes := make(map[string]interface{})
+		for resourceAttributesKey, resourceAttributesValue := range r.Config.ResourceAttributes {
+			var resourceAttributesInst interface{}
+			_ = json.Unmarshal([]byte(resourceAttributesValue.ValueString()), &resourceAttributesInst)
+			resourceAttributes[resourceAttributesKey] = resourceAttributesInst
+		}
+		samplingRate := new(float64)
+		if !r.Config.SamplingRate.IsUnknown() && !r.Config.SamplingRate.IsNull() {
+			*samplingRate, _ = r.Config.SamplingRate.ValueBigFloat().Float64()
+		} else {
+			samplingRate = nil
+		}
+		sendTimeout := new(int64)
+		if !r.Config.SendTimeout.IsUnknown() && !r.Config.SendTimeout.IsNull() {
+			*sendTimeout = r.Config.SendTimeout.ValueInt64()
+		} else {
+			sendTimeout = nil
+		}
+		config = &shared.CreateOpentelemetryPluginConfig{
+			BatchFlushDelay:              batchFlushDelay,
+			BatchSpanCount:               batchSpanCount,
+			ConnectTimeout:               connectTimeout,
+			Endpoint:                     endpoint,
+			HeaderType:                   headerType,
+			Headers:                      headers,
+			HTTPResponseHeaderForTraceid: httpResponseHeaderForTraceid,
+			Propagation:                  propagation,
+			Queue:                        queue,
+			ReadTimeout:                  readTimeout,
+			ResourceAttributes:           resourceAttributes,
+			SamplingRate:                 samplingRate,
+			SendTimeout:                  sendTimeout,
+		}
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
 	} else {
 		enabled = nil
+	}
+	instanceName := new(string)
+	if !r.InstanceName.IsUnknown() && !r.InstanceName.IsNull() {
+		*instanceName = r.InstanceName.ValueString()
+	} else {
+		instanceName = nil
 	}
 	var protocols []shared.CreateOpentelemetryPluginProtocols = []shared.CreateOpentelemetryPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
@@ -37,246 +203,156 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToSharedCreateOpentelemetryPlu
 			ID: id,
 		}
 	}
-	var route *shared.CreateOpentelemetryPluginRoute
-	if r.Route != nil {
+	var consumerGroup *shared.CreateOpentelemetryPluginConsumerGroup
+	if r.ConsumerGroup != nil {
 		id1 := new(string)
-		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
-			*id1 = r.Route.ID.ValueString()
+		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
+			*id1 = r.ConsumerGroup.ID.ValueString()
 		} else {
 			id1 = nil
 		}
-		route = &shared.CreateOpentelemetryPluginRoute{
+		consumerGroup = &shared.CreateOpentelemetryPluginConsumerGroup{
 			ID: id1,
+		}
+	}
+	var route *shared.CreateOpentelemetryPluginRoute
+	if r.Route != nil {
+		id2 := new(string)
+		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
+			*id2 = r.Route.ID.ValueString()
+		} else {
+			id2 = nil
+		}
+		route = &shared.CreateOpentelemetryPluginRoute{
+			ID: id2,
 		}
 	}
 	var service *shared.CreateOpentelemetryPluginService
 	if r.Service != nil {
-		id2 := new(string)
+		id3 := new(string)
 		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
-			*id2 = r.Service.ID.ValueString()
+			*id3 = r.Service.ID.ValueString()
 		} else {
-			id2 = nil
+			id3 = nil
 		}
 		service = &shared.CreateOpentelemetryPluginService{
-			ID: id2,
+			ID: id3,
 		}
-	}
-	batchFlushDelay := new(int64)
-	if !r.Config.BatchFlushDelay.IsUnknown() && !r.Config.BatchFlushDelay.IsNull() {
-		*batchFlushDelay = r.Config.BatchFlushDelay.ValueInt64()
-	} else {
-		batchFlushDelay = nil
-	}
-	batchSpanCount := new(int64)
-	if !r.Config.BatchSpanCount.IsUnknown() && !r.Config.BatchSpanCount.IsNull() {
-		*batchSpanCount = r.Config.BatchSpanCount.ValueInt64()
-	} else {
-		batchSpanCount = nil
-	}
-	connectTimeout := new(int64)
-	if !r.Config.ConnectTimeout.IsUnknown() && !r.Config.ConnectTimeout.IsNull() {
-		*connectTimeout = r.Config.ConnectTimeout.ValueInt64()
-	} else {
-		connectTimeout = nil
-	}
-	endpoint := new(string)
-	if !r.Config.Endpoint.IsUnknown() && !r.Config.Endpoint.IsNull() {
-		*endpoint = r.Config.Endpoint.ValueString()
-	} else {
-		endpoint = nil
-	}
-	headerType := new(shared.CreateOpentelemetryPluginHeaderType)
-	if !r.Config.HeaderType.IsUnknown() && !r.Config.HeaderType.IsNull() {
-		*headerType = shared.CreateOpentelemetryPluginHeaderType(r.Config.HeaderType.ValueString())
-	} else {
-		headerType = nil
-	}
-	headers := make(map[string]interface{})
-	for headersKey, headersValue := range r.Config.Headers {
-		var headersInst interface{}
-		_ = json.Unmarshal([]byte(headersValue.ValueString()), &headersInst)
-		headers[headersKey] = headersInst
-	}
-	httpResponseHeaderForTraceid := new(string)
-	if !r.Config.HTTPResponseHeaderForTraceid.IsUnknown() && !r.Config.HTTPResponseHeaderForTraceid.IsNull() {
-		*httpResponseHeaderForTraceid = r.Config.HTTPResponseHeaderForTraceid.ValueString()
-	} else {
-		httpResponseHeaderForTraceid = nil
-	}
-	var queue *shared.CreateOpentelemetryPluginQueue
-	if r.Config.Queue != nil {
-		initialRetryDelay := new(float64)
-		if !r.Config.Queue.InitialRetryDelay.IsUnknown() && !r.Config.Queue.InitialRetryDelay.IsNull() {
-			*initialRetryDelay, _ = r.Config.Queue.InitialRetryDelay.ValueBigFloat().Float64()
-		} else {
-			initialRetryDelay = nil
-		}
-		maxBatchSize := new(int64)
-		if !r.Config.Queue.MaxBatchSize.IsUnknown() && !r.Config.Queue.MaxBatchSize.IsNull() {
-			*maxBatchSize = r.Config.Queue.MaxBatchSize.ValueInt64()
-		} else {
-			maxBatchSize = nil
-		}
-		maxBytes := new(int64)
-		if !r.Config.Queue.MaxBytes.IsUnknown() && !r.Config.Queue.MaxBytes.IsNull() {
-			*maxBytes = r.Config.Queue.MaxBytes.ValueInt64()
-		} else {
-			maxBytes = nil
-		}
-		maxCoalescingDelay := new(float64)
-		if !r.Config.Queue.MaxCoalescingDelay.IsUnknown() && !r.Config.Queue.MaxCoalescingDelay.IsNull() {
-			*maxCoalescingDelay, _ = r.Config.Queue.MaxCoalescingDelay.ValueBigFloat().Float64()
-		} else {
-			maxCoalescingDelay = nil
-		}
-		maxEntries := new(int64)
-		if !r.Config.Queue.MaxEntries.IsUnknown() && !r.Config.Queue.MaxEntries.IsNull() {
-			*maxEntries = r.Config.Queue.MaxEntries.ValueInt64()
-		} else {
-			maxEntries = nil
-		}
-		maxRetryDelay := new(float64)
-		if !r.Config.Queue.MaxRetryDelay.IsUnknown() && !r.Config.Queue.MaxRetryDelay.IsNull() {
-			*maxRetryDelay, _ = r.Config.Queue.MaxRetryDelay.ValueBigFloat().Float64()
-		} else {
-			maxRetryDelay = nil
-		}
-		maxRetryTime := new(float64)
-		if !r.Config.Queue.MaxRetryTime.IsUnknown() && !r.Config.Queue.MaxRetryTime.IsNull() {
-			*maxRetryTime, _ = r.Config.Queue.MaxRetryTime.ValueBigFloat().Float64()
-		} else {
-			maxRetryTime = nil
-		}
-		queue = &shared.CreateOpentelemetryPluginQueue{
-			InitialRetryDelay:  initialRetryDelay,
-			MaxBatchSize:       maxBatchSize,
-			MaxBytes:           maxBytes,
-			MaxCoalescingDelay: maxCoalescingDelay,
-			MaxEntries:         maxEntries,
-			MaxRetryDelay:      maxRetryDelay,
-			MaxRetryTime:       maxRetryTime,
-		}
-	}
-	readTimeout := new(int64)
-	if !r.Config.ReadTimeout.IsUnknown() && !r.Config.ReadTimeout.IsNull() {
-		*readTimeout = r.Config.ReadTimeout.ValueInt64()
-	} else {
-		readTimeout = nil
-	}
-	resourceAttributes := make(map[string]interface{})
-	for resourceAttributesKey, resourceAttributesValue := range r.Config.ResourceAttributes {
-		var resourceAttributesInst interface{}
-		_ = json.Unmarshal([]byte(resourceAttributesValue.ValueString()), &resourceAttributesInst)
-		resourceAttributes[resourceAttributesKey] = resourceAttributesInst
-	}
-	samplingRate := new(float64)
-	if !r.Config.SamplingRate.IsUnknown() && !r.Config.SamplingRate.IsNull() {
-		*samplingRate, _ = r.Config.SamplingRate.ValueBigFloat().Float64()
-	} else {
-		samplingRate = nil
-	}
-	sendTimeout := new(int64)
-	if !r.Config.SendTimeout.IsUnknown() && !r.Config.SendTimeout.IsNull() {
-		*sendTimeout = r.Config.SendTimeout.ValueInt64()
-	} else {
-		sendTimeout = nil
-	}
-	config := shared.CreateOpentelemetryPluginConfig{
-		BatchFlushDelay:              batchFlushDelay,
-		BatchSpanCount:               batchSpanCount,
-		ConnectTimeout:               connectTimeout,
-		Endpoint:                     endpoint,
-		HeaderType:                   headerType,
-		Headers:                      headers,
-		HTTPResponseHeaderForTraceid: httpResponseHeaderForTraceid,
-		Queue:                        queue,
-		ReadTimeout:                  readTimeout,
-		ResourceAttributes:           resourceAttributes,
-		SamplingRate:                 samplingRate,
-		SendTimeout:                  sendTimeout,
 	}
 	out := shared.CreateOpentelemetryPlugin{
-		Enabled:   enabled,
-		Protocols: protocols,
-		Tags:      tags,
-		Consumer:  consumer,
-		Route:     route,
-		Service:   service,
-		Config:    config,
+		Config:        config,
+		Enabled:       enabled,
+		InstanceName:  instanceName,
+		Protocols:     protocols,
+		Tags:          tags,
+		Consumer:      consumer,
+		ConsumerGroup: consumerGroup,
+		Route:         route,
+		Service:       service,
 	}
 	return &out
 }
 
 func (r *GatewayPluginOpentelemetryResourceModel) RefreshFromSharedOpentelemetryPlugin(resp *shared.OpentelemetryPlugin) {
 	if resp != nil {
-		r.Config.BatchFlushDelay = types.Int64PointerValue(resp.Config.BatchFlushDelay)
-		r.Config.BatchSpanCount = types.Int64PointerValue(resp.Config.BatchSpanCount)
-		r.Config.ConnectTimeout = types.Int64PointerValue(resp.Config.ConnectTimeout)
-		r.Config.Endpoint = types.StringPointerValue(resp.Config.Endpoint)
-		if resp.Config.HeaderType != nil {
-			r.Config.HeaderType = types.StringValue(string(*resp.Config.HeaderType))
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.HeaderType = types.StringNull()
-		}
-		if len(resp.Config.Headers) > 0 {
-			r.Config.Headers = make(map[string]types.String)
-			for key, value := range resp.Config.Headers {
-				result, _ := json.Marshal(value)
-				r.Config.Headers[key] = types.StringValue(string(result))
-			}
-		}
-		r.Config.HTTPResponseHeaderForTraceid = types.StringPointerValue(resp.Config.HTTPResponseHeaderForTraceid)
-		if resp.Config.Queue == nil {
-			r.Config.Queue = nil
-		} else {
-			r.Config.Queue = &tfTypes.CreateOpentelemetryPluginQueue{}
-			if resp.Config.Queue.InitialRetryDelay != nil {
-				r.Config.Queue.InitialRetryDelay = types.NumberValue(big.NewFloat(float64(*resp.Config.Queue.InitialRetryDelay)))
+			r.Config = &tfTypes.CreateOpentelemetryPluginConfig{}
+			r.Config.BatchFlushDelay = types.Int64PointerValue(resp.Config.BatchFlushDelay)
+			r.Config.BatchSpanCount = types.Int64PointerValue(resp.Config.BatchSpanCount)
+			r.Config.ConnectTimeout = types.Int64PointerValue(resp.Config.ConnectTimeout)
+			r.Config.Endpoint = types.StringPointerValue(resp.Config.Endpoint)
+			if resp.Config.HeaderType != nil {
+				r.Config.HeaderType = types.StringValue(string(*resp.Config.HeaderType))
 			} else {
-				r.Config.Queue.InitialRetryDelay = types.NumberNull()
+				r.Config.HeaderType = types.StringNull()
 			}
-			r.Config.Queue.MaxBatchSize = types.Int64PointerValue(resp.Config.Queue.MaxBatchSize)
-			r.Config.Queue.MaxBytes = types.Int64PointerValue(resp.Config.Queue.MaxBytes)
-			if resp.Config.Queue.MaxCoalescingDelay != nil {
-				r.Config.Queue.MaxCoalescingDelay = types.NumberValue(big.NewFloat(float64(*resp.Config.Queue.MaxCoalescingDelay)))
+			if len(resp.Config.Headers) > 0 {
+				r.Config.Headers = make(map[string]types.String)
+				for key, value := range resp.Config.Headers {
+					result, _ := json.Marshal(value)
+					r.Config.Headers[key] = types.StringValue(string(result))
+				}
+			}
+			r.Config.HTTPResponseHeaderForTraceid = types.StringPointerValue(resp.Config.HTTPResponseHeaderForTraceid)
+			if resp.Config.Propagation == nil {
+				r.Config.Propagation = nil
 			} else {
-				r.Config.Queue.MaxCoalescingDelay = types.NumberNull()
+				r.Config.Propagation = &tfTypes.CreateOpentelemetryPluginPropagation{}
+				r.Config.Propagation.Clear = []types.String{}
+				for _, v := range resp.Config.Propagation.Clear {
+					r.Config.Propagation.Clear = append(r.Config.Propagation.Clear, types.StringValue(v))
+				}
+				r.Config.Propagation.DefaultFormat = types.StringValue(string(resp.Config.Propagation.DefaultFormat))
+				r.Config.Propagation.Extract = []types.String{}
+				for _, v := range resp.Config.Propagation.Extract {
+					r.Config.Propagation.Extract = append(r.Config.Propagation.Extract, types.StringValue(string(v)))
+				}
+				r.Config.Propagation.Inject = []types.String{}
+				for _, v := range resp.Config.Propagation.Inject {
+					r.Config.Propagation.Inject = append(r.Config.Propagation.Inject, types.StringValue(string(v)))
+				}
 			}
-			r.Config.Queue.MaxEntries = types.Int64PointerValue(resp.Config.Queue.MaxEntries)
-			if resp.Config.Queue.MaxRetryDelay != nil {
-				r.Config.Queue.MaxRetryDelay = types.NumberValue(big.NewFloat(float64(*resp.Config.Queue.MaxRetryDelay)))
+			if resp.Config.Queue == nil {
+				r.Config.Queue = nil
 			} else {
-				r.Config.Queue.MaxRetryDelay = types.NumberNull()
+				r.Config.Queue = &tfTypes.CreateOpentelemetryPluginQueue{}
+				if resp.Config.Queue.InitialRetryDelay != nil {
+					r.Config.Queue.InitialRetryDelay = types.NumberValue(big.NewFloat(float64(*resp.Config.Queue.InitialRetryDelay)))
+				} else {
+					r.Config.Queue.InitialRetryDelay = types.NumberNull()
+				}
+				r.Config.Queue.MaxBatchSize = types.Int64PointerValue(resp.Config.Queue.MaxBatchSize)
+				r.Config.Queue.MaxBytes = types.Int64PointerValue(resp.Config.Queue.MaxBytes)
+				if resp.Config.Queue.MaxCoalescingDelay != nil {
+					r.Config.Queue.MaxCoalescingDelay = types.NumberValue(big.NewFloat(float64(*resp.Config.Queue.MaxCoalescingDelay)))
+				} else {
+					r.Config.Queue.MaxCoalescingDelay = types.NumberNull()
+				}
+				r.Config.Queue.MaxEntries = types.Int64PointerValue(resp.Config.Queue.MaxEntries)
+				if resp.Config.Queue.MaxRetryDelay != nil {
+					r.Config.Queue.MaxRetryDelay = types.NumberValue(big.NewFloat(float64(*resp.Config.Queue.MaxRetryDelay)))
+				} else {
+					r.Config.Queue.MaxRetryDelay = types.NumberNull()
+				}
+				if resp.Config.Queue.MaxRetryTime != nil {
+					r.Config.Queue.MaxRetryTime = types.NumberValue(big.NewFloat(float64(*resp.Config.Queue.MaxRetryTime)))
+				} else {
+					r.Config.Queue.MaxRetryTime = types.NumberNull()
+				}
 			}
-			if resp.Config.Queue.MaxRetryTime != nil {
-				r.Config.Queue.MaxRetryTime = types.NumberValue(big.NewFloat(float64(*resp.Config.Queue.MaxRetryTime)))
+			r.Config.ReadTimeout = types.Int64PointerValue(resp.Config.ReadTimeout)
+			if len(resp.Config.ResourceAttributes) > 0 {
+				r.Config.ResourceAttributes = make(map[string]types.String)
+				for key1, value1 := range resp.Config.ResourceAttributes {
+					result1, _ := json.Marshal(value1)
+					r.Config.ResourceAttributes[key1] = types.StringValue(string(result1))
+				}
+			}
+			if resp.Config.SamplingRate != nil {
+				r.Config.SamplingRate = types.NumberValue(big.NewFloat(float64(*resp.Config.SamplingRate)))
 			} else {
-				r.Config.Queue.MaxRetryTime = types.NumberNull()
+				r.Config.SamplingRate = types.NumberNull()
 			}
+			r.Config.SendTimeout = types.Int64PointerValue(resp.Config.SendTimeout)
 		}
-		r.Config.ReadTimeout = types.Int64PointerValue(resp.Config.ReadTimeout)
-		if len(resp.Config.ResourceAttributes) > 0 {
-			r.Config.ResourceAttributes = make(map[string]types.String)
-			for key1, value1 := range resp.Config.ResourceAttributes {
-				result1, _ := json.Marshal(value1)
-				r.Config.ResourceAttributes[key1] = types.StringValue(string(result1))
-			}
-		}
-		if resp.Config.SamplingRate != nil {
-			r.Config.SamplingRate = types.NumberValue(big.NewFloat(float64(*resp.Config.SamplingRate)))
-		} else {
-			r.Config.SamplingRate = types.NumberNull()
-		}
-		r.Config.SendTimeout = types.Int64PointerValue(resp.Config.SendTimeout)
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
 			r.Consumer = &tfTypes.ACLConsumer{}
 			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
 		}
+		if resp.ConsumerGroup == nil {
+			r.ConsumerGroup = nil
+		} else {
+			r.ConsumerGroup = &tfTypes.ACLConsumer{}
+			r.ConsumerGroup.ID = types.StringPointerValue(resp.ConsumerGroup.ID)
+		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
+		r.InstanceName = types.StringPointerValue(resp.InstanceName)
 		r.Protocols = []types.String{}
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))
@@ -297,5 +373,6 @@ func (r *GatewayPluginOpentelemetryResourceModel) RefreshFromSharedOpentelemetry
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}
+		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
 }

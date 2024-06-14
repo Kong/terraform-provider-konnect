@@ -51,7 +51,7 @@ func (o *AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseConfig
 }
 
 type AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseDcrProvider struct {
-	// Contains a unique identifier used by the API for this resource.
+	// Contains a unique identifier used for this resource.
 	ID   string `json:"id"`
 	Name string `json:"name"`
 	// The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI.
@@ -91,7 +91,7 @@ func (o *AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseDcrPro
 
 // AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse - Response payload from creating an OIDC Application Auth Strategy
 type AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse struct {
-	// Contains a unique identifier used by the API for this resource.
+	// Contains a unique identifier used for this resource.
 	ID string `json:"id"`
 	// The name of the auth strategy. This is used to identify the auth strategy in the Konnect UI.
 	//
@@ -225,7 +225,7 @@ func (o *AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseConfigs) Get
 }
 
 type AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseDcrProvider struct {
-	// Contains a unique identifier used by the API for this resource.
+	// Contains a unique identifier used for this resource.
 	ID   string `json:"id"`
 	Name string `json:"name"`
 	// The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI.
@@ -265,7 +265,7 @@ func (o *AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseDcrProvider)
 
 // AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseAppAuthStrategyKeyAuthResponse - Response payload from creating or updating a Key Auth Application Auth Strategy
 type AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseAppAuthStrategyKeyAuthResponse struct {
-	// Contains a unique identifier used by the API for this resource.
+	// Contains a unique identifier used for this resource.
 	ID string `json:"id"`
 	// The name of the auth strategy. This is used to identify the auth strategy in the Konnect UI.
 	//

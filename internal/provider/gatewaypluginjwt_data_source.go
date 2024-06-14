@@ -29,16 +29,19 @@ type GatewayPluginJWTDataSource struct {
 
 // GatewayPluginJWTDataSourceModel describes the data model.
 type GatewayPluginJWTDataSourceModel struct {
-	Config         tfTypes.CreateJWTPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer          `tfsdk:"consumer"`
-	ControlPlaneID types.String                  `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                   `tfsdk:"created_at"`
-	Enabled        types.Bool                    `tfsdk:"enabled"`
-	ID             types.String                  `tfsdk:"id"`
-	Protocols      []types.String                `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer          `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer          `tfsdk:"service"`
-	Tags           []types.String                `tfsdk:"tags"`
+	Config         *tfTypes.CreateJWTPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer           `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer           `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                   `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                    `tfsdk:"created_at"`
+	Enabled        types.Bool                     `tfsdk:"enabled"`
+	ID             types.String                   `tfsdk:"id"`
+	InstanceName   types.String                   `tfsdk:"instance_name"`
+	Protocols      []types.String                 `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer           `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer           `tfsdk:"service"`
+	Tags           []types.String                 `tfsdk:"tags"`
+	UpdatedAt      types.Int64                    `tfsdk:"updated_at"`
 }
 
 // Metadata returns the data source type name.
@@ -106,6 +109,14 @@ func (r *GatewayPluginJWTDataSource) Schema(ctx context.Context, req datasource.
 				},
 				Description: `If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.`,
 			},
+			"consumer_group": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"id": schema.StringAttribute{
+						Computed: true,
+					},
+				},
+			},
 			"control_plane_id": schema.StringAttribute{
 				Required:    true,
 				Description: `The UUID of your control plane. This variable is available in the Konnect manager.`,
@@ -121,6 +132,9 @@ func (r *GatewayPluginJWTDataSource) Schema(ctx context.Context, req datasource.
 			"id": schema.StringAttribute{
 				Required:    true,
 				Description: `ID of the Plugin to lookup`,
+			},
+			"instance_name": schema.StringAttribute{
+				Computed: true,
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,
@@ -149,6 +163,10 @@ func (r *GatewayPluginJWTDataSource) Schema(ctx context.Context, req datasource.
 				Computed:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Plugin for grouping and filtering.`,
+			},
+			"updated_at": schema.Int64Attribute{
+				Computed:    true,
+				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
 	}
@@ -218,8 +236,8 @@ func (r *GatewayPluginJWTDataSource) Read(ctx context.Context, req datasource.Re
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.JWTPlugin == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.JWTPlugin != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedJWTPlugin(res.JWTPlugin)

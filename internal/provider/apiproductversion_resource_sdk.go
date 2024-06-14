@@ -67,6 +67,7 @@ func (r *APIProductVersionResourceModel) RefreshFromSharedAPIProductVersion(resp
 					portals1.AuthStrategies[authStrategiesCount].Name = authStrategies1.Name
 				}
 			}
+			portals1.AutoApproveRegistration = types.BoolValue(portalsItem.AutoApproveRegistration)
 			portals1.Deprecated = types.BoolValue(portalsItem.Deprecated)
 			portals1.PortalID = types.StringValue(portalsItem.PortalID)
 			portals1.PortalName = types.StringValue(portalsItem.PortalName)
@@ -77,6 +78,7 @@ func (r *APIProductVersionResourceModel) RefreshFromSharedAPIProductVersion(resp
 			} else {
 				r.Portals[portalsCount].ApplicationRegistrationEnabled = portals1.ApplicationRegistrationEnabled
 				r.Portals[portalsCount].AuthStrategies = portals1.AuthStrategies
+				r.Portals[portalsCount].AutoApproveRegistration = portals1.AutoApproveRegistration
 				r.Portals[portalsCount].Deprecated = portals1.Deprecated
 				r.Portals[portalsCount].PortalID = portals1.PortalID
 				r.Portals[portalsCount].PortalName = portals1.PortalName

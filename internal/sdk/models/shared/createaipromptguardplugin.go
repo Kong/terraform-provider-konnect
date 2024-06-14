@@ -6,7 +6,38 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/internal/sdk/types"
 )
+
+type CreateAIPromptGuardPluginConfig struct {
+	// If true, will ignore all previous chat prompts from the conversation history.
+	AllowAllConversationHistory *bool `json:"allow_all_conversation_history,omitempty"`
+	// Array of valid regex patterns, or valid questions from the 'user' role in chat.
+	AllowPatterns []string `json:"allow_patterns,omitempty"`
+	// Array of invalid regex patterns, or invalid questions from the 'user' role in chat.
+	DenyPatterns []string `json:"deny_patterns,omitempty"`
+}
+
+func (o *CreateAIPromptGuardPluginConfig) GetAllowAllConversationHistory() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.AllowAllConversationHistory
+}
+
+func (o *CreateAIPromptGuardPluginConfig) GetAllowPatterns() []string {
+	if o == nil {
+		return nil
+	}
+	return o.AllowPatterns
+}
+
+func (o *CreateAIPromptGuardPluginConfig) GetDenyPatterns() []string {
+	if o == nil {
+		return nil
+	}
+	return o.DenyPatterns
+}
 
 type CreateAIPromptGuardPluginProtocols string
 
@@ -70,6 +101,17 @@ func (o *CreateAIPromptGuardPluginConsumer) GetID() *string {
 	return o.ID
 }
 
+type CreateAIPromptGuardPluginConsumerGroup struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *CreateAIPromptGuardPluginConsumerGroup) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
 // CreateAIPromptGuardPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
 type CreateAIPromptGuardPluginRoute struct {
 	ID *string `json:"id,omitempty"`
@@ -94,63 +136,23 @@ func (o *CreateAIPromptGuardPluginService) GetID() *string {
 	return o.ID
 }
 
-type CreateAIPromptGuardPluginConfig struct {
-	// If true, will ignore all previous chat prompts from the conversation history.
-	AllowAllConversationHistory *bool `default:"false" json:"allow_all_conversation_history"`
-	// Array of valid patterns, or valid questions from the 'user' role in chat.
-	AllowPatterns []string `json:"allow_patterns,omitempty"`
-	// Array of invalid patterns, or invalid questions from the 'user' role in chat.
-	DenyPatterns []string `json:"deny_patterns,omitempty"`
-}
-
-func (c CreateAIPromptGuardPluginConfig) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
-}
-
-func (c *CreateAIPromptGuardPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (o *CreateAIPromptGuardPluginConfig) GetAllowAllConversationHistory() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.AllowAllConversationHistory
-}
-
-func (o *CreateAIPromptGuardPluginConfig) GetAllowPatterns() []string {
-	if o == nil {
-		return nil
-	}
-	return o.AllowPatterns
-}
-
-func (o *CreateAIPromptGuardPluginConfig) GetDenyPatterns() []string {
-	if o == nil {
-		return nil
-	}
-	return o.DenyPatterns
-}
-
-// CreateAIPromptGuardPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type CreateAIPromptGuardPlugin struct {
+	Config *CreateAIPromptGuardPluginConfig `json:"config,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool  `default:"true" json:"enabled"`
-	name    string `const:"ai-prompt-guard" json:"name"`
+	Enabled      *bool   `json:"enabled,omitempty"`
+	InstanceName *string `json:"instance_name,omitempty"`
+	name         *string `const:"ai-prompt-guard" json:"name,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []CreateAIPromptGuardPluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer *CreateAIPromptGuardPluginConsumer `json:"consumer,omitempty"`
+	Consumer      *CreateAIPromptGuardPluginConsumer      `json:"consumer,omitempty"`
+	ConsumerGroup *CreateAIPromptGuardPluginConsumerGroup `json:"consumer_group,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
 	Route *CreateAIPromptGuardPluginRoute `json:"route,omitempty"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 	Service *CreateAIPromptGuardPluginService `json:"service,omitempty"`
-	Config  CreateAIPromptGuardPluginConfig   `json:"config"`
 }
 
 func (c CreateAIPromptGuardPlugin) MarshalJSON() ([]byte, error) {
@@ -164,6 +166,13 @@ func (c *CreateAIPromptGuardPlugin) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (o *CreateAIPromptGuardPlugin) GetConfig() *CreateAIPromptGuardPluginConfig {
+	if o == nil {
+		return nil
+	}
+	return o.Config
+}
+
 func (o *CreateAIPromptGuardPlugin) GetEnabled() *bool {
 	if o == nil {
 		return nil
@@ -171,8 +180,15 @@ func (o *CreateAIPromptGuardPlugin) GetEnabled() *bool {
 	return o.Enabled
 }
 
-func (o *CreateAIPromptGuardPlugin) GetName() string {
-	return "ai-prompt-guard"
+func (o *CreateAIPromptGuardPlugin) GetInstanceName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.InstanceName
+}
+
+func (o *CreateAIPromptGuardPlugin) GetName() *string {
+	return types.String("ai-prompt-guard")
 }
 
 func (o *CreateAIPromptGuardPlugin) GetProtocols() []CreateAIPromptGuardPluginProtocols {
@@ -196,6 +212,13 @@ func (o *CreateAIPromptGuardPlugin) GetConsumer() *CreateAIPromptGuardPluginCons
 	return o.Consumer
 }
 
+func (o *CreateAIPromptGuardPlugin) GetConsumerGroup() *CreateAIPromptGuardPluginConsumerGroup {
+	if o == nil {
+		return nil
+	}
+	return o.ConsumerGroup
+}
+
 func (o *CreateAIPromptGuardPlugin) GetRoute() *CreateAIPromptGuardPluginRoute {
 	if o == nil {
 		return nil
@@ -208,11 +231,4 @@ func (o *CreateAIPromptGuardPlugin) GetService() *CreateAIPromptGuardPluginServi
 		return nil
 	}
 	return o.Service
-}
-
-func (o *CreateAIPromptGuardPlugin) GetConfig() CreateAIPromptGuardPluginConfig {
-	if o == nil {
-		return CreateAIPromptGuardPluginConfig{}
-	}
-	return o.Config
 }

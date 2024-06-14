@@ -2,27 +2,27 @@
 
 package shared
 
-type CreateBasicAuthWithoutParents struct {
-	Password *string  `json:"password,omitempty"`
+type HMACAuthWithoutParents struct {
+	Secret   *string  `json:"secret,omitempty"`
 	Tags     []string `json:"tags,omitempty"`
 	Username *string  `json:"username,omitempty"`
 }
 
-func (o *CreateBasicAuthWithoutParents) GetPassword() *string {
+func (o *HMACAuthWithoutParents) GetSecret() *string {
 	if o == nil {
 		return nil
 	}
-	return o.Password
+	return o.Secret
 }
 
-func (o *CreateBasicAuthWithoutParents) GetTags() []string {
+func (o *HMACAuthWithoutParents) GetTags() []string {
 	if o == nil {
 		return nil
 	}
 	return o.Tags
 }
 
-func (o *CreateBasicAuthWithoutParents) GetUsername() *string {
+func (o *HMACAuthWithoutParents) GetUsername() *string {
 	if o == nil {
 		return nil
 	}

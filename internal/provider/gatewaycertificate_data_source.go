@@ -36,6 +36,7 @@ type GatewayCertificateDataSourceModel struct {
 	Key            types.String   `tfsdk:"key"`
 	KeyAlt         types.String   `tfsdk:"key_alt"`
 	Tags           []types.String `tfsdk:"tags"`
+	UpdatedAt      types.Int64    `tfsdk:"updated_at"`
 }
 
 // Metadata returns the data source type name.
@@ -81,6 +82,10 @@ func (r *GatewayCertificateDataSource) Schema(ctx context.Context, req datasourc
 				Computed:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Certificate for grouping and filtering.`,
+			},
+			"updated_at": schema.Int64Attribute{
+				Computed:    true,
+				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
 	}
@@ -150,8 +155,8 @@ func (r *GatewayCertificateDataSource) Read(ctx context.Context, req datasource.
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.Certificate == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.Certificate != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedCertificate(res.Certificate)

@@ -41,6 +41,7 @@ type GatewayConsumerResourceModel struct {
 	CustomID       types.String   `tfsdk:"custom_id"`
 	ID             types.String   `tfsdk:"id"`
 	Tags           []types.String `tfsdk:"tags"`
+	UpdatedAt      types.Int64    `tfsdk:"updated_at"`
 	Username       types.String   `tfsdk:"username"`
 }
 
@@ -85,6 +86,10 @@ func (r *GatewayConsumerResource) Schema(ctx context.Context, req resource.Schem
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Consumer for grouping and filtering. Requires replacement if changed. `,
+			},
+			"updated_at": schema.Int64Attribute{
+				Computed:    true,
+				Description: `Unix epoch when the resource was last updated.`,
 			},
 			"username": schema.StringAttribute{
 				Computed: true,
@@ -138,10 +143,10 @@ func (r *GatewayConsumerResource) Create(ctx context.Context, req resource.Creat
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	createConsumer := *data.ToSharedCreateConsumer()
+	consumer := *data.ToSharedConsumerInput()
 	request := operations.CreateConsumerRequest{
 		ControlPlaneID: controlPlaneID,
-		CreateConsumer: createConsumer,
+		Consumer:       consumer,
 	}
 	res, err := r.client.Consumers.CreateConsumer(ctx, request)
 	if err != nil {
@@ -159,8 +164,8 @@ func (r *GatewayConsumerResource) Create(ctx context.Context, req resource.Creat
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.Consumer == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.Consumer != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedConsumer(res.Consumer)
@@ -214,8 +219,8 @@ func (r *GatewayConsumerResource) Read(ctx context.Context, req resource.ReadReq
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.Consumer == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.Consumer != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedConsumer(res.Consumer)

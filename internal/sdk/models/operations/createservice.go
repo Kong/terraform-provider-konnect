@@ -11,7 +11,7 @@ type CreateServiceRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// Description of the new Service for creation
-	CreateService shared.CreateService `request:"mediaType=application/json"`
+	Service shared.ServiceInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateServiceRequest) GetControlPlaneID() string {
@@ -21,11 +21,11 @@ func (o *CreateServiceRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateServiceRequest) GetCreateService() shared.CreateService {
+func (o *CreateServiceRequest) GetService() shared.ServiceInput {
 	if o == nil {
-		return shared.CreateService{}
+		return shared.ServiceInput{}
 	}
-	return o.CreateService
+	return o.Service
 }
 
 type CreateServiceResponse struct {

@@ -107,6 +107,9 @@ func (r *APIProductVersionDataSource) Schema(ctx context.Context, req datasource
 								},
 							},
 						},
+						"auto_approve_registration": schema.BoolAttribute{
+							Computed: true,
+						},
 						"deprecated": schema.BoolAttribute{
 							Computed: true,
 						},
@@ -199,8 +202,8 @@ func (r *APIProductVersionDataSource) Read(ctx context.Context, req datasource.R
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.APIProductVersion == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.APIProductVersion != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedAPIProductVersion(res.APIProductVersion)

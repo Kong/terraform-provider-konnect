@@ -5,7 +5,6 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/utils"
 )
 
 // PublishStatus - The publish status of the API product version. Applies publish status to all related portal product versions. This field is deprecated: Use PortalProductVersion.publish_status instead.
@@ -44,23 +43,12 @@ type CreateAPIProductVersionDTO struct {
 	// The publish status of the API product version. Applies publish status to all related portal product versions. This field is deprecated: Use PortalProductVersion.publish_status instead.
 	//
 	// Deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
-	PublishStatus *PublishStatus `default:"unpublished" json:"publish_status"`
+	PublishStatus *PublishStatus `json:"publish_status,omitempty"`
 	// Indicates if the version of the API product is deprecated. Applies deprecation or removes deprecation from all related portal product versions. This field is deprecated: Use PortalProductVersion.deprecated instead.
 	//
 	// Deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
-	Deprecated     *bool                  `default:"false" json:"deprecated"`
+	Deprecated     *bool                  `json:"deprecated,omitempty"`
 	GatewayService *GatewayServicePayload `json:"gateway_service,omitempty"`
-}
-
-func (c CreateAPIProductVersionDTO) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
-}
-
-func (c *CreateAPIProductVersionDTO) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
-		return err
-	}
-	return nil
 }
 
 func (o *CreateAPIProductVersionDTO) GetName() string {

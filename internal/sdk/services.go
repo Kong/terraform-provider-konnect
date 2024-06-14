@@ -48,7 +48,7 @@ func (s *Services) CreateService(ctx context.Context, request operations.CreateS
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "CreateService", "json", `request:"mediaType=application/json"`)
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Service", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
 	}

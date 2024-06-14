@@ -1,27 +1,27 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 57b43fc5cc7955d7204213f59e8a4111
+  docChecksum: bd5cd6e08d248801e993a4cbc736f8e8
   docVersion: 2.0.0
-  speakeasyVersion: 1.299.4
-  generationVersion: 2.338.7
-  releaseVersion: 0.2.5
-  configChecksum: 8d4c1fe1abb4fe9a1534e68b330900ed
+  speakeasyVersion: 1.308.1
+  generationVersion: 2.342.6
+  releaseVersion: 0.3.0
+  configChecksum: 99d7138314ecbf30d395e747094bf5fe
 features:
   terraform:
     additionalDependencies: 0.1.0
     additionalProperties: 0.1.2
     constsAndDefaults: 0.1.4
-    core: 3.21.1
+    core: 3.21.3
     deprecations: 2.81.1
     globalSecurity: 2.81.6
     globalServerURLs: 2.82.1
+    ignores: 2.81.1
     inputOutputModels: 2.83.0
     nameOverrides: 2.81.2
     nullables: 0.0.0
     retries: 2.81.1
-    typeOverrides: 2.81.1
-    unions: 2.81.14
+    unions: 2.81.15
 generatedFiles:
   - internal/sdk/mesh.go
   - internal/sdk/apiproducts.go
@@ -143,9 +143,6 @@ generatedFiles:
   - internal/sdk/models/operations/createkey.go
   - internal/sdk/models/operations/deletekey.go
   - internal/sdk/models/operations/getkey.go
-  - internal/sdk/models/operations/createplugin.go
-  - internal/sdk/models/operations/deleteplugin.go
-  - internal/sdk/models/operations/getplugin.go
   - internal/sdk/models/operations/deleteaclplugin.go
   - internal/sdk/models/operations/getaclplugin.go
   - internal/sdk/models/operations/updateaclplugin.go
@@ -310,6 +307,7 @@ generatedFiles:
   - internal/sdk/models/shared/invalidparameters.go
   - internal/sdk/models/shared/invalidparameterstandard.go
   - internal/sdk/models/shared/invalidrules.go
+  - internal/sdk/models/shared/invalidparameterminimumlength.go
   - internal/sdk/models/shared/invalidparameterchoiceitem.go
   - internal/sdk/models/shared/invalidparameterdependentitem.go
   - internal/sdk/models/shared/meshcontrolplane.go
@@ -318,6 +316,7 @@ generatedFiles:
   - internal/sdk/models/shared/updatemeshcontrolplanerequest.go
   - internal/sdk/models/shared/unsupportedmediatypeerror.go
   - internal/sdk/models/shared/apiproduct.go
+  - internal/sdk/models/shared/apiproductportal.go
   - internal/sdk/models/shared/createapiproductdto.go
   - internal/sdk/models/shared/updateapiproductdto.go
   - internal/sdk/models/shared/apiproductversion.go
@@ -377,29 +376,26 @@ generatedFiles:
   - internal/sdk/models/shared/updatecontrolplanerequest.go
   - internal/sdk/models/shared/gatewayunauthorizederror.go
   - internal/sdk/models/shared/cacertificate.go
-  - internal/sdk/models/shared/createcacertificate.go
+  - internal/sdk/models/shared/cacertificateinput.go
   - internal/sdk/models/shared/certificate.go
-  - internal/sdk/models/shared/createcertificate.go
+  - internal/sdk/models/shared/certificateinput.go
   - internal/sdk/models/shared/consumergroup.go
-  - internal/sdk/models/shared/createconsumergroup.go
+  - internal/sdk/models/shared/consumergroupinput.go
   - internal/sdk/models/shared/consumer.go
-  - internal/sdk/models/shared/createconsumer.go
+  - internal/sdk/models/shared/consumerinput.go
   - internal/sdk/models/shared/acl.go
-  - internal/sdk/models/shared/createaclwithoutparents.go
+  - internal/sdk/models/shared/aclwithoutparents.go
   - internal/sdk/models/shared/basicauth.go
-  - internal/sdk/models/shared/createbasicauthwithoutparents.go
+  - internal/sdk/models/shared/basicauthwithoutparents.go
   - internal/sdk/models/shared/hmacauth.go
-  - internal/sdk/models/shared/createhmacauthwithoutparents.go
+  - internal/sdk/models/shared/hmacauthwithoutparents.go
   - internal/sdk/models/shared/jwt.go
-  - internal/sdk/models/shared/createjwtwithoutparents.go
+  - internal/sdk/models/shared/jwtwithoutparents.go
   - internal/sdk/models/shared/keyauth.go
-  - internal/sdk/models/shared/createkeyauthwithoutparents.go
+  - internal/sdk/models/shared/keyauthwithoutparents.go
   - internal/sdk/models/shared/keyset.go
-  - internal/sdk/models/shared/createkeyset.go
+  - internal/sdk/models/shared/keysetinput.go
   - internal/sdk/models/shared/key.go
-  - internal/sdk/models/shared/createkey.go
-  - internal/sdk/models/shared/plugin.go
-  - internal/sdk/models/shared/createplugin.go
   - internal/sdk/models/shared/aclplugin.go
   - internal/sdk/models/shared/createaclplugin.go
   - internal/sdk/models/shared/aipromptdecoratorplugin.go
@@ -459,17 +455,12 @@ generatedFiles:
   - internal/sdk/models/shared/samlplugin.go
   - internal/sdk/models/shared/createsamlplugin.go
   - internal/sdk/models/shared/route.go
-  - internal/sdk/models/shared/createroute.go
   - internal/sdk/models/shared/service.go
-  - internal/sdk/models/shared/createservice.go
   - internal/sdk/models/shared/sni.go
-  - internal/sdk/models/shared/createsni.go
   - internal/sdk/models/shared/upstream.go
-  - internal/sdk/models/shared/createupstream.go
   - internal/sdk/models/shared/target.go
-  - internal/sdk/models/shared/createtargetwithoutparents.go
+  - internal/sdk/models/shared/targetwithoutparents.go
   - internal/sdk/models/shared/vault.go
-  - internal/sdk/models/shared/createvault.go
   - internal/sdk/models/shared/dataplaneclientcertificate.go
   - internal/sdk/models/shared/dataplaneclientcertificaterequest.go
   - internal/sdk/models/shared/groupmembership.go
@@ -547,6 +538,7 @@ generatedFiles:
   - main.go
   - terraform-registry-manifest.json
   - tools/tools.go
+  - internal/provider/types/api_product_portal.go
   - internal/provider/types/gateway_service_payload.go
   - internal/provider/types/api_product_version_auth_strategy.go
   - internal/provider/types/api_product_version_portal.go
@@ -599,6 +591,7 @@ generatedFiles:
   - internal/provider/types/client_jwk.go
   - internal/provider/types/session_redis_cluster_nodes.go
   - internal/provider/types/create_openid_connect_plugin_config.go
+  - internal/provider/types/create_opentelemetry_plugin_propagation.go
   - internal/provider/types/create_opentelemetry_plugin_queue.go
   - internal/provider/types/create_opentelemetry_plugin_config.go
   - internal/provider/types/create_pre_function_plugin_config.go
@@ -606,6 +599,7 @@ generatedFiles:
   - internal/provider/types/create_proxy_cache_plugin_memory.go
   - internal/provider/types/create_proxy_cache_plugin_response_headers.go
   - internal/provider/types/create_proxy_cache_plugin_config.go
+  - internal/provider/types/create_rate_limiting_plugin_redis.go
   - internal/provider/types/create_rate_limiting_plugin_config.go
   - internal/provider/types/create_rate_limiting_advanced_plugin_redis.go
   - internal/provider/types/create_rate_limiting_advanced_plugin_config.go
@@ -632,10 +626,11 @@ generatedFiles:
   - internal/provider/types/healthy.go
   - internal/provider/types/unhealthy.go
   - internal/provider/types/active.go
-  - internal/provider/types/create_upstream_healthy.go
-  - internal/provider/types/create_upstream_unhealthy.go
+  - internal/provider/types/upstream_healthy.go
+  - internal/provider/types/upstream_unhealthy.go
   - internal/provider/types/passive.go
   - internal/provider/types/healthchecks.go
+  - internal/provider/types/vault_config.go
   - internal/provider/types/portal_claim_mappings.go
   - internal/provider/types/portal_oidc_config.go
   - internal/provider/types/auth_strategy_client_credentials.go
@@ -733,10 +728,6 @@ generatedFiles:
   - internal/provider/gatewaykeyset_resource.go
   - internal/provider/gatewaykeyset_resource_sdk.go
   - examples/resources/konnect_gateway_key_set/resource.tf
-  - examples/resources/konnect_gateway_plugin/import.sh
-  - internal/provider/gatewayplugin_resource.go
-  - internal/provider/gatewayplugin_resource_sdk.go
-  - examples/resources/konnect_gateway_plugin/resource.tf
   - examples/resources/konnect_gateway_plugin_acl/import.sh
   - internal/provider/gatewaypluginacl_resource.go
   - internal/provider/gatewaypluginacl_resource_sdk.go
@@ -969,9 +960,6 @@ generatedFiles:
   - internal/provider/gatewaykeyset_data_source.go
   - internal/provider/gatewaykeyset_data_source_sdk.go
   - examples/data-sources/konnect_gateway_key_set/data-source.tf
-  - internal/provider/gatewayplugin_data_source.go
-  - internal/provider/gatewayplugin_data_source_sdk.go
-  - examples/data-sources/konnect_gateway_plugin/data-source.tf
   - internal/provider/gatewaypluginacl_data_source.go
   - internal/provider/gatewaypluginacl_data_source_sdk.go
   - examples/data-sources/konnect_gateway_plugin_acl/data-source.tf

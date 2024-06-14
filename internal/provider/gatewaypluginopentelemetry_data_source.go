@@ -29,16 +29,19 @@ type GatewayPluginOpentelemetryDataSource struct {
 
 // GatewayPluginOpentelemetryDataSourceModel describes the data model.
 type GatewayPluginOpentelemetryDataSourceModel struct {
-	Config         tfTypes.CreateOpentelemetryPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer                    `tfsdk:"consumer"`
-	ControlPlaneID types.String                            `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                             `tfsdk:"created_at"`
-	Enabled        types.Bool                              `tfsdk:"enabled"`
-	ID             types.String                            `tfsdk:"id"`
-	Protocols      []types.String                          `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer                    `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer                    `tfsdk:"service"`
-	Tags           []types.String                          `tfsdk:"tags"`
+	Config         *tfTypes.CreateOpentelemetryPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer                     `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer                     `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                             `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                              `tfsdk:"created_at"`
+	Enabled        types.Bool                               `tfsdk:"enabled"`
+	ID             types.String                             `tfsdk:"id"`
+	InstanceName   types.String                             `tfsdk:"instance_name"`
+	Protocols      []types.String                           `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer                     `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer                     `tfsdk:"service"`
+	Tags           []types.String                           `tfsdk:"tags"`
+	UpdatedAt      types.Int64                              `tfsdk:"updated_at"`
 }
 
 // Metadata returns the data source type name.
@@ -82,6 +85,30 @@ func (r *GatewayPluginOpentelemetryDataSource) Schema(ctx context.Context, req d
 					},
 					"http_response_header_for_traceid": schema.StringAttribute{
 						Computed: true,
+					},
+					"propagation": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"clear": schema.ListAttribute{
+								Computed:    true,
+								ElementType: types.StringType,
+								Description: `Header names to clear after context extraction. This allows to extract the context from a certain header and then remove it from the request, useful when extraction and injection are performed on different header formats and the original header should not be sent to the upstream. If left empty, no headers are cleared.`,
+							},
+							"default_format": schema.StringAttribute{
+								Computed:    true,
+								Description: `The default header format to use when extractors did not match any format in the incoming headers and ` + "`" + `inject` + "`" + ` is configured with the value: ` + "`" + `preserve` + "`" + `. This can happen when no tracing header was found in the request, or the incoming tracing header formats were not included in ` + "`" + `extract` + "`" + `. must be one of ["b3", "gcp", "b3-single", "jaeger", "aws", "ot", "w3c", "datadog"]`,
+							},
+							"extract": schema.ListAttribute{
+								Computed:    true,
+								ElementType: types.StringType,
+								Description: `Header formats used to extract tracing context from incoming requests. If multiple values are specified, the first one found will be used for extraction. If left empty, Kong will not extract any tracing context information from incoming requests and generate a trace with no parent and a new trace ID.`,
+							},
+							"inject": schema.ListAttribute{
+								Computed:    true,
+								ElementType: types.StringType,
+								Description: `Header formats used to inject tracing context. The value ` + "`" + `preserve` + "`" + ` will use the same header format as the incoming request. If multiple values are specified, all of them will be used during injection. If left empty, Kong will not inject any tracing context information in outgoing requests.`,
+							},
+						},
 					},
 					"queue": schema.SingleNestedAttribute{
 						Computed: true,
@@ -143,6 +170,14 @@ func (r *GatewayPluginOpentelemetryDataSource) Schema(ctx context.Context, req d
 				},
 				Description: `If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.`,
 			},
+			"consumer_group": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"id": schema.StringAttribute{
+						Computed: true,
+					},
+				},
+			},
 			"control_plane_id": schema.StringAttribute{
 				Required:    true,
 				Description: `The UUID of your control plane. This variable is available in the Konnect manager.`,
@@ -158,6 +193,9 @@ func (r *GatewayPluginOpentelemetryDataSource) Schema(ctx context.Context, req d
 			"id": schema.StringAttribute{
 				Required:    true,
 				Description: `ID of the Plugin to lookup`,
+			},
+			"instance_name": schema.StringAttribute{
+				Computed: true,
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,
@@ -186,6 +224,10 @@ func (r *GatewayPluginOpentelemetryDataSource) Schema(ctx context.Context, req d
 				Computed:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Plugin for grouping and filtering.`,
+			},
+			"updated_at": schema.Int64Attribute{
+				Computed:    true,
+				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
 	}
@@ -255,8 +297,8 @@ func (r *GatewayPluginOpentelemetryDataSource) Read(ctx context.Context, req dat
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.OpentelemetryPlugin == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.OpentelemetryPlugin != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedOpentelemetryPlugin(res.OpentelemetryPlugin)

@@ -9,6 +9,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
 )
@@ -28,10 +29,25 @@ type GatewayServiceDataSource struct {
 
 // GatewayServiceDataSourceModel describes the data model.
 type GatewayServiceDataSourceModel struct {
-	ControlPlaneID types.String `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64  `tfsdk:"created_at"`
-	ID             types.String `tfsdk:"id"`
-	UpdatedAt      types.Int64  `tfsdk:"updated_at"`
+	CaCertificates    []types.String       `tfsdk:"ca_certificates"`
+	ClientCertificate *tfTypes.ACLConsumer `tfsdk:"client_certificate"`
+	ConnectTimeout    types.Int64          `tfsdk:"connect_timeout"`
+	ControlPlaneID    types.String         `tfsdk:"control_plane_id"`
+	CreatedAt         types.Int64          `tfsdk:"created_at"`
+	Enabled           types.Bool           `tfsdk:"enabled"`
+	Host              types.String         `tfsdk:"host"`
+	ID                types.String         `tfsdk:"id"`
+	Name              types.String         `tfsdk:"name"`
+	Path              types.String         `tfsdk:"path"`
+	Port              types.Int64          `tfsdk:"port"`
+	Protocol          types.String         `tfsdk:"protocol"`
+	ReadTimeout       types.Int64          `tfsdk:"read_timeout"`
+	Retries           types.Int64          `tfsdk:"retries"`
+	Tags              []types.String       `tfsdk:"tags"`
+	TLSVerify         types.Bool           `tfsdk:"tls_verify"`
+	TLSVerifyDepth    types.Int64          `tfsdk:"tls_verify_depth"`
+	UpdatedAt         types.Int64          `tfsdk:"updated_at"`
+	WriteTimeout      types.Int64          `tfsdk:"write_timeout"`
 }
 
 // Metadata returns the data source type name.
@@ -45,6 +61,24 @@ func (r *GatewayServiceDataSource) Schema(ctx context.Context, req datasource.Sc
 		MarkdownDescription: "GatewayService DataSource",
 
 		Attributes: map[string]schema.Attribute{
+			"ca_certificates": schema.ListAttribute{
+				Computed:    true,
+				ElementType: types.StringType,
+				Description: `Array of ` + "`" + `CA Certificate` + "`" + ` object UUIDs that are used to build the trust store while verifying upstream server's TLS certificate. If set to ` + "`" + `null` + "`" + ` when Nginx default is respected. If default CA list in Nginx are not specified and TLS verification is enabled, then handshake with upstream server will always fail (because no CA are trusted).`,
+			},
+			"client_certificate": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"id": schema.StringAttribute{
+						Computed: true,
+					},
+				},
+				Description: `Certificate to be used as client certificate while TLS handshaking to the upstream server.`,
+			},
+			"connect_timeout": schema.Int64Attribute{
+				Computed:    true,
+				Description: `The timeout in milliseconds for establishing a connection to the upstream server.`,
+			},
 			"control_plane_id": schema.StringAttribute{
 				Required:    true,
 				Description: `The UUID of your control plane. This variable is available in the Konnect manager.`,
@@ -53,13 +87,62 @@ func (r *GatewayServiceDataSource) Schema(ctx context.Context, req datasource.Sc
 				Computed:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
+			"enabled": schema.BoolAttribute{
+				Computed:    true,
+				Description: `Whether the Service is active. If set to ` + "`" + `false` + "`" + `, the proxy behavior will be as if any routes attached to it do not exist (404). Default: ` + "`" + `true` + "`" + `.`,
+			},
+			"host": schema.StringAttribute{
+				Computed:    true,
+				Description: `The host of the upstream server. Note that the host value is case sensitive.`,
+			},
 			"id": schema.StringAttribute{
 				Required:    true,
 				Description: `ID of the Service to lookup`,
 			},
+			"name": schema.StringAttribute{
+				Computed:    true,
+				Description: `The Service name.`,
+			},
+			"path": schema.StringAttribute{
+				Computed:    true,
+				Description: `The path to be used in requests to the upstream server.`,
+			},
+			"port": schema.Int64Attribute{
+				Computed:    true,
+				Description: `The upstream server port.`,
+			},
+			"protocol": schema.StringAttribute{
+				Computed:    true,
+				Description: `The protocol used to communicate with the upstream. must be one of ["grpc", "grpcs", "http", "https", "tcp", "tls", "tls_passthrough", "udp", "ws", "wss"]`,
+			},
+			"read_timeout": schema.Int64Attribute{
+				Computed:    true,
+				Description: `The timeout in milliseconds between two successive read operations for transmitting a request to the upstream server.`,
+			},
+			"retries": schema.Int64Attribute{
+				Computed:    true,
+				Description: `The number of retries to execute upon failure to proxy.`,
+			},
+			"tags": schema.ListAttribute{
+				Computed:    true,
+				ElementType: types.StringType,
+				Description: `An optional set of strings associated with the Service for grouping and filtering.`,
+			},
+			"tls_verify": schema.BoolAttribute{
+				Computed:    true,
+				Description: `Whether to enable verification of upstream server TLS certificate. If set to ` + "`" + `null` + "`" + `, then the Nginx default is respected.`,
+			},
+			"tls_verify_depth": schema.Int64Attribute{
+				Computed:    true,
+				Description: `Maximum depth of chain while verifying Upstream server's TLS certificate. If set to ` + "`" + `null` + "`" + `, then the Nginx default is respected.`,
+			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
 				Description: `Unix epoch when the resource was last updated.`,
+			},
+			"write_timeout": schema.Int64Attribute{
+				Computed:    true,
+				Description: `The timeout in milliseconds between two successive write operations for transmitting a request to the upstream server.`,
 			},
 		},
 	}
@@ -129,8 +212,8 @@ func (r *GatewayServiceDataSource) Read(ctx context.Context, req datasource.Read
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.Service == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.Service != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedService(res.Service)

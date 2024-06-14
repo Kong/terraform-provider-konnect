@@ -10,11 +10,409 @@ import (
 )
 
 func (r *GatewayPluginSamlResourceModel) ToSharedCreateSamlPlugin() *shared.CreateSamlPlugin {
+	var config *shared.CreateSamlPluginConfig
+	if r.Config != nil {
+		anonymous := new(string)
+		if !r.Config.Anonymous.IsUnknown() && !r.Config.Anonymous.IsNull() {
+			*anonymous = r.Config.Anonymous.ValueString()
+		} else {
+			anonymous = nil
+		}
+		assertionConsumerPath := new(string)
+		if !r.Config.AssertionConsumerPath.IsUnknown() && !r.Config.AssertionConsumerPath.IsNull() {
+			*assertionConsumerPath = r.Config.AssertionConsumerPath.ValueString()
+		} else {
+			assertionConsumerPath = nil
+		}
+		idpCertificate := new(string)
+		if !r.Config.IdpCertificate.IsUnknown() && !r.Config.IdpCertificate.IsNull() {
+			*idpCertificate = r.Config.IdpCertificate.ValueString()
+		} else {
+			idpCertificate = nil
+		}
+		idpSsoURL := new(string)
+		if !r.Config.IdpSsoURL.IsUnknown() && !r.Config.IdpSsoURL.IsNull() {
+			*idpSsoURL = r.Config.IdpSsoURL.ValueString()
+		} else {
+			idpSsoURL = nil
+		}
+		issuer := new(string)
+		if !r.Config.Issuer.IsUnknown() && !r.Config.Issuer.IsNull() {
+			*issuer = r.Config.Issuer.ValueString()
+		} else {
+			issuer = nil
+		}
+		nameidFormat := new(shared.CreateSamlPluginNameidFormat)
+		if !r.Config.NameidFormat.IsUnknown() && !r.Config.NameidFormat.IsNull() {
+			*nameidFormat = shared.CreateSamlPluginNameidFormat(r.Config.NameidFormat.ValueString())
+		} else {
+			nameidFormat = nil
+		}
+		requestDigestAlgorithm := new(shared.CreateSamlPluginRequestDigestAlgorithm)
+		if !r.Config.RequestDigestAlgorithm.IsUnknown() && !r.Config.RequestDigestAlgorithm.IsNull() {
+			*requestDigestAlgorithm = shared.CreateSamlPluginRequestDigestAlgorithm(r.Config.RequestDigestAlgorithm.ValueString())
+		} else {
+			requestDigestAlgorithm = nil
+		}
+		requestSignatureAlgorithm := new(shared.CreateSamlPluginRequestSignatureAlgorithm)
+		if !r.Config.RequestSignatureAlgorithm.IsUnknown() && !r.Config.RequestSignatureAlgorithm.IsNull() {
+			*requestSignatureAlgorithm = shared.CreateSamlPluginRequestSignatureAlgorithm(r.Config.RequestSignatureAlgorithm.ValueString())
+		} else {
+			requestSignatureAlgorithm = nil
+		}
+		requestSigningCertificate := new(string)
+		if !r.Config.RequestSigningCertificate.IsUnknown() && !r.Config.RequestSigningCertificate.IsNull() {
+			*requestSigningCertificate = r.Config.RequestSigningCertificate.ValueString()
+		} else {
+			requestSigningCertificate = nil
+		}
+		requestSigningKey := new(string)
+		if !r.Config.RequestSigningKey.IsUnknown() && !r.Config.RequestSigningKey.IsNull() {
+			*requestSigningKey = r.Config.RequestSigningKey.ValueString()
+		} else {
+			requestSigningKey = nil
+		}
+		responseDigestAlgorithm := new(shared.CreateSamlPluginResponseDigestAlgorithm)
+		if !r.Config.ResponseDigestAlgorithm.IsUnknown() && !r.Config.ResponseDigestAlgorithm.IsNull() {
+			*responseDigestAlgorithm = shared.CreateSamlPluginResponseDigestAlgorithm(r.Config.ResponseDigestAlgorithm.ValueString())
+		} else {
+			responseDigestAlgorithm = nil
+		}
+		responseEncryptionKey := new(string)
+		if !r.Config.ResponseEncryptionKey.IsUnknown() && !r.Config.ResponseEncryptionKey.IsNull() {
+			*responseEncryptionKey = r.Config.ResponseEncryptionKey.ValueString()
+		} else {
+			responseEncryptionKey = nil
+		}
+		responseSignatureAlgorithm := new(shared.CreateSamlPluginResponseSignatureAlgorithm)
+		if !r.Config.ResponseSignatureAlgorithm.IsUnknown() && !r.Config.ResponseSignatureAlgorithm.IsNull() {
+			*responseSignatureAlgorithm = shared.CreateSamlPluginResponseSignatureAlgorithm(r.Config.ResponseSignatureAlgorithm.ValueString())
+		} else {
+			responseSignatureAlgorithm = nil
+		}
+		sessionAbsoluteTimeout := new(float64)
+		if !r.Config.SessionAbsoluteTimeout.IsUnknown() && !r.Config.SessionAbsoluteTimeout.IsNull() {
+			*sessionAbsoluteTimeout, _ = r.Config.SessionAbsoluteTimeout.ValueBigFloat().Float64()
+		} else {
+			sessionAbsoluteTimeout = nil
+		}
+		sessionAudience := new(string)
+		if !r.Config.SessionAudience.IsUnknown() && !r.Config.SessionAudience.IsNull() {
+			*sessionAudience = r.Config.SessionAudience.ValueString()
+		} else {
+			sessionAudience = nil
+		}
+		sessionCookieDomain := new(string)
+		if !r.Config.SessionCookieDomain.IsUnknown() && !r.Config.SessionCookieDomain.IsNull() {
+			*sessionCookieDomain = r.Config.SessionCookieDomain.ValueString()
+		} else {
+			sessionCookieDomain = nil
+		}
+		sessionCookieHTTPOnly := new(bool)
+		if !r.Config.SessionCookieHTTPOnly.IsUnknown() && !r.Config.SessionCookieHTTPOnly.IsNull() {
+			*sessionCookieHTTPOnly = r.Config.SessionCookieHTTPOnly.ValueBool()
+		} else {
+			sessionCookieHTTPOnly = nil
+		}
+		sessionCookieName := new(string)
+		if !r.Config.SessionCookieName.IsUnknown() && !r.Config.SessionCookieName.IsNull() {
+			*sessionCookieName = r.Config.SessionCookieName.ValueString()
+		} else {
+			sessionCookieName = nil
+		}
+		sessionCookiePath := new(string)
+		if !r.Config.SessionCookiePath.IsUnknown() && !r.Config.SessionCookiePath.IsNull() {
+			*sessionCookiePath = r.Config.SessionCookiePath.ValueString()
+		} else {
+			sessionCookiePath = nil
+		}
+		sessionCookieSameSite := new(shared.CreateSamlPluginSessionCookieSameSite)
+		if !r.Config.SessionCookieSameSite.IsUnknown() && !r.Config.SessionCookieSameSite.IsNull() {
+			*sessionCookieSameSite = shared.CreateSamlPluginSessionCookieSameSite(r.Config.SessionCookieSameSite.ValueString())
+		} else {
+			sessionCookieSameSite = nil
+		}
+		sessionCookieSecure := new(bool)
+		if !r.Config.SessionCookieSecure.IsUnknown() && !r.Config.SessionCookieSecure.IsNull() {
+			*sessionCookieSecure = r.Config.SessionCookieSecure.ValueBool()
+		} else {
+			sessionCookieSecure = nil
+		}
+		sessionEnforceSameSubject := new(bool)
+		if !r.Config.SessionEnforceSameSubject.IsUnknown() && !r.Config.SessionEnforceSameSubject.IsNull() {
+			*sessionEnforceSameSubject = r.Config.SessionEnforceSameSubject.ValueBool()
+		} else {
+			sessionEnforceSameSubject = nil
+		}
+		sessionHashStorageKey := new(bool)
+		if !r.Config.SessionHashStorageKey.IsUnknown() && !r.Config.SessionHashStorageKey.IsNull() {
+			*sessionHashStorageKey = r.Config.SessionHashStorageKey.ValueBool()
+		} else {
+			sessionHashStorageKey = nil
+		}
+		sessionHashSubject := new(bool)
+		if !r.Config.SessionHashSubject.IsUnknown() && !r.Config.SessionHashSubject.IsNull() {
+			*sessionHashSubject = r.Config.SessionHashSubject.ValueBool()
+		} else {
+			sessionHashSubject = nil
+		}
+		sessionIdlingTimeout := new(float64)
+		if !r.Config.SessionIdlingTimeout.IsUnknown() && !r.Config.SessionIdlingTimeout.IsNull() {
+			*sessionIdlingTimeout, _ = r.Config.SessionIdlingTimeout.ValueBigFloat().Float64()
+		} else {
+			sessionIdlingTimeout = nil
+		}
+		sessionMemcachedHost := new(string)
+		if !r.Config.SessionMemcachedHost.IsUnknown() && !r.Config.SessionMemcachedHost.IsNull() {
+			*sessionMemcachedHost = r.Config.SessionMemcachedHost.ValueString()
+		} else {
+			sessionMemcachedHost = nil
+		}
+		sessionMemcachedPort := new(int64)
+		if !r.Config.SessionMemcachedPort.IsUnknown() && !r.Config.SessionMemcachedPort.IsNull() {
+			*sessionMemcachedPort = r.Config.SessionMemcachedPort.ValueInt64()
+		} else {
+			sessionMemcachedPort = nil
+		}
+		sessionMemcachedPrefix := new(string)
+		if !r.Config.SessionMemcachedPrefix.IsUnknown() && !r.Config.SessionMemcachedPrefix.IsNull() {
+			*sessionMemcachedPrefix = r.Config.SessionMemcachedPrefix.ValueString()
+		} else {
+			sessionMemcachedPrefix = nil
+		}
+		sessionMemcachedSocket := new(string)
+		if !r.Config.SessionMemcachedSocket.IsUnknown() && !r.Config.SessionMemcachedSocket.IsNull() {
+			*sessionMemcachedSocket = r.Config.SessionMemcachedSocket.ValueString()
+		} else {
+			sessionMemcachedSocket = nil
+		}
+		sessionRedisClusterMaxRedirections := new(int64)
+		if !r.Config.SessionRedisClusterMaxRedirections.IsUnknown() && !r.Config.SessionRedisClusterMaxRedirections.IsNull() {
+			*sessionRedisClusterMaxRedirections = r.Config.SessionRedisClusterMaxRedirections.ValueInt64()
+		} else {
+			sessionRedisClusterMaxRedirections = nil
+		}
+		var sessionRedisClusterNodes []shared.CreateSamlPluginSessionRedisClusterNodes = []shared.CreateSamlPluginSessionRedisClusterNodes{}
+		for _, sessionRedisClusterNodesItem := range r.Config.SessionRedisClusterNodes {
+			ip := new(string)
+			if !sessionRedisClusterNodesItem.IP.IsUnknown() && !sessionRedisClusterNodesItem.IP.IsNull() {
+				*ip = sessionRedisClusterNodesItem.IP.ValueString()
+			} else {
+				ip = nil
+			}
+			port := new(int64)
+			if !sessionRedisClusterNodesItem.Port.IsUnknown() && !sessionRedisClusterNodesItem.Port.IsNull() {
+				*port = sessionRedisClusterNodesItem.Port.ValueInt64()
+			} else {
+				port = nil
+			}
+			sessionRedisClusterNodes = append(sessionRedisClusterNodes, shared.CreateSamlPluginSessionRedisClusterNodes{
+				IP:   ip,
+				Port: port,
+			})
+		}
+		sessionRedisConnectTimeout := new(int64)
+		if !r.Config.SessionRedisConnectTimeout.IsUnknown() && !r.Config.SessionRedisConnectTimeout.IsNull() {
+			*sessionRedisConnectTimeout = r.Config.SessionRedisConnectTimeout.ValueInt64()
+		} else {
+			sessionRedisConnectTimeout = nil
+		}
+		sessionRedisHost := new(string)
+		if !r.Config.SessionRedisHost.IsUnknown() && !r.Config.SessionRedisHost.IsNull() {
+			*sessionRedisHost = r.Config.SessionRedisHost.ValueString()
+		} else {
+			sessionRedisHost = nil
+		}
+		sessionRedisPassword := new(string)
+		if !r.Config.SessionRedisPassword.IsUnknown() && !r.Config.SessionRedisPassword.IsNull() {
+			*sessionRedisPassword = r.Config.SessionRedisPassword.ValueString()
+		} else {
+			sessionRedisPassword = nil
+		}
+		sessionRedisPort := new(int64)
+		if !r.Config.SessionRedisPort.IsUnknown() && !r.Config.SessionRedisPort.IsNull() {
+			*sessionRedisPort = r.Config.SessionRedisPort.ValueInt64()
+		} else {
+			sessionRedisPort = nil
+		}
+		sessionRedisPrefix := new(string)
+		if !r.Config.SessionRedisPrefix.IsUnknown() && !r.Config.SessionRedisPrefix.IsNull() {
+			*sessionRedisPrefix = r.Config.SessionRedisPrefix.ValueString()
+		} else {
+			sessionRedisPrefix = nil
+		}
+		sessionRedisReadTimeout := new(int64)
+		if !r.Config.SessionRedisReadTimeout.IsUnknown() && !r.Config.SessionRedisReadTimeout.IsNull() {
+			*sessionRedisReadTimeout = r.Config.SessionRedisReadTimeout.ValueInt64()
+		} else {
+			sessionRedisReadTimeout = nil
+		}
+		sessionRedisSendTimeout := new(int64)
+		if !r.Config.SessionRedisSendTimeout.IsUnknown() && !r.Config.SessionRedisSendTimeout.IsNull() {
+			*sessionRedisSendTimeout = r.Config.SessionRedisSendTimeout.ValueInt64()
+		} else {
+			sessionRedisSendTimeout = nil
+		}
+		sessionRedisServerName := new(string)
+		if !r.Config.SessionRedisServerName.IsUnknown() && !r.Config.SessionRedisServerName.IsNull() {
+			*sessionRedisServerName = r.Config.SessionRedisServerName.ValueString()
+		} else {
+			sessionRedisServerName = nil
+		}
+		sessionRedisSocket := new(string)
+		if !r.Config.SessionRedisSocket.IsUnknown() && !r.Config.SessionRedisSocket.IsNull() {
+			*sessionRedisSocket = r.Config.SessionRedisSocket.ValueString()
+		} else {
+			sessionRedisSocket = nil
+		}
+		sessionRedisSsl := new(bool)
+		if !r.Config.SessionRedisSsl.IsUnknown() && !r.Config.SessionRedisSsl.IsNull() {
+			*sessionRedisSsl = r.Config.SessionRedisSsl.ValueBool()
+		} else {
+			sessionRedisSsl = nil
+		}
+		sessionRedisSslVerify := new(bool)
+		if !r.Config.SessionRedisSslVerify.IsUnknown() && !r.Config.SessionRedisSslVerify.IsNull() {
+			*sessionRedisSslVerify = r.Config.SessionRedisSslVerify.ValueBool()
+		} else {
+			sessionRedisSslVerify = nil
+		}
+		sessionRedisUsername := new(string)
+		if !r.Config.SessionRedisUsername.IsUnknown() && !r.Config.SessionRedisUsername.IsNull() {
+			*sessionRedisUsername = r.Config.SessionRedisUsername.ValueString()
+		} else {
+			sessionRedisUsername = nil
+		}
+		sessionRemember := new(bool)
+		if !r.Config.SessionRemember.IsUnknown() && !r.Config.SessionRemember.IsNull() {
+			*sessionRemember = r.Config.SessionRemember.ValueBool()
+		} else {
+			sessionRemember = nil
+		}
+		sessionRememberAbsoluteTimeout := new(float64)
+		if !r.Config.SessionRememberAbsoluteTimeout.IsUnknown() && !r.Config.SessionRememberAbsoluteTimeout.IsNull() {
+			*sessionRememberAbsoluteTimeout, _ = r.Config.SessionRememberAbsoluteTimeout.ValueBigFloat().Float64()
+		} else {
+			sessionRememberAbsoluteTimeout = nil
+		}
+		sessionRememberCookieName := new(string)
+		if !r.Config.SessionRememberCookieName.IsUnknown() && !r.Config.SessionRememberCookieName.IsNull() {
+			*sessionRememberCookieName = r.Config.SessionRememberCookieName.ValueString()
+		} else {
+			sessionRememberCookieName = nil
+		}
+		sessionRememberRollingTimeout := new(float64)
+		if !r.Config.SessionRememberRollingTimeout.IsUnknown() && !r.Config.SessionRememberRollingTimeout.IsNull() {
+			*sessionRememberRollingTimeout, _ = r.Config.SessionRememberRollingTimeout.ValueBigFloat().Float64()
+		} else {
+			sessionRememberRollingTimeout = nil
+		}
+		var sessionRequestHeaders []shared.CreateSamlPluginSessionRequestHeaders = []shared.CreateSamlPluginSessionRequestHeaders{}
+		for _, sessionRequestHeadersItem := range r.Config.SessionRequestHeaders {
+			sessionRequestHeaders = append(sessionRequestHeaders, shared.CreateSamlPluginSessionRequestHeaders(sessionRequestHeadersItem.ValueString()))
+		}
+		var sessionResponseHeaders []shared.CreateSamlPluginSessionResponseHeaders = []shared.CreateSamlPluginSessionResponseHeaders{}
+		for _, sessionResponseHeadersItem := range r.Config.SessionResponseHeaders {
+			sessionResponseHeaders = append(sessionResponseHeaders, shared.CreateSamlPluginSessionResponseHeaders(sessionResponseHeadersItem.ValueString()))
+		}
+		sessionRollingTimeout := new(float64)
+		if !r.Config.SessionRollingTimeout.IsUnknown() && !r.Config.SessionRollingTimeout.IsNull() {
+			*sessionRollingTimeout, _ = r.Config.SessionRollingTimeout.ValueBigFloat().Float64()
+		} else {
+			sessionRollingTimeout = nil
+		}
+		sessionSecret := new(string)
+		if !r.Config.SessionSecret.IsUnknown() && !r.Config.SessionSecret.IsNull() {
+			*sessionSecret = r.Config.SessionSecret.ValueString()
+		} else {
+			sessionSecret = nil
+		}
+		sessionStorage := new(shared.CreateSamlPluginSessionStorage)
+		if !r.Config.SessionStorage.IsUnknown() && !r.Config.SessionStorage.IsNull() {
+			*sessionStorage = shared.CreateSamlPluginSessionStorage(r.Config.SessionStorage.ValueString())
+		} else {
+			sessionStorage = nil
+		}
+		sessionStoreMetadata := new(bool)
+		if !r.Config.SessionStoreMetadata.IsUnknown() && !r.Config.SessionStoreMetadata.IsNull() {
+			*sessionStoreMetadata = r.Config.SessionStoreMetadata.ValueBool()
+		} else {
+			sessionStoreMetadata = nil
+		}
+		validateAssertionSignature := new(bool)
+		if !r.Config.ValidateAssertionSignature.IsUnknown() && !r.Config.ValidateAssertionSignature.IsNull() {
+			*validateAssertionSignature = r.Config.ValidateAssertionSignature.ValueBool()
+		} else {
+			validateAssertionSignature = nil
+		}
+		config = &shared.CreateSamlPluginConfig{
+			Anonymous:                          anonymous,
+			AssertionConsumerPath:              assertionConsumerPath,
+			IdpCertificate:                     idpCertificate,
+			IdpSsoURL:                          idpSsoURL,
+			Issuer:                             issuer,
+			NameidFormat:                       nameidFormat,
+			RequestDigestAlgorithm:             requestDigestAlgorithm,
+			RequestSignatureAlgorithm:          requestSignatureAlgorithm,
+			RequestSigningCertificate:          requestSigningCertificate,
+			RequestSigningKey:                  requestSigningKey,
+			ResponseDigestAlgorithm:            responseDigestAlgorithm,
+			ResponseEncryptionKey:              responseEncryptionKey,
+			ResponseSignatureAlgorithm:         responseSignatureAlgorithm,
+			SessionAbsoluteTimeout:             sessionAbsoluteTimeout,
+			SessionAudience:                    sessionAudience,
+			SessionCookieDomain:                sessionCookieDomain,
+			SessionCookieHTTPOnly:              sessionCookieHTTPOnly,
+			SessionCookieName:                  sessionCookieName,
+			SessionCookiePath:                  sessionCookiePath,
+			SessionCookieSameSite:              sessionCookieSameSite,
+			SessionCookieSecure:                sessionCookieSecure,
+			SessionEnforceSameSubject:          sessionEnforceSameSubject,
+			SessionHashStorageKey:              sessionHashStorageKey,
+			SessionHashSubject:                 sessionHashSubject,
+			SessionIdlingTimeout:               sessionIdlingTimeout,
+			SessionMemcachedHost:               sessionMemcachedHost,
+			SessionMemcachedPort:               sessionMemcachedPort,
+			SessionMemcachedPrefix:             sessionMemcachedPrefix,
+			SessionMemcachedSocket:             sessionMemcachedSocket,
+			SessionRedisClusterMaxRedirections: sessionRedisClusterMaxRedirections,
+			SessionRedisClusterNodes:           sessionRedisClusterNodes,
+			SessionRedisConnectTimeout:         sessionRedisConnectTimeout,
+			SessionRedisHost:                   sessionRedisHost,
+			SessionRedisPassword:               sessionRedisPassword,
+			SessionRedisPort:                   sessionRedisPort,
+			SessionRedisPrefix:                 sessionRedisPrefix,
+			SessionRedisReadTimeout:            sessionRedisReadTimeout,
+			SessionRedisSendTimeout:            sessionRedisSendTimeout,
+			SessionRedisServerName:             sessionRedisServerName,
+			SessionRedisSocket:                 sessionRedisSocket,
+			SessionRedisSsl:                    sessionRedisSsl,
+			SessionRedisSslVerify:              sessionRedisSslVerify,
+			SessionRedisUsername:               sessionRedisUsername,
+			SessionRemember:                    sessionRemember,
+			SessionRememberAbsoluteTimeout:     sessionRememberAbsoluteTimeout,
+			SessionRememberCookieName:          sessionRememberCookieName,
+			SessionRememberRollingTimeout:      sessionRememberRollingTimeout,
+			SessionRequestHeaders:              sessionRequestHeaders,
+			SessionResponseHeaders:             sessionResponseHeaders,
+			SessionRollingTimeout:              sessionRollingTimeout,
+			SessionSecret:                      sessionSecret,
+			SessionStorage:                     sessionStorage,
+			SessionStoreMetadata:               sessionStoreMetadata,
+			ValidateAssertionSignature:         validateAssertionSignature,
+		}
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
 	} else {
 		enabled = nil
+	}
+	instanceName := new(string)
+	if !r.InstanceName.IsUnknown() && !r.InstanceName.IsNull() {
+		*instanceName = r.InstanceName.ValueString()
+	} else {
+		instanceName = nil
 	}
 	var protocols []shared.CreateSamlPluginProtocols = []shared.CreateSamlPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
@@ -36,564 +434,201 @@ func (r *GatewayPluginSamlResourceModel) ToSharedCreateSamlPlugin() *shared.Crea
 			ID: id,
 		}
 	}
-	var route *shared.CreateSamlPluginRoute
-	if r.Route != nil {
+	var consumerGroup *shared.CreateSamlPluginConsumerGroup
+	if r.ConsumerGroup != nil {
 		id1 := new(string)
-		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
-			*id1 = r.Route.ID.ValueString()
+		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
+			*id1 = r.ConsumerGroup.ID.ValueString()
 		} else {
 			id1 = nil
 		}
-		route = &shared.CreateSamlPluginRoute{
+		consumerGroup = &shared.CreateSamlPluginConsumerGroup{
 			ID: id1,
+		}
+	}
+	var route *shared.CreateSamlPluginRoute
+	if r.Route != nil {
+		id2 := new(string)
+		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
+			*id2 = r.Route.ID.ValueString()
+		} else {
+			id2 = nil
+		}
+		route = &shared.CreateSamlPluginRoute{
+			ID: id2,
 		}
 	}
 	var service *shared.CreateSamlPluginService
 	if r.Service != nil {
-		id2 := new(string)
+		id3 := new(string)
 		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
-			*id2 = r.Service.ID.ValueString()
+			*id3 = r.Service.ID.ValueString()
 		} else {
-			id2 = nil
+			id3 = nil
 		}
 		service = &shared.CreateSamlPluginService{
-			ID: id2,
+			ID: id3,
 		}
-	}
-	anonymous := new(string)
-	if !r.Config.Anonymous.IsUnknown() && !r.Config.Anonymous.IsNull() {
-		*anonymous = r.Config.Anonymous.ValueString()
-	} else {
-		anonymous = nil
-	}
-	assertionConsumerPath := new(string)
-	if !r.Config.AssertionConsumerPath.IsUnknown() && !r.Config.AssertionConsumerPath.IsNull() {
-		*assertionConsumerPath = r.Config.AssertionConsumerPath.ValueString()
-	} else {
-		assertionConsumerPath = nil
-	}
-	idpCertificate := new(string)
-	if !r.Config.IdpCertificate.IsUnknown() && !r.Config.IdpCertificate.IsNull() {
-		*idpCertificate = r.Config.IdpCertificate.ValueString()
-	} else {
-		idpCertificate = nil
-	}
-	idpSsoURL := new(string)
-	if !r.Config.IdpSsoURL.IsUnknown() && !r.Config.IdpSsoURL.IsNull() {
-		*idpSsoURL = r.Config.IdpSsoURL.ValueString()
-	} else {
-		idpSsoURL = nil
-	}
-	issuer := new(string)
-	if !r.Config.Issuer.IsUnknown() && !r.Config.Issuer.IsNull() {
-		*issuer = r.Config.Issuer.ValueString()
-	} else {
-		issuer = nil
-	}
-	nameidFormat := new(shared.CreateSamlPluginNameidFormat)
-	if !r.Config.NameidFormat.IsUnknown() && !r.Config.NameidFormat.IsNull() {
-		*nameidFormat = shared.CreateSamlPluginNameidFormat(r.Config.NameidFormat.ValueString())
-	} else {
-		nameidFormat = nil
-	}
-	requestDigestAlgorithm := new(shared.CreateSamlPluginRequestDigestAlgorithm)
-	if !r.Config.RequestDigestAlgorithm.IsUnknown() && !r.Config.RequestDigestAlgorithm.IsNull() {
-		*requestDigestAlgorithm = shared.CreateSamlPluginRequestDigestAlgorithm(r.Config.RequestDigestAlgorithm.ValueString())
-	} else {
-		requestDigestAlgorithm = nil
-	}
-	requestSignatureAlgorithm := new(shared.CreateSamlPluginRequestSignatureAlgorithm)
-	if !r.Config.RequestSignatureAlgorithm.IsUnknown() && !r.Config.RequestSignatureAlgorithm.IsNull() {
-		*requestSignatureAlgorithm = shared.CreateSamlPluginRequestSignatureAlgorithm(r.Config.RequestSignatureAlgorithm.ValueString())
-	} else {
-		requestSignatureAlgorithm = nil
-	}
-	requestSigningCertificate := new(string)
-	if !r.Config.RequestSigningCertificate.IsUnknown() && !r.Config.RequestSigningCertificate.IsNull() {
-		*requestSigningCertificate = r.Config.RequestSigningCertificate.ValueString()
-	} else {
-		requestSigningCertificate = nil
-	}
-	requestSigningKey := new(string)
-	if !r.Config.RequestSigningKey.IsUnknown() && !r.Config.RequestSigningKey.IsNull() {
-		*requestSigningKey = r.Config.RequestSigningKey.ValueString()
-	} else {
-		requestSigningKey = nil
-	}
-	responseDigestAlgorithm := new(shared.CreateSamlPluginResponseDigestAlgorithm)
-	if !r.Config.ResponseDigestAlgorithm.IsUnknown() && !r.Config.ResponseDigestAlgorithm.IsNull() {
-		*responseDigestAlgorithm = shared.CreateSamlPluginResponseDigestAlgorithm(r.Config.ResponseDigestAlgorithm.ValueString())
-	} else {
-		responseDigestAlgorithm = nil
-	}
-	responseEncryptionKey := new(string)
-	if !r.Config.ResponseEncryptionKey.IsUnknown() && !r.Config.ResponseEncryptionKey.IsNull() {
-		*responseEncryptionKey = r.Config.ResponseEncryptionKey.ValueString()
-	} else {
-		responseEncryptionKey = nil
-	}
-	responseSignatureAlgorithm := new(shared.CreateSamlPluginResponseSignatureAlgorithm)
-	if !r.Config.ResponseSignatureAlgorithm.IsUnknown() && !r.Config.ResponseSignatureAlgorithm.IsNull() {
-		*responseSignatureAlgorithm = shared.CreateSamlPluginResponseSignatureAlgorithm(r.Config.ResponseSignatureAlgorithm.ValueString())
-	} else {
-		responseSignatureAlgorithm = nil
-	}
-	sessionAbsoluteTimeout := new(float64)
-	if !r.Config.SessionAbsoluteTimeout.IsUnknown() && !r.Config.SessionAbsoluteTimeout.IsNull() {
-		*sessionAbsoluteTimeout, _ = r.Config.SessionAbsoluteTimeout.ValueBigFloat().Float64()
-	} else {
-		sessionAbsoluteTimeout = nil
-	}
-	sessionAudience := new(string)
-	if !r.Config.SessionAudience.IsUnknown() && !r.Config.SessionAudience.IsNull() {
-		*sessionAudience = r.Config.SessionAudience.ValueString()
-	} else {
-		sessionAudience = nil
-	}
-	sessionCookieDomain := new(string)
-	if !r.Config.SessionCookieDomain.IsUnknown() && !r.Config.SessionCookieDomain.IsNull() {
-		*sessionCookieDomain = r.Config.SessionCookieDomain.ValueString()
-	} else {
-		sessionCookieDomain = nil
-	}
-	sessionCookieHTTPOnly := new(bool)
-	if !r.Config.SessionCookieHTTPOnly.IsUnknown() && !r.Config.SessionCookieHTTPOnly.IsNull() {
-		*sessionCookieHTTPOnly = r.Config.SessionCookieHTTPOnly.ValueBool()
-	} else {
-		sessionCookieHTTPOnly = nil
-	}
-	sessionCookieName := new(string)
-	if !r.Config.SessionCookieName.IsUnknown() && !r.Config.SessionCookieName.IsNull() {
-		*sessionCookieName = r.Config.SessionCookieName.ValueString()
-	} else {
-		sessionCookieName = nil
-	}
-	sessionCookiePath := new(string)
-	if !r.Config.SessionCookiePath.IsUnknown() && !r.Config.SessionCookiePath.IsNull() {
-		*sessionCookiePath = r.Config.SessionCookiePath.ValueString()
-	} else {
-		sessionCookiePath = nil
-	}
-	sessionCookieSameSite := new(shared.CreateSamlPluginSessionCookieSameSite)
-	if !r.Config.SessionCookieSameSite.IsUnknown() && !r.Config.SessionCookieSameSite.IsNull() {
-		*sessionCookieSameSite = shared.CreateSamlPluginSessionCookieSameSite(r.Config.SessionCookieSameSite.ValueString())
-	} else {
-		sessionCookieSameSite = nil
-	}
-	sessionCookieSecure := new(bool)
-	if !r.Config.SessionCookieSecure.IsUnknown() && !r.Config.SessionCookieSecure.IsNull() {
-		*sessionCookieSecure = r.Config.SessionCookieSecure.ValueBool()
-	} else {
-		sessionCookieSecure = nil
-	}
-	sessionEnforceSameSubject := new(bool)
-	if !r.Config.SessionEnforceSameSubject.IsUnknown() && !r.Config.SessionEnforceSameSubject.IsNull() {
-		*sessionEnforceSameSubject = r.Config.SessionEnforceSameSubject.ValueBool()
-	} else {
-		sessionEnforceSameSubject = nil
-	}
-	sessionHashStorageKey := new(bool)
-	if !r.Config.SessionHashStorageKey.IsUnknown() && !r.Config.SessionHashStorageKey.IsNull() {
-		*sessionHashStorageKey = r.Config.SessionHashStorageKey.ValueBool()
-	} else {
-		sessionHashStorageKey = nil
-	}
-	sessionHashSubject := new(bool)
-	if !r.Config.SessionHashSubject.IsUnknown() && !r.Config.SessionHashSubject.IsNull() {
-		*sessionHashSubject = r.Config.SessionHashSubject.ValueBool()
-	} else {
-		sessionHashSubject = nil
-	}
-	sessionIdlingTimeout := new(float64)
-	if !r.Config.SessionIdlingTimeout.IsUnknown() && !r.Config.SessionIdlingTimeout.IsNull() {
-		*sessionIdlingTimeout, _ = r.Config.SessionIdlingTimeout.ValueBigFloat().Float64()
-	} else {
-		sessionIdlingTimeout = nil
-	}
-	sessionMemcachedHost := new(string)
-	if !r.Config.SessionMemcachedHost.IsUnknown() && !r.Config.SessionMemcachedHost.IsNull() {
-		*sessionMemcachedHost = r.Config.SessionMemcachedHost.ValueString()
-	} else {
-		sessionMemcachedHost = nil
-	}
-	sessionMemcachedPort := new(int64)
-	if !r.Config.SessionMemcachedPort.IsUnknown() && !r.Config.SessionMemcachedPort.IsNull() {
-		*sessionMemcachedPort = r.Config.SessionMemcachedPort.ValueInt64()
-	} else {
-		sessionMemcachedPort = nil
-	}
-	sessionMemcachedPrefix := new(string)
-	if !r.Config.SessionMemcachedPrefix.IsUnknown() && !r.Config.SessionMemcachedPrefix.IsNull() {
-		*sessionMemcachedPrefix = r.Config.SessionMemcachedPrefix.ValueString()
-	} else {
-		sessionMemcachedPrefix = nil
-	}
-	sessionMemcachedSocket := new(string)
-	if !r.Config.SessionMemcachedSocket.IsUnknown() && !r.Config.SessionMemcachedSocket.IsNull() {
-		*sessionMemcachedSocket = r.Config.SessionMemcachedSocket.ValueString()
-	} else {
-		sessionMemcachedSocket = nil
-	}
-	sessionRedisClusterMaxRedirections := new(int64)
-	if !r.Config.SessionRedisClusterMaxRedirections.IsUnknown() && !r.Config.SessionRedisClusterMaxRedirections.IsNull() {
-		*sessionRedisClusterMaxRedirections = r.Config.SessionRedisClusterMaxRedirections.ValueInt64()
-	} else {
-		sessionRedisClusterMaxRedirections = nil
-	}
-	var sessionRedisClusterNodes []shared.CreateSamlPluginSessionRedisClusterNodes = []shared.CreateSamlPluginSessionRedisClusterNodes{}
-	for _, sessionRedisClusterNodesItem := range r.Config.SessionRedisClusterNodes {
-		ip := new(string)
-		if !sessionRedisClusterNodesItem.IP.IsUnknown() && !sessionRedisClusterNodesItem.IP.IsNull() {
-			*ip = sessionRedisClusterNodesItem.IP.ValueString()
-		} else {
-			ip = nil
-		}
-		port := new(int64)
-		if !sessionRedisClusterNodesItem.Port.IsUnknown() && !sessionRedisClusterNodesItem.Port.IsNull() {
-			*port = sessionRedisClusterNodesItem.Port.ValueInt64()
-		} else {
-			port = nil
-		}
-		sessionRedisClusterNodes = append(sessionRedisClusterNodes, shared.CreateSamlPluginSessionRedisClusterNodes{
-			IP:   ip,
-			Port: port,
-		})
-	}
-	sessionRedisConnectTimeout := new(int64)
-	if !r.Config.SessionRedisConnectTimeout.IsUnknown() && !r.Config.SessionRedisConnectTimeout.IsNull() {
-		*sessionRedisConnectTimeout = r.Config.SessionRedisConnectTimeout.ValueInt64()
-	} else {
-		sessionRedisConnectTimeout = nil
-	}
-	sessionRedisHost := new(string)
-	if !r.Config.SessionRedisHost.IsUnknown() && !r.Config.SessionRedisHost.IsNull() {
-		*sessionRedisHost = r.Config.SessionRedisHost.ValueString()
-	} else {
-		sessionRedisHost = nil
-	}
-	sessionRedisPassword := new(string)
-	if !r.Config.SessionRedisPassword.IsUnknown() && !r.Config.SessionRedisPassword.IsNull() {
-		*sessionRedisPassword = r.Config.SessionRedisPassword.ValueString()
-	} else {
-		sessionRedisPassword = nil
-	}
-	sessionRedisPort := new(int64)
-	if !r.Config.SessionRedisPort.IsUnknown() && !r.Config.SessionRedisPort.IsNull() {
-		*sessionRedisPort = r.Config.SessionRedisPort.ValueInt64()
-	} else {
-		sessionRedisPort = nil
-	}
-	sessionRedisPrefix := new(string)
-	if !r.Config.SessionRedisPrefix.IsUnknown() && !r.Config.SessionRedisPrefix.IsNull() {
-		*sessionRedisPrefix = r.Config.SessionRedisPrefix.ValueString()
-	} else {
-		sessionRedisPrefix = nil
-	}
-	sessionRedisReadTimeout := new(int64)
-	if !r.Config.SessionRedisReadTimeout.IsUnknown() && !r.Config.SessionRedisReadTimeout.IsNull() {
-		*sessionRedisReadTimeout = r.Config.SessionRedisReadTimeout.ValueInt64()
-	} else {
-		sessionRedisReadTimeout = nil
-	}
-	sessionRedisSendTimeout := new(int64)
-	if !r.Config.SessionRedisSendTimeout.IsUnknown() && !r.Config.SessionRedisSendTimeout.IsNull() {
-		*sessionRedisSendTimeout = r.Config.SessionRedisSendTimeout.ValueInt64()
-	} else {
-		sessionRedisSendTimeout = nil
-	}
-	sessionRedisServerName := new(string)
-	if !r.Config.SessionRedisServerName.IsUnknown() && !r.Config.SessionRedisServerName.IsNull() {
-		*sessionRedisServerName = r.Config.SessionRedisServerName.ValueString()
-	} else {
-		sessionRedisServerName = nil
-	}
-	sessionRedisSocket := new(string)
-	if !r.Config.SessionRedisSocket.IsUnknown() && !r.Config.SessionRedisSocket.IsNull() {
-		*sessionRedisSocket = r.Config.SessionRedisSocket.ValueString()
-	} else {
-		sessionRedisSocket = nil
-	}
-	sessionRedisSsl := new(bool)
-	if !r.Config.SessionRedisSsl.IsUnknown() && !r.Config.SessionRedisSsl.IsNull() {
-		*sessionRedisSsl = r.Config.SessionRedisSsl.ValueBool()
-	} else {
-		sessionRedisSsl = nil
-	}
-	sessionRedisSslVerify := new(bool)
-	if !r.Config.SessionRedisSslVerify.IsUnknown() && !r.Config.SessionRedisSslVerify.IsNull() {
-		*sessionRedisSslVerify = r.Config.SessionRedisSslVerify.ValueBool()
-	} else {
-		sessionRedisSslVerify = nil
-	}
-	sessionRedisUsername := new(string)
-	if !r.Config.SessionRedisUsername.IsUnknown() && !r.Config.SessionRedisUsername.IsNull() {
-		*sessionRedisUsername = r.Config.SessionRedisUsername.ValueString()
-	} else {
-		sessionRedisUsername = nil
-	}
-	sessionRemember := new(bool)
-	if !r.Config.SessionRemember.IsUnknown() && !r.Config.SessionRemember.IsNull() {
-		*sessionRemember = r.Config.SessionRemember.ValueBool()
-	} else {
-		sessionRemember = nil
-	}
-	sessionRememberAbsoluteTimeout := new(float64)
-	if !r.Config.SessionRememberAbsoluteTimeout.IsUnknown() && !r.Config.SessionRememberAbsoluteTimeout.IsNull() {
-		*sessionRememberAbsoluteTimeout, _ = r.Config.SessionRememberAbsoluteTimeout.ValueBigFloat().Float64()
-	} else {
-		sessionRememberAbsoluteTimeout = nil
-	}
-	sessionRememberCookieName := new(string)
-	if !r.Config.SessionRememberCookieName.IsUnknown() && !r.Config.SessionRememberCookieName.IsNull() {
-		*sessionRememberCookieName = r.Config.SessionRememberCookieName.ValueString()
-	} else {
-		sessionRememberCookieName = nil
-	}
-	sessionRememberRollingTimeout := new(float64)
-	if !r.Config.SessionRememberRollingTimeout.IsUnknown() && !r.Config.SessionRememberRollingTimeout.IsNull() {
-		*sessionRememberRollingTimeout, _ = r.Config.SessionRememberRollingTimeout.ValueBigFloat().Float64()
-	} else {
-		sessionRememberRollingTimeout = nil
-	}
-	var sessionRequestHeaders []shared.CreateSamlPluginSessionRequestHeaders = []shared.CreateSamlPluginSessionRequestHeaders{}
-	for _, sessionRequestHeadersItem := range r.Config.SessionRequestHeaders {
-		sessionRequestHeaders = append(sessionRequestHeaders, shared.CreateSamlPluginSessionRequestHeaders(sessionRequestHeadersItem.ValueString()))
-	}
-	var sessionResponseHeaders []shared.CreateSamlPluginSessionResponseHeaders = []shared.CreateSamlPluginSessionResponseHeaders{}
-	for _, sessionResponseHeadersItem := range r.Config.SessionResponseHeaders {
-		sessionResponseHeaders = append(sessionResponseHeaders, shared.CreateSamlPluginSessionResponseHeaders(sessionResponseHeadersItem.ValueString()))
-	}
-	sessionRollingTimeout := new(float64)
-	if !r.Config.SessionRollingTimeout.IsUnknown() && !r.Config.SessionRollingTimeout.IsNull() {
-		*sessionRollingTimeout, _ = r.Config.SessionRollingTimeout.ValueBigFloat().Float64()
-	} else {
-		sessionRollingTimeout = nil
-	}
-	sessionSecret := new(string)
-	if !r.Config.SessionSecret.IsUnknown() && !r.Config.SessionSecret.IsNull() {
-		*sessionSecret = r.Config.SessionSecret.ValueString()
-	} else {
-		sessionSecret = nil
-	}
-	sessionStorage := new(shared.CreateSamlPluginSessionStorage)
-	if !r.Config.SessionStorage.IsUnknown() && !r.Config.SessionStorage.IsNull() {
-		*sessionStorage = shared.CreateSamlPluginSessionStorage(r.Config.SessionStorage.ValueString())
-	} else {
-		sessionStorage = nil
-	}
-	sessionStoreMetadata := new(bool)
-	if !r.Config.SessionStoreMetadata.IsUnknown() && !r.Config.SessionStoreMetadata.IsNull() {
-		*sessionStoreMetadata = r.Config.SessionStoreMetadata.ValueBool()
-	} else {
-		sessionStoreMetadata = nil
-	}
-	validateAssertionSignature := new(bool)
-	if !r.Config.ValidateAssertionSignature.IsUnknown() && !r.Config.ValidateAssertionSignature.IsNull() {
-		*validateAssertionSignature = r.Config.ValidateAssertionSignature.ValueBool()
-	} else {
-		validateAssertionSignature = nil
-	}
-	config := shared.CreateSamlPluginConfig{
-		Anonymous:                          anonymous,
-		AssertionConsumerPath:              assertionConsumerPath,
-		IdpCertificate:                     idpCertificate,
-		IdpSsoURL:                          idpSsoURL,
-		Issuer:                             issuer,
-		NameidFormat:                       nameidFormat,
-		RequestDigestAlgorithm:             requestDigestAlgorithm,
-		RequestSignatureAlgorithm:          requestSignatureAlgorithm,
-		RequestSigningCertificate:          requestSigningCertificate,
-		RequestSigningKey:                  requestSigningKey,
-		ResponseDigestAlgorithm:            responseDigestAlgorithm,
-		ResponseEncryptionKey:              responseEncryptionKey,
-		ResponseSignatureAlgorithm:         responseSignatureAlgorithm,
-		SessionAbsoluteTimeout:             sessionAbsoluteTimeout,
-		SessionAudience:                    sessionAudience,
-		SessionCookieDomain:                sessionCookieDomain,
-		SessionCookieHTTPOnly:              sessionCookieHTTPOnly,
-		SessionCookieName:                  sessionCookieName,
-		SessionCookiePath:                  sessionCookiePath,
-		SessionCookieSameSite:              sessionCookieSameSite,
-		SessionCookieSecure:                sessionCookieSecure,
-		SessionEnforceSameSubject:          sessionEnforceSameSubject,
-		SessionHashStorageKey:              sessionHashStorageKey,
-		SessionHashSubject:                 sessionHashSubject,
-		SessionIdlingTimeout:               sessionIdlingTimeout,
-		SessionMemcachedHost:               sessionMemcachedHost,
-		SessionMemcachedPort:               sessionMemcachedPort,
-		SessionMemcachedPrefix:             sessionMemcachedPrefix,
-		SessionMemcachedSocket:             sessionMemcachedSocket,
-		SessionRedisClusterMaxRedirections: sessionRedisClusterMaxRedirections,
-		SessionRedisClusterNodes:           sessionRedisClusterNodes,
-		SessionRedisConnectTimeout:         sessionRedisConnectTimeout,
-		SessionRedisHost:                   sessionRedisHost,
-		SessionRedisPassword:               sessionRedisPassword,
-		SessionRedisPort:                   sessionRedisPort,
-		SessionRedisPrefix:                 sessionRedisPrefix,
-		SessionRedisReadTimeout:            sessionRedisReadTimeout,
-		SessionRedisSendTimeout:            sessionRedisSendTimeout,
-		SessionRedisServerName:             sessionRedisServerName,
-		SessionRedisSocket:                 sessionRedisSocket,
-		SessionRedisSsl:                    sessionRedisSsl,
-		SessionRedisSslVerify:              sessionRedisSslVerify,
-		SessionRedisUsername:               sessionRedisUsername,
-		SessionRemember:                    sessionRemember,
-		SessionRememberAbsoluteTimeout:     sessionRememberAbsoluteTimeout,
-		SessionRememberCookieName:          sessionRememberCookieName,
-		SessionRememberRollingTimeout:      sessionRememberRollingTimeout,
-		SessionRequestHeaders:              sessionRequestHeaders,
-		SessionResponseHeaders:             sessionResponseHeaders,
-		SessionRollingTimeout:              sessionRollingTimeout,
-		SessionSecret:                      sessionSecret,
-		SessionStorage:                     sessionStorage,
-		SessionStoreMetadata:               sessionStoreMetadata,
-		ValidateAssertionSignature:         validateAssertionSignature,
 	}
 	out := shared.CreateSamlPlugin{
-		Enabled:   enabled,
-		Protocols: protocols,
-		Tags:      tags,
-		Consumer:  consumer,
-		Route:     route,
-		Service:   service,
-		Config:    config,
+		Config:        config,
+		Enabled:       enabled,
+		InstanceName:  instanceName,
+		Protocols:     protocols,
+		Tags:          tags,
+		Consumer:      consumer,
+		ConsumerGroup: consumerGroup,
+		Route:         route,
+		Service:       service,
 	}
 	return &out
 }
 
 func (r *GatewayPluginSamlResourceModel) RefreshFromSharedSamlPlugin(resp *shared.SamlPlugin) {
 	if resp != nil {
-		r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
-		r.Config.AssertionConsumerPath = types.StringPointerValue(resp.Config.AssertionConsumerPath)
-		r.Config.IdpCertificate = types.StringPointerValue(resp.Config.IdpCertificate)
-		r.Config.IdpSsoURL = types.StringPointerValue(resp.Config.IdpSsoURL)
-		r.Config.Issuer = types.StringPointerValue(resp.Config.Issuer)
-		if resp.Config.NameidFormat != nil {
-			r.Config.NameidFormat = types.StringValue(string(*resp.Config.NameidFormat))
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.NameidFormat = types.StringNull()
-		}
-		if resp.Config.RequestDigestAlgorithm != nil {
-			r.Config.RequestDigestAlgorithm = types.StringValue(string(*resp.Config.RequestDigestAlgorithm))
-		} else {
-			r.Config.RequestDigestAlgorithm = types.StringNull()
-		}
-		if resp.Config.RequestSignatureAlgorithm != nil {
-			r.Config.RequestSignatureAlgorithm = types.StringValue(string(*resp.Config.RequestSignatureAlgorithm))
-		} else {
-			r.Config.RequestSignatureAlgorithm = types.StringNull()
-		}
-		r.Config.RequestSigningCertificate = types.StringPointerValue(resp.Config.RequestSigningCertificate)
-		r.Config.RequestSigningKey = types.StringPointerValue(resp.Config.RequestSigningKey)
-		if resp.Config.ResponseDigestAlgorithm != nil {
-			r.Config.ResponseDigestAlgorithm = types.StringValue(string(*resp.Config.ResponseDigestAlgorithm))
-		} else {
-			r.Config.ResponseDigestAlgorithm = types.StringNull()
-		}
-		r.Config.ResponseEncryptionKey = types.StringPointerValue(resp.Config.ResponseEncryptionKey)
-		if resp.Config.ResponseSignatureAlgorithm != nil {
-			r.Config.ResponseSignatureAlgorithm = types.StringValue(string(*resp.Config.ResponseSignatureAlgorithm))
-		} else {
-			r.Config.ResponseSignatureAlgorithm = types.StringNull()
-		}
-		if resp.Config.SessionAbsoluteTimeout != nil {
-			r.Config.SessionAbsoluteTimeout = types.NumberValue(big.NewFloat(float64(*resp.Config.SessionAbsoluteTimeout)))
-		} else {
-			r.Config.SessionAbsoluteTimeout = types.NumberNull()
-		}
-		r.Config.SessionAudience = types.StringPointerValue(resp.Config.SessionAudience)
-		r.Config.SessionCookieDomain = types.StringPointerValue(resp.Config.SessionCookieDomain)
-		r.Config.SessionCookieHTTPOnly = types.BoolPointerValue(resp.Config.SessionCookieHTTPOnly)
-		r.Config.SessionCookieName = types.StringPointerValue(resp.Config.SessionCookieName)
-		r.Config.SessionCookiePath = types.StringPointerValue(resp.Config.SessionCookiePath)
-		if resp.Config.SessionCookieSameSite != nil {
-			r.Config.SessionCookieSameSite = types.StringValue(string(*resp.Config.SessionCookieSameSite))
-		} else {
-			r.Config.SessionCookieSameSite = types.StringNull()
-		}
-		r.Config.SessionCookieSecure = types.BoolPointerValue(resp.Config.SessionCookieSecure)
-		r.Config.SessionEnforceSameSubject = types.BoolPointerValue(resp.Config.SessionEnforceSameSubject)
-		r.Config.SessionHashStorageKey = types.BoolPointerValue(resp.Config.SessionHashStorageKey)
-		r.Config.SessionHashSubject = types.BoolPointerValue(resp.Config.SessionHashSubject)
-		if resp.Config.SessionIdlingTimeout != nil {
-			r.Config.SessionIdlingTimeout = types.NumberValue(big.NewFloat(float64(*resp.Config.SessionIdlingTimeout)))
-		} else {
-			r.Config.SessionIdlingTimeout = types.NumberNull()
-		}
-		r.Config.SessionMemcachedHost = types.StringPointerValue(resp.Config.SessionMemcachedHost)
-		r.Config.SessionMemcachedPort = types.Int64PointerValue(resp.Config.SessionMemcachedPort)
-		r.Config.SessionMemcachedPrefix = types.StringPointerValue(resp.Config.SessionMemcachedPrefix)
-		r.Config.SessionMemcachedSocket = types.StringPointerValue(resp.Config.SessionMemcachedSocket)
-		r.Config.SessionRedisClusterMaxRedirections = types.Int64PointerValue(resp.Config.SessionRedisClusterMaxRedirections)
-		r.Config.SessionRedisClusterNodes = []tfTypes.SessionRedisClusterNodes{}
-		if len(r.Config.SessionRedisClusterNodes) > len(resp.Config.SessionRedisClusterNodes) {
-			r.Config.SessionRedisClusterNodes = r.Config.SessionRedisClusterNodes[:len(resp.Config.SessionRedisClusterNodes)]
-		}
-		for sessionRedisClusterNodesCount, sessionRedisClusterNodesItem := range resp.Config.SessionRedisClusterNodes {
-			var sessionRedisClusterNodes1 tfTypes.SessionRedisClusterNodes
-			sessionRedisClusterNodes1.IP = types.StringPointerValue(sessionRedisClusterNodesItem.IP)
-			sessionRedisClusterNodes1.Port = types.Int64PointerValue(sessionRedisClusterNodesItem.Port)
-			if sessionRedisClusterNodesCount+1 > len(r.Config.SessionRedisClusterNodes) {
-				r.Config.SessionRedisClusterNodes = append(r.Config.SessionRedisClusterNodes, sessionRedisClusterNodes1)
+			r.Config = &tfTypes.CreateSamlPluginConfig{}
+			r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
+			r.Config.AssertionConsumerPath = types.StringPointerValue(resp.Config.AssertionConsumerPath)
+			r.Config.IdpCertificate = types.StringPointerValue(resp.Config.IdpCertificate)
+			r.Config.IdpSsoURL = types.StringPointerValue(resp.Config.IdpSsoURL)
+			r.Config.Issuer = types.StringPointerValue(resp.Config.Issuer)
+			if resp.Config.NameidFormat != nil {
+				r.Config.NameidFormat = types.StringValue(string(*resp.Config.NameidFormat))
 			} else {
-				r.Config.SessionRedisClusterNodes[sessionRedisClusterNodesCount].IP = sessionRedisClusterNodes1.IP
-				r.Config.SessionRedisClusterNodes[sessionRedisClusterNodesCount].Port = sessionRedisClusterNodes1.Port
+				r.Config.NameidFormat = types.StringNull()
 			}
+			if resp.Config.RequestDigestAlgorithm != nil {
+				r.Config.RequestDigestAlgorithm = types.StringValue(string(*resp.Config.RequestDigestAlgorithm))
+			} else {
+				r.Config.RequestDigestAlgorithm = types.StringNull()
+			}
+			if resp.Config.RequestSignatureAlgorithm != nil {
+				r.Config.RequestSignatureAlgorithm = types.StringValue(string(*resp.Config.RequestSignatureAlgorithm))
+			} else {
+				r.Config.RequestSignatureAlgorithm = types.StringNull()
+			}
+			r.Config.RequestSigningCertificate = types.StringPointerValue(resp.Config.RequestSigningCertificate)
+			r.Config.RequestSigningKey = types.StringPointerValue(resp.Config.RequestSigningKey)
+			if resp.Config.ResponseDigestAlgorithm != nil {
+				r.Config.ResponseDigestAlgorithm = types.StringValue(string(*resp.Config.ResponseDigestAlgorithm))
+			} else {
+				r.Config.ResponseDigestAlgorithm = types.StringNull()
+			}
+			r.Config.ResponseEncryptionKey = types.StringPointerValue(resp.Config.ResponseEncryptionKey)
+			if resp.Config.ResponseSignatureAlgorithm != nil {
+				r.Config.ResponseSignatureAlgorithm = types.StringValue(string(*resp.Config.ResponseSignatureAlgorithm))
+			} else {
+				r.Config.ResponseSignatureAlgorithm = types.StringNull()
+			}
+			if resp.Config.SessionAbsoluteTimeout != nil {
+				r.Config.SessionAbsoluteTimeout = types.NumberValue(big.NewFloat(float64(*resp.Config.SessionAbsoluteTimeout)))
+			} else {
+				r.Config.SessionAbsoluteTimeout = types.NumberNull()
+			}
+			r.Config.SessionAudience = types.StringPointerValue(resp.Config.SessionAudience)
+			r.Config.SessionCookieDomain = types.StringPointerValue(resp.Config.SessionCookieDomain)
+			r.Config.SessionCookieHTTPOnly = types.BoolPointerValue(resp.Config.SessionCookieHTTPOnly)
+			r.Config.SessionCookieName = types.StringPointerValue(resp.Config.SessionCookieName)
+			r.Config.SessionCookiePath = types.StringPointerValue(resp.Config.SessionCookiePath)
+			if resp.Config.SessionCookieSameSite != nil {
+				r.Config.SessionCookieSameSite = types.StringValue(string(*resp.Config.SessionCookieSameSite))
+			} else {
+				r.Config.SessionCookieSameSite = types.StringNull()
+			}
+			r.Config.SessionCookieSecure = types.BoolPointerValue(resp.Config.SessionCookieSecure)
+			r.Config.SessionEnforceSameSubject = types.BoolPointerValue(resp.Config.SessionEnforceSameSubject)
+			r.Config.SessionHashStorageKey = types.BoolPointerValue(resp.Config.SessionHashStorageKey)
+			r.Config.SessionHashSubject = types.BoolPointerValue(resp.Config.SessionHashSubject)
+			if resp.Config.SessionIdlingTimeout != nil {
+				r.Config.SessionIdlingTimeout = types.NumberValue(big.NewFloat(float64(*resp.Config.SessionIdlingTimeout)))
+			} else {
+				r.Config.SessionIdlingTimeout = types.NumberNull()
+			}
+			r.Config.SessionMemcachedHost = types.StringPointerValue(resp.Config.SessionMemcachedHost)
+			r.Config.SessionMemcachedPort = types.Int64PointerValue(resp.Config.SessionMemcachedPort)
+			r.Config.SessionMemcachedPrefix = types.StringPointerValue(resp.Config.SessionMemcachedPrefix)
+			r.Config.SessionMemcachedSocket = types.StringPointerValue(resp.Config.SessionMemcachedSocket)
+			r.Config.SessionRedisClusterMaxRedirections = types.Int64PointerValue(resp.Config.SessionRedisClusterMaxRedirections)
+			r.Config.SessionRedisClusterNodes = []tfTypes.SessionRedisClusterNodes{}
+			if len(r.Config.SessionRedisClusterNodes) > len(resp.Config.SessionRedisClusterNodes) {
+				r.Config.SessionRedisClusterNodes = r.Config.SessionRedisClusterNodes[:len(resp.Config.SessionRedisClusterNodes)]
+			}
+			for sessionRedisClusterNodesCount, sessionRedisClusterNodesItem := range resp.Config.SessionRedisClusterNodes {
+				var sessionRedisClusterNodes1 tfTypes.SessionRedisClusterNodes
+				sessionRedisClusterNodes1.IP = types.StringPointerValue(sessionRedisClusterNodesItem.IP)
+				sessionRedisClusterNodes1.Port = types.Int64PointerValue(sessionRedisClusterNodesItem.Port)
+				if sessionRedisClusterNodesCount+1 > len(r.Config.SessionRedisClusterNodes) {
+					r.Config.SessionRedisClusterNodes = append(r.Config.SessionRedisClusterNodes, sessionRedisClusterNodes1)
+				} else {
+					r.Config.SessionRedisClusterNodes[sessionRedisClusterNodesCount].IP = sessionRedisClusterNodes1.IP
+					r.Config.SessionRedisClusterNodes[sessionRedisClusterNodesCount].Port = sessionRedisClusterNodes1.Port
+				}
+			}
+			r.Config.SessionRedisConnectTimeout = types.Int64PointerValue(resp.Config.SessionRedisConnectTimeout)
+			r.Config.SessionRedisHost = types.StringPointerValue(resp.Config.SessionRedisHost)
+			r.Config.SessionRedisPassword = types.StringPointerValue(resp.Config.SessionRedisPassword)
+			r.Config.SessionRedisPort = types.Int64PointerValue(resp.Config.SessionRedisPort)
+			r.Config.SessionRedisPrefix = types.StringPointerValue(resp.Config.SessionRedisPrefix)
+			r.Config.SessionRedisReadTimeout = types.Int64PointerValue(resp.Config.SessionRedisReadTimeout)
+			r.Config.SessionRedisSendTimeout = types.Int64PointerValue(resp.Config.SessionRedisSendTimeout)
+			r.Config.SessionRedisServerName = types.StringPointerValue(resp.Config.SessionRedisServerName)
+			r.Config.SessionRedisSocket = types.StringPointerValue(resp.Config.SessionRedisSocket)
+			r.Config.SessionRedisSsl = types.BoolPointerValue(resp.Config.SessionRedisSsl)
+			r.Config.SessionRedisSslVerify = types.BoolPointerValue(resp.Config.SessionRedisSslVerify)
+			r.Config.SessionRedisUsername = types.StringPointerValue(resp.Config.SessionRedisUsername)
+			r.Config.SessionRemember = types.BoolPointerValue(resp.Config.SessionRemember)
+			if resp.Config.SessionRememberAbsoluteTimeout != nil {
+				r.Config.SessionRememberAbsoluteTimeout = types.NumberValue(big.NewFloat(float64(*resp.Config.SessionRememberAbsoluteTimeout)))
+			} else {
+				r.Config.SessionRememberAbsoluteTimeout = types.NumberNull()
+			}
+			r.Config.SessionRememberCookieName = types.StringPointerValue(resp.Config.SessionRememberCookieName)
+			if resp.Config.SessionRememberRollingTimeout != nil {
+				r.Config.SessionRememberRollingTimeout = types.NumberValue(big.NewFloat(float64(*resp.Config.SessionRememberRollingTimeout)))
+			} else {
+				r.Config.SessionRememberRollingTimeout = types.NumberNull()
+			}
+			r.Config.SessionRequestHeaders = []types.String{}
+			for _, v := range resp.Config.SessionRequestHeaders {
+				r.Config.SessionRequestHeaders = append(r.Config.SessionRequestHeaders, types.StringValue(string(v)))
+			}
+			r.Config.SessionResponseHeaders = []types.String{}
+			for _, v := range resp.Config.SessionResponseHeaders {
+				r.Config.SessionResponseHeaders = append(r.Config.SessionResponseHeaders, types.StringValue(string(v)))
+			}
+			if resp.Config.SessionRollingTimeout != nil {
+				r.Config.SessionRollingTimeout = types.NumberValue(big.NewFloat(float64(*resp.Config.SessionRollingTimeout)))
+			} else {
+				r.Config.SessionRollingTimeout = types.NumberNull()
+			}
+			r.Config.SessionSecret = types.StringPointerValue(resp.Config.SessionSecret)
+			if resp.Config.SessionStorage != nil {
+				r.Config.SessionStorage = types.StringValue(string(*resp.Config.SessionStorage))
+			} else {
+				r.Config.SessionStorage = types.StringNull()
+			}
+			r.Config.SessionStoreMetadata = types.BoolPointerValue(resp.Config.SessionStoreMetadata)
+			r.Config.ValidateAssertionSignature = types.BoolPointerValue(resp.Config.ValidateAssertionSignature)
 		}
-		r.Config.SessionRedisConnectTimeout = types.Int64PointerValue(resp.Config.SessionRedisConnectTimeout)
-		r.Config.SessionRedisHost = types.StringPointerValue(resp.Config.SessionRedisHost)
-		r.Config.SessionRedisPassword = types.StringPointerValue(resp.Config.SessionRedisPassword)
-		r.Config.SessionRedisPort = types.Int64PointerValue(resp.Config.SessionRedisPort)
-		r.Config.SessionRedisPrefix = types.StringPointerValue(resp.Config.SessionRedisPrefix)
-		r.Config.SessionRedisReadTimeout = types.Int64PointerValue(resp.Config.SessionRedisReadTimeout)
-		r.Config.SessionRedisSendTimeout = types.Int64PointerValue(resp.Config.SessionRedisSendTimeout)
-		r.Config.SessionRedisServerName = types.StringPointerValue(resp.Config.SessionRedisServerName)
-		r.Config.SessionRedisSocket = types.StringPointerValue(resp.Config.SessionRedisSocket)
-		r.Config.SessionRedisSsl = types.BoolPointerValue(resp.Config.SessionRedisSsl)
-		r.Config.SessionRedisSslVerify = types.BoolPointerValue(resp.Config.SessionRedisSslVerify)
-		r.Config.SessionRedisUsername = types.StringPointerValue(resp.Config.SessionRedisUsername)
-		r.Config.SessionRemember = types.BoolPointerValue(resp.Config.SessionRemember)
-		if resp.Config.SessionRememberAbsoluteTimeout != nil {
-			r.Config.SessionRememberAbsoluteTimeout = types.NumberValue(big.NewFloat(float64(*resp.Config.SessionRememberAbsoluteTimeout)))
-		} else {
-			r.Config.SessionRememberAbsoluteTimeout = types.NumberNull()
-		}
-		r.Config.SessionRememberCookieName = types.StringPointerValue(resp.Config.SessionRememberCookieName)
-		if resp.Config.SessionRememberRollingTimeout != nil {
-			r.Config.SessionRememberRollingTimeout = types.NumberValue(big.NewFloat(float64(*resp.Config.SessionRememberRollingTimeout)))
-		} else {
-			r.Config.SessionRememberRollingTimeout = types.NumberNull()
-		}
-		r.Config.SessionRequestHeaders = []types.String{}
-		for _, v := range resp.Config.SessionRequestHeaders {
-			r.Config.SessionRequestHeaders = append(r.Config.SessionRequestHeaders, types.StringValue(string(v)))
-		}
-		r.Config.SessionResponseHeaders = []types.String{}
-		for _, v := range resp.Config.SessionResponseHeaders {
-			r.Config.SessionResponseHeaders = append(r.Config.SessionResponseHeaders, types.StringValue(string(v)))
-		}
-		if resp.Config.SessionRollingTimeout != nil {
-			r.Config.SessionRollingTimeout = types.NumberValue(big.NewFloat(float64(*resp.Config.SessionRollingTimeout)))
-		} else {
-			r.Config.SessionRollingTimeout = types.NumberNull()
-		}
-		r.Config.SessionSecret = types.StringPointerValue(resp.Config.SessionSecret)
-		if resp.Config.SessionStorage != nil {
-			r.Config.SessionStorage = types.StringValue(string(*resp.Config.SessionStorage))
-		} else {
-			r.Config.SessionStorage = types.StringNull()
-		}
-		r.Config.SessionStoreMetadata = types.BoolPointerValue(resp.Config.SessionStoreMetadata)
-		r.Config.ValidateAssertionSignature = types.BoolPointerValue(resp.Config.ValidateAssertionSignature)
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
 			r.Consumer = &tfTypes.ACLConsumer{}
 			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
 		}
+		if resp.ConsumerGroup == nil {
+			r.ConsumerGroup = nil
+		} else {
+			r.ConsumerGroup = &tfTypes.ACLConsumer{}
+			r.ConsumerGroup.ID = types.StringPointerValue(resp.ConsumerGroup.ID)
+		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
+		r.InstanceName = types.StringPointerValue(resp.InstanceName)
 		r.Protocols = []types.String{}
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))
@@ -614,5 +649,6 @@ func (r *GatewayPluginSamlResourceModel) RefreshFromSharedSamlPlugin(resp *share
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}
+		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
 }

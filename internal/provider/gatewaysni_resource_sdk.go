@@ -4,25 +4,34 @@ package provider
 
 import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
 )
 
-func (r *GatewaySNIResourceModel) ToSharedCreateSNI() *shared.CreateSNI {
-	name := r.Name.ValueString()
+func (r *GatewaySNIResourceModel) ToSharedSNIInput() *shared.SNIInput {
+	name := new(string)
+	if !r.Name.IsUnknown() && !r.Name.IsNull() {
+		*name = r.Name.ValueString()
+	} else {
+		name = nil
+	}
 	var tags []string = []string{}
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	id := new(string)
-	if !r.Certificate.ID.IsUnknown() && !r.Certificate.ID.IsNull() {
-		*id = r.Certificate.ID.ValueString()
-	} else {
-		id = nil
+	var certificate *shared.SNICertificate
+	if r.Certificate != nil {
+		id := new(string)
+		if !r.Certificate.ID.IsUnknown() && !r.Certificate.ID.IsNull() {
+			*id = r.Certificate.ID.ValueString()
+		} else {
+			id = nil
+		}
+		certificate = &shared.SNICertificate{
+			ID: id,
+		}
 	}
-	certificate := shared.CreateSNICertificate{
-		ID: id,
-	}
-	out := shared.CreateSNI{
+	out := shared.SNIInput{
 		Name:        name,
 		Tags:        tags,
 		Certificate: certificate,
@@ -32,13 +41,19 @@ func (r *GatewaySNIResourceModel) ToSharedCreateSNI() *shared.CreateSNI {
 
 func (r *GatewaySNIResourceModel) RefreshFromSharedSni(resp *shared.Sni) {
 	if resp != nil {
-		r.Certificate.ID = types.StringPointerValue(resp.Certificate.ID)
+		if resp.Certificate == nil {
+			r.Certificate = nil
+		} else {
+			r.Certificate = &tfTypes.ACLConsumer{}
+			r.Certificate.ID = types.StringPointerValue(resp.Certificate.ID)
+		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.ID = types.StringPointerValue(resp.ID)
-		r.Name = types.StringValue(resp.Name)
+		r.Name = types.StringPointerValue(resp.Name)
 		r.Tags = []types.String{}
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}
+		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
 }

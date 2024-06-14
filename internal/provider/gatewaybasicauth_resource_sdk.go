@@ -8,7 +8,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
 )
 
-func (r *GatewayBasicAuthResourceModel) ToSharedCreateBasicAuthWithoutParents() *shared.CreateBasicAuthWithoutParents {
+func (r *GatewayBasicAuthResourceModel) ToSharedBasicAuthWithoutParents() *shared.BasicAuthWithoutParents {
 	password := new(string)
 	if !r.Password.IsUnknown() && !r.Password.IsNull() {
 		*password = r.Password.ValueString()
@@ -25,7 +25,7 @@ func (r *GatewayBasicAuthResourceModel) ToSharedCreateBasicAuthWithoutParents() 
 	} else {
 		username = nil
 	}
-	out := shared.CreateBasicAuthWithoutParents{
+	out := shared.BasicAuthWithoutParents{
 		Password: password,
 		Tags:     tags,
 		Username: username,
