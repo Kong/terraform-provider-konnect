@@ -13,7 +13,7 @@ type CreateTargetWithUpstreamRequest struct {
 	// ID or target of the Target to lookup
 	UpstreamIDForTarget string `pathParam:"style=simple,explode=false,name=UpstreamIdForTarget"`
 	// Description of new Target for creation
-	CreateTargetWithoutParents shared.CreateTargetWithoutParents `request:"mediaType=application/json"`
+	TargetWithoutParents shared.TargetWithoutParents `request:"mediaType=application/json"`
 }
 
 func (o *CreateTargetWithUpstreamRequest) GetControlPlaneID() string {
@@ -30,11 +30,11 @@ func (o *CreateTargetWithUpstreamRequest) GetUpstreamIDForTarget() string {
 	return o.UpstreamIDForTarget
 }
 
-func (o *CreateTargetWithUpstreamRequest) GetCreateTargetWithoutParents() shared.CreateTargetWithoutParents {
+func (o *CreateTargetWithUpstreamRequest) GetTargetWithoutParents() shared.TargetWithoutParents {
 	if o == nil {
-		return shared.CreateTargetWithoutParents{}
+		return shared.TargetWithoutParents{}
 	}
-	return o.CreateTargetWithoutParents
+	return o.TargetWithoutParents
 }
 
 type CreateTargetWithUpstreamResponse struct {

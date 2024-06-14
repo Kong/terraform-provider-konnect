@@ -2,8 +2,7 @@
 
 package shared
 
-// CreateConsumer - The Consumer object represents a consumer - or a user - of a Service. You can either rely on Kong as the primary datastore, or you can map the consumer list with your database to keep consistency between Kong and your existing primary datastore.
-type CreateConsumer struct {
+type ConsumerInput struct {
 	// Field for storing an existing unique ID for the Consumer - useful for mapping Kong with users in your existing database. You must send either this field or `username` with the request.
 	CustomID *string `json:"custom_id,omitempty"`
 	// An optional set of strings associated with the Consumer for grouping and filtering.
@@ -12,21 +11,21 @@ type CreateConsumer struct {
 	Username *string `json:"username,omitempty"`
 }
 
-func (o *CreateConsumer) GetCustomID() *string {
+func (o *ConsumerInput) GetCustomID() *string {
 	if o == nil {
 		return nil
 	}
 	return o.CustomID
 }
 
-func (o *CreateConsumer) GetTags() []string {
+func (o *ConsumerInput) GetTags() []string {
 	if o == nil {
 		return nil
 	}
 	return o.Tags
 }
 
-func (o *CreateConsumer) GetUsername() *string {
+func (o *ConsumerInput) GetUsername() *string {
 	if o == nil {
 		return nil
 	}

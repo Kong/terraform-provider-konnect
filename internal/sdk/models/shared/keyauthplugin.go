@@ -6,7 +6,83 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/internal/sdk/types"
 )
+
+type KeyAuthPluginConfig struct {
+	// An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request will fail with an authentication failure `4xx`.
+	Anonymous *string `json:"anonymous,omitempty"`
+	// An optional boolean value telling the plugin to show or hide the credential from the upstream service. If `true`, the plugin strips the credential from the request.
+	HideCredentials *bool `json:"hide_credentials,omitempty"`
+	// If enabled, the plugin reads the request body. Supported MIME types: `application/www-form-urlencoded`, `application/json`, and `multipart/form-data`.
+	KeyInBody *bool `json:"key_in_body,omitempty"`
+	// If enabled (default), the plugin reads the request header and tries to find the key in it.
+	KeyInHeader *bool `json:"key_in_header,omitempty"`
+	// If enabled (default), the plugin reads the query parameter in the request and tries to find the key in it.
+	KeyInQuery *bool `json:"key_in_query,omitempty"`
+	// Describes an array of parameter names where the plugin will look for a key. The key names may only contain [a-z], [A-Z], [0-9], [_] underscore, and [-] hyphen.
+	KeyNames []string `json:"key_names,omitempty"`
+	// When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value.
+	Realm *string `json:"realm,omitempty"`
+	// A boolean value that indicates whether the plugin should run (and try to authenticate) on `OPTIONS` preflight requests. If set to `false`, then `OPTIONS` requests are always allowed.
+	RunOnPreflight *bool `json:"run_on_preflight,omitempty"`
+}
+
+func (o *KeyAuthPluginConfig) GetAnonymous() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Anonymous
+}
+
+func (o *KeyAuthPluginConfig) GetHideCredentials() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.HideCredentials
+}
+
+func (o *KeyAuthPluginConfig) GetKeyInBody() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.KeyInBody
+}
+
+func (o *KeyAuthPluginConfig) GetKeyInHeader() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.KeyInHeader
+}
+
+func (o *KeyAuthPluginConfig) GetKeyInQuery() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.KeyInQuery
+}
+
+func (o *KeyAuthPluginConfig) GetKeyNames() []string {
+	if o == nil {
+		return nil
+	}
+	return o.KeyNames
+}
+
+func (o *KeyAuthPluginConfig) GetRealm() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Realm
+}
+
+func (o *KeyAuthPluginConfig) GetRunOnPreflight() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RunOnPreflight
+}
 
 type KeyAuthPluginProtocols string
 
@@ -70,6 +146,17 @@ func (o *KeyAuthPluginConsumer) GetID() *string {
 	return o.ID
 }
 
+type KeyAuthPluginConsumerGroup struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *KeyAuthPluginConsumerGroup) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
 // KeyAuthPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
 type KeyAuthPluginRoute struct {
 	ID *string `json:"id,omitempty"`
@@ -94,102 +181,28 @@ func (o *KeyAuthPluginService) GetID() *string {
 	return o.ID
 }
 
-type KeyAuthPluginConfig struct {
-	// An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request will fail with an authentication failure `4xx`.
-	Anonymous *string `json:"anonymous,omitempty"`
-	// An optional boolean value telling the plugin to show or hide the credential from the upstream service. If `true`, the plugin strips the credential from the request.
-	HideCredentials *bool `default:"false" json:"hide_credentials"`
-	// If enabled, the plugin reads the request body. Supported MIME types: `application/www-form-urlencoded`, `application/json`, and `multipart/form-data`.
-	KeyInBody *bool `default:"false" json:"key_in_body"`
-	// If enabled (default), the plugin reads the request header and tries to find the key in it.
-	KeyInHeader *bool `default:"true" json:"key_in_header"`
-	// If enabled (default), the plugin reads the query parameter in the request and tries to find the key in it.
-	KeyInQuery *bool `default:"true" json:"key_in_query"`
-	// Describes an array of parameter names where the plugin will look for a key. The key names may only contain [a-z], [A-Z], [0-9], [_] underscore, and [-] hyphen.
-	KeyNames []string `json:"key_names,omitempty"`
-	// A boolean value that indicates whether the plugin should run (and try to authenticate) on `OPTIONS` preflight requests. If set to `false`, then `OPTIONS` requests are always allowed.
-	RunOnPreflight *bool `default:"true" json:"run_on_preflight"`
-}
-
-func (k KeyAuthPluginConfig) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(k, "", false)
-}
-
-func (k *KeyAuthPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (o *KeyAuthPluginConfig) GetAnonymous() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Anonymous
-}
-
-func (o *KeyAuthPluginConfig) GetHideCredentials() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.HideCredentials
-}
-
-func (o *KeyAuthPluginConfig) GetKeyInBody() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.KeyInBody
-}
-
-func (o *KeyAuthPluginConfig) GetKeyInHeader() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.KeyInHeader
-}
-
-func (o *KeyAuthPluginConfig) GetKeyInQuery() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.KeyInQuery
-}
-
-func (o *KeyAuthPluginConfig) GetKeyNames() []string {
-	if o == nil {
-		return nil
-	}
-	return o.KeyNames
-}
-
-func (o *KeyAuthPluginConfig) GetRunOnPreflight() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.RunOnPreflight
-}
-
-// KeyAuthPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type KeyAuthPlugin struct {
+	Config *KeyAuthPluginConfig `json:"config,omitempty"`
+	// Unix epoch when the resource was created.
+	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool  `default:"true" json:"enabled"`
-	name    string `const:"key-auth" json:"name"`
+	Enabled      *bool   `json:"enabled,omitempty"`
+	ID           *string `json:"id,omitempty"`
+	InstanceName *string `json:"instance_name,omitempty"`
+	name         *string `const:"key-auth" json:"name,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []KeyAuthPluginProtocols `json:"protocols"`
+	Protocols []KeyAuthPluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
+	// Unix epoch when the resource was last updated.
+	UpdatedAt *int64 `json:"updated_at,omitempty"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer *KeyAuthPluginConsumer `json:"consumer,omitempty"`
+	Consumer      *KeyAuthPluginConsumer      `json:"consumer,omitempty"`
+	ConsumerGroup *KeyAuthPluginConsumerGroup `json:"consumer_group,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
 	Route *KeyAuthPluginRoute `json:"route,omitempty"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 	Service *KeyAuthPluginService `json:"service,omitempty"`
-	// Unix epoch when the resource was created.
-	CreatedAt *int64              `json:"created_at,omitempty"`
-	ID        *string             `json:"id,omitempty"`
-	Config    KeyAuthPluginConfig `json:"config"`
 }
 
 func (k KeyAuthPlugin) MarshalJSON() ([]byte, error) {
@@ -203,6 +216,20 @@ func (k *KeyAuthPlugin) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (o *KeyAuthPlugin) GetConfig() *KeyAuthPluginConfig {
+	if o == nil {
+		return nil
+	}
+	return o.Config
+}
+
+func (o *KeyAuthPlugin) GetCreatedAt() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.CreatedAt
+}
+
 func (o *KeyAuthPlugin) GetEnabled() *bool {
 	if o == nil {
 		return nil
@@ -210,13 +237,27 @@ func (o *KeyAuthPlugin) GetEnabled() *bool {
 	return o.Enabled
 }
 
-func (o *KeyAuthPlugin) GetName() string {
-	return "key-auth"
+func (o *KeyAuthPlugin) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *KeyAuthPlugin) GetInstanceName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.InstanceName
+}
+
+func (o *KeyAuthPlugin) GetName() *string {
+	return types.String("key-auth")
 }
 
 func (o *KeyAuthPlugin) GetProtocols() []KeyAuthPluginProtocols {
 	if o == nil {
-		return []KeyAuthPluginProtocols{}
+		return nil
 	}
 	return o.Protocols
 }
@@ -228,11 +269,25 @@ func (o *KeyAuthPlugin) GetTags() []string {
 	return o.Tags
 }
 
+func (o *KeyAuthPlugin) GetUpdatedAt() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.UpdatedAt
+}
+
 func (o *KeyAuthPlugin) GetConsumer() *KeyAuthPluginConsumer {
 	if o == nil {
 		return nil
 	}
 	return o.Consumer
+}
+
+func (o *KeyAuthPlugin) GetConsumerGroup() *KeyAuthPluginConsumerGroup {
+	if o == nil {
+		return nil
+	}
+	return o.ConsumerGroup
 }
 
 func (o *KeyAuthPlugin) GetRoute() *KeyAuthPluginRoute {
@@ -247,25 +302,4 @@ func (o *KeyAuthPlugin) GetService() *KeyAuthPluginService {
 		return nil
 	}
 	return o.Service
-}
-
-func (o *KeyAuthPlugin) GetCreatedAt() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.CreatedAt
-}
-
-func (o *KeyAuthPlugin) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-func (o *KeyAuthPlugin) GetConfig() KeyAuthPluginConfig {
-	if o == nil {
-		return KeyAuthPluginConfig{}
-	}
-	return o.Config
 }

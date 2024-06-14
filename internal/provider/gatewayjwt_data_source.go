@@ -54,7 +54,7 @@ func (r *GatewayJWTDataSource) Schema(ctx context.Context, req datasource.Schema
 		Attributes: map[string]schema.Attribute{
 			"algorithm": schema.StringAttribute{
 				Computed:    true,
-				Description: `must be one of ["HS256", "HS384", "HS512", "RS256", "RS384", "RS512", "ES256", "ES384"]`,
+				Description: `must be one of ["HS256", "HS384", "HS512", "RS256", "RS384", "RS512", "ES256", "ES384", "ES512", "PS256", "PS384", "PS512", "EdDSA"]`,
 			},
 			"consumer": schema.SingleNestedAttribute{
 				Computed: true,
@@ -163,8 +163,8 @@ func (r *GatewayJWTDataSource) Read(ctx context.Context, req datasource.ReadRequ
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.Jwt == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.Jwt != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedJwt(res.Jwt)

@@ -165,7 +165,7 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 								PlanModifiers: []planmodifier.String{
 									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 								},
-								Description: `Contains a unique identifier used by the API for this resource.`,
+								Description: `Contains a unique identifier used for this resource.`,
 							},
 							"name": schema.StringAttribute{
 								Computed: true,
@@ -210,7 +210,7 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 						PlanModifiers: []planmodifier.String{
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
-						Description: `Contains a unique identifier used by the API for this resource.`,
+						Description: `Contains a unique identifier used for this resource.`,
 					},
 					"name": schema.StringAttribute{
 						Computed: true,
@@ -407,7 +407,7 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 								PlanModifiers: []planmodifier.String{
 									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 								},
-								Description: `Contains a unique identifier used by the API for this resource.`,
+								Description: `Contains a unique identifier used for this resource.`,
 							},
 							"name": schema.StringAttribute{
 								Computed: true,
@@ -461,7 +461,7 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 						PlanModifiers: []planmodifier.String{
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
-						Description: `Contains a unique identifier used by the API for this resource.`,
+						Description: `Contains a unique identifier used for this resource.`,
 					},
 					"name": schema.StringAttribute{
 						Computed: true,
@@ -569,8 +569,8 @@ func (r *ApplicationAuthStrategyResource) Create(ctx context.Context, req resour
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.CreateAppAuthStrategyResponse == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.CreateAppAuthStrategyResponse != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedCreateAppAuthStrategyResponse(res.CreateAppAuthStrategyResponse)
@@ -595,8 +595,8 @@ func (r *ApplicationAuthStrategyResource) Create(ctx context.Context, req resour
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
 		return
 	}
-	if res1.GetAppAuthStrategyResponse == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res1.RawResponse))
+	if !(res1.GetAppAuthStrategyResponse != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
 	data.RefreshFromSharedGetAppAuthStrategyResponse(res1.GetAppAuthStrategyResponse)
@@ -648,8 +648,8 @@ func (r *ApplicationAuthStrategyResource) Read(ctx context.Context, req resource
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.GetAppAuthStrategyResponse == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.GetAppAuthStrategyResponse != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedGetAppAuthStrategyResponse(res.GetAppAuthStrategyResponse)
@@ -694,8 +694,8 @@ func (r *ApplicationAuthStrategyResource) Update(ctx context.Context, req resour
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.UpdateAppAuthStrategyResponse == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.UpdateAppAuthStrategyResponse != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedUpdateAppAuthStrategyResponse(res.UpdateAppAuthStrategyResponse)
@@ -720,8 +720,8 @@ func (r *ApplicationAuthStrategyResource) Update(ctx context.Context, req resour
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
 		return
 	}
-	if res1.GetAppAuthStrategyResponse == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res1.RawResponse))
+	if !(res1.GetAppAuthStrategyResponse != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
 	data.RefreshFromSharedGetAppAuthStrategyResponse(res1.GetAppAuthStrategyResponse)

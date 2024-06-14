@@ -29,16 +29,19 @@ type GatewayPluginJWTSignerDataSource struct {
 
 // GatewayPluginJWTSignerDataSourceModel describes the data model.
 type GatewayPluginJWTSignerDataSourceModel struct {
-	Config         tfTypes.CreateJWTSignerPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer                `tfsdk:"consumer"`
-	ControlPlaneID types.String                        `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                         `tfsdk:"created_at"`
-	Enabled        types.Bool                          `tfsdk:"enabled"`
-	ID             types.String                        `tfsdk:"id"`
-	Protocols      []types.String                      `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer                `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer                `tfsdk:"service"`
-	Tags           []types.String                      `tfsdk:"tags"`
+	Config         *tfTypes.CreateJWTSignerPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer                 `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer                 `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                         `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                          `tfsdk:"created_at"`
+	Enabled        types.Bool                           `tfsdk:"enabled"`
+	ID             types.String                         `tfsdk:"id"`
+	InstanceName   types.String                         `tfsdk:"instance_name"`
+	Protocols      []types.String                       `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer                 `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer                 `tfsdk:"service"`
+	Tags           []types.String                       `tfsdk:"tags"`
+	UpdatedAt      types.Int64                          `tfsdk:"updated_at"`
 }
 
 // Metadata returns the data source type name.
@@ -122,9 +125,41 @@ func (r *GatewayPluginJWTSignerDataSource) Schema(ctx context.Context, req datas
 						Computed:    true,
 						Description: `Specify the URI where the plugin can fetch the public keys (JWKS) to verify the signature of the access token.`,
 					},
+					"access_token_jwks_uri_client_certificate": schema.StringAttribute{
+						Computed:    true,
+						Description: `The client certificate that will be used to authenticate Kong if ` + "`" + `access_token_jwks_uri` + "`" + ` is an https uri that requires mTLS Auth.`,
+					},
+					"access_token_jwks_uri_client_password": schema.StringAttribute{
+						Computed:    true,
+						Description: `The client password that will be used to authenticate Kong if ` + "`" + `access_token_jwks_uri` + "`" + ` is a uri that requires Basic Auth. Should be configured together with ` + "`" + `access_token_jwks_uri_client_username` + "`" + ``,
+					},
+					"access_token_jwks_uri_client_username": schema.StringAttribute{
+						Computed:    true,
+						Description: `The client username that will be used to authenticate Kong if ` + "`" + `access_token_jwks_uri` + "`" + ` is a uri that requires Basic Auth. Should be configured together with ` + "`" + `access_token_jwks_uri_client_password` + "`" + ``,
+					},
+					"access_token_jwks_uri_rotate_period": schema.NumberAttribute{
+						Computed:    true,
+						Description: `Specify the period (in seconds) to auto-rotate the jwks for ` + "`" + `access_token_jwks_uri` + "`" + `. The default value 0 means no auto-rotation.`,
+					},
 					"access_token_keyset": schema.StringAttribute{
 						Computed:    true,
 						Description: `The name of the keyset containing signing keys.`,
+					},
+					"access_token_keyset_client_certificate": schema.StringAttribute{
+						Computed:    true,
+						Description: `The client certificate that will be used to authenticate Kong if ` + "`" + `access_token_keyset` + "`" + ` is an https uri that requires mTLS Auth.`,
+					},
+					"access_token_keyset_client_password": schema.StringAttribute{
+						Computed:    true,
+						Description: `The client password that will be used to authenticate Kong if ` + "`" + `access_token_keyset` + "`" + ` is a uri that requires Basic Auth. Should be configured together with ` + "`" + `access_token_keyset_client_username` + "`" + ``,
+					},
+					"access_token_keyset_client_username": schema.StringAttribute{
+						Computed:    true,
+						Description: `The client username that will be used to authenticate Kong if ` + "`" + `access_token_keyset` + "`" + ` is a uri that requires Basic Auth. Should be configured together with ` + "`" + `access_token_keyset_client_password` + "`" + ``,
+					},
+					"access_token_keyset_rotate_period": schema.NumberAttribute{
+						Computed:    true,
+						Description: `Specify the period (in seconds) to auto-rotate the jwks for ` + "`" + `access_token_keyset` + "`" + `. The default value 0 means no auto-rotation.`,
 					},
 					"access_token_leeway": schema.NumberAttribute{
 						Computed:    true,
@@ -160,10 +195,20 @@ func (r *GatewayPluginJWTSignerDataSource) Schema(ctx context.Context, req datas
 						Computed:    true,
 						Description: `If you want to add or subtract (using a negative value) expiry time (in seconds) of the original access token, you can specify a value that is added to the original access token's ` + "`" + `exp` + "`" + ` claim.`,
 					},
+					"add_access_token_claims": schema.MapAttribute{
+						Computed:    true,
+						ElementType: types.StringType,
+						Description: `Add customized claims if they are not present yet. Value can be a regular or JSON string; if JSON, decoded data is used as the claim's value.`,
+					},
+					"add_channel_token_claims": schema.MapAttribute{
+						Computed:    true,
+						ElementType: types.StringType,
+						Description: `Add customized claims if they are not present yet. Value can be a regular or JSON string; if JSON, decoded data is used as the claim's value.`,
+					},
 					"add_claims": schema.MapAttribute{
 						Computed:    true,
 						ElementType: types.StringType,
-						Description: `Add customized claims if they are not present yet.`,
+						Description: `Add customized claims to both tokens if they are not present yet. Value can be a regular or JSON string; if JSON, decoded data is used as the claim's value.`,
 					},
 					"cache_access_token_introspection": schema.BoolAttribute{
 						Computed:    true,
@@ -240,9 +285,41 @@ func (r *GatewayPluginJWTSignerDataSource) Schema(ctx context.Context, req datas
 						Computed:    true,
 						Description: `If you want to use ` + "`" + `config.verify_channel_token_signature` + "`" + `, you must specify the URI where the plugin can fetch the public keys (JWKS) to verify the signature of the channel token. If you don't specify a URI and you pass a JWT token to the plugin, then the plugin responds with ` + "`" + `401 Unauthorized` + "`" + `.`,
 					},
+					"channel_token_jwks_uri_client_certificate": schema.StringAttribute{
+						Computed:    true,
+						Description: `The client certificate that will be used to authenticate Kong if ` + "`" + `access_token_jwks_uri` + "`" + ` is an https uri that requires mTLS Auth.`,
+					},
+					"channel_token_jwks_uri_client_password": schema.StringAttribute{
+						Computed:    true,
+						Description: `The client password that will be used to authenticate Kong if ` + "`" + `channel_token_jwks_uri` + "`" + ` is a uri that requires Basic Auth. Should be configured together with ` + "`" + `channel_token_jwks_uri_client_username` + "`" + ``,
+					},
+					"channel_token_jwks_uri_client_username": schema.StringAttribute{
+						Computed:    true,
+						Description: `The client username that will be used to authenticate Kong if ` + "`" + `channel_token_jwks_uri` + "`" + ` is a uri that requires Basic Auth. Should be configured together with ` + "`" + `channel_token_jwks_uri_client_password` + "`" + ``,
+					},
+					"channel_token_jwks_uri_rotate_period": schema.NumberAttribute{
+						Computed:    true,
+						Description: `Specify the period (in seconds) to auto-rotate the jwks for ` + "`" + `channel_token_jwks_uri` + "`" + `. The default value 0 means no auto-rotation.`,
+					},
 					"channel_token_keyset": schema.StringAttribute{
 						Computed:    true,
 						Description: `The name of the keyset containing signing keys.`,
+					},
+					"channel_token_keyset_client_certificate": schema.StringAttribute{
+						Computed:    true,
+						Description: `The client certificate that will be used to authenticate Kong if ` + "`" + `channel_token_keyset` + "`" + ` is an https uri that requires mTLS Auth.`,
+					},
+					"channel_token_keyset_client_password": schema.StringAttribute{
+						Computed:    true,
+						Description: `The client password that will be used to authenticate Kong if ` + "`" + `channel_token_keyset` + "`" + ` is a uri that requires Basic Auth. Should be configured together with ` + "`" + `channel_token_keyset_client_username` + "`" + ``,
+					},
+					"channel_token_keyset_client_username": schema.StringAttribute{
+						Computed:    true,
+						Description: `The client username that will be used to authenticate Kong if ` + "`" + `channel_token_keyset` + "`" + ` is a uri that requires Basic Auth. Should be configured together with ` + "`" + `channel_token_keyset_client_password` + "`" + ``,
+					},
+					"channel_token_keyset_rotate_period": schema.NumberAttribute{
+						Computed:    true,
+						Description: `Specify the period (in seconds) to auto-rotate the jwks for ` + "`" + `channel_token_keyset` + "`" + `. The default value 0 means no auto-rotation.`,
 					},
 					"channel_token_leeway": schema.NumberAttribute{
 						Computed:    true,
@@ -294,14 +371,42 @@ func (r *GatewayPluginJWTSignerDataSource) Schema(ctx context.Context, req datas
 						Computed:    true,
 						Description: `Writes log entries with some added information using ` + "`" + `ngx.CRIT` + "`" + ` (CRITICAL) level.`,
 					},
+					"original_access_token_upstream_header": schema.StringAttribute{
+						Computed:    true,
+						Description: `The HTTP header name used to store the original access token.`,
+					},
+					"original_channel_token_upstream_header": schema.StringAttribute{
+						Computed:    true,
+						Description: `The HTTP header name used to store the original channel token.`,
+					},
 					"realm": schema.StringAttribute{
 						Computed:    true,
 						Description: `When authentication or authorization fails, or there is an unexpected error, the plugin sends an ` + "`" + `WWW-Authenticate` + "`" + ` header with the ` + "`" + `realm` + "`" + ` attribute value.`,
 					},
+					"remove_access_token_claims": schema.ListAttribute{
+						Computed:    true,
+						ElementType: types.StringType,
+						Description: `remove claims. It should be an array, and each element is a claim key string.`,
+					},
+					"remove_channel_token_claims": schema.ListAttribute{
+						Computed:    true,
+						ElementType: types.StringType,
+						Description: `remove claims. It should be an array, and each element is a claim key string.`,
+					},
+					"set_access_token_claims": schema.MapAttribute{
+						Computed:    true,
+						ElementType: types.StringType,
+						Description: `Set customized claims. If a claim is already present, it will be overwritten. Value can be a regular or JSON string; if JSON, decoded data is used as the claim's value.`,
+					},
+					"set_channel_token_claims": schema.MapAttribute{
+						Computed:    true,
+						ElementType: types.StringType,
+						Description: `Set customized claims. If a claim is already present, it will be overwritten. Value can be a regular or JSON string; if JSON, decoded data is used as the claim's value.`,
+					},
 					"set_claims": schema.MapAttribute{
 						Computed:    true,
 						ElementType: types.StringType,
-						Description: `Set customized claims. If a claim is already present, it will be overwritten.`,
+						Description: `Set customized claims to both tokens. If a claim is already present, it will be overwritten. Value can be a regular or JSON string; if JSON, decoded data is used as the claim's value.`,
 					},
 					"trust_access_token_introspection": schema.BoolAttribute{
 						Computed:    true,
@@ -361,6 +466,14 @@ func (r *GatewayPluginJWTSignerDataSource) Schema(ctx context.Context, req datas
 				},
 				Description: `If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.`,
 			},
+			"consumer_group": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"id": schema.StringAttribute{
+						Computed: true,
+					},
+				},
+			},
 			"control_plane_id": schema.StringAttribute{
 				Required:    true,
 				Description: `The UUID of your control plane. This variable is available in the Konnect manager.`,
@@ -376,6 +489,9 @@ func (r *GatewayPluginJWTSignerDataSource) Schema(ctx context.Context, req datas
 			"id": schema.StringAttribute{
 				Required:    true,
 				Description: `ID of the Plugin to lookup`,
+			},
+			"instance_name": schema.StringAttribute{
+				Computed: true,
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,
@@ -404,6 +520,10 @@ func (r *GatewayPluginJWTSignerDataSource) Schema(ctx context.Context, req datas
 				Computed:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Plugin for grouping and filtering.`,
+			},
+			"updated_at": schema.Int64Attribute{
+				Computed:    true,
+				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
 	}
@@ -473,8 +593,8 @@ func (r *GatewayPluginJWTSignerDataSource) Read(ctx context.Context, req datasou
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.JWTSignerPlugin == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.JWTSignerPlugin != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedJWTSignerPlugin(res.JWTSignerPlugin)

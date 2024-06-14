@@ -63,6 +63,8 @@ type CreateOpenidConnectPluginConfig struct {
 	DownstreamSessionIDHeader                    types.String               `tfsdk:"downstream_session_id_header"`
 	DownstreamUserInfoHeader                     types.String               `tfsdk:"downstream_user_info_header"`
 	DownstreamUserInfoJwtHeader                  types.String               `tfsdk:"downstream_user_info_jwt_header"`
+	DpopProofLifetime                            types.Number               `tfsdk:"dpop_proof_lifetime"`
+	DpopUseNonce                                 types.Bool                 `tfsdk:"dpop_use_nonce"`
 	EnableHsSignatures                           types.Bool                 `tfsdk:"enable_hs_signatures"`
 	EndSessionEndpoint                           types.String               `tfsdk:"end_session_endpoint"`
 	ExposeErrorCode                              types.Bool                 `tfsdk:"expose_error_code"`
@@ -121,6 +123,7 @@ type CreateOpenidConnectPluginConfig struct {
 	PasswordParamType                            []types.String             `tfsdk:"password_param_type"`
 	PreserveQueryArgs                            types.Bool                 `tfsdk:"preserve_query_args"`
 	ProofOfPossessionAuthMethodsValidation       types.Bool                 `tfsdk:"proof_of_possession_auth_methods_validation"`
+	ProofOfPossessionDpop                        types.String               `tfsdk:"proof_of_possession_dpop"`
 	ProofOfPossessionMtls                        types.String               `tfsdk:"proof_of_possession_mtls"`
 	PushedAuthorizationRequestEndpoint           types.String               `tfsdk:"pushed_authorization_request_endpoint"`
 	PushedAuthorizationRequestEndpointAuthMethod types.String               `tfsdk:"pushed_authorization_request_endpoint_auth_method"`
@@ -131,6 +134,7 @@ type CreateOpenidConnectPluginConfig struct {
 	RefreshTokens                                types.Bool                 `tfsdk:"refresh_tokens"`
 	RequireProofKeyForCodeExchange               types.Bool                 `tfsdk:"require_proof_key_for_code_exchange"`
 	RequirePushedAuthorizationRequests           types.Bool                 `tfsdk:"require_pushed_authorization_requests"`
+	RequireSignedRequestObject                   types.Bool                 `tfsdk:"require_signed_request_object"`
 	ResolveDistributedClaims                     types.Bool                 `tfsdk:"resolve_distributed_claims"`
 	ResponseMode                                 types.String               `tfsdk:"response_mode"`
 	ResponseType                                 []types.String             `tfsdk:"response_type"`

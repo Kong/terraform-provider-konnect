@@ -44,6 +44,7 @@ type GatewayCertificateResourceModel struct {
 	Key            types.String   `tfsdk:"key"`
 	KeyAlt         types.String   `tfsdk:"key_alt"`
 	Tags           []types.String `tfsdk:"tags"`
+	UpdatedAt      types.Int64    `tfsdk:"updated_at"`
 }
 
 func (r *GatewayCertificateResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -55,11 +56,12 @@ func (r *GatewayCertificateResource) Schema(ctx context.Context, req resource.Sc
 		MarkdownDescription: "GatewayCertificate Resource",
 		Attributes: map[string]schema.Attribute{
 			"cert": schema.StringAttribute{
+				Computed: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Required:    true,
+				Optional:    true,
 				Description: `PEM-encoded public certificate chain of the SSL key pair. This field is _referenceable_, which means it can be securely stored as a [secret](/gateway/latest/plan-and-deploy/security/secrets-management/getting-started) in a vault. References must follow a [specific format](/gateway/latest/plan-and-deploy/security/secrets-management/reference-format). Requires replacement if changed. `,
 			},
 			"cert_alt": schema.StringAttribute{
@@ -87,11 +89,12 @@ func (r *GatewayCertificateResource) Schema(ctx context.Context, req resource.Sc
 				Description: `ID of the Certificate to lookup`,
 			},
 			"key": schema.StringAttribute{
+				Computed: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Required:    true,
+				Optional:    true,
 				Description: `PEM-encoded private key of the SSL key pair. This field is _referenceable_, which means it can be securely stored as a [secret](/gateway/latest/plan-and-deploy/security/secrets-management/getting-started) in a vault. References must follow a [specific format](/gateway/latest/plan-and-deploy/security/secrets-management/reference-format). Requires replacement if changed. `,
 			},
 			"key_alt": schema.StringAttribute{
@@ -112,6 +115,10 @@ func (r *GatewayCertificateResource) Schema(ctx context.Context, req resource.Sc
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Certificate for grouping and filtering. Requires replacement if changed. `,
+			},
+			"updated_at": schema.Int64Attribute{
+				Computed:    true,
+				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
 	}
@@ -156,10 +163,10 @@ func (r *GatewayCertificateResource) Create(ctx context.Context, req resource.Cr
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	createCertificate := *data.ToSharedCreateCertificate()
+	certificate := *data.ToSharedCertificateInput()
 	request := operations.CreateCertificateRequest{
-		ControlPlaneID:    controlPlaneID,
-		CreateCertificate: createCertificate,
+		ControlPlaneID: controlPlaneID,
+		Certificate:    certificate,
 	}
 	res, err := r.client.Certificates.CreateCertificate(ctx, request)
 	if err != nil {
@@ -177,8 +184,8 @@ func (r *GatewayCertificateResource) Create(ctx context.Context, req resource.Cr
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.Certificate == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.Certificate != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedCertificate(res.Certificate)
@@ -232,8 +239,8 @@ func (r *GatewayCertificateResource) Read(ctx context.Context, req resource.Read
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.Certificate == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.Certificate != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedCertificate(res.Certificate)

@@ -6,93 +6,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/internal/sdk/types"
 )
-
-type CreatePreFunctionPluginProtocols string
-
-const (
-	CreatePreFunctionPluginProtocolsGrpc           CreatePreFunctionPluginProtocols = "grpc"
-	CreatePreFunctionPluginProtocolsGrpcs          CreatePreFunctionPluginProtocols = "grpcs"
-	CreatePreFunctionPluginProtocolsHTTP           CreatePreFunctionPluginProtocols = "http"
-	CreatePreFunctionPluginProtocolsHTTPS          CreatePreFunctionPluginProtocols = "https"
-	CreatePreFunctionPluginProtocolsTCP            CreatePreFunctionPluginProtocols = "tcp"
-	CreatePreFunctionPluginProtocolsTLS            CreatePreFunctionPluginProtocols = "tls"
-	CreatePreFunctionPluginProtocolsTLSPassthrough CreatePreFunctionPluginProtocols = "tls_passthrough"
-	CreatePreFunctionPluginProtocolsUDP            CreatePreFunctionPluginProtocols = "udp"
-	CreatePreFunctionPluginProtocolsWs             CreatePreFunctionPluginProtocols = "ws"
-	CreatePreFunctionPluginProtocolsWss            CreatePreFunctionPluginProtocols = "wss"
-)
-
-func (e CreatePreFunctionPluginProtocols) ToPointer() *CreatePreFunctionPluginProtocols {
-	return &e
-}
-func (e *CreatePreFunctionPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		fallthrough
-	case "tcp":
-		fallthrough
-	case "tls":
-		fallthrough
-	case "tls_passthrough":
-		fallthrough
-	case "udp":
-		fallthrough
-	case "ws":
-		fallthrough
-	case "wss":
-		*e = CreatePreFunctionPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for CreatePreFunctionPluginProtocols: %v", v)
-	}
-}
-
-// CreatePreFunctionPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-type CreatePreFunctionPluginConsumer struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *CreatePreFunctionPluginConsumer) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-// CreatePreFunctionPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-type CreatePreFunctionPluginRoute struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *CreatePreFunctionPluginRoute) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-// CreatePreFunctionPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-type CreatePreFunctionPluginService struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *CreatePreFunctionPluginService) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
 
 type CreatePreFunctionPluginConfig struct {
 	Access          []string `json:"access,omitempty"`
@@ -177,22 +92,120 @@ func (o *CreatePreFunctionPluginConfig) GetWsUpstreamFrame() []string {
 	return o.WsUpstreamFrame
 }
 
-// CreatePreFunctionPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
+type CreatePreFunctionPluginProtocols string
+
+const (
+	CreatePreFunctionPluginProtocolsGrpc           CreatePreFunctionPluginProtocols = "grpc"
+	CreatePreFunctionPluginProtocolsGrpcs          CreatePreFunctionPluginProtocols = "grpcs"
+	CreatePreFunctionPluginProtocolsHTTP           CreatePreFunctionPluginProtocols = "http"
+	CreatePreFunctionPluginProtocolsHTTPS          CreatePreFunctionPluginProtocols = "https"
+	CreatePreFunctionPluginProtocolsTCP            CreatePreFunctionPluginProtocols = "tcp"
+	CreatePreFunctionPluginProtocolsTLS            CreatePreFunctionPluginProtocols = "tls"
+	CreatePreFunctionPluginProtocolsTLSPassthrough CreatePreFunctionPluginProtocols = "tls_passthrough"
+	CreatePreFunctionPluginProtocolsUDP            CreatePreFunctionPluginProtocols = "udp"
+	CreatePreFunctionPluginProtocolsWs             CreatePreFunctionPluginProtocols = "ws"
+	CreatePreFunctionPluginProtocolsWss            CreatePreFunctionPluginProtocols = "wss"
+)
+
+func (e CreatePreFunctionPluginProtocols) ToPointer() *CreatePreFunctionPluginProtocols {
+	return &e
+}
+func (e *CreatePreFunctionPluginProtocols) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "grpc":
+		fallthrough
+	case "grpcs":
+		fallthrough
+	case "http":
+		fallthrough
+	case "https":
+		fallthrough
+	case "tcp":
+		fallthrough
+	case "tls":
+		fallthrough
+	case "tls_passthrough":
+		fallthrough
+	case "udp":
+		fallthrough
+	case "ws":
+		fallthrough
+	case "wss":
+		*e = CreatePreFunctionPluginProtocols(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for CreatePreFunctionPluginProtocols: %v", v)
+	}
+}
+
+// CreatePreFunctionPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+type CreatePreFunctionPluginConsumer struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *CreatePreFunctionPluginConsumer) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+type CreatePreFunctionPluginConsumerGroup struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *CreatePreFunctionPluginConsumerGroup) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+// CreatePreFunctionPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
+type CreatePreFunctionPluginRoute struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *CreatePreFunctionPluginRoute) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+// CreatePreFunctionPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+type CreatePreFunctionPluginService struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *CreatePreFunctionPluginService) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
 type CreatePreFunctionPlugin struct {
+	Config *CreatePreFunctionPluginConfig `json:"config,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool  `default:"true" json:"enabled"`
-	name    string `const:"pre-function" json:"name"`
+	Enabled      *bool   `json:"enabled,omitempty"`
+	InstanceName *string `json:"instance_name,omitempty"`
+	name         *string `const:"pre-function" json:"name,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []CreatePreFunctionPluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer *CreatePreFunctionPluginConsumer `json:"consumer,omitempty"`
+	Consumer      *CreatePreFunctionPluginConsumer      `json:"consumer,omitempty"`
+	ConsumerGroup *CreatePreFunctionPluginConsumerGroup `json:"consumer_group,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
 	Route *CreatePreFunctionPluginRoute `json:"route,omitempty"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 	Service *CreatePreFunctionPluginService `json:"service,omitempty"`
-	Config  CreatePreFunctionPluginConfig   `json:"config"`
 }
 
 func (c CreatePreFunctionPlugin) MarshalJSON() ([]byte, error) {
@@ -206,6 +219,13 @@ func (c *CreatePreFunctionPlugin) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (o *CreatePreFunctionPlugin) GetConfig() *CreatePreFunctionPluginConfig {
+	if o == nil {
+		return nil
+	}
+	return o.Config
+}
+
 func (o *CreatePreFunctionPlugin) GetEnabled() *bool {
 	if o == nil {
 		return nil
@@ -213,8 +233,15 @@ func (o *CreatePreFunctionPlugin) GetEnabled() *bool {
 	return o.Enabled
 }
 
-func (o *CreatePreFunctionPlugin) GetName() string {
-	return "pre-function"
+func (o *CreatePreFunctionPlugin) GetInstanceName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.InstanceName
+}
+
+func (o *CreatePreFunctionPlugin) GetName() *string {
+	return types.String("pre-function")
 }
 
 func (o *CreatePreFunctionPlugin) GetProtocols() []CreatePreFunctionPluginProtocols {
@@ -238,6 +265,13 @@ func (o *CreatePreFunctionPlugin) GetConsumer() *CreatePreFunctionPluginConsumer
 	return o.Consumer
 }
 
+func (o *CreatePreFunctionPlugin) GetConsumerGroup() *CreatePreFunctionPluginConsumerGroup {
+	if o == nil {
+		return nil
+	}
+	return o.ConsumerGroup
+}
+
 func (o *CreatePreFunctionPlugin) GetRoute() *CreatePreFunctionPluginRoute {
 	if o == nil {
 		return nil
@@ -250,11 +284,4 @@ func (o *CreatePreFunctionPlugin) GetService() *CreatePreFunctionPluginService {
 		return nil
 	}
 	return o.Service
-}
-
-func (o *CreatePreFunctionPlugin) GetConfig() CreatePreFunctionPluginConfig {
-	if o == nil {
-		return CreatePreFunctionPluginConfig{}
-	}
-	return o.Config
 }

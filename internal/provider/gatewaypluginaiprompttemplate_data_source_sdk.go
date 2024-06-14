@@ -10,21 +10,26 @@ import (
 
 func (r *GatewayPluginAIPromptTemplateDataSourceModel) RefreshFromSharedAIPromptTemplatePlugin(resp *shared.AIPromptTemplatePlugin) {
 	if resp != nil {
-		r.Config.AllowUntemplatedRequests = types.BoolPointerValue(resp.Config.AllowUntemplatedRequests)
-		r.Config.LogOriginalRequest = types.BoolPointerValue(resp.Config.LogOriginalRequest)
-		r.Config.Templates = []tfTypes.Templates{}
-		if len(r.Config.Templates) > len(resp.Config.Templates) {
-			r.Config.Templates = r.Config.Templates[:len(resp.Config.Templates)]
-		}
-		for templatesCount, templatesItem := range resp.Config.Templates {
-			var templates1 tfTypes.Templates
-			templates1.Name = types.StringPointerValue(templatesItem.Name)
-			templates1.Template = types.StringPointerValue(templatesItem.Template)
-			if templatesCount+1 > len(r.Config.Templates) {
-				r.Config.Templates = append(r.Config.Templates, templates1)
-			} else {
-				r.Config.Templates[templatesCount].Name = templates1.Name
-				r.Config.Templates[templatesCount].Template = templates1.Template
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.CreateAIPromptTemplatePluginConfig{}
+			r.Config.AllowUntemplatedRequests = types.BoolPointerValue(resp.Config.AllowUntemplatedRequests)
+			r.Config.LogOriginalRequest = types.BoolPointerValue(resp.Config.LogOriginalRequest)
+			r.Config.Templates = []tfTypes.Templates{}
+			if len(r.Config.Templates) > len(resp.Config.Templates) {
+				r.Config.Templates = r.Config.Templates[:len(resp.Config.Templates)]
+			}
+			for templatesCount, templatesItem := range resp.Config.Templates {
+				var templates1 tfTypes.Templates
+				templates1.Name = types.StringValue(templatesItem.Name)
+				templates1.Template = types.StringValue(templatesItem.Template)
+				if templatesCount+1 > len(r.Config.Templates) {
+					r.Config.Templates = append(r.Config.Templates, templates1)
+				} else {
+					r.Config.Templates[templatesCount].Name = templates1.Name
+					r.Config.Templates[templatesCount].Template = templates1.Template
+				}
 			}
 		}
 		if resp.Consumer == nil {
@@ -33,9 +38,16 @@ func (r *GatewayPluginAIPromptTemplateDataSourceModel) RefreshFromSharedAIPrompt
 			r.Consumer = &tfTypes.ACLConsumer{}
 			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
 		}
+		if resp.ConsumerGroup == nil {
+			r.ConsumerGroup = nil
+		} else {
+			r.ConsumerGroup = &tfTypes.ACLConsumer{}
+			r.ConsumerGroup.ID = types.StringPointerValue(resp.ConsumerGroup.ID)
+		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
+		r.InstanceName = types.StringPointerValue(resp.InstanceName)
 		r.Protocols = []types.String{}
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))
@@ -56,5 +68,6 @@ func (r *GatewayPluginAIPromptTemplateDataSourceModel) RefreshFromSharedAIPrompt
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}
+		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
 }

@@ -9,11 +9,57 @@ import (
 )
 
 func (r *GatewayPluginPrometheusResourceModel) ToSharedCreatePrometheusPlugin() *shared.CreatePrometheusPlugin {
+	var config *shared.CreatePrometheusPluginConfig
+	if r.Config != nil {
+		bandwidthMetrics := new(bool)
+		if !r.Config.BandwidthMetrics.IsUnknown() && !r.Config.BandwidthMetrics.IsNull() {
+			*bandwidthMetrics = r.Config.BandwidthMetrics.ValueBool()
+		} else {
+			bandwidthMetrics = nil
+		}
+		latencyMetrics := new(bool)
+		if !r.Config.LatencyMetrics.IsUnknown() && !r.Config.LatencyMetrics.IsNull() {
+			*latencyMetrics = r.Config.LatencyMetrics.ValueBool()
+		} else {
+			latencyMetrics = nil
+		}
+		perConsumer := new(bool)
+		if !r.Config.PerConsumer.IsUnknown() && !r.Config.PerConsumer.IsNull() {
+			*perConsumer = r.Config.PerConsumer.ValueBool()
+		} else {
+			perConsumer = nil
+		}
+		statusCodeMetrics := new(bool)
+		if !r.Config.StatusCodeMetrics.IsUnknown() && !r.Config.StatusCodeMetrics.IsNull() {
+			*statusCodeMetrics = r.Config.StatusCodeMetrics.ValueBool()
+		} else {
+			statusCodeMetrics = nil
+		}
+		upstreamHealthMetrics := new(bool)
+		if !r.Config.UpstreamHealthMetrics.IsUnknown() && !r.Config.UpstreamHealthMetrics.IsNull() {
+			*upstreamHealthMetrics = r.Config.UpstreamHealthMetrics.ValueBool()
+		} else {
+			upstreamHealthMetrics = nil
+		}
+		config = &shared.CreatePrometheusPluginConfig{
+			BandwidthMetrics:      bandwidthMetrics,
+			LatencyMetrics:        latencyMetrics,
+			PerConsumer:           perConsumer,
+			StatusCodeMetrics:     statusCodeMetrics,
+			UpstreamHealthMetrics: upstreamHealthMetrics,
+		}
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
 	} else {
 		enabled = nil
+	}
+	instanceName := new(string)
+	if !r.InstanceName.IsUnknown() && !r.InstanceName.IsNull() {
+		*instanceName = r.InstanceName.ValueString()
+	} else {
+		instanceName = nil
 	}
 	var protocols []shared.CreatePrometheusPluginProtocols = []shared.CreatePrometheusPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
@@ -35,95 +81,84 @@ func (r *GatewayPluginPrometheusResourceModel) ToSharedCreatePrometheusPlugin() 
 			ID: id,
 		}
 	}
-	var route *shared.CreatePrometheusPluginRoute
-	if r.Route != nil {
+	var consumerGroup *shared.CreatePrometheusPluginConsumerGroup
+	if r.ConsumerGroup != nil {
 		id1 := new(string)
-		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
-			*id1 = r.Route.ID.ValueString()
+		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
+			*id1 = r.ConsumerGroup.ID.ValueString()
 		} else {
 			id1 = nil
 		}
-		route = &shared.CreatePrometheusPluginRoute{
+		consumerGroup = &shared.CreatePrometheusPluginConsumerGroup{
 			ID: id1,
+		}
+	}
+	var route *shared.CreatePrometheusPluginRoute
+	if r.Route != nil {
+		id2 := new(string)
+		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
+			*id2 = r.Route.ID.ValueString()
+		} else {
+			id2 = nil
+		}
+		route = &shared.CreatePrometheusPluginRoute{
+			ID: id2,
 		}
 	}
 	var service *shared.CreatePrometheusPluginService
 	if r.Service != nil {
-		id2 := new(string)
+		id3 := new(string)
 		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
-			*id2 = r.Service.ID.ValueString()
+			*id3 = r.Service.ID.ValueString()
 		} else {
-			id2 = nil
+			id3 = nil
 		}
 		service = &shared.CreatePrometheusPluginService{
-			ID: id2,
+			ID: id3,
 		}
 	}
-	bandwidthMetrics := new(bool)
-	if !r.Config.BandwidthMetrics.IsUnknown() && !r.Config.BandwidthMetrics.IsNull() {
-		*bandwidthMetrics = r.Config.BandwidthMetrics.ValueBool()
-	} else {
-		bandwidthMetrics = nil
-	}
-	latencyMetrics := new(bool)
-	if !r.Config.LatencyMetrics.IsUnknown() && !r.Config.LatencyMetrics.IsNull() {
-		*latencyMetrics = r.Config.LatencyMetrics.ValueBool()
-	} else {
-		latencyMetrics = nil
-	}
-	perConsumer := new(bool)
-	if !r.Config.PerConsumer.IsUnknown() && !r.Config.PerConsumer.IsNull() {
-		*perConsumer = r.Config.PerConsumer.ValueBool()
-	} else {
-		perConsumer = nil
-	}
-	statusCodeMetrics := new(bool)
-	if !r.Config.StatusCodeMetrics.IsUnknown() && !r.Config.StatusCodeMetrics.IsNull() {
-		*statusCodeMetrics = r.Config.StatusCodeMetrics.ValueBool()
-	} else {
-		statusCodeMetrics = nil
-	}
-	upstreamHealthMetrics := new(bool)
-	if !r.Config.UpstreamHealthMetrics.IsUnknown() && !r.Config.UpstreamHealthMetrics.IsNull() {
-		*upstreamHealthMetrics = r.Config.UpstreamHealthMetrics.ValueBool()
-	} else {
-		upstreamHealthMetrics = nil
-	}
-	config := shared.CreatePrometheusPluginConfig{
-		BandwidthMetrics:      bandwidthMetrics,
-		LatencyMetrics:        latencyMetrics,
-		PerConsumer:           perConsumer,
-		StatusCodeMetrics:     statusCodeMetrics,
-		UpstreamHealthMetrics: upstreamHealthMetrics,
-	}
 	out := shared.CreatePrometheusPlugin{
-		Enabled:   enabled,
-		Protocols: protocols,
-		Tags:      tags,
-		Consumer:  consumer,
-		Route:     route,
-		Service:   service,
-		Config:    config,
+		Config:        config,
+		Enabled:       enabled,
+		InstanceName:  instanceName,
+		Protocols:     protocols,
+		Tags:          tags,
+		Consumer:      consumer,
+		ConsumerGroup: consumerGroup,
+		Route:         route,
+		Service:       service,
 	}
 	return &out
 }
 
 func (r *GatewayPluginPrometheusResourceModel) RefreshFromSharedPrometheusPlugin(resp *shared.PrometheusPlugin) {
 	if resp != nil {
-		r.Config.BandwidthMetrics = types.BoolPointerValue(resp.Config.BandwidthMetrics)
-		r.Config.LatencyMetrics = types.BoolPointerValue(resp.Config.LatencyMetrics)
-		r.Config.PerConsumer = types.BoolPointerValue(resp.Config.PerConsumer)
-		r.Config.StatusCodeMetrics = types.BoolPointerValue(resp.Config.StatusCodeMetrics)
-		r.Config.UpstreamHealthMetrics = types.BoolPointerValue(resp.Config.UpstreamHealthMetrics)
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.CreatePrometheusPluginConfig{}
+			r.Config.BandwidthMetrics = types.BoolPointerValue(resp.Config.BandwidthMetrics)
+			r.Config.LatencyMetrics = types.BoolPointerValue(resp.Config.LatencyMetrics)
+			r.Config.PerConsumer = types.BoolPointerValue(resp.Config.PerConsumer)
+			r.Config.StatusCodeMetrics = types.BoolPointerValue(resp.Config.StatusCodeMetrics)
+			r.Config.UpstreamHealthMetrics = types.BoolPointerValue(resp.Config.UpstreamHealthMetrics)
+		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
 			r.Consumer = &tfTypes.ACLConsumer{}
 			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
 		}
+		if resp.ConsumerGroup == nil {
+			r.ConsumerGroup = nil
+		} else {
+			r.ConsumerGroup = &tfTypes.ACLConsumer{}
+			r.ConsumerGroup.ID = types.StringPointerValue(resp.ConsumerGroup.ID)
+		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
+		r.InstanceName = types.StringPointerValue(resp.InstanceName)
 		r.Protocols = []types.String{}
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))
@@ -144,5 +179,6 @@ func (r *GatewayPluginPrometheusResourceModel) RefreshFromSharedPrometheusPlugin
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}
+		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
 }

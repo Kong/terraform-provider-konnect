@@ -2,19 +2,19 @@
 
 package shared
 
-type CreateACLWithoutParents struct {
+type ACLWithoutParents struct {
 	Group *string  `json:"group,omitempty"`
 	Tags  []string `json:"tags,omitempty"`
 }
 
-func (o *CreateACLWithoutParents) GetGroup() *string {
+func (o *ACLWithoutParents) GetGroup() *string {
 	if o == nil {
 		return nil
 	}
 	return o.Group
 }
 
-func (o *CreateACLWithoutParents) GetTags() []string {
+func (o *ACLWithoutParents) GetTags() []string {
 	if o == nil {
 		return nil
 	}

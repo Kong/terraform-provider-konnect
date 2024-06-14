@@ -15,5 +15,6 @@ type CreateAIProxyPluginOptions struct {
 	Temperature       types.Number `tfsdk:"temperature"`
 	TopK              types.Int64  `tfsdk:"top_k"`
 	TopP              types.Number `tfsdk:"top_p"`
+	UpstreamPath      types.String `tfsdk:"upstream_path"`
 	UpstreamURL       types.String `tfsdk:"upstream_url"`
 }

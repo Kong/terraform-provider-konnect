@@ -9,6 +9,7 @@ type APIProductVersionPortal struct {
 	PublishStatus                  APIProductVersionPublishStatus  `json:"publish_status"`
 	Deprecated                     bool                            `json:"deprecated"`
 	ApplicationRegistrationEnabled bool                            `json:"application_registration_enabled"`
+	AutoApproveRegistration        bool                            `json:"auto_approve_registration"`
 	AuthStrategies                 []APIProductVersionAuthStrategy `json:"auth_strategies"`
 }
 
@@ -52,6 +53,13 @@ func (o *APIProductVersionPortal) GetApplicationRegistrationEnabled() bool {
 		return false
 	}
 	return o.ApplicationRegistrationEnabled
+}
+
+func (o *APIProductVersionPortal) GetAutoApproveRegistration() bool {
+	if o == nil {
+		return false
+	}
+	return o.AutoApproveRegistration
 }
 
 func (o *APIProductVersionPortal) GetAuthStrategies() []APIProductVersionAuthStrategy {

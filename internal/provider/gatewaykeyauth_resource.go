@@ -147,11 +147,11 @@ func (r *GatewayKeyAuthResource) Create(ctx context.Context, req resource.Create
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
 	consumerIDForNestedEntities := data.ConsumerID.ValueString()
-	createKeyAuthWithoutParents := *data.ToSharedCreateKeyAuthWithoutParents()
+	keyAuthWithoutParents := *data.ToSharedKeyAuthWithoutParents()
 	request := operations.CreateKeyAuthWithConsumerRequest{
 		ControlPlaneID:              controlPlaneID,
 		ConsumerIDForNestedEntities: consumerIDForNestedEntities,
-		CreateKeyAuthWithoutParents: createKeyAuthWithoutParents,
+		KeyAuthWithoutParents:       keyAuthWithoutParents,
 	}
 	res, err := r.client.APIKeys.CreateKeyAuthWithConsumer(ctx, request)
 	if err != nil {
@@ -169,8 +169,8 @@ func (r *GatewayKeyAuthResource) Create(ctx context.Context, req resource.Create
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.KeyAuth == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.KeyAuth != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedKeyAuth(res.KeyAuth)
@@ -226,8 +226,8 @@ func (r *GatewayKeyAuthResource) Read(ctx context.Context, req resource.ReadRequ
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.KeyAuth == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.KeyAuth != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedKeyAuth(res.KeyAuth)

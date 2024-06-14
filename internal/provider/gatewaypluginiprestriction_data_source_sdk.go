@@ -11,19 +11,24 @@ import (
 
 func (r *GatewayPluginIPRestrictionDataSourceModel) RefreshFromSharedIPRestrictionPlugin(resp *shared.IPRestrictionPlugin) {
 	if resp != nil {
-		r.Config.Allow = []types.String{}
-		for _, v := range resp.Config.Allow {
-			r.Config.Allow = append(r.Config.Allow, types.StringValue(v))
-		}
-		r.Config.Deny = []types.String{}
-		for _, v := range resp.Config.Deny {
-			r.Config.Deny = append(r.Config.Deny, types.StringValue(v))
-		}
-		r.Config.Message = types.StringPointerValue(resp.Config.Message)
-		if resp.Config.Status != nil {
-			r.Config.Status = types.NumberValue(big.NewFloat(float64(*resp.Config.Status)))
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.Status = types.NumberNull()
+			r.Config = &tfTypes.CreateIPRestrictionPluginConfig{}
+			r.Config.Allow = []types.String{}
+			for _, v := range resp.Config.Allow {
+				r.Config.Allow = append(r.Config.Allow, types.StringValue(v))
+			}
+			r.Config.Deny = []types.String{}
+			for _, v := range resp.Config.Deny {
+				r.Config.Deny = append(r.Config.Deny, types.StringValue(v))
+			}
+			r.Config.Message = types.StringPointerValue(resp.Config.Message)
+			if resp.Config.Status != nil {
+				r.Config.Status = types.NumberValue(big.NewFloat(float64(*resp.Config.Status)))
+			} else {
+				r.Config.Status = types.NumberNull()
+			}
 		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
@@ -31,9 +36,16 @@ func (r *GatewayPluginIPRestrictionDataSourceModel) RefreshFromSharedIPRestricti
 			r.Consumer = &tfTypes.ACLConsumer{}
 			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
 		}
+		if resp.ConsumerGroup == nil {
+			r.ConsumerGroup = nil
+		} else {
+			r.ConsumerGroup = &tfTypes.ACLConsumer{}
+			r.ConsumerGroup.ID = types.StringPointerValue(resp.ConsumerGroup.ID)
+		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
+		r.InstanceName = types.StringPointerValue(resp.InstanceName)
 		r.Protocols = []types.String{}
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))
@@ -54,5 +66,6 @@ func (r *GatewayPluginIPRestrictionDataSourceModel) RefreshFromSharedIPRestricti
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}
+		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
 }

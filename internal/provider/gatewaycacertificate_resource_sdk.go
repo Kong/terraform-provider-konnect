@@ -7,8 +7,13 @@ import (
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
 )
 
-func (r *GatewayCACertificateResourceModel) ToSharedCreateCACertificate() *shared.CreateCACertificate {
-	cert := r.Cert.ValueString()
+func (r *GatewayCACertificateResourceModel) ToSharedCACertificateInput() *shared.CACertificateInput {
+	cert := new(string)
+	if !r.Cert.IsUnknown() && !r.Cert.IsNull() {
+		*cert = r.Cert.ValueString()
+	} else {
+		cert = nil
+	}
 	certDigest := new(string)
 	if !r.CertDigest.IsUnknown() && !r.CertDigest.IsNull() {
 		*certDigest = r.CertDigest.ValueString()
@@ -19,7 +24,7 @@ func (r *GatewayCACertificateResourceModel) ToSharedCreateCACertificate() *share
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	out := shared.CreateCACertificate{
+	out := shared.CACertificateInput{
 		Cert:       cert,
 		CertDigest: certDigest,
 		Tags:       tags,
@@ -29,7 +34,7 @@ func (r *GatewayCACertificateResourceModel) ToSharedCreateCACertificate() *share
 
 func (r *GatewayCACertificateResourceModel) RefreshFromSharedCACertificate(resp *shared.CACertificate) {
 	if resp != nil {
-		r.Cert = types.StringValue(resp.Cert)
+		r.Cert = types.StringPointerValue(resp.Cert)
 		r.CertDigest = types.StringPointerValue(resp.CertDigest)
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.ID = types.StringPointerValue(resp.ID)
@@ -37,5 +42,6 @@ func (r *GatewayCACertificateResourceModel) RefreshFromSharedCACertificate(resp 
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}
+		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
 }

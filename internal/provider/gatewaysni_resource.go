@@ -39,12 +39,13 @@ type GatewaySNIResource struct {
 
 // GatewaySNIResourceModel describes the resource data model.
 type GatewaySNIResourceModel struct {
-	Certificate    tfTypes.ACLConsumer `tfsdk:"certificate"`
-	ControlPlaneID types.String        `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64         `tfsdk:"created_at"`
-	ID             types.String        `tfsdk:"id"`
-	Name           types.String        `tfsdk:"name"`
-	Tags           []types.String      `tfsdk:"tags"`
+	Certificate    *tfTypes.ACLConsumer `tfsdk:"certificate"`
+	ControlPlaneID types.String         `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64          `tfsdk:"created_at"`
+	ID             types.String         `tfsdk:"id"`
+	Name           types.String         `tfsdk:"name"`
+	Tags           []types.String       `tfsdk:"tags"`
+	UpdatedAt      types.Int64          `tfsdk:"updated_at"`
 }
 
 func (r *GatewaySNIResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -56,11 +57,12 @@ func (r *GatewaySNIResource) Schema(ctx context.Context, req resource.SchemaRequ
 		MarkdownDescription: "GatewaySNI Resource",
 		Attributes: map[string]schema.Attribute{
 			"certificate": schema.SingleNestedAttribute{
+				Computed: true,
 				PlanModifiers: []planmodifier.Object{
 					objectplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 				},
-				Required: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{
 						Computed: true,
@@ -90,11 +92,12 @@ func (r *GatewaySNIResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Description: `ID of the SNI to lookup`,
 			},
 			"name": schema.StringAttribute{
+				Computed: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Required:    true,
+				Optional:    true,
 				Description: `The SNI name to associate with the given certificate. Requires replacement if changed. `,
 			},
 			"tags": schema.ListAttribute{
@@ -106,6 +109,10 @@ func (r *GatewaySNIResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the SNIs for grouping and filtering. Requires replacement if changed. `,
+			},
+			"updated_at": schema.Int64Attribute{
+				Computed:    true,
+				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
 	}
@@ -150,10 +157,10 @@ func (r *GatewaySNIResource) Create(ctx context.Context, req resource.CreateRequ
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	createSNI := *data.ToSharedCreateSNI()
+	sni := *data.ToSharedSNIInput()
 	request := operations.CreateSniRequest{
 		ControlPlaneID: controlPlaneID,
-		CreateSNI:      createSNI,
+		Sni:            sni,
 	}
 	res, err := r.client.SNIs.CreateSni(ctx, request)
 	if err != nil {
@@ -171,8 +178,8 @@ func (r *GatewaySNIResource) Create(ctx context.Context, req resource.CreateRequ
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.Sni == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.Sni != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedSni(res.Sni)
@@ -226,8 +233,8 @@ func (r *GatewaySNIResource) Read(ctx context.Context, req resource.ReadRequest,
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.Sni == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.Sni != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedSni(res.Sni)

@@ -3,15 +3,15 @@
 package provider
 
 import (
-	"encoding/json"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
 )
 
-func (r *GatewayVaultResourceModel) ToSharedCreateVault() *shared.CreateVault {
-	var config interface{}
-	if !r.Config.IsUnknown() && !r.Config.IsNull() {
-		_ = json.Unmarshal([]byte(r.Config.ValueString()), &config)
+func (r *GatewayVaultResourceModel) ToSharedVaultInput() *shared.VaultInput {
+	var config *shared.VaultConfig
+	if r.Config != nil {
+		config = &shared.VaultConfig{}
 	}
 	description := new(string)
 	if !r.Description.IsUnknown() && !r.Description.IsNull() {
@@ -35,7 +35,7 @@ func (r *GatewayVaultResourceModel) ToSharedCreateVault() *shared.CreateVault {
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	out := shared.CreateVault{
+	out := shared.VaultInput{
 		Config:      config,
 		Description: description,
 		Name:        name,
@@ -48,10 +48,9 @@ func (r *GatewayVaultResourceModel) ToSharedCreateVault() *shared.CreateVault {
 func (r *GatewayVaultResourceModel) RefreshFromSharedVault(resp *shared.Vault) {
 	if resp != nil {
 		if resp.Config == nil {
-			r.Config = types.StringNull()
+			r.Config = nil
 		} else {
-			configResult, _ := json.Marshal(resp.Config)
-			r.Config = types.StringValue(string(configResult))
+			r.Config = &tfTypes.VaultConfig{}
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Description = types.StringPointerValue(resp.Description)

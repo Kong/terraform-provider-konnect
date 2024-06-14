@@ -5,7 +5,6 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/utils"
 )
 
 type JWTAlgorithm string
@@ -19,6 +18,11 @@ const (
 	JWTAlgorithmRs512 JWTAlgorithm = "RS512"
 	JWTAlgorithmEs256 JWTAlgorithm = "ES256"
 	JWTAlgorithmEs384 JWTAlgorithm = "ES384"
+	JWTAlgorithmEs512 JWTAlgorithm = "ES512"
+	JWTAlgorithmPs256 JWTAlgorithm = "PS256"
+	JWTAlgorithmPs384 JWTAlgorithm = "PS384"
+	JWTAlgorithmPs512 JWTAlgorithm = "PS512"
+	JWTAlgorithmEdDsa JWTAlgorithm = "EdDSA"
 )
 
 func (e JWTAlgorithm) ToPointer() *JWTAlgorithm {
@@ -45,6 +49,16 @@ func (e *JWTAlgorithm) UnmarshalJSON(data []byte) error {
 	case "ES256":
 		fallthrough
 	case "ES384":
+		fallthrough
+	case "ES512":
+		fallthrough
+	case "PS256":
+		fallthrough
+	case "PS384":
+		fallthrough
+	case "PS512":
+		fallthrough
+	case "EdDSA":
 		*e = JWTAlgorithm(v)
 		return nil
 	default:
@@ -64,26 +78,15 @@ func (o *JWTConsumer) GetID() *string {
 }
 
 type Jwt struct {
-	Algorithm    *JWTAlgorithm `default:"HS256" json:"algorithm"`
-	Key          *string       `json:"key,omitempty"`
-	RsaPublicKey *string       `json:"rsa_public_key,omitempty"`
-	Secret       *string       `json:"secret,omitempty"`
-	Tags         []string      `json:"tags,omitempty"`
-	Consumer     *JWTConsumer  `json:"consumer,omitempty"`
+	Algorithm *JWTAlgorithm `json:"algorithm,omitempty"`
 	// Unix epoch when the resource was created.
-	CreatedAt *int64  `json:"created_at,omitempty"`
-	ID        *string `json:"id,omitempty"`
-}
-
-func (j Jwt) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(j, "", false)
-}
-
-func (j *Jwt) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &j, "", false, false); err != nil {
-		return err
-	}
-	return nil
+	CreatedAt    *int64       `json:"created_at,omitempty"`
+	ID           *string      `json:"id,omitempty"`
+	Key          *string      `json:"key,omitempty"`
+	RsaPublicKey *string      `json:"rsa_public_key,omitempty"`
+	Secret       *string      `json:"secret,omitempty"`
+	Tags         []string     `json:"tags,omitempty"`
+	Consumer     *JWTConsumer `json:"consumer,omitempty"`
 }
 
 func (o *Jwt) GetAlgorithm() *JWTAlgorithm {
@@ -91,6 +94,20 @@ func (o *Jwt) GetAlgorithm() *JWTAlgorithm {
 		return nil
 	}
 	return o.Algorithm
+}
+
+func (o *Jwt) GetCreatedAt() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.CreatedAt
+}
+
+func (o *Jwt) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
 }
 
 func (o *Jwt) GetKey() *string {
@@ -126,18 +143,4 @@ func (o *Jwt) GetConsumer() *JWTConsumer {
 		return nil
 	}
 	return o.Consumer
-}
-
-func (o *Jwt) GetCreatedAt() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.CreatedAt
-}
-
-func (o *Jwt) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
 }

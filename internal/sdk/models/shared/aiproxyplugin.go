@@ -6,93 +6,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/internal/sdk/types"
 )
-
-type AIProxyPluginProtocols string
-
-const (
-	AIProxyPluginProtocolsGrpc           AIProxyPluginProtocols = "grpc"
-	AIProxyPluginProtocolsGrpcs          AIProxyPluginProtocols = "grpcs"
-	AIProxyPluginProtocolsHTTP           AIProxyPluginProtocols = "http"
-	AIProxyPluginProtocolsHTTPS          AIProxyPluginProtocols = "https"
-	AIProxyPluginProtocolsTCP            AIProxyPluginProtocols = "tcp"
-	AIProxyPluginProtocolsTLS            AIProxyPluginProtocols = "tls"
-	AIProxyPluginProtocolsTLSPassthrough AIProxyPluginProtocols = "tls_passthrough"
-	AIProxyPluginProtocolsUDP            AIProxyPluginProtocols = "udp"
-	AIProxyPluginProtocolsWs             AIProxyPluginProtocols = "ws"
-	AIProxyPluginProtocolsWss            AIProxyPluginProtocols = "wss"
-)
-
-func (e AIProxyPluginProtocols) ToPointer() *AIProxyPluginProtocols {
-	return &e
-}
-func (e *AIProxyPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		fallthrough
-	case "tcp":
-		fallthrough
-	case "tls":
-		fallthrough
-	case "tls_passthrough":
-		fallthrough
-	case "udp":
-		fallthrough
-	case "ws":
-		fallthrough
-	case "wss":
-		*e = AIProxyPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AIProxyPluginProtocols: %v", v)
-	}
-}
-
-// AIProxyPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-type AIProxyPluginConsumer struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *AIProxyPluginConsumer) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-// AIProxyPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-type AIProxyPluginRoute struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *AIProxyPluginRoute) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-// AIProxyPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-type AIProxyPluginService struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *AIProxyPluginService) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
 
 // ParamLocation - Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body.
 type ParamLocation string
@@ -122,6 +37,14 @@ func (e *ParamLocation) UnmarshalJSON(data []byte) error {
 }
 
 type Auth struct {
+	// If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client ID.
+	AzureClientID *string `json:"azure_client_id,omitempty"`
+	// If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client secret.
+	AzureClientSecret *string `json:"azure_client_secret,omitempty"`
+	// If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the tenant ID.
+	AzureTenantID *string `json:"azure_tenant_id,omitempty"`
+	// Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models.
+	AzureUseManagedIdentity *bool `json:"azure_use_managed_identity,omitempty"`
 	// If AI model requires authentication via Authorization or API key header, specify its name here.
 	HeaderName *string `json:"header_name,omitempty"`
 	// Specify the full auth header value for 'header_name', for example 'Bearer key' or just 'key'.
@@ -132,6 +55,34 @@ type Auth struct {
 	ParamName *string `json:"param_name,omitempty"`
 	// Specify the full parameter value for 'param_name'.
 	ParamValue *string `json:"param_value,omitempty"`
+}
+
+func (o *Auth) GetAzureClientID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AzureClientID
+}
+
+func (o *Auth) GetAzureClientSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AzureClientSecret
+}
+
+func (o *Auth) GetAzureTenantID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AzureTenantID
+}
+
+func (o *Auth) GetAzureUseManagedIdentity() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.AzureUseManagedIdentity
 }
 
 func (o *Auth) GetHeaderName() *string {
@@ -171,20 +122,9 @@ func (o *Auth) GetParamValue() *string {
 
 type Logging struct {
 	// If enabled, will log the request and response body into the Kong log plugin(s) output.
-	LogPayloads *bool `default:"false" json:"log_payloads"`
+	LogPayloads *bool `json:"log_payloads,omitempty"`
 	// If enabled and supported by the driver, will add model usage and token metrics into the Kong log plugin(s) output.
-	LogStatistics *bool `default:"true" json:"log_statistics"`
-}
-
-func (l Logging) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(l, "", false)
-}
-
-func (l *Logging) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &l, "", false, false); err != nil {
-		return err
-	}
-	return nil
+	LogStatistics *bool `json:"log_statistics,omitempty"`
 }
 
 func (o *Logging) GetLogPayloads() *bool {
@@ -263,7 +203,7 @@ type Options struct {
 	// Defines the schema/API version, if using Anthropic provider.
 	AnthropicVersion *string `json:"anthropic_version,omitempty"`
 	// 'api-version' for Azure OpenAI instances.
-	AzureAPIVersion *string `default:"2023-05-15" json:"azure_api_version"`
+	AzureAPIVersion *string `json:"azure_api_version,omitempty"`
 	// Deployment ID for Azure OpenAI instances.
 	AzureDeploymentID *string `json:"azure_deployment_id,omitempty"`
 	// Instance name for Azure OpenAI hosted models.
@@ -271,28 +211,19 @@ type Options struct {
 	// If using llama2 provider, select the upstream message format.
 	Llama2Format *Llama2Format `json:"llama2_format,omitempty"`
 	// Defines the max_tokens, if using chat or completion models.
-	MaxTokens *int64 `default:"256" json:"max_tokens"`
+	MaxTokens *int64 `json:"max_tokens,omitempty"`
 	// If using mistral provider, select the upstream message format.
 	MistralFormat *MistralFormat `json:"mistral_format,omitempty"`
 	// Defines the matching temperature, if using chat or completion models.
-	Temperature *float64 `default:"1" json:"temperature"`
+	Temperature *float64 `json:"temperature,omitempty"`
 	// Defines the top-k most likely tokens, if supported.
-	TopK *int64 `default:"0" json:"top_k"`
+	TopK *int64 `json:"top_k,omitempty"`
 	// Defines the top-p probability mass, if supported.
-	TopP *float64 `default:"1" json:"top_p"`
+	TopP *float64 `json:"top_p,omitempty"`
+	// Manually specify or override the AI operation path, used when e.g. using the 'preserve' route_type.
+	UpstreamPath *string `json:"upstream_path,omitempty"`
 	// Manually specify or override the full URL to the AI operation endpoints, when calling (self-)hosted models, or for running via a private endpoint.
 	UpstreamURL *string `json:"upstream_url,omitempty"`
-}
-
-func (o Options) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(o, "", false)
-}
-
-func (o *Options) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
-		return err
-	}
-	return nil
 }
 
 func (o *Options) GetAnthropicVersion() *string {
@@ -363,6 +294,13 @@ func (o *Options) GetTopP() *float64 {
 		return nil
 	}
 	return o.TopP
+}
+
+func (o *Options) GetUpstreamPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.UpstreamPath
 }
 
 func (o *Options) GetUpstreamURL() *string {
@@ -441,12 +379,43 @@ func (o *Model) GetProvider() *Provider {
 	return o.Provider
 }
 
-// RouteType - The model's operation implementation, for this provider.
+// ResponseStreaming - Whether to 'optionally allow', 'deny', or 'always' (force) the streaming of answers via server sent events.
+type ResponseStreaming string
+
+const (
+	ResponseStreamingAllow  ResponseStreaming = "allow"
+	ResponseStreamingDeny   ResponseStreaming = "deny"
+	ResponseStreamingAlways ResponseStreaming = "always"
+)
+
+func (e ResponseStreaming) ToPointer() *ResponseStreaming {
+	return &e
+}
+func (e *ResponseStreaming) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "allow":
+		fallthrough
+	case "deny":
+		fallthrough
+	case "always":
+		*e = ResponseStreaming(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for ResponseStreaming: %v", v)
+	}
+}
+
+// RouteType - The model's operation implementation, for this provider. Set to `preserve` to pass through without transformation.
 type RouteType string
 
 const (
 	RouteTypeLlmV1Chat        RouteType = "llm/v1/chat"
 	RouteTypeLlmV1Completions RouteType = "llm/v1/completions"
+	RouteTypePreserve         RouteType = "preserve"
 )
 
 func (e RouteType) ToPointer() *RouteType {
@@ -461,6 +430,8 @@ func (e *RouteType) UnmarshalJSON(data []byte) error {
 	case "llm/v1/chat":
 		fallthrough
 	case "llm/v1/completions":
+		fallthrough
+	case "preserve":
 		*e = RouteType(v)
 		return nil
 	default:
@@ -471,8 +442,10 @@ func (e *RouteType) UnmarshalJSON(data []byte) error {
 type AIProxyPluginConfig struct {
 	Auth    *Auth    `json:"auth,omitempty"`
 	Logging *Logging `json:"logging,omitempty"`
-	Model   Model    `json:"model"`
-	// The model's operation implementation, for this provider.
+	Model   *Model   `json:"model,omitempty"`
+	// Whether to 'optionally allow', 'deny', or 'always' (force) the streaming of answers via server sent events.
+	ResponseStreaming *ResponseStreaming `json:"response_streaming,omitempty"`
+	// The model's operation implementation, for this provider. Set to `preserve` to pass through without transformation.
 	RouteType *RouteType `json:"route_type,omitempty"`
 }
 
@@ -490,11 +463,18 @@ func (o *AIProxyPluginConfig) GetLogging() *Logging {
 	return o.Logging
 }
 
-func (o *AIProxyPluginConfig) GetModel() Model {
+func (o *AIProxyPluginConfig) GetModel() *Model {
 	if o == nil {
-		return Model{}
+		return nil
 	}
 	return o.Model
+}
+
+func (o *AIProxyPluginConfig) GetResponseStreaming() *ResponseStreaming {
+	if o == nil {
+		return nil
+	}
+	return o.ResponseStreaming
 }
 
 func (o *AIProxyPluginConfig) GetRouteType() *RouteType {
@@ -504,25 +484,125 @@ func (o *AIProxyPluginConfig) GetRouteType() *RouteType {
 	return o.RouteType
 }
 
-// AIProxyPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
+type AIProxyPluginProtocols string
+
+const (
+	AIProxyPluginProtocolsGrpc           AIProxyPluginProtocols = "grpc"
+	AIProxyPluginProtocolsGrpcs          AIProxyPluginProtocols = "grpcs"
+	AIProxyPluginProtocolsHTTP           AIProxyPluginProtocols = "http"
+	AIProxyPluginProtocolsHTTPS          AIProxyPluginProtocols = "https"
+	AIProxyPluginProtocolsTCP            AIProxyPluginProtocols = "tcp"
+	AIProxyPluginProtocolsTLS            AIProxyPluginProtocols = "tls"
+	AIProxyPluginProtocolsTLSPassthrough AIProxyPluginProtocols = "tls_passthrough"
+	AIProxyPluginProtocolsUDP            AIProxyPluginProtocols = "udp"
+	AIProxyPluginProtocolsWs             AIProxyPluginProtocols = "ws"
+	AIProxyPluginProtocolsWss            AIProxyPluginProtocols = "wss"
+)
+
+func (e AIProxyPluginProtocols) ToPointer() *AIProxyPluginProtocols {
+	return &e
+}
+func (e *AIProxyPluginProtocols) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "grpc":
+		fallthrough
+	case "grpcs":
+		fallthrough
+	case "http":
+		fallthrough
+	case "https":
+		fallthrough
+	case "tcp":
+		fallthrough
+	case "tls":
+		fallthrough
+	case "tls_passthrough":
+		fallthrough
+	case "udp":
+		fallthrough
+	case "ws":
+		fallthrough
+	case "wss":
+		*e = AIProxyPluginProtocols(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for AIProxyPluginProtocols: %v", v)
+	}
+}
+
+// AIProxyPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+type AIProxyPluginConsumer struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *AIProxyPluginConsumer) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+type AIProxyPluginConsumerGroup struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *AIProxyPluginConsumerGroup) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+// AIProxyPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
+type AIProxyPluginRoute struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *AIProxyPluginRoute) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+// AIProxyPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+type AIProxyPluginService struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *AIProxyPluginService) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
 type AIProxyPlugin struct {
+	Config *AIProxyPluginConfig `json:"config,omitempty"`
+	// Unix epoch when the resource was created.
+	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool  `default:"true" json:"enabled"`
-	name    string `const:"ai-proxy" json:"name"`
+	Enabled      *bool   `json:"enabled,omitempty"`
+	ID           *string `json:"id,omitempty"`
+	InstanceName *string `json:"instance_name,omitempty"`
+	name         *string `const:"ai-proxy" json:"name,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []AIProxyPluginProtocols `json:"protocols"`
+	Protocols []AIProxyPluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
+	// Unix epoch when the resource was last updated.
+	UpdatedAt *int64 `json:"updated_at,omitempty"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer *AIProxyPluginConsumer `json:"consumer,omitempty"`
+	Consumer      *AIProxyPluginConsumer      `json:"consumer,omitempty"`
+	ConsumerGroup *AIProxyPluginConsumerGroup `json:"consumer_group,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
 	Route *AIProxyPluginRoute `json:"route,omitempty"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 	Service *AIProxyPluginService `json:"service,omitempty"`
-	// Unix epoch when the resource was created.
-	CreatedAt *int64              `json:"created_at,omitempty"`
-	ID        *string             `json:"id,omitempty"`
-	Config    AIProxyPluginConfig `json:"config"`
 }
 
 func (a AIProxyPlugin) MarshalJSON() ([]byte, error) {
@@ -536,6 +616,20 @@ func (a *AIProxyPlugin) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (o *AIProxyPlugin) GetConfig() *AIProxyPluginConfig {
+	if o == nil {
+		return nil
+	}
+	return o.Config
+}
+
+func (o *AIProxyPlugin) GetCreatedAt() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.CreatedAt
+}
+
 func (o *AIProxyPlugin) GetEnabled() *bool {
 	if o == nil {
 		return nil
@@ -543,13 +637,27 @@ func (o *AIProxyPlugin) GetEnabled() *bool {
 	return o.Enabled
 }
 
-func (o *AIProxyPlugin) GetName() string {
-	return "ai-proxy"
+func (o *AIProxyPlugin) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *AIProxyPlugin) GetInstanceName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.InstanceName
+}
+
+func (o *AIProxyPlugin) GetName() *string {
+	return types.String("ai-proxy")
 }
 
 func (o *AIProxyPlugin) GetProtocols() []AIProxyPluginProtocols {
 	if o == nil {
-		return []AIProxyPluginProtocols{}
+		return nil
 	}
 	return o.Protocols
 }
@@ -561,11 +669,25 @@ func (o *AIProxyPlugin) GetTags() []string {
 	return o.Tags
 }
 
+func (o *AIProxyPlugin) GetUpdatedAt() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.UpdatedAt
+}
+
 func (o *AIProxyPlugin) GetConsumer() *AIProxyPluginConsumer {
 	if o == nil {
 		return nil
 	}
 	return o.Consumer
+}
+
+func (o *AIProxyPlugin) GetConsumerGroup() *AIProxyPluginConsumerGroup {
+	if o == nil {
+		return nil
+	}
+	return o.ConsumerGroup
 }
 
 func (o *AIProxyPlugin) GetRoute() *AIProxyPluginRoute {
@@ -580,25 +702,4 @@ func (o *AIProxyPlugin) GetService() *AIProxyPluginService {
 		return nil
 	}
 	return o.Service
-}
-
-func (o *AIProxyPlugin) GetCreatedAt() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.CreatedAt
-}
-
-func (o *AIProxyPlugin) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-func (o *AIProxyPlugin) GetConfig() AIProxyPluginConfig {
-	if o == nil {
-		return AIProxyPluginConfig{}
-	}
-	return o.Config
 }

@@ -9,7 +9,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
 )
 
-func (r *GatewayRouteResourceModel) ToSharedCreateRoute() *shared.CreateRoute {
+func (r *GatewayRouteResourceModel) ToSharedRouteInput() *shared.RouteInput {
 	var destinations []shared.Destinations = []shared.Destinations{}
 	for _, destinationsItem := range r.Destinations {
 		ip := new(string)
@@ -71,9 +71,9 @@ func (r *GatewayRouteResourceModel) ToSharedCreateRoute() *shared.CreateRoute {
 	} else {
 		preserveHost = nil
 	}
-	var protocols []shared.CreateRouteProtocols = []shared.CreateRouteProtocols{}
+	var protocols []shared.RouteProtocols = []shared.RouteProtocols{}
 	for _, protocolsItem := range r.Protocols {
-		protocols = append(protocols, shared.CreateRouteProtocols(protocolsItem.ValueString()))
+		protocols = append(protocols, shared.RouteProtocols(protocolsItem.ValueString()))
 	}
 	regexPriority := new(int64)
 	if !r.RegexPriority.IsUnknown() && !r.RegexPriority.IsNull() {
@@ -126,7 +126,7 @@ func (r *GatewayRouteResourceModel) ToSharedCreateRoute() *shared.CreateRoute {
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	var service *shared.CreateRouteService
+	var service *shared.RouteService
 	if r.Service != nil {
 		id := new(string)
 		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
@@ -134,11 +134,11 @@ func (r *GatewayRouteResourceModel) ToSharedCreateRoute() *shared.CreateRoute {
 		} else {
 			id = nil
 		}
-		service = &shared.CreateRouteService{
+		service = &shared.RouteService{
 			ID: id,
 		}
 	}
-	out := shared.CreateRoute{
+	out := shared.RouteInput{
 		Destinations:            destinations,
 		Headers:                 headers,
 		Hosts:                   hosts,

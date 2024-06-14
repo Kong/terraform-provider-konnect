@@ -43,7 +43,7 @@ func (s *ConsumerGroups) CreateConsumerGroup(ctx context.Context, request operat
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "CreateConsumerGroup", "json", `request:"mediaType=application/json"`)
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "ConsumerGroup", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
 	}

@@ -14,8 +14,14 @@ type APIProduct struct {
 	Name string `json:"name"`
 	// The description of the API product
 	Description *string `json:"description"`
-	// The list of portal identifiers which this API product is published to
+	// The list of portal identifiers which this API product is published to.
+	// This property is deprecated and will be removed in a future version. Use the `portals` property instead.
+	//
+	//
+	// Deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
 	PortalIds []string `json:"portal_ids"`
+	// The list of portals which this API product is published to
+	Portals []APIProductPortal `json:"portals"`
 	// The number of product versions attached to this API product
 	VersionCount float64 `json:"version_count"`
 	// An ISO-8601 timestamp representation of entity creation date.
@@ -66,6 +72,13 @@ func (o *APIProduct) GetPortalIds() []string {
 		return []string{}
 	}
 	return o.PortalIds
+}
+
+func (o *APIProduct) GetPortals() []APIProductPortal {
+	if o == nil {
+		return []APIProductPortal{}
+	}
+	return o.Portals
 }
 
 func (o *APIProduct) GetVersionCount() float64 {

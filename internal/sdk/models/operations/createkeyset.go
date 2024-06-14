@@ -11,7 +11,7 @@ type CreateKeySetRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// Description of the new KeySet for creation
-	CreateKeySet shared.CreateKeySet `request:"mediaType=application/json"`
+	KeySet shared.KeySetInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateKeySetRequest) GetControlPlaneID() string {
@@ -21,11 +21,11 @@ func (o *CreateKeySetRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateKeySetRequest) GetCreateKeySet() shared.CreateKeySet {
+func (o *CreateKeySetRequest) GetKeySet() shared.KeySetInput {
 	if o == nil {
-		return shared.CreateKeySet{}
+		return shared.KeySetInput{}
 	}
-	return o.CreateKeySet
+	return o.KeySet
 }
 
 type CreateKeySetResponse struct {

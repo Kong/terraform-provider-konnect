@@ -10,7 +10,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
@@ -33,16 +32,19 @@ type GatewayPluginKeyAuthResource struct {
 
 // GatewayPluginKeyAuthResourceModel describes the resource data model.
 type GatewayPluginKeyAuthResourceModel struct {
-	Config         tfTypes.CreateKeyAuthPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer              `tfsdk:"consumer"`
-	ControlPlaneID types.String                      `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                       `tfsdk:"created_at"`
-	Enabled        types.Bool                        `tfsdk:"enabled"`
-	ID             types.String                      `tfsdk:"id"`
-	Protocols      []types.String                    `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer              `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer              `tfsdk:"service"`
-	Tags           []types.String                    `tfsdk:"tags"`
+	Config         *tfTypes.CreateKeyAuthPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer               `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer               `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                        `tfsdk:"created_at"`
+	Enabled        types.Bool                         `tfsdk:"enabled"`
+	ID             types.String                       `tfsdk:"id"`
+	InstanceName   types.String                       `tfsdk:"instance_name"`
+	Protocols      []types.String                     `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer               `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer               `tfsdk:"service"`
+	Tags           []types.String                     `tfsdk:"tags"`
+	UpdatedAt      types.Int64                        `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginKeyAuthResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -54,7 +56,8 @@ func (r *GatewayPluginKeyAuthResource) Schema(ctx context.Context, req resource.
 		MarkdownDescription: "GatewayPluginKeyAuth Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"anonymous": schema.StringAttribute{
 						Computed:    true,
@@ -64,26 +67,22 @@ func (r *GatewayPluginKeyAuthResource) Schema(ctx context.Context, req resource.
 					"hide_credentials": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `An optional boolean value telling the plugin to show or hide the credential from the upstream service. If ` + "`" + `true` + "`" + `, the plugin strips the credential from the request. Default: false`,
+						Description: `An optional boolean value telling the plugin to show or hide the credential from the upstream service. If ` + "`" + `true` + "`" + `, the plugin strips the credential from the request.`,
 					},
 					"key_in_body": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `If enabled, the plugin reads the request body. Supported MIME types: ` + "`" + `application/www-form-urlencoded` + "`" + `, ` + "`" + `application/json` + "`" + `, and ` + "`" + `multipart/form-data` + "`" + `. Default: false`,
+						Description: `If enabled, the plugin reads the request body. Supported MIME types: ` + "`" + `application/www-form-urlencoded` + "`" + `, ` + "`" + `application/json` + "`" + `, and ` + "`" + `multipart/form-data` + "`" + `.`,
 					},
 					"key_in_header": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(true),
-						Description: `If enabled (default), the plugin reads the request header and tries to find the key in it. Default: true`,
+						Description: `If enabled (default), the plugin reads the request header and tries to find the key in it.`,
 					},
 					"key_in_query": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(true),
-						Description: `If enabled (default), the plugin reads the query parameter in the request and tries to find the key in it. Default: true`,
+						Description: `If enabled (default), the plugin reads the query parameter in the request and tries to find the key in it.`,
 					},
 					"key_names": schema.ListAttribute{
 						Computed:    true,
@@ -91,11 +90,15 @@ func (r *GatewayPluginKeyAuthResource) Schema(ctx context.Context, req resource.
 						ElementType: types.StringType,
 						Description: `Describes an array of parameter names where the plugin will look for a key. The key names may only contain [a-z], [A-Z], [0-9], [_] underscore, and [-] hyphen.`,
 					},
+					"realm": schema.StringAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `When authentication fails the plugin sends ` + "`" + `WWW-Authenticate` + "`" + ` header with ` + "`" + `realm` + "`" + ` attribute value.`,
+					},
 					"run_on_preflight": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(true),
-						Description: `A boolean value that indicates whether the plugin should run (and try to authenticate) on ` + "`" + `OPTIONS` + "`" + ` preflight requests. If set to ` + "`" + `false` + "`" + `, then ` + "`" + `OPTIONS` + "`" + ` requests are always allowed. Default: true`,
+						Description: `A boolean value that indicates whether the plugin should run (and try to authenticate) on ` + "`" + `OPTIONS` + "`" + ` preflight requests. If set to ` + "`" + `false` + "`" + `, then ` + "`" + `OPTIONS` + "`" + ` requests are always allowed.`,
 					},
 				},
 			},
@@ -110,6 +113,16 @@ func (r *GatewayPluginKeyAuthResource) Schema(ctx context.Context, req resource.
 				},
 				Description: `If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.`,
 			},
+			"consumer_group": schema.SingleNestedAttribute{
+				Computed: true,
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"id": schema.StringAttribute{
+						Computed: true,
+						Optional: true,
+					},
+				},
+			},
 			"control_plane_id": schema.StringAttribute{
 				Required:    true,
 				Description: `The UUID of your control plane. This variable is available in the Konnect manager.`,
@@ -121,12 +134,15 @@ func (r *GatewayPluginKeyAuthResource) Schema(ctx context.Context, req resource.
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Default:     booldefault.StaticBool(true),
-				Description: `Whether the plugin is applied. Default: true`,
+				Description: `Whether the plugin is applied.`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
 				Description: `ID of the Plugin to lookup`,
+			},
+			"instance_name": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,
@@ -161,6 +177,10 @@ func (r *GatewayPluginKeyAuthResource) Schema(ctx context.Context, req resource.
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Plugin for grouping and filtering.`,
+			},
+			"updated_at": schema.Int64Attribute{
+				Computed:    true,
+				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
 	}
@@ -226,8 +246,8 @@ func (r *GatewayPluginKeyAuthResource) Create(ctx context.Context, req resource.
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.KeyAuthPlugin == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.KeyAuthPlugin != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedKeyAuthPlugin(res.KeyAuthPlugin)
@@ -281,8 +301,8 @@ func (r *GatewayPluginKeyAuthResource) Read(ctx context.Context, req resource.Re
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.KeyAuthPlugin == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.KeyAuthPlugin != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedKeyAuthPlugin(res.KeyAuthPlugin)
@@ -329,8 +349,8 @@ func (r *GatewayPluginKeyAuthResource) Update(ctx context.Context, req resource.
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.KeyAuthPlugin == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.KeyAuthPlugin != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedKeyAuthPlugin(res.KeyAuthPlugin)

@@ -65,7 +65,7 @@ func (s *Routes) CreateRoute(ctx context.Context, request operations.CreateRoute
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "CreateRoute", "json", `request:"mediaType=application/json"`)
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Route", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
 	}

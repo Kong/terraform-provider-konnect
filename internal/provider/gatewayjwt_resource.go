@@ -13,7 +13,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -67,8 +66,7 @@ func (r *GatewayJWTResource) Schema(ctx context.Context, req resource.SchemaRequ
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Optional:    true,
-				Default:     stringdefault.StaticString("HS256"),
-				Description: `Requires replacement if changed. ; must be one of ["HS256", "HS384", "HS512", "RS256", "RS384", "RS512", "ES256", "ES384"]; Default: "HS256"`,
+				Description: `Requires replacement if changed. ; must be one of ["HS256", "HS384", "HS512", "RS256", "RS384", "RS512", "ES256", "ES384", "ES512", "PS256", "PS384", "PS512", "EdDSA"]`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
 						"HS256",
@@ -79,6 +77,11 @@ func (r *GatewayJWTResource) Schema(ctx context.Context, req resource.SchemaRequ
 						"RS512",
 						"ES256",
 						"ES384",
+						"ES512",
+						"PS256",
+						"PS384",
+						"PS512",
+						"EdDSA",
 					),
 				},
 			},
@@ -193,11 +196,11 @@ func (r *GatewayJWTResource) Create(ctx context.Context, req resource.CreateRequ
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
 	consumerIDForNestedEntities := data.ConsumerID.ValueString()
-	createJWTWithoutParents := *data.ToSharedCreateJWTWithoutParents()
+	jwtWithoutParents := *data.ToSharedJWTWithoutParents()
 	request := operations.CreateJwtWithConsumerRequest{
 		ControlPlaneID:              controlPlaneID,
 		ConsumerIDForNestedEntities: consumerIDForNestedEntities,
-		CreateJWTWithoutParents:     createJWTWithoutParents,
+		JWTWithoutParents:           jwtWithoutParents,
 	}
 	res, err := r.client.JWTs.CreateJwtWithConsumer(ctx, request)
 	if err != nil {
@@ -215,8 +218,8 @@ func (r *GatewayJWTResource) Create(ctx context.Context, req resource.CreateRequ
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.Jwt == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.Jwt != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedJwt(res.Jwt)
@@ -272,8 +275,8 @@ func (r *GatewayJWTResource) Read(ctx context.Context, req resource.ReadRequest,
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.Jwt == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.Jwt != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedJwt(res.Jwt)

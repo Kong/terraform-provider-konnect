@@ -7,36 +7,37 @@ import (
 	"fmt"
 )
 
-// Rule - invalid parameters rules
-type Rule string
+// InvalidParameterDependentItemRule - invalid parameters rules
+type InvalidParameterDependentItemRule string
 
 const (
-	RuleDependentFields Rule = "dependent_fields"
+	InvalidParameterDependentItemRuleDependentFields InvalidParameterDependentItemRule = "dependent_fields"
 )
 
-func (e Rule) ToPointer() *Rule {
+func (e InvalidParameterDependentItemRule) ToPointer() *InvalidParameterDependentItemRule {
 	return &e
 }
-func (e *Rule) UnmarshalJSON(data []byte) error {
+func (e *InvalidParameterDependentItemRule) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
 	switch v {
 	case "dependent_fields":
-		*e = Rule(v)
+		*e = InvalidParameterDependentItemRule(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for Rule: %v", v)
+		return fmt.Errorf("invalid value for InvalidParameterDependentItemRule: %v", v)
 	}
 }
 
 type InvalidParameterDependentItem struct {
 	Field string `json:"field"`
 	// invalid parameters rules
-	Rule       *Rule  `json:"rule"`
-	Reason     string `json:"reason"`
-	Dependents []any  `json:"dependents"`
+	Rule       *InvalidParameterDependentItemRule `json:"rule"`
+	Reason     string                             `json:"reason"`
+	Dependents []any                              `json:"dependents"`
+	Source     *string                            `json:"source,omitempty"`
 }
 
 func (o *InvalidParameterDependentItem) GetField() string {
@@ -46,7 +47,7 @@ func (o *InvalidParameterDependentItem) GetField() string {
 	return o.Field
 }
 
-func (o *InvalidParameterDependentItem) GetRule() *Rule {
+func (o *InvalidParameterDependentItem) GetRule() *InvalidParameterDependentItemRule {
 	if o == nil {
 		return nil
 	}
@@ -65,4 +66,11 @@ func (o *InvalidParameterDependentItem) GetDependents() []any {
 		return nil
 	}
 	return o.Dependents
+}
+
+func (o *InvalidParameterDependentItem) GetSource() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Source
 }

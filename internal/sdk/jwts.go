@@ -41,7 +41,7 @@ func (s *JWTs) CreateJwtWithConsumer(ctx context.Context, request operations.Cre
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "CreateJWTWithoutParents", "json", `request:"mediaType=application/json"`)
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "JWTWithoutParents", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
 	}

@@ -133,10 +133,10 @@ func (r *GatewayKeySetResource) Create(ctx context.Context, req resource.CreateR
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	createKeySet := *data.ToSharedCreateKeySet()
+	keySet := *data.ToSharedKeySetInput()
 	request := operations.CreateKeySetRequest{
 		ControlPlaneID: controlPlaneID,
-		CreateKeySet:   createKeySet,
+		KeySet:         keySet,
 	}
 	res, err := r.client.KeySets.CreateKeySet(ctx, request)
 	if err != nil {
@@ -154,8 +154,8 @@ func (r *GatewayKeySetResource) Create(ctx context.Context, req resource.CreateR
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.KeySet == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.KeySet != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedKeySet(res.KeySet)
@@ -209,8 +209,8 @@ func (r *GatewayKeySetResource) Read(ctx context.Context, req resource.ReadReque
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.KeySet == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.KeySet != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedKeySet(res.KeySet)

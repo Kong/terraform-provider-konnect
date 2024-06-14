@@ -10,7 +10,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
@@ -45,6 +44,7 @@ type GatewayTargetResourceModel struct {
 	ID             types.String         `tfsdk:"id"`
 	Tags           []types.String       `tfsdk:"tags"`
 	Target         types.String         `tfsdk:"target"`
+	UpdatedAt      types.Number         `tfsdk:"updated_at"`
 	Upstream       *tfTypes.ACLConsumer `tfsdk:"upstream"`
 	UpstreamID     types.String         `tfsdk:"upstream_id"`
 	Weight         types.Int64          `tfsdk:"weight"`
@@ -92,6 +92,10 @@ func (r *GatewayTargetResource) Schema(ctx context.Context, req resource.SchemaR
 				Optional:    true,
 				Description: `The target address (ip or hostname) and port. If the hostname resolves to an SRV record, the ` + "`" + `port` + "`" + ` value will be overridden by the value from the DNS record. Requires replacement if changed. `,
 			},
+			"updated_at": schema.NumberAttribute{
+				Computed:    true,
+				Description: `Unix epoch when the resource was last updated.`,
+			},
 			"upstream": schema.SingleNestedAttribute{
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
@@ -114,8 +118,7 @@ func (r *GatewayTargetResource) Schema(ctx context.Context, req resource.SchemaR
 					speakeasy_int64planmodifier.SuppressDiff(speakeasy_int64planmodifier.ExplicitSuppress),
 				},
 				Optional:    true,
-				Default:     int64default.StaticInt64(100),
-				Description: `The weight this target gets within the upstream loadbalancer (` + "`" + `0` + "`" + `-` + "`" + `65535` + "`" + `). If the hostname resolves to an SRV record, the ` + "`" + `weight` + "`" + ` value will be overridden by the value from the DNS record. Requires replacement if changed. ; Default: 100`,
+				Description: `The weight this target gets within the upstream loadbalancer (` + "`" + `0` + "`" + `-` + "`" + `65535` + "`" + `). If the hostname resolves to an SRV record, the ` + "`" + `weight` + "`" + ` value will be overridden by the value from the DNS record. Requires replacement if changed. `,
 			},
 		},
 	}
@@ -161,11 +164,11 @@ func (r *GatewayTargetResource) Create(ctx context.Context, req resource.CreateR
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
 	upstreamIDForTarget := data.UpstreamID.ValueString()
-	createTargetWithoutParents := *data.ToSharedCreateTargetWithoutParents()
+	targetWithoutParents := *data.ToSharedTargetWithoutParents()
 	request := operations.CreateTargetWithUpstreamRequest{
-		ControlPlaneID:             controlPlaneID,
-		UpstreamIDForTarget:        upstreamIDForTarget,
-		CreateTargetWithoutParents: createTargetWithoutParents,
+		ControlPlaneID:       controlPlaneID,
+		UpstreamIDForTarget:  upstreamIDForTarget,
+		TargetWithoutParents: targetWithoutParents,
 	}
 	res, err := r.client.Targets.CreateTargetWithUpstream(ctx, request)
 	if err != nil {
@@ -183,8 +186,8 @@ func (r *GatewayTargetResource) Create(ctx context.Context, req resource.CreateR
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.Target == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.Target != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedTarget(res.Target)
@@ -240,8 +243,8 @@ func (r *GatewayTargetResource) Read(ctx context.Context, req resource.ReadReque
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.Target == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.Target != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedTarget(res.Target)

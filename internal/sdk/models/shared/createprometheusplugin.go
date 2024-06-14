@@ -6,7 +6,56 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/internal/sdk/types"
 )
+
+type CreatePrometheusPluginConfig struct {
+	// A boolean value that determines if bandwidth metrics should be collected. If enabled, `bandwidth_bytes` and `stream_sessions_total` metrics will be exported.
+	BandwidthMetrics *bool `json:"bandwidth_metrics,omitempty"`
+	// A boolean value that determines if latency metrics should be collected. If enabled, `kong_latency_ms`, `upstream_latency_ms` and `request_latency_ms` metrics will be exported.
+	LatencyMetrics *bool `json:"latency_metrics,omitempty"`
+	// A boolean value that determines if per-consumer metrics should be collected. If enabled, the `kong_http_requests_total` and `kong_bandwidth_bytes` metrics fill in the consumer label when available.
+	PerConsumer *bool `json:"per_consumer,omitempty"`
+	// A boolean value that determines if status code metrics should be collected. If enabled, `http_requests_total`, `stream_sessions_total` metrics will be exported.
+	StatusCodeMetrics *bool `json:"status_code_metrics,omitempty"`
+	// A boolean value that determines if upstream metrics should be collected. If enabled, `upstream_target_health` metric will be exported.
+	UpstreamHealthMetrics *bool `json:"upstream_health_metrics,omitempty"`
+}
+
+func (o *CreatePrometheusPluginConfig) GetBandwidthMetrics() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.BandwidthMetrics
+}
+
+func (o *CreatePrometheusPluginConfig) GetLatencyMetrics() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.LatencyMetrics
+}
+
+func (o *CreatePrometheusPluginConfig) GetPerConsumer() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.PerConsumer
+}
+
+func (o *CreatePrometheusPluginConfig) GetStatusCodeMetrics() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.StatusCodeMetrics
+}
+
+func (o *CreatePrometheusPluginConfig) GetUpstreamHealthMetrics() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.UpstreamHealthMetrics
+}
 
 type CreatePrometheusPluginProtocols string
 
@@ -70,6 +119,17 @@ func (o *CreatePrometheusPluginConsumer) GetID() *string {
 	return o.ID
 }
 
+type CreatePrometheusPluginConsumerGroup struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *CreatePrometheusPluginConsumerGroup) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
 // CreatePrometheusPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
 type CreatePrometheusPluginRoute struct {
 	ID *string `json:"id,omitempty"`
@@ -94,81 +154,23 @@ func (o *CreatePrometheusPluginService) GetID() *string {
 	return o.ID
 }
 
-type CreatePrometheusPluginConfig struct {
-	// A boolean value that determines if status code metrics should be collected. If enabled, `bandwidth_bytes` and `stream_sessions_total` metrics will be exported.
-	BandwidthMetrics *bool `default:"false" json:"bandwidth_metrics"`
-	// A boolean value that determines if status code metrics should be collected. If enabled, `kong_latency_ms`, `upstream_latency_ms` and `request_latency_ms` metrics will be exported.
-	LatencyMetrics *bool `default:"false" json:"latency_metrics"`
-	// A boolean value that determines if per-consumer metrics should be collected. If enabled, the `kong_http_requests_total` and `kong_bandwidth_bytes` metrics fill in the consumer label when available.
-	PerConsumer *bool `default:"false" json:"per_consumer"`
-	// A boolean value that determines if status code metrics should be collected. If enabled, `http_requests_total`, `stream_sessions_total` metrics will be exported.
-	StatusCodeMetrics *bool `default:"false" json:"status_code_metrics"`
-	// A boolean value that determines if status code metrics should be collected. If enabled, `upstream_target_health` metric will be exported.
-	UpstreamHealthMetrics *bool `default:"false" json:"upstream_health_metrics"`
-}
-
-func (c CreatePrometheusPluginConfig) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
-}
-
-func (c *CreatePrometheusPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (o *CreatePrometheusPluginConfig) GetBandwidthMetrics() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.BandwidthMetrics
-}
-
-func (o *CreatePrometheusPluginConfig) GetLatencyMetrics() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.LatencyMetrics
-}
-
-func (o *CreatePrometheusPluginConfig) GetPerConsumer() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.PerConsumer
-}
-
-func (o *CreatePrometheusPluginConfig) GetStatusCodeMetrics() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.StatusCodeMetrics
-}
-
-func (o *CreatePrometheusPluginConfig) GetUpstreamHealthMetrics() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.UpstreamHealthMetrics
-}
-
-// CreatePrometheusPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type CreatePrometheusPlugin struct {
+	Config *CreatePrometheusPluginConfig `json:"config,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool  `default:"true" json:"enabled"`
-	name    string `const:"prometheus" json:"name"`
+	Enabled      *bool   `json:"enabled,omitempty"`
+	InstanceName *string `json:"instance_name,omitempty"`
+	name         *string `const:"prometheus" json:"name,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []CreatePrometheusPluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer *CreatePrometheusPluginConsumer `json:"consumer,omitempty"`
+	Consumer      *CreatePrometheusPluginConsumer      `json:"consumer,omitempty"`
+	ConsumerGroup *CreatePrometheusPluginConsumerGroup `json:"consumer_group,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
 	Route *CreatePrometheusPluginRoute `json:"route,omitempty"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 	Service *CreatePrometheusPluginService `json:"service,omitempty"`
-	Config  CreatePrometheusPluginConfig   `json:"config"`
 }
 
 func (c CreatePrometheusPlugin) MarshalJSON() ([]byte, error) {
@@ -182,6 +184,13 @@ func (c *CreatePrometheusPlugin) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (o *CreatePrometheusPlugin) GetConfig() *CreatePrometheusPluginConfig {
+	if o == nil {
+		return nil
+	}
+	return o.Config
+}
+
 func (o *CreatePrometheusPlugin) GetEnabled() *bool {
 	if o == nil {
 		return nil
@@ -189,8 +198,15 @@ func (o *CreatePrometheusPlugin) GetEnabled() *bool {
 	return o.Enabled
 }
 
-func (o *CreatePrometheusPlugin) GetName() string {
-	return "prometheus"
+func (o *CreatePrometheusPlugin) GetInstanceName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.InstanceName
+}
+
+func (o *CreatePrometheusPlugin) GetName() *string {
+	return types.String("prometheus")
 }
 
 func (o *CreatePrometheusPlugin) GetProtocols() []CreatePrometheusPluginProtocols {
@@ -214,6 +230,13 @@ func (o *CreatePrometheusPlugin) GetConsumer() *CreatePrometheusPluginConsumer {
 	return o.Consumer
 }
 
+func (o *CreatePrometheusPlugin) GetConsumerGroup() *CreatePrometheusPluginConsumerGroup {
+	if o == nil {
+		return nil
+	}
+	return o.ConsumerGroup
+}
+
 func (o *CreatePrometheusPlugin) GetRoute() *CreatePrometheusPluginRoute {
 	if o == nil {
 		return nil
@@ -226,11 +249,4 @@ func (o *CreatePrometheusPlugin) GetService() *CreatePrometheusPluginService {
 		return nil
 	}
 	return o.Service
-}
-
-func (o *CreatePrometheusPlugin) GetConfig() CreatePrometheusPluginConfig {
-	if o == nil {
-		return CreatePrometheusPluginConfig{}
-	}
-	return o.Config
 }

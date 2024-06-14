@@ -6,93 +6,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/internal/sdk/types"
 )
-
-type AWSLambdaPluginProtocols string
-
-const (
-	AWSLambdaPluginProtocolsGrpc           AWSLambdaPluginProtocols = "grpc"
-	AWSLambdaPluginProtocolsGrpcs          AWSLambdaPluginProtocols = "grpcs"
-	AWSLambdaPluginProtocolsHTTP           AWSLambdaPluginProtocols = "http"
-	AWSLambdaPluginProtocolsHTTPS          AWSLambdaPluginProtocols = "https"
-	AWSLambdaPluginProtocolsTCP            AWSLambdaPluginProtocols = "tcp"
-	AWSLambdaPluginProtocolsTLS            AWSLambdaPluginProtocols = "tls"
-	AWSLambdaPluginProtocolsTLSPassthrough AWSLambdaPluginProtocols = "tls_passthrough"
-	AWSLambdaPluginProtocolsUDP            AWSLambdaPluginProtocols = "udp"
-	AWSLambdaPluginProtocolsWs             AWSLambdaPluginProtocols = "ws"
-	AWSLambdaPluginProtocolsWss            AWSLambdaPluginProtocols = "wss"
-)
-
-func (e AWSLambdaPluginProtocols) ToPointer() *AWSLambdaPluginProtocols {
-	return &e
-}
-func (e *AWSLambdaPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		fallthrough
-	case "tcp":
-		fallthrough
-	case "tls":
-		fallthrough
-	case "tls_passthrough":
-		fallthrough
-	case "udp":
-		fallthrough
-	case "ws":
-		fallthrough
-	case "wss":
-		*e = AWSLambdaPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AWSLambdaPluginProtocols: %v", v)
-	}
-}
-
-// AWSLambdaPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-type AWSLambdaPluginConsumer struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *AWSLambdaPluginConsumer) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-// AWSLambdaPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-type AWSLambdaPluginRoute struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *AWSLambdaPluginRoute) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-// AWSLambdaPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-type AWSLambdaPluginService struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *AWSLambdaPluginService) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
 
 // AwsImdsProtocolVersion - Identifier to select the IMDS protocol version to use: `v1` or `v2`.
 type AwsImdsProtocolVersion string
@@ -182,63 +97,52 @@ type AWSLambdaPluginConfig struct {
 	// The target AWS IAM role ARN used to invoke the Lambda function.
 	AwsAssumeRoleArn *string `json:"aws_assume_role_arn,omitempty"`
 	// Identifier to select the IMDS protocol version to use: `v1` or `v2`.
-	AwsImdsProtocolVersion *AwsImdsProtocolVersion `default:"v1" json:"aws_imds_protocol_version"`
+	AwsImdsProtocolVersion *AwsImdsProtocolVersion `json:"aws_imds_protocol_version,omitempty"`
 	// The AWS key credential to be used when invoking the function.
 	AwsKey *string `json:"aws_key,omitempty"`
 	// A string representing a host name, such as example.com.
 	AwsRegion *string `json:"aws_region,omitempty"`
 	// The identifier of the assumed role session.
-	AwsRoleSessionName *string `default:"kong" json:"aws_role_session_name"`
+	AwsRoleSessionName *string `json:"aws_role_session_name,omitempty"`
 	// The AWS secret credential to be used when invoking the function.
 	AwsSecret *string `json:"aws_secret,omitempty"`
 	// An optional value that defines whether the plugin should wrap requests into the Amazon API gateway.
-	AwsgatewayCompatible *bool `default:"false" json:"awsgateway_compatible"`
+	AwsgatewayCompatible *bool `json:"awsgateway_compatible,omitempty"`
 	// An optional value that Base64-encodes the request body.
-	Base64EncodeBody *bool `default:"true" json:"base64_encode_body"`
-	DisableHTTPS     *bool `default:"false" json:"disable_https"`
+	Base64EncodeBody *bool `json:"base64_encode_body,omitempty"`
+	DisableHTTPS     *bool `json:"disable_https,omitempty"`
 	// An optional value that defines whether the request body is sent in the request_body field of the JSON-encoded request. If the body arguments can be parsed, they are sent in the separate request_body_args field of the request.
-	ForwardRequestBody *bool `default:"false" json:"forward_request_body"`
+	ForwardRequestBody *bool `json:"forward_request_body,omitempty"`
 	// An optional value that defines whether the original HTTP request headers are sent as a map in the request_headers field of the JSON-encoded request.
-	ForwardRequestHeaders *bool `default:"false" json:"forward_request_headers"`
+	ForwardRequestHeaders *bool `json:"forward_request_headers,omitempty"`
 	// An optional value that defines whether the original HTTP request method verb is sent in the request_method field of the JSON-encoded request.
-	ForwardRequestMethod *bool `default:"false" json:"forward_request_method"`
+	ForwardRequestMethod *bool `json:"forward_request_method,omitempty"`
 	// An optional value that defines whether the original HTTP request URI is sent in the request_uri field of the JSON-encoded request.
-	ForwardRequestURI *bool `default:"false" json:"forward_request_uri"`
-	// The AWS Lambda function name to invoke.
+	ForwardRequestURI *bool `json:"forward_request_uri,omitempty"`
+	// The AWS Lambda function to invoke. Both function name and function ARN (including partial) are supported.
 	FunctionName *string `json:"function_name,omitempty"`
 	// A string representing a host name, such as example.com.
 	Host *string `json:"host,omitempty"`
 	// The InvocationType to use when invoking the function. Available types are RequestResponse, Event, DryRun.
-	InvocationType *InvocationType `default:"RequestResponse" json:"invocation_type"`
+	InvocationType *InvocationType `json:"invocation_type,omitempty"`
 	// An optional value that defines whether the response format to receive from the Lambda to this format.
-	IsProxyIntegration *bool `default:"false" json:"is_proxy_integration"`
+	IsProxyIntegration *bool `json:"is_proxy_integration,omitempty"`
 	// An optional value in milliseconds that defines how long an idle connection lives before being closed.
-	Keepalive *float64 `default:"60000" json:"keepalive"`
+	Keepalive *float64 `json:"keepalive,omitempty"`
 	// The LogType to use when invoking the function. By default, None and Tail are supported.
-	LogType *LogType `default:"Tail" json:"log_type"`
+	LogType *LogType `json:"log_type,omitempty"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `default:"443" json:"port"`
+	Port *int64 `json:"port,omitempty"`
 	// A string representing a URL, such as https://example.com/path/to/resource?q=search.
 	ProxyURL *string `json:"proxy_url,omitempty"`
 	// The qualifier to use when invoking the function.
 	Qualifier *string `json:"qualifier,omitempty"`
 	// An optional value that defines whether Kong should send large bodies that are buffered to disk
-	SkipLargeBodies *bool `default:"true" json:"skip_large_bodies"`
+	SkipLargeBodies *bool `json:"skip_large_bodies,omitempty"`
 	// An optional timeout in milliseconds when invoking the function.
-	Timeout *float64 `default:"60000" json:"timeout"`
+	Timeout *float64 `json:"timeout,omitempty"`
 	// The response status code to use (instead of the default 200, 202, or 204) in the case of an Unhandled Function Error.
 	UnhandledStatus *int64 `json:"unhandled_status,omitempty"`
-}
-
-func (a AWSLambdaPluginConfig) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
-}
-
-func (a *AWSLambdaPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
-		return err
-	}
-	return nil
 }
 
 func (o *AWSLambdaPluginConfig) GetAwsAssumeRoleArn() *string {
@@ -416,25 +320,125 @@ func (o *AWSLambdaPluginConfig) GetUnhandledStatus() *int64 {
 	return o.UnhandledStatus
 }
 
-// AWSLambdaPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
+type AWSLambdaPluginProtocols string
+
+const (
+	AWSLambdaPluginProtocolsGrpc           AWSLambdaPluginProtocols = "grpc"
+	AWSLambdaPluginProtocolsGrpcs          AWSLambdaPluginProtocols = "grpcs"
+	AWSLambdaPluginProtocolsHTTP           AWSLambdaPluginProtocols = "http"
+	AWSLambdaPluginProtocolsHTTPS          AWSLambdaPluginProtocols = "https"
+	AWSLambdaPluginProtocolsTCP            AWSLambdaPluginProtocols = "tcp"
+	AWSLambdaPluginProtocolsTLS            AWSLambdaPluginProtocols = "tls"
+	AWSLambdaPluginProtocolsTLSPassthrough AWSLambdaPluginProtocols = "tls_passthrough"
+	AWSLambdaPluginProtocolsUDP            AWSLambdaPluginProtocols = "udp"
+	AWSLambdaPluginProtocolsWs             AWSLambdaPluginProtocols = "ws"
+	AWSLambdaPluginProtocolsWss            AWSLambdaPluginProtocols = "wss"
+)
+
+func (e AWSLambdaPluginProtocols) ToPointer() *AWSLambdaPluginProtocols {
+	return &e
+}
+func (e *AWSLambdaPluginProtocols) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "grpc":
+		fallthrough
+	case "grpcs":
+		fallthrough
+	case "http":
+		fallthrough
+	case "https":
+		fallthrough
+	case "tcp":
+		fallthrough
+	case "tls":
+		fallthrough
+	case "tls_passthrough":
+		fallthrough
+	case "udp":
+		fallthrough
+	case "ws":
+		fallthrough
+	case "wss":
+		*e = AWSLambdaPluginProtocols(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for AWSLambdaPluginProtocols: %v", v)
+	}
+}
+
+// AWSLambdaPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+type AWSLambdaPluginConsumer struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *AWSLambdaPluginConsumer) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+type AWSLambdaPluginConsumerGroup struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *AWSLambdaPluginConsumerGroup) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+// AWSLambdaPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
+type AWSLambdaPluginRoute struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *AWSLambdaPluginRoute) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+// AWSLambdaPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+type AWSLambdaPluginService struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *AWSLambdaPluginService) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
 type AWSLambdaPlugin struct {
+	Config *AWSLambdaPluginConfig `json:"config,omitempty"`
+	// Unix epoch when the resource was created.
+	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool  `default:"true" json:"enabled"`
-	name    string `const:"aws-lambda" json:"name"`
+	Enabled      *bool   `json:"enabled,omitempty"`
+	ID           *string `json:"id,omitempty"`
+	InstanceName *string `json:"instance_name,omitempty"`
+	name         *string `const:"aws-lambda" json:"name,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []AWSLambdaPluginProtocols `json:"protocols"`
+	Protocols []AWSLambdaPluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
+	// Unix epoch when the resource was last updated.
+	UpdatedAt *int64 `json:"updated_at,omitempty"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer *AWSLambdaPluginConsumer `json:"consumer,omitempty"`
+	Consumer      *AWSLambdaPluginConsumer      `json:"consumer,omitempty"`
+	ConsumerGroup *AWSLambdaPluginConsumerGroup `json:"consumer_group,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
 	Route *AWSLambdaPluginRoute `json:"route,omitempty"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 	Service *AWSLambdaPluginService `json:"service,omitempty"`
-	// Unix epoch when the resource was created.
-	CreatedAt *int64                `json:"created_at,omitempty"`
-	ID        *string               `json:"id,omitempty"`
-	Config    AWSLambdaPluginConfig `json:"config"`
 }
 
 func (a AWSLambdaPlugin) MarshalJSON() ([]byte, error) {
@@ -448,6 +452,20 @@ func (a *AWSLambdaPlugin) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (o *AWSLambdaPlugin) GetConfig() *AWSLambdaPluginConfig {
+	if o == nil {
+		return nil
+	}
+	return o.Config
+}
+
+func (o *AWSLambdaPlugin) GetCreatedAt() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.CreatedAt
+}
+
 func (o *AWSLambdaPlugin) GetEnabled() *bool {
 	if o == nil {
 		return nil
@@ -455,13 +473,27 @@ func (o *AWSLambdaPlugin) GetEnabled() *bool {
 	return o.Enabled
 }
 
-func (o *AWSLambdaPlugin) GetName() string {
-	return "aws-lambda"
+func (o *AWSLambdaPlugin) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *AWSLambdaPlugin) GetInstanceName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.InstanceName
+}
+
+func (o *AWSLambdaPlugin) GetName() *string {
+	return types.String("aws-lambda")
 }
 
 func (o *AWSLambdaPlugin) GetProtocols() []AWSLambdaPluginProtocols {
 	if o == nil {
-		return []AWSLambdaPluginProtocols{}
+		return nil
 	}
 	return o.Protocols
 }
@@ -473,11 +505,25 @@ func (o *AWSLambdaPlugin) GetTags() []string {
 	return o.Tags
 }
 
+func (o *AWSLambdaPlugin) GetUpdatedAt() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.UpdatedAt
+}
+
 func (o *AWSLambdaPlugin) GetConsumer() *AWSLambdaPluginConsumer {
 	if o == nil {
 		return nil
 	}
 	return o.Consumer
+}
+
+func (o *AWSLambdaPlugin) GetConsumerGroup() *AWSLambdaPluginConsumerGroup {
+	if o == nil {
+		return nil
+	}
+	return o.ConsumerGroup
 }
 
 func (o *AWSLambdaPlugin) GetRoute() *AWSLambdaPluginRoute {
@@ -492,25 +538,4 @@ func (o *AWSLambdaPlugin) GetService() *AWSLambdaPluginService {
 		return nil
 	}
 	return o.Service
-}
-
-func (o *AWSLambdaPlugin) GetCreatedAt() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.CreatedAt
-}
-
-func (o *AWSLambdaPlugin) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-func (o *AWSLambdaPlugin) GetConfig() AWSLambdaPluginConfig {
-	if o == nil {
-		return AWSLambdaPluginConfig{}
-	}
-	return o.Config
 }

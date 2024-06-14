@@ -33,6 +33,7 @@ type GatewayConsumerDataSourceModel struct {
 	CustomID       types.String   `tfsdk:"custom_id"`
 	ID             types.String   `tfsdk:"id"`
 	Tags           []types.String `tfsdk:"tags"`
+	UpdatedAt      types.Int64    `tfsdk:"updated_at"`
 	Username       types.String   `tfsdk:"username"`
 }
 
@@ -67,6 +68,10 @@ func (r *GatewayConsumerDataSource) Schema(ctx context.Context, req datasource.S
 				Computed:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Consumer for grouping and filtering.`,
+			},
+			"updated_at": schema.Int64Attribute{
+				Computed:    true,
+				Description: `Unix epoch when the resource was last updated.`,
 			},
 			"username": schema.StringAttribute{
 				Computed:    true,
@@ -140,8 +145,8 @@ func (r *GatewayConsumerDataSource) Read(ctx context.Context, req datasource.Rea
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.Consumer == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.Consumer != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedConsumer(res.Consumer)

@@ -6,93 +6,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/internal/sdk/types"
 )
-
-type OpenidConnectPluginProtocols string
-
-const (
-	OpenidConnectPluginProtocolsGrpc           OpenidConnectPluginProtocols = "grpc"
-	OpenidConnectPluginProtocolsGrpcs          OpenidConnectPluginProtocols = "grpcs"
-	OpenidConnectPluginProtocolsHTTP           OpenidConnectPluginProtocols = "http"
-	OpenidConnectPluginProtocolsHTTPS          OpenidConnectPluginProtocols = "https"
-	OpenidConnectPluginProtocolsTCP            OpenidConnectPluginProtocols = "tcp"
-	OpenidConnectPluginProtocolsTLS            OpenidConnectPluginProtocols = "tls"
-	OpenidConnectPluginProtocolsTLSPassthrough OpenidConnectPluginProtocols = "tls_passthrough"
-	OpenidConnectPluginProtocolsUDP            OpenidConnectPluginProtocols = "udp"
-	OpenidConnectPluginProtocolsWs             OpenidConnectPluginProtocols = "ws"
-	OpenidConnectPluginProtocolsWss            OpenidConnectPluginProtocols = "wss"
-)
-
-func (e OpenidConnectPluginProtocols) ToPointer() *OpenidConnectPluginProtocols {
-	return &e
-}
-func (e *OpenidConnectPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		fallthrough
-	case "tcp":
-		fallthrough
-	case "tls":
-		fallthrough
-	case "tls_passthrough":
-		fallthrough
-	case "udp":
-		fallthrough
-	case "ws":
-		fallthrough
-	case "wss":
-		*e = OpenidConnectPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for OpenidConnectPluginProtocols: %v", v)
-	}
-}
-
-// OpenidConnectPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-type OpenidConnectPluginConsumer struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *OpenidConnectPluginConsumer) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-// OpenidConnectPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-type OpenidConnectPluginRoute struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *OpenidConnectPluginRoute) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-// OpenidConnectPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-type OpenidConnectPluginService struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *OpenidConnectPluginService) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
 
 type AuthMethods string
 
@@ -953,6 +868,36 @@ func (e *PasswordParamType) UnmarshalJSON(data []byte) error {
 	}
 }
 
+// ProofOfPossessionDpop - Enable Demonstrating Proof-of-Possession (DPoP). If set to strict, all request are verified despite the presence of the DPoP key claim (cnf.jkt). If set to optional, only tokens bound with DPoP's key are verified with the proof.
+type ProofOfPossessionDpop string
+
+const (
+	ProofOfPossessionDpopOff      ProofOfPossessionDpop = "off"
+	ProofOfPossessionDpopStrict   ProofOfPossessionDpop = "strict"
+	ProofOfPossessionDpopOptional ProofOfPossessionDpop = "optional"
+)
+
+func (e ProofOfPossessionDpop) ToPointer() *ProofOfPossessionDpop {
+	return &e
+}
+func (e *ProofOfPossessionDpop) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "off":
+		fallthrough
+	case "strict":
+		fallthrough
+	case "optional":
+		*e = ProofOfPossessionDpop(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for ProofOfPossessionDpop: %v", v)
+	}
+}
+
 // ProofOfPossessionMtls - Enable mtls proof of possession. If set to strict, all tokens (from supported auth_methods: bearer, introspection, and session granted with bearer or introspection) are verified, if set to optional, only tokens that contain the certificate hash claim are verified. If the verification fails, the request will be rejected with 401.
 type ProofOfPossessionMtls string
 
@@ -1054,13 +999,17 @@ func (e *RefreshTokenParamType) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// ResponseMode - The response mode passed to the authorization endpoint: - `query`: Instructs the identity provider to pass parameters in query string - `form_post`: Instructs the identity provider to pass parameters in request body - `fragment`: Instructs the identity provider to pass parameters in uri fragment (rarely useful as the plugin itself cannot read it).
+// ResponseMode - Response mode passed to the authorization endpoint: - `query`: for parameters in query string - `form_post`: for parameters in request body - `fragment`: for parameters in uri fragment (rarely useful as the plugin itself cannot read it) - `query.jwt`, `form_post.jwt`, `fragment.jwt`: similar to `query`, `form_post` and `fragment` but the parameters are encoded in a JWT - `jwt`: shortcut that indicates the default encoding for the requested response type.
 type ResponseMode string
 
 const (
-	ResponseModeQuery    ResponseMode = "query"
-	ResponseModeFormPost ResponseMode = "form_post"
-	ResponseModeFragment ResponseMode = "fragment"
+	ResponseModeQuery       ResponseMode = "query"
+	ResponseModeFormPost    ResponseMode = "form_post"
+	ResponseModeFragment    ResponseMode = "fragment"
+	ResponseModeQueryJwt    ResponseMode = "query.jwt"
+	ResponseModeFormPostJwt ResponseMode = "form_post.jwt"
+	ResponseModeFragmentJwt ResponseMode = "fragment.jwt"
+	ResponseModeJwt         ResponseMode = "jwt"
 )
 
 func (e ResponseMode) ToPointer() *ResponseMode {
@@ -1077,6 +1026,14 @@ func (e *ResponseMode) UnmarshalJSON(data []byte) error {
 	case "form_post":
 		fallthrough
 	case "fragment":
+		fallthrough
+	case "query.jwt":
+		fallthrough
+	case "form_post.jwt":
+		fallthrough
+	case "fragment.jwt":
+		fallthrough
+	case "jwt":
 		*e = ResponseMode(v)
 		return nil
 	default:
@@ -1161,20 +1118,9 @@ func (e *SessionCookieSameSite) UnmarshalJSON(data []byte) error {
 
 type SessionRedisClusterNodes struct {
 	// A string representing a host name, such as example.com.
-	IP *string `default:"127.0.0.1" json:"ip"`
+	IP *string `json:"ip,omitempty"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `default:"6379" json:"port"`
-}
-
-func (s SessionRedisClusterNodes) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(s, "", false)
-}
-
-func (s *SessionRedisClusterNodes) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
-		return err
-	}
-	return nil
+	Port *int64 `json:"port,omitempty"`
 }
 
 func (o *SessionRedisClusterNodes) GetIP() *string {
@@ -1423,13 +1369,13 @@ type OpenidConnectPluginConfig struct {
 	// The authorization cookie Domain flag.
 	AuthorizationCookieDomain *string `json:"authorization_cookie_domain,omitempty"`
 	// Forbids JavaScript from accessing the cookie, for example, through the `Document.cookie` property.
-	AuthorizationCookieHTTPOnly *bool `default:"true" json:"authorization_cookie_http_only"`
+	AuthorizationCookieHTTPOnly *bool `json:"authorization_cookie_http_only,omitempty"`
 	// The authorization cookie name.
-	AuthorizationCookieName *string `default:"authorization" json:"authorization_cookie_name"`
+	AuthorizationCookieName *string `json:"authorization_cookie_name,omitempty"`
 	// The authorization cookie Path flag.
-	AuthorizationCookiePath *string `default:"/" json:"authorization_cookie_path"`
+	AuthorizationCookiePath *string `json:"authorization_cookie_path,omitempty"`
 	// Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks.
-	AuthorizationCookieSameSite *AuthorizationCookieSameSite `default:"Default" json:"authorization_cookie_same_site"`
+	AuthorizationCookieSameSite *AuthorizationCookieSameSite `json:"authorization_cookie_same_site,omitempty"`
 	// Cookie is only sent to the server when a request is made with the https: scheme (except on localhost), and therefore is more resistant to man-in-the-middle attacks.
 	AuthorizationCookieSecure *bool `json:"authorization_cookie_secure,omitempty"`
 	// The authorization endpoint. If set it overrides the value in `authorization_endpoint` returned by the discovery endpoint.
@@ -1441,23 +1387,23 @@ type OpenidConnectPluginConfig struct {
 	// Extra query argument values passed to the authorization endpoint.
 	AuthorizationQueryArgsValues []string `json:"authorization_query_args_values,omitempty"`
 	// Specifies how long the session used for the authorization code flow can be used in seconds until it needs to be renewed. 0 disables the checks and rolling.
-	AuthorizationRollingTimeout *float64 `default:"600" json:"authorization_rolling_timeout"`
+	AuthorizationRollingTimeout *float64 `json:"authorization_rolling_timeout,omitempty"`
 	// The name of the cookie in which the bearer token is passed.
 	BearerTokenCookieName *string `json:"bearer_token_cookie_name,omitempty"`
 	// Where to look for the bearer token: - `header`: search the HTTP headers - `query`: search the URL's query string - `body`: search the HTTP request body - `cookie`: search the HTTP request cookies specified with `config.bearer_token_cookie_name`.
 	BearerTokenParamType []BearerTokenParamType `json:"bearer_token_param_type,omitempty"`
 	// If `consumer_by` is set to `username`, specify whether `username` can match consumers case-insensitively.
-	ByUsernameIgnoreCase *bool `default:"false" json:"by_username_ignore_case"`
+	ByUsernameIgnoreCase *bool `json:"by_username_ignore_case,omitempty"`
 	// Cache the introspection endpoint requests.
-	CacheIntrospection *bool `default:"true" json:"cache_introspection"`
+	CacheIntrospection *bool `json:"cache_introspection,omitempty"`
 	// Cache the token exchange endpoint requests.
-	CacheTokenExchange *bool `default:"true" json:"cache_token_exchange"`
+	CacheTokenExchange *bool `json:"cache_token_exchange,omitempty"`
 	// Cache the token endpoint requests.
-	CacheTokens *bool `default:"true" json:"cache_tokens"`
+	CacheTokens *bool `json:"cache_tokens,omitempty"`
 	// Salt used for generating the cache key that is used for caching the token endpoint requests.
 	CacheTokensSalt *string `json:"cache_tokens_salt,omitempty"`
 	// The default cache ttl in seconds that is used in case the cached object does not specify the expiry.
-	CacheTTL *float64 `default:"3600" json:"cache_ttl"`
+	CacheTTL *float64 `json:"cache_ttl,omitempty"`
 	// The maximum cache ttl in seconds (enforced).
 	CacheTTLMax *float64 `json:"cache_ttl_max,omitempty"`
 	// The minimum cache ttl in seconds (enforced).
@@ -1467,11 +1413,11 @@ type OpenidConnectPluginConfig struct {
 	// The resurrection ttl in seconds.
 	CacheTTLResurrect *float64 `json:"cache_ttl_resurrect,omitempty"`
 	// Cache the user info requests.
-	CacheUserInfo *bool `default:"true" json:"cache_user_info"`
+	CacheUserInfo *bool `json:"cache_user_info,omitempty"`
 	// The algorithm to use for client_secret_jwt (only HS***) or private_key_jwt authentication.
 	ClientAlg []ClientAlg `json:"client_alg,omitempty"`
 	// The client to use for this request (the selection is made with a request parameter with the same name).
-	ClientArg *string `default:"client_id" json:"client_arg"`
+	ClientArg *string `json:"client_arg,omitempty"`
 	// The default OpenID Connect client authentication method is 'client_secret_basic' (using 'Authorization: Basic' header), 'client_secret_post' (credentials in body), 'client_secret_jwt' (signed client assertion in body), 'private_key_jwt' (private key-signed assertion), 'tls_client_auth' (client certificate), 'self_signed_tls_client_auth' (self-signed client certificate), and 'none' (no authentication).
 	ClientAuth []ClientAuth `json:"client_auth,omitempty"`
 	// Where to look for the client credentials: - `header`: search the HTTP headers - `query`: search the URL's query string - `body`: search from the HTTP request body.
@@ -1487,7 +1433,7 @@ type OpenidConnectPluginConfig struct {
 	// The claim used for consumer mapping. If multiple values are set, it means the claim is inside a nested object of the token payload.
 	ConsumerClaim []string `json:"consumer_claim,omitempty"`
 	// Do not terminate the request if consumer mapping fails.
-	ConsumerOptional *bool `default:"false" json:"consumer_optional"`
+	ConsumerOptional *bool `json:"consumer_optional,omitempty"`
 	// The claim used to derive virtual credentials (e.g. to be consumed by the rate-limiting plugin), in case the consumer mapping is not used. If multiple values are set, it means the claim is inside a nested object of the token payload.
 	CredentialClaim []string `json:"credential_claim,omitempty"`
 	// Disable issuing the session cookie with the specified grants.
@@ -1497,7 +1443,7 @@ type OpenidConnectPluginConfig struct {
 	// Extra header values passed to the discovery endpoint.
 	DiscoveryHeadersValues []string `json:"discovery_headers_values,omitempty"`
 	// Display errors on failure responses.
-	DisplayErrors *bool `default:"false" json:"display_errors"`
+	DisplayErrors *bool `json:"display_errors,omitempty"`
 	// The allowed values for the `hd` claim.
 	Domains []string `json:"domains,omitempty"`
 	// The downstream access token header.
@@ -1524,18 +1470,22 @@ type OpenidConnectPluginConfig struct {
 	DownstreamUserInfoHeader *string `json:"downstream_user_info_header,omitempty"`
 	// The downstream user info JWT header (in case the user info returns a JWT response).
 	DownstreamUserInfoJwtHeader *string `json:"downstream_user_info_jwt_header,omitempty"`
+	// Specifies the lifetime in seconds of the DPoP proof. It determines how long the same proof can be used after creation. The creation time is determined by the nonce creation time if a nonce is used, and the iat claim otherwise.
+	DpopProofLifetime *float64 `json:"dpop_proof_lifetime,omitempty"`
+	// Specifies whether to challenge the client with a nonce value for DPoP proof. When enabled it will also be used to calculate the DPoP proof lifetime.
+	DpopUseNonce *bool `json:"dpop_use_nonce,omitempty"`
 	// Enable shared secret, for example, HS256, signatures (when disabled they will not be accepted).
-	EnableHsSignatures *bool `default:"false" json:"enable_hs_signatures"`
+	EnableHsSignatures *bool `json:"enable_hs_signatures,omitempty"`
 	// The end session endpoint. If set it overrides the value in `end_session_endpoint` returned by the discovery endpoint.
 	EndSessionEndpoint *string `json:"end_session_endpoint,omitempty"`
 	// Specifies whether to expose the error code header, as defined in RFC 6750. If an authorization request fails, this header is sent in the response. Set to `false` to disable.
-	ExposeErrorCode *bool `default:"true" json:"expose_error_code"`
+	ExposeErrorCode *bool `json:"expose_error_code,omitempty"`
 	// JWKS URIs whose public keys are trusted (in addition to the keys found with the discovery).
 	ExtraJwksUris []string `json:"extra_jwks_uris,omitempty"`
 	// Destroy any active session for the forbidden requests.
-	ForbiddenDestroySession *bool `default:"true" json:"forbidden_destroy_session"`
+	ForbiddenDestroySession *bool `json:"forbidden_destroy_session,omitempty"`
 	// The error message for the forbidden requests (when not using the redirection).
-	ForbiddenErrorMessage *string `default:"Forbidden" json:"forbidden_error_message"`
+	ForbiddenErrorMessage *string `json:"forbidden_error_message,omitempty"`
 	// Where to redirect the client on forbidden requests.
 	ForbiddenRedirectURI []string `json:"forbidden_redirect_uri,omitempty"`
 	// The claim that contains the groups. If multiple values are set, it means the claim is inside a nested object of the token payload.
@@ -1543,13 +1493,13 @@ type OpenidConnectPluginConfig struct {
 	// The groups (`groups_claim` claim) required to be present in the access token (or introspection results) for successful authorization. This config parameter works in both **AND** / **OR** cases.
 	GroupsRequired []string `json:"groups_required,omitempty"`
 	// Remove the credentials used for authentication from the request. If multiple credentials are sent with the same request, the plugin will remove those that were used for successful authentication.
-	HideCredentials *bool `default:"false" json:"hide_credentials"`
+	HideCredentials *bool `json:"hide_credentials,omitempty"`
 	// The HTTP proxy.
 	HTTPProxy *string `json:"http_proxy,omitempty"`
 	// The HTTP proxy authorization.
 	HTTPProxyAuthorization *string `json:"http_proxy_authorization,omitempty"`
 	// The HTTP version used for the requests by this plugin: - `1.1`: HTTP 1.1 (the default) - `1.0`: HTTP 1.0.
-	HTTPVersion *float64 `default:"1.1" json:"http_version"`
+	HTTPVersion *float64 `json:"http_version,omitempty"`
 	// The HTTPS proxy.
 	HTTPSProxy *string `json:"https_proxy,omitempty"`
 	// The HTTPS proxy authorization.
@@ -1561,11 +1511,11 @@ type OpenidConnectPluginConfig struct {
 	// Skip the token signature verification on certain grants: - `password`: OAuth password grant - `client_credentials`: OAuth client credentials grant - `authorization_code`: authorization code flow - `refresh_token`: OAuth refresh token grant - `session`: session cookie authentication - `introspection`: OAuth introspection - `userinfo`: OpenID Connect user info endpoint authentication.
 	IgnoreSignature []IgnoreSignature `json:"ignore_signature,omitempty"`
 	// Specifies whether to introspect the JWT access tokens (can be used to check for revocations).
-	IntrospectJwtTokens *bool `default:"false" json:"introspect_jwt_tokens"`
+	IntrospectJwtTokens *bool `json:"introspect_jwt_tokens,omitempty"`
 	// The value of `Accept` header for introspection requests: - `application/json`: introspection response as JSON - `application/token-introspection+jwt`: introspection response as JWT (from the current IETF draft document) - `application/jwt`: introspection response as JWT (from the obsolete IETF draft document).
-	IntrospectionAccept *IntrospectionAccept `default:"application/json" json:"introspection_accept"`
+	IntrospectionAccept *IntrospectionAccept `json:"introspection_accept,omitempty"`
 	// Check that the introspection response has an `active` claim with a value of `true`.
-	IntrospectionCheckActive *bool `default:"true" json:"introspection_check_active"`
+	IntrospectionCheckActive *bool `json:"introspection_check_active,omitempty"`
 	// The introspection endpoint. If set it overrides the value in `introspection_endpoint` returned by the discovery endpoint.
 	IntrospectionEndpoint *string `json:"introspection_endpoint,omitempty"`
 	// The introspection endpoint authentication method: : `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
@@ -1577,7 +1527,7 @@ type OpenidConnectPluginConfig struct {
 	// Extra header values passed to the introspection endpoint.
 	IntrospectionHeadersValues []string `json:"introspection_headers_values,omitempty"`
 	// Introspection hint parameter value passed to the introspection endpoint.
-	IntrospectionHint *string `default:"access_token" json:"introspection_hint"`
+	IntrospectionHint *string `json:"introspection_hint,omitempty"`
 	// Extra post arguments passed from the client to the introspection endpoint.
 	IntrospectionPostArgsClient []string `json:"introspection_post_args_client,omitempty"`
 	// Extra post argument names passed to the introspection endpoint.
@@ -1585,25 +1535,25 @@ type OpenidConnectPluginConfig struct {
 	// Extra post argument values passed to the introspection endpoint.
 	IntrospectionPostArgsValues []string `json:"introspection_post_args_values,omitempty"`
 	// Designate token's parameter name for introspection.
-	IntrospectionTokenParamName *string `default:"token" json:"introspection_token_param_name"`
+	IntrospectionTokenParamName *string `json:"introspection_token_param_name,omitempty"`
 	// The discovery endpoint (or the issuer identifier). When there is no discovery endpoint, please also configure `config.using_pseudo_issuer=true`.
 	Issuer *string `json:"issuer,omitempty"`
 	// The issuers allowed to be present in the tokens (`iss` claim).
 	IssuersAllowed []string `json:"issuers_allowed,omitempty"`
 	// The claim to match against the JWT session cookie.
-	JwtSessionClaim *string `default:"sid" json:"jwt_session_claim"`
+	JwtSessionClaim *string `json:"jwt_session_claim,omitempty"`
 	// The name of the JWT session cookie.
 	JwtSessionCookie *string `json:"jwt_session_cookie,omitempty"`
 	// Use keepalive with the HTTP client.
-	Keepalive *bool `default:"true" json:"keepalive"`
-	// Allow some leeway (in seconds) on the iat claim and ttl / expiry verification.
-	Leeway *float64 `default:"0" json:"leeway"`
+	Keepalive *bool `json:"keepalive,omitempty"`
+	// Defines leeway time (in seconds) for `auth_time`, `exp`, `iat`, and `nbf` claims
+	Leeway *float64 `json:"leeway,omitempty"`
 	// What to do after successful login: - `upstream`: proxy request to upstream service - `response`: terminate request with a response - `redirect`: redirect to a different location.
-	LoginAction *LoginAction `default:"upstream" json:"login_action"`
+	LoginAction *LoginAction `json:"login_action,omitempty"`
 	// Enable login functionality with specified grants.
 	LoginMethods []LoginMethods `json:"login_methods,omitempty"`
 	// Where to place `login_tokens` when using `redirect` `login_action`: - `query`: place tokens in query string - `fragment`: place tokens in url fragment (not readable by servers).
-	LoginRedirectMode *LoginRedirectMode `default:"fragment" json:"login_redirect_mode"`
+	LoginRedirectMode *LoginRedirectMode `json:"login_redirect_mode,omitempty"`
 	// Where to redirect the client when `login_action` is set to `redirect`.
 	LoginRedirectURI []string `json:"login_redirect_uri,omitempty"`
 	// What tokens to include in `response` body or `redirect` query string or fragment: - `id_token`: include id token - `access_token`: include access token - `refresh_token`: include refresh token - `tokens`: include the full token endpoint response - `introspection`: include introspection response.
@@ -1619,11 +1569,11 @@ type OpenidConnectPluginConfig struct {
 	// Revoke tokens as part of the logout.
 	//
 	// For more granular token revocation, you can also adjust the `logout_revoke_access_token` and `logout_revoke_refresh_token` parameters.
-	LogoutRevoke *bool `default:"false" json:"logout_revoke"`
+	LogoutRevoke *bool `json:"logout_revoke,omitempty"`
 	// Revoke the access token as part of the logout. Requires `logout_revoke` to be set to `true`.
-	LogoutRevokeAccessToken *bool `default:"true" json:"logout_revoke_access_token"`
+	LogoutRevokeAccessToken *bool `json:"logout_revoke_access_token,omitempty"`
 	// Revoke the refresh token as part of the logout. Requires `logout_revoke` to be set to `true`.
-	LogoutRevokeRefreshToken *bool `default:"true" json:"logout_revoke_refresh_token"`
+	LogoutRevokeRefreshToken *bool `json:"logout_revoke_refresh_token,omitempty"`
 	// The request URI suffix that activates the logout.
 	LogoutURISuffix *string `json:"logout_uri_suffix,omitempty"`
 	// The maximum age (in seconds) compared to the `auth_time` claim.
@@ -1639,11 +1589,13 @@ type OpenidConnectPluginConfig struct {
 	// Where to look for the username and password: - `header`: search the HTTP headers - `query`: search the URL's query string - `body`: search the HTTP request body.
 	PasswordParamType []PasswordParamType `json:"password_param_type,omitempty"`
 	// With this parameter, you can preserve request query arguments even when doing authorization code flow.
-	PreserveQueryArgs *bool `default:"false" json:"preserve_query_args"`
+	PreserveQueryArgs *bool `json:"preserve_query_args,omitempty"`
 	// If set to true, only the auth_methods that are compatible with Proof of Possession (PoP) can be configured when PoP is enabled. If set to false, all auth_methods will be configurable and PoP checks will be silently skipped for those auth_methods that are not compatible with PoP.
-	ProofOfPossessionAuthMethodsValidation *bool `default:"true" json:"proof_of_possession_auth_methods_validation"`
+	ProofOfPossessionAuthMethodsValidation *bool `json:"proof_of_possession_auth_methods_validation,omitempty"`
+	// Enable Demonstrating Proof-of-Possession (DPoP). If set to strict, all request are verified despite the presence of the DPoP key claim (cnf.jkt). If set to optional, only tokens bound with DPoP's key are verified with the proof.
+	ProofOfPossessionDpop *ProofOfPossessionDpop `json:"proof_of_possession_dpop,omitempty"`
 	// Enable mtls proof of possession. If set to strict, all tokens (from supported auth_methods: bearer, introspection, and session granted with bearer or introspection) are verified, if set to optional, only tokens that contain the certificate hash claim are verified. If the verification fails, the request will be rejected with 401.
-	ProofOfPossessionMtls *ProofOfPossessionMtls `default:"off" json:"proof_of_possession_mtls"`
+	ProofOfPossessionMtls *ProofOfPossessionMtls `json:"proof_of_possession_mtls,omitempty"`
 	// The pushed authorization endpoint. If set it overrides the value in `pushed_authorization_request_endpoint` returned by the discovery endpoint.
 	PushedAuthorizationRequestEndpoint *string `json:"pushed_authorization_request_endpoint,omitempty"`
 	// The pushed authorization request endpoint authentication method: `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
@@ -1651,37 +1603,39 @@ type OpenidConnectPluginConfig struct {
 	// The redirect URI passed to the authorization and token endpoints.
 	RedirectURI []string `json:"redirect_uri,omitempty"`
 	// Specifies how long (in seconds) the plugin waits between discovery attempts. Discovery is still triggered on an as-needed basis.
-	RediscoveryLifetime *float64 `default:"30" json:"rediscovery_lifetime"`
+	RediscoveryLifetime *float64 `json:"rediscovery_lifetime,omitempty"`
 	// The name of the parameter used to pass the refresh token.
 	RefreshTokenParamName *string `json:"refresh_token_param_name,omitempty"`
 	// Where to look for the refresh token: - `header`: search the HTTP headers - `query`: search the URL's query string - `body`: search the HTTP request body.
 	RefreshTokenParamType []RefreshTokenParamType `json:"refresh_token_param_type,omitempty"`
 	// Specifies whether the plugin should try to refresh (soon to be) expired access tokens if the plugin has a `refresh_token` available.
-	RefreshTokens *bool `default:"true" json:"refresh_tokens"`
+	RefreshTokens *bool `json:"refresh_tokens,omitempty"`
 	// Forcibly enable or disable the proof key for code exchange. When not set the value is determined through the discovery using the value of `code_challenge_methods_supported`, and enabled automatically (in case the `code_challenge_methods_supported` is missing, the PKCE will not be enabled).
 	RequireProofKeyForCodeExchange *bool `json:"require_proof_key_for_code_exchange,omitempty"`
 	// Forcibly enable or disable the pushed authorization requests. When not set the value is determined through the discovery using the value of `require_pushed_authorization_requests` (which defaults to `false`).
 	RequirePushedAuthorizationRequests *bool `json:"require_pushed_authorization_requests,omitempty"`
+	// Forcibly enable or disable the usage of signed request object on authorization or pushed authorization endpoint. When not set the value is determined through the discovery using the value of `require_signed_request_object`, and enabled automatically (in case the `require_signed_request_object` is missing, the feature will not be enabled).
+	RequireSignedRequestObject *bool `json:"require_signed_request_object,omitempty"`
 	// Distributed claims are represented by the `_claim_names` and `_claim_sources` members of the JSON object containing the claims. If this parameter is set to `true`, the plugin explicitly resolves these distributed claims.
-	ResolveDistributedClaims *bool `default:"false" json:"resolve_distributed_claims"`
-	// The response mode passed to the authorization endpoint: - `query`: Instructs the identity provider to pass parameters in query string - `form_post`: Instructs the identity provider to pass parameters in request body - `fragment`: Instructs the identity provider to pass parameters in uri fragment (rarely useful as the plugin itself cannot read it).
-	ResponseMode *ResponseMode `default:"query" json:"response_mode"`
+	ResolveDistributedClaims *bool `json:"resolve_distributed_claims,omitempty"`
+	// Response mode passed to the authorization endpoint: - `query`: for parameters in query string - `form_post`: for parameters in request body - `fragment`: for parameters in uri fragment (rarely useful as the plugin itself cannot read it) - `query.jwt`, `form_post.jwt`, `fragment.jwt`: similar to `query`, `form_post` and `fragment` but the parameters are encoded in a JWT - `jwt`: shortcut that indicates the default encoding for the requested response type.
+	ResponseMode *ResponseMode `json:"response_mode,omitempty"`
 	// The response type passed to the authorization endpoint.
 	ResponseType []string `json:"response_type,omitempty"`
 	// Specifies whether to always verify tokens stored in the session.
-	Reverify *bool `default:"false" json:"reverify"`
+	Reverify *bool `json:"reverify,omitempty"`
 	// The revocation endpoint. If set it overrides the value in `revocation_endpoint` returned by the discovery endpoint.
 	RevocationEndpoint *string `json:"revocation_endpoint,omitempty"`
 	// The revocation endpoint authentication method: : `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
 	RevocationEndpointAuthMethod *RevocationEndpointAuthMethod `json:"revocation_endpoint_auth_method,omitempty"`
 	// Designate token's parameter name for revocation.
-	RevocationTokenParamName *string `default:"token" json:"revocation_token_param_name"`
+	RevocationTokenParamName *string `json:"revocation_token_param_name,omitempty"`
 	// The claim that contains the roles. If multiple values are set, it means the claim is inside a nested object of the token payload.
 	RolesClaim []string `json:"roles_claim,omitempty"`
 	// The roles (`roles_claim` claim) required to be present in the access token (or introspection results) for successful authorization. This config parameter works in both **AND** / **OR** cases.
 	RolesRequired []string `json:"roles_required,omitempty"`
 	// Specifies whether to run this plugin on pre-flight (`OPTIONS`) requests.
-	RunOnPreflight *bool `default:"true" json:"run_on_preflight"`
+	RunOnPreflight *bool `json:"run_on_preflight,omitempty"`
 	// The scopes passed to the authorization and token endpoints.
 	Scopes []string `json:"scopes,omitempty"`
 	// The claim that contains the scopes. If multiple values are set, it means the claim is inside a nested object of the token payload.
@@ -1689,35 +1643,35 @@ type OpenidConnectPluginConfig struct {
 	// The scopes (`scopes_claim` claim) required to be present in the access token (or introspection results) for successful authorization. This config parameter works in both **AND** / **OR** cases.
 	ScopesRequired []string `json:"scopes_required,omitempty"`
 	// Specify whether to use the user info endpoint to get additional claims for consumer mapping, credential mapping, authenticated groups, and upstream and downstream headers.
-	SearchUserInfo *bool `default:"false" json:"search_user_info"`
+	SearchUserInfo *bool `json:"search_user_info,omitempty"`
 	// Limits how long the session can be renewed in seconds, until re-authentication is required. 0 disables the checks.
-	SessionAbsoluteTimeout *float64 `default:"86400" json:"session_absolute_timeout"`
+	SessionAbsoluteTimeout *float64 `json:"session_absolute_timeout,omitempty"`
 	// The session audience, which is the intended target application. For example `"my-application"`.
-	SessionAudience *string `default:"default" json:"session_audience"`
+	SessionAudience *string `json:"session_audience,omitempty"`
 	// The session cookie Domain flag.
 	SessionCookieDomain *string `json:"session_cookie_domain,omitempty"`
 	// Forbids JavaScript from accessing the cookie, for example, through the `Document.cookie` property.
-	SessionCookieHTTPOnly *bool `default:"true" json:"session_cookie_http_only"`
+	SessionCookieHTTPOnly *bool `json:"session_cookie_http_only,omitempty"`
 	// The session cookie name.
-	SessionCookieName *string `default:"session" json:"session_cookie_name"`
+	SessionCookieName *string `json:"session_cookie_name,omitempty"`
 	// The session cookie Path flag.
-	SessionCookiePath *string `default:"/" json:"session_cookie_path"`
+	SessionCookiePath *string `json:"session_cookie_path,omitempty"`
 	// Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks.
-	SessionCookieSameSite *SessionCookieSameSite `default:"Lax" json:"session_cookie_same_site"`
+	SessionCookieSameSite *SessionCookieSameSite `json:"session_cookie_same_site,omitempty"`
 	// Cookie is only sent to the server when a request is made with the https: scheme (except on localhost), and therefore is more resistant to man-in-the-middle attacks.
 	SessionCookieSecure *bool `json:"session_cookie_secure,omitempty"`
 	// When set to `true`, audiences are forced to share the same subject.
-	SessionEnforceSameSubject *bool `default:"false" json:"session_enforce_same_subject"`
+	SessionEnforceSameSubject *bool `json:"session_enforce_same_subject,omitempty"`
 	// When set to `true`, the storage key (session ID) is hashed for extra security. Hashing the storage key means it is impossible to decrypt data from the storage without a cookie.
-	SessionHashStorageKey *bool `default:"false" json:"session_hash_storage_key"`
+	SessionHashStorageKey *bool `json:"session_hash_storage_key,omitempty"`
 	// When set to `true`, the value of subject is hashed before being stored. Only applies when `session_store_metadata` is enabled.
-	SessionHashSubject *bool `default:"false" json:"session_hash_subject"`
+	SessionHashSubject *bool `json:"session_hash_subject,omitempty"`
 	// Specifies how long the session can be inactive until it is considered invalid in seconds. 0 disables the checks and touching.
-	SessionIdlingTimeout *float64 `default:"900" json:"session_idling_timeout"`
+	SessionIdlingTimeout *float64 `json:"session_idling_timeout,omitempty"`
 	// The memcached host.
-	SessionMemcachedHost *string `default:"127.0.0.1" json:"session_memcached_host"`
+	SessionMemcachedHost *string `json:"session_memcached_host,omitempty"`
 	// The memcached port.
-	SessionMemcachedPort *int64 `default:"11211" json:"session_memcached_port"`
+	SessionMemcachedPort *int64 `json:"session_memcached_port,omitempty"`
 	// The memcached session key prefix.
 	SessionMemcachedPrefix *string `json:"session_memcached_prefix,omitempty"`
 	// The memcached unix socket path.
@@ -1729,11 +1683,11 @@ type OpenidConnectPluginConfig struct {
 	// Session redis connection timeout in milliseconds.
 	SessionRedisConnectTimeout *int64 `json:"session_redis_connect_timeout,omitempty"`
 	// The Redis host.
-	SessionRedisHost *string `default:"127.0.0.1" json:"session_redis_host"`
+	SessionRedisHost *string `json:"session_redis_host,omitempty"`
 	// Password to use for Redis connection when the `redis` session storage is defined. If undefined, no AUTH commands are sent to Redis.
 	SessionRedisPassword *string `json:"session_redis_password,omitempty"`
 	// The Redis port.
-	SessionRedisPort *int64 `default:"6379" json:"session_redis_port"`
+	SessionRedisPort *int64 `json:"session_redis_port,omitempty"`
 	// The Redis session key prefix.
 	SessionRedisPrefix *string `json:"session_redis_prefix,omitempty"`
 	// Session redis read timeout in milliseconds.
@@ -1745,41 +1699,41 @@ type OpenidConnectPluginConfig struct {
 	// The Redis unix socket path.
 	SessionRedisSocket *string `json:"session_redis_socket,omitempty"`
 	// Use SSL/TLS for Redis connection.
-	SessionRedisSsl *bool `default:"false" json:"session_redis_ssl"`
+	SessionRedisSsl *bool `json:"session_redis_ssl,omitempty"`
 	// Verify identity provider server certificate.
-	SessionRedisSslVerify *bool `default:"false" json:"session_redis_ssl_verify"`
+	SessionRedisSslVerify *bool `json:"session_redis_ssl_verify,omitempty"`
 	// Username to use for Redis connection when the `redis` session storage is defined and ACL authentication is desired. If undefined, ACL authentication will not be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
 	SessionRedisUsername *string `json:"session_redis_username,omitempty"`
 	// Enables or disables persistent sessions.
-	SessionRemember *bool `default:"false" json:"session_remember"`
+	SessionRemember *bool `json:"session_remember,omitempty"`
 	// Limits how long the persistent session can be renewed in seconds, until re-authentication is required. 0 disables the checks.
-	SessionRememberAbsoluteTimeout *float64 `default:"2592000" json:"session_remember_absolute_timeout"`
+	SessionRememberAbsoluteTimeout *float64 `json:"session_remember_absolute_timeout,omitempty"`
 	// Persistent session cookie name. Use with the `remember` configuration parameter.
-	SessionRememberCookieName *string `default:"remember" json:"session_remember_cookie_name"`
+	SessionRememberCookieName *string `json:"session_remember_cookie_name,omitempty"`
 	// Specifies how long the persistent session is considered valid in seconds. 0 disables the checks and rolling.
-	SessionRememberRollingTimeout *float64 `default:"604800" json:"session_remember_rolling_timeout"`
+	SessionRememberRollingTimeout *float64 `json:"session_remember_rolling_timeout,omitempty"`
 	// Set of headers to send to upstream, use id, audience, subject, timeout, idling-timeout, rolling-timeout, absolute-timeout. E.g. `[ "id", "timeout" ]` will set Session-Id and Session-Timeout request headers.
 	SessionRequestHeaders []SessionRequestHeaders `json:"session_request_headers,omitempty"`
 	// Set of headers to send to downstream, use id, audience, subject, timeout, idling-timeout, rolling-timeout, absolute-timeout. E.g. `[ "id", "timeout" ]` will set Session-Id and Session-Timeout response headers.
 	SessionResponseHeaders []SessionResponseHeaders `json:"session_response_headers,omitempty"`
 	// Specifies how long the session can be used in seconds until it needs to be renewed. 0 disables the checks and rolling.
-	SessionRollingTimeout *float64 `default:"3600" json:"session_rolling_timeout"`
+	SessionRollingTimeout *float64 `json:"session_rolling_timeout,omitempty"`
 	// The session secret.
 	SessionSecret *string `json:"session_secret,omitempty"`
 	// The session storage for session data: - `cookie`: stores session data with the session cookie (the session cannot be invalidated or revoked without changing session secret, but is stateless, and doesn't require a database) - `memcache`: stores session data in memcached - `redis`: stores session data in Redis.
-	SessionStorage *SessionStorage `default:"cookie" json:"session_storage"`
+	SessionStorage *SessionStorage `json:"session_storage,omitempty"`
 	// Configures whether or not session metadata should be stored. This metadata includes information about the active sessions for a specific audience belonging to a specific subject.
-	SessionStoreMetadata *bool `default:"false" json:"session_store_metadata"`
-	// Verify identity provider server certificate.
-	SslVerify *bool `default:"false" json:"ssl_verify"`
+	SessionStoreMetadata *bool `json:"session_store_metadata,omitempty"`
+	// Verify identity provider server certificate. If set to `true`, the plugin uses the CA certificate set in the `kong.conf` config parameter `lua_ssl_trusted_certificate`.
+	SslVerify *bool `json:"ssl_verify,omitempty"`
 	// Network IO timeout in milliseconds.
-	Timeout *float64 `default:"10000" json:"timeout"`
+	Timeout *float64 `json:"timeout,omitempty"`
 	// ID of the Certificate entity representing the client certificate to use for mTLS client authentication for connections between Kong and the Auth Server.
 	TLSClientAuthCertID *string `json:"tls_client_auth_cert_id,omitempty"`
 	// Verify identity provider server certificate during mTLS client authentication.
-	TLSClientAuthSslVerify *bool `default:"true" json:"tls_client_auth_ssl_verify"`
+	TLSClientAuthSslVerify *bool `json:"tls_client_auth_ssl_verify,omitempty"`
 	// Include the scope in the token cache key, so token with different scopes are considered diffrent tokens.
-	TokenCacheKeyIncludeScope *bool `default:"false" json:"token_cache_key_include_scope"`
+	TokenCacheKeyIncludeScope *bool `json:"token_cache_key_include_scope,omitempty"`
 	// The token endpoint. If set it overrides the value in `token_endpoint` returned by the discovery endpoint.
 	TokenEndpoint *string `json:"token_endpoint,omitempty"`
 	// The token endpoint authentication method: `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
@@ -1798,22 +1752,22 @@ type OpenidConnectPluginConfig struct {
 	TokenHeadersReplay []string `json:"token_headers_replay,omitempty"`
 	// Extra header values passed to the token endpoint.
 	TokenHeadersValues []string `json:"token_headers_values,omitempty"`
-	// Pass extra arguments from the client to the OpenID-Connect plugin. If arguments exist, the client can pass them using: - Query parameters - Request Body - Reqest Header  This parameter can be used with `scope` values, like this:  `config.token_post_args_client=scope`  In this case, the token would take the `scope` value from the query parameter or from the request body or from the header and send it to the token endpoint.
+	// Pass extra arguments from the client to the OpenID-Connect plugin. If arguments exist, the client can pass them using: - Query parameters - Request Body - Request Header  This parameter can be used with `scope` values, like this:  `config.token_post_args_client=scope`  In this case, the token would take the `scope` value from the query parameter or from the request body or from the header and send it to the token endpoint.
 	TokenPostArgsClient []string `json:"token_post_args_client,omitempty"`
 	// Extra post argument names passed to the token endpoint.
 	TokenPostArgsNames []string `json:"token_post_args_names,omitempty"`
 	// Extra post argument values passed to the token endpoint.
 	TokenPostArgsValues []string `json:"token_post_args_values,omitempty"`
 	// Destroy any active session for the unauthorized requests.
-	UnauthorizedDestroySession *bool `default:"true" json:"unauthorized_destroy_session"`
+	UnauthorizedDestroySession *bool `json:"unauthorized_destroy_session,omitempty"`
 	// The error message for the unauthorized requests (when not using the redirection).
-	UnauthorizedErrorMessage *string `default:"Unauthorized" json:"unauthorized_error_message"`
+	UnauthorizedErrorMessage *string `json:"unauthorized_error_message,omitempty"`
 	// Where to redirect the client on unauthorized requests.
 	UnauthorizedRedirectURI []string `json:"unauthorized_redirect_uri,omitempty"`
 	// Where to redirect the client when unexpected errors happen with the requests.
 	UnexpectedRedirectURI []string `json:"unexpected_redirect_uri,omitempty"`
 	// The upstream access token header.
-	UpstreamAccessTokenHeader *string `default:"authorization:bearer" json:"upstream_access_token_header"`
+	UpstreamAccessTokenHeader *string `json:"upstream_access_token_header,omitempty"`
 	// The upstream access token JWK header.
 	UpstreamAccessTokenJwkHeader *string `json:"upstream_access_token_jwk_header,omitempty"`
 	// The upstream header claims. If multiple values are set, it means the claim is inside a nested object of the token payload.
@@ -1837,7 +1791,7 @@ type OpenidConnectPluginConfig struct {
 	// The upstream user info JWT header (in case the user info returns a JWT response).
 	UpstreamUserInfoJwtHeader *string `json:"upstream_user_info_jwt_header,omitempty"`
 	// The value of `Accept` header for user info requests: - `application/json`: user info response as JSON - `application/jwt`: user info response as JWT (from the obsolete IETF draft document).
-	UserinfoAccept *UserinfoAccept `default:"application/json" json:"userinfo_accept"`
+	UserinfoAccept *UserinfoAccept `json:"userinfo_accept,omitempty"`
 	// The user info endpoint. If set it overrides the value in `userinfo_endpoint` returned by the discovery endpoint.
 	UserinfoEndpoint *string `json:"userinfo_endpoint,omitempty"`
 	// Extra headers passed from the client to the user info endpoint.
@@ -1853,26 +1807,15 @@ type OpenidConnectPluginConfig struct {
 	// Extra query argument values passed to the user info endpoint.
 	UserinfoQueryArgsValues []string `json:"userinfo_query_args_values,omitempty"`
 	// If the plugin uses a pseudo issuer. When set to true, the plugin will not discover the configuration from the issuer URL specified with `config.issuer`.
-	UsingPseudoIssuer *bool `default:"false" json:"using_pseudo_issuer"`
+	UsingPseudoIssuer *bool `json:"using_pseudo_issuer,omitempty"`
 	// Verify tokens for standard claims.
-	VerifyClaims *bool `default:"true" json:"verify_claims"`
+	VerifyClaims *bool `json:"verify_claims,omitempty"`
 	// Verify nonce on authorization code flow.
-	VerifyNonce *bool `default:"true" json:"verify_nonce"`
+	VerifyNonce *bool `json:"verify_nonce,omitempty"`
 	// Verify plugin configuration against discovery.
-	VerifyParameters *bool `default:"false" json:"verify_parameters"`
+	VerifyParameters *bool `json:"verify_parameters,omitempty"`
 	// Verify signature of tokens.
-	VerifySignature *bool `default:"true" json:"verify_signature"`
-}
-
-func (o OpenidConnectPluginConfig) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(o, "", false)
-}
-
-func (o *OpenidConnectPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
-		return err
-	}
-	return nil
+	VerifySignature *bool `json:"verify_signature,omitempty"`
 }
 
 func (o *OpenidConnectPluginConfig) GetAnonymous() *string {
@@ -2281,6 +2224,20 @@ func (o *OpenidConnectPluginConfig) GetDownstreamUserInfoJwtHeader() *string {
 	return o.DownstreamUserInfoJwtHeader
 }
 
+func (o *OpenidConnectPluginConfig) GetDpopProofLifetime() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.DpopProofLifetime
+}
+
+func (o *OpenidConnectPluginConfig) GetDpopUseNonce() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.DpopUseNonce
+}
+
 func (o *OpenidConnectPluginConfig) GetEnableHsSignatures() *bool {
 	if o == nil {
 		return nil
@@ -2687,6 +2644,13 @@ func (o *OpenidConnectPluginConfig) GetProofOfPossessionAuthMethodsValidation() 
 	return o.ProofOfPossessionAuthMethodsValidation
 }
 
+func (o *OpenidConnectPluginConfig) GetProofOfPossessionDpop() *ProofOfPossessionDpop {
+	if o == nil {
+		return nil
+	}
+	return o.ProofOfPossessionDpop
+}
+
 func (o *OpenidConnectPluginConfig) GetProofOfPossessionMtls() *ProofOfPossessionMtls {
 	if o == nil {
 		return nil
@@ -2755,6 +2719,13 @@ func (o *OpenidConnectPluginConfig) GetRequirePushedAuthorizationRequests() *boo
 		return nil
 	}
 	return o.RequirePushedAuthorizationRequests
+}
+
+func (o *OpenidConnectPluginConfig) GetRequireSignedRequestObject() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RequireSignedRequestObject
 }
 
 func (o *OpenidConnectPluginConfig) GetResolveDistributedClaims() *bool {
@@ -3457,25 +3428,125 @@ func (o *OpenidConnectPluginConfig) GetVerifySignature() *bool {
 	return o.VerifySignature
 }
 
-// OpenidConnectPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
+type OpenidConnectPluginProtocols string
+
+const (
+	OpenidConnectPluginProtocolsGrpc           OpenidConnectPluginProtocols = "grpc"
+	OpenidConnectPluginProtocolsGrpcs          OpenidConnectPluginProtocols = "grpcs"
+	OpenidConnectPluginProtocolsHTTP           OpenidConnectPluginProtocols = "http"
+	OpenidConnectPluginProtocolsHTTPS          OpenidConnectPluginProtocols = "https"
+	OpenidConnectPluginProtocolsTCP            OpenidConnectPluginProtocols = "tcp"
+	OpenidConnectPluginProtocolsTLS            OpenidConnectPluginProtocols = "tls"
+	OpenidConnectPluginProtocolsTLSPassthrough OpenidConnectPluginProtocols = "tls_passthrough"
+	OpenidConnectPluginProtocolsUDP            OpenidConnectPluginProtocols = "udp"
+	OpenidConnectPluginProtocolsWs             OpenidConnectPluginProtocols = "ws"
+	OpenidConnectPluginProtocolsWss            OpenidConnectPluginProtocols = "wss"
+)
+
+func (e OpenidConnectPluginProtocols) ToPointer() *OpenidConnectPluginProtocols {
+	return &e
+}
+func (e *OpenidConnectPluginProtocols) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "grpc":
+		fallthrough
+	case "grpcs":
+		fallthrough
+	case "http":
+		fallthrough
+	case "https":
+		fallthrough
+	case "tcp":
+		fallthrough
+	case "tls":
+		fallthrough
+	case "tls_passthrough":
+		fallthrough
+	case "udp":
+		fallthrough
+	case "ws":
+		fallthrough
+	case "wss":
+		*e = OpenidConnectPluginProtocols(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for OpenidConnectPluginProtocols: %v", v)
+	}
+}
+
+// OpenidConnectPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+type OpenidConnectPluginConsumer struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *OpenidConnectPluginConsumer) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+type OpenidConnectPluginConsumerGroup struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *OpenidConnectPluginConsumerGroup) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+// OpenidConnectPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
+type OpenidConnectPluginRoute struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *OpenidConnectPluginRoute) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+// OpenidConnectPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+type OpenidConnectPluginService struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *OpenidConnectPluginService) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
 type OpenidConnectPlugin struct {
+	Config *OpenidConnectPluginConfig `json:"config,omitempty"`
+	// Unix epoch when the resource was created.
+	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool  `default:"true" json:"enabled"`
-	name    string `const:"openid-connect" json:"name"`
+	Enabled      *bool   `json:"enabled,omitempty"`
+	ID           *string `json:"id,omitempty"`
+	InstanceName *string `json:"instance_name,omitempty"`
+	name         *string `const:"openid-connect" json:"name,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []OpenidConnectPluginProtocols `json:"protocols"`
+	Protocols []OpenidConnectPluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
+	// Unix epoch when the resource was last updated.
+	UpdatedAt *int64 `json:"updated_at,omitempty"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer *OpenidConnectPluginConsumer `json:"consumer,omitempty"`
+	Consumer      *OpenidConnectPluginConsumer      `json:"consumer,omitempty"`
+	ConsumerGroup *OpenidConnectPluginConsumerGroup `json:"consumer_group,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
 	Route *OpenidConnectPluginRoute `json:"route,omitempty"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 	Service *OpenidConnectPluginService `json:"service,omitempty"`
-	// Unix epoch when the resource was created.
-	CreatedAt *int64                    `json:"created_at,omitempty"`
-	ID        *string                   `json:"id,omitempty"`
-	Config    OpenidConnectPluginConfig `json:"config"`
 }
 
 func (o OpenidConnectPlugin) MarshalJSON() ([]byte, error) {
@@ -3489,6 +3560,20 @@ func (o *OpenidConnectPlugin) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (o *OpenidConnectPlugin) GetConfig() *OpenidConnectPluginConfig {
+	if o == nil {
+		return nil
+	}
+	return o.Config
+}
+
+func (o *OpenidConnectPlugin) GetCreatedAt() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.CreatedAt
+}
+
 func (o *OpenidConnectPlugin) GetEnabled() *bool {
 	if o == nil {
 		return nil
@@ -3496,13 +3581,27 @@ func (o *OpenidConnectPlugin) GetEnabled() *bool {
 	return o.Enabled
 }
 
-func (o *OpenidConnectPlugin) GetName() string {
-	return "openid-connect"
+func (o *OpenidConnectPlugin) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *OpenidConnectPlugin) GetInstanceName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.InstanceName
+}
+
+func (o *OpenidConnectPlugin) GetName() *string {
+	return types.String("openid-connect")
 }
 
 func (o *OpenidConnectPlugin) GetProtocols() []OpenidConnectPluginProtocols {
 	if o == nil {
-		return []OpenidConnectPluginProtocols{}
+		return nil
 	}
 	return o.Protocols
 }
@@ -3514,11 +3613,25 @@ func (o *OpenidConnectPlugin) GetTags() []string {
 	return o.Tags
 }
 
+func (o *OpenidConnectPlugin) GetUpdatedAt() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.UpdatedAt
+}
+
 func (o *OpenidConnectPlugin) GetConsumer() *OpenidConnectPluginConsumer {
 	if o == nil {
 		return nil
 	}
 	return o.Consumer
+}
+
+func (o *OpenidConnectPlugin) GetConsumerGroup() *OpenidConnectPluginConsumerGroup {
+	if o == nil {
+		return nil
+	}
+	return o.ConsumerGroup
 }
 
 func (o *OpenidConnectPlugin) GetRoute() *OpenidConnectPluginRoute {
@@ -3533,25 +3646,4 @@ func (o *OpenidConnectPlugin) GetService() *OpenidConnectPluginService {
 		return nil
 	}
 	return o.Service
-}
-
-func (o *OpenidConnectPlugin) GetCreatedAt() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.CreatedAt
-}
-
-func (o *OpenidConnectPlugin) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-func (o *OpenidConnectPlugin) GetConfig() OpenidConnectPluginConfig {
-	if o == nil {
-		return OpenidConnectPluginConfig{}
-	}
-	return o.Config
 }

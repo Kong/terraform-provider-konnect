@@ -22,6 +22,11 @@ func (r *GatewayTargetDataSourceModel) RefreshFromSharedTarget(resp *shared.Targ
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}
 		r.Target = types.StringPointerValue(resp.Target)
+		if resp.UpdatedAt != nil {
+			r.UpdatedAt = types.NumberValue(big.NewFloat(float64(*resp.UpdatedAt)))
+		} else {
+			r.UpdatedAt = types.NumberNull()
+		}
 		if resp.Upstream == nil {
 			r.Upstream = nil
 		} else {

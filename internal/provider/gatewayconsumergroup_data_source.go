@@ -33,6 +33,7 @@ type GatewayConsumerGroupDataSourceModel struct {
 	ID             types.String   `tfsdk:"id"`
 	Name           types.String   `tfsdk:"name"`
 	Tags           []types.String `tfsdk:"tags"`
+	UpdatedAt      types.Int64    `tfsdk:"updated_at"`
 }
 
 // Metadata returns the data source type name.
@@ -64,6 +65,10 @@ func (r *GatewayConsumerGroupDataSource) Schema(ctx context.Context, req datasou
 			"tags": schema.ListAttribute{
 				Computed:    true,
 				ElementType: types.StringType,
+			},
+			"updated_at": schema.Int64Attribute{
+				Computed:    true,
+				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
 	}
@@ -133,8 +138,8 @@ func (r *GatewayConsumerGroupDataSource) Read(ctx context.Context, req datasourc
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.ConsumerGroup == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.ConsumerGroup != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedConsumerGroup(res.ConsumerGroup)

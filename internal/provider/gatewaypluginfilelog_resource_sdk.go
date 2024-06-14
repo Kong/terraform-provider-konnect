@@ -10,11 +10,43 @@ import (
 )
 
 func (r *GatewayPluginFileLogResourceModel) ToSharedCreateFileLogPlugin() *shared.CreateFileLogPlugin {
+	var config *shared.CreateFileLogPluginConfig
+	if r.Config != nil {
+		customFieldsByLua := make(map[string]interface{})
+		for customFieldsByLuaKey, customFieldsByLuaValue := range r.Config.CustomFieldsByLua {
+			var customFieldsByLuaInst interface{}
+			_ = json.Unmarshal([]byte(customFieldsByLuaValue.ValueString()), &customFieldsByLuaInst)
+			customFieldsByLua[customFieldsByLuaKey] = customFieldsByLuaInst
+		}
+		path := new(string)
+		if !r.Config.Path.IsUnknown() && !r.Config.Path.IsNull() {
+			*path = r.Config.Path.ValueString()
+		} else {
+			path = nil
+		}
+		reopen := new(bool)
+		if !r.Config.Reopen.IsUnknown() && !r.Config.Reopen.IsNull() {
+			*reopen = r.Config.Reopen.ValueBool()
+		} else {
+			reopen = nil
+		}
+		config = &shared.CreateFileLogPluginConfig{
+			CustomFieldsByLua: customFieldsByLua,
+			Path:              path,
+			Reopen:            reopen,
+		}
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
 	} else {
 		enabled = nil
+	}
+	instanceName := new(string)
+	if !r.InstanceName.IsUnknown() && !r.InstanceName.IsNull() {
+		*instanceName = r.InstanceName.ValueString()
+	} else {
+		instanceName = nil
 	}
 	var protocols []shared.CreateFileLogPluginProtocols = []shared.CreateFileLogPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
@@ -36,85 +68,88 @@ func (r *GatewayPluginFileLogResourceModel) ToSharedCreateFileLogPlugin() *share
 			ID: id,
 		}
 	}
-	var route *shared.CreateFileLogPluginRoute
-	if r.Route != nil {
+	var consumerGroup *shared.CreateFileLogPluginConsumerGroup
+	if r.ConsumerGroup != nil {
 		id1 := new(string)
-		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
-			*id1 = r.Route.ID.ValueString()
+		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
+			*id1 = r.ConsumerGroup.ID.ValueString()
 		} else {
 			id1 = nil
 		}
-		route = &shared.CreateFileLogPluginRoute{
+		consumerGroup = &shared.CreateFileLogPluginConsumerGroup{
 			ID: id1,
+		}
+	}
+	var route *shared.CreateFileLogPluginRoute
+	if r.Route != nil {
+		id2 := new(string)
+		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
+			*id2 = r.Route.ID.ValueString()
+		} else {
+			id2 = nil
+		}
+		route = &shared.CreateFileLogPluginRoute{
+			ID: id2,
 		}
 	}
 	var service *shared.CreateFileLogPluginService
 	if r.Service != nil {
-		id2 := new(string)
+		id3 := new(string)
 		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
-			*id2 = r.Service.ID.ValueString()
+			*id3 = r.Service.ID.ValueString()
 		} else {
-			id2 = nil
+			id3 = nil
 		}
 		service = &shared.CreateFileLogPluginService{
-			ID: id2,
+			ID: id3,
 		}
 	}
-	customFieldsByLua := make(map[string]interface{})
-	for customFieldsByLuaKey, customFieldsByLuaValue := range r.Config.CustomFieldsByLua {
-		var customFieldsByLuaInst interface{}
-		_ = json.Unmarshal([]byte(customFieldsByLuaValue.ValueString()), &customFieldsByLuaInst)
-		customFieldsByLua[customFieldsByLuaKey] = customFieldsByLuaInst
-	}
-	path := new(string)
-	if !r.Config.Path.IsUnknown() && !r.Config.Path.IsNull() {
-		*path = r.Config.Path.ValueString()
-	} else {
-		path = nil
-	}
-	reopen := new(bool)
-	if !r.Config.Reopen.IsUnknown() && !r.Config.Reopen.IsNull() {
-		*reopen = r.Config.Reopen.ValueBool()
-	} else {
-		reopen = nil
-	}
-	config := shared.CreateFileLogPluginConfig{
-		CustomFieldsByLua: customFieldsByLua,
-		Path:              path,
-		Reopen:            reopen,
-	}
 	out := shared.CreateFileLogPlugin{
-		Enabled:   enabled,
-		Protocols: protocols,
-		Tags:      tags,
-		Consumer:  consumer,
-		Route:     route,
-		Service:   service,
-		Config:    config,
+		Config:        config,
+		Enabled:       enabled,
+		InstanceName:  instanceName,
+		Protocols:     protocols,
+		Tags:          tags,
+		Consumer:      consumer,
+		ConsumerGroup: consumerGroup,
+		Route:         route,
+		Service:       service,
 	}
 	return &out
 }
 
 func (r *GatewayPluginFileLogResourceModel) RefreshFromSharedFileLogPlugin(resp *shared.FileLogPlugin) {
 	if resp != nil {
-		if len(resp.Config.CustomFieldsByLua) > 0 {
-			r.Config.CustomFieldsByLua = make(map[string]types.String)
-			for key, value := range resp.Config.CustomFieldsByLua {
-				result, _ := json.Marshal(value)
-				r.Config.CustomFieldsByLua[key] = types.StringValue(string(result))
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.CreateFileLogPluginConfig{}
+			if len(resp.Config.CustomFieldsByLua) > 0 {
+				r.Config.CustomFieldsByLua = make(map[string]types.String)
+				for key, value := range resp.Config.CustomFieldsByLua {
+					result, _ := json.Marshal(value)
+					r.Config.CustomFieldsByLua[key] = types.StringValue(string(result))
+				}
 			}
+			r.Config.Path = types.StringPointerValue(resp.Config.Path)
+			r.Config.Reopen = types.BoolPointerValue(resp.Config.Reopen)
 		}
-		r.Config.Path = types.StringPointerValue(resp.Config.Path)
-		r.Config.Reopen = types.BoolPointerValue(resp.Config.Reopen)
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
 			r.Consumer = &tfTypes.ACLConsumer{}
 			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
 		}
+		if resp.ConsumerGroup == nil {
+			r.ConsumerGroup = nil
+		} else {
+			r.ConsumerGroup = &tfTypes.ACLConsumer{}
+			r.ConsumerGroup.ID = types.StringPointerValue(resp.ConsumerGroup.ID)
+		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
+		r.InstanceName = types.StringPointerValue(resp.InstanceName)
 		r.Protocols = []types.String{}
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))
@@ -135,5 +170,6 @@ func (r *GatewayPluginFileLogResourceModel) RefreshFromSharedFileLogPlugin(resp 
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}
+		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
 }

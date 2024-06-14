@@ -2,19 +2,19 @@
 
 package shared
 
-type CreateKeySet struct {
-	Name *string  `json:"name,omitempty"`
+type KeyAuthWithoutParents struct {
+	Key  *string  `json:"key,omitempty"`
 	Tags []string `json:"tags,omitempty"`
 }
 
-func (o *CreateKeySet) GetName() *string {
+func (o *KeyAuthWithoutParents) GetKey() *string {
 	if o == nil {
 		return nil
 	}
-	return o.Name
+	return o.Key
 }
 
-func (o *CreateKeySet) GetTags() []string {
+func (o *KeyAuthWithoutParents) GetTags() []string {
 	if o == nil {
 		return nil
 	}

@@ -8,14 +8,19 @@ import (
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
 )
 
-func (r *GatewayKeyResourceModel) ToSharedCreateKey() *shared.CreateKey {
+func (r *GatewayKeyResourceModel) ToSharedKeyInput() *shared.KeyInput {
 	jwk := new(string)
 	if !r.Jwk.IsUnknown() && !r.Jwk.IsNull() {
 		*jwk = r.Jwk.ValueString()
 	} else {
 		jwk = nil
 	}
-	kid := r.Kid.ValueString()
+	kid := new(string)
+	if !r.Kid.IsUnknown() && !r.Kid.IsNull() {
+		*kid = r.Kid.ValueString()
+	} else {
+		kid = nil
+	}
 	name := new(string)
 	if !r.Name.IsUnknown() && !r.Name.IsNull() {
 		*name = r.Name.ValueString()
@@ -57,7 +62,7 @@ func (r *GatewayKeyResourceModel) ToSharedCreateKey() *shared.CreateKey {
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	out := shared.CreateKey{
+	out := shared.KeyInput{
 		Jwk:  jwk,
 		Kid:  kid,
 		Name: name,
@@ -73,7 +78,7 @@ func (r *GatewayKeyResourceModel) RefreshFromSharedKey(resp *shared.Key) {
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.Jwk = types.StringPointerValue(resp.Jwk)
-		r.Kid = types.StringValue(resp.Kid)
+		r.Kid = types.StringPointerValue(resp.Kid)
 		r.Name = types.StringPointerValue(resp.Name)
 		if resp.Pem == nil {
 			r.Pem = nil

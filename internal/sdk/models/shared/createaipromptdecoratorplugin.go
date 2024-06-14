@@ -6,7 +6,136 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/internal/sdk/types"
 )
+
+type CreateAIPromptDecoratorPluginRole string
+
+const (
+	CreateAIPromptDecoratorPluginRoleSystem    CreateAIPromptDecoratorPluginRole = "system"
+	CreateAIPromptDecoratorPluginRoleAssistant CreateAIPromptDecoratorPluginRole = "assistant"
+	CreateAIPromptDecoratorPluginRoleUser      CreateAIPromptDecoratorPluginRole = "user"
+)
+
+func (e CreateAIPromptDecoratorPluginRole) ToPointer() *CreateAIPromptDecoratorPluginRole {
+	return &e
+}
+func (e *CreateAIPromptDecoratorPluginRole) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "system":
+		fallthrough
+	case "assistant":
+		fallthrough
+	case "user":
+		*e = CreateAIPromptDecoratorPluginRole(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for CreateAIPromptDecoratorPluginRole: %v", v)
+	}
+}
+
+type CreateAIPromptDecoratorPluginAppend struct {
+	Content string                             `json:"content"`
+	Role    *CreateAIPromptDecoratorPluginRole `json:"role,omitempty"`
+}
+
+func (o *CreateAIPromptDecoratorPluginAppend) GetContent() string {
+	if o == nil {
+		return ""
+	}
+	return o.Content
+}
+
+func (o *CreateAIPromptDecoratorPluginAppend) GetRole() *CreateAIPromptDecoratorPluginRole {
+	if o == nil {
+		return nil
+	}
+	return o.Role
+}
+
+type CreateAIPromptDecoratorPluginConfigRole string
+
+const (
+	CreateAIPromptDecoratorPluginConfigRoleSystem    CreateAIPromptDecoratorPluginConfigRole = "system"
+	CreateAIPromptDecoratorPluginConfigRoleAssistant CreateAIPromptDecoratorPluginConfigRole = "assistant"
+	CreateAIPromptDecoratorPluginConfigRoleUser      CreateAIPromptDecoratorPluginConfigRole = "user"
+)
+
+func (e CreateAIPromptDecoratorPluginConfigRole) ToPointer() *CreateAIPromptDecoratorPluginConfigRole {
+	return &e
+}
+func (e *CreateAIPromptDecoratorPluginConfigRole) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "system":
+		fallthrough
+	case "assistant":
+		fallthrough
+	case "user":
+		*e = CreateAIPromptDecoratorPluginConfigRole(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for CreateAIPromptDecoratorPluginConfigRole: %v", v)
+	}
+}
+
+type CreateAIPromptDecoratorPluginPrepend struct {
+	Content string                                   `json:"content"`
+	Role    *CreateAIPromptDecoratorPluginConfigRole `json:"role,omitempty"`
+}
+
+func (o *CreateAIPromptDecoratorPluginPrepend) GetContent() string {
+	if o == nil {
+		return ""
+	}
+	return o.Content
+}
+
+func (o *CreateAIPromptDecoratorPluginPrepend) GetRole() *CreateAIPromptDecoratorPluginConfigRole {
+	if o == nil {
+		return nil
+	}
+	return o.Role
+}
+
+type CreateAIPromptDecoratorPluginPrompts struct {
+	// Insert chat messages at the end of the chat message array. This array preserves exact order when adding messages.
+	Append []CreateAIPromptDecoratorPluginAppend `json:"append,omitempty"`
+	// Insert chat messages at the beginning of the chat message array. This array preserves exact order when adding messages.
+	Prepend []CreateAIPromptDecoratorPluginPrepend `json:"prepend,omitempty"`
+}
+
+func (o *CreateAIPromptDecoratorPluginPrompts) GetAppend() []CreateAIPromptDecoratorPluginAppend {
+	if o == nil {
+		return nil
+	}
+	return o.Append
+}
+
+func (o *CreateAIPromptDecoratorPluginPrompts) GetPrepend() []CreateAIPromptDecoratorPluginPrepend {
+	if o == nil {
+		return nil
+	}
+	return o.Prepend
+}
+
+type CreateAIPromptDecoratorPluginConfig struct {
+	Prompts *CreateAIPromptDecoratorPluginPrompts `json:"prompts,omitempty"`
+}
+
+func (o *CreateAIPromptDecoratorPluginConfig) GetPrompts() *CreateAIPromptDecoratorPluginPrompts {
+	if o == nil {
+		return nil
+	}
+	return o.Prompts
+}
 
 type CreateAIPromptDecoratorPluginProtocols string
 
@@ -70,6 +199,17 @@ func (o *CreateAIPromptDecoratorPluginConsumer) GetID() *string {
 	return o.ID
 }
 
+type CreateAIPromptDecoratorPluginConsumerGroup struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *CreateAIPromptDecoratorPluginConsumerGroup) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
 // CreateAIPromptDecoratorPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
 type CreateAIPromptDecoratorPluginRoute struct {
 	ID *string `json:"id,omitempty"`
@@ -94,172 +234,23 @@ func (o *CreateAIPromptDecoratorPluginService) GetID() *string {
 	return o.ID
 }
 
-type CreateAIPromptDecoratorPluginRole string
-
-const (
-	CreateAIPromptDecoratorPluginRoleSystem    CreateAIPromptDecoratorPluginRole = "system"
-	CreateAIPromptDecoratorPluginRoleAssistant CreateAIPromptDecoratorPluginRole = "assistant"
-	CreateAIPromptDecoratorPluginRoleUser      CreateAIPromptDecoratorPluginRole = "user"
-)
-
-func (e CreateAIPromptDecoratorPluginRole) ToPointer() *CreateAIPromptDecoratorPluginRole {
-	return &e
-}
-func (e *CreateAIPromptDecoratorPluginRole) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "system":
-		fallthrough
-	case "assistant":
-		fallthrough
-	case "user":
-		*e = CreateAIPromptDecoratorPluginRole(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for CreateAIPromptDecoratorPluginRole: %v", v)
-	}
-}
-
-type CreateAIPromptDecoratorPluginAppend struct {
-	Content *string                            `json:"content,omitempty"`
-	Role    *CreateAIPromptDecoratorPluginRole `default:"system" json:"role"`
-}
-
-func (c CreateAIPromptDecoratorPluginAppend) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
-}
-
-func (c *CreateAIPromptDecoratorPluginAppend) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (o *CreateAIPromptDecoratorPluginAppend) GetContent() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Content
-}
-
-func (o *CreateAIPromptDecoratorPluginAppend) GetRole() *CreateAIPromptDecoratorPluginRole {
-	if o == nil {
-		return nil
-	}
-	return o.Role
-}
-
-type CreateAIPromptDecoratorPluginConfigRole string
-
-const (
-	CreateAIPromptDecoratorPluginConfigRoleSystem    CreateAIPromptDecoratorPluginConfigRole = "system"
-	CreateAIPromptDecoratorPluginConfigRoleAssistant CreateAIPromptDecoratorPluginConfigRole = "assistant"
-	CreateAIPromptDecoratorPluginConfigRoleUser      CreateAIPromptDecoratorPluginConfigRole = "user"
-)
-
-func (e CreateAIPromptDecoratorPluginConfigRole) ToPointer() *CreateAIPromptDecoratorPluginConfigRole {
-	return &e
-}
-func (e *CreateAIPromptDecoratorPluginConfigRole) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "system":
-		fallthrough
-	case "assistant":
-		fallthrough
-	case "user":
-		*e = CreateAIPromptDecoratorPluginConfigRole(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for CreateAIPromptDecoratorPluginConfigRole: %v", v)
-	}
-}
-
-type CreateAIPromptDecoratorPluginPrepend struct {
-	Content *string                                  `json:"content,omitempty"`
-	Role    *CreateAIPromptDecoratorPluginConfigRole `default:"system" json:"role"`
-}
-
-func (c CreateAIPromptDecoratorPluginPrepend) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
-}
-
-func (c *CreateAIPromptDecoratorPluginPrepend) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (o *CreateAIPromptDecoratorPluginPrepend) GetContent() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Content
-}
-
-func (o *CreateAIPromptDecoratorPluginPrepend) GetRole() *CreateAIPromptDecoratorPluginConfigRole {
-	if o == nil {
-		return nil
-	}
-	return o.Role
-}
-
-type CreateAIPromptDecoratorPluginPrompts struct {
-	// Insert chat messages at the end of the chat message array. This array preserves exact order when adding messages.
-	Append []CreateAIPromptDecoratorPluginAppend `json:"append,omitempty"`
-	// Insert chat messages at the beginning of the chat message array. This array preserves exact order when adding messages.
-	Prepend []CreateAIPromptDecoratorPluginPrepend `json:"prepend,omitempty"`
-}
-
-func (o *CreateAIPromptDecoratorPluginPrompts) GetAppend() []CreateAIPromptDecoratorPluginAppend {
-	if o == nil {
-		return nil
-	}
-	return o.Append
-}
-
-func (o *CreateAIPromptDecoratorPluginPrompts) GetPrepend() []CreateAIPromptDecoratorPluginPrepend {
-	if o == nil {
-		return nil
-	}
-	return o.Prepend
-}
-
-type CreateAIPromptDecoratorPluginConfig struct {
-	Prompts *CreateAIPromptDecoratorPluginPrompts `json:"prompts,omitempty"`
-}
-
-func (o *CreateAIPromptDecoratorPluginConfig) GetPrompts() *CreateAIPromptDecoratorPluginPrompts {
-	if o == nil {
-		return nil
-	}
-	return o.Prompts
-}
-
-// CreateAIPromptDecoratorPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type CreateAIPromptDecoratorPlugin struct {
+	Config *CreateAIPromptDecoratorPluginConfig `json:"config,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool  `default:"true" json:"enabled"`
-	name    string `const:"ai-prompt-decorator" json:"name"`
+	Enabled      *bool   `json:"enabled,omitempty"`
+	InstanceName *string `json:"instance_name,omitempty"`
+	name         *string `const:"ai-prompt-decorator" json:"name,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []CreateAIPromptDecoratorPluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer *CreateAIPromptDecoratorPluginConsumer `json:"consumer,omitempty"`
+	Consumer      *CreateAIPromptDecoratorPluginConsumer      `json:"consumer,omitempty"`
+	ConsumerGroup *CreateAIPromptDecoratorPluginConsumerGroup `json:"consumer_group,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
 	Route *CreateAIPromptDecoratorPluginRoute `json:"route,omitempty"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 	Service *CreateAIPromptDecoratorPluginService `json:"service,omitempty"`
-	Config  CreateAIPromptDecoratorPluginConfig   `json:"config"`
 }
 
 func (c CreateAIPromptDecoratorPlugin) MarshalJSON() ([]byte, error) {
@@ -273,6 +264,13 @@ func (c *CreateAIPromptDecoratorPlugin) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (o *CreateAIPromptDecoratorPlugin) GetConfig() *CreateAIPromptDecoratorPluginConfig {
+	if o == nil {
+		return nil
+	}
+	return o.Config
+}
+
 func (o *CreateAIPromptDecoratorPlugin) GetEnabled() *bool {
 	if o == nil {
 		return nil
@@ -280,8 +278,15 @@ func (o *CreateAIPromptDecoratorPlugin) GetEnabled() *bool {
 	return o.Enabled
 }
 
-func (o *CreateAIPromptDecoratorPlugin) GetName() string {
-	return "ai-prompt-decorator"
+func (o *CreateAIPromptDecoratorPlugin) GetInstanceName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.InstanceName
+}
+
+func (o *CreateAIPromptDecoratorPlugin) GetName() *string {
+	return types.String("ai-prompt-decorator")
 }
 
 func (o *CreateAIPromptDecoratorPlugin) GetProtocols() []CreateAIPromptDecoratorPluginProtocols {
@@ -305,6 +310,13 @@ func (o *CreateAIPromptDecoratorPlugin) GetConsumer() *CreateAIPromptDecoratorPl
 	return o.Consumer
 }
 
+func (o *CreateAIPromptDecoratorPlugin) GetConsumerGroup() *CreateAIPromptDecoratorPluginConsumerGroup {
+	if o == nil {
+		return nil
+	}
+	return o.ConsumerGroup
+}
+
 func (o *CreateAIPromptDecoratorPlugin) GetRoute() *CreateAIPromptDecoratorPluginRoute {
 	if o == nil {
 		return nil
@@ -317,11 +329,4 @@ func (o *CreateAIPromptDecoratorPlugin) GetService() *CreateAIPromptDecoratorPlu
 		return nil
 	}
 	return o.Service
-}
-
-func (o *CreateAIPromptDecoratorPlugin) GetConfig() CreateAIPromptDecoratorPluginConfig {
-	if o == nil {
-		return CreateAIPromptDecoratorPluginConfig{}
-	}
-	return o.Config
 }

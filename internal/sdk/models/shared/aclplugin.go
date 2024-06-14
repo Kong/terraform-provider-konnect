@@ -6,93 +6,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/internal/sdk/types"
 )
-
-type ACLPluginProtocols string
-
-const (
-	ACLPluginProtocolsGrpc           ACLPluginProtocols = "grpc"
-	ACLPluginProtocolsGrpcs          ACLPluginProtocols = "grpcs"
-	ACLPluginProtocolsHTTP           ACLPluginProtocols = "http"
-	ACLPluginProtocolsHTTPS          ACLPluginProtocols = "https"
-	ACLPluginProtocolsTCP            ACLPluginProtocols = "tcp"
-	ACLPluginProtocolsTLS            ACLPluginProtocols = "tls"
-	ACLPluginProtocolsTLSPassthrough ACLPluginProtocols = "tls_passthrough"
-	ACLPluginProtocolsUDP            ACLPluginProtocols = "udp"
-	ACLPluginProtocolsWs             ACLPluginProtocols = "ws"
-	ACLPluginProtocolsWss            ACLPluginProtocols = "wss"
-)
-
-func (e ACLPluginProtocols) ToPointer() *ACLPluginProtocols {
-	return &e
-}
-func (e *ACLPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		fallthrough
-	case "tcp":
-		fallthrough
-	case "tls":
-		fallthrough
-	case "tls_passthrough":
-		fallthrough
-	case "udp":
-		fallthrough
-	case "ws":
-		fallthrough
-	case "wss":
-		*e = ACLPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ACLPluginProtocols: %v", v)
-	}
-}
-
-// ACLPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-type ACLPluginConsumer struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *ACLPluginConsumer) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-// ACLPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-type ACLPluginRoute struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *ACLPluginRoute) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-// ACLPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-type ACLPluginService struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *ACLPluginService) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
 
 type ACLPluginConfig struct {
 	// Arbitrary group names that are allowed to consume the service or route. One of `config.allow` or `config.deny` must be specified.
@@ -100,19 +15,8 @@ type ACLPluginConfig struct {
 	// Arbitrary group names that are not allowed to consume the service or route. One of `config.allow` or `config.deny` must be specified.
 	Deny []string `json:"deny,omitempty"`
 	// If enabled (`true`), prevents the `X-Consumer-Groups` header from being sent in the request to the upstream service.
-	HideGroupsHeader      *bool `default:"false" json:"hide_groups_header"`
-	IncludeConsumerGroups *bool `default:"false" json:"include_consumer_groups"`
-}
-
-func (a ACLPluginConfig) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
-}
-
-func (a *ACLPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
-		return err
-	}
-	return nil
+	HideGroupsHeader      *bool `json:"hide_groups_header,omitempty"`
+	IncludeConsumerGroups *bool `json:"include_consumer_groups,omitempty"`
 }
 
 func (o *ACLPluginConfig) GetAllow() []string {
@@ -143,25 +47,125 @@ func (o *ACLPluginConfig) GetIncludeConsumerGroups() *bool {
 	return o.IncludeConsumerGroups
 }
 
-// ACLPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
+type Protocols string
+
+const (
+	ProtocolsGrpc           Protocols = "grpc"
+	ProtocolsGrpcs          Protocols = "grpcs"
+	ProtocolsHTTP           Protocols = "http"
+	ProtocolsHTTPS          Protocols = "https"
+	ProtocolsTCP            Protocols = "tcp"
+	ProtocolsTLS            Protocols = "tls"
+	ProtocolsTLSPassthrough Protocols = "tls_passthrough"
+	ProtocolsUDP            Protocols = "udp"
+	ProtocolsWs             Protocols = "ws"
+	ProtocolsWss            Protocols = "wss"
+)
+
+func (e Protocols) ToPointer() *Protocols {
+	return &e
+}
+func (e *Protocols) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "grpc":
+		fallthrough
+	case "grpcs":
+		fallthrough
+	case "http":
+		fallthrough
+	case "https":
+		fallthrough
+	case "tcp":
+		fallthrough
+	case "tls":
+		fallthrough
+	case "tls_passthrough":
+		fallthrough
+	case "udp":
+		fallthrough
+	case "ws":
+		fallthrough
+	case "wss":
+		*e = Protocols(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for Protocols: %v", v)
+	}
+}
+
+// ACLPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+type ACLPluginConsumer struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *ACLPluginConsumer) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+type ACLPluginConsumerGroup struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *ACLPluginConsumerGroup) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+// ACLPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
+type ACLPluginRoute struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *ACLPluginRoute) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+// ACLPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+type ACLPluginService struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *ACLPluginService) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
 type ACLPlugin struct {
+	Config *ACLPluginConfig `json:"config,omitempty"`
+	// Unix epoch when the resource was created.
+	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool  `default:"true" json:"enabled"`
-	name    string `const:"acl" json:"name"`
+	Enabled      *bool   `json:"enabled,omitempty"`
+	ID           *string `json:"id,omitempty"`
+	InstanceName *string `json:"instance_name,omitempty"`
+	name         *string `const:"acl" json:"name,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []ACLPluginProtocols `json:"protocols"`
+	Protocols []Protocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
+	// Unix epoch when the resource was last updated.
+	UpdatedAt *int64 `json:"updated_at,omitempty"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer *ACLPluginConsumer `json:"consumer,omitempty"`
+	Consumer      *ACLPluginConsumer      `json:"consumer,omitempty"`
+	ConsumerGroup *ACLPluginConsumerGroup `json:"consumer_group,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
 	Route *ACLPluginRoute `json:"route,omitempty"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 	Service *ACLPluginService `json:"service,omitempty"`
-	// Unix epoch when the resource was created.
-	CreatedAt *int64          `json:"created_at,omitempty"`
-	ID        *string         `json:"id,omitempty"`
-	Config    ACLPluginConfig `json:"config"`
 }
 
 func (a ACLPlugin) MarshalJSON() ([]byte, error) {
@@ -175,6 +179,20 @@ func (a *ACLPlugin) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (o *ACLPlugin) GetConfig() *ACLPluginConfig {
+	if o == nil {
+		return nil
+	}
+	return o.Config
+}
+
+func (o *ACLPlugin) GetCreatedAt() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.CreatedAt
+}
+
 func (o *ACLPlugin) GetEnabled() *bool {
 	if o == nil {
 		return nil
@@ -182,13 +200,27 @@ func (o *ACLPlugin) GetEnabled() *bool {
 	return o.Enabled
 }
 
-func (o *ACLPlugin) GetName() string {
-	return "acl"
+func (o *ACLPlugin) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
 }
 
-func (o *ACLPlugin) GetProtocols() []ACLPluginProtocols {
+func (o *ACLPlugin) GetInstanceName() *string {
 	if o == nil {
-		return []ACLPluginProtocols{}
+		return nil
+	}
+	return o.InstanceName
+}
+
+func (o *ACLPlugin) GetName() *string {
+	return types.String("acl")
+}
+
+func (o *ACLPlugin) GetProtocols() []Protocols {
+	if o == nil {
+		return nil
 	}
 	return o.Protocols
 }
@@ -200,11 +232,25 @@ func (o *ACLPlugin) GetTags() []string {
 	return o.Tags
 }
 
+func (o *ACLPlugin) GetUpdatedAt() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.UpdatedAt
+}
+
 func (o *ACLPlugin) GetConsumer() *ACLPluginConsumer {
 	if o == nil {
 		return nil
 	}
 	return o.Consumer
+}
+
+func (o *ACLPlugin) GetConsumerGroup() *ACLPluginConsumerGroup {
+	if o == nil {
+		return nil
+	}
+	return o.ConsumerGroup
 }
 
 func (o *ACLPlugin) GetRoute() *ACLPluginRoute {
@@ -219,25 +265,4 @@ func (o *ACLPlugin) GetService() *ACLPluginService {
 		return nil
 	}
 	return o.Service
-}
-
-func (o *ACLPlugin) GetCreatedAt() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.CreatedAt
-}
-
-func (o *ACLPlugin) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-func (o *ACLPlugin) GetConfig() ACLPluginConfig {
-	if o == nil {
-		return ACLPluginConfig{}
-	}
-	return o.Config
 }

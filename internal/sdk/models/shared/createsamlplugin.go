@@ -6,93 +6,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/internal/sdk/types"
 )
-
-type CreateSamlPluginProtocols string
-
-const (
-	CreateSamlPluginProtocolsGrpc           CreateSamlPluginProtocols = "grpc"
-	CreateSamlPluginProtocolsGrpcs          CreateSamlPluginProtocols = "grpcs"
-	CreateSamlPluginProtocolsHTTP           CreateSamlPluginProtocols = "http"
-	CreateSamlPluginProtocolsHTTPS          CreateSamlPluginProtocols = "https"
-	CreateSamlPluginProtocolsTCP            CreateSamlPluginProtocols = "tcp"
-	CreateSamlPluginProtocolsTLS            CreateSamlPluginProtocols = "tls"
-	CreateSamlPluginProtocolsTLSPassthrough CreateSamlPluginProtocols = "tls_passthrough"
-	CreateSamlPluginProtocolsUDP            CreateSamlPluginProtocols = "udp"
-	CreateSamlPluginProtocolsWs             CreateSamlPluginProtocols = "ws"
-	CreateSamlPluginProtocolsWss            CreateSamlPluginProtocols = "wss"
-)
-
-func (e CreateSamlPluginProtocols) ToPointer() *CreateSamlPluginProtocols {
-	return &e
-}
-func (e *CreateSamlPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		fallthrough
-	case "tcp":
-		fallthrough
-	case "tls":
-		fallthrough
-	case "tls_passthrough":
-		fallthrough
-	case "udp":
-		fallthrough
-	case "ws":
-		fallthrough
-	case "wss":
-		*e = CreateSamlPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for CreateSamlPluginProtocols: %v", v)
-	}
-}
-
-// CreateSamlPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-type CreateSamlPluginConsumer struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *CreateSamlPluginConsumer) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-// CreateSamlPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-type CreateSamlPluginRoute struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *CreateSamlPluginRoute) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-// CreateSamlPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-type CreateSamlPluginService struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *CreateSamlPluginService) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
 
 // CreateSamlPluginNameidFormat - The requested `NameId` format. Options available are: - `Unspecified` - `EmailAddress` - `Persistent` - `Transient`
 type CreateSamlPluginNameidFormat string
@@ -276,20 +191,9 @@ func (e *CreateSamlPluginSessionCookieSameSite) UnmarshalJSON(data []byte) error
 
 type CreateSamlPluginSessionRedisClusterNodes struct {
 	// A string representing a host name, such as example.com.
-	IP *string `default:"127.0.0.1" json:"ip"`
+	IP *string `json:"ip,omitempty"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `default:"6379" json:"port"`
-}
-
-func (c CreateSamlPluginSessionRedisClusterNodes) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
-}
-
-func (c *CreateSamlPluginSessionRedisClusterNodes) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
-		return err
-	}
-	return nil
+	Port *int64 `json:"port,omitempty"`
 }
 
 func (o *CreateSamlPluginSessionRedisClusterNodes) GetIP() *string {
@@ -433,49 +337,49 @@ type CreateSamlPluginConfig struct {
 	// The unique identifier of the IdP application. Formatted as a URL containing information about the IdP so the SP can validate that the SAML assertions it receives are issued from the correct IdP.
 	Issuer *string `json:"issuer,omitempty"`
 	// The requested `NameId` format. Options available are: - `Unspecified` - `EmailAddress` - `Persistent` - `Transient`
-	NameidFormat *CreateSamlPluginNameidFormat `default:"EmailAddress" json:"nameid_format"`
+	NameidFormat *CreateSamlPluginNameidFormat `json:"nameid_format,omitempty"`
 	// The digest algorithm for Authn requests: - `SHA256` - `SHA1`
-	RequestDigestAlgorithm *CreateSamlPluginRequestDigestAlgorithm `default:"SHA256" json:"request_digest_algorithm"`
+	RequestDigestAlgorithm *CreateSamlPluginRequestDigestAlgorithm `json:"request_digest_algorithm,omitempty"`
 	// The signature algorithm for signing Authn requests. Options available are: - `SHA256` - `SHA384` - `SHA512`
-	RequestSignatureAlgorithm *CreateSamlPluginRequestSignatureAlgorithm `default:"SHA256" json:"request_signature_algorithm"`
+	RequestSignatureAlgorithm *CreateSamlPluginRequestSignatureAlgorithm `json:"request_signature_algorithm,omitempty"`
 	// The certificate for signing requests.
 	RequestSigningCertificate *string `json:"request_signing_certificate,omitempty"`
 	// The private key for signing requests.  If this parameter is set, requests sent to the IdP are signed.  The `request_signing_certificate` parameter must be set as well.
 	RequestSigningKey *string `json:"request_signing_key,omitempty"`
 	// The algorithm for verifying digest in SAML responses: - `SHA256` - `SHA1`
-	ResponseDigestAlgorithm *CreateSamlPluginResponseDigestAlgorithm `default:"SHA256" json:"response_digest_algorithm"`
+	ResponseDigestAlgorithm *CreateSamlPluginResponseDigestAlgorithm `json:"response_digest_algorithm,omitempty"`
 	// The private encryption key required to decrypt encrypted assertions.
 	ResponseEncryptionKey *string `json:"response_encryption_key,omitempty"`
 	// The algorithm for validating signatures in SAML responses. Options available are: - `SHA256` - `SHA384` - `SHA512`
-	ResponseSignatureAlgorithm *CreateSamlPluginResponseSignatureAlgorithm `default:"SHA256" json:"response_signature_algorithm"`
+	ResponseSignatureAlgorithm *CreateSamlPluginResponseSignatureAlgorithm `json:"response_signature_algorithm,omitempty"`
 	// The session cookie absolute timeout in seconds. Specifies how long the session can be used until it is no longer valid.
-	SessionAbsoluteTimeout *float64 `default:"86400" json:"session_absolute_timeout"`
+	SessionAbsoluteTimeout *float64 `json:"session_absolute_timeout,omitempty"`
 	// The session audience, for example "my-application"
-	SessionAudience *string `default:"default" json:"session_audience"`
+	SessionAudience *string `json:"session_audience,omitempty"`
 	// The session cookie domain flag.
 	SessionCookieDomain *string `json:"session_cookie_domain,omitempty"`
 	// Forbids JavaScript from accessing the cookie, for example, through the `Document.cookie` property.
-	SessionCookieHTTPOnly *bool `default:"true" json:"session_cookie_http_only"`
+	SessionCookieHTTPOnly *bool `json:"session_cookie_http_only,omitempty"`
 	// The session cookie name.
-	SessionCookieName *string `default:"session" json:"session_cookie_name"`
+	SessionCookieName *string `json:"session_cookie_name,omitempty"`
 	// A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).
-	SessionCookiePath *string `default:"/" json:"session_cookie_path"`
+	SessionCookiePath *string `json:"session_cookie_path,omitempty"`
 	// Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks.
-	SessionCookieSameSite *CreateSamlPluginSessionCookieSameSite `default:"Lax" json:"session_cookie_same_site"`
+	SessionCookieSameSite *CreateSamlPluginSessionCookieSameSite `json:"session_cookie_same_site,omitempty"`
 	// The cookie is only sent to the server when a request is made with the https:scheme (except on localhost), and therefore is more resistant to man-in-the-middle attacks.
 	SessionCookieSecure *bool `json:"session_cookie_secure,omitempty"`
 	// When set to `true`, audiences are forced to share the same subject.
-	SessionEnforceSameSubject *bool `default:"false" json:"session_enforce_same_subject"`
+	SessionEnforceSameSubject *bool `json:"session_enforce_same_subject,omitempty"`
 	// When set to `true`, the storage key (session ID) is hashed for extra security. Hashing the storage key means it is impossible to decrypt data from the storage without a cookie.
-	SessionHashStorageKey *bool `default:"false" json:"session_hash_storage_key"`
+	SessionHashStorageKey *bool `json:"session_hash_storage_key,omitempty"`
 	// When set to `true`, the value of subject is hashed before being stored. Only applies when `session_store_metadata` is enabled.
-	SessionHashSubject *bool `default:"false" json:"session_hash_subject"`
+	SessionHashSubject *bool `json:"session_hash_subject,omitempty"`
 	// The session cookie idle time in seconds.
-	SessionIdlingTimeout *float64 `default:"900" json:"session_idling_timeout"`
+	SessionIdlingTimeout *float64 `json:"session_idling_timeout,omitempty"`
 	// The memcached host.
-	SessionMemcachedHost *string `default:"127.0.0.1" json:"session_memcached_host"`
+	SessionMemcachedHost *string `json:"session_memcached_host,omitempty"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	SessionMemcachedPort *int64 `default:"11211" json:"session_memcached_port"`
+	SessionMemcachedPort *int64 `json:"session_memcached_port,omitempty"`
 	// The memcached session key prefix.
 	SessionMemcachedPrefix *string `json:"session_memcached_prefix,omitempty"`
 	// The memcached unix socket path.
@@ -487,11 +391,11 @@ type CreateSamlPluginConfig struct {
 	// The Redis connection timeout in milliseconds.
 	SessionRedisConnectTimeout *int64 `json:"session_redis_connect_timeout,omitempty"`
 	// The Redis host IP.
-	SessionRedisHost *string `default:"127.0.0.1" json:"session_redis_host"`
+	SessionRedisHost *string `json:"session_redis_host,omitempty"`
 	// Password to use for Redis connection when the `redis` session storage is defined. If undefined, no auth commands are sent to Redis. This value is pulled from
 	SessionRedisPassword *string `json:"session_redis_password,omitempty"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	SessionRedisPort *int64 `default:"6379" json:"session_redis_port"`
+	SessionRedisPort *int64 `json:"session_redis_port,omitempty"`
 	// The Redis session key prefix.
 	SessionRedisPrefix *string `json:"session_redis_prefix,omitempty"`
 	// The Redis read timeout in milliseconds.
@@ -503,42 +407,31 @@ type CreateSamlPluginConfig struct {
 	// The Redis unix socket path.
 	SessionRedisSocket *string `json:"session_redis_socket,omitempty"`
 	// Use SSL/TLS for the Redis connection.
-	SessionRedisSsl *bool `default:"false" json:"session_redis_ssl"`
+	SessionRedisSsl *bool `json:"session_redis_ssl,omitempty"`
 	// Verify the Redis server certificate.
-	SessionRedisSslVerify *bool `default:"false" json:"session_redis_ssl_verify"`
+	SessionRedisSslVerify *bool `json:"session_redis_ssl_verify,omitempty"`
 	// Redis username if the `redis` session storage is defined and ACL authentication is desired.If undefined, ACL authentication will not be performed.  This requires Redis v6.0.0+. The username **cannot** be set to `default`.
 	SessionRedisUsername *string `json:"session_redis_username,omitempty"`
 	// Enables or disables persistent sessions
-	SessionRemember *bool `default:"false" json:"session_remember"`
+	SessionRemember *bool `json:"session_remember,omitempty"`
 	// Persistent session absolute timeout in seconds.
-	SessionRememberAbsoluteTimeout *float64 `default:"2592000" json:"session_remember_absolute_timeout"`
+	SessionRememberAbsoluteTimeout *float64 `json:"session_remember_absolute_timeout,omitempty"`
 	// Persistent session cookie name
-	SessionRememberCookieName *string `default:"remember" json:"session_remember_cookie_name"`
+	SessionRememberCookieName *string `json:"session_remember_cookie_name,omitempty"`
 	// Persistent session rolling timeout in seconds.
-	SessionRememberRollingTimeout *float64                                 `default:"604800" json:"session_remember_rolling_timeout"`
+	SessionRememberRollingTimeout *float64                                 `json:"session_remember_rolling_timeout,omitempty"`
 	SessionRequestHeaders         []CreateSamlPluginSessionRequestHeaders  `json:"session_request_headers,omitempty"`
 	SessionResponseHeaders        []CreateSamlPluginSessionResponseHeaders `json:"session_response_headers,omitempty"`
 	// The session cookie absolute timeout in seconds. Specifies how long the session can be used until it is no longer valid.
-	SessionRollingTimeout *float64 `default:"3600" json:"session_rolling_timeout"`
+	SessionRollingTimeout *float64 `json:"session_rolling_timeout,omitempty"`
 	// The session secret. This must be a random string of 32 characters from the base64 alphabet (letters, numbers, `/`, `_` and `+`). It is used as the secret key for encrypting session data as well as state information that is sent to the IdP in the authentication exchange.
 	SessionSecret *string `json:"session_secret,omitempty"`
 	// The session storage for session data: - `cookie`: stores session data with the session cookie. The session cannot be invalidated or revoked without changing the session secret, but is stateless, and doesn't require a database. - `memcached`: stores session data in memcached - `redis`: stores session data in Redis
-	SessionStorage *CreateSamlPluginSessionStorage `default:"cookie" json:"session_storage"`
+	SessionStorage *CreateSamlPluginSessionStorage `json:"session_storage,omitempty"`
 	// Configures whether or not session metadata should be stored. This includes information about the active sessions for the `specific_audience` belonging to a specific subject.
-	SessionStoreMetadata *bool `default:"false" json:"session_store_metadata"`
+	SessionStoreMetadata *bool `json:"session_store_metadata,omitempty"`
 	// Enable signature validation for SAML responses.
-	ValidateAssertionSignature *bool `default:"true" json:"validate_assertion_signature"`
-}
-
-func (c CreateSamlPluginConfig) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
-}
-
-func (c *CreateSamlPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
-		return err
-	}
-	return nil
+	ValidateAssertionSignature *bool `json:"validate_assertion_signature,omitempty"`
 }
 
 func (o *CreateSamlPluginConfig) GetAnonymous() *string {
@@ -919,22 +812,120 @@ func (o *CreateSamlPluginConfig) GetValidateAssertionSignature() *bool {
 	return o.ValidateAssertionSignature
 }
 
-// CreateSamlPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
+type CreateSamlPluginProtocols string
+
+const (
+	CreateSamlPluginProtocolsGrpc           CreateSamlPluginProtocols = "grpc"
+	CreateSamlPluginProtocolsGrpcs          CreateSamlPluginProtocols = "grpcs"
+	CreateSamlPluginProtocolsHTTP           CreateSamlPluginProtocols = "http"
+	CreateSamlPluginProtocolsHTTPS          CreateSamlPluginProtocols = "https"
+	CreateSamlPluginProtocolsTCP            CreateSamlPluginProtocols = "tcp"
+	CreateSamlPluginProtocolsTLS            CreateSamlPluginProtocols = "tls"
+	CreateSamlPluginProtocolsTLSPassthrough CreateSamlPluginProtocols = "tls_passthrough"
+	CreateSamlPluginProtocolsUDP            CreateSamlPluginProtocols = "udp"
+	CreateSamlPluginProtocolsWs             CreateSamlPluginProtocols = "ws"
+	CreateSamlPluginProtocolsWss            CreateSamlPluginProtocols = "wss"
+)
+
+func (e CreateSamlPluginProtocols) ToPointer() *CreateSamlPluginProtocols {
+	return &e
+}
+func (e *CreateSamlPluginProtocols) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "grpc":
+		fallthrough
+	case "grpcs":
+		fallthrough
+	case "http":
+		fallthrough
+	case "https":
+		fallthrough
+	case "tcp":
+		fallthrough
+	case "tls":
+		fallthrough
+	case "tls_passthrough":
+		fallthrough
+	case "udp":
+		fallthrough
+	case "ws":
+		fallthrough
+	case "wss":
+		*e = CreateSamlPluginProtocols(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for CreateSamlPluginProtocols: %v", v)
+	}
+}
+
+// CreateSamlPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+type CreateSamlPluginConsumer struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *CreateSamlPluginConsumer) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+type CreateSamlPluginConsumerGroup struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *CreateSamlPluginConsumerGroup) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+// CreateSamlPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
+type CreateSamlPluginRoute struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *CreateSamlPluginRoute) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+// CreateSamlPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+type CreateSamlPluginService struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *CreateSamlPluginService) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
 type CreateSamlPlugin struct {
+	Config *CreateSamlPluginConfig `json:"config,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool  `default:"true" json:"enabled"`
-	name    string `const:"saml" json:"name"`
+	Enabled      *bool   `json:"enabled,omitempty"`
+	InstanceName *string `json:"instance_name,omitempty"`
+	name         *string `const:"saml" json:"name,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []CreateSamlPluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer *CreateSamlPluginConsumer `json:"consumer,omitempty"`
+	Consumer      *CreateSamlPluginConsumer      `json:"consumer,omitempty"`
+	ConsumerGroup *CreateSamlPluginConsumerGroup `json:"consumer_group,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
 	Route *CreateSamlPluginRoute `json:"route,omitempty"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 	Service *CreateSamlPluginService `json:"service,omitempty"`
-	Config  CreateSamlPluginConfig   `json:"config"`
 }
 
 func (c CreateSamlPlugin) MarshalJSON() ([]byte, error) {
@@ -948,6 +939,13 @@ func (c *CreateSamlPlugin) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (o *CreateSamlPlugin) GetConfig() *CreateSamlPluginConfig {
+	if o == nil {
+		return nil
+	}
+	return o.Config
+}
+
 func (o *CreateSamlPlugin) GetEnabled() *bool {
 	if o == nil {
 		return nil
@@ -955,8 +953,15 @@ func (o *CreateSamlPlugin) GetEnabled() *bool {
 	return o.Enabled
 }
 
-func (o *CreateSamlPlugin) GetName() string {
-	return "saml"
+func (o *CreateSamlPlugin) GetInstanceName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.InstanceName
+}
+
+func (o *CreateSamlPlugin) GetName() *string {
+	return types.String("saml")
 }
 
 func (o *CreateSamlPlugin) GetProtocols() []CreateSamlPluginProtocols {
@@ -980,6 +985,13 @@ func (o *CreateSamlPlugin) GetConsumer() *CreateSamlPluginConsumer {
 	return o.Consumer
 }
 
+func (o *CreateSamlPlugin) GetConsumerGroup() *CreateSamlPluginConsumerGroup {
+	if o == nil {
+		return nil
+	}
+	return o.ConsumerGroup
+}
+
 func (o *CreateSamlPlugin) GetRoute() *CreateSamlPluginRoute {
 	if o == nil {
 		return nil
@@ -992,11 +1004,4 @@ func (o *CreateSamlPlugin) GetService() *CreateSamlPluginService {
 		return nil
 	}
 	return o.Service
-}
-
-func (o *CreateSamlPlugin) GetConfig() CreateSamlPluginConfig {
-	if o == nil {
-		return CreateSamlPluginConfig{}
-	}
-	return o.Config
 }

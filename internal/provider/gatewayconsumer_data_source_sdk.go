@@ -16,6 +16,7 @@ func (r *GatewayConsumerDataSourceModel) RefreshFromSharedConsumer(resp *shared.
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}
+		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 		r.Username = types.StringPointerValue(resp.Username)
 	}
 }

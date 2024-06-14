@@ -48,7 +48,7 @@ func (s *Vaults) CreateVault(ctx context.Context, request operations.CreateVault
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "CreateVault", "json", `request:"mediaType=application/json"`)
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Vault", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
 	}

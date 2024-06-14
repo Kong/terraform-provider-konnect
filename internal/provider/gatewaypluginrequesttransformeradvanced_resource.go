@@ -10,7 +10,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
@@ -33,16 +32,19 @@ type GatewayPluginRequestTransformerAdvancedResource struct {
 
 // GatewayPluginRequestTransformerAdvancedResourceModel describes the resource data model.
 type GatewayPluginRequestTransformerAdvancedResourceModel struct {
-	Config         tfTypes.CreateRequestTransformerAdvancedPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer                                 `tfsdk:"consumer"`
-	ControlPlaneID types.String                                         `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                                          `tfsdk:"created_at"`
-	Enabled        types.Bool                                           `tfsdk:"enabled"`
-	ID             types.String                                         `tfsdk:"id"`
-	Protocols      []types.String                                       `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer                                 `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer                                 `tfsdk:"service"`
-	Tags           []types.String                                       `tfsdk:"tags"`
+	Config         *tfTypes.CreateRequestTransformerAdvancedPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer                                  `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer                                  `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                                          `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                                           `tfsdk:"created_at"`
+	Enabled        types.Bool                                            `tfsdk:"enabled"`
+	ID             types.String                                          `tfsdk:"id"`
+	InstanceName   types.String                                          `tfsdk:"instance_name"`
+	Protocols      []types.String                                        `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer                                  `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer                                  `tfsdk:"service"`
+	Tags           []types.String                                        `tfsdk:"tags"`
+	UpdatedAt      types.Int64                                           `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginRequestTransformerAdvancedResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -54,7 +56,8 @@ func (r *GatewayPluginRequestTransformerAdvancedResource) Schema(ctx context.Con
 		MarkdownDescription: "GatewayPluginRequestTransformerAdvanced Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"add": schema.SingleNestedAttribute{
 						Computed: true,
@@ -122,8 +125,7 @@ func (r *GatewayPluginRequestTransformerAdvancedResource) Schema(ctx context.Con
 					"dots_in_keys": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(true),
-						Description: `Specify whether dots (for example, ` + "`" + `customers.info.phone` + "`" + `) should be treated as part of a property name or used to descend into nested JSON objects.  See [Arrays and nested objects](#arrays-and-nested-objects). Default: true`,
+						Description: `Specify whether dots (for example, ` + "`" + `customers.info.phone` + "`" + `) should be treated as part of a property name or used to descend into nested JSON objects.  See [Arrays and nested objects](#arrays-and-nested-objects).`,
 					},
 					"http_method": schema.StringAttribute{
 						Computed:    true,
@@ -215,6 +217,16 @@ func (r *GatewayPluginRequestTransformerAdvancedResource) Schema(ctx context.Con
 				},
 				Description: `If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.`,
 			},
+			"consumer_group": schema.SingleNestedAttribute{
+				Computed: true,
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"id": schema.StringAttribute{
+						Computed: true,
+						Optional: true,
+					},
+				},
+			},
 			"control_plane_id": schema.StringAttribute{
 				Required:    true,
 				Description: `The UUID of your control plane. This variable is available in the Konnect manager.`,
@@ -226,12 +238,15 @@ func (r *GatewayPluginRequestTransformerAdvancedResource) Schema(ctx context.Con
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Default:     booldefault.StaticBool(true),
-				Description: `Whether the plugin is applied. Default: true`,
+				Description: `Whether the plugin is applied.`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
 				Description: `ID of the Plugin to lookup`,
+			},
+			"instance_name": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,
@@ -266,6 +281,10 @@ func (r *GatewayPluginRequestTransformerAdvancedResource) Schema(ctx context.Con
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Plugin for grouping and filtering.`,
+			},
+			"updated_at": schema.Int64Attribute{
+				Computed:    true,
+				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
 	}
@@ -331,8 +350,8 @@ func (r *GatewayPluginRequestTransformerAdvancedResource) Create(ctx context.Con
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.RequestTransformerAdvancedPlugin == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.RequestTransformerAdvancedPlugin != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedRequestTransformerAdvancedPlugin(res.RequestTransformerAdvancedPlugin)
@@ -386,8 +405,8 @@ func (r *GatewayPluginRequestTransformerAdvancedResource) Read(ctx context.Conte
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.RequestTransformerAdvancedPlugin == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.RequestTransformerAdvancedPlugin != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedRequestTransformerAdvancedPlugin(res.RequestTransformerAdvancedPlugin)
@@ -434,8 +453,8 @@ func (r *GatewayPluginRequestTransformerAdvancedResource) Update(ctx context.Con
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.RequestTransformerAdvancedPlugin == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.RequestTransformerAdvancedPlugin != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedRequestTransformerAdvancedPlugin(res.RequestTransformerAdvancedPlugin)

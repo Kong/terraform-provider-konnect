@@ -8,7 +8,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
 )
 
-func (r *GatewayACLResourceModel) ToSharedCreateACLWithoutParents() *shared.CreateACLWithoutParents {
+func (r *GatewayACLResourceModel) ToSharedACLWithoutParents() *shared.ACLWithoutParents {
 	group := new(string)
 	if !r.Group.IsUnknown() && !r.Group.IsNull() {
 		*group = r.Group.ValueString()
@@ -19,7 +19,7 @@ func (r *GatewayACLResourceModel) ToSharedCreateACLWithoutParents() *shared.Crea
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	out := shared.CreateACLWithoutParents{
+	out := shared.ACLWithoutParents{
 		Group: group,
 		Tags:  tags,
 	}

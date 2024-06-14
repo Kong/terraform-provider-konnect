@@ -11,10 +11,11 @@ func (r *GatewayConsumerGroupDataSourceModel) RefreshFromSharedConsumerGroup(res
 	if resp != nil {
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.ID = types.StringPointerValue(resp.ID)
-		r.Name = types.StringValue(resp.Name)
+		r.Name = types.StringPointerValue(resp.Name)
 		r.Tags = []types.String{}
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}
+		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
 }

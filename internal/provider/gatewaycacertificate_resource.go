@@ -42,6 +42,7 @@ type GatewayCACertificateResourceModel struct {
 	CreatedAt      types.Int64    `tfsdk:"created_at"`
 	ID             types.String   `tfsdk:"id"`
 	Tags           []types.String `tfsdk:"tags"`
+	UpdatedAt      types.Int64    `tfsdk:"updated_at"`
 }
 
 func (r *GatewayCACertificateResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -53,11 +54,12 @@ func (r *GatewayCACertificateResource) Schema(ctx context.Context, req resource.
 		MarkdownDescription: "GatewayCACertificate Resource",
 		Attributes: map[string]schema.Attribute{
 			"cert": schema.StringAttribute{
+				Computed: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Required:    true,
+				Optional:    true,
 				Description: `PEM-encoded public certificate of the CA. Requires replacement if changed. `,
 			},
 			"cert_digest": schema.StringAttribute{
@@ -93,6 +95,10 @@ func (r *GatewayCACertificateResource) Schema(ctx context.Context, req resource.
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Certificate for grouping and filtering. Requires replacement if changed. `,
+			},
+			"updated_at": schema.Int64Attribute{
+				Computed:    true,
+				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
 	}
@@ -137,10 +143,10 @@ func (r *GatewayCACertificateResource) Create(ctx context.Context, req resource.
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	createCACertificate := *data.ToSharedCreateCACertificate()
+	caCertificate := *data.ToSharedCACertificateInput()
 	request := operations.CreateCaCertificateRequest{
-		ControlPlaneID:      controlPlaneID,
-		CreateCACertificate: createCACertificate,
+		ControlPlaneID: controlPlaneID,
+		CACertificate:  caCertificate,
 	}
 	res, err := r.client.CACertificates.CreateCaCertificate(ctx, request)
 	if err != nil {
@@ -158,8 +164,8 @@ func (r *GatewayCACertificateResource) Create(ctx context.Context, req resource.
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.CACertificate == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.CACertificate != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedCACertificate(res.CACertificate)
@@ -213,8 +219,8 @@ func (r *GatewayCACertificateResource) Read(ctx context.Context, req resource.Re
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.CACertificate == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.CACertificate != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedCACertificate(res.CACertificate)

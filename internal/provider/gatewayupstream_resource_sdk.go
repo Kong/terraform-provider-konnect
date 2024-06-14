@@ -10,14 +10,14 @@ import (
 	"math/big"
 )
 
-func (r *GatewayUpstreamResourceModel) ToSharedCreateUpstream() *shared.CreateUpstream {
-	algorithm := new(shared.CreateUpstreamAlgorithm)
+func (r *GatewayUpstreamResourceModel) ToSharedUpstreamInput() *shared.UpstreamInput {
+	algorithm := new(shared.UpstreamAlgorithm)
 	if !r.Algorithm.IsUnknown() && !r.Algorithm.IsNull() {
-		*algorithm = shared.CreateUpstreamAlgorithm(r.Algorithm.ValueString())
+		*algorithm = shared.UpstreamAlgorithm(r.Algorithm.ValueString())
 	} else {
 		algorithm = nil
 	}
-	var clientCertificate *shared.CreateUpstreamClientCertificate
+	var clientCertificate *shared.UpstreamClientCertificate
 	if r.ClientCertificate != nil {
 		id := new(string)
 		if !r.ClientCertificate.ID.IsUnknown() && !r.ClientCertificate.ID.IsNull() {
@@ -25,7 +25,7 @@ func (r *GatewayUpstreamResourceModel) ToSharedCreateUpstream() *shared.CreateUp
 		} else {
 			id = nil
 		}
-		clientCertificate = &shared.CreateUpstreamClientCertificate{
+		clientCertificate = &shared.UpstreamClientCertificate{
 			ID: id,
 		}
 	}
@@ -211,7 +211,7 @@ func (r *GatewayUpstreamResourceModel) ToSharedCreateUpstream() *shared.CreateUp
 		}
 		var passive *shared.Passive
 		if r.Healthchecks.Passive != nil {
-			var healthy1 *shared.CreateUpstreamHealthy
+			var healthy1 *shared.UpstreamHealthy
 			if r.Healthchecks.Passive.Healthy != nil {
 				var httpStatuses2 []int64 = []int64{}
 				for _, httpStatusesItem2 := range r.Healthchecks.Passive.Healthy.HTTPStatuses {
@@ -223,18 +223,18 @@ func (r *GatewayUpstreamResourceModel) ToSharedCreateUpstream() *shared.CreateUp
 				} else {
 					successes1 = nil
 				}
-				healthy1 = &shared.CreateUpstreamHealthy{
+				healthy1 = &shared.UpstreamHealthy{
 					HTTPStatuses: httpStatuses2,
 					Successes:    successes1,
 				}
 			}
-			typeVar1 := new(shared.CreateUpstreamType)
+			typeVar1 := new(shared.UpstreamType)
 			if !r.Healthchecks.Passive.Type.IsUnknown() && !r.Healthchecks.Passive.Type.IsNull() {
-				*typeVar1 = shared.CreateUpstreamType(r.Healthchecks.Passive.Type.ValueString())
+				*typeVar1 = shared.UpstreamType(r.Healthchecks.Passive.Type.ValueString())
 			} else {
 				typeVar1 = nil
 			}
-			var unhealthy1 *shared.CreateUpstreamUnhealthy
+			var unhealthy1 *shared.UpstreamUnhealthy
 			if r.Healthchecks.Passive.Unhealthy != nil {
 				httpFailures1 := new(int64)
 				if !r.Healthchecks.Passive.Unhealthy.HTTPFailures.IsUnknown() && !r.Healthchecks.Passive.Unhealthy.HTTPFailures.IsNull() {
@@ -258,7 +258,7 @@ func (r *GatewayUpstreamResourceModel) ToSharedCreateUpstream() *shared.CreateUp
 				} else {
 					timeouts1 = nil
 				}
-				unhealthy1 = &shared.CreateUpstreamUnhealthy{
+				unhealthy1 = &shared.UpstreamUnhealthy{
 					HTTPFailures: httpFailures1,
 					HTTPStatuses: httpStatuses3,
 					TCPFailures:  tcpFailures1,
@@ -289,7 +289,12 @@ func (r *GatewayUpstreamResourceModel) ToSharedCreateUpstream() *shared.CreateUp
 	} else {
 		hostHeader = nil
 	}
-	name := r.Name.ValueString()
+	name := new(string)
+	if !r.Name.IsUnknown() && !r.Name.IsNull() {
+		*name = r.Name.ValueString()
+	} else {
+		name = nil
+	}
 	slots := new(int64)
 	if !r.Slots.IsUnknown() && !r.Slots.IsNull() {
 		*slots = r.Slots.ValueInt64()
@@ -306,7 +311,7 @@ func (r *GatewayUpstreamResourceModel) ToSharedCreateUpstream() *shared.CreateUp
 	} else {
 		useSrvName = nil
 	}
-	out := shared.CreateUpstream{
+	out := shared.UpstreamInput{
 		Algorithm:              algorithm,
 		ClientCertificate:      clientCertificate,
 		HashFallback:           hashFallback,
@@ -430,7 +435,7 @@ func (r *GatewayUpstreamResourceModel) RefreshFromSharedUpstream(resp *shared.Up
 				if resp.Healthchecks.Passive.Healthy == nil {
 					r.Healthchecks.Passive.Healthy = nil
 				} else {
-					r.Healthchecks.Passive.Healthy = &tfTypes.CreateUpstreamHealthy{}
+					r.Healthchecks.Passive.Healthy = &tfTypes.UpstreamHealthy{}
 					r.Healthchecks.Passive.Healthy.HTTPStatuses = []types.Int64{}
 					for _, v := range resp.Healthchecks.Passive.Healthy.HTTPStatuses {
 						r.Healthchecks.Passive.Healthy.HTTPStatuses = append(r.Healthchecks.Passive.Healthy.HTTPStatuses, types.Int64Value(v))
@@ -445,7 +450,7 @@ func (r *GatewayUpstreamResourceModel) RefreshFromSharedUpstream(resp *shared.Up
 				if resp.Healthchecks.Passive.Unhealthy == nil {
 					r.Healthchecks.Passive.Unhealthy = nil
 				} else {
-					r.Healthchecks.Passive.Unhealthy = &tfTypes.CreateUpstreamUnhealthy{}
+					r.Healthchecks.Passive.Unhealthy = &tfTypes.UpstreamUnhealthy{}
 					r.Healthchecks.Passive.Unhealthy.HTTPFailures = types.Int64PointerValue(resp.Healthchecks.Passive.Unhealthy.HTTPFailures)
 					r.Healthchecks.Passive.Unhealthy.HTTPStatuses = []types.Int64{}
 					for _, v := range resp.Healthchecks.Passive.Unhealthy.HTTPStatuses {
@@ -463,12 +468,13 @@ func (r *GatewayUpstreamResourceModel) RefreshFromSharedUpstream(resp *shared.Up
 		}
 		r.HostHeader = types.StringPointerValue(resp.HostHeader)
 		r.ID = types.StringPointerValue(resp.ID)
-		r.Name = types.StringValue(resp.Name)
+		r.Name = types.StringPointerValue(resp.Name)
 		r.Slots = types.Int64PointerValue(resp.Slots)
 		r.Tags = []types.String{}
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}
+		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 		r.UseSrvName = types.BoolPointerValue(resp.UseSrvName)
 	}
 }

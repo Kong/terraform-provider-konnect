@@ -2,26 +2,11 @@
 
 package shared
 
-import (
-	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/utils"
-)
-
 // PortalClaimMappings - Mappings from a portal developer atribute to an Identity Provider claim.
 type PortalClaimMappings struct {
-	Name   *string `default:"name" json:"name"`
-	Email  *string `default:"email" json:"email"`
-	Groups *string `default:"groups" json:"groups"`
-}
-
-func (p PortalClaimMappings) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(p, "", false)
-}
-
-func (p *PortalClaimMappings) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
-		return err
-	}
-	return nil
+	Name   *string `json:"name,omitempty"`
+	Email  *string `json:"email,omitempty"`
+	Groups *string `json:"groups,omitempty"`
 }
 
 func (o *PortalClaimMappings) GetName() *string {

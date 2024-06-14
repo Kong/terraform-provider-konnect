@@ -11,5 +11,6 @@ type CreateKeyAuthPluginConfig struct {
 	KeyInHeader     types.Bool     `tfsdk:"key_in_header"`
 	KeyInQuery      types.Bool     `tfsdk:"key_in_query"`
 	KeyNames        []types.String `tfsdk:"key_names"`
+	Realm           types.String   `tfsdk:"realm"`
 	RunOnPreflight  types.Bool     `tfsdk:"run_on_preflight"`
 }

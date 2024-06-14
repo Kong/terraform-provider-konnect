@@ -11,17 +11,12 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/numberdefault"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
-	"math/big"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -39,16 +34,19 @@ type GatewayPluginSamlResource struct {
 
 // GatewayPluginSamlResourceModel describes the resource data model.
 type GatewayPluginSamlResourceModel struct {
-	Config         tfTypes.CreateSamlPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer           `tfsdk:"consumer"`
-	ControlPlaneID types.String                   `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                    `tfsdk:"created_at"`
-	Enabled        types.Bool                     `tfsdk:"enabled"`
-	ID             types.String                   `tfsdk:"id"`
-	Protocols      []types.String                 `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer           `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer           `tfsdk:"service"`
-	Tags           []types.String                 `tfsdk:"tags"`
+	Config         *tfTypes.CreateSamlPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer            `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer            `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                    `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                     `tfsdk:"created_at"`
+	Enabled        types.Bool                      `tfsdk:"enabled"`
+	ID             types.String                    `tfsdk:"id"`
+	InstanceName   types.String                    `tfsdk:"instance_name"`
+	Protocols      []types.String                  `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer            `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer            `tfsdk:"service"`
+	Tags           []types.String                  `tfsdk:"tags"`
+	UpdatedAt      types.Int64                     `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginSamlResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -60,7 +58,8 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 		MarkdownDescription: "GatewayPluginSaml Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"anonymous": schema.StringAttribute{
 						Computed:    true,
@@ -90,8 +89,7 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 					"nameid_format": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     stringdefault.StaticString("EmailAddress"),
-						Description: `The requested ` + "`" + `NameId` + "`" + ` format. Options available are: - ` + "`" + `Unspecified` + "`" + ` - ` + "`" + `EmailAddress` + "`" + ` - ` + "`" + `Persistent` + "`" + ` - ` + "`" + `Transient` + "`" + `. must be one of ["Unspecified", "EmailAddress", "Persistent", "Transient"]; Default: "EmailAddress"`,
+						Description: `The requested ` + "`" + `NameId` + "`" + ` format. Options available are: - ` + "`" + `Unspecified` + "`" + ` - ` + "`" + `EmailAddress` + "`" + ` - ` + "`" + `Persistent` + "`" + ` - ` + "`" + `Transient` + "`" + `. must be one of ["Unspecified", "EmailAddress", "Persistent", "Transient"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"Unspecified",
@@ -104,8 +102,7 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 					"request_digest_algorithm": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     stringdefault.StaticString("SHA256"),
-						Description: `The digest algorithm for Authn requests: - ` + "`" + `SHA256` + "`" + ` - ` + "`" + `SHA1` + "`" + `. must be one of ["SHA256", "SHA1"]; Default: "SHA256"`,
+						Description: `The digest algorithm for Authn requests: - ` + "`" + `SHA256` + "`" + ` - ` + "`" + `SHA1` + "`" + `. must be one of ["SHA256", "SHA1"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"SHA256",
@@ -116,8 +113,7 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 					"request_signature_algorithm": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     stringdefault.StaticString("SHA256"),
-						Description: `The signature algorithm for signing Authn requests. Options available are: - ` + "`" + `SHA256` + "`" + ` - ` + "`" + `SHA384` + "`" + ` - ` + "`" + `SHA512` + "`" + `. must be one of ["SHA256", "SHA384", "SHA512"]; Default: "SHA256"`,
+						Description: `The signature algorithm for signing Authn requests. Options available are: - ` + "`" + `SHA256` + "`" + ` - ` + "`" + `SHA384` + "`" + ` - ` + "`" + `SHA512` + "`" + `. must be one of ["SHA256", "SHA384", "SHA512"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"SHA256",
@@ -139,8 +135,7 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 					"response_digest_algorithm": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     stringdefault.StaticString("SHA256"),
-						Description: `The algorithm for verifying digest in SAML responses: - ` + "`" + `SHA256` + "`" + ` - ` + "`" + `SHA1` + "`" + `. must be one of ["SHA256", "SHA1"]; Default: "SHA256"`,
+						Description: `The algorithm for verifying digest in SAML responses: - ` + "`" + `SHA256` + "`" + ` - ` + "`" + `SHA1` + "`" + `. must be one of ["SHA256", "SHA1"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"SHA256",
@@ -156,8 +151,7 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 					"response_signature_algorithm": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     stringdefault.StaticString("SHA256"),
-						Description: `The algorithm for validating signatures in SAML responses. Options available are: - ` + "`" + `SHA256` + "`" + ` - ` + "`" + `SHA384` + "`" + ` - ` + "`" + `SHA512` + "`" + `. must be one of ["SHA256", "SHA384", "SHA512"]; Default: "SHA256"`,
+						Description: `The algorithm for validating signatures in SAML responses. Options available are: - ` + "`" + `SHA256` + "`" + ` - ` + "`" + `SHA384` + "`" + ` - ` + "`" + `SHA512` + "`" + `. must be one of ["SHA256", "SHA384", "SHA512"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"SHA256",
@@ -169,14 +163,12 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 					"session_absolute_timeout": schema.NumberAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     numberdefault.StaticBigFloat(big.NewFloat(86400)),
-						Description: `The session cookie absolute timeout in seconds. Specifies how long the session can be used until it is no longer valid. Default: 86400`,
+						Description: `The session cookie absolute timeout in seconds. Specifies how long the session can be used until it is no longer valid.`,
 					},
 					"session_audience": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     stringdefault.StaticString("default"),
-						Description: `The session audience, for example "my-application". Default: "default"`,
+						Description: `The session audience, for example "my-application"`,
 					},
 					"session_cookie_domain": schema.StringAttribute{
 						Computed:    true,
@@ -186,26 +178,22 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 					"session_cookie_http_only": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(true),
-						Description: `Forbids JavaScript from accessing the cookie, for example, through the ` + "`" + `Document.cookie` + "`" + ` property. Default: true`,
+						Description: `Forbids JavaScript from accessing the cookie, for example, through the ` + "`" + `Document.cookie` + "`" + ` property.`,
 					},
 					"session_cookie_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     stringdefault.StaticString("session"),
-						Description: `The session cookie name. Default: "session"`,
+						Description: `The session cookie name.`,
 					},
 					"session_cookie_path": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     stringdefault.StaticString("/"),
-						Description: `A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes). Default: "/"`,
+						Description: `A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).`,
 					},
 					"session_cookie_same_site": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     stringdefault.StaticString("Lax"),
-						Description: `Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks. must be one of ["Strict", "Lax", "None", "Default"]; Default: "Lax"`,
+						Description: `Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks. must be one of ["Strict", "Lax", "None", "Default"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"Strict",
@@ -223,38 +211,32 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 					"session_enforce_same_subject": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `When set to ` + "`" + `true` + "`" + `, audiences are forced to share the same subject. Default: false`,
+						Description: `When set to ` + "`" + `true` + "`" + `, audiences are forced to share the same subject.`,
 					},
 					"session_hash_storage_key": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `When set to ` + "`" + `true` + "`" + `, the storage key (session ID) is hashed for extra security. Hashing the storage key means it is impossible to decrypt data from the storage without a cookie. Default: false`,
+						Description: `When set to ` + "`" + `true` + "`" + `, the storage key (session ID) is hashed for extra security. Hashing the storage key means it is impossible to decrypt data from the storage without a cookie.`,
 					},
 					"session_hash_subject": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `When set to ` + "`" + `true` + "`" + `, the value of subject is hashed before being stored. Only applies when ` + "`" + `session_store_metadata` + "`" + ` is enabled. Default: false`,
+						Description: `When set to ` + "`" + `true` + "`" + `, the value of subject is hashed before being stored. Only applies when ` + "`" + `session_store_metadata` + "`" + ` is enabled.`,
 					},
 					"session_idling_timeout": schema.NumberAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     numberdefault.StaticBigFloat(big.NewFloat(900)),
-						Description: `The session cookie idle time in seconds. Default: 900`,
+						Description: `The session cookie idle time in seconds.`,
 					},
 					"session_memcached_host": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     stringdefault.StaticString("127.0.0.1"),
-						Description: `The memcached host. Default: "127.0.0.1"`,
+						Description: `The memcached host.`,
 					},
 					"session_memcached_port": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     int64default.StaticInt64(11211),
-						Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 11211`,
+						Description: `An integer representing a port number between 0 and 65535, inclusive.`,
 					},
 					"session_memcached_prefix": schema.StringAttribute{
 						Computed:    true,
@@ -279,14 +261,12 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 								"ip": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Default:     stringdefault.StaticString("127.0.0.1"),
-									Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+									Description: `A string representing a host name, such as example.com.`,
 								},
 								"port": schema.Int64Attribute{
 									Computed:    true,
 									Optional:    true,
-									Default:     int64default.StaticInt64(6379),
-									Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+									Description: `An integer representing a port number between 0 and 65535, inclusive.`,
 								},
 							},
 						},
@@ -300,8 +280,7 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 					"session_redis_host": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     stringdefault.StaticString("127.0.0.1"),
-						Description: `The Redis host IP. Default: "127.0.0.1"`,
+						Description: `The Redis host IP.`,
 					},
 					"session_redis_password": schema.StringAttribute{
 						Computed:    true,
@@ -311,8 +290,7 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 					"session_redis_port": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     int64default.StaticInt64(6379),
-						Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+						Description: `An integer representing a port number between 0 and 65535, inclusive.`,
 					},
 					"session_redis_prefix": schema.StringAttribute{
 						Computed:    true,
@@ -342,14 +320,12 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 					"session_redis_ssl": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `Use SSL/TLS for the Redis connection. Default: false`,
+						Description: `Use SSL/TLS for the Redis connection.`,
 					},
 					"session_redis_ssl_verify": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `Verify the Redis server certificate. Default: false`,
+						Description: `Verify the Redis server certificate.`,
 					},
 					"session_redis_username": schema.StringAttribute{
 						Computed:    true,
@@ -359,26 +335,22 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 					"session_remember": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `Enables or disables persistent sessions. Default: false`,
+						Description: `Enables or disables persistent sessions`,
 					},
 					"session_remember_absolute_timeout": schema.NumberAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     numberdefault.StaticBigFloat(big.NewFloat(2592000)),
-						Description: `Persistent session absolute timeout in seconds. Default: 2592000`,
+						Description: `Persistent session absolute timeout in seconds.`,
 					},
 					"session_remember_cookie_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     stringdefault.StaticString("remember"),
-						Description: `Persistent session cookie name. Default: "remember"`,
+						Description: `Persistent session cookie name`,
 					},
 					"session_remember_rolling_timeout": schema.NumberAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     numberdefault.StaticBigFloat(big.NewFloat(604800)),
-						Description: `Persistent session rolling timeout in seconds. Default: 604800`,
+						Description: `Persistent session rolling timeout in seconds.`,
 					},
 					"session_request_headers": schema.ListAttribute{
 						Computed:    true,
@@ -393,8 +365,7 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 					"session_rolling_timeout": schema.NumberAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     numberdefault.StaticBigFloat(big.NewFloat(3600)),
-						Description: `The session cookie absolute timeout in seconds. Specifies how long the session can be used until it is no longer valid. Default: 3600`,
+						Description: `The session cookie absolute timeout in seconds. Specifies how long the session can be used until it is no longer valid.`,
 					},
 					"session_secret": schema.StringAttribute{
 						Computed:    true,
@@ -404,8 +375,7 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 					"session_storage": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     stringdefault.StaticString("cookie"),
-						Description: `The session storage for session data: - ` + "`" + `cookie` + "`" + `: stores session data with the session cookie. The session cannot be invalidated or revoked without changing the session secret, but is stateless, and doesn't require a database. - ` + "`" + `memcached` + "`" + `: stores session data in memcached - ` + "`" + `redis` + "`" + `: stores session data in Redis. must be one of ["cookie", "memcache", "memcached", "redis"]; Default: "cookie"`,
+						Description: `The session storage for session data: - ` + "`" + `cookie` + "`" + `: stores session data with the session cookie. The session cannot be invalidated or revoked without changing the session secret, but is stateless, and doesn't require a database. - ` + "`" + `memcached` + "`" + `: stores session data in memcached - ` + "`" + `redis` + "`" + `: stores session data in Redis. must be one of ["cookie", "memcache", "memcached", "redis"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"cookie",
@@ -418,14 +388,12 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 					"session_store_metadata": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `Configures whether or not session metadata should be stored. This includes information about the active sessions for the ` + "`" + `specific_audience` + "`" + ` belonging to a specific subject. Default: false`,
+						Description: `Configures whether or not session metadata should be stored. This includes information about the active sessions for the ` + "`" + `specific_audience` + "`" + ` belonging to a specific subject.`,
 					},
 					"validate_assertion_signature": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(true),
-						Description: `Enable signature validation for SAML responses. Default: true`,
+						Description: `Enable signature validation for SAML responses.`,
 					},
 				},
 			},
@@ -440,6 +408,16 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 				},
 				Description: `If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.`,
 			},
+			"consumer_group": schema.SingleNestedAttribute{
+				Computed: true,
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"id": schema.StringAttribute{
+						Computed: true,
+						Optional: true,
+					},
+				},
+			},
 			"control_plane_id": schema.StringAttribute{
 				Required:    true,
 				Description: `The UUID of your control plane. This variable is available in the Konnect manager.`,
@@ -451,12 +429,15 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Default:     booldefault.StaticBool(true),
-				Description: `Whether the plugin is applied. Default: true`,
+				Description: `Whether the plugin is applied.`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
 				Description: `ID of the Plugin to lookup`,
+			},
+			"instance_name": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,
@@ -491,6 +472,10 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Plugin for grouping and filtering.`,
+			},
+			"updated_at": schema.Int64Attribute{
+				Computed:    true,
+				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
 	}
@@ -556,8 +541,8 @@ func (r *GatewayPluginSamlResource) Create(ctx context.Context, req resource.Cre
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.SamlPlugin == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.SamlPlugin != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedSamlPlugin(res.SamlPlugin)
@@ -611,8 +596,8 @@ func (r *GatewayPluginSamlResource) Read(ctx context.Context, req resource.ReadR
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.SamlPlugin == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.SamlPlugin != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedSamlPlugin(res.SamlPlugin)
@@ -659,8 +644,8 @@ func (r *GatewayPluginSamlResource) Update(ctx context.Context, req resource.Upd
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.SamlPlugin == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.SamlPlugin != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedSamlPlugin(res.SamlPlugin)

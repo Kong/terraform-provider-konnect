@@ -9,7 +9,7 @@ import (
 	"math/big"
 )
 
-func (r *GatewayTargetResourceModel) ToSharedCreateTargetWithoutParents() *shared.CreateTargetWithoutParents {
+func (r *GatewayTargetResourceModel) ToSharedTargetWithoutParents() *shared.TargetWithoutParents {
 	var tags []string = []string{}
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
@@ -26,7 +26,7 @@ func (r *GatewayTargetResourceModel) ToSharedCreateTargetWithoutParents() *share
 	} else {
 		weight = nil
 	}
-	out := shared.CreateTargetWithoutParents{
+	out := shared.TargetWithoutParents{
 		Tags:   tags,
 		Target: target,
 		Weight: weight,
@@ -47,6 +47,11 @@ func (r *GatewayTargetResourceModel) RefreshFromSharedTarget(resp *shared.Target
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}
 		r.Target = types.StringPointerValue(resp.Target)
+		if resp.UpdatedAt != nil {
+			r.UpdatedAt = types.NumberValue(big.NewFloat(float64(*resp.UpdatedAt)))
+		} else {
+			r.UpdatedAt = types.NumberNull()
+		}
 		if resp.Upstream == nil {
 			r.Upstream = nil
 		} else {

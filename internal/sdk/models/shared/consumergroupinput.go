@@ -2,19 +2,19 @@
 
 package shared
 
-type CreateKeyAuthWithoutParents struct {
-	Key  *string  `json:"key,omitempty"`
+type ConsumerGroupInput struct {
+	Name *string  `json:"name,omitempty"`
 	Tags []string `json:"tags,omitempty"`
 }
 
-func (o *CreateKeyAuthWithoutParents) GetKey() *string {
+func (o *ConsumerGroupInput) GetName() *string {
 	if o == nil {
 		return nil
 	}
-	return o.Key
+	return o.Name
 }
 
-func (o *CreateKeyAuthWithoutParents) GetTags() []string {
+func (o *ConsumerGroupInput) GetTags() []string {
 	if o == nil {
 		return nil
 	}

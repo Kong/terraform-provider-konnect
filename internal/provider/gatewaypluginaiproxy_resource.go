@@ -11,17 +11,12 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/numberdefault"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
-	"math/big"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -39,16 +34,19 @@ type GatewayPluginAIProxyResource struct {
 
 // GatewayPluginAIProxyResourceModel describes the resource data model.
 type GatewayPluginAIProxyResourceModel struct {
-	Config         tfTypes.CreateAIProxyPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer              `tfsdk:"consumer"`
-	ControlPlaneID types.String                      `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                       `tfsdk:"created_at"`
-	Enabled        types.Bool                        `tfsdk:"enabled"`
-	ID             types.String                      `tfsdk:"id"`
-	Protocols      []types.String                    `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer              `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer              `tfsdk:"service"`
-	Tags           []types.String                    `tfsdk:"tags"`
+	Config         *tfTypes.CreateAIProxyPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer               `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer               `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                        `tfsdk:"created_at"`
+	Enabled        types.Bool                         `tfsdk:"enabled"`
+	ID             types.String                       `tfsdk:"id"`
+	InstanceName   types.String                       `tfsdk:"instance_name"`
+	Protocols      []types.String                     `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer               `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer               `tfsdk:"service"`
+	Tags           []types.String                     `tfsdk:"tags"`
+	UpdatedAt      types.Int64                        `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginAIProxyResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -60,12 +58,33 @@ func (r *GatewayPluginAIProxyResource) Schema(ctx context.Context, req resource.
 		MarkdownDescription: "GatewayPluginAIProxy Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"auth": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
+							"azure_client_id": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client ID.`,
+							},
+							"azure_client_secret": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client secret.`,
+							},
+							"azure_tenant_id": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the tenant ID.`,
+							},
+							"azure_use_managed_identity": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models.`,
+							},
 							"header_name": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
@@ -106,19 +125,18 @@ func (r *GatewayPluginAIProxyResource) Schema(ctx context.Context, req resource.
 							"log_payloads": schema.BoolAttribute{
 								Computed:    true,
 								Optional:    true,
-								Default:     booldefault.StaticBool(false),
-								Description: `If enabled, will log the request and response body into the Kong log plugin(s) output. Default: false`,
+								Description: `If enabled, will log the request and response body into the Kong log plugin(s) output.`,
 							},
 							"log_statistics": schema.BoolAttribute{
 								Computed:    true,
 								Optional:    true,
-								Default:     booldefault.StaticBool(true),
-								Description: `If enabled and supported by the driver, will add model usage and token metrics into the Kong log plugin(s) output. Default: true`,
+								Description: `If enabled and supported by the driver, will add model usage and token metrics into the Kong log plugin(s) output.`,
 							},
 						},
 					},
 					"model": schema.SingleNestedAttribute{
-						Required: true,
+						Computed: true,
+						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"name": schema.StringAttribute{
 								Computed:    true,
@@ -137,8 +155,7 @@ func (r *GatewayPluginAIProxyResource) Schema(ctx context.Context, req resource.
 									"azure_api_version": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Default:     stringdefault.StaticString("2023-05-15"),
-										Description: `'api-version' for Azure OpenAI instances. Default: "2023-05-15"`,
+										Description: `'api-version' for Azure OpenAI instances.`,
 									},
 									"azure_deployment_id": schema.StringAttribute{
 										Computed:    true,
@@ -165,8 +182,7 @@ func (r *GatewayPluginAIProxyResource) Schema(ctx context.Context, req resource.
 									"max_tokens": schema.Int64Attribute{
 										Computed:    true,
 										Optional:    true,
-										Default:     int64default.StaticInt64(256),
-										Description: `Defines the max_tokens, if using chat or completion models. Default: 256`,
+										Description: `Defines the max_tokens, if using chat or completion models.`,
 									},
 									"mistral_format": schema.StringAttribute{
 										Computed:    true,
@@ -182,20 +198,22 @@ func (r *GatewayPluginAIProxyResource) Schema(ctx context.Context, req resource.
 									"temperature": schema.NumberAttribute{
 										Computed:    true,
 										Optional:    true,
-										Default:     numberdefault.StaticBigFloat(big.NewFloat(1)),
-										Description: `Defines the matching temperature, if using chat or completion models. Default: 1`,
+										Description: `Defines the matching temperature, if using chat or completion models.`,
 									},
 									"top_k": schema.Int64Attribute{
 										Computed:    true,
 										Optional:    true,
-										Default:     int64default.StaticInt64(0),
-										Description: `Defines the top-k most likely tokens, if supported. Default: 0`,
+										Description: `Defines the top-k most likely tokens, if supported.`,
 									},
 									"top_p": schema.NumberAttribute{
 										Computed:    true,
 										Optional:    true,
-										Default:     numberdefault.StaticBigFloat(big.NewFloat(1)),
-										Description: `Defines the top-p probability mass, if supported. Default: 1`,
+										Description: `Defines the top-p probability mass, if supported.`,
+									},
+									"upstream_path": schema.StringAttribute{
+										Computed:    true,
+										Optional:    true,
+										Description: `Manually specify or override the AI operation path, used when e.g. using the 'preserve' route_type.`,
 									},
 									"upstream_url": schema.StringAttribute{
 										Computed:    true,
@@ -222,14 +240,27 @@ func (r *GatewayPluginAIProxyResource) Schema(ctx context.Context, req resource.
 							},
 						},
 					},
+					"response_streaming": schema.StringAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `Whether to 'optionally allow', 'deny', or 'always' (force) the streaming of answers via server sent events. must be one of ["allow", "deny", "always"]`,
+						Validators: []validator.String{
+							stringvalidator.OneOf(
+								"allow",
+								"deny",
+								"always",
+							),
+						},
+					},
 					"route_type": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The model's operation implementation, for this provider. must be one of ["llm/v1/chat", "llm/v1/completions"]`,
+						Description: `The model's operation implementation, for this provider. Set to ` + "`" + `preserve` + "`" + ` to pass through without transformation. must be one of ["llm/v1/chat", "llm/v1/completions", "preserve"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"llm/v1/chat",
 								"llm/v1/completions",
+								"preserve",
 							),
 						},
 					},
@@ -246,6 +277,16 @@ func (r *GatewayPluginAIProxyResource) Schema(ctx context.Context, req resource.
 				},
 				Description: `If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.`,
 			},
+			"consumer_group": schema.SingleNestedAttribute{
+				Computed: true,
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"id": schema.StringAttribute{
+						Computed: true,
+						Optional: true,
+					},
+				},
+			},
 			"control_plane_id": schema.StringAttribute{
 				Required:    true,
 				Description: `The UUID of your control plane. This variable is available in the Konnect manager.`,
@@ -257,12 +298,15 @@ func (r *GatewayPluginAIProxyResource) Schema(ctx context.Context, req resource.
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Default:     booldefault.StaticBool(true),
-				Description: `Whether the plugin is applied. Default: true`,
+				Description: `Whether the plugin is applied.`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
 				Description: `ID of the Plugin to lookup`,
+			},
+			"instance_name": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,
@@ -297,6 +341,10 @@ func (r *GatewayPluginAIProxyResource) Schema(ctx context.Context, req resource.
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Plugin for grouping and filtering.`,
+			},
+			"updated_at": schema.Int64Attribute{
+				Computed:    true,
+				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
 	}
@@ -362,8 +410,8 @@ func (r *GatewayPluginAIProxyResource) Create(ctx context.Context, req resource.
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.AIProxyPlugin == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.AIProxyPlugin != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedAIProxyPlugin(res.AIProxyPlugin)
@@ -417,8 +465,8 @@ func (r *GatewayPluginAIProxyResource) Read(ctx context.Context, req resource.Re
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.AIProxyPlugin == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.AIProxyPlugin != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedAIProxyPlugin(res.AIProxyPlugin)
@@ -465,8 +513,8 @@ func (r *GatewayPluginAIProxyResource) Update(ctx context.Context, req resource.
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.AIProxyPlugin == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.AIProxyPlugin != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedAIProxyPlugin(res.AIProxyPlugin)

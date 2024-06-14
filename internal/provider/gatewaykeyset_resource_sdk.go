@@ -7,7 +7,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
 )
 
-func (r *GatewayKeySetResourceModel) ToSharedCreateKeySet() *shared.CreateKeySet {
+func (r *GatewayKeySetResourceModel) ToSharedKeySetInput() *shared.KeySetInput {
 	name := new(string)
 	if !r.Name.IsUnknown() && !r.Name.IsNull() {
 		*name = r.Name.ValueString()
@@ -18,7 +18,7 @@ func (r *GatewayKeySetResourceModel) ToSharedCreateKeySet() *shared.CreateKeySet
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	out := shared.CreateKeySet{
+	out := shared.KeySetInput{
 		Name: name,
 		Tags: tags,
 	}

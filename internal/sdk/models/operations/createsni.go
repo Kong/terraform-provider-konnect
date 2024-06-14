@@ -11,7 +11,7 @@ type CreateSniRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// Description of the new SNI for creation
-	CreateSNI shared.CreateSNI `request:"mediaType=application/json"`
+	Sni shared.SNIInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateSniRequest) GetControlPlaneID() string {
@@ -21,11 +21,11 @@ func (o *CreateSniRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateSniRequest) GetCreateSNI() shared.CreateSNI {
+func (o *CreateSniRequest) GetSni() shared.SNIInput {
 	if o == nil {
-		return shared.CreateSNI{}
+		return shared.SNIInput{}
 	}
-	return o.CreateSNI
+	return o.Sni
 }
 
 type CreateSniResponse struct {

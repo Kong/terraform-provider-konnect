@@ -8,7 +8,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
 )
 
-func (r *GatewayHMACAuthResourceModel) ToSharedCreateHMACAuthWithoutParents() *shared.CreateHMACAuthWithoutParents {
+func (r *GatewayHMACAuthResourceModel) ToSharedHMACAuthWithoutParents() *shared.HMACAuthWithoutParents {
 	secret := new(string)
 	if !r.Secret.IsUnknown() && !r.Secret.IsNull() {
 		*secret = r.Secret.ValueString()
@@ -25,7 +25,7 @@ func (r *GatewayHMACAuthResourceModel) ToSharedCreateHMACAuthWithoutParents() *s
 	} else {
 		username = nil
 	}
-	out := shared.CreateHMACAuthWithoutParents{
+	out := shared.HMACAuthWithoutParents{
 		Secret:   secret,
 		Tags:     tags,
 		Username: username,

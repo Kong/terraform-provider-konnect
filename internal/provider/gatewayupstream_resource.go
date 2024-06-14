@@ -12,17 +12,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/mapplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/numberdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/numberplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -38,7 +34,6 @@ import (
 	"github.com/kong/terraform-provider-konnect/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/internal/validators"
-	"math/big"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -76,6 +71,7 @@ type GatewayUpstreamResourceModel struct {
 	Name                   types.String          `tfsdk:"name"`
 	Slots                  types.Int64           `tfsdk:"slots"`
 	Tags                   []types.String        `tfsdk:"tags"`
+	UpdatedAt              types.Int64           `tfsdk:"updated_at"`
 	UseSrvName             types.Bool            `tfsdk:"use_srv_name"`
 }
 
@@ -94,13 +90,13 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Optional:    true,
-				Default:     stringdefault.StaticString("round-robin"),
-				Description: `Which load balancing algorithm to use. Requires replacement if changed. ; must be one of ["consistent-hashing", "least-connections", "round-robin"]; Default: "round-robin"`,
+				Description: `Which load balancing algorithm to use. Requires replacement if changed. ; must be one of ["consistent-hashing", "least-connections", "round-robin", "latency"]`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
 						"consistent-hashing",
 						"least-connections",
 						"round-robin",
+						"latency",
 					),
 				},
 			},
@@ -142,8 +138,7 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Optional:    true,
-				Default:     stringdefault.StaticString("none"),
-				Description: `What to use as hashing input if the primary ` + "`" + `hash_on` + "`" + ` does not return a hash (eg. header is missing, or no Consumer identified). Not available if ` + "`" + `hash_on` + "`" + ` is set to ` + "`" + `cookie` + "`" + `. Requires replacement if changed. ; must be one of ["none", "consumer", "ip", "header", "cookie", "path", "query_arg", "uri_capture"]; Default: "none"`,
+				Description: `What to use as hashing input if the primary ` + "`" + `hash_on` + "`" + ` does not return a hash (eg. header is missing, or no Consumer identified). Not available if ` + "`" + `hash_on` + "`" + ` is set to ` + "`" + `cookie` + "`" + `. Requires replacement if changed. ; must be one of ["none", "consumer", "ip", "header", "cookie", "path", "query_arg", "uri_capture"]`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
 						"none",
@@ -191,8 +186,7 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Optional:    true,
-				Default:     stringdefault.StaticString("none"),
-				Description: `What to use as hashing input. Using ` + "`" + `none` + "`" + ` results in a weighted-round-robin scheme with no hashing. Requires replacement if changed. ; must be one of ["none", "consumer", "ip", "header", "cookie", "path", "query_arg", "uri_capture"]; Default: "none"`,
+				Description: `What to use as hashing input. Using ` + "`" + `none` + "`" + ` results in a weighted-round-robin scheme with no hashing. Requires replacement if changed. ; must be one of ["none", "consumer", "ip", "header", "cookie", "path", "query_arg", "uri_capture"]`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
 						"none",
@@ -222,8 +216,7 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Optional:    true,
-				Default:     stringdefault.StaticString("/"),
-				Description: `The cookie path to set in the response headers. Only required when ` + "`" + `hash_on` + "`" + ` or ` + "`" + `hash_fallback` + "`" + ` is set to ` + "`" + `cookie` + "`" + `. Requires replacement if changed. ; Default: "/"`,
+				Description: `The cookie path to set in the response headers. Only required when ` + "`" + `hash_on` + "`" + ` or ` + "`" + `hash_fallback` + "`" + ` is set to ` + "`" + `cookie` + "`" + `. Requires replacement if changed. `,
 			},
 			"hash_on_header": schema.StringAttribute{
 				Computed: true,
@@ -275,8 +268,7 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 									speakeasy_int64planmodifier.SuppressDiff(speakeasy_int64planmodifier.ExplicitSuppress),
 								},
 								Optional:    true,
-								Default:     int64default.StaticInt64(10),
-								Description: `Requires replacement if changed. ; Default: 10`,
+								Description: `Requires replacement if changed. `,
 							},
 							"headers": schema.MapAttribute{
 								Computed: true,
@@ -316,8 +308,7 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 											speakeasy_numberplanmodifier.SuppressDiff(speakeasy_numberplanmodifier.ExplicitSuppress),
 										},
 										Optional:    true,
-										Default:     numberdefault.StaticBigFloat(big.NewFloat(0)),
-										Description: `Requires replacement if changed. ; Default: 0`,
+										Description: `Requires replacement if changed. `,
 									},
 									"successes": schema.Int64Attribute{
 										Computed: true,
@@ -326,8 +317,7 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 											speakeasy_int64planmodifier.SuppressDiff(speakeasy_int64planmodifier.ExplicitSuppress),
 										},
 										Optional:    true,
-										Default:     int64default.StaticInt64(0),
-										Description: `Requires replacement if changed. ; Default: 0`,
+										Description: `Requires replacement if changed. `,
 									},
 								},
 								Description: `Requires replacement if changed. `,
@@ -339,8 +329,7 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 								},
 								Optional:    true,
-								Default:     stringdefault.StaticString("/"),
-								Description: `Requires replacement if changed. ; Default: "/"`,
+								Description: `Requires replacement if changed. `,
 							},
 							"https_sni": schema.StringAttribute{
 								Computed: true,
@@ -358,8 +347,7 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 									speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
 								},
 								Optional:    true,
-								Default:     booldefault.StaticBool(true),
-								Description: `Requires replacement if changed. ; Default: true`,
+								Description: `Requires replacement if changed. `,
 							},
 							"timeout": schema.NumberAttribute{
 								Computed: true,
@@ -368,8 +356,7 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 									speakeasy_numberplanmodifier.SuppressDiff(speakeasy_numberplanmodifier.ExplicitSuppress),
 								},
 								Optional:    true,
-								Default:     numberdefault.StaticBigFloat(big.NewFloat(1)),
-								Description: `Requires replacement if changed. ; Default: 1`,
+								Description: `Requires replacement if changed. `,
 							},
 							"type": schema.StringAttribute{
 								Computed: true,
@@ -378,8 +365,7 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 								},
 								Optional:    true,
-								Default:     stringdefault.StaticString("http"),
-								Description: `Requires replacement if changed. ; must be one of ["tcp", "http", "https", "grpc", "grpcs"]; Default: "http"`,
+								Description: `Requires replacement if changed. ; must be one of ["tcp", "http", "https", "grpc", "grpcs"]`,
 								Validators: []validator.String{
 									stringvalidator.OneOf(
 										"tcp",
@@ -405,8 +391,7 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 											speakeasy_int64planmodifier.SuppressDiff(speakeasy_int64planmodifier.ExplicitSuppress),
 										},
 										Optional:    true,
-										Default:     int64default.StaticInt64(0),
-										Description: `Requires replacement if changed. ; Default: 0`,
+										Description: `Requires replacement if changed. `,
 									},
 									"http_statuses": schema.ListAttribute{
 										Computed: true,
@@ -425,8 +410,7 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 											speakeasy_numberplanmodifier.SuppressDiff(speakeasy_numberplanmodifier.ExplicitSuppress),
 										},
 										Optional:    true,
-										Default:     numberdefault.StaticBigFloat(big.NewFloat(0)),
-										Description: `Requires replacement if changed. ; Default: 0`,
+										Description: `Requires replacement if changed. `,
 									},
 									"tcp_failures": schema.Int64Attribute{
 										Computed: true,
@@ -435,8 +419,7 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 											speakeasy_int64planmodifier.SuppressDiff(speakeasy_int64planmodifier.ExplicitSuppress),
 										},
 										Optional:    true,
-										Default:     int64default.StaticInt64(0),
-										Description: `Requires replacement if changed. ; Default: 0`,
+										Description: `Requires replacement if changed. `,
 									},
 									"timeouts": schema.Int64Attribute{
 										Computed: true,
@@ -445,8 +428,7 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 											speakeasy_int64planmodifier.SuppressDiff(speakeasy_int64planmodifier.ExplicitSuppress),
 										},
 										Optional:    true,
-										Default:     int64default.StaticInt64(0),
-										Description: `Requires replacement if changed. ; Default: 0`,
+										Description: `Requires replacement if changed. `,
 									},
 								},
 								Description: `Requires replacement if changed. `,
@@ -487,8 +469,7 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 											speakeasy_int64planmodifier.SuppressDiff(speakeasy_int64planmodifier.ExplicitSuppress),
 										},
 										Optional:    true,
-										Default:     int64default.StaticInt64(0),
-										Description: `Requires replacement if changed. ; Default: 0`,
+										Description: `Requires replacement if changed. `,
 									},
 								},
 								Description: `Requires replacement if changed. `,
@@ -500,8 +481,7 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 								},
 								Optional:    true,
-								Default:     stringdefault.StaticString("http"),
-								Description: `Requires replacement if changed. ; must be one of ["tcp", "http", "https", "grpc", "grpcs"]; Default: "http"`,
+								Description: `Requires replacement if changed. ; must be one of ["tcp", "http", "https", "grpc", "grpcs"]`,
 								Validators: []validator.String{
 									stringvalidator.OneOf(
 										"tcp",
@@ -527,8 +507,7 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 											speakeasy_int64planmodifier.SuppressDiff(speakeasy_int64planmodifier.ExplicitSuppress),
 										},
 										Optional:    true,
-										Default:     int64default.StaticInt64(0),
-										Description: `Requires replacement if changed. ; Default: 0`,
+										Description: `Requires replacement if changed. `,
 									},
 									"http_statuses": schema.ListAttribute{
 										Computed: true,
@@ -547,8 +526,7 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 											speakeasy_int64planmodifier.SuppressDiff(speakeasy_int64planmodifier.ExplicitSuppress),
 										},
 										Optional:    true,
-										Default:     int64default.StaticInt64(0),
-										Description: `Requires replacement if changed. ; Default: 0`,
+										Description: `Requires replacement if changed. `,
 									},
 									"timeouts": schema.Int64Attribute{
 										Computed: true,
@@ -557,8 +535,7 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 											speakeasy_int64planmodifier.SuppressDiff(speakeasy_int64planmodifier.ExplicitSuppress),
 										},
 										Optional:    true,
-										Default:     int64default.StaticInt64(0),
-										Description: `Requires replacement if changed. ; Default: 0`,
+										Description: `Requires replacement if changed. `,
 									},
 								},
 								Description: `Requires replacement if changed. `,
@@ -573,8 +550,7 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 							speakeasy_numberplanmodifier.SuppressDiff(speakeasy_numberplanmodifier.ExplicitSuppress),
 						},
 						Optional:    true,
-						Default:     numberdefault.StaticBigFloat(big.NewFloat(0)),
-						Description: `Requires replacement if changed. ; Default: 0`,
+						Description: `Requires replacement if changed. `,
 					},
 				},
 				Description: `Requires replacement if changed. `,
@@ -593,11 +569,12 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 				Description: `ID of the Upstream to lookup`,
 			},
 			"name": schema.StringAttribute{
+				Computed: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Required:    true,
+				Optional:    true,
 				Description: `This is a hostname, which must be equal to the ` + "`" + `host` + "`" + ` of a Service. Requires replacement if changed. `,
 			},
 			"slots": schema.Int64Attribute{
@@ -607,8 +584,7 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 					speakeasy_int64planmodifier.SuppressDiff(speakeasy_int64planmodifier.ExplicitSuppress),
 				},
 				Optional:    true,
-				Default:     int64default.StaticInt64(10000),
-				Description: `The number of slots in the load balancer algorithm. If ` + "`" + `algorithm` + "`" + ` is set to ` + "`" + `round-robin` + "`" + `, this setting determines the maximum number of slots. If ` + "`" + `algorithm` + "`" + ` is set to ` + "`" + `consistent-hashing` + "`" + `, this setting determines the actual number of slots in the algorithm. Accepts an integer in the range ` + "`" + `10` + "`" + `-` + "`" + `65536` + "`" + `. Requires replacement if changed. ; Default: 10000`,
+				Description: `The number of slots in the load balancer algorithm. If ` + "`" + `algorithm` + "`" + ` is set to ` + "`" + `round-robin` + "`" + `, this setting determines the maximum number of slots. If ` + "`" + `algorithm` + "`" + ` is set to ` + "`" + `consistent-hashing` + "`" + `, this setting determines the actual number of slots in the algorithm. Accepts an integer in the range ` + "`" + `10` + "`" + `-` + "`" + `65536` + "`" + `. Requires replacement if changed. `,
 			},
 			"tags": schema.ListAttribute{
 				Computed: true,
@@ -620,6 +596,10 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Upstream for grouping and filtering. Requires replacement if changed. `,
 			},
+			"updated_at": schema.Int64Attribute{
+				Computed:    true,
+				Description: `Unix epoch when the resource was last updated.`,
+			},
 			"use_srv_name": schema.BoolAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.Bool{
@@ -627,8 +607,7 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 					speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
 				},
 				Optional:    true,
-				Default:     booldefault.StaticBool(false),
-				Description: `If set, the balancer will use SRV hostname(if DNS Answer has SRV record) as the proxy upstream ` + "`" + `Host` + "`" + `. Requires replacement if changed. ; Default: false`,
+				Description: `If set, the balancer will use SRV hostname(if DNS Answer has SRV record) as the proxy upstream ` + "`" + `Host` + "`" + `. Requires replacement if changed. `,
 			},
 		},
 	}
@@ -673,10 +652,10 @@ func (r *GatewayUpstreamResource) Create(ctx context.Context, req resource.Creat
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	createUpstream := *data.ToSharedCreateUpstream()
+	upstream := *data.ToSharedUpstreamInput()
 	request := operations.CreateUpstreamRequest{
 		ControlPlaneID: controlPlaneID,
-		CreateUpstream: createUpstream,
+		Upstream:       upstream,
 	}
 	res, err := r.client.Upstreams.CreateUpstream(ctx, request)
 	if err != nil {
@@ -694,8 +673,8 @@ func (r *GatewayUpstreamResource) Create(ctx context.Context, req resource.Creat
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.Upstream == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.Upstream != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedUpstream(res.Upstream)
@@ -749,8 +728,8 @@ func (r *GatewayUpstreamResource) Read(ctx context.Context, req resource.ReadReq
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.Upstream == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.Upstream != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedUpstream(res.Upstream)

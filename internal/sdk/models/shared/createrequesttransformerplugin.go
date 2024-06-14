@@ -6,93 +6,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/internal/sdk/types"
 )
-
-type CreateRequestTransformerPluginProtocols string
-
-const (
-	CreateRequestTransformerPluginProtocolsGrpc           CreateRequestTransformerPluginProtocols = "grpc"
-	CreateRequestTransformerPluginProtocolsGrpcs          CreateRequestTransformerPluginProtocols = "grpcs"
-	CreateRequestTransformerPluginProtocolsHTTP           CreateRequestTransformerPluginProtocols = "http"
-	CreateRequestTransformerPluginProtocolsHTTPS          CreateRequestTransformerPluginProtocols = "https"
-	CreateRequestTransformerPluginProtocolsTCP            CreateRequestTransformerPluginProtocols = "tcp"
-	CreateRequestTransformerPluginProtocolsTLS            CreateRequestTransformerPluginProtocols = "tls"
-	CreateRequestTransformerPluginProtocolsTLSPassthrough CreateRequestTransformerPluginProtocols = "tls_passthrough"
-	CreateRequestTransformerPluginProtocolsUDP            CreateRequestTransformerPluginProtocols = "udp"
-	CreateRequestTransformerPluginProtocolsWs             CreateRequestTransformerPluginProtocols = "ws"
-	CreateRequestTransformerPluginProtocolsWss            CreateRequestTransformerPluginProtocols = "wss"
-)
-
-func (e CreateRequestTransformerPluginProtocols) ToPointer() *CreateRequestTransformerPluginProtocols {
-	return &e
-}
-func (e *CreateRequestTransformerPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		fallthrough
-	case "tcp":
-		fallthrough
-	case "tls":
-		fallthrough
-	case "tls_passthrough":
-		fallthrough
-	case "udp":
-		fallthrough
-	case "ws":
-		fallthrough
-	case "wss":
-		*e = CreateRequestTransformerPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for CreateRequestTransformerPluginProtocols: %v", v)
-	}
-}
-
-// CreateRequestTransformerPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-type CreateRequestTransformerPluginConsumer struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *CreateRequestTransformerPluginConsumer) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-// CreateRequestTransformerPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-type CreateRequestTransformerPluginRoute struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *CreateRequestTransformerPluginRoute) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-// CreateRequestTransformerPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-type CreateRequestTransformerPluginService struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *CreateRequestTransformerPluginService) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
 
 type CreateRequestTransformerPluginAdd struct {
 	Body        []string `json:"body,omitempty"`
@@ -289,22 +204,120 @@ func (o *CreateRequestTransformerPluginConfig) GetReplace() *CreateRequestTransf
 	return o.Replace
 }
 
-// CreateRequestTransformerPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
+type CreateRequestTransformerPluginProtocols string
+
+const (
+	CreateRequestTransformerPluginProtocolsGrpc           CreateRequestTransformerPluginProtocols = "grpc"
+	CreateRequestTransformerPluginProtocolsGrpcs          CreateRequestTransformerPluginProtocols = "grpcs"
+	CreateRequestTransformerPluginProtocolsHTTP           CreateRequestTransformerPluginProtocols = "http"
+	CreateRequestTransformerPluginProtocolsHTTPS          CreateRequestTransformerPluginProtocols = "https"
+	CreateRequestTransformerPluginProtocolsTCP            CreateRequestTransformerPluginProtocols = "tcp"
+	CreateRequestTransformerPluginProtocolsTLS            CreateRequestTransformerPluginProtocols = "tls"
+	CreateRequestTransformerPluginProtocolsTLSPassthrough CreateRequestTransformerPluginProtocols = "tls_passthrough"
+	CreateRequestTransformerPluginProtocolsUDP            CreateRequestTransformerPluginProtocols = "udp"
+	CreateRequestTransformerPluginProtocolsWs             CreateRequestTransformerPluginProtocols = "ws"
+	CreateRequestTransformerPluginProtocolsWss            CreateRequestTransformerPluginProtocols = "wss"
+)
+
+func (e CreateRequestTransformerPluginProtocols) ToPointer() *CreateRequestTransformerPluginProtocols {
+	return &e
+}
+func (e *CreateRequestTransformerPluginProtocols) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "grpc":
+		fallthrough
+	case "grpcs":
+		fallthrough
+	case "http":
+		fallthrough
+	case "https":
+		fallthrough
+	case "tcp":
+		fallthrough
+	case "tls":
+		fallthrough
+	case "tls_passthrough":
+		fallthrough
+	case "udp":
+		fallthrough
+	case "ws":
+		fallthrough
+	case "wss":
+		*e = CreateRequestTransformerPluginProtocols(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for CreateRequestTransformerPluginProtocols: %v", v)
+	}
+}
+
+// CreateRequestTransformerPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+type CreateRequestTransformerPluginConsumer struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *CreateRequestTransformerPluginConsumer) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+type CreateRequestTransformerPluginConsumerGroup struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *CreateRequestTransformerPluginConsumerGroup) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+// CreateRequestTransformerPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
+type CreateRequestTransformerPluginRoute struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *CreateRequestTransformerPluginRoute) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+// CreateRequestTransformerPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+type CreateRequestTransformerPluginService struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *CreateRequestTransformerPluginService) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
 type CreateRequestTransformerPlugin struct {
+	Config *CreateRequestTransformerPluginConfig `json:"config,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool  `default:"true" json:"enabled"`
-	name    string `const:"request-transformer" json:"name"`
+	Enabled      *bool   `json:"enabled,omitempty"`
+	InstanceName *string `json:"instance_name,omitempty"`
+	name         *string `const:"request-transformer" json:"name,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []CreateRequestTransformerPluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer *CreateRequestTransformerPluginConsumer `json:"consumer,omitempty"`
+	Consumer      *CreateRequestTransformerPluginConsumer      `json:"consumer,omitempty"`
+	ConsumerGroup *CreateRequestTransformerPluginConsumerGroup `json:"consumer_group,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
 	Route *CreateRequestTransformerPluginRoute `json:"route,omitempty"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 	Service *CreateRequestTransformerPluginService `json:"service,omitempty"`
-	Config  CreateRequestTransformerPluginConfig   `json:"config"`
 }
 
 func (c CreateRequestTransformerPlugin) MarshalJSON() ([]byte, error) {
@@ -318,6 +331,13 @@ func (c *CreateRequestTransformerPlugin) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (o *CreateRequestTransformerPlugin) GetConfig() *CreateRequestTransformerPluginConfig {
+	if o == nil {
+		return nil
+	}
+	return o.Config
+}
+
 func (o *CreateRequestTransformerPlugin) GetEnabled() *bool {
 	if o == nil {
 		return nil
@@ -325,8 +345,15 @@ func (o *CreateRequestTransformerPlugin) GetEnabled() *bool {
 	return o.Enabled
 }
 
-func (o *CreateRequestTransformerPlugin) GetName() string {
-	return "request-transformer"
+func (o *CreateRequestTransformerPlugin) GetInstanceName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.InstanceName
+}
+
+func (o *CreateRequestTransformerPlugin) GetName() *string {
+	return types.String("request-transformer")
 }
 
 func (o *CreateRequestTransformerPlugin) GetProtocols() []CreateRequestTransformerPluginProtocols {
@@ -350,6 +377,13 @@ func (o *CreateRequestTransformerPlugin) GetConsumer() *CreateRequestTransformer
 	return o.Consumer
 }
 
+func (o *CreateRequestTransformerPlugin) GetConsumerGroup() *CreateRequestTransformerPluginConsumerGroup {
+	if o == nil {
+		return nil
+	}
+	return o.ConsumerGroup
+}
+
 func (o *CreateRequestTransformerPlugin) GetRoute() *CreateRequestTransformerPluginRoute {
 	if o == nil {
 		return nil
@@ -362,11 +396,4 @@ func (o *CreateRequestTransformerPlugin) GetService() *CreateRequestTransformerP
 		return nil
 	}
 	return o.Service
-}
-
-func (o *CreateRequestTransformerPlugin) GetConfig() CreateRequestTransformerPluginConfig {
-	if o == nil {
-		return CreateRequestTransformerPluginConfig{}
-	}
-	return o.Config
 }

@@ -29,16 +29,19 @@ type GatewayPluginBasicAuthDataSource struct {
 
 // GatewayPluginBasicAuthDataSourceModel describes the data model.
 type GatewayPluginBasicAuthDataSourceModel struct {
-	Config         tfTypes.CreateBasicAuthPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer                `tfsdk:"consumer"`
-	ControlPlaneID types.String                        `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                         `tfsdk:"created_at"`
-	Enabled        types.Bool                          `tfsdk:"enabled"`
-	ID             types.String                        `tfsdk:"id"`
-	Protocols      []types.String                      `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer                `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer                `tfsdk:"service"`
-	Tags           []types.String                      `tfsdk:"tags"`
+	Config         *tfTypes.CreateBasicAuthPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer                 `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer                 `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                         `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                          `tfsdk:"created_at"`
+	Enabled        types.Bool                           `tfsdk:"enabled"`
+	ID             types.String                         `tfsdk:"id"`
+	InstanceName   types.String                         `tfsdk:"instance_name"`
+	Protocols      []types.String                       `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer                 `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer                 `tfsdk:"service"`
+	Tags           []types.String                       `tfsdk:"tags"`
+	UpdatedAt      types.Int64                          `tfsdk:"updated_at"`
 }
 
 // Metadata returns the data source type name.
@@ -63,6 +66,10 @@ func (r *GatewayPluginBasicAuthDataSource) Schema(ctx context.Context, req datas
 						Computed:    true,
 						Description: `An optional boolean value telling the plugin to show or hide the credential from the upstream service. If ` + "`" + `true` + "`" + `, the plugin will strip the credential from the request (i.e. the ` + "`" + `Authorization` + "`" + ` header) before proxying it.`,
 					},
+					"realm": schema.StringAttribute{
+						Computed:    true,
+						Description: `When authentication fails the plugin sends ` + "`" + `WWW-Authenticate` + "`" + ` header with ` + "`" + `realm` + "`" + ` attribute value.`,
+					},
 				},
 			},
 			"consumer": schema.SingleNestedAttribute{
@@ -73,6 +80,14 @@ func (r *GatewayPluginBasicAuthDataSource) Schema(ctx context.Context, req datas
 					},
 				},
 				Description: `If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.`,
+			},
+			"consumer_group": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"id": schema.StringAttribute{
+						Computed: true,
+					},
+				},
 			},
 			"control_plane_id": schema.StringAttribute{
 				Required:    true,
@@ -89,6 +104,9 @@ func (r *GatewayPluginBasicAuthDataSource) Schema(ctx context.Context, req datas
 			"id": schema.StringAttribute{
 				Required:    true,
 				Description: `ID of the Plugin to lookup`,
+			},
+			"instance_name": schema.StringAttribute{
+				Computed: true,
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,
@@ -117,6 +135,10 @@ func (r *GatewayPluginBasicAuthDataSource) Schema(ctx context.Context, req datas
 				Computed:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Plugin for grouping and filtering.`,
+			},
+			"updated_at": schema.Int64Attribute{
+				Computed:    true,
+				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
 	}
@@ -186,8 +208,8 @@ func (r *GatewayPluginBasicAuthDataSource) Read(ctx context.Context, req datasou
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.BasicAuthPlugin == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+	if !(res.BasicAuthPlugin != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromSharedBasicAuthPlugin(res.BasicAuthPlugin)
