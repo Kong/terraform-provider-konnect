@@ -13358,6 +13358,7 @@ components:
             The configuration properties for the Vault which can be found on the
             vaults' documentation page.
           type: object
+          x-speakeasy-type-override: "any"
         created_at:
           description: Unix epoch when the resource was created.
           readOnly: true
