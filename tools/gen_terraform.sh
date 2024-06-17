@@ -23,6 +23,7 @@ apply_overlay overlays/konnect/api-products.yaml
 apply_overlay overlays/konnect/identity.yaml
 apply_overlay overlays/konnect/cloud-gateways.yaml
 apply_overlay overlays/konnect/complex-filters.yaml
+apply_overlay overlays/konnect/remove-defaults.yaml
 
 # Remove non-annotated fields
 node $DIR/filter-terraform-operations.js
