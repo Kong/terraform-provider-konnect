@@ -24,7 +24,7 @@ actions:
     remove: true
 
   # Vault
-  - target: $["components"]["schemas"]["VaultWithoutParents"]["properties"]["config"]
+  - target: $["components"]["schemas"]["Vault"]["properties"]["config"]
     update:
       x-speakeasy-type-override: any
 
