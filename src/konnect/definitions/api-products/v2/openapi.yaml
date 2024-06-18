@@ -707,8 +707,6 @@ components:
           schema:
             $ref: '#/components/schemas/UpdateAPIProductVersionDTO'
           examples:
-            PublishAPIProductVersion:
-              $ref: '#/components/examples/PublishApiProductVersionRequestExample'
             LinkAPIProductVersionRequest:
               $ref: '#/components/examples/LinkAPIProductVersionRequestExample'
             UnlinkAPIProductVersionRequest:
@@ -1342,7 +1340,7 @@ components:
           x-speakeasy-terraform-ignore: true
           type: string
           deprecated: true
-          description: 'This field is published if the API product version is published to at least one portal. This field is deprecated: Use PortalProductVersion.publish_status instead.'
+          description: 'This field is published if the API product version is published to at least one portal. This field is deprecated: Use [PortalProductVersion.publish_status](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version) instead.'
           enum:
             - unpublished
             - published
@@ -1350,7 +1348,7 @@ components:
         deprecated:
           type: boolean
           deprecated: true
-          description: 'Whether this API product version is deprecated in at least one portal. This field is deprecated: Use PortalProductVersion.deprecated instead'
+          description: 'Whether this API product version is deprecated in at least one portal. This field is deprecated: Use [PortalProductVersion.deprecated](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version) instead'
           example: false
         labels:
           $ref: '../../../../common/definitions/konnect_properties.yaml#/components/schemas/Labels'
@@ -1456,7 +1454,9 @@ components:
             example: 25a2624c-49fc-4764-99e1-224ed819f200
     CreateAPIProductVersionDTO:
       title: Create API Product Version Request
-      description: The request schema to create a version of an API product.
+      description: |
+        The request schema to create a version of an API product.
+        Note that the `publish_status` and `deprecated` fields are deprecated:  Use [PortalProductVersion.publish_status](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version) instead.
       type: object
       additionalProperties: false
       required:
@@ -1472,7 +1472,7 @@ components:
           type: string
           nullable: false
           deprecated: true
-          description: 'The publish status of the API product version. Applies publish status to all related portal product versions. This field is deprecated: Use PortalProductVersion.publish_status instead.'
+          description: 'The publish status of the API product version. Applies publish status to all related portal product versions. This field is deprecated: Use [PortalProductVersion.publish_status](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version) instead.'
           enum:
             - unpublished
             - published
@@ -1482,7 +1482,7 @@ components:
           type: boolean
           nullable: false
           deprecated: true
-          description: 'Indicates if the version of the API product is deprecated. Applies deprecation or removes deprecation from all related portal product versions. This field is deprecated: Use PortalProductVersion.deprecated instead.'
+          description: 'Indicates if the version of the API product is deprecated. Applies deprecation or removes deprecation from all related portal product versions. This field is deprecated: Use [PortalProductVersion.deprecated](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version) instead.'
           example: false
           default: false
         labels:
@@ -1590,7 +1590,9 @@ components:
           nullable: false
     UpdateAPIProductVersionDTO:
       title: Update API Product Version Request
-      description: The request schema for updating a version of an API product.
+      description: |
+        The request schema for updating a version of an API product.
+        Note that the `publish_status` and `deprecated` fields are deprecated:  Use [PortalProductVersion.publish_status](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version) instead.
       type: object
       additionalProperties: false
       properties:
@@ -1602,7 +1604,7 @@ components:
         publish_status:
           type: string
           deprecated: true
-          description: 'The publish status of the API product version. Applies publish status to all related portal product versions. This field is deprecated: Use PortalProductVersion.publish_status instead.'
+          description: 'The publish status of the API product version. Applies publish status to all related portal product versions. This field is deprecated: Use [PortalProductVersion.publish_status](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version) instead.'
           enum:
             - unpublished
             - published
@@ -1610,7 +1612,7 @@ components:
         deprecated:
           type: boolean
           deprecated: true
-          description: 'Indicates if the version of the API product is deprecated. Applies deprecation or removes deprecation from all related portal product versions. This field is deprecated: Use PortalProductVersion.deprecated instead.'
+          description: 'Indicates if the version of the API product is deprecated. Applies deprecation or removes deprecation from all related portal product versions. This field is deprecated: Use [PortalProductVersion.deprecated](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version) instead.'
           example: false
         notify:
           type: boolean
@@ -1797,10 +1799,6 @@ components:
       value:
         name: oas.yaml
         content: TXkgWUFNTCBvciBKU09OIGZvcm1hdHRlZCBPQVMgY29udGVudA==
-    PublishApiProductVersionRequestExample:
-      summary: Publish API Product Version
-      value:
-        publish_status: published
     LinkAPIProductVersionRequestExample:
       summary: Link API Product Version
       value:

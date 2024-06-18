@@ -9143,7 +9143,8 @@ components:
           description: >-
             This field is published if the API product version is published to
             at least one portal. This field is deprecated: Use
-            PortalProductVersion.publish_status instead.
+            [PortalProductVersion.publish_status](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version)
+            instead.
           enum:
             - unpublished
             - published
@@ -9154,7 +9155,8 @@ components:
           description: >-
             Whether this API product version is deprecated in at least one
             portal. This field is deprecated: Use
-            PortalProductVersion.deprecated instead
+            [PortalProductVersion.deprecated](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version)
+            instead
           example: false
         labels:
           $ref: '#/components/schemas/Labels'
@@ -9262,7 +9264,13 @@ components:
             example: 25a2624c-49fc-4764-99e1-224ed819f200
     CreateAPIProductVersionDTO:
       title: Create API Product Version Request
-      description: The request schema to create a version of an API product.
+      description: >
+        The request schema to create a version of an API product.
+
+        Note that the `publish_status` and `deprecated` fields are deprecated: 
+        Use
+        [PortalProductVersion.publish_status](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version)
+        instead.
       type: object
       additionalProperties: false
       required:
@@ -9281,7 +9289,9 @@ components:
           description: >-
             The publish status of the API product version. Applies publish
             status to all related portal product versions. This field is
-            deprecated: Use PortalProductVersion.publish_status instead.
+            deprecated: Use
+            [PortalProductVersion.publish_status](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version)
+            instead.
           enum:
             - unpublished
             - published
@@ -9295,7 +9305,8 @@ components:
             Indicates if the version of the API product is deprecated. Applies
             deprecation or removes deprecation from all related portal product
             versions. This field is deprecated: Use
-            PortalProductVersion.deprecated instead.
+            [PortalProductVersion.deprecated](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version)
+            instead.
           example: false
           default: false
         labels:
@@ -9410,7 +9421,13 @@ components:
           nullable: false
     UpdateAPIProductVersionDTO:
       title: Update API Product Version Request
-      description: The request schema for updating a version of an API product.
+      description: >
+        The request schema for updating a version of an API product.
+
+        Note that the `publish_status` and `deprecated` fields are deprecated: 
+        Use
+        [PortalProductVersion.publish_status](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version)
+        instead.
       type: object
       additionalProperties: false
       properties:
@@ -9425,7 +9442,9 @@ components:
           description: >-
             The publish status of the API product version. Applies publish
             status to all related portal product versions. This field is
-            deprecated: Use PortalProductVersion.publish_status instead.
+            deprecated: Use
+            [PortalProductVersion.publish_status](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version)
+            instead.
           enum:
             - unpublished
             - published
@@ -9437,7 +9456,8 @@ components:
             Indicates if the version of the API product is deprecated. Applies
             deprecation or removes deprecation from all related portal product
             versions. This field is deprecated: Use
-            PortalProductVersion.deprecated instead.
+            [PortalProductVersion.deprecated](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version)
+            instead.
           example: false
         notify:
           type: boolean
@@ -18253,10 +18273,6 @@ components:
       value:
         name: oas.yaml
         content: TXkgWUFNTCBvciBKU09OIGZvcm1hdHRlZCBPQVMgY29udGVudA==
-    PublishApiProductVersionRequestExample:
-      summary: Publish API Product Version
-      value:
-        publish_status: published
     LinkAPIProductVersionRequestExample:
       summary: Link API Product Version
       value:
@@ -25496,8 +25512,6 @@ components:
           schema:
             $ref: '#/components/schemas/UpdateAPIProductVersionDTO'
           examples:
-            PublishAPIProductVersion:
-              $ref: '#/components/examples/PublishApiProductVersionRequestExample'
             LinkAPIProductVersionRequest:
               $ref: '#/components/examples/LinkAPIProductVersionRequestExample'
             UnlinkAPIProductVersionRequest:
