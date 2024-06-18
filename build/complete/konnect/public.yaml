@@ -3188,7 +3188,6 @@ paths:
       parameters:
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageAfter'
-        - $ref: '#/components/parameters/PageBefore'
       tags:
         - Custom Plugin Schemas
     post:
@@ -4370,8 +4369,8 @@ paths:
         dataplanes configured with the certificate and corresponding private key
         to establish connection with this control plane.
       parameters:
-        - $ref: '#/components/parameters/page_size'
-        - $ref: '#/components/parameters/page_number'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageAfter'
     post:
       summary: Pin New DP Client Certificate
       description: >-
@@ -4431,9 +4430,6 @@ paths:
         config hash can be used to verify if the config hash of a data plane
         node is up to date with the control plane. The config hash will be the
         same if they are in sync.
-      parameters:
-        - $ref: '#/components/parameters/page_size'
-        - $ref: '#/components/parameters/page_number'
     parameters:
       - $ref: '#/components/parameters/controlPlaneId'
   /v2/control-planes/{controlPlaneId}/nodes:
@@ -4450,8 +4446,8 @@ paths:
         control plane. A data plane node record contains metadata information
         for the data plane running Kong Gateway.
       parameters:
-        - $ref: '#/components/parameters/page_size'
-        - $ref: '#/components/parameters/page_number'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageAfter'
     parameters:
       - $ref: '#/components/parameters/controlPlaneId'
   /v2/control-planes/{controlPlaneId}/nodes/{nodeId}:
@@ -4505,8 +4501,8 @@ paths:
         version, and corresponding resolution message to upgrade to the closest
         Long Term Support version.
       parameters:
-        - $ref: '#/components/parameters/page_size'
-        - $ref: '#/components/parameters/page_number'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageAfter'
     parameters:
       - $ref: '#/components/parameters/controlPlaneId'
   /v2/control-planes/{id}:
@@ -4647,7 +4643,7 @@ paths:
         plane group.
       parameters:
         - $ref: '#/components/parameters/PageSize'
-        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/PageAfter'
   /v2/control-planes/{id}/group-memberships/add:
     parameters:
       - schema:
@@ -13175,6 +13171,38 @@ components:
         - host: example.com
           port: 443
           protocol: https
+    CursorMetaWithSizeAndTotal:
+      type: object
+      required:
+        - size
+        - next
+        - total
+      properties:
+        next:
+          description: URI to the next page
+          type: string
+          format: path
+          nullable: true
+        size:
+          description: Requested page size
+          type: number
+          example: 10
+        total:
+          description: >-
+            Total number of objects in the collection; will only be present on
+            the first page
+          type: number
+          example: 974
+          nullable: true
+    CursorPaginatedMetaWithSizeAndTotal:
+      type: object
+      title: CursorPaginatedMetaWithSizeAndTotal
+      description: returns the pagination information
+      properties:
+        page:
+          $ref: '#/components/schemas/CursorMetaWithSizeAndTotal'
+      required:
+        - page
     DataPlaneClientCertificate:
       type: object
       properties:
@@ -19058,7 +19086,8 @@ components:
           page:
             total: 2
             size: 100
-            number: 1
+            next: >-
+              /control-planes/57fdf779-7935-476f-ab2b-7fa1323b70e6/group-memberships?q=son&page[after]=ewogICJpZCI6ICJoZWysbyB3b3JsZCIKgZ
         data:
           - id: 774f2a35-509d-4b94-97e9-1ed49563bcb1
             name: Group Member 1
@@ -22410,7 +22439,7 @@ components:
             type: object
             properties:
               meta:
-                $ref: '#/components/schemas/PaginatedMeta'
+                $ref: '#/components/schemas/CursorPaginatedMetaWithSizeAndTotal'
               data:
                 type: array
                 description: >-
@@ -22476,7 +22505,7 @@ components:
               page:
                 type: object
                 properties:
-                  total_count:
+                  total:
                     type: integer
     list-nodes:
       description: Example response
@@ -22514,12 +22543,10 @@ components:
               page:
                 type: object
                 properties:
-                  total_count:
+                  total:
                     type: integer
-                  next_cursor:
+                  next:
                     type: string
-                  has_next_page:
-                    type: boolean
     list-nodes-eol:
       description: Example response
       content:
@@ -22541,7 +22568,7 @@ components:
               page:
                 type: object
                 properties:
-                  total_count:
+                  total:
                     type: integer
     get-node:
       description: Example response
@@ -22613,7 +22640,7 @@ components:
               page:
                 type: object
                 properties:
-                  total_count:
+                  total:
                     type: integer
     plugin-schemas:
       description: A response for a single custom plugin schema.
@@ -24804,6 +24831,17 @@ components:
       schema:
         type: string
         example: test
+    PageAfter:
+      name: page[after]
+      description: >-
+        Request the next page of data, starting with the item after this
+        parameter.
+      required: false
+      in: query
+      allowEmptyValue: true
+      schema:
+        type: string
+        example: ewogICJpZCI6ICJoZWxsbyB3b3JsZCIKfQ
     pagination-size:
       description: Number of resources to be returned.
       in: query
@@ -24833,20 +24871,6 @@ components:
       description: >-
         The UUID of your control plane. This variable is available in the
         Konnect manager
-    page_size:
-      name: page_size
-      in: query
-      required: false
-      schema:
-        type: integer
-      description: The number of items to include in a page.
-    page_number:
-      name: page_number
-      in: query
-      required: false
-      schema:
-        type: integer
-      description: The specific page number in the collection results.
     DataPlaneCertificateId:
       name: certificateId
       in: path
@@ -25051,28 +25075,6 @@ components:
       required: true
       schema:
         type: string
-    PageAfter:
-      name: page[after]
-      description: >-
-        Request the next page of data, starting with the item after this
-        parameter.
-      required: false
-      in: query
-      allowEmptyValue: true
-      schema:
-        type: string
-        example: ewogICJpZCI6ICJoZWxsbyB3b3JsZCIKfQ
-    PageBefore:
-      name: page[before]
-      description: >-
-        Request the next page of data, starting with the item before this
-        parameter.
-      required: false
-      in: query
-      allowEmptyValue: true
-      schema:
-        type: string
-        example: ewogICJpZCI6ICJoZWxsbyB3b3JsZCIKfQ
     PortalId:
       name: portalId
       description: portal identifier

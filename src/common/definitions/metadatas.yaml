@@ -55,6 +55,36 @@ components:
           description: Requested page size
           type: number
           example: 10
+    CursorPaginatedMetaWithSizeAndTotal:
+      type: object
+      title: CursorPaginatedMetaWithSizeAndTotal
+      description: returns the pagination information
+      properties:
+        page:
+          $ref: '#/components/schemas/CursorMetaWithSizeAndTotal'
+      required:
+      - page
+    CursorMetaWithSizeAndTotal:
+      type: object
+      required:
+      - size
+      - next
+      - total
+      properties:
+        next:
+          description: URI to the next page
+          type: string
+          format: path
+          nullable: true
+        size:
+          description: Requested page size
+          type: number
+          example: 10
+        total:
+          description: Total number of objects in the collection; will only be present on the first page
+          type: number
+          example: 974
+          nullable: true
     CursorMeta:
       type: object
       description: Pagination metadata.
@@ -98,7 +128,7 @@ components:
                 type: number
                 example: 1000000000
   parameters:
-    PageBefore:      
+    PageBefore:
       name: 'page[before]'
       description: Request the next page of data, starting with the item before this parameter.
       required: false

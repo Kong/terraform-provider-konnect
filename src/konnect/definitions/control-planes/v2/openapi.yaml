@@ -190,7 +190,7 @@ paths:
       description: Returns an array of control planes that are a member of this control plane group.
       parameters:
         - $ref: ../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize
-        - $ref: ../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber
+        - $ref: ../../../../common/definitions/metadatas.yaml#/components/parameters/PageAfter
   '/control-planes/{id}/group-memberships/add':
     parameters:
       - schema:
@@ -570,7 +570,7 @@ components:
             type: object
             properties:
               meta:
-                $ref: ../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta
+                $ref: ../../../../common/definitions/metadatas.yaml#/components/schemas/CursorPaginatedMetaWithSizeAndTotal
               data:
                 type: array
                 description: Array of control planes summary who are a child to this control plane group.
@@ -1098,7 +1098,7 @@ components:
           page:
             total: 2
             size: 100
-            number: 1
+            next: /control-planes/57fdf779-7935-476f-ab2b-7fa1323b70e6/group-memberships?q=son&page[after]=ewogICJpZCI6ICJoZWysbyB3b3JsZCIKgZ
         data:
           - id: 774f2a35-509d-4b94-97e9-1ed49563bcb1
             name: Group Member 1
