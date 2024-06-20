@@ -1685,6 +1685,7 @@ paths:
         - $ref: '#/components/parameters/FilterByClusterTypeEqualityShort'
         - $ref: '#/components/parameters/FilterByClusterTypeNotEquals'
         - $ref: '#/components/parameters/FilterByLabels'
+        - $ref: '#/components/parameters/ControlPlaneSort'
       tags:
         - Control Planes
     parameters: []
@@ -24847,6 +24848,15 @@ components:
       schema:
         type: string
         example: test
+    ControlPlaneSort:
+      name: sort
+      description: |
+        Sorts a collection of control-planes. Supported sort attributes are:
+          - created_at
+      required: false
+      in: query
+      schema:
+        $ref: '#/components/schemas/SortQuery'
     PageAfter:
       name: page[after]
       description: >-

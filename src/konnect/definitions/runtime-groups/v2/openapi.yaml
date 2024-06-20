@@ -44,6 +44,7 @@ paths:
         - $ref: '#/components/parameters/FilterByClusterTypeEqualityShort'
         - $ref: '#/components/parameters/FilterByClusterTypeNotEquals'
         - $ref: '#/components/parameters/FilterByLabels'
+        - $ref: '#/components/parameters/RuntimeGroupSort'
       tags:
         - Runtime Groups
     parameters: []
@@ -389,6 +390,15 @@ components:
       schema:
         type: string
         example: test
+    RuntimeGroupSort:
+      name: sort
+      description: |
+        Sorts a collection of runtime-groups. Supported sort attributes are:
+          - created_at
+      required: false
+      in: query
+      schema:
+        $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/SortQuery'
   responses:
     RetrieveRuntimeGroupResponse:
       description: A response to retrieving a single runtime group.
