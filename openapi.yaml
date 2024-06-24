@@ -5065,6 +5065,77 @@ paths:
       description: Deletes an individual team. Returns 404 if the team is not found.
       tags:
         - Teams
+  /v3/teams/{teamId}/assigned-roles:
+    parameters:
+      - schema:
+          type: string
+          format: uuid
+          example: e81bc3e5-e9db-4764-b7dd-e81e39072cbe
+        name: teamId
+        in: path
+        required: true
+        description: The team ID
+    post:
+      x-speakeasy-entity-operation: TeamRole#create
+      summary: Assign Team Role
+      operationId: teams-assign-role
+      responses:
+        '201':
+          $ref: '#/components/responses/AssignedRoleSingle'
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+        '403':
+          $ref: '#/components/responses/IdentityPermissionDenied'
+        '404':
+          $ref: '#/components/responses/IdentityNotFound'
+        '409':
+          $ref: '#/components/responses/IdentityConflict'
+      description: Assigns a role to a team. Returns 409 if role is already assigned.
+      requestBody:
+        $ref: '#/components/requestBodies/AssignRole'
+      tags:
+        - Roles
+  /v3/teams/{teamId}/assigned-roles/{roleId}:
+    parameters:
+      - schema:
+          type: string
+          format: uuid
+          example: e81bc3e5-e9db-4764-b7dd-e81e39072cbe
+        name: teamId
+        in: path
+        required: true
+        description: The team ID.
+      - schema:
+          type: string
+          example: 8350205f-a305-4e39-abe9-bc082a80091a
+          format: uuid
+        name: roleId
+        in: path
+        required: true
+        description: The role ID.
+        x-speakeasy-match: id
+    delete:
+      x-speakeasy-entity-operation: TeamRole#delete
+      summary: Remove Team Role
+      operationId: teams-remove-role
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+        '403':
+          $ref: '#/components/responses/IdentityPermissionDenied'
+        '404':
+          $ref: '#/components/responses/IdentityNotFound'
+      tags:
+        - Roles
+      description: >-
+        Removes an assigned role from a team. Returns 404 if the requested team
+        or assigned role were not found.
   /v3/teams/{teamId}/system-accounts:
     parameters:
       - schema:
@@ -15861,7 +15932,6 @@ components:
       content:
         application/json:
           schema:
-            x-speakeasy-entity: SystemAccountRole
             type: object
             description: >-
               An assigned role is a role that has been assigned to a user or
