@@ -1,7 +1,7 @@
 # Changelog
 
 ## 0.4.0
-> Released on 2024/??/??
+> Released on 2024/06/24
 
 ### Features
 * Add support for the `konnect_api_product_specification`, `konnect_gateway_custom_plugin_schema`, `konnect_team`, `konnect_team_role` and `konnect_team_user` resources

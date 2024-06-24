@@ -72,6 +72,7 @@ This provider can manage the following resources:
 - SNI
 - Key
 - Key Set
+- Custom Plugin Schema
 
 ### Mesh
 
@@ -81,6 +82,7 @@ This provider can manage the following resources:
 
 - API Product
 - API Product Version
+- API Product Specification
 
 ### Dev Portal
 
@@ -95,6 +97,9 @@ This provider can manage the following resources:
 - System Account Access Tokens
 - System Account Roles
 - System Account Teams
+- Team
+- Team Roles
+- Team Users
 
 ## Usage
 
