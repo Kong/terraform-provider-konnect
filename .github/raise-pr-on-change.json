@@ -164,5 +164,11 @@
       "src": "build/complete/portal/public.yaml",
       "dest": "api-specs/portal.yaml"
     }
+  ],
+  "kong/portal": [
+    {
+      "src": "build/complete/portal/public.yaml",
+      "dest": "layers/core/openapi/portalApi/openapi.yaml"
+    }
   ]
 }
