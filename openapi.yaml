@@ -5198,6 +5198,68 @@ paths:
         account were not found.
       tags:
         - System Accounts - Team Membership
+  /v3/teams/{teamId}/users:
+    parameters:
+      - schema:
+          type: string
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+          format: uuid
+        name: teamId
+        in: path
+        required: true
+        description: ID of the team.
+    post:
+      x-speakeasy-entity-operation: TeamUser#create
+      summary: Add User
+      operationId: add-user-to-team
+      responses:
+        '201':
+          description: Created
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
+        '404':
+          $ref: '#/components/responses/IdentityNotFound'
+      description: Adds a user to a team.
+      requestBody:
+        $ref: '#/components/requestBodies/AddUserToTeam'
+      tags:
+        - Team Membership
+  /v3/teams/{teamId}/users/{userId}:
+    parameters:
+      - schema:
+          type: string
+          format: uuid
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        name: userId
+        in: path
+        required: true
+        description: User ID
+      - schema:
+          type: string
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+          format: uuid
+        name: teamId
+        in: path
+        required: true
+        description: Team ID.
+    delete:
+      x-speakeasy-entity-operation: TeamUser#delete
+      summary: Remove User
+      operationId: remove-user-from-team
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
+        '404':
+          $ref: '#/components/responses/IdentityNotFound'
+      description: >-
+        Removes a user from a team.
+
+        If the user was removed, returns a 204 empty response. Returns 404 if
+        the user or team were not found.
+      tags:
+        - Team Membership
 components:
   parameters:
     PageSize:
@@ -15928,6 +15990,22 @@ components:
                 writeOnly: true
               labels:
                 $ref: '#/components/schemas/LabelsUpdate'
+    AddUserToTeam:
+      description: The request schema for adding a user to a team.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                example: df120cb4-f60b-47bc-a2f8-6a28e6a3c63b
+                format: uuid
+                description: The user ID for the user being added to a team.
+                writeOnly: true
+                x-speakeasy-name-override: user_id
+            required:
+              - id
     AssignRole:
       content:
         application/json:
