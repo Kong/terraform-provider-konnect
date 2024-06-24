@@ -58,7 +58,40 @@ paths:
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/OrganizationNotFound'
-  
+  /organizations/{organizationId}/deletion-config:
+    parameters:
+    - schema:
+        type: string
+        format: uuid
+        example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+      name: organizationId
+      in: path
+      required: true
+      description: The ID of the organization being patched.
+    patch:
+      summary: Sets the deletion configs for a specifed organization.
+      operationId: patch-organization-deletion-config
+      description: |
+        Sets the deletion configs for a specified organization. The retention period 
+        is the number of days an organization can remain in the inactive state before 
+        being permanently deleted.
+      x-internal: true
+      x-unstable: true
+      tags:
+        - Organization Lifecycle
+      responses:
+        '200':
+          $ref: '#/components/responses/DeletionConfigResponse'
+        '400':
+          $ref: '#/components/responses/OrganizationStateBadRequest'
+        '401':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/OrganizationNotFound'
+      requestBody:
+        $ref: '#/components/requestBodies/DeletionConfigRequest'
 components:
   schemas:
     OrganizationState:
@@ -95,6 +128,16 @@ components:
           format: date-time
           readOnly: true
           example: '2023-01-23T17:22:52.150Z'
+    DeletionConfig:
+      type: object
+      title: Deletion Config
+      properties:
+        retention_period_days:
+          type: integer
+          description: The retention period in days.
+          example: 90
+          minimum: 1
+          maximum: 365
   responses:
     OrganizationStateResponse:
       description: A response for setting the organization state.
@@ -171,6 +214,16 @@ components:
           examples:
             Conflict:
               $ref: '#/components/examples/409OrganizationStateConflict'
+    DeletionConfigResponse:
+      description: The response schema for setting an organization's retention period.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DeletionConfig'
+          examples:
+            Example:
+              value:
+                retention_period_days: 90
   requestBodies:
     UpdateOrganizationState:
       required: true
@@ -205,7 +258,17 @@ components:
               value:
                 state: active
                 reason: organization was created
-  
+    DeletionConfigRequest:
+      required: true
+      description: The request schema to set an organization's retention period.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DeletionConfig'
+          examples:
+            Example:
+              value:
+                retention_period_days: 90
   examples:
     400InvalidRequestFormat:
       value:
