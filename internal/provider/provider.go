@@ -126,6 +126,7 @@ func (p *KonnectProvider) Configure(ctx context.Context, req provider.ConfigureR
 func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
 		NewAPIProductResource,
+		NewAPIProductSpecificationResource,
 		NewAPIProductVersionResource,
 		NewApplicationAuthStrategyResource,
 		NewCloudGatewayConfigurationResource,
@@ -140,6 +141,7 @@ func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resou
 		NewGatewayConsumerGroupResource,
 		NewGatewayControlPlaneResource,
 		NewGatewayControlPlaneMembershipResource,
+		NewGatewayCustomPluginSchemaResource,
 		NewGatewayDataPlaneClientCertificateResource,
 		NewGatewayHMACAuthResource,
 		NewGatewayJWTResource,
@@ -189,12 +191,16 @@ func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resou
 		NewSystemAccountAccessTokenResource,
 		NewSystemAccountRoleResource,
 		NewSystemAccountTeamResource,
+		NewTeamResource,
+		NewTeamRoleResource,
+		NewTeamUserResource,
 	}
 }
 
 func (p *KonnectProvider) DataSources(ctx context.Context) []func() datasource.DataSource {
 	return []func() datasource.DataSource{
 		NewAPIProductDataSource,
+		NewAPIProductSpecificationDataSource,
 		NewAPIProductVersionDataSource,
 		NewApplicationAuthStrategyDataSource,
 		NewCloudGatewayConfigurationDataSource,
@@ -209,6 +215,7 @@ func (p *KonnectProvider) DataSources(ctx context.Context) []func() datasource.D
 		NewGatewayConsumerDataSource,
 		NewGatewayConsumerGroupDataSource,
 		NewGatewayControlPlaneDataSource,
+		NewGatewayCustomPluginSchemaDataSource,
 		NewGatewayDataPlaneClientCertificateDataSource,
 		NewGatewayHMACAuthDataSource,
 		NewGatewayJWTDataSource,
@@ -256,6 +263,7 @@ func (p *KonnectProvider) DataSources(ctx context.Context) []func() datasource.D
 		NewPortalProductVersionDataSource,
 		NewSystemAccountDataSource,
 		NewSystemAccountAccessTokenDataSource,
+		NewTeamDataSource,
 	}
 }
 

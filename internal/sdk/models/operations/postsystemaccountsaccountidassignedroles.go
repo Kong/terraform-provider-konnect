@@ -7,6 +7,10 @@ import (
 	"net/http"
 )
 
+var PostSystemAccountsAccountIDAssignedRolesServerList = []string{
+	"https://global.api.konghq.com/",
+}
+
 type PostSystemAccountsAccountIDAssignedRolesRequest struct {
 	// ID of the system account.
 	AccountID string `pathParam:"style=simple,explode=false,name=accountId"`

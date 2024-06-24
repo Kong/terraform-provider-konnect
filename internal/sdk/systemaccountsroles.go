@@ -37,6 +37,7 @@ func (s *SystemAccountsRoles) PostSystemAccountsAccountIDAssignedRoles(ctx conte
 
 	o := operations.Options{}
 	supportedOptions := []string{
+		operations.SupportedOptionServerURL,
 		operations.SupportedOptionAcceptHeaderOverride,
 	}
 
@@ -45,7 +46,11 @@ func (s *SystemAccountsRoles) PostSystemAccountsAccountIDAssignedRoles(ctx conte
 			return nil, fmt.Errorf("error applying option: %w", err)
 		}
 	}
-	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	baseURL := utils.ReplaceParameters(operations.PostSystemAccountsAccountIDAssignedRolesServerList[0], map[string]string{})
+	if o.ServerURL != nil {
+		baseURL = *o.ServerURL
+	}
+
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/system-accounts/{accountId}/assigned-roles", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
@@ -176,7 +181,7 @@ func (s *SystemAccountsRoles) PostSystemAccountsAccountIDAssignedRoles(ctx conte
 
 // DeleteSystemAccountsAccountIDAssignedRolesRoleID - Delete Assigned Role from System Account
 // Removes an assigned role from a system account. Returns 404 if the system account or assigned role were not found.
-func (s *SystemAccountsRoles) DeleteSystemAccountsAccountIDAssignedRolesRoleID(ctx context.Context, request operations.DeleteSystemAccountsAccountIDAssignedRolesRoleIDRequest) (*operations.DeleteSystemAccountsAccountIDAssignedRolesRoleIDResponse, error) {
+func (s *SystemAccountsRoles) DeleteSystemAccountsAccountIDAssignedRolesRoleID(ctx context.Context, request operations.DeleteSystemAccountsAccountIDAssignedRolesRoleIDRequest, opts ...operations.Option) (*operations.DeleteSystemAccountsAccountIDAssignedRolesRoleIDResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "delete-system-accounts-accountId-assigned-roles-roleId",
@@ -184,7 +189,21 @@ func (s *SystemAccountsRoles) DeleteSystemAccountsAccountIDAssignedRolesRoleID(c
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
-	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionServerURL,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+	baseURL := utils.ReplaceParameters(operations.DeleteSystemAccountsAccountIDAssignedRolesRoleIDServerList[0], map[string]string{})
+	if o.ServerURL != nil {
+		baseURL = *o.ServerURL
+	}
+
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/system-accounts/{accountId}/assigned-roles/{roleId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)

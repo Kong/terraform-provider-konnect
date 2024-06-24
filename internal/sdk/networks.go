@@ -39,6 +39,7 @@ func (s *Networks) CreateNetwork(ctx context.Context, request shared.CreateNetwo
 
 	o := operations.Options{}
 	supportedOptions := []string{
+		operations.SupportedOptionServerURL,
 		operations.SupportedOptionAcceptHeaderOverride,
 	}
 
@@ -47,7 +48,11 @@ func (s *Networks) CreateNetwork(ctx context.Context, request shared.CreateNetwo
 			return nil, fmt.Errorf("error applying option: %w", err)
 		}
 	}
-	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	baseURL := utils.ReplaceParameters(operations.CreateNetworkServerList[0], map[string]string{})
+	if o.ServerURL != nil {
+		baseURL = *o.ServerURL
+	}
+
 	opURL, err := url.JoinPath(baseURL, "/v2/cloud-gateways/networks")
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
@@ -198,6 +203,7 @@ func (s *Networks) GetNetwork(ctx context.Context, request operations.GetNetwork
 
 	o := operations.Options{}
 	supportedOptions := []string{
+		operations.SupportedOptionServerURL,
 		operations.SupportedOptionAcceptHeaderOverride,
 	}
 
@@ -206,7 +212,11 @@ func (s *Networks) GetNetwork(ctx context.Context, request operations.GetNetwork
 			return nil, fmt.Errorf("error applying option: %w", err)
 		}
 	}
-	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	baseURL := utils.ReplaceParameters(operations.GetNetworkServerList[0], map[string]string{})
+	if o.ServerURL != nil {
+		baseURL = *o.ServerURL
+	}
+
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/cloud-gateways/networks/{networkId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
@@ -339,6 +349,7 @@ func (s *Networks) UpdateNetwork(ctx context.Context, request operations.UpdateN
 
 	o := operations.Options{}
 	supportedOptions := []string{
+		operations.SupportedOptionServerURL,
 		operations.SupportedOptionAcceptHeaderOverride,
 	}
 
@@ -347,7 +358,11 @@ func (s *Networks) UpdateNetwork(ctx context.Context, request operations.UpdateN
 			return nil, fmt.Errorf("error applying option: %w", err)
 		}
 	}
-	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	baseURL := utils.ReplaceParameters(operations.UpdateNetworkServerList[0], map[string]string{})
+	if o.ServerURL != nil {
+		baseURL = *o.ServerURL
+	}
+
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/cloud-gateways/networks/{networkId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
@@ -510,6 +525,7 @@ func (s *Networks) DeleteNetwork(ctx context.Context, request operations.DeleteN
 
 	o := operations.Options{}
 	supportedOptions := []string{
+		operations.SupportedOptionServerURL,
 		operations.SupportedOptionRetries,
 	}
 
@@ -518,7 +534,11 @@ func (s *Networks) DeleteNetwork(ctx context.Context, request operations.DeleteN
 			return nil, fmt.Errorf("error applying option: %w", err)
 		}
 	}
-	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	baseURL := utils.ReplaceParameters(operations.DeleteNetworkServerList[0], map[string]string{})
+	if o.ServerURL != nil {
+		baseURL = *o.ServerURL
+	}
+
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/cloud-gateways/networks/{networkId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)

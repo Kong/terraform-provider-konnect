@@ -175,6 +175,143 @@ paths:
         - API Product Versions
       requestBody:
         $ref: '#/components/requestBodies/CreateAPIProductVersionRequest'
+  /v2/api-products/{apiProductId}/product-versions/{apiProductVersionId}/specifications:
+    parameters:
+      - schema:
+          type: string
+          format: uuid
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        name: apiProductId
+        description: The API product identifier
+        in: path
+        required: true
+      - schema:
+          type: string
+          format: uuid
+          example: 9f5061ce-78f6-4452-9108-ad7c02821fd5
+        name: apiProductVersionId
+        description: The API product version identifier
+        in: path
+        required: true
+    post:
+      x-speakeasy-entity-operation: APIProductSpecification#create
+      summary: Create API Product Version Specification
+      description: |
+        Creates a specification for a version of an API product.
+        **Note:** You can only have one specification for a product version.
+      operationId: create-api-product-version-spec
+      responses:
+        '201':
+          $ref: '#/components/responses/APIProductVersionSpecResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/ApiProductUnauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/ApiProductNotFound'
+        '409':
+          $ref: '#/components/responses/VersionSpecConflict'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+      tags:
+        - API Product Version Specification
+      requestBody:
+        $ref: '#/components/requestBodies/CreateAPIProductVersionSpecRequest'
+  /v2/api-products/{apiProductId}/product-versions/{apiProductVersionId}/specifications/{specificationId}:
+    parameters:
+      - schema:
+          type: string
+          format: uuid
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        name: apiProductId
+        description: The API product identifier
+        in: path
+        required: true
+      - schema:
+          type: string
+          format: uuid
+          example: 9f5061ce-78f6-4452-9108-ad7c02821fd5
+        name: apiProductVersionId
+        description: The API product version identifier
+        in: path
+        required: true
+      - schema:
+          type: string
+          format: uuid
+          example: 742ff9f1-fb89-4aeb-a599-f0e278c7aeaa
+        name: specificationId
+        description: The API product version specification identifier
+        in: path
+        required: true
+        x-speakeasy-match: id
+    get:
+      x-speakeasy-entity-operation: APIProductSpecification#read
+      summary: Fetch API Product Version Specification
+      description: Returns a specification for the version of an API product.
+      operationId: get-api-product-version-spec
+      responses:
+        '200':
+          $ref: '#/components/responses/APIProductVersionSpecResponse'
+        '401':
+          $ref: '#/components/responses/ApiProductUnauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/ApiProductNotFound'
+      tags:
+        - API Product Version Specification
+    patch:
+      x-speakeasy-entity-operation: APIProductSpecification#update
+      summary: Update an API Product Version Specification
+      description: Updates a specification from an API product version.
+      operationId: update-api-product-version-spec
+      responses:
+        '200':
+          $ref: '#/components/responses/APIProductVersionSpecResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/ApiProductUnauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/ApiProductNotFound'
+        '409':
+          $ref: '#/components/responses/VersionSpecHiddenConflict'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+      tags:
+        - API Product Version Specification
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateAPIProductVersionSpecRequest'
+    delete:
+      x-speakeasy-entity-operation: APIProductSpecification#delete
+      summary: Delete API Product Version Specification
+      description: Removes a specification from a verion of an API product.
+      operationId: delete-api-product-version-spec
+      responses:
+        '204':
+          description: >-
+            Specification for the version of an API product was deleted
+            successfully.
+        '401':
+          $ref: '#/components/responses/ApiProductUnauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/ApiProductNotFound'
+      tags:
+        - API Product Version Specification
   /v2/api-products/{apiProductId}/product-versions/{id}:
     parameters:
       - schema:
@@ -444,6 +581,8 @@ paths:
           $ref: '#/components/responses/CloudGatewaysConflict'
       tags:
         - Data-Plane Group Configurations
+      servers:
+        - url: https://global.api.konghq.com/
   /v2/cloud-gateways/configurations/{configurationId}:
     get:
       x-speakeasy-entity-operation: CloudGatewayConfiguration#get
@@ -465,6 +604,8 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Data-Plane Group Configurations
+      servers:
+        - url: https://global.api.konghq.com/
   /v2/cloud-gateways/custom-domains:
     post:
       x-speakeasy-entity-operation: CloudGatewayCustomDomain#create
@@ -496,6 +637,8 @@ paths:
           $ref: '#/components/responses/Conflict'
       tags:
         - Custom Domains
+      servers:
+        - url: https://global.api.konghq.com/
   /v2/cloud-gateways/custom-domains/{customDomainId}:
     get:
       x-speakeasy-entity-operation: CloudGatewayCustomDomain#read
@@ -517,6 +660,8 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Custom Domains
+      servers:
+        - url: https://global.api.konghq.com/
     delete:
       x-speakeasy-entity-operation: CloudGatewayCustomDomain#delete
       x-speakeasy-retries:
@@ -549,6 +694,8 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Custom Domains
+      servers:
+        - url: https://global.api.konghq.com/
   /v2/cloud-gateways/networks:
     post:
       x-speakeasy-entity-operation: CloudGatewayNetwork#create
@@ -574,6 +721,8 @@ paths:
           $ref: '#/components/responses/Conflict'
       tags:
         - Networks
+      servers:
+        - url: https://global.api.konghq.com/
   /v2/cloud-gateways/networks/{networkId}:
     get:
       x-speakeasy-entity-operation: CloudGatewayNetwork#read
@@ -593,6 +742,8 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Networks
+      servers:
+        - url: https://global.api.konghq.com/
     patch:
       x-speakeasy-entity-operation: CloudGatewayNetwork#update
       summary: Update Network
@@ -621,6 +772,8 @@ paths:
           $ref: '#/components/responses/Conflict'
       tags:
         - Networks
+      servers:
+        - url: https://global.api.konghq.com/
     delete:
       x-speakeasy-entity-operation: CloudGatewayNetwork#delete
       x-speakeasy-retries:
@@ -651,6 +804,8 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Networks
+      servers:
+        - url: https://global.api.konghq.com/
   /v2/cloud-gateways/networks/{networkId}/transit-gateways:
     post:
       x-speakeasy-entity-operation: CloudGatewayTransitGateway#create
@@ -695,6 +850,8 @@ paths:
           $ref: '#/components/responses/Conflict'
       tags:
         - Transit Gateways
+      servers:
+        - url: https://global.api.konghq.com/
   /v2/cloud-gateways/networks/{networkId}/transit-gateways/{transitGatewayId}:
     get:
       x-speakeasy-entity-operation: CloudGatewayTransitGateway#read
@@ -720,6 +877,8 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Transit Gateways
+      servers:
+        - url: https://global.api.konghq.com/
     delete:
       x-speakeasy-entity-operation: CloudGatewayTransitGateway#delete
       x-speakeasy-retries:
@@ -756,6 +915,8 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Transit Gateways
+      servers:
+        - url: https://global.api.konghq.com/
   /v2/cloud-gateways/provider-accounts:
     get:
       x-speakeasy-entity-operation: CloudGatewayProviderAccountList#read
@@ -778,6 +939,8 @@ paths:
           $ref: '#/components/responses/Forbidden'
       tags:
         - Provider Accounts
+      servers:
+        - url: https://global.api.konghq.com/
   /v2/control-planes:
     parameters: []
     post:
@@ -1495,6 +1658,89 @@ paths:
       x-speakeasy-entity-operation: GatewayKey#read
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
+  /v2/control-planes/{controlPlaneId}/core-entities/plugin-schemas:
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+    post:
+      x-speakeasy-entity-operation: GatewayCustomPluginSchema#create
+      summary: Upload custom plugin schema
+      operationId: create-plugin-schemas
+      responses:
+        '201':
+          $ref: '#/components/responses/plugin-schemas'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - Custom Plugin Schemas
+      description: Upload a custom plugin schema associated with a control plane.
+      requestBody:
+        $ref: '#/components/requestBodies/create-plugin-schemas'
+  /v2/control-planes/{controlPlaneId}/core-entities/plugin-schemas/{name}:
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+      - schema:
+          type: string
+          example: myplugin
+        name: name
+        in: path
+        required: true
+        description: The custom plugin name
+    get:
+      x-speakeasy-entity-operation: GatewayCustomPluginSchema#read
+      summary: Fetch custom plugin schema
+      responses:
+        '200':
+          $ref: '#/components/responses/plugin-schemas'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      operationId: get-plugin-schema
+      description: Returns information about a custom plugin from a given name.
+      tags:
+        - Custom Plugin Schemas
+    delete:
+      x-speakeasy-entity-operation: GatewayCustomPluginSchema#delete
+      summary: Delete custom plugin schema
+      operationId: delete-plugin-schemas
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      description: Delete an individual custom plugin schema.
+      tags:
+        - Custom Plugin Schemas
+    put:
+      x-speakeasy-entity-operation: GatewayCustomPluginSchema#update
+      summary: Create or update a custom plugin schema
+      operationId: update-plugin-schemas
+      responses:
+        '200':
+          $ref: '#/components/responses/plugin-schemas'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      description: Create or update an individual custom plugin schema.
+      tags:
+        - Custom Plugin Schemas
+      requestBody:
+        $ref: '#/components/requestBodies/create-plugin-schemas'
   /v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#ACL:
     delete:
       description: Delete a ACL plugin
@@ -4538,6 +4784,8 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '409':
           $ref: '#/components/responses/IdentityConflict'
+      servers:
+        - url: https://global.api.konghq.com/
   /v3/system-accounts/{accountId}:
     get:
       x-speakeasy-entity-operation: SystemAccount#read
@@ -4557,6 +4805,8 @@ paths:
       description: >-
         Returns the system account (SA) for the SA ID specified as a path
         parameter.
+      servers:
+        - url: https://global.api.konghq.com/
     parameters:
       - schema:
           type: string
@@ -4587,6 +4837,8 @@ paths:
         - System Accounts
       requestBody:
         $ref: '#/components/requestBodies/UpdateSystemAccount'
+      servers:
+        - url: https://global.api.konghq.com/
     delete:
       x-speakeasy-entity-operation: SystemAccount#delete
       summary: Delete System Account
@@ -4605,6 +4857,8 @@ paths:
         account was not found.
       tags:
         - System Accounts
+      servers:
+        - url: https://global.api.konghq.com/
   /v3/system-accounts/{accountId}/access-tokens:
     parameters:
       - schema:
@@ -4637,6 +4891,8 @@ paths:
         $ref: '#/components/requestBodies/CreateSystemAccountAccessToken'
       tags:
         - System Accounts - Access Tokens
+      servers:
+        - url: https://global.api.konghq.com/
   /v3/system-accounts/{accountId}/access-tokens/{tokenId}:
     get:
       x-speakeasy-entity-operation: SystemAccountAccessToken#read
@@ -4657,6 +4913,8 @@ paths:
       parameters: []
       tags:
         - System Accounts - Access Tokens
+      servers:
+        - url: https://global.api.konghq.com/
     parameters:
       - schema:
           type: string
@@ -4693,6 +4951,8 @@ paths:
         $ref: '#/components/requestBodies/UpdateSystemAccountAccessToken'
       tags:
         - System Accounts - Access Tokens
+      servers:
+        - url: https://global.api.konghq.com/
     delete:
       x-speakeasy-entity-operation: SystemAccountAccessToken#delete
       summary: Delete System Account Access Token
@@ -4709,6 +4969,8 @@ paths:
       description: Deletes the specified token. Returns 404 if the token was not found.
       tags:
         - System Accounts - Access Tokens
+      servers:
+        - url: https://global.api.konghq.com/
   /v3/system-accounts/{accountId}/assigned-roles:
     parameters:
       - schema:
@@ -4739,6 +5001,8 @@ paths:
         $ref: '#/components/requestBodies/AssignRole'
       tags:
         - System Accounts - Roles
+      servers:
+        - url: https://global.api.konghq.com/
   /v3/system-accounts/{accountId}/assigned-roles/{roleId}:
     parameters:
       - schema:
@@ -4772,6 +5036,164 @@ paths:
         system account or assigned role were not found.
       tags:
         - System Accounts - Roles
+      servers:
+        - url: https://global.api.konghq.com/
+  /v3/teams:
+    parameters: []
+    post:
+      x-speakeasy-entity-operation: Team#create
+      summary: Create Team
+      operationId: create-team
+      responses:
+        '201':
+          $ref: '#/components/responses/TeamSingle'
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
+        '403':
+          $ref: '#/components/responses/IdentityPermissionDenied'
+      tags:
+        - Teams
+      requestBody:
+        $ref: '#/components/requestBodies/CreateTeam'
+      description: 'Creates a team in the Konnect Organization. '
+      servers:
+        - url: https://global.api.konghq.com/
+  /v3/teams/{teamId}:
+    parameters:
+      - schema:
+          type: string
+          format: uuid
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        name: teamId
+        in: path
+        required: true
+        description: The team ID
+        x-speakeasy-match: id
+    get:
+      x-speakeasy-entity-operation: Team#read
+      summary: Fetch Team
+      responses:
+        '200':
+          $ref: '#/components/responses/TeamSingle'
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
+        '404':
+          $ref: '#/components/responses/IdentityNotFound'
+      operationId: get-team
+      description: Returns information about a team from a given team ID.
+      tags:
+        - Teams
+      servers:
+        - url: https://global.api.konghq.com/
+    patch:
+      x-speakeasy-entity-operation: Team#update
+      summary: Update Team
+      operationId: update-team
+      responses:
+        '200':
+          $ref: '#/components/responses/TeamSingle'
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
+        '404':
+          $ref: '#/components/responses/IdentityNotFound'
+      description: Updates an individual team.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateTeam'
+      tags:
+        - Teams
+      servers:
+        - url: https://global.api.konghq.com/
+    delete:
+      x-speakeasy-entity-operation: Team#delete
+      summary: Delete Team
+      operationId: delete-team
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
+        '404':
+          $ref: '#/components/responses/IdentityNotFound'
+      description: Deletes an individual team. Returns 404 if the team is not found.
+      tags:
+        - Teams
+      servers:
+        - url: https://global.api.konghq.com/
+  /v3/teams/{teamId}/assigned-roles:
+    parameters:
+      - schema:
+          type: string
+          format: uuid
+          example: e81bc3e5-e9db-4764-b7dd-e81e39072cbe
+        name: teamId
+        in: path
+        required: true
+        description: The team ID
+    post:
+      x-speakeasy-entity-operation: TeamRole#create
+      summary: Assign Team Role
+      operationId: teams-assign-role
+      responses:
+        '201':
+          $ref: '#/components/responses/AssignedRoleSingle'
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+        '403':
+          $ref: '#/components/responses/IdentityPermissionDenied'
+        '404':
+          $ref: '#/components/responses/IdentityNotFound'
+        '409':
+          $ref: '#/components/responses/IdentityConflict'
+      description: Assigns a role to a team. Returns 409 if role is already assigned.
+      requestBody:
+        $ref: '#/components/requestBodies/AssignRole'
+      tags:
+        - Roles
+      servers:
+        - url: https://global.api.konghq.com/
+  /v3/teams/{teamId}/assigned-roles/{roleId}:
+    parameters:
+      - schema:
+          type: string
+          format: uuid
+          example: e81bc3e5-e9db-4764-b7dd-e81e39072cbe
+        name: teamId
+        in: path
+        required: true
+        description: The team ID.
+      - schema:
+          type: string
+          example: 8350205f-a305-4e39-abe9-bc082a80091a
+          format: uuid
+        name: roleId
+        in: path
+        required: true
+        description: The role ID.
+        x-speakeasy-match: id
+    delete:
+      x-speakeasy-entity-operation: TeamRole#delete
+      summary: Remove Team Role
+      operationId: teams-remove-role
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+        '403':
+          $ref: '#/components/responses/IdentityPermissionDenied'
+        '404':
+          $ref: '#/components/responses/IdentityNotFound'
+      tags:
+        - Roles
+      description: >-
+        Removes an assigned role from a team. Returns 404 if the requested team
+        or assigned role were not found.
+      servers:
+        - url: https://global.api.konghq.com/
   /v3/teams/{teamId}/system-accounts:
     parameters:
       - schema:
@@ -4802,6 +5224,8 @@ paths:
         $ref: '#/components/requestBodies/AddSystemAccountToTeam'
       tags:
         - System Accounts - Team Membership
+      servers:
+        - url: https://global.api.konghq.com/
   /v3/teams/{teamId}/system-accounts/{accountId}:
     parameters:
       - schema:
@@ -4834,6 +5258,74 @@ paths:
         account were not found.
       tags:
         - System Accounts - Team Membership
+      servers:
+        - url: https://global.api.konghq.com/
+  /v3/teams/{teamId}/users:
+    parameters:
+      - schema:
+          type: string
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+          format: uuid
+        name: teamId
+        in: path
+        required: true
+        description: ID of the team.
+    post:
+      x-speakeasy-entity-operation: TeamUser#create
+      summary: Add User
+      operationId: add-user-to-team
+      responses:
+        '201':
+          description: Created
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
+        '404':
+          $ref: '#/components/responses/IdentityNotFound'
+      description: Adds a user to a team.
+      requestBody:
+        $ref: '#/components/requestBodies/AddUserToTeam'
+      tags:
+        - Team Membership
+      servers:
+        - url: https://global.api.konghq.com/
+  /v3/teams/{teamId}/users/{userId}:
+    parameters:
+      - schema:
+          type: string
+          format: uuid
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        name: userId
+        in: path
+        required: true
+        description: User ID
+      - schema:
+          type: string
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+          format: uuid
+        name: teamId
+        in: path
+        required: true
+        description: Team ID.
+    delete:
+      x-speakeasy-entity-operation: TeamUser#delete
+      summary: Remove User
+      operationId: remove-user-from-team
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
+        '404':
+          $ref: '#/components/responses/IdentityNotFound'
+      description: >-
+        Removes a user from a team.
+
+        If the user was removed, returns a 204 empty response. Returns 404 if
+        the user or team were not found.
+      tags:
+        - Team Membership
+      servers:
+        - url: https://global.api.konghq.com/
 components:
   parameters:
     PageSize:
@@ -5410,6 +5902,41 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/DataPlaneClientCertificate'
+    plugin-schemas:
+      description: A response for a single custom plugin schema.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              item:
+                x-speakeasy-entity: GatewayCustomPluginSchema
+                type: object
+                properties:
+                  lua_schema:
+                    type: string
+                    description: The custom plugin schema; `jq -Rs '.' schema.lua`.
+                    example: >-
+                      return { name = \"myplugin\", fields = { { config = { type
+                      = \"record\", fields = { } } } } }
+                  name:
+                    type: string
+                    description: >-
+                      The custom plugin name determined by the custom plugin
+                      schema.
+                    example: myplugin
+                  created_at:
+                    type: integer
+                    description: >-
+                      An ISO-8604 timestamp representation of custom plugin
+                      schema creation date.
+                    example: 1422386534
+                  updated_at:
+                    type: integer
+                    description: >-
+                      An ISO-8604 timestamp representation of custom plugin
+                      schema update date.
+                    example: 1422412345
     HTTP401Error:
       content:
         application/json:
@@ -5464,6 +5991,20 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/MeshControlPlane'
+    VersionSpecConflict:
+      description: Conflict - only one version specification can exist
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ConflictError'
+    VersionSpecHiddenConflict:
+      description: >-
+        Conflict - name attribute must be unique accross legacy version
+        specifications
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ConflictError'
     ApiProductUnauthorized:
       description: Unauthorized
       content:
@@ -5488,6 +6029,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/APIProductVersion'
+    APIProductVersionSpecResponse:
+      description: API product version specification
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/APIProductVersionSpec'
     UnsupportedMediaType:
       description: Unsupported Media Type
       content:
@@ -5538,18 +6085,36 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/UpdateAppAuthStrategyResponse'
+    TeamSingle:
+      description: A response including a single team.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Team'
     AssignedRoleSingle:
       description: A get action response of a single assigned role.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/AssignedRole'
+    IdentityBadRequest:
+      description: Bad Request
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/BadRequestError'
     IdentityConflict:
       description: Conflict
       content:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/ConflictError'
+    IdentityPermissionDenied:
+      description: Permission denied
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ForbiddenError'
     IdentityUnauthenticated:
       description: Unauthenticated
       content:
@@ -13358,7 +13923,7 @@ components:
             The configuration properties for the Vault which can be found on the
             vaults' documentation page.
           type: object
-          x-speakeasy-type-override: "any"
+          x-speakeasy-type-override: any
         created_at:
           description: Unix epoch when the resource was created.
           readOnly: true
@@ -13748,7 +14313,8 @@ components:
           description: >-
             This field is published if the API product version is published to
             at least one portal. This field is deprecated: Use
-            PortalProductVersion.publish_status instead.
+            [PortalProductVersion.publish_status](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version)
+            instead.
           enum:
             - unpublished
             - published
@@ -13759,12 +14325,43 @@ components:
           description: >-
             Whether this API product version is deprecated in at least one
             portal. This field is deprecated: Use
-            PortalProductVersion.deprecated instead
+            [PortalProductVersion.deprecated](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version)
+            instead
           example: false
         auth_strategy_sync_errors:
           $ref: '#/components/schemas/AuthStrategySyncErrors'
         portals:
           $ref: '#/components/schemas/APIProductVersionPortals'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+    APIProductVersionSpec:
+      x-speakeasy-entity: APIProductSpecification
+      title: API Product Version Spec
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - content
+        - created_at
+        - updated_at
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 7710d5c4-d902-410b-992f-18b814155b53
+          description: The API product version specification identifier.
+          readOnly: true
+        name:
+          type: string
+          description: The name of the API product version specification
+          example: oas.yaml
+        content:
+          type: string
+          description: The contents of the API product version specification
+          example: My YAML or JSON formatted OAS content
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -13840,7 +14437,13 @@ components:
         - portal_ids
     CreateAPIProductVersionDTO:
       title: Create API Product Version Request
-      description: The request schema to create a version of an API product.
+      description: >
+        The request schema to create a version of an API product.
+
+        Note that the `publish_status` and `deprecated` fields are deprecated: 
+        Use
+        [PortalProductVersion.publish_status](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version)
+        instead.
       type: object
       additionalProperties: false
       required:
@@ -13859,7 +14462,9 @@ components:
           description: >-
             The publish status of the API product version. Applies publish
             status to all related portal product versions. This field is
-            deprecated: Use PortalProductVersion.publish_status instead.
+            deprecated: Use
+            [PortalProductVersion.publish_status](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version)
+            instead.
           enum:
             - unpublished
             - published
@@ -13872,16 +14477,49 @@ components:
             Indicates if the version of the API product is deprecated. Applies
             deprecation or removes deprecation from all related portal product
             versions. This field is deprecated: Use
-            PortalProductVersion.deprecated instead.
+            [PortalProductVersion.deprecated](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version)
+            instead.
           example: false
         gateway_service:
           oneOf:
             - $ref: '#/components/schemas/GatewayServicePayload'
             - $ref: '#/components/schemas/LegacyGatewayServicePayload'
           $ref: '#/components/schemas/GatewayServicePayload'
+    CreateAPIProductVersionSpecDTO:
+      x-speakeasy-entity: APIProductSpecification
+      title: Create API Product Version Specification Request
+      description: >-
+        The request schema to create a specification for a version of an API
+        product.
+      type: object
+      additionalProperties: false
+      required:
+        - name
+        - content
+      properties:
+        name:
+          type: string
+          nullable: false
+          pattern: ^.+(?:\.yaml|\.yml|\.json)$
+          minLength: 1
+          maxLength: 255
+          example: oas.yaml
+          description: The name of the API product version specification
+        content:
+          type: string
+          format: byte
+          minLength: 1
+          example: TXkgWUFNTCBvciBKU09OIGZvcm1hdHRlZCBPQVMgY29udGVudA==
+          description: The base64 encoded contents of the API product version specification
     UpdateAPIProductVersionDTO:
       title: Update API Product Version Request
-      description: The request schema for updating a version of an API product.
+      description: >
+        The request schema for updating a version of an API product.
+
+        Note that the `publish_status` and `deprecated` fields are deprecated: 
+        Use
+        [PortalProductVersion.publish_status](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version)
+        instead.
       type: object
       additionalProperties: false
       properties:
@@ -13896,7 +14534,9 @@ components:
           description: >-
             The publish status of the API product version. Applies publish
             status to all related portal product versions. This field is
-            deprecated: Use PortalProductVersion.publish_status instead.
+            deprecated: Use
+            [PortalProductVersion.publish_status](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version)
+            instead.
           enum:
             - unpublished
             - published
@@ -13908,7 +14548,8 @@ components:
             Indicates if the version of the API product is deprecated. Applies
             deprecation or removes deprecation from all related portal product
             versions. This field is deprecated: Use
-            PortalProductVersion.deprecated instead.
+            [PortalProductVersion.deprecated](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version)
+            instead.
           example: false
         notify:
           type: boolean
@@ -13929,6 +14570,29 @@ components:
             - $ref: '#/components/schemas/GatewayServicePayload'
             - $ref: '#/components/schemas/LegacyGatewayServicePayload'
           $ref: '#/components/schemas/GatewayServicePayload'
+    UpdateAPIProductVersionSpecDTO:
+      x-speakeasy-entity: APIProductSpecification
+      title: Update API Product Version Specification Request
+      description: >-
+        The request schema for updating a specification for a version of an API
+        product.
+      type: object
+      additionalProperties: false
+      properties:
+        name:
+          type: string
+          nullable: false
+          pattern: ^.+(?:\.yaml|\.yml|\.json)$
+          minLength: 1
+          maxLength: 255
+          example: oas.yaml
+          description: The name of the API product version specification
+        content:
+          type: string
+          format: byte
+          minLength: 1
+          example: TXkgWUFNTCBvciBKU09OIGZvcm1hdHRlZCBPQVMgY29udGVudA==
+          description: The base64 encoded contents of the API product version specification
     LegacyGatewayServicePayload:
       type: object
       nullable: true
@@ -15015,6 +15679,61 @@ components:
         The display name of the Auth strategy. This is used to identify the Auth
         strategy in the Portal UI.
       maxLength: 256
+    Team:
+      x-speakeasy-entity: Team
+      title: Team
+      type: object
+      description: The team object contains information about a group of users.
+      example:
+        id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+        name: IDM - Developers
+        description: The developers for the IDM API.
+        system_team: false
+        labels:
+          env: test
+        created_at: '1992-02-07T17:46:57.52Z'
+        updated_at: '2022-08-31T17:00:00.52Z'
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+          description: The team ID.
+          readOnly: true
+        name:
+          type: string
+          pattern: ^[\w \W]+$
+          example: IDM - Developers
+          maxLength: 250
+          description: The name of the team.
+        description:
+          type: string
+          example: The developers for the IDM API.
+          maxLength: 250
+          description: The team description in Konnect.
+        system_team:
+          type: boolean
+          description: >-
+            Returns True if a user belongs to a `system_team`. System teams are
+            teams that can manage Konnect objects, like "Organization Admin", or
+            "Service"
+          readOnly: true
+        labels:
+          $ref: '#/components/schemas/Labels'
+        created_at:
+          type: string
+          format: date-time
+          example: '1992-02-07T17:46:57.52Z'
+          description: A Unix timestamp representation of team creation.
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          example: '2022-02-07T17:00:00.52Z'
+          description: >
+            A Unix timestamp representation of the most recent change to the
+            team object in Konnect.
+          readOnly: true
     AssignedRole:
       title: AssignedRole
       type: object
@@ -15199,6 +15918,22 @@ components:
             required:
               - cert
       description: Request body for creating a dp-client-certificate.
+    create-plugin-schemas:
+      content:
+        application/json:
+          schema:
+            x-speakeasy-entity: GatewayCustomPluginSchema
+            type: object
+            properties:
+              lua_schema:
+                type: string
+                description: |
+                  The custom plugin schema; `jq -Rs '.' schema.lua`.
+                example: >-
+                  return { name = \"myplugin\", fields = { { config = { type =
+                  \"record\", fields = { } } } } }
+            required:
+              - lua_schema
     CreateAPIProductRequest:
       required: true
       content:
@@ -15218,6 +15953,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/CreateAPIProductVersionDTO'
+    CreateAPIProductVersionSpecRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateAPIProductVersionSpecDTO'
     UpdateAPIProductVersionRequest:
       x-speakeasy-entity: APIProductVersion
       required: true
@@ -15225,6 +15966,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/UpdateAPIProductVersionDTO'
+    UpdateAPIProductVersionSpecRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateAPIProductVersionSpecDTO'
     UpdatePortalAuthenticationSettings:
       description: Update a portal's developer authentication settings.
       content:
@@ -15256,11 +16003,79 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/UpdateAppAuthStrategyRequest'
+    CreateTeam:
+      description: >-
+        The request schema for the create team request.
+
+
+        If you pass the same `name` and `description` of an existing team in the
+        request, a team with the same `name` and `description` will be created.
+        The two teams will have different `team_id` values to differentiate
+        them.
+      content:
+        application/json:
+          schema:
+            x-speakeasy-entity: Team
+            type: object
+            properties:
+              name:
+                type: string
+                example: IDM - Developers
+                pattern: ^[\w \W]+$
+                description: A name for the team being created.
+                writeOnly: true
+              description:
+                type: string
+                maxLength: 250
+                example: The Identity Management (IDM) team.
+                description: The description of the new team.
+                writeOnly: true
+              labels:
+                $ref: '#/components/schemas/Labels'
+            required:
+              - name
+    UpdateTeam:
+      description: The request schema for the update team request.
+      content:
+        application/json:
+          schema:
+            x-speakeasy-entity: Team
+            type: object
+            properties:
+              name:
+                type: string
+                example: IDM - Developers
+                pattern: ^[\w \W]+$
+                description: The name of the team.
+                writeOnly: true
+              description:
+                type: string
+                maxLength: 250
+                example: The Identity Management (IDM) API team.
+                description: The description of the team.
+                writeOnly: true
+              labels:
+                $ref: '#/components/schemas/LabelsUpdate'
+    AddUserToTeam:
+      description: The request schema for adding a user to a team.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                example: df120cb4-f60b-47bc-a2f8-6a28e6a3c63b
+                format: uuid
+                description: The user ID for the user being added to a team.
+                writeOnly: true
+                x-speakeasy-name-override: user_id
+            required:
+              - id
     AssignRole:
       content:
         application/json:
           schema:
-            x-speakeasy-entity: SystemAccountRole
             type: object
             description: >-
               An assigned role is a role that has been assigned to a user or

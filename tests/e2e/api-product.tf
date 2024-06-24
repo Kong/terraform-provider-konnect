@@ -27,6 +27,18 @@ resource "konnect_api_product_version" "httpbin_v1" {
   }
 }
 
+# Read OAS from a URL
+data "http" "httpbin_oas" {
+  url = "https://petstore3.swagger.io/api/v3/openapi.json"
+}
+
+resource "konnect_api_product_specification" "httpbin_v1_spec" {
+  name                   = "sample.json"
+  content                = base64encode(tostring(data.http.httpbin_oas.response_body))
+  api_product_id         = konnect_api_product.httpbin.id
+  api_product_version_id = konnect_api_product_version.httpbin_v1.id
+}
+
 # Define an authentication strategy to be used by the product version
 resource "konnect_application_auth_strategy" "my_applicationauthstrategy" {
   key_auth = {

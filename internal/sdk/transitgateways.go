@@ -38,6 +38,7 @@ func (s *TransitGateways) CreateTransitGateway(ctx context.Context, request oper
 
 	o := operations.Options{}
 	supportedOptions := []string{
+		operations.SupportedOptionServerURL,
 		operations.SupportedOptionRetries,
 		operations.SupportedOptionAcceptHeaderOverride,
 	}
@@ -47,7 +48,11 @@ func (s *TransitGateways) CreateTransitGateway(ctx context.Context, request oper
 			return nil, fmt.Errorf("error applying option: %w", err)
 		}
 	}
-	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	baseURL := utils.ReplaceParameters(operations.CreateTransitGatewayServerList[0], map[string]string{})
+	if o.ServerURL != nil {
+		baseURL = *o.ServerURL
+	}
+
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/cloud-gateways/networks/{networkId}/transit-gateways", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
@@ -240,6 +245,7 @@ func (s *TransitGateways) GetTransitGateway(ctx context.Context, request operati
 
 	o := operations.Options{}
 	supportedOptions := []string{
+		operations.SupportedOptionServerURL,
 		operations.SupportedOptionAcceptHeaderOverride,
 	}
 
@@ -248,7 +254,11 @@ func (s *TransitGateways) GetTransitGateway(ctx context.Context, request operati
 			return nil, fmt.Errorf("error applying option: %w", err)
 		}
 	}
-	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	baseURL := utils.ReplaceParameters(operations.GetTransitGatewayServerList[0], map[string]string{})
+	if o.ServerURL != nil {
+		baseURL = *o.ServerURL
+	}
+
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/cloud-gateways/networks/{networkId}/transit-gateways/{transitGatewayId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
@@ -381,6 +391,7 @@ func (s *TransitGateways) DeleteTransitGateway(ctx context.Context, request oper
 
 	o := operations.Options{}
 	supportedOptions := []string{
+		operations.SupportedOptionServerURL,
 		operations.SupportedOptionRetries,
 	}
 
@@ -389,7 +400,11 @@ func (s *TransitGateways) DeleteTransitGateway(ctx context.Context, request oper
 			return nil, fmt.Errorf("error applying option: %w", err)
 		}
 	}
-	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	baseURL := utils.ReplaceParameters(operations.DeleteTransitGatewayServerList[0], map[string]string{})
+	if o.ServerURL != nil {
+		baseURL = *o.ServerURL
+	}
+
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/cloud-gateways/networks/{networkId}/transit-gateways/{transitGatewayId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)

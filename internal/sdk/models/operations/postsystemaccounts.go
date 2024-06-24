@@ -7,6 +7,10 @@ import (
 	"net/http"
 )
 
+var PostSystemAccountsServerList = []string{
+	"https://global.api.konghq.com/",
+}
+
 type PostSystemAccountsResponse struct {
 	// HTTP response content type for this operation
 	ContentType string

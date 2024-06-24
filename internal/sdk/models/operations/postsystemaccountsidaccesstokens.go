@@ -7,6 +7,10 @@ import (
 	"net/http"
 )
 
+var PostSystemAccountsIDAccessTokensServerList = []string{
+	"https://global.api.konghq.com/",
+}
+
 type PostSystemAccountsIDAccessTokensRequest struct {
 	// ID of the system account.
 	AccountID string `pathParam:"style=simple,explode=false,name=accountId"`
