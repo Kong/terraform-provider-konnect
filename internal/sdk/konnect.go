@@ -69,9 +69,10 @@ func (c *sdkConfiguration) GetServerDetails() (string, map[string]string) {
 //
 // https://docs.konghq.com - Documentation for Kong Gateway and its APIs
 type Konnect struct {
-	Mesh               *Mesh
-	APIProducts        *APIProducts
-	APIProductVersions *APIProductVersions
+	Mesh                           *Mesh
+	APIProducts                    *APIProducts
+	APIProductVersions             *APIProductVersions
+	APIProductVersionSpecification *APIProductVersionSpecification
 	// Application Auth Strategies are sets of plugin configurations that represent how the gateway will perform authentication and authorization for a Product Version.
 	// Called “Auth Strategy” for short in the context of portals/applications.
 	// The plugins are synced to any Gateway Service that is currently linked or becomes linked to the Product Version.
@@ -111,6 +112,8 @@ type Konnect struct {
 	// A key object holds a representation of asymmetric keys in various formats. When Kong Gateway or a Kong plugin requires a specific public or private key to perform certain operations, it can use this entity.
 	//
 	Keys *Keys
+	// Custom Plugin Schemas
+	CustomPluginSchemas *CustomPluginSchemas
 	// A plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. Plugins let you add functionality to services that run behind a Kong Gateway instance, like authentication or rate limiting.
 	// You can find more information about available plugins and which values each plugin accepts at the [Plugin Hub](https://docs.konghq.com/hub/).
 	// <br><br>
@@ -196,7 +199,10 @@ type Konnect struct {
 	SystemAccounts               *SystemAccounts
 	SystemAccountsAccessTokens   *SystemAccountsAccessTokens
 	SystemAccountsRoles          *SystemAccountsRoles
+	Teams                        *Teams
+	Roles                        *Roles
 	SystemAccountsTeamMembership *SystemAccountsTeamMembership
+	TeamMembership               *TeamMembership
 
 	sdkConfiguration sdkConfiguration
 }
@@ -268,8 +274,8 @@ func New(opts ...SDKOption) *Konnect {
 			Language:          "go",
 			OpenAPIDocVersion: "2.0.0",
 			SDKVersion:        "0.0.1",
-			GenVersion:        "2.342.6",
-			UserAgent:         "speakeasy-sdk/go 0.0.1 2.342.6 2.0.0 github.com/kong/terraform-provider-konnect/internal/sdk",
+			GenVersion:        "2.349.6",
+			UserAgent:         "speakeasy-sdk/go 0.0.1 2.349.6 2.0.0 github.com/kong/terraform-provider-konnect/internal/sdk",
 			Hooks:             hooks.New(),
 		},
 	}
@@ -294,6 +300,8 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.APIProducts = newAPIProducts(sdk.sdkConfiguration)
 
 	sdk.APIProductVersions = newAPIProductVersions(sdk.sdkConfiguration)
+
+	sdk.APIProductVersionSpecification = newAPIProductVersionSpecification(sdk.sdkConfiguration)
 
 	sdk.AppAuthStrategies = newAppAuthStrategies(sdk.sdkConfiguration)
 
@@ -331,6 +339,8 @@ func New(opts ...SDKOption) *Konnect {
 
 	sdk.Keys = newKeys(sdk.sdkConfiguration)
 
+	sdk.CustomPluginSchemas = newCustomPluginSchemas(sdk.sdkConfiguration)
+
 	sdk.Plugins = newPlugins(sdk.sdkConfiguration)
 
 	sdk.Routes = newRoutes(sdk.sdkConfiguration)
@@ -361,7 +371,13 @@ func New(opts ...SDKOption) *Konnect {
 
 	sdk.SystemAccountsRoles = newSystemAccountsRoles(sdk.sdkConfiguration)
 
+	sdk.Teams = newTeams(sdk.sdkConfiguration)
+
+	sdk.Roles = newRoles(sdk.sdkConfiguration)
+
 	sdk.SystemAccountsTeamMembership = newSystemAccountsTeamMembership(sdk.sdkConfiguration)
+
+	sdk.TeamMembership = newTeamMembership(sdk.sdkConfiguration)
 
 	return sdk
 }

@@ -7,6 +7,10 @@ import (
 	"net/http"
 )
 
+var CreateNetworkServerList = []string{
+	"https://global.api.konghq.com/",
+}
+
 type CreateNetworkResponse struct {
 	// HTTP response content type for this operation
 	ContentType string

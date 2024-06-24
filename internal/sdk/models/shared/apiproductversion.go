@@ -41,7 +41,7 @@ func (o *GatewayService) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-// APIProductVersionPublishStatus1 - This field is published if the API product version is published to at least one portal. This field is deprecated: Use PortalProductVersion.publish_status instead.
+// APIProductVersionPublishStatus1 - This field is published if the API product version is published to at least one portal. This field is deprecated: Use [PortalProductVersion.publish_status](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version) instead.
 //
 // Deprecated type: This will be removed in a future release, please migrate away from it as soon as possible.
 type APIProductVersionPublishStatus1 string
@@ -76,11 +76,11 @@ type APIProductVersion struct {
 	// The version of the API product
 	Name           string          `json:"name"`
 	GatewayService *GatewayService `json:"gateway_service"`
-	// This field is published if the API product version is published to at least one portal. This field is deprecated: Use PortalProductVersion.publish_status instead.
+	// This field is published if the API product version is published to at least one portal. This field is deprecated: Use [PortalProductVersion.publish_status](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version) instead.
 	//
 	// Deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
 	PublishStatus APIProductVersionPublishStatus1 `json:"publish_status"`
-	// Whether this API product version is deprecated in at least one portal. This field is deprecated: Use PortalProductVersion.deprecated instead
+	// Whether this API product version is deprecated in at least one portal. This field is deprecated: Use [PortalProductVersion.deprecated](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version) instead
 	//
 	// Deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
 	Deprecated bool `json:"deprecated"`

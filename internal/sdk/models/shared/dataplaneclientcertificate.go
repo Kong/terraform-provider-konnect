@@ -2,7 +2,7 @@
 
 package shared
 
-type Item struct {
+type DataPlaneClientCertificateItem struct {
 	// Unique ID of the certificate entity.
 	ID *string `json:"id,omitempty"`
 	// Date certificate was created.
@@ -13,28 +13,28 @@ type Item struct {
 	Cert *string `json:"cert,omitempty"`
 }
 
-func (o *Item) GetID() *string {
+func (o *DataPlaneClientCertificateItem) GetID() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ID
 }
 
-func (o *Item) GetCreatedAt() *int64 {
+func (o *DataPlaneClientCertificateItem) GetCreatedAt() *int64 {
 	if o == nil {
 		return nil
 	}
 	return o.CreatedAt
 }
 
-func (o *Item) GetUpdatedAt() *int64 {
+func (o *DataPlaneClientCertificateItem) GetUpdatedAt() *int64 {
 	if o == nil {
 		return nil
 	}
 	return o.UpdatedAt
 }
 
-func (o *Item) GetCert() *string {
+func (o *DataPlaneClientCertificateItem) GetCert() *string {
 	if o == nil {
 		return nil
 	}
@@ -42,10 +42,10 @@ func (o *Item) GetCert() *string {
 }
 
 type DataPlaneClientCertificate struct {
-	Item *Item `json:"item,omitempty"`
+	Item *DataPlaneClientCertificateItem `json:"item,omitempty"`
 }
 
-func (o *DataPlaneClientCertificate) GetItem() *Item {
+func (o *DataPlaneClientCertificate) GetItem() *DataPlaneClientCertificateItem {
 	if o == nil {
 		return nil
 	}

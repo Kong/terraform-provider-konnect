@@ -43,6 +43,7 @@ func (s *DataPlaneGroupConfigurations) CreateConfiguration(ctx context.Context, 
 
 	o := operations.Options{}
 	supportedOptions := []string{
+		operations.SupportedOptionServerURL,
 		operations.SupportedOptionAcceptHeaderOverride,
 	}
 
@@ -51,7 +52,11 @@ func (s *DataPlaneGroupConfigurations) CreateConfiguration(ctx context.Context, 
 			return nil, fmt.Errorf("error applying option: %w", err)
 		}
 	}
-	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	baseURL := utils.ReplaceParameters(operations.CreateConfigurationServerList[0], map[string]string{})
+	if o.ServerURL != nil {
+		baseURL = *o.ServerURL
+	}
+
 	opURL, err := url.JoinPath(baseURL, "/v2/cloud-gateways/configurations")
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
@@ -214,6 +219,7 @@ func (s *DataPlaneGroupConfigurations) GetConfiguration(ctx context.Context, req
 
 	o := operations.Options{}
 	supportedOptions := []string{
+		operations.SupportedOptionServerURL,
 		operations.SupportedOptionAcceptHeaderOverride,
 	}
 
@@ -222,7 +228,11 @@ func (s *DataPlaneGroupConfigurations) GetConfiguration(ctx context.Context, req
 			return nil, fmt.Errorf("error applying option: %w", err)
 		}
 	}
-	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	baseURL := utils.ReplaceParameters(operations.GetConfigurationServerList[0], map[string]string{})
+	if o.ServerURL != nil {
+		baseURL = *o.ServerURL
+	}
+
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/cloud-gateways/configurations/{configurationId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)

@@ -7,7 +7,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
 )
 
-func (r *GatewayDataPlaneClientCertificateDataSourceModel) RefreshFromSharedItem(resp *shared.Item) {
+func (r *GatewayDataPlaneClientCertificateDataSourceModel) RefreshFromSharedDataPlaneClientCertificateItem(resp *shared.DataPlaneClientCertificateItem) {
 	if resp != nil {
 		r.Cert = types.StringPointerValue(resp.Cert)
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)

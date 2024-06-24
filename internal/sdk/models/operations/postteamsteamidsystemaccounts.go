@@ -7,6 +7,10 @@ import (
 	"net/http"
 )
 
+var PostTeamsTeamIDSystemAccountsServerList = []string{
+	"https://global.api.konghq.com/",
+}
+
 type PostTeamsTeamIDSystemAccountsRequest struct {
 	// ID of the team.
 	TeamID string `pathParam:"style=simple,explode=false,name=teamId"`

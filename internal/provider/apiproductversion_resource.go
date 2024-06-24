@@ -68,7 +68,7 @@ func (r *APIProductVersionResource) Schema(ctx context.Context, req resource.Sch
 			"deprecated": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Indicates if the version of the API product is deprecated. Applies deprecation or removes deprecation from all related portal product versions. This field is deprecated: Use PortalProductVersion.deprecated instead.`,
+				Description: `Indicates if the version of the API product is deprecated. Applies deprecation or removes deprecation from all related portal product versions. This field is deprecated: Use [PortalProductVersion.deprecated](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version) instead.`,
 			},
 			"gateway_service": schema.SingleNestedAttribute{
 				Computed: true,

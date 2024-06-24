@@ -27,7 +27,7 @@ func newSystemAccountsTeamMembership(sdkConfig sdkConfiguration) *SystemAccounts
 
 // PostTeamsTeamIDSystemAccounts - Add System Account to a Team
 // Adds a system account to a team. Returns a 409 if the system account is already a member of the team.
-func (s *SystemAccountsTeamMembership) PostTeamsTeamIDSystemAccounts(ctx context.Context, request operations.PostTeamsTeamIDSystemAccountsRequest) (*operations.PostTeamsTeamIDSystemAccountsResponse, error) {
+func (s *SystemAccountsTeamMembership) PostTeamsTeamIDSystemAccounts(ctx context.Context, request operations.PostTeamsTeamIDSystemAccountsRequest, opts ...operations.Option) (*operations.PostTeamsTeamIDSystemAccountsResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "post-teams-teamId-system-accounts",
@@ -35,7 +35,21 @@ func (s *SystemAccountsTeamMembership) PostTeamsTeamIDSystemAccounts(ctx context
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
-	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionServerURL,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+	baseURL := utils.ReplaceParameters(operations.PostTeamsTeamIDSystemAccountsServerList[0], map[string]string{})
+	if o.ServerURL != nil {
+		baseURL = *o.ServerURL
+	}
+
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/teams/{teamId}/system-accounts", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
@@ -150,7 +164,7 @@ func (s *SystemAccountsTeamMembership) PostTeamsTeamIDSystemAccounts(ctx context
 
 // DeleteTeamsTeamIDSystemAccountsAccountID - Remove System Account From Team
 // Removes a system account from a team. Returns 404 if the team or system account were not found.
-func (s *SystemAccountsTeamMembership) DeleteTeamsTeamIDSystemAccountsAccountID(ctx context.Context, request operations.DeleteTeamsTeamIDSystemAccountsAccountIDRequest) (*operations.DeleteTeamsTeamIDSystemAccountsAccountIDResponse, error) {
+func (s *SystemAccountsTeamMembership) DeleteTeamsTeamIDSystemAccountsAccountID(ctx context.Context, request operations.DeleteTeamsTeamIDSystemAccountsAccountIDRequest, opts ...operations.Option) (*operations.DeleteTeamsTeamIDSystemAccountsAccountIDResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "delete-teams-teamId-system-accounts-accountId",
@@ -158,7 +172,21 @@ func (s *SystemAccountsTeamMembership) DeleteTeamsTeamIDSystemAccountsAccountID(
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
-	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionServerURL,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+	baseURL := utils.ReplaceParameters(operations.DeleteTeamsTeamIDSystemAccountsAccountIDServerList[0], map[string]string{})
+	if o.ServerURL != nil {
+		baseURL = *o.ServerURL
+	}
+
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/teams/{teamId}/system-accounts/{accountId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)

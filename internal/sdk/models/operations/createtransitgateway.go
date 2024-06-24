@@ -7,6 +7,10 @@ import (
 	"net/http"
 )
 
+var CreateTransitGatewayServerList = []string{
+	"https://global.api.konghq.com/",
+}
+
 type CreateTransitGatewayRequest struct {
 	// The network to operate on.
 	NetworkID                   string                             `pathParam:"style=simple,explode=false,name=networkId"`

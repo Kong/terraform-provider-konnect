@@ -15,7 +15,7 @@ func (r *GatewayDataPlaneClientCertificateResourceModel) ToSharedDataPlaneClient
 	return &out
 }
 
-func (r *GatewayDataPlaneClientCertificateResourceModel) RefreshFromSharedItem(resp *shared.Item) {
+func (r *GatewayDataPlaneClientCertificateResourceModel) RefreshFromSharedDataPlaneClientCertificateItem(resp *shared.DataPlaneClientCertificateItem) {
 	if resp != nil {
 		r.Cert = types.StringPointerValue(resp.Cert)
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)

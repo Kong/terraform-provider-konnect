@@ -144,7 +144,7 @@ func (r *GatewayDataPlaneClientCertificateResource) Create(ctx context.Context, 
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedItem(res.DataPlaneClientCertificate.Item)
+	data.RefreshFromSharedDataPlaneClientCertificateItem(res.DataPlaneClientCertificate.Item)
 	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
@@ -199,7 +199,7 @@ func (r *GatewayDataPlaneClientCertificateResource) Read(ctx context.Context, re
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedItem(res.DataPlaneClientCertificate.Item)
+	data.RefreshFromSharedDataPlaneClientCertificateItem(res.DataPlaneClientCertificate.Item)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

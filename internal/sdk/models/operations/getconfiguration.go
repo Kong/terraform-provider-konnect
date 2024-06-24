@@ -7,6 +7,10 @@ import (
 	"net/http"
 )
 
+var GetConfigurationServerList = []string{
+	"https://global.api.konghq.com/",
+}
+
 type GetConfigurationRequest struct {
 	// The ID of the configuration to operate on.
 	ConfigurationID string `pathParam:"style=simple,explode=false,name=configurationId"`

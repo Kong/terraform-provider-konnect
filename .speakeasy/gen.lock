@@ -1,23 +1,24 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: f84cf3df7e82e6b819982b3074135350
+  docChecksum: e5a7b36f302770121537c36b5b94bc08
   docVersion: 2.0.0
-  speakeasyVersion: 1.308.1
-  generationVersion: 2.342.6
-  releaseVersion: 0.3.1
-  configChecksum: 39bf26231f8e4ad014e7be9971ec0825
+  speakeasyVersion: 1.314.2
+  generationVersion: 2.349.6
+  releaseVersion: 0.4.0
+  configChecksum: 9e76a97111530d7f658a16f6a2e6e1a9
 features:
   terraform:
     additionalDependencies: 0.1.0
     additionalProperties: 0.1.2
     constsAndDefaults: 0.1.4
-    core: 3.21.3
+    core: 3.21.4
     deprecations: 2.81.1
     globalSecurity: 2.81.6
     globalServerURLs: 2.82.1
     ignores: 2.81.1
     inputOutputModels: 2.83.0
+    methodServerURLs: 2.82.1
     nameOverrides: 2.81.2
     nullables: 0.0.0
     retries: 2.81.1
@@ -27,6 +28,7 @@ generatedFiles:
   - internal/sdk/mesh.go
   - internal/sdk/apiproducts.go
   - internal/sdk/apiproductversions.go
+  - internal/sdk/apiproductversionspecification.go
   - internal/sdk/appauthstrategies.go
   - internal/sdk/dataplanegroupconfigurations.go
   - internal/sdk/customdomains.go
@@ -45,6 +47,7 @@ generatedFiles:
   - internal/sdk/apikeys.go
   - internal/sdk/keysets.go
   - internal/sdk/keys.go
+  - internal/sdk/custompluginschemas.go
   - internal/sdk/plugins.go
   - internal/sdk/routes.go
   - internal/sdk/services.go
@@ -60,7 +63,10 @@ generatedFiles:
   - internal/sdk/systemaccounts.go
   - internal/sdk/systemaccountsaccesstokens.go
   - internal/sdk/systemaccountsroles.go
+  - internal/sdk/teams.go
+  - internal/sdk/roles.go
   - internal/sdk/systemaccountsteammembership.go
+  - internal/sdk/teammembership.go
   - internal/sdk/konnect.go
   - internal/sdk/models/errors/sdkerror.go
   - internal/sdk/types/bigint.go
@@ -90,6 +96,10 @@ generatedFiles:
   - internal/sdk/models/operations/getapiproductversion.go
   - internal/sdk/models/operations/updateapiproductversion.go
   - internal/sdk/models/operations/deleteapiproductversion.go
+  - internal/sdk/models/operations/createapiproductversionspec.go
+  - internal/sdk/models/operations/getapiproductversionspec.go
+  - internal/sdk/models/operations/updateapiproductversionspec.go
+  - internal/sdk/models/operations/deleteapiproductversionspec.go
   - internal/sdk/models/operations/createappauthstrategy.go
   - internal/sdk/models/operations/getappauthstrategy.go
   - internal/sdk/models/operations/updateappauthstrategy.go
@@ -144,6 +154,10 @@ generatedFiles:
   - internal/sdk/models/operations/createkey.go
   - internal/sdk/models/operations/deletekey.go
   - internal/sdk/models/operations/getkey.go
+  - internal/sdk/models/operations/createpluginschemas.go
+  - internal/sdk/models/operations/getpluginschema.go
+  - internal/sdk/models/operations/deletepluginschemas.go
+  - internal/sdk/models/operations/updatepluginschemas.go
   - internal/sdk/models/operations/deleteaclplugin.go
   - internal/sdk/models/operations/getaclplugin.go
   - internal/sdk/models/operations/updateaclplugin.go
@@ -300,8 +314,16 @@ generatedFiles:
   - internal/sdk/models/operations/deletesystemaccountsidaccesstokensid.go
   - internal/sdk/models/operations/postsystemaccountsaccountidassignedroles.go
   - internal/sdk/models/operations/deletesystemaccountsaccountidassignedrolesroleid.go
+  - internal/sdk/models/operations/createteam.go
+  - internal/sdk/models/operations/getteam.go
+  - internal/sdk/models/operations/updateteam.go
+  - internal/sdk/models/operations/deleteteam.go
+  - internal/sdk/models/operations/teamsassignrole.go
+  - internal/sdk/models/operations/teamsremoverole.go
   - internal/sdk/models/operations/postteamsteamidsystemaccounts.go
   - internal/sdk/models/operations/deleteteamsteamidsystemaccountsaccountid.go
+  - internal/sdk/models/operations/addusertoteam.go
+  - internal/sdk/models/operations/removeuserfromteam.go
   - internal/sdk/models/shared/forbiddenerror.go
   - internal/sdk/models/shared/unauthorizederror.go
   - internal/sdk/models/shared/badrequesterror.go
@@ -328,6 +350,10 @@ generatedFiles:
   - internal/sdk/models/shared/createapiproductversiondto.go
   - internal/sdk/models/shared/gatewayservicepayload.go
   - internal/sdk/models/shared/updateapiproductversiondto.go
+  - internal/sdk/models/shared/conflicterror.go
+  - internal/sdk/models/shared/apiproductversionspec.go
+  - internal/sdk/models/shared/createapiproductversionspecdto.go
+  - internal/sdk/models/shared/updateapiproductversionspecdto.go
   - internal/sdk/models/shared/createappauthstrategyresponse.go
   - internal/sdk/models/shared/dcrprovidertype.go
   - internal/sdk/models/shared/appauthstrategyconfigkeyauth.go
@@ -337,7 +363,6 @@ generatedFiles:
   - internal/sdk/models/shared/updateappauthstrategyresponse.go
   - internal/sdk/models/shared/updateappauthstrategyrequest.go
   - internal/sdk/models/shared/partialappauthstrategyconfigopenidconnect.go
-  - internal/sdk/models/shared/conflicterror.go
   - internal/sdk/models/shared/configurationmanifest.go
   - internal/sdk/models/shared/controlplanegeo.go
   - internal/sdk/models/shared/configurationdataplanegroup.go
@@ -397,6 +422,8 @@ generatedFiles:
   - internal/sdk/models/shared/keyset.go
   - internal/sdk/models/shared/keysetinput.go
   - internal/sdk/models/shared/key.go
+  - internal/sdk/models/shared/pluginschemas.go
+  - internal/sdk/models/shared/createpluginschemas.go
   - internal/sdk/models/shared/aclplugin.go
   - internal/sdk/models/shared/createaclplugin.go
   - internal/sdk/models/shared/aipromptdecoratorplugin.go
@@ -489,7 +516,11 @@ generatedFiles:
   - internal/sdk/models/shared/updatesystemaccountaccesstoken.go
   - internal/sdk/models/shared/assignedrole.go
   - internal/sdk/models/shared/assignrole.go
+  - internal/sdk/models/shared/team.go
+  - internal/sdk/models/shared/createteam.go
+  - internal/sdk/models/shared/updateteam.go
   - internal/sdk/models/shared/addsystemaccounttoteam.go
+  - internal/sdk/models/shared/addusertoteam.go
   - internal/sdk/models/shared/security.go
   - internal/sdk/.gitignore
   - internal/sdk/models/operations/options.go
@@ -650,6 +681,10 @@ generatedFiles:
   - internal/provider/apiproduct_resource.go
   - internal/provider/apiproduct_resource_sdk.go
   - examples/resources/konnect_api_product/resource.tf
+  - examples/resources/konnect_api_product_specification/import.sh
+  - internal/provider/apiproductspecification_resource.go
+  - internal/provider/apiproductspecification_resource_sdk.go
+  - examples/resources/konnect_api_product_specification/resource.tf
   - examples/resources/konnect_api_product_version/import.sh
   - internal/provider/apiproductversion_resource.go
   - internal/provider/apiproductversion_resource_sdk.go
@@ -705,6 +740,10 @@ generatedFiles:
   - internal/provider/gatewaycontrolplanemembership_resource.go
   - internal/provider/gatewaycontrolplanemembership_resource_sdk.go
   - examples/resources/konnect_gateway_control_plane_membership/resource.tf
+  - examples/resources/konnect_gateway_custom_plugin_schema/import.sh
+  - internal/provider/gatewaycustompluginschema_resource.go
+  - internal/provider/gatewaycustompluginschema_resource_sdk.go
+  - examples/resources/konnect_gateway_custom_plugin_schema/resource.tf
   - examples/resources/konnect_gateway_data_plane_client_certificate/import.sh
   - internal/provider/gatewaydataplaneclientcertificate_resource.go
   - internal/provider/gatewaydataplaneclientcertificate_resource_sdk.go
@@ -898,9 +937,22 @@ generatedFiles:
   - internal/provider/systemaccountteam_resource.go
   - internal/provider/systemaccountteam_resource_sdk.go
   - examples/resources/konnect_system_account_team/resource.tf
+  - examples/resources/konnect_team/import.sh
+  - internal/provider/team_resource.go
+  - internal/provider/team_resource_sdk.go
+  - examples/resources/konnect_team/resource.tf
+  - internal/provider/teamrole_resource.go
+  - internal/provider/teamrole_resource_sdk.go
+  - examples/resources/konnect_team_role/resource.tf
+  - internal/provider/teamuser_resource.go
+  - internal/provider/teamuser_resource_sdk.go
+  - examples/resources/konnect_team_user/resource.tf
   - internal/provider/apiproduct_data_source.go
   - internal/provider/apiproduct_data_source_sdk.go
   - examples/data-sources/konnect_api_product/data-source.tf
+  - internal/provider/apiproductspecification_data_source.go
+  - internal/provider/apiproductspecification_data_source_sdk.go
+  - examples/data-sources/konnect_api_product_specification/data-source.tf
   - internal/provider/apiproductversion_data_source.go
   - internal/provider/apiproductversion_data_source_sdk.go
   - examples/data-sources/konnect_api_product_version/data-source.tf
@@ -943,6 +995,9 @@ generatedFiles:
   - internal/provider/gatewaycontrolplane_data_source.go
   - internal/provider/gatewaycontrolplane_data_source_sdk.go
   - examples/data-sources/konnect_gateway_control_plane/data-source.tf
+  - internal/provider/gatewaycustompluginschema_data_source.go
+  - internal/provider/gatewaycustompluginschema_data_source_sdk.go
+  - examples/data-sources/konnect_gateway_custom_plugin_schema/data-source.tf
   - internal/provider/gatewaydataplaneclientcertificate_data_source.go
   - internal/provider/gatewaydataplaneclientcertificate_data_source_sdk.go
   - examples/data-sources/konnect_gateway_data_plane_client_certificate/data-source.tf
@@ -1084,4 +1139,7 @@ generatedFiles:
   - internal/provider/systemaccountaccesstoken_data_source.go
   - internal/provider/systemaccountaccesstoken_data_source_sdk.go
   - examples/data-sources/konnect_system_account_access_token/data-source.tf
+  - internal/provider/team_data_source.go
+  - internal/provider/team_data_source_sdk.go
+  - examples/data-sources/konnect_team/data-source.tf
   - .gitattributes

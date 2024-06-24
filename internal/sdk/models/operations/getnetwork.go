@@ -7,6 +7,10 @@ import (
 	"net/http"
 )
 
+var GetNetworkServerList = []string{
+	"https://global.api.konghq.com/",
+}
+
 type GetNetworkRequest struct {
 	// The network to operate on.
 	NetworkID string `pathParam:"style=simple,explode=false,name=networkId"`

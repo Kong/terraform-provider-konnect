@@ -7,6 +7,10 @@ import (
 	"net/http"
 )
 
+var CreateCustomDomainsServerList = []string{
+	"https://global.api.konghq.com/",
+}
+
 type CreateCustomDomainsResponse struct {
 	// HTTP response content type for this operation
 	ContentType string

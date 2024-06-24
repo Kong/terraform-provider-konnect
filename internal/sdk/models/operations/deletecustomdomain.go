@@ -7,6 +7,10 @@ import (
 	"net/http"
 )
 
+var DeleteCustomDomainServerList = []string{
+	"https://global.api.konghq.com/",
+}
+
 type DeleteCustomDomainRequest struct {
 	// ID of the custom domain to operate on.
 	CustomDomainID string `pathParam:"style=simple,explode=false,name=customDomainId"`

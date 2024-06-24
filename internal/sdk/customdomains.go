@@ -40,6 +40,7 @@ func (s *CustomDomains) CreateCustomDomains(ctx context.Context, request shared.
 
 	o := operations.Options{}
 	supportedOptions := []string{
+		operations.SupportedOptionServerURL,
 		operations.SupportedOptionAcceptHeaderOverride,
 	}
 
@@ -48,7 +49,11 @@ func (s *CustomDomains) CreateCustomDomains(ctx context.Context, request shared.
 			return nil, fmt.Errorf("error applying option: %w", err)
 		}
 	}
-	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	baseURL := utils.ReplaceParameters(operations.CreateCustomDomainsServerList[0], map[string]string{})
+	if o.ServerURL != nil {
+		baseURL = *o.ServerURL
+	}
+
 	opURL, err := url.JoinPath(baseURL, "/v2/cloud-gateways/custom-domains")
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
@@ -211,6 +216,7 @@ func (s *CustomDomains) GetCustomDomain(ctx context.Context, request operations.
 
 	o := operations.Options{}
 	supportedOptions := []string{
+		operations.SupportedOptionServerURL,
 		operations.SupportedOptionAcceptHeaderOverride,
 	}
 
@@ -219,7 +225,11 @@ func (s *CustomDomains) GetCustomDomain(ctx context.Context, request operations.
 			return nil, fmt.Errorf("error applying option: %w", err)
 		}
 	}
-	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	baseURL := utils.ReplaceParameters(operations.GetCustomDomainServerList[0], map[string]string{})
+	if o.ServerURL != nil {
+		baseURL = *o.ServerURL
+	}
+
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/cloud-gateways/custom-domains/{customDomainId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
@@ -352,6 +362,7 @@ func (s *CustomDomains) DeleteCustomDomain(ctx context.Context, request operatio
 
 	o := operations.Options{}
 	supportedOptions := []string{
+		operations.SupportedOptionServerURL,
 		operations.SupportedOptionRetries,
 	}
 
@@ -360,7 +371,11 @@ func (s *CustomDomains) DeleteCustomDomain(ctx context.Context, request operatio
 			return nil, fmt.Errorf("error applying option: %w", err)
 		}
 	}
-	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	baseURL := utils.ReplaceParameters(operations.DeleteCustomDomainServerList[0], map[string]string{})
+	if o.ServerURL != nil {
+		baseURL = *o.ServerURL
+	}
+
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/cloud-gateways/custom-domains/{customDomainId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)

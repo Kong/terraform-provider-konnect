@@ -7,6 +7,10 @@ import (
 	"net/http"
 )
 
+var DeleteTransitGatewayServerList = []string{
+	"https://global.api.konghq.com/",
+}
+
 type DeleteTransitGatewayRequest struct {
 	// The network to operate on.
 	NetworkID string `pathParam:"style=simple,explode=false,name=networkId"`

@@ -38,6 +38,7 @@ func (s *SystemAccounts) PostSystemAccounts(ctx context.Context, request *shared
 
 	o := operations.Options{}
 	supportedOptions := []string{
+		operations.SupportedOptionServerURL,
 		operations.SupportedOptionAcceptHeaderOverride,
 	}
 
@@ -46,7 +47,11 @@ func (s *SystemAccounts) PostSystemAccounts(ctx context.Context, request *shared
 			return nil, fmt.Errorf("error applying option: %w", err)
 		}
 	}
-	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	baseURL := utils.ReplaceParameters(operations.PostSystemAccountsServerList[0], map[string]string{})
+	if o.ServerURL != nil {
+		baseURL = *o.ServerURL
+	}
+
 	opURL, err := url.JoinPath(baseURL, "/v3/system-accounts")
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
@@ -175,6 +180,7 @@ func (s *SystemAccounts) GetSystemAccountsID(ctx context.Context, request operat
 
 	o := operations.Options{}
 	supportedOptions := []string{
+		operations.SupportedOptionServerURL,
 		operations.SupportedOptionAcceptHeaderOverride,
 	}
 
@@ -183,7 +189,11 @@ func (s *SystemAccounts) GetSystemAccountsID(ctx context.Context, request operat
 			return nil, fmt.Errorf("error applying option: %w", err)
 		}
 	}
-	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	baseURL := utils.ReplaceParameters(operations.GetSystemAccountsIDServerList[0], map[string]string{})
+	if o.ServerURL != nil {
+		baseURL = *o.ServerURL
+	}
+
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/system-accounts/{accountId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
@@ -306,6 +316,7 @@ func (s *SystemAccounts) PatchSystemAccountsID(ctx context.Context, request oper
 
 	o := operations.Options{}
 	supportedOptions := []string{
+		operations.SupportedOptionServerURL,
 		operations.SupportedOptionAcceptHeaderOverride,
 	}
 
@@ -314,7 +325,11 @@ func (s *SystemAccounts) PatchSystemAccountsID(ctx context.Context, request oper
 			return nil, fmt.Errorf("error applying option: %w", err)
 		}
 	}
-	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	baseURL := utils.ReplaceParameters(operations.PatchSystemAccountsIDServerList[0], map[string]string{})
+	if o.ServerURL != nil {
+		baseURL = *o.ServerURL
+	}
+
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/system-accounts/{accountId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
@@ -445,7 +460,7 @@ func (s *SystemAccounts) PatchSystemAccountsID(ctx context.Context, request oper
 
 // DeleteSystemAccountsID - Delete System Account
 // Deletes the specified system account. Returns 404 if the requested account was not found.
-func (s *SystemAccounts) DeleteSystemAccountsID(ctx context.Context, request operations.DeleteSystemAccountsIDRequest) (*operations.DeleteSystemAccountsIDResponse, error) {
+func (s *SystemAccounts) DeleteSystemAccountsID(ctx context.Context, request operations.DeleteSystemAccountsIDRequest, opts ...operations.Option) (*operations.DeleteSystemAccountsIDResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "delete-system-accounts-id",
@@ -453,7 +468,21 @@ func (s *SystemAccounts) DeleteSystemAccountsID(ctx context.Context, request ope
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
-	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionServerURL,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+	baseURL := utils.ReplaceParameters(operations.DeleteSystemAccountsIDServerList[0], map[string]string{})
+	if o.ServerURL != nil {
+		baseURL = *o.ServerURL
+	}
+
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/system-accounts/{accountId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
