@@ -69,6 +69,13 @@ resource "konnect_api_product_version" "httpbin_v1" {
   }
 }
 
+resource "konnect_api_product_specification" "httpbin_v1_spec" {
+  name                   = "httpbin.yaml"
+  content                = base64encode(file("./httpbin.yaml"))
+  api_product_id         = konnect_api_product.httpbin.id
+  api_product_version_id = konnect_api_product_version.httpbin_v1.id
+}
+
 # Define an authentication strategy to be used by the product version
 resource "konnect_application_auth_strategy" "my_applicationauthstrategy" {
   key_auth = {

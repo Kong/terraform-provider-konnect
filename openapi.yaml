@@ -175,6 +175,143 @@ paths:
         - API Product Versions
       requestBody:
         $ref: '#/components/requestBodies/CreateAPIProductVersionRequest'
+  /v2/api-products/{apiProductId}/product-versions/{apiProductVersionId}/specifications:
+    parameters:
+      - schema:
+          type: string
+          format: uuid
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        name: apiProductId
+        description: The API product identifier
+        in: path
+        required: true
+      - schema:
+          type: string
+          format: uuid
+          example: 9f5061ce-78f6-4452-9108-ad7c02821fd5
+        name: apiProductVersionId
+        description: The API product version identifier
+        in: path
+        required: true
+    post:
+      x-speakeasy-entity-operation: APIProductSpecification#create
+      summary: Create API Product Version Specification
+      description: |
+        Creates a specification for a version of an API product.
+        **Note:** You can only have one specification for a product version.
+      operationId: create-api-product-version-spec
+      responses:
+        '201':
+          $ref: '#/components/responses/APIProductVersionSpecResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/ApiProductUnauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/ApiProductNotFound'
+        '409':
+          $ref: '#/components/responses/VersionSpecConflict'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+      tags:
+        - API Product Version Specification
+      requestBody:
+        $ref: '#/components/requestBodies/CreateAPIProductVersionSpecRequest'
+  /v2/api-products/{apiProductId}/product-versions/{apiProductVersionId}/specifications/{specificationId}:
+    parameters:
+      - schema:
+          type: string
+          format: uuid
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        name: apiProductId
+        description: The API product identifier
+        in: path
+        required: true
+      - schema:
+          type: string
+          format: uuid
+          example: 9f5061ce-78f6-4452-9108-ad7c02821fd5
+        name: apiProductVersionId
+        description: The API product version identifier
+        in: path
+        required: true
+      - schema:
+          type: string
+          format: uuid
+          example: 742ff9f1-fb89-4aeb-a599-f0e278c7aeaa
+        name: specificationId
+        description: The API product version specification identifier
+        in: path
+        required: true
+        x-speakeasy-match: id
+    get:
+      x-speakeasy-entity-operation: APIProductSpecification#read
+      summary: Fetch API Product Version Specification
+      description: Returns a specification for the version of an API product.
+      operationId: get-api-product-version-spec
+      responses:
+        '200':
+          $ref: '#/components/responses/APIProductVersionSpecResponse'
+        '401':
+          $ref: '#/components/responses/ApiProductUnauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/ApiProductNotFound'
+      tags:
+        - API Product Version Specification
+    patch:
+      x-speakeasy-entity-operation: APIProductSpecification#update
+      summary: Update an API Product Version Specification
+      description: Updates a specification from an API product version.
+      operationId: update-api-product-version-spec
+      responses:
+        '200':
+          $ref: '#/components/responses/APIProductVersionSpecResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/ApiProductUnauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/ApiProductNotFound'
+        '409':
+          $ref: '#/components/responses/VersionSpecHiddenConflict'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+      tags:
+        - API Product Version Specification
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateAPIProductVersionSpecRequest'
+    delete:
+      x-speakeasy-entity-operation: APIProductSpecification#delete
+      summary: Delete API Product Version Specification
+      description: Removes a specification from a verion of an API product.
+      operationId: delete-api-product-version-spec
+      responses:
+        '204':
+          description: >-
+            Specification for the version of an API product was deleted
+            successfully.
+        '401':
+          $ref: '#/components/responses/ApiProductUnauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/ApiProductNotFound'
+      tags:
+        - API Product Version Specification
   /v2/api-products/{apiProductId}/product-versions/{id}:
     parameters:
       - schema:
@@ -5464,6 +5601,20 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/MeshControlPlane'
+    VersionSpecConflict:
+      description: Conflict - only one version specification can exist
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ConflictError'
+    VersionSpecHiddenConflict:
+      description: >-
+        Conflict - name attribute must be unique accross legacy version
+        specifications
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ConflictError'
     ApiProductUnauthorized:
       description: Unauthorized
       content:
@@ -5488,6 +5639,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/APIProductVersion'
+    APIProductVersionSpecResponse:
+      description: API product version specification
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/APIProductVersionSpec'
     UnsupportedMediaType:
       description: Unsupported Media Type
       content:
@@ -13358,7 +13515,7 @@ components:
             The configuration properties for the Vault which can be found on the
             vaults' documentation page.
           type: object
-          x-speakeasy-type-override: "any"
+          x-speakeasy-type-override: any
         created_at:
           description: Unix epoch when the resource was created.
           readOnly: true
@@ -13748,7 +13905,8 @@ components:
           description: >-
             This field is published if the API product version is published to
             at least one portal. This field is deprecated: Use
-            PortalProductVersion.publish_status instead.
+            [PortalProductVersion.publish_status](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version)
+            instead.
           enum:
             - unpublished
             - published
@@ -13759,12 +13917,43 @@ components:
           description: >-
             Whether this API product version is deprecated in at least one
             portal. This field is deprecated: Use
-            PortalProductVersion.deprecated instead
+            [PortalProductVersion.deprecated](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version)
+            instead
           example: false
         auth_strategy_sync_errors:
           $ref: '#/components/schemas/AuthStrategySyncErrors'
         portals:
           $ref: '#/components/schemas/APIProductVersionPortals'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+    APIProductVersionSpec:
+      x-speakeasy-entity: APIProductSpecification
+      title: API Product Version Spec
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - content
+        - created_at
+        - updated_at
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 7710d5c4-d902-410b-992f-18b814155b53
+          description: The API product version specification identifier.
+          readOnly: true
+        name:
+          type: string
+          description: The name of the API product version specification
+          example: oas.yaml
+        content:
+          type: string
+          description: The contents of the API product version specification
+          example: My YAML or JSON formatted OAS content
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -13840,7 +14029,13 @@ components:
         - portal_ids
     CreateAPIProductVersionDTO:
       title: Create API Product Version Request
-      description: The request schema to create a version of an API product.
+      description: >
+        The request schema to create a version of an API product.
+
+        Note that the `publish_status` and `deprecated` fields are deprecated: 
+        Use
+        [PortalProductVersion.publish_status](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version)
+        instead.
       type: object
       additionalProperties: false
       required:
@@ -13859,7 +14054,9 @@ components:
           description: >-
             The publish status of the API product version. Applies publish
             status to all related portal product versions. This field is
-            deprecated: Use PortalProductVersion.publish_status instead.
+            deprecated: Use
+            [PortalProductVersion.publish_status](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version)
+            instead.
           enum:
             - unpublished
             - published
@@ -13872,16 +14069,49 @@ components:
             Indicates if the version of the API product is deprecated. Applies
             deprecation or removes deprecation from all related portal product
             versions. This field is deprecated: Use
-            PortalProductVersion.deprecated instead.
+            [PortalProductVersion.deprecated](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version)
+            instead.
           example: false
         gateway_service:
           oneOf:
             - $ref: '#/components/schemas/GatewayServicePayload'
             - $ref: '#/components/schemas/LegacyGatewayServicePayload'
           $ref: '#/components/schemas/GatewayServicePayload'
+    CreateAPIProductVersionSpecDTO:
+      x-speakeasy-entity: APIProductSpecification
+      title: Create API Product Version Specification Request
+      description: >-
+        The request schema to create a specification for a version of an API
+        product.
+      type: object
+      additionalProperties: false
+      required:
+        - name
+        - content
+      properties:
+        name:
+          type: string
+          nullable: false
+          pattern: ^.+(?:\.yaml|\.yml|\.json)$
+          minLength: 1
+          maxLength: 255
+          example: oas.yaml
+          description: The name of the API product version specification
+        content:
+          type: string
+          format: byte
+          minLength: 1
+          example: TXkgWUFNTCBvciBKU09OIGZvcm1hdHRlZCBPQVMgY29udGVudA==
+          description: The base64 encoded contents of the API product version specification
     UpdateAPIProductVersionDTO:
       title: Update API Product Version Request
-      description: The request schema for updating a version of an API product.
+      description: >
+        The request schema for updating a version of an API product.
+
+        Note that the `publish_status` and `deprecated` fields are deprecated: 
+        Use
+        [PortalProductVersion.publish_status](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version)
+        instead.
       type: object
       additionalProperties: false
       properties:
@@ -13896,7 +14126,9 @@ components:
           description: >-
             The publish status of the API product version. Applies publish
             status to all related portal product versions. This field is
-            deprecated: Use PortalProductVersion.publish_status instead.
+            deprecated: Use
+            [PortalProductVersion.publish_status](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version)
+            instead.
           enum:
             - unpublished
             - published
@@ -13908,7 +14140,8 @@ components:
             Indicates if the version of the API product is deprecated. Applies
             deprecation or removes deprecation from all related portal product
             versions. This field is deprecated: Use
-            PortalProductVersion.deprecated instead.
+            [PortalProductVersion.deprecated](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version)
+            instead.
           example: false
         notify:
           type: boolean
@@ -13929,6 +14162,29 @@ components:
             - $ref: '#/components/schemas/GatewayServicePayload'
             - $ref: '#/components/schemas/LegacyGatewayServicePayload'
           $ref: '#/components/schemas/GatewayServicePayload'
+    UpdateAPIProductVersionSpecDTO:
+      x-speakeasy-entity: APIProductSpecification
+      title: Update API Product Version Specification Request
+      description: >-
+        The request schema for updating a specification for a version of an API
+        product.
+      type: object
+      additionalProperties: false
+      properties:
+        name:
+          type: string
+          nullable: false
+          pattern: ^.+(?:\.yaml|\.yml|\.json)$
+          minLength: 1
+          maxLength: 255
+          example: oas.yaml
+          description: The name of the API product version specification
+        content:
+          type: string
+          format: byte
+          minLength: 1
+          example: TXkgWUFNTCBvciBKU09OIGZvcm1hdHRlZCBPQVMgY29udGVudA==
+          description: The base64 encoded contents of the API product version specification
     LegacyGatewayServicePayload:
       type: object
       nullable: true
@@ -15218,6 +15474,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/CreateAPIProductVersionDTO'
+    CreateAPIProductVersionSpecRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateAPIProductVersionSpecDTO'
     UpdateAPIProductVersionRequest:
       x-speakeasy-entity: APIProductVersion
       required: true
@@ -15225,6 +15487,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/UpdateAPIProductVersionDTO'
+    UpdateAPIProductVersionSpecRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateAPIProductVersionSpecDTO'
     UpdatePortalAuthenticationSettings:
       description: Update a portal's developer authentication settings.
       content:

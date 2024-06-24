@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.0
+> Released on 2024/??/??
+
+### Features
+* Add support for the `konnect_api_product_specification` resource
+
 ## 0.3.1
 > Released on 2024/06/14
 
