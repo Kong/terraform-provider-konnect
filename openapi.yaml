@@ -1632,6 +1632,89 @@ paths:
       x-speakeasy-entity-operation: GatewayKey#read
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
+  /v2/control-planes/{controlPlaneId}/core-entities/plugin-schemas:
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+    post:
+      x-speakeasy-entity-operation: GatewayCustomPluginSchema#create
+      summary: Upload custom plugin schema
+      operationId: create-plugin-schemas
+      responses:
+        '201':
+          $ref: '#/components/responses/plugin-schemas'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - Custom Plugin Schemas
+      description: Upload a custom plugin schema associated with a control plane.
+      requestBody:
+        $ref: '#/components/requestBodies/create-plugin-schemas'
+  /v2/control-planes/{controlPlaneId}/core-entities/plugin-schemas/{name}:
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+      - schema:
+          type: string
+          example: myplugin
+        name: name
+        in: path
+        required: true
+        description: The custom plugin name
+    get:
+      x-speakeasy-entity-operation: GatewayCustomPluginSchema#read
+      summary: Fetch custom plugin schema
+      responses:
+        '200':
+          $ref: '#/components/responses/plugin-schemas'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      operationId: get-plugin-schema
+      description: Returns information about a custom plugin from a given name.
+      tags:
+        - Custom Plugin Schemas
+    delete:
+      x-speakeasy-entity-operation: GatewayCustomPluginSchema#delete
+      summary: Delete custom plugin schema
+      operationId: delete-plugin-schemas
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      description: Delete an individual custom plugin schema.
+      tags:
+        - Custom Plugin Schemas
+    put:
+      x-speakeasy-entity-operation: GatewayCustomPluginSchema#update
+      summary: Create or update a custom plugin schema
+      operationId: update-plugin-schemas
+      responses:
+        '200':
+          $ref: '#/components/responses/plugin-schemas'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      description: Create or update an individual custom plugin schema.
+      tags:
+        - Custom Plugin Schemas
+      requestBody:
+        $ref: '#/components/requestBodies/create-plugin-schemas'
   /v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#ACL:
     delete:
       description: Delete a ACL plugin
@@ -5547,6 +5630,41 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/DataPlaneClientCertificate'
+    plugin-schemas:
+      description: A response for a single custom plugin schema.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              item:
+                x-speakeasy-entity: GatewayCustomPluginSchema
+                type: object
+                properties:
+                  lua_schema:
+                    type: string
+                    description: The custom plugin schema; `jq -Rs '.' schema.lua`.
+                    example: >-
+                      return { name = \"myplugin\", fields = { { config = { type
+                      = \"record\", fields = { } } } } }
+                  name:
+                    type: string
+                    description: >-
+                      The custom plugin name determined by the custom plugin
+                      schema.
+                    example: myplugin
+                  created_at:
+                    type: integer
+                    description: >-
+                      An ISO-8604 timestamp representation of custom plugin
+                      schema creation date.
+                    example: 1422386534
+                  updated_at:
+                    type: integer
+                    description: >-
+                      An ISO-8604 timestamp representation of custom plugin
+                      schema update date.
+                    example: 1422412345
     HTTP401Error:
       content:
         application/json:
@@ -15455,6 +15573,22 @@ components:
             required:
               - cert
       description: Request body for creating a dp-client-certificate.
+    create-plugin-schemas:
+      content:
+        application/json:
+          schema:
+            x-speakeasy-entity: GatewayCustomPluginSchema
+            type: object
+            properties:
+              lua_schema:
+                type: string
+                description: |
+                  The custom plugin schema; `jq -Rs '.' schema.lua`.
+                example: >-
+                  return { name = \"myplugin\", fields = { { config = { type =
+                  \"record\", fields = { } } } } }
+            required:
+              - lua_schema
     CreateAPIProductRequest:
       required: true
       content:

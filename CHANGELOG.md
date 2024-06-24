@@ -4,7 +4,7 @@
 > Released on 2024/??/??
 
 ### Features
-* Add support for the `konnect_api_product_specification` resource
+* Add support for the `konnect_api_product_specification` and `konnect_gateway_custom_plugin_schema` resources
 
 ## 0.3.1
 > Released on 2024/06/14
