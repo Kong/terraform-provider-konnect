@@ -2994,16 +2994,6 @@ components:
       type: string
       example: myapp
       description: The path used for initiating login requests with the identity provider.
-    IdentityProviderKonnectMappingEnabled:
-      type: boolean
-      description: Whether a Konnect Identity Admin assigns teams to a user.
-      default: true
-      example: true
-    IdentityProviderIDPMappingEnabled:
-      type: boolean
-      description: Identity provider groups determine the Konnect teams a user has.
-      default: false
-      example: true
     OIDCIdentityProviderIssuer:
       title: OIDC Identity Provider Issuer Property
       type: string
@@ -3119,10 +3109,6 @@ components:
           $ref: '#/components/schemas/IdentityProviderEnabled'
         login_path:
           $ref: '#/components/schemas/IdentityProviderLoginPath'
-        konnect_mapping_enabled:
-          $ref: '#/components/schemas/IdentityProviderKonnectMappingEnabled'
-        idp_mapping_enabled:
-          $ref: '#/components/schemas/IdentityProviderIDPMappingEnabled'
         config:
           type: object
           oneOf:
@@ -3160,13 +3146,6 @@ components:
         The identity provider that contains configuration data for the SAML
         authentication integration.
       properties:
-        idp_entity_id:
-          type: string
-          example: entityid
-          description: >-
-            The entity ID of the identity provider, used for uniquely
-            identifying it in SAML communications.
-          readOnly: true
         idp_metadata_url:
           $ref: '#/components/schemas/SAMLIdentityProviderMetadataURL'
         idp_metadata_xml:
@@ -3174,12 +3153,13 @@ components:
         sp_metadata_url:
           type: string
           format: uri
-          example: https://cloud.konghq.com/login/the-saml-konnect-org/metadata
+          example: >-
+            https://cloud.konghq.com/v2/authenticate/the-saml-konnect-org/saml/metadata
           readOnly: true
         sp_entity_id:
           type: string
           description: The entity ID of the service provider (SP).
-          example: entityid
+          example: https://cloud.konghq.com/sp/00000000-0000-0000-0000-000000000000
           readOnly: true
         login_url:
           type: string
@@ -3194,7 +3174,8 @@ components:
             The URL where the SAML identity provider sends authentication
             responses after successful login attempts.
           format: uri
-          example: https://cloud.konghq.com/login/the-saml-konnect-org/acs
+          example: >-
+            https://cloud.konghq.com/v2/authenticate/the-saml-konnect-org/saml/acs
           readOnly: true
       additionalProperties: false
     BooleanFieldFilter:
@@ -6894,12 +6875,13 @@ components:
         enabled: true
         login_path: the-saml-konnect-org
         config:
-          idp_entity_id: https://saml.example.com/entityid
           idp_metadata_url: https://mocksaml.com/api/saml/metadata
-          sp_entity_id: entityId
-          sp_metadata_url: https://cloud.konghq.com/login/the-saml-konnect-org/metadata
+          sp_entity_id: https://cloud.konghq.com/sp/00000000-0000-0000-0000-000000000000
+          sp_metadata_url: >-
+            https://cloud.konghq.com/v2/authenticate/the-saml-konnect-org/saml/metadata
           login_url: https://cloud.konghq.com/login/the-saml-konnect-org
-          callback_url: https://cloud.konghq.com/login/the-saml-konnect-org/acs
+          callback_url: >-
+            https://cloud.konghq.com/v2/authenticate/the-saml-konnect-org/saml/acs
         created_at: '2022-02-07T17:46:57.52Z'
         updated_at: '2022-02-07T17:46:57.52Z'
     SAMLIdentityProviderWithMetadata:
@@ -6909,16 +6891,17 @@ components:
         enabled: true
         login_path: the-saml-konnect-org
         config:
-          idp_entity_id: https://saml.example.com/entityid
           idp_metadata_xml: |
             <?xml version="1.0" encoding="UTF-8"?>
             <EntityDescriptor xmlns="urn:oasis:names:tc:SAML:2.0:metadata">
             <!-- SAML metadata content here -->
             </EntityDescriptor>
-          sp_entity_id: entityId
-          sp_metadata_url: https://cloud.konghq.com/login/the-saml-konnect-org/metadata
+          sp_entity_id: https://cloud.konghq.com/sp/00000000-0000-0000-0000-000000000000
+          sp_metadata_url: >-
+            https://cloud.konghq.com/v2/authenticate/the-saml-konnect-org/saml/metadata
           login_url: https://cloud.konghq.com/login/the-saml-konnect-org
-          callback_url: https://cloud.konghq.com/login/the-saml-konnect-org/acs
+          callback_url: >-
+            https://cloud.konghq.com/v2/authenticate/the-saml-konnect-org/saml/acs
         created_at: '2022-02-07T17:46:57.52Z'
         updated_at: '2022-02-07T17:46:57.52Z'
     IdentityProviders:
@@ -6929,12 +6912,13 @@ components:
             enabled: true
             login_path: the-saml-konnect-org
             config:
-              idp_entity_id: https://saml.example.com/entityid
               idp_metadata_url: https://mocksaml.com/api/saml/metadata
-              sp_entity_id: entityId
-              sp_metadata_url: https://cloud.konghq.com/login/the-saml-konnect-org/metadata
+              sp_entity_id: https://cloud.konghq.com/sp/00000000-0000-0000-0000-000000000000
+              sp_metadata_url: >-
+                https://cloud.konghq.com/v2/authenticate/the-saml-konnect-org/saml/metadata
               login_url: https://cloud.konghq.com/login/the-saml-konnect-org
-              callback_url: https://cloud.konghq.com/login/the-saml-konnect-org/acs
+              callback_url: >-
+                https://cloud.konghq.com/v2/authenticate/the-saml-konnect-org/saml/acs
             created_at: '2022-02-07T17:46:57.52Z'
             updated_at: '2022-02-07T17:46:57.52Z'
           - id: 66da2d42-469d-48cd-9ff3-0db135dd82d8
