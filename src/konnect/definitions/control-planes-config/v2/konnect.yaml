@@ -219,6 +219,7 @@ paths:
       tags:
         - Custom Plugin Schemas
     post:
+      x-speakeasy-entity-operation: GatewayCustomPluginSchema#create
       summary: Upload custom plugin schema
       operationId: create-plugin-schemas
       responses:
@@ -252,6 +253,7 @@ paths:
         required: true
         description: The custom plugin name
     get:
+      x-speakeasy-entity-operation: GatewayCustomPluginSchema#read
       summary: Fetch custom plugin schema
       responses:
         '200':
@@ -270,6 +272,7 @@ paths:
       tags:
         - Custom Plugin Schemas
     delete:
+      x-speakeasy-entity-operation: GatewayCustomPluginSchema#delete
       summary: Delete custom plugin schema
       operationId: delete-plugin-schemas
       responses:
@@ -288,6 +291,7 @@ paths:
       tags:
         - Custom Plugin Schemas
     put:
+      x-speakeasy-entity-operation: GatewayCustomPluginSchema#update
       summary: Create or update a custom plugin schema
       operationId: update-plugin-schemas
       responses:
@@ -395,6 +399,7 @@ components:
       content:
         application/json:
           schema:
+            x-speakeasy-entity: GatewayCustomPluginSchema
             type: object
             x-examples:
               Example 1:
@@ -595,6 +600,7 @@ components:
             type: object
             properties:
               item:
+                x-speakeasy-entity: GatewayCustomPluginSchema
                 type: object
                 properties:
                   lua_schema:

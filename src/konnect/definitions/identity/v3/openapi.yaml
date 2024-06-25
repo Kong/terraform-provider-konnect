@@ -526,6 +526,7 @@ paths:
         - Teams
     parameters: []
     post:
+      x-speakeasy-entity-operation: Team#create
       summary: Create Team
       operationId: create-team
       responses:
@@ -583,6 +584,7 @@ paths:
       tags:
         - Team Membership
     post:
+      x-speakeasy-entity-operation: TeamUser#create
       summary: Add User
       operationId: add-user-to-team
       responses:
@@ -607,7 +609,9 @@ paths:
         in: path
         required: true
         description: The team ID
+        x-speakeasy-match: id
     get:
+      x-speakeasy-entity-operation: Team#read
       summary: Fetch Team
       responses:
         '200':
@@ -621,6 +625,7 @@ paths:
       tags:
         - Teams
     patch:
+      x-speakeasy-entity-operation: Team#update
       summary: Update Team
       operationId: update-team
       responses:
@@ -636,6 +641,7 @@ paths:
       tags:
         - Teams
     delete:
+      x-speakeasy-entity-operation: Team#delete
       summary: Delete Team
       operationId: delete-team
       responses:
@@ -667,6 +673,7 @@ paths:
         required: true
         description: Team ID.
     delete:
+      x-speakeasy-entity-operation: TeamUser#delete
       summary: Remove User
       operationId: remove-user-from-team
       responses:
@@ -722,7 +729,8 @@ paths:
           required: false
           style: deepObject
     post:
-      summary: Assign Role
+      x-speakeasy-entity-operation: TeamRole#create
+      summary: Assign Team Role
       operationId: teams-assign-role
       responses:
         '201':
@@ -760,8 +768,10 @@ paths:
         in: path
         required: true
         description: The role ID.
+        x-speakeasy-match: id
     delete:
-      summary: Remove Role
+      x-speakeasy-entity-operation: TeamRole#delete
+      summary: Remove Team Role
       operationId: teams-remove-role
       responses:
         '204':
@@ -3209,6 +3219,7 @@ components:
       content:
         application/json:
           schema:
+            x-speakeasy-entity: Team
             type: object
             properties:
               name:
@@ -3235,6 +3246,7 @@ components:
       content:
         application/json:
           schema:
+            x-speakeasy-entity: Team
             type: object
             properties:
               name:
@@ -3267,6 +3279,7 @@ components:
                 format: uuid
                 description: The user ID for the user being added to a team.
                 writeOnly: true
+                x-speakeasy-name-override: user_id
             required:
               - id
           examples:
@@ -3331,7 +3344,6 @@ components:
       content:
         application/json:
           schema:
-            x-speakeasy-entity: SystemAccountRole
             type: object
             description: An assigned role is a role that has been assigned to a user or team.
             properties:
@@ -4103,6 +4115,7 @@ components:
           description: A Unix timestamp representation of the most recent change to the User account.
           readOnly: true
     Team:
+      x-speakeasy-entity: Team
       title: Team
       type: object
       description: The team object contains information about a group of users.

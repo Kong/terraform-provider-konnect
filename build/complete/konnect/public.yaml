@@ -42,6 +42,8 @@ paths:
         Returns an array of serverless cloud gateways objects.
       tags:
         - Serverless Cloud Gateways
+      servers:
+        - url: https://global.api.konghq.com/
     post:
       summary: Create a new serverless cloud gateway
       description: |-
@@ -71,6 +73,8 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
+      servers:
+        - url: https://global.api.konghq.com/
   /v0/serverless-cloud-gateways/{controlPlaneId}:
     parameters:
       - name: controlPlaneId
@@ -100,6 +104,8 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
+      servers:
+        - url: https://global.api.konghq.com/
     delete:
       summary: Delete the serverless cloud gateway
       description: |-
@@ -119,6 +125,8 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
+      servers:
+        - url: https://global.api.konghq.com/
   /v1/mesh/control-planes:
     get:
       summary: List Control Planes
@@ -248,6 +256,8 @@ paths:
           $ref: '#/components/responses/SearchResponse'
         '400':
           $ref: '#/components/responses/SearchBadRequest'
+      servers:
+        - url: https://global.api.konghq.com/
   /v1/search/types:
     get:
       operationId: get-search-types
@@ -258,6 +268,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/SearchTypesResponse'
+      servers:
+        - url: https://global.api.konghq.com/
   /v2/api-products:
     post:
       summary: Create API Product
@@ -532,6 +544,163 @@ paths:
           $ref: '#/components/responses/ApiProductNotFound'
       tags:
         - API Product Versions
+  /v2/api-products/{apiProductId}/product-versions/{apiProductVersionId}/specifications:
+    parameters:
+      - schema:
+          type: string
+          format: uuid
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        name: apiProductId
+        description: The API product identifier
+        in: path
+        required: true
+      - schema:
+          type: string
+          format: uuid
+          example: 9f5061ce-78f6-4452-9108-ad7c02821fd5
+        name: apiProductVersionId
+        description: The API product version identifier
+        in: path
+        required: true
+    post:
+      summary: Create API Product Version Specification
+      description: |
+        Creates a specification for a version of an API product.
+        **Note:** You can only have one specification for a product version.
+      operationId: create-api-product-version-spec
+      responses:
+        '201':
+          $ref: '#/components/responses/APIProductVersionSpecResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+              examples:
+                APIProductVersionSpecContentBadRequestExample:
+                  $ref: >-
+                    #/components/examples/APIProductVersionSpecContentBadRequestExample
+        '401':
+          $ref: '#/components/responses/ApiProductUnauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/ApiProductNotFound'
+        '409':
+          $ref: '#/components/responses/VersionSpecConflict'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+      tags:
+        - API Product Version Specification
+      requestBody:
+        $ref: '#/components/requestBodies/CreateAPIProductVersionSpecRequest'
+    get:
+      summary: Fetch API Product Version Specifications
+      description: |
+        Returns a list of specification for the version of an API product.
+        **Note:** You can only have one specification for a product version.
+      operationId: get-many-api-product-version-spec
+      responses:
+        '200':
+          $ref: '#/components/responses/ListAPIProductVersionSpecResponse'
+        '401':
+          $ref: '#/components/responses/ApiProductUnauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/ApiProductNotFound'
+      tags:
+        - API Product Version Specification
+  /v2/api-products/{apiProductId}/product-versions/{apiProductVersionId}/specifications/{specificationId}:
+    parameters:
+      - schema:
+          type: string
+          format: uuid
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        name: apiProductId
+        description: The API product identifier
+        in: path
+        required: true
+      - schema:
+          type: string
+          format: uuid
+          example: 9f5061ce-78f6-4452-9108-ad7c02821fd5
+        name: apiProductVersionId
+        description: The API product version identifier
+        in: path
+        required: true
+      - schema:
+          type: string
+          format: uuid
+          example: 742ff9f1-fb89-4aeb-a599-f0e278c7aeaa
+        name: specificationId
+        description: The API product version specification identifier
+        in: path
+        required: true
+    get:
+      summary: Fetch API Product Version Specification
+      description: Returns a specification for the version of an API product.
+      operationId: get-api-product-version-spec
+      responses:
+        '200':
+          $ref: '#/components/responses/APIProductVersionSpecResponse'
+        '401':
+          $ref: '#/components/responses/ApiProductUnauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/ApiProductNotFound'
+      tags:
+        - API Product Version Specification
+    patch:
+      summary: Update an API Product Version Specification
+      description: Updates a specification from an API product version.
+      operationId: update-api-product-version-spec
+      responses:
+        '200':
+          $ref: '#/components/responses/APIProductVersionSpecResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+              examples:
+                APIProductVersionSpecContentBadRequestExample:
+                  $ref: >-
+                    #/components/examples/APIProductVersionSpecContentBadRequestExample
+        '401':
+          $ref: '#/components/responses/ApiProductUnauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/ApiProductNotFound'
+        '409':
+          $ref: '#/components/responses/VersionSpecHiddenConflict'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+      tags:
+        - API Product Version Specification
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateAPIProductVersionSpecRequest'
+    delete:
+      summary: Delete API Product Version Specification
+      description: Removes a specification from a verion of an API product.
+      operationId: delete-api-product-version-spec
+      responses:
+        '204':
+          description: >-
+            Specification for the version of an API product was deleted
+            successfully.
+        '401':
+          $ref: '#/components/responses/ApiProductUnauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/ApiProductNotFound'
+      tags:
+        - API Product Version Specification
   /v2/api-products/{apiProductId}/product-versions/{id}:
     parameters:
       - schema:
@@ -608,163 +777,6 @@ paths:
           $ref: '#/components/responses/ApiProductNotFound'
       tags:
         - API Product Versions
-  /v2/api-products/{apiProductId}/product-versions/{productVersionId}/specifications:
-    parameters:
-      - schema:
-          type: string
-          format: uuid
-          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
-        name: apiProductId
-        description: The API product identifier
-        in: path
-        required: true
-      - schema:
-          type: string
-          format: uuid
-          example: 9f5061ce-78f6-4452-9108-ad7c02821fd5
-        name: productVersionId
-        description: The API product version identifier
-        in: path
-        required: true
-    post:
-      summary: Create API Product Version Specification
-      description: |
-        Creates a specification for a version of an API product.
-        **Note:** You can only have one specification for a product version.
-      operationId: create-api-product-version-spec
-      responses:
-        '201':
-          $ref: '#/components/responses/APIProductVersionSpecResponse'
-        '400':
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/BadRequestError'
-              examples:
-                APIProductVersionSpecContentBadRequestExample:
-                  $ref: >-
-                    #/components/examples/APIProductVersionSpecContentBadRequestExample
-        '401':
-          $ref: '#/components/responses/ApiProductUnauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/ApiProductNotFound'
-        '409':
-          $ref: '#/components/responses/VersionSpecConflict'
-        '415':
-          $ref: '#/components/responses/UnsupportedMediaType'
-      tags:
-        - API Product Version Specification
-      requestBody:
-        $ref: '#/components/requestBodies/CreateAPIProductVersionSpecRequest'
-    get:
-      summary: Fetch API Product Version Specifications
-      description: |
-        Returns a list of specification for the version of an API product.
-        **Note:** You can only have one specification for a product version.
-      operationId: get-many-api-product-version-spec
-      responses:
-        '200':
-          $ref: '#/components/responses/ListAPIProductVersionSpecResponse'
-        '401':
-          $ref: '#/components/responses/ApiProductUnauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/ApiProductNotFound'
-      tags:
-        - API Product Version Specification
-  /v2/api-products/{apiProductId}/product-versions/{productVersionId}/specifications/{specificationId}:
-    parameters:
-      - schema:
-          type: string
-          format: uuid
-          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
-        name: apiProductId
-        description: The API product identifier
-        in: path
-        required: true
-      - schema:
-          type: string
-          format: uuid
-          example: 9f5061ce-78f6-4452-9108-ad7c02821fd5
-        name: productVersionId
-        description: The API product version identifier
-        in: path
-        required: true
-      - schema:
-          type: string
-          format: uuid
-          example: 742ff9f1-fb89-4aeb-a599-f0e278c7aeaa
-        name: specificationId
-        description: The API product version specification identifier
-        in: path
-        required: true
-    get:
-      summary: Fetch API Product Version Specification
-      description: Returns a specification for the version of an API product.
-      operationId: get-api-product-version-spec
-      responses:
-        '200':
-          $ref: '#/components/responses/APIProductVersionSpecResponse'
-        '401':
-          $ref: '#/components/responses/ApiProductUnauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/ApiProductNotFound'
-      tags:
-        - API Product Version Specification
-    patch:
-      summary: Update an API Product Version Specification
-      description: Updates a specification from an API product version.
-      operationId: update-api-product-version-spec
-      responses:
-        '200':
-          $ref: '#/components/responses/APIProductVersionSpecResponse'
-        '400':
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/BadRequestError'
-              examples:
-                APIProductVersionSpecContentBadRequestExample:
-                  $ref: >-
-                    #/components/examples/APIProductVersionSpecContentBadRequestExample
-        '401':
-          $ref: '#/components/responses/ApiProductUnauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/ApiProductNotFound'
-        '409':
-          $ref: '#/components/responses/VersionSpecHiddenConflict'
-        '415':
-          $ref: '#/components/responses/UnsupportedMediaType'
-      tags:
-        - API Product Version Specification
-      requestBody:
-        $ref: '#/components/requestBodies/UpdateAPIProductVersionSpecRequest'
-    delete:
-      summary: Delete API Product Version Specification
-      description: Removes a specification from a verion of an API product.
-      operationId: delete-api-product-version-spec
-      responses:
-        '204':
-          description: >-
-            Specification for the version of an API product was deleted
-            successfully.
-        '401':
-          $ref: '#/components/responses/ApiProductUnauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/ApiProductNotFound'
-      tags:
-        - API Product Version Specification
   /v2/api-products/{id}:
     parameters:
       - schema:
@@ -1132,6 +1144,8 @@ paths:
             #/components/responses/RetrieveCloudGatewaysAvailabilityDocumentResponse
       tags:
         - Resource Availability
+      servers:
+        - url: https://global.api.konghq.com/
   /v2/cloud-gateways/configurations:
     get:
       summary: List Configurations
@@ -1156,6 +1170,8 @@ paths:
           $ref: '#/components/responses/Forbidden'
       tags:
         - Data-Plane Group Configurations
+      servers:
+        - url: https://global.api.konghq.com/
     put:
       summary: Create Configuration
       description: >
@@ -1198,6 +1214,8 @@ paths:
           $ref: '#/components/responses/CloudGatewaysConflict'
       tags:
         - Data-Plane Group Configurations
+      servers:
+        - url: https://global.api.konghq.com/
   /v2/cloud-gateways/configurations/{configurationId}:
     get:
       summary: Get Configuration
@@ -1218,6 +1236,8 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Data-Plane Group Configurations
+      servers:
+        - url: https://global.api.konghq.com/
   /v2/cloud-gateways/custom-domains:
     get:
       summary: List Custom Domains
@@ -1244,6 +1264,8 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Custom Domains
+      servers:
+        - url: https://global.api.konghq.com/
     post:
       summary: Create Custom Domain
       description: >
@@ -1273,6 +1295,8 @@ paths:
           $ref: '#/components/responses/Conflict'
       tags:
         - Custom Domains
+      servers:
+        - url: https://global.api.konghq.com/
   /v2/cloud-gateways/custom-domains/{customDomainId}:
     get:
       summary: Get Custom Domain
@@ -1293,6 +1317,8 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Custom Domains
+      servers:
+        - url: https://global.api.konghq.com/
     delete:
       summary: Delete Custom Domain
       description: >-
@@ -1314,6 +1340,8 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Custom Domains
+      servers:
+        - url: https://global.api.konghq.com/
   /v2/cloud-gateways/custom-domains/{customDomainId}/online-status:
     get:
       summary: Get Custom Domain Online Status
@@ -1332,6 +1360,8 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Custom Domains
+      servers:
+        - url: https://global.api.konghq.com/
   /v2/cloud-gateways/default-resource-quotas:
     get:
       summary: List Default Resource Quotas
@@ -1355,6 +1385,8 @@ paths:
           $ref: '#/components/responses/Forbidden'
       tags:
         - Resource Quotas
+      servers:
+        - url: https://global.api.konghq.com/
   /v2/cloud-gateways/networks:
     get:
       summary: List Networks
@@ -1375,6 +1407,8 @@ paths:
           $ref: '#/components/responses/Forbidden'
       tags:
         - Networks
+      servers:
+        - url: https://global.api.konghq.com/
     post:
       summary: Create Network
       description: Creates a new network for a given provider account.
@@ -1398,6 +1432,8 @@ paths:
           $ref: '#/components/responses/Conflict'
       tags:
         - Networks
+      servers:
+        - url: https://global.api.konghq.com/
   /v2/cloud-gateways/networks/{networkId}:
     get:
       summary: Get Network
@@ -1416,6 +1452,8 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Networks
+      servers:
+        - url: https://global.api.konghq.com/
     patch:
       summary: Update Network
       description: Updates a network by ID.
@@ -1443,6 +1481,8 @@ paths:
           $ref: '#/components/responses/Conflict'
       tags:
         - Networks
+      servers:
+        - url: https://global.api.konghq.com/
     delete:
       summary: Delete Network
       description: Deletes a network by ID.
@@ -1462,6 +1502,8 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Networks
+      servers:
+        - url: https://global.api.konghq.com/
   /v2/cloud-gateways/networks/{networkId}/configuration-references:
     get:
       description: List Network Configuration References
@@ -1486,6 +1528,8 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Networks
+      servers:
+        - url: https://global.api.konghq.com/
   /v2/cloud-gateways/networks/{networkId}/transit-gateways:
     get:
       summary: List Transit Gateways
@@ -1509,6 +1553,8 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Transit Gateways
+      servers:
+        - url: https://global.api.konghq.com/
     post:
       summary: Create Transit Gateway
       description: Creates a new transit gateway for a given network.
@@ -1536,6 +1582,8 @@ paths:
           $ref: '#/components/responses/Conflict'
       tags:
         - Transit Gateways
+      servers:
+        - url: https://global.api.konghq.com/
   /v2/cloud-gateways/networks/{networkId}/transit-gateways/{transitGatewayId}:
     get:
       summary: Get Transit Gateway
@@ -1555,6 +1603,8 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Transit Gateways
+      servers:
+        - url: https://global.api.konghq.com/
     delete:
       summary: Delete Transit Gateway
       description: Deletes a transit gateway by ID for a given network.
@@ -1575,6 +1625,8 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Transit Gateways
+      servers:
+        - url: https://global.api.konghq.com/
   /v2/cloud-gateways/provider-accounts:
     get:
       summary: List Provider Accounts
@@ -1597,6 +1649,8 @@ paths:
           $ref: '#/components/responses/Forbidden'
       tags:
         - Provider Accounts
+      servers:
+        - url: https://global.api.konghq.com/
   /v2/cloud-gateways/provider-accounts/{providerAccountId}:
     get:
       summary: Get Provider Account
@@ -1615,6 +1669,8 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Provider Accounts
+      servers:
+        - url: https://global.api.konghq.com/
   /v2/cloud-gateways/resource-quotas:
     get:
       summary: List Resource Quotas
@@ -1635,6 +1691,8 @@ paths:
           $ref: '#/components/responses/Forbidden'
       tags:
         - Resource Quotas
+      servers:
+        - url: https://global.api.konghq.com/
   /v2/cloud-gateways/resource-quotas/{resourceQuotaId}:
     get:
       summary: Get Resource Quota
@@ -1653,6 +1711,8 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Resource Quotas
+      servers:
+        - url: https://global.api.konghq.com/
   /v2/control-planes:
     get:
       summary: List Control Planes
@@ -6361,6 +6421,8 @@ paths:
           $ref: '#/components/responses/IdentityBadRequest'
         '401':
           $ref: '#/components/responses/IdentityUnauthenticated'
+      servers:
+        - url: https://global.api.konghq.com/
   /v3/authentication-settings:
     get:
       summary: Get Auth Settings
@@ -6375,6 +6437,8 @@ paths:
           $ref: '#/components/responses/AuthenticationSettings'
         '401':
           $ref: '#/components/responses/IdentityUnauthenticated'
+      servers:
+        - url: https://global.api.konghq.com/
     patch:
       summary: Update Auth Settings
       description: Updates authentication configuration.
@@ -6392,6 +6456,8 @@ paths:
           $ref: '#/components/responses/IdentityUnauthenticated'
         '403':
           $ref: '#/components/responses/Unauthorized'
+      servers:
+        - url: https://global.api.konghq.com/
   /v3/identity-provider:
     get:
       summary: Fetch IdP Configuration
@@ -6410,6 +6476,8 @@ paths:
       tags:
         - Auth Settings
       description: Fetch the IdP configuration.
+      servers:
+        - url: https://global.api.konghq.com/
     parameters: []
     patch:
       summary: Update IdP Configuration
@@ -6428,6 +6496,8 @@ paths:
         $ref: '#/components/requestBodies/UpdateIdPConfiguration'
       tags:
         - Auth Settings
+      servers:
+        - url: https://global.api.konghq.com/
   /v3/identity-provider/team-group-mappings:
     get:
       summary: Fetch Team Group Mappings
@@ -6451,6 +6521,8 @@ paths:
         Groups.
 
         Returns a 400 error if an Identity Provider has not yet been configured.
+      servers:
+        - url: https://global.api.konghq.com/
     patch:
       summary: Patch Mappings by Team ID
       operationId: patch-team-group-mappings
@@ -6482,6 +6554,8 @@ paths:
         the request body is not found or is not a UUID.
       requestBody:
         $ref: '#/components/requestBodies/PatchTeamGroupMappings'
+      servers:
+        - url: https://global.api.konghq.com/
   /v3/identity-provider/team-mappings:
     put:
       summary: Update Team Mappings
@@ -6502,6 +6576,8 @@ paths:
       description: Updates the IdP group to Konnect team mapping.
       requestBody:
         $ref: '#/components/requestBodies/UpdateTeamMappings'
+      servers:
+        - url: https://global.api.konghq.com/
     get:
       summary: Fetch Team Mapping
       operationId: get-idp-team-mappings
@@ -6522,6 +6598,8 @@ paths:
       tags:
         - Auth Settings
       description: Fetch the IdP group to Konnect team mapping.
+      servers:
+        - url: https://global.api.konghq.com/
   /v3/invites:
     post:
       summary: Invite User
@@ -6544,6 +6622,8 @@ paths:
           $ref: '#/components/responses/RateLimited'
       tags:
         - Invites
+      servers:
+        - url: https://global.api.konghq.com/
   /v3/organizations/impersonation:
     get:
       summary: Get Impersonation Settings
@@ -6560,6 +6640,8 @@ paths:
           $ref: '#/components/responses/IdentityUnauthenticated'
         '404':
           $ref: '#/components/responses/IdentityNotFound'
+      servers:
+        - url: https://global.api.konghq.com/
     patch:
       summary: Update Impersonation Settings
       description: Updates Impersonation Settings.
@@ -6579,6 +6661,8 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/IdentityNotFound'
+      servers:
+        - url: https://global.api.konghq.com/
   /v3/roles:
     get:
       summary: Get Predefined Roles
@@ -6593,6 +6677,8 @@ paths:
           $ref: '#/components/responses/IdentityUnauthenticated'
       tags:
         - Roles
+      servers:
+        - url: https://global.api.konghq.com/
   /v3/system-accounts:
     get:
       summary: List System Accounts
@@ -6628,6 +6714,8 @@ paths:
           description: Filter system accounts returned in the response.
           required: false
           style: deepObject
+      servers:
+        - url: https://global.api.konghq.com/
     post:
       summary: Create System Account
       operationId: post-system-accounts
@@ -6647,6 +6735,8 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '409':
           $ref: '#/components/responses/IdentityConflict'
+      servers:
+        - url: https://global.api.konghq.com/
   /v3/system-accounts/{accountId}:
     get:
       summary: Fetch System Account
@@ -6665,6 +6755,8 @@ paths:
       description: >-
         Returns the system account (SA) for the SA ID specified as a path
         parameter.
+      servers:
+        - url: https://global.api.konghq.com/
     parameters:
       - schema:
           type: string
@@ -6693,6 +6785,8 @@ paths:
         - System Accounts
       requestBody:
         $ref: '#/components/requestBodies/UpdateSystemAccount'
+      servers:
+        - url: https://global.api.konghq.com/
     delete:
       summary: Delete System Account
       operationId: delete-system-accounts-id
@@ -6710,6 +6804,8 @@ paths:
         account was not found.
       tags:
         - System Accounts
+      servers:
+        - url: https://global.api.konghq.com/
   /v3/system-accounts/{accountId}/access-tokens:
     get:
       summary: List System Account Access Tokens
@@ -6743,6 +6839,8 @@ paths:
           description: Filter access tokens returned in the response.
           required: false
           style: deepObject
+      servers:
+        - url: https://global.api.konghq.com/
     parameters:
       - schema:
           type: string
@@ -6773,6 +6871,8 @@ paths:
         $ref: '#/components/requestBodies/CreateSystemAccountAccessToken'
       tags:
         - System Accounts - Access Tokens
+      servers:
+        - url: https://global.api.konghq.com/
   /v3/system-accounts/{accountId}/access-tokens/{tokenId}:
     get:
       summary: Fetch System Account Access Token
@@ -6792,6 +6892,8 @@ paths:
       parameters: []
       tags:
         - System Accounts - Access Tokens
+      servers:
+        - url: https://global.api.konghq.com/
     parameters:
       - schema:
           type: string
@@ -6826,6 +6928,8 @@ paths:
         $ref: '#/components/requestBodies/UpdateSystemAccountAccessToken'
       tags:
         - System Accounts - Access Tokens
+      servers:
+        - url: https://global.api.konghq.com/
     delete:
       summary: Delete System Account Access Token
       operationId: delete-system-accounts-id-access-tokens-id
@@ -6841,6 +6945,8 @@ paths:
       description: Deletes the specified token. Returns 404 if the token was not found.
       tags:
         - System Accounts - Access Tokens
+      servers:
+        - url: https://global.api.konghq.com/
   /v3/system-accounts/{accountId}/assigned-roles:
     parameters:
       - schema:
@@ -6881,6 +6987,8 @@ paths:
           style: deepObject
       tags:
         - System Accounts - Roles
+      servers:
+        - url: https://global.api.konghq.com/
     post:
       summary: Create Assigned Role for System Account
       operationId: post-system-accounts-accountId-assigned-roles
@@ -6902,6 +7010,8 @@ paths:
         $ref: '#/components/requestBodies/AssignRole'
       tags:
         - System Accounts - Roles
+      servers:
+        - url: https://global.api.konghq.com/
   /v3/system-accounts/{accountId}/assigned-roles/{roleId}:
     parameters:
       - schema:
@@ -6933,6 +7043,8 @@ paths:
         system account or assigned role were not found.
       tags:
         - System Accounts - Roles
+      servers:
+        - url: https://global.api.konghq.com/
   /v3/system-accounts/{accountId}/teams:
     parameters:
       - schema:
@@ -6969,6 +7081,8 @@ paths:
           style: deepObject
       tags:
         - System Accounts - Team Membership
+      servers:
+        - url: https://global.api.konghq.com/
   /v3/teams:
     get:
       summary: List Teams
@@ -6998,6 +7112,8 @@ paths:
           style: deepObject
       tags:
         - Teams
+      servers:
+        - url: https://global.api.konghq.com/
     parameters: []
     post:
       summary: Create Team
@@ -7014,6 +7130,8 @@ paths:
       requestBody:
         $ref: '#/components/requestBodies/CreateTeam'
       description: 'Creates a team in the Konnect Organization. '
+      servers:
+        - url: https://global.api.konghq.com/
   /v3/teams/{teamId}:
     parameters:
       - schema:
@@ -7037,6 +7155,8 @@ paths:
       description: Returns information about a team from a given team ID.
       tags:
         - Teams
+      servers:
+        - url: https://global.api.konghq.com/
     patch:
       summary: Update Team
       operationId: update-team
@@ -7052,6 +7172,8 @@ paths:
         $ref: '#/components/requestBodies/UpdateTeam'
       tags:
         - Teams
+      servers:
+        - url: https://global.api.konghq.com/
     delete:
       summary: Delete Team
       operationId: delete-team
@@ -7065,6 +7187,8 @@ paths:
       description: Deletes an individual team. Returns 404 if the team is not found.
       tags:
         - Teams
+      servers:
+        - url: https://global.api.konghq.com/
   /v3/teams/{teamId}/assigned-roles:
     parameters:
       - schema:
@@ -7107,8 +7231,10 @@ paths:
           description: Filter roles returned in the response.
           required: false
           style: deepObject
+      servers:
+        - url: https://global.api.konghq.com/
     post:
-      summary: Assign Role
+      summary: Assign Team Role
       operationId: teams-assign-role
       responses:
         '201':
@@ -7128,6 +7254,8 @@ paths:
         $ref: '#/components/requestBodies/AssignRole'
       tags:
         - Roles
+      servers:
+        - url: https://global.api.konghq.com/
   /v3/teams/{teamId}/assigned-roles/{roleId}:
     parameters:
       - schema:
@@ -7147,7 +7275,7 @@ paths:
         required: true
         description: The role ID.
     delete:
-      summary: Remove Role
+      summary: Remove Team Role
       operationId: teams-remove-role
       responses:
         '204':
@@ -7165,6 +7293,8 @@ paths:
       description: >-
         Removes an assigned role from a team. Returns 404 if the requested team
         or assigned role were not found.
+      servers:
+        - url: https://global.api.konghq.com/
   /v3/teams/{teamId}/system-accounts:
     parameters:
       - schema:
@@ -7203,6 +7333,8 @@ paths:
           style: deepObject
       tags:
         - System Accounts - Team Membership
+      servers:
+        - url: https://global.api.konghq.com/
     post:
       summary: Add System Account to a Team
       operationId: post-teams-teamId-system-accounts
@@ -7224,6 +7356,8 @@ paths:
         $ref: '#/components/requestBodies/AddSystemAccountToTeam'
       tags:
         - System Accounts - Team Membership
+      servers:
+        - url: https://global.api.konghq.com/
   /v3/teams/{teamId}/system-accounts/{accountId}:
     parameters:
       - schema:
@@ -7255,6 +7389,8 @@ paths:
         account were not found.
       tags:
         - System Accounts - Team Membership
+      servers:
+        - url: https://global.api.konghq.com/
   /v3/teams/{teamId}/users:
     parameters:
       - schema:
@@ -7299,6 +7435,8 @@ paths:
           style: deepObject
       tags:
         - Team Membership
+      servers:
+        - url: https://global.api.konghq.com/
     post:
       summary: Add User
       operationId: add-user-to-team
@@ -7314,6 +7452,8 @@ paths:
         $ref: '#/components/requestBodies/AddUserToTeam'
       tags:
         - Team Membership
+      servers:
+        - url: https://global.api.konghq.com/
   /v3/teams/{teamId}/users/{userId}:
     parameters:
       - schema:
@@ -7349,6 +7489,8 @@ paths:
         the user or team were not found.
       tags:
         - Team Membership
+      servers:
+        - url: https://global.api.konghq.com/
   /v3/users:
     get:
       summary: List Users
@@ -7380,6 +7522,8 @@ paths:
           description: Filter users returned in the response.
           required: false
           style: deepObject
+      servers:
+        - url: https://global.api.konghq.com/
   /v3/users/{userId}:
     parameters:
       - schema:
@@ -7403,6 +7547,8 @@ paths:
           $ref: '#/components/responses/IdentityNotFound'
       operationId: get-user
       description: Returns the user object for the user ID specified as a path parameter.
+      servers:
+        - url: https://global.api.konghq.com/
     patch:
       summary: Update User
       operationId: update-user
@@ -7420,6 +7566,8 @@ paths:
         $ref: '#/components/requestBodies/UpdateUser'
       tags:
         - Users
+      servers:
+        - url: https://global.api.konghq.com/
     delete:
       summary: Delete User
       operationId: delete-user
@@ -7433,6 +7581,8 @@ paths:
         found.
       tags:
         - Users
+      servers:
+        - url: https://global.api.konghq.com/
   /v3/users/{userId}/assigned-roles:
     parameters:
       - schema:
@@ -7471,6 +7621,8 @@ paths:
           description: Filter roles returned in the response.
           required: false
           style: deepObject
+      servers:
+        - url: https://global.api.konghq.com/
     post:
       summary: Assign Role
       operationId: users-assign-role
@@ -7492,6 +7644,8 @@ paths:
         $ref: '#/components/requestBodies/AssignRole'
       tags:
         - Roles
+      servers:
+        - url: https://global.api.konghq.com/
   /v3/users/{userId}/assigned-roles/{roleId}:
     parameters:
       - schema:
@@ -7527,6 +7681,8 @@ paths:
       description: >-
         Removes an assigned role from a user. Returns 404 if the requested user
         or assigned role were not found.
+      servers:
+        - url: https://global.api.konghq.com/
   /v3/users/{userId}/teams:
     parameters:
       - schema:
@@ -7561,6 +7717,8 @@ paths:
           style: deepObject
       tags:
         - Team Membership
+      servers:
+        - url: https://global.api.konghq.com/
 components:
   schemas:
     BaseError:

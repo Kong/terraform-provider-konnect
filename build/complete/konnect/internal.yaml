@@ -44,6 +44,8 @@ paths:
           $ref: '#/components/responses/Conflict'
       tags:
         - Provider Accounts
+      servers:
+        - url: https://global.api.konghq.com/
   /v2/cloud-gateways/provider-accounts/{providerAccountId}:
     delete:
       summary: Delete Provider Account
@@ -64,6 +66,8 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Provider Accounts
+      servers:
+        - url: https://global.api.konghq.com/
   /v2/cloud-gateways/resource-quotas:
     post:
       summary: Create Resource Quota
@@ -90,6 +94,8 @@ paths:
           $ref: '#/components/responses/Conflict'
       tags:
         - Resource Quotas
+      servers:
+        - url: https://global.api.konghq.com/
   /v2/cloud-gateways/resource-quotas/{resourceQuotaId}:
     patch:
       summary: Update Resource Quota
@@ -116,6 +122,8 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Resource Quotas
+      servers:
+        - url: https://global.api.konghq.com/
   /v3/aws/marketplace/resolve-customer:
     post:
       summary: Resolves an AWS Customer.
@@ -130,6 +138,8 @@ paths:
           $ref: '#/components/responses/ResolveCustomerResponse'
         '400':
           $ref: '#/components/responses/IdentityBadRequest'
+      servers:
+        - url: https://global.api.konghq.com/
   /v3/internal/auth0/organizations:
     get:
       operationId: get-auth0-organizations-internal
@@ -144,6 +154,8 @@ paths:
           $ref: '#/components/responses/IdentityNotFound'
       tags:
         - SSO Auth0
+      servers:
+        - url: https://global.api.konghq.com/
   /v3/internal/auth0/register:
     post:
       operationId: post-auth0-register-internal
@@ -162,6 +174,8 @@ paths:
         $ref: '#/components/requestBodies/Auth0Registration'
       tags:
         - SSO Auth0
+      servers:
+        - url: https://global.api.konghq.com/
   /v3/internal/oauth/device/authorize:
     post:
       operationId: post-oauth-device-authorize
@@ -196,6 +210,8 @@ paths:
         - {}
       tags:
         - Device Authorization Grant
+      servers:
+        - url: https://global.api.konghq.com/
   /v3/internal/oauth/device/authorize/user:
     post:
       operationId: post-oauth-device-authorize-user
@@ -219,6 +235,8 @@ paths:
         - konnectAccessToken: []
       tags:
         - Device Authorization Grant
+      servers:
+        - url: https://global.api.konghq.com/
   /v3/internal/oauth/device/confirm:
     patch:
       operationId: patch-oauth-device-confirm
@@ -241,6 +259,8 @@ paths:
         - konnectAccessToken: []
       tags:
         - Device Authorization Grant
+      servers:
+        - url: https://global.api.konghq.com/
   /v3/internal/oauth/device/token:
     post:
       operationId: post-oauth-device-token
@@ -287,6 +307,8 @@ paths:
         - {}
       tags:
         - Device Authorization Grant
+      servers:
+        - url: https://global.api.konghq.com/
   /v3/internal/system-accounts/{accountId}/assigned-roles:
     parameters:
       - schema:
@@ -329,6 +351,8 @@ paths:
         - Managed System Accounts - Roles
       security:
         - clientToken: []
+      servers:
+        - url: https://global.api.konghq.com/
     post:
       summary: Assign a role to a managed System Account.
       operationId: create-system-accounts-assigned-roles-internal
@@ -352,6 +376,8 @@ paths:
         - Managed System Accounts - Roles
       security:
         - clientToken: []
+      servers:
+        - url: https://global.api.konghq.com/
   /v3/logout:
     post:
       summary: Log Out
@@ -362,6 +388,8 @@ paths:
       responses:
         '201':
           $ref: '#/components/responses/LogoutResponse'
+      servers:
+        - url: https://global.api.konghq.com/
   /v3/organizations/me:
     get:
       summary: Retrieve My Organization
@@ -376,6 +404,8 @@ paths:
       description: >-
         Returns the organization of the user identified in the token of the
         request.
+      servers:
+        - url: https://global.api.konghq.com/
     patch:
       summary: Update My Organization
       operationId: update-organizations-me
@@ -399,6 +429,8 @@ paths:
           $ref: '#/components/responses/IdentityNotFound'
       requestBody:
         $ref: '#/components/requestBodies/UpdateOrganization'
+      servers:
+        - url: https://global.api.konghq.com/
   /v3/refresh:
     post:
       summary: Refresh Token
@@ -414,6 +446,8 @@ paths:
           description: No Content
         '401':
           $ref: '#/components/responses/IdentityUnauthenticated'
+      servers:
+        - url: https://global.api.konghq.com/
   /v3/users/me:
     get:
       summary: Retrieve My User Account
@@ -431,6 +465,8 @@ paths:
       description: >-
         Returns the user account for the user identified in the token of the
         request.
+      servers:
+        - url: https://global.api.konghq.com/
     delete:
       summary: Delete My User Account
       operationId: delete-users-me
@@ -450,6 +486,8 @@ paths:
         request.
       tags:
         - Me
+      servers:
+        - url: https://global.api.konghq.com/
     patch:
       summary: Update My User Account
       operationId: patch-users-me
@@ -471,6 +509,8 @@ paths:
         - Me
       security:
         - konnectAccessToken: []
+      servers:
+        - url: https://global.api.konghq.com/
   /v3/users/me/permissions:
     get:
       summary: Get My Permissions
@@ -506,6 +546,8 @@ paths:
           $ref: '#/components/responses/IdentityBadRequest'
         '401':
           $ref: '#/components/responses/IdentityUnauthenticated'
+      servers:
+        - url: https://global.api.konghq.com/
 components:
   schemas:
     BaseError:

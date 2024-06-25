@@ -57,6 +57,8 @@ paths:
                   #/components/examples/UpdateServerlessCloudGatewayRequestExample
       tags:
         - Serverless Cloud Gateways
+      servers:
+        - url: https://global.api.konghq.com/
   /v2/discovery/discovered-entities:
     get:
       summary: List Discovered Entities
@@ -1754,6 +1756,8 @@ paths:
           $ref: '#/components/responses/IdentityPermissionDenied'
       tags:
         - Auth Settings
+      servers:
+        - url: https://global.api.konghq.com/
     post:
       summary: Create Identity Provider
       description: >
@@ -1775,6 +1779,8 @@ paths:
           $ref: '#/components/responses/CreateIdentityProviderPermissionDenied'
       tags:
         - Auth Settings
+      servers:
+        - url: https://global.api.konghq.com/
   /v3/identity-providers/{id}:
     parameters:
       - schema:
@@ -1807,6 +1813,8 @@ paths:
           $ref: '#/components/responses/IdentityNotFound'
       tags:
         - Auth Settings
+      servers:
+        - url: https://global.api.konghq.com/
     patch:
       summary: Update Identity Provider
       description: >
@@ -1830,6 +1838,8 @@ paths:
           $ref: '#/components/responses/IdentityNotFound'
       tags:
         - Auth Settings
+      servers:
+        - url: https://global.api.konghq.com/
     delete:
       summary: Delete Identity Provider
       description: >
@@ -1851,6 +1861,8 @@ paths:
           $ref: '#/components/responses/IdentityNotFound'
       tags:
         - Auth Settings
+      servers:
+        - url: https://global.api.konghq.com/
   /v3/organizations/{organizationId}/deletion-config:
     parameters:
       - schema:
@@ -1887,6 +1899,8 @@ paths:
           $ref: '#/components/responses/OrganizationNotFound'
       requestBody:
         $ref: '#/components/requestBodies/DeletionConfigRequest'
+      servers:
+        - url: https://global.api.konghq.com/
   /v3/organizations/state:
     post:
       summary: Sets a new state for an organization.
@@ -1911,6 +1925,8 @@ paths:
           $ref: '#/components/responses/OrganizationStateConflict'
       requestBody:
         $ref: '#/components/requestBodies/UpdateOrganizationState'
+      servers:
+        - url: https://global.api.konghq.com/
   /v3/organizations/state/history:
     get:
       summary: Returns the state history of an organization.
@@ -1938,6 +1954,8 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/OrganizationNotFound'
+      servers:
+        - url: https://global.api.konghq.com/
   /v3/roles:
     get:
       summary: Get Predefined Roles
@@ -1952,6 +1970,8 @@ paths:
           $ref: '#/components/responses/IdentityUnauthenticated'
       tags:
         - Roles
+      servers:
+        - url: https://global.api.konghq.com/
   /v4/explore:
     post:
       tags:

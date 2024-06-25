@@ -36,6 +36,8 @@ paths:
           $ref: '#/components/responses/OrganizationStateConflict'
       requestBody:
         $ref: '#/components/requestBodies/UpdateOrganizationState'
+      servers:
+        - url: https://global.api.konghq.com/
   /organizations/state/history:
     get:
       summary: Returns the state history of an organization.
@@ -63,6 +65,8 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/OrganizationNotFound'
+      servers:
+        - url: https://global.api.konghq.com/
   /organizations/{organizationId}/deletion-config:
     parameters:
       - schema:
@@ -99,6 +103,8 @@ paths:
           $ref: '#/components/responses/OrganizationNotFound'
       requestBody:
         $ref: '#/components/requestBodies/DeletionConfigRequest'
+      servers:
+        - url: https://global.api.konghq.com/
 components:
   schemas:
     OrganizationState:

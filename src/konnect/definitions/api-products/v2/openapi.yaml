@@ -445,7 +445,7 @@ paths:
           $ref: '#/components/responses/ApiProductNotFound'
       tags:
         - API Product Versions
-  /api-products/{apiProductId}/product-versions/{productVersionId}/specifications:
+  /api-products/{apiProductId}/product-versions/{apiProductVersionId}/specifications:
     parameters:
     - schema:
         type: string
@@ -459,11 +459,12 @@ paths:
         type: string
         format: uuid
         example: 9f5061ce-78f6-4452-9108-ad7c02821fd5
-      name: productVersionId
+      name: apiProductVersionId
       description: The API product version identifier
       in: path
       required: true
     post:
+      x-speakeasy-entity-operation: APIProductSpecification#create
       summary: Create API Product Version Specification
       description: |
         Creates a specification for a version of an API product.
@@ -512,7 +513,7 @@ paths:
           $ref: '#/components/responses/ApiProductNotFound'
       tags:
         - API Product Version Specification
-  /api-products/{apiProductId}/product-versions/{productVersionId}/specifications/{specificationId}:
+  /api-products/{apiProductId}/product-versions/{apiProductVersionId}/specifications/{specificationId}:
     parameters:
     - schema:
         type: string
@@ -526,7 +527,7 @@ paths:
         type: string
         format: uuid
         example: 9f5061ce-78f6-4452-9108-ad7c02821fd5
-      name: productVersionId
+      name: apiProductVersionId
       description: The API product version identifier
       in: path
       required: true
@@ -538,7 +539,9 @@ paths:
       description: The API product version specification identifier
       in: path
       required: true
+      x-speakeasy-match: id
     get:
+      x-speakeasy-entity-operation: APIProductSpecification#read
       summary: Fetch API Product Version Specification
       description: Returns a specification for the version of an API product.
       operationId: get-api-product-version-spec
@@ -554,6 +557,7 @@ paths:
       tags:
         - API Product Version Specification
     patch:
+      x-speakeasy-entity-operation: APIProductSpecification#update
       summary: Update an API Product Version Specification
       description: Updates a specification from an API product version.
       operationId: update-api-product-version-spec
@@ -584,6 +588,7 @@ paths:
       requestBody:
         $ref: '#/components/requestBodies/UpdateAPIProductVersionSpecRequest'
     delete:
+      x-speakeasy-entity-operation: APIProductSpecification#delete
       summary: Delete API Product Version Specification
       description: Removes a specification from a verion of an API product.
       operationId: delete-api-product-version-spec
@@ -1361,6 +1366,7 @@ components:
         updated_at:
           $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
     APIProductVersionSpec:
+      x-speakeasy-entity: APIProductSpecification
       title: API Product Version Spec
       type: object
       additionalProperties: false
@@ -1492,6 +1498,7 @@ components:
             - $ref: '#/components/schemas/GatewayServicePayload'
             - $ref: '#/components/schemas/LegacyGatewayServicePayload'
     CreateAPIProductVersionSpecDTO:
+      x-speakeasy-entity: APIProductSpecification
       title: Create API Product Version Specification Request
       description: The request schema to create a specification for a version of an API product.
       type: object
@@ -1630,6 +1637,7 @@ components:
         labels:
           $ref: '../../../../common/definitions/konnect_properties.yaml#/components/schemas/LabelsUpdate'
     UpdateAPIProductVersionSpecDTO:
+      x-speakeasy-entity: APIProductSpecification
       title: Update API Product Version Specification Request
       description: The request schema for updating a specification for a version of an API product.
       type: object

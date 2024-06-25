@@ -25,6 +25,9 @@ for PRODUCT in "${PRODUCTS[@]}"; do
   # Bundle here to make sure `computed` comes from `src` after we've linted
   node ./tools/bundle.js $PRODUCT
 
+  # Move any global.api.konghq.com server blocks to be per-operation
+  node ./tools/move-global-server-block.js $PRODUCT
+
   # Add beta warnings
   node ./tools/process-computed.js $PRODUCT
   echo "Creating merged $PRODUCT/complete.yaml";

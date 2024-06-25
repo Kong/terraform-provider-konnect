@@ -440,7 +440,7 @@ paths:
           $ref: '#/components/responses/ApiProductNotFound'
       tags:
         - API Product Versions
-  /api-products/{apiProductId}/product-versions/{productVersionId}/specifications:
+  /api-products/{apiProductId}/product-versions/{apiProductVersionId}/specifications:
     parameters:
       - schema:
           type: string
@@ -454,7 +454,7 @@ paths:
           type: string
           format: uuid
           example: 9f5061ce-78f6-4452-9108-ad7c02821fd5
-        name: productVersionId
+        name: apiProductVersionId
         description: The API product version identifier
         in: path
         required: true
@@ -508,7 +508,7 @@ paths:
           $ref: '#/components/responses/ApiProductNotFound'
       tags:
         - API Product Version Specification
-  /api-products/{apiProductId}/product-versions/{productVersionId}/specifications/{specificationId}:
+  /api-products/{apiProductId}/product-versions/{apiProductVersionId}/specifications/{specificationId}:
     parameters:
       - schema:
           type: string
@@ -522,7 +522,7 @@ paths:
           type: string
           format: uuid
           example: 9f5061ce-78f6-4452-9108-ad7c02821fd5
-        name: productVersionId
+        name: apiProductVersionId
         description: The API product version identifier
         in: path
         required: true
