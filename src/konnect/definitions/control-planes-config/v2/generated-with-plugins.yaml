@@ -6124,6 +6124,37 @@ paths:
             summary: Upsert a Consumer Group
             tags:
                 - Consumer Groups
+    /control-planes/{controlPlaneId}/core-entities/consumer_groups/{ConsumerGroupId}/consumers:
+        parameters:
+            - $ref: '#/components/parameters/ConsumerGroupId'
+            - $ref: '#/components/parameters/ControlPlaneId'
+        post:
+            description: Add a consumer to a consumer group
+            operationId: add-consumer-to-group
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            properties:
+                                consumer:
+                                    example: bob
+                                    type: string
+                            type: object
+            responses:
+                "201":
+                    content:
+                        application/json:
+                            schema:
+                                properties:
+                                    consumer:
+                                        $ref: '#/components/schemas/Consumer'
+                                    consumer_group:
+                                        $ref: '#/components/schemas/ConsumerGroup'
+                                type: object
+                    description: Consumer Added
+            summary: Add consumer to consumer group
+            tags:
+                - Consumer Groups
     /control-planes/{controlPlaneId}/core-entities/consumers:
         get:
             description: List all Consumers

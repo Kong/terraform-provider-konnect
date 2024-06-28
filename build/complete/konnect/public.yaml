@@ -2273,6 +2273,37 @@ paths:
       summary: Upsert a Consumer Group
       tags:
         - Consumer Groups
+  /v2/control-planes/{controlPlaneId}/core-entities/consumer_groups/{ConsumerGroupId}/consumers:
+    parameters:
+      - $ref: '#/components/parameters/ConsumerGroupId'
+      - $ref: '#/components/parameters/ControlPlaneId'
+    post:
+      description: Add a consumer to a consumer group
+      operationId: add-consumer-to-group
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                consumer:
+                  example: bob
+                  type: string
+              type: object
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                properties:
+                  consumer:
+                    $ref: '#/components/schemas/Consumer'
+                  consumer_group:
+                    $ref: '#/components/schemas/ConsumerGroup'
+                type: object
+          description: Consumer Added
+      summary: Add consumer to consumer group
+      tags:
+        - Consumer Groups
   /v2/control-planes/{controlPlaneId}/core-entities/consumers:
     get:
       description: List all Consumers
@@ -3653,6 +3684,34 @@ paths:
       summary: Upsert a Plugin associated with a Route
       tags:
         - Plugins
+  /v2/control-planes/{controlPlaneId}/core-entities/schemas/plugins/{pluginName}:
+    get:
+      description: Get the schema for a plugin
+      operationId: fetch-plugin-schema
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  fields:
+                    items:
+                      additionalProperties: true
+                      type: object
+                    type: array
+                type: object
+          description: The schema for the plugin
+      summary: Fetch plugin schema
+      tags:
+        - Plugins
+    parameters:
+      - description: The name of the plugin
+        in: path
+        name: pluginName
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/ControlPlaneId'
   /v2/control-planes/{controlPlaneId}/core-entities/services:
     get:
       description: List all Services
@@ -13483,6 +13542,10 @@ components:
           items:
             type: string
           type: array
+        updated_at:
+          description: Unix epoch when the resource was last updated.
+          readOnly: true
+          type: integer
       type: object
     Certificate:
       properties:
@@ -13538,6 +13601,10 @@ components:
           items:
             type: string
           type: array
+        updated_at:
+          description: Unix epoch when the resource was last updated.
+          readOnly: true
+          type: integer
       type: object
     Consumer:
       properties:
@@ -13561,6 +13628,10 @@ components:
           items:
             type: string
           type: array
+        updated_at:
+          description: Unix epoch when the resource was last updated.
+          readOnly: true
+          type: integer
         username:
           description: >-
             The unique username of the Consumer. You must send either this field
@@ -13582,6 +13653,10 @@ components:
           items:
             type: string
           type: array
+        updated_at:
+          description: Unix epoch when the resource was last updated.
+          readOnly: true
+          type: integer
       type: object
     GatewayUnauthorizedError:
       properties:
@@ -13648,6 +13723,11 @@ components:
             - RS512
             - ES256
             - ES384
+            - ES512
+            - PS256
+            - PS384
+            - PS512
+            - EdDSA
           type: string
         created_at:
           description: Unix epoch when the resource was created.
@@ -13782,6 +13862,13 @@ components:
                   type: string
               type: object
               x-foreign: true
+            consumer_group:
+              additionalProperties: false
+              properties:
+                id:
+                  type: string
+              type: object
+              x-foreign: true
             route:
               additionalProperties: false
               description: >-
@@ -13809,6 +13896,7 @@ components:
     PluginWithoutParents:
       properties:
         config:
+          additionalProperties: true
           description: >-
             The configuration properties for the Plugin which can be found on
             the plugins documentation page in the [Kong
@@ -13824,6 +13912,8 @@ components:
           type: boolean
         id:
           readOnly: true
+          type: string
+        instance_name:
           type: string
         name:
           description: >-
@@ -13865,6 +13955,10 @@ components:
           items:
             type: string
           type: array
+        updated_at:
+          description: Unix epoch when the resource was last updated.
+          readOnly: true
+          type: integer
       type: object
     Route:
       allOf:
@@ -14088,6 +14182,10 @@ components:
           items:
             type: string
           type: array
+        updated_at:
+          description: Unix epoch when the resource was last updated.
+          readOnly: true
+          type: integer
       type: object
     Service:
       properties:
@@ -14240,6 +14338,10 @@ components:
             resolves to an SRV record, the `port` value will be overridden by
             the value from the DNS record.
           type: string
+        updated_at:
+          description: Unix epoch when the resource was last updated.
+          readOnly: true
+          type: number
         weight:
           default: 100
           description: >-
@@ -14257,6 +14359,7 @@ components:
             - consistent-hashing
             - least-connections
             - round-robin
+            - latency
           type: string
         client_certificate:
           additionalProperties: false
@@ -14514,6 +14617,10 @@ components:
           items:
             type: string
           type: array
+        updated_at:
+          description: Unix epoch when the resource was last updated.
+          readOnly: true
+          type: integer
         use_srv_name:
           default: false
           description: >-
