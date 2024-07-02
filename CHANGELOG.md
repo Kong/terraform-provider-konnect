@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.1
+> Released on 2024/06/??
+
+### Features
+* Add support for the `konnect_serverless_cloud_gateway` resource
+
 ## 0.4.0
 > Released on 2024/06/24
 
