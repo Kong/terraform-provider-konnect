@@ -4,7 +4,7 @@
 > Released on 2024/06/??
 
 ### Features
-* Add support for the `konnect_serverless_cloud_gateway` resource
+* Add support for the `konnect_serverless_cloud_gateway` and `konnect_gateway_plugin_exit_transformer` resources
 
 ## 0.4.0
 > Released on 2024/06/24

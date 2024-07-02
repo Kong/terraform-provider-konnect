@@ -1810,6 +1810,69 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Custom Plugin Schemas
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins:
+    parameters:
+      - $ref: '#/components/parameters/ControlPlaneId'
+    post:
+      x-speakeasy-entity-operation: GatewayPlugin#create
+      operationId: create-plugin
+      summary: Create a new Plugin
+      description: Create a new Plugin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Plugin'
+        description: Description of the new Plugin for creation
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Plugin'
+          description: Successfully created Plugin
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Plugins
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}:
+    parameters:
+      - $ref: '#/components/parameters/ControlPlaneId'
+    get:
+      x-speakeasy-entity-operation: GatewayPlugin#read
+      operationId: get-plugin
+      summary: Fetch a Plugin
+      description: Get a Plugin using ID.
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Plugin'
+          description: Successfully fetched Plugin
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+        '404':
+          description: Resource does not exist
+      tags:
+        - Plugins
+      parameters:
+        - $ref: '#/components/parameters/PluginId'
+    delete:
+      x-speakeasy-entity-operation: GatewayPlugin#delete
+      operationId: delete-plugin
+      summary: Delete a Plugin
+      description: Delete a Plugin
+      responses:
+        '204':
+          description: Successfully deleted Plugin or the resource didn't exist
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Plugins
+      parameters:
+        - $ref: '#/components/parameters/PluginId'
   /v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#ACL:
     parameters:
       - $ref: '#/components/parameters/PluginId'
@@ -2298,6 +2361,61 @@ paths:
       operationId: delete-cors-plugin
       summary: Delete a CORS plugin
       description: Delete a CORS plugin
+      responses:
+        '204':
+          description: Successfully deleted Plugin or the resource didn't exist
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Plugins
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#ExitTransformer:
+    parameters:
+      - $ref: '#/components/parameters/PluginId'
+      - $ref: '#/components/parameters/ControlPlaneId'
+    get:
+      x-speakeasy-entity-operation: GatewayPluginExitTransformer#read
+      operationId: get-exittransformer-plugin
+      summary: Get a ExitTransformer plugin
+      description: Get a ExitTransformer plugin
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExitTransformerPlugin'
+          description: ExitTransformer plugin
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+        '404':
+          description: Resource does not exist
+      tags:
+        - Plugins
+    put:
+      x-speakeasy-entity-operation: GatewayPluginExitTransformer#update
+      operationId: update-exittransformer-plugin
+      summary: Update a ExitTransformer plugin
+      description: Update a ExitTransformer plugin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateExitTransformerPlugin'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExitTransformerPlugin'
+          description: ExitTransformer plugin
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Plugins
+    delete:
+      x-speakeasy-entity-operation: GatewayPluginExitTransformer#delete
+      operationId: delete-exittransformer-plugin
+      summary: Delete a ExitTransformer plugin
+      description: Delete a ExitTransformer plugin
       responses:
         '204':
           description: Successfully deleted Plugin or the resource didn't exist
@@ -3617,6 +3735,30 @@ paths:
               schema:
                 $ref: '#/components/schemas/CORSPlugin'
           description: Created CORS plugin
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Plugins
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins#ExitTransformer:
+    parameters:
+      - $ref: '#/components/parameters/ControlPlaneId'
+    post:
+      x-speakeasy-entity-operation: GatewayPluginExitTransformer#create
+      operationId: create-exittransformer-plugin
+      summary: Create a ExitTransformer plugin
+      description: Create a ExitTransformer plugin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateExitTransformerPlugin'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExitTransformerPlugin'
+          description: Created ExitTransformer plugin
         '401':
           $ref: '#/components/responses/HTTP401Error'
       tags:
@@ -8924,6 +9066,11 @@ components:
       format: date-time
       readOnly: true
       type: string
+    CreateExitTransformerPlugin:
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/ExitTransformerPluginConfig'
+      x-speakeasy-entity: GatewayPluginExitTransformer
     CreateFileLogPlugin:
       allOf:
         - $ref: '#/components/schemas/Plugin'
@@ -9308,6 +9455,33 @@ components:
       format: uuid
       nullable: true
       type: string
+    ExitTransformerPlugin:
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/ExitTransformerPluginConfig'
+      x-speakeasy-entity: GatewayPluginExitTransformer
+    ExitTransformerPluginConfig:
+      properties:
+        config:
+          properties:
+            functions:
+              items:
+                type: string
+              type: array
+            handle_unexpected:
+              description: >-
+                Determines whether to handle unexpected errors by transforming
+                their responses.
+              type: boolean
+            handle_unknown:
+              description: >-
+                Determines whether to handle unknown status codes by
+                transforming their responses.
+              type: boolean
+          type: object
+        name:
+          const: exit-transformer
+          type: string
     FileLogPlugin:
       allOf:
         - $ref: '#/components/schemas/Plugin'
@@ -12994,6 +13168,7 @@ components:
             the plugins documentation page in the [Kong
             Hub](https://docs.konghq.com/hub/).
           type: object
+          x-speakeasy-type-override: any
         created_at:
           description: Unix epoch when the resource was created.
           readOnly: true
