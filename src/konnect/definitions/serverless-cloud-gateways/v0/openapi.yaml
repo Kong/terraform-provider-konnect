@@ -37,6 +37,7 @@ paths:
       tags:
         - Serverless Cloud Gateways
     post:
+      x-speakeasy-entity-operation: ServerlessCloudGateway#create
       summary: Create a new serverless cloud gateway
       description: Create a new serverless cloud gateway
       operationId: create-serverless-cloud-gateway
@@ -73,7 +74,9 @@ paths:
         schema:
           type: string
           format: uuid
+        x-speakeasy-match: control_plane.id
     get:
+      x-speakeasy-entity-operation: ServerlessCloudGateway#read
       summary: Get the serverless cloud gateway
       description: Get the serverless cloud gateway
       operationId: get-serverless-cloud-gateway
@@ -93,6 +96,7 @@ paths:
           $ref: >-
             ../../../../common/definitions/errors.yaml#/components/responses/NotFound
     patch:
+      x-speakeasy-entity-operation: ServerlessCloudGateway#update
       summary: Update the serverless cloud gateway
       operationId: update-serverless-cloud-gateway
       x-internal: true
@@ -124,6 +128,7 @@ paths:
       tags:
         - Serverless Cloud Gateways
     delete:
+      x-speakeasy-entity-operation: ServerlessCloudGateway#delete
       summary: Delete the serverless cloud gateway
       description: Delete the serverless cloud gateway
       operationId: delete-serverless-cloud-gateway
@@ -161,6 +166,7 @@ components:
         ../../../../common/definitions/security.yaml#/components/securitySchemes/systemAccountAccessToken
   schemas:
     ServerlessCloudGateway:
+      x-speakeasy-entity: ServerlessCloudGateway
       type: object
       title: ServerlessCloudGateway
       description: A serverless cloud gateway
@@ -191,6 +197,7 @@ components:
         labels:
           $ref: '#/components/schemas/SCGWLabels'
     CreateServerlessCloudGatewayRequest:
+      x-speakeasy-entity: ServerlessCloudGateway
       type: object
       title: CreateServerlessCloudGatewayRequest
       description: Schema to create a serverless cloud gateway.
@@ -244,6 +251,7 @@ components:
         labels:
           $ref: '#/components/schemas/SCGWLabels'
     UpdateServerlessCloudGatewayRequest:
+      x-speakeasy-entity: ServerlessCloudGateway
       type: object
       title: UpdateServerlessCloudGatewayRequest
       description: Schema to update a serverless cloud gateway.

@@ -62,7 +62,7 @@ components:
             required: true
             schema:
                 type: string
-            x-speakeasy-match: consumer_id
+            x-speakeasy-name-override: consumer_id
         ControlPlaneId:
             description: The UUID of your control plane. This variable is available in the Konnect manager.
             example: 9524ec7d-36d9-465d-a8c5-83a3c9390458
@@ -201,7 +201,7 @@ components:
             required: true
             schema:
                 type: string
-            x-speakeasy-match: upstream_id
+            x-speakeasy-name-override: upstream_id
         VaultId:
             description: ID of the Vault to lookup
             example: 9d4d6d19-77c6-428e-a965-9bc9647633e9

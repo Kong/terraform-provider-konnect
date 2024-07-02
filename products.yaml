@@ -27,4 +27,5 @@ products:
       - "konnect/definitions/portal-management/v2/openapi.yaml"
       - "konnect/definitions/application-auth-strategies/v2/openapi.yaml"
       - "konnect/definitions/identity/v3/openapi.yaml"
+      - "konnect/definitions/serverless-cloud-gateways/v0/openapi.yaml"
     notMatch: []

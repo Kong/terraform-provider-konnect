@@ -3853,7 +3853,6 @@ components:
       description: API product version identifier
       in: path
       required: true
-      x-speakeasy-match: product_version_id
       schema:
         $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
     DeveloperId:
