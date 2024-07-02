@@ -3121,8 +3121,6 @@ components:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
           $ref: '#/components/schemas/UpdatedAt'
-        deleted_at:
-          $ref: '#/components/schemas/DeletedAt'
     OIDCIdentityProviderConfig:
       title: OIDC Identity Provider Config
       type: object
@@ -3423,12 +3421,6 @@ components:
                     - >-
                       This role grants access to read-only permissions to DCR
                       providers.
-    DeletedAt:
-      type: string
-      format: date-time
-      example: '2022-11-04T20:10:06.927Z'
-      description: An ISO-8601 timestamp representation of entity deleted date.
-      readOnly: true
     OrganizationState:
       type: object
       title: Organization State

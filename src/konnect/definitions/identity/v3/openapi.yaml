@@ -3960,8 +3960,6 @@ components:
           $ref: '../../../../common/definitions/konnect_properties.yaml#/components/schemas/CreatedAt'
         updated_at:
           $ref: '../../../../common/definitions/konnect_properties.yaml#/components/schemas/UpdatedAt'
-        deleted_at:
-          $ref: '../../../../common/definitions/konnect_properties.yaml#/components/schemas/DeletedAt'
     OIDCIdentityProviderConfig:
       title: OIDC Identity Provider Config
       type: object
