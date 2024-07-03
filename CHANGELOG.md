@@ -1,7 +1,7 @@
 # Changelog
 
-## 0.4.1
-> Released on 2024/06/??
+## 0.5.0
+> Released on 2024/07/03
 
 ### Features
 * Add support for the `konnect_serverless_cloud_gateway`, `konnect_gateway_plugin_exit_transformer`, `konnect_gateway_consumer_group` and `konnect_gateway_consumer_group_member` resources

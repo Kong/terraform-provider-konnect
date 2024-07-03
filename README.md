@@ -22,6 +22,7 @@ This provider can manage the following resources:
 - Custom Domain
 - Network
 - Transit Gateway
+- Serverless Cloud Gateway
 
 ### Kong Gateway Entities
 
@@ -57,7 +58,10 @@ This provider can manage the following resources:
   - Response Transformer
   - Response Transformer Advanced
   - SAML
+  - Exit Transformer
 - Consumers
+- Consumer Groups
+  - Consumer Group Members
 - Credentials
   - Basic Auth
   - Key Auth
