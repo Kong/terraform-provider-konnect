@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.1
+> Released on 2024/07/03
+
+### Features
+* Add `tfdocs` for all existing resources
+
 ## 0.5.0
 > Released on 2024/07/03
 
