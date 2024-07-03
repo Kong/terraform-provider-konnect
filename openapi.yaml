@@ -11,10 +11,10 @@ info:
   title: Konnect API
   version: 2.0.0
 servers:
-  - url: https://global.api.konghq.com
   - url: https://us.api.konghq.com
   - url: https://eu.api.konghq.com
   - url: https://au.api.konghq.com
+  - url: https://global.api.konghq.com
 paths:
   /v0/serverless-cloud-gateways:
     post:

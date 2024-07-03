@@ -4,7 +4,8 @@ all: speakeasy
 
 speakeasy: check-speakeasy
 	speakeasy generate sdk --lang terraform -o . -s ./openapi.yaml
-	@git clean -fd examples > /dev/null
+	@go generate ./..
+	@git clean -fd examples docs > /dev/null
 	@git checkout -- README.md examples/README.md
 	@rm USAGE.md
 
