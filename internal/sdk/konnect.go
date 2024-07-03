@@ -15,10 +15,10 @@ import (
 
 // ServerList contains the list of servers available to the SDK
 var ServerList = []string{
-	"https://global.api.konghq.com",
 	"https://us.api.konghq.com",
 	"https://eu.api.konghq.com",
 	"https://au.api.konghq.com",
+	"https://global.api.konghq.com",
 }
 
 // HTTPClient provides an interface for suplying the SDK with a custom HTTP client
