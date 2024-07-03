@@ -65,8 +65,8 @@ func (r *APIProductSpecificationDataSource) Schema(ctx context.Context, req data
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
 			},
 			"id": schema.StringAttribute{
-				Required:    true,
-				Description: `The API product version specification identifier`,
+				Computed:    true,
+				Description: `The API product version specification identifier.`,
 			},
 			"name": schema.StringAttribute{
 				Computed:    true,

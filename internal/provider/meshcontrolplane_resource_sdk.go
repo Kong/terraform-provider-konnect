@@ -9,7 +9,6 @@ import (
 )
 
 func (r *MeshControlPlaneResourceModel) ToSharedCreateMeshControlPlaneRequest() *shared.CreateMeshControlPlaneRequest {
-	name := r.Name.ValueString()
 	description := new(string)
 	if !r.Description.IsUnknown() && !r.Description.IsNull() {
 		*description = r.Description.ValueString()
@@ -21,10 +20,11 @@ func (r *MeshControlPlaneResourceModel) ToSharedCreateMeshControlPlaneRequest() 
 		labelsInst := labelsValue.ValueString()
 		labels[labelsKey] = labelsInst
 	}
+	name := r.Name.ValueString()
 	out := shared.CreateMeshControlPlaneRequest{
-		Name:        name,
 		Description: description,
 		Labels:      labels,
+		Name:        name,
 	}
 	return &out
 }
@@ -46,12 +46,6 @@ func (r *MeshControlPlaneResourceModel) RefreshFromSharedMeshControlPlane(resp *
 }
 
 func (r *MeshControlPlaneResourceModel) ToSharedUpdateMeshControlPlaneRequest() *shared.UpdateMeshControlPlaneRequest {
-	name := new(string)
-	if !r.Name.IsUnknown() && !r.Name.IsNull() {
-		*name = r.Name.ValueString()
-	} else {
-		name = nil
-	}
 	description := new(string)
 	if !r.Description.IsUnknown() && !r.Description.IsNull() {
 		*description = r.Description.ValueString()
@@ -63,10 +57,16 @@ func (r *MeshControlPlaneResourceModel) ToSharedUpdateMeshControlPlaneRequest() 
 		labelsInst := labelsValue.ValueString()
 		labels[labelsKey] = labelsInst
 	}
+	name := new(string)
+	if !r.Name.IsUnknown() && !r.Name.IsNull() {
+		*name = r.Name.ValueString()
+	} else {
+		name = nil
+	}
 	out := shared.UpdateMeshControlPlaneRequest{
-		Name:        name,
 		Description: description,
 		Labels:      labels,
+		Name:        name,
 	}
 	return &out
 }

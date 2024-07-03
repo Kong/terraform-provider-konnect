@@ -8,17 +8,10 @@ import (
 )
 
 type GetServiceRequest struct {
-	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// ID of the Service to lookup
 	ServiceID string `pathParam:"style=simple,explode=false,name=ServiceId"`
-}
-
-func (o *GetServiceRequest) GetControlPlaneID() string {
-	if o == nil {
-		return ""
-	}
-	return o.ControlPlaneID
+	// The UUID of your control plane. This variable is available in the Konnect manager.
+	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
 func (o *GetServiceRequest) GetServiceID() string {
@@ -26,6 +19,13 @@ func (o *GetServiceRequest) GetServiceID() string {
 		return ""
 	}
 	return o.ServiceID
+}
+
+func (o *GetServiceRequest) GetControlPlaneID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ControlPlaneID
 }
 
 type GetServiceResponse struct {

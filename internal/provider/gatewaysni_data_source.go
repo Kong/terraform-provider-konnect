@@ -67,8 +67,7 @@ func (r *GatewaySNIDataSource) Schema(ctx context.Context, req datasource.Schema
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"id": schema.StringAttribute{
-				Required:    true,
-				Description: `ID of the SNI to lookup`,
+				Computed: true,
 			},
 			"name": schema.StringAttribute{
 				Computed:    true,
@@ -125,11 +124,11 @@ func (r *GatewaySNIDataSource) Read(ctx context.Context, req datasource.ReadRequ
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	sniID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.GetSniRequest{
-		ControlPlaneID: controlPlaneID,
 		SNIID:          sniID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.SNIs.GetSni(ctx, request)
 	if err != nil {

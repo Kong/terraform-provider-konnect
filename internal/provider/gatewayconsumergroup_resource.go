@@ -10,13 +10,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/internal/planmodifiers/listplanmodifier"
-	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/internal/planmodifiers/stringplanmodifier"
 	"github.com/kong/terraform-provider-konnect/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
 )
@@ -53,38 +48,24 @@ func (r *GatewayConsumerGroupResource) Schema(ctx context.Context, req resource.
 		MarkdownDescription: "GatewayConsumerGroup Resource",
 		Attributes: map[string]schema.Attribute{
 			"control_plane_id": schema.StringAttribute{
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
-				},
 				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed. `,
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager.`,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"id": schema.StringAttribute{
-				Computed:    true,
-				Description: `ID of the Consumer Group to lookup`,
+				Computed: true,
 			},
 			"name": schema.StringAttribute{
 				Computed: true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-				},
-				Optional:    true,
-				Description: `Requires replacement if changed. `,
+				Optional: true,
 			},
 			"tags": schema.ListAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.List{
-					listplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
-				},
+				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
-				Description: `Requires replacement if changed. `,
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
@@ -183,11 +164,11 @@ func (r *GatewayConsumerGroupResource) Read(ctx context.Context, req resource.Re
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	consumerGroupID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.GetConsumerGroupRequest{
-		ControlPlaneID:  controlPlaneID,
 		ConsumerGroupID: consumerGroupID,
+		ControlPlaneID:  controlPlaneID,
 	}
 	res, err := r.client.ConsumerGroups.GetConsumerGroup(ctx, request)
 	if err != nil {
@@ -209,11 +190,11 @@ func (r *GatewayConsumerGroupResource) Read(ctx context.Context, req resource.Re
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.ConsumerGroup != nil) {
+	if !(res.ConsumerGroupInsideWrapper != nil && res.ConsumerGroupInsideWrapper.ConsumerGroup != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedConsumerGroup(res.ConsumerGroup)
+	data.RefreshFromSharedConsumerGroup(res.ConsumerGroupInsideWrapper.ConsumerGroup)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -233,7 +214,36 @@ func (r *GatewayConsumerGroupResource) Update(ctx context.Context, req resource.
 		return
 	}
 
-	// Not Implemented; all attributes marked as RequiresReplace
+	consumerGroupID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
+	consumerGroup := *data.ToSharedConsumerGroupInput()
+	request := operations.UpsertConsumerGroupRequest{
+		ConsumerGroupID: consumerGroupID,
+		ControlPlaneID:  controlPlaneID,
+		ConsumerGroup:   consumerGroup,
+	}
+	res, err := r.client.ConsumerGroups.UpsertConsumerGroup(ctx, request)
+	if err != nil {
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res != nil && res.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
+		}
+		return
+	}
+	if res == nil {
+		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
+		return
+	}
+	if res.StatusCode != 200 {
+		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
+		return
+	}
+	if !(res.ConsumerGroup != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
+		return
+	}
+	data.RefreshFromSharedConsumerGroup(res.ConsumerGroup)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -286,24 +296,24 @@ func (r *GatewayConsumerGroupResource) ImportState(ctx context.Context, req reso
 	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
 	dec.DisallowUnknownFields()
 	var data struct {
-		ControlPlaneID string `json:"control_plane_id"`
 		ID             string `json:"id"`
+		ControlPlaneID string `json:"control_plane_id"`
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "id": ""}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "consumer_group_id": "",  "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458"}': `+err.Error())
 		return
 	}
 
-	if len(data.ControlPlaneID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field control_plane_id is required but was not found in the json encoded ID. It's expected to be a value alike '"9524ec7d-36d9-465d-a8c5-83a3c9390458"`)
-		return
-	}
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
 	if len(data.ID) == 0 {
 		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '""`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)
+	if len(data.ControlPlaneID) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field control_plane_id is required but was not found in the json encoded ID. It's expected to be a value alike '"9524ec7d-36d9-465d-a8c5-83a3c9390458"`)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
 
 }

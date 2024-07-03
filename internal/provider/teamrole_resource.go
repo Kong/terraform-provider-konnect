@@ -86,7 +86,7 @@ func (r *TeamRoleResource) Schema(ctx context.Context, req resource.SchemaReques
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
-				Description: `The role ID.`,
+				Description: `The ID of the role assignment.`,
 			},
 			"role_name": schema.StringAttribute{
 				Computed: true,

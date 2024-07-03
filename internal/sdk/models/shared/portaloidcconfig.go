@@ -4,18 +4,18 @@ package shared
 
 // PortalOIDCConfig - Configuration properties for an OpenID Connect Identity Provider.
 type PortalOIDCConfig struct {
-	Issuer   string   `json:"issuer"`
-	ClientID string   `json:"client_id"`
-	Scopes   []string `json:"scopes,omitempty"`
 	// Mappings from a portal developer atribute to an Identity Provider claim.
 	ClaimMappings *PortalClaimMappings `json:"claim_mappings,omitempty"`
+	ClientID      string               `json:"client_id"`
+	Issuer        string               `json:"issuer"`
+	Scopes        []string             `json:"scopes,omitempty"`
 }
 
-func (o *PortalOIDCConfig) GetIssuer() string {
+func (o *PortalOIDCConfig) GetClaimMappings() *PortalClaimMappings {
 	if o == nil {
-		return ""
+		return nil
 	}
-	return o.Issuer
+	return o.ClaimMappings
 }
 
 func (o *PortalOIDCConfig) GetClientID() string {
@@ -25,16 +25,16 @@ func (o *PortalOIDCConfig) GetClientID() string {
 	return o.ClientID
 }
 
+func (o *PortalOIDCConfig) GetIssuer() string {
+	if o == nil {
+		return ""
+	}
+	return o.Issuer
+}
+
 func (o *PortalOIDCConfig) GetScopes() []string {
 	if o == nil {
 		return nil
 	}
 	return o.Scopes
-}
-
-func (o *PortalOIDCConfig) GetClaimMappings() *PortalClaimMappings {
-	if o == nil {
-		return nil
-	}
-	return o.ClaimMappings
 }

@@ -3,11 +3,11 @@
 package shared
 
 type InvalidParameterStandard struct {
-	Field string `json:"field"`
+	Field  string `json:"field"`
+	Reason string `json:"reason"`
 	// invalid parameters rules
 	Rule   *InvalidRules `json:"rule,omitempty"`
 	Source *string       `json:"source,omitempty"`
-	Reason string        `json:"reason"`
 }
 
 func (o *InvalidParameterStandard) GetField() string {
@@ -15,6 +15,13 @@ func (o *InvalidParameterStandard) GetField() string {
 		return ""
 	}
 	return o.Field
+}
+
+func (o *InvalidParameterStandard) GetReason() string {
+	if o == nil {
+		return ""
+	}
+	return o.Reason
 }
 
 func (o *InvalidParameterStandard) GetRule() *InvalidRules {
@@ -29,11 +36,4 @@ func (o *InvalidParameterStandard) GetSource() *string {
 		return nil
 	}
 	return o.Source
-}
-
-func (o *InvalidParameterStandard) GetReason() string {
-	if o == nil {
-		return ""
-	}
-	return o.Reason
 }

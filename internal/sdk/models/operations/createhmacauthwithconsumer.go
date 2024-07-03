@@ -11,7 +11,7 @@ type CreateHmacAuthWithConsumerRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// Consumer ID for nested entities
-	ConsumerIDForNestedEntities string `pathParam:"style=simple,explode=false,name=ConsumerIdForNestedEntities"`
+	ConsumerID string `pathParam:"style=simple,explode=false,name=ConsumerIdForNestedEntities"`
 	// Description of new HMAC-auth credential for creation
 	HMACAuthWithoutParents shared.HMACAuthWithoutParents `request:"mediaType=application/json"`
 }
@@ -23,11 +23,11 @@ func (o *CreateHmacAuthWithConsumerRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateHmacAuthWithConsumerRequest) GetConsumerIDForNestedEntities() string {
+func (o *CreateHmacAuthWithConsumerRequest) GetConsumerID() string {
 	if o == nil {
 		return ""
 	}
-	return o.ConsumerIDForNestedEntities
+	return o.ConsumerID
 }
 
 func (o *CreateHmacAuthWithConsumerRequest) GetHMACAuthWithoutParents() shared.HMACAuthWithoutParents {

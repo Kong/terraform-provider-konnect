@@ -9,18 +9,18 @@ import (
 
 // SystemAccountAccessToken - Schema of the system account access token.
 type SystemAccountAccessToken struct {
-	// ID of the system account access token.
-	ID *string `json:"id,omitempty"`
-	// Name of the system account access token.
-	Name *string `json:"name,omitempty"`
 	// Timestamp of when the system account access token was created.
 	CreatedAt *time.Time `json:"created_at,omitempty"`
-	// Timestamp of when the system account access token was last updated.
-	UpdatedAt *time.Time `json:"updated_at,omitempty"`
 	// Timestamp of when the system account access token will expire.
 	ExpiresAt *time.Time `json:"expires_at,omitempty"`
+	// ID of the system account access token.
+	ID *string `json:"id,omitempty"`
 	// Timestamp of when the system account access token was last used.
 	LastUsedAt *time.Time `json:"last_used_at,omitempty"`
+	// Name of the system account access token.
+	Name *string `json:"name,omitempty"`
+	// Timestamp of when the system account access token was last updated.
+	UpdatedAt *time.Time `json:"updated_at,omitempty"`
 }
 
 func (s SystemAccountAccessToken) MarshalJSON() ([]byte, error) {
@@ -34,32 +34,11 @@ func (s *SystemAccountAccessToken) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *SystemAccountAccessToken) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-func (o *SystemAccountAccessToken) GetName() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Name
-}
-
 func (o *SystemAccountAccessToken) GetCreatedAt() *time.Time {
 	if o == nil {
 		return nil
 	}
 	return o.CreatedAt
-}
-
-func (o *SystemAccountAccessToken) GetUpdatedAt() *time.Time {
-	if o == nil {
-		return nil
-	}
-	return o.UpdatedAt
 }
 
 func (o *SystemAccountAccessToken) GetExpiresAt() *time.Time {
@@ -69,9 +48,30 @@ func (o *SystemAccountAccessToken) GetExpiresAt() *time.Time {
 	return o.ExpiresAt
 }
 
+func (o *SystemAccountAccessToken) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
 func (o *SystemAccountAccessToken) GetLastUsedAt() *time.Time {
 	if o == nil {
 		return nil
 	}
 	return o.LastUsedAt
+}
+
+func (o *SystemAccountAccessToken) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *SystemAccountAccessToken) GetUpdatedAt() *time.Time {
+	if o == nil {
+		return nil
+	}
+	return o.UpdatedAt
 }

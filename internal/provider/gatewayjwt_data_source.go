@@ -77,8 +77,7 @@ func (r *GatewayJWTDataSource) Schema(ctx context.Context, req datasource.Schema
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"id": schema.StringAttribute{
-				Required:    true,
-				Description: `ID of the JWT to lookup`,
+				Computed: true,
 			},
 			"key": schema.StringAttribute{
 				Computed: true,
@@ -136,12 +135,12 @@ func (r *GatewayJWTDataSource) Read(ctx context.Context, req datasource.ReadRequ
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	consumerIDForNestedEntities := data.ConsumerID.ValueString()
+	consumerID := data.ConsumerID.ValueString()
 	jwtID := data.ID.ValueString()
 	request := operations.GetJwtWithConsumerRequest{
-		ControlPlaneID:              controlPlaneID,
-		ConsumerIDForNestedEntities: consumerIDForNestedEntities,
-		JWTID:                       jwtID,
+		ControlPlaneID: controlPlaneID,
+		ConsumerID:     consumerID,
+		JWTID:          jwtID,
 	}
 	res, err := r.client.JWTs.GetJwtWithConsumer(ctx, request)
 	if err != nil {

@@ -8,17 +8,10 @@ import (
 )
 
 type GetRouteRequest struct {
-	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// ID of the Route to lookup
 	RouteID string `pathParam:"style=simple,explode=false,name=RouteId"`
-}
-
-func (o *GetRouteRequest) GetControlPlaneID() string {
-	if o == nil {
-		return ""
-	}
-	return o.ControlPlaneID
+	// The UUID of your control plane. This variable is available in the Konnect manager.
+	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
 func (o *GetRouteRequest) GetRouteID() string {
@@ -26,6 +19,13 @@ func (o *GetRouteRequest) GetRouteID() string {
 		return ""
 	}
 	return o.RouteID
+}
+
+func (o *GetRouteRequest) GetControlPlaneID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ControlPlaneID
 }
 
 type GetRouteResponse struct {

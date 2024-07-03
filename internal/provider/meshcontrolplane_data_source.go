@@ -54,8 +54,8 @@ func (r *MeshControlPlaneDataSource) Schema(ctx context.Context, req datasource.
 				Computed: true,
 			},
 			"id": schema.StringAttribute{
-				Required:    true,
-				Description: `Id of the Konnect resource`,
+				Computed:    true,
+				Description: `ID of the control plane.`,
 			},
 			"labels": schema.MapAttribute{
 				Computed:    true,

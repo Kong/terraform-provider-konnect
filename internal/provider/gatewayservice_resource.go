@@ -11,20 +11,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	speakeasy_boolplanmodifier "github.com/kong/terraform-provider-konnect/internal/planmodifiers/boolplanmodifier"
-	speakeasy_int64planmodifier "github.com/kong/terraform-provider-konnect/internal/planmodifiers/int64planmodifier"
-	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/internal/planmodifiers/listplanmodifier"
-	speakeasy_objectplanmodifier "github.com/kong/terraform-provider-konnect/internal/planmodifiers/objectplanmodifier"
-	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
@@ -75,112 +64,67 @@ func (r *GatewayServiceResource) Schema(ctx context.Context, req resource.Schema
 		MarkdownDescription: "GatewayService Resource",
 		Attributes: map[string]schema.Attribute{
 			"ca_certificates": schema.ListAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.List{
-					listplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
-				},
+				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
-				Description: `Array of ` + "`" + `CA Certificate` + "`" + ` object UUIDs that are used to build the trust store while verifying upstream server's TLS certificate. If set to ` + "`" + `null` + "`" + ` when Nginx default is respected. If default CA list in Nginx are not specified and TLS verification is enabled, then handshake with upstream server will always fail (because no CA are trusted). Requires replacement if changed. `,
+				Description: `Array of ` + "`" + `CA Certificate` + "`" + ` object UUIDs that are used to build the trust store while verifying upstream server's TLS certificate. If set to ` + "`" + `null` + "`" + ` when Nginx default is respected. If default CA list in Nginx are not specified and TLS verification is enabled, then handshake with upstream server will always fail (because no CA are trusted).`,
 			},
 			"client_certificate": schema.SingleNestedAttribute{
 				Computed: true,
-				PlanModifiers: []planmodifier.Object{
-					objectplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
-				},
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{
 						Computed: true,
-						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.RequiresReplaceIfConfigured(),
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
-						Optional:    true,
-						Description: `Requires replacement if changed. `,
+						Optional: true,
 					},
 				},
-				Description: `Certificate to be used as client certificate while TLS handshaking to the upstream server. Requires replacement if changed. `,
+				Description: `Certificate to be used as client certificate while TLS handshaking to the upstream server.`,
 			},
 			"connect_timeout": schema.Int64Attribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.Int64{
-					int64planmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_int64planmodifier.SuppressDiff(speakeasy_int64planmodifier.ExplicitSuppress),
-				},
+				Computed:    true,
 				Optional:    true,
-				Description: `The timeout in milliseconds for establishing a connection to the upstream server. Requires replacement if changed. `,
+				Description: `The timeout in milliseconds for establishing a connection to the upstream server.`,
 			},
 			"control_plane_id": schema.StringAttribute{
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
-				},
 				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed. `,
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager.`,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.Bool{
-					boolplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
-				},
+				Computed:    true,
 				Optional:    true,
-				Description: `Whether the Service is active. If set to ` + "`" + `false` + "`" + `, the proxy behavior will be as if any routes attached to it do not exist (404). Default: ` + "`" + `true` + "`" + `. Requires replacement if changed. `,
+				Description: `Whether the Service is active. If set to ` + "`" + `false` + "`" + `, the proxy behavior will be as if any routes attached to it do not exist (404). Default: ` + "`" + `true` + "`" + `.`,
 			},
 			"host": schema.StringAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-				},
+				Computed:    true,
 				Optional:    true,
-				Description: `The host of the upstream server. Note that the host value is case sensitive. Requires replacement if changed. `,
+				Description: `The host of the upstream server. Note that the host value is case sensitive.`,
 			},
 			"id": schema.StringAttribute{
-				Computed:    true,
-				Description: `ID of the Service to lookup`,
+				Computed: true,
 			},
 			"name": schema.StringAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-				},
+				Computed:    true,
 				Optional:    true,
-				Description: `The Service name. Requires replacement if changed. `,
+				Description: `The Service name.`,
 			},
 			"path": schema.StringAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-				},
+				Computed:    true,
 				Optional:    true,
-				Description: `The path to be used in requests to the upstream server. Requires replacement if changed. `,
+				Description: `The path to be used in requests to the upstream server.`,
 			},
 			"port": schema.Int64Attribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.Int64{
-					int64planmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_int64planmodifier.SuppressDiff(speakeasy_int64planmodifier.ExplicitSuppress),
-				},
+				Computed:    true,
 				Optional:    true,
-				Description: `The upstream server port. Requires replacement if changed. `,
+				Description: `The upstream server port.`,
 			},
 			"protocol": schema.StringAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-				},
+				Computed:    true,
 				Optional:    true,
-				Description: `The protocol used to communicate with the upstream. Requires replacement if changed. ; must be one of ["grpc", "grpcs", "http", "https", "tcp", "tls", "tls_passthrough", "udp", "ws", "wss"]`,
+				Description: `The protocol used to communicate with the upstream. must be one of ["grpc", "grpcs", "http", "https", "tcp", "tls", "tls_passthrough", "udp", "ws", "wss"]`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
 						"grpc",
@@ -197,63 +141,39 @@ func (r *GatewayServiceResource) Schema(ctx context.Context, req resource.Schema
 				},
 			},
 			"read_timeout": schema.Int64Attribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.Int64{
-					int64planmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_int64planmodifier.SuppressDiff(speakeasy_int64planmodifier.ExplicitSuppress),
-				},
+				Computed:    true,
 				Optional:    true,
-				Description: `The timeout in milliseconds between two successive read operations for transmitting a request to the upstream server. Requires replacement if changed. `,
+				Description: `The timeout in milliseconds between two successive read operations for transmitting a request to the upstream server.`,
 			},
 			"retries": schema.Int64Attribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.Int64{
-					int64planmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_int64planmodifier.SuppressDiff(speakeasy_int64planmodifier.ExplicitSuppress),
-				},
+				Computed:    true,
 				Optional:    true,
-				Description: `The number of retries to execute upon failure to proxy. Requires replacement if changed. `,
+				Description: `The number of retries to execute upon failure to proxy.`,
 			},
 			"tags": schema.ListAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.List{
-					listplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
-				},
+				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
-				Description: `An optional set of strings associated with the Service for grouping and filtering. Requires replacement if changed. `,
+				Description: `An optional set of strings associated with the Service for grouping and filtering.`,
 			},
 			"tls_verify": schema.BoolAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.Bool{
-					boolplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
-				},
+				Computed:    true,
 				Optional:    true,
-				Description: `Whether to enable verification of upstream server TLS certificate. If set to ` + "`" + `null` + "`" + `, then the Nginx default is respected. Requires replacement if changed. `,
+				Description: `Whether to enable verification of upstream server TLS certificate. If set to ` + "`" + `null` + "`" + `, then the Nginx default is respected.`,
 			},
 			"tls_verify_depth": schema.Int64Attribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.Int64{
-					int64planmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_int64planmodifier.SuppressDiff(speakeasy_int64planmodifier.ExplicitSuppress),
-				},
+				Computed:    true,
 				Optional:    true,
-				Description: `Maximum depth of chain while verifying Upstream server's TLS certificate. If set to ` + "`" + `null` + "`" + `, then the Nginx default is respected. Requires replacement if changed. `,
+				Description: `Maximum depth of chain while verifying Upstream server's TLS certificate. If set to ` + "`" + `null` + "`" + `, then the Nginx default is respected.`,
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 			"write_timeout": schema.Int64Attribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.Int64{
-					int64planmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_int64planmodifier.SuppressDiff(speakeasy_int64planmodifier.ExplicitSuppress),
-				},
+				Computed:    true,
 				Optional:    true,
-				Description: `The timeout in milliseconds between two successive write operations for transmitting a request to the upstream server. Requires replacement if changed. `,
+				Description: `The timeout in milliseconds between two successive write operations for transmitting a request to the upstream server.`,
 			},
 		},
 	}
@@ -348,11 +268,11 @@ func (r *GatewayServiceResource) Read(ctx context.Context, req resource.ReadRequ
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	serviceID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.GetServiceRequest{
-		ControlPlaneID: controlPlaneID,
 		ServiceID:      serviceID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Services.GetService(ctx, request)
 	if err != nil {
@@ -398,7 +318,36 @@ func (r *GatewayServiceResource) Update(ctx context.Context, req resource.Update
 		return
 	}
 
-	// Not Implemented; all attributes marked as RequiresReplace
+	serviceID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
+	service := *data.ToSharedServiceInput()
+	request := operations.UpsertServiceRequest{
+		ServiceID:      serviceID,
+		ControlPlaneID: controlPlaneID,
+		Service:        service,
+	}
+	res, err := r.client.Services.UpsertService(ctx, request)
+	if err != nil {
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res != nil && res.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
+		}
+		return
+	}
+	if res == nil {
+		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
+		return
+	}
+	if res.StatusCode != 200 {
+		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
+		return
+	}
+	if !(res.Service != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
+		return
+	}
+	data.RefreshFromSharedService(res.Service)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -456,7 +405,7 @@ func (r *GatewayServiceResource) ImportState(ctx context.Context, req resource.I
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "id": "7fca84d6-7d37-4a74-a7b0-93e576089a41"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "service_id": "7fca84d6-7d37-4a74-a7b0-93e576089a41"}': `+err.Error())
 		return
 	}
 

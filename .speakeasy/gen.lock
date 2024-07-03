@@ -1,18 +1,18 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: e5a7b36f302770121537c36b5b94bc08
+  docChecksum: e92cb219730af41da1e70465a5936702
   docVersion: 2.0.0
-  speakeasyVersion: 1.314.2
-  generationVersion: 2.349.6
-  releaseVersion: 0.4.0
-  configChecksum: 9e76a97111530d7f658a16f6a2e6e1a9
+  speakeasyVersion: 1.326.0
+  generationVersion: 2.359.0
+  releaseVersion: 0.5.0
+  configChecksum: d5c862748c85add394182cf234537973
 features:
   terraform:
     additionalDependencies: 0.1.0
     additionalProperties: 0.1.2
     constsAndDefaults: 0.1.4
-    core: 3.21.4
+    core: 3.23.0
     deprecations: 2.81.1
     globalSecurity: 2.81.6
     globalServerURLs: 2.82.1
@@ -25,6 +25,7 @@ features:
     typeOverrides: 2.81.1
     unions: 2.81.15
 generatedFiles:
+  - internal/sdk/serverlesscloudgateways.go
   - internal/sdk/mesh.go
   - internal/sdk/apiproducts.go
   - internal/sdk/apiproductversions.go
@@ -69,6 +70,7 @@ generatedFiles:
   - internal/sdk/teammembership.go
   - internal/sdk/konnect.go
   - internal/sdk/models/errors/sdkerror.go
+  - internal/sdk/retry/config.go
   - internal/sdk/types/bigint.go
   - internal/sdk/types/date.go
   - internal/sdk/types/datetime.go
@@ -84,10 +86,13 @@ generatedFiles:
   - internal/sdk/internal/utils/retries.go
   - internal/sdk/internal/utils/security.go
   - internal/sdk/internal/utils/utils.go
+  - internal/sdk/models/operations/createserverlesscloudgateway.go
+  - internal/sdk/models/operations/getserverlesscloudgateway.go
+  - internal/sdk/models/operations/deleteserverlesscloudgateway.go
   - internal/sdk/models/operations/createcp.go
   - internal/sdk/models/operations/getmeshcontrolplane.go
-  - internal/sdk/models/operations/deletemeshcontrolplane.go
   - internal/sdk/models/operations/updatemeshcontrolplane.go
+  - internal/sdk/models/operations/deletemeshcontrolplane.go
   - internal/sdk/models/operations/createapiproduct.go
   - internal/sdk/models/operations/getapiproduct.go
   - internal/sdk/models/operations/updateapiproduct.go
@@ -122,129 +127,144 @@ generatedFiles:
   - internal/sdk/models/operations/updatecontrolplane.go
   - internal/sdk/models/operations/deletecontrolplane.go
   - internal/sdk/models/operations/createcacertificate.go
-  - internal/sdk/models/operations/deletecacertificate.go
   - internal/sdk/models/operations/getcacertificate.go
+  - internal/sdk/models/operations/upsertcacertificate.go
+  - internal/sdk/models/operations/deletecacertificate.go
   - internal/sdk/models/operations/createcertificate.go
-  - internal/sdk/models/operations/deletecertificate.go
   - internal/sdk/models/operations/getcertificate.go
+  - internal/sdk/models/operations/upsertcertificate.go
+  - internal/sdk/models/operations/deletecertificate.go
   - internal/sdk/models/operations/createconsumergroup.go
-  - internal/sdk/models/operations/deleteconsumergroup.go
   - internal/sdk/models/operations/getconsumergroup.go
+  - internal/sdk/models/operations/upsertconsumergroup.go
+  - internal/sdk/models/operations/deleteconsumergroup.go
+  - internal/sdk/models/operations/addconsumertogroup.go
+  - internal/sdk/models/operations/removeconsumerfromgroup.go
   - internal/sdk/models/operations/createconsumer.go
-  - internal/sdk/models/operations/deleteconsumer.go
   - internal/sdk/models/operations/getconsumer.go
+  - internal/sdk/models/operations/upsertconsumer.go
+  - internal/sdk/models/operations/deleteconsumer.go
   - internal/sdk/models/operations/createaclwithconsumer.go
-  - internal/sdk/models/operations/deleteaclwithconsumer.go
   - internal/sdk/models/operations/getaclwithconsumer.go
+  - internal/sdk/models/operations/deleteaclwithconsumer.go
   - internal/sdk/models/operations/createbasicauthwithconsumer.go
-  - internal/sdk/models/operations/deletebasicauthwithconsumer.go
   - internal/sdk/models/operations/getbasicauthwithconsumer.go
+  - internal/sdk/models/operations/deletebasicauthwithconsumer.go
   - internal/sdk/models/operations/createhmacauthwithconsumer.go
-  - internal/sdk/models/operations/deletehmacauthwithconsumer.go
   - internal/sdk/models/operations/gethmacauthwithconsumer.go
+  - internal/sdk/models/operations/deletehmacauthwithconsumer.go
   - internal/sdk/models/operations/createjwtwithconsumer.go
-  - internal/sdk/models/operations/deletejwtwithconsumer.go
   - internal/sdk/models/operations/getjwtwithconsumer.go
+  - internal/sdk/models/operations/deletejwtwithconsumer.go
   - internal/sdk/models/operations/createkeyauthwithconsumer.go
-  - internal/sdk/models/operations/deletekeyauthwithconsumer.go
   - internal/sdk/models/operations/getkeyauthwithconsumer.go
+  - internal/sdk/models/operations/deletekeyauthwithconsumer.go
   - internal/sdk/models/operations/createkeyset.go
-  - internal/sdk/models/operations/deletekeyset.go
   - internal/sdk/models/operations/getkeyset.go
+  - internal/sdk/models/operations/upsertkeyset.go
+  - internal/sdk/models/operations/deletekeyset.go
   - internal/sdk/models/operations/createkey.go
-  - internal/sdk/models/operations/deletekey.go
   - internal/sdk/models/operations/getkey.go
+  - internal/sdk/models/operations/upsertkey.go
+  - internal/sdk/models/operations/deletekey.go
   - internal/sdk/models/operations/createpluginschemas.go
   - internal/sdk/models/operations/getpluginschema.go
-  - internal/sdk/models/operations/deletepluginschemas.go
   - internal/sdk/models/operations/updatepluginschemas.go
-  - internal/sdk/models/operations/deleteaclplugin.go
+  - internal/sdk/models/operations/deletepluginschemas.go
+  - internal/sdk/models/operations/createplugin.go
+  - internal/sdk/models/operations/getplugin.go
+  - internal/sdk/models/operations/upsertplugin.go
+  - internal/sdk/models/operations/deleteplugin.go
   - internal/sdk/models/operations/getaclplugin.go
   - internal/sdk/models/operations/updateaclplugin.go
-  - internal/sdk/models/operations/deleteaipromptdecoratorplugin.go
+  - internal/sdk/models/operations/deleteaclplugin.go
   - internal/sdk/models/operations/getaipromptdecoratorplugin.go
   - internal/sdk/models/operations/updateaipromptdecoratorplugin.go
-  - internal/sdk/models/operations/deleteaipromptguardplugin.go
+  - internal/sdk/models/operations/deleteaipromptdecoratorplugin.go
   - internal/sdk/models/operations/getaipromptguardplugin.go
   - internal/sdk/models/operations/updateaipromptguardplugin.go
-  - internal/sdk/models/operations/deleteaiprompttemplateplugin.go
+  - internal/sdk/models/operations/deleteaipromptguardplugin.go
   - internal/sdk/models/operations/getaiprompttemplateplugin.go
   - internal/sdk/models/operations/updateaiprompttemplateplugin.go
-  - internal/sdk/models/operations/deleteaiproxyplugin.go
+  - internal/sdk/models/operations/deleteaiprompttemplateplugin.go
   - internal/sdk/models/operations/getaiproxyplugin.go
   - internal/sdk/models/operations/updateaiproxyplugin.go
-  - internal/sdk/models/operations/deleteawslambdaplugin.go
+  - internal/sdk/models/operations/deleteaiproxyplugin.go
   - internal/sdk/models/operations/getawslambdaplugin.go
   - internal/sdk/models/operations/updateawslambdaplugin.go
-  - internal/sdk/models/operations/deletebasicauthplugin.go
+  - internal/sdk/models/operations/deleteawslambdaplugin.go
   - internal/sdk/models/operations/getbasicauthplugin.go
   - internal/sdk/models/operations/updatebasicauthplugin.go
-  - internal/sdk/models/operations/deletecorrelationidplugin.go
+  - internal/sdk/models/operations/deletebasicauthplugin.go
   - internal/sdk/models/operations/getcorrelationidplugin.go
   - internal/sdk/models/operations/updatecorrelationidplugin.go
-  - internal/sdk/models/operations/deletecorsplugin.go
+  - internal/sdk/models/operations/deletecorrelationidplugin.go
   - internal/sdk/models/operations/getcorsplugin.go
   - internal/sdk/models/operations/updatecorsplugin.go
-  - internal/sdk/models/operations/deletefilelogplugin.go
+  - internal/sdk/models/operations/deletecorsplugin.go
+  - internal/sdk/models/operations/getexittransformerplugin.go
+  - internal/sdk/models/operations/updateexittransformerplugin.go
+  - internal/sdk/models/operations/deleteexittransformerplugin.go
   - internal/sdk/models/operations/getfilelogplugin.go
   - internal/sdk/models/operations/updatefilelogplugin.go
-  - internal/sdk/models/operations/deleteiprestrictionplugin.go
+  - internal/sdk/models/operations/deletefilelogplugin.go
   - internal/sdk/models/operations/getiprestrictionplugin.go
   - internal/sdk/models/operations/updateiprestrictionplugin.go
-  - internal/sdk/models/operations/deletejqplugin.go
+  - internal/sdk/models/operations/deleteiprestrictionplugin.go
   - internal/sdk/models/operations/getjqplugin.go
   - internal/sdk/models/operations/updatejqplugin.go
-  - internal/sdk/models/operations/deletejwtplugin.go
+  - internal/sdk/models/operations/deletejqplugin.go
   - internal/sdk/models/operations/getjwtplugin.go
   - internal/sdk/models/operations/updatejwtplugin.go
-  - internal/sdk/models/operations/deletejwtsignerplugin.go
+  - internal/sdk/models/operations/deletejwtplugin.go
   - internal/sdk/models/operations/getjwtsignerplugin.go
   - internal/sdk/models/operations/updatejwtsignerplugin.go
-  - internal/sdk/models/operations/deletekeyauthplugin.go
+  - internal/sdk/models/operations/deletejwtsignerplugin.go
   - internal/sdk/models/operations/getkeyauthplugin.go
   - internal/sdk/models/operations/updatekeyauthplugin.go
-  - internal/sdk/models/operations/deleteoauth2plugin.go
+  - internal/sdk/models/operations/deletekeyauthplugin.go
   - internal/sdk/models/operations/getoauth2plugin.go
   - internal/sdk/models/operations/updateoauth2plugin.go
-  - internal/sdk/models/operations/deleteopenidconnectplugin.go
+  - internal/sdk/models/operations/deleteoauth2plugin.go
   - internal/sdk/models/operations/getopenidconnectplugin.go
   - internal/sdk/models/operations/updateopenidconnectplugin.go
-  - internal/sdk/models/operations/deleteopentelemetryplugin.go
+  - internal/sdk/models/operations/deleteopenidconnectplugin.go
   - internal/sdk/models/operations/getopentelemetryplugin.go
   - internal/sdk/models/operations/updateopentelemetryplugin.go
-  - internal/sdk/models/operations/deleteprefunctionplugin.go
+  - internal/sdk/models/operations/deleteopentelemetryplugin.go
   - internal/sdk/models/operations/getprefunctionplugin.go
   - internal/sdk/models/operations/updateprefunctionplugin.go
-  - internal/sdk/models/operations/deleteprometheusplugin.go
+  - internal/sdk/models/operations/deleteprefunctionplugin.go
   - internal/sdk/models/operations/getprometheusplugin.go
   - internal/sdk/models/operations/updateprometheusplugin.go
-  - internal/sdk/models/operations/deleteproxycacheplugin.go
+  - internal/sdk/models/operations/deleteprometheusplugin.go
   - internal/sdk/models/operations/getproxycacheplugin.go
   - internal/sdk/models/operations/updateproxycacheplugin.go
-  - internal/sdk/models/operations/deleteratelimitingplugin.go
+  - internal/sdk/models/operations/deleteproxycacheplugin.go
   - internal/sdk/models/operations/getratelimitingplugin.go
   - internal/sdk/models/operations/updateratelimitingplugin.go
-  - internal/sdk/models/operations/deleteratelimitingadvancedplugin.go
+  - internal/sdk/models/operations/deleteratelimitingplugin.go
   - internal/sdk/models/operations/getratelimitingadvancedplugin.go
   - internal/sdk/models/operations/updateratelimitingadvancedplugin.go
-  - internal/sdk/models/operations/deleterequestterminationplugin.go
+  - internal/sdk/models/operations/deleteratelimitingadvancedplugin.go
   - internal/sdk/models/operations/getrequestterminationplugin.go
   - internal/sdk/models/operations/updaterequestterminationplugin.go
-  - internal/sdk/models/operations/deleterequesttransformerplugin.go
+  - internal/sdk/models/operations/deleterequestterminationplugin.go
   - internal/sdk/models/operations/getrequesttransformerplugin.go
   - internal/sdk/models/operations/updaterequesttransformerplugin.go
-  - internal/sdk/models/operations/deleterequesttransformeradvancedplugin.go
+  - internal/sdk/models/operations/deleterequesttransformerplugin.go
   - internal/sdk/models/operations/getrequesttransformeradvancedplugin.go
   - internal/sdk/models/operations/updaterequesttransformeradvancedplugin.go
-  - internal/sdk/models/operations/deleteresponsetransformerplugin.go
+  - internal/sdk/models/operations/deleterequesttransformeradvancedplugin.go
   - internal/sdk/models/operations/getresponsetransformerplugin.go
   - internal/sdk/models/operations/updateresponsetransformerplugin.go
-  - internal/sdk/models/operations/deleteresponsetransformeradvancedplugin.go
+  - internal/sdk/models/operations/deleteresponsetransformerplugin.go
   - internal/sdk/models/operations/getresponsetransformeradvancedplugin.go
   - internal/sdk/models/operations/updateresponsetransformeradvancedplugin.go
-  - internal/sdk/models/operations/deletesamlplugin.go
+  - internal/sdk/models/operations/deleteresponsetransformeradvancedplugin.go
   - internal/sdk/models/operations/getsamlplugin.go
   - internal/sdk/models/operations/updatesamlplugin.go
+  - internal/sdk/models/operations/deletesamlplugin.go
   - internal/sdk/models/operations/createaclplugin.go
   - internal/sdk/models/operations/createaipromptdecoratorplugin.go
   - internal/sdk/models/operations/createaipromptguardplugin.go
@@ -254,6 +274,7 @@ generatedFiles:
   - internal/sdk/models/operations/createbasicauthplugin.go
   - internal/sdk/models/operations/createcorrelationidplugin.go
   - internal/sdk/models/operations/createcorsplugin.go
+  - internal/sdk/models/operations/createexittransformerplugin.go
   - internal/sdk/models/operations/createfilelogplugin.go
   - internal/sdk/models/operations/createiprestrictionplugin.go
   - internal/sdk/models/operations/createjqplugin.go
@@ -275,23 +296,28 @@ generatedFiles:
   - internal/sdk/models/operations/createresponsetransformeradvancedplugin.go
   - internal/sdk/models/operations/createsamlplugin.go
   - internal/sdk/models/operations/createroute.go
-  - internal/sdk/models/operations/deleteroute.go
   - internal/sdk/models/operations/getroute.go
+  - internal/sdk/models/operations/upsertroute.go
+  - internal/sdk/models/operations/deleteroute.go
   - internal/sdk/models/operations/createservice.go
-  - internal/sdk/models/operations/deleteservice.go
   - internal/sdk/models/operations/getservice.go
+  - internal/sdk/models/operations/upsertservice.go
+  - internal/sdk/models/operations/deleteservice.go
   - internal/sdk/models/operations/createsni.go
-  - internal/sdk/models/operations/deletesni.go
   - internal/sdk/models/operations/getsni.go
+  - internal/sdk/models/operations/upsertsni.go
+  - internal/sdk/models/operations/deletesni.go
   - internal/sdk/models/operations/createupstream.go
-  - internal/sdk/models/operations/deleteupstream.go
   - internal/sdk/models/operations/getupstream.go
+  - internal/sdk/models/operations/upsertupstream.go
+  - internal/sdk/models/operations/deleteupstream.go
   - internal/sdk/models/operations/createtargetwithupstream.go
-  - internal/sdk/models/operations/deletetargetwithupstream.go
   - internal/sdk/models/operations/gettargetwithupstream.go
+  - internal/sdk/models/operations/deletetargetwithupstream.go
   - internal/sdk/models/operations/createvault.go
-  - internal/sdk/models/operations/deletevault.go
   - internal/sdk/models/operations/getvault.go
+  - internal/sdk/models/operations/upsertvault.go
+  - internal/sdk/models/operations/deletevault.go
   - internal/sdk/models/operations/createdataplanecertificate.go
   - internal/sdk/models/operations/getdataplanecertificate.go
   - internal/sdk/models/operations/deletedataplanecertificate.go
@@ -333,9 +359,13 @@ generatedFiles:
   - internal/sdk/models/shared/invalidparameterminimumlength.go
   - internal/sdk/models/shared/invalidparameterchoiceitem.go
   - internal/sdk/models/shared/invalidparameterdependentitem.go
+  - internal/sdk/models/shared/serverlesscloudgateway.go
+  - internal/sdk/models/shared/serverlesscontrolplane.go
+  - internal/sdk/models/shared/cpregion.go
+  - internal/sdk/models/shared/createserverlesscloudgatewayrequest.go
+  - internal/sdk/models/shared/notfounderror.go
   - internal/sdk/models/shared/meshcontrolplane.go
   - internal/sdk/models/shared/createmeshcontrolplanerequest.go
-  - internal/sdk/models/shared/notfounderror.go
   - internal/sdk/models/shared/updatemeshcontrolplanerequest.go
   - internal/sdk/models/shared/unsupportedmediatypeerror.go
   - internal/sdk/models/shared/apiproduct.go
@@ -344,8 +374,8 @@ generatedFiles:
   - internal/sdk/models/shared/updateapiproductdto.go
   - internal/sdk/models/shared/apiproductversion.go
   - internal/sdk/models/shared/apiproductversionportal.go
-  - internal/sdk/models/shared/apiproductversionauthstrategy.go
   - internal/sdk/models/shared/apiproductversionpublishstatus.go
+  - internal/sdk/models/shared/apiproductversionauthstrategy.go
   - internal/sdk/models/shared/authstrategysyncerror.go
   - internal/sdk/models/shared/createapiproductversiondto.go
   - internal/sdk/models/shared/gatewayservicepayload.go
@@ -364,14 +394,14 @@ generatedFiles:
   - internal/sdk/models/shared/updateappauthstrategyrequest.go
   - internal/sdk/models/shared/partialappauthstrategyconfigopenidconnect.go
   - internal/sdk/models/shared/configurationmanifest.go
-  - internal/sdk/models/shared/controlplanegeo.go
   - internal/sdk/models/shared/configurationdataplanegroup.go
+  - internal/sdk/models/shared/providername.go
   - internal/sdk/models/shared/configurationdataplanegroupautoscale.go
   - internal/sdk/models/shared/configurationdataplanegroupautoscalestatic.go
   - internal/sdk/models/shared/instancetypename.go
   - internal/sdk/models/shared/configurationdataplanegroupautoscaleautopilot.go
-  - internal/sdk/models/shared/providername.go
   - internal/sdk/models/shared/configurationdataplanegroupconfig.go
+  - internal/sdk/models/shared/controlplanegeo.go
   - internal/sdk/models/shared/apiaccess.go
   - internal/sdk/models/shared/createconfigurationrequest.go
   - internal/sdk/models/shared/createconfigurationdataplanegroup.go
@@ -379,21 +409,21 @@ generatedFiles:
   - internal/sdk/models/shared/customdomainstate.go
   - internal/sdk/models/shared/createcustomdomainrequest.go
   - internal/sdk/models/shared/network.go
-  - internal/sdk/models/shared/networkprovidermetadata.go
   - internal/sdk/models/shared/networkstate.go
+  - internal/sdk/models/shared/networkprovidermetadata.go
   - internal/sdk/models/shared/networkfirewallconfig.go
   - internal/sdk/models/shared/createnetworkrequest.go
   - internal/sdk/models/shared/patchnetworkrequest.go
   - internal/sdk/models/shared/transitgateway.go
-  - internal/sdk/models/shared/transitgatewaystate.go
-  - internal/sdk/models/shared/transitgatewaydnsconfig.go
   - internal/sdk/models/shared/transitgatewayattachmentconfig.go
   - internal/sdk/models/shared/awstransitgatewayattachmentconfig.go
+  - internal/sdk/models/shared/transitgatewaystate.go
+  - internal/sdk/models/shared/transitgatewaydnsconfig.go
   - internal/sdk/models/shared/createtransitgatewayrequest.go
   - internal/sdk/models/shared/listprovideraccountsresponse.go
-  - internal/sdk/models/shared/provideraccount.go
   - internal/sdk/models/shared/paginatedmeta.go
   - internal/sdk/models/shared/pagemeta.go
+  - internal/sdk/models/shared/provideraccount.go
   - internal/sdk/models/shared/serviceunavailable.go
   - internal/sdk/models/shared/internalservererror.go
   - internal/sdk/models/shared/controlplane.go
@@ -407,6 +437,7 @@ generatedFiles:
   - internal/sdk/models/shared/certificateinput.go
   - internal/sdk/models/shared/consumergroup.go
   - internal/sdk/models/shared/consumergroupinput.go
+  - internal/sdk/models/shared/consumergroupinsidewrapper.go
   - internal/sdk/models/shared/consumer.go
   - internal/sdk/models/shared/consumerinput.go
   - internal/sdk/models/shared/acl.go
@@ -424,6 +455,7 @@ generatedFiles:
   - internal/sdk/models/shared/key.go
   - internal/sdk/models/shared/pluginschemas.go
   - internal/sdk/models/shared/createpluginschemas.go
+  - internal/sdk/models/shared/plugin.go
   - internal/sdk/models/shared/aclplugin.go
   - internal/sdk/models/shared/createaclplugin.go
   - internal/sdk/models/shared/aipromptdecoratorplugin.go
@@ -442,6 +474,8 @@ generatedFiles:
   - internal/sdk/models/shared/createcorrelationidplugin.go
   - internal/sdk/models/shared/corsplugin.go
   - internal/sdk/models/shared/createcorsplugin.go
+  - internal/sdk/models/shared/exittransformerplugin.go
+  - internal/sdk/models/shared/createexittransformerplugin.go
   - internal/sdk/models/shared/filelogplugin.go
   - internal/sdk/models/shared/createfilelogplugin.go
   - internal/sdk/models/shared/iprestrictionplugin.go
@@ -502,10 +536,10 @@ generatedFiles:
   - internal/sdk/models/shared/portalclaimmappings.go
   - internal/sdk/models/shared/portalauthenticationsettingsupdaterequest.go
   - internal/sdk/models/shared/portalproductversion.go
+  - internal/sdk/models/shared/portalproductversionpublishstatus.go
   - internal/sdk/models/shared/authstrategy.go
   - internal/sdk/models/shared/authstrategykeyauth.go
   - internal/sdk/models/shared/authstrategyclientcredentials.go
-  - internal/sdk/models/shared/portalproductversionpublishstatus.go
   - internal/sdk/models/shared/replaceportalproductversionpayload.go
   - internal/sdk/models/shared/systemaccount.go
   - internal/sdk/models/shared/createsystemaccount.go
@@ -613,6 +647,7 @@ generatedFiles:
   - internal/provider/types/create_basic_auth_plugin_config.go
   - internal/provider/types/create_correlation_id_plugin_config.go
   - internal/provider/types/create_cors_plugin_config.go
+  - internal/provider/types/create_exit_transformer_plugin_config.go
   - internal/provider/types/create_file_log_plugin_config.go
   - internal/provider/types/create_ip_restriction_plugin_config.go
   - internal/provider/types/create_jq_plugin_request_jq_program_options.go
@@ -668,6 +703,7 @@ generatedFiles:
   - internal/provider/types/auth_strategy_client_credentials.go
   - internal/provider/types/auth_strategy_key_auth.go
   - internal/provider/types/auth_strategy.go
+  - internal/provider/types/serverless_control_plane.go
   - internal/provider/types/gateway_service.go
   - internal/provider/types/app_auth_strategy_open_id_connect_response_app_auth_strategy_open_id_connect_response.go
   - internal/provider/types/provider_account.go
@@ -733,6 +769,9 @@ generatedFiles:
   - internal/provider/gatewayconsumergroup_resource.go
   - internal/provider/gatewayconsumergroup_resource_sdk.go
   - examples/resources/konnect_gateway_consumer_group/resource.tf
+  - internal/provider/gatewayconsumergroupmember_resource.go
+  - internal/provider/gatewayconsumergroupmember_resource_sdk.go
+  - examples/resources/konnect_gateway_consumer_group_member/resource.tf
   - examples/resources/konnect_gateway_control_plane/import.sh
   - internal/provider/gatewaycontrolplane_resource.go
   - internal/provider/gatewaycontrolplane_resource_sdk.go
@@ -768,6 +807,10 @@ generatedFiles:
   - internal/provider/gatewaykeyset_resource.go
   - internal/provider/gatewaykeyset_resource_sdk.go
   - examples/resources/konnect_gateway_key_set/resource.tf
+  - examples/resources/konnect_gateway_plugin/import.sh
+  - internal/provider/gatewayplugin_resource.go
+  - internal/provider/gatewayplugin_resource_sdk.go
+  - examples/resources/konnect_gateway_plugin/resource.tf
   - examples/resources/konnect_gateway_plugin_acl/import.sh
   - internal/provider/gatewaypluginacl_resource.go
   - internal/provider/gatewaypluginacl_resource_sdk.go
@@ -804,6 +847,10 @@ generatedFiles:
   - internal/provider/gatewayplugincors_resource.go
   - internal/provider/gatewayplugincors_resource_sdk.go
   - examples/resources/konnect_gateway_plugin_cors/resource.tf
+  - examples/resources/konnect_gateway_plugin_exit_transformer/import.sh
+  - internal/provider/gatewaypluginexittransformer_resource.go
+  - internal/provider/gatewaypluginexittransformer_resource_sdk.go
+  - examples/resources/konnect_gateway_plugin_exit_transformer/resource.tf
   - examples/resources/konnect_gateway_plugin_file_log/import.sh
   - internal/provider/gatewaypluginfilelog_resource.go
   - internal/provider/gatewaypluginfilelog_resource_sdk.go
@@ -923,6 +970,10 @@ generatedFiles:
   - internal/provider/portalproductversion_resource.go
   - internal/provider/portalproductversion_resource_sdk.go
   - examples/resources/konnect_portal_product_version/resource.tf
+  - examples/resources/konnect_serverless_cloud_gateway/import.sh
+  - internal/provider/serverlesscloudgateway_resource.go
+  - internal/provider/serverlesscloudgateway_resource_sdk.go
+  - examples/resources/konnect_serverless_cloud_gateway/resource.tf
   - examples/resources/konnect_system_account/import.sh
   - internal/provider/systemaccount_resource.go
   - internal/provider/systemaccount_resource_sdk.go
@@ -1016,6 +1067,9 @@ generatedFiles:
   - internal/provider/gatewaykeyset_data_source.go
   - internal/provider/gatewaykeyset_data_source_sdk.go
   - examples/data-sources/konnect_gateway_key_set/data-source.tf
+  - internal/provider/gatewayplugin_data_source.go
+  - internal/provider/gatewayplugin_data_source_sdk.go
+  - examples/data-sources/konnect_gateway_plugin/data-source.tf
   - internal/provider/gatewaypluginacl_data_source.go
   - internal/provider/gatewaypluginacl_data_source_sdk.go
   - examples/data-sources/konnect_gateway_plugin_acl/data-source.tf
@@ -1043,6 +1097,9 @@ generatedFiles:
   - internal/provider/gatewayplugincors_data_source.go
   - internal/provider/gatewayplugincors_data_source_sdk.go
   - examples/data-sources/konnect_gateway_plugin_cors/data-source.tf
+  - internal/provider/gatewaypluginexittransformer_data_source.go
+  - internal/provider/gatewaypluginexittransformer_data_source_sdk.go
+  - examples/data-sources/konnect_gateway_plugin_exit_transformer/data-source.tf
   - internal/provider/gatewaypluginfilelog_data_source.go
   - internal/provider/gatewaypluginfilelog_data_source_sdk.go
   - examples/data-sources/konnect_gateway_plugin_file_log/data-source.tf
@@ -1133,6 +1190,9 @@ generatedFiles:
   - internal/provider/portalproductversion_data_source.go
   - internal/provider/portalproductversion_data_source_sdk.go
   - examples/data-sources/konnect_portal_product_version/data-source.tf
+  - internal/provider/serverlesscloudgateway_data_source.go
+  - internal/provider/serverlesscloudgateway_data_source_sdk.go
+  - examples/data-sources/konnect_serverless_cloud_gateway/data-source.tf
   - internal/provider/systemaccount_data_source.go
   - internal/provider/systemaccount_data_source_sdk.go
   - examples/data-sources/konnect_system_account/data-source.tf

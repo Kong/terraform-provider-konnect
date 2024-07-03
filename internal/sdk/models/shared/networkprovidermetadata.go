@@ -4,15 +4,8 @@ package shared
 
 // NetworkProviderMetadata - Metadata describing attributes returned by cloud-provider for the network.
 type NetworkProviderMetadata struct {
-	VpcID     *string  `json:"vpc_id,omitempty"`
 	SubnetIds []string `json:"subnet_ids,omitempty"`
-}
-
-func (o *NetworkProviderMetadata) GetVpcID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.VpcID
+	VpcID     *string  `json:"vpc_id,omitempty"`
 }
 
 func (o *NetworkProviderMetadata) GetSubnetIds() []string {
@@ -20,4 +13,11 @@ func (o *NetworkProviderMetadata) GetSubnetIds() []string {
 		return nil
 	}
 	return o.SubnetIds
+}
+
+func (o *NetworkProviderMetadata) GetVpcID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.VpcID
 }

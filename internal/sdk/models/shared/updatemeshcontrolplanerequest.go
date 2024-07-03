@@ -4,18 +4,11 @@ package shared
 
 // UpdateMeshControlPlaneRequest - a payload to update the control plane
 type UpdateMeshControlPlaneRequest struct {
-	// The name of the control plane.
-	Name        *string `json:"name,omitempty"`
 	Description *string `json:"description,omitempty"`
 	// Labels to facilitate tagged search on control planes. Keys must be of length 1-63 characters.
 	Labels map[string]string `json:"labels,omitempty"`
-}
-
-func (o *UpdateMeshControlPlaneRequest) GetName() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Name
+	// The name of the control plane.
+	Name *string `json:"name,omitempty"`
 }
 
 func (o *UpdateMeshControlPlaneRequest) GetDescription() *string {
@@ -30,4 +23,11 @@ func (o *UpdateMeshControlPlaneRequest) GetLabels() map[string]string {
 		return nil
 	}
 	return o.Labels
+}
+
+func (o *UpdateMeshControlPlaneRequest) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
 }

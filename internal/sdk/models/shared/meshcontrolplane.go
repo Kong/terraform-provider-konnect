@@ -9,15 +9,15 @@ import (
 
 // MeshControlPlane - a control plane
 type MeshControlPlane struct {
+	CreatedAt   time.Time `json:"created_at"`
+	Description *string   `json:"description,omitempty"`
 	// ID of the control plane.
 	ID string `json:"id"`
-	// The name of the control plane.
-	Name        string  `json:"name"`
-	Description *string `json:"description,omitempty"`
 	// Labels to facilitate tagged search on control planes. Keys must be of length 1-63 characters.
-	Labels    map[string]string `json:"labels,omitempty"`
-	CreatedAt time.Time         `json:"created_at"`
-	UpdatedAt time.Time         `json:"updated_at"`
+	Labels map[string]string `json:"labels,omitempty"`
+	// The name of the control plane.
+	Name      string    `json:"name"`
+	UpdatedAt time.Time `json:"updated_at"`
 }
 
 func (m MeshControlPlane) MarshalJSON() ([]byte, error) {
@@ -31,18 +31,11 @@ func (m *MeshControlPlane) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *MeshControlPlane) GetID() string {
+func (o *MeshControlPlane) GetCreatedAt() time.Time {
 	if o == nil {
-		return ""
+		return time.Time{}
 	}
-	return o.ID
-}
-
-func (o *MeshControlPlane) GetName() string {
-	if o == nil {
-		return ""
-	}
-	return o.Name
+	return o.CreatedAt
 }
 
 func (o *MeshControlPlane) GetDescription() *string {
@@ -52,6 +45,13 @@ func (o *MeshControlPlane) GetDescription() *string {
 	return o.Description
 }
 
+func (o *MeshControlPlane) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
 func (o *MeshControlPlane) GetLabels() map[string]string {
 	if o == nil {
 		return nil
@@ -59,11 +59,11 @@ func (o *MeshControlPlane) GetLabels() map[string]string {
 	return o.Labels
 }
 
-func (o *MeshControlPlane) GetCreatedAt() time.Time {
+func (o *MeshControlPlane) GetName() string {
 	if o == nil {
-		return time.Time{}
+		return ""
 	}
-	return o.CreatedAt
+	return o.Name
 }
 
 func (o *MeshControlPlane) GetUpdatedAt() time.Time {

@@ -56,8 +56,7 @@ func (r *GatewayConsumerGroupDataSource) Schema(ctx context.Context, req datasou
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"id": schema.StringAttribute{
-				Required:    true,
-				Description: `ID of the Consumer Group to lookup`,
+				Computed: true,
 			},
 			"name": schema.StringAttribute{
 				Computed: true,
@@ -112,11 +111,11 @@ func (r *GatewayConsumerGroupDataSource) Read(ctx context.Context, req datasourc
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	consumerGroupID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.GetConsumerGroupRequest{
-		ControlPlaneID:  controlPlaneID,
 		ConsumerGroupID: consumerGroupID,
+		ControlPlaneID:  controlPlaneID,
 	}
 	res, err := r.client.ConsumerGroups.GetConsumerGroup(ctx, request)
 	if err != nil {
@@ -138,11 +137,11 @@ func (r *GatewayConsumerGroupDataSource) Read(ctx context.Context, req datasourc
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.ConsumerGroup != nil) {
+	if !(res.ConsumerGroupInsideWrapper != nil && res.ConsumerGroupInsideWrapper.ConsumerGroup != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedConsumerGroup(res.ConsumerGroup)
+	data.RefreshFromSharedConsumerGroup(res.ConsumerGroupInsideWrapper.ConsumerGroup)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

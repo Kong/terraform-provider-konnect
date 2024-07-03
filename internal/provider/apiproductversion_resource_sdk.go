@@ -10,7 +10,6 @@ import (
 )
 
 func (r *APIProductVersionResourceModel) ToSharedCreateAPIProductVersionDTO() *shared.CreateAPIProductVersionDTO {
-	name := r.Name.ValueString()
 	deprecated := new(bool)
 	if !r.Deprecated.IsUnknown() && !r.Deprecated.IsNull() {
 		*deprecated = r.Deprecated.ValueBool()
@@ -19,17 +18,18 @@ func (r *APIProductVersionResourceModel) ToSharedCreateAPIProductVersionDTO() *s
 	}
 	var gatewayService *shared.GatewayServicePayload
 	if r.GatewayService != nil {
-		id := r.GatewayService.ID.ValueString()
 		controlPlaneID := r.GatewayService.ControlPlaneID.ValueString()
+		id := r.GatewayService.ID.ValueString()
 		gatewayService = &shared.GatewayServicePayload{
-			ID:             id,
 			ControlPlaneID: controlPlaneID,
+			ID:             id,
 		}
 	}
+	name := r.Name.ValueString()
 	out := shared.CreateAPIProductVersionDTO{
-		Name:           name,
 		Deprecated:     deprecated,
 		GatewayService: gatewayService,
+		Name:           name,
 	}
 	return &out
 }
@@ -91,12 +91,6 @@ func (r *APIProductVersionResourceModel) RefreshFromSharedAPIProductVersion(resp
 }
 
 func (r *APIProductVersionResourceModel) ToSharedUpdateAPIProductVersionDTO() *shared.UpdateAPIProductVersionDTO {
-	name := new(string)
-	if !r.Name.IsUnknown() && !r.Name.IsNull() {
-		*name = r.Name.ValueString()
-	} else {
-		name = nil
-	}
 	deprecated := new(bool)
 	if !r.Deprecated.IsUnknown() && !r.Deprecated.IsNull() {
 		*deprecated = r.Deprecated.ValueBool()
@@ -105,17 +99,23 @@ func (r *APIProductVersionResourceModel) ToSharedUpdateAPIProductVersionDTO() *s
 	}
 	var gatewayService *shared.GatewayServicePayload
 	if r.GatewayService != nil {
-		id := r.GatewayService.ID.ValueString()
 		controlPlaneID := r.GatewayService.ControlPlaneID.ValueString()
+		id := r.GatewayService.ID.ValueString()
 		gatewayService = &shared.GatewayServicePayload{
-			ID:             id,
 			ControlPlaneID: controlPlaneID,
+			ID:             id,
 		}
 	}
+	name := new(string)
+	if !r.Name.IsUnknown() && !r.Name.IsNull() {
+		*name = r.Name.ValueString()
+	} else {
+		name = nil
+	}
 	out := shared.UpdateAPIProductVersionDTO{
-		Name:           name,
 		Deprecated:     deprecated,
 		GatewayService: gatewayService,
+		Name:           name,
 	}
 	return &out
 }

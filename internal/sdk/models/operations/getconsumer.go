@@ -8,17 +8,10 @@ import (
 )
 
 type GetConsumerRequest struct {
-	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// ID of the Consumer to lookup
 	ConsumerID string `pathParam:"style=simple,explode=false,name=ConsumerId"`
-}
-
-func (o *GetConsumerRequest) GetControlPlaneID() string {
-	if o == nil {
-		return ""
-	}
-	return o.ControlPlaneID
+	// The UUID of your control plane. This variable is available in the Konnect manager.
+	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
 func (o *GetConsumerRequest) GetConsumerID() string {
@@ -26,6 +19,13 @@ func (o *GetConsumerRequest) GetConsumerID() string {
 		return ""
 	}
 	return o.ConsumerID
+}
+
+func (o *GetConsumerRequest) GetControlPlaneID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ControlPlaneID
 }
 
 type GetConsumerResponse struct {

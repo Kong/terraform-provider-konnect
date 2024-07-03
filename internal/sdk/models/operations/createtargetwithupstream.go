@@ -11,7 +11,7 @@ type CreateTargetWithUpstreamRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// ID or target of the Target to lookup
-	UpstreamIDForTarget string `pathParam:"style=simple,explode=false,name=UpstreamIdForTarget"`
+	UpstreamID string `pathParam:"style=simple,explode=false,name=UpstreamIdForTarget"`
 	// Description of new Target for creation
 	TargetWithoutParents shared.TargetWithoutParents `request:"mediaType=application/json"`
 }
@@ -23,11 +23,11 @@ func (o *CreateTargetWithUpstreamRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateTargetWithUpstreamRequest) GetUpstreamIDForTarget() string {
+func (o *CreateTargetWithUpstreamRequest) GetUpstreamID() string {
 	if o == nil {
 		return ""
 	}
-	return o.UpstreamIDForTarget
+	return o.UpstreamID
 }
 
 func (o *CreateTargetWithUpstreamRequest) GetTargetWithoutParents() shared.TargetWithoutParents {

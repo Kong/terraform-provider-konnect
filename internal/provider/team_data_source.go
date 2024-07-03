@@ -57,8 +57,8 @@ func (r *TeamDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 				Description: `The team description in Konnect.`,
 			},
 			"id": schema.StringAttribute{
-				Required:    true,
-				Description: `The team ID`,
+				Computed:    true,
+				Description: `The team ID.`,
 			},
 			"labels": schema.MapAttribute{
 				Computed:    true,

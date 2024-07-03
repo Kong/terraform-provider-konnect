@@ -32,18 +32,11 @@ func (e *ConfigurationDataPlaneGroupAutoscaleAutopilotKind) UnmarshalJSON(data [
 
 // ConfigurationDataPlaneGroupAutoscaleAutopilot - Object that describes the autopilot autoscaling strategy.
 type ConfigurationDataPlaneGroupAutoscaleAutopilot struct {
-	Kind ConfigurationDataPlaneGroupAutoscaleAutopilotKind `json:"kind"`
 	// Base number of requests per second that the deployment target should support.
-	BaseRps int64 `json:"base_rps"`
+	BaseRps int64                                             `json:"base_rps"`
+	Kind    ConfigurationDataPlaneGroupAutoscaleAutopilotKind `json:"kind"`
 	// Max number of requests per second that the deployment target should support. If not set, this defaults to 10x base_rps.
 	MaxRps *int64 `json:"max_rps,omitempty"`
-}
-
-func (o *ConfigurationDataPlaneGroupAutoscaleAutopilot) GetKind() ConfigurationDataPlaneGroupAutoscaleAutopilotKind {
-	if o == nil {
-		return ConfigurationDataPlaneGroupAutoscaleAutopilotKind("")
-	}
-	return o.Kind
 }
 
 func (o *ConfigurationDataPlaneGroupAutoscaleAutopilot) GetBaseRps() int64 {
@@ -51,6 +44,13 @@ func (o *ConfigurationDataPlaneGroupAutoscaleAutopilot) GetBaseRps() int64 {
 		return 0
 	}
 	return o.BaseRps
+}
+
+func (o *ConfigurationDataPlaneGroupAutoscaleAutopilot) GetKind() ConfigurationDataPlaneGroupAutoscaleAutopilotKind {
+	if o == nil {
+		return ConfigurationDataPlaneGroupAutoscaleAutopilotKind("")
+	}
+	return o.Kind
 }
 
 func (o *ConfigurationDataPlaneGroupAutoscaleAutopilot) GetMaxRps() *int64 {

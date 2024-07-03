@@ -10,13 +10,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/internal/planmodifiers/listplanmodifier"
-	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/internal/planmodifiers/stringplanmodifier"
 	"github.com/kong/terraform-provider-konnect/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
 )
@@ -54,47 +49,31 @@ func (r *GatewayCACertificateResource) Schema(ctx context.Context, req resource.
 		MarkdownDescription: "GatewayCACertificate Resource",
 		Attributes: map[string]schema.Attribute{
 			"cert": schema.StringAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-				},
+				Computed:    true,
 				Optional:    true,
-				Description: `PEM-encoded public certificate of the CA. Requires replacement if changed. `,
+				Description: `PEM-encoded public certificate of the CA.`,
 			},
 			"cert_digest": schema.StringAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-				},
+				Computed:    true,
 				Optional:    true,
-				Description: `SHA256 hex digest of the public certificate. This field is read-only and it cannot be set by the caller, the value is automatically computed. Requires replacement if changed. `,
+				Description: `SHA256 hex digest of the public certificate. This field is read-only and it cannot be set by the caller, the value is automatically computed.`,
 			},
 			"control_plane_id": schema.StringAttribute{
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
-				},
 				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed. `,
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager.`,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"id": schema.StringAttribute{
-				Computed:    true,
-				Description: `ID of the CA Certificate to lookup`,
+				Computed: true,
 			},
 			"tags": schema.ListAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.List{
-					listplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
-				},
+				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
-				Description: `An optional set of strings associated with the Certificate for grouping and filtering. Requires replacement if changed. `,
+				Description: `An optional set of strings associated with the Certificate for grouping and filtering.`,
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
@@ -193,11 +172,11 @@ func (r *GatewayCACertificateResource) Read(ctx context.Context, req resource.Re
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	caCertificateID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.GetCaCertificateRequest{
-		ControlPlaneID:  controlPlaneID,
 		CACertificateID: caCertificateID,
+		ControlPlaneID:  controlPlaneID,
 	}
 	res, err := r.client.CACertificates.GetCaCertificate(ctx, request)
 	if err != nil {
@@ -243,7 +222,36 @@ func (r *GatewayCACertificateResource) Update(ctx context.Context, req resource.
 		return
 	}
 
-	// Not Implemented; all attributes marked as RequiresReplace
+	caCertificateID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
+	caCertificate := *data.ToSharedCACertificateInput()
+	request := operations.UpsertCaCertificateRequest{
+		CACertificateID: caCertificateID,
+		ControlPlaneID:  controlPlaneID,
+		CACertificate:   caCertificate,
+	}
+	res, err := r.client.CACertificates.UpsertCaCertificate(ctx, request)
+	if err != nil {
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res != nil && res.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
+		}
+		return
+	}
+	if res == nil {
+		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
+		return
+	}
+	if res.StatusCode != 200 {
+		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
+		return
+	}
+	if !(res.CACertificate != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
+		return
+	}
+	data.RefreshFromSharedCACertificate(res.CACertificate)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -296,24 +304,24 @@ func (r *GatewayCACertificateResource) ImportState(ctx context.Context, req reso
 	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
 	dec.DisallowUnknownFields()
 	var data struct {
-		ControlPlaneID string `json:"control_plane_id"`
 		ID             string `json:"id"`
+		ControlPlaneID string `json:"control_plane_id"`
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "id": "3c31f18a-f27a-4f9b-8cd4-bf841554612f"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "ca_certificate_id": "3c31f18a-f27a-4f9b-8cd4-bf841554612f",  "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458"}': `+err.Error())
 		return
 	}
 
-	if len(data.ControlPlaneID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field control_plane_id is required but was not found in the json encoded ID. It's expected to be a value alike '"9524ec7d-36d9-465d-a8c5-83a3c9390458"`)
-		return
-	}
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
 	if len(data.ID) == 0 {
 		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '"3c31f18a-f27a-4f9b-8cd4-bf841554612f"`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)
+	if len(data.ControlPlaneID) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field control_plane_id is required but was not found in the json encoded ID. It's expected to be a value alike '"9524ec7d-36d9-465d-a8c5-83a3c9390458"`)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
 
 }

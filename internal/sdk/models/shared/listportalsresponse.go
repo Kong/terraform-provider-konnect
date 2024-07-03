@@ -4,16 +4,9 @@ package shared
 
 // ListPortalsResponse - A paginated list of portals in the current region in the organization.
 type ListPortalsResponse struct {
+	Data []Portal `json:"data"`
 	// returns the pagination information
 	Meta PaginatedMeta `json:"meta"`
-	Data []Portal      `json:"data"`
-}
-
-func (o *ListPortalsResponse) GetMeta() PaginatedMeta {
-	if o == nil {
-		return PaginatedMeta{}
-	}
-	return o.Meta
 }
 
 func (o *ListPortalsResponse) GetData() []Portal {
@@ -21,4 +14,11 @@ func (o *ListPortalsResponse) GetData() []Portal {
 		return []Portal{}
 	}
 	return o.Data
+}
+
+func (o *ListPortalsResponse) GetMeta() PaginatedMeta {
+	if o == nil {
+		return PaginatedMeta{}
+	}
+	return o.Meta
 }

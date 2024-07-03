@@ -20,5 +20,5 @@ resource "konnect_system_account_role" "my_systemaccountrole" {
 
 resource "konnect_system_account_team" "my_systemaccountteam" {
   account_id = konnect_system_account.my_systemaccount.id
-  team_id    = "0d591155-3e7f-4352-992d-eaea72fdf7b1" # Portal Admin
+  team_id    = konnect_team.my_team.id
 }

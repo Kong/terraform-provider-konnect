@@ -12,24 +12,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/mapplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/numberplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	speakeasy_boolplanmodifier "github.com/kong/terraform-provider-konnect/internal/planmodifiers/boolplanmodifier"
-	speakeasy_int64planmodifier "github.com/kong/terraform-provider-konnect/internal/planmodifiers/int64planmodifier"
-	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/internal/planmodifiers/listplanmodifier"
-	speakeasy_mapplanmodifier "github.com/kong/terraform-provider-konnect/internal/planmodifiers/mapplanmodifier"
-	speakeasy_numberplanmodifier "github.com/kong/terraform-provider-konnect/internal/planmodifiers/numberplanmodifier"
-	speakeasy_objectplanmodifier "github.com/kong/terraform-provider-konnect/internal/planmodifiers/objectplanmodifier"
-	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
@@ -84,13 +69,9 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 		MarkdownDescription: "GatewayUpstream Resource",
 		Attributes: map[string]schema.Attribute{
 			"algorithm": schema.StringAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-				},
+				Computed:    true,
 				Optional:    true,
-				Description: `Which load balancing algorithm to use. Requires replacement if changed. ; must be one of ["consistent-hashing", "least-connections", "round-robin", "latency"]`,
+				Description: `Which load balancing algorithm to use. must be one of ["consistent-hashing", "least-connections", "round-robin", "latency"]`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
 						"consistent-hashing",
@@ -102,43 +83,27 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 			},
 			"client_certificate": schema.SingleNestedAttribute{
 				Computed: true,
-				PlanModifiers: []planmodifier.Object{
-					objectplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
-				},
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{
 						Computed: true,
-						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.RequiresReplaceIfConfigured(),
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
-						Optional:    true,
-						Description: `Requires replacement if changed. `,
+						Optional: true,
 					},
 				},
-				Description: `If set, the certificate to be used as client certificate while TLS handshaking to the upstream server. Requires replacement if changed. `,
+				Description: `If set, the certificate to be used as client certificate while TLS handshaking to the upstream server.`,
 			},
 			"control_plane_id": schema.StringAttribute{
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
-				},
 				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed. `,
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager.`,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"hash_fallback": schema.StringAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-				},
+				Computed:    true,
 				Optional:    true,
-				Description: `What to use as hashing input if the primary ` + "`" + `hash_on` + "`" + ` does not return a hash (eg. header is missing, or no Consumer identified). Not available if ` + "`" + `hash_on` + "`" + ` is set to ` + "`" + `cookie` + "`" + `. Requires replacement if changed. ; must be one of ["none", "consumer", "ip", "header", "cookie", "path", "query_arg", "uri_capture"]`,
+				Description: `What to use as hashing input if the primary ` + "`" + `hash_on` + "`" + ` does not return a hash (eg. header is missing, or no Consumer identified). Not available if ` + "`" + `hash_on` + "`" + ` is set to ` + "`" + `cookie` + "`" + `. must be one of ["none", "consumer", "ip", "header", "cookie", "path", "query_arg", "uri_capture"]`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
 						"none",
@@ -153,40 +118,24 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 				},
 			},
 			"hash_fallback_header": schema.StringAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-				},
+				Computed:    true,
 				Optional:    true,
-				Description: `The header name to take the value from as hash input. Only required when ` + "`" + `hash_fallback` + "`" + ` is set to ` + "`" + `header` + "`" + `. Requires replacement if changed. `,
+				Description: `The header name to take the value from as hash input. Only required when ` + "`" + `hash_fallback` + "`" + ` is set to ` + "`" + `header` + "`" + `.`,
 			},
 			"hash_fallback_query_arg": schema.StringAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-				},
+				Computed:    true,
 				Optional:    true,
-				Description: `The name of the query string argument to take the value from as hash input. Only required when ` + "`" + `hash_fallback` + "`" + ` is set to ` + "`" + `query_arg` + "`" + `. Requires replacement if changed. `,
+				Description: `The name of the query string argument to take the value from as hash input. Only required when ` + "`" + `hash_fallback` + "`" + ` is set to ` + "`" + `query_arg` + "`" + `.`,
 			},
 			"hash_fallback_uri_capture": schema.StringAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-				},
+				Computed:    true,
 				Optional:    true,
-				Description: `The name of the route URI capture to take the value from as hash input. Only required when ` + "`" + `hash_fallback` + "`" + ` is set to ` + "`" + `uri_capture` + "`" + `. Requires replacement if changed. `,
+				Description: `The name of the route URI capture to take the value from as hash input. Only required when ` + "`" + `hash_fallback` + "`" + ` is set to ` + "`" + `uri_capture` + "`" + `.`,
 			},
 			"hash_on": schema.StringAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-				},
+				Computed:    true,
 				Optional:    true,
-				Description: `What to use as hashing input. Using ` + "`" + `none` + "`" + ` results in a weighted-round-robin scheme with no hashing. Requires replacement if changed. ; must be one of ["none", "consumer", "ip", "header", "cookie", "path", "query_arg", "uri_capture"]`,
+				Description: `What to use as hashing input. Using ` + "`" + `none` + "`" + ` results in a weighted-round-robin scheme with no hashing. must be one of ["none", "consumer", "ip", "header", "cookie", "path", "query_arg", "uri_capture"]`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
 						"none",
@@ -201,171 +150,89 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 				},
 			},
 			"hash_on_cookie": schema.StringAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-				},
+				Computed:    true,
 				Optional:    true,
-				Description: `The cookie name to take the value from as hash input. Only required when ` + "`" + `hash_on` + "`" + ` or ` + "`" + `hash_fallback` + "`" + ` is set to ` + "`" + `cookie` + "`" + `. If the specified cookie is not in the request, Kong will generate a value and set the cookie in the response. Requires replacement if changed. `,
+				Description: `The cookie name to take the value from as hash input. Only required when ` + "`" + `hash_on` + "`" + ` or ` + "`" + `hash_fallback` + "`" + ` is set to ` + "`" + `cookie` + "`" + `. If the specified cookie is not in the request, Kong will generate a value and set the cookie in the response.`,
 			},
 			"hash_on_cookie_path": schema.StringAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-				},
+				Computed:    true,
 				Optional:    true,
-				Description: `The cookie path to set in the response headers. Only required when ` + "`" + `hash_on` + "`" + ` or ` + "`" + `hash_fallback` + "`" + ` is set to ` + "`" + `cookie` + "`" + `. Requires replacement if changed. `,
+				Description: `The cookie path to set in the response headers. Only required when ` + "`" + `hash_on` + "`" + ` or ` + "`" + `hash_fallback` + "`" + ` is set to ` + "`" + `cookie` + "`" + `.`,
 			},
 			"hash_on_header": schema.StringAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-				},
+				Computed:    true,
 				Optional:    true,
-				Description: `The header name to take the value from as hash input. Only required when ` + "`" + `hash_on` + "`" + ` is set to ` + "`" + `header` + "`" + `. Requires replacement if changed. `,
+				Description: `The header name to take the value from as hash input. Only required when ` + "`" + `hash_on` + "`" + ` is set to ` + "`" + `header` + "`" + `.`,
 			},
 			"hash_on_query_arg": schema.StringAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-				},
+				Computed:    true,
 				Optional:    true,
-				Description: `The name of the query string argument to take the value from as hash input. Only required when ` + "`" + `hash_on` + "`" + ` is set to ` + "`" + `query_arg` + "`" + `. Requires replacement if changed. `,
+				Description: `The name of the query string argument to take the value from as hash input. Only required when ` + "`" + `hash_on` + "`" + ` is set to ` + "`" + `query_arg` + "`" + `.`,
 			},
 			"hash_on_uri_capture": schema.StringAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-				},
+				Computed:    true,
 				Optional:    true,
-				Description: `The name of the route URI capture to take the value from as hash input. Only required when ` + "`" + `hash_on` + "`" + ` is set to ` + "`" + `uri_capture` + "`" + `. Requires replacement if changed. `,
+				Description: `The name of the route URI capture to take the value from as hash input. Only required when ` + "`" + `hash_on` + "`" + ` is set to ` + "`" + `uri_capture` + "`" + `.`,
 			},
 			"healthchecks": schema.SingleNestedAttribute{
 				Computed: true,
-				PlanModifiers: []planmodifier.Object{
-					objectplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
-				},
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"active": schema.SingleNestedAttribute{
 						Computed: true,
-						PlanModifiers: []planmodifier.Object{
-							objectplanmodifier.RequiresReplaceIfConfigured(),
-							speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
-						},
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"concurrency": schema.Int64Attribute{
 								Computed: true,
-								PlanModifiers: []planmodifier.Int64{
-									int64planmodifier.RequiresReplaceIfConfigured(),
-									speakeasy_int64planmodifier.SuppressDiff(speakeasy_int64planmodifier.ExplicitSuppress),
-								},
-								Optional:    true,
-								Description: `Requires replacement if changed. `,
+								Optional: true,
 							},
 							"headers": schema.MapAttribute{
-								Computed: true,
-								PlanModifiers: []planmodifier.Map{
-									mapplanmodifier.RequiresReplaceIfConfigured(),
-									speakeasy_mapplanmodifier.SuppressDiff(speakeasy_mapplanmodifier.ExplicitSuppress),
-								},
+								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
-								Description: `Requires replacement if changed. `,
 								Validators: []validator.Map{
 									mapvalidator.ValueStringsAre(validators.IsValidJSON()),
 								},
 							},
 							"healthy": schema.SingleNestedAttribute{
 								Computed: true,
-								PlanModifiers: []planmodifier.Object{
-									objectplanmodifier.RequiresReplaceIfConfigured(),
-									speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
-								},
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"http_statuses": schema.ListAttribute{
-										Computed: true,
-										PlanModifiers: []planmodifier.List{
-											listplanmodifier.RequiresReplaceIfConfigured(),
-											speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
-										},
+										Computed:    true,
 										Optional:    true,
 										ElementType: types.Int64Type,
-										Description: `Requires replacement if changed. `,
 									},
 									"interval": schema.NumberAttribute{
 										Computed: true,
-										PlanModifiers: []planmodifier.Number{
-											numberplanmodifier.RequiresReplaceIfConfigured(),
-											speakeasy_numberplanmodifier.SuppressDiff(speakeasy_numberplanmodifier.ExplicitSuppress),
-										},
-										Optional:    true,
-										Description: `Requires replacement if changed. `,
+										Optional: true,
 									},
 									"successes": schema.Int64Attribute{
 										Computed: true,
-										PlanModifiers: []planmodifier.Int64{
-											int64planmodifier.RequiresReplaceIfConfigured(),
-											speakeasy_int64planmodifier.SuppressDiff(speakeasy_int64planmodifier.ExplicitSuppress),
-										},
-										Optional:    true,
-										Description: `Requires replacement if changed. `,
+										Optional: true,
 									},
 								},
-								Description: `Requires replacement if changed. `,
 							},
 							"http_path": schema.StringAttribute{
 								Computed: true,
-								PlanModifiers: []planmodifier.String{
-									stringplanmodifier.RequiresReplaceIfConfigured(),
-									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-								},
-								Optional:    true,
-								Description: `Requires replacement if changed. `,
+								Optional: true,
 							},
 							"https_sni": schema.StringAttribute{
 								Computed: true,
-								PlanModifiers: []planmodifier.String{
-									stringplanmodifier.RequiresReplaceIfConfigured(),
-									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-								},
-								Optional:    true,
-								Description: `Requires replacement if changed. `,
+								Optional: true,
 							},
 							"https_verify_certificate": schema.BoolAttribute{
 								Computed: true,
-								PlanModifiers: []planmodifier.Bool{
-									boolplanmodifier.RequiresReplaceIfConfigured(),
-									speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
-								},
-								Optional:    true,
-								Description: `Requires replacement if changed. `,
+								Optional: true,
 							},
 							"timeout": schema.NumberAttribute{
 								Computed: true,
-								PlanModifiers: []planmodifier.Number{
-									numberplanmodifier.RequiresReplaceIfConfigured(),
-									speakeasy_numberplanmodifier.SuppressDiff(speakeasy_numberplanmodifier.ExplicitSuppress),
-								},
-								Optional:    true,
-								Description: `Requires replacement if changed. `,
+								Optional: true,
 							},
 							"type": schema.StringAttribute{
-								Computed: true,
-								PlanModifiers: []planmodifier.String{
-									stringplanmodifier.RequiresReplaceIfConfigured(),
-									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-								},
+								Computed:    true,
 								Optional:    true,
-								Description: `Requires replacement if changed. ; must be one of ["tcp", "http", "https", "grpc", "grpcs"]`,
+								Description: `must be one of ["tcp", "http", "https", "grpc", "grpcs"]`,
 								Validators: []validator.String{
 									stringvalidator.OneOf(
 										"tcp",
@@ -378,110 +245,56 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 							},
 							"unhealthy": schema.SingleNestedAttribute{
 								Computed: true,
-								PlanModifiers: []planmodifier.Object{
-									objectplanmodifier.RequiresReplaceIfConfigured(),
-									speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
-								},
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"http_failures": schema.Int64Attribute{
 										Computed: true,
-										PlanModifiers: []planmodifier.Int64{
-											int64planmodifier.RequiresReplaceIfConfigured(),
-											speakeasy_int64planmodifier.SuppressDiff(speakeasy_int64planmodifier.ExplicitSuppress),
-										},
-										Optional:    true,
-										Description: `Requires replacement if changed. `,
+										Optional: true,
 									},
 									"http_statuses": schema.ListAttribute{
-										Computed: true,
-										PlanModifiers: []planmodifier.List{
-											listplanmodifier.RequiresReplaceIfConfigured(),
-											speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
-										},
+										Computed:    true,
 										Optional:    true,
 										ElementType: types.Int64Type,
-										Description: `Requires replacement if changed. `,
 									},
 									"interval": schema.NumberAttribute{
 										Computed: true,
-										PlanModifiers: []planmodifier.Number{
-											numberplanmodifier.RequiresReplaceIfConfigured(),
-											speakeasy_numberplanmodifier.SuppressDiff(speakeasy_numberplanmodifier.ExplicitSuppress),
-										},
-										Optional:    true,
-										Description: `Requires replacement if changed. `,
+										Optional: true,
 									},
 									"tcp_failures": schema.Int64Attribute{
 										Computed: true,
-										PlanModifiers: []planmodifier.Int64{
-											int64planmodifier.RequiresReplaceIfConfigured(),
-											speakeasy_int64planmodifier.SuppressDiff(speakeasy_int64planmodifier.ExplicitSuppress),
-										},
-										Optional:    true,
-										Description: `Requires replacement if changed. `,
+										Optional: true,
 									},
 									"timeouts": schema.Int64Attribute{
 										Computed: true,
-										PlanModifiers: []planmodifier.Int64{
-											int64planmodifier.RequiresReplaceIfConfigured(),
-											speakeasy_int64planmodifier.SuppressDiff(speakeasy_int64planmodifier.ExplicitSuppress),
-										},
-										Optional:    true,
-										Description: `Requires replacement if changed. `,
+										Optional: true,
 									},
 								},
-								Description: `Requires replacement if changed. `,
 							},
 						},
-						Description: `Requires replacement if changed. `,
 					},
 					"passive": schema.SingleNestedAttribute{
 						Computed: true,
-						PlanModifiers: []planmodifier.Object{
-							objectplanmodifier.RequiresReplaceIfConfigured(),
-							speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
-						},
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"healthy": schema.SingleNestedAttribute{
 								Computed: true,
-								PlanModifiers: []planmodifier.Object{
-									objectplanmodifier.RequiresReplaceIfConfigured(),
-									speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
-								},
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"http_statuses": schema.ListAttribute{
-										Computed: true,
-										PlanModifiers: []planmodifier.List{
-											listplanmodifier.RequiresReplaceIfConfigured(),
-											speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
-										},
+										Computed:    true,
 										Optional:    true,
 										ElementType: types.Int64Type,
-										Description: `Requires replacement if changed. `,
 									},
 									"successes": schema.Int64Attribute{
 										Computed: true,
-										PlanModifiers: []planmodifier.Int64{
-											int64planmodifier.RequiresReplaceIfConfigured(),
-											speakeasy_int64planmodifier.SuppressDiff(speakeasy_int64planmodifier.ExplicitSuppress),
-										},
-										Optional:    true,
-										Description: `Requires replacement if changed. `,
+										Optional: true,
 									},
 								},
-								Description: `Requires replacement if changed. `,
 							},
 							"type": schema.StringAttribute{
-								Computed: true,
-								PlanModifiers: []planmodifier.String{
-									stringplanmodifier.RequiresReplaceIfConfigured(),
-									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-								},
+								Computed:    true,
 								Optional:    true,
-								Description: `Requires replacement if changed. ; must be one of ["tcp", "http", "https", "grpc", "grpcs"]`,
+								Description: `must be one of ["tcp", "http", "https", "grpc", "grpcs"]`,
 								Validators: []validator.String{
 									stringvalidator.OneOf(
 										"tcp",
@@ -494,120 +307,67 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 							},
 							"unhealthy": schema.SingleNestedAttribute{
 								Computed: true,
-								PlanModifiers: []planmodifier.Object{
-									objectplanmodifier.RequiresReplaceIfConfigured(),
-									speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
-								},
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"http_failures": schema.Int64Attribute{
 										Computed: true,
-										PlanModifiers: []planmodifier.Int64{
-											int64planmodifier.RequiresReplaceIfConfigured(),
-											speakeasy_int64planmodifier.SuppressDiff(speakeasy_int64planmodifier.ExplicitSuppress),
-										},
-										Optional:    true,
-										Description: `Requires replacement if changed. `,
+										Optional: true,
 									},
 									"http_statuses": schema.ListAttribute{
-										Computed: true,
-										PlanModifiers: []planmodifier.List{
-											listplanmodifier.RequiresReplaceIfConfigured(),
-											speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
-										},
+										Computed:    true,
 										Optional:    true,
 										ElementType: types.Int64Type,
-										Description: `Requires replacement if changed. `,
 									},
 									"tcp_failures": schema.Int64Attribute{
 										Computed: true,
-										PlanModifiers: []planmodifier.Int64{
-											int64planmodifier.RequiresReplaceIfConfigured(),
-											speakeasy_int64planmodifier.SuppressDiff(speakeasy_int64planmodifier.ExplicitSuppress),
-										},
-										Optional:    true,
-										Description: `Requires replacement if changed. `,
+										Optional: true,
 									},
 									"timeouts": schema.Int64Attribute{
 										Computed: true,
-										PlanModifiers: []planmodifier.Int64{
-											int64planmodifier.RequiresReplaceIfConfigured(),
-											speakeasy_int64planmodifier.SuppressDiff(speakeasy_int64planmodifier.ExplicitSuppress),
-										},
-										Optional:    true,
-										Description: `Requires replacement if changed. `,
+										Optional: true,
 									},
 								},
-								Description: `Requires replacement if changed. `,
 							},
 						},
-						Description: `Requires replacement if changed. `,
 					},
 					"threshold": schema.NumberAttribute{
 						Computed: true,
-						PlanModifiers: []planmodifier.Number{
-							numberplanmodifier.RequiresReplaceIfConfigured(),
-							speakeasy_numberplanmodifier.SuppressDiff(speakeasy_numberplanmodifier.ExplicitSuppress),
-						},
-						Optional:    true,
-						Description: `Requires replacement if changed. `,
+						Optional: true,
 					},
 				},
-				Description: `Requires replacement if changed. `,
 			},
 			"host_header": schema.StringAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-				},
+				Computed:    true,
 				Optional:    true,
-				Description: `The hostname to be used as ` + "`" + `Host` + "`" + ` header when proxying requests through Kong. Requires replacement if changed. `,
+				Description: `The hostname to be used as ` + "`" + `Host` + "`" + ` header when proxying requests through Kong.`,
 			},
 			"id": schema.StringAttribute{
-				Computed:    true,
-				Description: `ID of the Upstream to lookup`,
+				Computed: true,
 			},
 			"name": schema.StringAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-				},
+				Computed:    true,
 				Optional:    true,
-				Description: `This is a hostname, which must be equal to the ` + "`" + `host` + "`" + ` of a Service. Requires replacement if changed. `,
+				Description: `This is a hostname, which must be equal to the ` + "`" + `host` + "`" + ` of a Service.`,
 			},
 			"slots": schema.Int64Attribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.Int64{
-					int64planmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_int64planmodifier.SuppressDiff(speakeasy_int64planmodifier.ExplicitSuppress),
-				},
+				Computed:    true,
 				Optional:    true,
-				Description: `The number of slots in the load balancer algorithm. If ` + "`" + `algorithm` + "`" + ` is set to ` + "`" + `round-robin` + "`" + `, this setting determines the maximum number of slots. If ` + "`" + `algorithm` + "`" + ` is set to ` + "`" + `consistent-hashing` + "`" + `, this setting determines the actual number of slots in the algorithm. Accepts an integer in the range ` + "`" + `10` + "`" + `-` + "`" + `65536` + "`" + `. Requires replacement if changed. `,
+				Description: `The number of slots in the load balancer algorithm. If ` + "`" + `algorithm` + "`" + ` is set to ` + "`" + `round-robin` + "`" + `, this setting determines the maximum number of slots. If ` + "`" + `algorithm` + "`" + ` is set to ` + "`" + `consistent-hashing` + "`" + `, this setting determines the actual number of slots in the algorithm. Accepts an integer in the range ` + "`" + `10` + "`" + `-` + "`" + `65536` + "`" + `.`,
 			},
 			"tags": schema.ListAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.List{
-					listplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
-				},
+				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
-				Description: `An optional set of strings associated with the Upstream for grouping and filtering. Requires replacement if changed. `,
+				Description: `An optional set of strings associated with the Upstream for grouping and filtering.`,
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 			"use_srv_name": schema.BoolAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.Bool{
-					boolplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
-				},
+				Computed:    true,
 				Optional:    true,
-				Description: `If set, the balancer will use SRV hostname(if DNS Answer has SRV record) as the proxy upstream ` + "`" + `Host` + "`" + `. Requires replacement if changed. `,
+				Description: `If set, the balancer will use SRV hostname(if DNS Answer has SRV record) as the proxy upstream ` + "`" + `Host` + "`" + `.`,
 			},
 		},
 	}
@@ -702,11 +462,11 @@ func (r *GatewayUpstreamResource) Read(ctx context.Context, req resource.ReadReq
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	upstreamID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.GetUpstreamRequest{
-		ControlPlaneID: controlPlaneID,
 		UpstreamID:     upstreamID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Upstreams.GetUpstream(ctx, request)
 	if err != nil {
@@ -752,7 +512,36 @@ func (r *GatewayUpstreamResource) Update(ctx context.Context, req resource.Updat
 		return
 	}
 
-	// Not Implemented; all attributes marked as RequiresReplace
+	upstreamID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
+	upstream := *data.ToSharedUpstreamInput()
+	request := operations.UpsertUpstreamRequest{
+		UpstreamID:     upstreamID,
+		ControlPlaneID: controlPlaneID,
+		Upstream:       upstream,
+	}
+	res, err := r.client.Upstreams.UpsertUpstream(ctx, request)
+	if err != nil {
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res != nil && res.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
+		}
+		return
+	}
+	if res == nil {
+		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
+		return
+	}
+	if res.StatusCode != 200 {
+		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
+		return
+	}
+	if !(res.Upstream != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
+		return
+	}
+	data.RefreshFromSharedUpstream(res.Upstream)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -810,7 +599,7 @@ func (r *GatewayUpstreamResource) ImportState(ctx context.Context, req resource.
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "id": "426d620c-7058-4ae6-aacc-f85a3204a2c5"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "upstream_id": "426d620c-7058-4ae6-aacc-f85a3204a2c5"}': `+err.Error())
 		return
 	}
 

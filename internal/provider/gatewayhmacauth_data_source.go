@@ -71,8 +71,7 @@ func (r *GatewayHMACAuthDataSource) Schema(ctx context.Context, req datasource.S
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"id": schema.StringAttribute{
-				Required:    true,
-				Description: `ID of the HMAC-auth credential to lookup`,
+				Computed: true,
 			},
 			"secret": schema.StringAttribute{
 				Computed: true,
@@ -127,12 +126,12 @@ func (r *GatewayHMACAuthDataSource) Read(ctx context.Context, req datasource.Rea
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	consumerIDForNestedEntities := data.ConsumerID.ValueString()
+	consumerID := data.ConsumerID.ValueString()
 	hmacAuthID := data.ID.ValueString()
 	request := operations.GetHmacAuthWithConsumerRequest{
-		ControlPlaneID:              controlPlaneID,
-		ConsumerIDForNestedEntities: consumerIDForNestedEntities,
-		HMACAuthID:                  hmacAuthID,
+		ControlPlaneID: controlPlaneID,
+		ConsumerID:     consumerID,
+		HMACAuthID:     hmacAuthID,
 	}
 	res, err := r.client.HMACAuthCredentials.GetHmacAuthWithConsumer(ctx, request)
 	if err != nil {

@@ -15,29 +15,43 @@ func (r *PortalAuthResourceModel) ToSharedPortalAuthenticationSettingsUpdateRequ
 	} else {
 		basicAuthEnabled = nil
 	}
-	oidcAuthEnabled := new(bool)
-	if !r.OidcAuthEnabled.IsUnknown() && !r.OidcAuthEnabled.IsNull() {
-		*oidcAuthEnabled = r.OidcAuthEnabled.ValueBool()
-	} else {
-		oidcAuthEnabled = nil
-	}
-	oidcTeamMappingEnabled := new(bool)
-	if !r.OidcTeamMappingEnabled.IsUnknown() && !r.OidcTeamMappingEnabled.IsNull() {
-		*oidcTeamMappingEnabled = r.OidcTeamMappingEnabled.ValueBool()
-	} else {
-		oidcTeamMappingEnabled = nil
-	}
 	konnectMappingEnabled := new(bool)
 	if !r.KonnectMappingEnabled.IsUnknown() && !r.KonnectMappingEnabled.IsNull() {
 		*konnectMappingEnabled = r.KonnectMappingEnabled.ValueBool()
 	} else {
 		konnectMappingEnabled = nil
 	}
-	oidcIssuer := new(string)
-	if !r.OidcIssuer.IsUnknown() && !r.OidcIssuer.IsNull() {
-		*oidcIssuer = r.OidcIssuer.ValueString()
+	oidcAuthEnabled := new(bool)
+	if !r.OidcAuthEnabled.IsUnknown() && !r.OidcAuthEnabled.IsNull() {
+		*oidcAuthEnabled = r.OidcAuthEnabled.ValueBool()
 	} else {
-		oidcIssuer = nil
+		oidcAuthEnabled = nil
+	}
+	var oidcClaimMappings *shared.PortalClaimMappings
+	if r.OidcClaimMappings != nil {
+		email := new(string)
+		if !r.OidcClaimMappings.Email.IsUnknown() && !r.OidcClaimMappings.Email.IsNull() {
+			*email = r.OidcClaimMappings.Email.ValueString()
+		} else {
+			email = nil
+		}
+		groups := new(string)
+		if !r.OidcClaimMappings.Groups.IsUnknown() && !r.OidcClaimMappings.Groups.IsNull() {
+			*groups = r.OidcClaimMappings.Groups.ValueString()
+		} else {
+			groups = nil
+		}
+		name := new(string)
+		if !r.OidcClaimMappings.Name.IsUnknown() && !r.OidcClaimMappings.Name.IsNull() {
+			*name = r.OidcClaimMappings.Name.ValueString()
+		} else {
+			name = nil
+		}
+		oidcClaimMappings = &shared.PortalClaimMappings{
+			Email:  email,
+			Groups: groups,
+			Name:   name,
+		}
 	}
 	oidcClientID := new(string)
 	if !r.OidcClientID.IsUnknown() && !r.OidcClientID.IsNull() {
@@ -51,46 +65,32 @@ func (r *PortalAuthResourceModel) ToSharedPortalAuthenticationSettingsUpdateRequ
 	} else {
 		oidcClientSecret = nil
 	}
+	oidcIssuer := new(string)
+	if !r.OidcIssuer.IsUnknown() && !r.OidcIssuer.IsNull() {
+		*oidcIssuer = r.OidcIssuer.ValueString()
+	} else {
+		oidcIssuer = nil
+	}
 	var oidcScopes []string = []string{}
 	for _, oidcScopesItem := range r.OidcScopes {
 		oidcScopes = append(oidcScopes, oidcScopesItem.ValueString())
 	}
-	var oidcClaimMappings *shared.PortalClaimMappings
-	if r.OidcClaimMappings != nil {
-		name := new(string)
-		if !r.OidcClaimMappings.Name.IsUnknown() && !r.OidcClaimMappings.Name.IsNull() {
-			*name = r.OidcClaimMappings.Name.ValueString()
-		} else {
-			name = nil
-		}
-		email := new(string)
-		if !r.OidcClaimMappings.Email.IsUnknown() && !r.OidcClaimMappings.Email.IsNull() {
-			*email = r.OidcClaimMappings.Email.ValueString()
-		} else {
-			email = nil
-		}
-		groups := new(string)
-		if !r.OidcClaimMappings.Groups.IsUnknown() && !r.OidcClaimMappings.Groups.IsNull() {
-			*groups = r.OidcClaimMappings.Groups.ValueString()
-		} else {
-			groups = nil
-		}
-		oidcClaimMappings = &shared.PortalClaimMappings{
-			Name:   name,
-			Email:  email,
-			Groups: groups,
-		}
+	oidcTeamMappingEnabled := new(bool)
+	if !r.OidcTeamMappingEnabled.IsUnknown() && !r.OidcTeamMappingEnabled.IsNull() {
+		*oidcTeamMappingEnabled = r.OidcTeamMappingEnabled.ValueBool()
+	} else {
+		oidcTeamMappingEnabled = nil
 	}
 	out := shared.PortalAuthenticationSettingsUpdateRequest{
 		BasicAuthEnabled:       basicAuthEnabled,
-		OidcAuthEnabled:        oidcAuthEnabled,
-		OidcTeamMappingEnabled: oidcTeamMappingEnabled,
 		KonnectMappingEnabled:  konnectMappingEnabled,
-		OidcIssuer:             oidcIssuer,
+		OidcAuthEnabled:        oidcAuthEnabled,
+		OidcClaimMappings:      oidcClaimMappings,
 		OidcClientID:           oidcClientID,
 		OidcClientSecret:       oidcClientSecret,
+		OidcIssuer:             oidcIssuer,
 		OidcScopes:             oidcScopes,
-		OidcClaimMappings:      oidcClaimMappings,
+		OidcTeamMappingEnabled: oidcTeamMappingEnabled,
 	}
 	return &out
 }
@@ -99,6 +99,7 @@ func (r *PortalAuthResourceModel) RefreshFromSharedPortalAuthenticationSettingsR
 	if resp != nil {
 		r.BasicAuthEnabled = types.BoolValue(resp.BasicAuthEnabled)
 		r.KonnectMappingEnabled = types.BoolValue(resp.KonnectMappingEnabled)
+		r.OidcAuthEnabled = types.BoolValue(resp.OidcAuthEnabled)
 		if resp.OidcConfig == nil {
 			r.OidcConfig = nil
 		} else {
@@ -118,7 +119,6 @@ func (r *PortalAuthResourceModel) RefreshFromSharedPortalAuthenticationSettingsR
 				r.OidcConfig.Scopes = append(r.OidcConfig.Scopes, types.StringValue(v))
 			}
 		}
-		r.OidcAuthEnabled = types.BoolValue(resp.OidcAuthEnabled)
 		r.OidcTeamMappingEnabled = types.BoolValue(resp.OidcTeamMappingEnabled)
 	}
 }

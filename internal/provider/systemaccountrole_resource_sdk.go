@@ -8,23 +8,11 @@ import (
 )
 
 func (r *SystemAccountRoleResourceModel) ToSharedAssignRole() *shared.AssignRole {
-	roleName := new(string)
-	if !r.RoleName.IsUnknown() && !r.RoleName.IsNull() {
-		*roleName = r.RoleName.ValueString()
-	} else {
-		roleName = nil
-	}
 	entityID := new(string)
 	if !r.EntityID.IsUnknown() && !r.EntityID.IsNull() {
 		*entityID = r.EntityID.ValueString()
 	} else {
 		entityID = nil
-	}
-	entityTypeName := new(string)
-	if !r.EntityTypeName.IsUnknown() && !r.EntityTypeName.IsNull() {
-		*entityTypeName = r.EntityTypeName.ValueString()
-	} else {
-		entityTypeName = nil
 	}
 	entityRegion := new(shared.EntityRegion)
 	if !r.EntityRegion.IsUnknown() && !r.EntityRegion.IsNull() {
@@ -32,11 +20,23 @@ func (r *SystemAccountRoleResourceModel) ToSharedAssignRole() *shared.AssignRole
 	} else {
 		entityRegion = nil
 	}
+	entityTypeName := new(string)
+	if !r.EntityTypeName.IsUnknown() && !r.EntityTypeName.IsNull() {
+		*entityTypeName = r.EntityTypeName.ValueString()
+	} else {
+		entityTypeName = nil
+	}
+	roleName := new(string)
+	if !r.RoleName.IsUnknown() && !r.RoleName.IsNull() {
+		*roleName = r.RoleName.ValueString()
+	} else {
+		roleName = nil
+	}
 	out := shared.AssignRole{
-		RoleName:       roleName,
 		EntityID:       entityID,
-		EntityTypeName: entityTypeName,
 		EntityRegion:   entityRegion,
+		EntityTypeName: entityTypeName,
+		RoleName:       roleName,
 	}
 	return &out
 }

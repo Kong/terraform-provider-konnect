@@ -82,8 +82,7 @@ func (r *GatewayHMACAuthResource) Schema(ctx context.Context, req resource.Schem
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"id": schema.StringAttribute{
-				Computed:    true,
-				Description: `ID of the HMAC-auth credential to lookup`,
+				Computed: true,
 			},
 			"secret": schema.StringAttribute{
 				Computed: true,
@@ -156,12 +155,12 @@ func (r *GatewayHMACAuthResource) Create(ctx context.Context, req resource.Creat
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	consumerIDForNestedEntities := data.ConsumerID.ValueString()
+	consumerID := data.ConsumerID.ValueString()
 	hmacAuthWithoutParents := *data.ToSharedHMACAuthWithoutParents()
 	request := operations.CreateHmacAuthWithConsumerRequest{
-		ControlPlaneID:              controlPlaneID,
-		ConsumerIDForNestedEntities: consumerIDForNestedEntities,
-		HMACAuthWithoutParents:      hmacAuthWithoutParents,
+		ControlPlaneID:         controlPlaneID,
+		ConsumerID:             consumerID,
+		HMACAuthWithoutParents: hmacAuthWithoutParents,
 	}
 	res, err := r.client.HMACAuthCredentials.CreateHmacAuthWithConsumer(ctx, request)
 	if err != nil {
@@ -209,12 +208,12 @@ func (r *GatewayHMACAuthResource) Read(ctx context.Context, req resource.ReadReq
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	consumerIDForNestedEntities := data.ConsumerID.ValueString()
+	consumerID := data.ConsumerID.ValueString()
 	hmacAuthID := data.ID.ValueString()
 	request := operations.GetHmacAuthWithConsumerRequest{
-		ControlPlaneID:              controlPlaneID,
-		ConsumerIDForNestedEntities: consumerIDForNestedEntities,
-		HMACAuthID:                  hmacAuthID,
+		ControlPlaneID: controlPlaneID,
+		ConsumerID:     consumerID,
+		HMACAuthID:     hmacAuthID,
 	}
 	res, err := r.client.HMACAuthCredentials.GetHmacAuthWithConsumer(ctx, request)
 	if err != nil {
@@ -285,12 +284,12 @@ func (r *GatewayHMACAuthResource) Delete(ctx context.Context, req resource.Delet
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	consumerIDForNestedEntities := data.ConsumerID.ValueString()
+	consumerID := data.ConsumerID.ValueString()
 	hmacAuthID := data.ID.ValueString()
 	request := operations.DeleteHmacAuthWithConsumerRequest{
-		ControlPlaneID:              controlPlaneID,
-		ConsumerIDForNestedEntities: consumerIDForNestedEntities,
-		HMACAuthID:                  hmacAuthID,
+		ControlPlaneID: controlPlaneID,
+		ConsumerID:     consumerID,
+		HMACAuthID:     hmacAuthID,
 	}
 	res, err := r.client.HMACAuthCredentials.DeleteHmacAuthWithConsumer(ctx, request)
 	if err != nil {
@@ -321,7 +320,7 @@ func (r *GatewayHMACAuthResource) ImportState(ctx context.Context, req resource.
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "consumer_id": "f28acbfa-c866-4587-b688-0208ac24df21",  "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "id": "70e7b00b-72f2-471b-a5ce-9c4171775360"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "consumer_id": "f28acbfa-c866-4587-b688-0208ac24df21",  "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "hmac_auth_id": "70e7b00b-72f2-471b-a5ce-9c4171775360"}': `+err.Error())
 		return
 	}
 

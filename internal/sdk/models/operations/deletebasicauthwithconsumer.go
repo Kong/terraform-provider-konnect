@@ -10,7 +10,7 @@ type DeleteBasicAuthWithConsumerRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// Consumer ID for nested entities
-	ConsumerIDForNestedEntities string `pathParam:"style=simple,explode=false,name=ConsumerIdForNestedEntities"`
+	ConsumerID string `pathParam:"style=simple,explode=false,name=ConsumerIdForNestedEntities"`
 	// ID of the Basic-auth credential to lookup
 	BasicAuthID string `pathParam:"style=simple,explode=false,name=BasicAuthId"`
 }
@@ -22,11 +22,11 @@ func (o *DeleteBasicAuthWithConsumerRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *DeleteBasicAuthWithConsumerRequest) GetConsumerIDForNestedEntities() string {
+func (o *DeleteBasicAuthWithConsumerRequest) GetConsumerID() string {
 	if o == nil {
 		return ""
 	}
-	return o.ConsumerIDForNestedEntities
+	return o.ConsumerID
 }
 
 func (o *DeleteBasicAuthWithConsumerRequest) GetBasicAuthID() string {

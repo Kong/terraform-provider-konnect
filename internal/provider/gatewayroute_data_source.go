@@ -101,8 +101,7 @@ func (r *GatewayRouteDataSource) Schema(ctx context.Context, req datasource.Sche
 				Description: `The status code Kong responds with when all properties of a Route match except the protocol i.e. if the protocol of the request is ` + "`" + `HTTP` + "`" + ` instead of ` + "`" + `HTTPS` + "`" + `. ` + "`" + `Location` + "`" + ` header is injected by Kong if the field is set to 301, 302, 307 or 308. Note: This config applies only if the Route is configured to only accept the ` + "`" + `https` + "`" + ` protocol. must be one of ["426", "301", "302", "307", "308"]`,
 			},
 			"id": schema.StringAttribute{
-				Required:    true,
-				Description: `ID of the Route to lookup`,
+				Computed: true,
 			},
 			"methods": schema.ListAttribute{
 				Computed:    true,
@@ -226,11 +225,11 @@ func (r *GatewayRouteDataSource) Read(ctx context.Context, req datasource.ReadRe
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	routeID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.GetRouteRequest{
-		ControlPlaneID: controlPlaneID,
 		RouteID:        routeID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Routes.GetRoute(ctx, request)
 	if err != nil {

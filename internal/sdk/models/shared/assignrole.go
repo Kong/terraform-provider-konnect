@@ -42,21 +42,14 @@ func (e *EntityRegion) UnmarshalJSON(data []byte) error {
 
 // AssignRole - An assigned role is a role that has been assigned to a user or team.
 type AssignRole struct {
-	// The desired role.
-	RoleName *string `json:"role_name,omitempty"`
 	// The ID of the entity.
 	EntityID *string `json:"entity_id,omitempty"`
-	// The type of entity.
-	EntityTypeName *string `json:"entity_type_name,omitempty"`
 	// The region of the team.
 	EntityRegion *EntityRegion `json:"entity_region,omitempty"`
-}
-
-func (o *AssignRole) GetRoleName() *string {
-	if o == nil {
-		return nil
-	}
-	return o.RoleName
+	// The type of entity.
+	EntityTypeName *string `json:"entity_type_name,omitempty"`
+	// The desired role.
+	RoleName *string `json:"role_name,omitempty"`
 }
 
 func (o *AssignRole) GetEntityID() *string {
@@ -66,6 +59,13 @@ func (o *AssignRole) GetEntityID() *string {
 	return o.EntityID
 }
 
+func (o *AssignRole) GetEntityRegion() *EntityRegion {
+	if o == nil {
+		return nil
+	}
+	return o.EntityRegion
+}
+
 func (o *AssignRole) GetEntityTypeName() *string {
 	if o == nil {
 		return nil
@@ -73,9 +73,9 @@ func (o *AssignRole) GetEntityTypeName() *string {
 	return o.EntityTypeName
 }
 
-func (o *AssignRole) GetEntityRegion() *EntityRegion {
+func (o *AssignRole) GetRoleName() *string {
 	if o == nil {
 		return nil
 	}
-	return o.EntityRegion
+	return o.RoleName
 }

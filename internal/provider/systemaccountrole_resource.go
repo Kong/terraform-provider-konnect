@@ -93,7 +93,7 @@ func (r *SystemAccountRoleResource) Schema(ctx context.Context, req resource.Sch
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
-				Description: `ID of the role.`,
+				Description: `The ID of the role assignment.`,
 			},
 			"role_name": schema.StringAttribute{
 				Computed: true,

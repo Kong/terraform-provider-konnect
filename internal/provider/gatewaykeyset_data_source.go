@@ -56,8 +56,7 @@ func (r *GatewayKeySetDataSource) Schema(ctx context.Context, req datasource.Sch
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"id": schema.StringAttribute{
-				Required:    true,
-				Description: `ID of the KeySet to lookup`,
+				Computed: true,
 			},
 			"name": schema.StringAttribute{
 				Computed: true,
@@ -112,11 +111,11 @@ func (r *GatewayKeySetDataSource) Read(ctx context.Context, req datasource.ReadR
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	keySetID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.GetKeySetRequest{
-		ControlPlaneID: controlPlaneID,
 		KeySetID:       keySetID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.KeySets.GetKeySet(ctx, request)
 	if err != nil {

@@ -10,14 +10,18 @@ import (
 )
 
 func (r *CloudGatewayNetworkResourceModel) ToSharedCreateNetworkRequest() *shared.CreateNetworkRequest {
-	name := r.Name.ValueString()
-	cloudGatewayProviderAccountID := r.CloudGatewayProviderAccountID.ValueString()
-	region := r.Region.ValueString()
 	var availabilityZones []string = []string{}
 	for _, availabilityZonesItem := range r.AvailabilityZones {
 		availabilityZones = append(availabilityZones, availabilityZonesItem.ValueString())
 	}
 	cidrBlock := r.CidrBlock.ValueString()
+	cloudGatewayProviderAccountID := r.CloudGatewayProviderAccountID.ValueString()
+	ddosProtection := new(bool)
+	if !r.DdosProtection.IsUnknown() && !r.DdosProtection.IsNull() {
+		*ddosProtection = r.DdosProtection.ValueBool()
+	} else {
+		ddosProtection = nil
+	}
 	var firewall *shared.NetworkFirewallConfig
 	if r.Firewall != nil {
 		var allowedCidrBlocks []string = []string{}
@@ -33,20 +37,16 @@ func (r *CloudGatewayNetworkResourceModel) ToSharedCreateNetworkRequest() *share
 			DeniedCidrBlocks:  deniedCidrBlocks,
 		}
 	}
-	ddosProtection := new(bool)
-	if !r.DdosProtection.IsUnknown() && !r.DdosProtection.IsNull() {
-		*ddosProtection = r.DdosProtection.ValueBool()
-	} else {
-		ddosProtection = nil
-	}
+	name := r.Name.ValueString()
+	region := r.Region.ValueString()
 	out := shared.CreateNetworkRequest{
-		Name:                          name,
-		CloudGatewayProviderAccountID: cloudGatewayProviderAccountID,
-		Region:                        region,
 		AvailabilityZones:             availabilityZones,
 		CidrBlock:                     cidrBlock,
-		Firewall:                      firewall,
+		CloudGatewayProviderAccountID: cloudGatewayProviderAccountID,
 		DdosProtection:                ddosProtection,
+		Firewall:                      firewall,
+		Name:                          name,
+		Region:                        region,
 	}
 	return &out
 }
@@ -92,12 +92,6 @@ func (r *CloudGatewayNetworkResourceModel) RefreshFromSharedNetwork(resp *shared
 }
 
 func (r *CloudGatewayNetworkResourceModel) ToSharedPatchNetworkRequest() *shared.PatchNetworkRequest {
-	name := new(string)
-	if !r.Name.IsUnknown() && !r.Name.IsNull() {
-		*name = r.Name.ValueString()
-	} else {
-		name = nil
-	}
 	var firewall *shared.NetworkFirewallConfig
 	if r.Firewall != nil {
 		var allowedCidrBlocks []string = []string{}
@@ -113,9 +107,15 @@ func (r *CloudGatewayNetworkResourceModel) ToSharedPatchNetworkRequest() *shared
 			DeniedCidrBlocks:  deniedCidrBlocks,
 		}
 	}
+	name := new(string)
+	if !r.Name.IsUnknown() && !r.Name.IsNull() {
+		*name = r.Name.ValueString()
+	} else {
+		name = nil
+	}
 	out := shared.PatchNetworkRequest{
-		Name:     name,
 		Firewall: firewall,
+		Name:     name,
 	}
 	return &out
 }

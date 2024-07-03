@@ -12,8 +12,8 @@ import (
 type AuthStrategyType string
 
 const (
-	AuthStrategyTypeKeyAuth                      AuthStrategyType = "key_auth"
 	AuthStrategyTypeClientCredentials            AuthStrategyType = "client_credentials"
+	AuthStrategyTypeKeyAuth                      AuthStrategyType = "key_auth"
 	AuthStrategyTypeSelfManagedClientCredentials AuthStrategyType = "self_managed_client_credentials"
 )
 
@@ -22,18 +22,6 @@ type AuthStrategy struct {
 	AuthStrategyClientCredentials *AuthStrategyClientCredentials
 
 	Type AuthStrategyType
-}
-
-func CreateAuthStrategyKeyAuth(keyAuth AuthStrategyKeyAuth) AuthStrategy {
-	typ := AuthStrategyTypeKeyAuth
-
-	typStr := CredentialType(typ)
-	keyAuth.CredentialType = typStr
-
-	return AuthStrategy{
-		AuthStrategyKeyAuth: &keyAuth,
-		Type:                typ,
-	}
 }
 
 func CreateAuthStrategyClientCredentials(clientCredentials AuthStrategyClientCredentials) AuthStrategy {
@@ -45,6 +33,18 @@ func CreateAuthStrategyClientCredentials(clientCredentials AuthStrategyClientCre
 	return AuthStrategy{
 		AuthStrategyClientCredentials: &clientCredentials,
 		Type:                          typ,
+	}
+}
+
+func CreateAuthStrategyKeyAuth(keyAuth AuthStrategyKeyAuth) AuthStrategy {
+	typ := AuthStrategyTypeKeyAuth
+
+	typStr := CredentialType(typ)
+	keyAuth.CredentialType = typStr
+
+	return AuthStrategy{
+		AuthStrategyKeyAuth: &keyAuth,
+		Type:                typ,
 	}
 }
 
@@ -72,15 +72,6 @@ func (u *AuthStrategy) UnmarshalJSON(data []byte) error {
 	}
 
 	switch dis.CredentialType {
-	case "key_auth":
-		authStrategyKeyAuth := new(AuthStrategyKeyAuth)
-		if err := utils.UnmarshalJSON(data, &authStrategyKeyAuth, "", true, false); err != nil {
-			return fmt.Errorf("could not unmarshal `%s` into expected (CredentialType == key_auth) type AuthStrategyKeyAuth within AuthStrategy: %w", string(data), err)
-		}
-
-		u.AuthStrategyKeyAuth = authStrategyKeyAuth
-		u.Type = AuthStrategyTypeKeyAuth
-		return nil
 	case "client_credentials":
 		authStrategyClientCredentials := new(AuthStrategyClientCredentials)
 		if err := utils.UnmarshalJSON(data, &authStrategyClientCredentials, "", true, false); err != nil {
@@ -89,6 +80,15 @@ func (u *AuthStrategy) UnmarshalJSON(data []byte) error {
 
 		u.AuthStrategyClientCredentials = authStrategyClientCredentials
 		u.Type = AuthStrategyTypeClientCredentials
+		return nil
+	case "key_auth":
+		authStrategyKeyAuth := new(AuthStrategyKeyAuth)
+		if err := utils.UnmarshalJSON(data, &authStrategyKeyAuth, "", true, false); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (CredentialType == key_auth) type AuthStrategyKeyAuth within AuthStrategy: %w", string(data), err)
+		}
+
+		u.AuthStrategyKeyAuth = authStrategyKeyAuth
+		u.Type = AuthStrategyTypeKeyAuth
 		return nil
 	case "self_managed_client_credentials":
 		authStrategyClientCredentials := new(AuthStrategyClientCredentials)

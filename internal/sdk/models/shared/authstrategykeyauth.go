@@ -32,10 +32,17 @@ func (e *CredentialType) UnmarshalJSON(data []byte) error {
 
 // AuthStrategyKeyAuth - KeyAuth Auth strategy that the application uses.
 type AuthStrategyKeyAuth struct {
-	// The Application Auth Strategy ID.
-	ID             string         `json:"id"`
-	Name           string         `json:"name"`
 	CredentialType CredentialType `json:"credential_type"`
+	// The Application Auth Strategy ID.
+	ID   string `json:"id"`
+	Name string `json:"name"`
+}
+
+func (o *AuthStrategyKeyAuth) GetCredentialType() CredentialType {
+	if o == nil {
+		return CredentialType("")
+	}
+	return o.CredentialType
 }
 
 func (o *AuthStrategyKeyAuth) GetID() string {
@@ -50,11 +57,4 @@ func (o *AuthStrategyKeyAuth) GetName() string {
 		return ""
 	}
 	return o.Name
-}
-
-func (o *AuthStrategyKeyAuth) GetCredentialType() CredentialType {
-	if o == nil {
-		return CredentialType("")
-	}
-	return o.CredentialType
 }

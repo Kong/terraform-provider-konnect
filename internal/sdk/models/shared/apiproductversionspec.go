@@ -8,14 +8,14 @@ import (
 )
 
 type APIProductVersionSpec struct {
-	// The API product version specification identifier.
-	ID string `json:"id"`
-	// The name of the API product version specification
-	Name string `json:"name"`
 	// The contents of the API product version specification
 	Content string `json:"content"`
 	// An ISO-8601 timestamp representation of entity creation date.
 	CreatedAt time.Time `json:"created_at"`
+	// The API product version specification identifier.
+	ID string `json:"id"`
+	// The name of the API product version specification
+	Name string `json:"name"`
 	// An ISO-8601 timestamp representation of entity update date.
 	UpdatedAt time.Time `json:"updated_at"`
 }
@@ -31,20 +31,6 @@ func (a *APIProductVersionSpec) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *APIProductVersionSpec) GetID() string {
-	if o == nil {
-		return ""
-	}
-	return o.ID
-}
-
-func (o *APIProductVersionSpec) GetName() string {
-	if o == nil {
-		return ""
-	}
-	return o.Name
-}
-
 func (o *APIProductVersionSpec) GetContent() string {
 	if o == nil {
 		return ""
@@ -57,6 +43,20 @@ func (o *APIProductVersionSpec) GetCreatedAt() time.Time {
 		return time.Time{}
 	}
 	return o.CreatedAt
+}
+
+func (o *APIProductVersionSpec) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *APIProductVersionSpec) GetName() string {
+	if o == nil {
+		return ""
+	}
+	return o.Name
 }
 
 func (o *APIProductVersionSpec) GetUpdatedAt() time.Time {

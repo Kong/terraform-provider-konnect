@@ -10,7 +10,7 @@ type DeleteTargetWithUpstreamRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// ID or target of the Target to lookup
-	UpstreamIDForTarget string `pathParam:"style=simple,explode=false,name=UpstreamIdForTarget"`
+	UpstreamID string `pathParam:"style=simple,explode=false,name=UpstreamIdForTarget"`
 	// ID of the Target to lookup
 	TargetID string `pathParam:"style=simple,explode=false,name=TargetId"`
 }
@@ -22,11 +22,11 @@ func (o *DeleteTargetWithUpstreamRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *DeleteTargetWithUpstreamRequest) GetUpstreamIDForTarget() string {
+func (o *DeleteTargetWithUpstreamRequest) GetUpstreamID() string {
 	if o == nil {
 		return ""
 	}
-	return o.UpstreamIDForTarget
+	return o.UpstreamID
 }
 
 func (o *DeleteTargetWithUpstreamRequest) GetTargetID() string {

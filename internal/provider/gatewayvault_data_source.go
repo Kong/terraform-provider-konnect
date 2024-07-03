@@ -67,8 +67,7 @@ func (r *GatewayVaultDataSource) Schema(ctx context.Context, req datasource.Sche
 				Description: `The description of the Vault entity.`,
 			},
 			"id": schema.StringAttribute{
-				Required:    true,
-				Description: `ID of the Vault to lookup`,
+				Computed: true,
 			},
 			"name": schema.StringAttribute{
 				Computed:    true,
@@ -129,11 +128,11 @@ func (r *GatewayVaultDataSource) Read(ctx context.Context, req datasource.ReadRe
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	vaultID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.GetVaultRequest{
-		ControlPlaneID: controlPlaneID,
 		VaultID:        vaultID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Vaults.GetVault(ctx, request)
 	if err != nil {

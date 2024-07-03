@@ -4,17 +4,10 @@ package shared
 
 // UpdateAPIProductVersionSpecDTO - The request schema for updating a specification for a version of an API product.
 type UpdateAPIProductVersionSpecDTO struct {
-	// The name of the API product version specification
-	Name *string `json:"name,omitempty"`
 	// The base64 encoded contents of the API product version specification
 	Content *string `json:"content,omitempty"`
-}
-
-func (o *UpdateAPIProductVersionSpecDTO) GetName() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Name
+	// The name of the API product version specification
+	Name *string `json:"name,omitempty"`
 }
 
 func (o *UpdateAPIProductVersionSpecDTO) GetContent() *string {
@@ -22,4 +15,11 @@ func (o *UpdateAPIProductVersionSpecDTO) GetContent() *string {
 		return nil
 	}
 	return o.Content
+}
+
+func (o *UpdateAPIProductVersionSpecDTO) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
 }

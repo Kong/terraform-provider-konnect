@@ -361,7 +361,7 @@ func (r *SystemAccountAccessTokenResource) ImportState(ctx context.Context, req 
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "account_id": "",  "id": ""}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "account_id": "",  "token_id": ""}': `+err.Error())
 		return
 	}
 

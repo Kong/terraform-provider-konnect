@@ -10,15 +10,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/internal/planmodifiers/listplanmodifier"
-	speakeasy_objectplanmodifier "github.com/kong/terraform-provider-konnect/internal/planmodifiers/objectplanmodifier"
-	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
@@ -60,105 +53,62 @@ func (r *GatewayKeyResource) Schema(ctx context.Context, req resource.SchemaRequ
 		MarkdownDescription: "GatewayKey Resource",
 		Attributes: map[string]schema.Attribute{
 			"control_plane_id": schema.StringAttribute{
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
-				},
 				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed. `,
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager.`,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"id": schema.StringAttribute{
-				Computed:    true,
-				Description: `ID of the Key to lookup`,
+				Computed: true,
 			},
 			"jwk": schema.StringAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-				},
+				Computed:    true,
 				Optional:    true,
-				Description: `A JSON Web Key represented as a string. Requires replacement if changed. `,
+				Description: `A JSON Web Key represented as a string.`,
 			},
 			"kid": schema.StringAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-				},
+				Computed:    true,
 				Optional:    true,
-				Description: `A unique identifier for a key. Requires replacement if changed. `,
+				Description: `A unique identifier for a key.`,
 			},
 			"name": schema.StringAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-				},
+				Computed:    true,
 				Optional:    true,
-				Description: `The name to associate with the given keys. Requires replacement if changed. `,
+				Description: `The name to associate with the given keys.`,
 			},
 			"pem": schema.SingleNestedAttribute{
 				Computed: true,
-				PlanModifiers: []planmodifier.Object{
-					objectplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
-				},
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"private_key": schema.StringAttribute{
 						Computed: true,
-						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.RequiresReplaceIfConfigured(),
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
-						Optional:    true,
-						Description: `Requires replacement if changed. `,
+						Optional: true,
 					},
 					"public_key": schema.StringAttribute{
 						Computed: true,
-						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.RequiresReplaceIfConfigured(),
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
-						Optional:    true,
-						Description: `Requires replacement if changed. `,
+						Optional: true,
 					},
 				},
-				Description: `A keypair in PEM format. Requires replacement if changed. `,
+				Description: `A keypair in PEM format.`,
 			},
 			"set": schema.SingleNestedAttribute{
 				Computed: true,
-				PlanModifiers: []planmodifier.Object{
-					objectplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
-				},
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{
 						Computed: true,
-						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.RequiresReplaceIfConfigured(),
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
-						Optional:    true,
-						Description: `Requires replacement if changed. `,
+						Optional: true,
 					},
 				},
-				Description: `The id (an UUID) of the key-set with which to associate the key. Requires replacement if changed. `,
+				Description: `The id (an UUID) of the key-set with which to associate the key.`,
 			},
 			"tags": schema.ListAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.List{
-					listplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
-				},
+				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
-				Description: `An optional set of strings associated with the Key for grouping and filtering. Requires replacement if changed. `,
+				Description: `An optional set of strings associated with the Key for grouping and filtering.`,
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
@@ -257,11 +207,11 @@ func (r *GatewayKeyResource) Read(ctx context.Context, req resource.ReadRequest,
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	keyID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.GetKeyRequest{
-		ControlPlaneID: controlPlaneID,
 		KeyID:          keyID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Keys.GetKey(ctx, request)
 	if err != nil {
@@ -307,7 +257,36 @@ func (r *GatewayKeyResource) Update(ctx context.Context, req resource.UpdateRequ
 		return
 	}
 
-	// Not Implemented; all attributes marked as RequiresReplace
+	keyID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
+	key := *data.ToSharedKeyInput()
+	request := operations.UpsertKeyRequest{
+		KeyID:          keyID,
+		ControlPlaneID: controlPlaneID,
+		Key:            key,
+	}
+	res, err := r.client.Keys.UpsertKey(ctx, request)
+	if err != nil {
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res != nil && res.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
+		}
+		return
+	}
+	if res == nil {
+		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
+		return
+	}
+	if res.StatusCode != 200 {
+		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
+		return
+	}
+	if !(res.Key != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
+		return
+	}
+	data.RefreshFromSharedKey(res.Key)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -365,7 +344,7 @@ func (r *GatewayKeyResource) ImportState(ctx context.Context, req resource.Impor
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "id": "bba22c06-a632-42be-a018-1b9ff357b5b9"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "key_id": "bba22c06-a632-42be-a018-1b9ff357b5b9"}': `+err.Error())
 		return
 	}
 

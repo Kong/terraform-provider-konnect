@@ -8,17 +8,10 @@ import (
 )
 
 type GetCaCertificateRequest struct {
-	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// ID of the CA Certificate to lookup
 	CACertificateID string `pathParam:"style=simple,explode=false,name=CACertificateId"`
-}
-
-func (o *GetCaCertificateRequest) GetControlPlaneID() string {
-	if o == nil {
-		return ""
-	}
-	return o.ControlPlaneID
+	// The UUID of your control plane. This variable is available in the Konnect manager.
+	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
 func (o *GetCaCertificateRequest) GetCACertificateID() string {
@@ -26,6 +19,13 @@ func (o *GetCaCertificateRequest) GetCACertificateID() string {
 		return ""
 	}
 	return o.CACertificateID
+}
+
+func (o *GetCaCertificateRequest) GetControlPlaneID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ControlPlaneID
 }
 
 type GetCaCertificateResponse struct {

@@ -241,8 +241,7 @@ func (r *GatewayUpstreamDataSource) Schema(ctx context.Context, req datasource.S
 				Description: `The hostname to be used as ` + "`" + `Host` + "`" + ` header when proxying requests through Kong.`,
 			},
 			"id": schema.StringAttribute{
-				Required:    true,
-				Description: `ID of the Upstream to lookup`,
+				Computed: true,
 			},
 			"name": schema.StringAttribute{
 				Computed:    true,
@@ -307,11 +306,11 @@ func (r *GatewayUpstreamDataSource) Read(ctx context.Context, req datasource.Rea
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	upstreamID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.GetUpstreamRequest{
-		ControlPlaneID: controlPlaneID,
 		UpstreamID:     upstreamID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Upstreams.GetUpstream(ctx, request)
 	if err != nil {
