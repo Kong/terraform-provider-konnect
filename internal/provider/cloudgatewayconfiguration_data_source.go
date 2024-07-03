@@ -223,8 +223,7 @@ func (r *CloudGatewayConfigurationDataSource) Schema(ctx context.Context, req da
 					``,
 			},
 			"id": schema.StringAttribute{
-				Required:    true,
-				Description: `The ID of the configuration to operate on.`,
+				Computed: true,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed:    true,

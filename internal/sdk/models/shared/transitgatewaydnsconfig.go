@@ -3,19 +3,12 @@
 package shared
 
 type TransitGatewayDNSConfig struct {
-	// Remote DNS Server IP Addresses to connect to for resolving internal DNS via a transit gateway.
-	RemoteDNSServerIPAddresses []string `json:"remote_dns_server_ip_addresses"`
 	// Internal domain names to proxy for DNS resolution from the listed remote DNS server IP addresses,
 	// for a transit gateway.
 	//
 	DomainProxyList []string `json:"domain_proxy_list"`
-}
-
-func (o *TransitGatewayDNSConfig) GetRemoteDNSServerIPAddresses() []string {
-	if o == nil {
-		return []string{}
-	}
-	return o.RemoteDNSServerIPAddresses
+	// Remote DNS Server IP Addresses to connect to for resolving internal DNS via a transit gateway.
+	RemoteDNSServerIPAddresses []string `json:"remote_dns_server_ip_addresses"`
 }
 
 func (o *TransitGatewayDNSConfig) GetDomainProxyList() []string {
@@ -23,4 +16,11 @@ func (o *TransitGatewayDNSConfig) GetDomainProxyList() []string {
 		return []string{}
 	}
 	return o.DomainProxyList
+}
+
+func (o *TransitGatewayDNSConfig) GetRemoteDNSServerIPAddresses() []string {
+	if o == nil {
+		return []string{}
+	}
+	return o.RemoteDNSServerIPAddresses
 }

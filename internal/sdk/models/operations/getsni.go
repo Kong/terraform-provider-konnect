@@ -8,17 +8,10 @@ import (
 )
 
 type GetSniRequest struct {
-	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// ID of the SNI to lookup
 	SNIID string `pathParam:"style=simple,explode=false,name=SNIId"`
-}
-
-func (o *GetSniRequest) GetControlPlaneID() string {
-	if o == nil {
-		return ""
-	}
-	return o.ControlPlaneID
+	// The UUID of your control plane. This variable is available in the Konnect manager.
+	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
 func (o *GetSniRequest) GetSNIID() string {
@@ -26,6 +19,13 @@ func (o *GetSniRequest) GetSNIID() string {
 		return ""
 	}
 	return o.SNIID
+}
+
+func (o *GetSniRequest) GetControlPlaneID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ControlPlaneID
 }
 
 type GetSniResponse struct {

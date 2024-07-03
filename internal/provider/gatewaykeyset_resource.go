@@ -10,13 +10,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/internal/planmodifiers/listplanmodifier"
-	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/internal/planmodifiers/stringplanmodifier"
 	"github.com/kong/terraform-provider-konnect/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
 )
@@ -53,38 +48,24 @@ func (r *GatewayKeySetResource) Schema(ctx context.Context, req resource.SchemaR
 		MarkdownDescription: "GatewayKeySet Resource",
 		Attributes: map[string]schema.Attribute{
 			"control_plane_id": schema.StringAttribute{
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
-				},
 				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed. `,
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager.`,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"id": schema.StringAttribute{
-				Computed:    true,
-				Description: `ID of the KeySet to lookup`,
+				Computed: true,
 			},
 			"name": schema.StringAttribute{
 				Computed: true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-				},
-				Optional:    true,
-				Description: `Requires replacement if changed. `,
+				Optional: true,
 			},
 			"tags": schema.ListAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.List{
-					listplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
-				},
+				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
-				Description: `Requires replacement if changed. `,
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
@@ -183,11 +164,11 @@ func (r *GatewayKeySetResource) Read(ctx context.Context, req resource.ReadReque
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	keySetID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.GetKeySetRequest{
-		ControlPlaneID: controlPlaneID,
 		KeySetID:       keySetID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.KeySets.GetKeySet(ctx, request)
 	if err != nil {
@@ -233,7 +214,36 @@ func (r *GatewayKeySetResource) Update(ctx context.Context, req resource.UpdateR
 		return
 	}
 
-	// Not Implemented; all attributes marked as RequiresReplace
+	keySetID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
+	keySet := *data.ToSharedKeySetInput()
+	request := operations.UpsertKeySetRequest{
+		KeySetID:       keySetID,
+		ControlPlaneID: controlPlaneID,
+		KeySet:         keySet,
+	}
+	res, err := r.client.KeySets.UpsertKeySet(ctx, request)
+	if err != nil {
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res != nil && res.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
+		}
+		return
+	}
+	if res == nil {
+		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
+		return
+	}
+	if res.StatusCode != 200 {
+		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
+		return
+	}
+	if !(res.KeySet != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
+		return
+	}
+	data.RefreshFromSharedKeySet(res.KeySet)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -291,7 +301,7 @@ func (r *GatewayKeySetResource) ImportState(ctx context.Context, req resource.Im
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "id": "6cc34248-50b4-4a81-9201-3bdf7a83f712"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "key_set_id": "6cc34248-50b4-4a81-9201-3bdf7a83f712"}': `+err.Error())
 		return
 	}
 

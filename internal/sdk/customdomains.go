@@ -12,6 +12,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/errors"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/internal/sdk/retry"
 	"io"
 	"net/http"
 	"net/url"
@@ -396,9 +397,9 @@ func (s *CustomDomains) DeleteCustomDomain(ctx context.Context, request operatio
 	retryConfig := o.Retries
 	if retryConfig == nil {
 		if globalRetryConfig == nil {
-			retryConfig = &utils.RetryConfig{
+			retryConfig = &retry.Config{
 				Strategy: "backoff",
-				Backoff: &utils.BackoffStrategy{
+				Backoff: &retry.BackoffStrategy{
 					InitialInterval: 10000,
 					MaxInterval:     60000,
 					Exponent:        1.5,

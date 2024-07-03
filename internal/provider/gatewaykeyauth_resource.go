@@ -81,8 +81,7 @@ func (r *GatewayKeyAuthResource) Schema(ctx context.Context, req resource.Schema
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"id": schema.StringAttribute{
-				Computed:    true,
-				Description: `ID of the API-key to lookup`,
+				Computed: true,
 			},
 			"key": schema.StringAttribute{
 				Computed: true,
@@ -146,12 +145,12 @@ func (r *GatewayKeyAuthResource) Create(ctx context.Context, req resource.Create
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	consumerIDForNestedEntities := data.ConsumerID.ValueString()
+	consumerID := data.ConsumerID.ValueString()
 	keyAuthWithoutParents := *data.ToSharedKeyAuthWithoutParents()
 	request := operations.CreateKeyAuthWithConsumerRequest{
-		ControlPlaneID:              controlPlaneID,
-		ConsumerIDForNestedEntities: consumerIDForNestedEntities,
-		KeyAuthWithoutParents:       keyAuthWithoutParents,
+		ControlPlaneID:        controlPlaneID,
+		ConsumerID:            consumerID,
+		KeyAuthWithoutParents: keyAuthWithoutParents,
 	}
 	res, err := r.client.APIKeys.CreateKeyAuthWithConsumer(ctx, request)
 	if err != nil {
@@ -199,12 +198,12 @@ func (r *GatewayKeyAuthResource) Read(ctx context.Context, req resource.ReadRequ
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	consumerIDForNestedEntities := data.ConsumerID.ValueString()
+	consumerID := data.ConsumerID.ValueString()
 	keyAuthID := data.ID.ValueString()
 	request := operations.GetKeyAuthWithConsumerRequest{
-		ControlPlaneID:              controlPlaneID,
-		ConsumerIDForNestedEntities: consumerIDForNestedEntities,
-		KeyAuthID:                   keyAuthID,
+		ControlPlaneID: controlPlaneID,
+		ConsumerID:     consumerID,
+		KeyAuthID:      keyAuthID,
 	}
 	res, err := r.client.APIKeys.GetKeyAuthWithConsumer(ctx, request)
 	if err != nil {
@@ -275,12 +274,12 @@ func (r *GatewayKeyAuthResource) Delete(ctx context.Context, req resource.Delete
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	consumerIDForNestedEntities := data.ConsumerID.ValueString()
+	consumerID := data.ConsumerID.ValueString()
 	keyAuthID := data.ID.ValueString()
 	request := operations.DeleteKeyAuthWithConsumerRequest{
-		ControlPlaneID:              controlPlaneID,
-		ConsumerIDForNestedEntities: consumerIDForNestedEntities,
-		KeyAuthID:                   keyAuthID,
+		ControlPlaneID: controlPlaneID,
+		ConsumerID:     consumerID,
+		KeyAuthID:      keyAuthID,
 	}
 	res, err := r.client.APIKeys.DeleteKeyAuthWithConsumer(ctx, request)
 	if err != nil {
@@ -311,7 +310,7 @@ func (r *GatewayKeyAuthResource) ImportState(ctx context.Context, req resource.I
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "consumer_id": "f28acbfa-c866-4587-b688-0208ac24df21",  "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "id": ""}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "consumer_id": "f28acbfa-c866-4587-b688-0208ac24df21",  "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "key_auth_id": ""}': `+err.Error())
 		return
 	}
 

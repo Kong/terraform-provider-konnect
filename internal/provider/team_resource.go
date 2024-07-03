@@ -62,7 +62,7 @@ func (r *TeamResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
-				Description: `The team ID`,
+				Description: `The team ID.`,
 			},
 			"labels": schema.MapAttribute{
 				Computed:    true,
@@ -300,5 +300,5 @@ func (r *TeamResource) Delete(ctx context.Context, req resource.DeleteRequest, r
 }
 
 func (r *TeamResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), req.ID)...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id").AtName("id"), req.ID)...)
 }

@@ -135,8 +135,7 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 					``,
 			},
 			"id": schema.StringAttribute{
-				Computed:    true,
-				Description: `The ID of the transit gateway to operate on.`,
+				Computed: true,
 			},
 			"name": schema.StringAttribute{
 				PlanModifiers: []planmodifier.String{
@@ -432,24 +431,24 @@ func (r *CloudGatewayTransitGatewayResource) ImportState(ctx context.Context, re
 	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
 	dec.DisallowUnknownFields()
 	var data struct {
-		ID        string `json:"id"`
 		NetworkID string `json:"network_id"`
+		ID        string `json:"id"`
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "id": "0850820b-d153-4a2a-b9be-7d2204779139",  "network_id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "network_id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695",  "transit_gateway_id": "0850820b-d153-4a2a-b9be-7d2204779139"}': `+err.Error())
 		return
 	}
 
-	if len(data.ID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '"0850820b-d153-4a2a-b9be-7d2204779139"`)
-		return
-	}
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)
 	if len(data.NetworkID) == 0 {
 		resp.Diagnostics.AddError("Missing required field", `The field network_id is required but was not found in the json encoded ID. It's expected to be a value alike '"36ae63d3-efd1-4bec-b246-62aa5d3f5695"`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("network_id"), data.NetworkID)...)
+	if len(data.ID) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '"0850820b-d153-4a2a-b9be-7d2204779139"`)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)
 
 }

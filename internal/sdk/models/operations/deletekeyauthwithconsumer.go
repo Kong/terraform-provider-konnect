@@ -10,7 +10,7 @@ type DeleteKeyAuthWithConsumerRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// Consumer ID for nested entities
-	ConsumerIDForNestedEntities string `pathParam:"style=simple,explode=false,name=ConsumerIdForNestedEntities"`
+	ConsumerID string `pathParam:"style=simple,explode=false,name=ConsumerIdForNestedEntities"`
 	// ID of the API-key to lookup
 	KeyAuthID string `pathParam:"style=simple,explode=false,name=KeyAuthId"`
 }
@@ -22,11 +22,11 @@ func (o *DeleteKeyAuthWithConsumerRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *DeleteKeyAuthWithConsumerRequest) GetConsumerIDForNestedEntities() string {
+func (o *DeleteKeyAuthWithConsumerRequest) GetConsumerID() string {
 	if o == nil {
 		return ""
 	}
-	return o.ConsumerIDForNestedEntities
+	return o.ConsumerID
 }
 
 func (o *DeleteKeyAuthWithConsumerRequest) GetKeyAuthID() string {

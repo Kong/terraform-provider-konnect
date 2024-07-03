@@ -8,8 +8,8 @@ import (
 )
 
 type CreateSystemAccountAccessToken struct {
-	Name      *string    `json:"name,omitempty"`
 	ExpiresAt *time.Time `json:"expires_at,omitempty"`
+	Name      *string    `json:"name,omitempty"`
 }
 
 func (c CreateSystemAccountAccessToken) MarshalJSON() ([]byte, error) {
@@ -23,16 +23,16 @@ func (c *CreateSystemAccountAccessToken) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *CreateSystemAccountAccessToken) GetName() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Name
-}
-
 func (o *CreateSystemAccountAccessToken) GetExpiresAt() *time.Time {
 	if o == nil {
 		return nil
 	}
 	return o.ExpiresAt
+}
+
+func (o *CreateSystemAccountAccessToken) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
 }

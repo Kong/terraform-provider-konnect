@@ -71,7 +71,7 @@ func (r *APIProductSpecificationResource) Schema(ctx context.Context, req resour
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
-				Description: `The API product version specification identifier`,
+				Description: `The API product version specification identifier.`,
 			},
 			"name": schema.StringAttribute{
 				Required:    true,
@@ -323,7 +323,7 @@ func (r *APIProductSpecificationResource) ImportState(ctx context.Context, req r
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "api_product_id": "d32d905a-ed33-46a3-a093-d8f536af9a8a",  "api_product_version_id": "9f5061ce-78f6-4452-9108-ad7c02821fd5",  "id": "742ff9f1-fb89-4aeb-a599-f0e278c7aeaa"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "api_product_id": "d32d905a-ed33-46a3-a093-d8f536af9a8a",  "api_product_version_id": "9f5061ce-78f6-4452-9108-ad7c02821fd5",  "specification_id": "742ff9f1-fb89-4aeb-a599-f0e278c7aeaa"}': `+err.Error())
 		return
 	}
 

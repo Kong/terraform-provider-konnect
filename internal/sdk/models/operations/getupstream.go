@@ -8,17 +8,10 @@ import (
 )
 
 type GetUpstreamRequest struct {
-	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// ID of the Upstream to lookup
 	UpstreamID string `pathParam:"style=simple,explode=false,name=UpstreamId"`
-}
-
-func (o *GetUpstreamRequest) GetControlPlaneID() string {
-	if o == nil {
-		return ""
-	}
-	return o.ControlPlaneID
+	// The UUID of your control plane. This variable is available in the Konnect manager.
+	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
 func (o *GetUpstreamRequest) GetUpstreamID() string {
@@ -26,6 +19,13 @@ func (o *GetUpstreamRequest) GetUpstreamID() string {
 		return ""
 	}
 	return o.UpstreamID
+}
+
+func (o *GetUpstreamRequest) GetControlPlaneID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ControlPlaneID
 }
 
 type GetUpstreamResponse struct {

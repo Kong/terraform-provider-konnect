@@ -96,8 +96,7 @@ func (r *GatewayServiceDataSource) Schema(ctx context.Context, req datasource.Sc
 				Description: `The host of the upstream server. Note that the host value is case sensitive.`,
 			},
 			"id": schema.StringAttribute{
-				Required:    true,
-				Description: `ID of the Service to lookup`,
+				Computed: true,
 			},
 			"name": schema.StringAttribute{
 				Computed:    true,
@@ -186,11 +185,11 @@ func (r *GatewayServiceDataSource) Read(ctx context.Context, req datasource.Read
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	serviceID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.GetServiceRequest{
-		ControlPlaneID: controlPlaneID,
 		ServiceID:      serviceID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Services.GetService(ctx, request)
 	if err != nil {

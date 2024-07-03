@@ -4,11 +4,25 @@ package shared
 
 // ForbiddenError - standard error
 type ForbiddenError struct {
+	Detail   any `json:"detail"`
+	Instance any `json:"instance"`
 	Status   any `json:"status"`
 	Title    any `json:"title"`
 	Type     any `json:"type,omitempty"`
-	Instance any `json:"instance"`
-	Detail   any `json:"detail"`
+}
+
+func (o *ForbiddenError) GetDetail() any {
+	if o == nil {
+		return nil
+	}
+	return o.Detail
+}
+
+func (o *ForbiddenError) GetInstance() any {
+	if o == nil {
+		return nil
+	}
+	return o.Instance
 }
 
 func (o *ForbiddenError) GetStatus() any {
@@ -30,18 +44,4 @@ func (o *ForbiddenError) GetType() any {
 		return nil
 	}
 	return o.Type
-}
-
-func (o *ForbiddenError) GetInstance() any {
-	if o == nil {
-		return nil
-	}
-	return o.Instance
-}
-
-func (o *ForbiddenError) GetDetail() any {
-	if o == nil {
-		return nil
-	}
-	return o.Detail
 }

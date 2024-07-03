@@ -9,26 +9,26 @@ import (
 
 // TransitGateway - Object containing information about a transit gateway.
 type TransitGateway struct {
-	ID string `json:"id"`
-	// Human-readable name of the transit gateway.
-	Name string `json:"name"`
 	// CIDR blocks for constructing a route table for the transit gateway, when attaching to the owning
 	// network.
 	//
-	CidrBlocks                     []string                       `json:"cidr_blocks"`
-	TransitGatewayAttachmentConfig TransitGatewayAttachmentConfig `json:"transit_gateway_attachment_config"`
+	CidrBlocks []string `json:"cidr_blocks"`
+	// An RFC-3339 timestamp representation of transit gateway creation date.
+	CreatedAt time.Time `json:"created_at"`
 	// List of mappings from remote DNS server IP address sets to proxied internal domains, for a transit gateway
 	// attachment.
 	//
 	DNSConfig []TransitGatewayDNSConfig `json:"dns_config"`
-	// State of the transit gateway.
-	State TransitGatewayState `json:"state"`
 	// Monotonically-increasing version count of the transit gateway, to indicate the order of updates to the
 	// transit gateway.
 	//
-	EntityVersion int64 `json:"entity_version"`
-	// An RFC-3339 timestamp representation of transit gateway creation date.
-	CreatedAt time.Time `json:"created_at"`
+	EntityVersion int64  `json:"entity_version"`
+	ID            string `json:"id"`
+	// Human-readable name of the transit gateway.
+	Name string `json:"name"`
+	// State of the transit gateway.
+	State                          TransitGatewayState            `json:"state"`
+	TransitGatewayAttachmentConfig TransitGatewayAttachmentConfig `json:"transit_gateway_attachment_config"`
 	// An RFC-3339 timestamp representation of transit gateway update date.
 	UpdatedAt time.Time `json:"updated_at"`
 }
@@ -42,6 +42,34 @@ func (t *TransitGateway) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (o *TransitGateway) GetCidrBlocks() []string {
+	if o == nil {
+		return []string{}
+	}
+	return o.CidrBlocks
+}
+
+func (o *TransitGateway) GetCreatedAt() time.Time {
+	if o == nil {
+		return time.Time{}
+	}
+	return o.CreatedAt
+}
+
+func (o *TransitGateway) GetDNSConfig() []TransitGatewayDNSConfig {
+	if o == nil {
+		return []TransitGatewayDNSConfig{}
+	}
+	return o.DNSConfig
+}
+
+func (o *TransitGateway) GetEntityVersion() int64 {
+	if o == nil {
+		return 0
+	}
+	return o.EntityVersion
 }
 
 func (o *TransitGateway) GetID() string {
@@ -58,27 +86,6 @@ func (o *TransitGateway) GetName() string {
 	return o.Name
 }
 
-func (o *TransitGateway) GetCidrBlocks() []string {
-	if o == nil {
-		return []string{}
-	}
-	return o.CidrBlocks
-}
-
-func (o *TransitGateway) GetTransitGatewayAttachmentConfig() TransitGatewayAttachmentConfig {
-	if o == nil {
-		return TransitGatewayAttachmentConfig{}
-	}
-	return o.TransitGatewayAttachmentConfig
-}
-
-func (o *TransitGateway) GetDNSConfig() []TransitGatewayDNSConfig {
-	if o == nil {
-		return []TransitGatewayDNSConfig{}
-	}
-	return o.DNSConfig
-}
-
 func (o *TransitGateway) GetState() TransitGatewayState {
 	if o == nil {
 		return TransitGatewayState("")
@@ -86,18 +93,11 @@ func (o *TransitGateway) GetState() TransitGatewayState {
 	return o.State
 }
 
-func (o *TransitGateway) GetEntityVersion() int64 {
+func (o *TransitGateway) GetTransitGatewayAttachmentConfig() TransitGatewayAttachmentConfig {
 	if o == nil {
-		return 0
+		return TransitGatewayAttachmentConfig{}
 	}
-	return o.EntityVersion
-}
-
-func (o *TransitGateway) GetCreatedAt() time.Time {
-	if o == nil {
-		return time.Time{}
-	}
-	return o.CreatedAt
+	return o.TransitGatewayAttachmentConfig
 }
 
 func (o *TransitGateway) GetUpdatedAt() time.Time {

@@ -142,8 +142,7 @@ func (r *CloudGatewayNetworkResource) Schema(ctx context.Context, req resource.S
 				Description: `Firewall configuration for a network.`,
 			},
 			"id": schema.StringAttribute{
-				Computed:    true,
-				Description: `The network to operate on.`,
+				Computed: true,
 			},
 			"name": schema.StringAttribute{
 				Required:    true,
@@ -406,5 +405,5 @@ func (r *CloudGatewayNetworkResource) Delete(ctx context.Context, req resource.D
 }
 
 func (r *CloudGatewayNetworkResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), req.ID)...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id").AtName("id"), req.ID)...)
 }

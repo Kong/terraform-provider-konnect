@@ -81,8 +81,7 @@ func (r *CloudGatewayCustomDomainDataSource) Schema(ctx context.Context, req dat
 					``,
 			},
 			"id": schema.StringAttribute{
-				Required:    true,
-				Description: `ID of the custom domain to operate on.`,
+				Computed: true,
 			},
 			"sni_id": schema.StringAttribute{
 				Computed: true,

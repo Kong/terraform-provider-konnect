@@ -11,10 +11,10 @@ import (
 // Once authenticated, an application will be granted access to any Product Version it is registered for that is configured for the same Auth Strategy.
 // An OIDC strategy may be used in conjunction with a DCR provider to automatically create the IdP application.
 type AppAuthStrategyConfigOpenIDConnect struct {
-	Issuer               string   `json:"issuer"`
-	CredentialClaim      []string `json:"credential_claim"`
-	Scopes               []string `json:"scopes"`
 	AuthMethods          []string `json:"auth_methods"`
+	CredentialClaim      []string `json:"credential_claim"`
+	Issuer               string   `json:"issuer"`
+	Scopes               []string `json:"scopes"`
 	AdditionalProperties any      `additionalProperties:"true" json:"-"`
 }
 
@@ -29,11 +29,11 @@ func (a *AppAuthStrategyConfigOpenIDConnect) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *AppAuthStrategyConfigOpenIDConnect) GetIssuer() string {
+func (o *AppAuthStrategyConfigOpenIDConnect) GetAuthMethods() []string {
 	if o == nil {
-		return ""
+		return []string{}
 	}
-	return o.Issuer
+	return o.AuthMethods
 }
 
 func (o *AppAuthStrategyConfigOpenIDConnect) GetCredentialClaim() []string {
@@ -43,18 +43,18 @@ func (o *AppAuthStrategyConfigOpenIDConnect) GetCredentialClaim() []string {
 	return o.CredentialClaim
 }
 
+func (o *AppAuthStrategyConfigOpenIDConnect) GetIssuer() string {
+	if o == nil {
+		return ""
+	}
+	return o.Issuer
+}
+
 func (o *AppAuthStrategyConfigOpenIDConnect) GetScopes() []string {
 	if o == nil {
 		return []string{}
 	}
 	return o.Scopes
-}
-
-func (o *AppAuthStrategyConfigOpenIDConnect) GetAuthMethods() []string {
-	if o == nil {
-		return []string{}
-	}
-	return o.AuthMethods
 }
 
 func (o *AppAuthStrategyConfigOpenIDConnect) GetAdditionalProperties() any {

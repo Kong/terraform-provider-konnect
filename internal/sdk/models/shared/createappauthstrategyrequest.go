@@ -9,6 +9,23 @@ import (
 	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/utils"
 )
 
+// AppAuthStrategyOpenIDConnectRequestConfigs - JSON-B object containing the configuration for the OIDC strategy
+type AppAuthStrategyOpenIDConnectRequestConfigs struct {
+	// A more advanced mode to configure an API Product Version’s Application Auth Strategy.
+	// Using this mode will allow developers to use API credentials issued from an external IdP that will authenticate their application requests.
+	// Once authenticated, an application will be granted access to any Product Version it is registered for that is configured for the same Auth Strategy.
+	// An OIDC strategy may be used in conjunction with a DCR provider to automatically create the IdP application.
+	//
+	OpenidConnect AppAuthStrategyConfigOpenIDConnect `json:"openid-connect"`
+}
+
+func (o *AppAuthStrategyOpenIDConnectRequestConfigs) GetOpenidConnect() AppAuthStrategyConfigOpenIDConnect {
+	if o == nil {
+		return AppAuthStrategyConfigOpenIDConnect{}
+	}
+	return o.OpenidConnect
+}
+
 type AppAuthStrategyOpenIDConnectRequestStrategyType string
 
 const (
@@ -32,56 +49,18 @@ func (e *AppAuthStrategyOpenIDConnectRequestStrategyType) UnmarshalJSON(data []b
 	}
 }
 
-// AppAuthStrategyOpenIDConnectRequestConfigs - JSON-B object containing the configuration for the OIDC strategy
-type AppAuthStrategyOpenIDConnectRequestConfigs struct {
-	// A more advanced mode to configure an API Product Version’s Application Auth Strategy.
-	// Using this mode will allow developers to use API credentials issued from an external IdP that will authenticate their application requests.
-	// Once authenticated, an application will be granted access to any Product Version it is registered for that is configured for the same Auth Strategy.
-	// An OIDC strategy may be used in conjunction with a DCR provider to automatically create the IdP application.
-	//
-	OpenidConnect AppAuthStrategyConfigOpenIDConnect `json:"openid-connect"`
-}
-
-func (o *AppAuthStrategyOpenIDConnectRequestConfigs) GetOpenidConnect() AppAuthStrategyConfigOpenIDConnect {
-	if o == nil {
-		return AppAuthStrategyConfigOpenIDConnect{}
-	}
-	return o.OpenidConnect
-}
-
 // AppAuthStrategyOpenIDConnectRequest - Payload for creating an OIDC Application Auth Strategy
 type AppAuthStrategyOpenIDConnectRequest struct {
-	// The name of the auth strategy. This is used to identify the auth strategy in the Konnect UI.
-	//
-	Name string `json:"name"`
-	// The display name of the Auth strategy. This is used to identify the Auth strategy in the Portal UI.
-	//
-	DisplayName  string                                          `json:"display_name"`
-	StrategyType AppAuthStrategyOpenIDConnectRequestStrategyType `json:"strategy_type"`
 	// JSON-B object containing the configuration for the OIDC strategy
 	Configs       AppAuthStrategyOpenIDConnectRequestConfigs `json:"configs"`
 	DcrProviderID *string                                    `json:"dcr_provider_id,omitempty"`
-}
-
-func (o *AppAuthStrategyOpenIDConnectRequest) GetName() string {
-	if o == nil {
-		return ""
-	}
-	return o.Name
-}
-
-func (o *AppAuthStrategyOpenIDConnectRequest) GetDisplayName() string {
-	if o == nil {
-		return ""
-	}
-	return o.DisplayName
-}
-
-func (o *AppAuthStrategyOpenIDConnectRequest) GetStrategyType() AppAuthStrategyOpenIDConnectRequestStrategyType {
-	if o == nil {
-		return AppAuthStrategyOpenIDConnectRequestStrategyType("")
-	}
-	return o.StrategyType
+	// The display name of the Auth strategy. This is used to identify the Auth strategy in the Portal UI.
+	//
+	DisplayName string `json:"display_name"`
+	// The name of the auth strategy. This is used to identify the auth strategy in the Konnect UI.
+	//
+	Name         string                                          `json:"name"`
+	StrategyType AppAuthStrategyOpenIDConnectRequestStrategyType `json:"strategy_type"`
 }
 
 func (o *AppAuthStrategyOpenIDConnectRequest) GetConfigs() AppAuthStrategyOpenIDConnectRequestConfigs {
@@ -96,6 +75,43 @@ func (o *AppAuthStrategyOpenIDConnectRequest) GetDcrProviderID() *string {
 		return nil
 	}
 	return o.DcrProviderID
+}
+
+func (o *AppAuthStrategyOpenIDConnectRequest) GetDisplayName() string {
+	if o == nil {
+		return ""
+	}
+	return o.DisplayName
+}
+
+func (o *AppAuthStrategyOpenIDConnectRequest) GetName() string {
+	if o == nil {
+		return ""
+	}
+	return o.Name
+}
+
+func (o *AppAuthStrategyOpenIDConnectRequest) GetStrategyType() AppAuthStrategyOpenIDConnectRequestStrategyType {
+	if o == nil {
+		return AppAuthStrategyOpenIDConnectRequestStrategyType("")
+	}
+	return o.StrategyType
+}
+
+// AppAuthStrategyKeyAuthRequestConfigs - JSON-B object containing the configuration for the Key Auth strategy
+type AppAuthStrategyKeyAuthRequestConfigs struct {
+	// The most basic mode to configure an Application Auth Strategy for an API Product Version.
+	// Using this mode will allow developers to generate API keys that will authenticate their application requests.
+	// Once authenticated, an application will be granted access to any Product Version it is registered for that is configured for Key Auth.
+	//
+	KeyAuth AppAuthStrategyConfigKeyAuth `json:"key-auth"`
+}
+
+func (o *AppAuthStrategyKeyAuthRequestConfigs) GetKeyAuth() AppAuthStrategyConfigKeyAuth {
+	if o == nil {
+		return AppAuthStrategyConfigKeyAuth{}
+	}
+	return o.KeyAuth
 }
 
 type StrategyType string
@@ -121,40 +137,24 @@ func (e *StrategyType) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// AppAuthStrategyKeyAuthRequestConfigs - JSON-B object containing the configuration for the Key Auth strategy
-type AppAuthStrategyKeyAuthRequestConfigs struct {
-	// The most basic mode to configure an Application Auth Strategy for an API Product Version.
-	// Using this mode will allow developers to generate API keys that will authenticate their application requests.
-	// Once authenticated, an application will be granted access to any Product Version it is registered for that is configured for Key Auth.
-	//
-	KeyAuth AppAuthStrategyConfigKeyAuth `json:"key-auth"`
-}
-
-func (o *AppAuthStrategyKeyAuthRequestConfigs) GetKeyAuth() AppAuthStrategyConfigKeyAuth {
-	if o == nil {
-		return AppAuthStrategyConfigKeyAuth{}
-	}
-	return o.KeyAuth
-}
-
 // AppAuthStrategyKeyAuthRequest - Request for creating a Key Auth Application Auth Strategy
 type AppAuthStrategyKeyAuthRequest struct {
-	// The name of the auth strategy. This is used to identify the auth strategy in the Konnect UI.
-	//
-	Name string `json:"name"`
-	// The display name of the Auth strategy. This is used to identify the Auth strategy in the Portal UI.
-	//
-	DisplayName  string       `json:"display_name"`
-	StrategyType StrategyType `json:"strategy_type"`
 	// JSON-B object containing the configuration for the Key Auth strategy
 	Configs AppAuthStrategyKeyAuthRequestConfigs `json:"configs"`
+	// The display name of the Auth strategy. This is used to identify the Auth strategy in the Portal UI.
+	//
+	DisplayName string `json:"display_name"`
+	// The name of the auth strategy. This is used to identify the auth strategy in the Konnect UI.
+	//
+	Name         string       `json:"name"`
+	StrategyType StrategyType `json:"strategy_type"`
 }
 
-func (o *AppAuthStrategyKeyAuthRequest) GetName() string {
+func (o *AppAuthStrategyKeyAuthRequest) GetConfigs() AppAuthStrategyKeyAuthRequestConfigs {
 	if o == nil {
-		return ""
+		return AppAuthStrategyKeyAuthRequestConfigs{}
 	}
-	return o.Name
+	return o.Configs
 }
 
 func (o *AppAuthStrategyKeyAuthRequest) GetDisplayName() string {
@@ -164,18 +164,18 @@ func (o *AppAuthStrategyKeyAuthRequest) GetDisplayName() string {
 	return o.DisplayName
 }
 
+func (o *AppAuthStrategyKeyAuthRequest) GetName() string {
+	if o == nil {
+		return ""
+	}
+	return o.Name
+}
+
 func (o *AppAuthStrategyKeyAuthRequest) GetStrategyType() StrategyType {
 	if o == nil {
 		return StrategyType("")
 	}
 	return o.StrategyType
-}
-
-func (o *AppAuthStrategyKeyAuthRequest) GetConfigs() AppAuthStrategyKeyAuthRequestConfigs {
-	if o == nil {
-		return AppAuthStrategyKeyAuthRequestConfigs{}
-	}
-	return o.Configs
 }
 
 type CreateAppAuthStrategyRequestType string

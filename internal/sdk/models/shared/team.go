@@ -9,21 +9,21 @@ import (
 
 // Team - The team object contains information about a group of users.
 type Team struct {
-	// The team ID.
-	ID *string `json:"id,omitempty"`
-	// The name of the team.
-	Name *string `json:"name,omitempty"`
+	// A Unix timestamp representation of team creation.
+	CreatedAt *time.Time `json:"created_at,omitempty"`
 	// The team description in Konnect.
 	Description *string `json:"description,omitempty"`
-	// Returns True if a user belongs to a `system_team`. System teams are teams that can manage Konnect objects, like "Organization Admin", or "Service"
-	SystemTeam *bool `json:"system_team,omitempty"`
+	// The team ID.
+	ID *string `json:"id,omitempty"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
 	Labels map[string]string `json:"labels,omitempty"`
-	// A Unix timestamp representation of team creation.
-	CreatedAt *time.Time `json:"created_at,omitempty"`
+	// The name of the team.
+	Name *string `json:"name,omitempty"`
+	// Returns True if a user belongs to a `system_team`. System teams are teams that can manage Konnect objects, like "Organization Admin", or "Service"
+	SystemTeam *bool `json:"system_team,omitempty"`
 	// A Unix timestamp representation of the most recent change to the team object in Konnect.
 	//
 	UpdatedAt *time.Time `json:"updated_at,omitempty"`
@@ -40,18 +40,11 @@ func (t *Team) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *Team) GetID() *string {
+func (o *Team) GetCreatedAt() *time.Time {
 	if o == nil {
 		return nil
 	}
-	return o.ID
-}
-
-func (o *Team) GetName() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Name
+	return o.CreatedAt
 }
 
 func (o *Team) GetDescription() *string {
@@ -61,11 +54,11 @@ func (o *Team) GetDescription() *string {
 	return o.Description
 }
 
-func (o *Team) GetSystemTeam() *bool {
+func (o *Team) GetID() *string {
 	if o == nil {
 		return nil
 	}
-	return o.SystemTeam
+	return o.ID
 }
 
 func (o *Team) GetLabels() map[string]string {
@@ -75,11 +68,18 @@ func (o *Team) GetLabels() map[string]string {
 	return o.Labels
 }
 
-func (o *Team) GetCreatedAt() *time.Time {
+func (o *Team) GetName() *string {
 	if o == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return o.Name
+}
+
+func (o *Team) GetSystemTeam() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.SystemTeam
 }
 
 func (o *Team) GetUpdatedAt() *time.Time {

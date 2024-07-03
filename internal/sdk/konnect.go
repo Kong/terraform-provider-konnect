@@ -8,6 +8,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/hooks"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/internal/sdk/retry"
 	"net/http"
 	"time"
 )
@@ -53,7 +54,7 @@ type sdkConfiguration struct {
 	SDKVersion        string
 	GenVersion        string
 	UserAgent         string
-	RetryConfig       *utils.RetryConfig
+	RetryConfig       *retry.Config
 	Hooks             *hooks.Hooks
 }
 
@@ -69,6 +70,7 @@ func (c *sdkConfiguration) GetServerDetails() (string, map[string]string) {
 //
 // https://docs.konghq.com - Documentation for Kong Gateway and its APIs
 type Konnect struct {
+	ServerlessCloudGateways        *ServerlessCloudGateways
 	Mesh                           *Mesh
 	APIProducts                    *APIProducts
 	APIProductVersions             *APIProductVersions
@@ -138,13 +140,6 @@ type Konnect struct {
 	// - `grpcs`: At least one of `hosts`, `headers`, `paths`, or `snis`
 	// - `ws`: At least one of `hosts`, `headers`, or `paths`
 	// - `wss`: At least one of `hosts`, `headers`, `paths`, or `snis`
-	//
-	//
-	//
-	//
-	//
-	//
-	//
 	//   <br>
 	//   A route can't have both `tls` and `tls_passthrough` protocols at same time.
 	//   <br><br>
@@ -261,7 +256,7 @@ func WithSecuritySource(security func(context.Context) (shared.Security, error))
 	}
 }
 
-func WithRetryConfig(retryConfig utils.RetryConfig) SDKOption {
+func WithRetryConfig(retryConfig retry.Config) SDKOption {
 	return func(sdk *Konnect) {
 		sdk.sdkConfiguration.RetryConfig = &retryConfig
 	}
@@ -274,8 +269,8 @@ func New(opts ...SDKOption) *Konnect {
 			Language:          "go",
 			OpenAPIDocVersion: "2.0.0",
 			SDKVersion:        "0.0.1",
-			GenVersion:        "2.349.6",
-			UserAgent:         "speakeasy-sdk/go 0.0.1 2.349.6 2.0.0 github.com/kong/terraform-provider-konnect/internal/sdk",
+			GenVersion:        "2.359.0",
+			UserAgent:         "speakeasy-sdk/go 0.0.1 2.359.0 2.0.0 github.com/kong/terraform-provider-konnect/internal/sdk",
 			Hooks:             hooks.New(),
 		},
 	}
@@ -294,6 +289,8 @@ func New(opts ...SDKOption) *Konnect {
 	if serverURL != currentServerURL {
 		sdk.sdkConfiguration.ServerURL = serverURL
 	}
+
+	sdk.ServerlessCloudGateways = newServerlessCloudGateways(sdk.sdkConfiguration)
 
 	sdk.Mesh = newMesh(sdk.sdkConfiguration)
 

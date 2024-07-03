@@ -60,8 +60,7 @@ func (r *GatewayTargetDataSource) Schema(ctx context.Context, req datasource.Sch
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"id": schema.StringAttribute{
-				Required:    true,
-				Description: `ID of the Target to lookup`,
+				Computed: true,
 			},
 			"tags": schema.ListAttribute{
 				Computed:    true,
@@ -135,12 +134,12 @@ func (r *GatewayTargetDataSource) Read(ctx context.Context, req datasource.ReadR
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	upstreamIDForTarget := data.UpstreamID.ValueString()
+	upstreamID := data.UpstreamID.ValueString()
 	targetID := data.ID.ValueString()
 	request := operations.GetTargetWithUpstreamRequest{
-		ControlPlaneID:      controlPlaneID,
-		UpstreamIDForTarget: upstreamIDForTarget,
-		TargetID:            targetID,
+		ControlPlaneID: controlPlaneID,
+		UpstreamID:     upstreamID,
+		TargetID:       targetID,
 	}
 	res, err := r.client.Targets.GetTargetWithUpstream(ctx, request)
 	if err != nil {

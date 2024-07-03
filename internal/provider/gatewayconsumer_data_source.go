@@ -61,8 +61,7 @@ func (r *GatewayConsumerDataSource) Schema(ctx context.Context, req datasource.S
 				Description: `Field for storing an existing unique ID for the Consumer - useful for mapping Kong with users in your existing database. You must send either this field or ` + "`" + `username` + "`" + ` with the request.`,
 			},
 			"id": schema.StringAttribute{
-				Required:    true,
-				Description: `ID of the Consumer to lookup`,
+				Computed: true,
 			},
 			"tags": schema.ListAttribute{
 				Computed:    true,
@@ -119,11 +118,11 @@ func (r *GatewayConsumerDataSource) Read(ctx context.Context, req datasource.Rea
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	consumerID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.GetConsumerRequest{
-		ControlPlaneID: controlPlaneID,
 		ConsumerID:     consumerID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Consumers.GetConsumer(ctx, request)
 	if err != nil {

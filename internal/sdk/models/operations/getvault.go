@@ -8,17 +8,10 @@ import (
 )
 
 type GetVaultRequest struct {
-	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// ID of the Vault to lookup
 	VaultID string `pathParam:"style=simple,explode=false,name=VaultId"`
-}
-
-func (o *GetVaultRequest) GetControlPlaneID() string {
-	if o == nil {
-		return ""
-	}
-	return o.ControlPlaneID
+	// The UUID of your control plane. This variable is available in the Konnect manager.
+	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
 func (o *GetVaultRequest) GetVaultID() string {
@@ -26,6 +19,13 @@ func (o *GetVaultRequest) GetVaultID() string {
 		return ""
 	}
 	return o.VaultID
+}
+
+func (o *GetVaultRequest) GetControlPlaneID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ControlPlaneID
 }
 
 type GetVaultResponse struct {

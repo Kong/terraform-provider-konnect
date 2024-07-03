@@ -12,6 +12,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/errors"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/internal/sdk/retry"
 	"io"
 	"net/http"
 )
@@ -84,9 +85,9 @@ func (s *TransitGateways) CreateTransitGateway(ctx context.Context, request oper
 	retryConfig := o.Retries
 	if retryConfig == nil {
 		if globalRetryConfig == nil {
-			retryConfig = &utils.RetryConfig{
+			retryConfig = &retry.Config{
 				Strategy: "backoff",
-				Backoff: &utils.BackoffStrategy{
+				Backoff: &retry.BackoffStrategy{
 					InitialInterval: 30000,
 					MaxInterval:     60000,
 					Exponent:        1.5,
@@ -425,9 +426,9 @@ func (s *TransitGateways) DeleteTransitGateway(ctx context.Context, request oper
 	retryConfig := o.Retries
 	if retryConfig == nil {
 		if globalRetryConfig == nil {
-			retryConfig = &utils.RetryConfig{
+			retryConfig = &retry.Config{
 				Strategy: "backoff",
-				Backoff: &utils.BackoffStrategy{
+				Backoff: &retry.BackoffStrategy{
 					InitialInterval: 10000,
 					MaxInterval:     60000,
 					Exponent:        1.5,

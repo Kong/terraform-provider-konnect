@@ -10,21 +10,36 @@ import (
 )
 
 func (r *CloudGatewayTransitGatewayResourceModel) ToSharedCreateTransitGatewayRequest() *shared.CreateTransitGatewayRequest {
-	name := r.Name.ValueString()
 	var cidrBlocks []string = []string{}
 	for _, cidrBlocksItem := range r.CidrBlocks {
 		cidrBlocks = append(cidrBlocks, cidrBlocksItem.ValueString())
 	}
+	var dnsConfig []shared.TransitGatewayDNSConfig = []shared.TransitGatewayDNSConfig{}
+	for _, dnsConfigItem := range r.DNSConfig {
+		var domainProxyList []string = []string{}
+		for _, domainProxyListItem := range dnsConfigItem.DomainProxyList {
+			domainProxyList = append(domainProxyList, domainProxyListItem.ValueString())
+		}
+		var remoteDNSServerIPAddresses []string = []string{}
+		for _, remoteDNSServerIPAddressesItem := range dnsConfigItem.RemoteDNSServerIPAddresses {
+			remoteDNSServerIPAddresses = append(remoteDNSServerIPAddresses, remoteDNSServerIPAddressesItem.ValueString())
+		}
+		dnsConfig = append(dnsConfig, shared.TransitGatewayDNSConfig{
+			DomainProxyList:            domainProxyList,
+			RemoteDNSServerIPAddresses: remoteDNSServerIPAddresses,
+		})
+	}
+	name := r.Name.ValueString()
 	var transitGatewayAttachmentConfig shared.TransitGatewayAttachmentConfig
 	var awsTransitGatewayAttachmentConfig *shared.AwsTransitGatewayAttachmentConfig
 	if r.TransitGatewayAttachmentConfig.AwsTransitGatewayAttachmentConfig != nil {
 		kind := shared.AWSTransitGatewayAttachmentType(r.TransitGatewayAttachmentConfig.AwsTransitGatewayAttachmentConfig.Kind.ValueString())
-		transitGatewayID := r.TransitGatewayAttachmentConfig.AwsTransitGatewayAttachmentConfig.TransitGatewayID.ValueString()
 		ramShareArn := r.TransitGatewayAttachmentConfig.AwsTransitGatewayAttachmentConfig.RAMShareArn.ValueString()
+		transitGatewayID := r.TransitGatewayAttachmentConfig.AwsTransitGatewayAttachmentConfig.TransitGatewayID.ValueString()
 		awsTransitGatewayAttachmentConfig = &shared.AwsTransitGatewayAttachmentConfig{
 			Kind:             kind,
-			TransitGatewayID: transitGatewayID,
 			RAMShareArn:      ramShareArn,
+			TransitGatewayID: transitGatewayID,
 		}
 	}
 	if awsTransitGatewayAttachmentConfig != nil {
@@ -32,26 +47,11 @@ func (r *CloudGatewayTransitGatewayResourceModel) ToSharedCreateTransitGatewayRe
 			AwsTransitGatewayAttachmentConfig: awsTransitGatewayAttachmentConfig,
 		}
 	}
-	var dnsConfig []shared.TransitGatewayDNSConfig = []shared.TransitGatewayDNSConfig{}
-	for _, dnsConfigItem := range r.DNSConfig {
-		var remoteDNSServerIPAddresses []string = []string{}
-		for _, remoteDNSServerIPAddressesItem := range dnsConfigItem.RemoteDNSServerIPAddresses {
-			remoteDNSServerIPAddresses = append(remoteDNSServerIPAddresses, remoteDNSServerIPAddressesItem.ValueString())
-		}
-		var domainProxyList []string = []string{}
-		for _, domainProxyListItem := range dnsConfigItem.DomainProxyList {
-			domainProxyList = append(domainProxyList, domainProxyListItem.ValueString())
-		}
-		dnsConfig = append(dnsConfig, shared.TransitGatewayDNSConfig{
-			RemoteDNSServerIPAddresses: remoteDNSServerIPAddresses,
-			DomainProxyList:            domainProxyList,
-		})
-	}
 	out := shared.CreateTransitGatewayRequest{
-		Name:                           name,
 		CidrBlocks:                     cidrBlocks,
-		TransitGatewayAttachmentConfig: transitGatewayAttachmentConfig,
 		DNSConfig:                      dnsConfig,
+		Name:                           name,
+		TransitGatewayAttachmentConfig: transitGatewayAttachmentConfig,
 	}
 	return &out
 }

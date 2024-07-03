@@ -59,7 +59,7 @@ func (r *MeshControlPlaneResource) Schema(ctx context.Context, req resource.Sche
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
-				Description: `Id of the Konnect resource`,
+				Description: `ID of the control plane.`,
 			},
 			"labels": schema.MapAttribute{
 				Computed:    true,
@@ -288,5 +288,5 @@ func (r *MeshControlPlaneResource) Delete(ctx context.Context, req resource.Dele
 }
 
 func (r *MeshControlPlaneResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), req.ID)...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id").AtName("id"), req.ID)...)
 }

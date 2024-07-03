@@ -8,17 +8,10 @@ import (
 )
 
 type GetConsumerGroupRequest struct {
-	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// ID of the Consumer Group to lookup
 	ConsumerGroupID string `pathParam:"style=simple,explode=false,name=ConsumerGroupId"`
-}
-
-func (o *GetConsumerGroupRequest) GetControlPlaneID() string {
-	if o == nil {
-		return ""
-	}
-	return o.ControlPlaneID
+	// The UUID of your control plane. This variable is available in the Konnect manager.
+	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
 func (o *GetConsumerGroupRequest) GetConsumerGroupID() string {
@@ -26,6 +19,13 @@ func (o *GetConsumerGroupRequest) GetConsumerGroupID() string {
 		return ""
 	}
 	return o.ConsumerGroupID
+}
+
+func (o *GetConsumerGroupRequest) GetControlPlaneID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ControlPlaneID
 }
 
 type GetConsumerGroupResponse struct {
@@ -36,7 +36,7 @@ type GetConsumerGroupResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// Successfully fetched Consumer Group
-	ConsumerGroup *shared.ConsumerGroup
+	ConsumerGroupInsideWrapper *shared.ConsumerGroupInsideWrapper
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
@@ -62,11 +62,11 @@ func (o *GetConsumerGroupResponse) GetRawResponse() *http.Response {
 	return o.RawResponse
 }
 
-func (o *GetConsumerGroupResponse) GetConsumerGroup() *shared.ConsumerGroup {
+func (o *GetConsumerGroupResponse) GetConsumerGroupInsideWrapper() *shared.ConsumerGroupInsideWrapper {
 	if o == nil {
 		return nil
 	}
-	return o.ConsumerGroup
+	return o.ConsumerGroupInsideWrapper
 }
 
 func (o *GetConsumerGroupResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {

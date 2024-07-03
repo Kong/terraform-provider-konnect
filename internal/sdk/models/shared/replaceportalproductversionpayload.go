@@ -4,32 +4,18 @@ package shared
 
 // ReplacePortalProductVersionPayload - Payload to update a Portal Product Version
 type ReplacePortalProductVersionPayload struct {
-	// Publication status of the API product version on the portal
-	PublishStatus PortalProductVersionPublishStatus `json:"publish_status"`
-	// A list of authentication strategy IDs
-	AuthStrategyIds []string `json:"auth_strategy_ids"`
 	// Whether the application registration on this portal for the api product version is enabled
 	ApplicationRegistrationEnabled bool `json:"application_registration_enabled"`
+	// A list of authentication strategy IDs
+	AuthStrategyIds []string `json:"auth_strategy_ids"`
 	// Whether the application registration auto approval on this portal for the api product version is enabled
 	AutoApproveRegistration bool `json:"auto_approve_registration"`
 	// Whether the api product version on the portal is deprecated
 	Deprecated bool `json:"deprecated"`
 	// Whether to notify developers who are affected by this change
 	NotifyDevelopers *bool `json:"notify_developers,omitempty"`
-}
-
-func (o *ReplacePortalProductVersionPayload) GetPublishStatus() PortalProductVersionPublishStatus {
-	if o == nil {
-		return PortalProductVersionPublishStatus("")
-	}
-	return o.PublishStatus
-}
-
-func (o *ReplacePortalProductVersionPayload) GetAuthStrategyIds() []string {
-	if o == nil {
-		return []string{}
-	}
-	return o.AuthStrategyIds
+	// Publication status of the API product version on the portal
+	PublishStatus PortalProductVersionPublishStatus `json:"publish_status"`
 }
 
 func (o *ReplacePortalProductVersionPayload) GetApplicationRegistrationEnabled() bool {
@@ -37,6 +23,13 @@ func (o *ReplacePortalProductVersionPayload) GetApplicationRegistrationEnabled()
 		return false
 	}
 	return o.ApplicationRegistrationEnabled
+}
+
+func (o *ReplacePortalProductVersionPayload) GetAuthStrategyIds() []string {
+	if o == nil {
+		return []string{}
+	}
+	return o.AuthStrategyIds
 }
 
 func (o *ReplacePortalProductVersionPayload) GetAutoApproveRegistration() bool {
@@ -58,4 +51,11 @@ func (o *ReplacePortalProductVersionPayload) GetNotifyDevelopers() *bool {
 		return nil
 	}
 	return o.NotifyDevelopers
+}
+
+func (o *ReplacePortalProductVersionPayload) GetPublishStatus() PortalProductVersionPublishStatus {
+	if o == nil {
+		return PortalProductVersionPublishStatus("")
+	}
+	return o.PublishStatus
 }

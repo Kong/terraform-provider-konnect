@@ -9,11 +9,11 @@ import (
 )
 
 func (r *APIProductSpecificationResourceModel) ToSharedCreateAPIProductVersionSpecDTO() *shared.CreateAPIProductVersionSpecDTO {
-	name := r.Name.ValueString()
 	content := r.Content.ValueString()
+	name := r.Name.ValueString()
 	out := shared.CreateAPIProductVersionSpecDTO{
-		Name:    name,
 		Content: content,
+		Name:    name,
 	}
 	return &out
 }
@@ -29,21 +29,21 @@ func (r *APIProductSpecificationResourceModel) RefreshFromSharedAPIProductVersio
 }
 
 func (r *APIProductSpecificationResourceModel) ToSharedUpdateAPIProductVersionSpecDTO() *shared.UpdateAPIProductVersionSpecDTO {
-	name := new(string)
-	if !r.Name.IsUnknown() && !r.Name.IsNull() {
-		*name = r.Name.ValueString()
-	} else {
-		name = nil
-	}
 	content := new(string)
 	if !r.Content.IsUnknown() && !r.Content.IsNull() {
 		*content = r.Content.ValueString()
 	} else {
 		content = nil
 	}
+	name := new(string)
+	if !r.Name.IsUnknown() && !r.Name.IsNull() {
+		*name = r.Name.ValueString()
+	} else {
+		name = nil
+	}
 	out := shared.UpdateAPIProductVersionSpecDTO{
-		Name:    name,
 		Content: content,
+		Name:    name,
 	}
 	return &out
 }

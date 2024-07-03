@@ -4,11 +4,25 @@ package shared
 
 // NotFoundError - standard error
 type NotFoundError struct {
+	Detail   any `json:"detail"`
+	Instance any `json:"instance"`
 	Status   any `json:"status"`
 	Title    any `json:"title"`
 	Type     any `json:"type,omitempty"`
-	Instance any `json:"instance"`
-	Detail   any `json:"detail"`
+}
+
+func (o *NotFoundError) GetDetail() any {
+	if o == nil {
+		return nil
+	}
+	return o.Detail
+}
+
+func (o *NotFoundError) GetInstance() any {
+	if o == nil {
+		return nil
+	}
+	return o.Instance
 }
 
 func (o *NotFoundError) GetStatus() any {
@@ -30,18 +44,4 @@ func (o *NotFoundError) GetType() any {
 		return nil
 	}
 	return o.Type
-}
-
-func (o *NotFoundError) GetInstance() any {
-	if o == nil {
-		return nil
-	}
-	return o.Instance
-}
-
-func (o *NotFoundError) GetDetail() any {
-	if o == nil {
-		return nil
-	}
-	return o.Detail
 }

@@ -70,8 +70,7 @@ func (r *GatewayTargetResource) Schema(ctx context.Context, req resource.SchemaR
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"id": schema.StringAttribute{
-				Computed:    true,
-				Description: `ID of the Target to lookup`,
+				Computed: true,
 			},
 			"tags": schema.ListAttribute{
 				Computed: true,
@@ -163,11 +162,11 @@ func (r *GatewayTargetResource) Create(ctx context.Context, req resource.CreateR
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	upstreamIDForTarget := data.UpstreamID.ValueString()
+	upstreamID := data.UpstreamID.ValueString()
 	targetWithoutParents := *data.ToSharedTargetWithoutParents()
 	request := operations.CreateTargetWithUpstreamRequest{
 		ControlPlaneID:       controlPlaneID,
-		UpstreamIDForTarget:  upstreamIDForTarget,
+		UpstreamID:           upstreamID,
 		TargetWithoutParents: targetWithoutParents,
 	}
 	res, err := r.client.Targets.CreateTargetWithUpstream(ctx, request)
@@ -216,12 +215,12 @@ func (r *GatewayTargetResource) Read(ctx context.Context, req resource.ReadReque
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	upstreamIDForTarget := data.UpstreamID.ValueString()
+	upstreamID := data.UpstreamID.ValueString()
 	targetID := data.ID.ValueString()
 	request := operations.GetTargetWithUpstreamRequest{
-		ControlPlaneID:      controlPlaneID,
-		UpstreamIDForTarget: upstreamIDForTarget,
-		TargetID:            targetID,
+		ControlPlaneID: controlPlaneID,
+		UpstreamID:     upstreamID,
+		TargetID:       targetID,
 	}
 	res, err := r.client.Targets.GetTargetWithUpstream(ctx, request)
 	if err != nil {
@@ -292,12 +291,12 @@ func (r *GatewayTargetResource) Delete(ctx context.Context, req resource.DeleteR
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	upstreamIDForTarget := data.UpstreamID.ValueString()
+	upstreamID := data.UpstreamID.ValueString()
 	targetID := data.ID.ValueString()
 	request := operations.DeleteTargetWithUpstreamRequest{
-		ControlPlaneID:      controlPlaneID,
-		UpstreamIDForTarget: upstreamIDForTarget,
-		TargetID:            targetID,
+		ControlPlaneID: controlPlaneID,
+		UpstreamID:     upstreamID,
+		TargetID:       targetID,
 	}
 	res, err := r.client.Targets.DeleteTargetWithUpstream(ctx, request)
 	if err != nil {
@@ -328,7 +327,7 @@ func (r *GatewayTargetResource) ImportState(ctx context.Context, req resource.Im
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "id": "5a078780-5d4c-4aae-984a-bdc6f52113d8",  "upstream_id": "5a078780-5d4c-4aae-984a-bdc6f52113d8"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "target_id": "5a078780-5d4c-4aae-984a-bdc6f52113d8",  "upstream_id": "5a078780-5d4c-4aae-984a-bdc6f52113d8"}': `+err.Error())
 		return
 	}
 

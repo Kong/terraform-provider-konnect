@@ -158,8 +158,7 @@ func (r *GatewayPluginProxyCacheDataSource) Schema(ctx context.Context, req data
 				Description: `Whether the plugin is applied.`,
 			},
 			"id": schema.StringAttribute{
-				Required:    true,
-				Description: `ID of the Plugin to lookup`,
+				Computed: true,
 			},
 			"instance_name": schema.StringAttribute{
 				Computed: true,

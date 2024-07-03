@@ -10,12 +10,11 @@ import (
 )
 
 func (r *PortalProductVersionResourceModel) ToSharedReplacePortalProductVersionPayload() *shared.ReplacePortalProductVersionPayload {
-	publishStatus := shared.PortalProductVersionPublishStatus(r.PublishStatus.ValueString())
+	applicationRegistrationEnabled := r.ApplicationRegistrationEnabled.ValueBool()
 	var authStrategyIds []string = []string{}
 	for _, authStrategyIdsItem := range r.AuthStrategyIds {
 		authStrategyIds = append(authStrategyIds, authStrategyIdsItem.ValueString())
 	}
-	applicationRegistrationEnabled := r.ApplicationRegistrationEnabled.ValueBool()
 	autoApproveRegistration := r.AutoApproveRegistration.ValueBool()
 	deprecated := r.Deprecated.ValueBool()
 	notifyDevelopers := new(bool)
@@ -24,13 +23,14 @@ func (r *PortalProductVersionResourceModel) ToSharedReplacePortalProductVersionP
 	} else {
 		notifyDevelopers = nil
 	}
+	publishStatus := shared.PortalProductVersionPublishStatus(r.PublishStatus.ValueString())
 	out := shared.ReplacePortalProductVersionPayload{
-		PublishStatus:                  publishStatus,
-		AuthStrategyIds:                authStrategyIds,
 		ApplicationRegistrationEnabled: applicationRegistrationEnabled,
+		AuthStrategyIds:                authStrategyIds,
 		AutoApproveRegistration:        autoApproveRegistration,
 		Deprecated:                     deprecated,
 		NotifyDevelopers:               notifyDevelopers,
+		PublishStatus:                  publishStatus,
 	}
 	return &out
 }

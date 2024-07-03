@@ -58,8 +58,8 @@ func (r *ApplicationAuthStrategyDataSource) Schema(ctx context.Context, req data
 					``,
 			},
 			"id": schema.StringAttribute{
-				Required:    true,
-				Description: `Application auth strategy identifier`,
+				Computed:    true,
+				Description: `Contains a unique identifier used for this resource.`,
 			},
 			"key_auth": schema.SingleNestedAttribute{
 				Computed: true,

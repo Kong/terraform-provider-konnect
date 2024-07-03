@@ -112,8 +112,7 @@ func (r *GatewayJWTResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"id": schema.StringAttribute{
-				Computed:    true,
-				Description: `ID of the JWT to lookup`,
+				Computed: true,
 			},
 			"key": schema.StringAttribute{
 				Computed: true,
@@ -195,12 +194,12 @@ func (r *GatewayJWTResource) Create(ctx context.Context, req resource.CreateRequ
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	consumerIDForNestedEntities := data.ConsumerID.ValueString()
+	consumerID := data.ConsumerID.ValueString()
 	jwtWithoutParents := *data.ToSharedJWTWithoutParents()
 	request := operations.CreateJwtWithConsumerRequest{
-		ControlPlaneID:              controlPlaneID,
-		ConsumerIDForNestedEntities: consumerIDForNestedEntities,
-		JWTWithoutParents:           jwtWithoutParents,
+		ControlPlaneID:    controlPlaneID,
+		ConsumerID:        consumerID,
+		JWTWithoutParents: jwtWithoutParents,
 	}
 	res, err := r.client.JWTs.CreateJwtWithConsumer(ctx, request)
 	if err != nil {
@@ -248,12 +247,12 @@ func (r *GatewayJWTResource) Read(ctx context.Context, req resource.ReadRequest,
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	consumerIDForNestedEntities := data.ConsumerID.ValueString()
+	consumerID := data.ConsumerID.ValueString()
 	jwtID := data.ID.ValueString()
 	request := operations.GetJwtWithConsumerRequest{
-		ControlPlaneID:              controlPlaneID,
-		ConsumerIDForNestedEntities: consumerIDForNestedEntities,
-		JWTID:                       jwtID,
+		ControlPlaneID: controlPlaneID,
+		ConsumerID:     consumerID,
+		JWTID:          jwtID,
 	}
 	res, err := r.client.JWTs.GetJwtWithConsumer(ctx, request)
 	if err != nil {
@@ -324,12 +323,12 @@ func (r *GatewayJWTResource) Delete(ctx context.Context, req resource.DeleteRequ
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	consumerIDForNestedEntities := data.ConsumerID.ValueString()
+	consumerID := data.ConsumerID.ValueString()
 	jwtID := data.ID.ValueString()
 	request := operations.DeleteJwtWithConsumerRequest{
-		ControlPlaneID:              controlPlaneID,
-		ConsumerIDForNestedEntities: consumerIDForNestedEntities,
-		JWTID:                       jwtID,
+		ControlPlaneID: controlPlaneID,
+		ConsumerID:     consumerID,
+		JWTID:          jwtID,
 	}
 	res, err := r.client.JWTs.DeleteJwtWithConsumer(ctx, request)
 	if err != nil {
@@ -360,7 +359,7 @@ func (r *GatewayJWTResource) ImportState(ctx context.Context, req resource.Impor
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "consumer_id": "f28acbfa-c866-4587-b688-0208ac24df21",  "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "id": "4a7f5faa-8c96-46d6-8214-c87573ef2ac4"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "consumer_id": "f28acbfa-c866-4587-b688-0208ac24df21",  "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "jwtid": "4a7f5faa-8c96-46d6-8214-c87573ef2ac4"}': `+err.Error())
 		return
 	}
 

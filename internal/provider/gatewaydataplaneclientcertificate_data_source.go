@@ -59,7 +59,8 @@ func (r *GatewayDataPlaneClientCertificateDataSource) Schema(ctx context.Context
 				Description: `Date certificate was created.`,
 			},
 			"id": schema.StringAttribute{
-				Required: true,
+				Computed:    true,
+				Description: `Unique ID of the certificate entity.`,
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,

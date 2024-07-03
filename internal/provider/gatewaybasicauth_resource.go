@@ -82,8 +82,7 @@ func (r *GatewayBasicAuthResource) Schema(ctx context.Context, req resource.Sche
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"id": schema.StringAttribute{
-				Computed:    true,
-				Description: `ID of the Basic-auth credential to lookup`,
+				Computed: true,
 			},
 			"password": schema.StringAttribute{
 				PlanModifiers: []planmodifier.String{
@@ -155,12 +154,12 @@ func (r *GatewayBasicAuthResource) Create(ctx context.Context, req resource.Crea
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	consumerIDForNestedEntities := data.ConsumerID.ValueString()
+	consumerID := data.ConsumerID.ValueString()
 	basicAuthWithoutParents := *data.ToSharedBasicAuthWithoutParents()
 	request := operations.CreateBasicAuthWithConsumerRequest{
-		ControlPlaneID:              controlPlaneID,
-		ConsumerIDForNestedEntities: consumerIDForNestedEntities,
-		BasicAuthWithoutParents:     basicAuthWithoutParents,
+		ControlPlaneID:          controlPlaneID,
+		ConsumerID:              consumerID,
+		BasicAuthWithoutParents: basicAuthWithoutParents,
 	}
 	res, err := r.client.BasicAuthCredentials.CreateBasicAuthWithConsumer(ctx, request)
 	if err != nil {
@@ -185,12 +184,12 @@ func (r *GatewayBasicAuthResource) Create(ctx context.Context, req resource.Crea
 	data.RefreshFromSharedBasicAuth(res.BasicAuth)
 	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 	controlPlaneId1 := data.ControlPlaneID.ValueString()
-	consumerIDForNestedEntities1 := data.ConsumerID.ValueString()
+	consumerId1 := data.ConsumerID.ValueString()
 	basicAuthID := data.ID.ValueString()
 	request1 := operations.GetBasicAuthWithConsumerRequest{
-		ControlPlaneID:              controlPlaneId1,
-		ConsumerIDForNestedEntities: consumerIDForNestedEntities1,
-		BasicAuthID:                 basicAuthID,
+		ControlPlaneID: controlPlaneId1,
+		ConsumerID:     consumerId1,
+		BasicAuthID:    basicAuthID,
 	}
 	res1, err := r.client.BasicAuthCredentials.GetBasicAuthWithConsumer(ctx, request1)
 	if err != nil {
@@ -238,12 +237,12 @@ func (r *GatewayBasicAuthResource) Read(ctx context.Context, req resource.ReadRe
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	consumerIDForNestedEntities := data.ConsumerID.ValueString()
+	consumerID := data.ConsumerID.ValueString()
 	basicAuthID := data.ID.ValueString()
 	request := operations.GetBasicAuthWithConsumerRequest{
-		ControlPlaneID:              controlPlaneID,
-		ConsumerIDForNestedEntities: consumerIDForNestedEntities,
-		BasicAuthID:                 basicAuthID,
+		ControlPlaneID: controlPlaneID,
+		ConsumerID:     consumerID,
+		BasicAuthID:    basicAuthID,
 	}
 	res, err := r.client.BasicAuthCredentials.GetBasicAuthWithConsumer(ctx, request)
 	if err != nil {
@@ -314,12 +313,12 @@ func (r *GatewayBasicAuthResource) Delete(ctx context.Context, req resource.Dele
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	consumerIDForNestedEntities := data.ConsumerID.ValueString()
+	consumerID := data.ConsumerID.ValueString()
 	basicAuthID := data.ID.ValueString()
 	request := operations.DeleteBasicAuthWithConsumerRequest{
-		ControlPlaneID:              controlPlaneID,
-		ConsumerIDForNestedEntities: consumerIDForNestedEntities,
-		BasicAuthID:                 basicAuthID,
+		ControlPlaneID: controlPlaneID,
+		ConsumerID:     consumerID,
+		BasicAuthID:    basicAuthID,
 	}
 	res, err := r.client.BasicAuthCredentials.DeleteBasicAuthWithConsumer(ctx, request)
 	if err != nil {
@@ -344,16 +343,21 @@ func (r *GatewayBasicAuthResource) ImportState(ctx context.Context, req resource
 	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
 	dec.DisallowUnknownFields()
 	var data struct {
+		ID             string `json:"id"`
 		ConsumerID     string `json:"consumer_id"`
 		ControlPlaneID string `json:"control_plane_id"`
-		ID             string `json:"id"`
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "consumer_id": "f28acbfa-c866-4587-b688-0208ac24df21",  "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "id": "80db1b58-ca7c-4d21-b92a-64eb07725872"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "basic_auth_id": "80db1b58-ca7c-4d21-b92a-64eb07725872",  "consumer_id": "f28acbfa-c866-4587-b688-0208ac24df21",  "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458"}': `+err.Error())
 		return
 	}
 
+	if len(data.ID) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '"80db1b58-ca7c-4d21-b92a-64eb07725872"`)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)
 	if len(data.ConsumerID) == 0 {
 		resp.Diagnostics.AddError("Missing required field", `The field consumer_id is required but was not found in the json encoded ID. It's expected to be a value alike '"f28acbfa-c866-4587-b688-0208ac24df21"`)
 		return
@@ -364,10 +368,5 @@ func (r *GatewayBasicAuthResource) ImportState(ctx context.Context, req resource
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
-	if len(data.ID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '"80db1b58-ca7c-4d21-b92a-64eb07725872"`)
-		return
-	}
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)
 
 }

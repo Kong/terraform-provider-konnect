@@ -90,8 +90,7 @@ func (r *GatewayACLResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Description: `Requires replacement if changed. `,
 			},
 			"id": schema.StringAttribute{
-				Computed:    true,
-				Description: `ID of the ACL to lookup`,
+				Computed: true,
 			},
 			"tags": schema.ListAttribute{
 				Computed: true,
@@ -146,12 +145,12 @@ func (r *GatewayACLResource) Create(ctx context.Context, req resource.CreateRequ
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	consumerIDForNestedEntities := data.ConsumerID.ValueString()
+	consumerID := data.ConsumerID.ValueString()
 	aclWithoutParents := *data.ToSharedACLWithoutParents()
 	request := operations.CreateACLWithConsumerRequest{
-		ControlPlaneID:              controlPlaneID,
-		ConsumerIDForNestedEntities: consumerIDForNestedEntities,
-		ACLWithoutParents:           aclWithoutParents,
+		ControlPlaneID:    controlPlaneID,
+		ConsumerID:        consumerID,
+		ACLWithoutParents: aclWithoutParents,
 	}
 	res, err := r.client.ACLs.CreateACLWithConsumer(ctx, request)
 	if err != nil {
@@ -199,12 +198,12 @@ func (r *GatewayACLResource) Read(ctx context.Context, req resource.ReadRequest,
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	consumerIDForNestedEntities := data.ConsumerID.ValueString()
+	consumerID := data.ConsumerID.ValueString()
 	aclID := data.ID.ValueString()
 	request := operations.GetACLWithConsumerRequest{
-		ControlPlaneID:              controlPlaneID,
-		ConsumerIDForNestedEntities: consumerIDForNestedEntities,
-		ACLID:                       aclID,
+		ControlPlaneID: controlPlaneID,
+		ConsumerID:     consumerID,
+		ACLID:          aclID,
 	}
 	res, err := r.client.ACLs.GetACLWithConsumer(ctx, request)
 	if err != nil {
@@ -275,12 +274,12 @@ func (r *GatewayACLResource) Delete(ctx context.Context, req resource.DeleteRequ
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	consumerIDForNestedEntities := data.ConsumerID.ValueString()
+	consumerID := data.ConsumerID.ValueString()
 	aclID := data.ID.ValueString()
 	request := operations.DeleteACLWithConsumerRequest{
-		ControlPlaneID:              controlPlaneID,
-		ConsumerIDForNestedEntities: consumerIDForNestedEntities,
-		ACLID:                       aclID,
+		ControlPlaneID: controlPlaneID,
+		ConsumerID:     consumerID,
+		ACLID:          aclID,
 	}
 	res, err := r.client.ACLs.DeleteACLWithConsumer(ctx, request)
 	if err != nil {
@@ -305,16 +304,21 @@ func (r *GatewayACLResource) ImportState(ctx context.Context, req resource.Impor
 	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
 	dec.DisallowUnknownFields()
 	var data struct {
+		ID             string `json:"id"`
 		ConsumerID     string `json:"consumer_id"`
 		ControlPlaneID string `json:"control_plane_id"`
-		ID             string `json:"id"`
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "consumer_id": "f28acbfa-c866-4587-b688-0208ac24df21",  "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "id": "f28acbfa-c866-4587-b688-0208ac24df21"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "aclid": "f28acbfa-c866-4587-b688-0208ac24df21",  "consumer_id": "f28acbfa-c866-4587-b688-0208ac24df21",  "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458"}': `+err.Error())
 		return
 	}
 
+	if len(data.ID) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '"f28acbfa-c866-4587-b688-0208ac24df21"`)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)
 	if len(data.ConsumerID) == 0 {
 		resp.Diagnostics.AddError("Missing required field", `The field consumer_id is required but was not found in the json encoded ID. It's expected to be a value alike '"f28acbfa-c866-4587-b688-0208ac24df21"`)
 		return
@@ -325,10 +329,5 @@ func (r *GatewayACLResource) ImportState(ctx context.Context, req resource.Impor
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
-	if len(data.ID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '"f28acbfa-c866-4587-b688-0208ac24df21"`)
-		return
-	}
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)
 
 }

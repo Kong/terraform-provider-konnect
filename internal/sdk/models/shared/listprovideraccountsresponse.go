@@ -3,16 +3,9 @@
 package shared
 
 type ListProviderAccountsResponse struct {
-	// returns the pagination information
-	Meta PaginatedMeta     `json:"meta"`
 	Data []ProviderAccount `json:"data"`
-}
-
-func (o *ListProviderAccountsResponse) GetMeta() PaginatedMeta {
-	if o == nil {
-		return PaginatedMeta{}
-	}
-	return o.Meta
+	// returns the pagination information
+	Meta PaginatedMeta `json:"meta"`
 }
 
 func (o *ListProviderAccountsResponse) GetData() []ProviderAccount {
@@ -20,4 +13,11 @@ func (o *ListProviderAccountsResponse) GetData() []ProviderAccount {
 		return []ProviderAccount{}
 	}
 	return o.Data
+}
+
+func (o *ListProviderAccountsResponse) GetMeta() PaginatedMeta {
+	if o == nil {
+		return PaginatedMeta{}
+	}
+	return o.Meta
 }

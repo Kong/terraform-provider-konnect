@@ -61,8 +61,7 @@ func (r *GatewayKeyDataSource) Schema(ctx context.Context, req datasource.Schema
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"id": schema.StringAttribute{
-				Required:    true,
-				Description: `ID of the Key to lookup`,
+				Computed: true,
 			},
 			"jwk": schema.StringAttribute{
 				Computed:    true,
@@ -148,11 +147,11 @@ func (r *GatewayKeyDataSource) Read(ctx context.Context, req datasource.ReadRequ
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	keyID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.GetKeyRequest{
-		ControlPlaneID: controlPlaneID,
 		KeyID:          keyID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Keys.GetKey(ctx, request)
 	if err != nil {

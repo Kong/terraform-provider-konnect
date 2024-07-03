@@ -3,19 +3,12 @@
 package shared
 
 type CreateSystemAccount struct {
-	// Name of the system account.
-	Name string `json:"name"`
 	// Description of the system account. Useful when the system account name is not sufficient to differentiate one system account from another.
 	Description string `json:"description"`
 	// The system account is managed by Konnect (true/false).
 	KonnectManaged *bool `json:"konnect_managed,omitempty"`
-}
-
-func (o *CreateSystemAccount) GetName() string {
-	if o == nil {
-		return ""
-	}
-	return o.Name
+	// Name of the system account.
+	Name string `json:"name"`
 }
 
 func (o *CreateSystemAccount) GetDescription() string {
@@ -30,4 +23,11 @@ func (o *CreateSystemAccount) GetKonnectManaged() *bool {
 		return nil
 	}
 	return o.KonnectManaged
+}
+
+func (o *CreateSystemAccount) GetName() string {
+	if o == nil {
+		return ""
+	}
+	return o.Name
 }

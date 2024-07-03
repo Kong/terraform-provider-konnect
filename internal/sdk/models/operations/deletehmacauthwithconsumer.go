@@ -10,7 +10,7 @@ type DeleteHmacAuthWithConsumerRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// Consumer ID for nested entities
-	ConsumerIDForNestedEntities string `pathParam:"style=simple,explode=false,name=ConsumerIdForNestedEntities"`
+	ConsumerID string `pathParam:"style=simple,explode=false,name=ConsumerIdForNestedEntities"`
 	// ID of the HMAC-auth credential to lookup
 	HMACAuthID string `pathParam:"style=simple,explode=false,name=HMACAuthId"`
 }
@@ -22,11 +22,11 @@ func (o *DeleteHmacAuthWithConsumerRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *DeleteHmacAuthWithConsumerRequest) GetConsumerIDForNestedEntities() string {
+func (o *DeleteHmacAuthWithConsumerRequest) GetConsumerID() string {
 	if o == nil {
 		return ""
 	}
-	return o.ConsumerIDForNestedEntities
+	return o.ConsumerID
 }
 
 func (o *DeleteHmacAuthWithConsumerRequest) GetHMACAuthID() string {

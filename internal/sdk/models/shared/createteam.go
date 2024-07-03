@@ -3,8 +3,6 @@
 package shared
 
 type CreateTeam struct {
-	// A name for the team being created.
-	Name string `json:"name"`
 	// The description of the new team.
 	Description *string `json:"description,omitempty"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
@@ -12,13 +10,8 @@ type CreateTeam struct {
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
 	Labels map[string]string `json:"labels,omitempty"`
-}
-
-func (o *CreateTeam) GetName() string {
-	if o == nil {
-		return ""
-	}
-	return o.Name
+	// A name for the team being created.
+	Name string `json:"name"`
 }
 
 func (o *CreateTeam) GetDescription() *string {
@@ -33,4 +26,11 @@ func (o *CreateTeam) GetLabels() map[string]string {
 		return nil
 	}
 	return o.Labels
+}
+
+func (o *CreateTeam) GetName() string {
+	if o == nil {
+		return ""
+	}
+	return o.Name
 }

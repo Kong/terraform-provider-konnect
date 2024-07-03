@@ -108,8 +108,7 @@ func (r *CloudGatewayCustomDomainResource) Schema(ctx context.Context, req resou
 					``,
 			},
 			"id": schema.StringAttribute{
-				Computed:    true,
-				Description: `ID of the custom domain to operate on.`,
+				Computed: true,
 			},
 			"sni_id": schema.StringAttribute{
 				Computed: true,
@@ -338,5 +337,5 @@ func (r *CloudGatewayCustomDomainResource) Delete(ctx context.Context, req resou
 }
 
 func (r *CloudGatewayCustomDomainResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), req.ID)...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id").AtName("id"), req.ID)...)
 }

@@ -73,7 +73,7 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
-				Description: `Application auth strategy identifier`,
+				Description: `Contains a unique identifier used for this resource.`,
 			},
 			"key_auth": schema.SingleNestedAttribute{
 				Computed: true,
@@ -773,5 +773,5 @@ func (r *ApplicationAuthStrategyResource) Delete(ctx context.Context, req resour
 }
 
 func (r *ApplicationAuthStrategyResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), req.ID)...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id").AtName("id"), req.ID)...)
 }

@@ -73,8 +73,7 @@ func (r *GatewayACLDataSource) Schema(ctx context.Context, req datasource.Schema
 				Computed: true,
 			},
 			"id": schema.StringAttribute{
-				Required:    true,
-				Description: `ID of the ACL to lookup`,
+				Computed: true,
 			},
 			"tags": schema.ListAttribute{
 				Computed:    true,
@@ -123,12 +122,12 @@ func (r *GatewayACLDataSource) Read(ctx context.Context, req datasource.ReadRequ
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	consumerIDForNestedEntities := data.ConsumerID.ValueString()
+	consumerID := data.ConsumerID.ValueString()
 	aclID := data.ID.ValueString()
 	request := operations.GetACLWithConsumerRequest{
-		ControlPlaneID:              controlPlaneID,
-		ConsumerIDForNestedEntities: consumerIDForNestedEntities,
-		ACLID:                       aclID,
+		ControlPlaneID: controlPlaneID,
+		ConsumerID:     consumerID,
+		ACLID:          aclID,
 	}
 	res, err := r.client.ACLs.GetACLWithConsumer(ctx, request)
 	if err != nil {

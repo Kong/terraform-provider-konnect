@@ -78,13 +78,14 @@ func (r *GatewayControlPlaneResource) Schema(ctx context.Context, req resource.S
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
 				Optional:    true,
-				Description: `The ClusterType value of the cluster associated with the Control Plane. Requires replacement if changed. ; must be one of ["CLUSTER_TYPE_CONTROL_PLANE", "CLUSTER_TYPE_HYBRID", "CLUSTER_TYPE_K8S_INGRESS_CONTROLLER", "CLUSTER_TYPE_CONTROL_PLANE_GROUP"]`,
+				Description: `The ClusterType value of the cluster associated with the Control Plane. Requires replacement if changed. ; must be one of ["CLUSTER_TYPE_CONTROL_PLANE", "CLUSTER_TYPE_HYBRID", "CLUSTER_TYPE_K8S_INGRESS_CONTROLLER", "CLUSTER_TYPE_CONTROL_PLANE_GROUP", "CLUSTER_TYPE_SERVERLESS"]`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
 						"CLUSTER_TYPE_CONTROL_PLANE",
 						"CLUSTER_TYPE_HYBRID",
 						"CLUSTER_TYPE_K8S_INGRESS_CONTROLLER",
 						"CLUSTER_TYPE_CONTROL_PLANE_GROUP",
+						"CLUSTER_TYPE_SERVERLESS",
 					),
 				},
 			},

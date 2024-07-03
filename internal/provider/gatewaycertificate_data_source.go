@@ -67,8 +67,7 @@ func (r *GatewayCertificateDataSource) Schema(ctx context.Context, req datasourc
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"id": schema.StringAttribute{
-				Required:    true,
-				Description: `ID of the Certificate to lookup`,
+				Computed: true,
 			},
 			"key": schema.StringAttribute{
 				Computed:    true,
@@ -129,11 +128,11 @@ func (r *GatewayCertificateDataSource) Read(ctx context.Context, req datasource.
 		return
 	}
 
-	controlPlaneID := data.ControlPlaneID.ValueString()
 	certificateID := data.ID.ValueString()
+	controlPlaneID := data.ControlPlaneID.ValueString()
 	request := operations.GetCertificateRequest{
-		ControlPlaneID: controlPlaneID,
 		CertificateID:  certificateID,
+		ControlPlaneID: controlPlaneID,
 	}
 	res, err := r.client.Certificates.GetCertificate(ctx, request)
 	if err != nil {

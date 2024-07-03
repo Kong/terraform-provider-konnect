@@ -4,12 +4,26 @@ package shared
 
 // ConfigurationDataPlaneGroupConfig - Object that describes where a data-plane group will be deployed to, along with how many instances.
 type ConfigurationDataPlaneGroupConfig struct {
+	Autoscale             ConfigurationDataPlaneGroupAutoscale `json:"autoscale"`
+	CloudGatewayNetworkID string                               `json:"cloud_gateway_network_id"`
 	// Name of cloud provider.
 	Provider ProviderName `json:"provider"`
 	// Region ID for cloud provider region.
-	Region                string                               `json:"region"`
-	CloudGatewayNetworkID string                               `json:"cloud_gateway_network_id"`
-	Autoscale             ConfigurationDataPlaneGroupAutoscale `json:"autoscale"`
+	Region string `json:"region"`
+}
+
+func (o *ConfigurationDataPlaneGroupConfig) GetAutoscale() ConfigurationDataPlaneGroupAutoscale {
+	if o == nil {
+		return ConfigurationDataPlaneGroupAutoscale{}
+	}
+	return o.Autoscale
+}
+
+func (o *ConfigurationDataPlaneGroupConfig) GetCloudGatewayNetworkID() string {
+	if o == nil {
+		return ""
+	}
+	return o.CloudGatewayNetworkID
 }
 
 func (o *ConfigurationDataPlaneGroupConfig) GetProvider() ProviderName {
@@ -24,18 +38,4 @@ func (o *ConfigurationDataPlaneGroupConfig) GetRegion() string {
 		return ""
 	}
 	return o.Region
-}
-
-func (o *ConfigurationDataPlaneGroupConfig) GetCloudGatewayNetworkID() string {
-	if o == nil {
-		return ""
-	}
-	return o.CloudGatewayNetworkID
-}
-
-func (o *ConfigurationDataPlaneGroupConfig) GetAutoscale() ConfigurationDataPlaneGroupAutoscale {
-	if o == nil {
-		return ConfigurationDataPlaneGroupAutoscale{}
-	}
-	return o.Autoscale
 }

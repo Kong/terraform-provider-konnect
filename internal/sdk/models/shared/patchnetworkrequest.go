@@ -4,17 +4,10 @@ package shared
 
 // PatchNetworkRequest - Request schema for updating a network.
 type PatchNetworkRequest struct {
-	// Human-readable name of the network.
-	Name *string `json:"name,omitempty"`
 	// Firewall configuration for a network.
 	Firewall *NetworkFirewallConfig `json:"firewall,omitempty"`
-}
-
-func (o *PatchNetworkRequest) GetName() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Name
+	// Human-readable name of the network.
+	Name *string `json:"name,omitempty"`
 }
 
 func (o *PatchNetworkRequest) GetFirewall() *NetworkFirewallConfig {
@@ -22,4 +15,11 @@ func (o *PatchNetworkRequest) GetFirewall() *NetworkFirewallConfig {
 		return nil
 	}
 	return o.Firewall
+}
+
+func (o *PatchNetworkRequest) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
 }

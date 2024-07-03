@@ -44,12 +44,12 @@ func (e *Rule) UnmarshalJSON(data []byte) error {
 }
 
 type InvalidParameterMinimumLength struct {
-	Field string `json:"field"`
+	Field   string `json:"field"`
+	Minimum int64  `json:"minimum"`
+	Reason  string `json:"reason"`
 	// invalid parameters rules
-	Rule    Rule    `json:"rule"`
-	Minimum int64   `json:"minimum"`
-	Source  *string `json:"source,omitempty"`
-	Reason  string  `json:"reason"`
+	Rule   Rule    `json:"rule"`
+	Source *string `json:"source,omitempty"`
 }
 
 func (o *InvalidParameterMinimumLength) GetField() string {
@@ -59,13 +59,6 @@ func (o *InvalidParameterMinimumLength) GetField() string {
 	return o.Field
 }
 
-func (o *InvalidParameterMinimumLength) GetRule() Rule {
-	if o == nil {
-		return Rule("")
-	}
-	return o.Rule
-}
-
 func (o *InvalidParameterMinimumLength) GetMinimum() int64 {
 	if o == nil {
 		return 0
@@ -73,16 +66,23 @@ func (o *InvalidParameterMinimumLength) GetMinimum() int64 {
 	return o.Minimum
 }
 
-func (o *InvalidParameterMinimumLength) GetSource() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Source
-}
-
 func (o *InvalidParameterMinimumLength) GetReason() string {
 	if o == nil {
 		return ""
 	}
 	return o.Reason
+}
+
+func (o *InvalidParameterMinimumLength) GetRule() Rule {
+	if o == nil {
+		return Rule("")
+	}
+	return o.Rule
+}
+
+func (o *InvalidParameterMinimumLength) GetSource() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Source
 }

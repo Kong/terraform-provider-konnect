@@ -9,12 +9,12 @@ import (
 )
 
 func (r *CloudGatewayCustomDomainResourceModel) ToSharedCreateCustomDomainRequest() *shared.CreateCustomDomainRequest {
-	controlPlaneID := r.ControlPlaneID.ValueString()
 	controlPlaneGeo := shared.ControlPlaneGeo(r.ControlPlaneGeo.ValueString())
+	controlPlaneID := r.ControlPlaneID.ValueString()
 	domain := r.Domain.ValueString()
 	out := shared.CreateCustomDomainRequest{
-		ControlPlaneID:  controlPlaneID,
 		ControlPlaneGeo: controlPlaneGeo,
+		ControlPlaneID:  controlPlaneID,
 		Domain:          domain,
 	}
 	return &out

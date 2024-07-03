@@ -10,6 +10,62 @@ import (
 	"time"
 )
 
+// AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseConfigs - JSON-B object containing the configuration for the OIDC strategy
+type AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseConfigs struct {
+	// A more advanced mode to configure an API Product Version’s Application Auth Strategy.
+	// Using this mode will allow developers to use API credentials issued from an external IdP that will authenticate their application requests.
+	// Once authenticated, an application will be granted access to any Product Version it is registered for that is configured for the same Auth Strategy.
+	// An OIDC strategy may be used in conjunction with a DCR provider to automatically create the IdP application.
+	//
+	OpenidConnect AppAuthStrategyConfigOpenIDConnect `json:"openid-connect"`
+}
+
+func (o *AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseConfigs) GetOpenidConnect() AppAuthStrategyConfigOpenIDConnect {
+	if o == nil {
+		return AppAuthStrategyConfigOpenIDConnect{}
+	}
+	return o.OpenidConnect
+}
+
+type AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseDcrProvider struct {
+	// The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI.
+	//
+	DisplayName *string `json:"display_name,omitempty"`
+	// Contains a unique identifier used for this resource.
+	ID   string `json:"id"`
+	Name string `json:"name"`
+	// The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http
+	ProviderType DcrProviderType `json:"provider_type"`
+}
+
+func (o *AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseDcrProvider) GetDisplayName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DisplayName
+}
+
+func (o *AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseDcrProvider) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseDcrProvider) GetName() string {
+	if o == nil {
+		return ""
+	}
+	return o.Name
+}
+
+func (o *AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseDcrProvider) GetProviderType() DcrProviderType {
+	if o == nil {
+		return DcrProviderType("")
+	}
+	return o.ProviderType
+}
+
 type AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseStrategyType string
 
 const (
@@ -33,80 +89,24 @@ func (e *AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseStrate
 	}
 }
 
-// AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseConfigs - JSON-B object containing the configuration for the OIDC strategy
-type AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseConfigs struct {
-	// A more advanced mode to configure an API Product Version’s Application Auth Strategy.
-	// Using this mode will allow developers to use API credentials issued from an external IdP that will authenticate their application requests.
-	// Once authenticated, an application will be granted access to any Product Version it is registered for that is configured for the same Auth Strategy.
-	// An OIDC strategy may be used in conjunction with a DCR provider to automatically create the IdP application.
-	//
-	OpenidConnect AppAuthStrategyConfigOpenIDConnect `json:"openid-connect"`
-}
-
-func (o *AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseConfigs) GetOpenidConnect() AppAuthStrategyConfigOpenIDConnect {
-	if o == nil {
-		return AppAuthStrategyConfigOpenIDConnect{}
-	}
-	return o.OpenidConnect
-}
-
-type AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseDcrProvider struct {
-	// Contains a unique identifier used for this resource.
-	ID   string `json:"id"`
-	Name string `json:"name"`
-	// The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI.
-	//
-	DisplayName *string `json:"display_name,omitempty"`
-	// The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http
-	ProviderType DcrProviderType `json:"provider_type"`
-}
-
-func (o *AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseDcrProvider) GetID() string {
-	if o == nil {
-		return ""
-	}
-	return o.ID
-}
-
-func (o *AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseDcrProvider) GetName() string {
-	if o == nil {
-		return ""
-	}
-	return o.Name
-}
-
-func (o *AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseDcrProvider) GetDisplayName() *string {
-	if o == nil {
-		return nil
-	}
-	return o.DisplayName
-}
-
-func (o *AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseDcrProvider) GetProviderType() DcrProviderType {
-	if o == nil {
-		return DcrProviderType("")
-	}
-	return o.ProviderType
-}
-
 // AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse - Response payload from creating an OIDC Application Auth Strategy
 type AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse struct {
+	// At least one published product version is using this auth strategy.
+	Active bool `json:"active"`
+	// JSON-B object containing the configuration for the OIDC strategy
+	Configs AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseConfigs `json:"configs"`
+	// An ISO-8601 timestamp representation of entity creation date.
+	CreatedAt   time.Time                                                                     `json:"created_at"`
+	DcrProvider *AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseDcrProvider `json:"dcr_provider"`
+	// The display name of the Auth strategy. This is used to identify the Auth strategy in the Portal UI.
+	//
+	DisplayName string `json:"display_name"`
 	// Contains a unique identifier used for this resource.
 	ID string `json:"id"`
 	// The name of the auth strategy. This is used to identify the auth strategy in the Konnect UI.
 	//
-	Name string `json:"name"`
-	// The display name of the Auth strategy. This is used to identify the Auth strategy in the Portal UI.
-	//
-	DisplayName  string                                                                        `json:"display_name"`
+	Name         string                                                                        `json:"name"`
 	StrategyType AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseStrategyType `json:"strategy_type"`
-	// JSON-B object containing the configuration for the OIDC strategy
-	Configs AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseConfigs `json:"configs"`
-	// At least one published product version is using this auth strategy.
-	Active      bool                                                                          `json:"active"`
-	DcrProvider *AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseDcrProvider `json:"dcr_provider"`
-	// An ISO-8601 timestamp representation of entity creation date.
-	CreatedAt time.Time `json:"created_at"`
 	// An ISO-8601 timestamp representation of entity update date.
 	UpdatedAt time.Time `json:"updated_at"`
 }
@@ -120,6 +120,41 @@ func (a *AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAut
 		return err
 	}
 	return nil
+}
+
+func (o *AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse) GetActive() bool {
+	if o == nil {
+		return false
+	}
+	return o.Active
+}
+
+func (o *AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse) GetConfigs() AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseConfigs {
+	if o == nil {
+		return AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseConfigs{}
+	}
+	return o.Configs
+}
+
+func (o *AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse) GetCreatedAt() time.Time {
+	if o == nil {
+		return time.Time{}
+	}
+	return o.CreatedAt
+}
+
+func (o *AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse) GetDcrProvider() *AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseDcrProvider {
+	if o == nil {
+		return nil
+	}
+	return o.DcrProvider
+}
+
+func (o *AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse) GetDisplayName() string {
+	if o == nil {
+		return ""
+	}
+	return o.DisplayName
 }
 
 func (o *AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse) GetID() string {
@@ -136,13 +171,6 @@ func (o *AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAut
 	return o.Name
 }
 
-func (o *AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse) GetDisplayName() string {
-	if o == nil {
-		return ""
-	}
-	return o.DisplayName
-}
-
 func (o *AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse) GetStrategyType() AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseStrategyType {
 	if o == nil {
 		return AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseStrategyType("")
@@ -150,39 +178,66 @@ func (o *AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAut
 	return o.StrategyType
 }
 
-func (o *AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse) GetConfigs() AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseConfigs {
-	if o == nil {
-		return AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseConfigs{}
-	}
-	return o.Configs
-}
-
-func (o *AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse) GetActive() bool {
-	if o == nil {
-		return false
-	}
-	return o.Active
-}
-
-func (o *AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse) GetDcrProvider() *AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseDcrProvider {
-	if o == nil {
-		return nil
-	}
-	return o.DcrProvider
-}
-
-func (o *AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse) GetCreatedAt() time.Time {
-	if o == nil {
-		return time.Time{}
-	}
-	return o.CreatedAt
-}
-
 func (o *AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse) GetUpdatedAt() time.Time {
 	if o == nil {
 		return time.Time{}
 	}
 	return o.UpdatedAt
+}
+
+// AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseConfigs - JSON-B object containing the configuration for the Key Auth strategy
+type AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseConfigs struct {
+	// The most basic mode to configure an Application Auth Strategy for an API Product Version.
+	// Using this mode will allow developers to generate API keys that will authenticate their application requests.
+	// Once authenticated, an application will be granted access to any Product Version it is registered for that is configured for Key Auth.
+	//
+	KeyAuth AppAuthStrategyConfigKeyAuth `json:"key-auth"`
+}
+
+func (o *AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseConfigs) GetKeyAuth() AppAuthStrategyConfigKeyAuth {
+	if o == nil {
+		return AppAuthStrategyConfigKeyAuth{}
+	}
+	return o.KeyAuth
+}
+
+type AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseDcrProvider struct {
+	// The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI.
+	//
+	DisplayName *string `json:"display_name,omitempty"`
+	// Contains a unique identifier used for this resource.
+	ID   string `json:"id"`
+	Name string `json:"name"`
+	// The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http
+	ProviderType DcrProviderType `json:"provider_type"`
+}
+
+func (o *AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseDcrProvider) GetDisplayName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DisplayName
+}
+
+func (o *AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseDcrProvider) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseDcrProvider) GetName() string {
+	if o == nil {
+		return ""
+	}
+	return o.Name
+}
+
+func (o *AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseDcrProvider) GetProviderType() DcrProviderType {
+	if o == nil {
+		return DcrProviderType("")
+	}
+	return o.ProviderType
 }
 
 type AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseStrategyType string
@@ -208,79 +263,24 @@ func (e *AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseStrategyType
 	}
 }
 
-// AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseConfigs - JSON-B object containing the configuration for the Key Auth strategy
-type AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseConfigs struct {
-	// The most basic mode to configure an Application Auth Strategy for an API Product Version.
-	// Using this mode will allow developers to generate API keys that will authenticate their application requests.
-	// Once authenticated, an application will be granted access to any Product Version it is registered for that is configured for Key Auth.
-	//
-	KeyAuth AppAuthStrategyConfigKeyAuth `json:"key-auth"`
-}
-
-func (o *AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseConfigs) GetKeyAuth() AppAuthStrategyConfigKeyAuth {
-	if o == nil {
-		return AppAuthStrategyConfigKeyAuth{}
-	}
-	return o.KeyAuth
-}
-
-type AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseDcrProvider struct {
-	// Contains a unique identifier used for this resource.
-	ID   string `json:"id"`
-	Name string `json:"name"`
-	// The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI.
-	//
-	DisplayName *string `json:"display_name,omitempty"`
-	// The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http
-	ProviderType DcrProviderType `json:"provider_type"`
-}
-
-func (o *AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseDcrProvider) GetID() string {
-	if o == nil {
-		return ""
-	}
-	return o.ID
-}
-
-func (o *AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseDcrProvider) GetName() string {
-	if o == nil {
-		return ""
-	}
-	return o.Name
-}
-
-func (o *AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseDcrProvider) GetDisplayName() *string {
-	if o == nil {
-		return nil
-	}
-	return o.DisplayName
-}
-
-func (o *AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseDcrProvider) GetProviderType() DcrProviderType {
-	if o == nil {
-		return DcrProviderType("")
-	}
-	return o.ProviderType
-}
-
 // AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseAppAuthStrategyKeyAuthResponse - Response payload from creating or updating a Key Auth Application Auth Strategy
 type AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseAppAuthStrategyKeyAuthResponse struct {
+	// At least one published product version is using this auth strategy.
+	Active bool `json:"active"`
+	// JSON-B object containing the configuration for the Key Auth strategy
+	Configs AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseConfigs `json:"configs"`
+	// An ISO-8601 timestamp representation of entity creation date.
+	CreatedAt   time.Time                                                               `json:"created_at"`
+	DcrProvider *AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseDcrProvider `json:"dcr_provider"`
+	// The display name of the Auth strategy. This is used to identify the Auth strategy in the Portal UI.
+	//
+	DisplayName string `json:"display_name"`
 	// Contains a unique identifier used for this resource.
 	ID string `json:"id"`
 	// The name of the auth strategy. This is used to identify the auth strategy in the Konnect UI.
 	//
-	Name string `json:"name"`
-	// The display name of the Auth strategy. This is used to identify the Auth strategy in the Portal UI.
-	//
-	DisplayName  string                                                                  `json:"display_name"`
+	Name         string                                                                  `json:"name"`
 	StrategyType AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseStrategyType `json:"strategy_type"`
-	// JSON-B object containing the configuration for the Key Auth strategy
-	Configs AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseConfigs `json:"configs"`
-	// At least one published product version is using this auth strategy.
-	Active      bool                                                                    `json:"active"`
-	DcrProvider *AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseDcrProvider `json:"dcr_provider"`
-	// An ISO-8601 timestamp representation of entity creation date.
-	CreatedAt time.Time `json:"created_at"`
 	// An ISO-8601 timestamp representation of entity update date.
 	UpdatedAt time.Time `json:"updated_at"`
 }
@@ -294,6 +294,41 @@ func (a *AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseAppAuthStrat
 		return err
 	}
 	return nil
+}
+
+func (o *AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseAppAuthStrategyKeyAuthResponse) GetActive() bool {
+	if o == nil {
+		return false
+	}
+	return o.Active
+}
+
+func (o *AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseAppAuthStrategyKeyAuthResponse) GetConfigs() AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseConfigs {
+	if o == nil {
+		return AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseConfigs{}
+	}
+	return o.Configs
+}
+
+func (o *AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseAppAuthStrategyKeyAuthResponse) GetCreatedAt() time.Time {
+	if o == nil {
+		return time.Time{}
+	}
+	return o.CreatedAt
+}
+
+func (o *AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseAppAuthStrategyKeyAuthResponse) GetDcrProvider() *AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseDcrProvider {
+	if o == nil {
+		return nil
+	}
+	return o.DcrProvider
+}
+
+func (o *AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseAppAuthStrategyKeyAuthResponse) GetDisplayName() string {
+	if o == nil {
+		return ""
+	}
+	return o.DisplayName
 }
 
 func (o *AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseAppAuthStrategyKeyAuthResponse) GetID() string {
@@ -310,46 +345,11 @@ func (o *AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseAppAuthStrat
 	return o.Name
 }
 
-func (o *AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseAppAuthStrategyKeyAuthResponse) GetDisplayName() string {
-	if o == nil {
-		return ""
-	}
-	return o.DisplayName
-}
-
 func (o *AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseAppAuthStrategyKeyAuthResponse) GetStrategyType() AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseStrategyType {
 	if o == nil {
 		return AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseStrategyType("")
 	}
 	return o.StrategyType
-}
-
-func (o *AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseAppAuthStrategyKeyAuthResponse) GetConfigs() AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseConfigs {
-	if o == nil {
-		return AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseConfigs{}
-	}
-	return o.Configs
-}
-
-func (o *AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseAppAuthStrategyKeyAuthResponse) GetActive() bool {
-	if o == nil {
-		return false
-	}
-	return o.Active
-}
-
-func (o *AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseAppAuthStrategyKeyAuthResponse) GetDcrProvider() *AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseDcrProvider {
-	if o == nil {
-		return nil
-	}
-	return o.DcrProvider
-}
-
-func (o *AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseAppAuthStrategyKeyAuthResponse) GetCreatedAt() time.Time {
-	if o == nil {
-		return time.Time{}
-	}
-	return o.CreatedAt
 }
 
 func (o *AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseAppAuthStrategyKeyAuthResponse) GetUpdatedAt() time.Time {

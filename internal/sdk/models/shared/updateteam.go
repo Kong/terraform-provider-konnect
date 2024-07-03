@@ -3,8 +3,6 @@
 package shared
 
 type UpdateTeam struct {
-	// The name of the team.
-	Name *string `json:"name,omitempty"`
 	// The description of the team.
 	Description *string `json:"description,omitempty"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
@@ -12,13 +10,8 @@ type UpdateTeam struct {
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
 	Labels map[string]string `json:"labels,omitempty"`
-}
-
-func (o *UpdateTeam) GetName() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Name
+	// The name of the team.
+	Name *string `json:"name,omitempty"`
 }
 
 func (o *UpdateTeam) GetDescription() *string {
@@ -33,4 +26,11 @@ func (o *UpdateTeam) GetLabels() map[string]string {
 		return nil
 	}
 	return o.Labels
+}
+
+func (o *UpdateTeam) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
 }

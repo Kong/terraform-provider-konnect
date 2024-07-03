@@ -3,17 +3,10 @@
 package shared
 
 type UpdateSystemAccount struct {
-	// Name of the system account.
-	Name *string `json:"name,omitempty"`
 	// Description of the system account.
 	Description *string `json:"description,omitempty"`
-}
-
-func (o *UpdateSystemAccount) GetName() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Name
+	// Name of the system account.
+	Name *string `json:"name,omitempty"`
 }
 
 func (o *UpdateSystemAccount) GetDescription() *string {
@@ -21,4 +14,11 @@ func (o *UpdateSystemAccount) GetDescription() *string {
 		return nil
 	}
 	return o.Description
+}
+
+func (o *UpdateSystemAccount) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
 }

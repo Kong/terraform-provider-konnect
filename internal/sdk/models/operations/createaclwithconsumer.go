@@ -11,7 +11,7 @@ type CreateACLWithConsumerRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// Consumer ID for nested entities
-	ConsumerIDForNestedEntities string `pathParam:"style=simple,explode=false,name=ConsumerIdForNestedEntities"`
+	ConsumerID string `pathParam:"style=simple,explode=false,name=ConsumerIdForNestedEntities"`
 	// Description of new ACL for creation
 	ACLWithoutParents shared.ACLWithoutParents `request:"mediaType=application/json"`
 }
@@ -23,11 +23,11 @@ func (o *CreateACLWithConsumerRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateACLWithConsumerRequest) GetConsumerIDForNestedEntities() string {
+func (o *CreateACLWithConsumerRequest) GetConsumerID() string {
 	if o == nil {
 		return ""
 	}
-	return o.ConsumerIDForNestedEntities
+	return o.ConsumerID
 }
 
 func (o *CreateACLWithConsumerRequest) GetACLWithoutParents() shared.ACLWithoutParents {

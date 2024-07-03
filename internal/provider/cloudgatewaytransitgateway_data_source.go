@@ -92,8 +92,7 @@ func (r *CloudGatewayTransitGatewayDataSource) Schema(ctx context.Context, req d
 					``,
 			},
 			"id": schema.StringAttribute{
-				Required:    true,
-				Description: `The ID of the transit gateway to operate on.`,
+				Computed: true,
 			},
 			"name": schema.StringAttribute{
 				Computed:    true,

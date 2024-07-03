@@ -70,8 +70,7 @@ func (r *GatewayBasicAuthDataSource) Schema(ctx context.Context, req datasource.
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"id": schema.StringAttribute{
-				Required:    true,
-				Description: `ID of the Basic-auth credential to lookup`,
+				Computed: true,
 			},
 			"tags": schema.ListAttribute{
 				Computed:    true,
@@ -123,12 +122,12 @@ func (r *GatewayBasicAuthDataSource) Read(ctx context.Context, req datasource.Re
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	consumerIDForNestedEntities := data.ConsumerID.ValueString()
+	consumerID := data.ConsumerID.ValueString()
 	basicAuthID := data.ID.ValueString()
 	request := operations.GetBasicAuthWithConsumerRequest{
-		ControlPlaneID:              controlPlaneID,
-		ConsumerIDForNestedEntities: consumerIDForNestedEntities,
-		BasicAuthID:                 basicAuthID,
+		ControlPlaneID: controlPlaneID,
+		ConsumerID:     consumerID,
+		BasicAuthID:    basicAuthID,
 	}
 	res, err := r.client.BasicAuthCredentials.GetBasicAuthWithConsumer(ctx, request)
 	if err != nil {

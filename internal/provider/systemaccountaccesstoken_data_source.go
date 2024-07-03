@@ -61,7 +61,7 @@ func (r *SystemAccountAccessTokenDataSource) Schema(ctx context.Context, req dat
 				Description: `Timestamp of when the system account access token will expire.`,
 			},
 			"id": schema.StringAttribute{
-				Required:    true,
+				Computed:    true,
 				Description: `ID of the system account access token.`,
 			},
 			"last_used_at": schema.StringAttribute{

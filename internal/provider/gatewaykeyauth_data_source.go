@@ -70,8 +70,7 @@ func (r *GatewayKeyAuthDataSource) Schema(ctx context.Context, req datasource.Sc
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"id": schema.StringAttribute{
-				Required:    true,
-				Description: `ID of the API-key to lookup`,
+				Computed: true,
 			},
 			"key": schema.StringAttribute{
 				Computed: true,
@@ -123,12 +122,12 @@ func (r *GatewayKeyAuthDataSource) Read(ctx context.Context, req datasource.Read
 	}
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
-	consumerIDForNestedEntities := data.ConsumerID.ValueString()
+	consumerID := data.ConsumerID.ValueString()
 	keyAuthID := data.ID.ValueString()
 	request := operations.GetKeyAuthWithConsumerRequest{
-		ControlPlaneID:              controlPlaneID,
-		ConsumerIDForNestedEntities: consumerIDForNestedEntities,
-		KeyAuthID:                   keyAuthID,
+		ControlPlaneID: controlPlaneID,
+		ConsumerID:     consumerID,
+		KeyAuthID:      keyAuthID,
 	}
 	res, err := r.client.APIKeys.GetKeyAuthWithConsumer(ctx, request)
 	if err != nil {

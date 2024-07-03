@@ -110,8 +110,7 @@ func (r *CloudGatewayNetworkDataSource) Schema(ctx context.Context, req datasour
 				Description: `Firewall configuration for a network.`,
 			},
 			"id": schema.StringAttribute{
-				Required:    true,
-				Description: `The network to operate on.`,
+				Computed: true,
 			},
 			"name": schema.StringAttribute{
 				Computed:    true,

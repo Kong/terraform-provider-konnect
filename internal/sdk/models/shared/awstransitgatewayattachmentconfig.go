@@ -32,10 +32,10 @@ func (e *AWSTransitGatewayAttachmentType) UnmarshalJSON(data []byte) error {
 
 type AwsTransitGatewayAttachmentConfig struct {
 	Kind AWSTransitGatewayAttachmentType `json:"kind"`
-	// AWS Transit Gateway ID to create attachment to.
-	TransitGatewayID string `json:"transit_gateway_id"`
 	// Resource Share ARN to verify request to create transit gateway attachment.
 	RAMShareArn string `json:"ram_share_arn"`
+	// AWS Transit Gateway ID to create attachment to.
+	TransitGatewayID string `json:"transit_gateway_id"`
 }
 
 func (o *AwsTransitGatewayAttachmentConfig) GetKind() AWSTransitGatewayAttachmentType {
@@ -45,16 +45,16 @@ func (o *AwsTransitGatewayAttachmentConfig) GetKind() AWSTransitGatewayAttachmen
 	return o.Kind
 }
 
-func (o *AwsTransitGatewayAttachmentConfig) GetTransitGatewayID() string {
-	if o == nil {
-		return ""
-	}
-	return o.TransitGatewayID
-}
-
 func (o *AwsTransitGatewayAttachmentConfig) GetRAMShareArn() string {
 	if o == nil {
 		return ""
 	}
 	return o.RAMShareArn
+}
+
+func (o *AwsTransitGatewayAttachmentConfig) GetTransitGatewayID() string {
+	if o == nil {
+		return ""
+	}
+	return o.TransitGatewayID
 }

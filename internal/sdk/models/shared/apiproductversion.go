@@ -10,14 +10,21 @@ import (
 )
 
 type GatewayService struct {
+	// The identifier of the control plane that the gateway service resides in
+	ControlPlaneID string `json:"control_plane_id"`
 	// The identifier of a gateway service associated with the version of the API product.
 	ID *string `json:"id"`
 	// This field is deprecated, please use `control_plane_id` instead. The identifier of the control plane that the gateway service resides in
 	//
 	// Deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
 	RuntimeGroupID *string `json:"runtime_group_id,omitempty"`
-	// The identifier of the control plane that the gateway service resides in
-	ControlPlaneID string `json:"control_plane_id"`
+}
+
+func (o *GatewayService) GetControlPlaneID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ControlPlaneID
 }
 
 func (o *GatewayService) GetID() *string {
@@ -32,13 +39,6 @@ func (o *GatewayService) GetRuntimeGroupID() *string {
 		return nil
 	}
 	return o.RuntimeGroupID
-}
-
-func (o *GatewayService) GetControlPlaneID() string {
-	if o == nil {
-		return ""
-	}
-	return o.ControlPlaneID
 }
 
 // APIProductVersionPublishStatus1 - This field is published if the API product version is published to at least one portal. This field is deprecated: Use [PortalProductVersion.publish_status](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version) instead.
@@ -71,25 +71,25 @@ func (e *APIProductVersionPublishStatus1) UnmarshalJSON(data []byte) error {
 }
 
 type APIProductVersion struct {
+	// The set of errors encountered when trying to sync the auth strategies on the version
+	AuthStrategySyncErrors []AuthStrategySyncError `json:"auth_strategy_sync_errors,omitempty"`
+	// An ISO-8601 timestamp representation of entity creation date.
+	CreatedAt time.Time `json:"created_at"`
+	// Whether this API product version is deprecated in at least one portal. This field is deprecated: Use [PortalProductVersion.deprecated](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version) instead
+	//
+	// Deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
+	Deprecated     bool            `json:"deprecated"`
+	GatewayService *GatewayService `json:"gateway_service"`
 	// The API product version identifier.
 	ID string `json:"id"`
 	// The version of the API product
-	Name           string          `json:"name"`
-	GatewayService *GatewayService `json:"gateway_service"`
+	Name string `json:"name"`
+	// The list of portals which this API product version is configured for
+	Portals []APIProductVersionPortal `json:"portals"`
 	// This field is published if the API product version is published to at least one portal. This field is deprecated: Use [PortalProductVersion.publish_status](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version) instead.
 	//
 	// Deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
 	PublishStatus APIProductVersionPublishStatus1 `json:"publish_status"`
-	// Whether this API product version is deprecated in at least one portal. This field is deprecated: Use [PortalProductVersion.deprecated](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version) instead
-	//
-	// Deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
-	Deprecated bool `json:"deprecated"`
-	// The set of errors encountered when trying to sync the auth strategies on the version
-	AuthStrategySyncErrors []AuthStrategySyncError `json:"auth_strategy_sync_errors,omitempty"`
-	// The list of portals which this API product version is configured for
-	Portals []APIProductVersionPortal `json:"portals"`
-	// An ISO-8601 timestamp representation of entity creation date.
-	CreatedAt time.Time `json:"created_at"`
 	// An ISO-8601 timestamp representation of entity update date.
 	UpdatedAt time.Time `json:"updated_at"`
 }
@@ -103,6 +103,34 @@ func (a *APIProductVersion) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (o *APIProductVersion) GetAuthStrategySyncErrors() []AuthStrategySyncError {
+	if o == nil {
+		return nil
+	}
+	return o.AuthStrategySyncErrors
+}
+
+func (o *APIProductVersion) GetCreatedAt() time.Time {
+	if o == nil {
+		return time.Time{}
+	}
+	return o.CreatedAt
+}
+
+func (o *APIProductVersion) GetDeprecated() bool {
+	if o == nil {
+		return false
+	}
+	return o.Deprecated
+}
+
+func (o *APIProductVersion) GetGatewayService() *GatewayService {
+	if o == nil {
+		return nil
+	}
+	return o.GatewayService
 }
 
 func (o *APIProductVersion) GetID() string {
@@ -119,34 +147,6 @@ func (o *APIProductVersion) GetName() string {
 	return o.Name
 }
 
-func (o *APIProductVersion) GetGatewayService() *GatewayService {
-	if o == nil {
-		return nil
-	}
-	return o.GatewayService
-}
-
-func (o *APIProductVersion) GetPublishStatus() APIProductVersionPublishStatus1 {
-	if o == nil {
-		return APIProductVersionPublishStatus1("")
-	}
-	return o.PublishStatus
-}
-
-func (o *APIProductVersion) GetDeprecated() bool {
-	if o == nil {
-		return false
-	}
-	return o.Deprecated
-}
-
-func (o *APIProductVersion) GetAuthStrategySyncErrors() []AuthStrategySyncError {
-	if o == nil {
-		return nil
-	}
-	return o.AuthStrategySyncErrors
-}
-
 func (o *APIProductVersion) GetPortals() []APIProductVersionPortal {
 	if o == nil {
 		return []APIProductVersionPortal{}
@@ -154,11 +154,11 @@ func (o *APIProductVersion) GetPortals() []APIProductVersionPortal {
 	return o.Portals
 }
 
-func (o *APIProductVersion) GetCreatedAt() time.Time {
+func (o *APIProductVersion) GetPublishStatus() APIProductVersionPublishStatus1 {
 	if o == nil {
-		return time.Time{}
+		return APIProductVersionPublishStatus1("")
 	}
-	return o.CreatedAt
+	return o.PublishStatus
 }
 
 func (o *APIProductVersion) GetUpdatedAt() time.Time {

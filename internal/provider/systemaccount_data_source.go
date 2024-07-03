@@ -56,7 +56,7 @@ func (r *SystemAccountDataSource) Schema(ctx context.Context, req datasource.Sch
 				Description: `Description of the system account.`,
 			},
 			"id": schema.StringAttribute{
-				Required:    true,
+				Computed:    true,
 				Description: `ID of the system account.`,
 			},
 			"konnect_managed": schema.BoolAttribute{

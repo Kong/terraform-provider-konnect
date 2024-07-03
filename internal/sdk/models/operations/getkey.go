@@ -8,17 +8,10 @@ import (
 )
 
 type GetKeyRequest struct {
-	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// ID of the Key to lookup
 	KeyID string `pathParam:"style=simple,explode=false,name=KeyId"`
-}
-
-func (o *GetKeyRequest) GetControlPlaneID() string {
-	if o == nil {
-		return ""
-	}
-	return o.ControlPlaneID
+	// The UUID of your control plane. This variable is available in the Konnect manager.
+	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
 func (o *GetKeyRequest) GetKeyID() string {
@@ -26,6 +19,13 @@ func (o *GetKeyRequest) GetKeyID() string {
 		return ""
 	}
 	return o.KeyID
+}
+
+func (o *GetKeyRequest) GetControlPlaneID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ControlPlaneID
 }
 
 type GetKeyResponse struct {
