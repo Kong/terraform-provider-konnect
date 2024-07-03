@@ -64,6 +64,82 @@ resource "konnect_gateway_basic_auth" "my_basicauth" {
   control_plane_id = konnect_gateway_control_plane.tfdemo.id
 }
 
+# And a consumer group + membership
+resource "konnect_gateway_consumer_group" "gold" {
+  name             = "gold"
+  control_plane_id = konnect_gateway_control_plane.tfdemo.id
+}
+
+resource "konnect_gateway_consumer_group_member" "ag" {
+  consumer_id       = konnect_gateway_consumer.alice.id
+  consumer_group_id = konnect_gateway_consumer_group.gold.id
+  control_plane_id  = konnect_gateway_control_plane.tfdemo.id
+}
+
+# A plugin on every entity type
+resource "konnect_gateway_plugin_rate_limiting" "global_rl" {
+  enabled = true
+  config = {
+    minute = 100
+    policy = "local"
+  }
+
+  control_plane_id = konnect_gateway_control_plane.tfdemo.id
+}
+
+resource "konnect_gateway_plugin_rate_limiting" "service_rl" {
+  enabled = true
+  config = {
+    minute = 1
+    policy = "local"
+  }
+
+  control_plane_id = konnect_gateway_control_plane.tfdemo.id
+  service = {
+    id = konnect_gateway_service.httpbin.id
+  }
+}
+
+resource "konnect_gateway_plugin_rate_limiting" "route_rl" {
+  enabled = true
+  config = {
+    minute = 2
+    policy = "local"
+  }
+
+  control_plane_id = konnect_gateway_control_plane.tfdemo.id
+  route = {
+    id = konnect_gateway_route.hello.id
+  }
+}
+
+resource "konnect_gateway_plugin_rate_limiting" "consumer_rl" {
+  enabled = true
+  config = {
+    minute = 3
+    policy = "local"
+  }
+
+  control_plane_id = konnect_gateway_control_plane.tfdemo.id
+  consumer = {
+    id = konnect_gateway_consumer.alice.id
+  }
+}
+
+resource "konnect_gateway_plugin_rate_limiting" "consumer_group_rl" {
+  enabled = true
+  config = {
+    minute = 4
+    policy = "local"
+  }
+
+  control_plane_id = konnect_gateway_control_plane.tfdemo.id
+  consumer_group = {
+    id = konnect_gateway_consumer_group.gold.id
+  }
+}
+
+# A custom plugin schema
 resource "konnect_gateway_custom_plugin_schema" "foo" {
   lua_schema = <<EOF
 return {
