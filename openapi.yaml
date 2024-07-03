@@ -1068,6 +1068,7 @@ paths:
         - CA Certificates
   /v2/control-planes/{controlPlaneId}/core-entities/ca_certificates/{CACertificateId}:
     parameters:
+      - $ref: '#/components/parameters/CACertificateId'
       - $ref: '#/components/parameters/ControlPlaneId'
     get:
       x-speakeasy-entity-operation: GatewayCACertificate#read
@@ -1087,8 +1088,29 @@ paths:
           description: Resource does not exist
       tags:
         - CA Certificates
-      parameters:
-        - $ref: '#/components/parameters/CACertificateId'
+    put:
+      x-speakeasy-entity-operation: GatewayCACertificate#update
+      operationId: upsert-ca_certificate
+      summary: Upsert a CA Certificate
+      description: Create or Update CA Certificate using ID.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CACertificate'
+        description: Description of the CA Certificate
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CACertificate'
+          description: Successfully upserted CA Certificate
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - CA Certificates
     delete:
       x-speakeasy-entity-operation: GatewayCACertificate#delete
       operationId: delete-ca_certificate
@@ -1131,6 +1153,7 @@ paths:
         - Certificates
   /v2/control-planes/{controlPlaneId}/core-entities/certificates/{CertificateId}:
     parameters:
+      - $ref: '#/components/parameters/CertificateId'
       - $ref: '#/components/parameters/ControlPlaneId'
     get:
       x-speakeasy-entity-operation: GatewayCertificate#read
@@ -1150,8 +1173,29 @@ paths:
           description: Resource does not exist
       tags:
         - Certificates
-      parameters:
-        - $ref: '#/components/parameters/CertificateId'
+    put:
+      x-speakeasy-entity-operation: GatewayCertificate#update
+      operationId: upsert-certificate
+      summary: Upsert a Certificate
+      description: Create or Update Certificate using ID.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Certificate'
+        description: Description of the Certificate
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Certificate'
+          description: Successfully upserted Certificate
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Certificates
     delete:
       x-speakeasy-entity-operation: GatewayCertificate#delete
       operationId: delete-certificate
@@ -1194,6 +1238,7 @@ paths:
         - Consumer Groups
   /v2/control-planes/{controlPlaneId}/core-entities/consumer_groups/{ConsumerGroupId}:
     parameters:
+      - $ref: '#/components/parameters/ConsumerGroupId'
       - $ref: '#/components/parameters/ControlPlaneId'
     get:
       x-speakeasy-entity-operation: GatewayConsumerGroup#read
@@ -1205,7 +1250,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ConsumerGroup'
+                $ref: '#/components/schemas/ConsumerGroupInsideWrapper'
           description: Successfully fetched Consumer Group
         '401':
           $ref: '#/components/responses/HTTP401Error'
@@ -1213,8 +1258,29 @@ paths:
           description: Resource does not exist
       tags:
         - Consumer Groups
-      parameters:
-        - $ref: '#/components/parameters/ConsumerGroupId'
+    put:
+      x-speakeasy-entity-operation: GatewayConsumerGroup#update
+      operationId: upsert-consumer_group
+      summary: Upsert a Consumer Group
+      description: Create or Update Consumer Group using ID.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConsumerGroup'
+        description: Description of the Consumer Group
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsumerGroup'
+          description: Successfully upserted Consumer Group
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Consumer Groups
     delete:
       x-speakeasy-entity-operation: GatewayConsumerGroup#delete
       operationId: delete-consumer_group
@@ -1229,6 +1295,49 @@ paths:
         - Consumer Groups
       parameters:
         - $ref: '#/components/parameters/ConsumerGroupId'
+  /v2/control-planes/{controlPlaneId}/core-entities/consumer_groups/{ConsumerGroupId}/consumers:
+    parameters:
+      - $ref: '#/components/parameters/ConsumerGroupIdManageConsumers'
+      - $ref: '#/components/parameters/ControlPlaneId'
+    post:
+      x-speakeasy-entity-operation: GatewayConsumerGroupMember#create
+      operationId: add-consumer-to-group
+      summary: Add consumer to consumer group
+      description: Add a consumer to a consumer group
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                consumer:
+                  example: cf4c7e60-11db-49dd-b300-7c7e5f0f7e6b
+                  type: string
+                  x-speakeasy-name-override: consumer_id
+              type: object
+      responses:
+        '201':
+          description: Consumer added to group
+      tags:
+        - Consumer Groups
+  /v2/control-planes/{controlPlaneId}/core-entities/consumer_groups/{ConsumerGroupId}/consumers/{ConsumerId}:
+    parameters:
+      - $ref: '#/components/parameters/ConsumerGroupIdManageConsumers'
+      - in: path
+        name: ConsumerId
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/ControlPlaneId'
+    delete:
+      x-speakeasy-entity-operation: GatewayConsumerGroupMember#delete
+      operationId: remove-consumer-from-group
+      summary: Remove consumer from consumer group
+      description: Remove a consumer from a consumer group
+      responses:
+        '204':
+          description: Consumer removed from group
+      tags:
+        - Consumer Groups
   /v2/control-planes/{controlPlaneId}/core-entities/consumers:
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
@@ -1257,6 +1366,7 @@ paths:
         - Consumers
   /v2/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerId}:
     parameters:
+      - $ref: '#/components/parameters/ConsumerId'
       - $ref: '#/components/parameters/ControlPlaneId'
     get:
       x-speakeasy-entity-operation: GatewayConsumer#read
@@ -1276,8 +1386,29 @@ paths:
           description: Resource does not exist
       tags:
         - Consumers
-      parameters:
-        - $ref: '#/components/parameters/ConsumerId'
+    put:
+      x-speakeasy-entity-operation: GatewayConsumer#update
+      operationId: upsert-consumer
+      summary: Upsert a Consumer
+      description: Create or Update Consumer using ID or username.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Consumer'
+        description: Description of the Consumer
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Consumer'
+          description: Successfully upserted Consumer
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Consumers
     delete:
       x-speakeasy-entity-operation: GatewayConsumer#delete
       operationId: delete-consumer
@@ -1629,6 +1760,7 @@ paths:
         - KeySets
   /v2/control-planes/{controlPlaneId}/core-entities/key-sets/{KeySetId}:
     parameters:
+      - $ref: '#/components/parameters/KeySetId'
       - $ref: '#/components/parameters/ControlPlaneId'
     get:
       x-speakeasy-entity-operation: GatewayKeySet#read
@@ -1648,8 +1780,29 @@ paths:
           description: Resource does not exist
       tags:
         - KeySets
-      parameters:
-        - $ref: '#/components/parameters/KeySetId'
+    put:
+      x-speakeasy-entity-operation: GatewayKeySet#update
+      operationId: upsert-key-set
+      summary: Upsert a KeySet
+      description: Create or Update KeySet using ID or name.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KeySet'
+        description: Description of the KeySet
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KeySet'
+          description: Successfully upserted KeySet
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - KeySets
     delete:
       x-speakeasy-entity-operation: GatewayKeySet#delete
       operationId: delete-key-set
@@ -1692,6 +1845,7 @@ paths:
         - Keys
   /v2/control-planes/{controlPlaneId}/core-entities/keys/{KeyId}:
     parameters:
+      - $ref: '#/components/parameters/KeyId'
       - $ref: '#/components/parameters/ControlPlaneId'
     get:
       x-speakeasy-entity-operation: GatewayKey#read
@@ -1711,8 +1865,29 @@ paths:
           description: Resource does not exist
       tags:
         - Keys
-      parameters:
-        - $ref: '#/components/parameters/KeyId'
+    put:
+      x-speakeasy-entity-operation: GatewayKey#update
+      operationId: upsert-key
+      summary: Upsert a Key
+      description: Create or Update Key using ID or name.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Key'
+        description: Description of the Key
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Key'
+          description: Successfully upserted Key
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Keys
     delete:
       x-speakeasy-entity-operation: GatewayKey#delete
       operationId: delete-key
@@ -1838,6 +2013,7 @@ paths:
         - Plugins
   /v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}:
     parameters:
+      - $ref: '#/components/parameters/PluginId'
       - $ref: '#/components/parameters/ControlPlaneId'
     get:
       x-speakeasy-entity-operation: GatewayPlugin#read
@@ -1857,8 +2033,29 @@ paths:
           description: Resource does not exist
       tags:
         - Plugins
-      parameters:
-        - $ref: '#/components/parameters/PluginId'
+    put:
+      x-speakeasy-entity-operation: GatewayPlugin#update
+      operationId: upsert-plugin
+      summary: Upsert a Plugin
+      description: Create or Update Plugin using ID.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Plugin'
+        description: Description of the Plugin
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Plugin'
+          description: Successfully upserted Plugin
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Plugins
     delete:
       x-speakeasy-entity-operation: GatewayPlugin#delete
       operationId: delete-plugin
@@ -4271,6 +4468,7 @@ paths:
         - Routes
   /v2/control-planes/{controlPlaneId}/core-entities/routes/{RouteId}:
     parameters:
+      - $ref: '#/components/parameters/RouteId'
       - $ref: '#/components/parameters/ControlPlaneId'
     get:
       x-speakeasy-entity-operation: GatewayRoute#read
@@ -4290,8 +4488,29 @@ paths:
           description: Resource does not exist
       tags:
         - Routes
-      parameters:
-        - $ref: '#/components/parameters/RouteId'
+    put:
+      x-speakeasy-entity-operation: GatewayRoute#update
+      operationId: upsert-route
+      summary: Upsert a Route
+      description: Create or Update Route using ID or name.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Route'
+        description: Description of the Route
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Route'
+          description: Successfully upserted Route
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Routes
     delete:
       x-speakeasy-entity-operation: GatewayRoute#delete
       operationId: delete-route
@@ -4334,6 +4553,7 @@ paths:
         - Services
   /v2/control-planes/{controlPlaneId}/core-entities/services/{ServiceId}:
     parameters:
+      - $ref: '#/components/parameters/ServiceId'
       - $ref: '#/components/parameters/ControlPlaneId'
     get:
       x-speakeasy-entity-operation: GatewayService#read
@@ -4353,8 +4573,29 @@ paths:
           description: Resource does not exist
       tags:
         - Services
-      parameters:
-        - $ref: '#/components/parameters/ServiceId'
+    put:
+      x-speakeasy-entity-operation: GatewayService#update
+      operationId: upsert-service
+      summary: Upsert a Service
+      description: Create or Update Service using ID or name.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Service'
+        description: Description of the Service
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+          description: Successfully upserted Service
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Services
     delete:
       x-speakeasy-entity-operation: GatewayService#delete
       operationId: delete-service
@@ -4397,6 +4638,7 @@ paths:
         - SNIs
   /v2/control-planes/{controlPlaneId}/core-entities/snis/{SNIId}:
     parameters:
+      - $ref: '#/components/parameters/SNIId'
       - $ref: '#/components/parameters/ControlPlaneId'
     get:
       x-speakeasy-entity-operation: GatewaySNI#read
@@ -4416,8 +4658,29 @@ paths:
           description: Resource does not exist
       tags:
         - SNIs
-      parameters:
-        - $ref: '#/components/parameters/SNIId'
+    put:
+      x-speakeasy-entity-operation: GatewaySNI#update
+      operationId: upsert-sni
+      summary: Upsert a SNI
+      description: Create or Update SNI using ID or name.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SNI'
+        description: Description of the SNI
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SNI'
+          description: Successfully upserted SNI
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - SNIs
     delete:
       x-speakeasy-entity-operation: GatewaySNI#delete
       operationId: delete-sni
@@ -4460,6 +4723,7 @@ paths:
         - Upstreams
   /v2/control-planes/{controlPlaneId}/core-entities/upstreams/{UpstreamId}:
     parameters:
+      - $ref: '#/components/parameters/UpstreamId'
       - $ref: '#/components/parameters/ControlPlaneId'
     get:
       x-speakeasy-entity-operation: GatewayUpstream#read
@@ -4479,8 +4743,29 @@ paths:
           description: Resource does not exist
       tags:
         - Upstreams
-      parameters:
-        - $ref: '#/components/parameters/UpstreamId'
+    put:
+      x-speakeasy-entity-operation: GatewayUpstream#update
+      operationId: upsert-upstream
+      summary: Upsert a Upstream
+      description: Create or Update Upstream using ID or name.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Upstream'
+        description: Description of the Upstream
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Upstream'
+          description: Successfully upserted Upstream
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Upstreams
     delete:
       x-speakeasy-entity-operation: GatewayUpstream#delete
       operationId: delete-upstream
@@ -4584,6 +4869,7 @@ paths:
         - Vaults
   /v2/control-planes/{controlPlaneId}/core-entities/vaults/{VaultId}:
     parameters:
+      - $ref: '#/components/parameters/VaultId'
       - $ref: '#/components/parameters/ControlPlaneId'
     get:
       x-speakeasy-entity-operation: GatewayVault#read
@@ -4603,8 +4889,29 @@ paths:
           description: Resource does not exist
       tags:
         - Vaults
-      parameters:
-        - $ref: '#/components/parameters/VaultId'
+    put:
+      x-speakeasy-entity-operation: GatewayVault#update
+      operationId: upsert-vault
+      summary: Upsert a Vault
+      description: Create or Update Vault using ID or prefix.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Vault'
+        description: Description of the Vault
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vault'
+          description: Successfully upserted Vault
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Vaults
     delete:
       x-speakeasy-entity-operation: GatewayVault#delete
       operationId: delete-vault
@@ -5611,6 +5918,13 @@ components:
       schema:
         type: string
       x-speakeasy-match: id
+    ConsumerGroupIdManageConsumers:
+      in: path
+      name: ConsumerGroupId
+      required: true
+      schema:
+        type: string
+      x-speakeasy-name-override: consumer_group_id
     ConsumerId:
       description: ID of the Consumer to lookup
       example: c1059869-6fa7-4329-a5f5-5946d14ca2c5
@@ -8522,6 +8836,11 @@ components:
           type: integer
       type: object
       x-speakeasy-entity: GatewayConsumerGroup
+    ConsumerGroupInsideWrapper:
+      properties:
+        consumer_group:
+          $ref: '#/components/schemas/ConsumerGroup'
+      type: object
     ControlPlane:
       allOf:
         - $ref: '#/components/schemas/ControlPlaneSummary'

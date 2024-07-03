@@ -4,7 +4,10 @@
 > Released on 2024/06/??
 
 ### Features
-* Add support for the `konnect_serverless_cloud_gateway` and `konnect_gateway_plugin_exit_transformer` resources
+* Add support for the `konnect_serverless_cloud_gateway`, `konnect_gateway_plugin_exit_transformer`, `konnect_gateway_consumer_group` and `konnect_gateway_consumer_group_member` resources
+
+### Bug Fixes
+* `konnect_gateway_*` resources are now updated in place rather than any change causing the entity to be recreated
 
 ## 0.4.0
 > Released on 2024/06/24
