@@ -10612,6 +10612,12 @@ components:
       description: >-
         This flag disables all the event-hooks on the application flow for the
         DCR provider.
+    DcrConfigPropertyDisableRefreshSecret:
+      title: DcrConfigPropertyDisableRefreshSecret
+      type: boolean
+      description: >-
+        This flag disable the refresh-secret endpoint on the application flow
+        for the DCR provider.
     DcrConfigAuth0InResponse:
       title: DcrConfigAuth0InResponse
       type: object
@@ -10761,6 +10767,8 @@ components:
           format: url
         disable_event_hooks:
           $ref: '#/components/schemas/DcrConfigPropertyDisableEventHooks'
+        disable_refresh_secret:
+          $ref: '#/components/schemas/DcrConfigPropertyDisableRefreshSecret'
     CreateDcrConfigHttpInRequest:
       title: CreateDcrConfigHttpInRequest
       type: object
@@ -10776,6 +10784,8 @@ components:
           $ref: '#/components/schemas/DcrConfigPropertyApiKey'
         disable_event_hooks:
           $ref: '#/components/schemas/DcrConfigPropertyDisableEventHooks'
+        disable_refresh_secret:
+          $ref: '#/components/schemas/DcrConfigPropertyDisableRefreshSecret'
     UpdateDcrConfigHttpInRequest:
       title: CreateDcrConfigHttpInRequest
       type: object
@@ -10788,6 +10798,8 @@ components:
           $ref: '#/components/schemas/DcrConfigPropertyApiKey'
         disable_event_hooks:
           $ref: '#/components/schemas/DcrConfigPropertyDisableEventHooks'
+        disable_refresh_secret:
+          $ref: '#/components/schemas/DcrConfigPropertyDisableRefreshSecret'
     DcrProviderType:
       title: DcrProviderType
       type: string
