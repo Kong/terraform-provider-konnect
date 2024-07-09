@@ -51,6 +51,7 @@ jobs:
           configFile: ".github/raise-pr-on-change.json"
           prBranch: automated-update
           targetBranch: main
-          # !Important: PR title **must** use conventional commit format for auto-versioning in downstream apps
           prTitle: "feat(sdk): automated oas update"
           prBody: "Generated OAS files from platform-api."
+          # !Important: Use conventional commit format for auto-versioning in downstream repos
+          commitMessage: "feat(sdk): automated oas update"
