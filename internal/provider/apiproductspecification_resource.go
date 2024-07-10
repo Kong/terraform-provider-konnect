@@ -16,6 +16,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/internal/validators"
+	custom_stringvalidators "github.com/kong/terraform-provider-konnect/internal/validators/stringvalidators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -76,6 +77,9 @@ func (r *APIProductSpecificationResource) Schema(ctx context.Context, req resour
 			"name": schema.StringAttribute{
 				Required:    true,
 				Description: `The name of the API product version specification`,
+				Validators: []validator.String{
+					custom_stringvalidators.OpenAPISpecFilenameValidator(),
+				},
 			},
 			"updated_at": schema.StringAttribute{
 				Computed:    true,

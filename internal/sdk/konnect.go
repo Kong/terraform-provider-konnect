@@ -8,17 +8,16 @@ import (
 	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/hooks"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/retry"
 	"net/http"
 	"time"
 )
 
 // ServerList contains the list of servers available to the SDK
 var ServerList = []string{
+	"https://global.api.konghq.com",
 	"https://us.api.konghq.com",
 	"https://eu.api.konghq.com",
 	"https://au.api.konghq.com",
-	"https://global.api.konghq.com",
 }
 
 // HTTPClient provides an interface for suplying the SDK with a custom HTTP client
@@ -54,7 +53,7 @@ type sdkConfiguration struct {
 	SDKVersion        string
 	GenVersion        string
 	UserAgent         string
-	RetryConfig       *retry.Config
+	RetryConfig       *utils.RetryConfig
 	Hooks             *hooks.Hooks
 }
 
@@ -73,6 +72,7 @@ type Konnect struct {
 	ServerlessCloudGateways        *ServerlessCloudGateways
 	Mesh                           *Mesh
 	APIProducts                    *APIProducts
+	APIProductDocumentation        *APIProductDocumentation
 	APIProductVersions             *APIProductVersions
 	APIProductVersionSpecification *APIProductVersionSpecification
 	// Application Auth Strategies are sets of plugin configurations that represent how the gateway will perform authentication and authorization for a Product Version.
@@ -256,7 +256,7 @@ func WithSecuritySource(security func(context.Context) (shared.Security, error))
 	}
 }
 
-func WithRetryConfig(retryConfig retry.Config) SDKOption {
+func WithRetryConfig(retryConfig utils.RetryConfig) SDKOption {
 	return func(sdk *Konnect) {
 		sdk.sdkConfiguration.RetryConfig = &retryConfig
 	}
@@ -269,8 +269,8 @@ func New(opts ...SDKOption) *Konnect {
 			Language:          "go",
 			OpenAPIDocVersion: "2.0.0",
 			SDKVersion:        "0.0.1",
-			GenVersion:        "2.359.0",
-			UserAgent:         "speakeasy-sdk/go 0.0.1 2.359.0 2.0.0 github.com/kong/terraform-provider-konnect/internal/sdk",
+			GenVersion:        "2.352.0",
+			UserAgent:         "speakeasy-sdk/go 0.0.1 2.352.0 2.0.0 github.com/kong/terraform-provider-konnect/internal/sdk",
 			Hooks:             hooks.New(),
 		},
 	}
@@ -295,6 +295,8 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.Mesh = newMesh(sdk.sdkConfiguration)
 
 	sdk.APIProducts = newAPIProducts(sdk.sdkConfiguration)
+
+	sdk.APIProductDocumentation = newAPIProductDocumentation(sdk.sdkConfiguration)
 
 	sdk.APIProductVersions = newAPIProductVersions(sdk.sdkConfiguration)
 

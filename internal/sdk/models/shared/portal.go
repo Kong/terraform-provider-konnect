@@ -34,6 +34,11 @@ type Portal struct {
 	ID string `json:"id"`
 	// Whether the portal catalog can be accessed publicly without any developer authentication. Developer accounts and applications cannot be created if the portal is public.
 	IsPublic bool `json:"is_public"`
+	// description: A maximum of 50 user-defined labels are allowed on this resource.
+	// Keys must not start with kong, konnect, insomnia, mesh, kic or _, which are reserved for Kong.
+	// Keys are case-sensitive.
+	//
+	Labels map[string]string `json:"labels,omitempty"`
 	// The name of the portal, used to distinguish it from other portals. Name must be unique.
 	Name string `json:"name"`
 	// Number of api products published to the portal
@@ -144,6 +149,13 @@ func (o *Portal) GetIsPublic() bool {
 		return false
 	}
 	return o.IsPublic
+}
+
+func (o *Portal) GetLabels() map[string]string {
+	if o == nil {
+		return nil
+	}
+	return o.Labels
 }
 
 func (o *Portal) GetName() string {

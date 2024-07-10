@@ -12,7 +12,6 @@ import (
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/errors"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/retry"
 	"io"
 	"net/http"
 	"net/url"
@@ -560,9 +559,9 @@ func (s *Networks) DeleteNetwork(ctx context.Context, request operations.DeleteN
 	retryConfig := o.Retries
 	if retryConfig == nil {
 		if globalRetryConfig == nil {
-			retryConfig = &retry.Config{
+			retryConfig = &utils.RetryConfig{
 				Strategy: "backoff",
-				Backoff: &retry.BackoffStrategy{
+				Backoff: &utils.BackoffStrategy{
 					InitialInterval: 10000,
 					MaxInterval:     60000,
 					Exponent:        1.5,

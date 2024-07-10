@@ -5,7 +5,6 @@ package operations
 import (
 	"errors"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/utils"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/retry"
 )
 
 var ErrUnsupportedOption = errors.New("unsupported option")
@@ -30,7 +29,7 @@ func (e AcceptHeaderEnum) ToPointer() *AcceptHeaderEnum {
 
 type Options struct {
 	ServerURL            *string
-	Retries              *retry.Config
+	Retries              *utils.RetryConfig
 	AcceptHeaderOverride *AcceptHeaderEnum
 }
 
@@ -65,7 +64,7 @@ func WithTemplatedServerURL(serverURL string, params map[string]string) Option {
 }
 
 // WithRetries allows customizing the default retry configuration.
-func WithRetries(config retry.Config) Option {
+func WithRetries(config utils.RetryConfig) Option {
 	return func(opts *Options, supportedOptions ...string) error {
 		if !utils.Contains(supportedOptions, SupportedOptionRetries) {
 			return ErrUnsupportedOption

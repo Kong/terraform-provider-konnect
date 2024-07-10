@@ -151,7 +151,7 @@ func (r *GatewayPluginPreFunctionResourceModel) RefreshFromSharedPreFunctionPlug
 		if resp.Config == nil {
 			r.Config = nil
 		} else {
-			r.Config = &tfTypes.CreatePreFunctionPluginConfig{}
+			r.Config = &tfTypes.CreatePostFunctionPluginConfig{}
 			r.Config.Access = []types.String{}
 			for _, v := range resp.Config.Access {
 				r.Config.Access = append(r.Config.Access, types.StringValue(v))

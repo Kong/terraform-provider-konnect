@@ -7,20 +7,20 @@ import (
 	"fmt"
 )
 
-// PublishStatus - The publish status of the API product version. Applies publish status to all related portal product versions. This field is deprecated: Use [PortalProductVersion.publish_status](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version) instead.
+// CreateAPIProductVersionDTOPublishStatus - The publish status of the API product version. Applies publish status to all related portal product versions. This field is deprecated: Use [PortalProductVersion.publish_status](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version) instead.
 //
 // Deprecated type: This will be removed in a future release, please migrate away from it as soon as possible.
-type PublishStatus string
+type CreateAPIProductVersionDTOPublishStatus string
 
 const (
-	PublishStatusUnpublished PublishStatus = "unpublished"
-	PublishStatusPublished   PublishStatus = "published"
+	CreateAPIProductVersionDTOPublishStatusUnpublished CreateAPIProductVersionDTOPublishStatus = "unpublished"
+	CreateAPIProductVersionDTOPublishStatusPublished   CreateAPIProductVersionDTOPublishStatus = "published"
 )
 
-func (e PublishStatus) ToPointer() *PublishStatus {
+func (e CreateAPIProductVersionDTOPublishStatus) ToPointer() *CreateAPIProductVersionDTOPublishStatus {
 	return &e
 }
-func (e *PublishStatus) UnmarshalJSON(data []byte) error {
+func (e *CreateAPIProductVersionDTOPublishStatus) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -29,10 +29,10 @@ func (e *PublishStatus) UnmarshalJSON(data []byte) error {
 	case "unpublished":
 		fallthrough
 	case "published":
-		*e = PublishStatus(v)
+		*e = CreateAPIProductVersionDTOPublishStatus(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for PublishStatus: %v", v)
+		return fmt.Errorf("invalid value for CreateAPIProductVersionDTOPublishStatus: %v", v)
 	}
 }
 
@@ -49,7 +49,7 @@ type CreateAPIProductVersionDTO struct {
 	// The publish status of the API product version. Applies publish status to all related portal product versions. This field is deprecated: Use [PortalProductVersion.publish_status](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version) instead.
 	//
 	// Deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
-	PublishStatus *PublishStatus `json:"publish_status,omitempty"`
+	PublishStatus *CreateAPIProductVersionDTOPublishStatus `json:"publish_status,omitempty"`
 }
 
 func (o *CreateAPIProductVersionDTO) GetDeprecated() *bool {
@@ -73,7 +73,7 @@ func (o *CreateAPIProductVersionDTO) GetName() string {
 	return o.Name
 }
 
-func (o *CreateAPIProductVersionDTO) GetPublishStatus() *PublishStatus {
+func (o *CreateAPIProductVersionDTO) GetPublishStatus() *CreateAPIProductVersionDTOPublishStatus {
 	if o == nil {
 		return nil
 	}
