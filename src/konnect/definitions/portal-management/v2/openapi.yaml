@@ -93,8 +93,6 @@ paths:
           $ref: >-
             ../../../../common/definitions/errors.yaml#/components/responses/Forbidden
     post:
-      x-unstable: true
-      x-internal: true
       summary: Create Portal
       description: >-
         Creates a new developer portal scoped in this region for this organization.
@@ -208,8 +206,6 @@ paths:
           $ref: >-
             ../../../../common/definitions/errors.yaml#/components/responses/Conflict
     delete:
-      x-unstable: true
-      x-internal: true
       summary: Delete Portal
       description: >-
         Deletes a single portal, along with all related entities. Will not allow deletion if there are developers registered to portal or
@@ -256,8 +252,6 @@ paths:
       - $ref: >-
           ../../../../common/definitions/portal.yaml#/components/parameters/PortalId
     post:
-      x-internal: true
-      x-unstable: true
       summary: Publish Multiples Products
       operationId: publish-api-products
       description: >-
@@ -6796,8 +6790,6 @@ components:
         - custom
       example: mint_rocket
     PortalsLabels:
-      x-unstable: true
-      x-internal: true
       title: Labels
       type: object
       description: >
@@ -6815,8 +6807,6 @@ components:
         maxLength: 63
       default: {}
     PortalsLabelsNullable:
-      x-unstable: true
-      x-internal: true
       nullable: true
       title: Labels
       type: object
