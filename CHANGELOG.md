@@ -1,5 +1,12 @@
 # Changelog
 
+
+## 0.6.0
+> Released on 2024/07/??
+
+### Features
+* Add support for the  `konnect_api_product_document`, `konnect_gateway_plugin_pre_function`, `konnect_gateway_plugin_post_function` and `konnect_gateway_plugin_statsd` resources
+
 ## 0.5.1
 > Released on 2024/07/03
 
