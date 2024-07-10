@@ -5447,7 +5447,14 @@ paths:
         - Portals
   /v2/portals/{portalId}:
     parameters:
-      - $ref: '#/components/parameters/parameters-PortalId'
+      - description: ID of the portal.
+        in: path
+        name: portalId
+        required: true
+        schema:
+          format: uuid
+          type: string
+        x-speakeasy-match: id
     patch:
       x-speakeasy-entity-operation: Portal#update
       operationId: update-portal
@@ -10027,6 +10034,7 @@ components:
       required:
         - name
       type: object
+      x-speakeasy-entity: Portal
     CreatePortalResponse:
       $ref: '#/components/schemas/Portal'
     CreatePostFunctionPlugin:
@@ -17450,6 +17458,7 @@ components:
             specific products.
           type: boolean
       type: object
+      x-speakeasy-entity: Portal
     UpdatePortalResponse:
       $ref: '#/components/schemas/Portal'
     Upstream:
