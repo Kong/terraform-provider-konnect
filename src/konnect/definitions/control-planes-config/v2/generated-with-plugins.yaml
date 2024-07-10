@@ -45,6 +45,13 @@ components:
             schema:
                 type: string
             x-speakeasy-match: id
+        ConsumerGroupIdManageConsumers:
+            in: path
+            name: ConsumerGroupId
+            required: true
+            schema:
+                type: string
+            x-speakeasy-name-override: consumer_group_id
         ConsumerId:
             description: ID of the Consumer to lookup
             example: c1059869-6fa7-4329-a5f5-5946d14ca2c5
@@ -910,6 +917,11 @@ components:
                     type: integer
             type: object
             x-speakeasy-entity: GatewayConsumerGroup
+        ConsumerGroupInsideWrapper:
+            properties:
+                consumer_group:
+                    $ref: '#/components/schemas/ConsumerGroup'
+            type: object
         CorrelationIdPlugin:
             allOf:
                 - $ref: '#/components/schemas/Plugin'
@@ -984,6 +996,11 @@ components:
                 - $ref: '#/components/schemas/Plugin'
                 - $ref: '#/components/schemas/CorrelationIdPluginConfig'
             x-speakeasy-entity: GatewayPluginCorrelationId
+        CreateExitTransformerPlugin:
+            allOf:
+                - $ref: '#/components/schemas/Plugin'
+                - $ref: '#/components/schemas/ExitTransformerPluginConfig'
+            x-speakeasy-entity: GatewayPluginExitTransformer
         CreateFileLogPlugin:
             allOf:
                 - $ref: '#/components/schemas/Plugin'
@@ -1029,6 +1046,11 @@ components:
                 - $ref: '#/components/schemas/Plugin'
                 - $ref: '#/components/schemas/OpentelemetryPluginConfig'
             x-speakeasy-entity: GatewayPluginOpentelemetry
+        CreatePostFunctionPlugin:
+            allOf:
+                - $ref: '#/components/schemas/Plugin'
+                - $ref: '#/components/schemas/PostFunctionPluginConfig'
+            x-speakeasy-entity: GatewayPluginPostFunction
         CreatePreFunctionPlugin:
             allOf:
                 - $ref: '#/components/schemas/Plugin'
@@ -1084,6 +1106,36 @@ components:
                 - $ref: '#/components/schemas/Plugin'
                 - $ref: '#/components/schemas/SamlPluginConfig'
             x-speakeasy-entity: GatewayPluginSaml
+        CreateStatsdPlugin:
+            allOf:
+                - $ref: '#/components/schemas/Plugin'
+                - $ref: '#/components/schemas/StatsdPluginConfig'
+            x-speakeasy-entity: GatewayPluginStatsd
+        ExitTransformerPlugin:
+            allOf:
+                - $ref: '#/components/schemas/Plugin'
+                - $ref: '#/components/schemas/ExitTransformerPluginConfig'
+            x-speakeasy-entity: GatewayPluginExitTransformer
+        ExitTransformerPluginConfig:
+            properties:
+                config:
+                    properties:
+                        functions:
+                            items:
+                                type: string
+                            type: array
+                        handle_unexpected:
+                            default: false
+                            description: Determines whether to handle unexpected errors by transforming their responses.
+                            type: boolean
+                        handle_unknown:
+                            default: false
+                            description: Determines whether to handle unknown status codes by transforming their responses.
+                            type: boolean
+                    type: object
+                name:
+                    const: exit-transformer
+                    type: string
         FileLogPlugin:
             allOf:
                 - $ref: '#/components/schemas/Plugin'
@@ -3591,6 +3643,69 @@ components:
                     readOnly: true
                     type: integer
             type: object
+        PostFunctionPlugin:
+            allOf:
+                - $ref: '#/components/schemas/Plugin'
+                - $ref: '#/components/schemas/PostFunctionPluginConfig'
+            x-speakeasy-entity: GatewayPluginPostFunction
+        PostFunctionPluginConfig:
+            properties:
+                config:
+                    properties:
+                        access:
+                            default: []
+                            items:
+                                type: string
+                            type: array
+                        body_filter:
+                            default: []
+                            items:
+                                type: string
+                            type: array
+                        certificate:
+                            default: []
+                            items:
+                                type: string
+                            type: array
+                        header_filter:
+                            default: []
+                            items:
+                                type: string
+                            type: array
+                        log:
+                            default: []
+                            items:
+                                type: string
+                            type: array
+                        rewrite:
+                            default: []
+                            items:
+                                type: string
+                            type: array
+                        ws_client_frame:
+                            default: []
+                            items:
+                                type: string
+                            type: array
+                        ws_close:
+                            default: []
+                            items:
+                                type: string
+                            type: array
+                        ws_handshake:
+                            default: []
+                            items:
+                                type: string
+                            type: array
+                        ws_upstream_frame:
+                            default: []
+                            items:
+                                type: string
+                            type: array
+                    type: object
+                name:
+                    const: post-function
+                    type: string
         PreFunctionPlugin:
             allOf:
                 - $ref: '#/components/schemas/Plugin'
@@ -5277,6 +5392,187 @@ components:
                     type: integer
             type: object
             x-speakeasy-entity: GatewayService
+        StatsdPlugin:
+            allOf:
+                - $ref: '#/components/schemas/Plugin'
+                - $ref: '#/components/schemas/StatsdPluginConfig'
+            x-speakeasy-entity: GatewayPluginStatsd
+        StatsdPluginConfig:
+            properties:
+                config:
+                    properties:
+                        allow_status_codes:
+                            description: List of status code ranges that are allowed to be logged in metrics.
+                            items:
+                                pattern: ^[0-9]+-[0-9]+$
+                                type: string
+                            type: array
+                        consumer_identifier_default:
+                            default: custom_id
+                            enum:
+                                - consumer_id
+                                - custom_id
+                                - username
+                            type: string
+                        flush_timeout:
+                            type: number
+                        host:
+                            default: localhost
+                            description: The IP address or hostname of StatsD server to send data to.
+                            type: string
+                        hostname_in_prefix:
+                            default: false
+                            type: boolean
+                        metrics:
+                            description: List of metrics to be logged.
+                            items:
+                                properties:
+                                    consumer_identifier:
+                                        description: Authenticated user detail.
+                                        enum:
+                                            - consumer_id
+                                            - custom_id
+                                            - username
+                                        type: string
+                                    name:
+                                        description: StatsD metric’s name.
+                                        enum:
+                                            - kong_latency
+                                            - latency
+                                            - request_count
+                                            - request_per_user
+                                            - request_size
+                                            - response_size
+                                            - status_count
+                                            - status_count_per_user
+                                            - unique_users
+                                            - upstream_latency
+                                            - status_count_per_workspace
+                                            - status_count_per_user_per_route
+                                            - shdict_usage
+                                            - cache_datastore_hits_total
+                                            - cache_datastore_misses_total
+                                        type: string
+                                    sample_rate:
+                                        description: Sampling rate
+                                        minimum: 0
+                                        type: number
+                                    service_identifier:
+                                        description: Service detail.
+                                        enum:
+                                            - service_id
+                                            - service_name
+                                            - service_host
+                                            - service_name_or_host
+                                        type: string
+                                    stat_type:
+                                        description: Determines what sort of event a metric represents.
+                                        enum:
+                                            - counter
+                                            - gauge
+                                            - histogram
+                                            - meter
+                                            - set
+                                            - timer
+                                        type: string
+                                    workspace_identifier:
+                                        description: Workspace detail.
+                                        enum:
+                                            - workspace_id
+                                            - workspace_name
+                                        type: string
+                                required:
+                                    - name
+                                    - stat_type
+                                type: object
+                            type: array
+                        port:
+                            default: 8125
+                            description: The port of StatsD server to send data to.
+                            maximum: 65535
+                            minimum: 0
+                            type: integer
+                        prefix:
+                            default: kong
+                            description: String to prefix to each metric's name.
+                            type: string
+                        queue:
+                            properties:
+                                initial_retry_delay:
+                                    default: 0.01
+                                    description: Time in seconds before the initial retry is made for a failing batch.
+                                    maximum: 1e+06
+                                    minimum: 0.001
+                                    type: number
+                                max_batch_size:
+                                    default: 1
+                                    description: Maximum number of entries that can be processed at a time.
+                                    maximum: 1e+06
+                                    minimum: 1
+                                    type: integer
+                                max_bytes:
+                                    description: Maximum number of bytes that can be waiting on a queue, requires string content.
+                                    type: integer
+                                max_coalescing_delay:
+                                    default: 1
+                                    description: Maximum number of (fractional) seconds to elapse after the first entry was queued before the queue starts calling the handler.
+                                    maximum: 3600
+                                    minimum: 0
+                                    type: number
+                                max_entries:
+                                    default: 10000
+                                    description: Maximum number of entries that can be waiting on the queue.
+                                    maximum: 1e+06
+                                    minimum: 1
+                                    type: integer
+                                max_retry_delay:
+                                    default: 60
+                                    description: Maximum time in seconds between retries, caps exponential backoff.
+                                    maximum: 1e+06
+                                    minimum: 0.001
+                                    type: number
+                                max_retry_time:
+                                    default: 60
+                                    description: Time in seconds before the queue gives up calling a failed handler for a batch.
+                                    type: number
+                            type: object
+                        queue_size:
+                            type: integer
+                        retry_count:
+                            type: integer
+                        service_identifier_default:
+                            default: service_name_or_host
+                            enum:
+                                - service_id
+                                - service_name
+                                - service_host
+                                - service_name_or_host
+                            type: string
+                        tag_style:
+                            enum:
+                                - dogstatsd
+                                - influxdb
+                                - librato
+                                - signalfx
+                            type: string
+                        udp_packet_size:
+                            default: 0
+                            maximum: 65507
+                            minimum: 0
+                            type: number
+                        use_tcp:
+                            default: false
+                            type: boolean
+                        workspace_identifier_default:
+                            default: workspace_id
+                            enum:
+                                - workspace_id
+                                - workspace_name
+                            type: string
+                    type: object
+                name:
+                    const: statsd
+                    type: string
         Target:
             allOf:
                 - $ref: '#/components/schemas/TargetWithoutParents'
@@ -5749,8 +6045,6 @@ paths:
         get:
             description: Get a CA Certificate using ID.
             operationId: get-ca_certificate
-            parameters:
-                - $ref: '#/components/parameters/CACertificateId'
             responses:
                 "200":
                     content:
@@ -5767,12 +6061,11 @@ paths:
                 - CA Certificates
             x-speakeasy-entity-operation: GatewayCACertificate#read
         parameters:
+            - $ref: '#/components/parameters/CACertificateId'
             - $ref: '#/components/parameters/ControlPlaneId'
         put:
             description: Create or Update CA Certificate using ID.
             operationId: upsert-ca_certificate
-            parameters:
-                - $ref: '#/components/parameters/CACertificateId'
             requestBody:
                 content:
                     application/json:
@@ -5792,6 +6085,7 @@ paths:
             summary: Upsert a CA Certificate
             tags:
                 - CA Certificates
+            x-speakeasy-entity-operation: GatewayCACertificate#update
     /control-planes/{controlPlaneId}/core-entities/certificates:
         get:
             description: List all Certificates
@@ -5862,8 +6156,6 @@ paths:
         get:
             description: Get a Certificate using ID.
             operationId: get-certificate
-            parameters:
-                - $ref: '#/components/parameters/CertificateId'
             responses:
                 "200":
                     content:
@@ -5880,12 +6172,11 @@ paths:
                 - Certificates
             x-speakeasy-entity-operation: GatewayCertificate#read
         parameters:
+            - $ref: '#/components/parameters/CertificateId'
             - $ref: '#/components/parameters/ControlPlaneId'
         put:
             description: Create or Update Certificate using ID.
             operationId: upsert-certificate
-            parameters:
-                - $ref: '#/components/parameters/CertificateId'
             requestBody:
                 content:
                     application/json:
@@ -5905,6 +6196,7 @@ paths:
             summary: Upsert a Certificate
             tags:
                 - Certificates
+            x-speakeasy-entity-operation: GatewayCertificate#update
     /control-planes/{controlPlaneId}/core-entities/certificates/{CertificateId}/snis:
         get:
             description: List all SNIs associated with a a Certificate
@@ -6081,14 +6373,12 @@ paths:
         get:
             description: Get a Consumer Group using ID.
             operationId: get-consumer_group
-            parameters:
-                - $ref: '#/components/parameters/ConsumerGroupId'
             responses:
                 "200":
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/ConsumerGroup'
+                                $ref: '#/components/schemas/ConsumerGroupInsideWrapper'
                     description: Successfully fetched Consumer Group
                 "401":
                     $ref: '#/components/responses/HTTP401Error'
@@ -6099,12 +6389,11 @@ paths:
                 - Consumer Groups
             x-speakeasy-entity-operation: GatewayConsumerGroup#read
         parameters:
+            - $ref: '#/components/parameters/ConsumerGroupId'
             - $ref: '#/components/parameters/ControlPlaneId'
         put:
             description: Create or Update Consumer Group using ID.
             operationId: upsert-consumer_group
-            parameters:
-                - $ref: '#/components/parameters/ConsumerGroupId'
             requestBody:
                 content:
                     application/json:
@@ -6124,9 +6413,10 @@ paths:
             summary: Upsert a Consumer Group
             tags:
                 - Consumer Groups
+            x-speakeasy-entity-operation: GatewayConsumerGroup#update
     /control-planes/{controlPlaneId}/core-entities/consumer_groups/{ConsumerGroupId}/consumers:
         parameters:
-            - $ref: '#/components/parameters/ConsumerGroupId'
+            - $ref: '#/components/parameters/ConsumerGroupIdManageConsumers'
             - $ref: '#/components/parameters/ControlPlaneId'
         post:
             description: Add a consumer to a consumer group
@@ -6137,8 +6427,9 @@ paths:
                         schema:
                             properties:
                                 consumer:
-                                    example: bob
+                                    example: cf4c7e60-11db-49dd-b300-7c7e5f0f7e6b
                                     type: string
+                                    x-speakeasy-name-override: consumer_id
                             type: object
             responses:
                 "201":
@@ -6146,15 +6437,37 @@ paths:
                         application/json:
                             schema:
                                 properties:
-                                    consumer:
-                                        $ref: '#/components/schemas/Consumer'
                                     consumer_group:
                                         $ref: '#/components/schemas/ConsumerGroup'
+                                    consumers:
+                                        items:
+                                            $ref: '#/components/schemas/Consumer'
+                                        type: array
                                 type: object
-                    description: Consumer Added
+                    description: Consumer added to group
             summary: Add consumer to consumer group
             tags:
                 - Consumer Groups
+            x-speakeasy-entity-operation: GatewayConsumerGroupMember#create
+    /control-planes/{controlPlaneId}/core-entities/consumer_groups/{ConsumerGroupId}/consumers/{ConsumerId}:
+        delete:
+            description: Remove a consumer from a consumer group
+            operationId: remove-consumer-from-group
+            responses:
+                "204":
+                    description: Consumer removed from group
+            summary: Remove consumer from consumer group
+            tags:
+                - Consumer Groups
+            x-speakeasy-entity-operation: GatewayConsumerGroupMember#delete
+        parameters:
+            - $ref: '#/components/parameters/ConsumerGroupIdManageConsumers'
+            - in: path
+              name: ConsumerId
+              required: true
+              schema:
+                type: string
+            - $ref: '#/components/parameters/ControlPlaneId'
     /control-planes/{controlPlaneId}/core-entities/consumers:
         get:
             description: List all Consumers
@@ -6225,8 +6538,6 @@ paths:
         get:
             description: Get a Consumer using ID or username.
             operationId: get-consumer
-            parameters:
-                - $ref: '#/components/parameters/ConsumerId'
             responses:
                 "200":
                     content:
@@ -6243,12 +6554,11 @@ paths:
                 - Consumers
             x-speakeasy-entity-operation: GatewayConsumer#read
         parameters:
+            - $ref: '#/components/parameters/ConsumerId'
             - $ref: '#/components/parameters/ControlPlaneId'
         put:
             description: Create or Update Consumer using ID or username.
             operationId: upsert-consumer
-            parameters:
-                - $ref: '#/components/parameters/ConsumerId'
             requestBody:
                 content:
                     application/json:
@@ -6268,6 +6578,7 @@ paths:
             summary: Upsert a Consumer
             tags:
                 - Consumers
+            x-speakeasy-entity-operation: GatewayConsumer#update
     /control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/acls:
         get:
             description: List all ACLs associated with a a Consumer
@@ -6970,8 +7281,6 @@ paths:
         get:
             description: Get a KeySet using ID or name.
             operationId: get-key-set
-            parameters:
-                - $ref: '#/components/parameters/KeySetId'
             responses:
                 "200":
                     content:
@@ -6988,12 +7297,11 @@ paths:
                 - KeySets
             x-speakeasy-entity-operation: GatewayKeySet#read
         parameters:
+            - $ref: '#/components/parameters/KeySetId'
             - $ref: '#/components/parameters/ControlPlaneId'
         put:
             description: Create or Update KeySet using ID or name.
             operationId: upsert-key-set
-            parameters:
-                - $ref: '#/components/parameters/KeySetId'
             requestBody:
                 content:
                     application/json:
@@ -7013,6 +7321,7 @@ paths:
             summary: Upsert a KeySet
             tags:
                 - KeySets
+            x-speakeasy-entity-operation: GatewayKeySet#update
     /control-planes/{controlPlaneId}/core-entities/keys:
         get:
             description: List all Keys
@@ -7083,8 +7392,6 @@ paths:
         get:
             description: Get a Key using ID or name.
             operationId: get-key
-            parameters:
-                - $ref: '#/components/parameters/KeyId'
             responses:
                 "200":
                     content:
@@ -7101,12 +7408,11 @@ paths:
                 - Keys
             x-speakeasy-entity-operation: GatewayKey#read
         parameters:
+            - $ref: '#/components/parameters/KeyId'
             - $ref: '#/components/parameters/ControlPlaneId'
         put:
             description: Create or Update Key using ID or name.
             operationId: upsert-key
-            parameters:
-                - $ref: '#/components/parameters/KeyId'
             requestBody:
                 content:
                     application/json:
@@ -7126,6 +7432,7 @@ paths:
             summary: Upsert a Key
             tags:
                 - Keys
+            x-speakeasy-entity-operation: GatewayKey#update
     /control-planes/{controlPlaneId}/core-entities/plugins:
         get:
             description: List all Plugins
@@ -7177,6 +7484,7 @@ paths:
             summary: Create a new Plugin
             tags:
                 - Plugins
+            x-speakeasy-entity-operation: GatewayPlugin#create
     /control-planes/{controlPlaneId}/core-entities/plugins#ACL:
         parameters:
             - $ref: '#/components/parameters/ControlPlaneId'
@@ -7393,6 +7701,30 @@ paths:
             tags:
                 - Plugins
             x-speakeasy-entity-operation: GatewayPluginCorrelationId#create
+    /control-planes/{controlPlaneId}/core-entities/plugins#ExitTransformer:
+        parameters:
+            - $ref: '#/components/parameters/ControlPlaneId'
+        post:
+            description: Create a ExitTransformer plugin
+            operationId: create-exittransformer-plugin
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateExitTransformerPlugin'
+            responses:
+                "201":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExitTransformerPlugin'
+                    description: Created ExitTransformer plugin
+                "401":
+                    $ref: '#/components/responses/HTTP401Error'
+            summary: Create a ExitTransformer plugin
+            tags:
+                - Plugins
+            x-speakeasy-entity-operation: GatewayPluginExitTransformer#create
     /control-planes/{controlPlaneId}/core-entities/plugins#FileLog:
         parameters:
             - $ref: '#/components/parameters/ControlPlaneId'
@@ -7609,6 +7941,30 @@ paths:
             tags:
                 - Plugins
             x-speakeasy-entity-operation: GatewayPluginOpentelemetry#create
+    /control-planes/{controlPlaneId}/core-entities/plugins#PostFunction:
+        parameters:
+            - $ref: '#/components/parameters/ControlPlaneId'
+        post:
+            description: Create a PostFunction plugin
+            operationId: create-postfunction-plugin
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreatePostFunctionPlugin'
+            responses:
+                "201":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/PostFunctionPlugin'
+                    description: Created PostFunction plugin
+                "401":
+                    $ref: '#/components/responses/HTTP401Error'
+            summary: Create a PostFunction plugin
+            tags:
+                - Plugins
+            x-speakeasy-entity-operation: GatewayPluginPostFunction#create
     /control-planes/{controlPlaneId}/core-entities/plugins#PreFunction:
         parameters:
             - $ref: '#/components/parameters/ControlPlaneId'
@@ -7873,6 +8229,30 @@ paths:
             tags:
                 - Plugins
             x-speakeasy-entity-operation: GatewayPluginSaml#create
+    /control-planes/{controlPlaneId}/core-entities/plugins#Statsd:
+        parameters:
+            - $ref: '#/components/parameters/ControlPlaneId'
+        post:
+            description: Create a Statsd plugin
+            operationId: create-statsd-plugin
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateStatsdPlugin'
+            responses:
+                "201":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/StatsdPlugin'
+                    description: Created Statsd plugin
+                "401":
+                    $ref: '#/components/responses/HTTP401Error'
+            summary: Create a Statsd plugin
+            tags:
+                - Plugins
+            x-speakeasy-entity-operation: GatewayPluginStatsd#create
     /control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}:
         delete:
             description: Delete a Plugin
@@ -7887,11 +8267,10 @@ paths:
             summary: Delete a Plugin
             tags:
                 - Plugins
+            x-speakeasy-entity-operation: GatewayPlugin#delete
         get:
             description: Get a Plugin using ID.
             operationId: get-plugin
-            parameters:
-                - $ref: '#/components/parameters/PluginId'
             responses:
                 "200":
                     content:
@@ -7906,13 +8285,13 @@ paths:
             summary: Fetch a Plugin
             tags:
                 - Plugins
+            x-speakeasy-entity-operation: GatewayPlugin#read
         parameters:
+            - $ref: '#/components/parameters/PluginId'
             - $ref: '#/components/parameters/ControlPlaneId'
         put:
             description: Create or Update Plugin using ID.
             operationId: upsert-plugin
-            parameters:
-                - $ref: '#/components/parameters/PluginId'
             requestBody:
                 content:
                     application/json:
@@ -7932,6 +8311,7 @@ paths:
             summary: Upsert a Plugin
             tags:
                 - Plugins
+            x-speakeasy-entity-operation: GatewayPlugin#update
     /control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#ACL:
         delete:
             description: Delete a ACL plugin
@@ -8427,6 +8807,61 @@ paths:
             tags:
                 - Plugins
             x-speakeasy-entity-operation: GatewayPluginCorrelationId#update
+    /control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#ExitTransformer:
+        delete:
+            description: Delete a ExitTransformer plugin
+            operationId: delete-exittransformer-plugin
+            responses:
+                "204":
+                    description: Successfully deleted Plugin or the resource didn't exist
+                "401":
+                    $ref: '#/components/responses/HTTP401Error'
+            summary: Delete a ExitTransformer plugin
+            tags:
+                - Plugins
+            x-speakeasy-entity-operation: GatewayPluginExitTransformer#delete
+        get:
+            description: Get a ExitTransformer plugin
+            operationId: get-exittransformer-plugin
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExitTransformerPlugin'
+                    description: ExitTransformer plugin
+                "401":
+                    $ref: '#/components/responses/HTTP401Error'
+                "404":
+                    description: Resource does not exist
+            summary: Get a ExitTransformer plugin
+            tags:
+                - Plugins
+            x-speakeasy-entity-operation: GatewayPluginExitTransformer#read
+        parameters:
+            - $ref: '#/components/parameters/PluginId'
+            - $ref: '#/components/parameters/ControlPlaneId'
+        put:
+            description: Update a ExitTransformer plugin
+            operationId: update-exittransformer-plugin
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateExitTransformerPlugin'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExitTransformerPlugin'
+                    description: ExitTransformer plugin
+                "401":
+                    $ref: '#/components/responses/HTTP401Error'
+            summary: Update a ExitTransformer plugin
+            tags:
+                - Plugins
+            x-speakeasy-entity-operation: GatewayPluginExitTransformer#update
     /control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#FileLog:
         delete:
             description: Delete a FileLog plugin
@@ -8922,6 +9357,61 @@ paths:
             tags:
                 - Plugins
             x-speakeasy-entity-operation: GatewayPluginOpentelemetry#update
+    /control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#PostFunction:
+        delete:
+            description: Delete a PostFunction plugin
+            operationId: delete-postfunction-plugin
+            responses:
+                "204":
+                    description: Successfully deleted Plugin or the resource didn't exist
+                "401":
+                    $ref: '#/components/responses/HTTP401Error'
+            summary: Delete a PostFunction plugin
+            tags:
+                - Plugins
+            x-speakeasy-entity-operation: GatewayPluginPostFunction#delete
+        get:
+            description: Get a PostFunction plugin
+            operationId: get-postfunction-plugin
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/PostFunctionPlugin'
+                    description: PostFunction plugin
+                "401":
+                    $ref: '#/components/responses/HTTP401Error'
+                "404":
+                    description: Resource does not exist
+            summary: Get a PostFunction plugin
+            tags:
+                - Plugins
+            x-speakeasy-entity-operation: GatewayPluginPostFunction#read
+        parameters:
+            - $ref: '#/components/parameters/PluginId'
+            - $ref: '#/components/parameters/ControlPlaneId'
+        put:
+            description: Update a PostFunction plugin
+            operationId: update-postfunction-plugin
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreatePostFunctionPlugin'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/PostFunctionPlugin'
+                    description: PostFunction plugin
+                "401":
+                    $ref: '#/components/responses/HTTP401Error'
+            summary: Update a PostFunction plugin
+            tags:
+                - Plugins
+            x-speakeasy-entity-operation: GatewayPluginPostFunction#update
     /control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#PreFunction:
         delete:
             description: Delete a PreFunction plugin
@@ -9527,6 +10017,61 @@ paths:
             tags:
                 - Plugins
             x-speakeasy-entity-operation: GatewayPluginSaml#update
+    /control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#Statsd:
+        delete:
+            description: Delete a Statsd plugin
+            operationId: delete-statsd-plugin
+            responses:
+                "204":
+                    description: Successfully deleted Plugin or the resource didn't exist
+                "401":
+                    $ref: '#/components/responses/HTTP401Error'
+            summary: Delete a Statsd plugin
+            tags:
+                - Plugins
+            x-speakeasy-entity-operation: GatewayPluginStatsd#delete
+        get:
+            description: Get a Statsd plugin
+            operationId: get-statsd-plugin
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/StatsdPlugin'
+                    description: Statsd plugin
+                "401":
+                    $ref: '#/components/responses/HTTP401Error'
+                "404":
+                    description: Resource does not exist
+            summary: Get a Statsd plugin
+            tags:
+                - Plugins
+            x-speakeasy-entity-operation: GatewayPluginStatsd#read
+        parameters:
+            - $ref: '#/components/parameters/PluginId'
+            - $ref: '#/components/parameters/ControlPlaneId'
+        put:
+            description: Update a Statsd plugin
+            operationId: update-statsd-plugin
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateStatsdPlugin'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/StatsdPlugin'
+                    description: Statsd plugin
+                "401":
+                    $ref: '#/components/responses/HTTP401Error'
+            summary: Update a Statsd plugin
+            tags:
+                - Plugins
+            x-speakeasy-entity-operation: GatewayPluginStatsd#update
     /control-planes/{controlPlaneId}/core-entities/routes:
         get:
             description: List all Routes
@@ -9597,8 +10142,6 @@ paths:
         get:
             description: Get a Route using ID or name.
             operationId: get-route
-            parameters:
-                - $ref: '#/components/parameters/RouteId'
             responses:
                 "200":
                     content:
@@ -9615,12 +10158,11 @@ paths:
                 - Routes
             x-speakeasy-entity-operation: GatewayRoute#read
         parameters:
+            - $ref: '#/components/parameters/RouteId'
             - $ref: '#/components/parameters/ControlPlaneId'
         put:
             description: Create or Update Route using ID or name.
             operationId: upsert-route
-            parameters:
-                - $ref: '#/components/parameters/RouteId'
             requestBody:
                 content:
                     application/json:
@@ -9640,6 +10182,7 @@ paths:
             summary: Upsert a Route
             tags:
                 - Routes
+            x-speakeasy-entity-operation: GatewayRoute#update
     /control-planes/{controlPlaneId}/core-entities/routes/{RouteId}/plugins:
         get:
             description: List all Plugins associated with a a Route
@@ -9844,8 +10387,6 @@ paths:
         get:
             description: Get a Service using ID or name.
             operationId: get-service
-            parameters:
-                - $ref: '#/components/parameters/ServiceId'
             responses:
                 "200":
                     content:
@@ -9862,12 +10403,11 @@ paths:
                 - Services
             x-speakeasy-entity-operation: GatewayService#read
         parameters:
+            - $ref: '#/components/parameters/ServiceId'
             - $ref: '#/components/parameters/ControlPlaneId'
         put:
             description: Create or Update Service using ID or name.
             operationId: upsert-service
-            parameters:
-                - $ref: '#/components/parameters/ServiceId'
             requestBody:
                 content:
                     application/json:
@@ -9887,6 +10427,7 @@ paths:
             summary: Upsert a Service
             tags:
                 - Services
+            x-speakeasy-entity-operation: GatewayService#update
     /control-planes/{controlPlaneId}/core-entities/services/{ServiceId}/plugins:
         get:
             description: List all Plugins associated with a a Service
@@ -10169,8 +10710,6 @@ paths:
         get:
             description: Get an SNI using ID or name.
             operationId: get-sni
-            parameters:
-                - $ref: '#/components/parameters/SNIId'
             responses:
                 "200":
                     content:
@@ -10187,12 +10726,11 @@ paths:
                 - SNIs
             x-speakeasy-entity-operation: GatewaySNI#read
         parameters:
+            - $ref: '#/components/parameters/SNIId'
             - $ref: '#/components/parameters/ControlPlaneId'
         put:
             description: Create or Update SNI using ID or name.
             operationId: upsert-sni
-            parameters:
-                - $ref: '#/components/parameters/SNIId'
             requestBody:
                 content:
                     application/json:
@@ -10212,6 +10750,7 @@ paths:
             summary: Upsert a SNI
             tags:
                 - SNIs
+            x-speakeasy-entity-operation: GatewaySNI#update
     /control-planes/{controlPlaneId}/core-entities/upstreams:
         get:
             description: List all Upstreams
@@ -10282,8 +10821,6 @@ paths:
         get:
             description: Get an Upstream using ID or name.
             operationId: get-upstream
-            parameters:
-                - $ref: '#/components/parameters/UpstreamId'
             responses:
                 "200":
                     content:
@@ -10300,12 +10837,11 @@ paths:
                 - Upstreams
             x-speakeasy-entity-operation: GatewayUpstream#read
         parameters:
+            - $ref: '#/components/parameters/UpstreamId'
             - $ref: '#/components/parameters/ControlPlaneId'
         put:
             description: Create or Update Upstream using ID or name.
             operationId: upsert-upstream
-            parameters:
-                - $ref: '#/components/parameters/UpstreamId'
             requestBody:
                 content:
                     application/json:
@@ -10325,6 +10861,7 @@ paths:
             summary: Upsert a Upstream
             tags:
                 - Upstreams
+            x-speakeasy-entity-operation: GatewayUpstream#update
     /control-planes/{controlPlaneId}/core-entities/upstreams/{UpstreamIdForTarget}/targets:
         get:
             description: List all Targets associated with a an Upstream
@@ -10504,8 +11041,6 @@ paths:
         get:
             description: Get a Vault using ID or prefix.
             operationId: get-vault
-            parameters:
-                - $ref: '#/components/parameters/VaultId'
             responses:
                 "200":
                     content:
@@ -10522,12 +11057,11 @@ paths:
                 - Vaults
             x-speakeasy-entity-operation: GatewayVault#read
         parameters:
+            - $ref: '#/components/parameters/VaultId'
             - $ref: '#/components/parameters/ControlPlaneId'
         put:
             description: Create or Update Vault using ID or prefix.
             operationId: upsert-vault
-            parameters:
-                - $ref: '#/components/parameters/VaultId'
             requestBody:
                 content:
                     application/json:
@@ -10547,6 +11081,7 @@ paths:
             summary: Upsert a Vault
             tags:
                 - Vaults
+            x-speakeasy-entity-operation: GatewayVault#update
 security:
     - konnectAccessToken: []
     - personalAccessToken: []

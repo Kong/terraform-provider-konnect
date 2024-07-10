@@ -25,22 +25,18 @@ module.exports = async function (product) {
 
   for (const f of toUpdate) {
     let oas = yaml.load(await fs.readFile(f));
-
-    const u = url.parse(oas.servers[0].url);
-    const server = `${u.protocol}//${u.hostname}/`;
-
-    oas = addServerBlockToEveryEndpoint(oas, product, server);
+    oas = removePerOperationServerBlock(oas);
     await fs.writeFile(f, yaml.dump(oas, {noRefs: true}));
   }
 
   return ({
-    "action": "add-global-server-block",
+    "action": "remove-global-server-block",
     product,
     files: toUpdate
   });
 };
 
-function addServerBlockToEveryEndpoint(doc, product, server) {
+function removePerOperationServerBlock(doc) {
     doc = traverse(doc).clone();
   
     return traverse(doc).forEach(function () {
@@ -48,9 +44,9 @@ function addServerBlockToEveryEndpoint(doc, product, server) {
         return;
       }
 
-      if (!this.node["servers"]) {
-        this.node["servers"] = [{url: server}];
-        this.node["x-servers-added"] = true;
+      if (this.node["servers"] && this.node["x-servers-added"]) {
+        delete this.node["servers"];
+        delete this.node["x-servers-added"];
       }
     });
 }

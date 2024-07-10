@@ -46,8 +46,6 @@ paths:
           $ref: '#/components/responses/IdentityPermissionDenied'
       tags:
         - Auth Settings
-      servers:
-        - url: https://global.api.konghq.com/
     post:
       summary: Create Identity Provider
       description: >
@@ -69,8 +67,6 @@ paths:
           $ref: '#/components/responses/CreateIdentityProviderPermissionDenied'
       tags:
         - Auth Settings
-      servers:
-        - url: https://global.api.konghq.com/
   /identity-providers/{id}:
     parameters:
       - schema:
@@ -103,8 +99,6 @@ paths:
           $ref: '#/components/responses/IdentityNotFound'
       tags:
         - Auth Settings
-      servers:
-        - url: https://global.api.konghq.com/
     patch:
       summary: Update Identity Provider
       description: >
@@ -128,8 +122,6 @@ paths:
           $ref: '#/components/responses/IdentityNotFound'
       tags:
         - Auth Settings
-      servers:
-        - url: https://global.api.konghq.com/
     delete:
       summary: Delete Identity Provider
       description: >
@@ -151,8 +143,6 @@ paths:
           $ref: '#/components/responses/IdentityNotFound'
       tags:
         - Auth Settings
-      servers:
-        - url: https://global.api.konghq.com/
   /roles:
     get:
       summary: Get Predefined Roles
@@ -167,8 +157,6 @@ paths:
           $ref: '#/components/responses/IdentityUnauthenticated'
       tags:
         - Roles
-      servers:
-        - url: https://global.api.konghq.com/
 components:
   responses:
     IdentityBadRequest:

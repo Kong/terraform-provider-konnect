@@ -38,8 +38,6 @@ paths:
             #/components/responses/RetrieveCloudGatewaysAvailabilityDocumentResponse
       tags:
         - Resource Availability
-      servers:
-        - url: https://global.api.konghq.com/
   /cloud-gateways/configurations:
     get:
       summary: List Configurations
@@ -64,8 +62,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
       tags:
         - Data-Plane Group Configurations
-      servers:
-        - url: https://global.api.konghq.com/
     put:
       summary: Create Configuration
       description: >
@@ -108,8 +104,6 @@ paths:
           $ref: '#/components/responses/CloudGatewaysConflict'
       tags:
         - Data-Plane Group Configurations
-      servers:
-        - url: https://global.api.konghq.com/
   /cloud-gateways/configurations/{configurationId}:
     get:
       summary: Get Configuration
@@ -130,8 +124,6 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Data-Plane Group Configurations
-      servers:
-        - url: https://global.api.konghq.com/
   /cloud-gateways/networks:
     get:
       summary: List Networks
@@ -152,8 +144,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
       tags:
         - Networks
-      servers:
-        - url: https://global.api.konghq.com/
     post:
       summary: Create Network
       description: Creates a new network for a given provider account.
@@ -177,8 +167,6 @@ paths:
           $ref: '#/components/responses/Conflict'
       tags:
         - Networks
-      servers:
-        - url: https://global.api.konghq.com/
   /cloud-gateways/networks/{networkId}:
     get:
       summary: Get Network
@@ -197,8 +185,6 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Networks
-      servers:
-        - url: https://global.api.konghq.com/
     patch:
       summary: Update Network
       description: Updates a network by ID.
@@ -226,8 +212,6 @@ paths:
           $ref: '#/components/responses/Conflict'
       tags:
         - Networks
-      servers:
-        - url: https://global.api.konghq.com/
     delete:
       summary: Delete Network
       description: Deletes a network by ID.
@@ -247,8 +231,6 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Networks
-      servers:
-        - url: https://global.api.konghq.com/
   /cloud-gateways/networks/{networkId}/transit-gateways:
     get:
       summary: List Transit Gateways
@@ -272,8 +254,6 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Transit Gateways
-      servers:
-        - url: https://global.api.konghq.com/
     post:
       summary: Create Transit Gateway
       description: Creates a new transit gateway for a given network.
@@ -301,8 +281,6 @@ paths:
           $ref: '#/components/responses/Conflict'
       tags:
         - Transit Gateways
-      servers:
-        - url: https://global.api.konghq.com/
   /cloud-gateways/networks/{networkId}/transit-gateways/{transitGatewayId}:
     get:
       summary: Get Transit Gateway
@@ -322,8 +300,6 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Transit Gateways
-      servers:
-        - url: https://global.api.konghq.com/
     delete:
       summary: Delete Transit Gateway
       description: Deletes a transit gateway by ID for a given network.
@@ -344,8 +320,6 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Transit Gateways
-      servers:
-        - url: https://global.api.konghq.com/
   /cloud-gateways/networks/{networkId}/configuration-references:
     get:
       description: List Network Configuration References
@@ -370,8 +344,6 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Networks
-      servers:
-        - url: https://global.api.konghq.com/
   /cloud-gateways/provider-accounts:
     get:
       summary: List Provider Accounts
@@ -394,8 +366,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
       tags:
         - Provider Accounts
-      servers:
-        - url: https://global.api.konghq.com/
   /cloud-gateways/provider-accounts/{providerAccountId}:
     get:
       summary: Get Provider Account
@@ -414,8 +384,6 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Provider Accounts
-      servers:
-        - url: https://global.api.konghq.com/
   /cloud-gateways/custom-domains:
     get:
       summary: List Custom Domains
@@ -442,8 +410,6 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Custom Domains
-      servers:
-        - url: https://global.api.konghq.com/
     post:
       summary: Create Custom Domain
       description: >
@@ -473,8 +439,6 @@ paths:
           $ref: '#/components/responses/Conflict'
       tags:
         - Custom Domains
-      servers:
-        - url: https://global.api.konghq.com/
   /cloud-gateways/custom-domains/{customDomainId}:
     get:
       summary: Get Custom Domain
@@ -495,8 +459,6 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Custom Domains
-      servers:
-        - url: https://global.api.konghq.com/
     delete:
       summary: Delete Custom Domain
       description: >-
@@ -518,8 +480,6 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Custom Domains
-      servers:
-        - url: https://global.api.konghq.com/
   /cloud-gateways/custom-domains/{customDomainId}/online-status:
     get:
       summary: Get Custom Domain Online Status
@@ -538,8 +498,6 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Custom Domains
-      servers:
-        - url: https://global.api.konghq.com/
   /cloud-gateways/default-resource-quotas:
     get:
       summary: List Default Resource Quotas
@@ -563,8 +521,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
       tags:
         - Resource Quotas
-      servers:
-        - url: https://global.api.konghq.com/
   /cloud-gateways/resource-quotas:
     get:
       summary: List Resource Quotas
@@ -585,8 +541,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
       tags:
         - Resource Quotas
-      servers:
-        - url: https://global.api.konghq.com/
   /cloud-gateways/resource-quotas/{resourceQuotaId}:
     get:
       summary: Get Resource Quota
@@ -605,8 +559,6 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Resource Quotas
-      servers:
-        - url: https://global.api.konghq.com/
 components:
   securitySchemes:
     konnectAccessToken:

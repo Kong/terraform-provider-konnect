@@ -52,8 +52,6 @@ paths:
                   #/components/examples/UpdateServerlessCloudGatewayRequestExample
       tags:
         - Serverless Cloud Gateways
-      servers:
-        - url: https://global.api.konghq.com/
 components:
   securitySchemes:
     personalAccessToken:

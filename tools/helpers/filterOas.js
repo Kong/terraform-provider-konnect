@@ -359,7 +359,8 @@ function splitByVisibility(doc) {
     'x-property-annotations',
     'x-target-specification',
     'x-internal',
-    'x-unstable'
+    'x-unstable',
+    'x-servers-added'
   ];
 
   dev = removeProperty(dev, fields);

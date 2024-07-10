@@ -37,8 +37,6 @@ paths:
         Returns an array of serverless cloud gateways objects.
       tags:
         - Serverless Cloud Gateways
-      servers:
-        - url: https://global.api.konghq.com/
     post:
       summary: Create a new serverless cloud gateway
       description: |-
@@ -68,8 +66,6 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
-      servers:
-        - url: https://global.api.konghq.com/
   /serverless-cloud-gateways/{controlPlaneId}:
     parameters:
       - name: controlPlaneId
@@ -99,8 +95,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: https://global.api.konghq.com/
     delete:
       summary: Delete the serverless cloud gateway
       description: |-
@@ -120,8 +114,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: https://global.api.konghq.com/
 components:
   parameters:
     FilterSCGWByLabels:

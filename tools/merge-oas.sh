@@ -30,8 +30,13 @@ for PRODUCT in "${PRODUCTS[@]}"; do
 
   # Add beta warnings
   node ./tools/process-computed.js $PRODUCT
+
+  # Merge everything together
   echo "Creating merged $PRODUCT/complete.yaml";
   ./node_modules/.bin/oas-toolkit merge --move-path-to-operation $COMPUTED_FILES src/common/$PRODUCT.yaml > computed/$PRODUCT/complete.yaml
+
+  # Remove per-endpoint servers from per-service specs
+  node ./tools/remove-global-server-block.js $PRODUCT
 done
 
 # Finally, bundle all internal APIs. They do not need merging

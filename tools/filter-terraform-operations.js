@@ -97,6 +97,41 @@ async function main() {
           return pathOrder[b[0]] - pathOrder[a[0]];
         })
       );
+
+      // Schema order
+      const schemaOrder = {
+        "x-speakeasy-entity-operation": 1100,
+        "operationId": 1000,
+        "summary": 900,
+        "description": 800,
+        "x-internal": 700,
+        "x-unstable": 600,
+        "requestBody": 500,
+        "responses": 400,
+        "tags": 400,
+      };
+
+      for (let method in tf.paths[path]) { 
+        if (method == "parameters") { 
+          continue;
+        }
+        tf.paths[path][method] = Object.fromEntries(
+          Object.entries(tf.paths[path][method]).sort(function (a, b) {
+            if (schemaOrder[a[0]] && schemaOrder[b[0]]) {
+              return schemaOrder[b[0]] - schemaOrder[a[0]];
+            }
+            if (schemaOrder[a[0]] && !schemaOrder[b[0]]) {
+              return -1;
+            }
+            if (schemaOrder[b[0]] && !schemaOrder[a[0]]) {
+              return 1;
+            }
+
+            return a[0].localeCompare(b[0]);
+          })
+        );
+    }
+
     }
 
     // As should schemas

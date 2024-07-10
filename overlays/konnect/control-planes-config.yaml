@@ -23,6 +23,10 @@ actions:
   - target: $["components"]["schemas"]["PluginWithoutParents"]["properties"]["ordering"]
     remove: true
 
+  - target: $["components"]["schemas"]["PluginWithoutParents"]["properties"]["config"]
+    update:
+      x-speakeasy-type-override: any
+
   # Vault
   - target: $["components"]["schemas"]["Vault"]["properties"]["config"]
     update:
@@ -33,3 +37,7 @@ actions:
     update:
       writeOnly: true 
       x-speakeasy-param-sensitive: true
+
+  # Consumer Group Members
+  - target: $["paths"]["/v2/control-planes/{controlPlaneId}/core-entities/consumer_groups/{ConsumerGroupId}/consumers"]["post"]["responses"]["201"]["content"]
+    remove: true

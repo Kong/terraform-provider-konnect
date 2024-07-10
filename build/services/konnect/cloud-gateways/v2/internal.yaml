@@ -41,8 +41,6 @@ paths:
           $ref: '#/components/responses/Conflict'
       tags:
         - Provider Accounts
-      servers:
-        - url: https://global.api.konghq.com/
   /cloud-gateways/provider-accounts/{providerAccountId}:
     delete:
       summary: Delete Provider Account
@@ -63,8 +61,6 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Provider Accounts
-      servers:
-        - url: https://global.api.konghq.com/
   /cloud-gateways/resource-quotas:
     post:
       summary: Create Resource Quota
@@ -91,8 +87,6 @@ paths:
           $ref: '#/components/responses/Conflict'
       tags:
         - Resource Quotas
-      servers:
-        - url: https://global.api.konghq.com/
   /cloud-gateways/resource-quotas/{resourceQuotaId}:
     patch:
       summary: Update Resource Quota
@@ -119,8 +113,6 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Resource Quotas
-      servers:
-        - url: https://global.api.konghq.com/
 components:
   securitySchemes:
     konnectAccessToken:
