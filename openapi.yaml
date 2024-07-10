@@ -11,10 +11,10 @@ info:
   title: Konnect API
   version: 2.0.0
 servers:
+  - url: https://global.api.konghq.com
   - url: https://us.api.konghq.com
   - url: https://eu.api.konghq.com
   - url: https://au.api.konghq.com
-  - url: https://global.api.konghq.com
 paths:
   /v0/serverless-cloud-gateways:
     post:
@@ -5421,11 +5421,42 @@ paths:
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageNumber'
         - $ref: '#/components/parameters/SortPortals'
+    post:
+      x-speakeasy-entity-operation: Portal#create
+      operationId: create-portal
+      summary: Create Portal
+      description: >-
+        Creates a new developer portal scoped in this region for this
+        organization.
+      requestBody:
+        $ref: '#/components/requestBodies/CreatePortal'
+      responses:
+        '201':
+          $ref: '#/components/responses/CreatePortal'
+        '400':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+          description: Bad Request
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Portals
   /v2/portals/{portalId}:
     parameters:
-      - $ref: '#/components/parameters/parameters-PortalId'
+      - description: ID of the portal.
+        in: path
+        name: portalId
+        required: true
+        schema:
+          format: uuid
+          type: string
+        x-speakeasy-match: id
     patch:
-      x-speakeasy-entity-operation: Portal#create,update
+      x-speakeasy-entity-operation: Portal#update
       operationId: update-portal
       summary: Update Portal
       description: >-
@@ -5452,6 +5483,48 @@ paths:
           $ref: '#/components/responses/Conflict'
       tags:
         - Portals
+    delete:
+      x-speakeasy-entity-operation: Portal#delete
+      operationId: delete-portal
+      summary: Delete Portal
+      description: >-
+        Deletes a single portal, along with all related entities. Will not allow
+        deletion if there are developers registered to portal or if there are
+        portal product versions with application registration enabled, unless
+        force=true query param is included in the request.
+      responses:
+        '204':
+          description: No Content
+        '400':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+          description: Bad Request
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portals
+      parameters:
+        - description: >-
+            If true, delete specified portal and all related entities, even if
+            there are developers registered to portal or if there are portal
+            product versions with application registration enabled. If false, do
+            not allow deletion if there are developers registered to portal or
+            if there are portal product versions with application registration
+            enabled.
+          in: query
+          name: force
+          schema:
+            default: 'false'
+            enum:
+              - 'true'
+              - 'false'
+            type: string
     x-speakeasy-entity-operation:
       '0': P
       '1': o
@@ -6557,6 +6630,13 @@ components:
           schema:
             $ref: '#/components/schemas/CreateAppAuthStrategyRequest'
       required: true
+    CreatePortal:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreatePortalRequest'
+      description: Create a portal.
+      required: true
     CreateSystemAccount:
       content:
         application/json:
@@ -6897,6 +6977,12 @@ components:
           schema:
             $ref: '#/components/schemas/Network'
       description: Response format for creating a network.
+    CreatePortal:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreatePortalResponse'
+      description: Details about the portal that was created.
     CreateServerlessCloudGatewayResponse:
       content:
         application/json:
@@ -9874,6 +9960,83 @@ components:
         - $ref: '#/components/schemas/Plugin'
         - $ref: '#/components/schemas/OpentelemetryPluginConfig'
       x-speakeasy-entity: GatewayPluginOpentelemetry
+    CreatePortalRequest:
+      additionalProperties: false
+      example:
+        auto_approve_applications: false
+        auto_approve_developers: false
+        custom_client_domain: portal.example.com
+        custom_domain: api.example.com
+        default_application_auth_strategy_id: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+        is_public: false
+        name: DevPortal
+        rbac_enabled: true
+      properties:
+        auto_approve_applications:
+          description: >-
+            Whether the requests from applications to register for products will
+            be automatically approved, or if they will be set to pending until
+            approved by an admin.
+          type: boolean
+        auto_approve_developers:
+          description: >-
+            Whether the developer account registrations will be automatically
+            approved, or if they will be set to pending until approved by an
+            admin.
+          type: boolean
+        custom_client_domain:
+          description: >-
+            The custom domain to access a self-hosted customized developer
+            portal client. If this is set, the Konnect-hosted portal will no
+            longer be available.  `custom_domain` must be also set for this
+            value to be set. See https://github.com/Kong/konnect-portal for
+            information on how to get started deploying and customizing your own
+            Konnect portal.
+          format: hostname
+          maxLength: 1024
+          nullable: true
+          type: string
+        custom_domain:
+          description: >-
+            The custom domain to access the developer portal. A CNAME for the
+            portal's default domain must be able to be set for the custom domain
+            for it to be valid. After setting a valid CNAME, an SSL/TLS
+            certificate will be automatically manged for the custom domain, and
+            traffic will be able to use the custom domain to route to the
+            portal's web client and API.
+          format: hostname
+          maxLength: 1024
+          nullable: true
+          type: string
+        default_application_auth_strategy_id:
+          $ref: '#/components/schemas/DefaultApplicationAuthStratID'
+        description:
+          $ref: '#/components/schemas/PortalDescription'
+        display_name:
+          $ref: '#/components/schemas/PortalDisplayName'
+        is_public:
+          description: >-
+            Whether the portal catalog can be accessed publicly without any
+            developer authentication. Developer accounts and applications cannot
+            be created if the portal is public.
+          type: boolean
+        labels:
+          $ref: '#/components/schemas/PortalsLabelsNullable'
+        name:
+          $ref: '#/components/schemas/PortalName'
+        rbac_enabled:
+          description: >-
+            Whether the portal resources are protected by Role Based Access
+            Control (RBAC). If enabled, developers view or register for products
+            until unless assigned to teams with access to view and consume
+            specific products.
+          type: boolean
+      required:
+        - name
+      type: object
+      x-speakeasy-entity: Portal
+    CreatePortalResponse:
+      $ref: '#/components/schemas/Portal'
     CreatePostFunctionPlugin:
       allOf:
         - $ref: '#/components/schemas/Plugin'
@@ -17295,6 +17458,7 @@ components:
             specific products.
           type: boolean
       type: object
+      x-speakeasy-entity: Portal
     UpdatePortalResponse:
       $ref: '#/components/schemas/Portal'
     Upstream:
@@ -17573,25 +17737,18 @@ components:
   securitySchemes:
     konnectAccessToken:
       bearerFormat: JWT
-      description: >
+      description: >-
         The Konnect access token is meant to be used by the Konnect dashboard
-        and the decK CLI authenticate with.
+        and the decK CLI to authenticate with.
       scheme: bearer
       type: http
     personalAccessToken:
       bearerFormat: Token
-      description: >
+      description: >-
         The personal access token is meant to be used as an alternative to
-        basic-auth when accessing Konnect via APIs.
-
-        You can generate a Personal Access Token (PAT) from the [personal access
-        token page](https://cloud.konghq.com/global/tokens/) in the Konnect
+        basic-auth when accessing Konnect via APIs. You can generate a Personal
+        Access Token (PAT) from the personal access token page in the Konnect
         dashboard.
-
-        The PAT token must be passed in the header of a request, for example:
-
-        `curl -X GET 'https://global.api.konghq.com/v2/users/' --header
-        'Authorization: Bearer kpat_xgfT...'`
       scheme: bearer
       type: http
     systemAccountAccessToken:
@@ -17624,6 +17781,77 @@ tags:
   - name: Custom Domains
   - name: Resource Quotas
   - name: Resource Availability
+  - name: Mesh
+  - name: API Products
+  - name: API Product Documentation
+  - name: API Product Versions
+  - name: API Product Version Specification
+  - description: APIs related to Configuration of Konnect Developer Portals.
+    name: Portals
+  - description: APIs related to Konnect Developer Portal Developers.
+    name: Portal Developers
+  - description: APIs related to Konnect Developer Portal Developer Teams.
+    name: Portal Teams
+  - description: >-
+      APIs related to Developer Membership in Konnect Developer Portal Developer
+      Teams.
+    name: Portal Team Membership
+  - description: APIs related to Team Roles in Konnect Developer Portal.
+    name: Portal Team Roles
+  - description: APIs related to Konnect Developer Portal Applications.
+    name: Portal Applications
+  - description: APIs related to Konnect Developer Portal Application Registrations.
+    name: Portal Application Registrations
+  - description: APIs related to API Products Published to Konnect Developer Portals.
+    name: Portal Products
+  - description: APIs related to Konnect Developer Portal Authentication Settings.
+    name: Portal Auth Settings
+  - description: APIs related to Konnect Developer Portal Appearance Settings.
+    name: Portal Appearance
+  - description: >
+      Portal Product Versions hold metadata that describes how a Product Version
+      is configured for a specific portal.
+        
+        They contain:
+        - Lifecyle and deprecation statuses
+        - Application registration settings like auto approve or whether application registration is enabled
+        - The authentication strategy that is enabled for Application Registration
+    name: Portal Product Versions
+  - description: >
+      Dynamic Client Registration Providers are configurations representing an
+      external Identity Provider whose clients (i.e. Applications) Konnect will
+      be authorized to manage.
+
+      For instance, they will be able to perform dynamic client registration
+      (DCR) with the provider. 
+
+      The DCR provider provides credentials to each DCR-enabled application in
+      Konnect that can be used to access Product Versions that the app is
+      registered for.
+    name: DCR Providers
+  - description: >
+      Application Auth Strategies are sets of plugin configurations that
+      represent how the gateway will perform authentication and authorization
+      for a Product Version. 
+
+      Called “Auth Strategy” for short in the context of portals/applications. 
+
+      The plugins are synced to any Gateway Service that is currently linked or
+      becomes linked to the Product Version.
+    name: App Auth Strategies
+  - name: Auth Settings
+  - name: Invites
+  - name: Roles
+  - name: Team Membership
+  - name: Teams
+  - name: Users
+  - name: System Accounts
+  - name: System Accounts - Access Tokens
+  - name: System Accounts - Roles
+  - name: System Accounts - Team Membership
+  - name: Authentication
+  - name: Impersonation Settings
+  - name: Serverless Cloud Gateways
   - description: DP Nodes
     name: DP Nodes
   - description: DP Certificates
@@ -17825,77 +18053,6 @@ tags:
   - name: JWTs
   - name: HMAC-auth credentials
   - name: ACLs
-  - name: Mesh
-  - name: API Products
-  - name: API Product Documentation
-  - name: API Product Versions
-  - name: API Product Version Specification
-  - description: APIs related to Configuration of Konnect Developer Portals.
-    name: Portals
-  - description: APIs related to Konnect Developer Portal Developers.
-    name: Portal Developers
-  - description: APIs related to Konnect Developer Portal Developer Teams.
-    name: Portal Teams
-  - description: >-
-      APIs related to Developer Membership in Konnect Developer Portal Developer
-      Teams.
-    name: Portal Team Membership
-  - description: APIs related to Team Roles in Konnect Developer Portal.
-    name: Portal Team Roles
-  - description: APIs related to Konnect Developer Portal Applications.
-    name: Portal Applications
-  - description: APIs related to Konnect Developer Portal Application Registrations.
-    name: Portal Application Registrations
-  - description: APIs related to API Products Published to Konnect Developer Portals.
-    name: Portal Products
-  - description: APIs related to Konnect Developer Portal Authentication Settings.
-    name: Portal Auth Settings
-  - description: APIs related to Konnect Developer Portal Appearance Settings.
-    name: Portal Appearance
-  - description: >
-      Portal Product Versions hold metadata that describes how a Product Version
-      is configured for a specific portal.
-        
-        They contain:
-        - Lifecyle and deprecation statuses
-        - Application registration settings like auto approve or whether application registration is enabled
-        - The authentication strategy that is enabled for Application Registration
-    name: Portal Product Versions
-  - description: >
-      Dynamic Client Registration Providers are configurations representing an
-      external Identity Provider whose clients (i.e. Applications) Konnect will
-      be authorized to manage.
-
-      For instance, they will be able to perform dynamic client registration
-      (DCR) with the provider. 
-
-      The DCR provider provides credentials to each DCR-enabled application in
-      Konnect that can be used to access Product Versions that the app is
-      registered for.
-    name: DCR Providers
-  - description: >
-      Application Auth Strategies are sets of plugin configurations that
-      represent how the gateway will perform authentication and authorization
-      for a Product Version. 
-
-      Called “Auth Strategy” for short in the context of portals/applications. 
-
-      The plugins are synced to any Gateway Service that is currently linked or
-      becomes linked to the Product Version.
-    name: App Auth Strategies
-  - name: Auth Settings
-  - name: Invites
-  - name: Roles
-  - name: Team Membership
-  - name: Teams
-  - name: Users
-  - name: System Accounts
-  - name: System Accounts - Access Tokens
-  - name: System Accounts - Roles
-  - name: System Accounts - Team Membership
-  - name: Authentication
-  - name: Impersonation Settings
-  - name: Serverless Cloud Gateways
 externalDocs:
   description: Documentation for Kong Gateway and its APIs
   url: https://docs.konghq.com

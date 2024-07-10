@@ -4,6 +4,9 @@
 ## 0.6.0
 > Released on 2024/07/??
 
+### BREAKING CHANGES
+* The `konnect_portal` resource can no longer be used to adopt the existing default portal without first running `terraform import`
+
 ### Features
 * Add support for the  `konnect_api_product_document`, `konnect_gateway_plugin_pre_function`, `konnect_gateway_plugin_post_function` and `konnect_gateway_plugin_statsd` resources
 
