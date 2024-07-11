@@ -164,6 +164,7 @@ paths:
         in: path
         required: true
     post:
+      x-speakeasy-entity-operation: APIProductDocument#create
       summary: Create API Product Document
       description: Creates a document for an API product.
       operationId: create-api-product-document
@@ -239,6 +240,7 @@ paths:
         in: path
         required: true
     get:
+      x-speakeasy-entity-operation: APIProductDocument#read
       summary: Fetch API Product Document
       description: Returns a document for the API product.
       operationId: get-api-product-document
@@ -254,6 +256,7 @@ paths:
       tags:
         - API Product Documentation
     patch:
+      x-speakeasy-entity-operation: APIProductDocument#update
       summary: Update an API Product Document
       description: Updates a document for an API product.
       operationId: update-api-product-document
@@ -284,6 +287,7 @@ paths:
       requestBody:
         $ref: '#/components/requestBodies/UpdateAPIProductDocumentRequest'
     delete:
+      x-speakeasy-entity-operation: APIProductDocument#delete
       summary: Delete API Product Documentation
       description: Removes a document from an API product.
       operationId: delete-api-product-document
@@ -1387,6 +1391,8 @@ components:
           type: string
           description: The name of the API product version specification
           example: oas.yaml
+          pattern: ".+(\\.yaml|\\.yml|\\.json)"
+          x-speakeasy-plan-validators: OpenApiSpecFilenameValidator
         content:
           type: string
           description: The contents of the API product version specification

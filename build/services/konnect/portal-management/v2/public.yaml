@@ -151,7 +151,13 @@ paths:
           $ref: '#/components/responses/Forbidden'
   /portals/{portalId}:
     parameters:
-      - $ref: '#/components/parameters/parameters-PortalId'
+      - name: portalId
+        in: path
+        schema:
+          type: string
+          format: uuid
+        required: true
+        description: ID of the portal.
     get:
       summary: Get Portal
       description: >-

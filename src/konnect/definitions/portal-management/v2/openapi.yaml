@@ -93,6 +93,7 @@ paths:
           $ref: >-
             ../../../../common/definitions/errors.yaml#/components/responses/Forbidden
     post:
+      x-speakeasy-entity-operation: Portal#create
       summary: Create Portal
       description: >-
         Creates a new developer portal scoped in this region for this organization.
@@ -135,8 +136,14 @@ paths:
   /portals/{portalId}:
     x-speakeasy-entity-operation: Portal#read
     parameters:
-      - $ref: >-
-          ../../../../common/definitions/portal.yaml#/components/parameters/PortalId
+      - name: portalId
+        in: path
+        schema:
+          type: string
+          format: uuid
+        required: true
+        description: ID of the portal.
+        x-speakeasy-match: id
     get:
       summary: Get Portal
       description: >-
@@ -158,7 +165,7 @@ paths:
           $ref: >-
             ../../../../common/definitions/errors.yaml#/components/responses/NotFound
     patch:
-      x-speakeasy-entity-operation: Portal#create,update
+      x-speakeasy-entity-operation: Portal#update
       summary: Update Portal
       description: >-
         Updates the configuration for a single portal including the visibility,
@@ -206,6 +213,7 @@ paths:
           $ref: >-
             ../../../../common/definitions/errors.yaml#/components/responses/Conflict
     delete:
+      x-speakeasy-entity-operation: Portal#delete
       summary: Delete Portal
       description: >-
         Deletes a single portal, along with all related entities. Will not allow deletion if there are developers registered to portal or
@@ -945,6 +953,7 @@ paths:
             ../../../../common/definitions/errors.yaml#/components/responses/NotFound
   /portals/{portalId}/appearance:
     get:
+      x-speakeasy-entity-operation: PortalAppearance#read
       summary: Get Appearance Configuration
       description: >-
         Returns the current portal appearance configuration including any custom
@@ -970,6 +979,7 @@ paths:
           $ref: >-
             ../../../../common/definitions/errors.yaml#/components/responses/NotFound
     patch:
+      x-speakeasy-entity-operation: PortalAppearance#create,update
       summary: Update Appearance Configuration
       description: >-
         Updates the current appearance configuration for this portal including
@@ -5956,6 +5966,7 @@ components:
       format: uuid
       example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
     CreatePortalRequest:
+      x-speakeasy-entity: Portal
       additionalProperties: false
       type: object
       required:
@@ -6025,6 +6036,7 @@ components:
       maxLength: 255
       minLength: 1
     UpdatePortalRequest:
+      x-speakeasy-entity: Portal
       additionalProperties: false
       type: object
       properties:

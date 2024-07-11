@@ -23,6 +23,18 @@ module.exports = function (product) {
     });
   }
 
+  // Make sure CPC is last in the list to minimise merge time
+  const cpcFiles = allFiles.filter((f) => {
+    return f.includes("/control-planes-config/");
+  })
+
+
+  allFiles = allFiles.filter((f) => {
+    return !f.includes("/control-planes-config/");
+  });
+  
+  allFiles = allFiles.concat(cpcFiles);
+
   return allFiles;
 };
 

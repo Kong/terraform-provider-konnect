@@ -28,3 +28,8 @@ actions:
     remove: true
   - target: $["components"]["schemas"]["UpdateAPIProductVersionDTO"]["properties"]["labels"]
     remove: true
+  
+  # We don't need the AST for content
+  - target: $["components"]["examples"]["APIProductDocumentExample"]["value"]["ast"]
+  - target: $["components"]["schemas"]["APIProductDocument"]["properties"]["ast"]
+    remove: true

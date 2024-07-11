@@ -2,9 +2,9 @@ openapi: 3.0.3
 info:
   title: Konnect API
   description: The Konnect platform API
-  version: 2.1.0
+  version: 0.0.1
   contact:
-    name: Kong
+    name: Kong Inc
     url: https://konghq.com
     email: support@konghq.com
   license:
@@ -2275,18 +2275,11 @@ components:
       type: http
       scheme: bearer
       bearerFormat: Token
-      description: >
+      description: >-
         The personal access token is meant to be used as an alternative to
-        basic-auth when accessing Konnect via APIs.
-
-        You can generate a Personal Access Token (PAT) from the [personal access
-        token page](https://cloud.konghq.com/global/tokens/) in the Konnect
+        basic-auth when accessing Konnect via APIs. You can generate a Personal
+        Access Token (PAT) from the personal access token page in the Konnect
         dashboard.
-
-        The PAT token must be passed in the header of a request, for example:
-
-        `curl -X GET 'https://global.api.konghq.com/v2/users/' --header
-        'Authorization: Bearer kpat_xgfT...'`
     systemAccountAccessToken:
       type: http
       scheme: bearer
@@ -2307,9 +2300,9 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
-      description: >
+      description: >-
         The Konnect access token is meant to be used by the Konnect dashboard
-        and the decK CLI authenticate with.
+        and the decK CLI to authenticate with.
 security:
   - personalAccessToken: []
   - systemAccountAccessToken: []
