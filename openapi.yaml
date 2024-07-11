@@ -5537,6 +5537,59 @@ paths:
       '8': e
       '9': a
       '10': d
+  /v2/portals/{portalId}/appearance:
+    get:
+      x-speakeasy-entity-operation: PortalAppearance#read
+      operationId: get-portal-appearance
+      summary: Get Appearance Configuration
+      description: >-
+        Returns the current portal appearance configuration including any custom
+        theme, colors, fonts, and image settings. Portals using the
+        fully-customizable portal client may override or ignore these settings
+        by disregarding them in the code.
+      responses:
+        '200':
+          $ref: '#/components/responses/GetPortalAppearance'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Appearance
+      parameters:
+        - $ref: '#/components/parameters/parameters-PortalId'
+    patch:
+      x-speakeasy-entity-operation: PortalAppearance#create,update
+      operationId: update-portal-appearance
+      summary: Update Appearance Configuration
+      description: >-
+        Updates the current appearance configuration for this portal including
+        setting pre-defined or custom themes, fonts, colors, and images. Note
+        that portals using the fully-customizable portal client may override or
+        ignore these settings by disregarding them in the code.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdatePortalAppearance'
+      responses:
+        '200':
+          $ref: '#/components/responses/UpdatePortalAppearance'
+        '400':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+          description: Bad Request
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Appearance
+      parameters:
+        - $ref: '#/components/parameters/parameters-PortalId'
   /v2/portals/{portalId}/authentication-settings:
     parameters:
       - $ref: '#/components/parameters/parameters-PortalId'
@@ -6776,6 +6829,13 @@ components:
             $ref: '#/components/schemas/UpdatePortalRequest'
       description: Update a portal's settings.
       required: true
+    UpdatePortalAppearance:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdatePortalAppearanceRequest'
+      description: Update a portal's appearance settings
+      required: true
     UpdatePortalAuthenticationSettings:
       content:
         application/json:
@@ -7013,6 +7073,12 @@ components:
           schema:
             $ref: '#/components/schemas/GetAppAuthStrategyResponse'
       description: A response containing a single application auth strategy object.
+    GetPortalAppearance:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GetPortalAppearanceResponse'
+      description: Details about a portal's current appearance settings.
     HTTP401Error:
       content:
         application/json:
@@ -7411,6 +7477,12 @@ components:
           schema:
             $ref: '#/components/schemas/UpdatePortalResponse'
       description: Details about the portal being updated.
+    UpdatePortalAppearance:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdatePortalAppearanceResponse'
+      description: Details about the appearance settings being updated.
     VersionSpecConflict:
       content:
         application/problem+json:
@@ -8402,6 +8474,210 @@ components:
         - created_at
         - updated_at
       title: AppAuthStrategyOpenIDConnectResponse
+      type: object
+    AppearanceColorVariable:
+      additionalProperties: false
+      example:
+        description: The color for a type of thing
+        value: '#000000'
+      properties:
+        description:
+          maxLength: 512
+          type: string
+        value:
+          maxLength: 255
+          type: string
+      required:
+        - value
+      type: object
+    AppearanceFontName:
+      description: The name of the font to render in the browser.
+      enum:
+        - Roboto
+        - Inter
+        - Open Sans
+        - Lato
+        - Slabo 27px
+        - Slabo 13px
+        - Oswald
+        - Source Sans Pro
+        - Montserrat
+        - Raleway
+        - PT Sans
+        - Lora
+        - Roboto Mono
+        - Inconsolata
+        - Source Code Pro
+        - PT Mono
+        - Ubuntu Mono
+        - IBM Plex Mono
+      example: Roboto
+      type: string
+    AppearanceImage:
+      additionalProperties: false
+      description: >-
+        The image data to upload, along with an optional filename. Images must
+        be a data URL with binary image data in base 64 format. See
+        https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs.
+      example:
+        data: data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+      nullable: true
+      properties:
+        data:
+          $ref: '#/components/schemas/ImageDataUri'
+        filename:
+          maxLength: 512
+          type: string
+      required:
+        - data
+      type: object
+    AppearanceImages:
+      additionalProperties: false
+      description: A collection of binary image data to customize images in the portal
+      example:
+        catalog_cover:
+          data: data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+        favicon:
+          data: data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+        logo:
+          data: data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+      nullable: true
+      properties:
+        catalog_cover:
+          $ref: '#/components/schemas/AppearanceImage'
+        favicon:
+          $ref: '#/components/schemas/AppearanceImage'
+        logo:
+          $ref: '#/components/schemas/AppearanceImage'
+      type: object
+    AppearanceThemeColorVariables:
+      additionalProperties: false
+      example:
+        button:
+          primary_fill:
+            description: Background for Primary Button
+            value: '#1155CB'
+          primary_text:
+            description: Text for Primary Button
+            value: '#FFFFFF'
+        section:
+          accent:
+            description: Subtle background
+            value: '#1F1F1F'
+          body:
+            description: Background for main content
+            value: '#0C0C0C'
+          footer:
+            description: Background for footer
+            value: '#212429'
+          header:
+            description: Background for header
+            value: '#0A161E'
+          hero:
+            description: Background for hero section
+            value: '#1A1D21'
+          stroke:
+            description: Border color
+            value: '#34393F'
+          tertiary:
+            description: Tertiary background
+            value: '#222529'
+        text:
+          accent:
+            description: Subtle text
+            value: '#FFFFFF'
+          footer:
+            description: Footer text
+            value: '#FFFFFF'
+          header:
+            description: Header text
+            value: '#FFFFFF'
+          headings:
+            description: Headings text
+            value: '#FFFFFF'
+          hero:
+            description: Hero text
+            value: rgba(255,255,255,0.8)
+          link:
+            description: Link text
+            value: '#2977FF'
+          primary:
+            description: Main content text
+            value: '#C8C8C9'
+          secondary:
+            description: Supporting text
+            value: '#919294'
+      properties:
+        button:
+          additionalProperties: false
+          properties:
+            primary_fill:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            primary_text:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+          required:
+            - primary_fill
+            - primary_text
+          type: object
+        section:
+          additionalProperties: false
+          properties:
+            accent:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            body:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            footer:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            header:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            hero:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            stroke:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            tertiary:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+          required:
+            - header
+            - body
+            - hero
+            - accent
+            - tertiary
+            - stroke
+            - footer
+          type: object
+        text:
+          additionalProperties: false
+          properties:
+            accent:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            footer:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            header:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            headings:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            hero:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            link:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            primary:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            secondary:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+          required:
+            - header
+            - hero
+            - headings
+            - primary
+            - secondary
+            - accent
+            - link
+            - footer
+          type: object
+      required:
+        - section
+        - text
+        - button
       type: object
     ApplicationRegistrationEnabled:
       description: >-
@@ -10451,6 +10727,93 @@ components:
       type: string
     GetAppAuthStrategyResponse:
       $ref: '#/components/schemas/AppAuthStrategy'
+    GetPortalAppearanceResponse:
+      allOf:
+        - $ref: '#/components/schemas/PortalAppearance'
+        - required:
+            - theme_name
+            - use_custom_fonts
+            - custom_theme
+            - custom_fonts
+            - text
+            - images
+          type: object
+      example:
+        custom_fonts:
+          base: Roboto
+          code: Roboto
+          headings: Roboto
+        custom_theme:
+          colors:
+            button:
+              primary_fill:
+                description: Background for Primary Button
+                value: '#1155CB'
+              primary_text:
+                description: Text for Primary Button
+                value: '#FFFFFF'
+            section:
+              accent:
+                description: Subtle background
+                value: '#F8F8F8'
+              body:
+                description: Background for main content
+                value: '#FFFFFF'
+              footer:
+                description: Background for footer
+                value: '#07A88D'
+              header:
+                description: Background for header
+                value: '#F8F8F8'
+              hero:
+                description: Background for hero section
+                value: '#F8F8F8'
+              stroke:
+                description: Border color
+                value: rgba(0,0,0,0.1)
+              tertiary:
+                description: Tertiary background
+                value: '#FFFFFF'
+            text:
+              accent:
+                description: Subtle text
+                value: '#07A88D'
+              footer:
+                description: Footer text
+                value: '#FFFFFF'
+              header:
+                description: Header text
+                value: rgba(0,0,0,0.8)
+              headings:
+                description: Headings text
+                value: rgba(0,0,0,0.8)
+              hero:
+                description: Hero text
+                value: '#FFFFFF'
+              link:
+                description: Link text
+                value: '#07A88D'
+              primary:
+                description: Main content text
+                value: rgba(0,0,0,0.8)
+              secondary:
+                description: Supporting text
+                value: rgba(0,0,0,0.8)
+        images:
+          catalog_cover:
+            data: data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+          favicon:
+            data: data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+            filename: favicon.ico
+          logo:
+            data: data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+            filename: logo.png
+        text:
+          catalog:
+            primary_header: Come on in!
+            welcome_message: Welcome
+        theme_name: custom
+        use_custom_fonts: true
     GroupMembership:
       properties:
         members:
@@ -10494,6 +10857,19 @@ components:
           type: string
       type: object
       x-speakeasy-entity: GatewayHMACAuth
+    ImageDataUri:
+      description: >-
+        must be a data URL with base64 image data, e.g.,
+        data:image/jpeg;base64,<BASE64_IMAGE_DATA>
+      example: data:image/png,YW5faW1hZ2VfZmlsZQ==
+      format: uri
+      pattern: >-
+        ^data:image/(png|jpeg|x-icon|ico|icon|vnd.microsoft.icon|gif)(;base64)?,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$
+      title: ImageDataUri
+      type: string
+      x-validation-message: >-
+        must be a data URL with base64 image data, e.g.,
+        data:image/jpeg;base64,<BASE64_IMAGE_DATA>
     InstanceTypeName:
       description: Instance type name to indicate capacity.
       enum:
@@ -12074,6 +12450,119 @@ components:
       description: Whether to notify developers who are affected by this change
       title: NotifyDevelopers
       type: boolean
+    NullableAppearanceFonts:
+      additionalProperties: false
+      description: >-
+        Font selections to render text in the portal user interface. Must set
+        use_custom_fonts to true to enable using custom font values.
+      nullable: true
+      properties:
+        base:
+          $ref: '#/components/schemas/AppearanceFontName'
+        code:
+          $ref: '#/components/schemas/AppearanceFontName'
+        headings:
+          $ref: '#/components/schemas/AppearanceFontName'
+      required:
+        - base
+        - code
+        - headings
+      type: object
+    NullableAppearanceTextVariables:
+      additionalProperties: false
+      description: Values to display for customizable text in the portal user interface
+      example:
+        catalog:
+          primary_header: Find All of Our Services in a Single Place
+          welcome_message: Welcome to our service catalog
+      nullable: true
+      properties:
+        catalog:
+          additionalProperties: false
+          properties:
+            primary_header:
+              maxLength: 512
+              type: string
+            welcome_message:
+              maxLength: 512
+              type: string
+          required:
+            - welcome_message
+            - primary_header
+          type: object
+      required:
+        - catalog
+      type: object
+    NullableAppearanceThemeVariables:
+      additionalProperties: false
+      description: >-
+        Groups of variables for configuring visual details of the portal user
+        interface. Set theme_name to 'custom' to use custom values for theme
+        variables.
+      example:
+        colors:
+          button:
+            primary_fill:
+              description: Background for Primary Button
+              value: '#1155CB'
+            primary_text:
+              description: Text for Primary Button
+              value: '#FFFFFF'
+          section:
+            accent:
+              description: Subtle background
+              value: '#F8F8F8'
+            body:
+              description: Background for main content
+              value: '#FFFFFF'
+            footer:
+              description: Background for footer
+              value: '#07A88D'
+            header:
+              description: Background for header
+              value: '#F8F8F8'
+            hero:
+              description: Background for hero section
+              value: '#F8F8F8'
+            stroke:
+              description: Border color
+              value: rgba(0,0,0,0.1)
+            tertiary:
+              description: Tertiary background
+              value: '#FFFFFF'
+          text:
+            accent:
+              description: Subtle text
+              value: '#07A88D'
+            footer:
+              description: Footer text
+              value: '#FFFFFF'
+            header:
+              description: Header text
+              value: rgba(0,0,0,0.8)
+            headings:
+              description: Headings text
+              value: rgba(0,0,0,0.8)
+            hero:
+              description: Hero text
+              value: '#FFFFFF'
+            link:
+              description: Link text
+              value: '#07A88D'
+            primary:
+              description: Main content text
+              value: rgba(0,0,0,0.8)
+            secondary:
+              description: Supporting text
+              value: rgba(0,0,0,0.8)
+      nullable: true
+      properties:
+        colors:
+          $ref: '#/components/schemas/AppearanceThemeColorVariables'
+      required:
+        - colors
+      title: AppearanceThemeVariables
+      type: object
     Oauth2Plugin:
       allOf:
         - $ref: '#/components/schemas/Plugin'
@@ -14223,6 +14712,101 @@ components:
         - published_product_count
       type: object
       x-speakeasy-entity: Portal
+    PortalAppearance:
+      additionalProperties: false
+      example:
+        custom_fonts:
+          base: Roboto
+          code: Roboto
+          headings: Roboto
+        custom_theme:
+          colors:
+            button:
+              primary_fill:
+                description: Background for Primary Button
+                value: '#1155CB'
+              primary_text:
+                description: Text for Primary Button
+                value: '#FFFFFF'
+            section:
+              accent:
+                description: Subtle background
+                value: '#F8F8F8'
+              body:
+                description: Background for main content
+                value: '#FFFFFF'
+              footer:
+                description: Background for footer
+                value: '#07A88D'
+              header:
+                description: Background for header
+                value: '#F8F8F8'
+              hero:
+                description: Background for hero section
+                value: '#F8F8F8'
+              stroke:
+                description: Border color
+                value: rgba(0,0,0,0.1)
+              tertiary:
+                description: Tertiary background
+                value: '#FFFFFF'
+            text:
+              accent:
+                description: Subtle text
+                value: '#07A88D'
+              footer:
+                description: Footer text
+                value: '#FFFFFF'
+              header:
+                description: Header text
+                value: rgba(0,0,0,0.8)
+              headings:
+                description: Headings text
+                value: rgba(0,0,0,0.8)
+              hero:
+                description: Hero text
+                value: '#FFFFFF'
+              link:
+                description: Link text
+                value: '#07A88D'
+              primary:
+                description: Main content text
+                value: rgba(0,0,0,0.8)
+              secondary:
+                description: Supporting text
+                value: rgba(0,0,0,0.8)
+        images:
+          catalog_cover:
+            data: data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+          favicon:
+            data: data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+            filename: favicon.ico
+          logo:
+            data: data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+            filename: logo.png
+        text:
+          catalog:
+            primary_header: Come one in!
+            welcome_message: Welcome
+        theme_name: custom
+        use_custom_fonts: true
+      properties:
+        custom_fonts:
+          $ref: '#/components/schemas/NullableAppearanceFonts'
+        custom_theme:
+          $ref: '#/components/schemas/NullableAppearanceThemeVariables'
+        images:
+          $ref: '#/components/schemas/AppearanceImages'
+        text:
+          $ref: '#/components/schemas/NullableAppearanceTextVariables'
+        theme_name:
+          $ref: '#/components/schemas/PortalTheme'
+        use_custom_fonts:
+          description: >-
+            If true, fonts in custom_fonts will be used over the theme's default
+            fonts
+          type: boolean
+      type: object
     PortalAuthenticationSettingsResponse:
       description: The developer authentication settings for a portal.
       example:
@@ -14488,6 +15072,16 @@ components:
       nullable: true
       title: Labels
       type: object
+    PortalTheme:
+      description: >-
+        Select a pre-existing default theme or specify 'custom' to use
+        custom_theme variables.
+      enum:
+        - mint_rocket
+        - dark_mode
+        - custom
+      example: mint_rocket
+      type: string
     PostFunctionPlugin:
       allOf:
         - $ref: '#/components/schemas/Plugin'
@@ -17388,6 +17982,95 @@ components:
           type: string
       title: UpdateMeshControlPlaneRequest
       type: object
+    UpdatePortalAppearanceRequest:
+      $ref: '#/components/schemas/PortalAppearance'
+    UpdatePortalAppearanceResponse:
+      allOf:
+        - $ref: '#/components/schemas/PortalAppearance'
+        - required:
+            - theme_name
+            - use_custom_fonts
+            - custom_theme
+            - custom_fonts
+            - text
+            - images
+          type: object
+      example:
+        custom_fonts:
+          base: Roboto
+          code: Roboto
+          headings: Roboto
+        custom_theme:
+          colors:
+            button:
+              primary_fill:
+                description: Background for Primary Button
+                value: '#1155CB'
+              primary_text:
+                description: Text for Primary Button
+                value: '#FFFFFF'
+            section:
+              accent:
+                description: Subtle background
+                value: '#F8F8F8'
+              body:
+                description: Background for main content
+                value: '#FFFFFF'
+              footer:
+                description: Background for footer
+                value: '#07A88D'
+              header:
+                description: Background for header
+                value: '#F8F8F8'
+              hero:
+                description: Background for hero section
+                value: '#F8F8F8'
+              stroke:
+                description: Border color
+                value: rgba(0,0,0,0.1)
+              tertiary:
+                description: Tertiary background
+                value: '#FFFFFF'
+            text:
+              accent:
+                description: Subtle text
+                value: '#07A88D'
+              footer:
+                description: Footer text
+                value: '#FFFFFF'
+              header:
+                description: Header text
+                value: rgba(0,0,0,0.8)
+              headings:
+                description: Headings text
+                value: rgba(0,0,0,0.8)
+              hero:
+                description: Hero text
+                value: '#FFFFFF'
+              link:
+                description: Link text
+                value: '#07A88D'
+              primary:
+                description: Main content text
+                value: rgba(0,0,0,0.8)
+              secondary:
+                description: Supporting text
+                value: rgba(0,0,0,0.8)
+        images:
+          catalog_cover:
+            data: data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+          favicon:
+            data: data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+            filename: favicon.ico
+          logo:
+            data: data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+            filename: logo.png
+        text:
+          catalog:
+            primary_header: Come on in!
+            welcome_message: Welcome
+        theme_name: custom
+        use_custom_fonts: true
     UpdatePortalRequest:
       additionalProperties: false
       example:
