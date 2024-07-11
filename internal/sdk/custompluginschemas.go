@@ -38,6 +38,7 @@ func (s *CustomPluginSchemas) CreatePluginSchemas(ctx context.Context, request o
 
 	o := operations.Options{}
 	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
 		operations.SupportedOptionAcceptHeaderOverride,
 	}
 
@@ -46,6 +47,7 @@ func (s *CustomPluginSchemas) CreatePluginSchemas(ctx context.Context, request o
 			return nil, fmt.Errorf("error applying option: %w", err)
 		}
 	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugin-schemas", request, nil)
 	if err != nil {
@@ -55,6 +57,17 @@ func (s *CustomPluginSchemas) CreatePluginSchemas(ctx context.Context, request o
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreatePluginSchemas", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
@@ -197,6 +210,7 @@ func (s *CustomPluginSchemas) GetPluginSchema(ctx context.Context, request opera
 
 	o := operations.Options{}
 	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
 		operations.SupportedOptionAcceptHeaderOverride,
 	}
 
@@ -205,10 +219,22 @@ func (s *CustomPluginSchemas) GetPluginSchema(ctx context.Context, request opera
 			return nil, fmt.Errorf("error applying option: %w", err)
 		}
 	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugin-schemas/{name}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", opURL, nil)
@@ -338,6 +364,7 @@ func (s *CustomPluginSchemas) UpdatePluginSchemas(ctx context.Context, request o
 
 	o := operations.Options{}
 	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
 		operations.SupportedOptionAcceptHeaderOverride,
 	}
 
@@ -346,6 +373,7 @@ func (s *CustomPluginSchemas) UpdatePluginSchemas(ctx context.Context, request o
 			return nil, fmt.Errorf("error applying option: %w", err)
 		}
 	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugin-schemas/{name}", request, nil)
 	if err != nil {
@@ -355,6 +383,17 @@ func (s *CustomPluginSchemas) UpdatePluginSchemas(ctx context.Context, request o
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreatePluginSchemas", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "PUT", opURL, bodyReader)
@@ -475,7 +514,7 @@ func (s *CustomPluginSchemas) UpdatePluginSchemas(ctx context.Context, request o
 
 // DeletePluginSchemas - Delete custom plugin schema
 // Delete an individual custom plugin schema.
-func (s *CustomPluginSchemas) DeletePluginSchemas(ctx context.Context, request operations.DeletePluginSchemasRequest) (*operations.DeletePluginSchemasResponse, error) {
+func (s *CustomPluginSchemas) DeletePluginSchemas(ctx context.Context, request operations.DeletePluginSchemasRequest, opts ...operations.Option) (*operations.DeletePluginSchemasResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "delete-plugin-schemas",
@@ -483,10 +522,32 @@ func (s *CustomPluginSchemas) DeletePluginSchemas(ctx context.Context, request o
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugin-schemas/{name}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "DELETE", opURL, nil)

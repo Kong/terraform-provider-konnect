@@ -4,7 +4,7 @@ package types
 
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
-type CreatePreFunctionPluginConfig struct {
+type CreatePostFunctionPluginConfig struct {
 	Access          []types.String `tfsdk:"access"`
 	BodyFilter      []types.String `tfsdk:"body_filter"`
 	Certificate     []types.String `tfsdk:"certificate"`

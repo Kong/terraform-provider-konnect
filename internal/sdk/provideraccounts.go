@@ -39,6 +39,7 @@ func (s *ProviderAccounts) ListProviderAccounts(ctx context.Context, request ope
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionServerURL,
+		operations.SupportedOptionTimeout,
 		operations.SupportedOptionAcceptHeaderOverride,
 	}
 
@@ -47,6 +48,7 @@ func (s *ProviderAccounts) ListProviderAccounts(ctx context.Context, request ope
 			return nil, fmt.Errorf("error applying option: %w", err)
 		}
 	}
+
 	baseURL := utils.ReplaceParameters(operations.ListProviderAccountsServerList[0], map[string]string{})
 	if o.ServerURL != nil {
 		baseURL = *o.ServerURL
@@ -55,6 +57,17 @@ func (s *ProviderAccounts) ListProviderAccounts(ctx context.Context, request ope
 	opURL, err := url.JoinPath(baseURL, "/v2/cloud-gateways/provider-accounts")
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", opURL, nil)

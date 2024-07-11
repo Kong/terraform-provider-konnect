@@ -32,19 +32,19 @@ type GatewayPluginPreFunctionResource struct {
 
 // GatewayPluginPreFunctionResourceModel describes the resource data model.
 type GatewayPluginPreFunctionResourceModel struct {
-	Config         *tfTypes.CreatePreFunctionPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer                   `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLConsumer                   `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                           `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                            `tfsdk:"created_at"`
-	Enabled        types.Bool                             `tfsdk:"enabled"`
-	ID             types.String                           `tfsdk:"id"`
-	InstanceName   types.String                           `tfsdk:"instance_name"`
-	Protocols      []types.String                         `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer                   `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer                   `tfsdk:"service"`
-	Tags           []types.String                         `tfsdk:"tags"`
-	UpdatedAt      types.Int64                            `tfsdk:"updated_at"`
+	Config         *tfTypes.CreatePostFunctionPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer                    `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer                    `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                            `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                             `tfsdk:"created_at"`
+	Enabled        types.Bool                              `tfsdk:"enabled"`
+	ID             types.String                            `tfsdk:"id"`
+	InstanceName   types.String                            `tfsdk:"instance_name"`
+	Protocols      []types.String                          `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer                    `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer                    `tfsdk:"service"`
+	Tags           []types.String                          `tfsdk:"tags"`
+	UpdatedAt      types.Int64                             `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginPreFunctionResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {

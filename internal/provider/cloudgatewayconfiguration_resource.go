@@ -561,5 +561,5 @@ func (r *CloudGatewayConfigurationResource) Delete(ctx context.Context, req reso
 }
 
 func (r *CloudGatewayConfigurationResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id").AtName("id"), req.ID)...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), req.ID)...)
 }

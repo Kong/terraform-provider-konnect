@@ -15,10 +15,10 @@ import (
 
 // ServerList contains the list of servers available to the SDK
 var ServerList = []string{
+	"https://global.api.konghq.com",
 	"https://us.api.konghq.com",
 	"https://eu.api.konghq.com",
 	"https://au.api.konghq.com",
-	"https://global.api.konghq.com",
 }
 
 // HTTPClient provides an interface for suplying the SDK with a custom HTTP client
@@ -56,6 +56,7 @@ type sdkConfiguration struct {
 	UserAgent         string
 	RetryConfig       *retry.Config
 	Hooks             *hooks.Hooks
+	Timeout           *time.Duration
 }
 
 func (c *sdkConfiguration) GetServerDetails() (string, map[string]string) {
@@ -73,6 +74,7 @@ type Konnect struct {
 	ServerlessCloudGateways        *ServerlessCloudGateways
 	Mesh                           *Mesh
 	APIProducts                    *APIProducts
+	APIProductDocumentation        *APIProductDocumentation
 	APIProductVersions             *APIProductVersions
 	APIProductVersionSpecification *APIProductVersionSpecification
 	// Application Auth Strategies are sets of plugin configurations that represent how the gateway will perform authentication and authorization for a Product Version.
@@ -181,6 +183,8 @@ type Konnect struct {
 	ControlPlaneGroups *ControlPlaneGroups
 	// APIs related to Configuration of Konnect Developer Portals.
 	Portals *Portals
+	// APIs related to Konnect Developer Portal Appearance Settings.
+	PortalAppearance *PortalAppearance
 	// APIs related to Konnect Developer Portal Authentication Settings.
 	PortalAuthSettings *PortalAuthSettings
 	// Portal Product Versions hold metadata that describes how a Product Version is configured for a specific portal.
@@ -262,6 +266,13 @@ func WithRetryConfig(retryConfig retry.Config) SDKOption {
 	}
 }
 
+// WithTimeout Optional request timeout applied to each operation
+func WithTimeout(timeout time.Duration) SDKOption {
+	return func(sdk *Konnect) {
+		sdk.sdkConfiguration.Timeout = &timeout
+	}
+}
+
 // New creates a new instance of the SDK with the provided options
 func New(opts ...SDKOption) *Konnect {
 	sdk := &Konnect{
@@ -269,8 +280,8 @@ func New(opts ...SDKOption) *Konnect {
 			Language:          "go",
 			OpenAPIDocVersion: "2.0.0",
 			SDKVersion:        "0.0.1",
-			GenVersion:        "2.359.0",
-			UserAgent:         "speakeasy-sdk/go 0.0.1 2.359.0 2.0.0 github.com/kong/terraform-provider-konnect/internal/sdk",
+			GenVersion:        "2.365.0",
+			UserAgent:         "speakeasy-sdk/go 0.0.1 2.365.0 2.0.0 github.com/kong/terraform-provider-konnect/internal/sdk",
 			Hooks:             hooks.New(),
 		},
 	}
@@ -295,6 +306,8 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.Mesh = newMesh(sdk.sdkConfiguration)
 
 	sdk.APIProducts = newAPIProducts(sdk.sdkConfiguration)
+
+	sdk.APIProductDocumentation = newAPIProductDocumentation(sdk.sdkConfiguration)
 
 	sdk.APIProductVersions = newAPIProductVersions(sdk.sdkConfiguration)
 
@@ -357,6 +370,8 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.ControlPlaneGroups = newControlPlaneGroups(sdk.sdkConfiguration)
 
 	sdk.Portals = newPortals(sdk.sdkConfiguration)
+
+	sdk.PortalAppearance = newPortalAppearance(sdk.sdkConfiguration)
 
 	sdk.PortalAuthSettings = newPortalAuthSettings(sdk.sdkConfiguration)
 

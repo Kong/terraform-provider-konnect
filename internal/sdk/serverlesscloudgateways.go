@@ -39,6 +39,7 @@ func (s *ServerlessCloudGateways) CreateServerlessCloudGateway(ctx context.Conte
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionServerURL,
+		operations.SupportedOptionTimeout,
 		operations.SupportedOptionAcceptHeaderOverride,
 	}
 
@@ -47,6 +48,7 @@ func (s *ServerlessCloudGateways) CreateServerlessCloudGateway(ctx context.Conte
 			return nil, fmt.Errorf("error applying option: %w", err)
 		}
 	}
+
 	baseURL := utils.ReplaceParameters(operations.CreateServerlessCloudGatewayServerList[0], map[string]string{})
 	if o.ServerURL != nil {
 		baseURL = *o.ServerURL
@@ -60,6 +62,17 @@ func (s *ServerlessCloudGateways) CreateServerlessCloudGateway(ctx context.Conte
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Request", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
@@ -191,6 +204,7 @@ func (s *ServerlessCloudGateways) GetServerlessCloudGateway(ctx context.Context,
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionServerURL,
+		operations.SupportedOptionTimeout,
 		operations.SupportedOptionAcceptHeaderOverride,
 	}
 
@@ -199,6 +213,7 @@ func (s *ServerlessCloudGateways) GetServerlessCloudGateway(ctx context.Context,
 			return nil, fmt.Errorf("error applying option: %w", err)
 		}
 	}
+
 	baseURL := utils.ReplaceParameters(operations.GetServerlessCloudGatewayServerList[0], map[string]string{})
 	if o.ServerURL != nil {
 		baseURL = *o.ServerURL
@@ -207,6 +222,17 @@ func (s *ServerlessCloudGateways) GetServerlessCloudGateway(ctx context.Context,
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v0/serverless-cloud-gateways/{controlPlaneId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", opURL, nil)
@@ -337,6 +363,7 @@ func (s *ServerlessCloudGateways) DeleteServerlessCloudGateway(ctx context.Conte
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionServerURL,
+		operations.SupportedOptionTimeout,
 	}
 
 	for _, opt := range opts {
@@ -344,6 +371,7 @@ func (s *ServerlessCloudGateways) DeleteServerlessCloudGateway(ctx context.Conte
 			return nil, fmt.Errorf("error applying option: %w", err)
 		}
 	}
+
 	baseURL := utils.ReplaceParameters(operations.DeleteServerlessCloudGatewayServerList[0], map[string]string{})
 	if o.ServerURL != nil {
 		baseURL = *o.ServerURL
@@ -352,6 +380,17 @@ func (s *ServerlessCloudGateways) DeleteServerlessCloudGateway(ctx context.Conte
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v0/serverless-cloud-gateways/{controlPlaneId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "DELETE", opURL, nil)

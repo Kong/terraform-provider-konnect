@@ -6,6 +6,7 @@ import (
 	"errors"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/retry"
+	"time"
 )
 
 var ErrUnsupportedOption = errors.New("unsupported option")
@@ -13,6 +14,7 @@ var ErrUnsupportedOption = errors.New("unsupported option")
 const (
 	SupportedOptionServerURL            = "serverURL"
 	SupportedOptionRetries              = "retries"
+	SupportedOptionTimeout              = "timeout"
 	SupportedOptionAcceptHeaderOverride = "acceptHeaderOverride"
 )
 
@@ -31,6 +33,7 @@ func (e AcceptHeaderEnum) ToPointer() *AcceptHeaderEnum {
 type Options struct {
 	ServerURL            *string
 	Retries              *retry.Config
+	Timeout              *time.Duration
 	AcceptHeaderOverride *AcceptHeaderEnum
 }
 
@@ -72,6 +75,18 @@ func WithRetries(config retry.Config) Option {
 		}
 
 		opts.Retries = &config
+		return nil
+	}
+}
+
+// WithOperationTimeout allows setting the request timeout applied for an operation.
+func WithOperationTimeout(timeout time.Duration) Option {
+	return func(opts *Options, supportedOptions ...string) error {
+		if !utils.Contains(supportedOptions, SupportedOptionRetries) {
+			return ErrUnsupportedOption
+		}
+
+		opts.Timeout = &timeout
 		return nil
 	}
 }

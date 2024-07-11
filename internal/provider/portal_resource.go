@@ -5,8 +5,10 @@ package provider
 import (
 	"context"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -30,24 +32,25 @@ type PortalResource struct {
 
 // PortalResourceModel describes the resource data model.
 type PortalResourceModel struct {
-	ApplicationCount                 types.Number `tfsdk:"application_count"`
-	AutoApproveApplications          types.Bool   `tfsdk:"auto_approve_applications"`
-	AutoApproveDevelopers            types.Bool   `tfsdk:"auto_approve_developers"`
-	CreatedAt                        types.String `tfsdk:"created_at"`
-	CustomClientDomain               types.String `tfsdk:"custom_client_domain"`
-	CustomDomain                     types.String `tfsdk:"custom_domain"`
-	DefaultApplicationAuthStrategyID types.String `tfsdk:"default_application_auth_strategy_id"`
-	DefaultDomain                    types.String `tfsdk:"default_domain"`
-	Description                      types.String `tfsdk:"description"`
-	DeveloperCount                   types.Number `tfsdk:"developer_count"`
-	DisplayName                      types.String `tfsdk:"display_name"`
-	ID                               types.String `tfsdk:"id"`
-	IsPublic                         types.Bool   `tfsdk:"is_public"`
-	Name                             types.String `tfsdk:"name"`
-	PortalID                         types.String `tfsdk:"portal_id"`
-	PublishedProductCount            types.Number `tfsdk:"published_product_count"`
-	RbacEnabled                      types.Bool   `tfsdk:"rbac_enabled"`
-	UpdatedAt                        types.String `tfsdk:"updated_at"`
+	ApplicationCount                 types.Number            `tfsdk:"application_count"`
+	AutoApproveApplications          types.Bool              `tfsdk:"auto_approve_applications"`
+	AutoApproveDevelopers            types.Bool              `tfsdk:"auto_approve_developers"`
+	CreatedAt                        types.String            `tfsdk:"created_at"`
+	CustomClientDomain               types.String            `tfsdk:"custom_client_domain"`
+	CustomDomain                     types.String            `tfsdk:"custom_domain"`
+	DefaultApplicationAuthStrategyID types.String            `tfsdk:"default_application_auth_strategy_id"`
+	DefaultDomain                    types.String            `tfsdk:"default_domain"`
+	Description                      types.String            `tfsdk:"description"`
+	DeveloperCount                   types.Number            `tfsdk:"developer_count"`
+	DisplayName                      types.String            `tfsdk:"display_name"`
+	Force                            types.String            `tfsdk:"force"`
+	ID                               types.String            `tfsdk:"id"`
+	IsPublic                         types.Bool              `tfsdk:"is_public"`
+	Labels                           map[string]types.String `tfsdk:"labels"`
+	Name                             types.String            `tfsdk:"name"`
+	PublishedProductCount            types.Number            `tfsdk:"published_product_count"`
+	RbacEnabled                      types.Bool              `tfsdk:"rbac_enabled"`
+	UpdatedAt                        types.String            `tfsdk:"updated_at"`
 }
 
 func (r *PortalResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -112,6 +115,18 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				Optional:    true,
 				Description: `The display name of the portal. This value will be the portal's ` + "`" + `name` + "`" + ` in Portal API.`,
 			},
+			"force": schema.StringAttribute{
+				Computed:    true,
+				Optional:    true,
+				Default:     stringdefault.StaticString("false"),
+				Description: `If true, delete specified portal and all related entities, even if there are developers registered to portal or if there are portal product versions with application registration enabled. If false, do not allow deletion if there are developers registered to portal or if there are portal product versions with application registration enabled. must be one of ["true", "false"]; Default: "false"`,
+				Validators: []validator.String{
+					stringvalidator.OneOf(
+						"true",
+						"false",
+					),
+				},
+			},
 			"id": schema.StringAttribute{
 				Computed:    true,
 				Description: `Contains a unique identifier used for this resource.`,
@@ -121,14 +136,18 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				Optional:    true,
 				Description: `Whether the portal catalog can be accessed publicly without any developer authentication. Developer accounts and applications cannot be created if the portal is public.`,
 			},
-			"name": schema.StringAttribute{
+			"labels": schema.MapAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The name of the portal, used to distinguish it from other portals. Name must be unique.`,
+				ElementType: types.StringType,
+				MarkdownDescription: `description: A maximum of 50 user-defined labels are allowed on this resource.` + "\n" +
+					`Keys must not start with kong, konnect, insomnia, mesh, kic or _, which are reserved for Kong.` + "\n" +
+					`Keys are case-sensitive.` + "\n" +
+					``,
 			},
-			"portal_id": schema.StringAttribute{
+			"name": schema.StringAttribute{
 				Required:    true,
-				Description: `ID of the portal.`,
+				Description: `The name of the portal, used to distinguish it from other portals. Name must be unique.`,
 			},
 			"published_product_count": schema.NumberAttribute{
 				Computed:    true,
@@ -188,13 +207,8 @@ func (r *PortalResource) Create(ctx context.Context, req resource.CreateRequest,
 		return
 	}
 
-	portalID := data.PortalID.ValueString()
-	updatePortalRequest := *data.ToSharedUpdatePortalRequest()
-	request := operations.UpdatePortalRequest{
-		PortalID:            portalID,
-		UpdatePortalRequest: updatePortalRequest,
-	}
-	res, err := r.client.Portals.UpdatePortal(ctx, request)
+	request := *data.ToSharedCreatePortalRequest()
+	res, err := r.client.Portals.CreatePortal(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -206,15 +220,15 @@ func (r *PortalResource) Create(ctx context.Context, req resource.CreateRequest,
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 200 {
+	if res.StatusCode != 201 {
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.UpdatePortalResponse != nil) {
+	if !(res.CreatePortalResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedUpdatePortalResponse(res.UpdatePortalResponse)
+	data.RefreshFromSharedCreatePortalResponse(res.CreatePortalResponse)
 	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
@@ -259,7 +273,7 @@ func (r *PortalResource) Update(ctx context.Context, req resource.UpdateRequest,
 		return
 	}
 
-	portalID := data.PortalID.ValueString()
+	portalID := data.ID.ValueString()
 	updatePortalRequest := *data.ToSharedUpdatePortalRequest()
 	request := operations.UpdatePortalRequest{
 		PortalID:            portalID,
@@ -310,7 +324,34 @@ func (r *PortalResource) Delete(ctx context.Context, req resource.DeleteRequest,
 		return
 	}
 
-	// Not Implemented; entity does not have a configured DELETE operation
+	portalID := data.ID.ValueString()
+	force := new(operations.Force)
+	if !data.Force.IsUnknown() && !data.Force.IsNull() {
+		*force = operations.Force(data.Force.ValueString())
+	} else {
+		force = nil
+	}
+	request := operations.DeletePortalRequest{
+		PortalID: portalID,
+		Force:    force,
+	}
+	res, err := r.client.Portals.DeletePortal(ctx, request)
+	if err != nil {
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res != nil && res.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
+		}
+		return
+	}
+	if res == nil {
+		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
+		return
+	}
+	if res.StatusCode != 204 {
+		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
+		return
+	}
+
 }
 
 func (r *PortalResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
