@@ -11,10 +11,10 @@ info:
   title: Konnect API
   version: 2.0.0
 servers:
+  - url: https://global.api.konghq.com
   - url: https://us.api.konghq.com
   - url: https://eu.api.konghq.com
   - url: https://au.api.konghq.com
-  - url: https://global.api.konghq.com
 paths:
   /v0/serverless-cloud-gateways:
     post:
@@ -208,6 +208,122 @@ paths:
           $ref: '#/components/responses/UnsupportedMediaType'
       tags:
         - API Products
+  /v2/api-products/{apiProductId}/documents:
+    parameters:
+      - description: The API product identifier
+        in: path
+        name: apiProductId
+        required: true
+        schema:
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+          format: uuid
+          type: string
+    post:
+      x-speakeasy-entity-operation: APIProductDocument#create
+      operationId: create-api-product-document
+      summary: Create API Product Document
+      description: Creates a document for an API product.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateAPIProductDocumentRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/APIProductDocumentResponse'
+        '400':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+          description: Bad Request
+        '401':
+          $ref: '#/components/responses/ApiProductUnauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/ApiProductNotFound'
+        '409':
+          $ref: '#/components/responses/SlugConflict'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+      tags:
+        - API Product Documentation
+  /v2/api-products/{apiProductId}/documents/{id}:
+    parameters:
+      - description: The API product identifier
+        in: path
+        name: apiProductId
+        required: true
+        schema:
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+          format: uuid
+          type: string
+      - description: The document identifier related to the API product
+        in: path
+        name: id
+        required: true
+        schema:
+          example: de5c9818-be5c-42e6-b514-e3d4bc30ddeb
+          format: uuid
+          type: string
+    get:
+      x-speakeasy-entity-operation: APIProductDocument#read
+      operationId: get-api-product-document
+      summary: Fetch API Product Document
+      description: Returns a document for the API product.
+      responses:
+        '200':
+          $ref: '#/components/responses/APIProductDocumentResponse'
+        '401':
+          $ref: '#/components/responses/ApiProductUnauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/ApiProductNotFound'
+      tags:
+        - API Product Documentation
+    patch:
+      x-speakeasy-entity-operation: APIProductDocument#update
+      operationId: update-api-product-document
+      summary: Update an API Product Document
+      description: Updates a document for an API product.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateAPIProductDocumentRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/APIProductDocumentResponse'
+        '400':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+          description: Bad Request
+        '401':
+          $ref: '#/components/responses/ApiProductUnauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/ApiProductNotFound'
+        '409':
+          $ref: '#/components/responses/SlugConflict'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+      tags:
+        - API Product Documentation
+    delete:
+      x-speakeasy-entity-operation: APIProductDocument#delete
+      operationId: delete-api-product-document
+      summary: Delete API Product Documentation
+      description: Removes a document from an API product.
+      responses:
+        '204':
+          description: Document for the API product was deleted successfully.
+        '401':
+          $ref: '#/components/responses/ApiProductUnauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/ApiProductNotFound'
+      tags:
+        - API Product Documentation
   /v2/api-products/{apiProductId}/product-versions:
     parameters:
       - description: The API Product ID
@@ -3115,6 +3231,61 @@ paths:
           $ref: '#/components/responses/HTTP401Error'
       tags:
         - Plugins
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#PostFunction:
+    parameters:
+      - $ref: '#/components/parameters/PluginId'
+      - $ref: '#/components/parameters/ControlPlaneId'
+    get:
+      x-speakeasy-entity-operation: GatewayPluginPostFunction#read
+      operationId: get-postfunction-plugin
+      summary: Get a PostFunction plugin
+      description: Get a PostFunction plugin
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostFunctionPlugin'
+          description: PostFunction plugin
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+        '404':
+          description: Resource does not exist
+      tags:
+        - Plugins
+    put:
+      x-speakeasy-entity-operation: GatewayPluginPostFunction#update
+      operationId: update-postfunction-plugin
+      summary: Update a PostFunction plugin
+      description: Update a PostFunction plugin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePostFunctionPlugin'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostFunctionPlugin'
+          description: PostFunction plugin
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Plugins
+    delete:
+      x-speakeasy-entity-operation: GatewayPluginPostFunction#delete
+      operationId: delete-postfunction-plugin
+      summary: Delete a PostFunction plugin
+      description: Delete a PostFunction plugin
+      responses:
+        '204':
+          description: Successfully deleted Plugin or the resource didn't exist
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Plugins
   /v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#PreFunction:
     parameters:
       - $ref: '#/components/parameters/PluginId'
@@ -3720,6 +3891,61 @@ paths:
           $ref: '#/components/responses/HTTP401Error'
       tags:
         - Plugins
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#Statsd:
+    parameters:
+      - $ref: '#/components/parameters/PluginId'
+      - $ref: '#/components/parameters/ControlPlaneId'
+    get:
+      x-speakeasy-entity-operation: GatewayPluginStatsd#read
+      operationId: get-statsd-plugin
+      summary: Get a Statsd plugin
+      description: Get a Statsd plugin
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatsdPlugin'
+          description: Statsd plugin
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+        '404':
+          description: Resource does not exist
+      tags:
+        - Plugins
+    put:
+      x-speakeasy-entity-operation: GatewayPluginStatsd#update
+      operationId: update-statsd-plugin
+      summary: Update a Statsd plugin
+      description: Update a Statsd plugin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateStatsdPlugin'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatsdPlugin'
+          description: Statsd plugin
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Plugins
+    delete:
+      x-speakeasy-entity-operation: GatewayPluginStatsd#delete
+      operationId: delete-statsd-plugin
+      summary: Delete a Statsd plugin
+      description: Delete a Statsd plugin
+      responses:
+        '204':
+          description: Successfully deleted Plugin or the resource didn't exist
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Plugins
   /v2/control-planes/{controlPlaneId}/core-entities/plugins#ACL:
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
@@ -4176,6 +4402,30 @@ paths:
           $ref: '#/components/responses/HTTP401Error'
       tags:
         - Plugins
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins#PostFunction:
+    parameters:
+      - $ref: '#/components/parameters/ControlPlaneId'
+    post:
+      x-speakeasy-entity-operation: GatewayPluginPostFunction#create
+      operationId: create-postfunction-plugin
+      summary: Create a PostFunction plugin
+      description: Create a PostFunction plugin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePostFunctionPlugin'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostFunctionPlugin'
+          description: Created PostFunction plugin
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Plugins
   /v2/control-planes/{controlPlaneId}/core-entities/plugins#PreFunction:
     parameters:
       - $ref: '#/components/parameters/ControlPlaneId'
@@ -4436,6 +4686,30 @@ paths:
               schema:
                 $ref: '#/components/schemas/SamlPlugin'
           description: Created Saml plugin
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Plugins
+  /v2/control-planes/{controlPlaneId}/core-entities/plugins#Statsd:
+    parameters:
+      - $ref: '#/components/parameters/ControlPlaneId'
+    post:
+      x-speakeasy-entity-operation: GatewayPluginStatsd#create
+      operationId: create-statsd-plugin
+      summary: Create a Statsd plugin
+      description: Create a Statsd plugin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateStatsdPlugin'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatsdPlugin'
+          description: Created Statsd plugin
         '401':
           $ref: '#/components/responses/HTTP401Error'
       tags:
@@ -5147,11 +5421,42 @@ paths:
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageNumber'
         - $ref: '#/components/parameters/SortPortals'
+    post:
+      x-speakeasy-entity-operation: Portal#create
+      operationId: create-portal
+      summary: Create Portal
+      description: >-
+        Creates a new developer portal scoped in this region for this
+        organization.
+      requestBody:
+        $ref: '#/components/requestBodies/CreatePortal'
+      responses:
+        '201':
+          $ref: '#/components/responses/CreatePortal'
+        '400':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+          description: Bad Request
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Portals
   /v2/portals/{portalId}:
     parameters:
-      - $ref: '#/components/parameters/parameters-PortalId'
+      - description: ID of the portal.
+        in: path
+        name: portalId
+        required: true
+        schema:
+          format: uuid
+          type: string
+        x-speakeasy-match: id
     patch:
-      x-speakeasy-entity-operation: Portal#create,update
+      x-speakeasy-entity-operation: Portal#update
       operationId: update-portal
       summary: Update Portal
       description: >-
@@ -5178,6 +5483,48 @@ paths:
           $ref: '#/components/responses/Conflict'
       tags:
         - Portals
+    delete:
+      x-speakeasy-entity-operation: Portal#delete
+      operationId: delete-portal
+      summary: Delete Portal
+      description: >-
+        Deletes a single portal, along with all related entities. Will not allow
+        deletion if there are developers registered to portal or if there are
+        portal product versions with application registration enabled, unless
+        force=true query param is included in the request.
+      responses:
+        '204':
+          description: No Content
+        '400':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+          description: Bad Request
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portals
+      parameters:
+        - description: >-
+            If true, delete specified portal and all related entities, even if
+            there are developers registered to portal or if there are portal
+            product versions with application registration enabled. If false, do
+            not allow deletion if there are developers registered to portal or
+            if there are portal product versions with application registration
+            enabled.
+          in: query
+          name: force
+          schema:
+            default: 'false'
+            enum:
+              - 'true'
+              - 'false'
+            type: string
     x-speakeasy-entity-operation:
       '0': P
       '1': o
@@ -5190,6 +5537,59 @@ paths:
       '8': e
       '9': a
       '10': d
+  /v2/portals/{portalId}/appearance:
+    get:
+      x-speakeasy-entity-operation: PortalAppearance#read
+      operationId: get-portal-appearance
+      summary: Get Appearance Configuration
+      description: >-
+        Returns the current portal appearance configuration including any custom
+        theme, colors, fonts, and image settings. Portals using the
+        fully-customizable portal client may override or ignore these settings
+        by disregarding them in the code.
+      responses:
+        '200':
+          $ref: '#/components/responses/GetPortalAppearance'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Appearance
+      parameters:
+        - $ref: '#/components/parameters/parameters-PortalId'
+    patch:
+      x-speakeasy-entity-operation: PortalAppearance#create,update
+      operationId: update-portal-appearance
+      summary: Update Appearance Configuration
+      description: >-
+        Updates the current appearance configuration for this portal including
+        setting pre-defined or custom themes, fonts, colors, and images. Note
+        that portals using the fully-customizable portal client may override or
+        ignore these settings by disregarding them in the code.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdatePortalAppearance'
+      responses:
+        '200':
+          $ref: '#/components/responses/UpdatePortalAppearance'
+        '400':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+          description: Bad Request
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Appearance
+      parameters:
+        - $ref: '#/components/parameters/parameters-PortalId'
   /v2/portals/{portalId}/authentication-settings:
     parameters:
       - $ref: '#/components/parameters/parameters-PortalId'
@@ -6252,6 +6652,12 @@ components:
               - lua_schema
             type: object
             x-speakeasy-entity: GatewayCustomPluginSchema
+    CreateAPIProductDocumentRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateAPIProductDocumentDTO'
+      required: true
     CreateAPIProductRequest:
       content:
         application/json:
@@ -6276,6 +6682,13 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/CreateAppAuthStrategyRequest'
+      required: true
+    CreatePortal:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreatePortalRequest'
+      description: Create a portal.
       required: true
     CreateSystemAccount:
       content:
@@ -6378,6 +6791,12 @@ components:
           schema:
             $ref: '#/components/schemas/ReplacePortalProductVersionPayload'
       required: true
+    UpdateAPIProductDocumentRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateAPIProductDocumentDTO'
+      required: true
     UpdateAPIProductRequest:
       content:
         application/json:
@@ -6409,6 +6828,13 @@ components:
           schema:
             $ref: '#/components/schemas/UpdatePortalRequest'
       description: Update a portal's settings.
+      required: true
+    UpdatePortalAppearance:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdatePortalAppearanceRequest'
+      description: Update a portal's appearance settings
       required: true
     UpdatePortalAuthenticationSettings:
       content:
@@ -6463,6 +6889,12 @@ components:
             x-speakeasy-entity: Team
       description: The request schema for the update team request.
   responses:
+    APIProductDocumentResponse:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/APIProductDocument'
+      description: API product document
     ApiProductNotFound:
       content:
         application/problem+json:
@@ -6605,6 +7037,12 @@ components:
           schema:
             $ref: '#/components/schemas/Network'
       description: Response format for creating a network.
+    CreatePortal:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreatePortalResponse'
+      description: Details about the portal that was created.
     CreateServerlessCloudGatewayResponse:
       content:
         application/json:
@@ -6635,6 +7073,12 @@ components:
           schema:
             $ref: '#/components/schemas/GetAppAuthStrategyResponse'
       description: A response containing a single application auth strategy object.
+    GetPortalAppearance:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GetPortalAppearanceResponse'
+      description: Details about a portal's current appearance settings.
     HTTP401Error:
       content:
         application/json:
@@ -6880,6 +7324,25 @@ components:
             title: ServiceUnavailableError
             type: object
       description: Service Unavailable
+    SlugConflict:
+      content:
+        application/problem+json:
+          schema:
+            properties:
+              instance:
+                type: string
+              status:
+                type: number
+              title:
+                type: string
+              type:
+                type: string
+            required:
+              - status
+              - title
+              - instance
+            type: object
+      description: Conflict - `slug` property must be unique
     SystemAccountAccessTokenCreated:
       content:
         application/json:
@@ -7014,6 +7477,12 @@ components:
           schema:
             $ref: '#/components/schemas/UpdatePortalResponse'
       description: Details about the portal being updated.
+    UpdatePortalAppearance:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdatePortalAppearanceResponse'
+      description: Details about the appearance settings being updated.
     VersionSpecConflict:
       content:
         application/problem+json:
@@ -7483,6 +7952,47 @@ components:
       title: API Product
       type: object
       x-speakeasy-entity: ApiProduct
+    APIProductDocument:
+      description: an api product document
+      properties:
+        content:
+          description: The unencoded markdown string of the api product document.
+          type: string
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        id:
+          format: uuid
+          type: string
+        metadata:
+          type: object
+        parent_document_id:
+          format: uuid
+          nullable: true
+          type: string
+        slug:
+          type: string
+        status:
+          enum:
+            - unpublished
+            - published
+          type: string
+        title:
+          type: string
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - id
+        - parent_document_id
+        - title
+        - slug
+        - status
+        - metadata
+        - content
+        - ast
+        - updated_at
+        - created_at
+      title: ApiProductDocument
+      type: object
     APIProductPortal:
       additionalProperties: false
       properties:
@@ -7682,7 +8192,9 @@ components:
         name:
           description: The name of the API product version specification
           example: oas.yaml
+          pattern: .+(\.yaml|\.yml|\.json)
           type: string
+          x-speakeasy-plan-validators: OpenApiSpecFilenameValidator
         updated_at:
           $ref: '#/components/schemas/UpdatedAt'
       required:
@@ -7962,6 +8474,210 @@ components:
         - created_at
         - updated_at
       title: AppAuthStrategyOpenIDConnectResponse
+      type: object
+    AppearanceColorVariable:
+      additionalProperties: false
+      example:
+        description: The color for a type of thing
+        value: '#000000'
+      properties:
+        description:
+          maxLength: 512
+          type: string
+        value:
+          maxLength: 255
+          type: string
+      required:
+        - value
+      type: object
+    AppearanceFontName:
+      description: The name of the font to render in the browser.
+      enum:
+        - Roboto
+        - Inter
+        - Open Sans
+        - Lato
+        - Slabo 27px
+        - Slabo 13px
+        - Oswald
+        - Source Sans Pro
+        - Montserrat
+        - Raleway
+        - PT Sans
+        - Lora
+        - Roboto Mono
+        - Inconsolata
+        - Source Code Pro
+        - PT Mono
+        - Ubuntu Mono
+        - IBM Plex Mono
+      example: Roboto
+      type: string
+    AppearanceImage:
+      additionalProperties: false
+      description: >-
+        The image data to upload, along with an optional filename. Images must
+        be a data URL with binary image data in base 64 format. See
+        https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs.
+      example:
+        data: data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+      nullable: true
+      properties:
+        data:
+          $ref: '#/components/schemas/ImageDataUri'
+        filename:
+          maxLength: 512
+          type: string
+      required:
+        - data
+      type: object
+    AppearanceImages:
+      additionalProperties: false
+      description: A collection of binary image data to customize images in the portal
+      example:
+        catalog_cover:
+          data: data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+        favicon:
+          data: data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+        logo:
+          data: data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+      nullable: true
+      properties:
+        catalog_cover:
+          $ref: '#/components/schemas/AppearanceImage'
+        favicon:
+          $ref: '#/components/schemas/AppearanceImage'
+        logo:
+          $ref: '#/components/schemas/AppearanceImage'
+      type: object
+    AppearanceThemeColorVariables:
+      additionalProperties: false
+      example:
+        button:
+          primary_fill:
+            description: Background for Primary Button
+            value: '#1155CB'
+          primary_text:
+            description: Text for Primary Button
+            value: '#FFFFFF'
+        section:
+          accent:
+            description: Subtle background
+            value: '#1F1F1F'
+          body:
+            description: Background for main content
+            value: '#0C0C0C'
+          footer:
+            description: Background for footer
+            value: '#212429'
+          header:
+            description: Background for header
+            value: '#0A161E'
+          hero:
+            description: Background for hero section
+            value: '#1A1D21'
+          stroke:
+            description: Border color
+            value: '#34393F'
+          tertiary:
+            description: Tertiary background
+            value: '#222529'
+        text:
+          accent:
+            description: Subtle text
+            value: '#FFFFFF'
+          footer:
+            description: Footer text
+            value: '#FFFFFF'
+          header:
+            description: Header text
+            value: '#FFFFFF'
+          headings:
+            description: Headings text
+            value: '#FFFFFF'
+          hero:
+            description: Hero text
+            value: rgba(255,255,255,0.8)
+          link:
+            description: Link text
+            value: '#2977FF'
+          primary:
+            description: Main content text
+            value: '#C8C8C9'
+          secondary:
+            description: Supporting text
+            value: '#919294'
+      properties:
+        button:
+          additionalProperties: false
+          properties:
+            primary_fill:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            primary_text:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+          required:
+            - primary_fill
+            - primary_text
+          type: object
+        section:
+          additionalProperties: false
+          properties:
+            accent:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            body:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            footer:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            header:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            hero:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            stroke:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            tertiary:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+          required:
+            - header
+            - body
+            - hero
+            - accent
+            - tertiary
+            - stroke
+            - footer
+          type: object
+        text:
+          additionalProperties: false
+          properties:
+            accent:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            footer:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            header:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            headings:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            hero:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            link:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            primary:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+            secondary:
+              $ref: '#/components/schemas/AppearanceColorVariable'
+          required:
+            - header
+            - hero
+            - headings
+            - primary
+            - secondary
+            - accent
+            - link
+            - footer
+          type: object
+      required:
+        - section
+        - text
+        - button
       type: object
     ApplicationRegistrationEnabled:
       description: >-
@@ -9121,6 +9837,46 @@ components:
         - $ref: '#/components/schemas/Plugin'
         - $ref: '#/components/schemas/AIProxyPluginConfig'
       x-speakeasy-entity: GatewayPluginAIProxy
+    CreateAPIProductDocumentDTO:
+      description: a document payload
+      properties:
+        content:
+          description: Can be markdown string content or base64 encoded string
+          example: '## My Markdown'
+          type: string
+        metadata:
+          description: metadata of the document
+          example:
+            author: John Doe
+          nullable: false
+          type: object
+        parent_document_id:
+          description: parent document id
+          example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
+          format: uuid
+          nullable: true
+          type: string
+        slug:
+          description: >-
+            document slug. must be unique accross documents belonging to an api
+            product
+          example: path-for-seo
+          maxLength: 80
+          pattern: ^[\w-]+$
+          type: string
+        status:
+          $ref: '#/components/schemas/PublishStatus'
+        title:
+          description: document title
+          example: How to create a document in Konnect DocumentHub
+          minLength: 1
+          type: string
+      required:
+        - slug
+        - status
+        - title
+      title: CreateDocumentPayload
+      type: object
     CreateAPIProductDTO:
       additionalProperties: false
       description: The request schema to create an API product.
@@ -9482,6 +10238,88 @@ components:
         - $ref: '#/components/schemas/Plugin'
         - $ref: '#/components/schemas/OpentelemetryPluginConfig'
       x-speakeasy-entity: GatewayPluginOpentelemetry
+    CreatePortalRequest:
+      additionalProperties: false
+      example:
+        auto_approve_applications: false
+        auto_approve_developers: false
+        custom_client_domain: portal.example.com
+        custom_domain: api.example.com
+        default_application_auth_strategy_id: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+        is_public: false
+        name: DevPortal
+        rbac_enabled: true
+      properties:
+        auto_approve_applications:
+          description: >-
+            Whether the requests from applications to register for products will
+            be automatically approved, or if they will be set to pending until
+            approved by an admin.
+          type: boolean
+        auto_approve_developers:
+          description: >-
+            Whether the developer account registrations will be automatically
+            approved, or if they will be set to pending until approved by an
+            admin.
+          type: boolean
+        custom_client_domain:
+          description: >-
+            The custom domain to access a self-hosted customized developer
+            portal client. If this is set, the Konnect-hosted portal will no
+            longer be available.  `custom_domain` must be also set for this
+            value to be set. See https://github.com/Kong/konnect-portal for
+            information on how to get started deploying and customizing your own
+            Konnect portal.
+          format: hostname
+          maxLength: 1024
+          nullable: true
+          type: string
+        custom_domain:
+          description: >-
+            The custom domain to access the developer portal. A CNAME for the
+            portal's default domain must be able to be set for the custom domain
+            for it to be valid. After setting a valid CNAME, an SSL/TLS
+            certificate will be automatically manged for the custom domain, and
+            traffic will be able to use the custom domain to route to the
+            portal's web client and API.
+          format: hostname
+          maxLength: 1024
+          nullable: true
+          type: string
+        default_application_auth_strategy_id:
+          $ref: '#/components/schemas/DefaultApplicationAuthStratID'
+        description:
+          $ref: '#/components/schemas/PortalDescription'
+        display_name:
+          $ref: '#/components/schemas/PortalDisplayName'
+        is_public:
+          description: >-
+            Whether the portal catalog can be accessed publicly without any
+            developer authentication. Developer accounts and applications cannot
+            be created if the portal is public.
+          type: boolean
+        labels:
+          $ref: '#/components/schemas/PortalsLabelsNullable'
+        name:
+          $ref: '#/components/schemas/PortalName'
+        rbac_enabled:
+          description: >-
+            Whether the portal resources are protected by Role Based Access
+            Control (RBAC). If enabled, developers view or register for products
+            until unless assigned to teams with access to view and consume
+            specific products.
+          type: boolean
+      required:
+        - name
+      type: object
+      x-speakeasy-entity: Portal
+    CreatePortalResponse:
+      $ref: '#/components/schemas/Portal'
+    CreatePostFunctionPlugin:
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/PostFunctionPluginConfig'
+      x-speakeasy-entity: GatewayPluginPostFunction
     CreatePreFunctionPlugin:
       allOf:
         - $ref: '#/components/schemas/Plugin'
@@ -9589,6 +10427,11 @@ components:
       title: CreateServerlessCloudGatewayRequest
       type: object
       x-speakeasy-entity: ServerlessCloudGateway
+    CreateStatsdPlugin:
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/StatsdPluginConfig'
+      x-speakeasy-entity: GatewayPluginStatsd
     CreateTransitGatewayRequest:
       additionalProperties: false
       description: Request schema for creating a transit gateway.
@@ -9884,6 +10727,93 @@ components:
       type: string
     GetAppAuthStrategyResponse:
       $ref: '#/components/schemas/AppAuthStrategy'
+    GetPortalAppearanceResponse:
+      allOf:
+        - $ref: '#/components/schemas/PortalAppearance'
+        - required:
+            - theme_name
+            - use_custom_fonts
+            - custom_theme
+            - custom_fonts
+            - text
+            - images
+          type: object
+      example:
+        custom_fonts:
+          base: Roboto
+          code: Roboto
+          headings: Roboto
+        custom_theme:
+          colors:
+            button:
+              primary_fill:
+                description: Background for Primary Button
+                value: '#1155CB'
+              primary_text:
+                description: Text for Primary Button
+                value: '#FFFFFF'
+            section:
+              accent:
+                description: Subtle background
+                value: '#F8F8F8'
+              body:
+                description: Background for main content
+                value: '#FFFFFF'
+              footer:
+                description: Background for footer
+                value: '#07A88D'
+              header:
+                description: Background for header
+                value: '#F8F8F8'
+              hero:
+                description: Background for hero section
+                value: '#F8F8F8'
+              stroke:
+                description: Border color
+                value: rgba(0,0,0,0.1)
+              tertiary:
+                description: Tertiary background
+                value: '#FFFFFF'
+            text:
+              accent:
+                description: Subtle text
+                value: '#07A88D'
+              footer:
+                description: Footer text
+                value: '#FFFFFF'
+              header:
+                description: Header text
+                value: rgba(0,0,0,0.8)
+              headings:
+                description: Headings text
+                value: rgba(0,0,0,0.8)
+              hero:
+                description: Hero text
+                value: '#FFFFFF'
+              link:
+                description: Link text
+                value: '#07A88D'
+              primary:
+                description: Main content text
+                value: rgba(0,0,0,0.8)
+              secondary:
+                description: Supporting text
+                value: rgba(0,0,0,0.8)
+        images:
+          catalog_cover:
+            data: data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+          favicon:
+            data: data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+            filename: favicon.ico
+          logo:
+            data: data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+            filename: logo.png
+        text:
+          catalog:
+            primary_header: Come on in!
+            welcome_message: Welcome
+        theme_name: custom
+        use_custom_fonts: true
     GroupMembership:
       properties:
         members:
@@ -9927,6 +10857,19 @@ components:
           type: string
       type: object
       x-speakeasy-entity: GatewayHMACAuth
+    ImageDataUri:
+      description: >-
+        must be a data URL with base64 image data, e.g.,
+        data:image/jpeg;base64,<BASE64_IMAGE_DATA>
+      example: data:image/png,YW5faW1hZ2VfZmlsZQ==
+      format: uri
+      pattern: >-
+        ^data:image/(png|jpeg|x-icon|ico|icon|vnd.microsoft.icon|gif)(;base64)?,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$
+      title: ImageDataUri
+      type: string
+      x-validation-message: >-
+        must be a data URL with base64 image data, e.g.,
+        data:image/jpeg;base64,<BASE64_IMAGE_DATA>
     InstanceTypeName:
       description: Instance type name to indicate capacity.
       enum:
@@ -11507,6 +12450,119 @@ components:
       description: Whether to notify developers who are affected by this change
       title: NotifyDevelopers
       type: boolean
+    NullableAppearanceFonts:
+      additionalProperties: false
+      description: >-
+        Font selections to render text in the portal user interface. Must set
+        use_custom_fonts to true to enable using custom font values.
+      nullable: true
+      properties:
+        base:
+          $ref: '#/components/schemas/AppearanceFontName'
+        code:
+          $ref: '#/components/schemas/AppearanceFontName'
+        headings:
+          $ref: '#/components/schemas/AppearanceFontName'
+      required:
+        - base
+        - code
+        - headings
+      type: object
+    NullableAppearanceTextVariables:
+      additionalProperties: false
+      description: Values to display for customizable text in the portal user interface
+      example:
+        catalog:
+          primary_header: Find All of Our Services in a Single Place
+          welcome_message: Welcome to our service catalog
+      nullable: true
+      properties:
+        catalog:
+          additionalProperties: false
+          properties:
+            primary_header:
+              maxLength: 512
+              type: string
+            welcome_message:
+              maxLength: 512
+              type: string
+          required:
+            - welcome_message
+            - primary_header
+          type: object
+      required:
+        - catalog
+      type: object
+    NullableAppearanceThemeVariables:
+      additionalProperties: false
+      description: >-
+        Groups of variables for configuring visual details of the portal user
+        interface. Set theme_name to 'custom' to use custom values for theme
+        variables.
+      example:
+        colors:
+          button:
+            primary_fill:
+              description: Background for Primary Button
+              value: '#1155CB'
+            primary_text:
+              description: Text for Primary Button
+              value: '#FFFFFF'
+          section:
+            accent:
+              description: Subtle background
+              value: '#F8F8F8'
+            body:
+              description: Background for main content
+              value: '#FFFFFF'
+            footer:
+              description: Background for footer
+              value: '#07A88D'
+            header:
+              description: Background for header
+              value: '#F8F8F8'
+            hero:
+              description: Background for hero section
+              value: '#F8F8F8'
+            stroke:
+              description: Border color
+              value: rgba(0,0,0,0.1)
+            tertiary:
+              description: Tertiary background
+              value: '#FFFFFF'
+          text:
+            accent:
+              description: Subtle text
+              value: '#07A88D'
+            footer:
+              description: Footer text
+              value: '#FFFFFF'
+            header:
+              description: Header text
+              value: rgba(0,0,0,0.8)
+            headings:
+              description: Headings text
+              value: rgba(0,0,0,0.8)
+            hero:
+              description: Hero text
+              value: '#FFFFFF'
+            link:
+              description: Link text
+              value: '#07A88D'
+            primary:
+              description: Main content text
+              value: rgba(0,0,0,0.8)
+            secondary:
+              description: Supporting text
+              value: rgba(0,0,0,0.8)
+      nullable: true
+      properties:
+        colors:
+          $ref: '#/components/schemas/AppearanceThemeColorVariables'
+      required:
+        - colors
+      title: AppearanceThemeVariables
+      type: object
     Oauth2Plugin:
       allOf:
         - $ref: '#/components/schemas/Plugin'
@@ -13621,6 +14677,8 @@ components:
             developer authentication. Developer accounts and applications cannot
             be created if the portal is public.
           type: boolean
+        labels:
+          $ref: '#/components/schemas/PortalsLabels'
         name:
           $ref: '#/components/schemas/PortalName'
         published_product_count:
@@ -13654,6 +14712,101 @@ components:
         - published_product_count
       type: object
       x-speakeasy-entity: Portal
+    PortalAppearance:
+      additionalProperties: false
+      example:
+        custom_fonts:
+          base: Roboto
+          code: Roboto
+          headings: Roboto
+        custom_theme:
+          colors:
+            button:
+              primary_fill:
+                description: Background for Primary Button
+                value: '#1155CB'
+              primary_text:
+                description: Text for Primary Button
+                value: '#FFFFFF'
+            section:
+              accent:
+                description: Subtle background
+                value: '#F8F8F8'
+              body:
+                description: Background for main content
+                value: '#FFFFFF'
+              footer:
+                description: Background for footer
+                value: '#07A88D'
+              header:
+                description: Background for header
+                value: '#F8F8F8'
+              hero:
+                description: Background for hero section
+                value: '#F8F8F8'
+              stroke:
+                description: Border color
+                value: rgba(0,0,0,0.1)
+              tertiary:
+                description: Tertiary background
+                value: '#FFFFFF'
+            text:
+              accent:
+                description: Subtle text
+                value: '#07A88D'
+              footer:
+                description: Footer text
+                value: '#FFFFFF'
+              header:
+                description: Header text
+                value: rgba(0,0,0,0.8)
+              headings:
+                description: Headings text
+                value: rgba(0,0,0,0.8)
+              hero:
+                description: Hero text
+                value: '#FFFFFF'
+              link:
+                description: Link text
+                value: '#07A88D'
+              primary:
+                description: Main content text
+                value: rgba(0,0,0,0.8)
+              secondary:
+                description: Supporting text
+                value: rgba(0,0,0,0.8)
+        images:
+          catalog_cover:
+            data: data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+          favicon:
+            data: data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+            filename: favicon.ico
+          logo:
+            data: data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+            filename: logo.png
+        text:
+          catalog:
+            primary_header: Come one in!
+            welcome_message: Welcome
+        theme_name: custom
+        use_custom_fonts: true
+      properties:
+        custom_fonts:
+          $ref: '#/components/schemas/NullableAppearanceFonts'
+        custom_theme:
+          $ref: '#/components/schemas/NullableAppearanceThemeVariables'
+        images:
+          $ref: '#/components/schemas/AppearanceImages'
+        text:
+          $ref: '#/components/schemas/NullableAppearanceTextVariables'
+        theme_name:
+          $ref: '#/components/schemas/PortalTheme'
+        use_custom_fonts:
+          description: >-
+            If true, fonts in custom_fonts will be used over the theme's default
+            fonts
+          type: boolean
+      type: object
     PortalAuthenticationSettingsResponse:
       description: The developer authentication settings for a portal.
       example:
@@ -13883,6 +15036,105 @@ components:
         - published
         - unpublished
       type: string
+    PortalsLabels:
+      additionalProperties:
+        maxLength: 63
+        minLength: 1
+        pattern: ^[a-z0-9A-Z]{1}([a-z0-9A-Z\-._]*[a-z0-9A-Z]+)?$
+        type: string
+      default: {}
+      description: >
+        description: A maximum of 50 user-defined labels are allowed on this
+        resource.
+
+        Keys must not start with kong, konnect, insomnia, mesh, kic or _, which
+        are reserved for Kong.
+
+        Keys are case-sensitive.
+      title: Labels
+      type: object
+    PortalsLabelsNullable:
+      additionalProperties:
+        maxLength: 63
+        minLength: 1
+        nullable: true
+        pattern: ^[a-z0-9A-Z]{1}([a-z0-9A-Z\-._]*[a-z0-9A-Z]+)?$
+        type: string
+      default: {}
+      description: >
+        description: A maximum of 50 user-defined labels are allowed on this
+        resource.
+
+        Keys must not start with kong, konnect, insomnia, mesh, kic or _, which
+        are reserved for Kong.
+
+        Keys are case-sensitive.
+      nullable: true
+      title: Labels
+      type: object
+    PortalTheme:
+      description: >-
+        Select a pre-existing default theme or specify 'custom' to use
+        custom_theme variables.
+      enum:
+        - mint_rocket
+        - dark_mode
+        - custom
+      example: mint_rocket
+      type: string
+    PostFunctionPlugin:
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/PostFunctionPluginConfig'
+      x-speakeasy-entity: GatewayPluginPostFunction
+    PostFunctionPluginConfig:
+      properties:
+        config:
+          properties:
+            access:
+              items:
+                type: string
+              type: array
+            body_filter:
+              items:
+                type: string
+              type: array
+            certificate:
+              items:
+                type: string
+              type: array
+            header_filter:
+              items:
+                type: string
+              type: array
+            log:
+              items:
+                type: string
+              type: array
+            rewrite:
+              items:
+                type: string
+              type: array
+            ws_client_frame:
+              items:
+                type: string
+              type: array
+            ws_close:
+              items:
+                type: string
+              type: array
+            ws_handshake:
+              items:
+                type: string
+              type: array
+            ws_upstream_frame:
+              items:
+                type: string
+              type: array
+          type: object
+        name:
+          const: post-function
+          type: string
     PreFunctionPlugin:
       allOf:
         - $ref: '#/components/schemas/Plugin'
@@ -14167,6 +15419,12 @@ components:
         $ref: '#/components/schemas/ProxyURL'
       title: ProxyURLs
       type: array
+    PublishStatus:
+      description: document publish status
+      enum:
+        - published
+        - unpublished
+      type: string
     RateLimitingAdvancedPlugin:
       allOf:
         - $ref: '#/components/schemas/Plugin'
@@ -15968,6 +17226,185 @@ components:
           type: integer
       type: object
       x-speakeasy-entity: GatewaySNI
+    StatsdPlugin:
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/StatsdPluginConfig'
+      x-speakeasy-entity: GatewayPluginStatsd
+    StatsdPluginConfig:
+      properties:
+        config:
+          properties:
+            allow_status_codes:
+              description: >-
+                List of status code ranges that are allowed to be logged in
+                metrics.
+              items:
+                pattern: ^[0-9]+-[0-9]+$
+                type: string
+              type: array
+            consumer_identifier_default:
+              enum:
+                - consumer_id
+                - custom_id
+                - username
+              type: string
+            flush_timeout:
+              type: number
+            host:
+              description: The IP address or hostname of StatsD server to send data to.
+              type: string
+            hostname_in_prefix:
+              type: boolean
+            metrics:
+              description: List of metrics to be logged.
+              items:
+                properties:
+                  consumer_identifier:
+                    description: Authenticated user detail.
+                    enum:
+                      - consumer_id
+                      - custom_id
+                      - username
+                    type: string
+                  name:
+                    description: StatsD metric’s name.
+                    enum:
+                      - kong_latency
+                      - latency
+                      - request_count
+                      - request_per_user
+                      - request_size
+                      - response_size
+                      - status_count
+                      - status_count_per_user
+                      - unique_users
+                      - upstream_latency
+                      - status_count_per_workspace
+                      - status_count_per_user_per_route
+                      - shdict_usage
+                      - cache_datastore_hits_total
+                      - cache_datastore_misses_total
+                    type: string
+                  sample_rate:
+                    description: Sampling rate
+                    minimum: 0
+                    type: number
+                  service_identifier:
+                    description: Service detail.
+                    enum:
+                      - service_id
+                      - service_name
+                      - service_host
+                      - service_name_or_host
+                    type: string
+                  stat_type:
+                    description: Determines what sort of event a metric represents.
+                    enum:
+                      - counter
+                      - gauge
+                      - histogram
+                      - meter
+                      - set
+                      - timer
+                    type: string
+                  workspace_identifier:
+                    description: Workspace detail.
+                    enum:
+                      - workspace_id
+                      - workspace_name
+                    type: string
+                required:
+                  - name
+                  - stat_type
+                type: object
+              type: array
+            port:
+              description: The port of StatsD server to send data to.
+              maximum: 65535
+              minimum: 0
+              type: integer
+            prefix:
+              description: String to prefix to each metric's name.
+              type: string
+            queue:
+              properties:
+                initial_retry_delay:
+                  description: >-
+                    Time in seconds before the initial retry is made for a
+                    failing batch.
+                  maximum: 1000000
+                  minimum: 0.001
+                  type: number
+                max_batch_size:
+                  description: Maximum number of entries that can be processed at a time.
+                  maximum: 1000000
+                  minimum: 1
+                  type: integer
+                max_bytes:
+                  description: >-
+                    Maximum number of bytes that can be waiting on a queue,
+                    requires string content.
+                  type: integer
+                max_coalescing_delay:
+                  description: >-
+                    Maximum number of (fractional) seconds to elapse after the
+                    first entry was queued before the queue starts calling the
+                    handler.
+                  maximum: 3600
+                  minimum: 0
+                  type: number
+                max_entries:
+                  description: Maximum number of entries that can be waiting on the queue.
+                  maximum: 1000000
+                  minimum: 1
+                  type: integer
+                max_retry_delay:
+                  description: >-
+                    Maximum time in seconds between retries, caps exponential
+                    backoff.
+                  maximum: 1000000
+                  minimum: 0.001
+                  type: number
+                max_retry_time:
+                  description: >-
+                    Time in seconds before the queue gives up calling a failed
+                    handler for a batch.
+                  type: number
+              type: object
+            queue_size:
+              type: integer
+            retry_count:
+              type: integer
+            service_identifier_default:
+              enum:
+                - service_id
+                - service_name
+                - service_host
+                - service_name_or_host
+              type: string
+            tag_style:
+              enum:
+                - dogstatsd
+                - influxdb
+                - librato
+                - signalfx
+              type: string
+            udp_packet_size:
+              maximum: 65507
+              minimum: 0
+              type: number
+            use_tcp:
+              type: boolean
+            workspace_identifier_default:
+              enum:
+                - workspace_id
+                - workspace_name
+              type: string
+          type: object
+        name:
+          const: statsd
+          type: string
     SystemAccount:
       description: Schema of the system account.
       example:
@@ -16304,6 +17741,43 @@ components:
             type:
               example: https://httpstatuses.com/415
           type: object
+    UpdateAPIProductDocumentDTO:
+      description: a document payload
+      properties:
+        content:
+          description: Can be markdown string content or base64 encoded string
+          example: YmFzZTY0LWVuY29kZWQgdGV4dCBzdHJpbmc=
+          type: string
+        metadata:
+          nullable: false
+          type: object
+        parent_document_id:
+          description: >
+            Parent document Id. If this value is explicitly set to null, the
+
+            document will be put as a top level document at the bottom of the
+            tree.
+          example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
+          format: uuid
+          nullable: true
+          type: string
+        slug:
+          description: >-
+            document slug. must be unique accross documents belonging to an api
+            product
+          example: path-for-seo
+          maxLength: 80
+          pattern: ^[\w-]+$
+          type: string
+        status:
+          $ref: '#/components/schemas/PublishStatus'
+        title:
+          description: document title
+          example: How to update a document in Konnect DocumentHub
+          minLength: 1
+          type: string
+      title: UpdateDocumentAttributesAndContentPayload
+      type: object
     UpdateAPIProductDTO:
       additionalProperties: false
       description: The request schema for updating an API product.
@@ -16508,6 +17982,95 @@ components:
           type: string
       title: UpdateMeshControlPlaneRequest
       type: object
+    UpdatePortalAppearanceRequest:
+      $ref: '#/components/schemas/PortalAppearance'
+    UpdatePortalAppearanceResponse:
+      allOf:
+        - $ref: '#/components/schemas/PortalAppearance'
+        - required:
+            - theme_name
+            - use_custom_fonts
+            - custom_theme
+            - custom_fonts
+            - text
+            - images
+          type: object
+      example:
+        custom_fonts:
+          base: Roboto
+          code: Roboto
+          headings: Roboto
+        custom_theme:
+          colors:
+            button:
+              primary_fill:
+                description: Background for Primary Button
+                value: '#1155CB'
+              primary_text:
+                description: Text for Primary Button
+                value: '#FFFFFF'
+            section:
+              accent:
+                description: Subtle background
+                value: '#F8F8F8'
+              body:
+                description: Background for main content
+                value: '#FFFFFF'
+              footer:
+                description: Background for footer
+                value: '#07A88D'
+              header:
+                description: Background for header
+                value: '#F8F8F8'
+              hero:
+                description: Background for hero section
+                value: '#F8F8F8'
+              stroke:
+                description: Border color
+                value: rgba(0,0,0,0.1)
+              tertiary:
+                description: Tertiary background
+                value: '#FFFFFF'
+            text:
+              accent:
+                description: Subtle text
+                value: '#07A88D'
+              footer:
+                description: Footer text
+                value: '#FFFFFF'
+              header:
+                description: Header text
+                value: rgba(0,0,0,0.8)
+              headings:
+                description: Headings text
+                value: rgba(0,0,0,0.8)
+              hero:
+                description: Hero text
+                value: '#FFFFFF'
+              link:
+                description: Link text
+                value: '#07A88D'
+              primary:
+                description: Main content text
+                value: rgba(0,0,0,0.8)
+              secondary:
+                description: Supporting text
+                value: rgba(0,0,0,0.8)
+        images:
+          catalog_cover:
+            data: data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+          favicon:
+            data: data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+            filename: favicon.ico
+          logo:
+            data: data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+            filename: logo.png
+        text:
+          catalog:
+            primary_header: Come on in!
+            welcome_message: Welcome
+        theme_name: custom
+        use_custom_fonts: true
     UpdatePortalRequest:
       additionalProperties: false
       example:
@@ -16568,6 +18131,8 @@ components:
             developer authentication. Developer accounts and applications cannot
             be created if the portal is public.
           type: boolean
+        labels:
+          $ref: '#/components/schemas/PortalsLabelsNullable'
         name:
           $ref: '#/components/schemas/PortalName'
         rbac_enabled:
@@ -16578,6 +18143,7 @@ components:
             specific products.
           type: boolean
       type: object
+      x-speakeasy-entity: Portal
     UpdatePortalResponse:
       $ref: '#/components/schemas/Portal'
     Upstream:
@@ -16856,25 +18422,18 @@ components:
   securitySchemes:
     konnectAccessToken:
       bearerFormat: JWT
-      description: >
+      description: >-
         The Konnect access token is meant to be used by the Konnect dashboard
-        and the decK CLI authenticate with.
+        and the decK CLI to authenticate with.
       scheme: bearer
       type: http
     personalAccessToken:
       bearerFormat: Token
-      description: >
+      description: >-
         The personal access token is meant to be used as an alternative to
-        basic-auth when accessing Konnect via APIs.
-
-        You can generate a Personal Access Token (PAT) from the [personal access
-        token page](https://cloud.konghq.com/global/tokens/) in the Konnect
+        basic-auth when accessing Konnect via APIs. You can generate a Personal
+        Access Token (PAT) from the personal access token page in the Konnect
         dashboard.
-
-        The PAT token must be passed in the header of a request, for example:
-
-        `curl -X GET 'https://global.api.konghq.com/v2/users/' --header
-        'Authorization: Bearer kpat_xgfT...'`
       scheme: bearer
       type: http
     systemAccountAccessToken:
@@ -16907,6 +18466,77 @@ tags:
   - name: Custom Domains
   - name: Resource Quotas
   - name: Resource Availability
+  - name: Mesh
+  - name: API Products
+  - name: API Product Documentation
+  - name: API Product Versions
+  - name: API Product Version Specification
+  - description: APIs related to Configuration of Konnect Developer Portals.
+    name: Portals
+  - description: APIs related to Konnect Developer Portal Developers.
+    name: Portal Developers
+  - description: APIs related to Konnect Developer Portal Developer Teams.
+    name: Portal Teams
+  - description: >-
+      APIs related to Developer Membership in Konnect Developer Portal Developer
+      Teams.
+    name: Portal Team Membership
+  - description: APIs related to Team Roles in Konnect Developer Portal.
+    name: Portal Team Roles
+  - description: APIs related to Konnect Developer Portal Applications.
+    name: Portal Applications
+  - description: APIs related to Konnect Developer Portal Application Registrations.
+    name: Portal Application Registrations
+  - description: APIs related to API Products Published to Konnect Developer Portals.
+    name: Portal Products
+  - description: APIs related to Konnect Developer Portal Authentication Settings.
+    name: Portal Auth Settings
+  - description: APIs related to Konnect Developer Portal Appearance Settings.
+    name: Portal Appearance
+  - description: >
+      Portal Product Versions hold metadata that describes how a Product Version
+      is configured for a specific portal.
+        
+        They contain:
+        - Lifecyle and deprecation statuses
+        - Application registration settings like auto approve or whether application registration is enabled
+        - The authentication strategy that is enabled for Application Registration
+    name: Portal Product Versions
+  - description: >
+      Dynamic Client Registration Providers are configurations representing an
+      external Identity Provider whose clients (i.e. Applications) Konnect will
+      be authorized to manage.
+
+      For instance, they will be able to perform dynamic client registration
+      (DCR) with the provider. 
+
+      The DCR provider provides credentials to each DCR-enabled application in
+      Konnect that can be used to access Product Versions that the app is
+      registered for.
+    name: DCR Providers
+  - description: >
+      Application Auth Strategies are sets of plugin configurations that
+      represent how the gateway will perform authentication and authorization
+      for a Product Version. 
+
+      Called “Auth Strategy” for short in the context of portals/applications. 
+
+      The plugins are synced to any Gateway Service that is currently linked or
+      becomes linked to the Product Version.
+    name: App Auth Strategies
+  - name: Auth Settings
+  - name: Invites
+  - name: Roles
+  - name: Team Membership
+  - name: Teams
+  - name: Users
+  - name: System Accounts
+  - name: System Accounts - Access Tokens
+  - name: System Accounts - Roles
+  - name: System Accounts - Team Membership
+  - name: Authentication
+  - name: Impersonation Settings
+  - name: Serverless Cloud Gateways
   - description: DP Nodes
     name: DP Nodes
   - description: DP Certificates
@@ -17108,77 +18738,6 @@ tags:
   - name: JWTs
   - name: HMAC-auth credentials
   - name: ACLs
-  - name: Mesh
-  - name: API Products
-  - name: API Product Documentation
-  - name: API Product Versions
-  - name: API Product Version Specification
-  - description: APIs related to Configuration of Konnect Developer Portals.
-    name: Portals
-  - description: APIs related to Konnect Developer Portal Developers.
-    name: Portal Developers
-  - description: APIs related to Konnect Developer Portal Developer Teams.
-    name: Portal Teams
-  - description: >-
-      APIs related to Developer Membership in Konnect Developer Portal Developer
-      Teams.
-    name: Portal Team Membership
-  - description: APIs related to Team Roles in Konnect Developer Portal.
-    name: Portal Team Roles
-  - description: APIs related to Konnect Developer Portal Applications.
-    name: Portal Applications
-  - description: APIs related to Konnect Developer Portal Application Registrations.
-    name: Portal Application Registrations
-  - description: APIs related to API Products Published to Konnect Developer Portals.
-    name: Portal Products
-  - description: APIs related to Konnect Developer Portal Authentication Settings.
-    name: Portal Auth Settings
-  - description: APIs related to Konnect Developer Portal Appearance Settings.
-    name: Portal Appearance
-  - description: >
-      Portal Product Versions hold metadata that describes how a Product Version
-      is configured for a specific portal.
-        
-        They contain:
-        - Lifecyle and deprecation statuses
-        - Application registration settings like auto approve or whether application registration is enabled
-        - The authentication strategy that is enabled for Application Registration
-    name: Portal Product Versions
-  - description: >
-      Dynamic Client Registration Providers are configurations representing an
-      external Identity Provider whose clients (i.e. Applications) Konnect will
-      be authorized to manage.
-
-      For instance, they will be able to perform dynamic client registration
-      (DCR) with the provider. 
-
-      The DCR provider provides credentials to each DCR-enabled application in
-      Konnect that can be used to access Product Versions that the app is
-      registered for.
-    name: DCR Providers
-  - description: >
-      Application Auth Strategies are sets of plugin configurations that
-      represent how the gateway will perform authentication and authorization
-      for a Product Version. 
-
-      Called “Auth Strategy” for short in the context of portals/applications. 
-
-      The plugins are synced to any Gateway Service that is currently linked or
-      becomes linked to the Product Version.
-    name: App Auth Strategies
-  - name: Auth Settings
-  - name: Invites
-  - name: Roles
-  - name: Team Membership
-  - name: Teams
-  - name: Users
-  - name: System Accounts
-  - name: System Accounts - Access Tokens
-  - name: System Accounts - Roles
-  - name: System Accounts - Team Membership
-  - name: Authentication
-  - name: Impersonation Settings
-  - name: Serverless Cloud Gateways
 externalDocs:
   description: Documentation for Kong Gateway and its APIs
   url: https://docs.konghq.com

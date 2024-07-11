@@ -31,12 +31,23 @@ func newUpstreams(sdkConfig sdkConfiguration) *Upstreams {
 
 // CreateUpstream - Create a new Upstream
 // Create a new Upstream
-func (s *Upstreams) CreateUpstream(ctx context.Context, request operations.CreateUpstreamRequest) (*operations.CreateUpstreamResponse, error) {
+func (s *Upstreams) CreateUpstream(ctx context.Context, request operations.CreateUpstreamRequest, opts ...operations.Option) (*operations.CreateUpstreamResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "create-upstream",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -48,6 +59,17 @@ func (s *Upstreams) CreateUpstream(ctx context.Context, request operations.Creat
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Upstream", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
@@ -139,7 +161,7 @@ func (s *Upstreams) CreateUpstream(ctx context.Context, request operations.Creat
 
 // GetUpstream - Fetch an Upstream
 // Get an Upstream using ID or name.
-func (s *Upstreams) GetUpstream(ctx context.Context, request operations.GetUpstreamRequest) (*operations.GetUpstreamResponse, error) {
+func (s *Upstreams) GetUpstream(ctx context.Context, request operations.GetUpstreamRequest, opts ...operations.Option) (*operations.GetUpstreamResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "get-upstream",
@@ -147,10 +169,32 @@ func (s *Upstreams) GetUpstream(ctx context.Context, request operations.GetUpstr
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/upstreams/{UpstreamId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", opURL, nil)
@@ -242,12 +286,23 @@ func (s *Upstreams) GetUpstream(ctx context.Context, request operations.GetUpstr
 
 // UpsertUpstream - Upsert a Upstream
 // Create or Update Upstream using ID or name.
-func (s *Upstreams) UpsertUpstream(ctx context.Context, request operations.UpsertUpstreamRequest) (*operations.UpsertUpstreamResponse, error) {
+func (s *Upstreams) UpsertUpstream(ctx context.Context, request operations.UpsertUpstreamRequest, opts ...operations.Option) (*operations.UpsertUpstreamResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "upsert-upstream",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -259,6 +314,17 @@ func (s *Upstreams) UpsertUpstream(ctx context.Context, request operations.Upser
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Upstream", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "PUT", opURL, bodyReader)
@@ -350,7 +416,7 @@ func (s *Upstreams) UpsertUpstream(ctx context.Context, request operations.Upser
 
 // DeleteUpstream - Delete an Upstream
 // Delete an Upstream
-func (s *Upstreams) DeleteUpstream(ctx context.Context, request operations.DeleteUpstreamRequest) (*operations.DeleteUpstreamResponse, error) {
+func (s *Upstreams) DeleteUpstream(ctx context.Context, request operations.DeleteUpstreamRequest, opts ...operations.Option) (*operations.DeleteUpstreamResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "delete-upstream",
@@ -358,10 +424,32 @@ func (s *Upstreams) DeleteUpstream(ctx context.Context, request operations.Delet
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/upstreams/{UpstreamId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "DELETE", opURL, nil)

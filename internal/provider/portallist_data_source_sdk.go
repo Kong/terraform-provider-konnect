@@ -31,6 +31,12 @@ func (r *PortalListDataSourceModel) RefreshFromSharedListPortalsResponse(resp *s
 			data1.DisplayName = types.StringValue(dataItem.DisplayName)
 			data1.ID = types.StringValue(dataItem.ID)
 			data1.IsPublic = types.BoolValue(dataItem.IsPublic)
+			if len(dataItem.Labels) > 0 {
+				data1.Labels = make(map[string]types.String)
+				for key, value := range dataItem.Labels {
+					data1.Labels[key] = types.StringValue(value)
+				}
+			}
 			data1.Name = types.StringValue(dataItem.Name)
 			data1.PublishedProductCount = types.NumberValue(big.NewFloat(float64(dataItem.PublishedProductCount)))
 			data1.RbacEnabled = types.BoolValue(dataItem.RbacEnabled)
@@ -51,6 +57,7 @@ func (r *PortalListDataSourceModel) RefreshFromSharedListPortalsResponse(resp *s
 				r.Data[dataCount].DisplayName = data1.DisplayName
 				r.Data[dataCount].ID = data1.ID
 				r.Data[dataCount].IsPublic = data1.IsPublic
+				r.Data[dataCount].Labels = data1.Labels
 				r.Data[dataCount].Name = data1.Name
 				r.Data[dataCount].PublishedProductCount = data1.PublishedProductCount
 				r.Data[dataCount].RbacEnabled = data1.RbacEnabled

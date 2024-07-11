@@ -27,12 +27,23 @@ func newJWTs(sdkConfig sdkConfiguration) *JWTs {
 
 // CreateJwtWithConsumer - Create a new JWT associated with a Consumer
 // Create a new JWT associated with a Consumer
-func (s *JWTs) CreateJwtWithConsumer(ctx context.Context, request operations.CreateJwtWithConsumerRequest) (*operations.CreateJwtWithConsumerResponse, error) {
+func (s *JWTs) CreateJwtWithConsumer(ctx context.Context, request operations.CreateJwtWithConsumerRequest, opts ...operations.Option) (*operations.CreateJwtWithConsumerResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "create-jwt-with-consumer",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -44,6 +55,17 @@ func (s *JWTs) CreateJwtWithConsumer(ctx context.Context, request operations.Cre
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "JWTWithoutParents", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
@@ -123,7 +145,7 @@ func (s *JWTs) CreateJwtWithConsumer(ctx context.Context, request operations.Cre
 
 // GetJwtWithConsumer - Fetch a JWT associated with a Consumer
 // Get a JWT associated with a Consumer using ID.
-func (s *JWTs) GetJwtWithConsumer(ctx context.Context, request operations.GetJwtWithConsumerRequest) (*operations.GetJwtWithConsumerResponse, error) {
+func (s *JWTs) GetJwtWithConsumer(ctx context.Context, request operations.GetJwtWithConsumerRequest, opts ...operations.Option) (*operations.GetJwtWithConsumerResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "get-jwt-with-consumer",
@@ -131,10 +153,32 @@ func (s *JWTs) GetJwtWithConsumer(ctx context.Context, request operations.GetJwt
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/jwt/{JWTId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", opURL, nil)
@@ -214,7 +258,7 @@ func (s *JWTs) GetJwtWithConsumer(ctx context.Context, request operations.GetJwt
 
 // DeleteJwtWithConsumer - Delete a a JWT associated with a a Consumer
 // Delete a a JWT associated with a a Consumer using ID.
-func (s *JWTs) DeleteJwtWithConsumer(ctx context.Context, request operations.DeleteJwtWithConsumerRequest) (*operations.DeleteJwtWithConsumerResponse, error) {
+func (s *JWTs) DeleteJwtWithConsumer(ctx context.Context, request operations.DeleteJwtWithConsumerRequest, opts ...operations.Option) (*operations.DeleteJwtWithConsumerResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "delete-jwt-with-consumer",
@@ -222,10 +266,32 @@ func (s *JWTs) DeleteJwtWithConsumer(ctx context.Context, request operations.Del
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/jwt/{JWTId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "DELETE", opURL, nil)

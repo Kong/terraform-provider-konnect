@@ -44,6 +44,7 @@ func (s *DataPlaneGroupConfigurations) CreateConfiguration(ctx context.Context, 
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionServerURL,
+		operations.SupportedOptionTimeout,
 		operations.SupportedOptionAcceptHeaderOverride,
 	}
 
@@ -52,6 +53,7 @@ func (s *DataPlaneGroupConfigurations) CreateConfiguration(ctx context.Context, 
 			return nil, fmt.Errorf("error applying option: %w", err)
 		}
 	}
+
 	baseURL := utils.ReplaceParameters(operations.CreateConfigurationServerList[0], map[string]string{})
 	if o.ServerURL != nil {
 		baseURL = *o.ServerURL
@@ -65,6 +67,17 @@ func (s *DataPlaneGroupConfigurations) CreateConfiguration(ctx context.Context, 
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Request", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "PUT", opURL, bodyReader)
@@ -220,6 +233,7 @@ func (s *DataPlaneGroupConfigurations) GetConfiguration(ctx context.Context, req
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionServerURL,
+		operations.SupportedOptionTimeout,
 		operations.SupportedOptionAcceptHeaderOverride,
 	}
 
@@ -228,6 +242,7 @@ func (s *DataPlaneGroupConfigurations) GetConfiguration(ctx context.Context, req
 			return nil, fmt.Errorf("error applying option: %w", err)
 		}
 	}
+
 	baseURL := utils.ReplaceParameters(operations.GetConfigurationServerList[0], map[string]string{})
 	if o.ServerURL != nil {
 		baseURL = *o.ServerURL
@@ -236,6 +251,17 @@ func (s *DataPlaneGroupConfigurations) GetConfiguration(ctx context.Context, req
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/cloud-gateways/configurations/{configurationId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", opURL, nil)

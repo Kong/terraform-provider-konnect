@@ -32,12 +32,23 @@ func newCertificates(sdkConfig sdkConfiguration) *Certificates {
 
 // CreateCertificate - Create a new Certificate
 // Create a new Certificate
-func (s *Certificates) CreateCertificate(ctx context.Context, request operations.CreateCertificateRequest) (*operations.CreateCertificateResponse, error) {
+func (s *Certificates) CreateCertificate(ctx context.Context, request operations.CreateCertificateRequest, opts ...operations.Option) (*operations.CreateCertificateResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "create-certificate",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -49,6 +60,17 @@ func (s *Certificates) CreateCertificate(ctx context.Context, request operations
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Certificate", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
@@ -140,7 +162,7 @@ func (s *Certificates) CreateCertificate(ctx context.Context, request operations
 
 // GetCertificate - Fetch a Certificate
 // Get a Certificate using ID.
-func (s *Certificates) GetCertificate(ctx context.Context, request operations.GetCertificateRequest) (*operations.GetCertificateResponse, error) {
+func (s *Certificates) GetCertificate(ctx context.Context, request operations.GetCertificateRequest, opts ...operations.Option) (*operations.GetCertificateResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "get-certificate",
@@ -148,10 +170,32 @@ func (s *Certificates) GetCertificate(ctx context.Context, request operations.Ge
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/certificates/{CertificateId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", opURL, nil)
@@ -243,12 +287,23 @@ func (s *Certificates) GetCertificate(ctx context.Context, request operations.Ge
 
 // UpsertCertificate - Upsert a Certificate
 // Create or Update Certificate using ID.
-func (s *Certificates) UpsertCertificate(ctx context.Context, request operations.UpsertCertificateRequest) (*operations.UpsertCertificateResponse, error) {
+func (s *Certificates) UpsertCertificate(ctx context.Context, request operations.UpsertCertificateRequest, opts ...operations.Option) (*operations.UpsertCertificateResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "upsert-certificate",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -260,6 +315,17 @@ func (s *Certificates) UpsertCertificate(ctx context.Context, request operations
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Certificate", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "PUT", opURL, bodyReader)
@@ -351,7 +417,7 @@ func (s *Certificates) UpsertCertificate(ctx context.Context, request operations
 
 // DeleteCertificate - Delete a Certificate
 // Delete a Certificate
-func (s *Certificates) DeleteCertificate(ctx context.Context, request operations.DeleteCertificateRequest) (*operations.DeleteCertificateResponse, error) {
+func (s *Certificates) DeleteCertificate(ctx context.Context, request operations.DeleteCertificateRequest, opts ...operations.Option) (*operations.DeleteCertificateResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "delete-certificate",
@@ -359,10 +425,32 @@ func (s *Certificates) DeleteCertificate(ctx context.Context, request operations
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/certificates/{CertificateId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "DELETE", opURL, nil)

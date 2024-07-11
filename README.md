@@ -87,6 +87,7 @@ This provider can manage the following resources:
 - API Product
 - API Product Version
 - API Product Specification
+- API Product Documentation
 
 ### Dev Portal
 
@@ -94,6 +95,7 @@ This provider can manage the following resources:
 - Portal Authentication
 - Application Auth Strategy
 - Portal Product Version
+- Portal Appearance
 
 ### Organization
 
@@ -166,3 +168,10 @@ Kong Gateway's plugin entity supports any JSON blob in the `config` field, and w
 In order to support idempotent plan and apply operations, this provider has one resource per plugin.
 
 If you require a plugin that is not currently supported, please open an issue.
+
+<!-- No SDK Installation -->
+<!-- No SDK Example Usage -->
+<!-- No SDK Available Operations -->
+<!-- Placeholder for Future Speakeasy SDK Sections -->
+
+

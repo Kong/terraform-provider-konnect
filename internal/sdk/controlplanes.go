@@ -38,6 +38,7 @@ func (s *ControlPlanes) CreateControlPlane(ctx context.Context, request shared.C
 
 	o := operations.Options{}
 	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
 		operations.SupportedOptionAcceptHeaderOverride,
 	}
 
@@ -46,6 +47,7 @@ func (s *ControlPlanes) CreateControlPlane(ctx context.Context, request shared.C
 			return nil, fmt.Errorf("error applying option: %w", err)
 		}
 	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := url.JoinPath(baseURL, "/v2/control-planes")
 	if err != nil {
@@ -55,6 +57,17 @@ func (s *ControlPlanes) CreateControlPlane(ctx context.Context, request shared.C
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Request", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
@@ -221,6 +234,7 @@ func (s *ControlPlanes) GetControlPlane(ctx context.Context, request operations.
 
 	o := operations.Options{}
 	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
 		operations.SupportedOptionAcceptHeaderOverride,
 	}
 
@@ -229,10 +243,22 @@ func (s *ControlPlanes) GetControlPlane(ctx context.Context, request operations.
 			return nil, fmt.Errorf("error applying option: %w", err)
 		}
 	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{id}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", opURL, nil)
@@ -386,6 +412,7 @@ func (s *ControlPlanes) UpdateControlPlane(ctx context.Context, request operatio
 
 	o := operations.Options{}
 	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
 		operations.SupportedOptionAcceptHeaderOverride,
 	}
 
@@ -394,6 +421,7 @@ func (s *ControlPlanes) UpdateControlPlane(ctx context.Context, request operatio
 			return nil, fmt.Errorf("error applying option: %w", err)
 		}
 	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{id}", request, nil)
 	if err != nil {
@@ -403,6 +431,17 @@ func (s *ControlPlanes) UpdateControlPlane(ctx context.Context, request operatio
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "UpdateControlPlaneRequest", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "PATCH", opURL, bodyReader)
@@ -559,7 +598,7 @@ func (s *ControlPlanes) UpdateControlPlane(ctx context.Context, request operatio
 
 // DeleteControlPlane - Delete Control Plane
 // Delete an individual control plane.
-func (s *ControlPlanes) DeleteControlPlane(ctx context.Context, request operations.DeleteControlPlaneRequest) (*operations.DeleteControlPlaneResponse, error) {
+func (s *ControlPlanes) DeleteControlPlane(ctx context.Context, request operations.DeleteControlPlaneRequest, opts ...operations.Option) (*operations.DeleteControlPlaneResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "delete-control-plane",
@@ -567,10 +606,32 @@ func (s *ControlPlanes) DeleteControlPlane(ctx context.Context, request operatio
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{id}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "DELETE", opURL, nil)

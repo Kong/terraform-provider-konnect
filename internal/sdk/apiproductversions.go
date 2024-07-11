@@ -37,6 +37,7 @@ func (s *APIProductVersions) CreateAPIProductVersion(ctx context.Context, reques
 
 	o := operations.Options{}
 	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
 		operations.SupportedOptionAcceptHeaderOverride,
 	}
 
@@ -45,6 +46,7 @@ func (s *APIProductVersions) CreateAPIProductVersion(ctx context.Context, reques
 			return nil, fmt.Errorf("error applying option: %w", err)
 		}
 	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/api-products/{apiProductId}/product-versions", request, nil)
 	if err != nil {
@@ -54,6 +56,17 @@ func (s *APIProductVersions) CreateAPIProductVersion(ctx context.Context, reques
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "CreateAPIProductVersionDTO", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
@@ -208,6 +221,7 @@ func (s *APIProductVersions) GetAPIProductVersion(ctx context.Context, request o
 
 	o := operations.Options{}
 	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
 		operations.SupportedOptionAcceptHeaderOverride,
 	}
 
@@ -216,10 +230,22 @@ func (s *APIProductVersions) GetAPIProductVersion(ctx context.Context, request o
 			return nil, fmt.Errorf("error applying option: %w", err)
 		}
 	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/api-products/{apiProductId}/product-versions/{id}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", opURL, nil)
@@ -349,6 +375,7 @@ func (s *APIProductVersions) UpdateAPIProductVersion(ctx context.Context, reques
 
 	o := operations.Options{}
 	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
 		operations.SupportedOptionAcceptHeaderOverride,
 	}
 
@@ -357,6 +384,7 @@ func (s *APIProductVersions) UpdateAPIProductVersion(ctx context.Context, reques
 			return nil, fmt.Errorf("error applying option: %w", err)
 		}
 	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/api-products/{apiProductId}/product-versions/{id}", request, nil)
 	if err != nil {
@@ -366,6 +394,17 @@ func (s *APIProductVersions) UpdateAPIProductVersion(ctx context.Context, reques
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "UpdateAPIProductVersionDTO", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "PATCH", opURL, bodyReader)
@@ -510,7 +549,7 @@ func (s *APIProductVersions) UpdateAPIProductVersion(ctx context.Context, reques
 
 // DeleteAPIProductVersion - Delete API Product Version
 // Removes an API product version.
-func (s *APIProductVersions) DeleteAPIProductVersion(ctx context.Context, request operations.DeleteAPIProductVersionRequest) (*operations.DeleteAPIProductVersionResponse, error) {
+func (s *APIProductVersions) DeleteAPIProductVersion(ctx context.Context, request operations.DeleteAPIProductVersionRequest, opts ...operations.Option) (*operations.DeleteAPIProductVersionResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "delete-api-product-version",
@@ -518,10 +557,32 @@ func (s *APIProductVersions) DeleteAPIProductVersion(ctx context.Context, reques
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/api-products/{apiProductId}/product-versions/{id}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "DELETE", opURL, nil)

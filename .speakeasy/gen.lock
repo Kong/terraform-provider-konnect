@@ -1,18 +1,18 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 8531eddc0e59b6df8a15eb304d357055
+  docChecksum: 67dbf5ff60c085b72d7bc16cc14be905
   docVersion: 2.0.0
-  speakeasyVersion: 1.326.0
-  generationVersion: 2.359.0
-  releaseVersion: 0.5.1
-  configChecksum: 93ea59b32337845569f25fe0c15879c5
+  speakeasyVersion: 1.331.0
+  generationVersion: 2.365.0
+  releaseVersion: 0.6.0
+  configChecksum: b90325a04436ae9f0474e5f91c43631a
 features:
   terraform:
     additionalDependencies: 0.1.0
     additionalProperties: 0.1.2
     constsAndDefaults: 0.1.4
-    core: 3.23.0
+    core: 3.23.5
     deprecations: 2.81.1
     globalSecurity: 2.81.6
     globalServerURLs: 2.82.1
@@ -28,6 +28,7 @@ generatedFiles:
   - internal/sdk/serverlesscloudgateways.go
   - internal/sdk/mesh.go
   - internal/sdk/apiproducts.go
+  - internal/sdk/apiproductdocumentation.go
   - internal/sdk/apiproductversions.go
   - internal/sdk/apiproductversionspecification.go
   - internal/sdk/appauthstrategies.go
@@ -59,6 +60,7 @@ generatedFiles:
   - internal/sdk/dpcertificates.go
   - internal/sdk/controlplanegroups.go
   - internal/sdk/portals.go
+  - internal/sdk/portalappearance.go
   - internal/sdk/portalauthsettings.go
   - internal/sdk/portalproductversions.go
   - internal/sdk/systemaccounts.go
@@ -97,6 +99,10 @@ generatedFiles:
   - internal/sdk/models/operations/getapiproduct.go
   - internal/sdk/models/operations/updateapiproduct.go
   - internal/sdk/models/operations/deleteapiproduct.go
+  - internal/sdk/models/operations/createapiproductdocument.go
+  - internal/sdk/models/operations/getapiproductdocument.go
+  - internal/sdk/models/operations/updateapiproductdocument.go
+  - internal/sdk/models/operations/deleteapiproductdocument.go
   - internal/sdk/models/operations/createapiproductversion.go
   - internal/sdk/models/operations/getapiproductversion.go
   - internal/sdk/models/operations/updateapiproductversion.go
@@ -232,6 +238,9 @@ generatedFiles:
   - internal/sdk/models/operations/getopentelemetryplugin.go
   - internal/sdk/models/operations/updateopentelemetryplugin.go
   - internal/sdk/models/operations/deleteopentelemetryplugin.go
+  - internal/sdk/models/operations/getpostfunctionplugin.go
+  - internal/sdk/models/operations/updatepostfunctionplugin.go
+  - internal/sdk/models/operations/deletepostfunctionplugin.go
   - internal/sdk/models/operations/getprefunctionplugin.go
   - internal/sdk/models/operations/updateprefunctionplugin.go
   - internal/sdk/models/operations/deleteprefunctionplugin.go
@@ -265,6 +274,9 @@ generatedFiles:
   - internal/sdk/models/operations/getsamlplugin.go
   - internal/sdk/models/operations/updatesamlplugin.go
   - internal/sdk/models/operations/deletesamlplugin.go
+  - internal/sdk/models/operations/getstatsdplugin.go
+  - internal/sdk/models/operations/updatestatsdplugin.go
+  - internal/sdk/models/operations/deletestatsdplugin.go
   - internal/sdk/models/operations/createaclplugin.go
   - internal/sdk/models/operations/createaipromptdecoratorplugin.go
   - internal/sdk/models/operations/createaipromptguardplugin.go
@@ -284,6 +296,7 @@ generatedFiles:
   - internal/sdk/models/operations/createoauth2plugin.go
   - internal/sdk/models/operations/createopenidconnectplugin.go
   - internal/sdk/models/operations/createopentelemetryplugin.go
+  - internal/sdk/models/operations/createpostfunctionplugin.go
   - internal/sdk/models/operations/createprefunctionplugin.go
   - internal/sdk/models/operations/createprometheusplugin.go
   - internal/sdk/models/operations/createproxycacheplugin.go
@@ -295,6 +308,7 @@ generatedFiles:
   - internal/sdk/models/operations/createresponsetransformerplugin.go
   - internal/sdk/models/operations/createresponsetransformeradvancedplugin.go
   - internal/sdk/models/operations/createsamlplugin.go
+  - internal/sdk/models/operations/createstatsdplugin.go
   - internal/sdk/models/operations/createroute.go
   - internal/sdk/models/operations/getroute.go
   - internal/sdk/models/operations/upsertroute.go
@@ -324,7 +338,11 @@ generatedFiles:
   - internal/sdk/models/operations/postcontrolplanesidgroupmembershipsadd.go
   - internal/sdk/models/operations/postcontrolplanesidgroupmembershipsremove.go
   - internal/sdk/models/operations/listportals.go
+  - internal/sdk/models/operations/createportal.go
   - internal/sdk/models/operations/updateportal.go
+  - internal/sdk/models/operations/deleteportal.go
+  - internal/sdk/models/operations/getportalappearance.go
+  - internal/sdk/models/operations/updateportalappearance.go
   - internal/sdk/models/operations/getportalauthenticationsettings.go
   - internal/sdk/models/operations/updateportalauthenticationsettings.go
   - internal/sdk/models/operations/getportalproductversion.go
@@ -372,6 +390,11 @@ generatedFiles:
   - internal/sdk/models/shared/apiproductportal.go
   - internal/sdk/models/shared/createapiproductdto.go
   - internal/sdk/models/shared/updateapiproductdto.go
+  - internal/sdk/models/shared/slugconflict.go
+  - internal/sdk/models/shared/apiproductdocument.go
+  - internal/sdk/models/shared/createapiproductdocumentdto.go
+  - internal/sdk/models/shared/publishstatus.go
+  - internal/sdk/models/shared/updateapiproductdocumentdto.go
   - internal/sdk/models/shared/apiproductversion.go
   - internal/sdk/models/shared/apiproductversionportal.go
   - internal/sdk/models/shared/apiproductversionpublishstatus.go
@@ -494,6 +517,8 @@ generatedFiles:
   - internal/sdk/models/shared/createopenidconnectplugin.go
   - internal/sdk/models/shared/opentelemetryplugin.go
   - internal/sdk/models/shared/createopentelemetryplugin.go
+  - internal/sdk/models/shared/postfunctionplugin.go
+  - internal/sdk/models/shared/createpostfunctionplugin.go
   - internal/sdk/models/shared/prefunctionplugin.go
   - internal/sdk/models/shared/createprefunctionplugin.go
   - internal/sdk/models/shared/prometheusplugin.go
@@ -516,6 +541,8 @@ generatedFiles:
   - internal/sdk/models/shared/createresponsetransformeradvancedplugin.go
   - internal/sdk/models/shared/samlplugin.go
   - internal/sdk/models/shared/createsamlplugin.go
+  - internal/sdk/models/shared/statsdplugin.go
+  - internal/sdk/models/shared/createstatsdplugin.go
   - internal/sdk/models/shared/route.go
   - internal/sdk/models/shared/service.go
   - internal/sdk/models/shared/sni.go
@@ -529,8 +556,22 @@ generatedFiles:
   - internal/sdk/models/shared/groupmembership.go
   - internal/sdk/models/shared/listportalsresponse.go
   - internal/sdk/models/shared/portal.go
+  - internal/sdk/models/shared/createportalresponse.go
+  - internal/sdk/models/shared/createportalrequest.go
   - internal/sdk/models/shared/updateportalresponse.go
   - internal/sdk/models/shared/updateportalrequest.go
+  - internal/sdk/models/shared/getportalappearanceresponse.go
+  - internal/sdk/models/shared/portaltheme.go
+  - internal/sdk/models/shared/nullableappearancetextvariables.go
+  - internal/sdk/models/shared/appearanceimages.go
+  - internal/sdk/models/shared/appearanceimage.go
+  - internal/sdk/models/shared/nullableappearancethemevariables.go
+  - internal/sdk/models/shared/appearancethemecolorvariables.go
+  - internal/sdk/models/shared/appearancecolorvariable.go
+  - internal/sdk/models/shared/nullableappearancefonts.go
+  - internal/sdk/models/shared/appearancefontname.go
+  - internal/sdk/models/shared/updateportalappearanceresponse.go
+  - internal/sdk/models/shared/updateportalappearancerequest.go
   - internal/sdk/models/shared/portalauthenticationsettingsresponse.go
   - internal/sdk/models/shared/portaloidcconfig.go
   - internal/sdk/models/shared/portalclaimmappings.go
@@ -606,6 +647,7 @@ generatedFiles:
   - terraform-registry-manifest.json
   - tools/tools.go
   - internal/provider/types/api_product_portal.go
+  - internal/provider/types/metadata.go
   - internal/provider/types/gateway_service_payload.go
   - internal/provider/types/api_product_version_auth_strategy.go
   - internal/provider/types/api_product_version_portal.go
@@ -662,7 +704,7 @@ generatedFiles:
   - internal/provider/types/create_opentelemetry_plugin_propagation.go
   - internal/provider/types/create_opentelemetry_plugin_queue.go
   - internal/provider/types/create_opentelemetry_plugin_config.go
-  - internal/provider/types/create_pre_function_plugin_config.go
+  - internal/provider/types/create_post_function_plugin_config.go
   - internal/provider/types/create_prometheus_plugin_config.go
   - internal/provider/types/create_proxy_cache_plugin_memory.go
   - internal/provider/types/create_proxy_cache_plugin_response_headers.go
@@ -691,6 +733,8 @@ generatedFiles:
   - internal/provider/types/create_response_transformer_advanced_plugin_transform.go
   - internal/provider/types/create_response_transformer_advanced_plugin_config.go
   - internal/provider/types/create_saml_plugin_config.go
+  - internal/provider/types/metrics.go
+  - internal/provider/types/create_statsd_plugin_config.go
   - internal/provider/types/healthy.go
   - internal/provider/types/unhealthy.go
   - internal/provider/types/active.go
@@ -698,6 +742,17 @@ generatedFiles:
   - internal/provider/types/upstream_unhealthy.go
   - internal/provider/types/passive.go
   - internal/provider/types/healthchecks.go
+  - internal/provider/types/nullable_appearance_fonts.go
+  - internal/provider/types/appearance_color_variable.go
+  - internal/provider/types/button.go
+  - internal/provider/types/section.go
+  - internal/provider/types/text.go
+  - internal/provider/types/appearance_theme_color_variables.go
+  - internal/provider/types/nullable_appearance_theme_variables.go
+  - internal/provider/types/appearance_image.go
+  - internal/provider/types/appearance_images.go
+  - internal/provider/types/catalog.go
+  - internal/provider/types/nullable_appearance_text_variables.go
   - internal/provider/types/portal_claim_mappings.go
   - internal/provider/types/portal_oidc_config.go
   - internal/provider/types/auth_strategy_client_credentials.go
@@ -717,6 +772,10 @@ generatedFiles:
   - internal/provider/apiproduct_resource.go
   - internal/provider/apiproduct_resource_sdk.go
   - examples/resources/konnect_api_product/resource.tf
+  - examples/resources/konnect_api_product_document/import.sh
+  - internal/provider/apiproductdocument_resource.go
+  - internal/provider/apiproductdocument_resource_sdk.go
+  - examples/resources/konnect_api_product_document/resource.tf
   - examples/resources/konnect_api_product_specification/import.sh
   - internal/provider/apiproductspecification_resource.go
   - internal/provider/apiproductspecification_resource_sdk.go
@@ -887,6 +946,10 @@ generatedFiles:
   - internal/provider/gatewaypluginopentelemetry_resource.go
   - internal/provider/gatewaypluginopentelemetry_resource_sdk.go
   - examples/resources/konnect_gateway_plugin_opentelemetry/resource.tf
+  - examples/resources/konnect_gateway_plugin_post_function/import.sh
+  - internal/provider/gatewaypluginpostfunction_resource.go
+  - internal/provider/gatewaypluginpostfunction_resource_sdk.go
+  - examples/resources/konnect_gateway_plugin_post_function/resource.tf
   - examples/resources/konnect_gateway_plugin_pre_function/import.sh
   - internal/provider/gatewaypluginprefunction_resource.go
   - internal/provider/gatewaypluginprefunction_resource_sdk.go
@@ -931,6 +994,10 @@ generatedFiles:
   - internal/provider/gatewaypluginsaml_resource.go
   - internal/provider/gatewaypluginsaml_resource_sdk.go
   - examples/resources/konnect_gateway_plugin_saml/resource.tf
+  - examples/resources/konnect_gateway_plugin_statsd/import.sh
+  - internal/provider/gatewaypluginstatsd_resource.go
+  - internal/provider/gatewaypluginstatsd_resource_sdk.go
+  - examples/resources/konnect_gateway_plugin_statsd/resource.tf
   - examples/resources/konnect_gateway_route/import.sh
   - internal/provider/gatewayroute_resource.go
   - internal/provider/gatewayroute_resource_sdk.go
@@ -962,6 +1029,10 @@ generatedFiles:
   - internal/provider/portal_resource.go
   - internal/provider/portal_resource_sdk.go
   - examples/resources/konnect_portal/resource.tf
+  - examples/resources/konnect_portal_appearance/import.sh
+  - internal/provider/portalappearance_resource.go
+  - internal/provider/portalappearance_resource_sdk.go
+  - examples/resources/konnect_portal_appearance/resource.tf
   - examples/resources/konnect_portal_auth/import.sh
   - internal/provider/portalauth_resource.go
   - internal/provider/portalauth_resource_sdk.go
@@ -1001,6 +1072,9 @@ generatedFiles:
   - internal/provider/apiproduct_data_source.go
   - internal/provider/apiproduct_data_source_sdk.go
   - examples/data-sources/konnect_api_product/data-source.tf
+  - internal/provider/apiproductdocument_data_source.go
+  - internal/provider/apiproductdocument_data_source_sdk.go
+  - examples/data-sources/konnect_api_product_document/data-source.tf
   - internal/provider/apiproductspecification_data_source.go
   - internal/provider/apiproductspecification_data_source_sdk.go
   - examples/data-sources/konnect_api_product_specification/data-source.tf
@@ -1127,6 +1201,9 @@ generatedFiles:
   - internal/provider/gatewaypluginopentelemetry_data_source.go
   - internal/provider/gatewaypluginopentelemetry_data_source_sdk.go
   - examples/data-sources/konnect_gateway_plugin_opentelemetry/data-source.tf
+  - internal/provider/gatewaypluginpostfunction_data_source.go
+  - internal/provider/gatewaypluginpostfunction_data_source_sdk.go
+  - examples/data-sources/konnect_gateway_plugin_post_function/data-source.tf
   - internal/provider/gatewaypluginprefunction_data_source.go
   - internal/provider/gatewaypluginprefunction_data_source_sdk.go
   - examples/data-sources/konnect_gateway_plugin_pre_function/data-source.tf
@@ -1160,6 +1237,9 @@ generatedFiles:
   - internal/provider/gatewaypluginsaml_data_source.go
   - internal/provider/gatewaypluginsaml_data_source_sdk.go
   - examples/data-sources/konnect_gateway_plugin_saml/data-source.tf
+  - internal/provider/gatewaypluginstatsd_data_source.go
+  - internal/provider/gatewaypluginstatsd_data_source_sdk.go
+  - examples/data-sources/konnect_gateway_plugin_statsd/data-source.tf
   - internal/provider/gatewayroute_data_source.go
   - internal/provider/gatewayroute_data_source_sdk.go
   - examples/data-sources/konnect_gateway_route/data-source.tf
@@ -1181,6 +1261,9 @@ generatedFiles:
   - internal/provider/meshcontrolplane_data_source.go
   - internal/provider/meshcontrolplane_data_source_sdk.go
   - examples/data-sources/konnect_mesh_control_plane/data-source.tf
+  - internal/provider/portalappearance_data_source.go
+  - internal/provider/portalappearance_data_source_sdk.go
+  - examples/data-sources/konnect_portal_appearance/data-source.tf
   - internal/provider/portalauth_data_source.go
   - internal/provider/portalauth_data_source_sdk.go
   - examples/data-sources/konnect_portal_auth/data-source.tf

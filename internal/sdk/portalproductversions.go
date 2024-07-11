@@ -43,6 +43,7 @@ func (s *PortalProductVersions) GetPortalProductVersion(ctx context.Context, req
 
 	o := operations.Options{}
 	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
 		operations.SupportedOptionAcceptHeaderOverride,
 	}
 
@@ -51,10 +52,22 @@ func (s *PortalProductVersions) GetPortalProductVersion(ctx context.Context, req
 			return nil, fmt.Errorf("error applying option: %w", err)
 		}
 	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/portals/{portalId}/product-versions/{productVersionId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", opURL, nil)
@@ -196,6 +209,7 @@ func (s *PortalProductVersions) ReplacePortalProductVersion(ctx context.Context,
 
 	o := operations.Options{}
 	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
 		operations.SupportedOptionAcceptHeaderOverride,
 	}
 
@@ -204,6 +218,7 @@ func (s *PortalProductVersions) ReplacePortalProductVersion(ctx context.Context,
 			return nil, fmt.Errorf("error applying option: %w", err)
 		}
 	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/portals/{portalId}/product-versions/{productVersionId}", request, nil)
 	if err != nil {
@@ -213,6 +228,17 @@ func (s *PortalProductVersions) ReplacePortalProductVersion(ctx context.Context,
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "ReplacePortalProductVersionPayload", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "PUT", opURL, bodyReader)
@@ -345,7 +371,7 @@ func (s *PortalProductVersions) ReplacePortalProductVersion(ctx context.Context,
 
 // DeletePortalProductVersion - Delete a portal product version
 // Delete a portal product version
-func (s *PortalProductVersions) DeletePortalProductVersion(ctx context.Context, request operations.DeletePortalProductVersionRequest) (*operations.DeletePortalProductVersionResponse, error) {
+func (s *PortalProductVersions) DeletePortalProductVersion(ctx context.Context, request operations.DeletePortalProductVersionRequest, opts ...operations.Option) (*operations.DeletePortalProductVersionResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "delete-portal-product-version",
@@ -353,10 +379,32 @@ func (s *PortalProductVersions) DeletePortalProductVersion(ctx context.Context, 
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/portals/{portalId}/product-versions/{productVersionId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "DELETE", opURL, nil)

@@ -107,7 +107,7 @@ func (r *GatewayPluginAIProxyResourceModel) ToSharedCreateAIProxyPlugin() *share
 			} else {
 				name = nil
 			}
-			var options *shared.CreateAIProxyPluginOptions
+			var optionsVar *shared.CreateAIProxyPluginOptions
 			if r.Config.Model.Options != nil {
 				anthropicVersion := new(string)
 				if !r.Config.Model.Options.AnthropicVersion.IsUnknown() && !r.Config.Model.Options.AnthropicVersion.IsNull() {
@@ -181,7 +181,7 @@ func (r *GatewayPluginAIProxyResourceModel) ToSharedCreateAIProxyPlugin() *share
 				} else {
 					upstreamURL = nil
 				}
-				options = &shared.CreateAIProxyPluginOptions{
+				optionsVar = &shared.CreateAIProxyPluginOptions{
 					AnthropicVersion:  anthropicVersion,
 					AzureAPIVersion:   azureAPIVersion,
 					AzureDeploymentID: azureDeploymentID,
@@ -204,7 +204,7 @@ func (r *GatewayPluginAIProxyResourceModel) ToSharedCreateAIProxyPlugin() *share
 			}
 			model = &shared.CreateAIProxyPluginModel{
 				Name:     name,
-				Options:  options,
+				Options:  optionsVar,
 				Provider: provider,
 			}
 		}

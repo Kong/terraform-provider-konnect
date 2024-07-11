@@ -198,8 +198,8 @@ func (e *MistralFormat) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// Options - Key/value settings for the model
-type Options struct {
+// OptionsObj - Key/value settings for the model
+type OptionsObj struct {
 	// Defines the schema/API version, if using Anthropic provider.
 	AnthropicVersion *string `json:"anthropic_version,omitempty"`
 	// 'api-version' for Azure OpenAI instances.
@@ -226,84 +226,84 @@ type Options struct {
 	UpstreamURL *string `json:"upstream_url,omitempty"`
 }
 
-func (o *Options) GetAnthropicVersion() *string {
+func (o *OptionsObj) GetAnthropicVersion() *string {
 	if o == nil {
 		return nil
 	}
 	return o.AnthropicVersion
 }
 
-func (o *Options) GetAzureAPIVersion() *string {
+func (o *OptionsObj) GetAzureAPIVersion() *string {
 	if o == nil {
 		return nil
 	}
 	return o.AzureAPIVersion
 }
 
-func (o *Options) GetAzureDeploymentID() *string {
+func (o *OptionsObj) GetAzureDeploymentID() *string {
 	if o == nil {
 		return nil
 	}
 	return o.AzureDeploymentID
 }
 
-func (o *Options) GetAzureInstance() *string {
+func (o *OptionsObj) GetAzureInstance() *string {
 	if o == nil {
 		return nil
 	}
 	return o.AzureInstance
 }
 
-func (o *Options) GetLlama2Format() *Llama2Format {
+func (o *OptionsObj) GetLlama2Format() *Llama2Format {
 	if o == nil {
 		return nil
 	}
 	return o.Llama2Format
 }
 
-func (o *Options) GetMaxTokens() *int64 {
+func (o *OptionsObj) GetMaxTokens() *int64 {
 	if o == nil {
 		return nil
 	}
 	return o.MaxTokens
 }
 
-func (o *Options) GetMistralFormat() *MistralFormat {
+func (o *OptionsObj) GetMistralFormat() *MistralFormat {
 	if o == nil {
 		return nil
 	}
 	return o.MistralFormat
 }
 
-func (o *Options) GetTemperature() *float64 {
+func (o *OptionsObj) GetTemperature() *float64 {
 	if o == nil {
 		return nil
 	}
 	return o.Temperature
 }
 
-func (o *Options) GetTopK() *int64 {
+func (o *OptionsObj) GetTopK() *int64 {
 	if o == nil {
 		return nil
 	}
 	return o.TopK
 }
 
-func (o *Options) GetTopP() *float64 {
+func (o *OptionsObj) GetTopP() *float64 {
 	if o == nil {
 		return nil
 	}
 	return o.TopP
 }
 
-func (o *Options) GetUpstreamPath() *string {
+func (o *OptionsObj) GetUpstreamPath() *string {
 	if o == nil {
 		return nil
 	}
 	return o.UpstreamPath
 }
 
-func (o *Options) GetUpstreamURL() *string {
+func (o *OptionsObj) GetUpstreamURL() *string {
 	if o == nil {
 		return nil
 	}
@@ -353,7 +353,7 @@ type Model struct {
 	// Model name to execute.
 	Name *string `json:"name,omitempty"`
 	// Key/value settings for the model
-	Options *Options `json:"options,omitempty"`
+	Options *OptionsObj `json:"options,omitempty"`
 	// AI provider request format - Kong translates requests to and from the specified backend compatible formats.
 	Provider *Provider `json:"provider,omitempty"`
 }
@@ -365,7 +365,7 @@ func (o *Model) GetName() *string {
 	return o.Name
 }
 
-func (o *Model) GetOptions() *Options {
+func (o *Model) GetOptions() *OptionsObj {
 	if o == nil {
 		return nil
 	}

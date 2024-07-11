@@ -103,6 +103,14 @@ func (r *PortalListDataSource) Schema(ctx context.Context, req datasource.Schema
 							Computed:    true,
 							Description: `Whether the portal catalog can be accessed publicly without any developer authentication. Developer accounts and applications cannot be created if the portal is public.`,
 						},
+						"labels": schema.MapAttribute{
+							Computed:    true,
+							ElementType: types.StringType,
+							MarkdownDescription: `description: A maximum of 50 user-defined labels are allowed on this resource.` + "\n" +
+								`Keys must not start with kong, konnect, insomnia, mesh, kic or _, which are reserved for Kong.` + "\n" +
+								`Keys are case-sensitive.` + "\n" +
+								``,
+						},
 						"name": schema.StringAttribute{
 							Computed:    true,
 							Description: `The name of the portal, used to distinguish it from other portals. Name must be unique.`,

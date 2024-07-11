@@ -38,6 +38,7 @@ func (s *Roles) TeamsAssignRole(ctx context.Context, request operations.TeamsAss
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionServerURL,
+		operations.SupportedOptionTimeout,
 		operations.SupportedOptionAcceptHeaderOverride,
 	}
 
@@ -46,6 +47,7 @@ func (s *Roles) TeamsAssignRole(ctx context.Context, request operations.TeamsAss
 			return nil, fmt.Errorf("error applying option: %w", err)
 		}
 	}
+
 	baseURL := utils.ReplaceParameters(operations.TeamsAssignRoleServerList[0], map[string]string{})
 	if o.ServerURL != nil {
 		baseURL = *o.ServerURL
@@ -59,6 +61,17 @@ func (s *Roles) TeamsAssignRole(ctx context.Context, request operations.TeamsAss
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "AssignRole", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
@@ -214,6 +227,7 @@ func (s *Roles) TeamsRemoveRole(ctx context.Context, request operations.TeamsRem
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionServerURL,
+		operations.SupportedOptionTimeout,
 	}
 
 	for _, opt := range opts {
@@ -221,6 +235,7 @@ func (s *Roles) TeamsRemoveRole(ctx context.Context, request operations.TeamsRem
 			return nil, fmt.Errorf("error applying option: %w", err)
 		}
 	}
+
 	baseURL := utils.ReplaceParameters(operations.TeamsRemoveRoleServerList[0], map[string]string{})
 	if o.ServerURL != nil {
 		baseURL = *o.ServerURL
@@ -229,6 +244,17 @@ func (s *Roles) TeamsRemoveRole(ctx context.Context, request operations.TeamsRem
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/teams/{teamId}/assigned-roles/{roleId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "DELETE", opURL, nil)

@@ -33,12 +33,23 @@ func newPlugins(sdkConfig sdkConfiguration) *Plugins {
 
 // CreatePlugin - Create a new Plugin
 // Create a new Plugin
-func (s *Plugins) CreatePlugin(ctx context.Context, request operations.CreatePluginRequest) (*operations.CreatePluginResponse, error) {
+func (s *Plugins) CreatePlugin(ctx context.Context, request operations.CreatePluginRequest, opts ...operations.Option) (*operations.CreatePluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "create-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -50,6 +61,17 @@ func (s *Plugins) CreatePlugin(ctx context.Context, request operations.CreatePlu
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Plugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
@@ -141,7 +163,7 @@ func (s *Plugins) CreatePlugin(ctx context.Context, request operations.CreatePlu
 
 // GetPlugin - Fetch a Plugin
 // Get a Plugin using ID.
-func (s *Plugins) GetPlugin(ctx context.Context, request operations.GetPluginRequest) (*operations.GetPluginResponse, error) {
+func (s *Plugins) GetPlugin(ctx context.Context, request operations.GetPluginRequest, opts ...operations.Option) (*operations.GetPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "get-plugin",
@@ -149,10 +171,32 @@ func (s *Plugins) GetPlugin(ctx context.Context, request operations.GetPluginReq
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", opURL, nil)
@@ -244,12 +288,23 @@ func (s *Plugins) GetPlugin(ctx context.Context, request operations.GetPluginReq
 
 // UpsertPlugin - Upsert a Plugin
 // Create or Update Plugin using ID.
-func (s *Plugins) UpsertPlugin(ctx context.Context, request operations.UpsertPluginRequest) (*operations.UpsertPluginResponse, error) {
+func (s *Plugins) UpsertPlugin(ctx context.Context, request operations.UpsertPluginRequest, opts ...operations.Option) (*operations.UpsertPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "upsert-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -261,6 +316,17 @@ func (s *Plugins) UpsertPlugin(ctx context.Context, request operations.UpsertPlu
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Plugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "PUT", opURL, bodyReader)
@@ -352,7 +418,7 @@ func (s *Plugins) UpsertPlugin(ctx context.Context, request operations.UpsertPlu
 
 // DeletePlugin - Delete a Plugin
 // Delete a Plugin
-func (s *Plugins) DeletePlugin(ctx context.Context, request operations.DeletePluginRequest) (*operations.DeletePluginResponse, error) {
+func (s *Plugins) DeletePlugin(ctx context.Context, request operations.DeletePluginRequest, opts ...operations.Option) (*operations.DeletePluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "delete-plugin",
@@ -360,10 +426,32 @@ func (s *Plugins) DeletePlugin(ctx context.Context, request operations.DeletePlu
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "DELETE", opURL, nil)
@@ -443,7 +531,7 @@ func (s *Plugins) DeletePlugin(ctx context.Context, request operations.DeletePlu
 
 // GetACLPlugin - Get a ACL plugin
 // Get a ACL plugin
-func (s *Plugins) GetACLPlugin(ctx context.Context, request operations.GetACLPluginRequest) (*operations.GetACLPluginResponse, error) {
+func (s *Plugins) GetACLPlugin(ctx context.Context, request operations.GetACLPluginRequest, opts ...operations.Option) (*operations.GetACLPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "get-acl-plugin",
@@ -451,10 +539,32 @@ func (s *Plugins) GetACLPlugin(ctx context.Context, request operations.GetACLPlu
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", opURL, nil)
@@ -546,12 +656,23 @@ func (s *Plugins) GetACLPlugin(ctx context.Context, request operations.GetACLPlu
 
 // UpdateACLPlugin - Update a ACL plugin
 // Update a ACL plugin
-func (s *Plugins) UpdateACLPlugin(ctx context.Context, request operations.UpdateACLPluginRequest) (*operations.UpdateACLPluginResponse, error) {
+func (s *Plugins) UpdateACLPlugin(ctx context.Context, request operations.UpdateACLPluginRequest, opts ...operations.Option) (*operations.UpdateACLPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "update-acl-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -563,6 +684,17 @@ func (s *Plugins) UpdateACLPlugin(ctx context.Context, request operations.Update
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateACLPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "PUT", opURL, bodyReader)
@@ -654,7 +786,7 @@ func (s *Plugins) UpdateACLPlugin(ctx context.Context, request operations.Update
 
 // DeleteACLPlugin - Delete a ACL plugin
 // Delete a ACL plugin
-func (s *Plugins) DeleteACLPlugin(ctx context.Context, request operations.DeleteACLPluginRequest) (*operations.DeleteACLPluginResponse, error) {
+func (s *Plugins) DeleteACLPlugin(ctx context.Context, request operations.DeleteACLPluginRequest, opts ...operations.Option) (*operations.DeleteACLPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "delete-acl-plugin",
@@ -662,10 +794,32 @@ func (s *Plugins) DeleteACLPlugin(ctx context.Context, request operations.Delete
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "DELETE", opURL, nil)
@@ -745,7 +899,7 @@ func (s *Plugins) DeleteACLPlugin(ctx context.Context, request operations.Delete
 
 // GetAipromptdecoratorPlugin - Get a AIPromptDecorator plugin
 // Get a AIPromptDecorator plugin
-func (s *Plugins) GetAipromptdecoratorPlugin(ctx context.Context, request operations.GetAipromptdecoratorPluginRequest) (*operations.GetAipromptdecoratorPluginResponse, error) {
+func (s *Plugins) GetAipromptdecoratorPlugin(ctx context.Context, request operations.GetAipromptdecoratorPluginRequest, opts ...operations.Option) (*operations.GetAipromptdecoratorPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "get-aipromptdecorator-plugin",
@@ -753,10 +907,32 @@ func (s *Plugins) GetAipromptdecoratorPlugin(ctx context.Context, request operat
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", opURL, nil)
@@ -848,12 +1024,23 @@ func (s *Plugins) GetAipromptdecoratorPlugin(ctx context.Context, request operat
 
 // UpdateAipromptdecoratorPlugin - Update a AIPromptDecorator plugin
 // Update a AIPromptDecorator plugin
-func (s *Plugins) UpdateAipromptdecoratorPlugin(ctx context.Context, request operations.UpdateAipromptdecoratorPluginRequest) (*operations.UpdateAipromptdecoratorPluginResponse, error) {
+func (s *Plugins) UpdateAipromptdecoratorPlugin(ctx context.Context, request operations.UpdateAipromptdecoratorPluginRequest, opts ...operations.Option) (*operations.UpdateAipromptdecoratorPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "update-aipromptdecorator-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -865,6 +1052,17 @@ func (s *Plugins) UpdateAipromptdecoratorPlugin(ctx context.Context, request ope
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateAIPromptDecoratorPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "PUT", opURL, bodyReader)
@@ -956,7 +1154,7 @@ func (s *Plugins) UpdateAipromptdecoratorPlugin(ctx context.Context, request ope
 
 // DeleteAipromptdecoratorPlugin - Delete a AIPromptDecorator plugin
 // Delete a AIPromptDecorator plugin
-func (s *Plugins) DeleteAipromptdecoratorPlugin(ctx context.Context, request operations.DeleteAipromptdecoratorPluginRequest) (*operations.DeleteAipromptdecoratorPluginResponse, error) {
+func (s *Plugins) DeleteAipromptdecoratorPlugin(ctx context.Context, request operations.DeleteAipromptdecoratorPluginRequest, opts ...operations.Option) (*operations.DeleteAipromptdecoratorPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "delete-aipromptdecorator-plugin",
@@ -964,10 +1162,32 @@ func (s *Plugins) DeleteAipromptdecoratorPlugin(ctx context.Context, request ope
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "DELETE", opURL, nil)
@@ -1047,7 +1267,7 @@ func (s *Plugins) DeleteAipromptdecoratorPlugin(ctx context.Context, request ope
 
 // GetAipromptguardPlugin - Get a AIPromptGuard plugin
 // Get a AIPromptGuard plugin
-func (s *Plugins) GetAipromptguardPlugin(ctx context.Context, request operations.GetAipromptguardPluginRequest) (*operations.GetAipromptguardPluginResponse, error) {
+func (s *Plugins) GetAipromptguardPlugin(ctx context.Context, request operations.GetAipromptguardPluginRequest, opts ...operations.Option) (*operations.GetAipromptguardPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "get-aipromptguard-plugin",
@@ -1055,10 +1275,32 @@ func (s *Plugins) GetAipromptguardPlugin(ctx context.Context, request operations
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", opURL, nil)
@@ -1150,12 +1392,23 @@ func (s *Plugins) GetAipromptguardPlugin(ctx context.Context, request operations
 
 // UpdateAipromptguardPlugin - Update a AIPromptGuard plugin
 // Update a AIPromptGuard plugin
-func (s *Plugins) UpdateAipromptguardPlugin(ctx context.Context, request operations.UpdateAipromptguardPluginRequest) (*operations.UpdateAipromptguardPluginResponse, error) {
+func (s *Plugins) UpdateAipromptguardPlugin(ctx context.Context, request operations.UpdateAipromptguardPluginRequest, opts ...operations.Option) (*operations.UpdateAipromptguardPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "update-aipromptguard-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -1167,6 +1420,17 @@ func (s *Plugins) UpdateAipromptguardPlugin(ctx context.Context, request operati
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateAIPromptGuardPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "PUT", opURL, bodyReader)
@@ -1258,7 +1522,7 @@ func (s *Plugins) UpdateAipromptguardPlugin(ctx context.Context, request operati
 
 // DeleteAipromptguardPlugin - Delete a AIPromptGuard plugin
 // Delete a AIPromptGuard plugin
-func (s *Plugins) DeleteAipromptguardPlugin(ctx context.Context, request operations.DeleteAipromptguardPluginRequest) (*operations.DeleteAipromptguardPluginResponse, error) {
+func (s *Plugins) DeleteAipromptguardPlugin(ctx context.Context, request operations.DeleteAipromptguardPluginRequest, opts ...operations.Option) (*operations.DeleteAipromptguardPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "delete-aipromptguard-plugin",
@@ -1266,10 +1530,32 @@ func (s *Plugins) DeleteAipromptguardPlugin(ctx context.Context, request operati
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "DELETE", opURL, nil)
@@ -1349,7 +1635,7 @@ func (s *Plugins) DeleteAipromptguardPlugin(ctx context.Context, request operati
 
 // GetAiprompttemplatePlugin - Get a AIPromptTemplate plugin
 // Get a AIPromptTemplate plugin
-func (s *Plugins) GetAiprompttemplatePlugin(ctx context.Context, request operations.GetAiprompttemplatePluginRequest) (*operations.GetAiprompttemplatePluginResponse, error) {
+func (s *Plugins) GetAiprompttemplatePlugin(ctx context.Context, request operations.GetAiprompttemplatePluginRequest, opts ...operations.Option) (*operations.GetAiprompttemplatePluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "get-aiprompttemplate-plugin",
@@ -1357,10 +1643,32 @@ func (s *Plugins) GetAiprompttemplatePlugin(ctx context.Context, request operati
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", opURL, nil)
@@ -1452,12 +1760,23 @@ func (s *Plugins) GetAiprompttemplatePlugin(ctx context.Context, request operati
 
 // UpdateAiprompttemplatePlugin - Update a AIPromptTemplate plugin
 // Update a AIPromptTemplate plugin
-func (s *Plugins) UpdateAiprompttemplatePlugin(ctx context.Context, request operations.UpdateAiprompttemplatePluginRequest) (*operations.UpdateAiprompttemplatePluginResponse, error) {
+func (s *Plugins) UpdateAiprompttemplatePlugin(ctx context.Context, request operations.UpdateAiprompttemplatePluginRequest, opts ...operations.Option) (*operations.UpdateAiprompttemplatePluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "update-aiprompttemplate-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -1469,6 +1788,17 @@ func (s *Plugins) UpdateAiprompttemplatePlugin(ctx context.Context, request oper
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateAIPromptTemplatePlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "PUT", opURL, bodyReader)
@@ -1560,7 +1890,7 @@ func (s *Plugins) UpdateAiprompttemplatePlugin(ctx context.Context, request oper
 
 // DeleteAiprompttemplatePlugin - Delete a AIPromptTemplate plugin
 // Delete a AIPromptTemplate plugin
-func (s *Plugins) DeleteAiprompttemplatePlugin(ctx context.Context, request operations.DeleteAiprompttemplatePluginRequest) (*operations.DeleteAiprompttemplatePluginResponse, error) {
+func (s *Plugins) DeleteAiprompttemplatePlugin(ctx context.Context, request operations.DeleteAiprompttemplatePluginRequest, opts ...operations.Option) (*operations.DeleteAiprompttemplatePluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "delete-aiprompttemplate-plugin",
@@ -1568,10 +1898,32 @@ func (s *Plugins) DeleteAiprompttemplatePlugin(ctx context.Context, request oper
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "DELETE", opURL, nil)
@@ -1651,7 +2003,7 @@ func (s *Plugins) DeleteAiprompttemplatePlugin(ctx context.Context, request oper
 
 // GetAiproxyPlugin - Get a AIProxy plugin
 // Get a AIProxy plugin
-func (s *Plugins) GetAiproxyPlugin(ctx context.Context, request operations.GetAiproxyPluginRequest) (*operations.GetAiproxyPluginResponse, error) {
+func (s *Plugins) GetAiproxyPlugin(ctx context.Context, request operations.GetAiproxyPluginRequest, opts ...operations.Option) (*operations.GetAiproxyPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "get-aiproxy-plugin",
@@ -1659,10 +2011,32 @@ func (s *Plugins) GetAiproxyPlugin(ctx context.Context, request operations.GetAi
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", opURL, nil)
@@ -1754,12 +2128,23 @@ func (s *Plugins) GetAiproxyPlugin(ctx context.Context, request operations.GetAi
 
 // UpdateAiproxyPlugin - Update a AIProxy plugin
 // Update a AIProxy plugin
-func (s *Plugins) UpdateAiproxyPlugin(ctx context.Context, request operations.UpdateAiproxyPluginRequest) (*operations.UpdateAiproxyPluginResponse, error) {
+func (s *Plugins) UpdateAiproxyPlugin(ctx context.Context, request operations.UpdateAiproxyPluginRequest, opts ...operations.Option) (*operations.UpdateAiproxyPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "update-aiproxy-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -1771,6 +2156,17 @@ func (s *Plugins) UpdateAiproxyPlugin(ctx context.Context, request operations.Up
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateAIProxyPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "PUT", opURL, bodyReader)
@@ -1862,7 +2258,7 @@ func (s *Plugins) UpdateAiproxyPlugin(ctx context.Context, request operations.Up
 
 // DeleteAiproxyPlugin - Delete a AIProxy plugin
 // Delete a AIProxy plugin
-func (s *Plugins) DeleteAiproxyPlugin(ctx context.Context, request operations.DeleteAiproxyPluginRequest) (*operations.DeleteAiproxyPluginResponse, error) {
+func (s *Plugins) DeleteAiproxyPlugin(ctx context.Context, request operations.DeleteAiproxyPluginRequest, opts ...operations.Option) (*operations.DeleteAiproxyPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "delete-aiproxy-plugin",
@@ -1870,10 +2266,32 @@ func (s *Plugins) DeleteAiproxyPlugin(ctx context.Context, request operations.De
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "DELETE", opURL, nil)
@@ -1953,7 +2371,7 @@ func (s *Plugins) DeleteAiproxyPlugin(ctx context.Context, request operations.De
 
 // GetAwslambdaPlugin - Get a AWSLambda plugin
 // Get a AWSLambda plugin
-func (s *Plugins) GetAwslambdaPlugin(ctx context.Context, request operations.GetAwslambdaPluginRequest) (*operations.GetAwslambdaPluginResponse, error) {
+func (s *Plugins) GetAwslambdaPlugin(ctx context.Context, request operations.GetAwslambdaPluginRequest, opts ...operations.Option) (*operations.GetAwslambdaPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "get-awslambda-plugin",
@@ -1961,10 +2379,32 @@ func (s *Plugins) GetAwslambdaPlugin(ctx context.Context, request operations.Get
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", opURL, nil)
@@ -2056,12 +2496,23 @@ func (s *Plugins) GetAwslambdaPlugin(ctx context.Context, request operations.Get
 
 // UpdateAwslambdaPlugin - Update a AWSLambda plugin
 // Update a AWSLambda plugin
-func (s *Plugins) UpdateAwslambdaPlugin(ctx context.Context, request operations.UpdateAwslambdaPluginRequest) (*operations.UpdateAwslambdaPluginResponse, error) {
+func (s *Plugins) UpdateAwslambdaPlugin(ctx context.Context, request operations.UpdateAwslambdaPluginRequest, opts ...operations.Option) (*operations.UpdateAwslambdaPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "update-awslambda-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -2073,6 +2524,17 @@ func (s *Plugins) UpdateAwslambdaPlugin(ctx context.Context, request operations.
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateAWSLambdaPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "PUT", opURL, bodyReader)
@@ -2164,7 +2626,7 @@ func (s *Plugins) UpdateAwslambdaPlugin(ctx context.Context, request operations.
 
 // DeleteAwslambdaPlugin - Delete a AWSLambda plugin
 // Delete a AWSLambda plugin
-func (s *Plugins) DeleteAwslambdaPlugin(ctx context.Context, request operations.DeleteAwslambdaPluginRequest) (*operations.DeleteAwslambdaPluginResponse, error) {
+func (s *Plugins) DeleteAwslambdaPlugin(ctx context.Context, request operations.DeleteAwslambdaPluginRequest, opts ...operations.Option) (*operations.DeleteAwslambdaPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "delete-awslambda-plugin",
@@ -2172,10 +2634,32 @@ func (s *Plugins) DeleteAwslambdaPlugin(ctx context.Context, request operations.
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "DELETE", opURL, nil)
@@ -2255,7 +2739,7 @@ func (s *Plugins) DeleteAwslambdaPlugin(ctx context.Context, request operations.
 
 // GetBasicauthPlugin - Get a BasicAuth plugin
 // Get a BasicAuth plugin
-func (s *Plugins) GetBasicauthPlugin(ctx context.Context, request operations.GetBasicauthPluginRequest) (*operations.GetBasicauthPluginResponse, error) {
+func (s *Plugins) GetBasicauthPlugin(ctx context.Context, request operations.GetBasicauthPluginRequest, opts ...operations.Option) (*operations.GetBasicauthPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "get-basicauth-plugin",
@@ -2263,10 +2747,32 @@ func (s *Plugins) GetBasicauthPlugin(ctx context.Context, request operations.Get
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", opURL, nil)
@@ -2358,12 +2864,23 @@ func (s *Plugins) GetBasicauthPlugin(ctx context.Context, request operations.Get
 
 // UpdateBasicauthPlugin - Update a BasicAuth plugin
 // Update a BasicAuth plugin
-func (s *Plugins) UpdateBasicauthPlugin(ctx context.Context, request operations.UpdateBasicauthPluginRequest) (*operations.UpdateBasicauthPluginResponse, error) {
+func (s *Plugins) UpdateBasicauthPlugin(ctx context.Context, request operations.UpdateBasicauthPluginRequest, opts ...operations.Option) (*operations.UpdateBasicauthPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "update-basicauth-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -2375,6 +2892,17 @@ func (s *Plugins) UpdateBasicauthPlugin(ctx context.Context, request operations.
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateBasicAuthPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "PUT", opURL, bodyReader)
@@ -2466,7 +2994,7 @@ func (s *Plugins) UpdateBasicauthPlugin(ctx context.Context, request operations.
 
 // DeleteBasicauthPlugin - Delete a BasicAuth plugin
 // Delete a BasicAuth plugin
-func (s *Plugins) DeleteBasicauthPlugin(ctx context.Context, request operations.DeleteBasicauthPluginRequest) (*operations.DeleteBasicauthPluginResponse, error) {
+func (s *Plugins) DeleteBasicauthPlugin(ctx context.Context, request operations.DeleteBasicauthPluginRequest, opts ...operations.Option) (*operations.DeleteBasicauthPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "delete-basicauth-plugin",
@@ -2474,10 +3002,32 @@ func (s *Plugins) DeleteBasicauthPlugin(ctx context.Context, request operations.
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "DELETE", opURL, nil)
@@ -2557,7 +3107,7 @@ func (s *Plugins) DeleteBasicauthPlugin(ctx context.Context, request operations.
 
 // GetCorrelationidPlugin - Get a CorrelationId plugin
 // Get a CorrelationId plugin
-func (s *Plugins) GetCorrelationidPlugin(ctx context.Context, request operations.GetCorrelationidPluginRequest) (*operations.GetCorrelationidPluginResponse, error) {
+func (s *Plugins) GetCorrelationidPlugin(ctx context.Context, request operations.GetCorrelationidPluginRequest, opts ...operations.Option) (*operations.GetCorrelationidPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "get-correlationid-plugin",
@@ -2565,10 +3115,32 @@ func (s *Plugins) GetCorrelationidPlugin(ctx context.Context, request operations
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", opURL, nil)
@@ -2660,12 +3232,23 @@ func (s *Plugins) GetCorrelationidPlugin(ctx context.Context, request operations
 
 // UpdateCorrelationidPlugin - Update a CorrelationId plugin
 // Update a CorrelationId plugin
-func (s *Plugins) UpdateCorrelationidPlugin(ctx context.Context, request operations.UpdateCorrelationidPluginRequest) (*operations.UpdateCorrelationidPluginResponse, error) {
+func (s *Plugins) UpdateCorrelationidPlugin(ctx context.Context, request operations.UpdateCorrelationidPluginRequest, opts ...operations.Option) (*operations.UpdateCorrelationidPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "update-correlationid-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -2677,6 +3260,17 @@ func (s *Plugins) UpdateCorrelationidPlugin(ctx context.Context, request operati
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateCorrelationIDPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "PUT", opURL, bodyReader)
@@ -2768,7 +3362,7 @@ func (s *Plugins) UpdateCorrelationidPlugin(ctx context.Context, request operati
 
 // DeleteCorrelationidPlugin - Delete a CorrelationId plugin
 // Delete a CorrelationId plugin
-func (s *Plugins) DeleteCorrelationidPlugin(ctx context.Context, request operations.DeleteCorrelationidPluginRequest) (*operations.DeleteCorrelationidPluginResponse, error) {
+func (s *Plugins) DeleteCorrelationidPlugin(ctx context.Context, request operations.DeleteCorrelationidPluginRequest, opts ...operations.Option) (*operations.DeleteCorrelationidPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "delete-correlationid-plugin",
@@ -2776,10 +3370,32 @@ func (s *Plugins) DeleteCorrelationidPlugin(ctx context.Context, request operati
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "DELETE", opURL, nil)
@@ -2859,7 +3475,7 @@ func (s *Plugins) DeleteCorrelationidPlugin(ctx context.Context, request operati
 
 // GetCorsPlugin - Get a CORS plugin
 // Get a CORS plugin
-func (s *Plugins) GetCorsPlugin(ctx context.Context, request operations.GetCorsPluginRequest) (*operations.GetCorsPluginResponse, error) {
+func (s *Plugins) GetCorsPlugin(ctx context.Context, request operations.GetCorsPluginRequest, opts ...operations.Option) (*operations.GetCorsPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "get-cors-plugin",
@@ -2867,10 +3483,32 @@ func (s *Plugins) GetCorsPlugin(ctx context.Context, request operations.GetCorsP
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", opURL, nil)
@@ -2962,12 +3600,23 @@ func (s *Plugins) GetCorsPlugin(ctx context.Context, request operations.GetCorsP
 
 // UpdateCorsPlugin - Update a CORS plugin
 // Update a CORS plugin
-func (s *Plugins) UpdateCorsPlugin(ctx context.Context, request operations.UpdateCorsPluginRequest) (*operations.UpdateCorsPluginResponse, error) {
+func (s *Plugins) UpdateCorsPlugin(ctx context.Context, request operations.UpdateCorsPluginRequest, opts ...operations.Option) (*operations.UpdateCorsPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "update-cors-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -2979,6 +3628,17 @@ func (s *Plugins) UpdateCorsPlugin(ctx context.Context, request operations.Updat
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateCORSPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "PUT", opURL, bodyReader)
@@ -3070,7 +3730,7 @@ func (s *Plugins) UpdateCorsPlugin(ctx context.Context, request operations.Updat
 
 // DeleteCorsPlugin - Delete a CORS plugin
 // Delete a CORS plugin
-func (s *Plugins) DeleteCorsPlugin(ctx context.Context, request operations.DeleteCorsPluginRequest) (*operations.DeleteCorsPluginResponse, error) {
+func (s *Plugins) DeleteCorsPlugin(ctx context.Context, request operations.DeleteCorsPluginRequest, opts ...operations.Option) (*operations.DeleteCorsPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "delete-cors-plugin",
@@ -3078,10 +3738,32 @@ func (s *Plugins) DeleteCorsPlugin(ctx context.Context, request operations.Delet
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "DELETE", opURL, nil)
@@ -3161,7 +3843,7 @@ func (s *Plugins) DeleteCorsPlugin(ctx context.Context, request operations.Delet
 
 // GetExittransformerPlugin - Get a ExitTransformer plugin
 // Get a ExitTransformer plugin
-func (s *Plugins) GetExittransformerPlugin(ctx context.Context, request operations.GetExittransformerPluginRequest) (*operations.GetExittransformerPluginResponse, error) {
+func (s *Plugins) GetExittransformerPlugin(ctx context.Context, request operations.GetExittransformerPluginRequest, opts ...operations.Option) (*operations.GetExittransformerPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "get-exittransformer-plugin",
@@ -3169,10 +3851,32 @@ func (s *Plugins) GetExittransformerPlugin(ctx context.Context, request operatio
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", opURL, nil)
@@ -3264,12 +3968,23 @@ func (s *Plugins) GetExittransformerPlugin(ctx context.Context, request operatio
 
 // UpdateExittransformerPlugin - Update a ExitTransformer plugin
 // Update a ExitTransformer plugin
-func (s *Plugins) UpdateExittransformerPlugin(ctx context.Context, request operations.UpdateExittransformerPluginRequest) (*operations.UpdateExittransformerPluginResponse, error) {
+func (s *Plugins) UpdateExittransformerPlugin(ctx context.Context, request operations.UpdateExittransformerPluginRequest, opts ...operations.Option) (*operations.UpdateExittransformerPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "update-exittransformer-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -3281,6 +3996,17 @@ func (s *Plugins) UpdateExittransformerPlugin(ctx context.Context, request opera
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateExitTransformerPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "PUT", opURL, bodyReader)
@@ -3372,7 +4098,7 @@ func (s *Plugins) UpdateExittransformerPlugin(ctx context.Context, request opera
 
 // DeleteExittransformerPlugin - Delete a ExitTransformer plugin
 // Delete a ExitTransformer plugin
-func (s *Plugins) DeleteExittransformerPlugin(ctx context.Context, request operations.DeleteExittransformerPluginRequest) (*operations.DeleteExittransformerPluginResponse, error) {
+func (s *Plugins) DeleteExittransformerPlugin(ctx context.Context, request operations.DeleteExittransformerPluginRequest, opts ...operations.Option) (*operations.DeleteExittransformerPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "delete-exittransformer-plugin",
@@ -3380,10 +4106,32 @@ func (s *Plugins) DeleteExittransformerPlugin(ctx context.Context, request opera
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "DELETE", opURL, nil)
@@ -3463,7 +4211,7 @@ func (s *Plugins) DeleteExittransformerPlugin(ctx context.Context, request opera
 
 // GetFilelogPlugin - Get a FileLog plugin
 // Get a FileLog plugin
-func (s *Plugins) GetFilelogPlugin(ctx context.Context, request operations.GetFilelogPluginRequest) (*operations.GetFilelogPluginResponse, error) {
+func (s *Plugins) GetFilelogPlugin(ctx context.Context, request operations.GetFilelogPluginRequest, opts ...operations.Option) (*operations.GetFilelogPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "get-filelog-plugin",
@@ -3471,10 +4219,32 @@ func (s *Plugins) GetFilelogPlugin(ctx context.Context, request operations.GetFi
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", opURL, nil)
@@ -3566,12 +4336,23 @@ func (s *Plugins) GetFilelogPlugin(ctx context.Context, request operations.GetFi
 
 // UpdateFilelogPlugin - Update a FileLog plugin
 // Update a FileLog plugin
-func (s *Plugins) UpdateFilelogPlugin(ctx context.Context, request operations.UpdateFilelogPluginRequest) (*operations.UpdateFilelogPluginResponse, error) {
+func (s *Plugins) UpdateFilelogPlugin(ctx context.Context, request operations.UpdateFilelogPluginRequest, opts ...operations.Option) (*operations.UpdateFilelogPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "update-filelog-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -3583,6 +4364,17 @@ func (s *Plugins) UpdateFilelogPlugin(ctx context.Context, request operations.Up
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateFileLogPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "PUT", opURL, bodyReader)
@@ -3674,7 +4466,7 @@ func (s *Plugins) UpdateFilelogPlugin(ctx context.Context, request operations.Up
 
 // DeleteFilelogPlugin - Delete a FileLog plugin
 // Delete a FileLog plugin
-func (s *Plugins) DeleteFilelogPlugin(ctx context.Context, request operations.DeleteFilelogPluginRequest) (*operations.DeleteFilelogPluginResponse, error) {
+func (s *Plugins) DeleteFilelogPlugin(ctx context.Context, request operations.DeleteFilelogPluginRequest, opts ...operations.Option) (*operations.DeleteFilelogPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "delete-filelog-plugin",
@@ -3682,10 +4474,32 @@ func (s *Plugins) DeleteFilelogPlugin(ctx context.Context, request operations.De
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "DELETE", opURL, nil)
@@ -3765,7 +4579,7 @@ func (s *Plugins) DeleteFilelogPlugin(ctx context.Context, request operations.De
 
 // GetIprestrictionPlugin - Get a IpRestriction plugin
 // Get a IpRestriction plugin
-func (s *Plugins) GetIprestrictionPlugin(ctx context.Context, request operations.GetIprestrictionPluginRequest) (*operations.GetIprestrictionPluginResponse, error) {
+func (s *Plugins) GetIprestrictionPlugin(ctx context.Context, request operations.GetIprestrictionPluginRequest, opts ...operations.Option) (*operations.GetIprestrictionPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "get-iprestriction-plugin",
@@ -3773,10 +4587,32 @@ func (s *Plugins) GetIprestrictionPlugin(ctx context.Context, request operations
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", opURL, nil)
@@ -3868,12 +4704,23 @@ func (s *Plugins) GetIprestrictionPlugin(ctx context.Context, request operations
 
 // UpdateIprestrictionPlugin - Update a IpRestriction plugin
 // Update a IpRestriction plugin
-func (s *Plugins) UpdateIprestrictionPlugin(ctx context.Context, request operations.UpdateIprestrictionPluginRequest) (*operations.UpdateIprestrictionPluginResponse, error) {
+func (s *Plugins) UpdateIprestrictionPlugin(ctx context.Context, request operations.UpdateIprestrictionPluginRequest, opts ...operations.Option) (*operations.UpdateIprestrictionPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "update-iprestriction-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -3885,6 +4732,17 @@ func (s *Plugins) UpdateIprestrictionPlugin(ctx context.Context, request operati
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateIPRestrictionPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "PUT", opURL, bodyReader)
@@ -3976,7 +4834,7 @@ func (s *Plugins) UpdateIprestrictionPlugin(ctx context.Context, request operati
 
 // DeleteIprestrictionPlugin - Delete a IpRestriction plugin
 // Delete a IpRestriction plugin
-func (s *Plugins) DeleteIprestrictionPlugin(ctx context.Context, request operations.DeleteIprestrictionPluginRequest) (*operations.DeleteIprestrictionPluginResponse, error) {
+func (s *Plugins) DeleteIprestrictionPlugin(ctx context.Context, request operations.DeleteIprestrictionPluginRequest, opts ...operations.Option) (*operations.DeleteIprestrictionPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "delete-iprestriction-plugin",
@@ -3984,10 +4842,32 @@ func (s *Plugins) DeleteIprestrictionPlugin(ctx context.Context, request operati
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "DELETE", opURL, nil)
@@ -4067,7 +4947,7 @@ func (s *Plugins) DeleteIprestrictionPlugin(ctx context.Context, request operati
 
 // GetJqPlugin - Get a JQ plugin
 // Get a JQ plugin
-func (s *Plugins) GetJqPlugin(ctx context.Context, request operations.GetJqPluginRequest) (*operations.GetJqPluginResponse, error) {
+func (s *Plugins) GetJqPlugin(ctx context.Context, request operations.GetJqPluginRequest, opts ...operations.Option) (*operations.GetJqPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "get-jq-plugin",
@@ -4075,10 +4955,32 @@ func (s *Plugins) GetJqPlugin(ctx context.Context, request operations.GetJqPlugi
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", opURL, nil)
@@ -4170,12 +5072,23 @@ func (s *Plugins) GetJqPlugin(ctx context.Context, request operations.GetJqPlugi
 
 // UpdateJqPlugin - Update a JQ plugin
 // Update a JQ plugin
-func (s *Plugins) UpdateJqPlugin(ctx context.Context, request operations.UpdateJqPluginRequest) (*operations.UpdateJqPluginResponse, error) {
+func (s *Plugins) UpdateJqPlugin(ctx context.Context, request operations.UpdateJqPluginRequest, opts ...operations.Option) (*operations.UpdateJqPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "update-jq-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -4187,6 +5100,17 @@ func (s *Plugins) UpdateJqPlugin(ctx context.Context, request operations.UpdateJ
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateJQPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "PUT", opURL, bodyReader)
@@ -4278,7 +5202,7 @@ func (s *Plugins) UpdateJqPlugin(ctx context.Context, request operations.UpdateJ
 
 // DeleteJqPlugin - Delete a JQ plugin
 // Delete a JQ plugin
-func (s *Plugins) DeleteJqPlugin(ctx context.Context, request operations.DeleteJqPluginRequest) (*operations.DeleteJqPluginResponse, error) {
+func (s *Plugins) DeleteJqPlugin(ctx context.Context, request operations.DeleteJqPluginRequest, opts ...operations.Option) (*operations.DeleteJqPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "delete-jq-plugin",
@@ -4286,10 +5210,32 @@ func (s *Plugins) DeleteJqPlugin(ctx context.Context, request operations.DeleteJ
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "DELETE", opURL, nil)
@@ -4369,7 +5315,7 @@ func (s *Plugins) DeleteJqPlugin(ctx context.Context, request operations.DeleteJ
 
 // GetJwtPlugin - Get a JWT plugin
 // Get a JWT plugin
-func (s *Plugins) GetJwtPlugin(ctx context.Context, request operations.GetJwtPluginRequest) (*operations.GetJwtPluginResponse, error) {
+func (s *Plugins) GetJwtPlugin(ctx context.Context, request operations.GetJwtPluginRequest, opts ...operations.Option) (*operations.GetJwtPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "get-jwt-plugin",
@@ -4377,10 +5323,32 @@ func (s *Plugins) GetJwtPlugin(ctx context.Context, request operations.GetJwtPlu
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", opURL, nil)
@@ -4472,12 +5440,23 @@ func (s *Plugins) GetJwtPlugin(ctx context.Context, request operations.GetJwtPlu
 
 // UpdateJwtPlugin - Update a JWT plugin
 // Update a JWT plugin
-func (s *Plugins) UpdateJwtPlugin(ctx context.Context, request operations.UpdateJwtPluginRequest) (*operations.UpdateJwtPluginResponse, error) {
+func (s *Plugins) UpdateJwtPlugin(ctx context.Context, request operations.UpdateJwtPluginRequest, opts ...operations.Option) (*operations.UpdateJwtPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "update-jwt-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -4489,6 +5468,17 @@ func (s *Plugins) UpdateJwtPlugin(ctx context.Context, request operations.Update
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateJWTPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "PUT", opURL, bodyReader)
@@ -4580,7 +5570,7 @@ func (s *Plugins) UpdateJwtPlugin(ctx context.Context, request operations.Update
 
 // DeleteJwtPlugin - Delete a JWT plugin
 // Delete a JWT plugin
-func (s *Plugins) DeleteJwtPlugin(ctx context.Context, request operations.DeleteJwtPluginRequest) (*operations.DeleteJwtPluginResponse, error) {
+func (s *Plugins) DeleteJwtPlugin(ctx context.Context, request operations.DeleteJwtPluginRequest, opts ...operations.Option) (*operations.DeleteJwtPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "delete-jwt-plugin",
@@ -4588,10 +5578,32 @@ func (s *Plugins) DeleteJwtPlugin(ctx context.Context, request operations.Delete
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "DELETE", opURL, nil)
@@ -4671,7 +5683,7 @@ func (s *Plugins) DeleteJwtPlugin(ctx context.Context, request operations.Delete
 
 // GetJwtsignerPlugin - Get a JWTSigner plugin
 // Get a JWTSigner plugin
-func (s *Plugins) GetJwtsignerPlugin(ctx context.Context, request operations.GetJwtsignerPluginRequest) (*operations.GetJwtsignerPluginResponse, error) {
+func (s *Plugins) GetJwtsignerPlugin(ctx context.Context, request operations.GetJwtsignerPluginRequest, opts ...operations.Option) (*operations.GetJwtsignerPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "get-jwtsigner-plugin",
@@ -4679,10 +5691,32 @@ func (s *Plugins) GetJwtsignerPlugin(ctx context.Context, request operations.Get
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", opURL, nil)
@@ -4774,12 +5808,23 @@ func (s *Plugins) GetJwtsignerPlugin(ctx context.Context, request operations.Get
 
 // UpdateJwtsignerPlugin - Update a JWTSigner plugin
 // Update a JWTSigner plugin
-func (s *Plugins) UpdateJwtsignerPlugin(ctx context.Context, request operations.UpdateJwtsignerPluginRequest) (*operations.UpdateJwtsignerPluginResponse, error) {
+func (s *Plugins) UpdateJwtsignerPlugin(ctx context.Context, request operations.UpdateJwtsignerPluginRequest, opts ...operations.Option) (*operations.UpdateJwtsignerPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "update-jwtsigner-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -4791,6 +5836,17 @@ func (s *Plugins) UpdateJwtsignerPlugin(ctx context.Context, request operations.
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateJWTSignerPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "PUT", opURL, bodyReader)
@@ -4882,7 +5938,7 @@ func (s *Plugins) UpdateJwtsignerPlugin(ctx context.Context, request operations.
 
 // DeleteJwtsignerPlugin - Delete a JWTSigner plugin
 // Delete a JWTSigner plugin
-func (s *Plugins) DeleteJwtsignerPlugin(ctx context.Context, request operations.DeleteJwtsignerPluginRequest) (*operations.DeleteJwtsignerPluginResponse, error) {
+func (s *Plugins) DeleteJwtsignerPlugin(ctx context.Context, request operations.DeleteJwtsignerPluginRequest, opts ...operations.Option) (*operations.DeleteJwtsignerPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "delete-jwtsigner-plugin",
@@ -4890,10 +5946,32 @@ func (s *Plugins) DeleteJwtsignerPlugin(ctx context.Context, request operations.
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "DELETE", opURL, nil)
@@ -4973,7 +6051,7 @@ func (s *Plugins) DeleteJwtsignerPlugin(ctx context.Context, request operations.
 
 // GetKeyauthPlugin - Get a KeyAuth plugin
 // Get a KeyAuth plugin
-func (s *Plugins) GetKeyauthPlugin(ctx context.Context, request operations.GetKeyauthPluginRequest) (*operations.GetKeyauthPluginResponse, error) {
+func (s *Plugins) GetKeyauthPlugin(ctx context.Context, request operations.GetKeyauthPluginRequest, opts ...operations.Option) (*operations.GetKeyauthPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "get-keyauth-plugin",
@@ -4981,10 +6059,32 @@ func (s *Plugins) GetKeyauthPlugin(ctx context.Context, request operations.GetKe
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", opURL, nil)
@@ -5076,12 +6176,23 @@ func (s *Plugins) GetKeyauthPlugin(ctx context.Context, request operations.GetKe
 
 // UpdateKeyauthPlugin - Update a KeyAuth plugin
 // Update a KeyAuth plugin
-func (s *Plugins) UpdateKeyauthPlugin(ctx context.Context, request operations.UpdateKeyauthPluginRequest) (*operations.UpdateKeyauthPluginResponse, error) {
+func (s *Plugins) UpdateKeyauthPlugin(ctx context.Context, request operations.UpdateKeyauthPluginRequest, opts ...operations.Option) (*operations.UpdateKeyauthPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "update-keyauth-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -5093,6 +6204,17 @@ func (s *Plugins) UpdateKeyauthPlugin(ctx context.Context, request operations.Up
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateKeyAuthPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "PUT", opURL, bodyReader)
@@ -5184,7 +6306,7 @@ func (s *Plugins) UpdateKeyauthPlugin(ctx context.Context, request operations.Up
 
 // DeleteKeyauthPlugin - Delete a KeyAuth plugin
 // Delete a KeyAuth plugin
-func (s *Plugins) DeleteKeyauthPlugin(ctx context.Context, request operations.DeleteKeyauthPluginRequest) (*operations.DeleteKeyauthPluginResponse, error) {
+func (s *Plugins) DeleteKeyauthPlugin(ctx context.Context, request operations.DeleteKeyauthPluginRequest, opts ...operations.Option) (*operations.DeleteKeyauthPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "delete-keyauth-plugin",
@@ -5192,10 +6314,32 @@ func (s *Plugins) DeleteKeyauthPlugin(ctx context.Context, request operations.De
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "DELETE", opURL, nil)
@@ -5275,7 +6419,7 @@ func (s *Plugins) DeleteKeyauthPlugin(ctx context.Context, request operations.De
 
 // GetOauth2Plugin - Get a Oauth2 plugin
 // Get a Oauth2 plugin
-func (s *Plugins) GetOauth2Plugin(ctx context.Context, request operations.GetOauth2PluginRequest) (*operations.GetOauth2PluginResponse, error) {
+func (s *Plugins) GetOauth2Plugin(ctx context.Context, request operations.GetOauth2PluginRequest, opts ...operations.Option) (*operations.GetOauth2PluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "get-oauth2-plugin",
@@ -5283,10 +6427,32 @@ func (s *Plugins) GetOauth2Plugin(ctx context.Context, request operations.GetOau
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", opURL, nil)
@@ -5378,12 +6544,23 @@ func (s *Plugins) GetOauth2Plugin(ctx context.Context, request operations.GetOau
 
 // UpdateOauth2Plugin - Update a Oauth2 plugin
 // Update a Oauth2 plugin
-func (s *Plugins) UpdateOauth2Plugin(ctx context.Context, request operations.UpdateOauth2PluginRequest) (*operations.UpdateOauth2PluginResponse, error) {
+func (s *Plugins) UpdateOauth2Plugin(ctx context.Context, request operations.UpdateOauth2PluginRequest, opts ...operations.Option) (*operations.UpdateOauth2PluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "update-oauth2-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -5395,6 +6572,17 @@ func (s *Plugins) UpdateOauth2Plugin(ctx context.Context, request operations.Upd
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateOauth2Plugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "PUT", opURL, bodyReader)
@@ -5486,7 +6674,7 @@ func (s *Plugins) UpdateOauth2Plugin(ctx context.Context, request operations.Upd
 
 // DeleteOauth2Plugin - Delete a Oauth2 plugin
 // Delete a Oauth2 plugin
-func (s *Plugins) DeleteOauth2Plugin(ctx context.Context, request operations.DeleteOauth2PluginRequest) (*operations.DeleteOauth2PluginResponse, error) {
+func (s *Plugins) DeleteOauth2Plugin(ctx context.Context, request operations.DeleteOauth2PluginRequest, opts ...operations.Option) (*operations.DeleteOauth2PluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "delete-oauth2-plugin",
@@ -5494,10 +6682,32 @@ func (s *Plugins) DeleteOauth2Plugin(ctx context.Context, request operations.Del
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "DELETE", opURL, nil)
@@ -5577,7 +6787,7 @@ func (s *Plugins) DeleteOauth2Plugin(ctx context.Context, request operations.Del
 
 // GetOpenidconnectPlugin - Get a OpenidConnect plugin
 // Get a OpenidConnect plugin
-func (s *Plugins) GetOpenidconnectPlugin(ctx context.Context, request operations.GetOpenidconnectPluginRequest) (*operations.GetOpenidconnectPluginResponse, error) {
+func (s *Plugins) GetOpenidconnectPlugin(ctx context.Context, request operations.GetOpenidconnectPluginRequest, opts ...operations.Option) (*operations.GetOpenidconnectPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "get-openidconnect-plugin",
@@ -5585,10 +6795,32 @@ func (s *Plugins) GetOpenidconnectPlugin(ctx context.Context, request operations
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", opURL, nil)
@@ -5680,12 +6912,23 @@ func (s *Plugins) GetOpenidconnectPlugin(ctx context.Context, request operations
 
 // UpdateOpenidconnectPlugin - Update a OpenidConnect plugin
 // Update a OpenidConnect plugin
-func (s *Plugins) UpdateOpenidconnectPlugin(ctx context.Context, request operations.UpdateOpenidconnectPluginRequest) (*operations.UpdateOpenidconnectPluginResponse, error) {
+func (s *Plugins) UpdateOpenidconnectPlugin(ctx context.Context, request operations.UpdateOpenidconnectPluginRequest, opts ...operations.Option) (*operations.UpdateOpenidconnectPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "update-openidconnect-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -5697,6 +6940,17 @@ func (s *Plugins) UpdateOpenidconnectPlugin(ctx context.Context, request operati
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateOpenidConnectPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "PUT", opURL, bodyReader)
@@ -5788,7 +7042,7 @@ func (s *Plugins) UpdateOpenidconnectPlugin(ctx context.Context, request operati
 
 // DeleteOpenidconnectPlugin - Delete a OpenidConnect plugin
 // Delete a OpenidConnect plugin
-func (s *Plugins) DeleteOpenidconnectPlugin(ctx context.Context, request operations.DeleteOpenidconnectPluginRequest) (*operations.DeleteOpenidconnectPluginResponse, error) {
+func (s *Plugins) DeleteOpenidconnectPlugin(ctx context.Context, request operations.DeleteOpenidconnectPluginRequest, opts ...operations.Option) (*operations.DeleteOpenidconnectPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "delete-openidconnect-plugin",
@@ -5796,10 +7050,32 @@ func (s *Plugins) DeleteOpenidconnectPlugin(ctx context.Context, request operati
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "DELETE", opURL, nil)
@@ -5879,7 +7155,7 @@ func (s *Plugins) DeleteOpenidconnectPlugin(ctx context.Context, request operati
 
 // GetOpentelemetryPlugin - Get a Opentelemetry plugin
 // Get a Opentelemetry plugin
-func (s *Plugins) GetOpentelemetryPlugin(ctx context.Context, request operations.GetOpentelemetryPluginRequest) (*operations.GetOpentelemetryPluginResponse, error) {
+func (s *Plugins) GetOpentelemetryPlugin(ctx context.Context, request operations.GetOpentelemetryPluginRequest, opts ...operations.Option) (*operations.GetOpentelemetryPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "get-opentelemetry-plugin",
@@ -5887,10 +7163,32 @@ func (s *Plugins) GetOpentelemetryPlugin(ctx context.Context, request operations
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", opURL, nil)
@@ -5982,12 +7280,23 @@ func (s *Plugins) GetOpentelemetryPlugin(ctx context.Context, request operations
 
 // UpdateOpentelemetryPlugin - Update a Opentelemetry plugin
 // Update a Opentelemetry plugin
-func (s *Plugins) UpdateOpentelemetryPlugin(ctx context.Context, request operations.UpdateOpentelemetryPluginRequest) (*operations.UpdateOpentelemetryPluginResponse, error) {
+func (s *Plugins) UpdateOpentelemetryPlugin(ctx context.Context, request operations.UpdateOpentelemetryPluginRequest, opts ...operations.Option) (*operations.UpdateOpentelemetryPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "update-opentelemetry-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -5999,6 +7308,17 @@ func (s *Plugins) UpdateOpentelemetryPlugin(ctx context.Context, request operati
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateOpentelemetryPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "PUT", opURL, bodyReader)
@@ -6090,7 +7410,7 @@ func (s *Plugins) UpdateOpentelemetryPlugin(ctx context.Context, request operati
 
 // DeleteOpentelemetryPlugin - Delete a Opentelemetry plugin
 // Delete a Opentelemetry plugin
-func (s *Plugins) DeleteOpentelemetryPlugin(ctx context.Context, request operations.DeleteOpentelemetryPluginRequest) (*operations.DeleteOpentelemetryPluginResponse, error) {
+func (s *Plugins) DeleteOpentelemetryPlugin(ctx context.Context, request operations.DeleteOpentelemetryPluginRequest, opts ...operations.Option) (*operations.DeleteOpentelemetryPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "delete-opentelemetry-plugin",
@@ -6098,10 +7418,32 @@ func (s *Plugins) DeleteOpentelemetryPlugin(ctx context.Context, request operati
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "DELETE", opURL, nil)
@@ -6179,9 +7521,377 @@ func (s *Plugins) DeleteOpentelemetryPlugin(ctx context.Context, request operati
 
 }
 
+// GetPostfunctionPlugin - Get a PostFunction plugin
+// Get a PostFunction plugin
+func (s *Plugins) GetPostfunctionPlugin(ctx context.Context, request operations.GetPostfunctionPluginRequest, opts ...operations.Option) (*operations.GetPostfunctionPluginResponse, error) {
+	hookCtx := hooks.HookContext{
+		Context:        ctx,
+		OperationID:    "get-postfunction-plugin",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
+	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
+	}
+
+	req, err := http.NewRequestWithContext(ctx, "GET", opURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error creating request: %w", err)
+	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
+
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+		return nil, err
+	}
+
+	req, err = s.sdkConfiguration.Hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
+	if err != nil {
+		return nil, err
+	}
+
+	httpRes, err := s.sdkConfiguration.Client.Do(req)
+	if err != nil || httpRes == nil {
+		if err != nil {
+			err = fmt.Errorf("error sending request: %w", err)
+		} else {
+			err = fmt.Errorf("error sending request: no response")
+		}
+
+		_, err = s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, nil, err)
+		return nil, err
+	} else if utils.MatchStatusCodes([]string{}, httpRes.StatusCode) {
+		_httpRes, err := s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, httpRes, nil)
+		if err != nil {
+			return nil, err
+		} else if _httpRes != nil {
+			httpRes = _httpRes
+		}
+	} else {
+		httpRes, err = s.sdkConfiguration.Hooks.AfterSuccess(hooks.AfterSuccessContext{HookContext: hookCtx}, httpRes)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	res := &operations.GetPostfunctionPluginResponse{
+		StatusCode:  httpRes.StatusCode,
+		ContentType: httpRes.Header.Get("Content-Type"),
+		RawResponse: httpRes,
+	}
+
+	rawBody, err := io.ReadAll(httpRes.Body)
+	if err != nil {
+		return nil, fmt.Errorf("error reading response body: %w", err)
+	}
+	httpRes.Body.Close()
+	httpRes.Body = io.NopCloser(bytes.NewBuffer(rawBody))
+
+	switch {
+	case httpRes.StatusCode == 200:
+		switch {
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
+			var out shared.PostFunctionPlugin
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
+				return nil, err
+			}
+
+			res.PostFunctionPlugin = &out
+		default:
+			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
+		}
+	case httpRes.StatusCode == 401:
+		switch {
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
+			var out shared.GatewayUnauthorizedError
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
+				return nil, err
+			}
+
+			res.GatewayUnauthorizedError = &out
+		default:
+			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
+		}
+	case httpRes.StatusCode == 404:
+	default:
+		return nil, errors.NewSDKError("unknown status code returned", httpRes.StatusCode, string(rawBody), httpRes)
+	}
+
+	return res, nil
+
+}
+
+// UpdatePostfunctionPlugin - Update a PostFunction plugin
+// Update a PostFunction plugin
+func (s *Plugins) UpdatePostfunctionPlugin(ctx context.Context, request operations.UpdatePostfunctionPluginRequest, opts ...operations.Option) (*operations.UpdatePostfunctionPluginResponse, error) {
+	hookCtx := hooks.HookContext{
+		Context:        ctx,
+		OperationID:    "update-postfunction-plugin",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
+	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreatePostFunctionPlugin", "json", `request:"mediaType=application/json"`)
+	if err != nil {
+		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
+	}
+
+	req, err := http.NewRequestWithContext(ctx, "PUT", opURL, bodyReader)
+	if err != nil {
+		return nil, fmt.Errorf("error creating request: %w", err)
+	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
+	req.Header.Set("Content-Type", reqContentType)
+
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+		return nil, err
+	}
+
+	req, err = s.sdkConfiguration.Hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
+	if err != nil {
+		return nil, err
+	}
+
+	httpRes, err := s.sdkConfiguration.Client.Do(req)
+	if err != nil || httpRes == nil {
+		if err != nil {
+			err = fmt.Errorf("error sending request: %w", err)
+		} else {
+			err = fmt.Errorf("error sending request: no response")
+		}
+
+		_, err = s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, nil, err)
+		return nil, err
+	} else if utils.MatchStatusCodes([]string{}, httpRes.StatusCode) {
+		_httpRes, err := s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, httpRes, nil)
+		if err != nil {
+			return nil, err
+		} else if _httpRes != nil {
+			httpRes = _httpRes
+		}
+	} else {
+		httpRes, err = s.sdkConfiguration.Hooks.AfterSuccess(hooks.AfterSuccessContext{HookContext: hookCtx}, httpRes)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	res := &operations.UpdatePostfunctionPluginResponse{
+		StatusCode:  httpRes.StatusCode,
+		ContentType: httpRes.Header.Get("Content-Type"),
+		RawResponse: httpRes,
+	}
+
+	rawBody, err := io.ReadAll(httpRes.Body)
+	if err != nil {
+		return nil, fmt.Errorf("error reading response body: %w", err)
+	}
+	httpRes.Body.Close()
+	httpRes.Body = io.NopCloser(bytes.NewBuffer(rawBody))
+
+	switch {
+	case httpRes.StatusCode == 200:
+		switch {
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
+			var out shared.PostFunctionPlugin
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
+				return nil, err
+			}
+
+			res.PostFunctionPlugin = &out
+		default:
+			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
+		}
+	case httpRes.StatusCode == 401:
+		switch {
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
+			var out shared.GatewayUnauthorizedError
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
+				return nil, err
+			}
+
+			res.GatewayUnauthorizedError = &out
+		default:
+			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
+		}
+	default:
+		return nil, errors.NewSDKError("unknown status code returned", httpRes.StatusCode, string(rawBody), httpRes)
+	}
+
+	return res, nil
+
+}
+
+// DeletePostfunctionPlugin - Delete a PostFunction plugin
+// Delete a PostFunction plugin
+func (s *Plugins) DeletePostfunctionPlugin(ctx context.Context, request operations.DeletePostfunctionPluginRequest, opts ...operations.Option) (*operations.DeletePostfunctionPluginResponse, error) {
+	hookCtx := hooks.HookContext{
+		Context:        ctx,
+		OperationID:    "delete-postfunction-plugin",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
+	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
+	}
+
+	req, err := http.NewRequestWithContext(ctx, "DELETE", opURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error creating request: %w", err)
+	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
+
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+		return nil, err
+	}
+
+	req, err = s.sdkConfiguration.Hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
+	if err != nil {
+		return nil, err
+	}
+
+	httpRes, err := s.sdkConfiguration.Client.Do(req)
+	if err != nil || httpRes == nil {
+		if err != nil {
+			err = fmt.Errorf("error sending request: %w", err)
+		} else {
+			err = fmt.Errorf("error sending request: no response")
+		}
+
+		_, err = s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, nil, err)
+		return nil, err
+	} else if utils.MatchStatusCodes([]string{}, httpRes.StatusCode) {
+		_httpRes, err := s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, httpRes, nil)
+		if err != nil {
+			return nil, err
+		} else if _httpRes != nil {
+			httpRes = _httpRes
+		}
+	} else {
+		httpRes, err = s.sdkConfiguration.Hooks.AfterSuccess(hooks.AfterSuccessContext{HookContext: hookCtx}, httpRes)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	res := &operations.DeletePostfunctionPluginResponse{
+		StatusCode:  httpRes.StatusCode,
+		ContentType: httpRes.Header.Get("Content-Type"),
+		RawResponse: httpRes,
+	}
+
+	rawBody, err := io.ReadAll(httpRes.Body)
+	if err != nil {
+		return nil, fmt.Errorf("error reading response body: %w", err)
+	}
+	httpRes.Body.Close()
+	httpRes.Body = io.NopCloser(bytes.NewBuffer(rawBody))
+
+	switch {
+	case httpRes.StatusCode == 204:
+	case httpRes.StatusCode == 401:
+		switch {
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
+			var out shared.GatewayUnauthorizedError
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
+				return nil, err
+			}
+
+			res.GatewayUnauthorizedError = &out
+		default:
+			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
+		}
+	default:
+		return nil, errors.NewSDKError("unknown status code returned", httpRes.StatusCode, string(rawBody), httpRes)
+	}
+
+	return res, nil
+
+}
+
 // GetPrefunctionPlugin - Get a PreFunction plugin
 // Get a PreFunction plugin
-func (s *Plugins) GetPrefunctionPlugin(ctx context.Context, request operations.GetPrefunctionPluginRequest) (*operations.GetPrefunctionPluginResponse, error) {
+func (s *Plugins) GetPrefunctionPlugin(ctx context.Context, request operations.GetPrefunctionPluginRequest, opts ...operations.Option) (*operations.GetPrefunctionPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "get-prefunction-plugin",
@@ -6189,10 +7899,32 @@ func (s *Plugins) GetPrefunctionPlugin(ctx context.Context, request operations.G
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", opURL, nil)
@@ -6284,12 +8016,23 @@ func (s *Plugins) GetPrefunctionPlugin(ctx context.Context, request operations.G
 
 // UpdatePrefunctionPlugin - Update a PreFunction plugin
 // Update a PreFunction plugin
-func (s *Plugins) UpdatePrefunctionPlugin(ctx context.Context, request operations.UpdatePrefunctionPluginRequest) (*operations.UpdatePrefunctionPluginResponse, error) {
+func (s *Plugins) UpdatePrefunctionPlugin(ctx context.Context, request operations.UpdatePrefunctionPluginRequest, opts ...operations.Option) (*operations.UpdatePrefunctionPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "update-prefunction-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -6301,6 +8044,17 @@ func (s *Plugins) UpdatePrefunctionPlugin(ctx context.Context, request operation
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreatePreFunctionPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "PUT", opURL, bodyReader)
@@ -6392,7 +8146,7 @@ func (s *Plugins) UpdatePrefunctionPlugin(ctx context.Context, request operation
 
 // DeletePrefunctionPlugin - Delete a PreFunction plugin
 // Delete a PreFunction plugin
-func (s *Plugins) DeletePrefunctionPlugin(ctx context.Context, request operations.DeletePrefunctionPluginRequest) (*operations.DeletePrefunctionPluginResponse, error) {
+func (s *Plugins) DeletePrefunctionPlugin(ctx context.Context, request operations.DeletePrefunctionPluginRequest, opts ...operations.Option) (*operations.DeletePrefunctionPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "delete-prefunction-plugin",
@@ -6400,10 +8154,32 @@ func (s *Plugins) DeletePrefunctionPlugin(ctx context.Context, request operation
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "DELETE", opURL, nil)
@@ -6483,7 +8259,7 @@ func (s *Plugins) DeletePrefunctionPlugin(ctx context.Context, request operation
 
 // GetPrometheusPlugin - Get a Prometheus plugin
 // Get a Prometheus plugin
-func (s *Plugins) GetPrometheusPlugin(ctx context.Context, request operations.GetPrometheusPluginRequest) (*operations.GetPrometheusPluginResponse, error) {
+func (s *Plugins) GetPrometheusPlugin(ctx context.Context, request operations.GetPrometheusPluginRequest, opts ...operations.Option) (*operations.GetPrometheusPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "get-prometheus-plugin",
@@ -6491,10 +8267,32 @@ func (s *Plugins) GetPrometheusPlugin(ctx context.Context, request operations.Ge
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", opURL, nil)
@@ -6586,12 +8384,23 @@ func (s *Plugins) GetPrometheusPlugin(ctx context.Context, request operations.Ge
 
 // UpdatePrometheusPlugin - Update a Prometheus plugin
 // Update a Prometheus plugin
-func (s *Plugins) UpdatePrometheusPlugin(ctx context.Context, request operations.UpdatePrometheusPluginRequest) (*operations.UpdatePrometheusPluginResponse, error) {
+func (s *Plugins) UpdatePrometheusPlugin(ctx context.Context, request operations.UpdatePrometheusPluginRequest, opts ...operations.Option) (*operations.UpdatePrometheusPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "update-prometheus-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -6603,6 +8412,17 @@ func (s *Plugins) UpdatePrometheusPlugin(ctx context.Context, request operations
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreatePrometheusPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "PUT", opURL, bodyReader)
@@ -6694,7 +8514,7 @@ func (s *Plugins) UpdatePrometheusPlugin(ctx context.Context, request operations
 
 // DeletePrometheusPlugin - Delete a Prometheus plugin
 // Delete a Prometheus plugin
-func (s *Plugins) DeletePrometheusPlugin(ctx context.Context, request operations.DeletePrometheusPluginRequest) (*operations.DeletePrometheusPluginResponse, error) {
+func (s *Plugins) DeletePrometheusPlugin(ctx context.Context, request operations.DeletePrometheusPluginRequest, opts ...operations.Option) (*operations.DeletePrometheusPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "delete-prometheus-plugin",
@@ -6702,10 +8522,32 @@ func (s *Plugins) DeletePrometheusPlugin(ctx context.Context, request operations
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "DELETE", opURL, nil)
@@ -6785,7 +8627,7 @@ func (s *Plugins) DeletePrometheusPlugin(ctx context.Context, request operations
 
 // GetProxycachePlugin - Get a ProxyCache plugin
 // Get a ProxyCache plugin
-func (s *Plugins) GetProxycachePlugin(ctx context.Context, request operations.GetProxycachePluginRequest) (*operations.GetProxycachePluginResponse, error) {
+func (s *Plugins) GetProxycachePlugin(ctx context.Context, request operations.GetProxycachePluginRequest, opts ...operations.Option) (*operations.GetProxycachePluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "get-proxycache-plugin",
@@ -6793,10 +8635,32 @@ func (s *Plugins) GetProxycachePlugin(ctx context.Context, request operations.Ge
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", opURL, nil)
@@ -6888,12 +8752,23 @@ func (s *Plugins) GetProxycachePlugin(ctx context.Context, request operations.Ge
 
 // UpdateProxycachePlugin - Update a ProxyCache plugin
 // Update a ProxyCache plugin
-func (s *Plugins) UpdateProxycachePlugin(ctx context.Context, request operations.UpdateProxycachePluginRequest) (*operations.UpdateProxycachePluginResponse, error) {
+func (s *Plugins) UpdateProxycachePlugin(ctx context.Context, request operations.UpdateProxycachePluginRequest, opts ...operations.Option) (*operations.UpdateProxycachePluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "update-proxycache-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -6905,6 +8780,17 @@ func (s *Plugins) UpdateProxycachePlugin(ctx context.Context, request operations
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateProxyCachePlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "PUT", opURL, bodyReader)
@@ -6996,7 +8882,7 @@ func (s *Plugins) UpdateProxycachePlugin(ctx context.Context, request operations
 
 // DeleteProxycachePlugin - Delete a ProxyCache plugin
 // Delete a ProxyCache plugin
-func (s *Plugins) DeleteProxycachePlugin(ctx context.Context, request operations.DeleteProxycachePluginRequest) (*operations.DeleteProxycachePluginResponse, error) {
+func (s *Plugins) DeleteProxycachePlugin(ctx context.Context, request operations.DeleteProxycachePluginRequest, opts ...operations.Option) (*operations.DeleteProxycachePluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "delete-proxycache-plugin",
@@ -7004,10 +8890,32 @@ func (s *Plugins) DeleteProxycachePlugin(ctx context.Context, request operations
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "DELETE", opURL, nil)
@@ -7087,7 +8995,7 @@ func (s *Plugins) DeleteProxycachePlugin(ctx context.Context, request operations
 
 // GetRatelimitingPlugin - Get a RateLimiting plugin
 // Get a RateLimiting plugin
-func (s *Plugins) GetRatelimitingPlugin(ctx context.Context, request operations.GetRatelimitingPluginRequest) (*operations.GetRatelimitingPluginResponse, error) {
+func (s *Plugins) GetRatelimitingPlugin(ctx context.Context, request operations.GetRatelimitingPluginRequest, opts ...operations.Option) (*operations.GetRatelimitingPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "get-ratelimiting-plugin",
@@ -7095,10 +9003,32 @@ func (s *Plugins) GetRatelimitingPlugin(ctx context.Context, request operations.
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", opURL, nil)
@@ -7190,12 +9120,23 @@ func (s *Plugins) GetRatelimitingPlugin(ctx context.Context, request operations.
 
 // UpdateRatelimitingPlugin - Update a RateLimiting plugin
 // Update a RateLimiting plugin
-func (s *Plugins) UpdateRatelimitingPlugin(ctx context.Context, request operations.UpdateRatelimitingPluginRequest) (*operations.UpdateRatelimitingPluginResponse, error) {
+func (s *Plugins) UpdateRatelimitingPlugin(ctx context.Context, request operations.UpdateRatelimitingPluginRequest, opts ...operations.Option) (*operations.UpdateRatelimitingPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "update-ratelimiting-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -7207,6 +9148,17 @@ func (s *Plugins) UpdateRatelimitingPlugin(ctx context.Context, request operatio
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateRateLimitingPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "PUT", opURL, bodyReader)
@@ -7298,7 +9250,7 @@ func (s *Plugins) UpdateRatelimitingPlugin(ctx context.Context, request operatio
 
 // DeleteRatelimitingPlugin - Delete a RateLimiting plugin
 // Delete a RateLimiting plugin
-func (s *Plugins) DeleteRatelimitingPlugin(ctx context.Context, request operations.DeleteRatelimitingPluginRequest) (*operations.DeleteRatelimitingPluginResponse, error) {
+func (s *Plugins) DeleteRatelimitingPlugin(ctx context.Context, request operations.DeleteRatelimitingPluginRequest, opts ...operations.Option) (*operations.DeleteRatelimitingPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "delete-ratelimiting-plugin",
@@ -7306,10 +9258,32 @@ func (s *Plugins) DeleteRatelimitingPlugin(ctx context.Context, request operatio
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "DELETE", opURL, nil)
@@ -7389,7 +9363,7 @@ func (s *Plugins) DeleteRatelimitingPlugin(ctx context.Context, request operatio
 
 // GetRatelimitingadvancedPlugin - Get a RateLimitingAdvanced plugin
 // Get a RateLimitingAdvanced plugin
-func (s *Plugins) GetRatelimitingadvancedPlugin(ctx context.Context, request operations.GetRatelimitingadvancedPluginRequest) (*operations.GetRatelimitingadvancedPluginResponse, error) {
+func (s *Plugins) GetRatelimitingadvancedPlugin(ctx context.Context, request operations.GetRatelimitingadvancedPluginRequest, opts ...operations.Option) (*operations.GetRatelimitingadvancedPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "get-ratelimitingadvanced-plugin",
@@ -7397,10 +9371,32 @@ func (s *Plugins) GetRatelimitingadvancedPlugin(ctx context.Context, request ope
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", opURL, nil)
@@ -7492,12 +9488,23 @@ func (s *Plugins) GetRatelimitingadvancedPlugin(ctx context.Context, request ope
 
 // UpdateRatelimitingadvancedPlugin - Update a RateLimitingAdvanced plugin
 // Update a RateLimitingAdvanced plugin
-func (s *Plugins) UpdateRatelimitingadvancedPlugin(ctx context.Context, request operations.UpdateRatelimitingadvancedPluginRequest) (*operations.UpdateRatelimitingadvancedPluginResponse, error) {
+func (s *Plugins) UpdateRatelimitingadvancedPlugin(ctx context.Context, request operations.UpdateRatelimitingadvancedPluginRequest, opts ...operations.Option) (*operations.UpdateRatelimitingadvancedPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "update-ratelimitingadvanced-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -7509,6 +9516,17 @@ func (s *Plugins) UpdateRatelimitingadvancedPlugin(ctx context.Context, request 
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateRateLimitingAdvancedPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "PUT", opURL, bodyReader)
@@ -7600,7 +9618,7 @@ func (s *Plugins) UpdateRatelimitingadvancedPlugin(ctx context.Context, request 
 
 // DeleteRatelimitingadvancedPlugin - Delete a RateLimitingAdvanced plugin
 // Delete a RateLimitingAdvanced plugin
-func (s *Plugins) DeleteRatelimitingadvancedPlugin(ctx context.Context, request operations.DeleteRatelimitingadvancedPluginRequest) (*operations.DeleteRatelimitingadvancedPluginResponse, error) {
+func (s *Plugins) DeleteRatelimitingadvancedPlugin(ctx context.Context, request operations.DeleteRatelimitingadvancedPluginRequest, opts ...operations.Option) (*operations.DeleteRatelimitingadvancedPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "delete-ratelimitingadvanced-plugin",
@@ -7608,10 +9626,32 @@ func (s *Plugins) DeleteRatelimitingadvancedPlugin(ctx context.Context, request 
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "DELETE", opURL, nil)
@@ -7691,7 +9731,7 @@ func (s *Plugins) DeleteRatelimitingadvancedPlugin(ctx context.Context, request 
 
 // GetRequestterminationPlugin - Get a RequestTermination plugin
 // Get a RequestTermination plugin
-func (s *Plugins) GetRequestterminationPlugin(ctx context.Context, request operations.GetRequestterminationPluginRequest) (*operations.GetRequestterminationPluginResponse, error) {
+func (s *Plugins) GetRequestterminationPlugin(ctx context.Context, request operations.GetRequestterminationPluginRequest, opts ...operations.Option) (*operations.GetRequestterminationPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "get-requesttermination-plugin",
@@ -7699,10 +9739,32 @@ func (s *Plugins) GetRequestterminationPlugin(ctx context.Context, request opera
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", opURL, nil)
@@ -7794,12 +9856,23 @@ func (s *Plugins) GetRequestterminationPlugin(ctx context.Context, request opera
 
 // UpdateRequestterminationPlugin - Update a RequestTermination plugin
 // Update a RequestTermination plugin
-func (s *Plugins) UpdateRequestterminationPlugin(ctx context.Context, request operations.UpdateRequestterminationPluginRequest) (*operations.UpdateRequestterminationPluginResponse, error) {
+func (s *Plugins) UpdateRequestterminationPlugin(ctx context.Context, request operations.UpdateRequestterminationPluginRequest, opts ...operations.Option) (*operations.UpdateRequestterminationPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "update-requesttermination-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -7811,6 +9884,17 @@ func (s *Plugins) UpdateRequestterminationPlugin(ctx context.Context, request op
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateRequestTerminationPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "PUT", opURL, bodyReader)
@@ -7902,7 +9986,7 @@ func (s *Plugins) UpdateRequestterminationPlugin(ctx context.Context, request op
 
 // DeleteRequestterminationPlugin - Delete a RequestTermination plugin
 // Delete a RequestTermination plugin
-func (s *Plugins) DeleteRequestterminationPlugin(ctx context.Context, request operations.DeleteRequestterminationPluginRequest) (*operations.DeleteRequestterminationPluginResponse, error) {
+func (s *Plugins) DeleteRequestterminationPlugin(ctx context.Context, request operations.DeleteRequestterminationPluginRequest, opts ...operations.Option) (*operations.DeleteRequestterminationPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "delete-requesttermination-plugin",
@@ -7910,10 +9994,32 @@ func (s *Plugins) DeleteRequestterminationPlugin(ctx context.Context, request op
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "DELETE", opURL, nil)
@@ -7993,7 +10099,7 @@ func (s *Plugins) DeleteRequestterminationPlugin(ctx context.Context, request op
 
 // GetRequesttransformerPlugin - Get a RequestTransformer plugin
 // Get a RequestTransformer plugin
-func (s *Plugins) GetRequesttransformerPlugin(ctx context.Context, request operations.GetRequesttransformerPluginRequest) (*operations.GetRequesttransformerPluginResponse, error) {
+func (s *Plugins) GetRequesttransformerPlugin(ctx context.Context, request operations.GetRequesttransformerPluginRequest, opts ...operations.Option) (*operations.GetRequesttransformerPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "get-requesttransformer-plugin",
@@ -8001,10 +10107,32 @@ func (s *Plugins) GetRequesttransformerPlugin(ctx context.Context, request opera
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", opURL, nil)
@@ -8096,12 +10224,23 @@ func (s *Plugins) GetRequesttransformerPlugin(ctx context.Context, request opera
 
 // UpdateRequesttransformerPlugin - Update a RequestTransformer plugin
 // Update a RequestTransformer plugin
-func (s *Plugins) UpdateRequesttransformerPlugin(ctx context.Context, request operations.UpdateRequesttransformerPluginRequest) (*operations.UpdateRequesttransformerPluginResponse, error) {
+func (s *Plugins) UpdateRequesttransformerPlugin(ctx context.Context, request operations.UpdateRequesttransformerPluginRequest, opts ...operations.Option) (*operations.UpdateRequesttransformerPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "update-requesttransformer-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -8113,6 +10252,17 @@ func (s *Plugins) UpdateRequesttransformerPlugin(ctx context.Context, request op
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateRequestTransformerPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "PUT", opURL, bodyReader)
@@ -8204,7 +10354,7 @@ func (s *Plugins) UpdateRequesttransformerPlugin(ctx context.Context, request op
 
 // DeleteRequesttransformerPlugin - Delete a RequestTransformer plugin
 // Delete a RequestTransformer plugin
-func (s *Plugins) DeleteRequesttransformerPlugin(ctx context.Context, request operations.DeleteRequesttransformerPluginRequest) (*operations.DeleteRequesttransformerPluginResponse, error) {
+func (s *Plugins) DeleteRequesttransformerPlugin(ctx context.Context, request operations.DeleteRequesttransformerPluginRequest, opts ...operations.Option) (*operations.DeleteRequesttransformerPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "delete-requesttransformer-plugin",
@@ -8212,10 +10362,32 @@ func (s *Plugins) DeleteRequesttransformerPlugin(ctx context.Context, request op
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "DELETE", opURL, nil)
@@ -8295,7 +10467,7 @@ func (s *Plugins) DeleteRequesttransformerPlugin(ctx context.Context, request op
 
 // GetRequesttransformeradvancedPlugin - Get a RequestTransformerAdvanced plugin
 // Get a RequestTransformerAdvanced plugin
-func (s *Plugins) GetRequesttransformeradvancedPlugin(ctx context.Context, request operations.GetRequesttransformeradvancedPluginRequest) (*operations.GetRequesttransformeradvancedPluginResponse, error) {
+func (s *Plugins) GetRequesttransformeradvancedPlugin(ctx context.Context, request operations.GetRequesttransformeradvancedPluginRequest, opts ...operations.Option) (*operations.GetRequesttransformeradvancedPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "get-requesttransformeradvanced-plugin",
@@ -8303,10 +10475,32 @@ func (s *Plugins) GetRequesttransformeradvancedPlugin(ctx context.Context, reque
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", opURL, nil)
@@ -8398,12 +10592,23 @@ func (s *Plugins) GetRequesttransformeradvancedPlugin(ctx context.Context, reque
 
 // UpdateRequesttransformeradvancedPlugin - Update a RequestTransformerAdvanced plugin
 // Update a RequestTransformerAdvanced plugin
-func (s *Plugins) UpdateRequesttransformeradvancedPlugin(ctx context.Context, request operations.UpdateRequesttransformeradvancedPluginRequest) (*operations.UpdateRequesttransformeradvancedPluginResponse, error) {
+func (s *Plugins) UpdateRequesttransformeradvancedPlugin(ctx context.Context, request operations.UpdateRequesttransformeradvancedPluginRequest, opts ...operations.Option) (*operations.UpdateRequesttransformeradvancedPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "update-requesttransformeradvanced-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -8415,6 +10620,17 @@ func (s *Plugins) UpdateRequesttransformeradvancedPlugin(ctx context.Context, re
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateRequestTransformerAdvancedPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "PUT", opURL, bodyReader)
@@ -8506,7 +10722,7 @@ func (s *Plugins) UpdateRequesttransformeradvancedPlugin(ctx context.Context, re
 
 // DeleteRequesttransformeradvancedPlugin - Delete a RequestTransformerAdvanced plugin
 // Delete a RequestTransformerAdvanced plugin
-func (s *Plugins) DeleteRequesttransformeradvancedPlugin(ctx context.Context, request operations.DeleteRequesttransformeradvancedPluginRequest) (*operations.DeleteRequesttransformeradvancedPluginResponse, error) {
+func (s *Plugins) DeleteRequesttransformeradvancedPlugin(ctx context.Context, request operations.DeleteRequesttransformeradvancedPluginRequest, opts ...operations.Option) (*operations.DeleteRequesttransformeradvancedPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "delete-requesttransformeradvanced-plugin",
@@ -8514,10 +10730,32 @@ func (s *Plugins) DeleteRequesttransformeradvancedPlugin(ctx context.Context, re
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "DELETE", opURL, nil)
@@ -8597,7 +10835,7 @@ func (s *Plugins) DeleteRequesttransformeradvancedPlugin(ctx context.Context, re
 
 // GetResponsetransformerPlugin - Get a ResponseTransformer plugin
 // Get a ResponseTransformer plugin
-func (s *Plugins) GetResponsetransformerPlugin(ctx context.Context, request operations.GetResponsetransformerPluginRequest) (*operations.GetResponsetransformerPluginResponse, error) {
+func (s *Plugins) GetResponsetransformerPlugin(ctx context.Context, request operations.GetResponsetransformerPluginRequest, opts ...operations.Option) (*operations.GetResponsetransformerPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "get-responsetransformer-plugin",
@@ -8605,10 +10843,32 @@ func (s *Plugins) GetResponsetransformerPlugin(ctx context.Context, request oper
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", opURL, nil)
@@ -8700,12 +10960,23 @@ func (s *Plugins) GetResponsetransformerPlugin(ctx context.Context, request oper
 
 // UpdateResponsetransformerPlugin - Update a ResponseTransformer plugin
 // Update a ResponseTransformer plugin
-func (s *Plugins) UpdateResponsetransformerPlugin(ctx context.Context, request operations.UpdateResponsetransformerPluginRequest) (*operations.UpdateResponsetransformerPluginResponse, error) {
+func (s *Plugins) UpdateResponsetransformerPlugin(ctx context.Context, request operations.UpdateResponsetransformerPluginRequest, opts ...operations.Option) (*operations.UpdateResponsetransformerPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "update-responsetransformer-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -8717,6 +10988,17 @@ func (s *Plugins) UpdateResponsetransformerPlugin(ctx context.Context, request o
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateResponseTransformerPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "PUT", opURL, bodyReader)
@@ -8808,7 +11090,7 @@ func (s *Plugins) UpdateResponsetransformerPlugin(ctx context.Context, request o
 
 // DeleteResponsetransformerPlugin - Delete a ResponseTransformer plugin
 // Delete a ResponseTransformer plugin
-func (s *Plugins) DeleteResponsetransformerPlugin(ctx context.Context, request operations.DeleteResponsetransformerPluginRequest) (*operations.DeleteResponsetransformerPluginResponse, error) {
+func (s *Plugins) DeleteResponsetransformerPlugin(ctx context.Context, request operations.DeleteResponsetransformerPluginRequest, opts ...operations.Option) (*operations.DeleteResponsetransformerPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "delete-responsetransformer-plugin",
@@ -8816,10 +11098,32 @@ func (s *Plugins) DeleteResponsetransformerPlugin(ctx context.Context, request o
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "DELETE", opURL, nil)
@@ -8899,7 +11203,7 @@ func (s *Plugins) DeleteResponsetransformerPlugin(ctx context.Context, request o
 
 // GetResponsetransformeradvancedPlugin - Get a ResponseTransformerAdvanced plugin
 // Get a ResponseTransformerAdvanced plugin
-func (s *Plugins) GetResponsetransformeradvancedPlugin(ctx context.Context, request operations.GetResponsetransformeradvancedPluginRequest) (*operations.GetResponsetransformeradvancedPluginResponse, error) {
+func (s *Plugins) GetResponsetransformeradvancedPlugin(ctx context.Context, request operations.GetResponsetransformeradvancedPluginRequest, opts ...operations.Option) (*operations.GetResponsetransformeradvancedPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "get-responsetransformeradvanced-plugin",
@@ -8907,10 +11211,32 @@ func (s *Plugins) GetResponsetransformeradvancedPlugin(ctx context.Context, requ
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", opURL, nil)
@@ -9002,12 +11328,23 @@ func (s *Plugins) GetResponsetransformeradvancedPlugin(ctx context.Context, requ
 
 // UpdateResponsetransformeradvancedPlugin - Update a ResponseTransformerAdvanced plugin
 // Update a ResponseTransformerAdvanced plugin
-func (s *Plugins) UpdateResponsetransformeradvancedPlugin(ctx context.Context, request operations.UpdateResponsetransformeradvancedPluginRequest) (*operations.UpdateResponsetransformeradvancedPluginResponse, error) {
+func (s *Plugins) UpdateResponsetransformeradvancedPlugin(ctx context.Context, request operations.UpdateResponsetransformeradvancedPluginRequest, opts ...operations.Option) (*operations.UpdateResponsetransformeradvancedPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "update-responsetransformeradvanced-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -9019,6 +11356,17 @@ func (s *Plugins) UpdateResponsetransformeradvancedPlugin(ctx context.Context, r
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateResponseTransformerAdvancedPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "PUT", opURL, bodyReader)
@@ -9110,7 +11458,7 @@ func (s *Plugins) UpdateResponsetransformeradvancedPlugin(ctx context.Context, r
 
 // DeleteResponsetransformeradvancedPlugin - Delete a ResponseTransformerAdvanced plugin
 // Delete a ResponseTransformerAdvanced plugin
-func (s *Plugins) DeleteResponsetransformeradvancedPlugin(ctx context.Context, request operations.DeleteResponsetransformeradvancedPluginRequest) (*operations.DeleteResponsetransformeradvancedPluginResponse, error) {
+func (s *Plugins) DeleteResponsetransformeradvancedPlugin(ctx context.Context, request operations.DeleteResponsetransformeradvancedPluginRequest, opts ...operations.Option) (*operations.DeleteResponsetransformeradvancedPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "delete-responsetransformeradvanced-plugin",
@@ -9118,10 +11466,32 @@ func (s *Plugins) DeleteResponsetransformeradvancedPlugin(ctx context.Context, r
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "DELETE", opURL, nil)
@@ -9201,7 +11571,7 @@ func (s *Plugins) DeleteResponsetransformeradvancedPlugin(ctx context.Context, r
 
 // GetSamlPlugin - Get a Saml plugin
 // Get a Saml plugin
-func (s *Plugins) GetSamlPlugin(ctx context.Context, request operations.GetSamlPluginRequest) (*operations.GetSamlPluginResponse, error) {
+func (s *Plugins) GetSamlPlugin(ctx context.Context, request operations.GetSamlPluginRequest, opts ...operations.Option) (*operations.GetSamlPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "get-saml-plugin",
@@ -9209,10 +11579,32 @@ func (s *Plugins) GetSamlPlugin(ctx context.Context, request operations.GetSamlP
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", opURL, nil)
@@ -9304,12 +11696,23 @@ func (s *Plugins) GetSamlPlugin(ctx context.Context, request operations.GetSamlP
 
 // UpdateSamlPlugin - Update a Saml plugin
 // Update a Saml plugin
-func (s *Plugins) UpdateSamlPlugin(ctx context.Context, request operations.UpdateSamlPluginRequest) (*operations.UpdateSamlPluginResponse, error) {
+func (s *Plugins) UpdateSamlPlugin(ctx context.Context, request operations.UpdateSamlPluginRequest, opts ...operations.Option) (*operations.UpdateSamlPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "update-saml-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -9321,6 +11724,17 @@ func (s *Plugins) UpdateSamlPlugin(ctx context.Context, request operations.Updat
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateSamlPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "PUT", opURL, bodyReader)
@@ -9412,7 +11826,7 @@ func (s *Plugins) UpdateSamlPlugin(ctx context.Context, request operations.Updat
 
 // DeleteSamlPlugin - Delete a Saml plugin
 // Delete a Saml plugin
-func (s *Plugins) DeleteSamlPlugin(ctx context.Context, request operations.DeleteSamlPluginRequest) (*operations.DeleteSamlPluginResponse, error) {
+func (s *Plugins) DeleteSamlPlugin(ctx context.Context, request operations.DeleteSamlPluginRequest, opts ...operations.Option) (*operations.DeleteSamlPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "delete-saml-plugin",
@@ -9420,10 +11834,32 @@ func (s *Plugins) DeleteSamlPlugin(ctx context.Context, request operations.Delet
 		SecuritySource: s.sdkConfiguration.Security,
 	}
 
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "DELETE", opURL, nil)
@@ -9501,14 +11937,393 @@ func (s *Plugins) DeleteSamlPlugin(ctx context.Context, request operations.Delet
 
 }
 
+// GetStatsdPlugin - Get a Statsd plugin
+// Get a Statsd plugin
+func (s *Plugins) GetStatsdPlugin(ctx context.Context, request operations.GetStatsdPluginRequest, opts ...operations.Option) (*operations.GetStatsdPluginResponse, error) {
+	hookCtx := hooks.HookContext{
+		Context:        ctx,
+		OperationID:    "get-statsd-plugin",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
+	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
+	}
+
+	req, err := http.NewRequestWithContext(ctx, "GET", opURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error creating request: %w", err)
+	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
+
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+		return nil, err
+	}
+
+	req, err = s.sdkConfiguration.Hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
+	if err != nil {
+		return nil, err
+	}
+
+	httpRes, err := s.sdkConfiguration.Client.Do(req)
+	if err != nil || httpRes == nil {
+		if err != nil {
+			err = fmt.Errorf("error sending request: %w", err)
+		} else {
+			err = fmt.Errorf("error sending request: no response")
+		}
+
+		_, err = s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, nil, err)
+		return nil, err
+	} else if utils.MatchStatusCodes([]string{}, httpRes.StatusCode) {
+		_httpRes, err := s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, httpRes, nil)
+		if err != nil {
+			return nil, err
+		} else if _httpRes != nil {
+			httpRes = _httpRes
+		}
+	} else {
+		httpRes, err = s.sdkConfiguration.Hooks.AfterSuccess(hooks.AfterSuccessContext{HookContext: hookCtx}, httpRes)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	res := &operations.GetStatsdPluginResponse{
+		StatusCode:  httpRes.StatusCode,
+		ContentType: httpRes.Header.Get("Content-Type"),
+		RawResponse: httpRes,
+	}
+
+	rawBody, err := io.ReadAll(httpRes.Body)
+	if err != nil {
+		return nil, fmt.Errorf("error reading response body: %w", err)
+	}
+	httpRes.Body.Close()
+	httpRes.Body = io.NopCloser(bytes.NewBuffer(rawBody))
+
+	switch {
+	case httpRes.StatusCode == 200:
+		switch {
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
+			var out shared.StatsdPlugin
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
+				return nil, err
+			}
+
+			res.StatsdPlugin = &out
+		default:
+			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
+		}
+	case httpRes.StatusCode == 401:
+		switch {
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
+			var out shared.GatewayUnauthorizedError
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
+				return nil, err
+			}
+
+			res.GatewayUnauthorizedError = &out
+		default:
+			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
+		}
+	case httpRes.StatusCode == 404:
+	default:
+		return nil, errors.NewSDKError("unknown status code returned", httpRes.StatusCode, string(rawBody), httpRes)
+	}
+
+	return res, nil
+
+}
+
+// UpdateStatsdPlugin - Update a Statsd plugin
+// Update a Statsd plugin
+func (s *Plugins) UpdateStatsdPlugin(ctx context.Context, request operations.UpdateStatsdPluginRequest, opts ...operations.Option) (*operations.UpdateStatsdPluginResponse, error) {
+	hookCtx := hooks.HookContext{
+		Context:        ctx,
+		OperationID:    "update-statsd-plugin",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
+	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateStatsdPlugin", "json", `request:"mediaType=application/json"`)
+	if err != nil {
+		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
+	}
+
+	req, err := http.NewRequestWithContext(ctx, "PUT", opURL, bodyReader)
+	if err != nil {
+		return nil, fmt.Errorf("error creating request: %w", err)
+	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
+	req.Header.Set("Content-Type", reqContentType)
+
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+		return nil, err
+	}
+
+	req, err = s.sdkConfiguration.Hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
+	if err != nil {
+		return nil, err
+	}
+
+	httpRes, err := s.sdkConfiguration.Client.Do(req)
+	if err != nil || httpRes == nil {
+		if err != nil {
+			err = fmt.Errorf("error sending request: %w", err)
+		} else {
+			err = fmt.Errorf("error sending request: no response")
+		}
+
+		_, err = s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, nil, err)
+		return nil, err
+	} else if utils.MatchStatusCodes([]string{}, httpRes.StatusCode) {
+		_httpRes, err := s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, httpRes, nil)
+		if err != nil {
+			return nil, err
+		} else if _httpRes != nil {
+			httpRes = _httpRes
+		}
+	} else {
+		httpRes, err = s.sdkConfiguration.Hooks.AfterSuccess(hooks.AfterSuccessContext{HookContext: hookCtx}, httpRes)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	res := &operations.UpdateStatsdPluginResponse{
+		StatusCode:  httpRes.StatusCode,
+		ContentType: httpRes.Header.Get("Content-Type"),
+		RawResponse: httpRes,
+	}
+
+	rawBody, err := io.ReadAll(httpRes.Body)
+	if err != nil {
+		return nil, fmt.Errorf("error reading response body: %w", err)
+	}
+	httpRes.Body.Close()
+	httpRes.Body = io.NopCloser(bytes.NewBuffer(rawBody))
+
+	switch {
+	case httpRes.StatusCode == 200:
+		switch {
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
+			var out shared.StatsdPlugin
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
+				return nil, err
+			}
+
+			res.StatsdPlugin = &out
+		default:
+			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
+		}
+	case httpRes.StatusCode == 401:
+		switch {
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
+			var out shared.GatewayUnauthorizedError
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
+				return nil, err
+			}
+
+			res.GatewayUnauthorizedError = &out
+		default:
+			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
+		}
+	default:
+		return nil, errors.NewSDKError("unknown status code returned", httpRes.StatusCode, string(rawBody), httpRes)
+	}
+
+	return res, nil
+
+}
+
+// DeleteStatsdPlugin - Delete a Statsd plugin
+// Delete a Statsd plugin
+func (s *Plugins) DeleteStatsdPlugin(ctx context.Context, request operations.DeleteStatsdPluginRequest, opts ...operations.Option) (*operations.DeleteStatsdPluginResponse, error) {
+	hookCtx := hooks.HookContext{
+		Context:        ctx,
+		OperationID:    "delete-statsd-plugin",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
+	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
+	}
+
+	req, err := http.NewRequestWithContext(ctx, "DELETE", opURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error creating request: %w", err)
+	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
+
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+		return nil, err
+	}
+
+	req, err = s.sdkConfiguration.Hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
+	if err != nil {
+		return nil, err
+	}
+
+	httpRes, err := s.sdkConfiguration.Client.Do(req)
+	if err != nil || httpRes == nil {
+		if err != nil {
+			err = fmt.Errorf("error sending request: %w", err)
+		} else {
+			err = fmt.Errorf("error sending request: no response")
+		}
+
+		_, err = s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, nil, err)
+		return nil, err
+	} else if utils.MatchStatusCodes([]string{}, httpRes.StatusCode) {
+		_httpRes, err := s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, httpRes, nil)
+		if err != nil {
+			return nil, err
+		} else if _httpRes != nil {
+			httpRes = _httpRes
+		}
+	} else {
+		httpRes, err = s.sdkConfiguration.Hooks.AfterSuccess(hooks.AfterSuccessContext{HookContext: hookCtx}, httpRes)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	res := &operations.DeleteStatsdPluginResponse{
+		StatusCode:  httpRes.StatusCode,
+		ContentType: httpRes.Header.Get("Content-Type"),
+		RawResponse: httpRes,
+	}
+
+	rawBody, err := io.ReadAll(httpRes.Body)
+	if err != nil {
+		return nil, fmt.Errorf("error reading response body: %w", err)
+	}
+	httpRes.Body.Close()
+	httpRes.Body = io.NopCloser(bytes.NewBuffer(rawBody))
+
+	switch {
+	case httpRes.StatusCode == 204:
+	case httpRes.StatusCode == 401:
+		switch {
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
+			var out shared.GatewayUnauthorizedError
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
+				return nil, err
+			}
+
+			res.GatewayUnauthorizedError = &out
+		default:
+			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
+		}
+	default:
+		return nil, errors.NewSDKError("unknown status code returned", httpRes.StatusCode, string(rawBody), httpRes)
+	}
+
+	return res, nil
+
+}
+
 // CreateACLPlugin - Create a ACL plugin
 // Create a ACL plugin
-func (s *Plugins) CreateACLPlugin(ctx context.Context, request operations.CreateACLPluginRequest) (*operations.CreateACLPluginResponse, error) {
+func (s *Plugins) CreateACLPlugin(ctx context.Context, request operations.CreateACLPluginRequest, opts ...operations.Option) (*operations.CreateACLPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "create-acl-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -9520,6 +12335,17 @@ func (s *Plugins) CreateACLPlugin(ctx context.Context, request operations.Create
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateACLPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
@@ -9611,12 +12437,23 @@ func (s *Plugins) CreateACLPlugin(ctx context.Context, request operations.Create
 
 // CreateAipromptdecoratorPlugin - Create a AIPromptDecorator plugin
 // Create a AIPromptDecorator plugin
-func (s *Plugins) CreateAipromptdecoratorPlugin(ctx context.Context, request operations.CreateAipromptdecoratorPluginRequest) (*operations.CreateAipromptdecoratorPluginResponse, error) {
+func (s *Plugins) CreateAipromptdecoratorPlugin(ctx context.Context, request operations.CreateAipromptdecoratorPluginRequest, opts ...operations.Option) (*operations.CreateAipromptdecoratorPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "create-aipromptdecorator-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -9628,6 +12465,17 @@ func (s *Plugins) CreateAipromptdecoratorPlugin(ctx context.Context, request ope
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateAIPromptDecoratorPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
@@ -9719,12 +12567,23 @@ func (s *Plugins) CreateAipromptdecoratorPlugin(ctx context.Context, request ope
 
 // CreateAipromptguardPlugin - Create a AIPromptGuard plugin
 // Create a AIPromptGuard plugin
-func (s *Plugins) CreateAipromptguardPlugin(ctx context.Context, request operations.CreateAipromptguardPluginRequest) (*operations.CreateAipromptguardPluginResponse, error) {
+func (s *Plugins) CreateAipromptguardPlugin(ctx context.Context, request operations.CreateAipromptguardPluginRequest, opts ...operations.Option) (*operations.CreateAipromptguardPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "create-aipromptguard-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -9736,6 +12595,17 @@ func (s *Plugins) CreateAipromptguardPlugin(ctx context.Context, request operati
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateAIPromptGuardPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
@@ -9827,12 +12697,23 @@ func (s *Plugins) CreateAipromptguardPlugin(ctx context.Context, request operati
 
 // CreateAiprompttemplatePlugin - Create a AIPromptTemplate plugin
 // Create a AIPromptTemplate plugin
-func (s *Plugins) CreateAiprompttemplatePlugin(ctx context.Context, request operations.CreateAiprompttemplatePluginRequest) (*operations.CreateAiprompttemplatePluginResponse, error) {
+func (s *Plugins) CreateAiprompttemplatePlugin(ctx context.Context, request operations.CreateAiprompttemplatePluginRequest, opts ...operations.Option) (*operations.CreateAiprompttemplatePluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "create-aiprompttemplate-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -9844,6 +12725,17 @@ func (s *Plugins) CreateAiprompttemplatePlugin(ctx context.Context, request oper
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateAIPromptTemplatePlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
@@ -9935,12 +12827,23 @@ func (s *Plugins) CreateAiprompttemplatePlugin(ctx context.Context, request oper
 
 // CreateAiproxyPlugin - Create a AIProxy plugin
 // Create a AIProxy plugin
-func (s *Plugins) CreateAiproxyPlugin(ctx context.Context, request operations.CreateAiproxyPluginRequest) (*operations.CreateAiproxyPluginResponse, error) {
+func (s *Plugins) CreateAiproxyPlugin(ctx context.Context, request operations.CreateAiproxyPluginRequest, opts ...operations.Option) (*operations.CreateAiproxyPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "create-aiproxy-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -9952,6 +12855,17 @@ func (s *Plugins) CreateAiproxyPlugin(ctx context.Context, request operations.Cr
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateAIProxyPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
@@ -10043,12 +12957,23 @@ func (s *Plugins) CreateAiproxyPlugin(ctx context.Context, request operations.Cr
 
 // CreateAwslambdaPlugin - Create a AWSLambda plugin
 // Create a AWSLambda plugin
-func (s *Plugins) CreateAwslambdaPlugin(ctx context.Context, request operations.CreateAwslambdaPluginRequest) (*operations.CreateAwslambdaPluginResponse, error) {
+func (s *Plugins) CreateAwslambdaPlugin(ctx context.Context, request operations.CreateAwslambdaPluginRequest, opts ...operations.Option) (*operations.CreateAwslambdaPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "create-awslambda-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -10060,6 +12985,17 @@ func (s *Plugins) CreateAwslambdaPlugin(ctx context.Context, request operations.
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateAWSLambdaPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
@@ -10151,12 +13087,23 @@ func (s *Plugins) CreateAwslambdaPlugin(ctx context.Context, request operations.
 
 // CreateBasicauthPlugin - Create a BasicAuth plugin
 // Create a BasicAuth plugin
-func (s *Plugins) CreateBasicauthPlugin(ctx context.Context, request operations.CreateBasicauthPluginRequest) (*operations.CreateBasicauthPluginResponse, error) {
+func (s *Plugins) CreateBasicauthPlugin(ctx context.Context, request operations.CreateBasicauthPluginRequest, opts ...operations.Option) (*operations.CreateBasicauthPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "create-basicauth-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -10168,6 +13115,17 @@ func (s *Plugins) CreateBasicauthPlugin(ctx context.Context, request operations.
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateBasicAuthPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
@@ -10259,12 +13217,23 @@ func (s *Plugins) CreateBasicauthPlugin(ctx context.Context, request operations.
 
 // CreateCorrelationidPlugin - Create a CorrelationId plugin
 // Create a CorrelationId plugin
-func (s *Plugins) CreateCorrelationidPlugin(ctx context.Context, request operations.CreateCorrelationidPluginRequest) (*operations.CreateCorrelationidPluginResponse, error) {
+func (s *Plugins) CreateCorrelationidPlugin(ctx context.Context, request operations.CreateCorrelationidPluginRequest, opts ...operations.Option) (*operations.CreateCorrelationidPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "create-correlationid-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -10276,6 +13245,17 @@ func (s *Plugins) CreateCorrelationidPlugin(ctx context.Context, request operati
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateCorrelationIDPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
@@ -10367,12 +13347,23 @@ func (s *Plugins) CreateCorrelationidPlugin(ctx context.Context, request operati
 
 // CreateCorsPlugin - Create a CORS plugin
 // Create a CORS plugin
-func (s *Plugins) CreateCorsPlugin(ctx context.Context, request operations.CreateCorsPluginRequest) (*operations.CreateCorsPluginResponse, error) {
+func (s *Plugins) CreateCorsPlugin(ctx context.Context, request operations.CreateCorsPluginRequest, opts ...operations.Option) (*operations.CreateCorsPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "create-cors-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -10384,6 +13375,17 @@ func (s *Plugins) CreateCorsPlugin(ctx context.Context, request operations.Creat
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateCORSPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
@@ -10475,12 +13477,23 @@ func (s *Plugins) CreateCorsPlugin(ctx context.Context, request operations.Creat
 
 // CreateExittransformerPlugin - Create a ExitTransformer plugin
 // Create a ExitTransformer plugin
-func (s *Plugins) CreateExittransformerPlugin(ctx context.Context, request operations.CreateExittransformerPluginRequest) (*operations.CreateExittransformerPluginResponse, error) {
+func (s *Plugins) CreateExittransformerPlugin(ctx context.Context, request operations.CreateExittransformerPluginRequest, opts ...operations.Option) (*operations.CreateExittransformerPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "create-exittransformer-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -10492,6 +13505,17 @@ func (s *Plugins) CreateExittransformerPlugin(ctx context.Context, request opera
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateExitTransformerPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
@@ -10583,12 +13607,23 @@ func (s *Plugins) CreateExittransformerPlugin(ctx context.Context, request opera
 
 // CreateFilelogPlugin - Create a FileLog plugin
 // Create a FileLog plugin
-func (s *Plugins) CreateFilelogPlugin(ctx context.Context, request operations.CreateFilelogPluginRequest) (*operations.CreateFilelogPluginResponse, error) {
+func (s *Plugins) CreateFilelogPlugin(ctx context.Context, request operations.CreateFilelogPluginRequest, opts ...operations.Option) (*operations.CreateFilelogPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "create-filelog-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -10600,6 +13635,17 @@ func (s *Plugins) CreateFilelogPlugin(ctx context.Context, request operations.Cr
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateFileLogPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
@@ -10691,12 +13737,23 @@ func (s *Plugins) CreateFilelogPlugin(ctx context.Context, request operations.Cr
 
 // CreateIprestrictionPlugin - Create a IpRestriction plugin
 // Create a IpRestriction plugin
-func (s *Plugins) CreateIprestrictionPlugin(ctx context.Context, request operations.CreateIprestrictionPluginRequest) (*operations.CreateIprestrictionPluginResponse, error) {
+func (s *Plugins) CreateIprestrictionPlugin(ctx context.Context, request operations.CreateIprestrictionPluginRequest, opts ...operations.Option) (*operations.CreateIprestrictionPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "create-iprestriction-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -10708,6 +13765,17 @@ func (s *Plugins) CreateIprestrictionPlugin(ctx context.Context, request operati
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateIPRestrictionPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
@@ -10799,12 +13867,23 @@ func (s *Plugins) CreateIprestrictionPlugin(ctx context.Context, request operati
 
 // CreateJqPlugin - Create a JQ plugin
 // Create a JQ plugin
-func (s *Plugins) CreateJqPlugin(ctx context.Context, request operations.CreateJqPluginRequest) (*operations.CreateJqPluginResponse, error) {
+func (s *Plugins) CreateJqPlugin(ctx context.Context, request operations.CreateJqPluginRequest, opts ...operations.Option) (*operations.CreateJqPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "create-jq-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -10816,6 +13895,17 @@ func (s *Plugins) CreateJqPlugin(ctx context.Context, request operations.CreateJ
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateJQPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
@@ -10907,12 +13997,23 @@ func (s *Plugins) CreateJqPlugin(ctx context.Context, request operations.CreateJ
 
 // CreateJwtPlugin - Create a JWT plugin
 // Create a JWT plugin
-func (s *Plugins) CreateJwtPlugin(ctx context.Context, request operations.CreateJwtPluginRequest) (*operations.CreateJwtPluginResponse, error) {
+func (s *Plugins) CreateJwtPlugin(ctx context.Context, request operations.CreateJwtPluginRequest, opts ...operations.Option) (*operations.CreateJwtPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "create-jwt-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -10924,6 +14025,17 @@ func (s *Plugins) CreateJwtPlugin(ctx context.Context, request operations.Create
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateJWTPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
@@ -11015,12 +14127,23 @@ func (s *Plugins) CreateJwtPlugin(ctx context.Context, request operations.Create
 
 // CreateJwtsignerPlugin - Create a JWTSigner plugin
 // Create a JWTSigner plugin
-func (s *Plugins) CreateJwtsignerPlugin(ctx context.Context, request operations.CreateJwtsignerPluginRequest) (*operations.CreateJwtsignerPluginResponse, error) {
+func (s *Plugins) CreateJwtsignerPlugin(ctx context.Context, request operations.CreateJwtsignerPluginRequest, opts ...operations.Option) (*operations.CreateJwtsignerPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "create-jwtsigner-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -11032,6 +14155,17 @@ func (s *Plugins) CreateJwtsignerPlugin(ctx context.Context, request operations.
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateJWTSignerPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
@@ -11123,12 +14257,23 @@ func (s *Plugins) CreateJwtsignerPlugin(ctx context.Context, request operations.
 
 // CreateKeyauthPlugin - Create a KeyAuth plugin
 // Create a KeyAuth plugin
-func (s *Plugins) CreateKeyauthPlugin(ctx context.Context, request operations.CreateKeyauthPluginRequest) (*operations.CreateKeyauthPluginResponse, error) {
+func (s *Plugins) CreateKeyauthPlugin(ctx context.Context, request operations.CreateKeyauthPluginRequest, opts ...operations.Option) (*operations.CreateKeyauthPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "create-keyauth-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -11140,6 +14285,17 @@ func (s *Plugins) CreateKeyauthPlugin(ctx context.Context, request operations.Cr
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateKeyAuthPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
@@ -11231,12 +14387,23 @@ func (s *Plugins) CreateKeyauthPlugin(ctx context.Context, request operations.Cr
 
 // CreateOauth2Plugin - Create a Oauth2 plugin
 // Create a Oauth2 plugin
-func (s *Plugins) CreateOauth2Plugin(ctx context.Context, request operations.CreateOauth2PluginRequest) (*operations.CreateOauth2PluginResponse, error) {
+func (s *Plugins) CreateOauth2Plugin(ctx context.Context, request operations.CreateOauth2PluginRequest, opts ...operations.Option) (*operations.CreateOauth2PluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "create-oauth2-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -11248,6 +14415,17 @@ func (s *Plugins) CreateOauth2Plugin(ctx context.Context, request operations.Cre
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateOauth2Plugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
@@ -11339,12 +14517,23 @@ func (s *Plugins) CreateOauth2Plugin(ctx context.Context, request operations.Cre
 
 // CreateOpenidconnectPlugin - Create a OpenidConnect plugin
 // Create a OpenidConnect plugin
-func (s *Plugins) CreateOpenidconnectPlugin(ctx context.Context, request operations.CreateOpenidconnectPluginRequest) (*operations.CreateOpenidconnectPluginResponse, error) {
+func (s *Plugins) CreateOpenidconnectPlugin(ctx context.Context, request operations.CreateOpenidconnectPluginRequest, opts ...operations.Option) (*operations.CreateOpenidconnectPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "create-openidconnect-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -11356,6 +14545,17 @@ func (s *Plugins) CreateOpenidconnectPlugin(ctx context.Context, request operati
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateOpenidConnectPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
@@ -11447,12 +14647,23 @@ func (s *Plugins) CreateOpenidconnectPlugin(ctx context.Context, request operati
 
 // CreateOpentelemetryPlugin - Create a Opentelemetry plugin
 // Create a Opentelemetry plugin
-func (s *Plugins) CreateOpentelemetryPlugin(ctx context.Context, request operations.CreateOpentelemetryPluginRequest) (*operations.CreateOpentelemetryPluginResponse, error) {
+func (s *Plugins) CreateOpentelemetryPlugin(ctx context.Context, request operations.CreateOpentelemetryPluginRequest, opts ...operations.Option) (*operations.CreateOpentelemetryPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "create-opentelemetry-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -11464,6 +14675,17 @@ func (s *Plugins) CreateOpentelemetryPlugin(ctx context.Context, request operati
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateOpentelemetryPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
@@ -11553,14 +14775,155 @@ func (s *Plugins) CreateOpentelemetryPlugin(ctx context.Context, request operati
 
 }
 
+// CreatePostfunctionPlugin - Create a PostFunction plugin
+// Create a PostFunction plugin
+func (s *Plugins) CreatePostfunctionPlugin(ctx context.Context, request operations.CreatePostfunctionPluginRequest, opts ...operations.Option) (*operations.CreatePostfunctionPluginResponse, error) {
+	hookCtx := hooks.HookContext{
+		Context:        ctx,
+		OperationID:    "create-postfunction-plugin",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
+	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreatePostFunctionPlugin", "json", `request:"mediaType=application/json"`)
+	if err != nil {
+		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
+	}
+
+	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
+	if err != nil {
+		return nil, fmt.Errorf("error creating request: %w", err)
+	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
+	req.Header.Set("Content-Type", reqContentType)
+
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+		return nil, err
+	}
+
+	req, err = s.sdkConfiguration.Hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
+	if err != nil {
+		return nil, err
+	}
+
+	httpRes, err := s.sdkConfiguration.Client.Do(req)
+	if err != nil || httpRes == nil {
+		if err != nil {
+			err = fmt.Errorf("error sending request: %w", err)
+		} else {
+			err = fmt.Errorf("error sending request: no response")
+		}
+
+		_, err = s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, nil, err)
+		return nil, err
+	} else if utils.MatchStatusCodes([]string{}, httpRes.StatusCode) {
+		_httpRes, err := s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, httpRes, nil)
+		if err != nil {
+			return nil, err
+		} else if _httpRes != nil {
+			httpRes = _httpRes
+		}
+	} else {
+		httpRes, err = s.sdkConfiguration.Hooks.AfterSuccess(hooks.AfterSuccessContext{HookContext: hookCtx}, httpRes)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	res := &operations.CreatePostfunctionPluginResponse{
+		StatusCode:  httpRes.StatusCode,
+		ContentType: httpRes.Header.Get("Content-Type"),
+		RawResponse: httpRes,
+	}
+
+	rawBody, err := io.ReadAll(httpRes.Body)
+	if err != nil {
+		return nil, fmt.Errorf("error reading response body: %w", err)
+	}
+	httpRes.Body.Close()
+	httpRes.Body = io.NopCloser(bytes.NewBuffer(rawBody))
+
+	switch {
+	case httpRes.StatusCode == 201:
+		switch {
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
+			var out shared.PostFunctionPlugin
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
+				return nil, err
+			}
+
+			res.PostFunctionPlugin = &out
+		default:
+			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
+		}
+	case httpRes.StatusCode == 401:
+		switch {
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
+			var out shared.GatewayUnauthorizedError
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
+				return nil, err
+			}
+
+			res.GatewayUnauthorizedError = &out
+		default:
+			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
+		}
+	default:
+		return nil, errors.NewSDKError("unknown status code returned", httpRes.StatusCode, string(rawBody), httpRes)
+	}
+
+	return res, nil
+
+}
+
 // CreatePrefunctionPlugin - Create a PreFunction plugin
 // Create a PreFunction plugin
-func (s *Plugins) CreatePrefunctionPlugin(ctx context.Context, request operations.CreatePrefunctionPluginRequest) (*operations.CreatePrefunctionPluginResponse, error) {
+func (s *Plugins) CreatePrefunctionPlugin(ctx context.Context, request operations.CreatePrefunctionPluginRequest, opts ...operations.Option) (*operations.CreatePrefunctionPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "create-prefunction-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -11572,6 +14935,17 @@ func (s *Plugins) CreatePrefunctionPlugin(ctx context.Context, request operation
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreatePreFunctionPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
@@ -11663,12 +15037,23 @@ func (s *Plugins) CreatePrefunctionPlugin(ctx context.Context, request operation
 
 // CreatePrometheusPlugin - Create a Prometheus plugin
 // Create a Prometheus plugin
-func (s *Plugins) CreatePrometheusPlugin(ctx context.Context, request operations.CreatePrometheusPluginRequest) (*operations.CreatePrometheusPluginResponse, error) {
+func (s *Plugins) CreatePrometheusPlugin(ctx context.Context, request operations.CreatePrometheusPluginRequest, opts ...operations.Option) (*operations.CreatePrometheusPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "create-prometheus-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -11680,6 +15065,17 @@ func (s *Plugins) CreatePrometheusPlugin(ctx context.Context, request operations
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreatePrometheusPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
@@ -11771,12 +15167,23 @@ func (s *Plugins) CreatePrometheusPlugin(ctx context.Context, request operations
 
 // CreateProxycachePlugin - Create a ProxyCache plugin
 // Create a ProxyCache plugin
-func (s *Plugins) CreateProxycachePlugin(ctx context.Context, request operations.CreateProxycachePluginRequest) (*operations.CreateProxycachePluginResponse, error) {
+func (s *Plugins) CreateProxycachePlugin(ctx context.Context, request operations.CreateProxycachePluginRequest, opts ...operations.Option) (*operations.CreateProxycachePluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "create-proxycache-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -11788,6 +15195,17 @@ func (s *Plugins) CreateProxycachePlugin(ctx context.Context, request operations
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateProxyCachePlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
@@ -11879,12 +15297,23 @@ func (s *Plugins) CreateProxycachePlugin(ctx context.Context, request operations
 
 // CreateRatelimitingPlugin - Create a RateLimiting plugin
 // Create a RateLimiting plugin
-func (s *Plugins) CreateRatelimitingPlugin(ctx context.Context, request operations.CreateRatelimitingPluginRequest) (*operations.CreateRatelimitingPluginResponse, error) {
+func (s *Plugins) CreateRatelimitingPlugin(ctx context.Context, request operations.CreateRatelimitingPluginRequest, opts ...operations.Option) (*operations.CreateRatelimitingPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "create-ratelimiting-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -11896,6 +15325,17 @@ func (s *Plugins) CreateRatelimitingPlugin(ctx context.Context, request operatio
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateRateLimitingPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
@@ -11987,12 +15427,23 @@ func (s *Plugins) CreateRatelimitingPlugin(ctx context.Context, request operatio
 
 // CreateRatelimitingadvancedPlugin - Create a RateLimitingAdvanced plugin
 // Create a RateLimitingAdvanced plugin
-func (s *Plugins) CreateRatelimitingadvancedPlugin(ctx context.Context, request operations.CreateRatelimitingadvancedPluginRequest) (*operations.CreateRatelimitingadvancedPluginResponse, error) {
+func (s *Plugins) CreateRatelimitingadvancedPlugin(ctx context.Context, request operations.CreateRatelimitingadvancedPluginRequest, opts ...operations.Option) (*operations.CreateRatelimitingadvancedPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "create-ratelimitingadvanced-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -12004,6 +15455,17 @@ func (s *Plugins) CreateRatelimitingadvancedPlugin(ctx context.Context, request 
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateRateLimitingAdvancedPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
@@ -12095,12 +15557,23 @@ func (s *Plugins) CreateRatelimitingadvancedPlugin(ctx context.Context, request 
 
 // CreateRequestterminationPlugin - Create a RequestTermination plugin
 // Create a RequestTermination plugin
-func (s *Plugins) CreateRequestterminationPlugin(ctx context.Context, request operations.CreateRequestterminationPluginRequest) (*operations.CreateRequestterminationPluginResponse, error) {
+func (s *Plugins) CreateRequestterminationPlugin(ctx context.Context, request operations.CreateRequestterminationPluginRequest, opts ...operations.Option) (*operations.CreateRequestterminationPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "create-requesttermination-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -12112,6 +15585,17 @@ func (s *Plugins) CreateRequestterminationPlugin(ctx context.Context, request op
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateRequestTerminationPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
@@ -12203,12 +15687,23 @@ func (s *Plugins) CreateRequestterminationPlugin(ctx context.Context, request op
 
 // CreateRequesttransformerPlugin - Create a RequestTransformer plugin
 // Create a RequestTransformer plugin
-func (s *Plugins) CreateRequesttransformerPlugin(ctx context.Context, request operations.CreateRequesttransformerPluginRequest) (*operations.CreateRequesttransformerPluginResponse, error) {
+func (s *Plugins) CreateRequesttransformerPlugin(ctx context.Context, request operations.CreateRequesttransformerPluginRequest, opts ...operations.Option) (*operations.CreateRequesttransformerPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "create-requesttransformer-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -12220,6 +15715,17 @@ func (s *Plugins) CreateRequesttransformerPlugin(ctx context.Context, request op
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateRequestTransformerPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
@@ -12311,12 +15817,23 @@ func (s *Plugins) CreateRequesttransformerPlugin(ctx context.Context, request op
 
 // CreateRequesttransformeradvancedPlugin - Create a RequestTransformerAdvanced plugin
 // Create a RequestTransformerAdvanced plugin
-func (s *Plugins) CreateRequesttransformeradvancedPlugin(ctx context.Context, request operations.CreateRequesttransformeradvancedPluginRequest) (*operations.CreateRequesttransformeradvancedPluginResponse, error) {
+func (s *Plugins) CreateRequesttransformeradvancedPlugin(ctx context.Context, request operations.CreateRequesttransformeradvancedPluginRequest, opts ...operations.Option) (*operations.CreateRequesttransformeradvancedPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "create-requesttransformeradvanced-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -12328,6 +15845,17 @@ func (s *Plugins) CreateRequesttransformeradvancedPlugin(ctx context.Context, re
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateRequestTransformerAdvancedPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
@@ -12419,12 +15947,23 @@ func (s *Plugins) CreateRequesttransformeradvancedPlugin(ctx context.Context, re
 
 // CreateResponsetransformerPlugin - Create a ResponseTransformer plugin
 // Create a ResponseTransformer plugin
-func (s *Plugins) CreateResponsetransformerPlugin(ctx context.Context, request operations.CreateResponsetransformerPluginRequest) (*operations.CreateResponsetransformerPluginResponse, error) {
+func (s *Plugins) CreateResponsetransformerPlugin(ctx context.Context, request operations.CreateResponsetransformerPluginRequest, opts ...operations.Option) (*operations.CreateResponsetransformerPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "create-responsetransformer-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -12436,6 +15975,17 @@ func (s *Plugins) CreateResponsetransformerPlugin(ctx context.Context, request o
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateResponseTransformerPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
@@ -12527,12 +16077,23 @@ func (s *Plugins) CreateResponsetransformerPlugin(ctx context.Context, request o
 
 // CreateResponsetransformeradvancedPlugin - Create a ResponseTransformerAdvanced plugin
 // Create a ResponseTransformerAdvanced plugin
-func (s *Plugins) CreateResponsetransformeradvancedPlugin(ctx context.Context, request operations.CreateResponsetransformeradvancedPluginRequest) (*operations.CreateResponsetransformeradvancedPluginResponse, error) {
+func (s *Plugins) CreateResponsetransformeradvancedPlugin(ctx context.Context, request operations.CreateResponsetransformeradvancedPluginRequest, opts ...operations.Option) (*operations.CreateResponsetransformeradvancedPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "create-responsetransformeradvanced-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -12544,6 +16105,17 @@ func (s *Plugins) CreateResponsetransformeradvancedPlugin(ctx context.Context, r
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateResponseTransformerAdvancedPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
@@ -12635,12 +16207,23 @@ func (s *Plugins) CreateResponsetransformeradvancedPlugin(ctx context.Context, r
 
 // CreateSamlPlugin - Create a Saml plugin
 // Create a Saml plugin
-func (s *Plugins) CreateSamlPlugin(ctx context.Context, request operations.CreateSamlPluginRequest) (*operations.CreateSamlPluginResponse, error) {
+func (s *Plugins) CreateSamlPlugin(ctx context.Context, request operations.CreateSamlPluginRequest, opts ...operations.Option) (*operations.CreateSamlPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
 		OperationID:    "create-saml-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
@@ -12652,6 +16235,17 @@ func (s *Plugins) CreateSamlPlugin(ctx context.Context, request operations.Creat
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateSamlPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
@@ -12718,6 +16312,136 @@ func (s *Plugins) CreateSamlPlugin(ctx context.Context, request operations.Creat
 			}
 
 			res.SamlPlugin = &out
+		default:
+			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
+		}
+	case httpRes.StatusCode == 401:
+		switch {
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
+			var out shared.GatewayUnauthorizedError
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
+				return nil, err
+			}
+
+			res.GatewayUnauthorizedError = &out
+		default:
+			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
+		}
+	default:
+		return nil, errors.NewSDKError("unknown status code returned", httpRes.StatusCode, string(rawBody), httpRes)
+	}
+
+	return res, nil
+
+}
+
+// CreateStatsdPlugin - Create a Statsd plugin
+// Create a Statsd plugin
+func (s *Plugins) CreateStatsdPlugin(ctx context.Context, request operations.CreateStatsdPluginRequest, opts ...operations.Option) (*operations.CreateStatsdPluginResponse, error) {
+	hookCtx := hooks.HookContext{
+		Context:        ctx,
+		OperationID:    "create-statsd-plugin",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
+	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateStatsdPlugin", "json", `request:"mediaType=application/json"`)
+	if err != nil {
+		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
+	}
+
+	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
+	if err != nil {
+		return nil, fmt.Errorf("error creating request: %w", err)
+	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
+	req.Header.Set("Content-Type", reqContentType)
+
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+		return nil, err
+	}
+
+	req, err = s.sdkConfiguration.Hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
+	if err != nil {
+		return nil, err
+	}
+
+	httpRes, err := s.sdkConfiguration.Client.Do(req)
+	if err != nil || httpRes == nil {
+		if err != nil {
+			err = fmt.Errorf("error sending request: %w", err)
+		} else {
+			err = fmt.Errorf("error sending request: no response")
+		}
+
+		_, err = s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, nil, err)
+		return nil, err
+	} else if utils.MatchStatusCodes([]string{}, httpRes.StatusCode) {
+		_httpRes, err := s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, httpRes, nil)
+		if err != nil {
+			return nil, err
+		} else if _httpRes != nil {
+			httpRes = _httpRes
+		}
+	} else {
+		httpRes, err = s.sdkConfiguration.Hooks.AfterSuccess(hooks.AfterSuccessContext{HookContext: hookCtx}, httpRes)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	res := &operations.CreateStatsdPluginResponse{
+		StatusCode:  httpRes.StatusCode,
+		ContentType: httpRes.Header.Get("Content-Type"),
+		RawResponse: httpRes,
+	}
+
+	rawBody, err := io.ReadAll(httpRes.Body)
+	if err != nil {
+		return nil, fmt.Errorf("error reading response body: %w", err)
+	}
+	httpRes.Body.Close()
+	httpRes.Body = io.NopCloser(bytes.NewBuffer(rawBody))
+
+	switch {
+	case httpRes.StatusCode == 201:
+		switch {
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
+			var out shared.StatsdPlugin
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
+				return nil, err
+			}
+
+			res.StatsdPlugin = &out
 		default:
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}

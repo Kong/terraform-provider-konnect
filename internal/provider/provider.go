@@ -42,7 +42,7 @@ func (p *KonnectProvider) Schema(ctx context.Context, req provider.SchemaRequest
 		Description: `Konnect API: The Konnect platform API`,
 		Attributes: map[string]schema.Attribute{
 			"server_url": schema.StringAttribute{
-				MarkdownDescription: "Server URL (defaults to https://us.api.konghq.com)",
+				MarkdownDescription: "Server URL (defaults to https://global.api.konghq.com)",
 				Optional:            true,
 				Required:            false,
 			},
@@ -77,7 +77,7 @@ func (p *KonnectProvider) Configure(ctx context.Context, req provider.ConfigureR
 		ServerURL = os.Getenv("KONNECT_SERVER_URL")
 	}
 	if ServerURL == "" {
-		ServerURL = "https://us.api.konghq.com"
+		ServerURL = "https://global.api.konghq.com"
 	}
 
 	personalAccessToken := new(string)
@@ -126,6 +126,7 @@ func (p *KonnectProvider) Configure(ctx context.Context, req provider.ConfigureR
 func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
 		NewAPIProductResource,
+		NewAPIProductDocumentResource,
 		NewAPIProductSpecificationResource,
 		NewAPIProductVersionResource,
 		NewApplicationAuthStrategyResource,
@@ -169,6 +170,7 @@ func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resou
 		NewGatewayPluginOauth2Resource,
 		NewGatewayPluginOpenidConnectResource,
 		NewGatewayPluginOpentelemetryResource,
+		NewGatewayPluginPostFunctionResource,
 		NewGatewayPluginPreFunctionResource,
 		NewGatewayPluginPrometheusResource,
 		NewGatewayPluginProxyCacheResource,
@@ -180,6 +182,7 @@ func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resou
 		NewGatewayPluginResponseTransformerResource,
 		NewGatewayPluginResponseTransformerAdvancedResource,
 		NewGatewayPluginSamlResource,
+		NewGatewayPluginStatsdResource,
 		NewGatewayRouteResource,
 		NewGatewayServiceResource,
 		NewGatewaySNIResource,
@@ -188,6 +191,7 @@ func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resou
 		NewGatewayVaultResource,
 		NewMeshControlPlaneResource,
 		NewPortalResource,
+		NewPortalAppearanceResource,
 		NewPortalAuthResource,
 		NewPortalProductVersionResource,
 		NewServerlessCloudGatewayResource,
@@ -204,6 +208,7 @@ func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resou
 func (p *KonnectProvider) DataSources(ctx context.Context) []func() datasource.DataSource {
 	return []func() datasource.DataSource{
 		NewAPIProductDataSource,
+		NewAPIProductDocumentDataSource,
 		NewAPIProductSpecificationDataSource,
 		NewAPIProductVersionDataSource,
 		NewApplicationAuthStrategyDataSource,
@@ -246,6 +251,7 @@ func (p *KonnectProvider) DataSources(ctx context.Context) []func() datasource.D
 		NewGatewayPluginOauth2DataSource,
 		NewGatewayPluginOpenidConnectDataSource,
 		NewGatewayPluginOpentelemetryDataSource,
+		NewGatewayPluginPostFunctionDataSource,
 		NewGatewayPluginPreFunctionDataSource,
 		NewGatewayPluginPrometheusDataSource,
 		NewGatewayPluginProxyCacheDataSource,
@@ -257,6 +263,7 @@ func (p *KonnectProvider) DataSources(ctx context.Context) []func() datasource.D
 		NewGatewayPluginResponseTransformerDataSource,
 		NewGatewayPluginResponseTransformerAdvancedDataSource,
 		NewGatewayPluginSamlDataSource,
+		NewGatewayPluginStatsdDataSource,
 		NewGatewayRouteDataSource,
 		NewGatewayServiceDataSource,
 		NewGatewaySNIDataSource,
@@ -264,6 +271,7 @@ func (p *KonnectProvider) DataSources(ctx context.Context) []func() datasource.D
 		NewGatewayUpstreamDataSource,
 		NewGatewayVaultDataSource,
 		NewMeshControlPlaneDataSource,
+		NewPortalAppearanceDataSource,
 		NewPortalAuthDataSource,
 		NewPortalListDataSource,
 		NewPortalProductVersionDataSource,
