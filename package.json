@@ -49,5 +49,8 @@
   },
   "dependencies": {
     "micromatch": "^4.0.5"
+  },
+  "volta": {
+    "node": "18.20.4"
   }
 }

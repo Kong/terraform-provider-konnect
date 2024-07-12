@@ -18,7 +18,6 @@ paths:
         Sets a new state for an organization and creates an organization state 
         history record. An organization can be set to active or inactive.
       x-internal: true
-      x-unstable: true
       tags:
         - Organization Lifecycle
       responses:
@@ -46,7 +45,6 @@ paths:
         will be transitioned to the deleting state if the organization remains inactive for 90 days. 
         After deletion is complete, the state will be transitioned to the final deleted state. 
       x-internal: true
-      x-unstable: true
       tags:
         - Organization Lifecycle
       responses:

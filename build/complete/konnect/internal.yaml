@@ -434,6 +434,61 @@ paths:
         $ref: '#/components/requestBodies/UpdateOrganization'
       servers:
         - url: https://global.api.konghq.com/
+  /v3/organizations/state:
+    post:
+      summary: Sets a new state for an organization.
+      operationId: post-organization-state
+      description: |
+        Sets a new state for an organization and creates an organization state 
+        history record. An organization can be set to active or inactive.
+      tags:
+        - Organization Lifecycle
+      responses:
+        '201':
+          $ref: '#/components/responses/OrganizationStateResponse'
+        '400':
+          $ref: '#/components/responses/OrganizationStateBadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/OrganizationNotFound'
+        '409':
+          $ref: '#/components/responses/OrganizationStateConflict'
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateOrganizationState'
+      servers:
+        - url: https://global.api.konghq.com/
+  /v3/organizations/state/history:
+    get:
+      summary: Returns the state history of an organization.
+      operationId: get-organization-state-history
+      description: >
+        Returns the state history of an organization sorted in reverse
+        chronological order.
+
+        Possible states include active, inactive, deleting, and deleted. An
+        organization state 
+
+        will be transitioned to the deleting state if the organization remains
+        inactive for 90 days. 
+
+        After deletion is complete, the state will be transitioned to the final
+        deleted state. 
+      tags:
+        - Organization Lifecycle
+      responses:
+        '200':
+          $ref: '#/components/responses/OrganizationStateHistory'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/OrganizationNotFound'
+      servers:
+        - url: https://global.api.konghq.com/
   /v3/refresh:
     post:
       summary: Refresh Token
@@ -1278,6 +1333,44 @@ components:
       type: boolean
       x-examples:
         example-1: true
+    OrganizationState:
+      type: object
+      title: Organization State
+      properties:
+        id:
+          type: string
+          description: UUID of the organization.
+          format: uuid
+          readOnly: true
+          example: d99c041a-c7cf-46a2-bf3a-44bb5f75400e
+        state:
+          type: string
+          description: State of the organization.
+          example: active
+          enum:
+            - active
+            - inactive
+            - deleting
+            - deleted
+        reason:
+          type: string
+          description: The reason for the organization's state.
+          example: invoice overdue (30 days)
+        service:
+          type: string
+          description: The service that modified the state.
+          example: kbilling
+        changed_by:
+          type: string
+          description: |
+            The ID of the Konger who modified the state.
+          example: 00uerwcs8eC4ifanR256
+        created_at:
+          type: string
+          description: Date the organization state was created.
+          format: date-time
+          readOnly: true
+          example: '2023-01-23T17:22:52.150Z'
   examples:
     UnauthorizedExample:
       value:
@@ -1564,6 +1657,27 @@ components:
       value:
         token: >-
           A1B2C3D4E5F6G7H8I9J0K+LMNOPQRSTUVWXYZabcd+efghijklmnopqrstuv+wxyz0123456789+
+    400InvalidRequestFormat:
+      value:
+        status: 400
+        title: Bad Request
+        instance: konnect:trace:3674017986744198214
+        invalid_parameters:
+          - field: body
+            reason: request format is invalid
+        detail: The request format is invalid
+    404OrganizationStateNotFound:
+      value:
+        status: 404
+        title: Not Found
+        instance: konnect:trace:2287285207635123011
+        detail: The requested organization was not found
+    409OrganizationStateConflict:
+      value:
+        status: 409
+        title: Conflict
+        instance: konnect:trace:2287285207635123011
+        detail: Organization is already set to the requested state
   responses:
     Unauthorized:
       description: Unauthorized
@@ -2116,6 +2230,83 @@ components:
               - organization_name
               - user
               - metadata
+    OrganizationStateResponse:
+      description: A response for setting the organization state.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OrganizationState'
+          examples:
+            Example:
+              value:
+                id: d99c041a-c7cf-46a2-bf3a-44bb5f75400e
+                state: active
+                reason: invoice overdue (30 days)
+                service: kadmin
+                changed_by: 00uerwcs8eC4ifanR256
+                created_at: '2023-01-18T11:35:45.130Z'
+    OrganizationStateHistory:
+      description: >-
+        A paginated list response for a collection of organization state
+        changes.
+      content:
+        application/json:
+          schema:
+            type: object
+            title: Organizations State History.
+            properties:
+              meta:
+                $ref: '#/components/schemas/PaginatedMeta'
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrganizationState'
+          examples:
+            Example:
+              value:
+                meta:
+                  page:
+                    number: 1
+                    size: 2
+                    total: 2
+                data:
+                  - id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+                    state: inactive
+                    service: kadmin
+                    reason: invoice overdue (30 days)
+                    changed_by: 00uerwcs8eC4ifanR256
+                    created_at: '2022-09-25T13:00:00.00Z'
+                  - id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f8
+                    state: active
+                    service: kauth
+                    created_at: '2021-09-25T13:00:00.00Z'
+    OrganizationStateBadRequest:
+      description: Bad Request
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/BadRequestError'
+          examples:
+            Request format is invalid:
+              $ref: '#/components/examples/400InvalidRequestFormat'
+    OrganizationNotFound:
+      description: Not Found
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/NotFoundError'
+          examples:
+            Not Found:
+              $ref: '#/components/examples/404OrganizationStateNotFound'
+    OrganizationStateConflict:
+      description: Conflict
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ConflictError'
+          examples:
+            Conflict:
+              $ref: '#/components/examples/409OrganizationStateConflict'
   parameters:
     ResourceQuotaId:
       name: resourceQuotaId
@@ -2270,6 +2461,41 @@ components:
                 description: The end-user device verification code.
             required:
               - user_code
+    UpdateOrganizationState:
+      required: true
+      description: The request schema to set an organization's state.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              state:
+                type: string
+                description: The state of the organization to set.
+                example: inactive
+                enum:
+                  - active
+                  - inactive
+              reason:
+                type: string
+                description: The reason for the state change.
+                example: invoice overdue (30 days)
+              changed_by:
+                type: string
+                description: The uuid of the konger who modified the state.
+                example: 00uerwcs8eC4ifanR256
+            required:
+              - state
+          examples:
+            Inactive Example:
+              value:
+                state: inactive
+                reason: invoice overdue (30 days)
+                changed_by: 00uerwcs8eC4ifanR256
+            Active Example:
+              value:
+                state: active
+                reason: organization was created
   securitySchemes:
     personalAccessToken:
       type: http
@@ -2316,3 +2542,4 @@ tags:
   - name: AWS
   - name: Device Authorization Grant
   - name: SSO Auth0
+  - name: Organization Lifecycle
