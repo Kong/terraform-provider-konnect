@@ -110,7 +110,7 @@ paths:
       requestBody:
         $ref: '#/components/requestBodies/UpdateIdentityProviderRequest'
       responses:
-        '201':
+        '200':
           $ref: '#/components/responses/IdentityProvider'
         '400':
           $ref: '#/components/responses/IdentityBadRequest'
