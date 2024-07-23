@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.6.1
+> Released on 2024/07/23
+
+### Features
+* Add list of `enums` for available roles when using the Identity API
+* Add pattern validation based on OpenAPI spec when running `terraform validate`
+
+### Bug Fixes
+* Fixed `terraform import` for the `konnect_portal` resource
 
 ## 0.6.0
 > Released on 2024/07/11
