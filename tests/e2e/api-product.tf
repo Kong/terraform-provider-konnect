@@ -1,8 +1,11 @@
-# Fetch the list of portals so that we can refer
-# to the Portal ID for publishing
-data "konnect_portal_list" "my_portallist" {
-  page_number = 1
-  page_size   = 1
+# Create a Portal
+resource "konnect_portal" "my_portal" {
+  name                      = "My New Portal"
+  auto_approve_applications = false
+  auto_approve_developers   = false
+  custom_domain             = "tfdemo.example.com"
+  is_public                 = false
+  rbac_enabled              = false
 }
 
 # API Product configuration
@@ -10,11 +13,8 @@ resource "konnect_api_product" "httpbin" {
   name        = "HTTPBin Product"
   description = "This product productizes the HTTPBin service"
 
-  # Which portals to publish the API product to
-  # Konnect only supports a single portal at the moment
-  # so we can rely on the first portal in the list
   portal_ids = [
-    data.konnect_portal_list.my_portallist.data[0].id
+    konnect_portal.my_portal.id
   ]
 }
 
@@ -61,7 +61,7 @@ resource "konnect_portal_product_version" "my_portalproductversion" {
   deprecated                       = false
   publish_status                   = "published"
 
-  portal_id          = data.konnect_portal_list.my_portallist.data[0].id
+  portal_id          = konnect_portal.my_portal.id
   product_version_id = konnect_api_product_version.httpbin_v1.id
   auth_strategy_ids = [
     konnect_application_auth_strategy.my_applicationauthstrategy.id
