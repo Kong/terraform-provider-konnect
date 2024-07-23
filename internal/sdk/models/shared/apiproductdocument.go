@@ -9,9 +9,6 @@ import (
 	"time"
 )
 
-type APIProductDocumentMetadata struct {
-}
-
 type Status string
 
 const (
@@ -38,18 +35,21 @@ func (e *Status) UnmarshalJSON(data []byte) error {
 	}
 }
 
+type APIProductDocumentMetadata struct {
+}
+
 // APIProductDocument - an api product document
 type APIProductDocument struct {
+	ID               string                     `json:"id"`
+	ParentDocumentID *string                    `json:"parent_document_id"`
+	Title            string                     `json:"title"`
+	Slug             string                     `json:"slug"`
+	Status           Status                     `json:"status"`
+	Metadata         APIProductDocumentMetadata `json:"metadata"`
 	// The unencoded markdown string of the api product document.
 	Content string `json:"content"`
 	// An ISO-8601 timestamp representation of entity creation date.
-	CreatedAt        time.Time                  `json:"created_at"`
-	ID               string                     `json:"id"`
-	Metadata         APIProductDocumentMetadata `json:"metadata"`
-	ParentDocumentID *string                    `json:"parent_document_id"`
-	Slug             string                     `json:"slug"`
-	Status           Status                     `json:"status"`
-	Title            string                     `json:"title"`
+	CreatedAt time.Time `json:"created_at"`
 	// An ISO-8601 timestamp representation of entity update date.
 	UpdatedAt time.Time `json:"updated_at"`
 }
@@ -65,20 +65,6 @@ func (a *APIProductDocument) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *APIProductDocument) GetContent() string {
-	if o == nil {
-		return ""
-	}
-	return o.Content
-}
-
-func (o *APIProductDocument) GetCreatedAt() time.Time {
-	if o == nil {
-		return time.Time{}
-	}
-	return o.CreatedAt
-}
-
 func (o *APIProductDocument) GetID() string {
 	if o == nil {
 		return ""
@@ -86,18 +72,18 @@ func (o *APIProductDocument) GetID() string {
 	return o.ID
 }
 
-func (o *APIProductDocument) GetMetadata() APIProductDocumentMetadata {
-	if o == nil {
-		return APIProductDocumentMetadata{}
-	}
-	return o.Metadata
-}
-
 func (o *APIProductDocument) GetParentDocumentID() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ParentDocumentID
+}
+
+func (o *APIProductDocument) GetTitle() string {
+	if o == nil {
+		return ""
+	}
+	return o.Title
 }
 
 func (o *APIProductDocument) GetSlug() string {
@@ -114,11 +100,25 @@ func (o *APIProductDocument) GetStatus() Status {
 	return o.Status
 }
 
-func (o *APIProductDocument) GetTitle() string {
+func (o *APIProductDocument) GetMetadata() APIProductDocumentMetadata {
+	if o == nil {
+		return APIProductDocumentMetadata{}
+	}
+	return o.Metadata
+}
+
+func (o *APIProductDocument) GetContent() string {
 	if o == nil {
 		return ""
 	}
-	return o.Title
+	return o.Content
+}
+
+func (o *APIProductDocument) GetCreatedAt() time.Time {
+	if o == nil {
+		return time.Time{}
+	}
+	return o.CreatedAt
 }
 
 func (o *APIProductDocument) GetUpdatedAt() time.Time {

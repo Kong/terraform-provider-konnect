@@ -32,19 +32,12 @@ func (e *InvalidParameterChoiceItemRule) UnmarshalJSON(data []byte) error {
 }
 
 type InvalidParameterChoiceItem struct {
-	Choices []any  `json:"choices"`
-	Field   string `json:"field"`
-	Reason  string `json:"reason"`
+	Field string `json:"field"`
 	// invalid parameters rules
-	Rule   InvalidParameterChoiceItemRule `json:"rule"`
-	Source *string                        `json:"source,omitempty"`
-}
-
-func (o *InvalidParameterChoiceItem) GetChoices() []any {
-	if o == nil {
-		return []any{}
-	}
-	return o.Choices
+	Rule    InvalidParameterChoiceItemRule `json:"rule"`
+	Reason  string                         `json:"reason"`
+	Choices []any                          `json:"choices"`
+	Source  *string                        `json:"source,omitempty"`
 }
 
 func (o *InvalidParameterChoiceItem) GetField() string {
@@ -54,6 +47,13 @@ func (o *InvalidParameterChoiceItem) GetField() string {
 	return o.Field
 }
 
+func (o *InvalidParameterChoiceItem) GetRule() InvalidParameterChoiceItemRule {
+	if o == nil {
+		return InvalidParameterChoiceItemRule("")
+	}
+	return o.Rule
+}
+
 func (o *InvalidParameterChoiceItem) GetReason() string {
 	if o == nil {
 		return ""
@@ -61,11 +61,11 @@ func (o *InvalidParameterChoiceItem) GetReason() string {
 	return o.Reason
 }
 
-func (o *InvalidParameterChoiceItem) GetRule() InvalidParameterChoiceItemRule {
+func (o *InvalidParameterChoiceItem) GetChoices() []any {
 	if o == nil {
-		return InvalidParameterChoiceItemRule("")
+		return []any{}
 	}
-	return o.Rule
+	return o.Choices
 }
 
 func (o *InvalidParameterChoiceItem) GetSource() *string {

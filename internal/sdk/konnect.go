@@ -142,6 +142,13 @@ type Konnect struct {
 	// - `grpcs`: At least one of `hosts`, `headers`, `paths`, or `snis`
 	// - `ws`: At least one of `hosts`, `headers`, or `paths`
 	// - `wss`: At least one of `hosts`, `headers`, `paths`, or `snis`
+	//
+	//
+	//
+	//
+	//
+	//
+	//
 	//   <br>
 	//   A route can't have both `tls` and `tls_passthrough` protocols at same time.
 	//   <br><br>
@@ -280,8 +287,8 @@ func New(opts ...SDKOption) *Konnect {
 			Language:          "go",
 			OpenAPIDocVersion: "2.0.0",
 			SDKVersion:        "0.0.1",
-			GenVersion:        "2.365.0",
-			UserAgent:         "speakeasy-sdk/go 0.0.1 2.365.0 2.0.0 github.com/kong/terraform-provider-konnect/internal/sdk",
+			GenVersion:        "2.378.3",
+			UserAgent:         "speakeasy-sdk/go 0.0.1 2.378.3 2.0.0 github.com/kong/terraform-provider-konnect/internal/sdk",
 			Hooks:             hooks.New(),
 		},
 	}

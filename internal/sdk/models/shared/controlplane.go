@@ -31,21 +31,21 @@ func (o *Config) GetTelemetryEndpoint() *string {
 
 // ControlPlane - The control plane object contains information about a Kong control plane.
 type ControlPlane struct {
-	// CP configuration object for related access endpoints.
-	Config *Config `json:"config,omitempty"`
-	// An ISO-8604 timestamp representation of control plane creation date.
-	CreatedAt *time.Time `json:"created_at,omitempty"`
-	// The description of the control plane in Konnect.
-	Description *string `json:"description,omitempty"`
 	// The control plane ID.
 	ID *string `json:"id,omitempty"`
+	// The name of the control plane.
+	Name *string `json:"name,omitempty"`
+	// The description of the control plane in Konnect.
+	Description *string `json:"description,omitempty"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
 	Labels map[string]string `json:"labels,omitempty"`
-	// The name of the control plane.
-	Name *string `json:"name,omitempty"`
+	// CP configuration object for related access endpoints.
+	Config *Config `json:"config,omitempty"`
+	// An ISO-8604 timestamp representation of control plane creation date.
+	CreatedAt *time.Time `json:"created_at,omitempty"`
 	// An ISO-8604 timestamp representation of control plane update date.
 	UpdatedAt *time.Time `json:"updated_at,omitempty"`
 }
@@ -61,6 +61,34 @@ func (c *ControlPlane) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (o *ControlPlane) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *ControlPlane) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *ControlPlane) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *ControlPlane) GetLabels() map[string]string {
+	if o == nil {
+		return nil
+	}
+	return o.Labels
+}
+
 func (o *ControlPlane) GetConfig() *Config {
 	if o == nil {
 		return nil
@@ -73,34 +101,6 @@ func (o *ControlPlane) GetCreatedAt() *time.Time {
 		return nil
 	}
 	return o.CreatedAt
-}
-
-func (o *ControlPlane) GetDescription() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Description
-}
-
-func (o *ControlPlane) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-func (o *ControlPlane) GetLabels() map[string]string {
-	if o == nil {
-		return nil
-	}
-	return o.Labels
-}
-
-func (o *ControlPlane) GetName() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Name
 }
 
 func (o *ControlPlane) GetUpdatedAt() *time.Time {

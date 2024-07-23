@@ -3,17 +3,10 @@
 package shared
 
 type GatewayServicePayload struct {
-	// The identifier of the control plane that the gateway service resides in
-	ControlPlaneID string `json:"control_plane_id"`
 	// The identifier of a gateway service associated with the version of the API product.
 	ID string `json:"id"`
-}
-
-func (o *GatewayServicePayload) GetControlPlaneID() string {
-	if o == nil {
-		return ""
-	}
-	return o.ControlPlaneID
+	// The identifier of the control plane that the gateway service resides in
+	ControlPlaneID string `json:"control_plane_id"`
 }
 
 func (o *GatewayServicePayload) GetID() string {
@@ -21,4 +14,11 @@ func (o *GatewayServicePayload) GetID() string {
 		return ""
 	}
 	return o.ID
+}
+
+func (o *GatewayServicePayload) GetControlPlaneID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ControlPlaneID
 }

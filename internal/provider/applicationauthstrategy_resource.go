@@ -70,6 +70,9 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 				Computed: true,
 				MarkdownDescription: `The display name of the Auth strategy. This is used to identify the Auth strategy in the Portal UI.` + "\n" +
 					``,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(256),
+				},
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
@@ -159,6 +162,9 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 								},
 								MarkdownDescription: `The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI.` + "\n" +
 									``,
+								Validators: []validator.String{
+									stringvalidator.UTF8LengthBetween(1, 256),
+								},
 							},
 							"id": schema.StringAttribute{
 								Computed: true,
@@ -203,6 +209,7 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 							`Requires replacement if changed. ; Not Null`,
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
+							stringvalidator.UTF8LengthAtMost(256),
 						},
 					},
 					"id": schema.StringAttribute{
@@ -224,6 +231,7 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 							`Requires replacement if changed. ; Not Null`,
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
+							stringvalidator.UTF8LengthBetween(1, 256),
 						},
 					},
 					"strategy_type": schema.StringAttribute{
@@ -263,6 +271,9 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 				Computed: true,
 				MarkdownDescription: `The name of the auth strategy. This is used to identify the auth strategy in the Konnect UI.` + "\n" +
 					``,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthBetween(1, 256),
+				},
 			},
 			"openid_connect": schema.SingleNestedAttribute{
 				Computed: true,
@@ -345,6 +356,7 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 										Description: `Requires replacement if changed. ; Not Null`,
 										Validators: []validator.String{
 											speakeasy_stringvalidators.NotNull(),
+											stringvalidator.UTF8LengthAtMost(256),
 										},
 									},
 									"scopes": schema.ListAttribute{
@@ -401,6 +413,9 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 								},
 								MarkdownDescription: `The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI.` + "\n" +
 									``,
+								Validators: []validator.String{
+									stringvalidator.UTF8LengthBetween(1, 256),
+								},
 							},
 							"id": schema.StringAttribute{
 								Computed: true,
@@ -454,6 +469,7 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 							`Requires replacement if changed. ; Not Null`,
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
+							stringvalidator.UTF8LengthAtMost(256),
 						},
 					},
 					"id": schema.StringAttribute{
@@ -475,6 +491,7 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 							`Requires replacement if changed. ; Not Null`,
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
+							stringvalidator.UTF8LengthBetween(1, 256),
 						},
 					},
 					"strategy_type": schema.StringAttribute{

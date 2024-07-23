@@ -7,9 +7,6 @@ type UpdateAPIProductDocumentDTOMetadata struct {
 
 // UpdateAPIProductDocumentDTO - a document payload
 type UpdateAPIProductDocumentDTO struct {
-	// Can be markdown string content or base64 encoded string
-	Content  *string                              `json:"content,omitempty"`
-	Metadata *UpdateAPIProductDocumentDTOMetadata `json:"metadata,omitempty"`
 	// Parent document Id. If this value is explicitly set to null, the
 	// document will be put as a top level document at the bottom of the tree.
 	//
@@ -20,20 +17,9 @@ type UpdateAPIProductDocumentDTO struct {
 	Status *PublishStatus `json:"status,omitempty"`
 	// document title
 	Title *string `json:"title,omitempty"`
-}
-
-func (o *UpdateAPIProductDocumentDTO) GetContent() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Content
-}
-
-func (o *UpdateAPIProductDocumentDTO) GetMetadata() *UpdateAPIProductDocumentDTOMetadata {
-	if o == nil {
-		return nil
-	}
-	return o.Metadata
+	// Can be markdown string content or base64 encoded string
+	Content  *string                              `json:"content,omitempty"`
+	Metadata *UpdateAPIProductDocumentDTOMetadata `json:"metadata,omitempty"`
 }
 
 func (o *UpdateAPIProductDocumentDTO) GetParentDocumentID() *string {
@@ -62,4 +48,18 @@ func (o *UpdateAPIProductDocumentDTO) GetTitle() *string {
 		return nil
 	}
 	return o.Title
+}
+
+func (o *UpdateAPIProductDocumentDTO) GetContent() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Content
+}
+
+func (o *UpdateAPIProductDocumentDTO) GetMetadata() *UpdateAPIProductDocumentDTOMetadata {
+	if o == nil {
+		return nil
+	}
+	return o.Metadata
 }

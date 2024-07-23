@@ -4,17 +4,10 @@ package shared
 
 // CreateAPIProductVersionSpecDTO - The request schema to create a specification for a version of an API product.
 type CreateAPIProductVersionSpecDTO struct {
-	// The base64 encoded contents of the API product version specification
-	Content string `json:"content"`
 	// The name of the API product version specification
 	Name string `json:"name"`
-}
-
-func (o *CreateAPIProductVersionSpecDTO) GetContent() string {
-	if o == nil {
-		return ""
-	}
-	return o.Content
+	// The base64 encoded contents of the API product version specification
+	Content string `json:"content"`
 }
 
 func (o *CreateAPIProductVersionSpecDTO) GetName() string {
@@ -22,4 +15,11 @@ func (o *CreateAPIProductVersionSpecDTO) GetName() string {
 		return ""
 	}
 	return o.Name
+}
+
+func (o *CreateAPIProductVersionSpecDTO) GetContent() string {
+	if o == nil {
+		return ""
+	}
+	return o.Content
 }

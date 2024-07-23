@@ -7,9 +7,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
@@ -83,6 +85,9 @@ func (r *GatewayPluginRequestTerminationResource) Schema(ctx context.Context, re
 						Computed:    true,
 						Optional:    true,
 						Description: `The response code to send. Must be an integer between 100 and 599.`,
+						Validators: []validator.Int64{
+							int64validator.Between(100, 599),
+						},
 					},
 					"trigger": schema.StringAttribute{
 						Computed:    true,

@@ -14,6 +14,9 @@ func (r *ApplicationAuthStrategyResourceModel) ToSharedCreateAppAuthStrategyRequ
 	var out shared.CreateAppAuthStrategyRequest
 	var appAuthStrategyKeyAuthRequest *shared.AppAuthStrategyKeyAuthRequest
 	if r.KeyAuth != nil {
+		name := r.KeyAuth.Name.ValueString()
+		displayName := r.KeyAuth.DisplayName.ValueString()
+		strategyType := shared.StrategyType(r.KeyAuth.StrategyType.ValueString())
 		var keyNames []string = []string{}
 		for _, keyNamesItem := range r.KeyAuth.Configs.KeyAuth.KeyNames {
 			keyNames = append(keyNames, keyNamesItem.ValueString())
@@ -24,14 +27,11 @@ func (r *ApplicationAuthStrategyResourceModel) ToSharedCreateAppAuthStrategyRequ
 		configs := shared.AppAuthStrategyKeyAuthRequestConfigs{
 			KeyAuth: keyAuth,
 		}
-		displayName := r.KeyAuth.DisplayName.ValueString()
-		name := r.KeyAuth.Name.ValueString()
-		strategyType := shared.StrategyType(r.KeyAuth.StrategyType.ValueString())
 		appAuthStrategyKeyAuthRequest = &shared.AppAuthStrategyKeyAuthRequest{
-			Configs:      configs,
-			DisplayName:  displayName,
 			Name:         name,
+			DisplayName:  displayName,
 			StrategyType: strategyType,
+			Configs:      configs,
 		}
 	}
 	if appAuthStrategyKeyAuthRequest != nil {
@@ -41,28 +41,31 @@ func (r *ApplicationAuthStrategyResourceModel) ToSharedCreateAppAuthStrategyRequ
 	}
 	var appAuthStrategyOpenIDConnectRequest *shared.AppAuthStrategyOpenIDConnectRequest
 	if r.OpenidConnect != nil {
-		var authMethods []string = []string{}
-		for _, authMethodsItem := range r.OpenidConnect.Configs.OpenidConnect.AuthMethods {
-			authMethods = append(authMethods, authMethodsItem.ValueString())
-		}
+		name1 := r.OpenidConnect.Name.ValueString()
+		displayName1 := r.OpenidConnect.DisplayName.ValueString()
+		strategyType1 := shared.AppAuthStrategyOpenIDConnectRequestStrategyType(r.OpenidConnect.StrategyType.ValueString())
+		issuer := r.OpenidConnect.Configs.OpenidConnect.Issuer.ValueString()
 		var credentialClaim []string = []string{}
 		for _, credentialClaimItem := range r.OpenidConnect.Configs.OpenidConnect.CredentialClaim {
 			credentialClaim = append(credentialClaim, credentialClaimItem.ValueString())
 		}
-		issuer := r.OpenidConnect.Configs.OpenidConnect.Issuer.ValueString()
 		var scopes []string = []string{}
 		for _, scopesItem := range r.OpenidConnect.Configs.OpenidConnect.Scopes {
 			scopes = append(scopes, scopesItem.ValueString())
+		}
+		var authMethods []string = []string{}
+		for _, authMethodsItem := range r.OpenidConnect.Configs.OpenidConnect.AuthMethods {
+			authMethods = append(authMethods, authMethodsItem.ValueString())
 		}
 		var additionalProperties interface{}
 		if !r.OpenidConnect.Configs.OpenidConnect.AdditionalProperties.IsUnknown() && !r.OpenidConnect.Configs.OpenidConnect.AdditionalProperties.IsNull() {
 			_ = json.Unmarshal([]byte(r.OpenidConnect.Configs.OpenidConnect.AdditionalProperties.ValueString()), &additionalProperties)
 		}
 		openidConnect := shared.AppAuthStrategyConfigOpenIDConnect{
-			AuthMethods:          authMethods,
-			CredentialClaim:      credentialClaim,
 			Issuer:               issuer,
+			CredentialClaim:      credentialClaim,
 			Scopes:               scopes,
+			AuthMethods:          authMethods,
 			AdditionalProperties: additionalProperties,
 		}
 		configs1 := shared.AppAuthStrategyOpenIDConnectRequestConfigs{
@@ -74,15 +77,12 @@ func (r *ApplicationAuthStrategyResourceModel) ToSharedCreateAppAuthStrategyRequ
 		} else {
 			dcrProviderID = nil
 		}
-		displayName1 := r.OpenidConnect.DisplayName.ValueString()
-		name1 := r.OpenidConnect.Name.ValueString()
-		strategyType1 := shared.AppAuthStrategyOpenIDConnectRequestStrategyType(r.OpenidConnect.StrategyType.ValueString())
 		appAuthStrategyOpenIDConnectRequest = &shared.AppAuthStrategyOpenIDConnectRequest{
+			Name:          name1,
+			DisplayName:   displayName1,
+			StrategyType:  strategyType1,
 			Configs:       configs1,
 			DcrProviderID: dcrProviderID,
-			DisplayName:   displayName1,
-			Name:          name1,
-			StrategyType:  strategyType1,
 		}
 	}
 	if appAuthStrategyOpenIDConnectRequest != nil {
@@ -244,21 +244,21 @@ func (r *ApplicationAuthStrategyResourceModel) RefreshFromSharedGetAppAuthStrate
 }
 
 func (r *ApplicationAuthStrategyResourceModel) ToSharedUpdateAppAuthStrategyRequest() *shared.UpdateAppAuthStrategyRequest {
-	displayName := new(string)
-	if !r.DisplayName.IsUnknown() && !r.DisplayName.IsNull() {
-		*displayName = r.DisplayName.ValueString()
-	} else {
-		displayName = nil
-	}
 	name := new(string)
 	if !r.Name.IsUnknown() && !r.Name.IsNull() {
 		*name = r.Name.ValueString()
 	} else {
 		name = nil
 	}
+	displayName := new(string)
+	if !r.DisplayName.IsUnknown() && !r.DisplayName.IsNull() {
+		*displayName = r.DisplayName.ValueString()
+	} else {
+		displayName = nil
+	}
 	out := shared.UpdateAppAuthStrategyRequest{
-		DisplayName: displayName,
 		Name:        name,
+		DisplayName: displayName,
 	}
 	return &out
 }

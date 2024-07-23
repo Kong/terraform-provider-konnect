@@ -106,9 +106,9 @@ func (r *PortalListDataSource) Schema(ctx context.Context, req datasource.Schema
 						"labels": schema.MapAttribute{
 							Computed:    true,
 							ElementType: types.StringType,
-							MarkdownDescription: `description: A maximum of 50 user-defined labels are allowed on this resource.` + "\n" +
-								`Keys must not start with kong, konnect, insomnia, mesh, kic or _, which are reserved for Kong.` + "\n" +
-								`Keys are case-sensitive.` + "\n" +
+							MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
+								`` + "\n" +
+								`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".` + "\n" +
 								``,
 						},
 						"name": schema.StringAttribute{

@@ -5,18 +5,18 @@ package shared
 // AppearanceImages - A collection of binary image data to customize images in the portal
 type AppearanceImages struct {
 	// The image data to upload, along with an optional filename. Images must be a data URL with binary image data in base 64 format. See https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs.
-	CatalogCover *AppearanceImage `json:"catalog_cover,omitempty"`
+	Logo *AppearanceImage `json:"logo,omitempty"`
 	// The image data to upload, along with an optional filename. Images must be a data URL with binary image data in base 64 format. See https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs.
 	Favicon *AppearanceImage `json:"favicon,omitempty"`
 	// The image data to upload, along with an optional filename. Images must be a data URL with binary image data in base 64 format. See https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs.
-	Logo *AppearanceImage `json:"logo,omitempty"`
+	CatalogCover *AppearanceImage `json:"catalog_cover,omitempty"`
 }
 
-func (o *AppearanceImages) GetCatalogCover() *AppearanceImage {
+func (o *AppearanceImages) GetLogo() *AppearanceImage {
 	if o == nil {
 		return nil
 	}
-	return o.CatalogCover
+	return o.Logo
 }
 
 func (o *AppearanceImages) GetFavicon() *AppearanceImage {
@@ -26,9 +26,9 @@ func (o *AppearanceImages) GetFavicon() *AppearanceImage {
 	return o.Favicon
 }
 
-func (o *AppearanceImages) GetLogo() *AppearanceImage {
+func (o *AppearanceImages) GetCatalogCover() *AppearanceImage {
 	if o == nil {
 		return nil
 	}
-	return o.Logo
+	return o.CatalogCover
 }

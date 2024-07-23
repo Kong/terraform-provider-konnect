@@ -8,9 +8,41 @@ import (
 	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/utils"
 )
 
+type Value string
+
+const (
+	ValuePluginSyncErrorComm               Value = "plugin_sync_error_comm"
+	ValuePluginSyncErrorUnknown            Value = "plugin_sync_error_unknown"
+	ValuePluginSyncErrorFatal              Value = "plugin_sync_error_fatal"
+	ValuePluginSyncErrorUpdatingPluginRefs Value = "plugin_sync_error_updating_plugin_refs"
+)
+
+func (e Value) ToPointer() *Value {
+	return &e
+}
+func (e *Value) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "plugin_sync_error_comm":
+		fallthrough
+	case "plugin_sync_error_unknown":
+		fallthrough
+	case "plugin_sync_error_fatal":
+		fallthrough
+	case "plugin_sync_error_updating_plugin_refs":
+		*e = Value(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for Value: %v", v)
+	}
+}
+
 type Details struct {
-	Message              []string `json:"message,omitempty"`
 	Type                 *string  `json:"type,omitempty"`
+	Message              []string `json:"message,omitempty"`
 	AdditionalProperties any      `additionalProperties:"true" json:"-"`
 }
 
@@ -25,18 +57,18 @@ func (d *Details) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *Details) GetMessage() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Message
-}
-
 func (o *Details) GetType() *string {
 	if o == nil {
 		return nil
 	}
 	return o.Type
+}
+
+func (o *Details) GetMessage() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Message
 }
 
 func (o *Details) GetAdditionalProperties() any {
@@ -76,57 +108,11 @@ func (o *Info) GetAdditionalProperties() any {
 	return o.AdditionalProperties
 }
 
-type Value string
-
-const (
-	ValuePluginSyncErrorComm               Value = "plugin_sync_error_comm"
-	ValuePluginSyncErrorUnknown            Value = "plugin_sync_error_unknown"
-	ValuePluginSyncErrorFatal              Value = "plugin_sync_error_fatal"
-	ValuePluginSyncErrorUpdatingPluginRefs Value = "plugin_sync_error_updating_plugin_refs"
-)
-
-func (e Value) ToPointer() *Value {
-	return &e
-}
-func (e *Value) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "plugin_sync_error_comm":
-		fallthrough
-	case "plugin_sync_error_unknown":
-		fallthrough
-	case "plugin_sync_error_fatal":
-		fallthrough
-	case "plugin_sync_error_updating_plugin_refs":
-		*e = Value(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Value: %v", v)
-	}
-}
-
 type AuthStrategySyncError struct {
-	Info       *Info   `json:"info,omitempty"`
-	Message    string  `json:"message"`
 	PluginName *string `json:"plugin_name,omitempty"`
 	Value      *Value  `json:"value,omitempty"`
-}
-
-func (o *AuthStrategySyncError) GetInfo() *Info {
-	if o == nil {
-		return nil
-	}
-	return o.Info
-}
-
-func (o *AuthStrategySyncError) GetMessage() string {
-	if o == nil {
-		return ""
-	}
-	return o.Message
+	Message    string  `json:"message"`
+	Info       *Info   `json:"info,omitempty"`
 }
 
 func (o *AuthStrategySyncError) GetPluginName() *string {
@@ -141,4 +127,18 @@ func (o *AuthStrategySyncError) GetValue() *Value {
 		return nil
 	}
 	return o.Value
+}
+
+func (o *AuthStrategySyncError) GetMessage() string {
+	if o == nil {
+		return ""
+	}
+	return o.Message
+}
+
+func (o *AuthStrategySyncError) GetInfo() *Info {
+	if o == nil {
+		return nil
+	}
+	return o.Info
 }

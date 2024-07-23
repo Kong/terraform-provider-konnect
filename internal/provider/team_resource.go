@@ -5,6 +5,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -14,6 +15,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/internal/validators"
+	"regexp"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -59,6 +61,9 @@ func (r *TeamResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				Computed:    true,
 				Optional:    true,
 				Description: `The description of the new team.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(250),
+				},
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
@@ -76,6 +81,10 @@ func (r *TeamResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 			"name": schema.StringAttribute{
 				Required:    true,
 				Description: `A name for the team being created.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(250),
+					stringvalidator.RegexMatches(regexp.MustCompile(`^[\w \W]+$`), "must match pattern "+regexp.MustCompile(`^[\w \W]+$`).String()),
+				},
 			},
 			"system_team": schema.BoolAttribute{
 				Computed:    true,

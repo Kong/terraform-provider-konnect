@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -188,6 +189,9 @@ func (r *GatewayPluginStatsdResource) Schema(ctx context.Context, req resource.S
 						Computed:    true,
 						Optional:    true,
 						Description: `The port of StatsD server to send data to.`,
+						Validators: []validator.Int64{
+							int64validator.AtMost(65535),
+						},
 					},
 					"prefix": schema.StringAttribute{
 						Computed:    true,
@@ -207,6 +211,9 @@ func (r *GatewayPluginStatsdResource) Schema(ctx context.Context, req resource.S
 								Computed:    true,
 								Optional:    true,
 								Description: `Maximum number of entries that can be processed at a time.`,
+								Validators: []validator.Int64{
+									int64validator.Between(1, 1000000),
+								},
 							},
 							"max_bytes": schema.Int64Attribute{
 								Computed:    true,
@@ -222,6 +229,9 @@ func (r *GatewayPluginStatsdResource) Schema(ctx context.Context, req resource.S
 								Computed:    true,
 								Optional:    true,
 								Description: `Maximum number of entries that can be waiting on the queue.`,
+								Validators: []validator.Int64{
+									int64validator.Between(1, 1000000),
+								},
 							},
 							"max_retry_delay": schema.NumberAttribute{
 								Computed:    true,

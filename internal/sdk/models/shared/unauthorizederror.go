@@ -4,25 +4,11 @@ package shared
 
 // UnauthorizedError - standard error
 type UnauthorizedError struct {
-	Detail   any `json:"detail"`
-	Instance any `json:"instance"`
 	Status   any `json:"status"`
 	Title    any `json:"title"`
 	Type     any `json:"type,omitempty"`
-}
-
-func (o *UnauthorizedError) GetDetail() any {
-	if o == nil {
-		return nil
-	}
-	return o.Detail
-}
-
-func (o *UnauthorizedError) GetInstance() any {
-	if o == nil {
-		return nil
-	}
-	return o.Instance
+	Instance any `json:"instance"`
+	Detail   any `json:"detail"`
 }
 
 func (o *UnauthorizedError) GetStatus() any {
@@ -44,4 +30,18 @@ func (o *UnauthorizedError) GetType() any {
 		return nil
 	}
 	return o.Type
+}
+
+func (o *UnauthorizedError) GetInstance() any {
+	if o == nil {
+		return nil
+	}
+	return o.Instance
+}
+
+func (o *UnauthorizedError) GetDetail() any {
+	if o == nil {
+		return nil
+	}
+	return o.Detail
 }

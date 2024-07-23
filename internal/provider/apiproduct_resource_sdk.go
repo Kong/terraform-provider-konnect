@@ -11,6 +11,7 @@ import (
 )
 
 func (r *APIProductResourceModel) ToSharedCreateAPIProductDTO() *shared.CreateAPIProductDTO {
+	name := r.Name.ValueString()
 	description := new(string)
 	if !r.Description.IsUnknown() && !r.Description.IsNull() {
 		*description = r.Description.ValueString()
@@ -22,15 +23,14 @@ func (r *APIProductResourceModel) ToSharedCreateAPIProductDTO() *shared.CreateAP
 		labelsInst := labelsValue.ValueString()
 		labels[labelsKey] = labelsInst
 	}
-	name := r.Name.ValueString()
 	var portalIds []string = []string{}
 	for _, portalIdsItem := range r.PortalIds {
 		portalIds = append(portalIds, portalIdsItem.ValueString())
 	}
 	out := shared.CreateAPIProductDTO{
+		Name:        name,
 		Description: description,
 		Labels:      labels,
-		Name:        name,
 		PortalIds:   portalIds,
 	}
 	return &out
@@ -73,6 +73,12 @@ func (r *APIProductResourceModel) RefreshFromSharedAPIProduct(resp *shared.APIPr
 }
 
 func (r *APIProductResourceModel) ToSharedUpdateAPIProductDTO() *shared.UpdateAPIProductDTO {
+	name := new(string)
+	if !r.Name.IsUnknown() && !r.Name.IsNull() {
+		*name = r.Name.ValueString()
+	} else {
+		name = nil
+	}
 	description := new(string)
 	if !r.Description.IsUnknown() && !r.Description.IsNull() {
 		*description = r.Description.ValueString()
@@ -84,20 +90,14 @@ func (r *APIProductResourceModel) ToSharedUpdateAPIProductDTO() *shared.UpdateAP
 		labelsInst := labelsValue.ValueString()
 		labels[labelsKey] = labelsInst
 	}
-	name := new(string)
-	if !r.Name.IsUnknown() && !r.Name.IsNull() {
-		*name = r.Name.ValueString()
-	} else {
-		name = nil
-	}
 	var portalIds []string = []string{}
 	for _, portalIdsItem := range r.PortalIds {
 		portalIds = append(portalIds, portalIdsItem.ValueString())
 	}
 	out := shared.UpdateAPIProductDTO{
+		Name:        name,
 		Description: description,
 		Labels:      labels,
-		Name:        name,
 		PortalIds:   portalIds,
 	}
 	return &out

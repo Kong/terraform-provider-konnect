@@ -77,6 +77,7 @@ func (r *GatewayPluginAIPromptDecoratorResource) Schema(ctx context.Context, req
 											Description: `Not Null`,
 											Validators: []validator.String{
 												speakeasy_stringvalidators.NotNull(),
+												stringvalidator.UTF8LengthBetween(1, 500),
 											},
 										},
 										"role": schema.StringAttribute{
@@ -106,6 +107,7 @@ func (r *GatewayPluginAIPromptDecoratorResource) Schema(ctx context.Context, req
 											Description: `Not Null`,
 											Validators: []validator.String{
 												speakeasy_stringvalidators.NotNull(),
+												stringvalidator.UTF8LengthBetween(1, 500),
 											},
 										},
 										"role": schema.StringAttribute{

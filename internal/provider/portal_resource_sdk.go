@@ -10,6 +10,31 @@ import (
 )
 
 func (r *PortalResourceModel) ToSharedCreatePortalRequest() *shared.CreatePortalRequest {
+	name := r.Name.ValueString()
+	displayName := new(string)
+	if !r.DisplayName.IsUnknown() && !r.DisplayName.IsNull() {
+		*displayName = r.DisplayName.ValueString()
+	} else {
+		displayName = nil
+	}
+	description := new(string)
+	if !r.Description.IsUnknown() && !r.Description.IsNull() {
+		*description = r.Description.ValueString()
+	} else {
+		description = nil
+	}
+	isPublic := new(bool)
+	if !r.IsPublic.IsUnknown() && !r.IsPublic.IsNull() {
+		*isPublic = r.IsPublic.ValueBool()
+	} else {
+		isPublic = nil
+	}
+	rbacEnabled := new(bool)
+	if !r.RbacEnabled.IsUnknown() && !r.RbacEnabled.IsNull() {
+		*rbacEnabled = r.RbacEnabled.ValueBool()
+	} else {
+		rbacEnabled = nil
+	}
 	autoApproveApplications := new(bool)
 	if !r.AutoApproveApplications.IsUnknown() && !r.AutoApproveApplications.IsNull() {
 		*autoApproveApplications = r.AutoApproveApplications.ValueBool()
@@ -22,17 +47,17 @@ func (r *PortalResourceModel) ToSharedCreatePortalRequest() *shared.CreatePortal
 	} else {
 		autoApproveDevelopers = nil
 	}
-	customClientDomain := new(string)
-	if !r.CustomClientDomain.IsUnknown() && !r.CustomClientDomain.IsNull() {
-		*customClientDomain = r.CustomClientDomain.ValueString()
-	} else {
-		customClientDomain = nil
-	}
 	customDomain := new(string)
 	if !r.CustomDomain.IsUnknown() && !r.CustomDomain.IsNull() {
 		*customDomain = r.CustomDomain.ValueString()
 	} else {
 		customDomain = nil
+	}
+	customClientDomain := new(string)
+	if !r.CustomClientDomain.IsUnknown() && !r.CustomClientDomain.IsNull() {
+		*customClientDomain = r.CustomClientDomain.ValueString()
+	} else {
+		customClientDomain = nil
 	}
 	defaultApplicationAuthStrategyID := new(string)
 	if !r.DefaultApplicationAuthStrategyID.IsUnknown() && !r.DefaultApplicationAuthStrategyID.IsNull() {
@@ -40,48 +65,23 @@ func (r *PortalResourceModel) ToSharedCreatePortalRequest() *shared.CreatePortal
 	} else {
 		defaultApplicationAuthStrategyID = nil
 	}
-	description := new(string)
-	if !r.Description.IsUnknown() && !r.Description.IsNull() {
-		*description = r.Description.ValueString()
-	} else {
-		description = nil
-	}
-	displayName := new(string)
-	if !r.DisplayName.IsUnknown() && !r.DisplayName.IsNull() {
-		*displayName = r.DisplayName.ValueString()
-	} else {
-		displayName = nil
-	}
-	isPublic := new(bool)
-	if !r.IsPublic.IsUnknown() && !r.IsPublic.IsNull() {
-		*isPublic = r.IsPublic.ValueBool()
-	} else {
-		isPublic = nil
-	}
 	labels := make(map[string]string)
 	for labelsKey, labelsValue := range r.Labels {
 		labelsInst := labelsValue.ValueString()
 		labels[labelsKey] = labelsInst
 	}
-	name := r.Name.ValueString()
-	rbacEnabled := new(bool)
-	if !r.RbacEnabled.IsUnknown() && !r.RbacEnabled.IsNull() {
-		*rbacEnabled = r.RbacEnabled.ValueBool()
-	} else {
-		rbacEnabled = nil
-	}
 	out := shared.CreatePortalRequest{
+		Name:                             name,
+		DisplayName:                      displayName,
+		Description:                      description,
+		IsPublic:                         isPublic,
+		RbacEnabled:                      rbacEnabled,
 		AutoApproveApplications:          autoApproveApplications,
 		AutoApproveDevelopers:            autoApproveDevelopers,
-		CustomClientDomain:               customClientDomain,
 		CustomDomain:                     customDomain,
+		CustomClientDomain:               customClientDomain,
 		DefaultApplicationAuthStrategyID: defaultApplicationAuthStrategyID,
-		Description:                      description,
-		DisplayName:                      displayName,
-		IsPublic:                         isPublic,
 		Labels:                           labels,
-		Name:                             name,
-		RbacEnabled:                      rbacEnabled,
 	}
 	return &out
 }
@@ -114,7 +114,65 @@ func (r *PortalResourceModel) RefreshFromSharedCreatePortalResponse(resp *shared
 	}
 }
 
+func (r *PortalResourceModel) RefreshFromSharedGetPortalResponse(resp *shared.GetPortalResponse) {
+	if resp != nil {
+		r.ApplicationCount = types.NumberValue(big.NewFloat(float64(resp.ApplicationCount)))
+		r.AutoApproveApplications = types.BoolValue(resp.AutoApproveApplications)
+		r.AutoApproveDevelopers = types.BoolValue(resp.AutoApproveDevelopers)
+		r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
+		r.CustomClientDomain = types.StringPointerValue(resp.CustomClientDomain)
+		r.CustomDomain = types.StringPointerValue(resp.CustomDomain)
+		r.DefaultApplicationAuthStrategyID = types.StringPointerValue(resp.DefaultApplicationAuthStrategyID)
+		r.DefaultDomain = types.StringValue(resp.DefaultDomain)
+		r.Description = types.StringPointerValue(resp.Description)
+		r.DeveloperCount = types.NumberValue(big.NewFloat(float64(resp.DeveloperCount)))
+		r.DisplayName = types.StringValue(resp.DisplayName)
+		r.ID = types.StringValue(resp.ID)
+		r.IsPublic = types.BoolValue(resp.IsPublic)
+		if len(resp.Labels) > 0 {
+			r.Labels = make(map[string]types.String)
+			for key, value := range resp.Labels {
+				r.Labels[key] = types.StringValue(value)
+			}
+		}
+		r.Name = types.StringValue(resp.Name)
+		r.PublishedProductCount = types.NumberValue(big.NewFloat(float64(resp.PublishedProductCount)))
+		r.RbacEnabled = types.BoolValue(resp.RbacEnabled)
+		r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
+	}
+}
+
 func (r *PortalResourceModel) ToSharedUpdatePortalRequest() *shared.UpdatePortalRequest {
+	name := new(string)
+	if !r.Name.IsUnknown() && !r.Name.IsNull() {
+		*name = r.Name.ValueString()
+	} else {
+		name = nil
+	}
+	displayName := new(string)
+	if !r.DisplayName.IsUnknown() && !r.DisplayName.IsNull() {
+		*displayName = r.DisplayName.ValueString()
+	} else {
+		displayName = nil
+	}
+	description := new(string)
+	if !r.Description.IsUnknown() && !r.Description.IsNull() {
+		*description = r.Description.ValueString()
+	} else {
+		description = nil
+	}
+	isPublic := new(bool)
+	if !r.IsPublic.IsUnknown() && !r.IsPublic.IsNull() {
+		*isPublic = r.IsPublic.ValueBool()
+	} else {
+		isPublic = nil
+	}
+	rbacEnabled := new(bool)
+	if !r.RbacEnabled.IsUnknown() && !r.RbacEnabled.IsNull() {
+		*rbacEnabled = r.RbacEnabled.ValueBool()
+	} else {
+		rbacEnabled = nil
+	}
 	autoApproveApplications := new(bool)
 	if !r.AutoApproveApplications.IsUnknown() && !r.AutoApproveApplications.IsNull() {
 		*autoApproveApplications = r.AutoApproveApplications.ValueBool()
@@ -127,17 +185,17 @@ func (r *PortalResourceModel) ToSharedUpdatePortalRequest() *shared.UpdatePortal
 	} else {
 		autoApproveDevelopers = nil
 	}
-	customClientDomain := new(string)
-	if !r.CustomClientDomain.IsUnknown() && !r.CustomClientDomain.IsNull() {
-		*customClientDomain = r.CustomClientDomain.ValueString()
-	} else {
-		customClientDomain = nil
-	}
 	customDomain := new(string)
 	if !r.CustomDomain.IsUnknown() && !r.CustomDomain.IsNull() {
 		*customDomain = r.CustomDomain.ValueString()
 	} else {
 		customDomain = nil
+	}
+	customClientDomain := new(string)
+	if !r.CustomClientDomain.IsUnknown() && !r.CustomClientDomain.IsNull() {
+		*customClientDomain = r.CustomClientDomain.ValueString()
+	} else {
+		customClientDomain = nil
 	}
 	defaultApplicationAuthStrategyID := new(string)
 	if !r.DefaultApplicationAuthStrategyID.IsUnknown() && !r.DefaultApplicationAuthStrategyID.IsNull() {
@@ -145,53 +203,23 @@ func (r *PortalResourceModel) ToSharedUpdatePortalRequest() *shared.UpdatePortal
 	} else {
 		defaultApplicationAuthStrategyID = nil
 	}
-	description := new(string)
-	if !r.Description.IsUnknown() && !r.Description.IsNull() {
-		*description = r.Description.ValueString()
-	} else {
-		description = nil
-	}
-	displayName := new(string)
-	if !r.DisplayName.IsUnknown() && !r.DisplayName.IsNull() {
-		*displayName = r.DisplayName.ValueString()
-	} else {
-		displayName = nil
-	}
-	isPublic := new(bool)
-	if !r.IsPublic.IsUnknown() && !r.IsPublic.IsNull() {
-		*isPublic = r.IsPublic.ValueBool()
-	} else {
-		isPublic = nil
-	}
 	labels := make(map[string]string)
 	for labelsKey, labelsValue := range r.Labels {
 		labelsInst := labelsValue.ValueString()
 		labels[labelsKey] = labelsInst
 	}
-	name := new(string)
-	if !r.Name.IsUnknown() && !r.Name.IsNull() {
-		*name = r.Name.ValueString()
-	} else {
-		name = nil
-	}
-	rbacEnabled := new(bool)
-	if !r.RbacEnabled.IsUnknown() && !r.RbacEnabled.IsNull() {
-		*rbacEnabled = r.RbacEnabled.ValueBool()
-	} else {
-		rbacEnabled = nil
-	}
 	out := shared.UpdatePortalRequest{
+		Name:                             name,
+		DisplayName:                      displayName,
+		Description:                      description,
+		IsPublic:                         isPublic,
+		RbacEnabled:                      rbacEnabled,
 		AutoApproveApplications:          autoApproveApplications,
 		AutoApproveDevelopers:            autoApproveDevelopers,
-		CustomClientDomain:               customClientDomain,
 		CustomDomain:                     customDomain,
+		CustomClientDomain:               customClientDomain,
 		DefaultApplicationAuthStrategyID: defaultApplicationAuthStrategyID,
-		Description:                      description,
-		DisplayName:                      displayName,
-		IsPublic:                         isPublic,
 		Labels:                           labels,
-		Name:                             name,
-		RbacEnabled:                      rbacEnabled,
 	}
 	return &out
 }

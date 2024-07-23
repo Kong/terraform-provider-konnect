@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -162,6 +163,9 @@ func (r *GatewayPluginRateLimitingResource) Schema(ctx context.Context, req reso
 								Computed:    true,
 								Optional:    true,
 								Description: `An integer representing a port number between 0 and 65535, inclusive.`,
+								Validators: []validator.Int64{
+									int64validator.AtMost(65535),
+								},
 							},
 							"server_name": schema.StringAttribute{
 								Computed:    true,
@@ -182,6 +186,9 @@ func (r *GatewayPluginRateLimitingResource) Schema(ctx context.Context, req reso
 								Computed:    true,
 								Optional:    true,
 								Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
+								Validators: []validator.Int64{
+									int64validator.AtMost(2147483646),
+								},
 							},
 							"username": schema.StringAttribute{
 								Computed:    true,

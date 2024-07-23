@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -204,6 +205,9 @@ func (r *GatewayPluginAIProxyResource) Schema(ctx context.Context, req resource.
 										Computed:    true,
 										Optional:    true,
 										Description: `Defines the top-k most likely tokens, if supported.`,
+										Validators: []validator.Int64{
+											int64validator.AtMost(500),
+										},
 									},
 									"top_p": schema.NumberAttribute{
 										Computed:    true,

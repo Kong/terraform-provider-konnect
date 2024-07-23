@@ -21,6 +21,7 @@ import (
 	speakeasy_int64validators "github.com/kong/terraform-provider-konnect/internal/validators/int64validators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/internal/validators/stringvalidators"
+	"regexp"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -374,6 +375,9 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 			"version": schema.StringAttribute{
 				Required:    true,
 				Description: `Supported gateway version.`,
+				Validators: []validator.String{
+					stringvalidator.RegexMatches(regexp.MustCompile(`^(\d)+(\.(\d)+)?$`), "must match pattern "+regexp.MustCompile(`^(\d)+(\.(\d)+)?$`).String()),
+				},
 			},
 		},
 	}

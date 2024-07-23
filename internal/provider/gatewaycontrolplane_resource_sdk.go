@@ -9,6 +9,19 @@ import (
 )
 
 func (r *GatewayControlPlaneResourceModel) ToSharedCreateControlPlaneRequest() *shared.CreateControlPlaneRequest {
+	name := r.Name.ValueString()
+	description := new(string)
+	if !r.Description.IsUnknown() && !r.Description.IsNull() {
+		*description = r.Description.ValueString()
+	} else {
+		description = nil
+	}
+	clusterType := new(shared.ClusterType)
+	if !r.ClusterType.IsUnknown() && !r.ClusterType.IsNull() {
+		*clusterType = shared.ClusterType(r.ClusterType.ValueString())
+	} else {
+		clusterType = nil
+	}
 	authType := new(shared.AuthType)
 	if !r.AuthType.IsUnknown() && !r.AuthType.IsNull() {
 		*authType = shared.AuthType(r.AuthType.ValueString())
@@ -21,24 +34,6 @@ func (r *GatewayControlPlaneResourceModel) ToSharedCreateControlPlaneRequest() *
 	} else {
 		cloudGateway = nil
 	}
-	clusterType := new(shared.ClusterType)
-	if !r.ClusterType.IsUnknown() && !r.ClusterType.IsNull() {
-		*clusterType = shared.ClusterType(r.ClusterType.ValueString())
-	} else {
-		clusterType = nil
-	}
-	description := new(string)
-	if !r.Description.IsUnknown() && !r.Description.IsNull() {
-		*description = r.Description.ValueString()
-	} else {
-		description = nil
-	}
-	labels := make(map[string]string)
-	for labelsKey, labelsValue := range r.Labels {
-		labelsInst := labelsValue.ValueString()
-		labels[labelsKey] = labelsInst
-	}
-	name := r.Name.ValueString()
 	var proxyUrls []shared.ProxyURL = []shared.ProxyURL{}
 	for _, proxyUrlsItem := range r.ProxyUrls {
 		host := proxyUrlsItem.Host.ValueString()
@@ -50,14 +45,19 @@ func (r *GatewayControlPlaneResourceModel) ToSharedCreateControlPlaneRequest() *
 			Protocol: protocol,
 		})
 	}
+	labels := make(map[string]string)
+	for labelsKey, labelsValue := range r.Labels {
+		labelsInst := labelsValue.ValueString()
+		labels[labelsKey] = labelsInst
+	}
 	out := shared.CreateControlPlaneRequest{
+		Name:         name,
+		Description:  description,
+		ClusterType:  clusterType,
 		AuthType:     authType,
 		CloudGateway: cloudGateway,
-		ClusterType:  clusterType,
-		Description:  description,
-		Labels:       labels,
-		Name:         name,
 		ProxyUrls:    proxyUrls,
+		Labels:       labels,
 	}
 	return &out
 }
@@ -84,11 +84,11 @@ func (r *GatewayControlPlaneResourceModel) RefreshFromSharedControlPlane(resp *s
 }
 
 func (r *GatewayControlPlaneResourceModel) ToSharedUpdateControlPlaneRequest() *shared.UpdateControlPlaneRequest {
-	authType := new(shared.UpdateControlPlaneRequestAuthType)
-	if !r.AuthType.IsUnknown() && !r.AuthType.IsNull() {
-		*authType = shared.UpdateControlPlaneRequestAuthType(r.AuthType.ValueString())
+	name := new(string)
+	if !r.Name.IsUnknown() && !r.Name.IsNull() {
+		*name = r.Name.ValueString()
 	} else {
-		authType = nil
+		name = nil
 	}
 	description := new(string)
 	if !r.Description.IsUnknown() && !r.Description.IsNull() {
@@ -96,16 +96,11 @@ func (r *GatewayControlPlaneResourceModel) ToSharedUpdateControlPlaneRequest() *
 	} else {
 		description = nil
 	}
-	labels := make(map[string]string)
-	for labelsKey, labelsValue := range r.Labels {
-		labelsInst := labelsValue.ValueString()
-		labels[labelsKey] = labelsInst
-	}
-	name := new(string)
-	if !r.Name.IsUnknown() && !r.Name.IsNull() {
-		*name = r.Name.ValueString()
+	authType := new(shared.UpdateControlPlaneRequestAuthType)
+	if !r.AuthType.IsUnknown() && !r.AuthType.IsNull() {
+		*authType = shared.UpdateControlPlaneRequestAuthType(r.AuthType.ValueString())
 	} else {
-		name = nil
+		authType = nil
 	}
 	var proxyUrls []shared.ProxyURL = []shared.ProxyURL{}
 	for _, proxyUrlsItem := range r.ProxyUrls {
@@ -118,12 +113,17 @@ func (r *GatewayControlPlaneResourceModel) ToSharedUpdateControlPlaneRequest() *
 			Protocol: protocol,
 		})
 	}
+	labels := make(map[string]string)
+	for labelsKey, labelsValue := range r.Labels {
+		labelsInst := labelsValue.ValueString()
+		labels[labelsKey] = labelsInst
+	}
 	out := shared.UpdateControlPlaneRequest{
-		AuthType:    authType,
-		Description: description,
-		Labels:      labels,
 		Name:        name,
+		Description: description,
+		AuthType:    authType,
 		ProxyUrls:   proxyUrls,
+		Labels:      labels,
 	}
 	return &out
 }

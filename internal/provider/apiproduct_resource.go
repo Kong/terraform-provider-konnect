@@ -6,6 +6,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -80,6 +81,9 @@ func (r *APIProductResource) Schema(ctx context.Context, req resource.SchemaRequ
 			"name": schema.StringAttribute{
 				Required:    true,
 				Description: `The name of the API product.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthBetween(1, 100),
+				},
 			},
 			"portal_ids": schema.ListAttribute{
 				Required:    true,

@@ -4,19 +4,40 @@ package shared
 
 // CreateNetworkRequest - Request schema for creating a network.
 type CreateNetworkRequest struct {
+	// Human-readable name of the network.
+	Name                          string `json:"name"`
+	CloudGatewayProviderAccountID string `json:"cloud_gateway_provider_account_id"`
+	// Region ID for cloud provider region.
+	Region string `json:"region"`
 	// List of availability zones that the network is attached to.
 	AvailabilityZones []string `json:"availability_zones"`
 	// CIDR block configuration for the network.
-	CidrBlock                     string `json:"cidr_block"`
-	CloudGatewayProviderAccountID string `json:"cloud_gateway_provider_account_id"`
-	// Whether DDOS protection is enabled for the network.
-	DdosProtection *bool `json:"ddos_protection,omitempty"`
+	CidrBlock string `json:"cidr_block"`
 	// Firewall configuration for a network.
 	Firewall *NetworkFirewallConfig `json:"firewall,omitempty"`
-	// Human-readable name of the network.
-	Name string `json:"name"`
-	// Region ID for cloud provider region.
-	Region string `json:"region"`
+	// Whether DDOS protection is enabled for the network.
+	DdosProtection *bool `json:"ddos_protection,omitempty"`
+}
+
+func (o *CreateNetworkRequest) GetName() string {
+	if o == nil {
+		return ""
+	}
+	return o.Name
+}
+
+func (o *CreateNetworkRequest) GetCloudGatewayProviderAccountID() string {
+	if o == nil {
+		return ""
+	}
+	return o.CloudGatewayProviderAccountID
+}
+
+func (o *CreateNetworkRequest) GetRegion() string {
+	if o == nil {
+		return ""
+	}
+	return o.Region
 }
 
 func (o *CreateNetworkRequest) GetAvailabilityZones() []string {
@@ -33,20 +54,6 @@ func (o *CreateNetworkRequest) GetCidrBlock() string {
 	return o.CidrBlock
 }
 
-func (o *CreateNetworkRequest) GetCloudGatewayProviderAccountID() string {
-	if o == nil {
-		return ""
-	}
-	return o.CloudGatewayProviderAccountID
-}
-
-func (o *CreateNetworkRequest) GetDdosProtection() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.DdosProtection
-}
-
 func (o *CreateNetworkRequest) GetFirewall() *NetworkFirewallConfig {
 	if o == nil {
 		return nil
@@ -54,16 +61,9 @@ func (o *CreateNetworkRequest) GetFirewall() *NetworkFirewallConfig {
 	return o.Firewall
 }
 
-func (o *CreateNetworkRequest) GetName() string {
+func (o *CreateNetworkRequest) GetDdosProtection() *bool {
 	if o == nil {
-		return ""
+		return nil
 	}
-	return o.Name
-}
-
-func (o *CreateNetworkRequest) GetRegion() string {
-	if o == nil {
-		return ""
-	}
-	return o.Region
+	return o.DdosProtection
 }

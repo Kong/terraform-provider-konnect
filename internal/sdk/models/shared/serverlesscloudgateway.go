@@ -10,12 +10,12 @@ import (
 // ServerlessCloudGateway - A serverless cloud gateway
 type ServerlessCloudGateway struct {
 	ControlPlane ServerlessControlPlane `json:"control_plane"`
-	CreatedAt    time.Time              `json:"created_at"`
 	// Endpoint for the serverless cloud gateway.
-	GatewayEndpoint string `json:"gateway_endpoint"`
+	GatewayEndpoint string    `json:"gateway_endpoint"`
+	CreatedAt       time.Time `json:"created_at"`
+	UpdatedAt       time.Time `json:"updated_at"`
 	// Labels to facilitate tagged search on serverless cloud gateways. Keys must be of length 1-63 characters, and cannot start with 'kong', 'konnect', 'mesh', 'kic', or '_'.
-	Labels    map[string]string `json:"labels,omitempty"`
-	UpdatedAt time.Time         `json:"updated_at"`
+	Labels map[string]string `json:"labels,omitempty"`
 }
 
 func (s ServerlessCloudGateway) MarshalJSON() ([]byte, error) {
@@ -36,13 +36,6 @@ func (o *ServerlessCloudGateway) GetControlPlane() ServerlessControlPlane {
 	return o.ControlPlane
 }
 
-func (o *ServerlessCloudGateway) GetCreatedAt() time.Time {
-	if o == nil {
-		return time.Time{}
-	}
-	return o.CreatedAt
-}
-
 func (o *ServerlessCloudGateway) GetGatewayEndpoint() string {
 	if o == nil {
 		return ""
@@ -50,11 +43,11 @@ func (o *ServerlessCloudGateway) GetGatewayEndpoint() string {
 	return o.GatewayEndpoint
 }
 
-func (o *ServerlessCloudGateway) GetLabels() map[string]string {
+func (o *ServerlessCloudGateway) GetCreatedAt() time.Time {
 	if o == nil {
-		return nil
+		return time.Time{}
 	}
-	return o.Labels
+	return o.CreatedAt
 }
 
 func (o *ServerlessCloudGateway) GetUpdatedAt() time.Time {
@@ -62,4 +55,11 @@ func (o *ServerlessCloudGateway) GetUpdatedAt() time.Time {
 		return time.Time{}
 	}
 	return o.UpdatedAt
+}
+
+func (o *ServerlessCloudGateway) GetLabels() map[string]string {
+	if o == nil {
+		return nil
+	}
+	return o.Labels
 }

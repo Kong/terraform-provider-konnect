@@ -47,24 +47,24 @@ func (e *State) UnmarshalJSON(data []byte) error {
 
 // ConfigurationDataPlaneGroup - Object that describes the set of data-plane groups currently pointed to this configuration.
 type ConfigurationDataPlaneGroup struct {
-	Autoscale             ConfigurationDataPlaneGroupAutoscale `json:"autoscale"`
-	CloudGatewayNetworkID string                               `json:"cloud_gateway_network_id"`
-	// An RFC-3339 timestamp representation of data-plane group creation date.
-	CreatedAt time.Time `json:"created_at"`
-	// List of egress IP addresses for the network that this data-plane group runs on.
-	//
-	EgressIPAddresses []string `json:"egress_ip_addresses,omitempty"`
 	// ID of the data-plane group that represents a deployment target for a set of data-planes.
 	ID string `json:"id"`
-	// List of private IP addresses of the internal load balancer that proxies traffic to this data-plane group.
-	//
-	PrivateIPAddresses []string `json:"private_ip_addresses,omitempty"`
 	// Name of cloud provider.
 	Provider ProviderName `json:"provider"`
 	// Region ID for cloud provider region.
-	Region string `json:"region"`
+	Region                string                               `json:"region"`
+	Autoscale             ConfigurationDataPlaneGroupAutoscale `json:"autoscale"`
+	CloudGatewayNetworkID string                               `json:"cloud_gateway_network_id"`
 	// State of the data-plane group.
 	State State `json:"state"`
+	// List of private IP addresses of the internal load balancer that proxies traffic to this data-plane group.
+	//
+	PrivateIPAddresses []string `json:"private_ip_addresses,omitempty"`
+	// List of egress IP addresses for the network that this data-plane group runs on.
+	//
+	EgressIPAddresses []string `json:"egress_ip_addresses,omitempty"`
+	// An RFC-3339 timestamp representation of data-plane group creation date.
+	CreatedAt time.Time `json:"created_at"`
 	// An RFC-3339 timestamp representation of data-plane group update date.
 	UpdatedAt time.Time `json:"updated_at"`
 }
@@ -80,46 +80,11 @@ func (c *ConfigurationDataPlaneGroup) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *ConfigurationDataPlaneGroup) GetAutoscale() ConfigurationDataPlaneGroupAutoscale {
-	if o == nil {
-		return ConfigurationDataPlaneGroupAutoscale{}
-	}
-	return o.Autoscale
-}
-
-func (o *ConfigurationDataPlaneGroup) GetCloudGatewayNetworkID() string {
-	if o == nil {
-		return ""
-	}
-	return o.CloudGatewayNetworkID
-}
-
-func (o *ConfigurationDataPlaneGroup) GetCreatedAt() time.Time {
-	if o == nil {
-		return time.Time{}
-	}
-	return o.CreatedAt
-}
-
-func (o *ConfigurationDataPlaneGroup) GetEgressIPAddresses() []string {
-	if o == nil {
-		return nil
-	}
-	return o.EgressIPAddresses
-}
-
 func (o *ConfigurationDataPlaneGroup) GetID() string {
 	if o == nil {
 		return ""
 	}
 	return o.ID
-}
-
-func (o *ConfigurationDataPlaneGroup) GetPrivateIPAddresses() []string {
-	if o == nil {
-		return nil
-	}
-	return o.PrivateIPAddresses
 }
 
 func (o *ConfigurationDataPlaneGroup) GetProvider() ProviderName {
@@ -136,11 +101,46 @@ func (o *ConfigurationDataPlaneGroup) GetRegion() string {
 	return o.Region
 }
 
+func (o *ConfigurationDataPlaneGroup) GetAutoscale() ConfigurationDataPlaneGroupAutoscale {
+	if o == nil {
+		return ConfigurationDataPlaneGroupAutoscale{}
+	}
+	return o.Autoscale
+}
+
+func (o *ConfigurationDataPlaneGroup) GetCloudGatewayNetworkID() string {
+	if o == nil {
+		return ""
+	}
+	return o.CloudGatewayNetworkID
+}
+
 func (o *ConfigurationDataPlaneGroup) GetState() State {
 	if o == nil {
 		return State("")
 	}
 	return o.State
+}
+
+func (o *ConfigurationDataPlaneGroup) GetPrivateIPAddresses() []string {
+	if o == nil {
+		return nil
+	}
+	return o.PrivateIPAddresses
+}
+
+func (o *ConfigurationDataPlaneGroup) GetEgressIPAddresses() []string {
+	if o == nil {
+		return nil
+	}
+	return o.EgressIPAddresses
+}
+
+func (o *ConfigurationDataPlaneGroup) GetCreatedAt() time.Time {
+	if o == nil {
+		return time.Time{}
+	}
+	return o.CreatedAt
 }
 
 func (o *ConfigurationDataPlaneGroup) GetUpdatedAt() time.Time {

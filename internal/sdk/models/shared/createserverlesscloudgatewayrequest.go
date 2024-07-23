@@ -4,13 +4,20 @@ package shared
 
 // CreateServerlessCloudGatewayRequest - Schema to create a serverless cloud gateway.
 type CreateServerlessCloudGatewayRequest struct {
+	ControlPlane ServerlessControlPlane `json:"control_plane"`
 	// The cluster certificate (public key).
 	ClusterCert string `json:"cluster_cert"`
 	// The cluster certificate key (private key).
-	ClusterCertKey string                 `json:"cluster_cert_key"`
-	ControlPlane   ServerlessControlPlane `json:"control_plane"`
+	ClusterCertKey string `json:"cluster_cert_key"`
 	// Labels to facilitate tagged search on serverless cloud gateways. Keys must be of length 1-63 characters, and cannot start with 'kong', 'konnect', 'mesh', 'kic', or '_'.
 	Labels map[string]string `json:"labels,omitempty"`
+}
+
+func (o *CreateServerlessCloudGatewayRequest) GetControlPlane() ServerlessControlPlane {
+	if o == nil {
+		return ServerlessControlPlane{}
+	}
+	return o.ControlPlane
 }
 
 func (o *CreateServerlessCloudGatewayRequest) GetClusterCert() string {
@@ -25,13 +32,6 @@ func (o *CreateServerlessCloudGatewayRequest) GetClusterCertKey() string {
 		return ""
 	}
 	return o.ClusterCertKey
-}
-
-func (o *CreateServerlessCloudGatewayRequest) GetControlPlane() ServerlessControlPlane {
-	if o == nil {
-		return ServerlessControlPlane{}
-	}
-	return o.ControlPlane
 }
 
 func (o *CreateServerlessCloudGatewayRequest) GetLabels() map[string]string {

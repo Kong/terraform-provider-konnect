@@ -7,12 +7,7 @@ import (
 )
 
 func (r *TeamUserResourceModel) ToSharedAddUserToTeam() *shared.AddUserToTeam {
-	userID := new(string)
-	if !r.UserID.IsUnknown() && !r.UserID.IsNull() {
-		*userID = r.UserID.ValueString()
-	} else {
-		userID = nil
-	}
+	userID := r.UserID.ValueString()
 	out := shared.AddUserToTeam{
 		UserID: userID,
 	}

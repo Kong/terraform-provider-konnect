@@ -4,18 +4,11 @@ package shared
 
 // CreateCustomDomainRequest - Request schema for creating a custom domain in the global API.
 type CreateCustomDomainRequest struct {
+	ControlPlaneID string `json:"control_plane_id"`
 	// Set of control-plane geos supported for deploying cloud-gateways configurations.
 	ControlPlaneGeo ControlPlaneGeo `json:"control_plane_geo"`
-	ControlPlaneID  string          `json:"control_plane_id"`
 	// Domain name of the custom domain.
 	Domain string `json:"domain"`
-}
-
-func (o *CreateCustomDomainRequest) GetControlPlaneGeo() ControlPlaneGeo {
-	if o == nil {
-		return ControlPlaneGeo("")
-	}
-	return o.ControlPlaneGeo
 }
 
 func (o *CreateCustomDomainRequest) GetControlPlaneID() string {
@@ -23,6 +16,13 @@ func (o *CreateCustomDomainRequest) GetControlPlaneID() string {
 		return ""
 	}
 	return o.ControlPlaneID
+}
+
+func (o *CreateCustomDomainRequest) GetControlPlaneGeo() ControlPlaneGeo {
+	if o == nil {
+		return ControlPlaneGeo("")
+	}
+	return o.ControlPlaneGeo
 }
 
 func (o *CreateCustomDomainRequest) GetDomain() string {

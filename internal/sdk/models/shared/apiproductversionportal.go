@@ -3,42 +3,14 @@
 package shared
 
 type APIProductVersionPortal struct {
-	ApplicationRegistrationEnabled bool                            `json:"application_registration_enabled"`
-	AuthStrategies                 []APIProductVersionAuthStrategy `json:"auth_strategies"`
-	AutoApproveRegistration        bool                            `json:"auto_approve_registration"`
-	Deprecated                     bool                            `json:"deprecated"`
 	PortalID                       string                          `json:"portal_id"`
 	PortalName                     string                          `json:"portal_name"`
 	PortalProductVersionID         string                          `json:"portal_product_version_id"`
 	PublishStatus                  APIProductVersionPublishStatus  `json:"publish_status"`
-}
-
-func (o *APIProductVersionPortal) GetApplicationRegistrationEnabled() bool {
-	if o == nil {
-		return false
-	}
-	return o.ApplicationRegistrationEnabled
-}
-
-func (o *APIProductVersionPortal) GetAuthStrategies() []APIProductVersionAuthStrategy {
-	if o == nil {
-		return []APIProductVersionAuthStrategy{}
-	}
-	return o.AuthStrategies
-}
-
-func (o *APIProductVersionPortal) GetAutoApproveRegistration() bool {
-	if o == nil {
-		return false
-	}
-	return o.AutoApproveRegistration
-}
-
-func (o *APIProductVersionPortal) GetDeprecated() bool {
-	if o == nil {
-		return false
-	}
-	return o.Deprecated
+	Deprecated                     bool                            `json:"deprecated"`
+	ApplicationRegistrationEnabled bool                            `json:"application_registration_enabled"`
+	AutoApproveRegistration        bool                            `json:"auto_approve_registration"`
+	AuthStrategies                 []APIProductVersionAuthStrategy `json:"auth_strategies"`
 }
 
 func (o *APIProductVersionPortal) GetPortalID() string {
@@ -67,4 +39,32 @@ func (o *APIProductVersionPortal) GetPublishStatus() APIProductVersionPublishSta
 		return APIProductVersionPublishStatus("")
 	}
 	return o.PublishStatus
+}
+
+func (o *APIProductVersionPortal) GetDeprecated() bool {
+	if o == nil {
+		return false
+	}
+	return o.Deprecated
+}
+
+func (o *APIProductVersionPortal) GetApplicationRegistrationEnabled() bool {
+	if o == nil {
+		return false
+	}
+	return o.ApplicationRegistrationEnabled
+}
+
+func (o *APIProductVersionPortal) GetAutoApproveRegistration() bool {
+	if o == nil {
+		return false
+	}
+	return o.AutoApproveRegistration
+}
+
+func (o *APIProductVersionPortal) GetAuthStrategies() []APIProductVersionAuthStrategy {
+	if o == nil {
+		return []APIProductVersionAuthStrategy{}
+	}
+	return o.AuthStrategies
 }

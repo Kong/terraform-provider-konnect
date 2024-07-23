@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -17,6 +18,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/internal/validators"
 	custom_stringvalidators "github.com/kong/terraform-provider-konnect/internal/validators/stringvalidators"
+	"regexp"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -62,6 +64,9 @@ func (r *APIProductSpecificationResource) Schema(ctx context.Context, req resour
 			"content": schema.StringAttribute{
 				Required:    true,
 				Description: `The base64 encoded contents of the API product version specification`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtLeast(1),
+				},
 			},
 			"created_at": schema.StringAttribute{
 				Computed:    true,
@@ -78,6 +83,8 @@ func (r *APIProductSpecificationResource) Schema(ctx context.Context, req resour
 				Required:    true,
 				Description: `The name of the API product version specification`,
 				Validators: []validator.String{
+					stringvalidator.UTF8LengthBetween(1, 255),
+					stringvalidator.RegexMatches(regexp.MustCompile(`(((((^.+(?:\.yaml|\.yml|\.json)$|.+(\.yaml|\.yml|\.json))|^.+(?:\.yaml|\.yml|\.json)$)|.+(\.yaml|\.yml|\.json))|.+(\.yaml|\.yml|\.json))|^.+(?:\.yaml|\.yml|\.json)$)`), "must match pattern "+regexp.MustCompile(`(((((^.+(?:\.yaml|\.yml|\.json)$|.+(\.yaml|\.yml|\.json))|^.+(?:\.yaml|\.yml|\.json)$)|.+(\.yaml|\.yml|\.json))|.+(\.yaml|\.yml|\.json))|^.+(?:\.yaml|\.yml|\.json)$)`).String()),
 					custom_stringvalidators.OpenAPISpecFilenameValidator(),
 				},
 			},

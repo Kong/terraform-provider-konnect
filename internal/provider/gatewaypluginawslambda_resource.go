@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -178,6 +179,9 @@ func (r *GatewayPluginAWSLambdaResource) Schema(ctx context.Context, req resourc
 						Computed:    true,
 						Optional:    true,
 						Description: `An integer representing a port number between 0 and 65535, inclusive.`,
+						Validators: []validator.Int64{
+							int64validator.AtMost(65535),
+						},
 					},
 					"proxy_url": schema.StringAttribute{
 						Computed:    true,
@@ -203,6 +207,9 @@ func (r *GatewayPluginAWSLambdaResource) Schema(ctx context.Context, req resourc
 						Computed:    true,
 						Optional:    true,
 						Description: `The response status code to use (instead of the default 200, 202, or 204) in the case of an Unhandled Function Error.`,
+						Validators: []validator.Int64{
+							int64validator.Between(100, 999),
+						},
 					},
 				},
 			},

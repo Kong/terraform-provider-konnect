@@ -4,25 +4,11 @@ package shared
 
 // UnsupportedMediaTypeError - standard error
 type UnsupportedMediaTypeError struct {
-	Detail   any `json:"detail"`
-	Instance any `json:"instance"`
 	Status   any `json:"status"`
 	Title    any `json:"title"`
 	Type     any `json:"type,omitempty"`
-}
-
-func (o *UnsupportedMediaTypeError) GetDetail() any {
-	if o == nil {
-		return nil
-	}
-	return o.Detail
-}
-
-func (o *UnsupportedMediaTypeError) GetInstance() any {
-	if o == nil {
-		return nil
-	}
-	return o.Instance
+	Instance any `json:"instance"`
+	Detail   any `json:"detail"`
 }
 
 func (o *UnsupportedMediaTypeError) GetStatus() any {
@@ -44,4 +30,18 @@ func (o *UnsupportedMediaTypeError) GetType() any {
 		return nil
 	}
 	return o.Type
+}
+
+func (o *UnsupportedMediaTypeError) GetInstance() any {
+	if o == nil {
+		return nil
+	}
+	return o.Instance
+}
+
+func (o *UnsupportedMediaTypeError) GetDetail() any {
+	if o == nil {
+		return nil
+	}
+	return o.Detail
 }

@@ -9,21 +9,21 @@ import (
 )
 
 func (r *SystemAccountAccessTokenResourceModel) ToSharedCreateSystemAccountAccessToken() *shared.CreateSystemAccountAccessToken {
-	expiresAt := new(time.Time)
-	if !r.ExpiresAt.IsUnknown() && !r.ExpiresAt.IsNull() {
-		*expiresAt, _ = time.Parse(time.RFC3339Nano, r.ExpiresAt.ValueString())
-	} else {
-		expiresAt = nil
-	}
 	name := new(string)
 	if !r.Name.IsUnknown() && !r.Name.IsNull() {
 		*name = r.Name.ValueString()
 	} else {
 		name = nil
 	}
+	expiresAt := new(time.Time)
+	if !r.ExpiresAt.IsUnknown() && !r.ExpiresAt.IsNull() {
+		*expiresAt, _ = time.Parse(time.RFC3339Nano, r.ExpiresAt.ValueString())
+	} else {
+		expiresAt = nil
+	}
 	out := shared.CreateSystemAccountAccessToken{
-		ExpiresAt: expiresAt,
 		Name:      name,
+		ExpiresAt: expiresAt,
 	}
 	return &out
 }

@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -148,6 +149,9 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 								Computed:    true,
 								Optional:    true,
 								Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
+								Validators: []validator.Int64{
+									int64validator.AtMost(2147483646),
+								},
 							},
 							"database": schema.Int64Attribute{
 								Computed:    true,
@@ -163,11 +167,17 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 								Computed:    true,
 								Optional:    true,
 								Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `keepalive_pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `keepalive_pool_size` + "`" + `.`,
+								Validators: []validator.Int64{
+									int64validator.AtMost(2147483646),
+								},
 							},
 							"keepalive_pool_size": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
 								Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `keepalive_pool_size` + "`" + ` nor ` + "`" + `keepalive_backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `keepalive_pool_size` + "`" + ` isn't specified but ` + "`" + `keepalive_backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.`,
+								Validators: []validator.Int64{
+									int64validator.Between(1, 2147483646),
+								},
 							},
 							"password": schema.StringAttribute{
 								Computed:    true,
@@ -178,16 +188,25 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 								Computed:    true,
 								Optional:    true,
 								Description: `An integer representing a port number between 0 and 65535, inclusive.`,
+								Validators: []validator.Int64{
+									int64validator.AtMost(65535),
+								},
 							},
 							"read_timeout": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
 								Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
+								Validators: []validator.Int64{
+									int64validator.AtMost(2147483646),
+								},
 							},
 							"send_timeout": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
 								Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
+								Validators: []validator.Int64{
+									int64validator.AtMost(2147483646),
+								},
 							},
 							"sentinel_addresses": schema.ListAttribute{
 								Computed:    true,
@@ -241,6 +260,9 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 								Computed:    true,
 								Optional:    true,
 								Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
+								Validators: []validator.Int64{
+									int64validator.AtMost(2147483646),
+								},
 							},
 							"username": schema.StringAttribute{
 								Computed:    true,
