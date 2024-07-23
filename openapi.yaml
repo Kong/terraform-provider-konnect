@@ -18102,6 +18102,38 @@ components:
                 type: string
                 example: Viewer
                 description: The desired role.
+                enum:
+                  - Admin
+                  - Appearance Maintainer
+                  - Application Registration
+                  - Certificate Admin
+                  - Cloud Gateway Cluster Admin
+                  - Cloud Gateway Cluster Viewer
+                  - Consumer Admin
+                  - Creator
+                  - Deployer
+                  - Discovery Admin
+                  - Discovery Viewer
+                  - Gateway Service Admin
+                  - Integration Admin
+                  - Integration Viewer
+                  - Key Admin
+                  - Maintainer
+                  - Network Admin
+                  - Network Creator
+                  - Network Viewer
+                  - Plugin Admin
+                  - Plugins Admin
+                  - Product Publisher
+                  - Publisher
+                  - Route Admin
+                  - SNI Admin
+                  - Service Admin
+                  - Service Creator
+                  - Service Viewer
+                  - Upstream Admin
+                  - Vault Admin
+                  - Viewer
               entity_id:
                 type: string
                 format: uuid
@@ -18111,6 +18143,17 @@ components:
                 type: string
                 example: Control Planes
                 description: The type of entity.
+                enum:
+                  - API Products
+                  - Application Auth Strategies
+                  - Audit Logs
+                  - Control Planes
+                  - DCR Providers
+                  - Identity
+                  - Mesh Control Planes
+                  - Networks
+                  - Portals
+                  - Service Hub
               entity_region:
                 type: string
                 enum:
