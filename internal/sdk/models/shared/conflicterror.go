@@ -4,25 +4,11 @@ package shared
 
 // ConflictError - standard error
 type ConflictError struct {
-	Detail   any `json:"detail"`
-	Instance any `json:"instance"`
 	Status   any `json:"status"`
 	Title    any `json:"title"`
 	Type     any `json:"type,omitempty"`
-}
-
-func (o *ConflictError) GetDetail() any {
-	if o == nil {
-		return nil
-	}
-	return o.Detail
-}
-
-func (o *ConflictError) GetInstance() any {
-	if o == nil {
-		return nil
-	}
-	return o.Instance
+	Instance any `json:"instance"`
+	Detail   any `json:"detail"`
 }
 
 func (o *ConflictError) GetStatus() any {
@@ -44,4 +30,18 @@ func (o *ConflictError) GetType() any {
 		return nil
 	}
 	return o.Type
+}
+
+func (o *ConflictError) GetInstance() any {
+	if o == nil {
+		return nil
+	}
+	return o.Instance
+}
+
+func (o *ConflictError) GetDetail() any {
+	if o == nil {
+		return nil
+	}
+	return o.Detail
 }

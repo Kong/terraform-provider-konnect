@@ -33,28 +33,14 @@ func (e *ServiceUnavailableStatus) UnmarshalJSON(data []byte) error {
 
 // ServiceUnavailable - Error response for temporary service unavailability.
 type ServiceUnavailable struct {
-	// Details about the error.
-	Detail *string `json:"detail,omitempty"`
-	// The Konnect traceback code
-	Instance string `json:"instance"`
 	// The HTTP status code.
 	Status ServiceUnavailableStatus `json:"status"`
 	// The error response code.
 	Title string `json:"title"`
-}
-
-func (o *ServiceUnavailable) GetDetail() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Detail
-}
-
-func (o *ServiceUnavailable) GetInstance() string {
-	if o == nil {
-		return ""
-	}
-	return o.Instance
+	// The Konnect traceback code
+	Instance string `json:"instance"`
+	// Details about the error.
+	Detail *string `json:"detail,omitempty"`
 }
 
 func (o *ServiceUnavailable) GetStatus() ServiceUnavailableStatus {
@@ -69,4 +55,18 @@ func (o *ServiceUnavailable) GetTitle() string {
 		return ""
 	}
 	return o.Title
+}
+
+func (o *ServiceUnavailable) GetInstance() string {
+	if o == nil {
+		return ""
+	}
+	return o.Instance
+}
+
+func (o *ServiceUnavailable) GetDetail() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Detail
 }

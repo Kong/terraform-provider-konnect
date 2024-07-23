@@ -8,19 +8,12 @@ import (
 )
 
 type APIProduct struct {
-	// An ISO-8601 timestamp representation of entity creation date.
-	CreatedAt time.Time `json:"created_at"`
-	// The description of the API product
-	Description *string `json:"description"`
 	// The API product ID.
 	ID string `json:"id"`
-	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
-	//
-	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
-	//
-	Labels map[string]string `json:"labels"`
 	// The name of the API product
 	Name string `json:"name"`
+	// The description of the API product
+	Description *string `json:"description"`
 	// The list of portal identifiers which this API product is published to.
 	// This property is deprecated and will be removed in a future version. Use the `portals` property instead.
 	//
@@ -29,10 +22,17 @@ type APIProduct struct {
 	PortalIds []string `json:"portal_ids"`
 	// The list of portals which this API product is published to
 	Portals []APIProductPortal `json:"portals"`
-	// An ISO-8601 timestamp representation of entity update date.
-	UpdatedAt time.Time `json:"updated_at"`
 	// The number of product versions attached to this API product
 	VersionCount float64 `json:"version_count"`
+	// An ISO-8601 timestamp representation of entity creation date.
+	CreatedAt time.Time `json:"created_at"`
+	// An ISO-8601 timestamp representation of entity update date.
+	UpdatedAt time.Time `json:"updated_at"`
+	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
+	//
+	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+	//
+	Labels map[string]string `json:"labels"`
 }
 
 func (a APIProduct) MarshalJSON() ([]byte, error) {
@@ -46,20 +46,6 @@ func (a *APIProduct) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *APIProduct) GetCreatedAt() time.Time {
-	if o == nil {
-		return time.Time{}
-	}
-	return o.CreatedAt
-}
-
-func (o *APIProduct) GetDescription() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Description
-}
-
 func (o *APIProduct) GetID() string {
 	if o == nil {
 		return ""
@@ -67,18 +53,18 @@ func (o *APIProduct) GetID() string {
 	return o.ID
 }
 
-func (o *APIProduct) GetLabels() map[string]string {
-	if o == nil {
-		return map[string]string{}
-	}
-	return o.Labels
-}
-
 func (o *APIProduct) GetName() string {
 	if o == nil {
 		return ""
 	}
 	return o.Name
+}
+
+func (o *APIProduct) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
 }
 
 func (o *APIProduct) GetPortalIds() []string {
@@ -95,6 +81,20 @@ func (o *APIProduct) GetPortals() []APIProductPortal {
 	return o.Portals
 }
 
+func (o *APIProduct) GetVersionCount() float64 {
+	if o == nil {
+		return 0.0
+	}
+	return o.VersionCount
+}
+
+func (o *APIProduct) GetCreatedAt() time.Time {
+	if o == nil {
+		return time.Time{}
+	}
+	return o.CreatedAt
+}
+
 func (o *APIProduct) GetUpdatedAt() time.Time {
 	if o == nil {
 		return time.Time{}
@@ -102,9 +102,9 @@ func (o *APIProduct) GetUpdatedAt() time.Time {
 	return o.UpdatedAt
 }
 
-func (o *APIProduct) GetVersionCount() float64 {
+func (o *APIProduct) GetLabels() map[string]string {
 	if o == nil {
-		return 0.0
+		return map[string]string{}
 	}
-	return o.VersionCount
+	return o.Labels
 }

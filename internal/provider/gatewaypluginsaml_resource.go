@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -17,6 +18,7 @@ import (
 	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
+	"regexp"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -237,6 +239,9 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 						Computed:    true,
 						Optional:    true,
 						Description: `An integer representing a port number between 0 and 65535, inclusive.`,
+						Validators: []validator.Int64{
+							int64validator.AtMost(65535),
+						},
 					},
 					"session_memcached_prefix": schema.StringAttribute{
 						Computed:    true,
@@ -267,6 +272,9 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 									Computed:    true,
 									Optional:    true,
 									Description: `An integer representing a port number between 0 and 65535, inclusive.`,
+									Validators: []validator.Int64{
+										int64validator.AtMost(65535),
+									},
 								},
 							},
 						},
@@ -291,6 +299,9 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 						Computed:    true,
 						Optional:    true,
 						Description: `An integer representing a port number between 0 and 65535, inclusive.`,
+						Validators: []validator.Int64{
+							int64validator.AtMost(65535),
+						},
 					},
 					"session_redis_prefix": schema.StringAttribute{
 						Computed:    true,
@@ -371,6 +382,10 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 						Computed:    true,
 						Optional:    true,
 						Description: `The session secret. This must be a random string of 32 characters from the base64 alphabet (letters, numbers, ` + "`" + `/` + "`" + `, ` + "`" + `_` + "`" + ` and ` + "`" + `+` + "`" + `). It is used as the secret key for encrypting session data as well as state information that is sent to the IdP in the authentication exchange.`,
+						Validators: []validator.String{
+							stringvalidator.UTF8LengthBetween(32, 32),
+							stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9a-zA-Z/_+]+$`), "must match pattern "+regexp.MustCompile(`^[0-9a-zA-Z/_+]+$`).String()),
+						},
 					},
 					"session_storage": schema.StringAttribute{
 						Computed:    true,

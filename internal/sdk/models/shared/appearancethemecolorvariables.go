@@ -2,6 +2,132 @@
 
 package shared
 
+type Section struct {
+	Header   AppearanceColorVariable `json:"header"`
+	Body     AppearanceColorVariable `json:"body"`
+	Hero     AppearanceColorVariable `json:"hero"`
+	Accent   AppearanceColorVariable `json:"accent"`
+	Tertiary AppearanceColorVariable `json:"tertiary"`
+	Stroke   AppearanceColorVariable `json:"stroke"`
+	Footer   AppearanceColorVariable `json:"footer"`
+}
+
+func (o *Section) GetHeader() AppearanceColorVariable {
+	if o == nil {
+		return AppearanceColorVariable{}
+	}
+	return o.Header
+}
+
+func (o *Section) GetBody() AppearanceColorVariable {
+	if o == nil {
+		return AppearanceColorVariable{}
+	}
+	return o.Body
+}
+
+func (o *Section) GetHero() AppearanceColorVariable {
+	if o == nil {
+		return AppearanceColorVariable{}
+	}
+	return o.Hero
+}
+
+func (o *Section) GetAccent() AppearanceColorVariable {
+	if o == nil {
+		return AppearanceColorVariable{}
+	}
+	return o.Accent
+}
+
+func (o *Section) GetTertiary() AppearanceColorVariable {
+	if o == nil {
+		return AppearanceColorVariable{}
+	}
+	return o.Tertiary
+}
+
+func (o *Section) GetStroke() AppearanceColorVariable {
+	if o == nil {
+		return AppearanceColorVariable{}
+	}
+	return o.Stroke
+}
+
+func (o *Section) GetFooter() AppearanceColorVariable {
+	if o == nil {
+		return AppearanceColorVariable{}
+	}
+	return o.Footer
+}
+
+type Text struct {
+	Header    AppearanceColorVariable `json:"header"`
+	Hero      AppearanceColorVariable `json:"hero"`
+	Headings  AppearanceColorVariable `json:"headings"`
+	Primary   AppearanceColorVariable `json:"primary"`
+	Secondary AppearanceColorVariable `json:"secondary"`
+	Accent    AppearanceColorVariable `json:"accent"`
+	Link      AppearanceColorVariable `json:"link"`
+	Footer    AppearanceColorVariable `json:"footer"`
+}
+
+func (o *Text) GetHeader() AppearanceColorVariable {
+	if o == nil {
+		return AppearanceColorVariable{}
+	}
+	return o.Header
+}
+
+func (o *Text) GetHero() AppearanceColorVariable {
+	if o == nil {
+		return AppearanceColorVariable{}
+	}
+	return o.Hero
+}
+
+func (o *Text) GetHeadings() AppearanceColorVariable {
+	if o == nil {
+		return AppearanceColorVariable{}
+	}
+	return o.Headings
+}
+
+func (o *Text) GetPrimary() AppearanceColorVariable {
+	if o == nil {
+		return AppearanceColorVariable{}
+	}
+	return o.Primary
+}
+
+func (o *Text) GetSecondary() AppearanceColorVariable {
+	if o == nil {
+		return AppearanceColorVariable{}
+	}
+	return o.Secondary
+}
+
+func (o *Text) GetAccent() AppearanceColorVariable {
+	if o == nil {
+		return AppearanceColorVariable{}
+	}
+	return o.Accent
+}
+
+func (o *Text) GetLink() AppearanceColorVariable {
+	if o == nil {
+		return AppearanceColorVariable{}
+	}
+	return o.Link
+}
+
+func (o *Text) GetFooter() AppearanceColorVariable {
+	if o == nil {
+		return AppearanceColorVariable{}
+	}
+	return o.Footer
+}
+
 type Button struct {
 	PrimaryFill AppearanceColorVariable `json:"primary_fill"`
 	PrimaryText AppearanceColorVariable `json:"primary_text"`
@@ -21,143 +147,10 @@ func (o *Button) GetPrimaryText() AppearanceColorVariable {
 	return o.PrimaryText
 }
 
-type Section struct {
-	Accent   AppearanceColorVariable `json:"accent"`
-	Body     AppearanceColorVariable `json:"body"`
-	Footer   AppearanceColorVariable `json:"footer"`
-	Header   AppearanceColorVariable `json:"header"`
-	Hero     AppearanceColorVariable `json:"hero"`
-	Stroke   AppearanceColorVariable `json:"stroke"`
-	Tertiary AppearanceColorVariable `json:"tertiary"`
-}
-
-func (o *Section) GetAccent() AppearanceColorVariable {
-	if o == nil {
-		return AppearanceColorVariable{}
-	}
-	return o.Accent
-}
-
-func (o *Section) GetBody() AppearanceColorVariable {
-	if o == nil {
-		return AppearanceColorVariable{}
-	}
-	return o.Body
-}
-
-func (o *Section) GetFooter() AppearanceColorVariable {
-	if o == nil {
-		return AppearanceColorVariable{}
-	}
-	return o.Footer
-}
-
-func (o *Section) GetHeader() AppearanceColorVariable {
-	if o == nil {
-		return AppearanceColorVariable{}
-	}
-	return o.Header
-}
-
-func (o *Section) GetHero() AppearanceColorVariable {
-	if o == nil {
-		return AppearanceColorVariable{}
-	}
-	return o.Hero
-}
-
-func (o *Section) GetStroke() AppearanceColorVariable {
-	if o == nil {
-		return AppearanceColorVariable{}
-	}
-	return o.Stroke
-}
-
-func (o *Section) GetTertiary() AppearanceColorVariable {
-	if o == nil {
-		return AppearanceColorVariable{}
-	}
-	return o.Tertiary
-}
-
-type Text struct {
-	Accent    AppearanceColorVariable `json:"accent"`
-	Footer    AppearanceColorVariable `json:"footer"`
-	Header    AppearanceColorVariable `json:"header"`
-	Headings  AppearanceColorVariable `json:"headings"`
-	Hero      AppearanceColorVariable `json:"hero"`
-	Link      AppearanceColorVariable `json:"link"`
-	Primary   AppearanceColorVariable `json:"primary"`
-	Secondary AppearanceColorVariable `json:"secondary"`
-}
-
-func (o *Text) GetAccent() AppearanceColorVariable {
-	if o == nil {
-		return AppearanceColorVariable{}
-	}
-	return o.Accent
-}
-
-func (o *Text) GetFooter() AppearanceColorVariable {
-	if o == nil {
-		return AppearanceColorVariable{}
-	}
-	return o.Footer
-}
-
-func (o *Text) GetHeader() AppearanceColorVariable {
-	if o == nil {
-		return AppearanceColorVariable{}
-	}
-	return o.Header
-}
-
-func (o *Text) GetHeadings() AppearanceColorVariable {
-	if o == nil {
-		return AppearanceColorVariable{}
-	}
-	return o.Headings
-}
-
-func (o *Text) GetHero() AppearanceColorVariable {
-	if o == nil {
-		return AppearanceColorVariable{}
-	}
-	return o.Hero
-}
-
-func (o *Text) GetLink() AppearanceColorVariable {
-	if o == nil {
-		return AppearanceColorVariable{}
-	}
-	return o.Link
-}
-
-func (o *Text) GetPrimary() AppearanceColorVariable {
-	if o == nil {
-		return AppearanceColorVariable{}
-	}
-	return o.Primary
-}
-
-func (o *Text) GetSecondary() AppearanceColorVariable {
-	if o == nil {
-		return AppearanceColorVariable{}
-	}
-	return o.Secondary
-}
-
 type AppearanceThemeColorVariables struct {
-	Button  Button  `json:"button"`
 	Section Section `json:"section"`
 	Text    Text    `json:"text"`
-}
-
-func (o *AppearanceThemeColorVariables) GetButton() Button {
-	if o == nil {
-		return Button{}
-	}
-	return o.Button
+	Button  Button  `json:"button"`
 }
 
 func (o *AppearanceThemeColorVariables) GetSection() Section {
@@ -172,4 +165,11 @@ func (o *AppearanceThemeColorVariables) GetText() Text {
 		return Text{}
 	}
 	return o.Text
+}
+
+func (o *AppearanceThemeColorVariables) GetButton() Button {
+	if o == nil {
+		return Button{}
+	}
+	return o.Button
 }

@@ -32,19 +32,12 @@ func (e *InvalidParameterDependentItemRule) UnmarshalJSON(data []byte) error {
 }
 
 type InvalidParameterDependentItem struct {
-	Dependents []any  `json:"dependents"`
-	Field      string `json:"field"`
-	Reason     string `json:"reason"`
+	Field string `json:"field"`
 	// invalid parameters rules
-	Rule   *InvalidParameterDependentItemRule `json:"rule"`
-	Source *string                            `json:"source,omitempty"`
-}
-
-func (o *InvalidParameterDependentItem) GetDependents() []any {
-	if o == nil {
-		return nil
-	}
-	return o.Dependents
+	Rule       *InvalidParameterDependentItemRule `json:"rule"`
+	Reason     string                             `json:"reason"`
+	Dependents []any                              `json:"dependents"`
+	Source     *string                            `json:"source,omitempty"`
 }
 
 func (o *InvalidParameterDependentItem) GetField() string {
@@ -54,6 +47,13 @@ func (o *InvalidParameterDependentItem) GetField() string {
 	return o.Field
 }
 
+func (o *InvalidParameterDependentItem) GetRule() *InvalidParameterDependentItemRule {
+	if o == nil {
+		return nil
+	}
+	return o.Rule
+}
+
 func (o *InvalidParameterDependentItem) GetReason() string {
 	if o == nil {
 		return ""
@@ -61,11 +61,11 @@ func (o *InvalidParameterDependentItem) GetReason() string {
 	return o.Reason
 }
 
-func (o *InvalidParameterDependentItem) GetRule() *InvalidParameterDependentItemRule {
+func (o *InvalidParameterDependentItem) GetDependents() []any {
 	if o == nil {
 		return nil
 	}
-	return o.Rule
+	return o.Dependents
 }
 
 func (o *InvalidParameterDependentItem) GetSource() *string {

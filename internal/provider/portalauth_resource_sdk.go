@@ -15,43 +15,29 @@ func (r *PortalAuthResourceModel) ToSharedPortalAuthenticationSettingsUpdateRequ
 	} else {
 		basicAuthEnabled = nil
 	}
-	konnectMappingEnabled := new(bool)
-	if !r.KonnectMappingEnabled.IsUnknown() && !r.KonnectMappingEnabled.IsNull() {
-		*konnectMappingEnabled = r.KonnectMappingEnabled.ValueBool()
-	} else {
-		konnectMappingEnabled = nil
-	}
 	oidcAuthEnabled := new(bool)
 	if !r.OidcAuthEnabled.IsUnknown() && !r.OidcAuthEnabled.IsNull() {
 		*oidcAuthEnabled = r.OidcAuthEnabled.ValueBool()
 	} else {
 		oidcAuthEnabled = nil
 	}
-	var oidcClaimMappings *shared.PortalClaimMappings
-	if r.OidcClaimMappings != nil {
-		email := new(string)
-		if !r.OidcClaimMappings.Email.IsUnknown() && !r.OidcClaimMappings.Email.IsNull() {
-			*email = r.OidcClaimMappings.Email.ValueString()
-		} else {
-			email = nil
-		}
-		groups := new(string)
-		if !r.OidcClaimMappings.Groups.IsUnknown() && !r.OidcClaimMappings.Groups.IsNull() {
-			*groups = r.OidcClaimMappings.Groups.ValueString()
-		} else {
-			groups = nil
-		}
-		name := new(string)
-		if !r.OidcClaimMappings.Name.IsUnknown() && !r.OidcClaimMappings.Name.IsNull() {
-			*name = r.OidcClaimMappings.Name.ValueString()
-		} else {
-			name = nil
-		}
-		oidcClaimMappings = &shared.PortalClaimMappings{
-			Email:  email,
-			Groups: groups,
-			Name:   name,
-		}
+	oidcTeamMappingEnabled := new(bool)
+	if !r.OidcTeamMappingEnabled.IsUnknown() && !r.OidcTeamMappingEnabled.IsNull() {
+		*oidcTeamMappingEnabled = r.OidcTeamMappingEnabled.ValueBool()
+	} else {
+		oidcTeamMappingEnabled = nil
+	}
+	konnectMappingEnabled := new(bool)
+	if !r.KonnectMappingEnabled.IsUnknown() && !r.KonnectMappingEnabled.IsNull() {
+		*konnectMappingEnabled = r.KonnectMappingEnabled.ValueBool()
+	} else {
+		konnectMappingEnabled = nil
+	}
+	oidcIssuer := new(string)
+	if !r.OidcIssuer.IsUnknown() && !r.OidcIssuer.IsNull() {
+		*oidcIssuer = r.OidcIssuer.ValueString()
+	} else {
+		oidcIssuer = nil
 	}
 	oidcClientID := new(string)
 	if !r.OidcClientID.IsUnknown() && !r.OidcClientID.IsNull() {
@@ -65,32 +51,46 @@ func (r *PortalAuthResourceModel) ToSharedPortalAuthenticationSettingsUpdateRequ
 	} else {
 		oidcClientSecret = nil
 	}
-	oidcIssuer := new(string)
-	if !r.OidcIssuer.IsUnknown() && !r.OidcIssuer.IsNull() {
-		*oidcIssuer = r.OidcIssuer.ValueString()
-	} else {
-		oidcIssuer = nil
-	}
 	var oidcScopes []string = []string{}
 	for _, oidcScopesItem := range r.OidcScopes {
 		oidcScopes = append(oidcScopes, oidcScopesItem.ValueString())
 	}
-	oidcTeamMappingEnabled := new(bool)
-	if !r.OidcTeamMappingEnabled.IsUnknown() && !r.OidcTeamMappingEnabled.IsNull() {
-		*oidcTeamMappingEnabled = r.OidcTeamMappingEnabled.ValueBool()
-	} else {
-		oidcTeamMappingEnabled = nil
+	var oidcClaimMappings *shared.PortalClaimMappings
+	if r.OidcClaimMappings != nil {
+		name := new(string)
+		if !r.OidcClaimMappings.Name.IsUnknown() && !r.OidcClaimMappings.Name.IsNull() {
+			*name = r.OidcClaimMappings.Name.ValueString()
+		} else {
+			name = nil
+		}
+		email := new(string)
+		if !r.OidcClaimMappings.Email.IsUnknown() && !r.OidcClaimMappings.Email.IsNull() {
+			*email = r.OidcClaimMappings.Email.ValueString()
+		} else {
+			email = nil
+		}
+		groups := new(string)
+		if !r.OidcClaimMappings.Groups.IsUnknown() && !r.OidcClaimMappings.Groups.IsNull() {
+			*groups = r.OidcClaimMappings.Groups.ValueString()
+		} else {
+			groups = nil
+		}
+		oidcClaimMappings = &shared.PortalClaimMappings{
+			Name:   name,
+			Email:  email,
+			Groups: groups,
+		}
 	}
 	out := shared.PortalAuthenticationSettingsUpdateRequest{
 		BasicAuthEnabled:       basicAuthEnabled,
-		KonnectMappingEnabled:  konnectMappingEnabled,
 		OidcAuthEnabled:        oidcAuthEnabled,
-		OidcClaimMappings:      oidcClaimMappings,
+		OidcTeamMappingEnabled: oidcTeamMappingEnabled,
+		KonnectMappingEnabled:  konnectMappingEnabled,
+		OidcIssuer:             oidcIssuer,
 		OidcClientID:           oidcClientID,
 		OidcClientSecret:       oidcClientSecret,
-		OidcIssuer:             oidcIssuer,
 		OidcScopes:             oidcScopes,
-		OidcTeamMappingEnabled: oidcTeamMappingEnabled,
+		OidcClaimMappings:      oidcClaimMappings,
 	}
 	return &out
 }

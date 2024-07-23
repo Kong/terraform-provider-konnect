@@ -32,18 +32,11 @@ func (e *Kind) UnmarshalJSON(data []byte) error {
 
 // ConfigurationDataPlaneGroupAutoscaleStatic - Object that describes the static autoscaling strategy.
 type ConfigurationDataPlaneGroupAutoscaleStatic struct {
+	Kind Kind `json:"kind"`
 	// Instance type name to indicate capacity.
 	InstanceType InstanceTypeName `json:"instance_type"`
-	Kind         Kind             `json:"kind"`
 	// Number of data-planes the deployment target will contain.
 	RequestedInstances int64 `json:"requested_instances"`
-}
-
-func (o *ConfigurationDataPlaneGroupAutoscaleStatic) GetInstanceType() InstanceTypeName {
-	if o == nil {
-		return InstanceTypeName("")
-	}
-	return o.InstanceType
 }
 
 func (o *ConfigurationDataPlaneGroupAutoscaleStatic) GetKind() Kind {
@@ -51,6 +44,13 @@ func (o *ConfigurationDataPlaneGroupAutoscaleStatic) GetKind() Kind {
 		return Kind("")
 	}
 	return o.Kind
+}
+
+func (o *ConfigurationDataPlaneGroupAutoscaleStatic) GetInstanceType() InstanceTypeName {
+	if o == nil {
+		return InstanceTypeName("")
+	}
+	return o.InstanceType
 }
 
 func (o *ConfigurationDataPlaneGroupAutoscaleStatic) GetRequestedInstances() int64 {

@@ -4,9 +4,16 @@ package shared
 
 // PortalClaimMappings - Mappings from a portal developer atribute to an Identity Provider claim.
 type PortalClaimMappings struct {
+	Name   *string `json:"name,omitempty"`
 	Email  *string `json:"email,omitempty"`
 	Groups *string `json:"groups,omitempty"`
-	Name   *string `json:"name,omitempty"`
+}
+
+func (o *PortalClaimMappings) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
 }
 
 func (o *PortalClaimMappings) GetEmail() *string {
@@ -21,11 +28,4 @@ func (o *PortalClaimMappings) GetGroups() *string {
 		return nil
 	}
 	return o.Groups
-}
-
-func (o *PortalClaimMappings) GetName() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Name
 }

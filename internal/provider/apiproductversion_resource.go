@@ -103,6 +103,9 @@ func (r *APIProductVersionResource) Schema(ctx context.Context, req resource.Sch
 			"name": schema.StringAttribute{
 				Required:    true,
 				Description: `The version name of the API product version.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtLeast(1),
+				},
 			},
 			"portals": schema.ListNestedAttribute{
 				Computed: true,

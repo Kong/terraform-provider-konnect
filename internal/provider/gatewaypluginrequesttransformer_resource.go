@@ -7,14 +7,17 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
+	"regexp"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -105,6 +108,9 @@ func (r *GatewayPluginRequestTransformerResource) Schema(ctx context.Context, re
 						Computed:    true,
 						Optional:    true,
 						Description: `A string representing an HTTP method, such as GET, POST, PUT, or DELETE. The string must contain only uppercase letters.`,
+						Validators: []validator.String{
+							stringvalidator.RegexMatches(regexp.MustCompile(`^%u+$`), "must match pattern "+regexp.MustCompile(`^%u+$`).String()),
+						},
 					},
 					"remove": schema.SingleNestedAttribute{
 						Computed: true,

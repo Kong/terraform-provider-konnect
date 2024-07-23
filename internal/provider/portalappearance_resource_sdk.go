@@ -9,250 +9,274 @@ import (
 )
 
 func (r *PortalAppearanceResourceModel) ToSharedUpdatePortalAppearanceRequest() *shared.UpdatePortalAppearanceRequest {
-	var customFonts *shared.NullableAppearanceFonts
-	if r.CustomFonts != nil {
-		base := shared.AppearanceFontName(r.CustomFonts.Base.ValueString())
-		code := shared.AppearanceFontName(r.CustomFonts.Code.ValueString())
-		headings := shared.AppearanceFontName(r.CustomFonts.Headings.ValueString())
-		customFonts = &shared.NullableAppearanceFonts{
-			Base:     base,
-			Code:     code,
-			Headings: headings,
-		}
+	themeName := new(shared.PortalTheme)
+	if !r.ThemeName.IsUnknown() && !r.ThemeName.IsNull() {
+		*themeName = shared.PortalTheme(r.ThemeName.ValueString())
+	} else {
+		themeName = nil
 	}
 	var customTheme *shared.NullableAppearanceThemeVariables
 	if r.CustomTheme != nil {
+		value := r.CustomTheme.Colors.Section.Header.Value.ValueString()
 		description := new(string)
-		if !r.CustomTheme.Colors.Button.PrimaryFill.Description.IsUnknown() && !r.CustomTheme.Colors.Button.PrimaryFill.Description.IsNull() {
-			*description = r.CustomTheme.Colors.Button.PrimaryFill.Description.ValueString()
+		if !r.CustomTheme.Colors.Section.Header.Description.IsUnknown() && !r.CustomTheme.Colors.Section.Header.Description.IsNull() {
+			*description = r.CustomTheme.Colors.Section.Header.Description.ValueString()
 		} else {
 			description = nil
 		}
-		value := r.CustomTheme.Colors.Button.PrimaryFill.Value.ValueString()
-		primaryFill := shared.AppearanceColorVariable{
-			Description: description,
+		header := shared.AppearanceColorVariable{
 			Value:       value,
+			Description: description,
 		}
+		value1 := r.CustomTheme.Colors.Section.Body.Value.ValueString()
 		description1 := new(string)
-		if !r.CustomTheme.Colors.Button.PrimaryText.Description.IsUnknown() && !r.CustomTheme.Colors.Button.PrimaryText.Description.IsNull() {
-			*description1 = r.CustomTheme.Colors.Button.PrimaryText.Description.ValueString()
+		if !r.CustomTheme.Colors.Section.Body.Description.IsUnknown() && !r.CustomTheme.Colors.Section.Body.Description.IsNull() {
+			*description1 = r.CustomTheme.Colors.Section.Body.Description.ValueString()
 		} else {
 			description1 = nil
 		}
-		value1 := r.CustomTheme.Colors.Button.PrimaryText.Value.ValueString()
-		primaryText := shared.AppearanceColorVariable{
-			Description: description1,
+		body := shared.AppearanceColorVariable{
 			Value:       value1,
+			Description: description1,
+		}
+		value2 := r.CustomTheme.Colors.Section.Hero.Value.ValueString()
+		description2 := new(string)
+		if !r.CustomTheme.Colors.Section.Hero.Description.IsUnknown() && !r.CustomTheme.Colors.Section.Hero.Description.IsNull() {
+			*description2 = r.CustomTheme.Colors.Section.Hero.Description.ValueString()
+		} else {
+			description2 = nil
+		}
+		hero := shared.AppearanceColorVariable{
+			Value:       value2,
+			Description: description2,
+		}
+		value3 := r.CustomTheme.Colors.Section.Accent.Value.ValueString()
+		description3 := new(string)
+		if !r.CustomTheme.Colors.Section.Accent.Description.IsUnknown() && !r.CustomTheme.Colors.Section.Accent.Description.IsNull() {
+			*description3 = r.CustomTheme.Colors.Section.Accent.Description.ValueString()
+		} else {
+			description3 = nil
+		}
+		accent := shared.AppearanceColorVariable{
+			Value:       value3,
+			Description: description3,
+		}
+		value4 := r.CustomTheme.Colors.Section.Tertiary.Value.ValueString()
+		description4 := new(string)
+		if !r.CustomTheme.Colors.Section.Tertiary.Description.IsUnknown() && !r.CustomTheme.Colors.Section.Tertiary.Description.IsNull() {
+			*description4 = r.CustomTheme.Colors.Section.Tertiary.Description.ValueString()
+		} else {
+			description4 = nil
+		}
+		tertiary := shared.AppearanceColorVariable{
+			Value:       value4,
+			Description: description4,
+		}
+		value5 := r.CustomTheme.Colors.Section.Stroke.Value.ValueString()
+		description5 := new(string)
+		if !r.CustomTheme.Colors.Section.Stroke.Description.IsUnknown() && !r.CustomTheme.Colors.Section.Stroke.Description.IsNull() {
+			*description5 = r.CustomTheme.Colors.Section.Stroke.Description.ValueString()
+		} else {
+			description5 = nil
+		}
+		stroke := shared.AppearanceColorVariable{
+			Value:       value5,
+			Description: description5,
+		}
+		value6 := r.CustomTheme.Colors.Section.Footer.Value.ValueString()
+		description6 := new(string)
+		if !r.CustomTheme.Colors.Section.Footer.Description.IsUnknown() && !r.CustomTheme.Colors.Section.Footer.Description.IsNull() {
+			*description6 = r.CustomTheme.Colors.Section.Footer.Description.ValueString()
+		} else {
+			description6 = nil
+		}
+		footer := shared.AppearanceColorVariable{
+			Value:       value6,
+			Description: description6,
+		}
+		section := shared.Section{
+			Header:   header,
+			Body:     body,
+			Hero:     hero,
+			Accent:   accent,
+			Tertiary: tertiary,
+			Stroke:   stroke,
+			Footer:   footer,
+		}
+		value7 := r.CustomTheme.Colors.Text.Header.Value.ValueString()
+		description7 := new(string)
+		if !r.CustomTheme.Colors.Text.Header.Description.IsUnknown() && !r.CustomTheme.Colors.Text.Header.Description.IsNull() {
+			*description7 = r.CustomTheme.Colors.Text.Header.Description.ValueString()
+		} else {
+			description7 = nil
+		}
+		header1 := shared.AppearanceColorVariable{
+			Value:       value7,
+			Description: description7,
+		}
+		value8 := r.CustomTheme.Colors.Text.Hero.Value.ValueString()
+		description8 := new(string)
+		if !r.CustomTheme.Colors.Text.Hero.Description.IsUnknown() && !r.CustomTheme.Colors.Text.Hero.Description.IsNull() {
+			*description8 = r.CustomTheme.Colors.Text.Hero.Description.ValueString()
+		} else {
+			description8 = nil
+		}
+		hero1 := shared.AppearanceColorVariable{
+			Value:       value8,
+			Description: description8,
+		}
+		value9 := r.CustomTheme.Colors.Text.Headings.Value.ValueString()
+		description9 := new(string)
+		if !r.CustomTheme.Colors.Text.Headings.Description.IsUnknown() && !r.CustomTheme.Colors.Text.Headings.Description.IsNull() {
+			*description9 = r.CustomTheme.Colors.Text.Headings.Description.ValueString()
+		} else {
+			description9 = nil
+		}
+		headings := shared.AppearanceColorVariable{
+			Value:       value9,
+			Description: description9,
+		}
+		value10 := r.CustomTheme.Colors.Text.Primary.Value.ValueString()
+		description10 := new(string)
+		if !r.CustomTheme.Colors.Text.Primary.Description.IsUnknown() && !r.CustomTheme.Colors.Text.Primary.Description.IsNull() {
+			*description10 = r.CustomTheme.Colors.Text.Primary.Description.ValueString()
+		} else {
+			description10 = nil
+		}
+		primary := shared.AppearanceColorVariable{
+			Value:       value10,
+			Description: description10,
+		}
+		value11 := r.CustomTheme.Colors.Text.Secondary.Value.ValueString()
+		description11 := new(string)
+		if !r.CustomTheme.Colors.Text.Secondary.Description.IsUnknown() && !r.CustomTheme.Colors.Text.Secondary.Description.IsNull() {
+			*description11 = r.CustomTheme.Colors.Text.Secondary.Description.ValueString()
+		} else {
+			description11 = nil
+		}
+		secondary := shared.AppearanceColorVariable{
+			Value:       value11,
+			Description: description11,
+		}
+		value12 := r.CustomTheme.Colors.Text.Accent.Value.ValueString()
+		description12 := new(string)
+		if !r.CustomTheme.Colors.Text.Accent.Description.IsUnknown() && !r.CustomTheme.Colors.Text.Accent.Description.IsNull() {
+			*description12 = r.CustomTheme.Colors.Text.Accent.Description.ValueString()
+		} else {
+			description12 = nil
+		}
+		accent1 := shared.AppearanceColorVariable{
+			Value:       value12,
+			Description: description12,
+		}
+		value13 := r.CustomTheme.Colors.Text.Link.Value.ValueString()
+		description13 := new(string)
+		if !r.CustomTheme.Colors.Text.Link.Description.IsUnknown() && !r.CustomTheme.Colors.Text.Link.Description.IsNull() {
+			*description13 = r.CustomTheme.Colors.Text.Link.Description.ValueString()
+		} else {
+			description13 = nil
+		}
+		link := shared.AppearanceColorVariable{
+			Value:       value13,
+			Description: description13,
+		}
+		value14 := r.CustomTheme.Colors.Text.Footer.Value.ValueString()
+		description14 := new(string)
+		if !r.CustomTheme.Colors.Text.Footer.Description.IsUnknown() && !r.CustomTheme.Colors.Text.Footer.Description.IsNull() {
+			*description14 = r.CustomTheme.Colors.Text.Footer.Description.ValueString()
+		} else {
+			description14 = nil
+		}
+		footer1 := shared.AppearanceColorVariable{
+			Value:       value14,
+			Description: description14,
+		}
+		text := shared.Text{
+			Header:    header1,
+			Hero:      hero1,
+			Headings:  headings,
+			Primary:   primary,
+			Secondary: secondary,
+			Accent:    accent1,
+			Link:      link,
+			Footer:    footer1,
+		}
+		value15 := r.CustomTheme.Colors.Button.PrimaryFill.Value.ValueString()
+		description15 := new(string)
+		if !r.CustomTheme.Colors.Button.PrimaryFill.Description.IsUnknown() && !r.CustomTheme.Colors.Button.PrimaryFill.Description.IsNull() {
+			*description15 = r.CustomTheme.Colors.Button.PrimaryFill.Description.ValueString()
+		} else {
+			description15 = nil
+		}
+		primaryFill := shared.AppearanceColorVariable{
+			Value:       value15,
+			Description: description15,
+		}
+		value16 := r.CustomTheme.Colors.Button.PrimaryText.Value.ValueString()
+		description16 := new(string)
+		if !r.CustomTheme.Colors.Button.PrimaryText.Description.IsUnknown() && !r.CustomTheme.Colors.Button.PrimaryText.Description.IsNull() {
+			*description16 = r.CustomTheme.Colors.Button.PrimaryText.Description.ValueString()
+		} else {
+			description16 = nil
+		}
+		primaryText := shared.AppearanceColorVariable{
+			Value:       value16,
+			Description: description16,
 		}
 		button := shared.Button{
 			PrimaryFill: primaryFill,
 			PrimaryText: primaryText,
 		}
-		description2 := new(string)
-		if !r.CustomTheme.Colors.Section.Accent.Description.IsUnknown() && !r.CustomTheme.Colors.Section.Accent.Description.IsNull() {
-			*description2 = r.CustomTheme.Colors.Section.Accent.Description.ValueString()
-		} else {
-			description2 = nil
-		}
-		value2 := r.CustomTheme.Colors.Section.Accent.Value.ValueString()
-		accent := shared.AppearanceColorVariable{
-			Description: description2,
-			Value:       value2,
-		}
-		description3 := new(string)
-		if !r.CustomTheme.Colors.Section.Body.Description.IsUnknown() && !r.CustomTheme.Colors.Section.Body.Description.IsNull() {
-			*description3 = r.CustomTheme.Colors.Section.Body.Description.ValueString()
-		} else {
-			description3 = nil
-		}
-		value3 := r.CustomTheme.Colors.Section.Body.Value.ValueString()
-		body := shared.AppearanceColorVariable{
-			Description: description3,
-			Value:       value3,
-		}
-		description4 := new(string)
-		if !r.CustomTheme.Colors.Section.Footer.Description.IsUnknown() && !r.CustomTheme.Colors.Section.Footer.Description.IsNull() {
-			*description4 = r.CustomTheme.Colors.Section.Footer.Description.ValueString()
-		} else {
-			description4 = nil
-		}
-		value4 := r.CustomTheme.Colors.Section.Footer.Value.ValueString()
-		footer := shared.AppearanceColorVariable{
-			Description: description4,
-			Value:       value4,
-		}
-		description5 := new(string)
-		if !r.CustomTheme.Colors.Section.Header.Description.IsUnknown() && !r.CustomTheme.Colors.Section.Header.Description.IsNull() {
-			*description5 = r.CustomTheme.Colors.Section.Header.Description.ValueString()
-		} else {
-			description5 = nil
-		}
-		value5 := r.CustomTheme.Colors.Section.Header.Value.ValueString()
-		header := shared.AppearanceColorVariable{
-			Description: description5,
-			Value:       value5,
-		}
-		description6 := new(string)
-		if !r.CustomTheme.Colors.Section.Hero.Description.IsUnknown() && !r.CustomTheme.Colors.Section.Hero.Description.IsNull() {
-			*description6 = r.CustomTheme.Colors.Section.Hero.Description.ValueString()
-		} else {
-			description6 = nil
-		}
-		value6 := r.CustomTheme.Colors.Section.Hero.Value.ValueString()
-		hero := shared.AppearanceColorVariable{
-			Description: description6,
-			Value:       value6,
-		}
-		description7 := new(string)
-		if !r.CustomTheme.Colors.Section.Stroke.Description.IsUnknown() && !r.CustomTheme.Colors.Section.Stroke.Description.IsNull() {
-			*description7 = r.CustomTheme.Colors.Section.Stroke.Description.ValueString()
-		} else {
-			description7 = nil
-		}
-		value7 := r.CustomTheme.Colors.Section.Stroke.Value.ValueString()
-		stroke := shared.AppearanceColorVariable{
-			Description: description7,
-			Value:       value7,
-		}
-		description8 := new(string)
-		if !r.CustomTheme.Colors.Section.Tertiary.Description.IsUnknown() && !r.CustomTheme.Colors.Section.Tertiary.Description.IsNull() {
-			*description8 = r.CustomTheme.Colors.Section.Tertiary.Description.ValueString()
-		} else {
-			description8 = nil
-		}
-		value8 := r.CustomTheme.Colors.Section.Tertiary.Value.ValueString()
-		tertiary := shared.AppearanceColorVariable{
-			Description: description8,
-			Value:       value8,
-		}
-		section := shared.Section{
-			Accent:   accent,
-			Body:     body,
-			Footer:   footer,
-			Header:   header,
-			Hero:     hero,
-			Stroke:   stroke,
-			Tertiary: tertiary,
-		}
-		description9 := new(string)
-		if !r.CustomTheme.Colors.Text.Accent.Description.IsUnknown() && !r.CustomTheme.Colors.Text.Accent.Description.IsNull() {
-			*description9 = r.CustomTheme.Colors.Text.Accent.Description.ValueString()
-		} else {
-			description9 = nil
-		}
-		value9 := r.CustomTheme.Colors.Text.Accent.Value.ValueString()
-		accent1 := shared.AppearanceColorVariable{
-			Description: description9,
-			Value:       value9,
-		}
-		description10 := new(string)
-		if !r.CustomTheme.Colors.Text.Footer.Description.IsUnknown() && !r.CustomTheme.Colors.Text.Footer.Description.IsNull() {
-			*description10 = r.CustomTheme.Colors.Text.Footer.Description.ValueString()
-		} else {
-			description10 = nil
-		}
-		value10 := r.CustomTheme.Colors.Text.Footer.Value.ValueString()
-		footer1 := shared.AppearanceColorVariable{
-			Description: description10,
-			Value:       value10,
-		}
-		description11 := new(string)
-		if !r.CustomTheme.Colors.Text.Header.Description.IsUnknown() && !r.CustomTheme.Colors.Text.Header.Description.IsNull() {
-			*description11 = r.CustomTheme.Colors.Text.Header.Description.ValueString()
-		} else {
-			description11 = nil
-		}
-		value11 := r.CustomTheme.Colors.Text.Header.Value.ValueString()
-		header1 := shared.AppearanceColorVariable{
-			Description: description11,
-			Value:       value11,
-		}
-		description12 := new(string)
-		if !r.CustomTheme.Colors.Text.Headings.Description.IsUnknown() && !r.CustomTheme.Colors.Text.Headings.Description.IsNull() {
-			*description12 = r.CustomTheme.Colors.Text.Headings.Description.ValueString()
-		} else {
-			description12 = nil
-		}
-		value12 := r.CustomTheme.Colors.Text.Headings.Value.ValueString()
-		headings1 := shared.AppearanceColorVariable{
-			Description: description12,
-			Value:       value12,
-		}
-		description13 := new(string)
-		if !r.CustomTheme.Colors.Text.Hero.Description.IsUnknown() && !r.CustomTheme.Colors.Text.Hero.Description.IsNull() {
-			*description13 = r.CustomTheme.Colors.Text.Hero.Description.ValueString()
-		} else {
-			description13 = nil
-		}
-		value13 := r.CustomTheme.Colors.Text.Hero.Value.ValueString()
-		hero1 := shared.AppearanceColorVariable{
-			Description: description13,
-			Value:       value13,
-		}
-		description14 := new(string)
-		if !r.CustomTheme.Colors.Text.Link.Description.IsUnknown() && !r.CustomTheme.Colors.Text.Link.Description.IsNull() {
-			*description14 = r.CustomTheme.Colors.Text.Link.Description.ValueString()
-		} else {
-			description14 = nil
-		}
-		value14 := r.CustomTheme.Colors.Text.Link.Value.ValueString()
-		link := shared.AppearanceColorVariable{
-			Description: description14,
-			Value:       value14,
-		}
-		description15 := new(string)
-		if !r.CustomTheme.Colors.Text.Primary.Description.IsUnknown() && !r.CustomTheme.Colors.Text.Primary.Description.IsNull() {
-			*description15 = r.CustomTheme.Colors.Text.Primary.Description.ValueString()
-		} else {
-			description15 = nil
-		}
-		value15 := r.CustomTheme.Colors.Text.Primary.Value.ValueString()
-		primary := shared.AppearanceColorVariable{
-			Description: description15,
-			Value:       value15,
-		}
-		description16 := new(string)
-		if !r.CustomTheme.Colors.Text.Secondary.Description.IsUnknown() && !r.CustomTheme.Colors.Text.Secondary.Description.IsNull() {
-			*description16 = r.CustomTheme.Colors.Text.Secondary.Description.ValueString()
-		} else {
-			description16 = nil
-		}
-		value16 := r.CustomTheme.Colors.Text.Secondary.Value.ValueString()
-		secondary := shared.AppearanceColorVariable{
-			Description: description16,
-			Value:       value16,
-		}
-		text := shared.Text{
-			Accent:    accent1,
-			Footer:    footer1,
-			Header:    header1,
-			Headings:  headings1,
-			Hero:      hero1,
-			Link:      link,
-			Primary:   primary,
-			Secondary: secondary,
-		}
 		colors := shared.AppearanceThemeColorVariables{
-			Button:  button,
 			Section: section,
 			Text:    text,
+			Button:  button,
 		}
 		customTheme = &shared.NullableAppearanceThemeVariables{
 			Colors: colors,
 		}
 	}
+	var customFonts *shared.NullableAppearanceFonts
+	if r.CustomFonts != nil {
+		base := shared.AppearanceFontName(r.CustomFonts.Base.ValueString())
+		code := shared.AppearanceFontName(r.CustomFonts.Code.ValueString())
+		headings1 := shared.AppearanceFontName(r.CustomFonts.Headings.ValueString())
+		customFonts = &shared.NullableAppearanceFonts{
+			Base:     base,
+			Code:     code,
+			Headings: headings1,
+		}
+	}
+	useCustomFonts := new(bool)
+	if !r.UseCustomFonts.IsUnknown() && !r.UseCustomFonts.IsNull() {
+		*useCustomFonts = r.UseCustomFonts.ValueBool()
+	} else {
+		useCustomFonts = nil
+	}
+	var text1 *shared.NullableAppearanceTextVariables
+	if r.Text != nil {
+		welcomeMessage := r.Text.Catalog.WelcomeMessage.ValueString()
+		primaryHeader := r.Text.Catalog.PrimaryHeader.ValueString()
+		catalog := shared.Catalog{
+			WelcomeMessage: welcomeMessage,
+			PrimaryHeader:  primaryHeader,
+		}
+		text1 = &shared.NullableAppearanceTextVariables{
+			Catalog: catalog,
+		}
+	}
 	var images *shared.AppearanceImages
 	if r.Images != nil {
-		var catalogCover *shared.AppearanceImage
-		if r.Images.CatalogCover != nil {
-			data := r.Images.CatalogCover.Data.ValueString()
+		var logo *shared.AppearanceImage
+		if r.Images.Logo != nil {
+			data := r.Images.Logo.Data.ValueString()
 			filename := new(string)
-			if !r.Images.CatalogCover.Filename.IsUnknown() && !r.Images.CatalogCover.Filename.IsNull() {
-				*filename = r.Images.CatalogCover.Filename.ValueString()
+			if !r.Images.Logo.Filename.IsUnknown() && !r.Images.Logo.Filename.IsNull() {
+				*filename = r.Images.Logo.Filename.ValueString()
 			} else {
 				filename = nil
 			}
-			catalogCover = &shared.AppearanceImage{
+			logo = &shared.AppearanceImage{
 				Data:     data,
 				Filename: filename,
 			}
@@ -271,57 +295,33 @@ func (r *PortalAppearanceResourceModel) ToSharedUpdatePortalAppearanceRequest() 
 				Filename: filename1,
 			}
 		}
-		var logo *shared.AppearanceImage
-		if r.Images.Logo != nil {
-			data2 := r.Images.Logo.Data.ValueString()
+		var catalogCover *shared.AppearanceImage
+		if r.Images.CatalogCover != nil {
+			data2 := r.Images.CatalogCover.Data.ValueString()
 			filename2 := new(string)
-			if !r.Images.Logo.Filename.IsUnknown() && !r.Images.Logo.Filename.IsNull() {
-				*filename2 = r.Images.Logo.Filename.ValueString()
+			if !r.Images.CatalogCover.Filename.IsUnknown() && !r.Images.CatalogCover.Filename.IsNull() {
+				*filename2 = r.Images.CatalogCover.Filename.ValueString()
 			} else {
 				filename2 = nil
 			}
-			logo = &shared.AppearanceImage{
+			catalogCover = &shared.AppearanceImage{
 				Data:     data2,
 				Filename: filename2,
 			}
 		}
 		images = &shared.AppearanceImages{
-			CatalogCover: catalogCover,
-			Favicon:      favicon,
 			Logo:         logo,
+			Favicon:      favicon,
+			CatalogCover: catalogCover,
 		}
-	}
-	var text1 *shared.NullableAppearanceTextVariables
-	if r.Text != nil {
-		primaryHeader := r.Text.Catalog.PrimaryHeader.ValueString()
-		welcomeMessage := r.Text.Catalog.WelcomeMessage.ValueString()
-		catalog := shared.Catalog{
-			PrimaryHeader:  primaryHeader,
-			WelcomeMessage: welcomeMessage,
-		}
-		text1 = &shared.NullableAppearanceTextVariables{
-			Catalog: catalog,
-		}
-	}
-	themeName := new(shared.PortalTheme)
-	if !r.ThemeName.IsUnknown() && !r.ThemeName.IsNull() {
-		*themeName = shared.PortalTheme(r.ThemeName.ValueString())
-	} else {
-		themeName = nil
-	}
-	useCustomFonts := new(bool)
-	if !r.UseCustomFonts.IsUnknown() && !r.UseCustomFonts.IsNull() {
-		*useCustomFonts = r.UseCustomFonts.ValueBool()
-	} else {
-		useCustomFonts = nil
 	}
 	out := shared.UpdatePortalAppearanceRequest{
-		CustomFonts:    customFonts,
-		CustomTheme:    customTheme,
-		Images:         images,
-		Text:           text1,
 		ThemeName:      themeName,
+		CustomTheme:    customTheme,
+		CustomFonts:    customFonts,
 		UseCustomFonts: useCustomFonts,
+		Text:           text1,
+		Images:         images,
 	}
 	return &out
 }

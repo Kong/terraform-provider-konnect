@@ -33,28 +33,14 @@ func (e *InternalServerErrorStatus) UnmarshalJSON(data []byte) error {
 
 // InternalServerError - The error response object.
 type InternalServerError struct {
-	// Details about the error.
-	Detail *string `json:"detail,omitempty"`
-	// The Konnect traceback code
-	Instance string `json:"instance"`
 	// The HTTP status code.
 	Status InternalServerErrorStatus `json:"status"`
 	// The error response code.
 	Title string `json:"title"`
-}
-
-func (o *InternalServerError) GetDetail() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Detail
-}
-
-func (o *InternalServerError) GetInstance() string {
-	if o == nil {
-		return ""
-	}
-	return o.Instance
+	// The Konnect traceback code
+	Instance string `json:"instance"`
+	// Details about the error.
+	Detail *string `json:"detail,omitempty"`
 }
 
 func (o *InternalServerError) GetStatus() InternalServerErrorStatus {
@@ -69,4 +55,18 @@ func (o *InternalServerError) GetTitle() string {
 		return ""
 	}
 	return o.Title
+}
+
+func (o *InternalServerError) GetInstance() string {
+	if o == nil {
+		return ""
+	}
+	return o.Instance
+}
+
+func (o *InternalServerError) GetDetail() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Detail
 }

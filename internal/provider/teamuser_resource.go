@@ -53,7 +53,7 @@ func (r *TeamUserResource) Schema(ctx context.Context, req resource.SchemaReques
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Optional:    true,
+				Required:    true,
 				Description: `User ID. Requires replacement if changed. `,
 			},
 		},

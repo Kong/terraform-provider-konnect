@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-type CreatePortalResponse struct {
+type GetPortalResponse struct {
 	// Contains a unique identifier used for this resource.
 	ID string `json:"id"`
 	// An ISO-8601 timestamp representation of entity creation date.
@@ -49,137 +49,137 @@ type CreatePortalResponse struct {
 	PublishedProductCount float64 `json:"published_product_count"`
 }
 
-func (c CreatePortalResponse) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
+func (g GetPortalResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
 }
 
-func (c *CreatePortalResponse) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+func (g *GetPortalResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *CreatePortalResponse) GetID() string {
+func (o *GetPortalResponse) GetID() string {
 	if o == nil {
 		return ""
 	}
 	return o.ID
 }
 
-func (o *CreatePortalResponse) GetCreatedAt() time.Time {
+func (o *GetPortalResponse) GetCreatedAt() time.Time {
 	if o == nil {
 		return time.Time{}
 	}
 	return o.CreatedAt
 }
 
-func (o *CreatePortalResponse) GetUpdatedAt() time.Time {
+func (o *GetPortalResponse) GetUpdatedAt() time.Time {
 	if o == nil {
 		return time.Time{}
 	}
 	return o.UpdatedAt
 }
 
-func (o *CreatePortalResponse) GetName() string {
+func (o *GetPortalResponse) GetName() string {
 	if o == nil {
 		return ""
 	}
 	return o.Name
 }
 
-func (o *CreatePortalResponse) GetDisplayName() string {
+func (o *GetPortalResponse) GetDisplayName() string {
 	if o == nil {
 		return ""
 	}
 	return o.DisplayName
 }
 
-func (o *CreatePortalResponse) GetDescription() *string {
+func (o *GetPortalResponse) GetDescription() *string {
 	if o == nil {
 		return nil
 	}
 	return o.Description
 }
 
-func (o *CreatePortalResponse) GetDefaultDomain() string {
+func (o *GetPortalResponse) GetDefaultDomain() string {
 	if o == nil {
 		return ""
 	}
 	return o.DefaultDomain
 }
 
-func (o *CreatePortalResponse) GetIsPublic() bool {
+func (o *GetPortalResponse) GetIsPublic() bool {
 	if o == nil {
 		return false
 	}
 	return o.IsPublic
 }
 
-func (o *CreatePortalResponse) GetRbacEnabled() bool {
+func (o *GetPortalResponse) GetRbacEnabled() bool {
 	if o == nil {
 		return false
 	}
 	return o.RbacEnabled
 }
 
-func (o *CreatePortalResponse) GetAutoApproveApplications() bool {
+func (o *GetPortalResponse) GetAutoApproveApplications() bool {
 	if o == nil {
 		return false
 	}
 	return o.AutoApproveApplications
 }
 
-func (o *CreatePortalResponse) GetAutoApproveDevelopers() bool {
+func (o *GetPortalResponse) GetAutoApproveDevelopers() bool {
 	if o == nil {
 		return false
 	}
 	return o.AutoApproveDevelopers
 }
 
-func (o *CreatePortalResponse) GetCustomDomain() *string {
+func (o *GetPortalResponse) GetCustomDomain() *string {
 	if o == nil {
 		return nil
 	}
 	return o.CustomDomain
 }
 
-func (o *CreatePortalResponse) GetCustomClientDomain() *string {
+func (o *GetPortalResponse) GetCustomClientDomain() *string {
 	if o == nil {
 		return nil
 	}
 	return o.CustomClientDomain
 }
 
-func (o *CreatePortalResponse) GetDefaultApplicationAuthStrategyID() *string {
+func (o *GetPortalResponse) GetDefaultApplicationAuthStrategyID() *string {
 	if o == nil {
 		return nil
 	}
 	return o.DefaultApplicationAuthStrategyID
 }
 
-func (o *CreatePortalResponse) GetLabels() map[string]string {
+func (o *GetPortalResponse) GetLabels() map[string]string {
 	if o == nil {
 		return nil
 	}
 	return o.Labels
 }
 
-func (o *CreatePortalResponse) GetApplicationCount() float64 {
+func (o *GetPortalResponse) GetApplicationCount() float64 {
 	if o == nil {
 		return 0.0
 	}
 	return o.ApplicationCount
 }
 
-func (o *CreatePortalResponse) GetDeveloperCount() float64 {
+func (o *GetPortalResponse) GetDeveloperCount() float64 {
 	if o == nil {
 		return 0.0
 	}
 	return o.DeveloperCount
 }
 
-func (o *CreatePortalResponse) GetPublishedProductCount() float64 {
+func (o *GetPortalResponse) GetPublishedProductCount() float64 {
 	if o == nil {
 		return 0.0
 	}

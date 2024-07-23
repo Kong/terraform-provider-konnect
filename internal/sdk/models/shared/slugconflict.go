@@ -3,17 +3,10 @@
 package shared
 
 type SlugConflict struct {
-	Instance string  `json:"instance"`
 	Status   float64 `json:"status"`
 	Title    string  `json:"title"`
 	Type     *string `json:"type,omitempty"`
-}
-
-func (o *SlugConflict) GetInstance() string {
-	if o == nil {
-		return ""
-	}
-	return o.Instance
+	Instance string  `json:"instance"`
 }
 
 func (o *SlugConflict) GetStatus() float64 {
@@ -35,4 +28,11 @@ func (o *SlugConflict) GetType() *string {
 		return nil
 	}
 	return o.Type
+}
+
+func (o *SlugConflict) GetInstance() string {
+	if o == nil {
+		return ""
+	}
+	return o.Instance
 }

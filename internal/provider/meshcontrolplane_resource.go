@@ -5,6 +5,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -56,6 +57,9 @@ func (r *MeshControlPlaneResource) Schema(ctx context.Context, req resource.Sche
 			"description": schema.StringAttribute{
 				Computed: true,
 				Optional: true,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(250),
+				},
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
@@ -70,6 +74,9 @@ func (r *MeshControlPlaneResource) Schema(ctx context.Context, req resource.Sche
 			"name": schema.StringAttribute{
 				Required:    true,
 				Description: `The name of the control plane.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthBetween(1, 100),
+				},
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,

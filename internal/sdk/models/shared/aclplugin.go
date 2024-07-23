@@ -47,25 +47,25 @@ func (o *ACLPluginConfig) GetIncludeConsumerGroups() *bool {
 	return o.IncludeConsumerGroups
 }
 
-type ACLPluginProtocols string
+type Protocols string
 
 const (
-	ACLPluginProtocolsGrpc           ACLPluginProtocols = "grpc"
-	ACLPluginProtocolsGrpcs          ACLPluginProtocols = "grpcs"
-	ACLPluginProtocolsHTTP           ACLPluginProtocols = "http"
-	ACLPluginProtocolsHTTPS          ACLPluginProtocols = "https"
-	ACLPluginProtocolsTCP            ACLPluginProtocols = "tcp"
-	ACLPluginProtocolsTLS            ACLPluginProtocols = "tls"
-	ACLPluginProtocolsTLSPassthrough ACLPluginProtocols = "tls_passthrough"
-	ACLPluginProtocolsUDP            ACLPluginProtocols = "udp"
-	ACLPluginProtocolsWs             ACLPluginProtocols = "ws"
-	ACLPluginProtocolsWss            ACLPluginProtocols = "wss"
+	ProtocolsGrpc           Protocols = "grpc"
+	ProtocolsGrpcs          Protocols = "grpcs"
+	ProtocolsHTTP           Protocols = "http"
+	ProtocolsHTTPS          Protocols = "https"
+	ProtocolsTCP            Protocols = "tcp"
+	ProtocolsTLS            Protocols = "tls"
+	ProtocolsTLSPassthrough Protocols = "tls_passthrough"
+	ProtocolsUDP            Protocols = "udp"
+	ProtocolsWs             Protocols = "ws"
+	ProtocolsWss            Protocols = "wss"
 )
 
-func (e ACLPluginProtocols) ToPointer() *ACLPluginProtocols {
+func (e Protocols) ToPointer() *Protocols {
 	return &e
 }
-func (e *ACLPluginProtocols) UnmarshalJSON(data []byte) error {
+func (e *Protocols) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -90,10 +90,10 @@ func (e *ACLPluginProtocols) UnmarshalJSON(data []byte) error {
 	case "ws":
 		fallthrough
 	case "wss":
-		*e = ACLPluginProtocols(v)
+		*e = Protocols(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for ACLPluginProtocols: %v", v)
+		return fmt.Errorf("invalid value for Protocols: %v", v)
 	}
 }
 
@@ -154,7 +154,7 @@ type ACLPlugin struct {
 	InstanceName *string `json:"instance_name,omitempty"`
 	name         *string `const:"acl" json:"name,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []ACLPluginProtocols `json:"protocols,omitempty"`
+	Protocols []Protocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -218,7 +218,7 @@ func (o *ACLPlugin) GetName() *string {
 	return types.String("acl")
 }
 
-func (o *ACLPlugin) GetProtocols() []ACLPluginProtocols {
+func (o *ACLPlugin) GetProtocols() []Protocols {
 	if o == nil {
 		return nil
 	}

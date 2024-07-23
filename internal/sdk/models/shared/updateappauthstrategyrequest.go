@@ -105,29 +105,22 @@ func (u Configs) MarshalJSON() ([]byte, error) {
 
 // UpdateAppAuthStrategyRequest - Request body for updating an Application Auth Strategy
 type UpdateAppAuthStrategyRequest struct {
-	// JSON-B object containing the configuration for the OIDC strategy under the key 'openid-connect' or the configuration for the Key Auth strategy under the key 'key-auth'
-	Configs       *Configs `json:"configs,omitempty"`
-	DcrProviderID *string  `json:"dcr_provider_id,omitempty"`
-	// The display name of the Auth strategy. This is used to identify the Auth strategy in the Portal UI.
-	//
-	DisplayName *string `json:"display_name,omitempty"`
 	// The name of the auth strategy. This is used to identify the auth strategy in the Konnect UI.
 	//
 	Name *string `json:"name,omitempty"`
+	// The display name of the Auth strategy. This is used to identify the Auth strategy in the Portal UI.
+	//
+	DisplayName   *string `json:"display_name,omitempty"`
+	DcrProviderID *string `json:"dcr_provider_id,omitempty"`
+	// JSON-B object containing the configuration for the OIDC strategy under the key 'openid-connect' or the configuration for the Key Auth strategy under the key 'key-auth'
+	Configs *Configs `json:"configs,omitempty"`
 }
 
-func (o *UpdateAppAuthStrategyRequest) GetConfigs() *Configs {
+func (o *UpdateAppAuthStrategyRequest) GetName() *string {
 	if o == nil {
 		return nil
 	}
-	return o.Configs
-}
-
-func (o *UpdateAppAuthStrategyRequest) GetDcrProviderID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.DcrProviderID
+	return o.Name
 }
 
 func (o *UpdateAppAuthStrategyRequest) GetDisplayName() *string {
@@ -137,9 +130,16 @@ func (o *UpdateAppAuthStrategyRequest) GetDisplayName() *string {
 	return o.DisplayName
 }
 
-func (o *UpdateAppAuthStrategyRequest) GetName() *string {
+func (o *UpdateAppAuthStrategyRequest) GetDcrProviderID() *string {
 	if o == nil {
 		return nil
 	}
-	return o.Name
+	return o.DcrProviderID
+}
+
+func (o *UpdateAppAuthStrategyRequest) GetConfigs() *Configs {
+	if o == nil {
+		return nil
+	}
+	return o.Configs
 }

@@ -10,6 +10,15 @@ import (
 )
 
 func (r *APIProductDocumentResourceModel) ToSharedCreateAPIProductDocumentDTO() *shared.CreateAPIProductDocumentDTO {
+	parentDocumentID := new(string)
+	if !r.ParentDocumentID.IsUnknown() && !r.ParentDocumentID.IsNull() {
+		*parentDocumentID = r.ParentDocumentID.ValueString()
+	} else {
+		parentDocumentID = nil
+	}
+	slug := r.Slug.ValueString()
+	status := shared.PublishStatus(r.Status.ValueString())
+	title := r.Title.ValueString()
 	content := new(string)
 	if !r.Content.IsUnknown() && !r.Content.IsNull() {
 		*content = r.Content.ValueString()
@@ -20,22 +29,13 @@ func (r *APIProductDocumentResourceModel) ToSharedCreateAPIProductDocumentDTO() 
 	if r.Metadata != nil {
 		metadata = &shared.Metadata{}
 	}
-	parentDocumentID := new(string)
-	if !r.ParentDocumentID.IsUnknown() && !r.ParentDocumentID.IsNull() {
-		*parentDocumentID = r.ParentDocumentID.ValueString()
-	} else {
-		parentDocumentID = nil
-	}
-	slug := r.Slug.ValueString()
-	status := shared.PublishStatus(r.Status.ValueString())
-	title := r.Title.ValueString()
 	out := shared.CreateAPIProductDocumentDTO{
-		Content:          content,
-		Metadata:         metadata,
 		ParentDocumentID: parentDocumentID,
 		Slug:             slug,
 		Status:           status,
 		Title:            title,
+		Content:          content,
+		Metadata:         metadata,
 	}
 	return &out
 }
@@ -57,16 +57,6 @@ func (r *APIProductDocumentResourceModel) RefreshFromSharedAPIProductDocument(re
 }
 
 func (r *APIProductDocumentResourceModel) ToSharedUpdateAPIProductDocumentDTO() *shared.UpdateAPIProductDocumentDTO {
-	content := new(string)
-	if !r.Content.IsUnknown() && !r.Content.IsNull() {
-		*content = r.Content.ValueString()
-	} else {
-		content = nil
-	}
-	var metadata *shared.UpdateAPIProductDocumentDTOMetadata
-	if r.Metadata != nil {
-		metadata = &shared.UpdateAPIProductDocumentDTOMetadata{}
-	}
 	parentDocumentID := new(string)
 	if !r.ParentDocumentID.IsUnknown() && !r.ParentDocumentID.IsNull() {
 		*parentDocumentID = r.ParentDocumentID.ValueString()
@@ -91,13 +81,23 @@ func (r *APIProductDocumentResourceModel) ToSharedUpdateAPIProductDocumentDTO() 
 	} else {
 		title = nil
 	}
+	content := new(string)
+	if !r.Content.IsUnknown() && !r.Content.IsNull() {
+		*content = r.Content.ValueString()
+	} else {
+		content = nil
+	}
+	var metadata *shared.UpdateAPIProductDocumentDTOMetadata
+	if r.Metadata != nil {
+		metadata = &shared.UpdateAPIProductDocumentDTOMetadata{}
+	}
 	out := shared.UpdateAPIProductDocumentDTO{
-		Content:          content,
-		Metadata:         metadata,
 		ParentDocumentID: parentDocumentID,
 		Slug:             slug,
 		Status:           status,
 		Title:            title,
+		Content:          content,
+		Metadata:         metadata,
 	}
 	return &out
 }

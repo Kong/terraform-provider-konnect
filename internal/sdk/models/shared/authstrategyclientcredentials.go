@@ -35,25 +35,11 @@ func (e *AuthStrategyClientCredentialsCredentialType) UnmarshalJSON(data []byte)
 
 // AuthStrategyClientCredentials - Client Credential Auth strategy that the application uses.
 type AuthStrategyClientCredentials struct {
-	AuthMethods    []string                                    `json:"auth_methods"`
-	CredentialType AuthStrategyClientCredentialsCredentialType `json:"credential_type"`
 	// The Application Auth Strategy ID.
-	ID   string `json:"id"`
-	Name string `json:"name"`
-}
-
-func (o *AuthStrategyClientCredentials) GetAuthMethods() []string {
-	if o == nil {
-		return []string{}
-	}
-	return o.AuthMethods
-}
-
-func (o *AuthStrategyClientCredentials) GetCredentialType() AuthStrategyClientCredentialsCredentialType {
-	if o == nil {
-		return AuthStrategyClientCredentialsCredentialType("")
-	}
-	return o.CredentialType
+	ID             string                                      `json:"id"`
+	Name           string                                      `json:"name"`
+	CredentialType AuthStrategyClientCredentialsCredentialType `json:"credential_type"`
+	AuthMethods    []string                                    `json:"auth_methods"`
 }
 
 func (o *AuthStrategyClientCredentials) GetID() string {
@@ -68,4 +54,18 @@ func (o *AuthStrategyClientCredentials) GetName() string {
 		return ""
 	}
 	return o.Name
+}
+
+func (o *AuthStrategyClientCredentials) GetCredentialType() AuthStrategyClientCredentialsCredentialType {
+	if o == nil {
+		return AuthStrategyClientCredentialsCredentialType("")
+	}
+	return o.CredentialType
+}
+
+func (o *AuthStrategyClientCredentials) GetAuthMethods() []string {
+	if o == nil {
+		return []string{}
+	}
+	return o.AuthMethods
 }

@@ -9,13 +9,11 @@ import (
 
 // ConfigurationManifest - Object containing information about a control-plane's cloud-gateways configuration.
 type ConfigurationManifest struct {
+	ID string `json:"id"`
+	// Supported gateway version.
+	Version string `json:"version"`
 	// Type of API access data-plane groups will support for a configuration.
 	APIAccess *APIAccess `default:"private+public" json:"api_access"`
-	// Set of control-plane geos supported for deploying cloud-gateways configurations.
-	ControlPlaneGeo ControlPlaneGeo `json:"control_plane_geo"`
-	ControlPlaneID  string          `json:"control_plane_id"`
-	// An RFC-3339 timestamp representation of configuration creation date.
-	CreatedAt time.Time `json:"created_at"`
 	// Object that describes where data-planes will be deployed to, along with how many instances.
 	DataplaneGroupConfig []ConfigurationDataPlaneGroupConfig `json:"dataplane_group_config"`
 	// List of data-plane groups that describe where data-planes will be deployed to, along with how many
@@ -25,11 +23,13 @@ type ConfigurationManifest struct {
 	// Positive, monotonically increasing version integer, to serialize configuration changes.
 	//
 	EntityVersion float64 `json:"entity_version"`
-	ID            string  `json:"id"`
+	// An RFC-3339 timestamp representation of configuration creation date.
+	CreatedAt time.Time `json:"created_at"`
 	// An RFC-3339 timestamp representation of configuration update date.
-	UpdatedAt time.Time `json:"updated_at"`
-	// Supported gateway version.
-	Version string `json:"version"`
+	UpdatedAt      time.Time `json:"updated_at"`
+	ControlPlaneID string    `json:"control_plane_id"`
+	// Set of control-plane geos supported for deploying cloud-gateways configurations.
+	ControlPlaneGeo ControlPlaneGeo `json:"control_plane_geo"`
 }
 
 func (c ConfigurationManifest) MarshalJSON() ([]byte, error) {
@@ -43,32 +43,25 @@ func (c *ConfigurationManifest) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (o *ConfigurationManifest) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *ConfigurationManifest) GetVersion() string {
+	if o == nil {
+		return ""
+	}
+	return o.Version
+}
+
 func (o *ConfigurationManifest) GetAPIAccess() *APIAccess {
 	if o == nil {
 		return nil
 	}
 	return o.APIAccess
-}
-
-func (o *ConfigurationManifest) GetControlPlaneGeo() ControlPlaneGeo {
-	if o == nil {
-		return ControlPlaneGeo("")
-	}
-	return o.ControlPlaneGeo
-}
-
-func (o *ConfigurationManifest) GetControlPlaneID() string {
-	if o == nil {
-		return ""
-	}
-	return o.ControlPlaneID
-}
-
-func (o *ConfigurationManifest) GetCreatedAt() time.Time {
-	if o == nil {
-		return time.Time{}
-	}
-	return o.CreatedAt
 }
 
 func (o *ConfigurationManifest) GetDataplaneGroupConfig() []ConfigurationDataPlaneGroupConfig {
@@ -92,11 +85,11 @@ func (o *ConfigurationManifest) GetEntityVersion() float64 {
 	return o.EntityVersion
 }
 
-func (o *ConfigurationManifest) GetID() string {
+func (o *ConfigurationManifest) GetCreatedAt() time.Time {
 	if o == nil {
-		return ""
+		return time.Time{}
 	}
-	return o.ID
+	return o.CreatedAt
 }
 
 func (o *ConfigurationManifest) GetUpdatedAt() time.Time {
@@ -106,9 +99,16 @@ func (o *ConfigurationManifest) GetUpdatedAt() time.Time {
 	return o.UpdatedAt
 }
 
-func (o *ConfigurationManifest) GetVersion() string {
+func (o *ConfigurationManifest) GetControlPlaneID() string {
 	if o == nil {
 		return ""
 	}
-	return o.Version
+	return o.ControlPlaneID
+}
+
+func (o *ConfigurationManifest) GetControlPlaneGeo() ControlPlaneGeo {
+	if o == nil {
+		return ControlPlaneGeo("")
+	}
+	return o.ControlPlaneGeo
 }

@@ -11,25 +11,23 @@ import (
 )
 
 func (r *CloudGatewayConfigurationResourceModel) ToSharedCreateConfigurationRequest() *shared.CreateConfigurationRequest {
-	apiAccess := new(shared.APIAccess)
-	if !r.APIAccess.IsUnknown() && !r.APIAccess.IsNull() {
-		*apiAccess = shared.APIAccess(r.APIAccess.ValueString())
-	} else {
-		apiAccess = nil
-	}
-	controlPlaneGeo := shared.ControlPlaneGeo(r.ControlPlaneGeo.ValueString())
 	controlPlaneID := r.ControlPlaneID.ValueString()
+	controlPlaneGeo := shared.ControlPlaneGeo(r.ControlPlaneGeo.ValueString())
+	version := r.Version.ValueString()
 	var dataplaneGroups []shared.CreateConfigurationDataPlaneGroup = []shared.CreateConfigurationDataPlaneGroup{}
 	for _, dataplaneGroupsItem := range r.DataplaneGroups {
+		provider := shared.ProviderName(dataplaneGroupsItem.Provider.ValueString())
+		region := dataplaneGroupsItem.Region.ValueString()
+		cloudGatewayNetworkID := dataplaneGroupsItem.CloudGatewayNetworkID.ValueString()
 		var autoscale shared.ConfigurationDataPlaneGroupAutoscale
 		var configurationDataPlaneGroupAutoscaleStatic *shared.ConfigurationDataPlaneGroupAutoscaleStatic
 		if dataplaneGroupsItem.Autoscale.ConfigurationDataPlaneGroupAutoscaleStatic != nil {
-			instanceType := shared.InstanceTypeName(dataplaneGroupsItem.Autoscale.ConfigurationDataPlaneGroupAutoscaleStatic.InstanceType.ValueString())
 			kind := shared.Kind(dataplaneGroupsItem.Autoscale.ConfigurationDataPlaneGroupAutoscaleStatic.Kind.ValueString())
+			instanceType := shared.InstanceTypeName(dataplaneGroupsItem.Autoscale.ConfigurationDataPlaneGroupAutoscaleStatic.InstanceType.ValueString())
 			requestedInstances := dataplaneGroupsItem.Autoscale.ConfigurationDataPlaneGroupAutoscaleStatic.RequestedInstances.ValueInt64()
 			configurationDataPlaneGroupAutoscaleStatic = &shared.ConfigurationDataPlaneGroupAutoscaleStatic{
-				InstanceType:       instanceType,
 				Kind:               kind,
+				InstanceType:       instanceType,
 				RequestedInstances: requestedInstances,
 			}
 		}
@@ -40,8 +38,8 @@ func (r *CloudGatewayConfigurationResourceModel) ToSharedCreateConfigurationRequ
 		}
 		var configurationDataPlaneGroupAutoscaleAutopilot *shared.ConfigurationDataPlaneGroupAutoscaleAutopilot
 		if dataplaneGroupsItem.Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot != nil {
-			baseRps := dataplaneGroupsItem.Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot.BaseRps.ValueInt64()
 			kind1 := shared.ConfigurationDataPlaneGroupAutoscaleAutopilotKind(dataplaneGroupsItem.Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot.Kind.ValueString())
+			baseRps := dataplaneGroupsItem.Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot.BaseRps.ValueInt64()
 			maxRps := new(int64)
 			if !dataplaneGroupsItem.Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot.MaxRps.IsUnknown() && !dataplaneGroupsItem.Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot.MaxRps.IsNull() {
 				*maxRps = dataplaneGroupsItem.Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot.MaxRps.ValueInt64()
@@ -49,8 +47,8 @@ func (r *CloudGatewayConfigurationResourceModel) ToSharedCreateConfigurationRequ
 				maxRps = nil
 			}
 			configurationDataPlaneGroupAutoscaleAutopilot = &shared.ConfigurationDataPlaneGroupAutoscaleAutopilot{
-				BaseRps: baseRps,
 				Kind:    kind1,
+				BaseRps: baseRps,
 				MaxRps:  maxRps,
 			}
 		}
@@ -59,23 +57,25 @@ func (r *CloudGatewayConfigurationResourceModel) ToSharedCreateConfigurationRequ
 				ConfigurationDataPlaneGroupAutoscaleAutopilot: configurationDataPlaneGroupAutoscaleAutopilot,
 			}
 		}
-		cloudGatewayNetworkID := dataplaneGroupsItem.CloudGatewayNetworkID.ValueString()
-		provider := shared.ProviderName(dataplaneGroupsItem.Provider.ValueString())
-		region := dataplaneGroupsItem.Region.ValueString()
 		dataplaneGroups = append(dataplaneGroups, shared.CreateConfigurationDataPlaneGroup{
-			Autoscale:             autoscale,
-			CloudGatewayNetworkID: cloudGatewayNetworkID,
 			Provider:              provider,
 			Region:                region,
+			CloudGatewayNetworkID: cloudGatewayNetworkID,
+			Autoscale:             autoscale,
 		})
 	}
-	version := r.Version.ValueString()
+	apiAccess := new(shared.APIAccess)
+	if !r.APIAccess.IsUnknown() && !r.APIAccess.IsNull() {
+		*apiAccess = shared.APIAccess(r.APIAccess.ValueString())
+	} else {
+		apiAccess = nil
+	}
 	out := shared.CreateConfigurationRequest{
-		APIAccess:       apiAccess,
-		ControlPlaneGeo: controlPlaneGeo,
 		ControlPlaneID:  controlPlaneID,
-		DataplaneGroups: dataplaneGroups,
+		ControlPlaneGeo: controlPlaneGeo,
 		Version:         version,
+		DataplaneGroups: dataplaneGroups,
+		APIAccess:       apiAccess,
 	}
 	return &out
 }

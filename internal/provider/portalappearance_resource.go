@@ -17,6 +17,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/internal/validators/stringvalidators"
+	"regexp"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -161,6 +162,9 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 											"description": schema.StringAttribute{
 												Computed: true,
 												Optional: true,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtMost(512),
+												},
 											},
 											"value": schema.StringAttribute{
 												Computed:    true,
@@ -168,6 +172,7 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 												Description: `Not Null`,
 												Validators: []validator.String{
 													speakeasy_stringvalidators.NotNull(),
+													stringvalidator.UTF8LengthAtMost(255),
 												},
 											},
 										},
@@ -183,6 +188,9 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 											"description": schema.StringAttribute{
 												Computed: true,
 												Optional: true,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtMost(512),
+												},
 											},
 											"value": schema.StringAttribute{
 												Computed:    true,
@@ -190,6 +198,7 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 												Description: `Not Null`,
 												Validators: []validator.String{
 													speakeasy_stringvalidators.NotNull(),
+													stringvalidator.UTF8LengthAtMost(255),
 												},
 											},
 										},
@@ -215,6 +224,9 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 											"description": schema.StringAttribute{
 												Computed: true,
 												Optional: true,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtMost(512),
+												},
 											},
 											"value": schema.StringAttribute{
 												Computed:    true,
@@ -222,6 +234,7 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 												Description: `Not Null`,
 												Validators: []validator.String{
 													speakeasy_stringvalidators.NotNull(),
+													stringvalidator.UTF8LengthAtMost(255),
 												},
 											},
 										},
@@ -237,6 +250,9 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 											"description": schema.StringAttribute{
 												Computed: true,
 												Optional: true,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtMost(512),
+												},
 											},
 											"value": schema.StringAttribute{
 												Computed:    true,
@@ -244,6 +260,7 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 												Description: `Not Null`,
 												Validators: []validator.String{
 													speakeasy_stringvalidators.NotNull(),
+													stringvalidator.UTF8LengthAtMost(255),
 												},
 											},
 										},
@@ -259,6 +276,9 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 											"description": schema.StringAttribute{
 												Computed: true,
 												Optional: true,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtMost(512),
+												},
 											},
 											"value": schema.StringAttribute{
 												Computed:    true,
@@ -266,6 +286,7 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 												Description: `Not Null`,
 												Validators: []validator.String{
 													speakeasy_stringvalidators.NotNull(),
+													stringvalidator.UTF8LengthAtMost(255),
 												},
 											},
 										},
@@ -281,6 +302,9 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 											"description": schema.StringAttribute{
 												Computed: true,
 												Optional: true,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtMost(512),
+												},
 											},
 											"value": schema.StringAttribute{
 												Computed:    true,
@@ -288,6 +312,7 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 												Description: `Not Null`,
 												Validators: []validator.String{
 													speakeasy_stringvalidators.NotNull(),
+													stringvalidator.UTF8LengthAtMost(255),
 												},
 											},
 										},
@@ -303,6 +328,9 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 											"description": schema.StringAttribute{
 												Computed: true,
 												Optional: true,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtMost(512),
+												},
 											},
 											"value": schema.StringAttribute{
 												Computed:    true,
@@ -310,6 +338,7 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 												Description: `Not Null`,
 												Validators: []validator.String{
 													speakeasy_stringvalidators.NotNull(),
+													stringvalidator.UTF8LengthAtMost(255),
 												},
 											},
 										},
@@ -325,6 +354,9 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 											"description": schema.StringAttribute{
 												Computed: true,
 												Optional: true,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtMost(512),
+												},
 											},
 											"value": schema.StringAttribute{
 												Computed:    true,
@@ -332,6 +364,7 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 												Description: `Not Null`,
 												Validators: []validator.String{
 													speakeasy_stringvalidators.NotNull(),
+													stringvalidator.UTF8LengthAtMost(255),
 												},
 											},
 										},
@@ -347,6 +380,9 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 											"description": schema.StringAttribute{
 												Computed: true,
 												Optional: true,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtMost(512),
+												},
 											},
 											"value": schema.StringAttribute{
 												Computed:    true,
@@ -354,6 +390,7 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 												Description: `Not Null`,
 												Validators: []validator.String{
 													speakeasy_stringvalidators.NotNull(),
+													stringvalidator.UTF8LengthAtMost(255),
 												},
 											},
 										},
@@ -379,6 +416,9 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 											"description": schema.StringAttribute{
 												Computed: true,
 												Optional: true,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtMost(512),
+												},
 											},
 											"value": schema.StringAttribute{
 												Computed:    true,
@@ -386,6 +426,7 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 												Description: `Not Null`,
 												Validators: []validator.String{
 													speakeasy_stringvalidators.NotNull(),
+													stringvalidator.UTF8LengthAtMost(255),
 												},
 											},
 										},
@@ -401,6 +442,9 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 											"description": schema.StringAttribute{
 												Computed: true,
 												Optional: true,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtMost(512),
+												},
 											},
 											"value": schema.StringAttribute{
 												Computed:    true,
@@ -408,6 +452,7 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 												Description: `Not Null`,
 												Validators: []validator.String{
 													speakeasy_stringvalidators.NotNull(),
+													stringvalidator.UTF8LengthAtMost(255),
 												},
 											},
 										},
@@ -423,6 +468,9 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 											"description": schema.StringAttribute{
 												Computed: true,
 												Optional: true,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtMost(512),
+												},
 											},
 											"value": schema.StringAttribute{
 												Computed:    true,
@@ -430,6 +478,7 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 												Description: `Not Null`,
 												Validators: []validator.String{
 													speakeasy_stringvalidators.NotNull(),
+													stringvalidator.UTF8LengthAtMost(255),
 												},
 											},
 										},
@@ -445,6 +494,9 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 											"description": schema.StringAttribute{
 												Computed: true,
 												Optional: true,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtMost(512),
+												},
 											},
 											"value": schema.StringAttribute{
 												Computed:    true,
@@ -452,6 +504,7 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 												Description: `Not Null`,
 												Validators: []validator.String{
 													speakeasy_stringvalidators.NotNull(),
+													stringvalidator.UTF8LengthAtMost(255),
 												},
 											},
 										},
@@ -467,6 +520,9 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 											"description": schema.StringAttribute{
 												Computed: true,
 												Optional: true,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtMost(512),
+												},
 											},
 											"value": schema.StringAttribute{
 												Computed:    true,
@@ -474,6 +530,7 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 												Description: `Not Null`,
 												Validators: []validator.String{
 													speakeasy_stringvalidators.NotNull(),
+													stringvalidator.UTF8LengthAtMost(255),
 												},
 											},
 										},
@@ -489,6 +546,9 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 											"description": schema.StringAttribute{
 												Computed: true,
 												Optional: true,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtMost(512),
+												},
 											},
 											"value": schema.StringAttribute{
 												Computed:    true,
@@ -496,6 +556,7 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 												Description: `Not Null`,
 												Validators: []validator.String{
 													speakeasy_stringvalidators.NotNull(),
+													stringvalidator.UTF8LengthAtMost(255),
 												},
 											},
 										},
@@ -511,6 +572,9 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 											"description": schema.StringAttribute{
 												Computed: true,
 												Optional: true,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtMost(512),
+												},
 											},
 											"value": schema.StringAttribute{
 												Computed:    true,
@@ -518,6 +582,7 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 												Description: `Not Null`,
 												Validators: []validator.String{
 													speakeasy_stringvalidators.NotNull(),
+													stringvalidator.UTF8LengthAtMost(255),
 												},
 											},
 										},
@@ -533,6 +598,9 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 											"description": schema.StringAttribute{
 												Computed: true,
 												Optional: true,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtMost(512),
+												},
 											},
 											"value": schema.StringAttribute{
 												Computed:    true,
@@ -540,6 +608,7 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 												Description: `Not Null`,
 												Validators: []validator.String{
 													speakeasy_stringvalidators.NotNull(),
+													stringvalidator.UTF8LengthAtMost(255),
 												},
 											},
 										},
@@ -577,11 +646,15 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 								Description: `must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>. Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.RegexMatches(regexp.MustCompile(`^data:image/(png|jpeg|x-icon|ico|icon|vnd.microsoft.icon|gif)(;base64)?,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$`), "must match pattern "+regexp.MustCompile(`^data:image/(png|jpeg|x-icon|ico|icon|vnd.microsoft.icon|gif)(;base64)?,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$`).String()),
 								},
 							},
 							"filename": schema.StringAttribute{
 								Computed: true,
 								Optional: true,
+								Validators: []validator.String{
+									stringvalidator.UTF8LengthAtMost(512),
+								},
 							},
 						},
 						Description: `The image data to upload, along with an optional filename. Images must be a data URL with binary image data in base 64 format. See https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs.`,
@@ -596,11 +669,15 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 								Description: `must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>. Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.RegexMatches(regexp.MustCompile(`^data:image/(png|jpeg|x-icon|ico|icon|vnd.microsoft.icon|gif)(;base64)?,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$`), "must match pattern "+regexp.MustCompile(`^data:image/(png|jpeg|x-icon|ico|icon|vnd.microsoft.icon|gif)(;base64)?,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$`).String()),
 								},
 							},
 							"filename": schema.StringAttribute{
 								Computed: true,
 								Optional: true,
+								Validators: []validator.String{
+									stringvalidator.UTF8LengthAtMost(512),
+								},
 							},
 						},
 						Description: `The image data to upload, along with an optional filename. Images must be a data URL with binary image data in base 64 format. See https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs.`,
@@ -615,11 +692,15 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 								Description: `must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>. Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.RegexMatches(regexp.MustCompile(`^data:image/(png|jpeg|x-icon|ico|icon|vnd.microsoft.icon|gif)(;base64)?,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$`), "must match pattern "+regexp.MustCompile(`^data:image/(png|jpeg|x-icon|ico|icon|vnd.microsoft.icon|gif)(;base64)?,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$`).String()),
 								},
 							},
 							"filename": schema.StringAttribute{
 								Computed: true,
 								Optional: true,
+								Validators: []validator.String{
+									stringvalidator.UTF8LengthAtMost(512),
+								},
 							},
 						},
 						Description: `The image data to upload, along with an optional filename. Images must be a data URL with binary image data in base 64 format. See https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs.`,
@@ -645,6 +726,7 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 								Description: `Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtMost(512),
 								},
 							},
 							"welcome_message": schema.StringAttribute{
@@ -653,6 +735,7 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 								Description: `Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtMost(512),
 								},
 							},
 						},

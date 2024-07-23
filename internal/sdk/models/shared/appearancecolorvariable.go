@@ -3,15 +3,8 @@
 package shared
 
 type AppearanceColorVariable struct {
-	Description *string `json:"description,omitempty"`
 	Value       string  `json:"value"`
-}
-
-func (o *AppearanceColorVariable) GetDescription() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Description
+	Description *string `json:"description,omitempty"`
 }
 
 func (o *AppearanceColorVariable) GetValue() string {
@@ -19,4 +12,11 @@ func (o *AppearanceColorVariable) GetValue() string {
 		return ""
 	}
 	return o.Value
+}
+
+func (o *AppearanceColorVariable) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
 }

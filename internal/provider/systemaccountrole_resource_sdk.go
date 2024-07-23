@@ -8,11 +8,23 @@ import (
 )
 
 func (r *SystemAccountRoleResourceModel) ToSharedAssignRole() *shared.AssignRole {
+	roleName := new(shared.RoleName)
+	if !r.RoleName.IsUnknown() && !r.RoleName.IsNull() {
+		*roleName = shared.RoleName(r.RoleName.ValueString())
+	} else {
+		roleName = nil
+	}
 	entityID := new(string)
 	if !r.EntityID.IsUnknown() && !r.EntityID.IsNull() {
 		*entityID = r.EntityID.ValueString()
 	} else {
 		entityID = nil
+	}
+	entityTypeName := new(shared.EntityTypeName)
+	if !r.EntityTypeName.IsUnknown() && !r.EntityTypeName.IsNull() {
+		*entityTypeName = shared.EntityTypeName(r.EntityTypeName.ValueString())
+	} else {
+		entityTypeName = nil
 	}
 	entityRegion := new(shared.EntityRegion)
 	if !r.EntityRegion.IsUnknown() && !r.EntityRegion.IsNull() {
@@ -20,23 +32,11 @@ func (r *SystemAccountRoleResourceModel) ToSharedAssignRole() *shared.AssignRole
 	} else {
 		entityRegion = nil
 	}
-	entityTypeName := new(string)
-	if !r.EntityTypeName.IsUnknown() && !r.EntityTypeName.IsNull() {
-		*entityTypeName = r.EntityTypeName.ValueString()
-	} else {
-		entityTypeName = nil
-	}
-	roleName := new(string)
-	if !r.RoleName.IsUnknown() && !r.RoleName.IsNull() {
-		*roleName = r.RoleName.ValueString()
-	} else {
-		roleName = nil
-	}
 	out := shared.AssignRole{
-		EntityID:       entityID,
-		EntityRegion:   entityRegion,
-		EntityTypeName: entityTypeName,
 		RoleName:       roleName,
+		EntityID:       entityID,
+		EntityTypeName: entityTypeName,
+		EntityRegion:   entityRegion,
 	}
 	return &out
 }
@@ -49,8 +49,16 @@ func (r *SystemAccountRoleResourceModel) RefreshFromSharedAssignedRole(resp *sha
 		} else {
 			r.EntityRegion = types.StringNull()
 		}
-		r.EntityTypeName = types.StringPointerValue(resp.EntityTypeName)
+		if resp.EntityTypeName != nil {
+			r.EntityTypeName = types.StringValue(string(*resp.EntityTypeName))
+		} else {
+			r.EntityTypeName = types.StringNull()
+		}
 		r.ID = types.StringPointerValue(resp.ID)
-		r.RoleName = types.StringPointerValue(resp.RoleName)
+		if resp.RoleName != nil {
+			r.RoleName = types.StringValue(string(*resp.RoleName))
+		} else {
+			r.RoleName = types.StringNull()
+		}
 	}
 }

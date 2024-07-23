@@ -16,6 +16,7 @@ const (
 	SupportedOptionRetries              = "retries"
 	SupportedOptionTimeout              = "timeout"
 	SupportedOptionAcceptHeaderOverride = "acceptHeaderOverride"
+	SupportedOptionURLOverride          = "urlOverride"
 )
 
 type AcceptHeaderEnum string
@@ -35,6 +36,7 @@ type Options struct {
 	Retries              *retry.Config
 	Timeout              *time.Duration
 	AcceptHeaderOverride *AcceptHeaderEnum
+	URLOverride          *string
 }
 
 type Option func(*Options, ...string) error
@@ -98,6 +100,18 @@ func WithAcceptHeaderOverride(acceptHeaderOverride AcceptHeaderEnum) Option {
 		}
 
 		opts.AcceptHeaderOverride = &acceptHeaderOverride
+		return nil
+	}
+}
+
+// WithURLOverride allows overriding the URL.
+func WithURLOverride(urlOverride string) Option {
+	return func(opts *Options, supportedOptions ...string) error {
+		if !utils.Contains(supportedOptions, SupportedOptionURLOverride) {
+			return ErrUnsupportedOption
+		}
+
+		opts.URLOverride = &urlOverride
 		return nil
 	}
 }

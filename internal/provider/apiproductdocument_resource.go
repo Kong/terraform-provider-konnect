@@ -18,6 +18,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/internal/validators"
+	"regexp"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -89,6 +90,10 @@ func (r *APIProductDocumentResource) Schema(ctx context.Context, req resource.Sc
 			"slug": schema.StringAttribute{
 				Required:    true,
 				Description: `document slug. must be unique accross documents belonging to an api product`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(80),
+					stringvalidator.RegexMatches(regexp.MustCompile(`^[\w-]+$`), "must match pattern "+regexp.MustCompile(`^[\w-]+$`).String()),
+				},
 			},
 			"status": schema.StringAttribute{
 				Required:    true,
@@ -103,6 +108,9 @@ func (r *APIProductDocumentResource) Schema(ctx context.Context, req resource.Sc
 			"title": schema.StringAttribute{
 				Required:    true,
 				Description: `document title`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtLeast(1),
+				},
 			},
 			"updated_at": schema.StringAttribute{
 				Computed:    true,

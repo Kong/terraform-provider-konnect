@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -1102,6 +1103,9 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						Computed:    true,
 						Optional:    true,
 						Description: `The memcached port.`,
+						Validators: []validator.Int64{
+							int64validator.AtMost(65535),
+						},
 					},
 					"session_memcached_prefix": schema.StringAttribute{
 						Computed:    true,
@@ -1132,6 +1136,9 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 									Computed:    true,
 									Optional:    true,
 									Description: `An integer representing a port number between 0 and 65535, inclusive.`,
+									Validators: []validator.Int64{
+										int64validator.AtMost(65535),
+									},
 								},
 							},
 						},
@@ -1156,6 +1163,9 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						Computed:    true,
 						Optional:    true,
 						Description: `The Redis port.`,
+						Validators: []validator.Int64{
+							int64validator.AtMost(65535),
+						},
 					},
 					"session_redis_prefix": schema.StringAttribute{
 						Computed:    true,

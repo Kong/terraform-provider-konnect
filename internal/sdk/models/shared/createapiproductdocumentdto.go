@@ -8,10 +8,6 @@ type Metadata struct {
 
 // CreateAPIProductDocumentDTO - a document payload
 type CreateAPIProductDocumentDTO struct {
-	// Can be markdown string content or base64 encoded string
-	Content *string `json:"content,omitempty"`
-	// metadata of the document
-	Metadata *Metadata `json:"metadata,omitempty"`
 	// parent document id
 	ParentDocumentID *string `json:"parent_document_id,omitempty"`
 	// document slug. must be unique accross documents belonging to an api product
@@ -20,20 +16,10 @@ type CreateAPIProductDocumentDTO struct {
 	Status PublishStatus `json:"status"`
 	// document title
 	Title string `json:"title"`
-}
-
-func (o *CreateAPIProductDocumentDTO) GetContent() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Content
-}
-
-func (o *CreateAPIProductDocumentDTO) GetMetadata() *Metadata {
-	if o == nil {
-		return nil
-	}
-	return o.Metadata
+	// Can be markdown string content or base64 encoded string
+	Content *string `json:"content,omitempty"`
+	// metadata of the document
+	Metadata *Metadata `json:"metadata,omitempty"`
 }
 
 func (o *CreateAPIProductDocumentDTO) GetParentDocumentID() *string {
@@ -62,4 +48,18 @@ func (o *CreateAPIProductDocumentDTO) GetTitle() string {
 		return ""
 	}
 	return o.Title
+}
+
+func (o *CreateAPIProductDocumentDTO) GetContent() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Content
+}
+
+func (o *CreateAPIProductDocumentDTO) GetMetadata() *Metadata {
+	if o == nil {
+		return nil
+	}
+	return o.Metadata
 }

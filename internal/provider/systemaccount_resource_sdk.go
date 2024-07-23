@@ -9,6 +9,7 @@ import (
 )
 
 func (r *SystemAccountResourceModel) ToSharedCreateSystemAccount() *shared.CreateSystemAccount {
+	name := r.Name.ValueString()
 	description := r.Description.ValueString()
 	konnectManaged := new(bool)
 	if !r.KonnectManaged.IsUnknown() && !r.KonnectManaged.IsNull() {
@@ -16,11 +17,10 @@ func (r *SystemAccountResourceModel) ToSharedCreateSystemAccount() *shared.Creat
 	} else {
 		konnectManaged = nil
 	}
-	name := r.Name.ValueString()
 	out := shared.CreateSystemAccount{
+		Name:           name,
 		Description:    description,
 		KonnectManaged: konnectManaged,
-		Name:           name,
 	}
 	return &out
 }
@@ -45,21 +45,21 @@ func (r *SystemAccountResourceModel) RefreshFromSharedSystemAccount(resp *shared
 }
 
 func (r *SystemAccountResourceModel) ToSharedUpdateSystemAccount() *shared.UpdateSystemAccount {
-	description := new(string)
-	if !r.Description.IsUnknown() && !r.Description.IsNull() {
-		*description = r.Description.ValueString()
-	} else {
-		description = nil
-	}
 	name := new(string)
 	if !r.Name.IsUnknown() && !r.Name.IsNull() {
 		*name = r.Name.ValueString()
 	} else {
 		name = nil
 	}
+	description := new(string)
+	if !r.Description.IsUnknown() && !r.Description.IsNull() {
+		*description = r.Description.ValueString()
+	} else {
+		description = nil
+	}
 	out := shared.UpdateSystemAccount{
-		Description: description,
 		Name:        name,
+		Description: description,
 	}
 	return &out
 }

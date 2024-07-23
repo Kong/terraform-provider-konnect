@@ -4,12 +4,12 @@ package shared
 
 type AddUserToTeam struct {
 	// The user ID for the user being added to a team.
-	UserID *string `json:"id,omitempty"`
+	UserID string `json:"id"`
 }
 
-func (o *AddUserToTeam) GetUserID() *string {
+func (o *AddUserToTeam) GetUserID() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.UserID
 }

@@ -6,6 +6,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
+	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
@@ -86,11 +87,17 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				Computed:    true,
 				Optional:    true,
 				Description: `The custom domain to access a self-hosted customized developer portal client. If this is set, the Konnect-hosted portal will no longer be available.  ` + "`" + `custom_domain` + "`" + ` must be also set for this value to be set. See https://github.com/Kong/konnect-portal for information on how to get started deploying and customizing your own Konnect portal.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
 			},
 			"custom_domain": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
 				Description: `The custom domain to access the developer portal. A CNAME for the portal's default domain must be able to be set for the custom domain for it to be valid. After setting a valid CNAME, an SSL/TLS certificate will be automatically manged for the custom domain, and traffic will be able to use the custom domain to route to the portal's web client and API.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
 			},
 			"default_application_auth_strategy_id": schema.StringAttribute{
 				Computed:    true,
@@ -105,6 +112,9 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				Computed:    true,
 				Optional:    true,
 				Description: `The description of the portal.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(512),
+				},
 			},
 			"developer_count": schema.NumberAttribute{
 				Computed:    true,
@@ -114,6 +124,9 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				Computed:    true,
 				Optional:    true,
 				Description: `The display name of the portal. This value will be the portal's ` + "`" + `name` + "`" + ` in Portal API.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthBetween(1, 255),
+				},
 			},
 			"force": schema.StringAttribute{
 				Computed:    true,
@@ -140,14 +153,17 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
-				MarkdownDescription: `description: A maximum of 50 user-defined labels are allowed on this resource.` + "\n" +
-					`Keys must not start with kong, konnect, insomnia, mesh, kic or _, which are reserved for Kong.` + "\n" +
-					`Keys are case-sensitive.` + "\n" +
+				MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
+					`` + "\n" +
+					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".` + "\n" +
 					``,
 			},
 			"name": schema.StringAttribute{
 				Required:    true,
 				Description: `The name of the portal, used to distinguish it from other portals. Name must be unique.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthBetween(1, 255),
+				},
 			},
 			"published_product_count": schema.NumberAttribute{
 				Computed:    true,
@@ -253,7 +269,35 @@ func (r *PortalResource) Read(ctx context.Context, req resource.ReadRequest, res
 		return
 	}
 
-	// Not Implemented; we rely entirely on CREATE API request response
+	portalID := data.ID.ValueString()
+	request := operations.GetPortalRequest{
+		PortalID: portalID,
+	}
+	res, err := r.client.Portals.GetPortal(ctx, request)
+	if err != nil {
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res != nil && res.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
+		}
+		return
+	}
+	if res == nil {
+		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
+		return
+	}
+	if res.StatusCode == 404 {
+		resp.State.RemoveResource(ctx)
+		return
+	}
+	if res.StatusCode != 200 {
+		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
+		return
+	}
+	if !(res.GetPortalResponse != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
+		return
+	}
+	data.RefreshFromSharedGetPortalResponse(res.GetPortalResponse)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -355,5 +399,5 @@ func (r *PortalResource) Delete(ctx context.Context, req resource.DeleteRequest,
 }
 
 func (r *PortalResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	resp.Diagnostics.AddError("Not Implemented", "No available import state operation is available for resource portal.")
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), req.ID)...)
 }

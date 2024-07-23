@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/mapvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -78,6 +79,9 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 						Computed:    true,
 						Optional:    true,
 						Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
+						Validators: []validator.Int64{
+							int64validator.AtMost(2147483646),
+						},
 					},
 					"endpoint": schema.StringAttribute{
 						Computed:    true,
@@ -171,6 +175,9 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 								Computed:    true,
 								Optional:    true,
 								Description: `Maximum number of entries that can be processed at a time.`,
+								Validators: []validator.Int64{
+									int64validator.Between(1, 1000000),
+								},
 							},
 							"max_bytes": schema.Int64Attribute{
 								Computed:    true,
@@ -186,6 +193,9 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 								Computed:    true,
 								Optional:    true,
 								Description: `Maximum number of entries that can be waiting on the queue.`,
+								Validators: []validator.Int64{
+									int64validator.Between(1, 1000000),
+								},
 							},
 							"max_retry_delay": schema.NumberAttribute{
 								Computed:    true,
@@ -203,6 +213,9 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 						Computed:    true,
 						Optional:    true,
 						Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
+						Validators: []validator.Int64{
+							int64validator.AtMost(2147483646),
+						},
 					},
 					"resource_attributes": schema.MapAttribute{
 						Computed:    true,
@@ -221,6 +234,9 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 						Computed:    true,
 						Optional:    true,
 						Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
+						Validators: []validator.Int64{
+							int64validator.AtMost(2147483646),
+						},
 					},
 				},
 			},

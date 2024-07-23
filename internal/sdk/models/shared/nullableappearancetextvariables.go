@@ -3,15 +3,8 @@
 package shared
 
 type Catalog struct {
-	PrimaryHeader  string `json:"primary_header"`
 	WelcomeMessage string `json:"welcome_message"`
-}
-
-func (o *Catalog) GetPrimaryHeader() string {
-	if o == nil {
-		return ""
-	}
-	return o.PrimaryHeader
+	PrimaryHeader  string `json:"primary_header"`
 }
 
 func (o *Catalog) GetWelcomeMessage() string {
@@ -19,6 +12,13 @@ func (o *Catalog) GetWelcomeMessage() string {
 		return ""
 	}
 	return o.WelcomeMessage
+}
+
+func (o *Catalog) GetPrimaryHeader() string {
+	if o == nil {
+		return ""
+	}
+	return o.PrimaryHeader
 }
 
 // NullableAppearanceTextVariables - Values to display for customizable text in the portal user interface

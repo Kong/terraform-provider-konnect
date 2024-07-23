@@ -9,8 +9,6 @@ import (
 )
 
 func (r *ServerlessCloudGatewayResourceModel) ToSharedCreateServerlessCloudGatewayRequest() *shared.CreateServerlessCloudGatewayRequest {
-	clusterCert := r.ClusterCert.ValueString()
-	clusterCertKey := r.ClusterCertKey.ValueString()
 	id := r.ControlPlane.ID.ValueString()
 	prefix := r.ControlPlane.Prefix.ValueString()
 	region := shared.CpRegion(r.ControlPlane.Region.ValueString())
@@ -19,15 +17,17 @@ func (r *ServerlessCloudGatewayResourceModel) ToSharedCreateServerlessCloudGatew
 		Prefix: prefix,
 		Region: region,
 	}
+	clusterCert := r.ClusterCert.ValueString()
+	clusterCertKey := r.ClusterCertKey.ValueString()
 	labels := make(map[string]string)
 	for labelsKey, labelsValue := range r.Labels {
 		labelsInst := labelsValue.ValueString()
 		labels[labelsKey] = labelsInst
 	}
 	out := shared.CreateServerlessCloudGatewayRequest{
+		ControlPlane:   controlPlane,
 		ClusterCert:    clusterCert,
 		ClusterCertKey: clusterCertKey,
-		ControlPlane:   controlPlane,
 		Labels:         labels,
 	}
 	return &out

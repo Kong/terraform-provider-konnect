@@ -6,14 +6,14 @@ package shared
 type PortalAuthenticationSettingsResponse struct {
 	// The organization has basic auth enabled.
 	BasicAuthEnabled bool `json:"basic_auth_enabled"`
-	// A Konnect Identity Admin assigns teams to a developer.
-	KonnectMappingEnabled bool `json:"konnect_mapping_enabled"`
 	// The organization has OIDC disabled.
 	OidcAuthEnabled bool `json:"oidc_auth_enabled"`
-	// Configuration properties for an OpenID Connect Identity Provider.
-	OidcConfig *PortalOIDCConfig `json:"oidc_config,omitempty"`
 	// IdP groups determine the Portal Teams a developer has.
 	OidcTeamMappingEnabled bool `json:"oidc_team_mapping_enabled"`
+	// A Konnect Identity Admin assigns teams to a developer.
+	KonnectMappingEnabled bool `json:"konnect_mapping_enabled"`
+	// Configuration properties for an OpenID Connect Identity Provider.
+	OidcConfig *PortalOIDCConfig `json:"oidc_config,omitempty"`
 }
 
 func (o *PortalAuthenticationSettingsResponse) GetBasicAuthEnabled() bool {
@@ -23,13 +23,6 @@ func (o *PortalAuthenticationSettingsResponse) GetBasicAuthEnabled() bool {
 	return o.BasicAuthEnabled
 }
 
-func (o *PortalAuthenticationSettingsResponse) GetKonnectMappingEnabled() bool {
-	if o == nil {
-		return false
-	}
-	return o.KonnectMappingEnabled
-}
-
 func (o *PortalAuthenticationSettingsResponse) GetOidcAuthEnabled() bool {
 	if o == nil {
 		return false
@@ -37,16 +30,23 @@ func (o *PortalAuthenticationSettingsResponse) GetOidcAuthEnabled() bool {
 	return o.OidcAuthEnabled
 }
 
-func (o *PortalAuthenticationSettingsResponse) GetOidcConfig() *PortalOIDCConfig {
-	if o == nil {
-		return nil
-	}
-	return o.OidcConfig
-}
-
 func (o *PortalAuthenticationSettingsResponse) GetOidcTeamMappingEnabled() bool {
 	if o == nil {
 		return false
 	}
 	return o.OidcTeamMappingEnabled
+}
+
+func (o *PortalAuthenticationSettingsResponse) GetKonnectMappingEnabled() bool {
+	if o == nil {
+		return false
+	}
+	return o.KonnectMappingEnabled
+}
+
+func (o *PortalAuthenticationSettingsResponse) GetOidcConfig() *PortalOIDCConfig {
+	if o == nil {
+		return nil
+	}
+	return o.OidcConfig
 }

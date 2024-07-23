@@ -1,18 +1,18 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 67dbf5ff60c085b72d7bc16cc14be905
+  docChecksum: fcbed672c3b8c36fe93152e7be92405a
   docVersion: 2.0.0
-  speakeasyVersion: 1.331.0
-  generationVersion: 2.365.0
-  releaseVersion: 0.6.0
-  configChecksum: b90325a04436ae9f0474e5f91c43631a
+  speakeasyVersion: 1.345.3
+  generationVersion: 2.378.3
+  releaseVersion: 0.6.1
+  configChecksum: 73fbbfb1cda7882100f3c4d13e1c94bd
 features:
   terraform:
     additionalDependencies: 0.1.0
     additionalProperties: 0.1.2
     constsAndDefaults: 0.1.4
-    core: 3.23.5
+    core: 3.24.2
     deprecations: 2.81.1
     globalSecurity: 2.81.6
     globalServerURLs: 2.82.1
@@ -177,10 +177,6 @@ generatedFiles:
   - internal/sdk/models/operations/getpluginschema.go
   - internal/sdk/models/operations/updatepluginschemas.go
   - internal/sdk/models/operations/deletepluginschemas.go
-  - internal/sdk/models/operations/createplugin.go
-  - internal/sdk/models/operations/getplugin.go
-  - internal/sdk/models/operations/upsertplugin.go
-  - internal/sdk/models/operations/deleteplugin.go
   - internal/sdk/models/operations/getaclplugin.go
   - internal/sdk/models/operations/updateaclplugin.go
   - internal/sdk/models/operations/deleteaclplugin.go
@@ -309,6 +305,7 @@ generatedFiles:
   - internal/sdk/models/operations/createresponsetransformeradvancedplugin.go
   - internal/sdk/models/operations/createsamlplugin.go
   - internal/sdk/models/operations/createstatsdplugin.go
+  - internal/sdk/models/operations/fetchpluginschema.go
   - internal/sdk/models/operations/createroute.go
   - internal/sdk/models/operations/getroute.go
   - internal/sdk/models/operations/upsertroute.go
@@ -339,6 +336,7 @@ generatedFiles:
   - internal/sdk/models/operations/postcontrolplanesidgroupmembershipsremove.go
   - internal/sdk/models/operations/listportals.go
   - internal/sdk/models/operations/createportal.go
+  - internal/sdk/models/operations/getportal.go
   - internal/sdk/models/operations/updateportal.go
   - internal/sdk/models/operations/deleteportal.go
   - internal/sdk/models/operations/getportalappearance.go
@@ -397,8 +395,8 @@ generatedFiles:
   - internal/sdk/models/shared/updateapiproductdocumentdto.go
   - internal/sdk/models/shared/apiproductversion.go
   - internal/sdk/models/shared/apiproductversionportal.go
-  - internal/sdk/models/shared/apiproductversionpublishstatus.go
   - internal/sdk/models/shared/apiproductversionauthstrategy.go
+  - internal/sdk/models/shared/apiproductversionpublishstatus.go
   - internal/sdk/models/shared/authstrategysyncerror.go
   - internal/sdk/models/shared/createapiproductversiondto.go
   - internal/sdk/models/shared/gatewayservicepayload.go
@@ -417,14 +415,14 @@ generatedFiles:
   - internal/sdk/models/shared/updateappauthstrategyrequest.go
   - internal/sdk/models/shared/partialappauthstrategyconfigopenidconnect.go
   - internal/sdk/models/shared/configurationmanifest.go
+  - internal/sdk/models/shared/controlplanegeo.go
   - internal/sdk/models/shared/configurationdataplanegroup.go
-  - internal/sdk/models/shared/providername.go
   - internal/sdk/models/shared/configurationdataplanegroupautoscale.go
   - internal/sdk/models/shared/configurationdataplanegroupautoscalestatic.go
   - internal/sdk/models/shared/instancetypename.go
   - internal/sdk/models/shared/configurationdataplanegroupautoscaleautopilot.go
+  - internal/sdk/models/shared/providername.go
   - internal/sdk/models/shared/configurationdataplanegroupconfig.go
-  - internal/sdk/models/shared/controlplanegeo.go
   - internal/sdk/models/shared/apiaccess.go
   - internal/sdk/models/shared/createconfigurationrequest.go
   - internal/sdk/models/shared/createconfigurationdataplanegroup.go
@@ -432,21 +430,21 @@ generatedFiles:
   - internal/sdk/models/shared/customdomainstate.go
   - internal/sdk/models/shared/createcustomdomainrequest.go
   - internal/sdk/models/shared/network.go
-  - internal/sdk/models/shared/networkstate.go
   - internal/sdk/models/shared/networkprovidermetadata.go
+  - internal/sdk/models/shared/networkstate.go
   - internal/sdk/models/shared/networkfirewallconfig.go
   - internal/sdk/models/shared/createnetworkrequest.go
   - internal/sdk/models/shared/patchnetworkrequest.go
   - internal/sdk/models/shared/transitgateway.go
-  - internal/sdk/models/shared/transitgatewayattachmentconfig.go
-  - internal/sdk/models/shared/awstransitgatewayattachmentconfig.go
   - internal/sdk/models/shared/transitgatewaystate.go
   - internal/sdk/models/shared/transitgatewaydnsconfig.go
+  - internal/sdk/models/shared/transitgatewayattachmentconfig.go
+  - internal/sdk/models/shared/awstransitgatewayattachmentconfig.go
   - internal/sdk/models/shared/createtransitgatewayrequest.go
   - internal/sdk/models/shared/listprovideraccountsresponse.go
+  - internal/sdk/models/shared/provideraccount.go
   - internal/sdk/models/shared/paginatedmeta.go
   - internal/sdk/models/shared/pagemeta.go
-  - internal/sdk/models/shared/provideraccount.go
   - internal/sdk/models/shared/serviceunavailable.go
   - internal/sdk/models/shared/internalservererror.go
   - internal/sdk/models/shared/controlplane.go
@@ -478,7 +476,6 @@ generatedFiles:
   - internal/sdk/models/shared/key.go
   - internal/sdk/models/shared/pluginschemas.go
   - internal/sdk/models/shared/createpluginschemas.go
-  - internal/sdk/models/shared/plugin.go
   - internal/sdk/models/shared/aclplugin.go
   - internal/sdk/models/shared/createaclplugin.go
   - internal/sdk/models/shared/aipromptdecoratorplugin.go
@@ -558,18 +555,19 @@ generatedFiles:
   - internal/sdk/models/shared/portal.go
   - internal/sdk/models/shared/createportalresponse.go
   - internal/sdk/models/shared/createportalrequest.go
+  - internal/sdk/models/shared/getportalresponse.go
   - internal/sdk/models/shared/updateportalresponse.go
   - internal/sdk/models/shared/updateportalrequest.go
   - internal/sdk/models/shared/getportalappearanceresponse.go
-  - internal/sdk/models/shared/portaltheme.go
-  - internal/sdk/models/shared/nullableappearancetextvariables.go
   - internal/sdk/models/shared/appearanceimages.go
   - internal/sdk/models/shared/appearanceimage.go
+  - internal/sdk/models/shared/nullableappearancetextvariables.go
+  - internal/sdk/models/shared/nullableappearancefonts.go
+  - internal/sdk/models/shared/appearancefontname.go
   - internal/sdk/models/shared/nullableappearancethemevariables.go
   - internal/sdk/models/shared/appearancethemecolorvariables.go
   - internal/sdk/models/shared/appearancecolorvariable.go
-  - internal/sdk/models/shared/nullableappearancefonts.go
-  - internal/sdk/models/shared/appearancefontname.go
+  - internal/sdk/models/shared/portaltheme.go
   - internal/sdk/models/shared/updateportalappearanceresponse.go
   - internal/sdk/models/shared/updateportalappearancerequest.go
   - internal/sdk/models/shared/portalauthenticationsettingsresponse.go
@@ -577,10 +575,10 @@ generatedFiles:
   - internal/sdk/models/shared/portalclaimmappings.go
   - internal/sdk/models/shared/portalauthenticationsettingsupdaterequest.go
   - internal/sdk/models/shared/portalproductversion.go
-  - internal/sdk/models/shared/portalproductversionpublishstatus.go
   - internal/sdk/models/shared/authstrategy.go
   - internal/sdk/models/shared/authstrategykeyauth.go
   - internal/sdk/models/shared/authstrategyclientcredentials.go
+  - internal/sdk/models/shared/portalproductversionpublishstatus.go
   - internal/sdk/models/shared/replaceportalproductversionpayload.go
   - internal/sdk/models/shared/systemaccount.go
   - internal/sdk/models/shared/createsystemaccount.go
@@ -602,6 +600,7 @@ generatedFiles:
   - internal/sdk/.gitattributes
   - internal/sdk/internal/hooks/registration.go
   - internal/sdk/internal/hooks/hooks.go
+  - internal/sdk/CONTRIBUTING.md
   - examples/README.md
   - go.mod
   - go.sum
@@ -866,10 +865,6 @@ generatedFiles:
   - internal/provider/gatewaykeyset_resource.go
   - internal/provider/gatewaykeyset_resource_sdk.go
   - examples/resources/konnect_gateway_key_set/resource.tf
-  - examples/resources/konnect_gateway_plugin/import.sh
-  - internal/provider/gatewayplugin_resource.go
-  - internal/provider/gatewayplugin_resource_sdk.go
-  - examples/resources/konnect_gateway_plugin/resource.tf
   - examples/resources/konnect_gateway_plugin_acl/import.sh
   - internal/provider/gatewaypluginacl_resource.go
   - internal/provider/gatewaypluginacl_resource_sdk.go
@@ -1026,6 +1021,7 @@ generatedFiles:
   - internal/provider/meshcontrolplane_resource.go
   - internal/provider/meshcontrolplane_resource_sdk.go
   - examples/resources/konnect_mesh_control_plane/resource.tf
+  - examples/resources/konnect_portal/import.sh
   - internal/provider/portal_resource.go
   - internal/provider/portal_resource_sdk.go
   - examples/resources/konnect_portal/resource.tf
@@ -1141,9 +1137,6 @@ generatedFiles:
   - internal/provider/gatewaykeyset_data_source.go
   - internal/provider/gatewaykeyset_data_source_sdk.go
   - examples/data-sources/konnect_gateway_key_set/data-source.tf
-  - internal/provider/gatewayplugin_data_source.go
-  - internal/provider/gatewayplugin_data_source_sdk.go
-  - examples/data-sources/konnect_gateway_plugin/data-source.tf
   - internal/provider/gatewaypluginacl_data_source.go
   - internal/provider/gatewaypluginacl_data_source_sdk.go
   - examples/data-sources/konnect_gateway_plugin_acl/data-source.tf
@@ -1261,6 +1254,9 @@ generatedFiles:
   - internal/provider/meshcontrolplane_data_source.go
   - internal/provider/meshcontrolplane_data_source_sdk.go
   - examples/data-sources/konnect_mesh_control_plane/data-source.tf
+  - internal/provider/portal_data_source.go
+  - internal/provider/portal_data_source_sdk.go
+  - examples/data-sources/konnect_portal/data-source.tf
   - internal/provider/portalappearance_data_source.go
   - internal/provider/portalappearance_data_source_sdk.go
   - examples/data-sources/konnect_portal_appearance/data-source.tf

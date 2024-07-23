@@ -39,31 +39,17 @@ func (e *CreateAPIProductVersionDTOPublishStatus) UnmarshalJSON(data []byte) err
 // CreateAPIProductVersionDTO - The request schema to create a version of an API product.
 // Note that the `publish_status` and `deprecated` fields are deprecated:  Use [PortalProductVersion.publish_status](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version) instead.
 type CreateAPIProductVersionDTO struct {
-	// Indicates if the version of the API product is deprecated. Applies deprecation or removes deprecation from all related portal product versions. This field is deprecated: Use [PortalProductVersion.deprecated](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version) instead.
-	//
-	// Deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
-	Deprecated     *bool                  `json:"deprecated,omitempty"`
-	GatewayService *GatewayServicePayload `json:"gateway_service,omitempty"`
 	// The version name of the API product version.
 	Name string `json:"name"`
 	// The publish status of the API product version. Applies publish status to all related portal product versions. This field is deprecated: Use [PortalProductVersion.publish_status](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version) instead.
 	//
 	// Deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
 	PublishStatus *CreateAPIProductVersionDTOPublishStatus `json:"publish_status,omitempty"`
-}
-
-func (o *CreateAPIProductVersionDTO) GetDeprecated() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.Deprecated
-}
-
-func (o *CreateAPIProductVersionDTO) GetGatewayService() *GatewayServicePayload {
-	if o == nil {
-		return nil
-	}
-	return o.GatewayService
+	// Indicates if the version of the API product is deprecated. Applies deprecation or removes deprecation from all related portal product versions. This field is deprecated: Use [PortalProductVersion.deprecated](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version) instead.
+	//
+	// Deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
+	Deprecated     *bool                  `json:"deprecated,omitempty"`
+	GatewayService *GatewayServicePayload `json:"gateway_service,omitempty"`
 }
 
 func (o *CreateAPIProductVersionDTO) GetName() string {
@@ -78,4 +64,18 @@ func (o *CreateAPIProductVersionDTO) GetPublishStatus() *CreateAPIProductVersion
 		return nil
 	}
 	return o.PublishStatus
+}
+
+func (o *CreateAPIProductVersionDTO) GetDeprecated() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Deprecated
+}
+
+func (o *CreateAPIProductVersionDTO) GetGatewayService() *GatewayServicePayload {
+	if o == nil {
+		return nil
+	}
+	return o.GatewayService
 }

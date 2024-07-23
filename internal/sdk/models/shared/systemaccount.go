@@ -9,18 +9,18 @@ import (
 
 // SystemAccount - Schema of the system account.
 type SystemAccount struct {
-	// Timestamp of when the system account was created.
-	CreatedAt *time.Time `json:"created_at,omitempty"`
-	// Description of the system account.
-	Description *string `json:"description,omitempty"`
 	// ID of the system account.
 	ID *string `json:"id,omitempty"`
-	// The system account is managed by Konnect (true/false).
-	KonnectManaged *bool `json:"konnect_managed,omitempty"`
 	// Name of the system account.
 	Name *string `json:"name,omitempty"`
+	// Description of the system account.
+	Description *string `json:"description,omitempty"`
+	// Timestamp of when the system account was created.
+	CreatedAt *time.Time `json:"created_at,omitempty"`
 	// Timestamp of when the system account was last updated.
 	UpdatedAt *time.Time `json:"updated_at,omitempty"`
+	// The system account is managed by Konnect (true/false).
+	KonnectManaged *bool `json:"konnect_managed,omitempty"`
 }
 
 func (s SystemAccount) MarshalJSON() ([]byte, error) {
@@ -34,32 +34,11 @@ func (s *SystemAccount) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *SystemAccount) GetCreatedAt() *time.Time {
-	if o == nil {
-		return nil
-	}
-	return o.CreatedAt
-}
-
-func (o *SystemAccount) GetDescription() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Description
-}
-
 func (o *SystemAccount) GetID() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ID
-}
-
-func (o *SystemAccount) GetKonnectManaged() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.KonnectManaged
 }
 
 func (o *SystemAccount) GetName() *string {
@@ -69,9 +48,30 @@ func (o *SystemAccount) GetName() *string {
 	return o.Name
 }
 
+func (o *SystemAccount) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *SystemAccount) GetCreatedAt() *time.Time {
+	if o == nil {
+		return nil
+	}
+	return o.CreatedAt
+}
+
 func (o *SystemAccount) GetUpdatedAt() *time.Time {
 	if o == nil {
 		return nil
 	}
 	return o.UpdatedAt
+}
+
+func (o *SystemAccount) GetKonnectManaged() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.KonnectManaged
 }
