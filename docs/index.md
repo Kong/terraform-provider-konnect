@@ -19,5 +19,5 @@ Konnect API: The Konnect platform API
 
 - `konnect_access_token` (String, Sensitive)
 - `personal_access_token` (String, Sensitive)
-- `server_url` (String) Server URL (defaults to https://us.api.konghq.com)
+- `server_url` (String) Server URL (defaults to https://global.api.konghq.com)
 - `system_account_access_token` (String, Sensitive)
