@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.6.2
+> Released on 2024/07/24
+
+### Features
+* Add the ability for the Kong team to use the provider against development environments
+
+### Bug fixes
+* Generate up to date documentation
+
 ## 0.6.1
 > Released on 2024/07/23
 
