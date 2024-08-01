@@ -1,8 +1,8 @@
 openapi: 3.0.2
 info:
-  title: Konnect API Requests
+  title: Konnect API Request Analytics
   version: 2.0.0
-  description: The API for querying API Requests.
+  description: The API to query detailed records for every API request proxied by Kong
   contact:
     name: Kong
     url: 'https://cloud.konghq.com'
@@ -16,7 +16,6 @@ servers:
 paths:
   /api-requests:
     post:
-      x-unstable: true
       summary: Query API Requests
       operationId: query-requests
       description: Returns API requests that were proxied through the Kong Gateway.

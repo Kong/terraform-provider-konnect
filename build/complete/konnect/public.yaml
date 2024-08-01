@@ -852,11 +852,7 @@ paths:
     post:
       summary: Query API Requests
       operationId: query-requests
-      description: |-
-        **Pre-release Endpoint**
-        This endpoint is currently in beta and is subject to change.
-
-        Returns API requests that were proxied through the Kong Gateway.
+      description: Returns API requests that were proxied through the Kong Gateway.
       tags:
         - API Requests
       requestBody:
