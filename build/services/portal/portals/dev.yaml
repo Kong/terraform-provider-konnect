@@ -206,6 +206,7 @@ components:
                     title: Home
                     path: /
                     public: true
+                    description: Welcome page
                     created_at: '2021-09-01T00:00:00Z'
                     updated_at: '2021-09-01T00:00:00Z'
                 meta:
@@ -267,6 +268,10 @@ components:
         to authenticated users.
       type: boolean
       example: true
+    PageDescription:
+      title: PageDescription
+      type: string
+      example: A custom page about developer portals
     ListPortalPages:
       title: List Portal Pages
       description: A paginated list of pages for the portal
@@ -293,6 +298,8 @@ components:
           $ref: '#/components/schemas/PageTitle'
         public:
           $ref: '#/components/schemas/PagePublicStatus'
+        description:
+          $ref: '#/components/schemas/PageDescription'
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -320,6 +327,8 @@ components:
           $ref: '#/components/schemas/PageContent'
         public:
           $ref: '#/components/schemas/PagePublicStatus'
+        description:
+          $ref: '#/components/schemas/PageDescription'
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:

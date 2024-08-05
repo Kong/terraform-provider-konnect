@@ -2153,6 +2153,7 @@ components:
           Welcome to the Getting Started page. This is where you can learn how
           to use our APIs.
         public: true
+        published: true
     UpdatePortalPageExample1:
       value:
         title: About Us
@@ -2945,6 +2946,7 @@ components:
           Welcome to the home page of the portal. This is where you can find
           information about the portal and its products.
         public: true
+        published: true
         created_at: '2022-02-07T17:46:57.52Z'
         updated_at: '2022-10-08T17:00:00.52Z'
     ListPortalPagesExample1:
@@ -2959,6 +2961,8 @@ components:
             path: /
             title: Home
             public: true
+            published: true
+            description: 'A custom page'
             created_at: '2022-02-07T17:46:57.52Z'
             updated_at: '2022-10-08T17:00:00.52Z'
     VerifyPortalDomainsBadRequestExample1:
@@ -4334,9 +4338,19 @@ components:
       example: '# Welcome to My Page'
     PagePublicStatus:
       title: PagePublicStatus
-      description: Whether a page is publicly accessible to non-authenticated users.
+      description: Whether a page is publicly accessible to non-authenticated users. Defaults to false.
       type: boolean
       example: true
+    PagePublishStatus:
+      title: PagePublishStatus
+      description: Whether a page is visible on a given portal. Defaults to false.
+      type: boolean
+      example: true
+    PageDescription:
+      title: PageDescription
+      type: string
+      maxLength: 160
+      example: 'A custom page about developer portals'
     PagePublicStatusWithDefault:
       title: PagePublicStatusWithDefault
       description: Whether a page is publicly accessible to non-authenticated users.
@@ -4357,6 +4371,10 @@ components:
           $ref: '#/components/schemas/PageContent'
         public:
           $ref: '#/components/schemas/PagePublicStatus'
+        published:
+          $ref: '#/components/schemas/PagePublishStatus'
+        description:
+          $ref: '#/components/schemas/PageDescription'
     CreatePortalPageRequest:
       title: CreatePortalPageRequest
       description: Create a page in a portal.
@@ -4375,6 +4393,10 @@ components:
           $ref: '#/components/schemas/PageContent'
         public:
           $ref: '#/components/schemas/PagePublicStatusWithDefault'
+        published:
+          $ref: '#/components/schemas/PagePublishStatus'
+        description:
+          $ref: '#/components/schemas/PageDescription'
     PortalPageInfo:
       title: PortalPageInfo
       description: Information about a page in a portal.
@@ -4387,6 +4409,7 @@ components:
         - public
         - created_at
         - updated_at
+        - published
       properties:
         id:
           $ref: >-
@@ -4397,6 +4420,10 @@ components:
           $ref: '#/components/schemas/PageTitle'
         public:
           $ref: '#/components/schemas/PagePublicStatus'
+        published:
+          $ref: '#/components/schemas/PagePublishStatus'
+        description:
+          $ref: '#/components/schemas/PageDescription'
         created_at:
           $ref: >-
             ../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt
@@ -4414,6 +4441,7 @@ components:
         - title
         - content
         - public
+        - published
         - created_at
         - updated_at
       properties:
@@ -4428,6 +4456,8 @@ components:
           $ref: '#/components/schemas/PageContent'
         public:
           $ref: '#/components/schemas/PagePublicStatus'
+        published:
+          $ref: '#/components/schemas/PagePublishStatus'
         created_at:
           $ref: >-
             ../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt
@@ -4456,6 +4486,8 @@ components:
             path: /my-page
             title: My Page
             public: true
+            published: true
+            description: 'A custom page'
             created_at: '2021-01-01T00:00:00Z'
             updated_at: '2021-01-01T00:00:00Z'
         meta:
