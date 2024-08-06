@@ -4458,6 +4458,8 @@ components:
           $ref: '#/components/schemas/PagePublicStatus'
         published:
           $ref: '#/components/schemas/PagePublishStatus'
+        description:
+          $ref: '#/components/schemas/PageDescription'
         created_at:
           $ref: >-
             ../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt

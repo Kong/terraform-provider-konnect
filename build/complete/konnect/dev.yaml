@@ -3341,6 +3341,8 @@ components:
           $ref: '#/components/schemas/PagePublicStatus'
         published:
           $ref: '#/components/schemas/PagePublishStatus'
+        description:
+          $ref: '#/components/schemas/PageDescription'
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
