@@ -70,15 +70,6 @@ components:
             schema:
                 type: string
             x-speakeasy-name-override: consumer_id
-        ControlPlaneId:
-            description: The UUID of your control plane. This variable is available in the Konnect manager.
-            example: 9524ec7d-36d9-465d-a8c5-83a3c9390458
-            in: path
-            name: controlPlaneId
-            required: true
-            schema:
-                format: uuid
-                type: string
         HMACAuthId:
             description: ID of the HMAC-auth credential to lookup
             example: 70e7b00b-72f2-471b-a5ce-9c4171775360
@@ -3548,6 +3539,9 @@ components:
                 name:
                     const: opentelemetry
                     type: string
+        PaginationNextResponse:
+            description: URI to the next page (may be null)
+            type: string
         PaginationOffsetResponse:
             description: Offset is used to paginate through the API. Provide this value to the next list operation to fetch the next page
             type: string
@@ -5935,6 +5929,8 @@ paths:
                                         items:
                                             $ref: '#/components/schemas/ACL'
                                         type: array
+                                    next:
+                                        $ref: '#/components/schemas/PaginationNextResponse'
                                     offset:
                                         $ref: '#/components/schemas/PaginationOffsetResponse'
                                 type: object
@@ -5945,7 +5941,7 @@ paths:
             tags:
                 - ACLs
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
     /control-planes/{controlPlaneId}/core-entities/basic-auths:
         get:
             description: List all Basic-auth credentials
@@ -5964,6 +5960,8 @@ paths:
                                         items:
                                             $ref: '#/components/schemas/BasicAuth'
                                         type: array
+                                    next:
+                                        $ref: '#/components/schemas/PaginationNextResponse'
                                     offset:
                                         $ref: '#/components/schemas/PaginationOffsetResponse'
                                 type: object
@@ -5974,7 +5972,7 @@ paths:
             tags:
                 - Basic-auth credentials
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
     /control-planes/{controlPlaneId}/core-entities/ca_certificates:
         get:
             description: List all CA Certificates
@@ -5993,6 +5991,8 @@ paths:
                                         items:
                                             $ref: '#/components/schemas/CACertificate'
                                         type: array
+                                    next:
+                                        $ref: '#/components/schemas/PaginationNextResponse'
                                     offset:
                                         $ref: '#/components/schemas/PaginationOffsetResponse'
                                 type: object
@@ -6003,7 +6003,7 @@ paths:
             tags:
                 - CA Certificates
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         post:
             description: Create a new CA Certificate
             operationId: create-ca_certificate
@@ -6062,7 +6062,7 @@ paths:
             x-speakeasy-entity-operation: GatewayCACertificate#read
         parameters:
             - $ref: '#/components/parameters/CACertificateId'
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         put:
             description: Create or Update CA Certificate using ID.
             operationId: upsert-ca_certificate
@@ -6104,6 +6104,8 @@ paths:
                                         items:
                                             $ref: '#/components/schemas/Certificate'
                                         type: array
+                                    next:
+                                        $ref: '#/components/schemas/PaginationNextResponse'
                                     offset:
                                         $ref: '#/components/schemas/PaginationOffsetResponse'
                                 type: object
@@ -6114,7 +6116,7 @@ paths:
             tags:
                 - Certificates
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         post:
             description: Create a new Certificate
             operationId: create-certificate
@@ -6173,7 +6175,7 @@ paths:
             x-speakeasy-entity-operation: GatewayCertificate#read
         parameters:
             - $ref: '#/components/parameters/CertificateId'
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         put:
             description: Create or Update Certificate using ID.
             operationId: upsert-certificate
@@ -6216,6 +6218,8 @@ paths:
                                         items:
                                             $ref: '#/components/schemas/SNI'
                                         type: array
+                                    next:
+                                        $ref: '#/components/schemas/PaginationNextResponse'
                                     offset:
                                         $ref: '#/components/schemas/PaginationOffsetResponse'
                                 type: object
@@ -6224,7 +6228,7 @@ paths:
             tags:
                 - SNIs
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         post:
             description: Create a new SNI associated with a Certificate
             operationId: create-sni-with-certificate
@@ -6279,7 +6283,7 @@ paths:
             tags:
                 - SNIs
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         put:
             description: Create or Update an SNI associated with a Certificate using ID or name.
             operationId: upsert-sni-with-certificate
@@ -6321,6 +6325,8 @@ paths:
                                         items:
                                             $ref: '#/components/schemas/ConsumerGroup'
                                         type: array
+                                    next:
+                                        $ref: '#/components/schemas/PaginationNextResponse'
                                     offset:
                                         $ref: '#/components/schemas/PaginationOffsetResponse'
                                 type: object
@@ -6331,7 +6337,7 @@ paths:
             tags:
                 - Consumer Groups
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         post:
             description: Create a new Consumer Group
             operationId: create-consumer_group
@@ -6390,7 +6396,7 @@ paths:
             x-speakeasy-entity-operation: GatewayConsumerGroup#read
         parameters:
             - $ref: '#/components/parameters/ConsumerGroupId'
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         put:
             description: Create or Update Consumer Group using ID.
             operationId: upsert-consumer_group
@@ -6417,7 +6423,7 @@ paths:
     /control-planes/{controlPlaneId}/core-entities/consumer_groups/{ConsumerGroupId}/consumers:
         parameters:
             - $ref: '#/components/parameters/ConsumerGroupIdManageConsumers'
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         post:
             description: Add a consumer to a consumer group
             operationId: add-consumer-to-group
@@ -6467,7 +6473,7 @@ paths:
               required: true
               schema:
                 type: string
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
     /control-planes/{controlPlaneId}/core-entities/consumers:
         get:
             description: List all Consumers
@@ -6486,6 +6492,8 @@ paths:
                                         items:
                                             $ref: '#/components/schemas/Consumer'
                                         type: array
+                                    next:
+                                        $ref: '#/components/schemas/PaginationNextResponse'
                                     offset:
                                         $ref: '#/components/schemas/PaginationOffsetResponse'
                                 type: object
@@ -6496,7 +6504,7 @@ paths:
             tags:
                 - Consumers
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         post:
             description: Create a new Consumer
             operationId: create-consumer
@@ -6555,7 +6563,7 @@ paths:
             x-speakeasy-entity-operation: GatewayConsumer#read
         parameters:
             - $ref: '#/components/parameters/ConsumerId'
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         put:
             description: Create or Update Consumer using ID or username.
             operationId: upsert-consumer
@@ -6598,6 +6606,8 @@ paths:
                                         items:
                                             $ref: '#/components/schemas/ACL'
                                         type: array
+                                    next:
+                                        $ref: '#/components/schemas/PaginationNextResponse'
                                     offset:
                                         $ref: '#/components/schemas/PaginationOffsetResponse'
                                 type: object
@@ -6606,7 +6616,7 @@ paths:
             tags:
                 - ACLs
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         post:
             description: Create a new ACL associated with a Consumer
             operationId: create-acl-with-consumer
@@ -6664,7 +6674,7 @@ paths:
                 - ACLs
             x-speakeasy-entity-operation: GatewayACL#read
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         put:
             description: Create or Update an ACL associated with a Consumer using ID.
             operationId: upsert-acl-with-consumer
@@ -6707,6 +6717,8 @@ paths:
                                         items:
                                             $ref: '#/components/schemas/BasicAuth'
                                         type: array
+                                    next:
+                                        $ref: '#/components/schemas/PaginationNextResponse'
                                     offset:
                                         $ref: '#/components/schemas/PaginationOffsetResponse'
                                 type: object
@@ -6715,7 +6727,7 @@ paths:
             tags:
                 - Basic-auth credentials
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         post:
             description: Create a new Basic-auth credential associated with a Consumer
             operationId: create-basic-auth-with-consumer
@@ -6773,7 +6785,7 @@ paths:
                 - Basic-auth credentials
             x-speakeasy-entity-operation: GatewayBasicAuth#read
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         put:
             description: Create or Update a Basic-auth credential associated with a Consumer using ID.
             operationId: upsert-basic-auth-with-consumer
@@ -6816,6 +6828,8 @@ paths:
                                         items:
                                             $ref: '#/components/schemas/HMACAuth'
                                         type: array
+                                    next:
+                                        $ref: '#/components/schemas/PaginationNextResponse'
                                     offset:
                                         $ref: '#/components/schemas/PaginationOffsetResponse'
                                 type: object
@@ -6824,7 +6838,7 @@ paths:
             tags:
                 - HMAC-auth credentials
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         post:
             description: Create a new HMAC-auth credential associated with a Consumer
             operationId: create-hmac-auth-with-consumer
@@ -6882,7 +6896,7 @@ paths:
                 - HMAC-auth credentials
             x-speakeasy-entity-operation: GatewayHMACAuth#read
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         put:
             description: Create or Update a HMAC-auth credential associated with a Consumer using ID.
             operationId: upsert-hmac-auth-with-consumer
@@ -6925,6 +6939,8 @@ paths:
                                         items:
                                             $ref: '#/components/schemas/JWT'
                                         type: array
+                                    next:
+                                        $ref: '#/components/schemas/PaginationNextResponse'
                                     offset:
                                         $ref: '#/components/schemas/PaginationOffsetResponse'
                                 type: object
@@ -6933,7 +6949,7 @@ paths:
             tags:
                 - JWTs
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         post:
             description: Create a new JWT associated with a Consumer
             operationId: create-jwt-with-consumer
@@ -6991,7 +7007,7 @@ paths:
                 - JWTs
             x-speakeasy-entity-operation: GatewayJWT#read
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         put:
             description: Create or Update a JWT associated with a Consumer using ID.
             operationId: upsert-jwt-with-consumer
@@ -7034,6 +7050,8 @@ paths:
                                         items:
                                             $ref: '#/components/schemas/KeyAuth'
                                         type: array
+                                    next:
+                                        $ref: '#/components/schemas/PaginationNextResponse'
                                     offset:
                                         $ref: '#/components/schemas/PaginationOffsetResponse'
                                 type: object
@@ -7042,7 +7060,7 @@ paths:
             tags:
                 - API-keys
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         post:
             description: Create a new API-key associated with a Consumer
             operationId: create-key-auth-with-consumer
@@ -7100,7 +7118,7 @@ paths:
                 - API-keys
             x-speakeasy-entity-operation: GatewayKeyAuth#read
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         put:
             description: Create or Update an API-key associated with a Consumer using ID.
             operationId: upsert-key-auth-with-consumer
@@ -7142,6 +7160,8 @@ paths:
                                         items:
                                             $ref: '#/components/schemas/HMACAuth'
                                         type: array
+                                    next:
+                                        $ref: '#/components/schemas/PaginationNextResponse'
                                     offset:
                                         $ref: '#/components/schemas/PaginationOffsetResponse'
                                 type: object
@@ -7152,7 +7172,7 @@ paths:
             tags:
                 - HMAC-auth credentials
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
     /control-planes/{controlPlaneId}/core-entities/jwts:
         get:
             description: List all JWTs
@@ -7171,6 +7191,8 @@ paths:
                                         items:
                                             $ref: '#/components/schemas/JWT'
                                         type: array
+                                    next:
+                                        $ref: '#/components/schemas/PaginationNextResponse'
                                     offset:
                                         $ref: '#/components/schemas/PaginationOffsetResponse'
                                 type: object
@@ -7181,7 +7203,7 @@ paths:
             tags:
                 - JWTs
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
     /control-planes/{controlPlaneId}/core-entities/key-auths:
         get:
             description: List all API-keys
@@ -7200,6 +7222,8 @@ paths:
                                         items:
                                             $ref: '#/components/schemas/KeyAuth'
                                         type: array
+                                    next:
+                                        $ref: '#/components/schemas/PaginationNextResponse'
                                     offset:
                                         $ref: '#/components/schemas/PaginationOffsetResponse'
                                 type: object
@@ -7210,7 +7234,7 @@ paths:
             tags:
                 - API-keys
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
     /control-planes/{controlPlaneId}/core-entities/key-sets:
         get:
             description: List all KeySets
@@ -7229,6 +7253,8 @@ paths:
                                         items:
                                             $ref: '#/components/schemas/KeySet'
                                         type: array
+                                    next:
+                                        $ref: '#/components/schemas/PaginationNextResponse'
                                     offset:
                                         $ref: '#/components/schemas/PaginationOffsetResponse'
                                 type: object
@@ -7239,7 +7265,7 @@ paths:
             tags:
                 - KeySets
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         post:
             description: Create a new KeySet
             operationId: create-key-set
@@ -7298,7 +7324,7 @@ paths:
             x-speakeasy-entity-operation: GatewayKeySet#read
         parameters:
             - $ref: '#/components/parameters/KeySetId'
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         put:
             description: Create or Update KeySet using ID or name.
             operationId: upsert-key-set
@@ -7340,6 +7366,8 @@ paths:
                                         items:
                                             $ref: '#/components/schemas/Key'
                                         type: array
+                                    next:
+                                        $ref: '#/components/schemas/PaginationNextResponse'
                                     offset:
                                         $ref: '#/components/schemas/PaginationOffsetResponse'
                                 type: object
@@ -7350,7 +7378,7 @@ paths:
             tags:
                 - Keys
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         post:
             description: Create a new Key
             operationId: create-key
@@ -7409,7 +7437,7 @@ paths:
             x-speakeasy-entity-operation: GatewayKey#read
         parameters:
             - $ref: '#/components/parameters/KeyId'
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         put:
             description: Create or Update Key using ID or name.
             operationId: upsert-key
@@ -7451,6 +7479,8 @@ paths:
                                         items:
                                             $ref: '#/components/schemas/Plugin'
                                         type: array
+                                    next:
+                                        $ref: '#/components/schemas/PaginationNextResponse'
                                     offset:
                                         $ref: '#/components/schemas/PaginationOffsetResponse'
                                 type: object
@@ -7461,7 +7491,7 @@ paths:
             tags:
                 - Plugins
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         post:
             description: Create a new Plugin
             operationId: create-plugin
@@ -7484,10 +7514,9 @@ paths:
             summary: Create a new Plugin
             tags:
                 - Plugins
-            x-speakeasy-entity-operation: GatewayPlugin#create
     /control-planes/{controlPlaneId}/core-entities/plugins#ACL:
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         post:
             description: Create a ACL plugin
             operationId: create-acl-plugin
@@ -7511,7 +7540,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginACL#create
     /control-planes/{controlPlaneId}/core-entities/plugins#AIPromptDecorator:
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         post:
             description: Create a AIPromptDecorator plugin
             operationId: create-aipromptdecorator-plugin
@@ -7535,7 +7564,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginAIPromptDecorator#create
     /control-planes/{controlPlaneId}/core-entities/plugins#AIPromptGuard:
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         post:
             description: Create a AIPromptGuard plugin
             operationId: create-aipromptguard-plugin
@@ -7559,7 +7588,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginAIPromptGuard#create
     /control-planes/{controlPlaneId}/core-entities/plugins#AIPromptTemplate:
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         post:
             description: Create a AIPromptTemplate plugin
             operationId: create-aiprompttemplate-plugin
@@ -7583,7 +7612,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginAIPromptTemplate#create
     /control-planes/{controlPlaneId}/core-entities/plugins#AIProxy:
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         post:
             description: Create a AIProxy plugin
             operationId: create-aiproxy-plugin
@@ -7607,7 +7636,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginAIProxy#create
     /control-planes/{controlPlaneId}/core-entities/plugins#AWSLambda:
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         post:
             description: Create a AWSLambda plugin
             operationId: create-awslambda-plugin
@@ -7631,7 +7660,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginAWSLambda#create
     /control-planes/{controlPlaneId}/core-entities/plugins#BasicAuth:
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         post:
             description: Create a BasicAuth plugin
             operationId: create-basicauth-plugin
@@ -7655,7 +7684,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginBasicAuth#create
     /control-planes/{controlPlaneId}/core-entities/plugins#CORS:
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         post:
             description: Create a CORS plugin
             operationId: create-cors-plugin
@@ -7679,7 +7708,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginCORS#create
     /control-planes/{controlPlaneId}/core-entities/plugins#CorrelationId:
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         post:
             description: Create a CorrelationId plugin
             operationId: create-correlationid-plugin
@@ -7703,7 +7732,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginCorrelationId#create
     /control-planes/{controlPlaneId}/core-entities/plugins#ExitTransformer:
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         post:
             description: Create a ExitTransformer plugin
             operationId: create-exittransformer-plugin
@@ -7727,7 +7756,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginExitTransformer#create
     /control-planes/{controlPlaneId}/core-entities/plugins#FileLog:
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         post:
             description: Create a FileLog plugin
             operationId: create-filelog-plugin
@@ -7751,7 +7780,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginFileLog#create
     /control-planes/{controlPlaneId}/core-entities/plugins#IpRestriction:
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         post:
             description: Create a IpRestriction plugin
             operationId: create-iprestriction-plugin
@@ -7775,7 +7804,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginIpRestriction#create
     /control-planes/{controlPlaneId}/core-entities/plugins#JQ:
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         post:
             description: Create a JQ plugin
             operationId: create-jq-plugin
@@ -7799,7 +7828,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginJQ#create
     /control-planes/{controlPlaneId}/core-entities/plugins#JWT:
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         post:
             description: Create a JWT plugin
             operationId: create-jwt-plugin
@@ -7823,7 +7852,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginJWT#create
     /control-planes/{controlPlaneId}/core-entities/plugins#JWTSigner:
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         post:
             description: Create a JWTSigner plugin
             operationId: create-jwtsigner-plugin
@@ -7847,7 +7876,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginJWTSigner#create
     /control-planes/{controlPlaneId}/core-entities/plugins#KeyAuth:
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         post:
             description: Create a KeyAuth plugin
             operationId: create-keyauth-plugin
@@ -7871,7 +7900,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginKeyAuth#create
     /control-planes/{controlPlaneId}/core-entities/plugins#Oauth2:
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         post:
             description: Create a Oauth2 plugin
             operationId: create-oauth2-plugin
@@ -7895,7 +7924,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginOauth2#create
     /control-planes/{controlPlaneId}/core-entities/plugins#OpenidConnect:
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         post:
             description: Create a OpenidConnect plugin
             operationId: create-openidconnect-plugin
@@ -7919,7 +7948,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginOpenidConnect#create
     /control-planes/{controlPlaneId}/core-entities/plugins#Opentelemetry:
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         post:
             description: Create a Opentelemetry plugin
             operationId: create-opentelemetry-plugin
@@ -7943,7 +7972,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginOpentelemetry#create
     /control-planes/{controlPlaneId}/core-entities/plugins#PostFunction:
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         post:
             description: Create a PostFunction plugin
             operationId: create-postfunction-plugin
@@ -7967,7 +7996,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginPostFunction#create
     /control-planes/{controlPlaneId}/core-entities/plugins#PreFunction:
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         post:
             description: Create a PreFunction plugin
             operationId: create-prefunction-plugin
@@ -7991,7 +8020,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginPreFunction#create
     /control-planes/{controlPlaneId}/core-entities/plugins#Prometheus:
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         post:
             description: Create a Prometheus plugin
             operationId: create-prometheus-plugin
@@ -8015,7 +8044,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginPrometheus#create
     /control-planes/{controlPlaneId}/core-entities/plugins#ProxyCache:
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         post:
             description: Create a ProxyCache plugin
             operationId: create-proxycache-plugin
@@ -8039,7 +8068,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginProxyCache#create
     /control-planes/{controlPlaneId}/core-entities/plugins#RateLimiting:
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         post:
             description: Create a RateLimiting plugin
             operationId: create-ratelimiting-plugin
@@ -8063,7 +8092,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginRateLimiting#create
     /control-planes/{controlPlaneId}/core-entities/plugins#RateLimitingAdvanced:
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         post:
             description: Create a RateLimitingAdvanced plugin
             operationId: create-ratelimitingadvanced-plugin
@@ -8087,7 +8116,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginRateLimitingAdvanced#create
     /control-planes/{controlPlaneId}/core-entities/plugins#RequestTermination:
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         post:
             description: Create a RequestTermination plugin
             operationId: create-requesttermination-plugin
@@ -8111,7 +8140,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginRequestTermination#create
     /control-planes/{controlPlaneId}/core-entities/plugins#RequestTransformer:
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         post:
             description: Create a RequestTransformer plugin
             operationId: create-requesttransformer-plugin
@@ -8135,7 +8164,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginRequestTransformer#create
     /control-planes/{controlPlaneId}/core-entities/plugins#RequestTransformerAdvanced:
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         post:
             description: Create a RequestTransformerAdvanced plugin
             operationId: create-requesttransformeradvanced-plugin
@@ -8159,7 +8188,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginRequestTransformerAdvanced#create
     /control-planes/{controlPlaneId}/core-entities/plugins#ResponseTransformer:
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         post:
             description: Create a ResponseTransformer plugin
             operationId: create-responsetransformer-plugin
@@ -8183,7 +8212,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginResponseTransformer#create
     /control-planes/{controlPlaneId}/core-entities/plugins#ResponseTransformerAdvanced:
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         post:
             description: Create a ResponseTransformerAdvanced plugin
             operationId: create-responsetransformeradvanced-plugin
@@ -8207,7 +8236,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginResponseTransformerAdvanced#create
     /control-planes/{controlPlaneId}/core-entities/plugins#Saml:
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         post:
             description: Create a Saml plugin
             operationId: create-saml-plugin
@@ -8231,7 +8260,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginSaml#create
     /control-planes/{controlPlaneId}/core-entities/plugins#Statsd:
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         post:
             description: Create a Statsd plugin
             operationId: create-statsd-plugin
@@ -8267,7 +8296,6 @@ paths:
             summary: Delete a Plugin
             tags:
                 - Plugins
-            x-speakeasy-entity-operation: GatewayPlugin#delete
         get:
             description: Get a Plugin using ID.
             operationId: get-plugin
@@ -8285,10 +8313,9 @@ paths:
             summary: Fetch a Plugin
             tags:
                 - Plugins
-            x-speakeasy-entity-operation: GatewayPlugin#read
         parameters:
             - $ref: '#/components/parameters/PluginId'
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         put:
             description: Create or Update Plugin using ID.
             operationId: upsert-plugin
@@ -8311,7 +8338,6 @@ paths:
             summary: Upsert a Plugin
             tags:
                 - Plugins
-            x-speakeasy-entity-operation: GatewayPlugin#update
     /control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#ACL:
         delete:
             description: Delete a ACL plugin
@@ -8345,7 +8371,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginACL#read
         parameters:
             - $ref: '#/components/parameters/PluginId'
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         put:
             description: Update a ACL plugin
             operationId: update-acl-plugin
@@ -8400,7 +8426,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginAIPromptDecorator#read
         parameters:
             - $ref: '#/components/parameters/PluginId'
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         put:
             description: Update a AIPromptDecorator plugin
             operationId: update-aipromptdecorator-plugin
@@ -8455,7 +8481,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginAIPromptGuard#read
         parameters:
             - $ref: '#/components/parameters/PluginId'
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         put:
             description: Update a AIPromptGuard plugin
             operationId: update-aipromptguard-plugin
@@ -8510,7 +8536,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginAIPromptTemplate#read
         parameters:
             - $ref: '#/components/parameters/PluginId'
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         put:
             description: Update a AIPromptTemplate plugin
             operationId: update-aiprompttemplate-plugin
@@ -8565,7 +8591,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginAIProxy#read
         parameters:
             - $ref: '#/components/parameters/PluginId'
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         put:
             description: Update a AIProxy plugin
             operationId: update-aiproxy-plugin
@@ -8620,7 +8646,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginAWSLambda#read
         parameters:
             - $ref: '#/components/parameters/PluginId'
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         put:
             description: Update a AWSLambda plugin
             operationId: update-awslambda-plugin
@@ -8675,7 +8701,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginBasicAuth#read
         parameters:
             - $ref: '#/components/parameters/PluginId'
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         put:
             description: Update a BasicAuth plugin
             operationId: update-basicauth-plugin
@@ -8730,7 +8756,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginCORS#read
         parameters:
             - $ref: '#/components/parameters/PluginId'
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         put:
             description: Update a CORS plugin
             operationId: update-cors-plugin
@@ -8785,7 +8811,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginCorrelationId#read
         parameters:
             - $ref: '#/components/parameters/PluginId'
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         put:
             description: Update a CorrelationId plugin
             operationId: update-correlationid-plugin
@@ -8840,7 +8866,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginExitTransformer#read
         parameters:
             - $ref: '#/components/parameters/PluginId'
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         put:
             description: Update a ExitTransformer plugin
             operationId: update-exittransformer-plugin
@@ -8895,7 +8921,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginFileLog#read
         parameters:
             - $ref: '#/components/parameters/PluginId'
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         put:
             description: Update a FileLog plugin
             operationId: update-filelog-plugin
@@ -8950,7 +8976,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginIpRestriction#read
         parameters:
             - $ref: '#/components/parameters/PluginId'
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         put:
             description: Update a IpRestriction plugin
             operationId: update-iprestriction-plugin
@@ -9005,7 +9031,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginJQ#read
         parameters:
             - $ref: '#/components/parameters/PluginId'
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         put:
             description: Update a JQ plugin
             operationId: update-jq-plugin
@@ -9060,7 +9086,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginJWT#read
         parameters:
             - $ref: '#/components/parameters/PluginId'
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         put:
             description: Update a JWT plugin
             operationId: update-jwt-plugin
@@ -9115,7 +9141,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginJWTSigner#read
         parameters:
             - $ref: '#/components/parameters/PluginId'
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         put:
             description: Update a JWTSigner plugin
             operationId: update-jwtsigner-plugin
@@ -9170,7 +9196,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginKeyAuth#read
         parameters:
             - $ref: '#/components/parameters/PluginId'
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         put:
             description: Update a KeyAuth plugin
             operationId: update-keyauth-plugin
@@ -9225,7 +9251,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginOauth2#read
         parameters:
             - $ref: '#/components/parameters/PluginId'
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         put:
             description: Update a Oauth2 plugin
             operationId: update-oauth2-plugin
@@ -9280,7 +9306,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginOpenidConnect#read
         parameters:
             - $ref: '#/components/parameters/PluginId'
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         put:
             description: Update a OpenidConnect plugin
             operationId: update-openidconnect-plugin
@@ -9335,7 +9361,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginOpentelemetry#read
         parameters:
             - $ref: '#/components/parameters/PluginId'
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         put:
             description: Update a Opentelemetry plugin
             operationId: update-opentelemetry-plugin
@@ -9390,7 +9416,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginPostFunction#read
         parameters:
             - $ref: '#/components/parameters/PluginId'
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         put:
             description: Update a PostFunction plugin
             operationId: update-postfunction-plugin
@@ -9445,7 +9471,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginPreFunction#read
         parameters:
             - $ref: '#/components/parameters/PluginId'
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         put:
             description: Update a PreFunction plugin
             operationId: update-prefunction-plugin
@@ -9500,7 +9526,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginPrometheus#read
         parameters:
             - $ref: '#/components/parameters/PluginId'
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         put:
             description: Update a Prometheus plugin
             operationId: update-prometheus-plugin
@@ -9555,7 +9581,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginProxyCache#read
         parameters:
             - $ref: '#/components/parameters/PluginId'
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         put:
             description: Update a ProxyCache plugin
             operationId: update-proxycache-plugin
@@ -9610,7 +9636,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginRateLimiting#read
         parameters:
             - $ref: '#/components/parameters/PluginId'
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         put:
             description: Update a RateLimiting plugin
             operationId: update-ratelimiting-plugin
@@ -9665,7 +9691,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginRateLimitingAdvanced#read
         parameters:
             - $ref: '#/components/parameters/PluginId'
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         put:
             description: Update a RateLimitingAdvanced plugin
             operationId: update-ratelimitingadvanced-plugin
@@ -9720,7 +9746,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginRequestTermination#read
         parameters:
             - $ref: '#/components/parameters/PluginId'
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         put:
             description: Update a RequestTermination plugin
             operationId: update-requesttermination-plugin
@@ -9775,7 +9801,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginRequestTransformer#read
         parameters:
             - $ref: '#/components/parameters/PluginId'
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         put:
             description: Update a RequestTransformer plugin
             operationId: update-requesttransformer-plugin
@@ -9830,7 +9856,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginRequestTransformerAdvanced#read
         parameters:
             - $ref: '#/components/parameters/PluginId'
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         put:
             description: Update a RequestTransformerAdvanced plugin
             operationId: update-requesttransformeradvanced-plugin
@@ -9885,7 +9911,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginResponseTransformer#read
         parameters:
             - $ref: '#/components/parameters/PluginId'
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         put:
             description: Update a ResponseTransformer plugin
             operationId: update-responsetransformer-plugin
@@ -9940,7 +9966,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginResponseTransformerAdvanced#read
         parameters:
             - $ref: '#/components/parameters/PluginId'
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         put:
             description: Update a ResponseTransformerAdvanced plugin
             operationId: update-responsetransformeradvanced-plugin
@@ -9995,7 +10021,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginSaml#read
         parameters:
             - $ref: '#/components/parameters/PluginId'
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         put:
             description: Update a Saml plugin
             operationId: update-saml-plugin
@@ -10050,7 +10076,7 @@ paths:
             x-speakeasy-entity-operation: GatewayPluginStatsd#read
         parameters:
             - $ref: '#/components/parameters/PluginId'
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         put:
             description: Update a Statsd plugin
             operationId: update-statsd-plugin
@@ -10090,6 +10116,8 @@ paths:
                                         items:
                                             $ref: '#/components/schemas/Route'
                                         type: array
+                                    next:
+                                        $ref: '#/components/schemas/PaginationNextResponse'
                                     offset:
                                         $ref: '#/components/schemas/PaginationOffsetResponse'
                                 type: object
@@ -10100,7 +10128,7 @@ paths:
             tags:
                 - Routes
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         post:
             description: Create a new Route
             operationId: create-route
@@ -10159,7 +10187,7 @@ paths:
             x-speakeasy-entity-operation: GatewayRoute#read
         parameters:
             - $ref: '#/components/parameters/RouteId'
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         put:
             description: Create or Update Route using ID or name.
             operationId: upsert-route
@@ -10202,6 +10230,8 @@ paths:
                                         items:
                                             $ref: '#/components/schemas/Plugin'
                                         type: array
+                                    next:
+                                        $ref: '#/components/schemas/PaginationNextResponse'
                                     offset:
                                         $ref: '#/components/schemas/PaginationOffsetResponse'
                                 type: object
@@ -10210,7 +10240,7 @@ paths:
             tags:
                 - Plugins
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         post:
             description: Create a new Plugin associated with a Route
             operationId: create-plugin-with-route
@@ -10265,7 +10295,7 @@ paths:
             tags:
                 - Plugins
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         put:
             description: Create or Update a Plugin associated with a Route using ID.
             operationId: upsert-plugin-with-route
@@ -10316,7 +10346,7 @@ paths:
               required: true
               schema:
                 type: string
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
     /control-planes/{controlPlaneId}/core-entities/services:
         get:
             description: List all Services
@@ -10335,6 +10365,8 @@ paths:
                                         items:
                                             $ref: '#/components/schemas/Service'
                                         type: array
+                                    next:
+                                        $ref: '#/components/schemas/PaginationNextResponse'
                                     offset:
                                         $ref: '#/components/schemas/PaginationOffsetResponse'
                                 type: object
@@ -10345,7 +10377,7 @@ paths:
             tags:
                 - Services
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         post:
             description: Create a new Service
             operationId: create-service
@@ -10404,7 +10436,7 @@ paths:
             x-speakeasy-entity-operation: GatewayService#read
         parameters:
             - $ref: '#/components/parameters/ServiceId'
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         put:
             description: Create or Update Service using ID or name.
             operationId: upsert-service
@@ -10447,6 +10479,8 @@ paths:
                                         items:
                                             $ref: '#/components/schemas/Plugin'
                                         type: array
+                                    next:
+                                        $ref: '#/components/schemas/PaginationNextResponse'
                                     offset:
                                         $ref: '#/components/schemas/PaginationOffsetResponse'
                                 type: object
@@ -10455,7 +10489,7 @@ paths:
             tags:
                 - Plugins
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         post:
             description: Create a new Plugin associated with a Service
             operationId: create-plugin-with-service
@@ -10510,7 +10544,7 @@ paths:
             tags:
                 - Plugins
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         put:
             description: Create or Update a Plugin associated with a Service using ID.
             operationId: upsert-plugin-with-service
@@ -10553,6 +10587,8 @@ paths:
                                         items:
                                             $ref: '#/components/schemas/Route'
                                         type: array
+                                    next:
+                                        $ref: '#/components/schemas/PaginationNextResponse'
                                     offset:
                                         $ref: '#/components/schemas/PaginationOffsetResponse'
                                 type: object
@@ -10561,7 +10597,7 @@ paths:
             tags:
                 - Routes
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         post:
             description: Create a new Route associated with a Service
             operationId: create-route-with-service
@@ -10616,7 +10652,7 @@ paths:
             tags:
                 - Routes
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         put:
             description: Create or Update a Route associated with a Service using ID or name.
             operationId: upsert-route-with-service
@@ -10658,6 +10694,8 @@ paths:
                                         items:
                                             $ref: '#/components/schemas/SNI'
                                         type: array
+                                    next:
+                                        $ref: '#/components/schemas/PaginationNextResponse'
                                     offset:
                                         $ref: '#/components/schemas/PaginationOffsetResponse'
                                 type: object
@@ -10668,7 +10706,7 @@ paths:
             tags:
                 - SNIs
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         post:
             description: Create a new SNI
             operationId: create-sni
@@ -10727,7 +10765,7 @@ paths:
             x-speakeasy-entity-operation: GatewaySNI#read
         parameters:
             - $ref: '#/components/parameters/SNIId'
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         put:
             description: Create or Update SNI using ID or name.
             operationId: upsert-sni
@@ -10769,6 +10807,8 @@ paths:
                                         items:
                                             $ref: '#/components/schemas/Upstream'
                                         type: array
+                                    next:
+                                        $ref: '#/components/schemas/PaginationNextResponse'
                                     offset:
                                         $ref: '#/components/schemas/PaginationOffsetResponse'
                                 type: object
@@ -10779,7 +10819,7 @@ paths:
             tags:
                 - Upstreams
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         post:
             description: Create a new Upstream
             operationId: create-upstream
@@ -10838,7 +10878,7 @@ paths:
             x-speakeasy-entity-operation: GatewayUpstream#read
         parameters:
             - $ref: '#/components/parameters/UpstreamId'
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         put:
             description: Create or Update Upstream using ID or name.
             operationId: upsert-upstream
@@ -10881,6 +10921,8 @@ paths:
                                         items:
                                             $ref: '#/components/schemas/Target'
                                         type: array
+                                    next:
+                                        $ref: '#/components/schemas/PaginationNextResponse'
                                     offset:
                                         $ref: '#/components/schemas/PaginationOffsetResponse'
                                 type: object
@@ -10889,7 +10931,7 @@ paths:
             tags:
                 - Targets
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         post:
             description: Create a new Target associated with an Upstream
             operationId: create-target-with-upstream
@@ -10947,7 +10989,7 @@ paths:
                 - Targets
             x-speakeasy-entity-operation: GatewayTarget#read
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         put:
             description: Create or Update a Target associated with an Upstream using ID or target.
             operationId: upsert-target-with-upstream
@@ -10989,6 +11031,8 @@ paths:
                                         items:
                                             $ref: '#/components/schemas/Vault'
                                         type: array
+                                    next:
+                                        $ref: '#/components/schemas/PaginationNextResponse'
                                     offset:
                                         $ref: '#/components/schemas/PaginationOffsetResponse'
                                 type: object
@@ -10999,7 +11043,7 @@ paths:
             tags:
                 - Vaults
         parameters:
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         post:
             description: Create a new Vault
             operationId: create-vault
@@ -11058,7 +11102,7 @@ paths:
             x-speakeasy-entity-operation: GatewayVault#read
         parameters:
             - $ref: '#/components/parameters/VaultId'
-            - $ref: '#/components/parameters/ControlPlaneId'
+            - $ref: '#/components/parameters/controlPlaneId'
         put:
             description: Create or Update Vault using ID or prefix.
             operationId: upsert-vault

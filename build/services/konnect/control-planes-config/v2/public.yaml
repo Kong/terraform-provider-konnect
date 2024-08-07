@@ -614,8 +614,6 @@ paths:
     get:
       description: Get a CA Certificate using ID.
       operationId: get-ca_certificate
-      parameters:
-        - $ref: '#/components/parameters/CACertificateId'
       responses:
         '200':
           content:
@@ -631,12 +629,11 @@ paths:
       tags:
         - CA Certificates
     parameters:
+      - $ref: '#/components/parameters/CACertificateId'
       - $ref: '#/components/parameters/controlPlaneId'
     put:
       description: Create or Update CA Certificate using ID.
       operationId: upsert-ca_certificate
-      parameters:
-        - $ref: '#/components/parameters/CACertificateId'
       requestBody:
         content:
           application/json:
@@ -726,8 +723,6 @@ paths:
     get:
       description: Get a Certificate using ID.
       operationId: get-certificate
-      parameters:
-        - $ref: '#/components/parameters/CertificateId'
       responses:
         '200':
           content:
@@ -743,12 +738,11 @@ paths:
       tags:
         - Certificates
     parameters:
+      - $ref: '#/components/parameters/CertificateId'
       - $ref: '#/components/parameters/controlPlaneId'
     put:
       description: Create or Update Certificate using ID.
       operationId: upsert-certificate
-      parameters:
-        - $ref: '#/components/parameters/CertificateId'
       requestBody:
         content:
           application/json:
@@ -946,14 +940,12 @@ paths:
     get:
       description: Get a Consumer Group using ID.
       operationId: get-consumer_group
-      parameters:
-        - $ref: '#/components/parameters/ConsumerGroupId'
       responses:
         '200':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ConsumerGroup'
+                $ref: '#/components/schemas/ConsumerGroupInsideWrapper'
           description: Successfully fetched Consumer Group
         '401':
           $ref: '#/components/responses/HTTP401Error'
@@ -963,12 +955,11 @@ paths:
       tags:
         - Consumer Groups
     parameters:
+      - $ref: '#/components/parameters/ConsumerGroupId'
       - $ref: '#/components/parameters/controlPlaneId'
     put:
       description: Create or Update Consumer Group using ID.
       operationId: upsert-consumer_group
-      parameters:
-        - $ref: '#/components/parameters/ConsumerGroupId'
       requestBody:
         content:
           application/json:
@@ -990,7 +981,7 @@ paths:
         - Consumer Groups
   /control-planes/{controlPlaneId}/core-entities/consumer_groups/{ConsumerGroupId}/consumers:
     parameters:
-      - $ref: '#/components/parameters/ConsumerGroupId'
+      - $ref: '#/components/parameters/ConsumerGroupIdManageConsumers'
       - $ref: '#/components/parameters/controlPlaneId'
     post:
       description: Add a consumer to a consumer group
@@ -1001,7 +992,7 @@ paths:
             schema:
               properties:
                 consumer:
-                  example: bob
+                  example: cf4c7e60-11db-49dd-b300-7c7e5f0f7e6b
                   type: string
               type: object
       responses:
@@ -1010,15 +1001,35 @@ paths:
             application/json:
               schema:
                 properties:
-                  consumer:
-                    $ref: '#/components/schemas/Consumer'
                   consumer_group:
                     $ref: '#/components/schemas/ConsumerGroup'
+                  consumers:
+                    items:
+                      $ref: '#/components/schemas/Consumer'
+                    type: array
                 type: object
-          description: Consumer Added
+          description: Consumer added to group
       summary: Add consumer to consumer group
       tags:
         - Consumer Groups
+  /control-planes/{controlPlaneId}/core-entities/consumer_groups/{ConsumerGroupId}/consumers/{ConsumerId}:
+    delete:
+      description: Remove a consumer from a consumer group
+      operationId: remove-consumer-from-group
+      responses:
+        '204':
+          description: Consumer removed from group
+      summary: Remove consumer from consumer group
+      tags:
+        - Consumer Groups
+    parameters:
+      - $ref: '#/components/parameters/ConsumerGroupIdManageConsumers'
+      - in: path
+        name: ConsumerId
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/controlPlaneId'
   /control-planes/{controlPlaneId}/core-entities/consumers:
     get:
       description: List all Consumers
@@ -1089,8 +1100,6 @@ paths:
     get:
       description: Get a Consumer using ID or username.
       operationId: get-consumer
-      parameters:
-        - $ref: '#/components/parameters/ConsumerId'
       responses:
         '200':
           content:
@@ -1106,12 +1115,11 @@ paths:
       tags:
         - Consumers
     parameters:
+      - $ref: '#/components/parameters/ConsumerId'
       - $ref: '#/components/parameters/controlPlaneId'
     put:
       description: Create or Update Consumer using ID or username.
       operationId: upsert-consumer
-      parameters:
-        - $ref: '#/components/parameters/ConsumerId'
       requestBody:
         content:
           application/json:
@@ -1842,8 +1850,6 @@ paths:
     get:
       description: Get a KeySet using ID or name.
       operationId: get-key-set
-      parameters:
-        - $ref: '#/components/parameters/KeySetId'
       responses:
         '200':
           content:
@@ -1859,12 +1865,11 @@ paths:
       tags:
         - KeySets
     parameters:
+      - $ref: '#/components/parameters/KeySetId'
       - $ref: '#/components/parameters/controlPlaneId'
     put:
       description: Create or Update KeySet using ID or name.
       operationId: upsert-key-set
-      parameters:
-        - $ref: '#/components/parameters/KeySetId'
       requestBody:
         content:
           application/json:
@@ -1954,8 +1959,6 @@ paths:
     get:
       description: Get a Key using ID or name.
       operationId: get-key
-      parameters:
-        - $ref: '#/components/parameters/KeyId'
       responses:
         '200':
           content:
@@ -1971,12 +1974,11 @@ paths:
       tags:
         - Keys
     parameters:
+      - $ref: '#/components/parameters/KeyId'
       - $ref: '#/components/parameters/controlPlaneId'
     put:
       description: Create or Update Key using ID or name.
       operationId: upsert-key
-      parameters:
-        - $ref: '#/components/parameters/KeyId'
       requestBody:
         content:
           application/json:
@@ -2066,8 +2068,6 @@ paths:
     get:
       description: Get a Plugin using ID.
       operationId: get-plugin
-      parameters:
-        - $ref: '#/components/parameters/PluginId'
       responses:
         '200':
           content:
@@ -2083,12 +2083,11 @@ paths:
       tags:
         - Plugins
     parameters:
+      - $ref: '#/components/parameters/PluginId'
       - $ref: '#/components/parameters/controlPlaneId'
     put:
       description: Create or Update Plugin using ID.
       operationId: upsert-plugin
-      parameters:
-        - $ref: '#/components/parameters/PluginId'
       requestBody:
         content:
           application/json:
@@ -2178,8 +2177,6 @@ paths:
     get:
       description: Get a Route using ID or name.
       operationId: get-route
-      parameters:
-        - $ref: '#/components/parameters/RouteId'
       responses:
         '200':
           content:
@@ -2195,12 +2192,11 @@ paths:
       tags:
         - Routes
     parameters:
+      - $ref: '#/components/parameters/RouteId'
       - $ref: '#/components/parameters/controlPlaneId'
     put:
       description: Create or Update Route using ID or name.
       operationId: upsert-route
-      parameters:
-        - $ref: '#/components/parameters/RouteId'
       requestBody:
         content:
           application/json:
@@ -2426,8 +2422,6 @@ paths:
     get:
       description: Get a Service using ID or name.
       operationId: get-service
-      parameters:
-        - $ref: '#/components/parameters/ServiceId'
       responses:
         '200':
           content:
@@ -2443,12 +2437,11 @@ paths:
       tags:
         - Services
     parameters:
+      - $ref: '#/components/parameters/ServiceId'
       - $ref: '#/components/parameters/controlPlaneId'
     put:
       description: Create or Update Service using ID or name.
       operationId: upsert-service
-      parameters:
-        - $ref: '#/components/parameters/ServiceId'
       requestBody:
         content:
           application/json:
@@ -2754,8 +2747,6 @@ paths:
     get:
       description: Get an SNI using ID or name.
       operationId: get-sni
-      parameters:
-        - $ref: '#/components/parameters/SNIId'
       responses:
         '200':
           content:
@@ -2771,12 +2762,11 @@ paths:
       tags:
         - SNIs
     parameters:
+      - $ref: '#/components/parameters/SNIId'
       - $ref: '#/components/parameters/controlPlaneId'
     put:
       description: Create or Update SNI using ID or name.
       operationId: upsert-sni
-      parameters:
-        - $ref: '#/components/parameters/SNIId'
       requestBody:
         content:
           application/json:
@@ -2866,8 +2856,6 @@ paths:
     get:
       description: Get an Upstream using ID or name.
       operationId: get-upstream
-      parameters:
-        - $ref: '#/components/parameters/UpstreamId'
       responses:
         '200':
           content:
@@ -2883,12 +2871,11 @@ paths:
       tags:
         - Upstreams
     parameters:
+      - $ref: '#/components/parameters/UpstreamId'
       - $ref: '#/components/parameters/controlPlaneId'
     put:
       description: Create or Update Upstream using ID or name.
       operationId: upsert-upstream
-      parameters:
-        - $ref: '#/components/parameters/UpstreamId'
       requestBody:
         content:
           application/json:
@@ -3088,8 +3075,6 @@ paths:
     get:
       description: Get a Vault using ID or prefix.
       operationId: get-vault
-      parameters:
-        - $ref: '#/components/parameters/VaultId'
       responses:
         '200':
           content:
@@ -3105,12 +3090,11 @@ paths:
       tags:
         - Vaults
     parameters:
+      - $ref: '#/components/parameters/VaultId'
       - $ref: '#/components/parameters/controlPlaneId'
     put:
       description: Create or Update Vault using ID or prefix.
       operationId: upsert-vault
-      parameters:
-        - $ref: '#/components/parameters/VaultId'
       requestBody:
         content:
           application/json:
@@ -3202,6 +3186,12 @@ components:
     ConsumerGroupId:
       description: ID of the Consumer Group to lookup
       example: ''
+      in: path
+      name: ConsumerGroupId
+      required: true
+      schema:
+        type: string
+    ConsumerGroupIdManageConsumers:
       in: path
       name: ConsumerGroupId
       required: true
@@ -3593,6 +3583,11 @@ components:
           description: Unix epoch when the resource was last updated.
           readOnly: true
           type: integer
+      type: object
+    ConsumerGroupInsideWrapper:
+      properties:
+        consumer_group:
+          $ref: '#/components/schemas/ConsumerGroup'
       type: object
     GatewayUnauthorizedError:
       properties:
