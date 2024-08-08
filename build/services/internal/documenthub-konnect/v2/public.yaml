@@ -469,8 +469,8 @@ components:
     Slug:
       type: string
       description: document slug
-      pattern: ^[\w-]+$
-      maxLength: 80
+      pattern: ^[\w\/-]+$
+      maxLength: 512
       example: path-for-seo
     PublishStatus:
       description: document publish status. Default to published.
