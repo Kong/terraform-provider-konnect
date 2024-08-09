@@ -1401,6 +1401,8 @@ components:
             reason: request format is invalid
           - field: body
             reason: request format is invalid
+          - field: body
+            reason: request format is invalid
     PermissionDeniedExample:
       value:
         status: 403

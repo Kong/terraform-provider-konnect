@@ -19310,6 +19310,8 @@ components:
             reason: request format is invalid
           - field: body
             reason: request format is invalid
+          - field: body
+            reason: request format is invalid
     400-authorization-cannot-be-blank:
       value:
         status: 400
@@ -19317,6 +19319,8 @@ components:
         detail: Required field missing
         instance: konnect:trace:6644808935508571943
         invalid_parameters:
+          - field: authorization
+            reason: cannot be blank
           - field: authorization
             reason: cannot be blank
     400-endpoint-cannot-be-blank:
@@ -19328,6 +19332,8 @@ components:
         invalid_parameters:
           - field: endpoint
             reason: cannot be blank
+          - field: endpoint
+            reason: cannot be blank
     400-endpoint-must-be-valid-url:
       value:
         status: 400
@@ -19335,6 +19341,8 @@ components:
         detail: Invalid endpoint
         instance: konnect:trace:6644808935508571943
         invalid_parameters:
+          - field: endpoint
+            reason: must be a valid URL
           - field: endpoint
             reason: must be a valid URL
     409-job-running:

@@ -56,3 +56,12 @@ components:
       example: '2022-11-04T20:10:06.927Z'
       description: An ISO-8601 timestamp representation of entity update date.
       readOnly: true
+  parameters:
+    AuditLogDestinationId:
+      schema:
+        type: string
+        format: uuid
+      name: auditLogDestinationId
+      in: path
+      required: true
+      description: ID of the Audit Log Destination.
