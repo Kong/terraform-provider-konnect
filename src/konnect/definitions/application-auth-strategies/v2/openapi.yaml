@@ -1422,6 +1422,8 @@ components:
           nullable: true
           type: string
           format: uuid
+        labels:
+          $ref: '../../../../common/definitions/konnect_properties.yaml#/components/schemas/Labels'
     AppAuthStrategyOpenIDConnectResponse:
       title: AppAuthStrategyOpenIDConnectResponse
       description: Response payload from creating an OIDC Application Auth Strategy

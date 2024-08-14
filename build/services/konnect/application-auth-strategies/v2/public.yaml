@@ -1535,6 +1535,8 @@ components:
           nullable: true
           type: string
           format: uuid
+        labels:
+          $ref: '#/components/schemas/Labels'
     AppAuthStrategyOpenIDConnectResponse:
       title: AppAuthStrategyOpenIDConnectResponse
       description: Response payload from creating an OIDC Application Auth Strategy
