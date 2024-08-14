@@ -255,6 +255,68 @@ paths:
         '404':
           $ref: >-
             ../../../../common/definitions/errors.yaml#/components/responses/NotFound
+  /portals/{portalId}/config:
+    parameters:
+      - $ref: >-
+          ../../../../common/definitions/portal.yaml#/components/parameters/PortalId
+    get:
+      summary: Get a portal configuration
+      operationId: get-portal-config
+      description: Get the configuration of the portal
+      x-internal: true
+      x-unstable: true
+      tags:
+        - Portals
+      responses:
+        '200':
+          $ref: '#/components/responses/GetPortalConfig'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: >-
+                  ../../../../common/definitions/errors.yaml#/components/schemas/BadRequestError
+    put:
+      summary: Replace a portal configuration
+      operationId: replace-portal-config
+      description: Update the configuration of the portal
+      x-internal: true
+      x-unstable: true
+      tags:
+        - Portals
+      requestBody:
+        $ref: '#/components/requestBodies/ReplacePortalConfig'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetPortalConfig'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: >-
+                  ../../../../common/definitions/errors.yaml#/components/schemas/BadRequestError
+    patch:
+      summary: Update a portal configuration
+      operationId: update-portal-config
+      description: Update the configuration of the portal
+      x-internal: true
+      x-unstable: true
+      tags:
+        - Portals
+      requestBody:
+        $ref: '#/components/requestBodies/UpdatePortalConfig'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetPortalConfig'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: >-
+                  ../../../../common/definitions/errors.yaml#/components/schemas/BadRequestError
   /portals/{portalId}/publish:
     parameters:
       - $ref: >-
@@ -3803,6 +3865,17 @@ components:
     GetPortalCatalogCoverResponseExample2:
       value: data:image/jpg;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
   requestBodies:
+    UpdatePortalConfig:
+      description: Request schema to replace the portal configuration.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalConfig'
+    ReplacePortalConfig:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalConfig'
     ReplacePortalAuditLogReplayJob:
       description: The request schema to replace a portal audit log replay job.
       content:
@@ -4221,6 +4294,12 @@ components:
       schema:
         type: string
   responses:
+    GetPortalConfig:
+      description: Response for a portal configuration
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalConfig'
     PortalAuditLogReplayJob:
       description: Response from fetching or updating an portal audit log replay job
       content:
@@ -4452,6 +4531,12 @@ components:
           examples:
             Example 1:
               $ref: '#/components/examples/GetPortalExample1'
+    GetortalConfig:
+      description: Configuration of the portal.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalConfig'
     UpdatePortal:
       description: Details about the portal being updated.
       content:
@@ -5675,6 +5760,10 @@ components:
         version_count: 4
     GetPortalResponse:
       $ref: '#/components/schemas/Portal'
+    PortalConfig:
+      title: PortalConfig
+      type: object
+      additionalProperties: true
     UpdatePortalResponse:
       $ref: '#/components/schemas/Portal'
     CreatePortalResponse:

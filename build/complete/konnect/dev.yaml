@@ -999,6 +999,58 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
+  /v2/portals/{portalId}/config:
+    parameters:
+      - $ref: '#/components/parameters/parameters-PortalId'
+    get:
+      summary: Get a portal configuration
+      operationId: get-portal-config
+      description: Get the configuration of the portal
+      tags:
+        - Portals
+      responses:
+        '200':
+          $ref: '#/components/responses/GetPortalConfig'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+    put:
+      summary: Replace a portal configuration
+      operationId: replace-portal-config
+      description: Update the configuration of the portal
+      tags:
+        - Portals
+      requestBody:
+        $ref: '#/components/requestBodies/ReplacePortalConfig'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetPortalConfig'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+    patch:
+      summary: Update a portal configuration
+      operationId: update-portal-config
+      description: Update the configuration of the portal
+      tags:
+        - Portals
+      requestBody:
+        $ref: '#/components/requestBodies/UpdatePortalConfig'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetPortalConfig'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
   /v2/portals/{portalId}/pages:
     get:
       summary: List Portal Pages
@@ -3610,6 +3662,10 @@ components:
           $ref: '#/components/schemas/DateTimeFieldFilter'
         updated_at:
           $ref: '#/components/schemas/DateTimeFieldFilter'
+    PortalConfig:
+      title: PortalConfig
+      type: object
+      additionalProperties: true
     DateTimeFieldFilter:
       title: DateTimeFieldFilter
       description: Filters on the given datetime (RFC-3339) field value.
@@ -7866,6 +7922,12 @@ components:
             Example:
               value:
                 retention_period_days: 90
+    GetPortalConfig:
+      description: Response for a portal configuration
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalConfig'
     PortalAuditLogReplayJob:
       description: Response from fetching or updating an portal audit log replay job
       content:
@@ -8741,6 +8803,17 @@ components:
             Example:
               value:
                 retention_period_days: 90
+    UpdatePortalConfig:
+      description: Request schema to replace the portal configuration.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalConfig'
+    ReplacePortalConfig:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalConfig'
     ReplacePortalAuditLogReplayJob:
       description: The request schema to replace a portal audit log replay job.
       content:
@@ -9085,6 +9158,8 @@ tags:
   - name: Auth Settings
   - name: Roles
   - name: Organization Lifecycle
+  - name: Portals
+    description: APIs related to Configuration of Konnect Developer Portals.
   - name: Portal Pages
     description: APIs related to Konnect Developer Portal Custom Pages.
   - name: Serverless Cloud Gateways

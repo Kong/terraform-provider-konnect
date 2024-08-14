@@ -17,9 +17,63 @@ security:
   - personalAccessToken: []
   - systemAccountAccessToken: []
 tags:
+  - name: Portals
+    description: APIs related to Configuration of Konnect Developer Portals.
   - name: Portal Pages
     description: APIs related to Konnect Developer Portal Custom Pages.
 paths:
+  /portals/{portalId}/config:
+    parameters:
+      - $ref: '#/components/parameters/parameters-PortalId'
+    get:
+      summary: Get a portal configuration
+      operationId: get-portal-config
+      description: Get the configuration of the portal
+      tags:
+        - Portals
+      responses:
+        '200':
+          $ref: '#/components/responses/GetPortalConfig'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+    put:
+      summary: Replace a portal configuration
+      operationId: replace-portal-config
+      description: Update the configuration of the portal
+      tags:
+        - Portals
+      requestBody:
+        $ref: '#/components/requestBodies/ReplacePortalConfig'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetPortalConfig'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+    patch:
+      summary: Update a portal configuration
+      operationId: update-portal-config
+      description: Update the configuration of the portal
+      tags:
+        - Portals
+      requestBody:
+        $ref: '#/components/requestBodies/UpdatePortalConfig'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetPortalConfig'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
   /portals/{portalId}/audit-log-replay-job:
     parameters:
       - $ref: '#/components/parameters/parameters-PortalId'
@@ -430,6 +484,17 @@ components:
         instance: kong:trace:6816496025408232265
         detail: Not Found
   requestBodies:
+    UpdatePortalConfig:
+      description: Request schema to replace the portal configuration.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalConfig'
+    ReplacePortalConfig:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalConfig'
     ReplacePortalAuditLogReplayJob:
       description: The request schema to replace a portal audit log replay job.
       content:
@@ -553,6 +618,12 @@ components:
       required: true
       description: ID of the page.
   responses:
+    GetPortalConfig:
+      description: Response for a portal configuration
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalConfig'
     PortalAuditLogReplayJob:
       description: Response from fetching or updating an portal audit log replay job
       content:
@@ -926,6 +997,10 @@ components:
           $ref: '#/components/schemas/DateTimeFieldFilter'
         updated_at:
           $ref: '#/components/schemas/DateTimeFieldFilter'
+    PortalConfig:
+      title: PortalConfig
+      type: object
+      additionalProperties: true
     StringFieldEqualsFilter:
       title: StringFieldEqualsFilter
       description: Filters on the given string field value by exact match.
