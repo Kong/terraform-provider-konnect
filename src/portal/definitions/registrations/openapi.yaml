@@ -20,6 +20,10 @@ paths:
         - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByIdEqualityShort'
         - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByStatusEquality'
         - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByStatusEqualityShort'
+        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByProductNameEquality'
+        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByProductNameEqualityShort'
+        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByProductVersionNameEquality'
+        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByProductVersionNameEqualityShort'
       responses:
         '200':
           $ref: '#/components/responses/ListRegistrations'
