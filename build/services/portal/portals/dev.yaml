@@ -10,6 +10,18 @@ tags:
   - name: portal
     description: The API for retrieving details about a single Konnect Portal.
 paths:
+  /api/v2/portal/customization:
+    get:
+      operationId: get-portal-customization
+      summary: Get Customization
+      description: Returns the customized portal appearance.
+      responses:
+        '200':
+          $ref: '#/components/responses/GetPortalCustomization'
+      tags:
+        - portal
+      security:
+        - {}
   /api/v2/portal/pages:
     get:
       operationId: list-portal-pages
@@ -230,6 +242,12 @@ components:
                 public: true
                 created_at: '2021-09-01T00:00:00Z'
                 updated_at: '2021-09-01T00:00:00Z'
+    GetPortalCustomization:
+      description: Response for a portal customization
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalCustomization'
     NotFound:
       description: Not Found
       content:
@@ -341,6 +359,10 @@ components:
         - public
         - created_at
         - updated_at
+    PortalCustomization:
+      title: PortalCustomization
+      type: object
+      additionalProperties: true
     CreatedAt:
       type: string
       format: date-time

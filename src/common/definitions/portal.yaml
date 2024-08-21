@@ -44,6 +44,10 @@ components:
       required: true
       description: ID of the page.
   schemas:
+    PortalCustomization:
+      title: PortalCustomization
+      type: object
+      additionalProperties: true
     ImageDataUri:
       title: ImageDataUri
       type: string
@@ -52,3 +56,10 @@ components:
       description: 'must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>'
       x-validation-message: 'must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>'
       example: 'data:image/png,YW5faW1hZ2VfZmlsZQ=='
+  responses:
+    GetPortalCustomization:
+      description: Response for a portal customization
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalCustomization'

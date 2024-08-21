@@ -19,6 +19,8 @@ security:
 tags:
   - name: Portals
     description: APIs related to Configuration of Konnect Developer Portals.
+  - name: Portal Customization
+    description: APIs related to Konnect Developer Portal Customization.
   - name: Portal Pages
     description: APIs related to Konnect Developer Portal Custom Pages.
 paths:
@@ -162,6 +164,43 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/PortalAuditLogWebhookStatus'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /portals/{portalId}/customization:
+    get:
+      summary: Get Customization
+      description: Returns the customized portal appearance.
+      operationId: get-portal-customization
+      parameters:
+        - $ref: '#/components/parameters/parameters-PortalId'
+      tags:
+        - Portal Customization
+      responses:
+        '200':
+          $ref: '#/components/responses/GetPortalCustomization'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      summary: Replace Customization
+      description: Replace the customized portal appearance
+      operationId: replace-portal-customization
+      parameters:
+        - $ref: '#/components/parameters/parameters-PortalId'
+      tags:
+        - Portal Customization
+      requestBody:
+        $ref: '#/components/requestBodies/ReplacePortalCustomization'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetPortalCustomization'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -490,6 +529,11 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/PortalConfig'
+    ReplacePortalCustomization:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalCustomization'
     ReplacePortalConfig:
       content:
         application/json:
@@ -805,6 +849,12 @@ components:
           examples:
             NotFoundExample:
               $ref: '#/components/examples/NotFoundExample'
+    GetPortalCustomization:
+      description: Response for a portal customization
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalCustomization'
   schemas:
     PagePath:
       title: PagePath
@@ -1522,6 +1572,10 @@ components:
           gt: '2022-03-30T07:20:50Z'
         datetime_field_6:
           gte: '2022-03-30T07:20:50Z'
+    PortalCustomization:
+      title: PortalCustomization
+      type: object
+      additionalProperties: true
   securitySchemes:
     personalAccessToken:
       type: http

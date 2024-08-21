@@ -31,6 +31,20 @@ paths:
         - portal
       security:
         - {}
+  /api/v2/portal/customization:
+    get:
+      x-internal: true
+      x-unstable: true
+      operationId: get-portal-customization
+      summary: Get Customization
+      description: Returns the customized portal appearance.
+      responses:
+        '200':
+          $ref: '../../../common/definitions/portal.yaml#/components/responses/GetPortalCustomization'
+      tags:
+        - portal
+      security:
+        - {}
   /api/v2/portal/logo:
     get:
       operationId: get-portal-logo
