@@ -624,6 +624,7 @@ components:
             - CLUSTER_TYPE_HYBRID
             - CLUSTER_TYPE_K8S_INGRESS_CONTROLLER
             - CLUSTER_TYPE_COMPOSITE
+            - CLUSTER_TYPE_SERVERLESS
         auth_type:
           type: string
           description: The auth type value of the cluster associated with the Runtime Group.
@@ -767,6 +768,7 @@ components:
                 - CLUSTER_TYPE_HYBRID
                 - CLUSTER_TYPE_K8S_INGRESS_CONTROLLER
                 - CLUSTER_TYPE_COMPOSITE
+                - CLUSTER_TYPE_SERVERLESS
               readOnly: true
             auth_type:
               type: string
