@@ -230,6 +230,7 @@ components:
             -----END CERTIFICATE-----
         cluster_cert_key:
           type: string
+          x-speakeasy-param-sensitive: true
           description: The cluster certificate key (private key).
           example: >
             -----BEGIN PRIVATE KEY-----
