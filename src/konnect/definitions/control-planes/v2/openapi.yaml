@@ -106,7 +106,7 @@ paths:
         '503':
           $ref: '#/components/responses/ServiceUnavailable'
       operationId: get-control-plane
-      description: Returns information about a team from a given team ID.
+      description: Returns information about an individual control plane.
       tags:
         - Control Planes
     patch:
