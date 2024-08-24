@@ -172,6 +172,8 @@ paths:
                 $ref: '#/components/schemas/DateTimeFieldFilter'
               metadata:
                 $ref: '#/components/schemas/StringFieldFilter'
+              status:
+                $ref: '#/components/schemas/PublishStatus'
           in: query
           name: filter
           description: |
@@ -369,6 +371,7 @@ components:
         - slug
         - title
         - filename
+        - status
         - metadata
         - created_at
         - updated_at
@@ -396,6 +399,8 @@ components:
           type: string
           description: the filename of the document
           example: myDocument.md
+        status:
+          $ref: '#/components/schemas/PublishStatus'
         metadata:
           $ref: '#/components/schemas/Metadata'
         created_at:
@@ -410,6 +415,7 @@ components:
         - id
         - slug
         - revision
+        - status
         - created_at
         - updated_at
       properties:
@@ -428,6 +434,8 @@ components:
           type: string
           description: the slug of the document
           example: getting-started
+        status:
+          $ref: '#/components/schemas/PublishStatus'
         revision:
           $ref: '#/components/schemas/RevisionRaw'
         created_at:
