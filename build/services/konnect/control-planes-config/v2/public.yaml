@@ -262,9 +262,6 @@ paths:
         associated to this control plane. A pinned dataplane certificate allows
         dataplanes configured with the certificate and corresponding private key
         to establish connection with this control plane.
-      parameters:
-        - $ref: '#/components/parameters/PageSize'
-        - $ref: '#/components/parameters/PageAfter'
     post:
       summary: Pin New DP Client Certificate
       description: >-

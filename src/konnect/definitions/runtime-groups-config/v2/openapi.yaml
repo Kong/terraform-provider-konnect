@@ -3692,9 +3692,6 @@ paths:
           $ref: '#/components/responses/get-expected-config-hash'
       operationId: get-expected-config-hash
       description: Retrieve the expected config hash for this runtime group. The expected config hash can be used to verify if the config hash of a runtime instance is up to date with the runtime group. The config hash will be the same if they are in sync.
-      parameters:
-        - $ref: '#/components/parameters/page_size'
-        - $ref: '#/components/parameters/page_number'
     parameters:
       - $ref: '#/components/parameters/runtimeGroupId'
   '/runtime-groups/{runtimeGroupId}/dp-client-certificates':
@@ -3709,9 +3706,6 @@ paths:
       tags:
         - DP Certificates
       description: Returns a list of pinned dataplane client certificates that are associated to this runtime group. A pinned dataplane certificate allows dataplanes configured with the certificate and corresponding private key to establish connection with this runtime group.
-      parameters:
-        - $ref: '#/components/parameters/page_size'
-        - $ref: '#/components/parameters/page_number'
     post:
       summary: Pin New DP Client Certificate
       operationId: post-dp-client-certificates
