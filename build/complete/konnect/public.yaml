@@ -27029,6 +27029,7 @@ security:
   - personalAccessToken: []
   - systemAccountAccessToken: []
   - konnectAccessToken: []
+  - serviceAccessToken: []
 tags:
   - name: Custom Reports
   - name: API Requests

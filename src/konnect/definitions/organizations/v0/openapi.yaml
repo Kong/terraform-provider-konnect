@@ -1,0 +1,111 @@
+openapi: 3.0.3
+info:
+  title: Konnect Organizations Entitlements
+  version: 0.0.0
+  description: Internal entitlement management API.
+  contact:
+    name: Kong
+    url: https://konghq.com
+servers:
+  - url: 'https://us.api.konghq.com/v0'
+    description: US Region Base URL
+  - url: 'https://eu.api.konghq.com/v0'
+    description: EU Region Base URL
+  - url: 'https://au.api.konghq.com/v0'
+    description: AU Region Base URL
+paths:
+  /organizations/{organizationId}/entitlements:
+    parameters:
+      - $ref: '#/components/parameters/OrganizationId'
+    get:
+      x-private: true
+      summary: Get entitlements
+      description: >-
+        Returns the entitlements for a given organization. Internal endpoint for kadmin.
+      operationId: get-entitlements
+      responses:
+        '200':
+          $ref: '#/components/responses/GetEntitlements'
+        '401':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+        '404':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+      tags:
+        - Organizations
+    patch:
+      x-private: true
+      summary: Update entitlements
+      description: >-
+        Update the entitlements for a given organization. Internal endpoint for kadmin.
+      operationId: update-entitlements
+      requestBody:
+          $ref: '#/components/requestBodies/UpdateEntitlements'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetEntitlements'
+        '401':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+        '404':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+      tags:
+        - Organizations
+components:
+  requestBodies:
+    UpdateEntitlements:
+      description: Update an organization's entitlements.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Entitlements'
+          examples:
+            Example 1:
+              $ref: '#/components/examples/UpdateEntitlementsExample1'
+  responses:
+    GetEntitlements:
+      description: Entitlements for this organization.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GetEntitlementsResponse'
+          examples:
+            Example 1:
+              $ref: '#/components/examples/GetEntitlementsExample1'
+  parameters:
+    OrganizationId:
+      name: organizationId
+      description: organization identifier
+      in: path
+      required: true
+      schema:
+        $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
+  schemas:
+    GetEntitlementsResponse:
+      $ref: '#/components/schemas/Entitlements'
+    Entitlements:
+      title: Entitlements
+      additionalProperties: false
+      type: object
+      required:
+        - portals_limit
+      properties:
+        portals_limit:
+          type: number
+          example: 4
+  examples:
+    GetEntitlementsExample1:
+      value:
+        portals_limit: 4
+    UpdateEntitlementsExample1:
+      value:
+        portals_limit: 3
+security:
+  - serviceAccessToken: []
+tags:
+  - name: Organizations
+    description: API related to the management of Konnect Organizations
+

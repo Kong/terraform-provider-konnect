@@ -9204,6 +9204,7 @@ security:
   - personalAccessToken: []
   - systemAccountAccessToken: []
   - konnectAccessToken: []
+  - serviceAccessToken: []
 tags:
   - name: Explore
   - name: Audit Logs

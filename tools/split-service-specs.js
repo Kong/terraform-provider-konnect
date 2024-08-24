@@ -27,13 +27,14 @@ async function main() {
     let complete = yaml.load(await fs.readFile(f));
     let name = f.replace(`${baseDir}/computed/${mode}/`,"").replace("openapi.yaml","");
 
-    const { dev, internal, public } = splitByVisibility(complete);
+    const { dev, internal, public, private } = splitByVisibility(complete);
 
     await tryMkdir(`${outputDir}/${name}`, { recursive: true });
     const builds = {
       dev,
       internal,
       public,
+      private
     };
 
     for (let build in builds){

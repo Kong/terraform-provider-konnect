@@ -30,3 +30,9 @@ components:
       name: portalaccesstoken
       description: |
         The Developer portal cookie is meant to be used by the Developer API to authenticate with.
+    serviceAccessToken:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        The Service access token is meant to be used between internal services.    

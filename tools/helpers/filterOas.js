@@ -231,7 +231,11 @@ function splitByVisibility(doc) {
   }
 
   function isPublic(node){
-    return !node["x-internal"] && !node["x-unstable"];
+    return !node["x-internal"] && !node["x-unstable"] && !node["x-private"];
+  }
+
+  function isPrivate(node){
+    return node["x-private"];
   }
 
   // Annotate any paths with a target specification
@@ -245,6 +249,7 @@ function splitByVisibility(doc) {
   annotateWithTarget(doc, isPath, isDev, 'dev');
   annotateWithTarget(doc, isPath, isInternal, 'internal');
   annotateWithTarget(doc, isPath, isPublic, 'public');
+  annotateWithTarget(doc, isPath, isPrivate, 'private');
 
   // Annotate any schemas with a target specification
   function isSchema(t){
@@ -259,6 +264,7 @@ function splitByVisibility(doc) {
 
   annotateWithTarget(doc, isSchema, isDev, 'dev');
   annotateWithTarget(doc, isSchema, isInternal, 'internal');
+  annotateWithTarget(doc, isSchema, isPrivate, 'private');
 
   // For any schema that are annotated with a target specification,
   // annotate the paths that use them
@@ -270,12 +276,14 @@ function splitByVisibility(doc) {
   let dev = filterPathsToTarget(doc, 'dev');
   let internal = filterPathsToTarget(doc, 'internal');
   let public = filterPathsToTarget(doc, 'public');
+  let private = filterPathsToTarget(doc, 'private');
 
   // For each OAS file, if any of the used schemas are annotated with 'internal' etc
   // Then remove any properties from paths that use them unless the target matches
   dev = removeSchemasNotIn(dev, 'dev');
   internal = removeSchemasNotIn(internal, 'internal');
   public = removeSchemasNotIn(public, 'public');
+  private = removeSchemasNotIn(private, 'private');
 
   // Finally, remove any properties that are explicitly marked as 'internal' etc
   function propertyIsDev(v){
@@ -360,14 +368,16 @@ function splitByVisibility(doc) {
     'x-target-specification',
     'x-internal',
     'x-unstable',
+    'x-private',
     'x-servers-added'
   ];
 
   dev = removeProperty(dev, fields);
   internal = removeProperty(internal, fields);
   public = removeProperty(public, fields);
+  private = removeProperty(private, fields);
 
-  return {dev, internal, public};
+  return {dev, internal, public, private};
 }
 
 module.exports = {
