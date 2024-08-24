@@ -1,14 +1,12 @@
 openapi: 3.0.3
 info:
-  title: DocumentHub Developer Api
+  title: Internal DocumentHub Developer Api
   description: DocumentHub Developer Api
   version: 0.0.1
   contact:
     name: Kong
     url: https://konghq.com
 servers:
-  - url: http://localhost:4400/developer/v0
-    description: Local
   - url: http://documenthub.documenthub.svc.cluster.local:4400/developer/v0
     description: Konnect cluster
 security:
@@ -132,6 +130,7 @@ paths:
         - Customization
   /has-documentation:
     post:
+      operationId: has-documentation
       description: Has documentation
       summary: Returns wether the resourceKind resourceId pairs has documentation
       requestBody:

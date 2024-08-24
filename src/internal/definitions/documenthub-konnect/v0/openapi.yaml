@@ -1,22 +1,12 @@
 openapi: 3.0.3
 info:
-    title: DocumentHub admin Api
+    title: Internal DocumentHub admin Api
     description: DocumentHub admin Api
     version: '0.0.1'
     contact:
       name: Kong
       url: 'https://konghq.com'
 servers:
-  - url: 'http://localhost:4400/v0'
-    description: Local
-  - url: 'https://us.api.konghq.tech/v0'
-    description: Development - US
-  - url: 'https://us.api.konghq.com/v0'
-    description: Production - US
-  - url: 'https://eu.api.konghq.tech/v0'
-    description: Development - EU
-  - url: 'https://eu.api.konghq.com/v0'
-    description: Production - EU
   - url: 'http://documenthub.documenthub.svc.cluster.local:4400/v0'
     description: Konnect cluster
 paths:

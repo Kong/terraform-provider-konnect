@@ -1,14 +1,12 @@
 openapi: 3.0.3
 info:
-    title: DocumentHub Developer Api v2
+    title: Internal DocumentHub Developer Api v2
     description: DocumentHub developer Api
     version: '0.0.1'
     contact:
       name: Kong
       url: 'https://konghq.com'
 servers:
-  - url: 'http://localhost:4400/developer/v2'
-    description: Local
   - url: 'http://documenthub.documenthub.svc.cluster.local:4400/developer/v2'
     description: Konnect cluster
 paths:

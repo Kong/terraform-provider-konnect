@@ -36,6 +36,15 @@ rules:
       - field: "summary"
         function: truthy
 
+  #operationId-required:
+  #  description: All paths require an operationId
+  #  severity: error
+  #  message: Missing {{property}} at {{path}}
+  #  given: $.paths.*[get,post,patch,put,delete]
+  #  then:
+  #    - field: "operationId"
+  #      function: truthy
+
   adv-parameter-property-include-id-check:
     description: |-
       If property or path parameters contain 'ID' it should have Id instead of ID.
@@ -75,7 +84,7 @@ rules:
         notMatch: "[{}]"
 
   server-in-approved-list:
-    description: Server block must be us, eu or global.api.konghq.com
+    description: Server block must be us, eu or global.api.konghq.com, or be a `.svc.cluster.local` address for internal APIs
     severity: error
     recommended: true
     message: "{{error}}"
@@ -84,18 +93,18 @@ rules:
     then:
       function: pattern
       functionOptions:
-        match: "https://(us|eu|au|me|global).api.konghq.com/v(\\d+)"
+        match: "((https://(us|eu|au|me|global).api.konghq.com/v(\\d+))|(.*svc\\.cluster\\.local.*))"
 
   title-prefix:
     severity: error
-    description: "Titles must be prefixed with their product. One of [Konnect, Portal, Gateway]"
+    description: "Titles must be prefixed with their product. One of [Konnect, Portal, Gateway, Internal]"
     message: >-
-      "{{value}}" must start with "Konnect", "Portal" or "Gateway"
+      "{{value}}" must start with "Konnect", "Portal", "Gateway" or "Internal"
     given: $.info.title
     then:
       function: pattern
       functionOptions:
-        match: '^(Konnect|Portal|Gateway)'
+        match: '^(Konnect|Portal|Gateway|Internal)'
   title-no-api-suffix:
     severity: error
     description: "Titles must not end with 'API'"
@@ -368,6 +377,12 @@ rules:
           notMatch: "blacklist"
 
 overrides:
+
+  - files:
+      - "src/**/*"
+    rules:
+      operation-operationId: "error"
+
   - files:
     - "src/portal/definitions/products/**/openapi.yaml#/components/schemas/ListBlock"
     - "src/portal/definitions/products/**/openapi.yaml#/components/schemas/Text"
@@ -570,3 +585,15 @@ overrides:
        - "src/konnect/definitions/servicehub/**/openapi.yaml#/components/schemas/Revision"
     rules:
       blocked-field-names: "off"
+
+  # Legacy internal API rules
+  - files: 
+      - "src/internal/definitions/documenthub-konnect/**/openapi.yaml"
+      - "src/internal/definitions/documenthub-portal/**/openapi.yaml"
+    rules:
+      blocked-field-names: "off"
+
+  - files:
+      - "src/internal/definitions/documenthub-portal/v0/openapi.yaml#/paths/~1has-documentation/post/responses"
+    rules:
+      errors-post-not-contain-200: "off"
