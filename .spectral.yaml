@@ -84,7 +84,7 @@ rules:
     then:
       function: pattern
       functionOptions:
-        match: "https://(us|eu|au|global).api.konghq.com/v(\\d+)"
+        match: "https://(us|eu|au|me|global).api.konghq.com/v(\\d+)"
 
   title-prefix:
     severity: error
