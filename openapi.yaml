@@ -8076,6 +8076,8 @@ components:
           type: boolean
           example: false
           deprecated: true
+        labels:
+          $ref: '#/components/schemas/Labels'
         auth_strategy_sync_errors:
           $ref: '#/components/schemas/AuthStrategySyncErrors'
         portals:
@@ -8091,6 +8093,7 @@ components:
         - gateway_service
         - publish_status
         - deprecated
+        - labels
         - portals
         - created_at
         - updated_at
@@ -8219,6 +8222,8 @@ components:
           example: false
           deprecated: true
           nullable: false
+        labels:
+          $ref: '#/components/schemas/Labels'
         gateway_service:
           $ref: '#/components/schemas/GatewayServicePayload'
           oneOf:
@@ -8361,6 +8366,8 @@ components:
           anyOf:
             - $ref: '#/components/schemas/GatewayServicePayload'
             - $ref: '#/components/schemas/LegacyGatewayServicePayload'
+        labels:
+          $ref: '#/components/schemas/LabelsUpdate'
       additionalProperties: false
       title: Update API Product Version Request
     UpdateAPIProductVersionSpecDTO:

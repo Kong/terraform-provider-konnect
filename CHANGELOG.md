@@ -3,6 +3,9 @@
 ## 0.7.0
 > Released on 2024/??/??
 
+### Features
+* Add support for `labels` to `konnect_api_product_version`
+
 ### Bug fixes
 * Force recreation of `konnect_gateway_*` entities if `control_plane_id` changes
 
