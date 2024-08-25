@@ -1,20 +1,21 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: fcbed672c3b8c36fe93152e7be92405a
+  docChecksum: 16c39623978fb12fe079db91924a43ef
   docVersion: 2.0.0
-  speakeasyVersion: 1.345.4
-  generationVersion: 2.378.3
-  releaseVersion: 0.6.2
-  configChecksum: 2bdf82c9291ee3881de509de4bdfbcbe
+  speakeasyVersion: 1.378.1
+  generationVersion: 2.404.3
+  releaseVersion: 0.6.3
+  configChecksum: 24e4f83962a7f817a65830be840445b2
 features:
   terraform:
     additionalDependencies: 0.1.0
     additionalProperties: 0.1.2
     constsAndDefaults: 0.1.4
-    core: 3.24.2
+    core: 3.24.7
     deprecations: 2.81.1
-    globalSecurity: 2.81.6
+    envVarSecurityUsage: 0.1.0
+    globalSecurity: 2.81.8
     globalServerURLs: 2.82.1
     ignores: 2.81.1
     inputOutputModels: 2.83.0
@@ -23,7 +24,7 @@ features:
     nullables: 0.0.0
     retries: 2.81.1
     typeOverrides: 2.81.1
-    unions: 2.81.15
+    unions: 2.81.16
 generatedFiles:
   - internal/sdk/serverlesscloudgateways.go
   - internal/sdk/mesh.go
@@ -93,8 +94,8 @@ generatedFiles:
   - internal/sdk/models/operations/deleteserverlesscloudgateway.go
   - internal/sdk/models/operations/createcp.go
   - internal/sdk/models/operations/getmeshcontrolplane.go
-  - internal/sdk/models/operations/updatemeshcontrolplane.go
   - internal/sdk/models/operations/deletemeshcontrolplane.go
+  - internal/sdk/models/operations/updatemeshcontrolplane.go
   - internal/sdk/models/operations/createapiproduct.go
   - internal/sdk/models/operations/getapiproduct.go
   - internal/sdk/models/operations/updateapiproduct.go
@@ -133,146 +134,146 @@ generatedFiles:
   - internal/sdk/models/operations/updatecontrolplane.go
   - internal/sdk/models/operations/deletecontrolplane.go
   - internal/sdk/models/operations/createcacertificate.go
+  - internal/sdk/models/operations/deletecacertificate.go
   - internal/sdk/models/operations/getcacertificate.go
   - internal/sdk/models/operations/upsertcacertificate.go
-  - internal/sdk/models/operations/deletecacertificate.go
   - internal/sdk/models/operations/createcertificate.go
+  - internal/sdk/models/operations/deletecertificate.go
   - internal/sdk/models/operations/getcertificate.go
   - internal/sdk/models/operations/upsertcertificate.go
-  - internal/sdk/models/operations/deletecertificate.go
   - internal/sdk/models/operations/createconsumergroup.go
+  - internal/sdk/models/operations/deleteconsumergroup.go
   - internal/sdk/models/operations/getconsumergroup.go
   - internal/sdk/models/operations/upsertconsumergroup.go
-  - internal/sdk/models/operations/deleteconsumergroup.go
   - internal/sdk/models/operations/addconsumertogroup.go
   - internal/sdk/models/operations/removeconsumerfromgroup.go
   - internal/sdk/models/operations/createconsumer.go
+  - internal/sdk/models/operations/deleteconsumer.go
   - internal/sdk/models/operations/getconsumer.go
   - internal/sdk/models/operations/upsertconsumer.go
-  - internal/sdk/models/operations/deleteconsumer.go
   - internal/sdk/models/operations/createaclwithconsumer.go
-  - internal/sdk/models/operations/getaclwithconsumer.go
   - internal/sdk/models/operations/deleteaclwithconsumer.go
+  - internal/sdk/models/operations/getaclwithconsumer.go
   - internal/sdk/models/operations/createbasicauthwithconsumer.go
-  - internal/sdk/models/operations/getbasicauthwithconsumer.go
   - internal/sdk/models/operations/deletebasicauthwithconsumer.go
+  - internal/sdk/models/operations/getbasicauthwithconsumer.go
   - internal/sdk/models/operations/createhmacauthwithconsumer.go
-  - internal/sdk/models/operations/gethmacauthwithconsumer.go
   - internal/sdk/models/operations/deletehmacauthwithconsumer.go
+  - internal/sdk/models/operations/gethmacauthwithconsumer.go
   - internal/sdk/models/operations/createjwtwithconsumer.go
-  - internal/sdk/models/operations/getjwtwithconsumer.go
   - internal/sdk/models/operations/deletejwtwithconsumer.go
+  - internal/sdk/models/operations/getjwtwithconsumer.go
   - internal/sdk/models/operations/createkeyauthwithconsumer.go
-  - internal/sdk/models/operations/getkeyauthwithconsumer.go
   - internal/sdk/models/operations/deletekeyauthwithconsumer.go
+  - internal/sdk/models/operations/getkeyauthwithconsumer.go
   - internal/sdk/models/operations/createkeyset.go
+  - internal/sdk/models/operations/deletekeyset.go
   - internal/sdk/models/operations/getkeyset.go
   - internal/sdk/models/operations/upsertkeyset.go
-  - internal/sdk/models/operations/deletekeyset.go
   - internal/sdk/models/operations/createkey.go
+  - internal/sdk/models/operations/deletekey.go
   - internal/sdk/models/operations/getkey.go
   - internal/sdk/models/operations/upsertkey.go
-  - internal/sdk/models/operations/deletekey.go
   - internal/sdk/models/operations/createpluginschemas.go
   - internal/sdk/models/operations/getpluginschema.go
-  - internal/sdk/models/operations/updatepluginschemas.go
   - internal/sdk/models/operations/deletepluginschemas.go
+  - internal/sdk/models/operations/updatepluginschemas.go
+  - internal/sdk/models/operations/deleteaclplugin.go
   - internal/sdk/models/operations/getaclplugin.go
   - internal/sdk/models/operations/updateaclplugin.go
-  - internal/sdk/models/operations/deleteaclplugin.go
+  - internal/sdk/models/operations/deleteaipromptdecoratorplugin.go
   - internal/sdk/models/operations/getaipromptdecoratorplugin.go
   - internal/sdk/models/operations/updateaipromptdecoratorplugin.go
-  - internal/sdk/models/operations/deleteaipromptdecoratorplugin.go
+  - internal/sdk/models/operations/deleteaipromptguardplugin.go
   - internal/sdk/models/operations/getaipromptguardplugin.go
   - internal/sdk/models/operations/updateaipromptguardplugin.go
-  - internal/sdk/models/operations/deleteaipromptguardplugin.go
+  - internal/sdk/models/operations/deleteaiprompttemplateplugin.go
   - internal/sdk/models/operations/getaiprompttemplateplugin.go
   - internal/sdk/models/operations/updateaiprompttemplateplugin.go
-  - internal/sdk/models/operations/deleteaiprompttemplateplugin.go
+  - internal/sdk/models/operations/deleteaiproxyplugin.go
   - internal/sdk/models/operations/getaiproxyplugin.go
   - internal/sdk/models/operations/updateaiproxyplugin.go
-  - internal/sdk/models/operations/deleteaiproxyplugin.go
+  - internal/sdk/models/operations/deleteawslambdaplugin.go
   - internal/sdk/models/operations/getawslambdaplugin.go
   - internal/sdk/models/operations/updateawslambdaplugin.go
-  - internal/sdk/models/operations/deleteawslambdaplugin.go
+  - internal/sdk/models/operations/deletebasicauthplugin.go
   - internal/sdk/models/operations/getbasicauthplugin.go
   - internal/sdk/models/operations/updatebasicauthplugin.go
-  - internal/sdk/models/operations/deletebasicauthplugin.go
+  - internal/sdk/models/operations/deletecorrelationidplugin.go
   - internal/sdk/models/operations/getcorrelationidplugin.go
   - internal/sdk/models/operations/updatecorrelationidplugin.go
-  - internal/sdk/models/operations/deletecorrelationidplugin.go
+  - internal/sdk/models/operations/deletecorsplugin.go
   - internal/sdk/models/operations/getcorsplugin.go
   - internal/sdk/models/operations/updatecorsplugin.go
-  - internal/sdk/models/operations/deletecorsplugin.go
+  - internal/sdk/models/operations/deleteexittransformerplugin.go
   - internal/sdk/models/operations/getexittransformerplugin.go
   - internal/sdk/models/operations/updateexittransformerplugin.go
-  - internal/sdk/models/operations/deleteexittransformerplugin.go
+  - internal/sdk/models/operations/deletefilelogplugin.go
   - internal/sdk/models/operations/getfilelogplugin.go
   - internal/sdk/models/operations/updatefilelogplugin.go
-  - internal/sdk/models/operations/deletefilelogplugin.go
+  - internal/sdk/models/operations/deleteiprestrictionplugin.go
   - internal/sdk/models/operations/getiprestrictionplugin.go
   - internal/sdk/models/operations/updateiprestrictionplugin.go
-  - internal/sdk/models/operations/deleteiprestrictionplugin.go
+  - internal/sdk/models/operations/deletejqplugin.go
   - internal/sdk/models/operations/getjqplugin.go
   - internal/sdk/models/operations/updatejqplugin.go
-  - internal/sdk/models/operations/deletejqplugin.go
+  - internal/sdk/models/operations/deletejwtplugin.go
   - internal/sdk/models/operations/getjwtplugin.go
   - internal/sdk/models/operations/updatejwtplugin.go
-  - internal/sdk/models/operations/deletejwtplugin.go
+  - internal/sdk/models/operations/deletejwtsignerplugin.go
   - internal/sdk/models/operations/getjwtsignerplugin.go
   - internal/sdk/models/operations/updatejwtsignerplugin.go
-  - internal/sdk/models/operations/deletejwtsignerplugin.go
+  - internal/sdk/models/operations/deletekeyauthplugin.go
   - internal/sdk/models/operations/getkeyauthplugin.go
   - internal/sdk/models/operations/updatekeyauthplugin.go
-  - internal/sdk/models/operations/deletekeyauthplugin.go
+  - internal/sdk/models/operations/deleteoauth2plugin.go
   - internal/sdk/models/operations/getoauth2plugin.go
   - internal/sdk/models/operations/updateoauth2plugin.go
-  - internal/sdk/models/operations/deleteoauth2plugin.go
+  - internal/sdk/models/operations/deleteopenidconnectplugin.go
   - internal/sdk/models/operations/getopenidconnectplugin.go
   - internal/sdk/models/operations/updateopenidconnectplugin.go
-  - internal/sdk/models/operations/deleteopenidconnectplugin.go
+  - internal/sdk/models/operations/deleteopentelemetryplugin.go
   - internal/sdk/models/operations/getopentelemetryplugin.go
   - internal/sdk/models/operations/updateopentelemetryplugin.go
-  - internal/sdk/models/operations/deleteopentelemetryplugin.go
+  - internal/sdk/models/operations/deletepostfunctionplugin.go
   - internal/sdk/models/operations/getpostfunctionplugin.go
   - internal/sdk/models/operations/updatepostfunctionplugin.go
-  - internal/sdk/models/operations/deletepostfunctionplugin.go
+  - internal/sdk/models/operations/deleteprefunctionplugin.go
   - internal/sdk/models/operations/getprefunctionplugin.go
   - internal/sdk/models/operations/updateprefunctionplugin.go
-  - internal/sdk/models/operations/deleteprefunctionplugin.go
+  - internal/sdk/models/operations/deleteprometheusplugin.go
   - internal/sdk/models/operations/getprometheusplugin.go
   - internal/sdk/models/operations/updateprometheusplugin.go
-  - internal/sdk/models/operations/deleteprometheusplugin.go
+  - internal/sdk/models/operations/deleteproxycacheplugin.go
   - internal/sdk/models/operations/getproxycacheplugin.go
   - internal/sdk/models/operations/updateproxycacheplugin.go
-  - internal/sdk/models/operations/deleteproxycacheplugin.go
+  - internal/sdk/models/operations/deleteratelimitingplugin.go
   - internal/sdk/models/operations/getratelimitingplugin.go
   - internal/sdk/models/operations/updateratelimitingplugin.go
-  - internal/sdk/models/operations/deleteratelimitingplugin.go
+  - internal/sdk/models/operations/deleteratelimitingadvancedplugin.go
   - internal/sdk/models/operations/getratelimitingadvancedplugin.go
   - internal/sdk/models/operations/updateratelimitingadvancedplugin.go
-  - internal/sdk/models/operations/deleteratelimitingadvancedplugin.go
+  - internal/sdk/models/operations/deleterequestterminationplugin.go
   - internal/sdk/models/operations/getrequestterminationplugin.go
   - internal/sdk/models/operations/updaterequestterminationplugin.go
-  - internal/sdk/models/operations/deleterequestterminationplugin.go
+  - internal/sdk/models/operations/deleterequesttransformerplugin.go
   - internal/sdk/models/operations/getrequesttransformerplugin.go
   - internal/sdk/models/operations/updaterequesttransformerplugin.go
-  - internal/sdk/models/operations/deleterequesttransformerplugin.go
+  - internal/sdk/models/operations/deleterequesttransformeradvancedplugin.go
   - internal/sdk/models/operations/getrequesttransformeradvancedplugin.go
   - internal/sdk/models/operations/updaterequesttransformeradvancedplugin.go
-  - internal/sdk/models/operations/deleterequesttransformeradvancedplugin.go
+  - internal/sdk/models/operations/deleteresponsetransformerplugin.go
   - internal/sdk/models/operations/getresponsetransformerplugin.go
   - internal/sdk/models/operations/updateresponsetransformerplugin.go
-  - internal/sdk/models/operations/deleteresponsetransformerplugin.go
+  - internal/sdk/models/operations/deleteresponsetransformeradvancedplugin.go
   - internal/sdk/models/operations/getresponsetransformeradvancedplugin.go
   - internal/sdk/models/operations/updateresponsetransformeradvancedplugin.go
-  - internal/sdk/models/operations/deleteresponsetransformeradvancedplugin.go
+  - internal/sdk/models/operations/deletesamlplugin.go
   - internal/sdk/models/operations/getsamlplugin.go
   - internal/sdk/models/operations/updatesamlplugin.go
-  - internal/sdk/models/operations/deletesamlplugin.go
+  - internal/sdk/models/operations/deletestatsdplugin.go
   - internal/sdk/models/operations/getstatsdplugin.go
   - internal/sdk/models/operations/updatestatsdplugin.go
-  - internal/sdk/models/operations/deletestatsdplugin.go
   - internal/sdk/models/operations/createaclplugin.go
   - internal/sdk/models/operations/createaipromptdecoratorplugin.go
   - internal/sdk/models/operations/createaipromptguardplugin.go
@@ -305,30 +306,29 @@ generatedFiles:
   - internal/sdk/models/operations/createresponsetransformeradvancedplugin.go
   - internal/sdk/models/operations/createsamlplugin.go
   - internal/sdk/models/operations/createstatsdplugin.go
-  - internal/sdk/models/operations/fetchpluginschema.go
   - internal/sdk/models/operations/createroute.go
+  - internal/sdk/models/operations/deleteroute.go
   - internal/sdk/models/operations/getroute.go
   - internal/sdk/models/operations/upsertroute.go
-  - internal/sdk/models/operations/deleteroute.go
   - internal/sdk/models/operations/createservice.go
+  - internal/sdk/models/operations/deleteservice.go
   - internal/sdk/models/operations/getservice.go
   - internal/sdk/models/operations/upsertservice.go
-  - internal/sdk/models/operations/deleteservice.go
   - internal/sdk/models/operations/createsni.go
+  - internal/sdk/models/operations/deletesni.go
   - internal/sdk/models/operations/getsni.go
   - internal/sdk/models/operations/upsertsni.go
-  - internal/sdk/models/operations/deletesni.go
   - internal/sdk/models/operations/createupstream.go
+  - internal/sdk/models/operations/deleteupstream.go
   - internal/sdk/models/operations/getupstream.go
   - internal/sdk/models/operations/upsertupstream.go
-  - internal/sdk/models/operations/deleteupstream.go
   - internal/sdk/models/operations/createtargetwithupstream.go
-  - internal/sdk/models/operations/gettargetwithupstream.go
   - internal/sdk/models/operations/deletetargetwithupstream.go
+  - internal/sdk/models/operations/gettargetwithupstream.go
   - internal/sdk/models/operations/createvault.go
+  - internal/sdk/models/operations/deletevault.go
   - internal/sdk/models/operations/getvault.go
   - internal/sdk/models/operations/upsertvault.go
-  - internal/sdk/models/operations/deletevault.go
   - internal/sdk/models/operations/createdataplanecertificate.go
   - internal/sdk/models/operations/getdataplanecertificate.go
   - internal/sdk/models/operations/deletedataplanecertificate.go
@@ -336,7 +336,6 @@ generatedFiles:
   - internal/sdk/models/operations/postcontrolplanesidgroupmembershipsremove.go
   - internal/sdk/models/operations/listportals.go
   - internal/sdk/models/operations/createportal.go
-  - internal/sdk/models/operations/getportal.go
   - internal/sdk/models/operations/updateportal.go
   - internal/sdk/models/operations/deleteportal.go
   - internal/sdk/models/operations/getportalappearance.go
@@ -555,7 +554,6 @@ generatedFiles:
   - internal/sdk/models/shared/portal.go
   - internal/sdk/models/shared/createportalresponse.go
   - internal/sdk/models/shared/createportalrequest.go
-  - internal/sdk/models/shared/getportalresponse.go
   - internal/sdk/models/shared/updateportalresponse.go
   - internal/sdk/models/shared/updateportalrequest.go
   - internal/sdk/models/shared/getportalappearanceresponse.go
@@ -598,7 +596,6 @@ generatedFiles:
   - internal/sdk/.gitignore
   - internal/sdk/models/operations/options.go
   - internal/sdk/.gitattributes
-  - internal/sdk/internal/hooks/registration.go
   - internal/sdk/internal/hooks/hooks.go
   - internal/sdk/CONTRIBUTING.md
   - examples/README.md
@@ -759,6 +756,7 @@ generatedFiles:
   - internal/provider/types/auth_strategy.go
   - internal/provider/types/serverless_control_plane.go
   - internal/provider/types/gateway_service.go
+  - internal/provider/types/app_auth_strategy_key_auth_response_app_auth_strategy_key_auth_response.go
   - internal/provider/types/app_auth_strategy_open_id_connect_response_app_auth_strategy_open_id_connect_response.go
   - internal/provider/types/provider_account.go
   - internal/provider/types/page_meta.go
@@ -1021,7 +1019,6 @@ generatedFiles:
   - internal/provider/meshcontrolplane_resource.go
   - internal/provider/meshcontrolplane_resource_sdk.go
   - examples/resources/konnect_mesh_control_plane/resource.tf
-  - examples/resources/konnect_portal/import.sh
   - internal/provider/portal_resource.go
   - internal/provider/portal_resource_sdk.go
   - examples/resources/konnect_portal/resource.tf
@@ -1254,9 +1251,6 @@ generatedFiles:
   - internal/provider/meshcontrolplane_data_source.go
   - internal/provider/meshcontrolplane_data_source_sdk.go
   - examples/data-sources/konnect_mesh_control_plane/data-source.tf
-  - internal/provider/portal_data_source.go
-  - internal/provider/portal_data_source_sdk.go
-  - examples/data-sources/konnect_portal/data-source.tf
   - internal/provider/portalappearance_data_source.go
   - internal/provider/portalappearance_data_source_sdk.go
   - examples/data-sources/konnect_portal_appearance/data-source.tf
