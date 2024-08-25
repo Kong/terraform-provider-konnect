@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.6.2
+## 0.6.3
 > Released on 2024/08/25
 
 ### Features
