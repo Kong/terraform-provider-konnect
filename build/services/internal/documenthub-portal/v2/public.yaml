@@ -5,32 +5,27 @@ info:
   version: 0.0.1
   contact:
     name: Kong
-    url: https://konghq.com
+    url: 'https://konghq.com'
 servers:
-  - url: http://documenthub.documenthub.svc.cluster.local:4400/developer/v2
+  - url: 'http://documenthub.documenthub.svc.cluster.local:4400/developer/v2'
     description: Konnect cluster
-security:
-  - portalAccessToken: []
-tags:
-  - name: Documents
-    description: document operations
 paths:
-  /collections/{collectionId}/documents:
+  '/collections/{collectionId}/documents':
     get:
+      operationId: listDocuments
       summary: List collection documents
       description: List documents in a collection
-      operationId: listDocuments
       parameters:
         - $ref: '#/components/parameters/collectionId'
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageNumber'
-        - schema:
-            type: string
-            example: filter[name]=my-doc
+        - name: 'filter[field]'
           in: query
-          name: filter[field]
           description: |
             A field to filter on. Supported fields: slug, metadata.
+          schema:
+            type: string
+            example: 'filter[name]=my-doc'
       responses:
         '200':
           description: Documents in the collection
@@ -45,14 +40,14 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Documents
-  /collections/{collectionId}/documents/{documentId}:
+  '/collections/{collectionId}/documents/{documentId}':
     get:
+      operationId: getDocument
       summary: Get the document
       description: Get the document
-      operationId: getDocument
       parameters:
-        - in: header
-          name: Accept
+        - name: Accept
+          in: header
           schema:
             $ref: '#/components/schemas/DocumentFormatContentTypeEnum'
         - $ref: '#/components/parameters/collectionId'
@@ -61,35 +56,61 @@ paths:
         '200':
           description: Document
           content:
-            text/markdown:
-              schema:
-                type: string
-                description: the markdown content
             application/json:
               schema:
                 $ref: '#/components/schemas/DocumentRaw'
             application/vnd.konnect.document-nodes+json:
               schema:
                 $ref: '#/components/schemas/Document'
+            text/markdown:
+              schema:
+                description: the markdown content
+                type: string
         '404':
           $ref: '#/components/responses/NotFound'
       tags:
         - Documents
 components:
-  securitySchemes:
-    portalAccessToken:
-      type: apiKey
-      in: cookie
-      name: portalaccesstoken
-      description: >
-        The Developer portal cookie is meant to be used by the Developer API to
-        authenticate with.
+  parameters:
+    PageNumber:
+      name: 'page[number]'
+      description: Determines which page of the entities to retrieve.
+      required: false
+      in: query
+      allowEmptyValue: true
+      schema:
+        type: integer
+        example: 1
+    PageSize:
+      name: 'page[size]'
+      description: The maximum number of items to include per page. The last page of a collection may include fewer items.
+      required: false
+      in: query
+      allowEmptyValue: true
+      schema:
+        type: integer
+        example: 10
+    collectionId:
+      name: collectionId
+      in: path
+      required: true
+      description: Targeted collection
+      example: bb84c46a-432d-4314-81e4-478614a52dcb
+      schema:
+        type: string
+        format: uuid
+    documentId:
+      name: documentId
+      in: path
+      required: true
+      description: Targeted document
+      example: bb84c46a-432d-4314-81e4-478614a52dcb
+      schema:
+        type: string
+        format: uuid
   schemas:
     ListDocumentsTree:
       type: object
-      required:
-        - meta
-        - data
       properties:
         meta:
           $ref: '#/components/schemas/PaginatedMeta'
@@ -97,12 +118,11 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DocumentTree'
-    ListDocuments:
-      type: object
-      additionalProperties: false
       required:
         - meta
         - data
+    ListDocuments:
+      type: object
       properties:
         meta:
           $ref: '#/components/schemas/PaginatedMeta'
@@ -110,9 +130,38 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DocumentItem'
+      additionalProperties: false
+      required:
+        - meta
+        - data
     DocumentItem:
       type: object
-      title: Document item
+      properties:
+        id:
+          description: the id of the document
+          type: string
+          format: uuid
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        parent_document_id:
+          description: the id of the parent document
+          type: string
+          format: uuid
+          example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
+          nullable: true
+        slug:
+          description: the slug of the document
+          type: string
+          example: getting-started
+        title:
+          description: the title of the document
+          type: string
+          example: Getting Started
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
       additionalProperties: false
       required:
         - id
@@ -122,57 +171,25 @@ components:
         - metadata
         - created_at
         - updated_at
-      properties:
-        id:
-          type: string
-          format: uuid
-          description: the id of the document
-          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
-        parent_document_id:
-          type: string
-          format: uuid
-          description: the id of the parent document
-          nullable: true
-          example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
-        slug:
-          type: string
-          description: the slug of the document
-          example: getting-started
-        title:
-          type: string
-          description: the title of the document
-          example: Getting Started
-        metadata:
-          $ref: '#/components/schemas/Metadata'
-        created_at:
-          $ref: '#/components/schemas/CreatedAt'
-        updated_at:
-          $ref: '#/components/schemas/UpdatedAt'
+      title: Document item
     DocumentRaw:
-      type: object
-      title: Document
       description: a document
-      required:
-        - id
-        - slug
-        - revision
-        - created_at
-        - updated_at
+      type: object
       properties:
         id:
+          description: the id of the document
           type: string
           format: uuid
-          description: the id of the document
           example: d32d905a-ed33-46a3-a093-d8f536af9a8a
         parent_document_id:
+          description: the id of the parent document
           type: string
           format: uuid
-          description: the id of the parent document
-          nullable: true
           example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
+          nullable: true
         slug:
-          type: string
           description: the slug of the document
+          type: string
           example: getting-started
         revision:
           $ref: '#/components/schemas/RevisionRaw'
@@ -180,85 +197,85 @@ components:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
           $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - id
+        - slug
+        - revision
+        - created_at
+        - updated_at
+      title: Document
     RevisionRaw:
-      type: object
-      title: Revision
       description: revision of a document
+      type: object
+      properties:
+        id:
+          description: the id of the revision
+          type: string
+          format: uuid
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        document_id:
+          description: the id of the document
+          type: string
+          format: uuid
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        content:
+          description: Markdown document
+          type: string
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+        title:
+          description: the title of the document
+          type: string
+          example: Hello World
       required:
         - id
         - document_id
         - content
         - metadata
         - title
+      title: Revision
+    Document:
+      description: a document
+      type: object
       properties:
         id:
-          type: string
-          format: uuid
-          description: the id of the revision
-          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
-        document_id:
-          type: string
-          format: uuid
           description: the id of the document
+          type: string
+          format: uuid
           example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        parent_document_id:
+          description: the id of the parent document
+          type: string
+          format: uuid
+          example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
+          nullable: true
+        slug:
+          description: the slug of the document
+          type: string
+          example: getting-started
         content:
-          type: string
-          description: Markdown document
-        metadata:
-          $ref: '#/components/schemas/Metadata'
+          $ref: '#/components/schemas/DocumentBlock'
+        meta:
+          description: the metadata of the document
+          type: object
+          example:
+            title: Hello World
+            description: This is a description
+            keywords: 'hello, world'
         title:
-          type: string
           description: the title of the document
+          type: string
           example: Hello World
-    Document:
-      type: object
-      title: Document
-      description: a document
       required:
         - id
         - slug
         - meta
         - title
         - content
-      properties:
-        id:
-          type: string
-          format: uuid
-          description: the id of the document
-          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
-        parent_document_id:
-          type: string
-          format: uuid
-          description: the id of the parent document
-          nullable: true
-          example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
-        slug:
-          type: string
-          description: the slug of the document
-          example: getting-started
-        content:
-          $ref: '#/components/schemas/DocumentBlock'
-        meta:
-          type: object
-          description: the metadata of the document
-          example:
-            title: Hello World
-            description: This is a description
-            keywords: hello, world
-        title:
-          type: string
-          description: the title of the document
-          example: Hello World
+      title: Document
     DocumentTree:
-      type: object
-      title: DocumentTree
       description: a document tree
-      required:
-        - id
-        - title
-        - slug
-        - metadata
-        - children
+      type: object
       properties:
         id:
           type: string
@@ -267,15 +284,15 @@ components:
         parent_document_id:
           type: string
           format: uuid
-          nullable: true
           example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
+          nullable: true
         title:
-          type: string
           description: the title of the document
+          type: string
           example: Getting Started
         slug:
-          type: string
           description: the slug of the document
+          type: string
           example: getting-started
         metadata:
           $ref: '#/components/schemas/Metadata'
@@ -283,15 +300,16 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DocumentTree'
-    PageMeta:
-      type: object
-      description: >-
-        Contains pagination query parameters and the total number of objects
-        returned.
       required:
-        - number
-        - size
-        - total
+        - id
+        - title
+        - slug
+        - metadata
+        - children
+      title: DocumentTree
+    PageMeta:
+      description: Contains pagination query parameters and the total number of objects returned.
+      type: object
       properties:
         number:
           type: number
@@ -302,83 +320,79 @@ components:
         total:
           type: number
           example: 100
+      required:
+        - number
+        - size
+        - total
     PaginatedMeta:
-      type: object
-      title: PaginatedMeta
       description: returns the pagination information
+      type: object
       properties:
         page:
           $ref: '#/components/schemas/PageMeta'
       required:
         - page
+      title: PaginatedMeta
     Metadata:
-      type: object
       description: Contains key value pairs information about entity's metadata.
-      additionalProperties: true
+      type: object
       example:
         owner: John Appleseed
+      additionalProperties: true
     CreatedAt:
+      description: An ISO-8601 timestamp representation of entity creation date.
       type: string
       format: date-time
       example: '2022-11-04T20:10:06.927Z'
-      description: An ISO-8601 timestamp representation of entity creation date.
       readOnly: true
     UpdatedAt:
+      description: An ISO-8601 timestamp representation of entity update date.
       type: string
       format: date-time
       example: '2022-11-04T20:10:06.927Z'
-      description: An ISO-8601 timestamp representation of entity update date.
       readOnly: true
     BaseError:
-      type: object
-      title: Error
       description: standard error
+      type: object
+      properties:
+        status:
+          description: |
+            The HTTP status code of the error. Useful when passing the response
+            body to child properties in a frontend UI. Must be returned as an integer.
+          type: integer
+          readOnly: true
+        title:
+          description: |
+            A short, human-readable summary of the problem. It should not
+            change between occurences of a problem, except for localization.
+            Should be provided as "Sentence case" for direct use in the UI.
+          type: string
+          readOnly: true
+        type:
+          description: The error type.
+          type: string
+          readOnly: true
+        instance:
+          description: |
+            Used to return the correlation ID back to the user, in the format
+            kong:trace:<correlation_id>. This helps us find the relevant logs
+            when a customer reports an issue.
+          type: string
+          readOnly: true
+        detail:
+          description: |
+            A human readable explanation specific to this occurence of the problem.
+            This field may contain request/entity data to help the user understand
+            what went wrong. Enclose variable values in square brackets. Should be
+            provided as "Sentence case" for direct use in the UI.
+          type: string
+          readOnly: true
       required:
         - status
         - title
         - instance
         - detail
-      properties:
-        status:
-          type: integer
-          description: >
-            The HTTP status code of the error. Useful when passing the response
-
-            body to child properties in a frontend UI. Must be returned as an
-            integer.
-          readOnly: true
-        title:
-          type: string
-          description: |
-            A short, human-readable summary of the problem. It should not
-            change between occurences of a problem, except for localization.
-            Should be provided as "Sentence case" for direct use in the UI.
-          readOnly: true
-        type:
-          type: string
-          description: The error type.
-          readOnly: true
-        instance:
-          type: string
-          description: |
-            Used to return the correlation ID back to the user, in the format
-            kong:trace:<correlation_id>. This helps us find the relevant logs
-            when a customer reports an issue.
-          readOnly: true
-        detail:
-          type: string
-          description: >
-            A human readable explanation specific to this occurence of the
-            problem.
-
-            This field may contain request/entity data to help the user
-            understand
-
-            what went wrong. Enclose variable values in square brackets. Should
-            be
-
-            provided as "Sentence case" for direct use in the UI.
-          readOnly: true
+      title: Error
     NotFoundError:
       allOf:
         - $ref: '#/components/schemas/BaseError'
@@ -389,9 +403,9 @@ components:
             title:
               example: Not Found
             type:
-              example: https://httpstatuses.com/404
+              example: 'https://httpstatuses.com/404'
             instance:
-              example: kong:trace:1234567890
+              example: 'kong:trace:1234567890'
             detail:
               example: Not found
     DocumentFormatContentTypeEnum:
@@ -408,8 +422,6 @@ components:
         $ref: '#/components/schemas/ChildNode'
     HeadingBlock:
       type: object
-      required:
-        - type
       properties:
         type:
           type: string
@@ -418,14 +430,14 @@ components:
         level:
           description: Level of the heading which maps to HTML <h> tag
           type: number
-          minimum: 1
           maximum: 6
+          minimum: 1
         children:
           $ref: '#/components/schemas/NodeChildren'
-    BlockQuoteBlock:
-      type: object
       required:
         - type
+    BlockQuoteBlock:
+      type: object
       properties:
         type:
           type: string
@@ -433,10 +445,10 @@ components:
             - blockquote
         children:
           $ref: '#/components/schemas/NodeChildren'
-    ParagraphBlock:
-      type: object
       required:
         - type
+    ParagraphBlock:
+      type: object
       properties:
         type:
           type: string
@@ -444,10 +456,10 @@ components:
             - paragraph
         children:
           $ref: '#/components/schemas/NodeChildren'
-    TextBlock:
-      type: object
       required:
         - type
+    TextBlock:
+      type: object
       properties:
         type:
           type: string
@@ -455,10 +467,10 @@ components:
             - text_block
         children:
           $ref: '#/components/schemas/NodeChildren'
-    BreakBlock:
-      type: object
       required:
         - type
+    BreakBlock:
+      type: object
       properties:
         type:
           type: string
@@ -466,10 +478,10 @@ components:
             - break
         children:
           $ref: '#/components/schemas/NodeChildren'
-    CodeBlock:
-      type: object
       required:
         - type
+    CodeBlock:
+      type: object
       properties:
         type:
           type: string
@@ -479,10 +491,10 @@ components:
           type: string
         children:
           $ref: '#/components/schemas/NodeChildren'
-    ListBlock:
-      type: object
       required:
         - type
+    ListBlock:
+      type: object
       properties:
         type:
           type: string
@@ -493,10 +505,10 @@ components:
           type: boolean
         children:
           $ref: '#/components/schemas/NodeChildren'
-    ListItemBlock:
-      type: object
       required:
         - type
+    ListItemBlock:
+      type: object
       properties:
         type:
           type: string
@@ -504,10 +516,10 @@ components:
             - list_item
         children:
           $ref: '#/components/schemas/NodeChildren'
-    Text:
-      type: object
       required:
         - type
+    Text:
+      type: object
       properties:
         type:
           type: string
@@ -529,29 +541,29 @@ components:
           type: boolean
         children:
           $ref: '#/components/schemas/NodeChildren'
-    Emphasis:
-      type: object
       required:
         - type
+    Emphasis:
+      type: object
       properties:
         type:
           type: string
           enum:
             - emphasis
         level:
-          type: number
-          minimum: 1
-          maximum: 2
           description: |
             Level of emphasis
             1 - italic
             2 - bold
+          type: number
+          maximum: 2
+          minimum: 1
         children:
           $ref: '#/components/schemas/NodeChildren'
-    Code:
-      type: object
       required:
         - type
+    Code:
+      type: object
       properties:
         type:
           type: string
@@ -559,10 +571,10 @@ components:
             - code
         children:
           $ref: '#/components/schemas/NodeChildren'
-    Link:
-      type: object
       required:
         - type
+    Link:
+      type: object
       properties:
         type:
           type: string
@@ -574,10 +586,10 @@ components:
         title:
           description: Title of the link
           type: string
-    Image:
-      type: object
       required:
         - type
+    Image:
+      type: object
       properties:
         type:
           type: string
@@ -592,15 +604,17 @@ components:
         title:
           description: Title of the image
           type: string
-    StrikeThrough:
-      type: object
       required:
         - type
+    StrikeThrough:
+      type: object
       properties:
         type:
           type: string
           enum:
             - strikethrough
+      required:
+        - type
     AlignmentKind:
       type: string
       enum:
@@ -610,14 +624,11 @@ components:
         - none
     TableAlignments:
       type: array
-      nullable: true
       items:
         $ref: '#/components/schemas/AlignmentKind'
+      nullable: true
     TableBlock:
       type: object
-      required:
-        - type
-        - alignments
       properties:
         type:
           type: string
@@ -627,11 +638,11 @@ components:
           $ref: '#/components/schemas/TableAlignments'
         children:
           $ref: '#/components/schemas/NodeChildren'
-    TableHeaderBlock:
-      type: object
       required:
         - type
         - alignments
+    TableHeaderBlock:
+      type: object
       properties:
         type:
           type: string
@@ -641,10 +652,11 @@ components:
           $ref: '#/components/schemas/TableAlignments'
         children:
           $ref: '#/components/schemas/NodeChildren'
-    TableCellBlock:
-      type: object
       required:
         - type
+        - alignments
+    TableCellBlock:
+      type: object
       properties:
         type:
           type: string
@@ -654,11 +666,10 @@ components:
           $ref: '#/components/schemas/AlignmentKind'
         children:
           $ref: '#/components/schemas/NodeChildren'
-    TableRowBlock:
-      type: object
       required:
         - type
-        - alignments
+    TableRowBlock:
+      type: object
       properties:
         type:
           type: string
@@ -668,21 +679,26 @@ components:
           $ref: '#/components/schemas/TableAlignments'
         children:
           $ref: '#/components/schemas/NodeChildren'
+      required:
+        - type
+        - alignments
     TaskCheckbox:
       type: object
-      required:
-        - checked
-        - type
       properties:
         type:
           type: string
           enum:
             - task_checkbox
         checked:
-          type: boolean
           description: State of the checkbox
+          type: boolean
+      required:
+        - checked
+        - type
     ChildNode:
       type: object
+      discriminator:
+        propertyName: type
       oneOf:
         - $ref: '#/components/schemas/HeadingBlock'
         - $ref: '#/components/schemas/BlockQuoteBlock'
@@ -703,12 +719,9 @@ components:
         - $ref: '#/components/schemas/TableCellBlock'
         - $ref: '#/components/schemas/TableRowBlock'
         - $ref: '#/components/schemas/TaskCheckbox'
-      discriminator:
-        propertyName: type
     DocumentBlock:
+      description: content of the document
       type: object
-      required:
-        - type
       properties:
         type:
           type: string
@@ -718,14 +731,22 @@ components:
           type: string
         children:
           $ref: '#/components/schemas/NodeChildren'
-      description: content of the document
       example:
         type: document
         content:
           - type: paragraph
             content:
-              - type: text
-                text: Hello World
+              - text: Hello World
+                type: text
+      required:
+        - type
+  examples:
+    NotFoundExample:
+      value:
+        status: 404
+        title: Not Found
+        instance: 'kong:trace:6816496025408232265'
+        detail: Not Found
   requestBodies: {}
   responses:
     NotFound:
@@ -737,49 +758,15 @@ components:
           examples:
             NotFoundExample:
               $ref: '#/components/examples/NotFoundExample'
-  parameters:
-    collectionId:
-      name: collectionId
-      in: path
-      required: true
-      description: Targeted collection
-      example: bb84c46a-432d-4314-81e4-478614a52dcb
-      schema:
-        type: string
-        format: uuid
-    documentId:
-      name: documentId
-      in: path
-      required: true
-      description: Targeted document
-      example: bb84c46a-432d-4314-81e4-478614a52dcb
-      schema:
-        type: string
-        format: uuid
-    PageSize:
-      name: page[size]
-      description: >-
-        The maximum number of items to include per page. The last page of a
-        collection may include fewer items.
-      required: false
-      in: query
-      allowEmptyValue: true
-      schema:
-        type: integer
-        example: 10
-    PageNumber:
-      name: page[number]
-      description: Determines which page of the entities to retrieve.
-      required: false
-      in: query
-      allowEmptyValue: true
-      schema:
-        type: integer
-        example: 1
-  examples:
-    NotFoundExample:
-      value:
-        status: 404
-        title: Not Found
-        instance: kong:trace:6816496025408232265
-        detail: Not Found
+  securitySchemes:
+    portalAccessToken:
+      type: apiKey
+      in: cookie
+      name: portalaccesstoken
+      description: |
+        The Developer portal cookie is meant to be used by the Developer API to authenticate with.
+tags:
+  - name: Documents
+    description: document operations
+security:
+  - portalAccessToken: []

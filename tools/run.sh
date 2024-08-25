@@ -19,3 +19,8 @@ fi
 ./tools/merge-oas.sh $1
 node ./tools/generate-sdk-openapi-files.js $1
 node ./tools/split-service-specs.js $1
+
+# Make sure all specs are ordered deterministically
+for i in $(find build -name '*.yaml'); do
+  npx openapi-format --sortFile .openapi-format-sort.json $i -o $i
+done

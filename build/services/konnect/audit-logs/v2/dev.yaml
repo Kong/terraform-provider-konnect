@@ -5,27 +5,20 @@ info:
   description: The API for configuring Kong Konnect Audit Logs.
   contact:
     name: Kong
-    url: https://konghq.com
+    url: 'https://konghq.com'
 servers:
-  - url: https://us.api.konghq.com/v2
+  - url: 'https://us.api.konghq.com/v2'
     description: US URL
-  - url: https://eu.api.konghq.com/v2
+  - url: 'https://eu.api.konghq.com/v2'
     description: EU URL
-  - url: https://au.api.konghq.com/v2
+  - url: 'https://au.api.konghq.com/v2'
     description: AU URL
-security:
-  - personalAccessToken: []
-  - systemAccountAccessToken: []
-tags:
-  - name: Audit Logs
 paths:
   /audit-log-destinations:
     get:
+      operationId: get-audit-log-destinations
       summary: Get Audit Log Destinations
       description: Returns configuration for the audit log destinations.
-      operationId: get-audit-log-destinations
-      tags:
-        - Audit Logs
       responses:
         '200':
           $ref: '#/components/responses/AuditLogDestinationCollection'
@@ -33,12 +26,12 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
-    post:
-      summary: Create Audit Log Destination
-      description: Creates a configuration for the audit log destination.
-      operationId: create-audit-log-destination
       tags:
         - Audit Logs
+    post:
+      operationId: create-audit-log-destination
+      summary: Create Audit Log Destination
+      description: Creates a configuration for the audit log destination.
       requestBody:
         $ref: '#/components/requestBodies/CreateAuditLogDestination'
       responses:
@@ -50,15 +43,15 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
-  /audit-log-destination/{auditLogDestinationId}:
+      tags:
+        - Audit Logs
+  '/audit-log-destination/{auditLogDestinationId}':
     parameters:
       - $ref: '#/components/parameters/AuditLogDestinationId'
     get:
+      operationId: get-audit-log-destination
       summary: Get Audit Log Destination
       description: Returns configuration for the audit log destination.
-      operationId: get-audit-log-destination
-      tags:
-        - Audit Logs
       responses:
         '200':
           $ref: '#/components/responses/AuditLogDestinationSingle'
@@ -68,14 +61,14 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-    patch:
-      summary: Update Audit Log Destination
-      description: Updates configuration for the audit log destination.
-      operationId: update-audit-log-destination
-      requestBody:
-        $ref: '#/components/requestBodies/UpdateAuditLogDestination'
       tags:
         - Audit Logs
+    patch:
+      operationId: update-audit-log-destination
+      summary: Update Audit Log Destination
+      description: Updates configuration for the audit log destination.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateAuditLogDestination'
       responses:
         '200':
           $ref: '#/components/responses/AuditLogDestinationSingle'
@@ -87,12 +80,12 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-    delete:
-      summary: Delete Audit Log Destination
-      description: Deletes configuration for the audit log destination.
-      operationId: delete-audit-log-destination
       tags:
         - Audit Logs
+    delete:
+      operationId: delete-audit-log-destination
+      summary: Delete Audit Log Destination
+      description: Deletes configuration for the audit log destination.
       responses:
         '204':
           description: No Content
@@ -102,7 +95,453 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
+      tags:
+        - Audit Logs
 components:
+  parameters:
+    AuditLogDestinationId:
+      schema:
+        type: string
+        format: uuid
+      name: auditLogDestinationId
+      in: path
+      required: true
+      description: ID of the Audit Log Destination.
+  schemas:
+    AuditLogDestination:
+      description: Audit Log Destination Schema
+      type: object
+      properties:
+        endpoint:
+          description: The endpoint that will receive audit log messages.
+          type: string
+          example: 'https://example.com/audit-logs'
+        log_format:
+          description: The output format of each log messages.
+          type: string
+          example: cef
+          default: cef
+          enum:
+            - cef
+            - json
+        skip_ssl_verification:
+          description: Indicates if the SSL certificate verification of the host endpoint should be skipped when delivering payloads.
+          type: boolean
+          example: false
+          default: false
+        created_at:
+          description: Timestamp when this webhook was created.
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          description: 'Timestamp when this webhook was last updated. Initial value is 0001-01-01T00:00:0Z.'
+          type: string
+          format: date-time
+          readOnly: true
+      example:
+        Get Audit Log Destination:
+          $ref: '#/components/examples/Get-Audit-Log-Destination'
+      title: AuditLogDestination
+    BaseError:
+      description: standard error
+      type: object
+      properties:
+        status:
+          description: |
+            The HTTP status code of the error. Useful when passing the response
+            body to child properties in a frontend UI. Must be returned as an integer.
+          type: integer
+          readOnly: true
+        title:
+          description: |
+            A short, human-readable summary of the problem. It should not
+            change between occurences of a problem, except for localization.
+            Should be provided as "Sentence case" for direct use in the UI.
+          type: string
+          readOnly: true
+        type:
+          description: The error type.
+          type: string
+          readOnly: true
+        instance:
+          description: |
+            Used to return the correlation ID back to the user, in the format
+            kong:trace:<correlation_id>. This helps us find the relevant logs
+            when a customer reports an issue.
+          type: string
+          readOnly: true
+        detail:
+          description: |
+            A human readable explanation specific to this occurence of the problem.
+            This field may contain request/entity data to help the user understand
+            what went wrong. Enclose variable values in square brackets. Should be
+            provided as "Sentence case" for direct use in the UI.
+          type: string
+          readOnly: true
+      required:
+        - status
+        - title
+        - instance
+        - detail
+      title: Error
+    UnauthorizedError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 401
+            title:
+              example: Unauthorized
+            type:
+              example: 'https://httpstatuses.com/401'
+            instance:
+              example: 'kong:trace:1234567890'
+            detail:
+              example: Invalid credentials
+    ForbiddenError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 403
+            title:
+              example: Forbidden
+            type:
+              example: 'https://httpstatuses.com/403'
+            instance:
+              example: 'kong:trace:1234567890'
+            detail:
+              example: Forbidden
+    InvalidRules:
+      description: invalid parameters rules
+      type: string
+      enum:
+        - required
+        - max_length
+        - is_array
+        - is_base64
+        - is_boolean
+        - is_date_time
+        - is_integer
+        - is_null
+        - is_number
+        - is_object
+        - is_string
+        - is_uuid
+        - is_fqdn
+        - is_arn
+        - unknown_property
+        - is_label
+        - matches_regex
+        - invalid
+        - is_supported_network_availability_zone_list
+        - is_supported_network_cidr_block
+        - is_supported_provider_region
+      nullable: true
+      readOnly: true
+    InvalidParameterStandard:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          $ref: '#/components/schemas/InvalidRules'
+        source:
+          type: string
+          example: body
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+      additionalProperties: false
+      required:
+        - field
+        - reason
+    InvalidParameterMinimumLength:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          description: invalid parameters rules
+          type: string
+          enum:
+            - min_length
+            - min_digits
+            - min_lowercase
+            - min_uppercase
+            - min_symbols
+          nullable: false
+          readOnly: true
+        minimum:
+          type: integer
+          example: 8
+        source:
+          type: string
+          example: body
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+      additionalProperties: false
+      required:
+        - field
+        - reason
+        - rule
+        - minimum
+    InvalidParameterChoiceItem:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          description: invalid parameters rules
+          type: string
+          enum:
+            - enum
+          nullable: false
+          readOnly: true
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+        choices:
+          type: array
+          items: {}
+          minimum: 1
+          nullable: false
+          readOnly: true
+          uniqueItems: true
+        source:
+          type: string
+          example: body
+      additionalProperties: false
+      required:
+        - field
+        - reason
+        - rule
+        - choices
+    InvalidParameterDependentItem:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          description: invalid parameters rules
+          type: string
+          enum:
+            - dependent_fields
+          nullable: true
+          readOnly: true
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+        dependents:
+          type: array
+          items: {}
+          nullable: true
+          readOnly: true
+          uniqueItems: true
+        source:
+          type: string
+          example: body
+      additionalProperties: false
+      required:
+        - field
+        - rule
+        - reason
+        - dependents
+    InvalidParameters:
+      description: invalid parameters
+      type: array
+      items:
+        oneOf:
+          - $ref: '#/components/schemas/InvalidParameterStandard'
+          - $ref: '#/components/schemas/InvalidParameterMinimumLength'
+          - $ref: '#/components/schemas/InvalidParameterChoiceItem'
+          - $ref: '#/components/schemas/InvalidParameterDependentItem'
+      minItems: 1
+      nullable: false
+      uniqueItems: true
+    BadRequestError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          required:
+            - invalid_parameters
+          properties:
+            invalid_parameters:
+              $ref: '#/components/schemas/InvalidParameters'
+    NotFoundError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 404
+            title:
+              example: Not Found
+            type:
+              example: 'https://httpstatuses.com/404'
+            instance:
+              example: 'kong:trace:1234567890'
+            detail:
+              example: Not found
+  examples:
+    400-request-format-is-invalid:
+      value:
+        status: 400
+        title: Bad Request
+        detail: Could not parse request body
+        instance: 'konnect:trace:3674017986744198214'
+        invalid_parameters:
+          - field: body
+            reason: request format is invalid
+    400-authorization-cannot-be-blank:
+      value:
+        status: 400
+        title: Bad Request
+        detail: Required field missing
+        instance: 'konnect:trace:6644808935508571943'
+        invalid_parameters:
+          - field: authorization
+            reason: cannot be blank
+    400-endpoint-cannot-be-blank:
+      value:
+        status: 400
+        title: Bad Request
+        detail: Required field missing
+        instance: 'konnect:trace:6644808935508571943'
+        invalid_parameters:
+          - field: endpoint
+            reason: cannot be blank
+    400-endpoint-must-be-valid-url:
+      value:
+        status: 400
+        title: Bad Request
+        detail: Invalid endpoint
+        instance: 'konnect:trace:6644808935508571943'
+        invalid_parameters:
+          - field: endpoint
+            reason: must be a valid URL
+    Update-Audit-Log-Destination:
+      value:
+        endpoint: 'https://example.com/audit-log-json'
+        log_format: json
+        skip_ssl_verification: false
+    Get-Audit-Log-Destination:
+      value:
+        id: 07ec3858-066b-4629-bdc5-d4aa893b424d
+        endpoint: 'https://example.com/audit-log'
+        log_format: cef
+        skip_ssl_verification: false
+        created_at: '2023-03-20T09:29:14.52Z'
+        updated_at: '2023-03-21T09:29:14.52Z'
+    Create-Audit-Log-Destination:
+      value:
+        endpoint: 'https://example.com/audit-log'
+        authorization: Bearer token
+        log_format: cef
+        skip_ssl_verification: false
+    UnauthorizedExample:
+      value:
+        status: 401
+        title: Unauthorized
+        instance: 'kong:trace:8347343766220159418'
+        detail: Unauthorized
+    ForbiddenExample:
+      value:
+        status: 403
+        title: Forbidden
+        instance: 'kong:trace:2723154947768991354'
+        detail: You do not have permission to perform this action
+    NotFoundExample:
+      value:
+        status: 404
+        title: Not Found
+        instance: 'kong:trace:6816496025408232265'
+        detail: Not Found
+  requestBodies:
+    CreateAuditLogDestination:
+      description: The request schema to create an audit log destination.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              endpoint:
+                description: The endpoint that will receive audit log messages.
+                type: string
+                example: 'https://example.com/audit-logs'
+              authorization:
+                description: The value to include in the `Authorization` header when sending audit logs to the webhook.
+                type: string
+                example: Bearer sometoken
+              log_format:
+                description: The output format of each log message.
+                type: string
+                example: cef
+                default: cef
+                enum:
+                  - cef
+                  - json
+              skip_ssl_verification:
+                description: |-
+                  Indicates if the SSL certificate verification of the host endpoint should be skipped when delivering payloads.
+                  We strongly recommend not setting this to 'true' as you are subject to man-in-the-middle and other attacks.
+                  This option should be considered only for self-signed SSL certificates used in a non-production environment.
+                type: boolean
+                example: false
+                default: false
+          examples:
+            Create Audit Log Destination:
+              $ref: '#/components/examples/Create-Audit-Log-Destination'
+    UpdateAuditLogDestination:
+      description: The request schema to modify an audit log destination.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              endpoint:
+                description: The endpoint that will receive audit log messages.
+                type: string
+                example: 'https://example.com/audit-logs'
+              authorization:
+                description: The value to include in the `Authorization` header when sending audit logs to the webhook.
+                type: string
+                example: Bearer sometoken
+              log_format:
+                description: The output format of each log message.
+                type: string
+                example: cef
+                default: cef
+                enum:
+                  - cef
+                  - json
+              skip_ssl_verification:
+                description: |-
+                  Indicates if the SSL certificate verification of the host endpoint should be skipped when delivering payloads.
+                  We strongly recommend not setting this to 'true' as you are subject to man-in-the-middle and other attacks.
+                  This option should be considered only for self-signed SSL certificates used in a non-production environment.
+                type: boolean
+                example: false
+                default: false
+          examples:
+            Update Audit Log Destination:
+              $ref: '#/components/examples/Update-Audit-Log-Destination'
   responses:
     AuditLogDestinationSingle:
       description: Get response for audit log destination
@@ -119,12 +558,12 @@ components:
         application/json:
           schema:
             type: object
-            title: Audit Log Destinations Response
             properties:
               data:
                 type: array
                 items:
                   $ref: '#/components/schemas/AuditLogDestination'
+            title: Audit Log Destinations Response
           examples:
             Audit Log Destination Collection:
               $ref: '#/components/examples/Get-Audit-Log-Destination'
@@ -170,506 +609,27 @@ components:
           examples:
             NotFoundExample:
               $ref: '#/components/examples/NotFoundExample'
-  requestBodies:
-    CreateAuditLogDestination:
-      description: The request schema to create an audit log destination.
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              endpoint:
-                type: string
-                example: https://example.com/audit-logs
-                description: The endpoint that will receive audit log messages.
-              authorization:
-                type: string
-                example: Bearer sometoken
-                description: >-
-                  The value to include in the `Authorization` header when
-                  sending audit logs to the webhook.
-              log_format:
-                type: string
-                example: cef
-                enum:
-                  - cef
-                  - json
-                description: The output format of each log message.
-                default: cef
-              skip_ssl_verification:
-                type: boolean
-                example: false
-                description: >-
-                  Indicates if the SSL certificate verification of the host
-                  endpoint should be skipped when delivering payloads.
-
-                  We strongly recommend not setting this to 'true' as you are
-                  subject to man-in-the-middle and other attacks.
-
-                  This option should be considered only for self-signed SSL
-                  certificates used in a non-production environment.
-                default: false
-          examples:
-            Create Audit Log Destination:
-              $ref: '#/components/examples/Create-Audit-Log-Destination'
-    UpdateAuditLogDestination:
-      description: The request schema to modify an audit log destination.
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              endpoint:
-                type: string
-                example: https://example.com/audit-logs
-                description: The endpoint that will receive audit log messages.
-              authorization:
-                type: string
-                example: Bearer sometoken
-                description: >-
-                  The value to include in the `Authorization` header when
-                  sending audit logs to the webhook.
-              log_format:
-                type: string
-                example: cef
-                enum:
-                  - cef
-                  - json
-                description: The output format of each log message.
-                default: cef
-              skip_ssl_verification:
-                type: boolean
-                example: false
-                description: >-
-                  Indicates if the SSL certificate verification of the host
-                  endpoint should be skipped when delivering payloads.
-
-                  We strongly recommend not setting this to 'true' as you are
-                  subject to man-in-the-middle and other attacks.
-
-                  This option should be considered only for self-signed SSL
-                  certificates used in a non-production environment.
-                default: false
-          examples:
-            Update Audit Log Destination:
-              $ref: '#/components/examples/Update-Audit-Log-Destination'
   securitySchemes:
     personalAccessToken:
       type: http
       scheme: bearer
       bearerFormat: Token
-      description: >
-        The personal access token is meant to be used as an alternative to
-        basic-auth when accessing Konnect via APIs.
-
-        You can generate a Personal Access Token (PAT) from the [personal access
-        token page](https://cloud.konghq.com/global/tokens/) in the Konnect
-        dashboard.
-
+      description: |
+        The personal access token is meant to be used as an alternative to basic-auth when accessing Konnect via APIs.
+        You can generate a Personal Access Token (PAT) from the [personal access token page](https://cloud.konghq.com/global/tokens/) in the Konnect dashboard.
         The PAT token must be passed in the header of a request, for example:
-
-        `curl -X GET 'https://global.api.konghq.com/v2/users/' --header
-        'Authorization: Bearer kpat_xgfT...'`
+        `curl -X GET 'https://global.api.konghq.com/v2/users/' --header 'Authorization: Bearer kpat_xgfT...'`
     systemAccountAccessToken:
       type: http
       scheme: bearer
       bearerFormat: Token
-      description: >
-        The system account access token is meant for automations and
-        integrations that are not directly associated with a human identity.
-
-        You can generate a system account Access Token by creating a system
-        account and then obtaining a system account access token for that
-        account.
-
+      description: |
+        The system account access token is meant for automations and integrations that are not directly associated with a human identity.
+        You can generate a system account Access Token by creating a system account and then obtaining a system account access token for that account.
         The access token must be passed in the header of a request, for example:
-
-        `curl -X GET 'https://global.api.konghq.com/v2/users/' --header
-        'Authorization: Bearer spat_i2Ej...'`
-  examples:
-    400-request-format-is-invalid:
-      value:
-        status: 400
-        title: Bad Request
-        detail: Could not parse request body
-        instance: konnect:trace:3674017986744198214
-        invalid_parameters:
-          - field: body
-            reason: request format is invalid
-    400-authorization-cannot-be-blank:
-      value:
-        status: 400
-        title: Bad Request
-        detail: Required field missing
-        instance: konnect:trace:6644808935508571943
-        invalid_parameters:
-          - field: authorization
-            reason: cannot be blank
-    400-endpoint-cannot-be-blank:
-      value:
-        status: 400
-        title: Bad Request
-        detail: Required field missing
-        instance: konnect:trace:6644808935508571943
-        invalid_parameters:
-          - field: endpoint
-            reason: cannot be blank
-    400-endpoint-must-be-valid-url:
-      value:
-        status: 400
-        title: Bad Request
-        detail: Invalid endpoint
-        instance: konnect:trace:6644808935508571943
-        invalid_parameters:
-          - field: endpoint
-            reason: must be a valid URL
-    Update-Audit-Log-Destination:
-      value:
-        endpoint: https://example.com/audit-log-json
-        log_format: json
-        skip_ssl_verification: false
-    Get-Audit-Log-Destination:
-      value:
-        id: 07ec3858-066b-4629-bdc5-d4aa893b424d
-        endpoint: https://example.com/audit-log
-        log_format: cef
-        skip_ssl_verification: false
-        created_at: '2023-03-20T09:29:14.52Z'
-        updated_at: '2023-03-21T09:29:14.52Z'
-    Create-Audit-Log-Destination:
-      value:
-        endpoint: https://example.com/audit-log
-        authorization: Bearer token
-        log_format: cef
-        skip_ssl_verification: false
-    UnauthorizedExample:
-      value:
-        status: 401
-        title: Unauthorized
-        instance: kong:trace:8347343766220159418
-        detail: Unauthorized
-    ForbiddenExample:
-      value:
-        status: 403
-        title: Forbidden
-        instance: kong:trace:2723154947768991354
-        detail: You do not have permission to perform this action
-    NotFoundExample:
-      value:
-        status: 404
-        title: Not Found
-        instance: kong:trace:6816496025408232265
-        detail: Not Found
-  schemas:
-    AuditLogDestination:
-      title: AuditLogDestination
-      type: object
-      description: Audit Log Destination Schema
-      properties:
-        endpoint:
-          type: string
-          example: https://example.com/audit-logs
-          description: The endpoint that will receive audit log messages.
-        log_format:
-          type: string
-          example: cef
-          enum:
-            - cef
-            - json
-          description: The output format of each log messages.
-          default: cef
-        skip_ssl_verification:
-          type: boolean
-          example: false
-          description: >-
-            Indicates if the SSL certificate verification of the host endpoint
-            should be skipped when delivering payloads.
-          default: false
-        created_at:
-          type: string
-          description: Timestamp when this webhook was created.
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          description: >-
-            Timestamp when this webhook was last updated. Initial value is
-            0001-01-01T00:00:0Z.
-          format: date-time
-          readOnly: true
-      example:
-        Get Audit Log Destination:
-          $ref: '#/components/examples/Get-Audit-Log-Destination'
-    BaseError:
-      type: object
-      title: Error
-      description: standard error
-      required:
-        - status
-        - title
-        - instance
-        - detail
-      properties:
-        status:
-          type: integer
-          description: >
-            The HTTP status code of the error. Useful when passing the response
-
-            body to child properties in a frontend UI. Must be returned as an
-            integer.
-          readOnly: true
-        title:
-          type: string
-          description: |
-            A short, human-readable summary of the problem. It should not
-            change between occurences of a problem, except for localization.
-            Should be provided as "Sentence case" for direct use in the UI.
-          readOnly: true
-        type:
-          type: string
-          description: The error type.
-          readOnly: true
-        instance:
-          type: string
-          description: |
-            Used to return the correlation ID back to the user, in the format
-            kong:trace:<correlation_id>. This helps us find the relevant logs
-            when a customer reports an issue.
-          readOnly: true
-        detail:
-          type: string
-          description: >
-            A human readable explanation specific to this occurence of the
-            problem.
-
-            This field may contain request/entity data to help the user
-            understand
-
-            what went wrong. Enclose variable values in square brackets. Should
-            be
-
-            provided as "Sentence case" for direct use in the UI.
-          readOnly: true
-    UnauthorizedError:
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
-        - type: object
-          properties:
-            status:
-              example: 401
-            title:
-              example: Unauthorized
-            type:
-              example: https://httpstatuses.com/401
-            instance:
-              example: kong:trace:1234567890
-            detail:
-              example: Invalid credentials
-    ForbiddenError:
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
-        - type: object
-          properties:
-            status:
-              example: 403
-            title:
-              example: Forbidden
-            type:
-              example: https://httpstatuses.com/403
-            instance:
-              example: kong:trace:1234567890
-            detail:
-              example: Forbidden
-    InvalidRules:
-      description: invalid parameters rules
-      type: string
-      readOnly: true
-      nullable: true
-      enum:
-        - required
-        - max_length
-        - is_array
-        - is_base64
-        - is_boolean
-        - is_date_time
-        - is_integer
-        - is_null
-        - is_number
-        - is_object
-        - is_string
-        - is_uuid
-        - is_fqdn
-        - is_arn
-        - unknown_property
-        - is_label
-        - matches_regex
-        - invalid
-        - is_supported_network_availability_zone_list
-        - is_supported_network_cidr_block
-        - is_supported_provider_region
-    InvalidParameterStandard:
-      type: object
-      additionalProperties: false
-      properties:
-        field:
-          type: string
-          example: name
-          readOnly: true
-        rule:
-          $ref: '#/components/schemas/InvalidRules'
-        source:
-          type: string
-          example: body
-        reason:
-          type: string
-          example: is a required field
-          readOnly: true
-      required:
-        - field
-        - reason
-    InvalidParameterMinimumLength:
-      type: object
-      additionalProperties: false
-      properties:
-        field:
-          type: string
-          example: name
-          readOnly: true
-        rule:
-          description: invalid parameters rules
-          type: string
-          readOnly: true
-          nullable: false
-          enum:
-            - min_length
-            - min_digits
-            - min_lowercase
-            - min_uppercase
-            - min_symbols
-        minimum:
-          type: integer
-          example: 8
-        source:
-          type: string
-          example: body
-        reason:
-          type: string
-          example: is a required field
-          readOnly: true
-      required:
-        - field
-        - reason
-        - rule
-        - minimum
-    InvalidParameterChoiceItem:
-      type: object
-      additionalProperties: false
-      properties:
-        field:
-          type: string
-          example: name
-          readOnly: true
-        rule:
-          description: invalid parameters rules
-          type: string
-          readOnly: true
-          nullable: false
-          enum:
-            - enum
-        reason:
-          type: string
-          example: is a required field
-          readOnly: true
-        choices:
-          type: array
-          uniqueItems: true
-          readOnly: true
-          nullable: false
-          minimum: 1
-          items: {}
-        source:
-          type: string
-          example: body
-      required:
-        - field
-        - reason
-        - rule
-        - choices
-    InvalidParameterDependentItem:
-      type: object
-      additionalProperties: false
-      properties:
-        field:
-          type: string
-          example: name
-          readOnly: true
-        rule:
-          description: invalid parameters rules
-          type: string
-          readOnly: true
-          nullable: true
-          enum:
-            - dependent_fields
-        reason:
-          type: string
-          example: is a required field
-          readOnly: true
-        dependents:
-          type: array
-          uniqueItems: true
-          nullable: true
-          items: {}
-          readOnly: true
-        source:
-          type: string
-          example: body
-      required:
-        - field
-        - rule
-        - reason
-        - dependents
-    InvalidParameters:
-      type: array
-      nullable: false
-      uniqueItems: true
-      minItems: 1
-      description: invalid parameters
-      items:
-        oneOf:
-          - $ref: '#/components/schemas/InvalidParameterStandard'
-          - $ref: '#/components/schemas/InvalidParameterMinimumLength'
-          - $ref: '#/components/schemas/InvalidParameterChoiceItem'
-          - $ref: '#/components/schemas/InvalidParameterDependentItem'
-    BadRequestError:
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
-        - type: object
-          required:
-            - invalid_parameters
-          properties:
-            invalid_parameters:
-              $ref: '#/components/schemas/InvalidParameters'
-    NotFoundError:
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
-        - type: object
-          properties:
-            status:
-              example: 404
-            title:
-              example: Not Found
-            type:
-              example: https://httpstatuses.com/404
-            instance:
-              example: kong:trace:1234567890
-            detail:
-              example: Not found
-  parameters:
-    AuditLogDestinationId:
-      schema:
-        type: string
-        format: uuid
-      name: auditLogDestinationId
-      in: path
-      required: true
-      description: ID of the Audit Log Destination.
+        `curl -X GET 'https://global.api.konghq.com/v2/users/' --header 'Authorization: Bearer spat_i2Ej...'`
+tags:
+  - name: Audit Logs
+security:
+  - personalAccessToken: []
+  - systemAccountAccessToken: []

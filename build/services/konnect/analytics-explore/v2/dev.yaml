@@ -5,27 +5,20 @@ info:
   version: 4.0.0
   contact:
     name: Kong
-    url: https://cloud.konghq.com
+    url: 'https://cloud.konghq.com'
 servers:
-  - url: https://us.api.konghq.com/v4
+  - url: 'https://us.api.konghq.com/v4'
     description: US Region Konnect Platform Base URL
-  - url: https://eu.api.konghq.com/v4
+  - url: 'https://eu.api.konghq.com/v4'
     description: EU Region Konnect Platform Base URL
-  - url: https://au.api.konghq.com/v4
+  - url: 'https://au.api.konghq.com/v4'
     description: AU Region Konnect Platform Base URL
-tags:
-  - name: Explore
 paths:
   /explore:
     post:
-      tags:
-        - Explore
       operationId: ExploreController_exploreV2
       summary: Explore metrics in the analyticcs platform
-      description: >-
-        Post a query to the endpoint to retrieve aggregated metrics down to the
-        minute. Data can be requested to group by any 2 dimensions, and any
-        number of filter conditions.
+      description: 'Post a query to the endpoint to retrieve aggregated metrics down to the minute. Data can be requested to group by any 2 dimensions, and any number of filter conditions.'
       requestBody:
         required: true
         content:
@@ -50,11 +43,13 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
+      tags:
+        - Explore
 components:
   schemas:
     AbsoluteTimeRangeDtoV2:
-      type: object
       description: A duration representing an exact start and end time.
+      type: object
       properties:
         tz:
           type: string
@@ -64,25 +59,16 @@ components:
           enum:
             - absolute
         start:
-          format: date-time
           type: string
+          format: date-time
         end:
-          format: date-time
           type: string
+          format: date-time
       required:
         - type
     RelativeTimeRangeDtoV2:
+      description: 'A duration representing a relative-to-now span of time. Generally the start time is floored to the requested granularity. Eg 7d from now, with 1day granularity initiated at 2024-01-08T17:11:00+05:00 will query for the time range from 2024-01-01T00:00:00+05:00 to 2024-01-08T17:11:00+05:00. The exact start and end timestamps are returned in the result query in the meta.start_ms and meta.end_ms fields. If the granularity for the previous query was 1hour, it would query a time range from 2024-01-01T17:00:00+05:00 to 2024-01-08T17:11:00+05:00.'
       type: object
-      description: >-
-        A duration representing a relative-to-now span of time. Generally the
-        start time is floored to the requested granularity. Eg 7d from now, with
-        1day granularity initiated at 2024-01-08T17:11:00+05:00 will query for
-        the time range from 2024-01-01T00:00:00+05:00 to
-        2024-01-08T17:11:00+05:00. The exact start and end timestamps are
-        returned in the result query in the meta.start_ms and meta.end_ms
-        fields. If the granularity for the previous query was 1hour, it would
-        query a time range from 2024-01-01T17:00:00+05:00 to
-        2024-01-08T17:11:00+05:00.
       properties:
         tz:
           type: string
@@ -93,6 +79,7 @@ components:
             - relative
         time_range:
           type: string
+          default: 1h
           enum:
             - 15m
             - 1h
@@ -105,16 +92,16 @@ components:
             - current_month
             - previous_week
             - previous_month
-          default: 1h
       required:
         - type
         - time_range
     ExploreFilter:
-      type: object
       description: A filter that specifies which data to include in the query
+      type: object
       properties:
         dimension:
           type: string
+          example: status_code
           enum:
             - api_product
             - api_product_version
@@ -127,14 +114,13 @@ components:
             - route
             - status_code
             - status_code_grouped
-          example: status_code
         type:
           type: string
+          example: in
           enum:
             - in
             - not_in
             - selector
-          example: in
         values:
           type: array
           items:
@@ -144,16 +130,12 @@ components:
         - type
         - values
     ExploreV2Dto:
-      type: object
       description: A query to launch at the API
+      type: object
       properties:
         metrics:
+          description: List of aggregated metrics to collect across the requested time span.
           type: array
-          description: >-
-            List of aggregated metrics to collect across the requested time
-            span.
-          example:
-            - request_count
           items:
             type: string
             enum:
@@ -179,13 +161,11 @@ components:
               - request_size_p50
               - request_size_average
               - response_size_average
-        dimensions:
-          type: array
-          description: List of attributes or entity types to group by.
-          minItems: 0
-          maxItems: 2
           example:
-            - status_code_grouped
+            - request_count
+        dimensions:
+          description: List of attributes or entity types to group by.
+          type: array
           items:
             type: string
             enum:
@@ -201,64 +181,44 @@ components:
               - status_code
               - status_code_grouped
               - time
+          example:
+            - status_code_grouped
+          maxItems: 2
+          minItems: 0
         filters:
-          type: array
           description: A list of filters to apply to the query.
+          type: array
           items:
             $ref: '#/components/schemas/ExploreFilter'
         granularity:
-          type: string
-          description: >
-            Force time grouping into buckets of the specified duration.  Only
-            has an effect if "time" is in the "dimensions" list.
+          description: |
+            Force time grouping into buckets of the specified duration.  Only has an effect if "time" is in the "dimensions" list.
 
-
-            If "trend" is chosen, the time range covered by the query will be
-            twice the specified time range, and the granularity will be set such
-            that two time buckets are returned, one for the given time range and
-            one for the same time range prior.
-
+            If "trend" is chosen, the time range covered by the query will be twice the specified time range, and the granularity will be set such that two time buckets are returned, one for the given time range and one for the same time range prior.
             For example:
 
-
             time range: last 24 hours
-
             granularity: trend
-
 
             will return 2 time buckets (assuming both have data):
 
-
             - 48 hours ago to 24 hours ago
-
             - 24 hours ago to now
-
 
             Another example:
 
-
             time range: 2020-05-01 to 2020-05-15
-
             granularity: trend
-
 
             will return 2 time buckets:
 
-
             - 2020-04-15 through 2020-04-30
-
             - 2020-05-01 through 2020-05-15
 
+            The granularity of the result may be coarser than requested.  The finest allowed granularity depends on the query's time range: data farther in the past may have coarser granularity.  The exact result granularity will be reported in the response `meta.granularity_ms` field.
 
-            The granularity of the result may be coarser than requested.  The
-            finest allowed granularity depends on the query's time range: data
-            farther in the past may have coarser granularity.  The exact result
-            granularity will be reported in the response `meta.granularity_ms`
-            field.
-
-
-            If granularity is not specified and "time" is in the dimensions
-            list, a default will be chosen based on the time range requested.
+            If granularity is not specified and "time" is in the dimensions list, a default will be chosen based on the time range requested.
+          type: string
           enum:
             - minute
             - hour
@@ -267,21 +227,19 @@ components:
             - trend
         time_range:
           description: The time range to query.
-          oneOf:
-            - $ref: '#/components/schemas/RelativeTimeRangeDtoV2'
-            - $ref: '#/components/schemas/AbsoluteTimeRangeDtoV2'
+          default:
+            type: relative
+            time_range: 1h
           discriminator:
             propertyName: type
             mapping:
               relative: '#/components/schemas/RelativeTimeRangeDtoV2'
               absolute: '#/components/schemas/AbsoluteTimeRangeDtoV2'
-          default:
-            type: relative
-            time_range: 1h
+          oneOf:
+            - $ref: '#/components/schemas/RelativeTimeRangeDtoV2'
+            - $ref: '#/components/schemas/AbsoluteTimeRangeDtoV2'
         meta:
           type: object
-      required:
-        - metrics
       example:
         time_range:
           type: relative
@@ -300,6 +258,8 @@ components:
           - response_latency_p99
           - response_latency_p95
           - response_latency_p50
+      required:
+        - metrics
     GroupByResult:
       type: object
       properties:
@@ -309,29 +269,26 @@ components:
         event:
           type: object
           readOnly: true
-      required:
-        - timestamp
-        - event
       example:
         event:
-          gateway_service: >-
-            d5ac5d88-efed-4e10-9dfe-0b0a6646c219:bf16907c-8673-4f9d-aa83-1f2ea9215055
+          gateway_service: 'd5ac5d88-efed-4e10-9dfe-0b0a6646c219:bf16907c-8673-4f9d-aa83-1f2ea9215055'
           request_count: 1000
           response_latency_p99: 23
         timestamp: '2024-01-16T00:00:00Z'
+      required:
+        - timestamp
+        - event
     DisplayBlob:
       type: object
       properties: {}
       example:
         gateway_service:
-          d5ac5d88-efed-4e10-9dfe-0b0a6646c219:bf16907c-8673-4f9d-aa83-111111111111:
-            id: >-
-              d5ac5d88-efed-4e10-9dfe-0b0a6646c219:bf16907c-8673-4f9d-aa83-111111111111
+          'd5ac5d88-efed-4e10-9dfe-0b0a6646c219:bf16907c-8673-4f9d-aa83-111111111111':
+            id: 'd5ac5d88-efed-4e10-9dfe-0b0a6646c219:bf16907c-8673-4f9d-aa83-111111111111'
             deleted: true
             name: Gateway Service Alpha
-          d5ac5d88-efed-4e10-9dfe-0b0a6646c219:bf16907c-8673-4f9d-aa83-1f2ea9215055:
-            id: >-
-              d5ac5d88-efed-4e10-9dfe-0b0a6646c219:bf16907c-8673-4f9d-aa83-1f2ea9215055
+          'd5ac5d88-efed-4e10-9dfe-0b0a6646c219:bf16907c-8673-4f9d-aa83-1f2ea9215055':
+            id: 'd5ac5d88-efed-4e10-9dfe-0b0a6646c219:bf16907c-8673-4f9d-aa83-1f2ea9215055'
             deleted: false
             name: Gateway Service Beta
     MetricUnitDto:
@@ -350,13 +307,13 @@ components:
           type: number
           readOnly: true
         display:
-          readOnly: true
           allOf:
             - $ref: '#/components/schemas/DisplayBlob'
-        metric_units:
           readOnly: true
+        metric_units:
           allOf:
             - $ref: '#/components/schemas/MetricUnitDto'
+          readOnly: true
         granularity:
           type: number
           readOnly: true
@@ -372,28 +329,17 @@ components:
         query_id:
           type: string
           readOnly: true
-      required:
-        - start_ms
-        - end_ms
-        - display
-        - metric_units
-        - granularity_ms
-        - truncated
-        - limit
-        - query_id
       example:
         start_ms: 1705428000000
         end_ms: 1705429000000
         display:
           gateway_service:
-            d5ac5d88-efed-4e10-9dfe-0b0a6646c219:bf16907c-8673-4f9d-aa83-111111111111:
-              id: >-
-                d5ac5d88-efed-4e10-9dfe-0b0a6646c219:bf16907c-8673-4f9d-aa83-111111111111
+            'd5ac5d88-efed-4e10-9dfe-0b0a6646c219:bf16907c-8673-4f9d-aa83-111111111111':
+              id: 'd5ac5d88-efed-4e10-9dfe-0b0a6646c219:bf16907c-8673-4f9d-aa83-111111111111'
               deleted: true
               name: Gateway Service Alpha
-            d5ac5d88-efed-4e10-9dfe-0b0a6646c219:bf16907c-8673-4f9d-aa83-1f2ea9215055:
-              id: >-
-                d5ac5d88-efed-4e10-9dfe-0b0a6646c219:bf16907c-8673-4f9d-aa83-1f2ea9215055
+            'd5ac5d88-efed-4e10-9dfe-0b0a6646c219:bf16907c-8673-4f9d-aa83-1f2ea9215055':
+              id: 'd5ac5d88-efed-4e10-9dfe-0b0a6646c219:bf16907c-8673-4f9d-aa83-1f2ea9215055'
               deleted: false
               name: Gateway Service Beta
         metric_units:
@@ -403,71 +349,72 @@ components:
         truncated: false
         limit: 50
         query_id: requested-query-id
+      required:
+        - start_ms
+        - end_ms
+        - display
+        - metric_units
+        - granularity_ms
+        - truncated
+        - limit
+        - query_id
     ExploreResultV2:
       type: object
       properties:
         data:
-          readOnly: true
           type: array
           items:
             $ref: '#/components/schemas/GroupByResult'
-        meta:
           readOnly: true
+        meta:
           allOf:
             - $ref: '#/components/schemas/QueryResponseMeta'
+          readOnly: true
       required:
         - data
         - meta
     BaseError:
-      type: object
-      title: Error
       description: standard error
+      type: object
+      properties:
+        status:
+          description: |
+            The HTTP status code of the error. Useful when passing the response
+            body to child properties in a frontend UI. Must be returned as an integer.
+          type: integer
+          readOnly: true
+        title:
+          description: |
+            A short, human-readable summary of the problem. It should not
+            change between occurences of a problem, except for localization.
+            Should be provided as "Sentence case" for direct use in the UI.
+          type: string
+          readOnly: true
+        type:
+          description: The error type.
+          type: string
+          readOnly: true
+        instance:
+          description: |
+            Used to return the correlation ID back to the user, in the format
+            kong:trace:<correlation_id>. This helps us find the relevant logs
+            when a customer reports an issue.
+          type: string
+          readOnly: true
+        detail:
+          description: |
+            A human readable explanation specific to this occurence of the problem.
+            This field may contain request/entity data to help the user understand
+            what went wrong. Enclose variable values in square brackets. Should be
+            provided as "Sentence case" for direct use in the UI.
+          type: string
+          readOnly: true
       required:
         - status
         - title
         - instance
         - detail
-      properties:
-        status:
-          type: integer
-          description: >
-            The HTTP status code of the error. Useful when passing the response
-
-            body to child properties in a frontend UI. Must be returned as an
-            integer.
-          readOnly: true
-        title:
-          type: string
-          description: |
-            A short, human-readable summary of the problem. It should not
-            change between occurences of a problem, except for localization.
-            Should be provided as "Sentence case" for direct use in the UI.
-          readOnly: true
-        type:
-          type: string
-          description: The error type.
-          readOnly: true
-        instance:
-          type: string
-          description: |
-            Used to return the correlation ID back to the user, in the format
-            kong:trace:<correlation_id>. This helps us find the relevant logs
-            when a customer reports an issue.
-          readOnly: true
-        detail:
-          type: string
-          description: >
-            A human readable explanation specific to this occurence of the
-            problem.
-
-            This field may contain request/entity data to help the user
-            understand
-
-            what went wrong. Enclose variable values in square brackets. Should
-            be
-
-            provided as "Sentence case" for direct use in the UI.
-          readOnly: true
+      title: Error
     UnauthorizedError:
       allOf:
         - $ref: '#/components/schemas/BaseError'
@@ -478,9 +425,9 @@ components:
             title:
               example: Unauthorized
             type:
-              example: https://httpstatuses.com/401
+              example: 'https://httpstatuses.com/401'
             instance:
-              example: kong:trace:1234567890
+              example: 'kong:trace:1234567890'
             detail:
               example: Invalid credentials
     ForbiddenError:
@@ -493,9 +440,9 @@ components:
             title:
               example: Forbidden
             type:
-              example: https://httpstatuses.com/403
+              example: 'https://httpstatuses.com/403'
             instance:
-              example: kong:trace:1234567890
+              example: 'kong:trace:1234567890'
             detail:
               example: Forbidden
   examples:
@@ -503,7 +450,7 @@ components:
       value:
         status: 400
         title: Invalid Request
-        instance: kong:trace:6591723055278037644
+        instance: 'kong:trace:6591723055278037644'
         detail: Invalid Parameters
         invalid_parameters:
           - field: time_range.time_range
@@ -522,13 +469,13 @@ components:
       value:
         status: 401
         title: Unauthorized
-        instance: kong:trace:8347343766220159418
+        instance: 'kong:trace:8347343766220159418'
         detail: Unauthorized
     ForbiddenExample:
       value:
         status: 403
         title: Forbidden
-        instance: kong:trace:2723154947768991354
+        instance: 'kong:trace:2723154947768991354'
         detail: You do not have permission to perform this action
   responses:
     Unauthorized:
@@ -549,3 +496,5 @@ components:
           examples:
             UnauthorizedExample:
               $ref: '#/components/examples/ForbiddenExample'
+tags:
+  - name: Explore

@@ -5,29 +5,22 @@ info:
   description: Internal entitlement management API.
   contact:
     name: Kong
-    url: https://konghq.com
+    url: 'https://konghq.com'
 servers:
-  - url: https://us.api.konghq.com/v0
+  - url: 'https://us.api.konghq.com/v0'
     description: US Region Base URL
-  - url: https://eu.api.konghq.com/v0
+  - url: 'https://eu.api.konghq.com/v0'
     description: EU Region Base URL
-  - url: https://au.api.konghq.com/v0
+  - url: 'https://au.api.konghq.com/v0'
     description: AU Region Base URL
-security:
-  - serviceAccessToken: []
-tags:
-  - name: Organizations
-    description: API related to the management of Konnect Organizations
 paths:
-  /organizations/{organizationId}/entitlements:
+  '/organizations/{organizationId}/entitlements':
     parameters:
       - $ref: '#/components/parameters/OrganizationId'
     get:
-      summary: Get entitlements
-      description: >-
-        Returns the entitlements for a given organization. Internal endpoint for
-        kadmin.
       operationId: get-entitlements
+      summary: Get entitlements
+      description: Returns the entitlements for a given organization. Internal endpoint for kadmin.
       responses:
         '200':
           $ref: '#/components/responses/GetEntitlements'
@@ -40,11 +33,9 @@ paths:
       tags:
         - Organizations
     patch:
-      summary: Update entitlements
-      description: >-
-        Update the entitlements for a given organization. Internal endpoint for
-        kadmin.
       operationId: update-entitlements
+      summary: Update entitlements
+      description: Update the entitlements for a given organization. Internal endpoint for kadmin.
       requestBody:
         $ref: '#/components/requestBodies/UpdateEntitlements'
       responses:
@@ -59,6 +50,145 @@ paths:
       tags:
         - Organizations
 components:
+  parameters:
+    OrganizationId:
+      name: organizationId
+      description: organization identifier
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/UUID'
+  schemas:
+    GetEntitlementsResponse:
+      $ref: '#/components/schemas/Entitlements'
+    Entitlements:
+      type: object
+      properties:
+        portals_limit:
+          type: number
+          example: 4
+      additionalProperties: false
+      required:
+        - portals_limit
+      title: Entitlements
+    UUID:
+      description: Contains a unique identifier used by the API for this resource.
+      type: string
+      format: uuid
+      example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+      readOnly: true
+    BaseError:
+      description: standard error
+      type: object
+      properties:
+        status:
+          description: |
+            The HTTP status code of the error. Useful when passing the response
+            body to child properties in a frontend UI. Must be returned as an integer.
+          type: integer
+          readOnly: true
+        title:
+          description: |
+            A short, human-readable summary of the problem. It should not
+            change between occurences of a problem, except for localization.
+            Should be provided as "Sentence case" for direct use in the UI.
+          type: string
+          readOnly: true
+        type:
+          description: The error type.
+          type: string
+          readOnly: true
+        instance:
+          description: |
+            Used to return the correlation ID back to the user, in the format
+            kong:trace:<correlation_id>. This helps us find the relevant logs
+            when a customer reports an issue.
+          type: string
+          readOnly: true
+        detail:
+          description: |
+            A human readable explanation specific to this occurence of the problem.
+            This field may contain request/entity data to help the user understand
+            what went wrong. Enclose variable values in square brackets. Should be
+            provided as "Sentence case" for direct use in the UI.
+          type: string
+          readOnly: true
+      required:
+        - status
+        - title
+        - instance
+        - detail
+      title: Error
+    UnauthorizedError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 401
+            title:
+              example: Unauthorized
+            type:
+              example: 'https://httpstatuses.com/401'
+            instance:
+              example: 'kong:trace:1234567890'
+            detail:
+              example: Invalid credentials
+    ForbiddenError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 403
+            title:
+              example: Forbidden
+            type:
+              example: 'https://httpstatuses.com/403'
+            instance:
+              example: 'kong:trace:1234567890'
+            detail:
+              example: Forbidden
+    NotFoundError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 404
+            title:
+              example: Not Found
+            type:
+              example: 'https://httpstatuses.com/404'
+            instance:
+              example: 'kong:trace:1234567890'
+            detail:
+              example: Not found
+  examples:
+    GetEntitlementsExample1:
+      value:
+        portals_limit: 4
+    UpdateEntitlementsExample1:
+      value:
+        portals_limit: 3
+    UnauthorizedExample:
+      value:
+        status: 401
+        title: Unauthorized
+        instance: 'kong:trace:8347343766220159418'
+        detail: Unauthorized
+    ForbiddenExample:
+      value:
+        status: 403
+        title: Forbidden
+        instance: 'kong:trace:2723154947768991354'
+        detail: You do not have permission to perform this action
+    NotFoundExample:
+      value:
+        status: 404
+        title: Not Found
+        instance: 'kong:trace:6816496025408232265'
+        detail: Not Found
   requestBodies:
     UpdateEntitlements:
       description: Update an organization's entitlements.
@@ -107,150 +237,8 @@ components:
           examples:
             NotFoundExample:
               $ref: '#/components/examples/NotFoundExample'
-  parameters:
-    OrganizationId:
-      name: organizationId
-      description: organization identifier
-      in: path
-      required: true
-      schema:
-        $ref: '#/components/schemas/UUID'
-  schemas:
-    GetEntitlementsResponse:
-      $ref: '#/components/schemas/Entitlements'
-    Entitlements:
-      title: Entitlements
-      additionalProperties: false
-      type: object
-      required:
-        - portals_limit
-      properties:
-        portals_limit:
-          type: number
-          example: 4
-    UUID:
-      type: string
-      format: uuid
-      example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-      description: Contains a unique identifier used by the API for this resource.
-      readOnly: true
-    BaseError:
-      type: object
-      title: Error
-      description: standard error
-      required:
-        - status
-        - title
-        - instance
-        - detail
-      properties:
-        status:
-          type: integer
-          description: >
-            The HTTP status code of the error. Useful when passing the response
-
-            body to child properties in a frontend UI. Must be returned as an
-            integer.
-          readOnly: true
-        title:
-          type: string
-          description: |
-            A short, human-readable summary of the problem. It should not
-            change between occurences of a problem, except for localization.
-            Should be provided as "Sentence case" for direct use in the UI.
-          readOnly: true
-        type:
-          type: string
-          description: The error type.
-          readOnly: true
-        instance:
-          type: string
-          description: |
-            Used to return the correlation ID back to the user, in the format
-            kong:trace:<correlation_id>. This helps us find the relevant logs
-            when a customer reports an issue.
-          readOnly: true
-        detail:
-          type: string
-          description: >
-            A human readable explanation specific to this occurence of the
-            problem.
-
-            This field may contain request/entity data to help the user
-            understand
-
-            what went wrong. Enclose variable values in square brackets. Should
-            be
-
-            provided as "Sentence case" for direct use in the UI.
-          readOnly: true
-    UnauthorizedError:
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
-        - type: object
-          properties:
-            status:
-              example: 401
-            title:
-              example: Unauthorized
-            type:
-              example: https://httpstatuses.com/401
-            instance:
-              example: kong:trace:1234567890
-            detail:
-              example: Invalid credentials
-    ForbiddenError:
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
-        - type: object
-          properties:
-            status:
-              example: 403
-            title:
-              example: Forbidden
-            type:
-              example: https://httpstatuses.com/403
-            instance:
-              example: kong:trace:1234567890
-            detail:
-              example: Forbidden
-    NotFoundError:
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
-        - type: object
-          properties:
-            status:
-              example: 404
-            title:
-              example: Not Found
-            type:
-              example: https://httpstatuses.com/404
-            instance:
-              example: kong:trace:1234567890
-            detail:
-              example: Not found
-  examples:
-    GetEntitlementsExample1:
-      value:
-        portals_limit: 4
-    UpdateEntitlementsExample1:
-      value:
-        portals_limit: 3
-    UnauthorizedExample:
-      value:
-        status: 401
-        title: Unauthorized
-        instance: kong:trace:8347343766220159418
-        detail: Unauthorized
-    ForbiddenExample:
-      value:
-        status: 403
-        title: Forbidden
-        instance: kong:trace:2723154947768991354
-        detail: You do not have permission to perform this action
-    NotFoundExample:
-      value:
-        status: 404
-        title: Not Found
-        instance: kong:trace:6816496025408232265
-        detail: Not Found
+tags:
+  - name: Organizations
+    description: API related to the management of Konnect Organizations
+security:
+  - serviceAccessToken: []

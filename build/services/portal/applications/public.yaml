@@ -5,26 +5,13 @@ info:
   description: N/A (this description is removed during bundling)
   contact:
     name: Kong
-    url: https://cloud.konghq.com
-tags:
-  - name: applications
-    description: >-
-      The API for Konnect Portal developer applications within a private portal
-      (i.e. requires registration/authentication). When a portal is in `public`
-      mode, all of the described endpoints will return a 404 error. A public
-      portal means that applications and registrations are not available/needed.
-      In this API's context, "you" and "your" refers to the developer consuming
-      the API.
-  - name: credentials
-    description: >-
-      The API for Konnect Portal developer credentials within a private portal
-      (i.e. requires registration/authentication).
+    url: 'https://cloud.konghq.com'
 paths:
   /api/v2/applications:
     get:
+      operationId: list-applications
       summary: List Applications
       description: List applications owned by the developer currently logged in.
-      operationId: list-applications
       parameters:
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageNumber'
@@ -40,14 +27,14 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
-      tags:
-        - applications
       security:
         - portalAccessToken: []
+      tags:
+        - applications
     post:
+      operationId: create-application
       summary: Create an Application
       description: Creates a new Application.
-      operationId: create-application
       requestBody:
         $ref: '#/components/requestBodies/CreateApplication'
       responses:
@@ -63,18 +50,15 @@ paths:
           $ref: '#/components/responses/NotFound'
         '409':
           $ref: '#/components/responses/Conflict'
-      tags:
-        - applications
       security:
         - portalAccessToken: []
-  /api/v2/applications/{applicationId}:
+      tags:
+        - applications
+  '/api/v2/applications/{applicationId}':
     get:
-      summary: Get an Application
-      description: >-
-        Gets the details for an existing application. You need only supply the
-        unique application identifier that was returned upon application
-        creation or by the list-applications endpoint.
       operationId: get-application
+      summary: Get an Application
+      description: Gets the details for an existing application. You need only supply the unique application identifier that was returned upon application creation or by the list-applications endpoint.
       parameters:
         - $ref: '#/components/parameters/ApplicationId'
       responses:
@@ -86,16 +70,14 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
-      tags:
-        - applications
       security:
         - portalAccessToken: []
+      tags:
+        - applications
     delete:
-      summary: Delete Application
-      description: >-
-        Deletes an application and all of its associated entities
-        (registrations).
       operationId: delete-application
+      summary: Delete Application
+      description: Deletes an application and all of its associated entities (registrations).
       parameters:
         - $ref: '#/components/parameters/ApplicationId'
       responses:
@@ -109,16 +91,14 @@ paths:
           $ref: '#/components/responses/NotFound'
         '429':
           $ref: '#/components/responses/TooManyRequests'
-      tags:
-        - applications
       security:
         - portalAccessToken: []
+      tags:
+        - applications
     patch:
-      summary: Update Application
-      description: >-
-        Updates an application, replacing specified properties with any new
-        values supplied in the request body.
       operationId: update-application
+      summary: Update Application
+      description: 'Updates an application, replacing specified properties with any new values supplied in the request body.'
       parameters:
         - $ref: '#/components/parameters/ApplicationId'
       requestBody:
@@ -134,15 +114,15 @@ paths:
           $ref: '#/components/responses/NotFound'
         '409':
           $ref: '#/components/responses/Conflict'
-      tags:
-        - applications
       security:
         - portalAccessToken: []
-  /api/v2/applications/{applicationId}/refresh-token:
+      tags:
+        - applications
+  '/api/v2/applications/{applicationId}/refresh-token':
     post:
+      operationId: refresh-application-token
       summary: Refresh Client Secret
       description: Resets the client secret for an application.
-      operationId: refresh-application-token
       parameters:
         - $ref: '#/components/parameters/ApplicationId'
       responses:
@@ -154,15 +134,15 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
-      tags:
-        - credentials
       security:
         - portalAccessToken: []
-  /api/v2/applications/{applicationId}/credentials:
+      tags:
+        - credentials
+  '/api/v2/applications/{applicationId}/credentials':
     get:
+      operationId: list-credentials
       summary: List credentials
       description: Lists the credentials for an application they own.
-      operationId: list-credentials
       parameters:
         - $ref: '#/components/parameters/ApplicationId'
         - $ref: '#/components/parameters/PageSize'
@@ -176,14 +156,14 @@ paths:
           $ref: '#/components/responses/NotFound'
         '409':
           $ref: '#/components/responses/Conflict'
-      tags:
-        - credentials
       security:
         - portalAccessToken: []
+      tags:
+        - credentials
     post:
+      operationId: create-credential
       summary: Create Credential for Application
       description: Allows a developer to create a credential for an application they own.
-      operationId: create-credential
       parameters:
         - $ref: '#/components/parameters/ApplicationId'
       requestBody:
@@ -199,17 +179,15 @@ paths:
           $ref: '#/components/responses/PostCredentials403Response'
         '404':
           $ref: '#/components/responses/NotFound'
-      tags:
-        - credentials
       security:
         - portalAccessToken: []
-  /api/v2/applications/{applicationId}/credentials/{credentialId}:
+      tags:
+        - credentials
+  '/api/v2/applications/{applicationId}/credentials/{credentialId}':
     put:
-      summary: Update Credential
-      description: >-
-        Updates a credential for an application owned by the current logged in
-        developer.
       operationId: update-credential
+      summary: Update Credential
+      description: Updates a credential for an application owned by the current logged in developer.
       parameters:
         - $ref: '#/components/parameters/ApplicationId'
         - $ref: '#/components/parameters/CredentialId'
@@ -224,14 +202,14 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
-      tags:
-        - credentials
       security:
         - portalAccessToken: []
+      tags:
+        - credentials
     delete:
+      operationId: delete-credential
       summary: Delete Credential
       description: Deletes a credential for an application they own.
-      operationId: delete-credential
       parameters:
         - $ref: '#/components/parameters/ApplicationId'
         - $ref: '#/components/parameters/CredentialId'
@@ -246,22 +224,18 @@ paths:
           $ref: '#/components/responses/NotFound'
         '409':
           $ref: '#/components/responses/Conflict'
-      tags:
-        - credentials
       security:
         - portalAccessToken: []
-  /api/v2/applications/{applicationId}/product-versions/{productVersionId}/granted-scopes:
+      tags:
+        - credentials
+  '/api/v2/applications/{applicationId}/product-versions/{productVersionId}/granted-scopes':
     get:
-      summary: Get the granted scopes
-      description: >
-        Retrieves the granted scopes of a specified application and product
-        version directly from the IDP.
-
-        Scopes shared between product versions will be returned, even if not
-        currently registered for given product version.
-
-        Will return 422 if this feature is not supported by the application.
       operationId: get-application-product-version-granted-scopes
+      summary: Get the granted scopes
+      description: |
+        Retrieves the granted scopes of a specified application and product version directly from the IDP.
+        Scopes shared between product versions will be returned, even if not currently registered for given product version.
+        Will return 422 if this feature is not supported by the application.
       parameters:
         - $ref: '#/components/parameters/ApplicationId'
         - $ref: '#/components/parameters/ProductVersionId'
@@ -274,23 +248,18 @@ paths:
           $ref: '#/components/responses/NotFound'
         '422':
           $ref: '#/components/responses/GetGrantedScopesProductVersion422Response'
-      tags:
-        - applications
       security:
         - portalAccessToken: []
+      tags:
+        - applications
   /api/v2/applications/auth-strategies:
     get:
-      summary: List the available auth strategies
-      description: >
-        Retrieve the available Auth Strategies on this portal.
-
-        An Auth Strategy is a set of plugin configurations that represent how
-        the gateway will perform authentication and authorization for a Product
-        Version.
-
-        It may reference to Key-Auth or an OIDC configuration (with or without
-        DCR).
       operationId: list-application-auth-strategies
+      summary: List the available auth strategies
+      description: |
+        Retrieve the available Auth Strategies on this portal.
+        An Auth Strategy is a set of plugin configurations that represent how the gateway will perform authentication and authorization for a Product Version.
+        It may reference to Key-Auth or an OIDC configuration (with or without DCR).
       parameters:
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageNumber'
@@ -305,110 +274,12 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
-      tags:
-        - applications
       security:
         - portalAccessToken: []
+      tags:
+        - applications
 components:
-  securitySchemes:
-    portalAccessToken:
-      type: apiKey
-      in: cookie
-      name: portalaccesstoken
-      description: >
-        The Developer portal cookie is meant to be used by the Developer API to
-        authenticate with.
   parameters:
-    CredentialId:
-      name: credentialId
-      in: path
-      required: true
-      description: Id of the targeted credential
-      schema:
-        type: string
-        format: uuid
-    FilterByCredentialTypeEquality:
-      name: filter[credential_type][eq]
-      description: >-
-        Filter by direct equality comparison of the credential_type with a
-        supplied value.
-      in: query
-      required: false
-      schema:
-        type: string
-        enum:
-          - client_credentials
-          - self_managed_client_credentials
-          - key_auth
-        example: key_auth
-    PageSize:
-      name: page[size]
-      description: >-
-        The maximum number of items to include per page. The last page of a
-        collection may include fewer items.
-      required: false
-      in: query
-      allowEmptyValue: true
-      schema:
-        type: integer
-        example: 10
-    PageNumber:
-      name: page[number]
-      description: Determines which page of the entities to retrieve.
-      required: false
-      in: query
-      allowEmptyValue: true
-      schema:
-        type: integer
-        example: 1
-    FilterByNameEquality:
-      name: filter[name][eq]
-      description: >-
-        Filter by direct equality comparison of the name property with a
-        supplied value.
-      in: query
-      required: false
-      schema:
-        type: string
-        example: good service
-    FilterByNameEqualityShort:
-      name: filter[name]
-      description: >-
-        Filter by direct equality comparison (short-hand) of the name property
-        with a supplied value.
-      in: query
-      required: false
-      schema:
-        type: string
-        example: good service
-    FilterByNameContains:
-      name: filter[name][contains]
-      description: >-
-        Filter by contains comparison of the name property with a supplied
-        substring
-      in: query
-      required: false
-      schema:
-        type: string
-        example: good service
-    FilterByAuthStrategyEquality:
-      name: filter[auth_strategy_id][eq]
-      description: Filter by the id of the auth strategy supported by the application.
-      in: query
-      required: false
-      schema:
-        type: string
-        example: 5be86298-147b-45ab-bfaf-a1bff97dce39
-    FilterByAuthStrategyEqualityShort:
-      name: filter[auth_strategy_id]
-      description: >-
-        Filter by the id of the auth strategy supported by the application
-        (short-hand).
-      in: query
-      required: false
-      schema:
-        type: string
-        example: 5be86298-147b-45ab-bfaf-a1bff97dce39
     ApplicationId:
       name: applicationId
       in: path
@@ -417,6 +288,84 @@ components:
       schema:
         type: string
         format: uuid
+    CredentialId:
+      name: credentialId
+      in: path
+      required: true
+      description: Id of the targeted credential
+      schema:
+        type: string
+        format: uuid
+    FilterByAuthStrategyEquality:
+      name: 'filter[auth_strategy_id][eq]'
+      description: Filter by the id of the auth strategy supported by the application.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 5be86298-147b-45ab-bfaf-a1bff97dce39
+    FilterByAuthStrategyEqualityShort:
+      name: 'filter[auth_strategy_id]'
+      description: Filter by the id of the auth strategy supported by the application (short-hand).
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 5be86298-147b-45ab-bfaf-a1bff97dce39
+    FilterByCredentialTypeEquality:
+      name: 'filter[credential_type][eq]'
+      description: Filter by direct equality comparison of the credential_type with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: key_auth
+        enum:
+          - client_credentials
+          - self_managed_client_credentials
+          - key_auth
+    FilterByNameContains:
+      name: 'filter[name][contains]'
+      description: Filter by contains comparison of the name property with a supplied substring
+      in: query
+      required: false
+      schema:
+        type: string
+        example: good service
+    FilterByNameEquality:
+      name: 'filter[name][eq]'
+      description: Filter by direct equality comparison of the name property with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: good service
+    FilterByNameEqualityShort:
+      name: 'filter[name]'
+      description: Filter by direct equality comparison (short-hand) of the name property with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: good service
+    PageNumber:
+      name: 'page[number]'
+      description: Determines which page of the entities to retrieve.
+      required: false
+      in: query
+      allowEmptyValue: true
+      schema:
+        type: integer
+        example: 1
+    PageSize:
+      name: 'page[size]'
+      description: The maximum number of items to include per page. The last page of a collection may include fewer items.
+      required: false
+      in: query
+      allowEmptyValue: true
+      schema:
+        type: integer
+        example: 10
     ProductVersionId:
       name: productVersionId
       in: path
@@ -425,6 +374,751 @@ components:
       schema:
         type: string
         format: uuid
+  schemas:
+    AuthStrategyId:
+      description: 'ID of the auth strategy to use for the application. If null or not included, the default application auth strategy will be used.'
+      type: string
+      format: uuid
+      nullable: true
+    Scopes:
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        The granted scopes for the application. Will only be included if supported by the application's auth strategy.
+      type: array
+      items:
+        type: string
+    CreateCredentialPayload:
+      type: object
+      properties:
+        display_name:
+          type: string
+          maxLength: 255
+      additionalProperties: false
+    UpdateCredentialPayload:
+      type: object
+      properties:
+        display_name:
+          type: string
+          maxLength: 255
+      additionalProperties: false
+      required:
+        - display_name
+    ListApplicationsResponse:
+      type: object
+      properties:
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/GetApplicationResponse'
+      additionalProperties: false
+      required:
+        - data
+        - meta
+    GetApplicationResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        name:
+          type: string
+        reference_id:
+          $ref: '#/components/schemas/ApplicationReferenceId'
+        description:
+          type: string
+          nullable: true
+        redirect_uri:
+          type: string
+          nullable: true
+        auth_strategy:
+          $ref: '#/components/schemas/PortalAuthStrategy'
+        scopes:
+          $ref: '#/components/schemas/Scopes'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - reference_id
+        - description
+        - updated_at
+        - created_at
+    ListCredentialsResponse:
+      type: object
+      properties:
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            type: object
+            additionalProperties: false
+            properties:
+              id:
+                $ref: '#/components/schemas/UUID'
+              display_name:
+                type: string
+            required:
+              - id
+              - display_name
+      additionalProperties: false
+      required:
+        - data
+        - meta
+    CredentialCreationResponse:
+      type: object
+      properties:
+        credential:
+          type: string
+        id:
+          $ref: '#/components/schemas/UUID'
+        display_name:
+          type: string
+      additionalProperties: false
+      required:
+        - credential
+        - id
+        - display_name
+    RefreshTokenResponse:
+      description: Refresh token response
+      type: object
+      properties:
+        client_id:
+          type: string
+        client_secret:
+          type: string
+      additionalProperties: false
+      required:
+        - client_id
+        - client_secret
+      title: Refresh token response
+    CreateApplicationPayload:
+      description: Application creation payload
+      type: object
+      properties:
+        name:
+          description: The name of the application
+          type: string
+          maxLength: 255
+        reference_id:
+          $ref: '#/components/schemas/ApplicationReferenceId'
+        redirect_uri:
+          description: URL to redirect to after completing an OIDC auth flow
+          type: string
+          format: uri
+        description:
+          description: A brief description of the application
+          type: string
+          maxLength: 255
+        auth_strategy_id:
+          $ref: '#/components/schemas/AuthStrategyId'
+        scopes:
+          $ref: '#/components/schemas/Scopes'
+      additionalProperties: false
+      required:
+        - name
+      title: CreateApplicationPayload
+    ApplicationCreationResponse:
+      description: Application creation response payload
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        name:
+          type: string
+        reference_id:
+          $ref: '#/components/schemas/ApplicationReferenceId'
+        description:
+          type: string
+          nullable: true
+        redirect_uri:
+          type: string
+          nullable: true
+        credentials:
+          type: object
+          additionalProperties: false
+          properties:
+            client_id:
+              type: string
+            client_secret:
+              type: string
+          required:
+            - client_id
+            - client_secret
+        auth_strategy:
+          $ref: '#/components/schemas/PortalAuthStrategy'
+        scopes:
+          $ref: '#/components/schemas/Scopes'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - reference_id
+        - description
+        - created_at
+        - updated_at
+        - auth_strategy
+      title: ApplicationCreationResponse
+    UpdateApplicationPayload:
+      description: Payload required to update an application
+      type: object
+      properties:
+        name:
+          description: The name of the application
+          type: string
+          maxLength: 255
+        reference_id:
+          $ref: '#/components/schemas/ApplicationReferenceId'
+        redirect_uri:
+          description: URL to redirect to after completing an OIDC auth flow
+          type: string
+          format: uri
+        description:
+          description: A brief description of the application
+          type: string
+          maxLength: 255
+        scopes:
+          $ref: '#/components/schemas/Scopes'
+      additionalProperties: false
+      title: UpdateApplicationPayload
+    ApplicationUpdateResponse:
+      description: Application update response payload
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        name:
+          type: string
+        reference_id:
+          $ref: '#/components/schemas/ApplicationReferenceId'
+        description:
+          type: string
+          example: A brief description of the application
+          nullable: true
+        redirect_uri:
+          type: string
+          example: 'https://example.com/callback'
+          nullable: true
+        auth_strategy:
+          $ref: '#/components/schemas/PortalAuthStrategy'
+        scopes:
+          $ref: '#/components/schemas/Scopes'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - reference_id
+        - description
+        - updated_at
+        - created_at
+      title: ApplicationUpdateResponse
+    GetGrantedScopesProductVersionResponse:
+      type: object
+      properties:
+        scopes:
+          $ref: '#/components/schemas/RefreshedGrantedScopes'
+      additionalProperties: false
+      required:
+        - scopes
+    ListAuthStrategiesResponse:
+      type: object
+      properties:
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PortalAuthStrategy'
+      additionalProperties: false
+      required:
+        - data
+        - meta
+    PageMeta:
+      description: Contains pagination query parameters and the total number of objects returned.
+      type: object
+      properties:
+        number:
+          type: number
+          example: 1
+        size:
+          type: number
+          example: 10
+        total:
+          type: number
+          example: 100
+      required:
+        - number
+        - size
+        - total
+    PaginatedMeta:
+      description: returns the pagination information
+      type: object
+      properties:
+        page:
+          $ref: '#/components/schemas/PageMeta'
+      required:
+        - page
+      title: PaginatedMeta
+    UUID:
+      description: Contains a unique identifier used by the API for this resource.
+      type: string
+      format: uuid
+      example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+      readOnly: true
+    ApplicationReferenceId:
+      description: |
+        An identifier to correlate the application with an external system.
+        Cannot be set when using Dynamic Client Registration.
+      type: string
+      maxLength: 255
+    PortalAuthStrategyKeyAuth:
+      description: KeyAuth Auth strategy that the application uses.
+      type: object
+      properties:
+        id:
+          description: The Application Auth Strategy ID.
+          type: string
+          format: uuid
+          example: b9e81174-b5bb-4638-a3c3-8afe61a0abf8
+          readOnly: true
+        name:
+          type: string
+          example: name
+          default: name
+        credential_type:
+          type: string
+          enum:
+            - key_auth
+        key_names:
+          type: array
+          items:
+            type: string
+          example:
+            - apikey
+      required:
+        - id
+        - name
+        - credential_type
+        - key_names
+    AvailableScopes:
+      description: Possible developer selectable scopes for an application. Only present when using DCR Provider that supports it.
+      type: array
+      items:
+        type: string
+      example:
+        - scope1
+        - scope2
+    AuthMethods:
+      type: array
+      items:
+        description: Auth Methods enabled for this strategy
+        type: string
+      example:
+        - bearer
+    PortalAuthStrategyClientCredentials:
+      description: Client Credential Auth strategy that the application uses.
+      type: object
+      properties:
+        id:
+          description: The Application Auth Strategy ID.
+          type: string
+          format: uuid
+          example: b9e81174-b5bb-4638-a3c3-8afe61a0abf8
+          readOnly: true
+        available_scopes:
+          $ref: '#/components/schemas/AvailableScopes'
+        name:
+          type: string
+          example: name
+          default: name
+        credential_type:
+          type: string
+          enum:
+            - client_credentials
+            - self_managed_client_credentials
+        auth_methods:
+          $ref: '#/components/schemas/AuthMethods'
+      required:
+        - id
+        - name
+        - credential_type
+        - auth_methods
+    PortalAuthStrategy:
+      type: object
+      discriminator:
+        propertyName: credential_type
+      nullable: true
+      oneOf:
+        - $ref: '#/components/schemas/PortalAuthStrategyKeyAuth'
+        - $ref: '#/components/schemas/PortalAuthStrategyClientCredentials'
+    CreatedAt:
+      description: An ISO-8601 timestamp representation of entity creation date.
+      type: string
+      format: date-time
+      example: '2022-11-04T20:10:06.927Z'
+      readOnly: true
+    UpdatedAt:
+      description: An ISO-8601 timestamp representation of entity update date.
+      type: string
+      format: date-time
+      example: '2022-11-04T20:10:06.927Z'
+      readOnly: true
+    BaseError:
+      description: standard error
+      type: object
+      properties:
+        status:
+          description: |
+            The HTTP status code of the error. Useful when passing the response
+            body to child properties in a frontend UI. Must be returned as an integer.
+          type: integer
+          readOnly: true
+        title:
+          description: |
+            A short, human-readable summary of the problem. It should not
+            change between occurences of a problem, except for localization.
+            Should be provided as "Sentence case" for direct use in the UI.
+          type: string
+          readOnly: true
+        type:
+          description: The error type.
+          type: string
+          readOnly: true
+        instance:
+          description: |
+            Used to return the correlation ID back to the user, in the format
+            kong:trace:<correlation_id>. This helps us find the relevant logs
+            when a customer reports an issue.
+          type: string
+          readOnly: true
+        detail:
+          description: |
+            A human readable explanation specific to this occurence of the problem.
+            This field may contain request/entity data to help the user understand
+            what went wrong. Enclose variable values in square brackets. Should be
+            provided as "Sentence case" for direct use in the UI.
+          type: string
+          readOnly: true
+      required:
+        - status
+        - title
+        - instance
+        - detail
+      title: Error
+    InvalidRules:
+      description: invalid parameters rules
+      type: string
+      enum:
+        - required
+        - max_length
+        - is_array
+        - is_base64
+        - is_boolean
+        - is_date_time
+        - is_integer
+        - is_null
+        - is_number
+        - is_object
+        - is_string
+        - is_uuid
+        - is_fqdn
+        - is_arn
+        - unknown_property
+        - is_label
+        - matches_regex
+        - invalid
+        - is_supported_network_availability_zone_list
+        - is_supported_network_cidr_block
+        - is_supported_provider_region
+      nullable: true
+      readOnly: true
+    InvalidParameterStandard:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          $ref: '#/components/schemas/InvalidRules'
+        source:
+          type: string
+          example: body
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+      additionalProperties: false
+      required:
+        - field
+        - reason
+    InvalidParameterMinimumLength:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          description: invalid parameters rules
+          type: string
+          enum:
+            - min_length
+            - min_digits
+            - min_lowercase
+            - min_uppercase
+            - min_symbols
+          nullable: false
+          readOnly: true
+        minimum:
+          type: integer
+          example: 8
+        source:
+          type: string
+          example: body
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+      additionalProperties: false
+      required:
+        - field
+        - reason
+        - rule
+        - minimum
+    InvalidParameterChoiceItem:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          description: invalid parameters rules
+          type: string
+          enum:
+            - enum
+          nullable: false
+          readOnly: true
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+        choices:
+          type: array
+          items: {}
+          minimum: 1
+          nullable: false
+          readOnly: true
+          uniqueItems: true
+        source:
+          type: string
+          example: body
+      additionalProperties: false
+      required:
+        - field
+        - reason
+        - rule
+        - choices
+    InvalidParameterDependentItem:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          description: invalid parameters rules
+          type: string
+          enum:
+            - dependent_fields
+          nullable: true
+          readOnly: true
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+        dependents:
+          type: array
+          items: {}
+          nullable: true
+          readOnly: true
+          uniqueItems: true
+        source:
+          type: string
+          example: body
+      additionalProperties: false
+      required:
+        - field
+        - rule
+        - reason
+        - dependents
+    InvalidParameters:
+      description: invalid parameters
+      type: array
+      items:
+        oneOf:
+          - $ref: '#/components/schemas/InvalidParameterStandard'
+          - $ref: '#/components/schemas/InvalidParameterMinimumLength'
+          - $ref: '#/components/schemas/InvalidParameterChoiceItem'
+          - $ref: '#/components/schemas/InvalidParameterDependentItem'
+      minItems: 1
+      nullable: false
+      uniqueItems: true
+    BadRequestError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          required:
+            - invalid_parameters
+          properties:
+            invalid_parameters:
+              $ref: '#/components/schemas/InvalidParameters'
+    UnauthorizedError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 401
+            title:
+              example: Unauthorized
+            type:
+              example: 'https://httpstatuses.com/401'
+            instance:
+              example: 'kong:trace:1234567890'
+            detail:
+              example: Invalid credentials
+    ForbiddenError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 403
+            title:
+              example: Forbidden
+            type:
+              example: 'https://httpstatuses.com/403'
+            instance:
+              example: 'kong:trace:1234567890'
+            detail:
+              example: Forbidden
+    NotFoundError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 404
+            title:
+              example: Not Found
+            type:
+              example: 'https://httpstatuses.com/404'
+            instance:
+              example: 'kong:trace:1234567890'
+            detail:
+              example: Not found
+    ConflictError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 409
+            title:
+              example: Conflict
+            type:
+              example: 'https://httpstatuses.com/409'
+            instance:
+              example: 'kong:trace:1234567890'
+            detail:
+              example: Conflict
+    TooManyRequestsError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 429
+            title:
+              example: Too Many Requests
+            type:
+              example: 'https://httpstatuses.com/429'
+            instance:
+              example: 'kong:trace:1234567890'
+            detail:
+              example: Too Many Requests
+    RefreshedGrantedScopes:
+      description: 'List of granted scopes, directly updated from the IDP'
+      type: array
+      items:
+        type: string
+    UnprocessableContentError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 422
+            title:
+              example: Unprocessable Content
+            type:
+              example: 'https://httpstatuses.com/422'
+            instance:
+              example: 'kong:trace:1234567891'
+            detail:
+              example: Unprocessable Content
+  examples:
+    GetGrantedScopesProductVersion200Response:
+      value:
+        scopes:
+          - openid
+    GetGrantedScopesProductVersion422Example:
+      value:
+        status: 422
+        title: Unsupported IDP
+        type: 'https://kongapi.info/konnect/portal/granted-scopes-unavailable'
+        detail: This feature is not supported by the application.
+        instance: 'kong:trace:2724154947768991354'
+    PostCredentials403Example:
+      value:
+        status: 403
+        title: Forbidden
+        detail: 'Maximum number of Credentials exceeded. Max Allowed: 20'
+        instance: 'kong:trace:2724154947768991355'
+    UnauthorizedExample:
+      value:
+        status: 401
+        title: Unauthorized
+        instance: 'kong:trace:8347343766220159418'
+        detail: Unauthorized
+    ForbiddenExample:
+      value:
+        status: 403
+        title: Forbidden
+        instance: 'kong:trace:2723154947768991354'
+        detail: You do not have permission to perform this action
+    NotFoundExample:
+      value:
+        status: 404
+        title: Not Found
+        instance: 'kong:trace:6816496025408232265'
+        detail: Not Found
   requestBodies:
     CreateApplication:
       description: Create an application
@@ -575,768 +1269,18 @@ components:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/TooManyRequestsError'
-  schemas:
-    AuthStrategyId:
-      description: >-
-        ID of the auth strategy to use for the application. If null or not
-        included, the default application auth strategy will be used.
-      type: string
-      format: uuid
-      nullable: true
-    Scopes:
-      description: >-
-        **Pre-release Endpoint**
-
-        This endpoint is currently in beta and is subject to change.
-
-
-        The granted scopes for the application. Will only be included if
-        supported by the application's auth strategy.
-      type: array
-      items:
-        type: string
-    CreateCredentialPayload:
-      additionalProperties: false
-      type: object
-      properties:
-        display_name:
-          type: string
-          maxLength: 255
-    UpdateCredentialPayload:
-      additionalProperties: false
-      type: object
-      required:
-        - display_name
-      properties:
-        display_name:
-          type: string
-          maxLength: 255
-    ListApplicationsResponse:
-      additionalProperties: false
-      type: object
-      required:
-        - data
-        - meta
-      properties:
-        meta:
-          $ref: '#/components/schemas/PaginatedMeta'
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/GetApplicationResponse'
-    GetApplicationResponse:
-      additionalProperties: false
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/UUID'
-        name:
-          type: string
-        reference_id:
-          $ref: '#/components/schemas/ApplicationReferenceId'
-        description:
-          type: string
-          nullable: true
-        redirect_uri:
-          type: string
-          nullable: true
-        auth_strategy:
-          $ref: '#/components/schemas/PortalAuthStrategy'
-        scopes:
-          $ref: '#/components/schemas/Scopes'
-        created_at:
-          $ref: '#/components/schemas/CreatedAt'
-        updated_at:
-          $ref: '#/components/schemas/UpdatedAt'
-      required:
-        - id
-        - name
-        - reference_id
-        - description
-        - updated_at
-        - created_at
-    ListCredentialsResponse:
-      additionalProperties: false
-      type: object
-      required:
-        - data
-        - meta
-      properties:
-        meta:
-          $ref: '#/components/schemas/PaginatedMeta'
-        data:
-          type: array
-          items:
-            type: object
-            additionalProperties: false
-            properties:
-              id:
-                $ref: '#/components/schemas/UUID'
-              display_name:
-                type: string
-            required:
-              - id
-              - display_name
-    CredentialCreationResponse:
-      additionalProperties: false
-      type: object
-      properties:
-        credential:
-          type: string
-        id:
-          $ref: '#/components/schemas/UUID'
-        display_name:
-          type: string
-      required:
-        - credential
-        - id
-        - display_name
-    RefreshTokenResponse:
-      additionalProperties: false
-      type: object
-      title: Refresh token response
-      description: Refresh token response
-      required:
-        - client_id
-        - client_secret
-      properties:
-        client_id:
-          type: string
-        client_secret:
-          type: string
-    CreateApplicationPayload:
-      additionalProperties: false
-      type: object
-      title: CreateApplicationPayload
-      description: Application creation payload
-      required:
-        - name
-      properties:
-        name:
-          description: The name of the application
-          type: string
-          maxLength: 255
-        reference_id:
-          $ref: '#/components/schemas/ApplicationReferenceId'
-        redirect_uri:
-          description: URL to redirect to after completing an OIDC auth flow
-          type: string
-          format: uri
-        description:
-          description: A brief description of the application
-          type: string
-          maxLength: 255
-        auth_strategy_id:
-          $ref: '#/components/schemas/AuthStrategyId'
-        scopes:
-          $ref: '#/components/schemas/Scopes'
-    ApplicationCreationResponse:
-      additionalProperties: false
-      type: object
-      title: ApplicationCreationResponse
-      description: Application creation response payload
-      required:
-        - id
-        - name
-        - reference_id
-        - description
-        - created_at
-        - updated_at
-        - auth_strategy
-      properties:
-        id:
-          $ref: '#/components/schemas/UUID'
-        name:
-          type: string
-        reference_id:
-          $ref: '#/components/schemas/ApplicationReferenceId'
-        description:
-          type: string
-          nullable: true
-        redirect_uri:
-          type: string
-          nullable: true
-        credentials:
-          additionalProperties: false
-          type: object
-          required:
-            - client_id
-            - client_secret
-          properties:
-            client_id:
-              type: string
-            client_secret:
-              type: string
-        auth_strategy:
-          $ref: '#/components/schemas/PortalAuthStrategy'
-        scopes:
-          $ref: '#/components/schemas/Scopes'
-        created_at:
-          $ref: '#/components/schemas/CreatedAt'
-        updated_at:
-          $ref: '#/components/schemas/UpdatedAt'
-    UpdateApplicationPayload:
-      additionalProperties: false
-      type: object
-      title: UpdateApplicationPayload
-      description: Payload required to update an application
-      properties:
-        name:
-          description: The name of the application
-          type: string
-          maxLength: 255
-        reference_id:
-          $ref: '#/components/schemas/ApplicationReferenceId'
-        redirect_uri:
-          description: URL to redirect to after completing an OIDC auth flow
-          type: string
-          format: uri
-        description:
-          description: A brief description of the application
-          type: string
-          maxLength: 255
-        scopes:
-          $ref: '#/components/schemas/Scopes'
-    ApplicationUpdateResponse:
-      additionalProperties: false
-      type: object
-      title: ApplicationUpdateResponse
-      description: Application update response payload
-      required:
-        - id
-        - name
-        - reference_id
-        - description
-        - updated_at
-        - created_at
-      properties:
-        id:
-          $ref: '#/components/schemas/UUID'
-        name:
-          type: string
-        reference_id:
-          $ref: '#/components/schemas/ApplicationReferenceId'
-        description:
-          type: string
-          example: A brief description of the application
-          nullable: true
-        redirect_uri:
-          type: string
-          example: https://example.com/callback
-          nullable: true
-        auth_strategy:
-          $ref: '#/components/schemas/PortalAuthStrategy'
-        scopes:
-          $ref: '#/components/schemas/Scopes'
-        created_at:
-          $ref: '#/components/schemas/CreatedAt'
-        updated_at:
-          $ref: '#/components/schemas/UpdatedAt'
-    GetGrantedScopesProductVersionResponse:
-      additionalProperties: false
-      type: object
-      required:
-        - scopes
-      properties:
-        scopes:
-          $ref: '#/components/schemas/RefreshedGrantedScopes'
-    ListAuthStrategiesResponse:
-      additionalProperties: false
-      type: object
-      required:
-        - data
-        - meta
-      properties:
-        meta:
-          $ref: '#/components/schemas/PaginatedMeta'
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/PortalAuthStrategy'
-    PageMeta:
-      type: object
-      description: >-
-        Contains pagination query parameters and the total number of objects
-        returned.
-      required:
-        - number
-        - size
-        - total
-      properties:
-        number:
-          type: number
-          example: 1
-        size:
-          type: number
-          example: 10
-        total:
-          type: number
-          example: 100
-    PaginatedMeta:
-      type: object
-      title: PaginatedMeta
-      description: returns the pagination information
-      properties:
-        page:
-          $ref: '#/components/schemas/PageMeta'
-      required:
-        - page
-    UUID:
-      type: string
-      format: uuid
-      example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-      description: Contains a unique identifier used by the API for this resource.
-      readOnly: true
-    ApplicationReferenceId:
+  securitySchemes:
+    portalAccessToken:
+      type: apiKey
+      in: cookie
+      name: portalaccesstoken
       description: |
-        An identifier to correlate the application with an external system.
-        Cannot be set when using Dynamic Client Registration.
-      type: string
-      maxLength: 255
-    PortalAuthStrategyKeyAuth:
-      description: KeyAuth Auth strategy that the application uses.
-      type: object
-      required:
-        - id
-        - name
-        - credential_type
-        - key_names
-      properties:
-        id:
-          type: string
-          format: uuid
-          example: b9e81174-b5bb-4638-a3c3-8afe61a0abf8
-          description: The Application Auth Strategy ID.
-          readOnly: true
-        name:
-          type: string
-          example: name
-          default: name
-        credential_type:
-          type: string
-          enum:
-            - key_auth
-        key_names:
-          type: array
-          items:
-            type: string
-          example:
-            - apikey
-    AvailableScopes:
-      description: >-
-        Possible developer selectable scopes for an application. Only present
-        when using DCR Provider that supports it.
-      type: array
-      items:
-        type: string
-      example:
-        - scope1
-        - scope2
-    AuthMethods:
-      type: array
-      items:
-        description: Auth Methods enabled for this strategy
-        type: string
-      example:
-        - bearer
-    PortalAuthStrategyClientCredentials:
-      description: Client Credential Auth strategy that the application uses.
-      type: object
-      required:
-        - id
-        - name
-        - credential_type
-        - auth_methods
-      properties:
-        id:
-          type: string
-          format: uuid
-          example: b9e81174-b5bb-4638-a3c3-8afe61a0abf8
-          description: The Application Auth Strategy ID.
-          readOnly: true
-        available_scopes:
-          $ref: '#/components/schemas/AvailableScopes'
-        name:
-          type: string
-          example: name
-          default: name
-        credential_type:
-          type: string
-          enum:
-            - client_credentials
-            - self_managed_client_credentials
-        auth_methods:
-          $ref: '#/components/schemas/AuthMethods'
-    PortalAuthStrategy:
-      type: object
-      nullable: true
-      oneOf:
-        - $ref: '#/components/schemas/PortalAuthStrategyKeyAuth'
-        - $ref: '#/components/schemas/PortalAuthStrategyClientCredentials'
-      discriminator:
-        propertyName: credential_type
-    CreatedAt:
-      type: string
-      format: date-time
-      example: '2022-11-04T20:10:06.927Z'
-      description: An ISO-8601 timestamp representation of entity creation date.
-      readOnly: true
-    UpdatedAt:
-      type: string
-      format: date-time
-      example: '2022-11-04T20:10:06.927Z'
-      description: An ISO-8601 timestamp representation of entity update date.
-      readOnly: true
-    BaseError:
-      type: object
-      title: Error
-      description: standard error
-      required:
-        - status
-        - title
-        - instance
-        - detail
-      properties:
-        status:
-          type: integer
-          description: >
-            The HTTP status code of the error. Useful when passing the response
-
-            body to child properties in a frontend UI. Must be returned as an
-            integer.
-          readOnly: true
-        title:
-          type: string
-          description: |
-            A short, human-readable summary of the problem. It should not
-            change between occurences of a problem, except for localization.
-            Should be provided as "Sentence case" for direct use in the UI.
-          readOnly: true
-        type:
-          type: string
-          description: The error type.
-          readOnly: true
-        instance:
-          type: string
-          description: |
-            Used to return the correlation ID back to the user, in the format
-            kong:trace:<correlation_id>. This helps us find the relevant logs
-            when a customer reports an issue.
-          readOnly: true
-        detail:
-          type: string
-          description: >
-            A human readable explanation specific to this occurence of the
-            problem.
-
-            This field may contain request/entity data to help the user
-            understand
-
-            what went wrong. Enclose variable values in square brackets. Should
-            be
-
-            provided as "Sentence case" for direct use in the UI.
-          readOnly: true
-    InvalidRules:
-      description: invalid parameters rules
-      type: string
-      readOnly: true
-      nullable: true
-      enum:
-        - required
-        - max_length
-        - is_array
-        - is_base64
-        - is_boolean
-        - is_date_time
-        - is_integer
-        - is_null
-        - is_number
-        - is_object
-        - is_string
-        - is_uuid
-        - is_fqdn
-        - is_arn
-        - unknown_property
-        - is_label
-        - matches_regex
-        - invalid
-        - is_supported_network_availability_zone_list
-        - is_supported_network_cidr_block
-        - is_supported_provider_region
-    InvalidParameterStandard:
-      type: object
-      additionalProperties: false
-      properties:
-        field:
-          type: string
-          example: name
-          readOnly: true
-        rule:
-          $ref: '#/components/schemas/InvalidRules'
-        source:
-          type: string
-          example: body
-        reason:
-          type: string
-          example: is a required field
-          readOnly: true
-      required:
-        - field
-        - reason
-    InvalidParameterMinimumLength:
-      type: object
-      additionalProperties: false
-      properties:
-        field:
-          type: string
-          example: name
-          readOnly: true
-        rule:
-          description: invalid parameters rules
-          type: string
-          readOnly: true
-          nullable: false
-          enum:
-            - min_length
-            - min_digits
-            - min_lowercase
-            - min_uppercase
-            - min_symbols
-        minimum:
-          type: integer
-          example: 8
-        source:
-          type: string
-          example: body
-        reason:
-          type: string
-          example: is a required field
-          readOnly: true
-      required:
-        - field
-        - reason
-        - rule
-        - minimum
-    InvalidParameterChoiceItem:
-      type: object
-      additionalProperties: false
-      properties:
-        field:
-          type: string
-          example: name
-          readOnly: true
-        rule:
-          description: invalid parameters rules
-          type: string
-          readOnly: true
-          nullable: false
-          enum:
-            - enum
-        reason:
-          type: string
-          example: is a required field
-          readOnly: true
-        choices:
-          type: array
-          uniqueItems: true
-          readOnly: true
-          nullable: false
-          minimum: 1
-          items: {}
-        source:
-          type: string
-          example: body
-      required:
-        - field
-        - reason
-        - rule
-        - choices
-    InvalidParameterDependentItem:
-      type: object
-      additionalProperties: false
-      properties:
-        field:
-          type: string
-          example: name
-          readOnly: true
-        rule:
-          description: invalid parameters rules
-          type: string
-          readOnly: true
-          nullable: true
-          enum:
-            - dependent_fields
-        reason:
-          type: string
-          example: is a required field
-          readOnly: true
-        dependents:
-          type: array
-          uniqueItems: true
-          nullable: true
-          items: {}
-          readOnly: true
-        source:
-          type: string
-          example: body
-      required:
-        - field
-        - rule
-        - reason
-        - dependents
-    InvalidParameters:
-      type: array
-      nullable: false
-      uniqueItems: true
-      minItems: 1
-      description: invalid parameters
-      items:
-        oneOf:
-          - $ref: '#/components/schemas/InvalidParameterStandard'
-          - $ref: '#/components/schemas/InvalidParameterMinimumLength'
-          - $ref: '#/components/schemas/InvalidParameterChoiceItem'
-          - $ref: '#/components/schemas/InvalidParameterDependentItem'
-    BadRequestError:
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
-        - type: object
-          required:
-            - invalid_parameters
-          properties:
-            invalid_parameters:
-              $ref: '#/components/schemas/InvalidParameters'
-    UnauthorizedError:
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
-        - type: object
-          properties:
-            status:
-              example: 401
-            title:
-              example: Unauthorized
-            type:
-              example: https://httpstatuses.com/401
-            instance:
-              example: kong:trace:1234567890
-            detail:
-              example: Invalid credentials
-    ForbiddenError:
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
-        - type: object
-          properties:
-            status:
-              example: 403
-            title:
-              example: Forbidden
-            type:
-              example: https://httpstatuses.com/403
-            instance:
-              example: kong:trace:1234567890
-            detail:
-              example: Forbidden
-    NotFoundError:
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
-        - type: object
-          properties:
-            status:
-              example: 404
-            title:
-              example: Not Found
-            type:
-              example: https://httpstatuses.com/404
-            instance:
-              example: kong:trace:1234567890
-            detail:
-              example: Not found
-    ConflictError:
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
-        - type: object
-          properties:
-            status:
-              example: 409
-            title:
-              example: Conflict
-            type:
-              example: https://httpstatuses.com/409
-            instance:
-              example: kong:trace:1234567890
-            detail:
-              example: Conflict
-    TooManyRequestsError:
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
-        - type: object
-          properties:
-            status:
-              example: 429
-            title:
-              example: Too Many Requests
-            type:
-              example: https://httpstatuses.com/429
-            instance:
-              example: kong:trace:1234567890
-            detail:
-              example: Too Many Requests
-    RefreshedGrantedScopes:
-      description: List of granted scopes, directly updated from the IDP
-      type: array
-      items:
-        type: string
-    UnprocessableContentError:
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
-        - type: object
-          properties:
-            status:
-              example: 422
-            title:
-              example: Unprocessable Content
-            type:
-              example: https://httpstatuses.com/422
-            instance:
-              example: kong:trace:1234567891
-            detail:
-              example: Unprocessable Content
-  examples:
-    GetGrantedScopesProductVersion200Response:
-      value:
-        scopes:
-          - openid
-    GetGrantedScopesProductVersion422Example:
-      value:
-        status: 422
-        title: Unsupported IDP
-        type: https://kongapi.info/konnect/portal/granted-scopes-unavailable
-        detail: This feature is not supported by the application.
-        instance: kong:trace:2724154947768991354
-    PostCredentials403Example:
-      value:
-        status: 403
-        title: Forbidden
-        detail: 'Maximum number of Credentials exceeded. Max Allowed: 20'
-        instance: kong:trace:2724154947768991355
-    UnauthorizedExample:
-      value:
-        status: 401
-        title: Unauthorized
-        instance: kong:trace:8347343766220159418
-        detail: Unauthorized
-    ForbiddenExample:
-      value:
-        status: 403
-        title: Forbidden
-        instance: kong:trace:2723154947768991354
-        detail: You do not have permission to perform this action
-    NotFoundExample:
-      value:
-        status: 404
-        title: Not Found
-        instance: kong:trace:6816496025408232265
-        detail: Not Found
+        The Developer portal cookie is meant to be used by the Developer API to authenticate with.
+tags:
+  - name: applications
+    description: 'The API for Konnect Portal developer applications within a private portal (i.e. requires registration/authentication). When a portal is in `public` mode, all of the described endpoints will return a 404 error. A public portal means that applications and registrations are not available/needed. In this API''s context, "you" and "your" refers to the developer consuming the API.'
+  - name: credentials
+    description: The API for Konnect Portal developer credentials within a private portal (i.e. requires registration/authentication).
 x-errors:
   granted-scopes-unavailable:
     description: |

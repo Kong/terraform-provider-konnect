@@ -5,29 +5,34 @@ info:
   version: 0.0.1
   contact:
     name: Kong
-    url: https://konghq.com
+    url: 'https://konghq.com'
 servers:
-  - url: https://global.api.konghq.com/v0
+  - url: 'https://global.api.konghq.com/v0'
     description: US Public API
-security:
-  - personalAccessToken: []
-  - systemAccountAccessToken: []
-tags:
-  - name: Serverless Cloud Gateways
 paths:
-  /serverless-cloud-gateways/{controlPlaneId}:
+  '/serverless-cloud-gateways/{controlPlaneId}':
     parameters:
       - name: controlPlaneId
         in: path
-        required: true
         description: Id of the Serverless Cloud Gateway control plane
-        example: bf138ba2-c9b1-4229-b268-04d9d8a6410b
+        required: true
         schema:
           type: string
           format: uuid
+        example: bf138ba2-c9b1-4229-b268-04d9d8a6410b
     patch:
-      summary: Update the serverless cloud gateway
       operationId: update-serverless-cloud-gateway
+      summary: Update the serverless cloud gateway
+      description: Update an individual serverless cloud gateway.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateServerlessCloudGatewayRequest'
+            examples:
+              Example Request Body:
+                $ref: '#/components/examples/UpdateServerlessCloudGatewayRequestExample'
       responses:
         '200':
           $ref: '#/components/responses/UpdateServerlessCloudGatewayResponse'
@@ -39,70 +44,20 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      description: Update an individual serverless cloud gateway.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UpdateServerlessCloudGatewayRequest'
-            examples:
-              Example Request Body:
-                $ref: >-
-                  #/components/examples/UpdateServerlessCloudGatewayRequestExample
       tags:
         - Serverless Cloud Gateways
 components:
-  securitySchemes:
-    personalAccessToken:
-      type: http
-      scheme: bearer
-      bearerFormat: Token
-      description: >
-        The personal access token is meant to be used as an alternative to
-        basic-auth when accessing Konnect via APIs.
-
-        You can generate a Personal Access Token (PAT) from the [personal access
-        token page](https://cloud.konghq.com/global/tokens/) in the Konnect
-        dashboard.
-
-        The PAT token must be passed in the header of a request, for example:
-
-        `curl -X GET 'https://global.api.konghq.com/v2/users/' --header
-        'Authorization: Bearer kpat_xgfT...'`
-    systemAccountAccessToken:
-      type: http
-      scheme: bearer
-      bearerFormat: Token
-      description: >
-        The system account access token is meant for automations and
-        integrations that are not directly associated with a human identity.
-
-        You can generate a system account Access Token by creating a system
-        account and then obtaining a system account access token for that
-        account.
-
-        The access token must be passed in the header of a request, for example:
-
-        `curl -X GET 'https://global.api.konghq.com/v2/users/' --header
-        'Authorization: Bearer spat_i2Ej...'`
   schemas:
     ServerlessCloudGateway:
-      type: object
-      title: ServerlessCloudGateway
       description: A serverless cloud gateway
-      required:
-        - control_plane
-        - gateway_endpoint
-        - updated_at
-        - created_at
+      type: object
       properties:
         control_plane:
           $ref: '#/components/schemas/ServerlessControlPlane'
         gateway_endpoint:
+          description: Endpoint for the serverless cloud gateway.
           type: string
           format: hostname
-          description: Endpoint for the serverless cloud gateway.
           example: us-kong-4594857kpl.kongcloud.dev
           readOnly: true
         created_at:
@@ -117,117 +72,112 @@ components:
           readOnly: true
         labels:
           $ref: '#/components/schemas/SCGWLabels'
+      required:
+        - control_plane
+        - gateway_endpoint
+        - updated_at
+        - created_at
+      title: ServerlessCloudGateway
     UpdateServerlessCloudGatewayRequest:
-      type: object
-      title: UpdateServerlessCloudGatewayRequest
       description: Schema to update a serverless cloud gateway.
-      additionalProperties: false
+      type: object
       properties:
         cp_prefix:
-          type: string
           description: The prefix of the serverless cloud gateway CP.
+          type: string
           example: 518da50bf7
         cp_region:
           $ref: '#/components/schemas/CpRegion'
         labels:
           $ref: '#/components/schemas/SCGWLabels'
+      additionalProperties: false
+      title: UpdateServerlessCloudGatewayRequest
     SCGWLabels:
-      title: Labels
+      description: 'Labels to facilitate tagged search on serverless cloud gateways. Keys must be of length 1-63 characters, and cannot start with ''kong'', ''konnect'', ''mesh'', ''kic'', or ''_''.'
       type: object
       example:
         env: test
-      description: >-
-        Labels to facilitate tagged search on serverless cloud gateways. Keys
-        must be of length 1-63 characters, and cannot start with 'kong',
-        'konnect', 'mesh', 'kic', or '_'.
       additionalProperties:
         type: string
-        pattern: ^[a-z0-9A-Z]{1}([a-z0-9A-Z\-\.\_]*[a-z0-9A-Z]+)?$
+        pattern: '^[a-z0-9A-Z]{1}([a-z0-9A-Z\-\.\_]*[a-z0-9A-Z]+)?$'
         minLength: 1
         maxLength: 63
+      title: Labels
     CpRegion:
-      title: Control plane region
-      type: string
       description: The control plane region.
+      type: string
       example: us
       enum:
         - us
         - eu
         - au
+      title: Control plane region
       x-enum-varnames:
         - US
         - Europe
         - Aus
     ServerlessControlPlane:
       type: object
-      title: Control plane
-      x-go-name: ControlPlane
+      properties:
+        id:
+          description: ID of the serverless cloud gateway CP.
+          type: string
+          format: uuid
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        prefix:
+          description: The prefix of the serverless cloud gateway CP.
+          type: string
+          example: 518da50bf7
+        region:
+          $ref: '#/components/schemas/CpRegion'
       required:
         - id
         - prefix
         - region
-      properties:
-        id:
-          type: string
-          format: uuid
-          description: ID of the serverless cloud gateway CP.
-          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
-        prefix:
-          type: string
-          description: The prefix of the serverless cloud gateway CP.
-          example: 518da50bf7
-        region:
-          $ref: '#/components/schemas/CpRegion'
+      title: Control plane
+      x-go-name: ControlPlane
     BaseError:
-      type: object
-      title: Error
       description: standard error
+      type: object
+      properties:
+        status:
+          description: |
+            The HTTP status code of the error. Useful when passing the response
+            body to child properties in a frontend UI. Must be returned as an integer.
+          type: integer
+          readOnly: true
+        title:
+          description: |
+            A short, human-readable summary of the problem. It should not
+            change between occurences of a problem, except for localization.
+            Should be provided as "Sentence case" for direct use in the UI.
+          type: string
+          readOnly: true
+        type:
+          description: The error type.
+          type: string
+          readOnly: true
+        instance:
+          description: |
+            Used to return the correlation ID back to the user, in the format
+            kong:trace:<correlation_id>. This helps us find the relevant logs
+            when a customer reports an issue.
+          type: string
+          readOnly: true
+        detail:
+          description: |
+            A human readable explanation specific to this occurence of the problem.
+            This field may contain request/entity data to help the user understand
+            what went wrong. Enclose variable values in square brackets. Should be
+            provided as "Sentence case" for direct use in the UI.
+          type: string
+          readOnly: true
       required:
         - status
         - title
         - instance
         - detail
-      properties:
-        status:
-          type: integer
-          description: >
-            The HTTP status code of the error. Useful when passing the response
-
-            body to child properties in a frontend UI. Must be returned as an
-            integer.
-          readOnly: true
-        title:
-          type: string
-          description: |
-            A short, human-readable summary of the problem. It should not
-            change between occurences of a problem, except for localization.
-            Should be provided as "Sentence case" for direct use in the UI.
-          readOnly: true
-        type:
-          type: string
-          description: The error type.
-          readOnly: true
-        instance:
-          type: string
-          description: |
-            Used to return the correlation ID back to the user, in the format
-            kong:trace:<correlation_id>. This helps us find the relevant logs
-            when a customer reports an issue.
-          readOnly: true
-        detail:
-          type: string
-          description: >
-            A human readable explanation specific to this occurence of the
-            problem.
-
-            This field may contain request/entity data to help the user
-            understand
-
-            what went wrong. Enclose variable values in square brackets. Should
-            be
-
-            provided as "Sentence case" for direct use in the UI.
-          readOnly: true
+      title: Error
     UnauthorizedError:
       allOf:
         - $ref: '#/components/schemas/BaseError'
@@ -238,9 +188,9 @@ components:
             title:
               example: Unauthorized
             type:
-              example: https://httpstatuses.com/401
+              example: 'https://httpstatuses.com/401'
             instance:
-              example: kong:trace:1234567890
+              example: 'kong:trace:1234567890'
             detail:
               example: Invalid credentials
     ForbiddenError:
@@ -253,16 +203,14 @@ components:
             title:
               example: Forbidden
             type:
-              example: https://httpstatuses.com/403
+              example: 'https://httpstatuses.com/403'
             instance:
-              example: kong:trace:1234567890
+              example: 'kong:trace:1234567890'
             detail:
               example: Forbidden
     InvalidRules:
       description: invalid parameters rules
       type: string
-      readOnly: true
-      nullable: true
       enum:
         - required
         - max_length
@@ -285,9 +233,10 @@ components:
         - is_supported_network_availability_zone_list
         - is_supported_network_cidr_block
         - is_supported_provider_region
+      nullable: true
+      readOnly: true
     InvalidParameterStandard:
       type: object
-      additionalProperties: false
       properties:
         field:
           type: string
@@ -302,12 +251,12 @@ components:
           type: string
           example: is a required field
           readOnly: true
+      additionalProperties: false
       required:
         - field
         - reason
     InvalidParameterMinimumLength:
       type: object
-      additionalProperties: false
       properties:
         field:
           type: string
@@ -316,14 +265,14 @@ components:
         rule:
           description: invalid parameters rules
           type: string
-          readOnly: true
-          nullable: false
           enum:
             - min_length
             - min_digits
             - min_lowercase
             - min_uppercase
             - min_symbols
+          nullable: false
+          readOnly: true
         minimum:
           type: integer
           example: 8
@@ -334,6 +283,7 @@ components:
           type: string
           example: is a required field
           readOnly: true
+      additionalProperties: false
       required:
         - field
         - reason
@@ -341,7 +291,6 @@ components:
         - minimum
     InvalidParameterChoiceItem:
       type: object
-      additionalProperties: false
       properties:
         field:
           type: string
@@ -350,24 +299,25 @@ components:
         rule:
           description: invalid parameters rules
           type: string
-          readOnly: true
-          nullable: false
           enum:
             - enum
+          nullable: false
+          readOnly: true
         reason:
           type: string
           example: is a required field
           readOnly: true
         choices:
           type: array
-          uniqueItems: true
-          readOnly: true
-          nullable: false
-          minimum: 1
           items: {}
+          minimum: 1
+          nullable: false
+          readOnly: true
+          uniqueItems: true
         source:
           type: string
           example: body
+      additionalProperties: false
       required:
         - field
         - reason
@@ -375,7 +325,6 @@ components:
         - choices
     InvalidParameterDependentItem:
       type: object
-      additionalProperties: false
       properties:
         field:
           type: string
@@ -384,40 +333,41 @@ components:
         rule:
           description: invalid parameters rules
           type: string
-          readOnly: true
-          nullable: true
           enum:
             - dependent_fields
+          nullable: true
+          readOnly: true
         reason:
           type: string
           example: is a required field
           readOnly: true
         dependents:
           type: array
-          uniqueItems: true
-          nullable: true
           items: {}
+          nullable: true
           readOnly: true
+          uniqueItems: true
         source:
           type: string
           example: body
+      additionalProperties: false
       required:
         - field
         - rule
         - reason
         - dependents
     InvalidParameters:
-      type: array
-      nullable: false
-      uniqueItems: true
-      minItems: 1
       description: invalid parameters
+      type: array
       items:
         oneOf:
           - $ref: '#/components/schemas/InvalidParameterStandard'
           - $ref: '#/components/schemas/InvalidParameterMinimumLength'
           - $ref: '#/components/schemas/InvalidParameterChoiceItem'
           - $ref: '#/components/schemas/InvalidParameterDependentItem'
+      minItems: 1
+      nullable: false
+      uniqueItems: true
     BadRequestError:
       allOf:
         - $ref: '#/components/schemas/BaseError'
@@ -437,11 +387,45 @@ components:
             title:
               example: Not Found
             type:
-              example: https://httpstatuses.com/404
+              example: 'https://httpstatuses.com/404'
             instance:
-              example: kong:trace:1234567890
+              example: 'kong:trace:1234567890'
             detail:
               example: Not found
+  examples:
+    ServerlessCloudGatewayExample:
+      value:
+        control_plane:
+          id: d32d905a-ed33-46a3-a093-d8f536af9a8a
+          prefix: 518da50bf7
+          region: eu
+        gateway_endpoint: kong-518da50bf7euab123.kongcloud.dev
+        created_at: '2023-01-11T02:30:42.227Z'
+        updated_at: '2023-01-11T02:30:42.227Z'
+        labels:
+          test: 'true'
+    UpdateServerlessCloudGatewayRequestExample:
+      value:
+        labels:
+          test: 'true'
+    UnauthorizedExample:
+      value:
+        status: 401
+        title: Unauthorized
+        instance: 'kong:trace:8347343766220159418'
+        detail: Unauthorized
+    ForbiddenExample:
+      value:
+        status: 403
+        title: Forbidden
+        instance: 'kong:trace:2723154947768991354'
+        detail: You do not have permission to perform this action
+    NotFoundExample:
+      value:
+        status: 404
+        title: Not Found
+        instance: 'kong:trace:6816496025408232265'
+        detail: Not Found
   responses:
     UpdateServerlessCloudGatewayResponse:
       description: A response to updating a serverless cloud gateway.
@@ -485,37 +469,27 @@ components:
           examples:
             NotFoundExample:
               $ref: '#/components/examples/NotFoundExample'
-  examples:
-    ServerlessCloudGatewayExample:
-      value:
-        control_plane:
-          id: d32d905a-ed33-46a3-a093-d8f536af9a8a
-          prefix: 518da50bf7
-          region: eu
-        gateway_endpoint: kong-518da50bf7euab123.kongcloud.dev
-        created_at: '2023-01-11T02:30:42.227Z'
-        updated_at: '2023-01-11T02:30:42.227Z'
-        labels:
-          test: 'true'
-    UpdateServerlessCloudGatewayRequestExample:
-      value:
-        labels:
-          test: 'true'
-    UnauthorizedExample:
-      value:
-        status: 401
-        title: Unauthorized
-        instance: kong:trace:8347343766220159418
-        detail: Unauthorized
-    ForbiddenExample:
-      value:
-        status: 403
-        title: Forbidden
-        instance: kong:trace:2723154947768991354
-        detail: You do not have permission to perform this action
-    NotFoundExample:
-      value:
-        status: 404
-        title: Not Found
-        instance: kong:trace:6816496025408232265
-        detail: Not Found
+  securitySchemes:
+    personalAccessToken:
+      type: http
+      scheme: bearer
+      bearerFormat: Token
+      description: |
+        The personal access token is meant to be used as an alternative to basic-auth when accessing Konnect via APIs.
+        You can generate a Personal Access Token (PAT) from the [personal access token page](https://cloud.konghq.com/global/tokens/) in the Konnect dashboard.
+        The PAT token must be passed in the header of a request, for example:
+        `curl -X GET 'https://global.api.konghq.com/v2/users/' --header 'Authorization: Bearer kpat_xgfT...'`
+    systemAccountAccessToken:
+      type: http
+      scheme: bearer
+      bearerFormat: Token
+      description: |
+        The system account access token is meant for automations and integrations that are not directly associated with a human identity.
+        You can generate a system account Access Token by creating a system account and then obtaining a system account access token for that account.
+        The access token must be passed in the header of a request, for example:
+        `curl -X GET 'https://global.api.konghq.com/v2/users/' --header 'Authorization: Bearer spat_i2Ej...'`
+tags:
+  - name: Serverless Cloud Gateways
+security:
+  - personalAccessToken: []
+  - systemAccountAccessToken: []

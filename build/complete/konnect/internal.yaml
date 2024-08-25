@@ -5,29 +5,26 @@ info:
   version: 0.0.1
   contact:
     name: Kong Inc
-    url: https://konghq.com
+    url: 'https://konghq.com'
     email: support@konghq.com
   license:
     name: Apache 2.0
-    url: https://www.apache.org/licenses/LICENSE-2.0.html
+    url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
 servers:
-  - url: https://us.api.konghq.com
+  - url: 'https://us.api.konghq.com'
     description: United-States Production region
-  - url: https://eu.api.konghq.com
+  - url: 'https://eu.api.konghq.com'
     description: Europe Production region
-  - url: https://au.api.konghq.com
+  - url: 'https://au.api.konghq.com'
     description: Australia Production region
-  - url: https://global.api.konghq.com
+  - url: 'https://global.api.konghq.com'
     description: Global Production
-externalDocs:
-  description: Documentation for Kong Gateway and its APIs
-  url: https://docs.konghq.com
 paths:
   /v2/cloud-gateways/provider-accounts:
     post:
+      operationId: create-provider-account
       summary: Create Provider Account
       description: Creates a new provider account for an organization.
-      operationId: create-provider-account
       requestBody:
         required: true
         content:
@@ -45,15 +42,15 @@ paths:
           $ref: '#/components/responses/CloudGatewaysForbidden'
         '409':
           $ref: '#/components/responses/Conflict'
+      servers:
+        - url: 'https://global.api.konghq.com/'
       tags:
         - Provider Accounts
-      servers:
-        - url: https://global.api.konghq.com/
-  /v2/cloud-gateways/provider-accounts/{providerAccountId}:
+  '/v2/cloud-gateways/provider-accounts/{providerAccountId}':
     delete:
+      operationId: delete-provider-account
       summary: Delete Provider Account
       description: Deletes a provider account by ID.
-      operationId: delete-provider-account
       parameters:
         - $ref: '#/components/parameters/ProviderAccountId'
       responses:
@@ -67,17 +64,16 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
+      servers:
+        - url: 'https://global.api.konghq.com/'
       tags:
         - Provider Accounts
-      servers:
-        - url: https://global.api.konghq.com/
   /v2/cloud-gateways/resource-quotas:
     post:
-      summary: Create Resource Quota
-      description: >
-        Creates a new resource quota, scoped to a given resource, for an
-        organization.
       operationId: create-resource-quota
+      summary: Create Resource Quota
+      description: |
+        Creates a new resource quota, scoped to a given resource, for an organization.
       requestBody:
         required: true
         content:
@@ -95,15 +91,15 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '409':
           $ref: '#/components/responses/Conflict'
+      servers:
+        - url: 'https://global.api.konghq.com/'
       tags:
         - Resource Quotas
-      servers:
-        - url: https://global.api.konghq.com/
-  /v2/cloud-gateways/resource-quotas/{resourceQuotaId}:
+  '/v2/cloud-gateways/resource-quotas/{resourceQuotaId}':
     patch:
+      operationId: update-resource-quota
       summary: Update Resource Quota
       description: Updates a resource quota by ID.
-      operationId: update-resource-quota
       parameters:
         - $ref: '#/components/parameters/ResourceQuotaId'
       requestBody:
@@ -123,17 +119,15 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
+      servers:
+        - url: 'https://global.api.konghq.com/'
       tags:
         - Resource Quotas
-      servers:
-        - url: https://global.api.konghq.com/
   /v3/aws/marketplace/resolve-customer:
     post:
+      operationId: resolveCustomer
       summary: Resolves an AWS Customer.
       description: This call the aws marketplace resolve customer api.
-      operationId: resolveCustomer
-      tags:
-        - AWS
       requestBody:
         $ref: '#/components/requestBodies/AWSResolveCustomerRequest'
       responses:
@@ -142,7 +136,9 @@ paths:
         '400':
           $ref: '#/components/responses/IdentityBadRequest'
       servers:
-        - url: https://global.api.konghq.com/
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - AWS
   /v3/internal/auth0/organizations:
     get:
       operationId: get-auth0-organizations-internal
@@ -155,17 +151,17 @@ paths:
           $ref: '#/components/responses/IdentityBadRequest'
         '404':
           $ref: '#/components/responses/IdentityNotFound'
+      servers:
+        - url: 'https://global.api.konghq.com/'
       tags:
         - SSO Auth0
-      servers:
-        - url: https://global.api.konghq.com/
   /v3/internal/auth0/register:
     post:
       operationId: post-auth0-register-internal
       summary: Register a new organization with an Auth0 authenticated user.
-      description: >-
-        Create a new organization with Auth0 authentication. The Auth0 user will
-        be the organization owner.
+      description: Create a new organization with Auth0 authentication. The Auth0 user will be the organization owner.
+      requestBody:
+        $ref: '#/components/requestBodies/Auth0Registration'
       responses:
         '201':
           $ref: '#/components/responses/Auth0Registration'
@@ -173,20 +169,16 @@ paths:
           $ref: '#/components/responses/IdentityBadRequest'
         '404':
           $ref: '#/components/responses/IdentityNotFound'
-      requestBody:
-        $ref: '#/components/requestBodies/Auth0Registration'
+      servers:
+        - url: 'https://global.api.konghq.com/'
       tags:
         - SSO Auth0
-      servers:
-        - url: https://global.api.konghq.com/
   /v3/internal/oauth/device/authorize:
     post:
       operationId: post-oauth-device-authorize
       summary: Device authorization request
-      description: >-
-        Initiates a device authorization workflow, generating and returning a
-        unique device verification code.
-
+      description: |-
+        Initiates a device authorization workflow, generating and returning a unique device verification code.
         See https://www.rfc-editor.org/rfc/rfc8628#section-3.1 for details.
       requestBody:
         description: The request schema for the device authorization request.
@@ -197,11 +189,11 @@ paths:
               type: object
               properties:
                 client_id:
-                  type: string
                   description: The client identifier.
-                scope:
                   type: string
+                scope:
                   description: The scope of the access request.
+                  type: string
               required:
                 - client_id
       responses:
@@ -211,18 +203,15 @@ paths:
           $ref: '#/components/responses/DeviceAuthorizationGrantAuthorizeBadRequest'
       security:
         - {}
+      servers:
+        - url: 'https://global.api.konghq.com/'
       tags:
         - Device Authorization Grant
-      servers:
-        - url: https://global.api.konghq.com/
   /v3/internal/oauth/device/authorize/user:
     post:
       operationId: post-oauth-device-authorize-user
       summary: User device authorization request
-      description: >-
-        Marks the device code as authorized and is a means to provide the
-        interactive UI flow with the necessary request metadata for the user to
-        confirm the request.
+      description: Marks the device code as authorized and is a means to provide the interactive UI flow with the necessary request metadata for the user to confirm the request.
       requestBody:
         $ref: '#/components/requestBodies/DeviceAuthorizationUserRequest'
       responses:
@@ -236,17 +225,15 @@ paths:
           $ref: '#/components/responses/Unauthorized'
       security:
         - konnectAccessToken: []
+      servers:
+        - url: 'https://global.api.konghq.com/'
       tags:
         - Device Authorization Grant
-      servers:
-        - url: https://global.api.konghq.com/
   /v3/internal/oauth/device/confirm:
     patch:
       operationId: patch-oauth-device-confirm
       summary: Device confirmation request
-      description: >-
-        Confirms the authorization request by marking the device code as
-        confirmed.
+      description: Confirms the authorization request by marking the device code as confirmed.
       requestBody:
         $ref: '#/components/requestBodies/DeviceConfirmationRequest'
       responses:
@@ -260,21 +247,17 @@ paths:
           $ref: '#/components/responses/Unauthorized'
       security:
         - konnectAccessToken: []
+      servers:
+        - url: 'https://global.api.konghq.com/'
       tags:
         - Device Authorization Grant
-      servers:
-        - url: https://global.api.konghq.com/
   /v3/internal/oauth/device/token:
     post:
       operationId: post-oauth-device-token
       summary: Device access token request
-      description: >-
-        This endpoint provides the machine client a means of being notified when
-        a request for authorization is granted or rejected. 
-
-        It is expected for the client to try the access token request repeatedly
-        in a polling fashion based on the error code in the response.
-
+      description: |-
+        This endpoint provides the machine client a means of being notified when a request for authorization is granted or rejected. 
+        It is expected for the client to try the access token request repeatedly in a polling fashion based on the error code in the response.
         See https://www.rfc-editor.org/rfc/rfc8628#section-3.4 for details.
       requestBody:
         description: The request schema for the device access token request.
@@ -285,18 +268,14 @@ paths:
               type: object
               properties:
                 grant_type:
+                  description: 'Value MUST be set to "urn:ietf:params:oauth:grant-type:device_code".'
                   type: string
-                  description: >-
-                    Value MUST be set to
-                    "urn:ietf:params:oauth:grant-type:device_code".
                 device_code:
+                  description: 'The device verification code, "device_code" from the device authorization response.'
                   type: string
-                  description: >-
-                    The device verification code, "device_code" from the device
-                    authorization response.
                 client_id:
-                  type: string
                   description: The client identifier.
+                  type: string
               required:
                 - grant_type
                 - device_code
@@ -308,24 +287,35 @@ paths:
           $ref: '#/components/responses/DeviceAuthorizationGrantTokenBadRequest'
       security:
         - {}
+      servers:
+        - url: 'https://global.api.konghq.com/'
       tags:
         - Device Authorization Grant
-      servers:
-        - url: https://global.api.konghq.com/
-  /v3/internal/system-accounts/{accountId}/assigned-roles:
+  '/v3/internal/system-accounts/{accountId}/assigned-roles':
     parameters:
-      - schema:
-          type: string
-        name: accountId
+      - name: accountId
         in: path
-        required: true
         description: ID of the system account.
+        required: true
+        schema:
+          type: string
     get:
       operationId: get-system-accounts-assigned-roles-internal
       summary: Fetch assigned roles for a managed system account.
-      description: >-
-        Lists the roles belonging to a managed system account.  Returns 400 if
-        any filter parameters are invalid.
+      description: Lists the roles belonging to a managed system account.  Returns 400 if any filter parameters are invalid.
+      parameters:
+        - name: filter
+          in: query
+          description: Filter roles returned in the response.
+          required: false
+          schema:
+            type: object
+            properties:
+              role_name:
+                $ref: '#/components/schemas/StringFieldEqualsFilter'
+              entity_type_name:
+                $ref: '#/components/schemas/StringFieldEqualsFilter'
+          style: deepObject
       responses:
         '200':
           $ref: '#/components/responses/ParameterizedAssignedRolesCollection'
@@ -337,28 +327,18 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/IdentityNotFound'
-      parameters:
-        - schema:
-            type: object
-            properties:
-              role_name:
-                $ref: '#/components/schemas/StringFieldEqualsFilter'
-              entity_type_name:
-                $ref: '#/components/schemas/StringFieldEqualsFilter'
-          in: query
-          name: filter
-          description: Filter roles returned in the response.
-          required: false
-          style: deepObject
-      tags:
-        - Managed System Accounts - Roles
       security:
         - clientToken: []
       servers:
-        - url: https://global.api.konghq.com/
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Managed System Accounts - Roles
     post:
-      summary: Assign a role to a managed System Account.
       operationId: create-system-accounts-assigned-roles-internal
+      summary: Assign a role to a managed System Account.
+      description: Assigns a role to a managed system account. Returns 409 if role is already assigned.
+      requestBody:
+        $ref: '#/components/requestBodies/AssignParameterizedRole'
       responses:
         '201':
           $ref: '#/components/responses/ParameterizedAssignedRoleSingle'
@@ -370,55 +350,46 @@ paths:
           $ref: '#/components/responses/IdentityNotFound'
         '409':
           $ref: '#/components/responses/IdentityConflict'
-      description: >-
-        Assigns a role to a managed system account. Returns 409 if role is
-        already assigned.
-      requestBody:
-        $ref: '#/components/requestBodies/AssignParameterizedRole'
-      tags:
-        - Managed System Accounts - Roles
       security:
         - clientToken: []
       servers:
-        - url: https://global.api.konghq.com/
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Managed System Accounts - Roles
   /v3/logout:
     post:
+      operationId: logout
       summary: Log Out
       description: Clears the auth cookies.
-      operationId: logout
-      tags:
-        - Authentication
       responses:
         '201':
           $ref: '#/components/responses/LogoutResponse'
       servers:
-        - url: https://global.api.konghq.com/
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Authentication
   /v3/organizations/me:
     get:
+      operationId: get-organizations-me
       summary: Retrieve My Organization
-      tags:
-        - Me
+      description: Returns the organization of the user identified in the token of the request.
       responses:
         '200':
           $ref: '#/components/responses/MeOrganization'
         '401':
           $ref: '#/components/responses/IdentityUnauthenticated'
-      operationId: get-organizations-me
-      description: >-
-        Returns the organization of the user identified in the token of the
-        request.
       servers:
-        - url: https://global.api.konghq.com/
-    patch:
-      summary: Update My Organization
-      operationId: update-organizations-me
-      description: >
-        Updates the current user's organization. When updating the owner, the
-        new owner 
-
-        must be an organization admin.
+        - url: 'https://global.api.konghq.com/'
       tags:
         - Me
+    patch:
+      operationId: update-organizations-me
+      summary: Update My Organization
+      description: |
+        Updates the current user's organization. When updating the owner, the new owner 
+        must be an organization admin.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateOrganization'
       responses:
         '200':
           $ref: '#/components/responses/MeOrganization'
@@ -430,19 +401,19 @@ paths:
           $ref: '#/components/responses/IdentityPermissionDenied'
         '404':
           $ref: '#/components/responses/IdentityNotFound'
-      requestBody:
-        $ref: '#/components/requestBodies/UpdateOrganization'
       servers:
-        - url: https://global.api.konghq.com/
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Me
   /v3/organizations/state:
     post:
-      summary: Sets a new state for an organization.
       operationId: post-organization-state
+      summary: Sets a new state for an organization.
       description: |
         Sets a new state for an organization and creates an organization state 
         history record. An organization can be set to active or inactive.
-      tags:
-        - Organization Lifecycle
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateOrganizationState'
       responses:
         '201':
           $ref: '#/components/responses/OrganizationStateResponse'
@@ -456,28 +427,19 @@ paths:
           $ref: '#/components/responses/OrganizationNotFound'
         '409':
           $ref: '#/components/responses/OrganizationStateConflict'
-      requestBody:
-        $ref: '#/components/requestBodies/UpdateOrganizationState'
       servers:
-        - url: https://global.api.konghq.com/
-  /v3/organizations/state/history:
-    get:
-      summary: Returns the state history of an organization.
-      operationId: get-organization-state-history
-      description: >
-        Returns the state history of an organization sorted in reverse
-        chronological order.
-
-        Possible states include active, inactive, deleting, and deleted. An
-        organization state 
-
-        will be transitioned to the deleting state if the organization remains
-        inactive for 90 days. 
-
-        After deletion is complete, the state will be transitioned to the final
-        deleted state. 
+        - url: 'https://global.api.konghq.com/'
       tags:
         - Organization Lifecycle
+  /v3/organizations/state/history:
+    get:
+      operationId: get-organization-state-history
+      summary: Returns the state history of an organization.
+      description: |
+        Returns the state history of an organization sorted in reverse chronological order.
+        Possible states include active, inactive, deleting, and deleted. An organization state 
+        will be transitioned to the deleting state if the organization remains inactive for 90 days. 
+        After deletion is complete, the state will be transitioned to the final deleted state. 
       responses:
         '200':
           $ref: '#/components/responses/OrganizationStateHistory'
@@ -488,67 +450,63 @@ paths:
         '404':
           $ref: '#/components/responses/OrganizationNotFound'
       servers:
-        - url: https://global.api.konghq.com/
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Organization Lifecycle
   /v3/refresh:
     post:
-      summary: Refresh Token
-      description: >-
-        Issues new tokens. Returns 401 if a) the user is no longer active, b)
-        the token has exceeded its lifetime limit, or c) the token has been
-        revoked.
       operationId: refresh-token
-      tags:
-        - Authentication
+      summary: Refresh Token
+      description: 'Issues new tokens. Returns 401 if a) the user is no longer active, b) the token has exceeded its lifetime limit, or c) the token has been revoked.'
       responses:
         '204':
           description: No Content
         '401':
           $ref: '#/components/responses/IdentityUnauthenticated'
       servers:
-        - url: https://global.api.konghq.com/
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Authentication
   /v3/users/me:
     get:
+      operationId: get-users-me
       summary: Retrieve My User Account
-      tags:
-        - Me
+      description: Returns the user account for the user identified in the token of the request.
       responses:
         '200':
           $ref: '#/components/responses/UserSingle'
         '401':
           $ref: '#/components/responses/IdentityUnauthenticated'
-      operationId: get-users-me
       security:
         - personalAccessToken: []
         - konnectAccessToken: []
-      description: >-
-        Returns the user account for the user identified in the token of the
-        request.
       servers:
-        - url: https://global.api.konghq.com/
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Me
     delete:
-      summary: Delete My User Account
       operationId: delete-users-me
-      security:
-        - konnectAccessToken: []
+      summary: Delete My User Account
+      description: Deletes the user account for the user identified in the token of the request.
       responses:
         '204':
           description: No Content
         '401':
           $ref: '#/components/responses/IdentityUnauthenticated'
         '403':
-          description: >-
-            Forbidden - If there are other users in the organization or a
-            konnectAccessToken was not provided.
-      description: >-
-        Deletes the user account for the user identified in the token of the
-        request.
+          description: Forbidden - If there are other users in the organization or a konnectAccessToken was not provided.
+      security:
+        - konnectAccessToken: []
+      servers:
+        - url: 'https://global.api.konghq.com/'
       tags:
         - Me
-      servers:
-        - url: https://global.api.konghq.com/
     patch:
-      summary: Update My User Account
       operationId: patch-users-me
+      summary: Update My User Account
+      description: Updates the user account for the user identified in the token of the request.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateUser'
       responses:
         '200':
           $ref: '#/components/responses/UserSingle'
@@ -558,26 +516,23 @@ paths:
           $ref: '#/components/responses/IdentityUnauthenticated'
         '403':
           description: Forbidden - If a konnectAccessToken was not provided.
-      description: >-
-        Updates the user account for the user identified in the token of the
-        request.
-      requestBody:
-        $ref: '#/components/requestBodies/UpdateUser'
-      tags:
-        - Me
       security:
         - konnectAccessToken: []
       servers:
-        - url: https://global.api.konghq.com/
-  /v3/users/me/permissions:
-    get:
-      summary: Get My Permissions
+        - url: 'https://global.api.konghq.com/'
       tags:
         - Me
-      description: Returns the permissions for the current user
+  /v3/users/me/permissions:
+    get:
       operationId: get-users-me-permissions
+      summary: Get My Permissions
+      description: Returns the permissions for the current user
       parameters:
-        - schema:
+        - name: filter
+          in: query
+          description: Filter permissions returned in the response.
+          required: false
+          schema:
             type: object
             properties:
               actions:
@@ -590,13 +545,7 @@ paths:
                 $ref: '#/components/schemas/StringFieldEqualsFilter'
               top_level:
                 $ref: '#/components/schemas/BooleanFieldFilter'
-          in: query
-          name: filter
-          description: Filter permissions returned in the response.
-          required: false
           style: deepObject
-      security:
-        - konnectAccessToken: []
       responses:
         '200':
           $ref: '#/components/responses/UserPermissions'
@@ -604,60 +553,71 @@ paths:
           $ref: '#/components/responses/IdentityBadRequest'
         '401':
           $ref: '#/components/responses/IdentityUnauthenticated'
+      security:
+        - konnectAccessToken: []
       servers:
-        - url: https://global.api.konghq.com/
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Me
 components:
+  parameters:
+    ProviderAccountId:
+      name: providerAccountId
+      in: path
+      description: The ID of the provider account to operate on.
+      required: true
+      schema:
+        $ref: '#/components/schemas/ProviderAccountId'
+    ResourceQuotaId:
+      name: resourceQuotaId
+      in: path
+      description: The ID of the resource quota to operate on.
+      required: true
+      schema:
+        $ref: '#/components/schemas/ResourceQuotaId'
   schemas:
     BaseError:
-      type: object
-      title: Error
       description: standard error
+      type: object
+      properties:
+        status:
+          description: |
+            The HTTP status code of the error. Useful when passing the response
+            body to child properties in a frontend UI. Must be returned as an integer.
+          type: integer
+          readOnly: true
+        title:
+          description: |
+            A short, human-readable summary of the problem. It should not
+            change between occurences of a problem, except for localization.
+            Should be provided as "Sentence case" for direct use in the UI.
+          type: string
+          readOnly: true
+        type:
+          description: The error type.
+          type: string
+          readOnly: true
+        instance:
+          description: |
+            Used to return the correlation ID back to the user, in the format
+            kong:trace:<correlation_id>. This helps us find the relevant logs
+            when a customer reports an issue.
+          type: string
+          readOnly: true
+        detail:
+          description: |
+            A human readable explanation specific to this occurence of the problem.
+            This field may contain request/entity data to help the user understand
+            what went wrong. Enclose variable values in square brackets. Should be
+            provided as "Sentence case" for direct use in the UI.
+          type: string
+          readOnly: true
       required:
         - status
         - title
         - instance
         - detail
-      properties:
-        status:
-          type: integer
-          description: >
-            The HTTP status code of the error. Useful when passing the response
-
-            body to child properties in a frontend UI. Must be returned as an
-            integer.
-          readOnly: true
-        title:
-          type: string
-          description: |
-            A short, human-readable summary of the problem. It should not
-            change between occurences of a problem, except for localization.
-            Should be provided as "Sentence case" for direct use in the UI.
-          readOnly: true
-        type:
-          type: string
-          description: The error type.
-          readOnly: true
-        instance:
-          type: string
-          description: |
-            Used to return the correlation ID back to the user, in the format
-            kong:trace:<correlation_id>. This helps us find the relevant logs
-            when a customer reports an issue.
-          readOnly: true
-        detail:
-          type: string
-          description: >
-            A human readable explanation specific to this occurence of the
-            problem.
-
-            This field may contain request/entity data to help the user
-            understand
-
-            what went wrong. Enclose variable values in square brackets. Should
-            be
-
-            provided as "Sentence case" for direct use in the UI.
-          readOnly: true
+      title: Error
     UnauthorizedError:
       allOf:
         - $ref: '#/components/schemas/BaseError'
@@ -668,9 +628,9 @@ components:
             title:
               example: Unauthorized
             type:
-              example: https://httpstatuses.com/401
+              example: 'https://httpstatuses.com/401'
             instance:
-              example: kong:trace:1234567890
+              example: 'kong:trace:1234567890'
             detail:
               example: Invalid credentials
     ForbiddenError:
@@ -683,49 +643,45 @@ components:
             title:
               example: Forbidden
             type:
-              example: https://httpstatuses.com/403
+              example: 'https://httpstatuses.com/403'
             instance:
-              example: kong:trace:1234567890
+              example: 'kong:trace:1234567890'
             detail:
               example: Forbidden
     PaginatedMeta:
+      description: returns the pagination information
       type: object
+      properties:
+        page:
+          description: Contains pagination query parameters and the total number of entities returned.
+          type: object
+          $ref: '#/components/schemas/PageMeta'
+          properties:
+            number:
+              description: Represents the current page number.
+              type: integer
+              example: 2
+            size:
+              description: Represents the number of entities on the page.
+              type: integer
+              example: 10
+              maximum: 100
+            total:
+              description: Integer indicating the total number of entities in the list of results that’s being paginated.
+              type: integer
+              example: 100
+              maximum: 1000
       example:
         page:
           number: 2
           size: 10
           total: 100
-      title: PaginatedMeta
-      description: returns the pagination information
-      properties:
-        page:
-          type: object
-          description: >-
-            Contains pagination query parameters and the total number of
-            entities returned.
-          properties:
-            number:
-              type: integer
-              example: 2
-              description: Represents the current page number.
-            size:
-              type: integer
-              example: 10
-              maximum: 100
-              description: Represents the number of entities on the page.
-            total:
-              type: integer
-              example: 100
-              maximum: 1000
-              description: >-
-                Integer indicating the total number of entities in the list of
-                results that’s being paginated.
-          $ref: '#/components/schemas/PageMeta'
       required:
         - page
+      title: PaginatedMeta
     StringFieldEqualsFilter:
-      title: StringFieldEqualsFilter
       description: Filters on the given string field value by exact match.
+      type: string
       oneOf:
         - type: string
         - type: object
@@ -736,20 +692,14 @@ components:
               type: string
           required:
             - eq
+      title: StringFieldEqualsFilter
       x-examples:
         example-1: equals-some-value
         example-2:
           eq: some-value
-      type: string
     PageMeta:
+      description: Contains pagination query parameters and the total number of objects returned.
       type: object
-      description: >-
-        Contains pagination query parameters and the total number of objects
-        returned.
-      required:
-        - number
-        - size
-        - total
       properties:
         number:
           type: number
@@ -760,11 +710,13 @@ components:
         total:
           type: number
           example: 100
+      required:
+        - number
+        - size
+        - total
     InvalidRules:
       description: invalid parameters rules
       type: string
-      readOnly: true
-      nullable: true
       enum:
         - required
         - max_length
@@ -787,9 +739,10 @@ components:
         - is_supported_network_availability_zone_list
         - is_supported_network_cidr_block
         - is_supported_provider_region
+      nullable: true
+      readOnly: true
     InvalidParameterStandard:
       type: object
-      additionalProperties: false
       properties:
         field:
           type: string
@@ -804,12 +757,12 @@ components:
           type: string
           example: is a required field
           readOnly: true
+      additionalProperties: false
       required:
         - field
         - reason
     InvalidParameterMinimumLength:
       type: object
-      additionalProperties: false
       properties:
         field:
           type: string
@@ -818,14 +771,14 @@ components:
         rule:
           description: invalid parameters rules
           type: string
-          readOnly: true
-          nullable: false
           enum:
             - min_length
             - min_digits
             - min_lowercase
             - min_uppercase
             - min_symbols
+          nullable: false
+          readOnly: true
         minimum:
           type: integer
           example: 8
@@ -836,6 +789,7 @@ components:
           type: string
           example: is a required field
           readOnly: true
+      additionalProperties: false
       required:
         - field
         - reason
@@ -843,7 +797,6 @@ components:
         - minimum
     InvalidParameterChoiceItem:
       type: object
-      additionalProperties: false
       properties:
         field:
           type: string
@@ -852,24 +805,25 @@ components:
         rule:
           description: invalid parameters rules
           type: string
-          readOnly: true
-          nullable: false
           enum:
             - enum
+          nullable: false
+          readOnly: true
         reason:
           type: string
           example: is a required field
           readOnly: true
         choices:
           type: array
-          uniqueItems: true
-          readOnly: true
-          nullable: false
-          minimum: 1
           items: {}
+          minimum: 1
+          nullable: false
+          readOnly: true
+          uniqueItems: true
         source:
           type: string
           example: body
+      additionalProperties: false
       required:
         - field
         - reason
@@ -877,7 +831,6 @@ components:
         - choices
     InvalidParameterDependentItem:
       type: object
-      additionalProperties: false
       properties:
         field:
           type: string
@@ -886,40 +839,41 @@ components:
         rule:
           description: invalid parameters rules
           type: string
-          readOnly: true
-          nullable: true
           enum:
             - dependent_fields
+          nullable: true
+          readOnly: true
         reason:
           type: string
           example: is a required field
           readOnly: true
         dependents:
           type: array
-          uniqueItems: true
-          nullable: true
           items: {}
+          nullable: true
           readOnly: true
+          uniqueItems: true
         source:
           type: string
           example: body
+      additionalProperties: false
       required:
         - field
         - rule
         - reason
         - dependents
     InvalidParameters:
-      type: array
-      nullable: false
-      uniqueItems: true
-      minItems: 1
       description: invalid parameters
+      type: array
       items:
         oneOf:
           - $ref: '#/components/schemas/InvalidParameterStandard'
           - $ref: '#/components/schemas/InvalidParameterMinimumLength'
           - $ref: '#/components/schemas/InvalidParameterChoiceItem'
           - $ref: '#/components/schemas/InvalidParameterDependentItem'
+      minItems: 1
+      nullable: false
+      uniqueItems: true
     BadRequestError:
       allOf:
         - $ref: '#/components/schemas/BaseError'
@@ -939,9 +893,9 @@ components:
             title:
               example: Not Found
             type:
-              example: https://httpstatuses.com/404
+              example: 'https://httpstatuses.com/404'
             instance:
-              example: kong:trace:1234567890
+              example: 'kong:trace:1234567890'
             detail:
               example: Not found
     ConflictError:
@@ -954,9 +908,9 @@ components:
             title:
               example: Conflict
             type:
-              example: https://httpstatuses.com/409
+              example: 'https://httpstatuses.com/409'
             instance:
-              example: kong:trace:1234567890
+              example: 'kong:trace:1234567890'
             detail:
               example: Conflict
     ProviderAccountId:
@@ -969,17 +923,14 @@ components:
       example: 9678f205-49a1-47bb-82d9-d01cafa42a0d
       readOnly: true
     ProviderName:
-      title: Provider Name
       description: Name of cloud provider.
       type: string
+      example: aws
       enum:
         - aws
-      example: aws
+      title: Provider Name
     ProviderAccount:
-      title: Cloud Gateway Provider Account
-      description: >-
-        Object containing mapping for organization and cloud provider to account
-        ID.
+      description: Object containing mapping for organization and cloud provider to account ID.
       type: object
       properties:
         id:
@@ -987,24 +938,20 @@ components:
         provider:
           $ref: '#/components/schemas/ProviderName'
         provider_account_id:
-          type: string
           description: ID of the cloud provider account.
+          type: string
           readOnly: true
         created_at:
+          description: An RFC-3339 timestamp representation of provider account creation date.
           type: string
           format: date-time
           example: '2022-11-04T20:10:06.927Z'
-          description: >-
-            An RFC-3339 timestamp representation of provider account creation
-            date.
           readOnly: true
         updated_at:
+          description: An RFC-3339 timestamp representation of provider account update date.
           type: string
           format: date-time
           example: '2022-11-04T20:10:06.927Z'
-          description: >-
-            An RFC-3339 timestamp representation of provider account update
-            date.
           readOnly: true
       required:
         - id
@@ -1012,18 +959,17 @@ components:
         - provider_account_id
         - created_at
         - updated_at
+      title: Cloud Gateway Provider Account
     CreateProviderAccountRequest:
-      title: CreateProviderAccountRequest
-      description: >-
-        Request schema for creating a provider account via automatic account
-        vending.
+      description: Request schema for creating a provider account via automatic account vending.
       type: object
-      additionalProperties: false
       properties:
         provider:
           $ref: '#/components/schemas/ProviderName'
+      additionalProperties: false
       required:
         - provider
+      title: CreateProviderAccountRequest
     ResourceQuotaQualifier:
       description: Enumeration of resources available for quota enforcement.
       type: string
@@ -1032,28 +978,22 @@ components:
         - count/networks.not-offline
         - count/data-planes-estimate
     ResourceQuotaName:
-      type: string
       description: The human-readable name of this resource quota.
-      readOnly: true
-      example: Active Networks
-    ResourceQuotaDescription:
       type: string
-      description: A more verbose description of what this resource quota enforces.
+      example: Active Networks
       readOnly: true
-      example: >-
-        Across the organization, the aggregate number of active networks cannot
-        exceed this value.
+    ResourceQuotaDescription:
+      description: A more verbose description of what this resource quota enforces.
+      type: string
+      example: 'Across the organization, the aggregate number of active networks cannot exceed this value.'
+      readOnly: true
     ResourceQuotaValue:
+      description: |
+        The aggregate non-negative integer count of this resource that's allowed for the organization.
       type: integer
-      description: >
-        The aggregate non-negative integer count of this resource that's allowed
-        for the organization.
       example: 2
     ResourceQuota:
-      title: Resource Quota
-      description: >-
-        Object containing information about a resource quota for an
-        organization.
+      description: Object containing information about a resource quota for an organization.
       type: object
       properties:
         id:
@@ -1067,18 +1007,16 @@ components:
         value:
           $ref: '#/components/schemas/ResourceQuotaValue'
         created_at:
+          description: An RFC-3339 timestamp representation of resource quota creation date.
           type: string
           format: date-time
           example: '2022-11-04T20:10:06.927Z'
-          description: >-
-            An RFC-3339 timestamp representation of resource quota creation
-            date.
           readOnly: true
         updated_at:
+          description: An RFC-3339 timestamp representation of resource quota update date.
           type: string
           format: date-time
           example: '2022-11-04T20:10:06.927Z'
-          description: An RFC-3339 timestamp representation of resource quota update date.
           readOnly: true
       required:
         - id
@@ -1088,51 +1026,45 @@ components:
         - value
         - created_at
         - updated_at
+      title: Resource Quota
     CreateResourceQuotaRequest:
-      title: CreateResourceQuotaRequest
       description: Request schema for creating a resource quota for an organization.
       type: object
-      additionalProperties: false
       properties:
         resource:
           $ref: '#/components/schemas/ResourceQuotaQualifier'
         value:
           $ref: '#/components/schemas/ResourceQuotaValue'
+      additionalProperties: false
       required:
         - resource
         - value
+      title: CreateResourceQuotaRequest
     PatchResourceQuotaRequest:
-      title: PatchResourceQuotaRequest
       description: Request schema for patching a resource quota for an organization.
       type: object
-      additionalProperties: false
       properties:
         value:
           $ref: '#/components/schemas/ResourceQuotaValue'
+      additionalProperties: false
       required:
         - value
+      title: PatchResourceQuotaRequest
     BaseDeviceAuthorizationGrantBadRequest:
-      title: Base Device Authorization Grant Bad Request
       type: object
       properties:
         error_description:
+          description: 'Human-readable text providing additional information, used to assist the client developer in understanding the error that occurred.'
           type: string
-          description: >-
-            Human-readable text providing additional information, used to assist
-            the client developer in understanding the error that occurred.
         error_uri:
+          description: 'A URI identifying a human-readable web page with information about the error, used to provide the client developer with additional information about the error.'
           type: string
-          description: >-
-            A URI identifying a human-readable web page with information about
-            the error, used to provide the client developer with additional
-            information about the error.
+      title: Base Device Authorization Grant Bad Request
     DeviceAuthorizationGrantAuthorizeError:
-      title: Device Authorization Grant Authorize Error
-      type: object
       description: The error response for the device authorization grant request.
+      type: object
       properties:
         error:
-          type: string
           description: |-
             A single error code from the following enum.
 
@@ -1158,6 +1090,7 @@ components:
 
               invalid_scope
                  The requested scope is invalid, unknown, malformed, or exceeds the scope granted by the resource owner.
+          type: string
           enum:
             - invalid_request
             - invalid_client
@@ -1167,13 +1100,12 @@ components:
             - invalid_scope
       required:
         - error
+      title: Device Authorization Grant Authorize Error
     DeviceAuthorizationGrantTokenError:
-      title: Device Authorization Grant Token Error
-      type: object
       description: The error response for the device token request.
+      type: object
       properties:
         error:
-          type: string
           description: |-
             A single error code from the following enum.
 
@@ -1189,6 +1121,7 @@ components:
 
               expired_token
                  The "device_code" has expired, and the device authorization session has concluded.
+          type: string
           enum:
             - authorization_pending
             - slow_down
@@ -1196,37 +1129,75 @@ components:
             - expired_token
       required:
         - error
+      title: Device Authorization Grant Token Error
     Auth0Organization:
-      title: Auth0 organization schema.
-      type: object
       description: A single auth0 organization.
+      type: object
       properties:
         name:
+          description: The name of the organization.
           type: string
           example: My Organization
-          description: The name of the organization.
           readOnly: true
         login_path:
-          type: string
-          example: >-
-            /v2/authenticate/federated?org_id=7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
           description: The login path of the organization.
+          type: string
+          example: /v2/authenticate/federated?org_id=7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
           readOnly: true
+      title: Auth0 organization schema.
     Auth0Registration:
-      title: Auth0 organization registration response
-      type: object
       description: A successful Auth0 organization registration response.
+      type: object
       properties:
         organization_id:
           type: string
         login_path:
           type: string
+      title: Auth0 organization registration response
     User:
-      title: User
+      description: The user object contains information about an individual user who can use the Konnect application and API.
       type: object
-      description: >-
-        The user object contains information about an individual user who can
-        use the Konnect application and API.
+      properties:
+        id:
+          description: The User ID.
+          type: string
+          format: uuid
+          example: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+          readOnly: true
+        email:
+          description: The email registered to the user.
+          type: string
+          format: email
+          example: user@email.com
+          maxLength: 250
+        full_name:
+          description: The User's full name.
+          type: string
+          example: Jane Doe
+          maxLength: 250
+          pattern: '^[\w \W]+$'
+        preferred_name:
+          description: The User's preferred name.
+          type: string
+          example: Jane
+          maxLength: 250
+        active:
+          description: Returns True if a user has verified their email address.
+          type: boolean
+          default: true
+          readOnly: true
+        created_at:
+          description: The time stamp for the date the account was registered.
+          type: string
+          format: date-time
+          example: '2022-02-07T17:46:57.52Z'
+          readOnly: true
+        updated_at:
+          description: A Unix timestamp representation of the most recent change to the User account.
+          type: string
+          format: date-time
+          example: '2022-10-08T17:00:00.52Z'
+          readOnly: true
       example:
         id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
         email: user@email.com
@@ -1235,55 +1206,44 @@ components:
         active: true
         created_at: '2022-02-07T17:46:57.52Z'
         updated_at: '2022-10-08T17:00:00.52Z'
+      title: User
+    ParameterizedAssignedRole:
+      description: A parameterized assigned role is a role that has been assigned to a managed system account with additional parameters.
+      type: object
       properties:
         id:
+          description: The ID of the role assignment.
           type: string
           format: uuid
-          example: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-          description: The User ID.
-          readOnly: true
-        email:
+          example: eaf7adf1-32c8-4bbf-b960-d1f8456afe67
+        role_name:
+          description: Name of the role being assigned.
           type: string
-          format: email
-          example: user@email.com
-          maxLength: 250
-          description: The email registered to the user.
-        full_name:
+          example: Viewer
+        entity_id:
+          description: A RBAC entity ID.
           type: string
-          pattern: ^[\w \W]+$
-          maxLength: 250
-          description: The User's full name.
-          example: Jane Doe
-        preferred_name:
+          format: uuid
+          example: 817d0422-45c9-4d88-8d64-45aef05c1ae7
+        entity_type_name:
+          description: Name of the entity type the role is being assigned to.
           type: string
-          example: Jane
-          maxLength: 250
-          description: The User's preferred name.
-        active:
-          type: boolean
-          default: true
-          description: Returns True if a user has verified their email address.
-          readOnly: true
-        created_at:
+          example: Control Planes
+        entity_region:
+          description: Region of the entity.
           type: string
-          format: date-time
-          example: '2022-02-07T17:46:57.52Z'
-          description: The time stamp for the date the account was registered.
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          example: '2022-10-08T17:00:00.52Z'
-          description: >-
-            A Unix timestamp representation of the most recent change to the
-            User account.
-          readOnly: true
-    ParameterizedAssignedRole:
-      title: ParameterizedAssignedRole
-      type: object
-      description: >-
-        A parameterized assigned role is a role that has been assigned to a
-        managed system account with additional parameters.
+          example: eu
+          enum:
+            - us
+            - eu
+            - au
+            - '*'
+        parameters:
+          description: Additional parameters for the role assignment.
+          properties:
+            '':
+              type: object
+          type: object
       example:
         id: 54cc6168-ebb1-4300-8168-d62a0dd08fc8
         role_name: Viewer
@@ -1292,60 +1252,26 @@ components:
         entity_region: us
         parameters:
           zoneName: zone3
-      properties:
-        id:
-          type: string
-          format: uuid
-          example: eaf7adf1-32c8-4bbf-b960-d1f8456afe67
-          description: The ID of the role assignment.
-        role_name:
-          type: string
-          example: Viewer
-          description: Name of the role being assigned.
-        entity_id:
-          type: string
-          format: uuid
-          example: 817d0422-45c9-4d88-8d64-45aef05c1ae7
-          description: A RBAC entity ID.
-        entity_type_name:
-          type: string
-          example: Control Planes
-          description: Name of the entity type the role is being assigned to.
-        entity_region:
-          type: string
-          enum:
-            - us
-            - eu
-            - au
-            - '*'
-          example: eu
-          description: Region of the entity.
-        parameters:
-          type: object
-          description: Additional parameters for the role assignment.
-          properties:
-            '':
-              type: object
+      title: ParameterizedAssignedRole
     BooleanFieldFilter:
-      example: true
-      title: BooleanFieldFilter
       description: Filter by a boolean value (true/false).
       type: boolean
+      example: true
+      title: BooleanFieldFilter
       x-examples:
         example-1: true
     OrganizationState:
       type: object
-      title: Organization State
       properties:
         id:
-          type: string
           description: UUID of the organization.
-          format: uuid
-          readOnly: true
-          example: d99c041a-c7cf-46a2-bf3a-44bb5f75400e
-        state:
           type: string
+          format: uuid
+          example: d99c041a-c7cf-46a2-bf3a-44bb5f75400e
+          readOnly: true
+        state:
           description: State of the organization.
+          type: string
           example: active
           enum:
             - active
@@ -1353,49 +1279,50 @@ components:
             - deleting
             - deleted
         reason:
-          type: string
           description: The reason for the organization's state.
+          type: string
           example: invoice overdue (30 days)
         service:
-          type: string
           description: The service that modified the state.
+          type: string
           example: kbilling
         changed_by:
-          type: string
           description: |
             The ID of the Konger who modified the state.
+          type: string
           example: 00uerwcs8eC4ifanR256
         created_at:
-          type: string
           description: Date the organization state was created.
+          type: string
           format: date-time
-          readOnly: true
           example: '2023-01-23T17:22:52.150Z'
+          readOnly: true
+      title: Organization State
   examples:
     UnauthorizedExample:
       value:
         status: 401
         title: Unauthorized
-        instance: kong:trace:8347343766220159418
+        instance: 'kong:trace:8347343766220159418'
         detail: Unauthorized
     ForbiddenExample:
       value:
         status: 403
         title: Forbidden
-        instance: kong:trace:2723154947768991354
+        instance: 'kong:trace:2723154947768991354'
         detail: You do not have permission to perform this action
     NotFoundExample:
       value:
         status: 404
         title: Not Found
-        instance: kong:trace:6816496025408232265
+        instance: 'kong:trace:6816496025408232265'
         detail: Not Found
     400-request-format-is-invalid:
       value:
         status: 400
         title: Bad Request
         detail: Could not parse request body
-        instance: konnect:trace:3674017986744198214
+        instance: 'konnect:trace:3674017986744198214'
         invalid_parameters:
           - field: body
             reason: request format is invalid
@@ -1407,19 +1334,19 @@ components:
       value:
         status: 403
         title: Forbidden
-        instance: konnect:trace:2822394689570210664
+        instance: 'konnect:trace:2822394689570210664'
         detail: You do not have permission to perform this action.
     QuotaExceededExample:
       value:
         status: 403
         title: Quota Exceeded
-        instance: konnect:trace:2822394689570210664
+        instance: 'konnect:trace:2822394689570210664'
         detail: 'Maximum number of <quota name> exceeded. Max allowed: <quota value>.'
     NetworkNameLengthCheckBadRequestExample:
       value:
         status: 400
         title: Invalid Request
-        instance: konnect:trace:2822394689570210664
+        instance: 'konnect:trace:2822394689570210664'
         detail: Invalid Parameters
         invalid_parameters:
           - field: name
@@ -1429,7 +1356,7 @@ components:
       value:
         status: 400
         title: Invalid Request
-        instance: konnect:trace:2822394689570210664
+        instance: 'konnect:trace:2822394689570210664'
         detail: Invalid Parameters
         invalid_parameters:
           - field: name
@@ -1439,7 +1366,7 @@ components:
       value:
         status: 400
         title: Invalid Request
-        instance: konnect:trace:2822394689570210664
+        instance: 'konnect:trace:2822394689570210664'
         detail: Invalid Parameters
         invalid_parameters:
           - field: domain
@@ -1450,7 +1377,7 @@ components:
       value:
         status: 400
         title: Invalid Request
-        instance: konnect:trace:2822394689570210664
+        instance: 'konnect:trace:2822394689570210664'
         detail: Invalid Parameters
         invalid_parameters:
           - field: api_access
@@ -1459,26 +1386,22 @@ components:
               - private
               - public
               - private+public
-            reason: >-
-              api_access must be one of the following values: private, public,
-              private+public
+            reason: 'api_access must be one of the following values: private, public, private+public'
     ConfigurationDataPlaneGroupStaticRequestedInstancesBadRequestExample:
       value:
         status: 400
         title: Invalid Request
-        instance: konnect:trace:2822394689570210664
+        instance: 'konnect:trace:2822394689570210664'
         detail: Invalid Parameters
         invalid_parameters:
           - field: dataplane_groups.0.autoscale.requested_instances
             rule: is_integer
-            reason: >-
-              dataplane_groups.0.autoscale.requested_instances must be an
-              integer number
+            reason: dataplane_groups.0.autoscale.requested_instances must be an integer number
     ConfigurationDataPlaneGroupAutopilotBaseRpsBadRequestExample:
       value:
         status: 400
         title: Invalid Request
-        instance: konnect:trace:2822394689570210664
+        instance: 'konnect:trace:2822394689570210664'
         detail: Invalid Parameters
         invalid_parameters:
           - field: dataplane_groups.0.autoscale.base_rps
@@ -1488,7 +1411,7 @@ components:
       value:
         status: 400
         title: Bad Request
-        instance: konnect:trace:6644808935508571943
+        instance: 'konnect:trace:6644808935508571943'
         invalid_parameters:
           - field: name
             reason: cannot be blank
@@ -1496,7 +1419,7 @@ components:
       value:
         status: 400
         title: Bad Request
-        instance: konnect:trace:8988732526256293040
+        instance: 'konnect:trace:8988732526256293040'
         invalid_parameters:
           - field: teamID
             reason: invalid ID format
@@ -1504,7 +1427,7 @@ components:
       value:
         status: 400
         title: Bad Request
-        instance: konnect:trace:7680390984800447837
+        instance: 'konnect:trace:7680390984800447837'
         invalid_parameters:
           - field: id
             reason: must be a valid UUID v4
@@ -1513,7 +1436,7 @@ components:
         status: 400
         title: Bad Request
         detail: Password does not meet complexity requirements.
-        instance: konnect:trace:1738820719742148545
+        instance: 'konnect:trace:1738820719742148545'
         invalid_parameters:
           - field: new_password
             reason: 'is too short (minimum length: 8)'
@@ -1539,7 +1462,7 @@ components:
       value:
         status: 400
         title: Bad Request
-        instance: konnect:trace:1738820719742148545
+        instance: 'konnect:trace:1738820719742148545'
         invalid_parameters:
           - field: teamID
             reason: system teams cannot be modified
@@ -1547,7 +1470,7 @@ components:
       value:
         status: 400
         title: Bad Request
-        instance: konnect:trace:6644808935508571943
+        instance: 'konnect:trace:6644808935508571943'
         invalid_parameters:
           - field: oidc_auth_enabled
             reason: cannot be disabled when both basic auth and SAML are also disabled
@@ -1555,14 +1478,12 @@ components:
             reason: cannot be disabled when both OIDC and SAML are also disabled
           - field: saml_auth_enabled
             reason: cannot be disabled when both OIDC and basic auth are also disabled
-        detail: >-
-          Atleast one of the authentication schemes from basic, oidc or saml
-          needs to be enabled
+        detail: 'Atleast one of the authentication schemes from basic, oidc or saml needs to be enabled'
     400-oidc-auth-enabled-needs-idp:
       value:
         status: 400
         title: Bad Request
-        instance: konnect:trace:6644808935508571943
+        instance: 'konnect:trace:6644808935508571943'
         invalid_parameters:
           - field: oidc_auth_enabled
             reason: cannot be set before configuring an identity provider
@@ -1571,7 +1492,7 @@ components:
         status: 400
         title: Bad Request
         detail: An IdP configuration is required
-        instance: konnect:trace:6644808935508571943
+        instance: 'konnect:trace:6644808935508571943'
         invalid_parameters:
           - field: data
             reason: cannot be set before configuring an identity provider
@@ -1579,32 +1500,32 @@ components:
       value:
         status: 404
         title: Not Found
-        instance: konnect:trace:2287285207635123011
+        instance: 'konnect:trace:2287285207635123011'
         detail: The requested team was not found
     403-permission-denied:
       value:
         status: 403
         title: Permission denied
-        instance: konnect:trace:2822394689570210664
+        instance: 'konnect:trace:2822394689570210664'
         detail: Only enterprise organizations can create teams
     403-invalid-permissions:
       value:
         status: 403
         title: Invalid Permissions
-        detail: You must have the [administrator] role to perform this action
-        instance: konnect:trace:6c1ef33ae5bce33634d7d7d695c7f203
+        detail: 'You must have the [administrator] role to perform this action'
+        instance: 'konnect:trace:6c1ef33ae5bce33634d7d7d695c7f203'
     403-auth-invalid:
       value:
-        type: https://kongapi.info/konnect/invalid-permissions
+        type: 'https://kongapi.info/konnect/invalid-permissions'
         status: 403
         title: Invalid Permissions
-        detail: You must have the [administrator] role to perform this action
-        instance: konnect:trace:6c1ef33ae5bce33634d7d7d695c7f203
+        detail: 'You must have the [administrator] role to perform this action'
+        instance: 'konnect:trace:6c1ef33ae5bce33634d7d7d695c7f203'
     409-user-is-already-active:
       value:
         status: 409
         title: Resource Conflict
-        instance: konnect:trace:6644808935508571943
+        instance: 'konnect:trace:6644808935508571943'
         detail: User is already active
     Parameterized-Assigned-Roles-Collection-Example:
       value:
@@ -1641,7 +1562,7 @@ components:
       value:
         status: 401
         title: Unauthenticated
-        instance: konnect:trace:952172606039454040
+        instance: 'konnect:trace:952172606039454040'
         detail: A valid token is required
     Get-User-Response:
       value:
@@ -1662,13 +1583,12 @@ components:
         name: Kong Inc
     AWS-Resolve-Customer-Request:
       value:
-        token: >-
-          A1B2C3D4E5F6G7H8I9J0K+LMNOPQRSTUVWXYZabcd+efghijklmnopqrstuv+wxyz0123456789+
+        token: A1B2C3D4E5F6G7H8I9J0K+LMNOPQRSTUVWXYZabcd+efghijklmnopqrstuv+wxyz0123456789+
     400InvalidRequestFormat:
       value:
         status: 400
         title: Bad Request
-        instance: konnect:trace:3674017986744198214
+        instance: 'konnect:trace:3674017986744198214'
         invalid_parameters:
           - field: body
             reason: request format is invalid
@@ -1677,41 +1597,211 @@ components:
       value:
         status: 404
         title: Not Found
-        instance: konnect:trace:2287285207635123011
+        instance: 'konnect:trace:2287285207635123011'
         detail: The requested organization was not found
     409OrganizationStateConflict:
       value:
         status: 409
         title: Conflict
-        instance: konnect:trace:2287285207635123011
+        instance: 'konnect:trace:2287285207635123011'
         detail: Organization is already set to the requested state
+  requestBodies:
+    Auth0Registration:
+      content:
+        application/json:
+          schema:
+            description: Auth0 organization registration
+            type: object
+            properties:
+              organization_name:
+                type: string
+              default_region:
+                type: string
+            required:
+              - organization_name
+              - default_region
+            title: Auth0 organization register
+    UpdateUser:
+      description: The request schema for the update user request.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              full_name:
+                description: The user's full name.
+                type: string
+                example: James C. Woods
+                pattern: '^[\w \W]+$'
+                writeOnly: true
+              preferred_name:
+                description: The user's desired name.
+                type: string
+                example: Jimmy
+                maxLength: 250
+                writeOnly: true
+          examples:
+            Example Request Body:
+              $ref: '#/components/examples/Update-User-Request'
+    AssignParameterizedRole:
+      content:
+        application/json:
+          schema:
+            description: A parameterized assigned role is a role that has been assigned to a managed system account.
+            type: object
+            properties:
+              role_name:
+                description: The desired role.
+                type: string
+                example: Connector
+              entity_id:
+                description: The ID of the entity.
+                type: string
+                format: uuid
+                example: e67490ce-44dc-4cbd-b65e-b52c746fc26a
+              entity_type_name:
+                description: The type of entity.
+                type: string
+                example: Mesh Control Planes
+              entity_region:
+                description: The region to scope the role assignment to.
+                type: string
+                example: eu
+                enum:
+                  - us
+                  - eu
+                  - au
+                  - '*'
+              parameters:
+                example:
+                  zoneName: zone3
+                type: object
+          examples:
+            Parameterized-Assigned-Role:
+              $ref: '#/components/examples/Parameterized-Assigned-Role-Example'
+      description: The request schema for assigning a role.
+    UpdateOrganization:
+      description: The request schema to update an organization.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              owner_id:
+                description: The user id of the new owner of the organization. Must be a member of the Organization Admins team.
+                type: string
+                format: uuid
+                example: d9c56d92-0339-4dfb-be0c-2253162edba9
+              name:
+                description: The new name of the organization.
+                type: string
+                example: Kong Inc
+          examples:
+            Example Request Body:
+              $ref: '#/components/examples/Update-Organization'
+    AWSResolveCustomerRequest:
+      description: AWS Marketplace Metering Resolve Customer request.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              token:
+                description: Token is the aws customer token from the aws marketplace.
+                type: string
+            required:
+              - token
+          examples:
+            Example Request Body:
+              $ref: '#/components/examples/AWS-Resolve-Customer-Request'
+    DeviceAuthorizationUserRequest:
+      description: The request schema for the user device authorization request.
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              user_code:
+                description: The end-user device verification code.
+                type: string
+            required:
+              - user_code
+    DeviceConfirmationRequest:
+      description: The request schema for the device confirmation request.
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              user_code:
+                description: The end-user device verification code.
+                type: string
+            required:
+              - user_code
+    UpdateOrganizationState:
+      required: true
+      description: The request schema to set an organization's state.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              state:
+                description: The state of the organization to set.
+                type: string
+                example: inactive
+                enum:
+                  - active
+                  - inactive
+              reason:
+                description: The reason for the state change.
+                type: string
+                example: invoice overdue (30 days)
+              changed_by:
+                description: The uuid of the konger who modified the state.
+                type: string
+                example: 00uerwcs8eC4ifanR256
+            required:
+              - state
+          examples:
+            Inactive Example:
+              value:
+                state: inactive
+                reason: invoice overdue (30 days)
+                changed_by: 00uerwcs8eC4ifanR256
+            Active Example:
+              value:
+                state: active
+                reason: organization was created
   responses:
     Unauthorized:
       description: Unauthorized
       content:
         application/problem+json:
           schema:
-            $ref: '#/components/schemas/UnauthorizedError'
-            type: object
-            title: Unauthorized Response
             description: The error response object.
+            type: object
             properties:
               status:
+                description: The HTTP status code.
                 type: integer
                 example: 403
-                description: The HTTP status code.
               title:
-                type: string
                 description: The Error Response.
+                type: string
                 example: Unauthorized
               instance:
-                type: string
                 description: The Konnect traceback code.
-                example: konnect:trace:952172606039454040
-              detail:
                 type: string
+                example: 'konnect:trace:952172606039454040'
+              detail:
                 description: Details about the error response.
+                type: string
                 example: You do not have permission to perform this action
+            $ref: '#/components/schemas/UnauthorizedError'
+            title: Unauthorized Response
           examples:
             UnauthorizedExample:
               $ref: '#/components/examples/UnauthorizedExample'
@@ -1733,34 +1823,34 @@ components:
       content:
         application/problem+json:
           schema:
+            description: The error response object.
             type: object
+            properties:
+              type:
+                description: Documentation for this error.
+                type: string
+              status:
+                description: The HTTP status code.
+                type: integer
+                example: 404
+              title:
+                description: The error response code.
+                type: string
+                example: Not Found
+              instance:
+                description: The Konnect traceback code
+                type: string
+                example: 'konnect:trace:2287285207635123011'
+              detail:
+                description: Details about the error.
+                type: string
+                example: The requested report was not found
             example:
               Example 1:
                 status: 404
                 title: Not Found
-                instance: konnect:trace:2287285207635123011
+                instance: 'konnect:trace:2287285207635123011'
                 detail: The requested report was not found
-            description: The error response object.
-            properties:
-              type:
-                type: string
-                description: Documentation for this error.
-              status:
-                type: integer
-                description: The HTTP status code.
-                example: 404
-              title:
-                type: string
-                description: The error response code.
-                example: Not Found
-              instance:
-                type: string
-                example: konnect:trace:2287285207635123011
-                description: The Konnect traceback code
-              detail:
-                type: string
-                example: The requested report was not found
-                description: Details about the error.
             $ref: '#/components/schemas/NotFoundError'
           examples:
             NotFoundExample:
@@ -1799,18 +1889,15 @@ components:
             Network Name Length Exceeded:
               $ref: '#/components/examples/NetworkNameLengthCheckBadRequestExample'
             Transit Gateway Name Length Exceeded:
-              $ref: >-
-                #/components/examples/TransitGatewayNameLengthCheckBadRequestExample
+              $ref: '#/components/examples/TransitGatewayNameLengthCheckBadRequestExample'
             Custom Domain Domain Length Too Short:
               $ref: '#/components/examples/CustomDomainLengthCheckBadRequestExample'
             Configuration Api Access Enum Validation:
               $ref: '#/components/examples/ConfigurationApiAccessBadRequestExample'
             Configuration Data-Plane Group Static Request Instances Minimum:
-              $ref: >-
-                #/components/examples/ConfigurationDataPlaneGroupStaticRequestedInstancesBadRequestExample
+              $ref: '#/components/examples/ConfigurationDataPlaneGroupStaticRequestedInstancesBadRequestExample'
             Configuration Data-Plane Group Autopilot Base RPS Minimum:
-              $ref: >-
-                #/components/examples/ConfigurationDataPlaneGroupAutopilotBaseRpsBadRequestExample
+              $ref: '#/components/examples/ConfigurationDataPlaneGroupAutopilotBaseRpsBadRequestExample'
     CloudGatewaysForbidden:
       description: Forbidden
       content:
@@ -1834,7 +1921,6 @@ components:
         application/json:
           schema:
             type: object
-            title: Auth0 Organizations Collection Response
             properties:
               meta:
                 $ref: '#/components/schemas/PaginatedMeta'
@@ -1842,6 +1928,7 @@ components:
                 type: array
                 items:
                   $ref: '#/components/schemas/Auth0Organization'
+            title: Auth0 Organizations Collection Response
           examples:
             Organization Collection:
               value:
@@ -1852,8 +1939,7 @@ components:
                     total: 10
                 data:
                   - name: IDM - Developers
-                    login_path: >-
-                      /v2/authenticate/federated?org_id=7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+                    login_path: /v2/authenticate/federated?org_id=7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
     UserSingle:
       description: A get action response of a single user.
       content:
@@ -1873,26 +1959,23 @@ components:
             Assigned Role Example:
               $ref: '#/components/examples/Parameterized-Assigned-Role-Example'
     ParameterizedAssignedRolesCollection:
-      description: >-
-        A paginated list response for a collection of parameterized assigned
-        roles.
+      description: A paginated list response for a collection of parameterized assigned roles.
       content:
         application/json:
           schema:
             type: object
-            title: Parameterized Assigned Roles Collection Response
             properties:
               meta:
                 $ref: '#/components/schemas/PaginatedMeta'
               data:
-                type: array
                 description: An Array
+                type: array
                 items:
                   $ref: '#/components/schemas/ParameterizedAssignedRole'
+            title: Parameterized Assigned Roles Collection Response
           examples:
             ParameterizedAssignedRolesCollection:
-              $ref: >-
-                #/components/examples/Parameterized-Assigned-Roles-Collection-Example
+              $ref: '#/components/examples/Parameterized-Assigned-Roles-Collection-Example'
     DeviceAuthorizationGrantAuthorizeBadRequest:
       description: Bad Request
       content:
@@ -1909,8 +1992,7 @@ components:
             allOf:
               - $ref: '#/components/schemas/BaseDeviceAuthorizationGrantBadRequest'
               - oneOf:
-                  - $ref: >-
-                      #/components/schemas/DeviceAuthorizationGrantAuthorizeError
+                  - $ref: '#/components/schemas/DeviceAuthorizationGrantAuthorizeError'
                   - $ref: '#/components/schemas/DeviceAuthorizationGrantTokenError'
     IdentityBadRequest:
       description: Bad Request
@@ -1932,8 +2014,7 @@ components:
             Password Complexity:
               $ref: '#/components/examples/400-password-complexity'
             Authentication Settings cannot be all Disabled:
-              $ref: >-
-                #/components/examples/400-authentication-settings-cannot-be-all-disabled
+              $ref: '#/components/examples/400-authentication-settings-cannot-be-all-disabled'
             OIDC needs an IdP configuration:
               $ref: '#/components/examples/400-oidc-auth-enabled-needs-idp'
             IdP configuration is required:
@@ -1942,7 +2023,7 @@ components:
               value:
                 status: 400
                 title: Bad Request
-                instance: konnect:trace:3674017986744198214
+                instance: 'konnect:trace:3674017986744198214'
                 invalid_parameters:
                   - field: '[filter][actions][contains]'
                     reason: '[contains] is not a supported filter operation'
@@ -1992,7 +2073,40 @@ components:
         application/json:
           schema:
             type: object
-            title: Me Organization Response
+            properties:
+              id:
+                description: UUID of the organization.
+                type: string
+                format: uuid
+                readOnly: true
+              name:
+                description: Name of the organization.
+                type: string
+              owner_id:
+                description: Owner ID of the organization.
+                type: string
+              login_path:
+                description: Path to organization-specific login when single sign on (SSO) is enabled. Blank otherwise.
+                type: string
+              created_at:
+                description: Date the organization was created.
+                type: string
+                format: date-time
+                readOnly: true
+              updated_at:
+                description: Date the organization was last updated.
+                type: string
+                format: date-time
+                readOnly: true
+              state:
+                description: State of the organization
+                type: string
+                enum:
+                  - active
+                  - inactive
+              retention_period_days:
+                description: The number of days an organization spends inactive before being deleted.
+                type: integer
             example:
               id: d99c041a-c7cf-46a2-bf3a-44bb5f75400e
               name: string
@@ -2001,44 +2115,7 @@ components:
               updated_at: '2023-01-23T17:22:52.150Z'
               state: active
               retention_period_days: 90
-            properties:
-              id:
-                type: string
-                description: UUID of the organization.
-                format: uuid
-                readOnly: true
-              name:
-                type: string
-                description: Name of the organization.
-              owner_id:
-                type: string
-                description: Owner ID of the organization.
-              login_path:
-                type: string
-                description: >-
-                  Path to organization-specific login when single sign on (SSO)
-                  is enabled. Blank otherwise.
-              created_at:
-                type: string
-                description: Date the organization was created.
-                format: date-time
-                readOnly: true
-              updated_at:
-                type: string
-                description: Date the organization was last updated.
-                format: date-time
-                readOnly: true
-              state:
-                type: string
-                description: State of the organization
-                enum:
-                  - active
-                  - inactive
-              retention_period_days:
-                type: integer
-                description: >-
-                  The number of days an organization spends inactive before
-                  being deleted.
+            title: Me Organization Response
           examples:
             Example:
               value:
@@ -2056,7 +2133,6 @@ components:
         application/json:
           schema:
             type: object
-            title: User Permissions Response
             properties:
               data:
                 type: array
@@ -2071,15 +2147,15 @@ components:
                         type: string
             example:
               data:
-                - resource: krn:accounts:reg/*:org/aa878768-05cb-4811-90d2-b82ef61caf44
+                - resource: 'krn:accounts:reg/*:org/aa878768-05cb-4811-90d2-b82ef61caf44'
                   actions:
                     - '#root'
+            title: User Permissions Response
           examples:
             OrganizationAdminExample:
               value:
                 data:
-                  - resource: >-
-                      krn:accounts:reg/*:org/aa878768-05cb-4811-90d2-b82ef61caf44
+                  - resource: 'krn:accounts:reg/*:org/aa878768-05cb-4811-90d2-b82ef61caf44'
                     actions:
                       - '#root'
     LogoutResponse:
@@ -2088,155 +2164,143 @@ components:
         application/json:
           schema:
             type: object
-            title: Logout Response
-            required:
-              - login_path
             properties:
               login_path:
-                type: string
                 description: The login path.
+                type: string
+            required:
+              - login_path
+            title: Logout Response
     ResolveCustomerResponse:
       description: AWS Resolve customer response
       content:
         application/json:
           schema:
             type: object
-            title: Resolve Customer Response
-            required:
-              - organization_id
             properties:
               organization_id:
-                type: string
                 description: UUID of the organization.
+                type: string
                 format: uuid
+            required:
+              - organization_id
+            title: Resolve Customer Response
     DeviceAuthorizationResponse:
       description: Device authorization response
       content:
         application/json:
           schema:
             type: object
-            title: Device Authorization Response
             properties:
               device_code:
-                type: string
                 description: The device verification code.
+                type: string
               user_code:
-                type: string
                 description: The end-user verification code.
+                type: string
               verification_uri:
-                type: string
                 description: The end-user verification URI on the authorization server.
-              verification_uri_complete:
                 type: string
+              verification_uri_complete:
                 description: A verification URI that includes the "user_code".
+                type: string
               expires_in:
-                type: integer
                 description: The lifetime in seconds of the "device_code" and "user_code".
-              interval:
                 type: integer
-                description: >-
-                  The minimum amount of time in seconds that the client should
-                  wait between polling requests to the token endpoint.
+              interval:
+                description: The minimum amount of time in seconds that the client should wait between polling requests to the token endpoint.
+                type: integer
+            example:
+              device_code: GmRhmhcxhwAzkoEqiMEg_DnyEysNkuNhszIySk9eS
+              user_code: WDJB-MJHT
+              verification_uri: 'https://example.com/device'
+              verification_uri_complete: 'https://example.com/device?user_code=WDJB-MJHT'
+              expires_in: 1800
+              interval: 5
             required:
               - device_code
               - user_code
               - verification_uri
               - expires_in
-            example:
-              device_code: GmRhmhcxhwAzkoEqiMEg_DnyEysNkuNhszIySk9eS
-              user_code: WDJB-MJHT
-              verification_uri: https://example.com/device
-              verification_uri_complete: https://example.com/device?user_code=WDJB-MJHT
-              expires_in: 1800
-              interval: 5
+            title: Device Authorization Response
     DeviceAccessTokenResponse:
       description: Device access token response
       content:
         application/json:
           schema:
             type: object
-            title: Device Access Token Response
             properties:
               access_token:
-                type: string
                 description: The access token issued by the authorization server.
+                type: string
               token_type:
-                type: string
                 description: The type of the token issued.
+                type: string
               expires_in:
-                type: integer
                 description: The lifetime in seconds of the access token.
+                type: integer
               refresh_token:
+                description: 'The refresh token, which can be used to obtain new access tokens using the same authorization grant.'
                 type: string
-                description: >-
-                  The refresh token, which can be used to obtain new access
-                  tokens using the same authorization grant.
               scope:
-                type: string
                 description: The scope of the access token.
-            required:
-              - access_token
-              - token_type
-              - expires_in
+                type: string
             example:
               access_token: 2YotnFZFEjr1zCsicMWpAA
               token_type: Bearer
               expires_in: 3600
               refresh_token: tGzv3JOkF0XG5Qx2TlKWIA
               scope: read write
+            required:
+              - access_token
+              - token_type
+              - expires_in
+            title: Device Access Token Response
     DeviceAuthorizationUserResponse:
       description: User device authorization response
       content:
         application/json:
           schema:
             type: object
-            title: User Device Authorization Response
             properties:
               organization_name:
-                type: string
                 description: The name of the organization.
+                type: string
               user:
                 $ref: '#/components/schemas/User'
               metadata:
+                description: The device metadata to be displayed to the user for confirmation.
                 type: object
-                description: >-
-                  The device metadata to be displayed to the user for
-                  confirmation.
+                example:
+                  client_name: Konnect CLI
+                  user_agent: kconnectctl/0.12
+                  source_ip: 192.158.1.38
+                  requested_at: '2022-02-07T17:46:57.52Z'
                 properties:
                   client_name:
-                    type: string
                     description: The requesting application human name.
+                    type: string
                   user_agent:
+                    description: The device's user agent used to perform the device authorization grant request.
                     type: string
-                    description: >-
-                      The device's user agent used to perform the device
-                      authorization grant request.
                   source_ip:
+                    description: The IP address of the device used to perform the device authorization grant request.
                     type: string
-                    description: >-
-                      The IP address of the device used to perform the device
-                      authorization grant request.
                   requested_at:
+                    description: The time stamp for the date the device authorization request was made.
                     type: string
                     format: date-time
-                    description: >-
-                      The time stamp for the date the device authorization
-                      request was made.
                     example: '2022-02-07T17:46:57.52Z'
                 required:
                   - client_name
                   - user_agent
                   - source_ip
                   - requested_at
-                example:
-                  client_name: Konnect CLI
-                  user_agent: kconnectctl/0.12
-                  source_ip: 192.158.1.38
-                  requested_at: '2022-02-07T17:46:57.52Z'
             required:
               - organization_name
               - user
               - metadata
+            title: User Device Authorization Response
     OrganizationStateResponse:
       description: A response for setting the organization state.
       content:
@@ -2253,14 +2317,11 @@ components:
                 changed_by: 00uerwcs8eC4ifanR256
                 created_at: '2023-01-18T11:35:45.130Z'
     OrganizationStateHistory:
-      description: >-
-        A paginated list response for a collection of organization state
-        changes.
+      description: A paginated list response for a collection of organization state changes.
       content:
         application/json:
           schema:
             type: object
-            title: Organizations State History.
             properties:
               meta:
                 $ref: '#/components/schemas/PaginatedMeta'
@@ -2268,6 +2329,7 @@ components:
                 type: array
                 items:
                   $ref: '#/components/schemas/OrganizationState'
+            title: Organizations State History.
           examples:
             Example:
               value:
@@ -2314,233 +2376,26 @@ components:
           examples:
             Conflict:
               $ref: '#/components/examples/409OrganizationStateConflict'
-  parameters:
-    ResourceQuotaId:
-      name: resourceQuotaId
-      in: path
-      description: The ID of the resource quota to operate on.
-      required: true
-      schema:
-        $ref: '#/components/schemas/ResourceQuotaId'
-    ProviderAccountId:
-      name: providerAccountId
-      in: path
-      description: The ID of the provider account to operate on.
-      required: true
-      schema:
-        $ref: '#/components/schemas/ProviderAccountId'
-  requestBodies:
-    Auth0Registration:
-      content:
-        application/json:
-          schema:
-            title: Auth0 organization register
-            type: object
-            required:
-              - organization_name
-              - default_region
-            description: Auth0 organization registration
-            properties:
-              organization_name:
-                type: string
-              default_region:
-                type: string
-    UpdateUser:
-      description: The request schema for the update user request.
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              full_name:
-                type: string
-                pattern: ^[\w \W]+$
-                example: James C. Woods
-                description: The user's full name.
-                writeOnly: true
-              preferred_name:
-                type: string
-                maxLength: 250
-                example: Jimmy
-                description: The user's desired name.
-                writeOnly: true
-          examples:
-            Example Request Body:
-              $ref: '#/components/examples/Update-User-Request'
-    AssignParameterizedRole:
-      content:
-        application/json:
-          schema:
-            type: object
-            description: >-
-              A parameterized assigned role is a role that has been assigned to
-              a managed system account.
-            properties:
-              role_name:
-                type: string
-                example: Connector
-                description: The desired role.
-              entity_id:
-                type: string
-                format: uuid
-                example: e67490ce-44dc-4cbd-b65e-b52c746fc26a
-                description: The ID of the entity.
-              entity_type_name:
-                type: string
-                example: Mesh Control Planes
-                description: The type of entity.
-              entity_region:
-                type: string
-                enum:
-                  - us
-                  - eu
-                  - au
-                  - '*'
-                example: eu
-                description: The region to scope the role assignment to.
-              parameters:
-                type: object
-                example:
-                  zoneName: zone3
-          examples:
-            Parameterized-Assigned-Role:
-              $ref: '#/components/examples/Parameterized-Assigned-Role-Example'
-      description: The request schema for assigning a role.
-    UpdateOrganization:
-      description: The request schema to update an organization.
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              owner_id:
-                type: string
-                description: >-
-                  The user id of the new owner of the organization. Must be a
-                  member of the Organization Admins team.
-                format: uuid
-                example: d9c56d92-0339-4dfb-be0c-2253162edba9
-              name:
-                type: string
-                description: The new name of the organization.
-                example: Kong Inc
-          examples:
-            Example Request Body:
-              $ref: '#/components/examples/Update-Organization'
-    AWSResolveCustomerRequest:
-      description: AWS Marketplace Metering Resolve Customer request.
-      content:
-        application/json:
-          schema:
-            type: object
-            required:
-              - token
-            properties:
-              token:
-                type: string
-                description: Token is the aws customer token from the aws marketplace.
-          examples:
-            Example Request Body:
-              $ref: '#/components/examples/AWS-Resolve-Customer-Request'
-    DeviceAuthorizationUserRequest:
-      description: The request schema for the user device authorization request.
-      required: true
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              user_code:
-                type: string
-                description: The end-user device verification code.
-            required:
-              - user_code
-    DeviceConfirmationRequest:
-      description: The request schema for the device confirmation request.
-      required: true
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              user_code:
-                type: string
-                description: The end-user device verification code.
-            required:
-              - user_code
-    UpdateOrganizationState:
-      required: true
-      description: The request schema to set an organization's state.
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              state:
-                type: string
-                description: The state of the organization to set.
-                example: inactive
-                enum:
-                  - active
-                  - inactive
-              reason:
-                type: string
-                description: The reason for the state change.
-                example: invoice overdue (30 days)
-              changed_by:
-                type: string
-                description: The uuid of the konger who modified the state.
-                example: 00uerwcs8eC4ifanR256
-            required:
-              - state
-          examples:
-            Inactive Example:
-              value:
-                state: inactive
-                reason: invoice overdue (30 days)
-                changed_by: 00uerwcs8eC4ifanR256
-            Active Example:
-              value:
-                state: active
-                reason: organization was created
   securitySchemes:
     personalAccessToken:
       type: http
       scheme: bearer
       bearerFormat: Token
-      description: >-
-        The personal access token is meant to be used as an alternative to
-        basic-auth when accessing Konnect via APIs. You can generate a Personal
-        Access Token (PAT) from the personal access token page in the Konnect
-        dashboard.
+      description: The personal access token is meant to be used as an alternative to basic-auth when accessing Konnect via APIs. You can generate a Personal Access Token (PAT) from the personal access token page in the Konnect dashboard.
     systemAccountAccessToken:
       type: http
       scheme: bearer
       bearerFormat: Token
-      description: >
-        The system account access token is meant for automations and
-        integrations that are not directly associated with a human identity.
-
-        You can generate a system account Access Token by creating a system
-        account and then obtaining a system account access token for that
-        account.
-
+      description: |
+        The system account access token is meant for automations and integrations that are not directly associated with a human identity.
+        You can generate a system account Access Token by creating a system account and then obtaining a system account access token for that account.
         The access token must be passed in the header of a request, for example:
-
-        `curl -X GET 'https://global.api.konghq.com/v2/users/' --header
-        'Authorization: Bearer spat_i2Ej...'`
+        `curl -X GET 'https://global.api.konghq.com/v2/users/' --header 'Authorization: Bearer spat_i2Ej...'`
     konnectAccessToken:
       type: http
       scheme: bearer
       bearerFormat: JWT
-      description: >-
-        The Konnect access token is meant to be used by the Konnect dashboard
-        and the decK CLI to authenticate with.
-security:
-  - personalAccessToken: []
-  - systemAccountAccessToken: []
-  - konnectAccessToken: []
-  - serviceAccessToken: []
+      description: The Konnect access token is meant to be used by the Konnect dashboard and the decK CLI to authenticate with.
 tags:
   - name: Provider Accounts
   - name: Resource Quotas
@@ -2551,3 +2406,11 @@ tags:
   - name: Device Authorization Grant
   - name: SSO Auth0
   - name: Organization Lifecycle
+externalDocs:
+  description: Documentation for Kong Gateway and its APIs
+  url: 'https://docs.konghq.com'
+security:
+  - personalAccessToken: []
+  - systemAccountAccessToken: []
+  - konnectAccessToken: []
+  - serviceAccessToken: []

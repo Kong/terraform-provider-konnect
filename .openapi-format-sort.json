@@ -1,0 +1,16 @@
+{
+  "root": ["openapi", "info", "servers", "paths", "components", "tags", "x-tagGroups", "externalDocs"],
+  "get": ["x-unstable", "x-internal", "x-private", "x-speakeasy-entity-operation", "operationId", "summary", "description", "parameters", "requestBody", "responses"],
+  "post": ["x-unstable", "x-internal", "x-private", "x-speakeasy-entity-operation", "operationId", "summary", "description", "parameters", "requestBody", "responses"],
+  "put": ["x-unstable", "x-internal", "x-private", "x-speakeasy-entity-operation", "operationId", "summary", "description", "parameters", "requestBody", "responses"],
+  "patch": ["x-unstable", "x-internal", "x-private", "x-speakeasy-entity-operation", "operationId", "summary", "description", "parameters", "requestBody", "responses"],
+  "delete": ["x-unstable", "x-internal", "x-private", "x-speakeasy-entity-operation", "operationId", "summary", "description", "parameters", "requestBody", "responses"],
+  "parameters": ["name", "in", "description", "required", "schema"],
+  "requestBody": ["description", "required", "content"],
+  "responses": ["description", "headers", "content", "links"],
+  "content": [],
+  "components": ["parameters", "schemas"],
+  "schema": ["x-speakeasy-entity", "description", "type", "items", "properties", "format", "example", "default"],
+  "schemas": ["x-speakeasy-entity", "description", "type", "items", "properties", "format", "example", "default"],
+  "properties": ["x-speakeasy-entity", "description", "type", "items", "format", "example", "default", "enum"]
+}

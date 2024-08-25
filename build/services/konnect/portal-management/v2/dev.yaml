@@ -5,34 +5,22 @@ info:
   description: The management API for Portals
   contact:
     name: Kong
-    url: https://konghq.com
+    url: 'https://konghq.com'
 servers:
-  - url: https://us.api.konghq.com/v2
+  - url: 'https://us.api.konghq.com/v2'
     description: US Region Base URL
-  - url: https://eu.api.konghq.com/v2
+  - url: 'https://eu.api.konghq.com/v2'
     description: EU Region Base URL
-  - url: https://au.api.konghq.com/v2
+  - url: 'https://au.api.konghq.com/v2'
     description: AU Region Base URL
-security:
-  - personalAccessToken: []
-  - systemAccountAccessToken: []
-tags:
-  - name: Portals
-    description: APIs related to Configuration of Konnect Developer Portals.
-  - name: Portal Customization
-    description: APIs related to Konnect Developer Portal Customization.
-  - name: Portal Pages
-    description: APIs related to Konnect Developer Portal Custom Pages.
 paths:
-  /portals/{portalId}/config:
+  '/portals/{portalId}/config':
     parameters:
       - $ref: '#/components/parameters/parameters-PortalId'
     get:
-      summary: Get a portal configuration
       operationId: get-portal-config
+      summary: Get a portal configuration
       description: Get the configuration of the portal
-      tags:
-        - Portals
       responses:
         '200':
           $ref: '#/components/responses/GetPortalConfig'
@@ -42,12 +30,12 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/BadRequestError'
-    put:
-      summary: Replace a portal configuration
-      operationId: replace-portal-config
-      description: Update the configuration of the portal
       tags:
         - Portals
+    put:
+      operationId: replace-portal-config
+      summary: Replace a portal configuration
+      description: Update the configuration of the portal
       requestBody:
         $ref: '#/components/requestBodies/ReplacePortalConfig'
       responses:
@@ -59,12 +47,12 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/BadRequestError'
-    patch:
-      summary: Update a portal configuration
-      operationId: update-portal-config
-      description: Update the configuration of the portal
       tags:
         - Portals
+    patch:
+      operationId: update-portal-config
+      summary: Update a portal configuration
+      description: Update the configuration of the portal
       requestBody:
         $ref: '#/components/requestBodies/UpdatePortalConfig'
       responses:
@@ -76,17 +64,17 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/BadRequestError'
-  /portals/{portalId}/audit-log-replay-job:
+      tags:
+        - Portals
+  '/portals/{portalId}/audit-log-replay-job':
     parameters:
       - $ref: '#/components/parameters/parameters-PortalId'
     put:
+      operationId: update-portal-audit-log-replay-job
       summary: Update Portal Audit Log Replay Job
       description: Updates a job to re-send audit logs to an portal's webhook.
-      operationId: update-portal-audit-log-replay-job
       requestBody:
         $ref: '#/components/requestBodies/ReplacePortalAuditLogReplayJob'
-      tags:
-        - Portal Audit Logs
       responses:
         '202':
           $ref: '#/components/responses/PortalAuditLogReplayJob'
@@ -100,12 +88,12 @@ paths:
           $ref: '#/components/responses/NotFound'
         '409':
           $ref: '#/components/responses/PortalReplayJobConflict'
-    get:
-      summary: Get Portal Audit Log Replay Job
-      description: Returns the audit log replay job's configuration and status.
-      operationId: get-portal-audit-log-replay-job
       tags:
         - Portal Audit Logs
+    get:
+      operationId: get-portal-audit-log-replay-job
+      summary: Get Portal Audit Log Replay Job
+      description: Returns the audit log replay job's configuration and status.
       responses:
         '200':
           $ref: '#/components/responses/PortalAuditLogReplayJob'
@@ -115,17 +103,17 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-  /portals/{portalId}/audit-log-webhook:
+      tags:
+        - Portal Audit Logs
+  '/portals/{portalId}/audit-log-webhook':
     parameters:
       - $ref: '#/components/parameters/parameters-PortalId'
     patch:
+      operationId: update-portal-audit-log-webhook
       summary: Update Portal Audit Log Webhook
       description: Updates the configuration for a webhook to receive audit logs.
-      operationId: update-portal-audit-log-webhook
       requestBody:
         $ref: '#/components/requestBodies/UpdatePortalAuditLogWebhook'
-      tags:
-        - Portal Audit Logs
       responses:
         '200':
           $ref: '#/components/responses/PortalAuditLogWebhook'
@@ -137,12 +125,12 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-    get:
-      summary: Get Portal Audit Log Webhook
-      description: Returns configuration for the audit log webhook.
-      operationId: get-portal-audit-log-webhook
       tags:
         - Portal Audit Logs
+    get:
+      operationId: get-portal-audit-log-webhook
+      summary: Get Portal Audit Log Webhook
+      description: Returns configuration for the audit log webhook.
       responses:
         '200':
           $ref: '#/components/responses/PortalAuditLogWebhook'
@@ -152,15 +140,15 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-  /portals/{portalId}/audit-log-webhook/status:
+      tags:
+        - Portal Audit Logs
+  '/portals/{portalId}/audit-log-webhook/status':
     parameters:
       - $ref: '#/components/parameters/parameters-PortalId'
     get:
+      operationId: get-portal-audit-log-webhook-status
       summary: Get Portal Audit Log Webhook Status
       description: Returns status of the audit log webhook.
-      operationId: get-portal-audit-log-webhook-status
-      tags:
-        - Portal Audit Logs
       responses:
         '200':
           $ref: '#/components/responses/PortalAuditLogWebhookStatus'
@@ -170,15 +158,15 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-  /portals/{portalId}/customization:
+      tags:
+        - Portal Audit Logs
+  '/portals/{portalId}/customization':
     get:
+      operationId: get-portal-customization
       summary: Get Customization
       description: Returns the customized portal appearance.
-      operationId: get-portal-customization
       parameters:
         - $ref: '#/components/parameters/parameters-PortalId'
-      tags:
-        - Portal Customization
       responses:
         '200':
           $ref: '#/components/responses/GetPortalCustomization'
@@ -188,14 +176,14 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-    put:
-      summary: Replace Customization
-      description: Replace the customized portal appearance
-      operationId: replace-portal-customization
-      parameters:
-        - $ref: '#/components/parameters/parameters-PortalId'
       tags:
         - Portal Customization
+    put:
+      operationId: replace-portal-customization
+      summary: Replace Customization
+      description: Replace the customized portal appearance
+      parameters:
+        - $ref: '#/components/parameters/parameters-PortalId'
       requestBody:
         $ref: '#/components/requestBodies/ReplacePortalCustomization'
       responses:
@@ -207,27 +195,25 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-  /portals/{portalId}/pages:
+      tags:
+        - Portal Customization
+  '/portals/{portalId}/pages':
     get:
-      summary: List Portal Pages
-      description: >-
-        Returns the paginated list of custom pages that have been created for
-        this portal.
       operationId: list-portal-pages
+      summary: List Portal Pages
+      description: Returns the paginated list of custom pages that have been created for this portal.
       parameters:
         - $ref: '#/components/parameters/SortPortalPages'
         - $ref: '#/components/parameters/parameters-PortalId'
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageNumber'
-        - in: query
-          name: filter
+        - name: filter
+          in: query
           description: Filter pages returned in the response.
           required: false
-          style: deepObject
           schema:
             $ref: '#/components/schemas/PortalPagesFilters'
-      tags:
-        - Portal Pages
+          style: deepObject
       responses:
         '200':
           $ref: '#/components/responses/ListPortalPages'
@@ -248,19 +234,16 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-    post:
-      summary: Create Portal Page
-      description: >-
-        Creates a new custom page for this portal. Custom pages can be used to
-        display static content, documentation, or other information to
-        developers.
-      operationId: create-portal-page
-      requestBody:
-        $ref: '#/components/requestBodies/CreatePortalPage'
-      parameters:
-        - $ref: '#/components/parameters/parameters-PortalId'
       tags:
         - Portal Pages
+    post:
+      operationId: create-portal-page
+      summary: Create Portal Page
+      description: 'Creates a new custom page for this portal. Custom pages can be used to display static content, documentation, or other information to developers.'
+      parameters:
+        - $ref: '#/components/parameters/parameters-PortalId'
+      requestBody:
+        $ref: '#/components/requestBodies/CreatePortalPage'
       responses:
         '201':
           $ref: '#/components/responses/PortalPage'
@@ -281,19 +264,16 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-  /portals/{portalId}/pages/{pageId}:
+      tags:
+        - Portal Pages
+  '/portals/{portalId}/pages/{pageId}':
     get:
-      summary: Get Portal Page
-      description: >-
-        Returns the configuration of a single custom page for this portal.
-        Custom pages can be used to display static content, documentation, or
-        other information to developers.
       operationId: get-portal-page
+      summary: Get Portal Page
+      description: 'Returns the configuration of a single custom page for this portal. Custom pages can be used to display static content, documentation, or other information to developers.'
       parameters:
         - $ref: '#/components/parameters/parameters-PortalId'
         - $ref: '#/components/parameters/PageId'
-      tags:
-        - Portal Pages
       responses:
         '200':
           $ref: '#/components/responses/PortalPage'
@@ -303,17 +283,17 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Pages
     patch:
+      operationId: update-portal-page
       summary: Update Portal Page
       description: Updates the configuration of a single custom page for this portal.
-      operationId: update-portal-page
-      requestBody:
-        $ref: '#/components/requestBodies/UpdatePortalPage'
       parameters:
         - $ref: '#/components/parameters/parameters-PortalId'
         - $ref: '#/components/parameters/PageId'
-      tags:
-        - Portal Pages
+      requestBody:
+        $ref: '#/components/requestBodies/UpdatePortalPage'
       responses:
         '200':
           $ref: '#/components/responses/PortalPage'
@@ -334,15 +314,15 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Pages
     delete:
+      operationId: delete-portal-page
       summary: Delete Portal Page
       description: Deletes a single custom page for this portal.
-      operationId: delete-portal-page
       parameters:
         - $ref: '#/components/parameters/parameters-PortalId'
         - $ref: '#/components/parameters/PageId'
-      tags:
-        - Portal Pages
       responses:
         '204':
           description: No Content
@@ -352,14 +332,764 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Pages
 components:
+  parameters:
+    PageId:
+      schema:
+        type: string
+        format: uuid
+        example: ebbac5b0-ac89-45c3-9d2e-c4542c657e79
+      name: pageId
+      in: path
+      required: true
+      description: ID of the page.
+    PageNumber:
+      name: 'page[number]'
+      description: Determines which page of the entities to retrieve.
+      required: false
+      in: query
+      allowEmptyValue: true
+      schema:
+        type: integer
+        example: 1
+    PageSize:
+      name: 'page[size]'
+      description: The maximum number of items to include per page. The last page of a collection may include fewer items.
+      required: false
+      in: query
+      allowEmptyValue: true
+      schema:
+        type: integer
+        example: 10
+    SortPortalPages:
+      name: sort
+      description: |
+        Sorts a collection of portal pages. Supported sort attributes are:
+          - created_at
+          - updated_at
+          - path
+          - title
+          - public
+      in: query
+      required: false
+      schema:
+        type: string
+    parameters-PortalId:
+      schema:
+        type: string
+        format: uuid
+      name: portalId
+      in: path
+      required: true
+      description: ID of the portal.
+  schemas:
+    PagePath:
+      description: The path of a page in a portal with a leading slash.
+      type: string
+      example: /my-page
+      maxLength: 512
+      title: PagePath
+    PageTitle:
+      description: The title of a page in a portal.
+      type: string
+      example: My Page
+      maxLength: 512
+      title: PageTitle
+    PageContent:
+      description: The renderable markdown content of a page in a portal.
+      type: string
+      example: '# Welcome to My Page'
+      maxLength: 1000000
+      title: PageContent
+    PagePublicStatus:
+      description: Whether a page is publicly accessible to non-authenticated users. Defaults to false.
+      type: boolean
+      example: true
+      title: PagePublicStatus
+    PagePublishStatus:
+      description: Whether a page is visible on a given portal. Defaults to false.
+      type: boolean
+      example: true
+      title: PagePublishStatus
+    PageDescription:
+      type: string
+      example: A custom page about developer portals
+      maxLength: 160
+      title: PageDescription
+    PagePublicStatusWithDefault:
+      description: Whether a page is publicly accessible to non-authenticated users.
+      type: boolean
+      example: true
+      default: false
+      title: PagePublicStatusWithDefault
+    UpdatePortalPageRequest:
+      description: Update a page in a portal.
+      type: object
+      properties:
+        path:
+          $ref: '#/components/schemas/PagePath'
+        title:
+          $ref: '#/components/schemas/PageTitle'
+        content:
+          $ref: '#/components/schemas/PageContent'
+        public:
+          $ref: '#/components/schemas/PagePublicStatus'
+        published:
+          $ref: '#/components/schemas/PagePublishStatus'
+        description:
+          $ref: '#/components/schemas/PageDescription'
+      additionalProperties: false
+      title: UpdatePortalPageRequest
+    CreatePortalPageRequest:
+      description: Create a page in a portal.
+      type: object
+      properties:
+        path:
+          $ref: '#/components/schemas/PagePath'
+        title:
+          $ref: '#/components/schemas/PageTitle'
+        content:
+          $ref: '#/components/schemas/PageContent'
+        public:
+          $ref: '#/components/schemas/PagePublicStatusWithDefault'
+        published:
+          $ref: '#/components/schemas/PagePublishStatus'
+        description:
+          $ref: '#/components/schemas/PageDescription'
+      additionalProperties: false
+      required:
+        - path
+        - title
+        - content
+      title: CreatePortalPageRequest
+    PortalPageInfo:
+      description: Information about a page in a portal.
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        path:
+          $ref: '#/components/schemas/PagePath'
+        title:
+          $ref: '#/components/schemas/PageTitle'
+        public:
+          $ref: '#/components/schemas/PagePublicStatus'
+        published:
+          $ref: '#/components/schemas/PagePublishStatus'
+        description:
+          $ref: '#/components/schemas/PageDescription'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
+      required:
+        - id
+        - path
+        - title
+        - public
+        - created_at
+        - updated_at
+        - published
+      title: PortalPageInfo
+    PortalPageResponse:
+      description: Details about a page in a portal.
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        path:
+          $ref: '#/components/schemas/PagePath'
+        title:
+          $ref: '#/components/schemas/PageTitle'
+        content:
+          $ref: '#/components/schemas/PageContent'
+        public:
+          $ref: '#/components/schemas/PagePublicStatus'
+        published:
+          $ref: '#/components/schemas/PagePublishStatus'
+        description:
+          $ref: '#/components/schemas/PageDescription'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
+      required:
+        - id
+        - path
+        - title
+        - content
+        - public
+        - published
+        - created_at
+        - updated_at
+      title: PortalPageResponse
+    ListPortalPagesResponse:
+      description: A paginated list of custom pages in a portal.
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PortalPageInfo'
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
+      example:
+        data:
+          - id: 437c7192-fea0-4f35-8478-c8d57783f8c1
+            path: /my-page
+            title: My Page
+            public: true
+            published: true
+            description: A custom page
+            created_at: '2021-01-01T00:00:00Z'
+            updated_at: '2021-01-01T00:00:00Z'
+        meta:
+          page:
+            number: 1
+            size: 10
+            total: 1
+      additionalProperties: false
+      required:
+        - data
+        - meta
+      title: ListPortalPagesResponse
+    PortalPagesFilters:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UuidFieldFilter'
+        path:
+          $ref: '#/components/schemas/StringFieldFilter'
+        title:
+          $ref: '#/components/schemas/StringFieldFilter'
+        public:
+          $ref: '#/components/schemas/BooleanFieldFilter'
+        created_at:
+          $ref: '#/components/schemas/DateTimeFieldFilter'
+        updated_at:
+          $ref: '#/components/schemas/DateTimeFieldFilter'
+      additionalProperties: false
+      title: PortalPagesFilters
+    PortalConfig:
+      type: object
+      additionalProperties: true
+      title: PortalConfig
+    StringFieldEqualsFilter:
+      description: Filters on the given string field value by exact match.
+      oneOf:
+        - type: string
+        - type: object
+          title: StringFieldEqualsComparison
+          additionalProperties: false
+          properties:
+            eq:
+              type: string
+          required:
+            - eq
+      title: StringFieldEqualsFilter
+      x-examples:
+        example-1: equals-some-value
+        example-2:
+          eq: some-value
+    StringFieldOEQFilter:
+      description: Returns entities that exact match any of the comma-delimited phrases in the filter string.
+      type: object
+      properties:
+        oeq:
+          type: string
+      additionalProperties: false
+      required:
+        - oeq
+      title: StringFieldOEQFilter
+      x-examples:
+        example-1:
+          oeq: 'some-value,some-other-value'
+    StringFieldNEQFilter:
+      description: Filters on the given string field value by exact match inequality.
+      type: object
+      properties:
+        neq:
+          type: string
+      additionalProperties: false
+      required:
+        - neq
+      title: StringFieldNEQFilter
+      x-examples:
+        example-1:
+          neq: not-this-value
+    UuidFieldFilter:
+      description: Filters on the given UUID field value by exact match.
+      oneOf:
+        - $ref: '#/components/schemas/StringFieldEqualsFilter'
+        - $ref: '#/components/schemas/StringFieldOEQFilter'
+        - $ref: '#/components/schemas/StringFieldNEQFilter'
+      title: UuidFieldFilter
+      x-examples:
+        example-1: 3bbfd3a-e9ab-48a9-9881-ed589e4615d1
+        example-2:
+          eq: 3bbfd3a-e9ab-48a9-9881-ed589e4615d1
+        example-3:
+          oeq: 3bbfd3a-e9ab-48a9-9881-ed589e4615d1
+        example-4:
+          neq: 3bbfd3a-e9ab-48a9-9881-ed589e4615d1
+    StringFieldContainsFilter:
+      description: Filters on the given string field value by fuzzy match.
+      type: object
+      properties:
+        contains:
+          type: string
+      additionalProperties: false
+      required:
+        - contains
+      title: StringFieldContainsFilter
+      x-examples:
+        example-1:
+          contains: some-value
+    StringFieldOContainsFilter:
+      description: Returns entities that fuzzy-match any of the comma-delimited phrases in the filter string.
+      type: object
+      properties:
+        ocontains:
+          type: string
+      additionalProperties: false
+      required:
+        - ocontains
+      title: StringFieldOContainsFilter
+      x-examples:
+        example-1:
+          ocontains: 'this-value,or-that-value'
+    StringFieldFilter:
+      description: Filters on the given string field value by either exact or fuzzy match.
+      oneOf:
+        - $ref: '#/components/schemas/StringFieldEqualsFilter'
+        - $ref: '#/components/schemas/StringFieldContainsFilter'
+        - $ref: '#/components/schemas/StringFieldOContainsFilter'
+        - $ref: '#/components/schemas/StringFieldOEQFilter'
+        - $ref: '#/components/schemas/StringFieldNEQFilter'
+      title: StringFieldFilter
+      x-examples:
+        example-1: equals-some-value
+        example-2:
+          eq: some-value
+        example-3:
+          contains: some-value
+        example-4:
+          ocontains: 'some-potential,value'
+        example-5:
+          oeq: 'some-potential,value'
+        example-6:
+          neq: not-this-value
+    BooleanFieldFilter:
+      description: Filter by a boolean value (true/false).
+      type: boolean
+      title: BooleanFieldFilter
+      x-examples:
+        example-1: true
+    PageMeta:
+      description: Contains pagination query parameters and the total number of objects returned.
+      type: object
+      properties:
+        number:
+          type: number
+          example: 1
+        size:
+          type: number
+          example: 10
+        total:
+          type: number
+          example: 100
+      required:
+        - number
+        - size
+        - total
+    PaginatedMeta:
+      description: returns the pagination information
+      type: object
+      properties:
+        page:
+          $ref: '#/components/schemas/PageMeta'
+      required:
+        - page
+      title: PaginatedMeta
+    UUID:
+      description: Contains a unique identifier used for this resource.
+      type: string
+      format: uuid
+      example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+      readOnly: true
+    CreatedAt:
+      description: An ISO-8601 timestamp representation of entity creation date.
+      type: string
+      format: date-time
+      example: '2022-11-04T20:10:06.927Z'
+      readOnly: true
+    UpdatedAt:
+      description: An ISO-8601 timestamp representation of entity update date.
+      type: string
+      format: date-time
+      example: '2022-11-04T20:10:06.927Z'
+      readOnly: true
+    BaseError:
+      description: standard error
+      type: object
+      properties:
+        status:
+          description: |
+            The HTTP status code of the error. Useful when passing the response
+            body to child properties in a frontend UI. Must be returned as an integer.
+          type: integer
+          readOnly: true
+        title:
+          description: |
+            A short, human-readable summary of the problem. It should not
+            change between occurences of a problem, except for localization.
+            Should be provided as "Sentence case" for direct use in the UI.
+          type: string
+          readOnly: true
+        type:
+          description: The error type.
+          type: string
+          readOnly: true
+        instance:
+          description: |
+            Used to return the correlation ID back to the user, in the format
+            kong:trace:<correlation_id>. This helps us find the relevant logs
+            when a customer reports an issue.
+          type: string
+          readOnly: true
+        detail:
+          description: |
+            A human readable explanation specific to this occurence of the problem.
+            This field may contain request/entity data to help the user understand
+            what went wrong. Enclose variable values in square brackets. Should be
+            provided as "Sentence case" for direct use in the UI.
+          type: string
+          readOnly: true
+      required:
+        - status
+        - title
+        - instance
+        - detail
+      title: Error
+    InvalidRules:
+      description: invalid parameters rules
+      type: string
+      enum:
+        - required
+        - max_length
+        - is_array
+        - is_base64
+        - is_boolean
+        - is_date_time
+        - is_integer
+        - is_null
+        - is_number
+        - is_object
+        - is_string
+        - is_uuid
+        - is_fqdn
+        - is_arn
+        - unknown_property
+        - is_label
+        - matches_regex
+        - invalid
+        - is_supported_network_availability_zone_list
+        - is_supported_network_cidr_block
+        - is_supported_provider_region
+      nullable: true
+      readOnly: true
+    InvalidParameterStandard:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          $ref: '#/components/schemas/InvalidRules'
+        source:
+          type: string
+          example: body
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+      additionalProperties: false
+      required:
+        - field
+        - reason
+    InvalidParameterMinimumLength:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          description: invalid parameters rules
+          type: string
+          enum:
+            - min_length
+            - min_digits
+            - min_lowercase
+            - min_uppercase
+            - min_symbols
+          nullable: false
+          readOnly: true
+        minimum:
+          type: integer
+          example: 8
+        source:
+          type: string
+          example: body
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+      additionalProperties: false
+      required:
+        - field
+        - reason
+        - rule
+        - minimum
+    InvalidParameterChoiceItem:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          description: invalid parameters rules
+          type: string
+          enum:
+            - enum
+          nullable: false
+          readOnly: true
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+        choices:
+          type: array
+          items: {}
+          minimum: 1
+          nullable: false
+          readOnly: true
+          uniqueItems: true
+        source:
+          type: string
+          example: body
+      additionalProperties: false
+      required:
+        - field
+        - reason
+        - rule
+        - choices
+    InvalidParameterDependentItem:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          description: invalid parameters rules
+          type: string
+          enum:
+            - dependent_fields
+          nullable: true
+          readOnly: true
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+        dependents:
+          type: array
+          items: {}
+          nullable: true
+          readOnly: true
+          uniqueItems: true
+        source:
+          type: string
+          example: body
+      additionalProperties: false
+      required:
+        - field
+        - rule
+        - reason
+        - dependents
+    InvalidParameters:
+      description: invalid parameters
+      type: array
+      items:
+        oneOf:
+          - $ref: '#/components/schemas/InvalidParameterStandard'
+          - $ref: '#/components/schemas/InvalidParameterMinimumLength'
+          - $ref: '#/components/schemas/InvalidParameterChoiceItem'
+          - $ref: '#/components/schemas/InvalidParameterDependentItem'
+      minItems: 1
+      nullable: false
+      uniqueItems: true
+    BadRequestError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          required:
+            - invalid_parameters
+          properties:
+            invalid_parameters:
+              $ref: '#/components/schemas/InvalidParameters'
+    UnauthorizedError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 401
+            title:
+              example: Unauthorized
+            type:
+              example: 'https://httpstatuses.com/401'
+            instance:
+              example: 'kong:trace:1234567890'
+            detail:
+              example: Invalid credentials
+    ForbiddenError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 403
+            title:
+              example: Forbidden
+            type:
+              example: 'https://httpstatuses.com/403'
+            instance:
+              example: 'kong:trace:1234567890'
+            detail:
+              example: Forbidden
+    NotFoundError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 404
+            title:
+              example: Not Found
+            type:
+              example: 'https://httpstatuses.com/404'
+            instance:
+              example: 'kong:trace:1234567890'
+            detail:
+              example: Not found
+    ConflictError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 409
+            title:
+              example: Conflict
+            type:
+              example: 'https://httpstatuses.com/409'
+            instance:
+              example: 'kong:trace:1234567890'
+            detail:
+              example: Conflict
+    DateTimeFieldFilter:
+      description: Filters on the given datetime (RFC-3339) field value.
+      oneOf:
+        - type: string
+          format: date-time
+          description: Value strictly equals given RFC-3339 formatted timestamp in UTC
+          example: '2022-03-30T07:20:50Z'
+        - type: object
+          title: DateTimeFieldEqualsFilter
+          additionalProperties: false
+          properties:
+            eq:
+              description: Value strictly equals given RFC-3339 formatted timestamp in UTC
+              type: string
+              format: date-time
+              example: '2022-03-30T07:20:50Z'
+          required:
+            - eq
+        - type: object
+          title: DateTimeFieldLTFilter
+          additionalProperties: false
+          properties:
+            lt:
+              description: Value is less than the given RFC-3339 formatted timestamp in UTC
+              type: string
+              format: date-time
+              example: '2022-03-30T07:20:50Z'
+          required:
+            - lt
+        - type: object
+          title: DateTimeFieldLTEFilter
+          additionalProperties: false
+          properties:
+            lte:
+              description: Value is less than or equal to the given RFC-3339 formatted timestamp in UTC
+              type: string
+              format: date-time
+              example: '2022-03-30T07:20:50Z'
+          required:
+            - lte
+        - type: object
+          title: DateTimeFieldGTFilter
+          additionalProperties: false
+          properties:
+            lt:
+              description: Value is greater than the given RFC-3339 formatted timestamp in UTC
+              type: string
+              format: date-time
+              example: '2022-03-30T07:20:50Z'
+          required:
+            - gt
+        - type: object
+          title: DateTimeFieldGTEFilter
+          additionalProperties: false
+          properties:
+            lte:
+              description: Value is greater than or equal to the given RFC-3339 formatted timestamp in UTC
+              type: string
+              format: date-time
+              example: '2022-03-30T07:20:50Z'
+          required:
+            - gte
+      title: DateTimeFieldFilter
+      x-examples:
+        datetime_field_1: '2022-03-30T07:20:50Z'
+        datetime_field_2:
+          eq: '2022-03-30T07:20:50Z'
+        datetime_field_3:
+          lt: '2022-03-30T07:20:50Z'
+        datetime_field_4:
+          lte: '2022-03-30T07:20:50Z'
+        datetime_field_5:
+          gt: '2022-03-30T07:20:50Z'
+        datetime_field_6:
+          gte: '2022-03-30T07:20:50Z'
+    PortalCustomization:
+      type: object
+      additionalProperties: true
+      title: PortalCustomization
   examples:
     400-request-format-is-invalid:
       value:
         status: 400
         title: Bad Request
         detail: Could not parse request body
-        instance: konnect:trace:3674017986744198214
+        instance: 'konnect:trace:3674017986744198214'
         invalid_parameters:
           - field: body
             reason: request format is invalid
@@ -368,7 +1098,7 @@ components:
         status: 400
         title: Bad Request
         detail: Required field missing
-        instance: konnect:trace:6644808935508571943
+        instance: 'konnect:trace:6644808935508571943'
         invalid_parameters:
           - field: authorization
             reason: cannot be blank
@@ -377,7 +1107,7 @@ components:
         status: 400
         title: Bad Request
         detail: Required field missing
-        instance: konnect:trace:6644808935508571943
+        instance: 'konnect:trace:6644808935508571943'
         invalid_parameters:
           - field: endpoint
             reason: cannot be blank
@@ -386,7 +1116,7 @@ components:
         status: 400
         title: Bad Request
         detail: Invalid endpoint
-        instance: konnect:trace:6644808935508571943
+        instance: 'konnect:trace:6644808935508571943'
         invalid_parameters:
           - field: endpoint
             reason: must be a valid URL
@@ -394,7 +1124,7 @@ components:
       value:
         status: 409
         title: Resource Conflict
-        instance: konnect:trace:6644808935508571943
+        instance: 'konnect:trace:6644808935508571943'
         detail: A replay job is currently running
     Update-Portal-Audit-Log-Webhook:
       value:
@@ -420,26 +1150,20 @@ components:
       value:
         title: Getting Started
         path: /getting-started
-        content: >-
-          Welcome to the Getting Started page. This is where you can learn how
-          to use our APIs.
+        content: Welcome to the Getting Started page. This is where you can learn how to use our APIs.
         public: true
         published: true
     UpdatePortalPageExample1:
       value:
         title: About Us
         path: /about-us
-        content: >-
-          Welcome to the About Us page. This is where you can learn about our
-          company.
+        content: Welcome to the About Us page. This is where you can learn about our company.
     PortalPageExample1:
       value:
         id: 8f9fd312-a987-4628-b4c5-bb4f4fddd5f7
         path: /
         title: Home
-        content: >-
-          Welcome to the home page of the portal. This is where you can find
-          information about the portal and its products.
+        content: Welcome to the home page of the portal. This is where you can find information about the portal and its products.
         public: true
         published: true
         created_at: '2022-02-07T17:46:57.52Z'
@@ -464,7 +1188,7 @@ components:
       value:
         status: 400
         title: Invalid Request
-        instance: kong:trace:1433447772874964729
+        instance: 'kong:trace:1433447772874964729'
         detail: Invalid Parameters
         invalid_parameters:
           - field: my_property
@@ -475,7 +1199,7 @@ components:
       value:
         status: 400
         title: Invalid Request
-        instance: kong:trace:1433447772874964729
+        instance: 'kong:trace:1433447772874964729'
         detail: Invalid Parameters
         invalid_parameters:
           - field: title
@@ -486,10 +1210,10 @@ components:
       value:
         status: 400
         title: Invalid Request
-        instance: kong:trace:1433447772874964729
+        instance: 'kong:trace:1433447772874964729'
         detail: Invalid Parameters
         invalid_parameters:
-          - field: page[size]
+          - field: 'page[size]'
             rule: is_number
             reason: '"page[size]" must be a number'
             source: query
@@ -497,10 +1221,10 @@ components:
       value:
         status: 400
         title: Invalid Request
-        instance: kong:trace:1433447772874964729
+        instance: 'kong:trace:1433447772874964729'
         detail: Invalid Parameters
         invalid_parameters:
-          - field: filter[my_attribute]
+          - field: 'filter[my_attribute]'
             rule: unknown_property
             reason: '"filter[my_attribute]" is not allowed'
             source: query
@@ -508,19 +1232,19 @@ components:
       value:
         status: 401
         title: Unauthorized
-        instance: kong:trace:8347343766220159418
+        instance: 'kong:trace:8347343766220159418'
         detail: Unauthorized
     ForbiddenExample:
       value:
         status: 403
         title: Forbidden
-        instance: kong:trace:2723154947768991354
+        instance: 'kong:trace:2723154947768991354'
         detail: You do not have permission to perform this action
     NotFoundExample:
       value:
         status: 404
         title: Not Found
-        instance: kong:trace:6816496025408232265
+        instance: 'kong:trace:6816496025408232265'
         detail: Not Found
   requestBodies:
     UpdatePortalConfig:
@@ -545,26 +1269,22 @@ components:
         application/json:
           schema:
             type: object
+            properties:
+              start_at:
+                description: |-
+                  The start of a date-time range in RFC3339 format e.g. 2017-07-21T17:32:28Z.
+                  Must be within the last 7 days.
+                type: string
+                format: date-time
+              end_at:
+                description: |-
+                  The end of a date-time range in RFC3339 format e.g. 2017-07-21T17:32:28Z.
+                  Must be within the last 7 days.
+                type: string
+                format: date-time
             required:
               - start_at
               - end_at
-            properties:
-              start_at:
-                type: string
-                format: date-time
-                description: >-
-                  The start of a date-time range in RFC3339 format e.g.
-                  2017-07-21T17:32:28Z.
-
-                  Must be within the last 7 days.
-              end_at:
-                type: string
-                format: date-time
-                description: >-
-                  The end of a date-time range in RFC3339 format e.g.
-                  2017-07-21T17:32:28Z.
-
-                  Must be within the last 7 days.
     UpdatePortalAuditLogWebhook:
       description: The request schema to modify an portal audit log webhook.
       content:
@@ -573,16 +1293,14 @@ components:
             type: object
             properties:
               enabled:
+                description: Indicates if the data should be sent to the configured destination.
                 type: boolean
                 example: true
-                description: >-
-                  Indicates if the data should be sent to the configured
-                  destination.
                 default: false
               audit_log_destination_id:
+                description: ID of the audit log destination.
                 type: string
                 format: uuid
-                description: ID of the audit log destination.
           examples:
             Disable Webhook:
               $ref: '#/components/examples/Disable-Portal-Audit-Log-Webhook'
@@ -610,57 +1328,6 @@ components:
           examples:
             Example 1:
               $ref: '#/components/examples/UpdatePortalPageExample1'
-  parameters:
-    SortPortalPages:
-      name: sort
-      description: |
-        Sorts a collection of portal pages. Supported sort attributes are:
-          - created_at
-          - updated_at
-          - path
-          - title
-          - public
-      in: query
-      required: false
-      schema:
-        type: string
-    PageSize:
-      name: page[size]
-      description: >-
-        The maximum number of items to include per page. The last page of a
-        collection may include fewer items.
-      required: false
-      in: query
-      allowEmptyValue: true
-      schema:
-        type: integer
-        example: 10
-    PageNumber:
-      name: page[number]
-      description: Determines which page of the entities to retrieve.
-      required: false
-      in: query
-      allowEmptyValue: true
-      schema:
-        type: integer
-        example: 1
-    parameters-PortalId:
-      schema:
-        type: string
-        format: uuid
-      name: portalId
-      in: path
-      required: true
-      description: ID of the portal.
-    PageId:
-      schema:
-        type: string
-        format: uuid
-        example: ebbac5b0-ac89-45c3-9d2e-c4542c657e79
-      name: pageId
-      in: path
-      required: true
-      description: ID of the page.
   responses:
     GetPortalConfig:
       description: Response for a portal configuration
@@ -676,19 +1343,15 @@ components:
             type: object
             properties:
               start_at:
+                description: 'The start of a date-time range. Initial value is 0001-01-01T00:00:0Z.'
                 type: string
                 format: date-time
                 example: '2017-07-21T17:32:28Z'
-                description: >-
-                  The start of a date-time range. Initial value is
-                  0001-01-01T00:00:0Z.
               end_at:
+                description: 'The end of a date-time range. Initial value is 0001-01-01T00:00:0Z.'
                 type: string
                 format: date-time
                 example: '2017-07-21T17:32:28Z'
-                description: >-
-                  The end of a date-time range. Initial value is
-                  0001-01-01T00:00:0Z.
               status:
                 type: string
                 enum:
@@ -700,10 +1363,8 @@ components:
                   - failed
                 readOnly: true
               updated_at:
+                description: 'Timestamp when this job was last updated. Initial value is 0001-01-01T00:00:0Z.'
                 type: string
-                description: >-
-                  Timestamp when this job was last updated. Initial value is
-                  0001-01-01T00:00:0Z.
                 format: date-time
                 readOnly: true
     PortalAuditLogWebhook:
@@ -714,16 +1375,14 @@ components:
             type: object
             properties:
               enabled:
+                description: Indicates if the data should be sent to the configured audit log destination.
                 type: boolean
                 example: true
-                description: >-
-                  Indicates if the data should be sent to the configured audit
-                  log destination.
                 default: false
               audit_log_destination_id:
+                description: ID of the audit log destination.
                 type: string
                 format: uuid
-                description: ID of the audit log destination.
           examples:
             Get Portal Audit Log Webhook:
               $ref: '#/components/examples/Get-Portal-Audit-Log-Webhook'
@@ -735,42 +1394,33 @@ components:
             type: object
             properties:
               webhook_status:
+                description: |-
+                  Current status of a webhook. `active` indicates the webhook is sending or ready to send requests. 
+                  `inactive` indicates the webhook has been turned off due to failed attempts.
                 type: string
                 example: active
                 enum:
                   - active
                   - inactive
-                description: >-
-                  Current status of a webhook. `active` indicates the webhook is
-                  sending or ready to send requests. 
-
-                  `inactive` indicates the webhook has been turned off due to
-                  failed attempts.
               webhook_enabled:
+                description: |-
+                  Configured status of a webhook. `enabled` indicates the client will accept requests. 
+                  `disabled` indicates the client will not accept requests.
                 type: boolean
                 example: true
-                description: >-
-                  Configured status of a webhook. `enabled` indicates the client
-                  will accept requests. 
-
-                  `disabled` indicates the client will not accept requests.
               last_attempt_at:
+                description: 'The last time a request was made to the webhook, regardless of outcome.'
                 type: string
                 format: date-time
                 example: '2023-03-21T09:29:14.52Z'
-                description: >-
-                  The last time a request was made to the webhook, regardless of
-                  outcome.
               last_response_code:
+                description: The last response code received from the webhook.
                 type: integer
                 example: 401
-                description: The last response code received from the webhook.
               last_response_message:
+                description: The last message received from the webhook. Useful for debugging.
                 type: string
                 example: Unauthenticated
-                description: >-
-                  The last message received from the webhook. Useful for
-                  debugging.
           examples:
             Get Audit Log Webhook Status:
               $ref: '#/components/examples/Get-Portal-Audit-Log-Webhook-Status'
@@ -855,757 +1505,32 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/PortalCustomization'
-  schemas:
-    PagePath:
-      title: PagePath
-      description: The path of a page in a portal with a leading slash.
-      type: string
-      maxLength: 512
-      example: /my-page
-    PageTitle:
-      title: PageTitle
-      description: The title of a page in a portal.
-      type: string
-      maxLength: 512
-      example: My Page
-    PageContent:
-      title: PageContent
-      description: The renderable markdown content of a page in a portal.
-      type: string
-      maxLength: 1000000
-      example: '# Welcome to My Page'
-    PagePublicStatus:
-      title: PagePublicStatus
-      description: >-
-        Whether a page is publicly accessible to non-authenticated users.
-        Defaults to false.
-      type: boolean
-      example: true
-    PagePublishStatus:
-      title: PagePublishStatus
-      description: Whether a page is visible on a given portal. Defaults to false.
-      type: boolean
-      example: true
-    PageDescription:
-      title: PageDescription
-      type: string
-      maxLength: 160
-      example: A custom page about developer portals
-    PagePublicStatusWithDefault:
-      title: PagePublicStatusWithDefault
-      description: Whether a page is publicly accessible to non-authenticated users.
-      type: boolean
-      default: false
-      example: true
-    UpdatePortalPageRequest:
-      title: UpdatePortalPageRequest
-      description: Update a page in a portal.
-      type: object
-      additionalProperties: false
-      properties:
-        path:
-          $ref: '#/components/schemas/PagePath'
-        title:
-          $ref: '#/components/schemas/PageTitle'
-        content:
-          $ref: '#/components/schemas/PageContent'
-        public:
-          $ref: '#/components/schemas/PagePublicStatus'
-        published:
-          $ref: '#/components/schemas/PagePublishStatus'
-        description:
-          $ref: '#/components/schemas/PageDescription'
-    CreatePortalPageRequest:
-      title: CreatePortalPageRequest
-      description: Create a page in a portal.
-      type: object
-      additionalProperties: false
-      required:
-        - path
-        - title
-        - content
-      properties:
-        path:
-          $ref: '#/components/schemas/PagePath'
-        title:
-          $ref: '#/components/schemas/PageTitle'
-        content:
-          $ref: '#/components/schemas/PageContent'
-        public:
-          $ref: '#/components/schemas/PagePublicStatusWithDefault'
-        published:
-          $ref: '#/components/schemas/PagePublishStatus'
-        description:
-          $ref: '#/components/schemas/PageDescription'
-    PortalPageInfo:
-      title: PortalPageInfo
-      description: Information about a page in a portal.
-      type: object
-      additionalProperties: false
-      required:
-        - id
-        - path
-        - title
-        - public
-        - created_at
-        - updated_at
-        - published
-      properties:
-        id:
-          $ref: '#/components/schemas/UUID'
-        path:
-          $ref: '#/components/schemas/PagePath'
-        title:
-          $ref: '#/components/schemas/PageTitle'
-        public:
-          $ref: '#/components/schemas/PagePublicStatus'
-        published:
-          $ref: '#/components/schemas/PagePublishStatus'
-        description:
-          $ref: '#/components/schemas/PageDescription'
-        created_at:
-          $ref: '#/components/schemas/CreatedAt'
-        updated_at:
-          $ref: '#/components/schemas/UpdatedAt'
-    PortalPageResponse:
-      title: PortalPageResponse
-      description: Details about a page in a portal.
-      additionalProperties: false
-      type: object
-      required:
-        - id
-        - path
-        - title
-        - content
-        - public
-        - published
-        - created_at
-        - updated_at
-      properties:
-        id:
-          $ref: '#/components/schemas/UUID'
-        path:
-          $ref: '#/components/schemas/PagePath'
-        title:
-          $ref: '#/components/schemas/PageTitle'
-        content:
-          $ref: '#/components/schemas/PageContent'
-        public:
-          $ref: '#/components/schemas/PagePublicStatus'
-        published:
-          $ref: '#/components/schemas/PagePublishStatus'
-        description:
-          $ref: '#/components/schemas/PageDescription'
-        created_at:
-          $ref: '#/components/schemas/CreatedAt'
-        updated_at:
-          $ref: '#/components/schemas/UpdatedAt'
-    ListPortalPagesResponse:
-      title: ListPortalPagesResponse
-      description: A paginated list of custom pages in a portal.
-      additionalProperties: false
-      type: object
-      required:
-        - data
-        - meta
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/PortalPageInfo'
-        meta:
-          $ref: '#/components/schemas/PaginatedMeta'
-      example:
-        data:
-          - id: 437c7192-fea0-4f35-8478-c8d57783f8c1
-            path: /my-page
-            title: My Page
-            public: true
-            published: true
-            description: A custom page
-            created_at: '2021-01-01T00:00:00Z'
-            updated_at: '2021-01-01T00:00:00Z'
-        meta:
-          page:
-            number: 1
-            size: 10
-            total: 1
-    PortalPagesFilters:
-      title: PortalPagesFilters
-      type: object
-      additionalProperties: false
-      properties:
-        id:
-          $ref: '#/components/schemas/UuidFieldFilter'
-        path:
-          $ref: '#/components/schemas/StringFieldFilter'
-        title:
-          $ref: '#/components/schemas/StringFieldFilter'
-        public:
-          $ref: '#/components/schemas/BooleanFieldFilter'
-        created_at:
-          $ref: '#/components/schemas/DateTimeFieldFilter'
-        updated_at:
-          $ref: '#/components/schemas/DateTimeFieldFilter'
-    PortalConfig:
-      title: PortalConfig
-      type: object
-      additionalProperties: true
-    StringFieldEqualsFilter:
-      title: StringFieldEqualsFilter
-      description: Filters on the given string field value by exact match.
-      oneOf:
-        - type: string
-        - type: object
-          title: StringFieldEqualsComparison
-          additionalProperties: false
-          properties:
-            eq:
-              type: string
-          required:
-            - eq
-      x-examples:
-        example-1: equals-some-value
-        example-2:
-          eq: some-value
-    StringFieldOEQFilter:
-      title: StringFieldOEQFilter
-      description: >-
-        Returns entities that exact match any of the comma-delimited phrases in
-        the filter string.
-      type: object
-      additionalProperties: false
-      properties:
-        oeq:
-          type: string
-      required:
-        - oeq
-      x-examples:
-        example-1:
-          oeq: some-value,some-other-value
-    StringFieldNEQFilter:
-      title: StringFieldNEQFilter
-      description: Filters on the given string field value by exact match inequality.
-      type: object
-      additionalProperties: false
-      properties:
-        neq:
-          type: string
-      required:
-        - neq
-      x-examples:
-        example-1:
-          neq: not-this-value
-    UuidFieldFilter:
-      title: UuidFieldFilter
-      description: Filters on the given UUID field value by exact match.
-      oneOf:
-        - $ref: '#/components/schemas/StringFieldEqualsFilter'
-        - $ref: '#/components/schemas/StringFieldOEQFilter'
-        - $ref: '#/components/schemas/StringFieldNEQFilter'
-      x-examples:
-        example-1: 3bbfd3a-e9ab-48a9-9881-ed589e4615d1
-        example-2:
-          eq: 3bbfd3a-e9ab-48a9-9881-ed589e4615d1
-        example-3:
-          oeq: 3bbfd3a-e9ab-48a9-9881-ed589e4615d1
-        example-4:
-          neq: 3bbfd3a-e9ab-48a9-9881-ed589e4615d1
-    StringFieldContainsFilter:
-      title: StringFieldContainsFilter
-      description: Filters on the given string field value by fuzzy match.
-      type: object
-      additionalProperties: false
-      properties:
-        contains:
-          type: string
-      required:
-        - contains
-      x-examples:
-        example-1:
-          contains: some-value
-    StringFieldOContainsFilter:
-      title: StringFieldOContainsFilter
-      description: >-
-        Returns entities that fuzzy-match any of the comma-delimited phrases in
-        the filter string.
-      type: object
-      additionalProperties: false
-      properties:
-        ocontains:
-          type: string
-      required:
-        - ocontains
-      x-examples:
-        example-1:
-          ocontains: this-value,or-that-value
-    StringFieldFilter:
-      title: StringFieldFilter
-      description: Filters on the given string field value by either exact or fuzzy match.
-      oneOf:
-        - $ref: '#/components/schemas/StringFieldEqualsFilter'
-        - $ref: '#/components/schemas/StringFieldContainsFilter'
-        - $ref: '#/components/schemas/StringFieldOContainsFilter'
-        - $ref: '#/components/schemas/StringFieldOEQFilter'
-        - $ref: '#/components/schemas/StringFieldNEQFilter'
-      x-examples:
-        example-1: equals-some-value
-        example-2:
-          eq: some-value
-        example-3:
-          contains: some-value
-        example-4:
-          ocontains: some-potential,value
-        example-5:
-          oeq: some-potential,value
-        example-6:
-          neq: not-this-value
-    BooleanFieldFilter:
-      title: BooleanFieldFilter
-      description: Filter by a boolean value (true/false).
-      type: boolean
-      x-examples:
-        example-1: true
-    PageMeta:
-      type: object
-      description: >-
-        Contains pagination query parameters and the total number of objects
-        returned.
-      required:
-        - number
-        - size
-        - total
-      properties:
-        number:
-          type: number
-          example: 1
-        size:
-          type: number
-          example: 10
-        total:
-          type: number
-          example: 100
-    PaginatedMeta:
-      type: object
-      title: PaginatedMeta
-      description: returns the pagination information
-      properties:
-        page:
-          $ref: '#/components/schemas/PageMeta'
-      required:
-        - page
-    UUID:
-      type: string
-      format: uuid
-      example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-      description: Contains a unique identifier used for this resource.
-      readOnly: true
-    CreatedAt:
-      type: string
-      format: date-time
-      example: '2022-11-04T20:10:06.927Z'
-      description: An ISO-8601 timestamp representation of entity creation date.
-      readOnly: true
-    UpdatedAt:
-      type: string
-      format: date-time
-      example: '2022-11-04T20:10:06.927Z'
-      description: An ISO-8601 timestamp representation of entity update date.
-      readOnly: true
-    BaseError:
-      type: object
-      title: Error
-      description: standard error
-      required:
-        - status
-        - title
-        - instance
-        - detail
-      properties:
-        status:
-          type: integer
-          description: >
-            The HTTP status code of the error. Useful when passing the response
-
-            body to child properties in a frontend UI. Must be returned as an
-            integer.
-          readOnly: true
-        title:
-          type: string
-          description: |
-            A short, human-readable summary of the problem. It should not
-            change between occurences of a problem, except for localization.
-            Should be provided as "Sentence case" for direct use in the UI.
-          readOnly: true
-        type:
-          type: string
-          description: The error type.
-          readOnly: true
-        instance:
-          type: string
-          description: |
-            Used to return the correlation ID back to the user, in the format
-            kong:trace:<correlation_id>. This helps us find the relevant logs
-            when a customer reports an issue.
-          readOnly: true
-        detail:
-          type: string
-          description: >
-            A human readable explanation specific to this occurence of the
-            problem.
-
-            This field may contain request/entity data to help the user
-            understand
-
-            what went wrong. Enclose variable values in square brackets. Should
-            be
-
-            provided as "Sentence case" for direct use in the UI.
-          readOnly: true
-    InvalidRules:
-      description: invalid parameters rules
-      type: string
-      readOnly: true
-      nullable: true
-      enum:
-        - required
-        - max_length
-        - is_array
-        - is_base64
-        - is_boolean
-        - is_date_time
-        - is_integer
-        - is_null
-        - is_number
-        - is_object
-        - is_string
-        - is_uuid
-        - is_fqdn
-        - is_arn
-        - unknown_property
-        - is_label
-        - matches_regex
-        - invalid
-        - is_supported_network_availability_zone_list
-        - is_supported_network_cidr_block
-        - is_supported_provider_region
-    InvalidParameterStandard:
-      type: object
-      additionalProperties: false
-      properties:
-        field:
-          type: string
-          example: name
-          readOnly: true
-        rule:
-          $ref: '#/components/schemas/InvalidRules'
-        source:
-          type: string
-          example: body
-        reason:
-          type: string
-          example: is a required field
-          readOnly: true
-      required:
-        - field
-        - reason
-    InvalidParameterMinimumLength:
-      type: object
-      additionalProperties: false
-      properties:
-        field:
-          type: string
-          example: name
-          readOnly: true
-        rule:
-          description: invalid parameters rules
-          type: string
-          readOnly: true
-          nullable: false
-          enum:
-            - min_length
-            - min_digits
-            - min_lowercase
-            - min_uppercase
-            - min_symbols
-        minimum:
-          type: integer
-          example: 8
-        source:
-          type: string
-          example: body
-        reason:
-          type: string
-          example: is a required field
-          readOnly: true
-      required:
-        - field
-        - reason
-        - rule
-        - minimum
-    InvalidParameterChoiceItem:
-      type: object
-      additionalProperties: false
-      properties:
-        field:
-          type: string
-          example: name
-          readOnly: true
-        rule:
-          description: invalid parameters rules
-          type: string
-          readOnly: true
-          nullable: false
-          enum:
-            - enum
-        reason:
-          type: string
-          example: is a required field
-          readOnly: true
-        choices:
-          type: array
-          uniqueItems: true
-          readOnly: true
-          nullable: false
-          minimum: 1
-          items: {}
-        source:
-          type: string
-          example: body
-      required:
-        - field
-        - reason
-        - rule
-        - choices
-    InvalidParameterDependentItem:
-      type: object
-      additionalProperties: false
-      properties:
-        field:
-          type: string
-          example: name
-          readOnly: true
-        rule:
-          description: invalid parameters rules
-          type: string
-          readOnly: true
-          nullable: true
-          enum:
-            - dependent_fields
-        reason:
-          type: string
-          example: is a required field
-          readOnly: true
-        dependents:
-          type: array
-          uniqueItems: true
-          nullable: true
-          items: {}
-          readOnly: true
-        source:
-          type: string
-          example: body
-      required:
-        - field
-        - rule
-        - reason
-        - dependents
-    InvalidParameters:
-      type: array
-      nullable: false
-      uniqueItems: true
-      minItems: 1
-      description: invalid parameters
-      items:
-        oneOf:
-          - $ref: '#/components/schemas/InvalidParameterStandard'
-          - $ref: '#/components/schemas/InvalidParameterMinimumLength'
-          - $ref: '#/components/schemas/InvalidParameterChoiceItem'
-          - $ref: '#/components/schemas/InvalidParameterDependentItem'
-    BadRequestError:
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
-        - type: object
-          required:
-            - invalid_parameters
-          properties:
-            invalid_parameters:
-              $ref: '#/components/schemas/InvalidParameters'
-    UnauthorizedError:
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
-        - type: object
-          properties:
-            status:
-              example: 401
-            title:
-              example: Unauthorized
-            type:
-              example: https://httpstatuses.com/401
-            instance:
-              example: kong:trace:1234567890
-            detail:
-              example: Invalid credentials
-    ForbiddenError:
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
-        - type: object
-          properties:
-            status:
-              example: 403
-            title:
-              example: Forbidden
-            type:
-              example: https://httpstatuses.com/403
-            instance:
-              example: kong:trace:1234567890
-            detail:
-              example: Forbidden
-    NotFoundError:
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
-        - type: object
-          properties:
-            status:
-              example: 404
-            title:
-              example: Not Found
-            type:
-              example: https://httpstatuses.com/404
-            instance:
-              example: kong:trace:1234567890
-            detail:
-              example: Not found
-    ConflictError:
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
-        - type: object
-          properties:
-            status:
-              example: 409
-            title:
-              example: Conflict
-            type:
-              example: https://httpstatuses.com/409
-            instance:
-              example: kong:trace:1234567890
-            detail:
-              example: Conflict
-    DateTimeFieldFilter:
-      title: DateTimeFieldFilter
-      description: Filters on the given datetime (RFC-3339) field value.
-      oneOf:
-        - type: string
-          format: date-time
-          description: Value strictly equals given RFC-3339 formatted timestamp in UTC
-          example: '2022-03-30T07:20:50Z'
-        - type: object
-          title: DateTimeFieldEqualsFilter
-          additionalProperties: false
-          properties:
-            eq:
-              type: string
-              format: date-time
-              description: Value strictly equals given RFC-3339 formatted timestamp in UTC
-              example: '2022-03-30T07:20:50Z'
-          required:
-            - eq
-        - type: object
-          title: DateTimeFieldLTFilter
-          additionalProperties: false
-          properties:
-            lt:
-              type: string
-              format: date-time
-              description: Value is less than the given RFC-3339 formatted timestamp in UTC
-              example: '2022-03-30T07:20:50Z'
-          required:
-            - lt
-        - type: object
-          title: DateTimeFieldLTEFilter
-          additionalProperties: false
-          properties:
-            lte:
-              type: string
-              format: date-time
-              description: >-
-                Value is less than or equal to the given RFC-3339 formatted
-                timestamp in UTC
-              example: '2022-03-30T07:20:50Z'
-          required:
-            - lte
-        - type: object
-          title: DateTimeFieldGTFilter
-          additionalProperties: false
-          properties:
-            lt:
-              type: string
-              format: date-time
-              description: >-
-                Value is greater than the given RFC-3339 formatted timestamp in
-                UTC
-              example: '2022-03-30T07:20:50Z'
-          required:
-            - gt
-        - type: object
-          title: DateTimeFieldGTEFilter
-          additionalProperties: false
-          properties:
-            lte:
-              type: string
-              format: date-time
-              description: >-
-                Value is greater than or equal to the given RFC-3339 formatted
-                timestamp in UTC
-              example: '2022-03-30T07:20:50Z'
-          required:
-            - gte
-      x-examples:
-        datetime_field_1: '2022-03-30T07:20:50Z'
-        datetime_field_2:
-          eq: '2022-03-30T07:20:50Z'
-        datetime_field_3:
-          lt: '2022-03-30T07:20:50Z'
-        datetime_field_4:
-          lte: '2022-03-30T07:20:50Z'
-        datetime_field_5:
-          gt: '2022-03-30T07:20:50Z'
-        datetime_field_6:
-          gte: '2022-03-30T07:20:50Z'
-    PortalCustomization:
-      title: PortalCustomization
-      type: object
-      additionalProperties: true
   securitySchemes:
     personalAccessToken:
       type: http
       scheme: bearer
       bearerFormat: Token
-      description: >
-        The personal access token is meant to be used as an alternative to
-        basic-auth when accessing Konnect via APIs.
-
-        You can generate a Personal Access Token (PAT) from the [personal access
-        token page](https://cloud.konghq.com/global/tokens/) in the Konnect
-        dashboard.
-
+      description: |
+        The personal access token is meant to be used as an alternative to basic-auth when accessing Konnect via APIs.
+        You can generate a Personal Access Token (PAT) from the [personal access token page](https://cloud.konghq.com/global/tokens/) in the Konnect dashboard.
         The PAT token must be passed in the header of a request, for example:
-
-        `curl -X GET 'https://global.api.konghq.com/v2/users/' --header
-        'Authorization: Bearer kpat_xgfT...'`
+        `curl -X GET 'https://global.api.konghq.com/v2/users/' --header 'Authorization: Bearer kpat_xgfT...'`
     systemAccountAccessToken:
       type: http
       scheme: bearer
       bearerFormat: Token
-      description: >
-        The system account access token is meant for automations and
-        integrations that are not directly associated with a human identity.
-
-        You can generate a system account Access Token by creating a system
-        account and then obtaining a system account access token for that
-        account.
-
+      description: |
+        The system account access token is meant for automations and integrations that are not directly associated with a human identity.
+        You can generate a system account Access Token by creating a system account and then obtaining a system account access token for that account.
         The access token must be passed in the header of a request, for example:
-
-        `curl -X GET 'https://global.api.konghq.com/v2/users/' --header
-        'Authorization: Bearer spat_i2Ej...'`
+        `curl -X GET 'https://global.api.konghq.com/v2/users/' --header 'Authorization: Bearer spat_i2Ej...'`
+tags:
+  - name: Portals
+    description: APIs related to Configuration of Konnect Developer Portals.
+  - name: Portal Customization
+    description: APIs related to Konnect Developer Portal Customization.
+  - name: Portal Pages
+    description: APIs related to Konnect Developer Portal Custom Pages.
+security:
+  - personalAccessToken: []
+  - systemAccountAccessToken: []

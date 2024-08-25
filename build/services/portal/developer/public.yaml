@@ -5,10 +5,7 @@ info:
   description: N/A (this description is removed during bundling)
   contact:
     name: Kong
-    url: https://cloud.konghq.com
-tags:
-  - name: developer
-    description: API for managing a Konnect Portal Developer.
+    url: 'https://cloud.konghq.com'
 paths:
   /api/v2/developer:
     post:
@@ -29,10 +26,10 @@ paths:
           description: the developer has been properly registered.
         '400':
           $ref: '#/components/responses/BadRequest'
-      tags:
-        - developer
       security:
         - {}
+      tags:
+        - developer
   /api/v2/developer/forgot-password:
     post:
       operationId: forgot-password
@@ -51,72 +48,29 @@ paths:
           description: the password reset flow has been initiated.
         '400':
           $ref: '#/components/responses/BadRequest'
-      tags:
-        - developer
       security:
         - {}
-  /api/v2/developer/me:
-    get:
-      summary: Retrieve My Account
       tags:
         - developer
+  /api/v2/developer/me:
+    get:
+      operationId: get-developer-me
+      summary: Retrieve My Account
+      description: Returns info about the current developer.
       responses:
         '200':
           $ref: '#/components/responses/MeResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
-      operationId: get-developer-me
-      description: Returns info about the current developer.
       security:
         - portalAccessToken: []
+      tags:
+        - developer
 components:
-  examples:
-    RegisterDeveloperRequestExample1:
-      value:
-        email: dev@company.com
-        full_name: Dev Smith
-    UnauthorizedExample:
-      value:
-        status: 401
-        title: Unauthorized
-        instance: kong:trace:8347343766220159418
-        detail: Unauthorized
-  securitySchemes:
-    portalAccessToken:
-      type: apiKey
-      in: cookie
-      name: portalaccesstoken
-      description: >
-        The Developer portal cookie is meant to be used by the Developer API to
-        authenticate with.
-  responses:
-    MeResponse:
-      description: Response from me endpoint
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Developer'
-    BadRequest:
-      description: Bad Request
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/BadRequestError'
-    Unauthorized:
-      description: Unauthorized
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/UnauthorizedError'
-          examples:
-            UnauthorizedExample:
-              $ref: '#/components/examples/UnauthorizedExample'
   schemas:
     Developer:
-      title: Developer
-      type: object
       description: A user who can use a developer portal
-      additionalProperties: false
+      type: object
       properties:
         id:
           $ref: '#/components/schemas/UUID'
@@ -127,23 +81,23 @@ components:
           maxLength: 250
         full_name:
           type: string
-          pattern: ^[\w \W]+$
           example: API Developer
           maxLength: 250
+          pattern: '^[\w \W]+$'
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
           $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
       required:
         - full_name
         - email
+      title: Developer
     RegisterPayload:
-      title: register payload
       description: |
         Payload required to be sent to register a developer to the
         portal.
       type: object
-      additionalProperties: true
       properties:
         email:
           type: string
@@ -151,80 +105,72 @@ components:
           example: developer@konghq.com
         full_name:
           type: string
-          minLength: 1
-          maxLength: 256
           example: Jane Doe
+          maxLength: 256
+          minLength: 1
+      additionalProperties: true
       required:
         - full_name
         - email
+      title: register payload
     ResetPasswordPayload:
-      title: reset password payload
       description: |
         Payload required to start the reset password flow
       type: object
-      additionalProperties: false
       properties:
         email:
           type: string
           format: email
           example: developer@konghq.com
+      additionalProperties: false
       required:
         - email
+      title: reset password payload
     BaseError:
-      type: object
-      title: Error
       description: standard error
+      type: object
+      properties:
+        status:
+          description: |
+            The HTTP status code of the error. Useful when passing the response
+            body to child properties in a frontend UI. Must be returned as an integer.
+          type: integer
+          readOnly: true
+        title:
+          description: |
+            A short, human-readable summary of the problem. It should not
+            change between occurences of a problem, except for localization.
+            Should be provided as "Sentence case" for direct use in the UI.
+          type: string
+          readOnly: true
+        type:
+          description: The error type.
+          type: string
+          readOnly: true
+        instance:
+          description: |
+            Used to return the correlation ID back to the user, in the format
+            kong:trace:<correlation_id>. This helps us find the relevant logs
+            when a customer reports an issue.
+          type: string
+          readOnly: true
+        detail:
+          description: |
+            A human readable explanation specific to this occurence of the problem.
+            This field may contain request/entity data to help the user understand
+            what went wrong. Enclose variable values in square brackets. Should be
+            provided as "Sentence case" for direct use in the UI.
+          type: string
+          readOnly: true
       required:
         - status
         - title
         - instance
         - detail
-      properties:
-        status:
-          type: integer
-          description: >
-            The HTTP status code of the error. Useful when passing the response
-
-            body to child properties in a frontend UI. Must be returned as an
-            integer.
-          readOnly: true
-        title:
-          type: string
-          description: |
-            A short, human-readable summary of the problem. It should not
-            change between occurences of a problem, except for localization.
-            Should be provided as "Sentence case" for direct use in the UI.
-          readOnly: true
-        type:
-          type: string
-          description: The error type.
-          readOnly: true
-        instance:
-          type: string
-          description: |
-            Used to return the correlation ID back to the user, in the format
-            kong:trace:<correlation_id>. This helps us find the relevant logs
-            when a customer reports an issue.
-          readOnly: true
-        detail:
-          type: string
-          description: >
-            A human readable explanation specific to this occurence of the
-            problem.
-
-            This field may contain request/entity data to help the user
-            understand
-
-            what went wrong. Enclose variable values in square brackets. Should
-            be
-
-            provided as "Sentence case" for direct use in the UI.
-          readOnly: true
+      title: Error
     InvalidRules:
       description: invalid parameters rules
       type: string
-      readOnly: true
-      nullable: true
       enum:
         - required
         - max_length
@@ -247,9 +193,10 @@ components:
         - is_supported_network_availability_zone_list
         - is_supported_network_cidr_block
         - is_supported_provider_region
+      nullable: true
+      readOnly: true
     InvalidParameterStandard:
       type: object
-      additionalProperties: false
       properties:
         field:
           type: string
@@ -264,12 +211,12 @@ components:
           type: string
           example: is a required field
           readOnly: true
+      additionalProperties: false
       required:
         - field
         - reason
     InvalidParameterMinimumLength:
       type: object
-      additionalProperties: false
       properties:
         field:
           type: string
@@ -278,14 +225,14 @@ components:
         rule:
           description: invalid parameters rules
           type: string
-          readOnly: true
-          nullable: false
           enum:
             - min_length
             - min_digits
             - min_lowercase
             - min_uppercase
             - min_symbols
+          nullable: false
+          readOnly: true
         minimum:
           type: integer
           example: 8
@@ -296,6 +243,7 @@ components:
           type: string
           example: is a required field
           readOnly: true
+      additionalProperties: false
       required:
         - field
         - reason
@@ -303,7 +251,6 @@ components:
         - minimum
     InvalidParameterChoiceItem:
       type: object
-      additionalProperties: false
       properties:
         field:
           type: string
@@ -312,24 +259,25 @@ components:
         rule:
           description: invalid parameters rules
           type: string
-          readOnly: true
-          nullable: false
           enum:
             - enum
+          nullable: false
+          readOnly: true
         reason:
           type: string
           example: is a required field
           readOnly: true
         choices:
           type: array
-          uniqueItems: true
-          readOnly: true
-          nullable: false
-          minimum: 1
           items: {}
+          minimum: 1
+          nullable: false
+          readOnly: true
+          uniqueItems: true
         source:
           type: string
           example: body
+      additionalProperties: false
       required:
         - field
         - reason
@@ -337,7 +285,6 @@ components:
         - choices
     InvalidParameterDependentItem:
       type: object
-      additionalProperties: false
       properties:
         field:
           type: string
@@ -346,40 +293,41 @@ components:
         rule:
           description: invalid parameters rules
           type: string
-          readOnly: true
-          nullable: true
           enum:
             - dependent_fields
+          nullable: true
+          readOnly: true
         reason:
           type: string
           example: is a required field
           readOnly: true
         dependents:
           type: array
-          uniqueItems: true
-          nullable: true
           items: {}
+          nullable: true
           readOnly: true
+          uniqueItems: true
         source:
           type: string
           example: body
+      additionalProperties: false
       required:
         - field
         - rule
         - reason
         - dependents
     InvalidParameters:
-      type: array
-      nullable: false
-      uniqueItems: true
-      minItems: 1
       description: invalid parameters
+      type: array
       items:
         oneOf:
           - $ref: '#/components/schemas/InvalidParameterStandard'
           - $ref: '#/components/schemas/InvalidParameterMinimumLength'
           - $ref: '#/components/schemas/InvalidParameterChoiceItem'
           - $ref: '#/components/schemas/InvalidParameterDependentItem'
+      minItems: 1
+      nullable: false
+      uniqueItems: true
     BadRequestError:
       allOf:
         - $ref: '#/components/schemas/BaseError'
@@ -390,22 +338,22 @@ components:
             invalid_parameters:
               $ref: '#/components/schemas/InvalidParameters'
     UUID:
+      description: Contains a unique identifier used by the API for this resource.
       type: string
       format: uuid
       example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-      description: Contains a unique identifier used by the API for this resource.
       readOnly: true
     CreatedAt:
+      description: An ISO-8601 timestamp representation of entity creation date.
       type: string
       format: date-time
       example: '2022-11-04T20:10:06.927Z'
-      description: An ISO-8601 timestamp representation of entity creation date.
       readOnly: true
     UpdatedAt:
+      description: An ISO-8601 timestamp representation of entity update date.
       type: string
       format: date-time
       example: '2022-11-04T20:10:06.927Z'
-      description: An ISO-8601 timestamp representation of entity update date.
       readOnly: true
     UnauthorizedError:
       allOf:
@@ -417,8 +365,51 @@ components:
             title:
               example: Unauthorized
             type:
-              example: https://httpstatuses.com/401
+              example: 'https://httpstatuses.com/401'
             instance:
-              example: kong:trace:1234567890
+              example: 'kong:trace:1234567890'
             detail:
               example: Invalid credentials
+  examples:
+    RegisterDeveloperRequestExample1:
+      value:
+        email: dev@company.com
+        full_name: Dev Smith
+    UnauthorizedExample:
+      value:
+        status: 401
+        title: Unauthorized
+        instance: 'kong:trace:8347343766220159418'
+        detail: Unauthorized
+  responses:
+    MeResponse:
+      description: Response from me endpoint
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Developer'
+    BadRequest:
+      description: Bad Request
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/BadRequestError'
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/UnauthorizedError'
+          examples:
+            UnauthorizedExample:
+              $ref: '#/components/examples/UnauthorizedExample'
+  securitySchemes:
+    portalAccessToken:
+      type: apiKey
+      in: cookie
+      name: portalaccesstoken
+      description: |
+        The Developer portal cookie is meant to be used by the Developer API to authenticate with.
+tags:
+  - name: developer
+    description: API for managing a Konnect Portal Developer.

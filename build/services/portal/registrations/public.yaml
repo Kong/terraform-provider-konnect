@@ -5,20 +5,13 @@ info:
   description: N/A (this description is removed during bundling)
   contact:
     name: Kong
-    url: https://cloud.konghq.com
-tags:
-  - name: registrations
-    description: >
-      The API for Konnect Portal application registrations. If the portal is
-      public
-
-      all of the described endpoints will return a 404 error
+    url: 'https://cloud.konghq.com'
 paths:
-  /api/v2/applications/{applicationId}/registrations:
+  '/api/v2/applications/{applicationId}/registrations':
     get:
+      operationId: list-application-registrations
       summary: Get application registrations
       description: Lists product registrations for an application.
-      operationId: list-application-registrations
       parameters:
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageNumber'
@@ -40,14 +33,14 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
-      tags:
-        - registrations
       security:
         - portalAccessToken: []
+      tags:
+        - registrations
     post:
+      operationId: create-application-registration
       summary: Register an application for a product
       description: Registers an application for a product.
-      operationId: create-application-registration
       parameters:
         - $ref: '#/components/parameters/ApplicationId'
       requestBody:
@@ -63,15 +56,15 @@ paths:
           $ref: '#/components/responses/NotFound'
         '409':
           $ref: '#/components/responses/Conflict'
-      tags:
-        - registrations
       security:
         - portalAccessToken: []
-  /api/v2/applications/{applicationId}/registrations/{registrationId}:
+      tags:
+        - registrations
+  '/api/v2/applications/{applicationId}/registrations/{registrationId}':
     get:
+      operationId: get-application-registration
       summary: Get an application registration
       description: Retrieves the specified product registration for an application.
-      operationId: get-application-registration
       parameters:
         - $ref: '#/components/parameters/ApplicationId'
         - $ref: '#/components/parameters/RegistrationId'
@@ -82,14 +75,14 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
-      tags:
-        - registrations
       security:
         - portalAccessToken: []
+      tags:
+        - registrations
     delete:
+      operationId: delete-application-registration
       summary: Delete an application registration
       description: Unregister an application for a product version.
-      operationId: delete-application-registration
       parameters:
         - $ref: '#/components/parameters/ApplicationId'
         - $ref: '#/components/parameters/RegistrationId'
@@ -100,19 +93,17 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
-      tags:
-        - registrations
       security:
         - portalAccessToken: []
-  /api/v2/applications/{applicationId}/registrations/{registrationId}/granted-scopes:
+      tags:
+        - registrations
+  '/api/v2/applications/{applicationId}/registrations/{registrationId}/granted-scopes':
     get:
-      summary: Get the granted scopes of an application registration
-      description: >
-        Retrieves the granted scopes of a specified product registration
-        directly from the IDP for an application.
-
-        Will return 409 if this feature is not supported by the application.
       operationId: get-application-registration-granted-scopes
+      summary: Get the granted scopes of an application registration
+      description: |
+        Retrieves the granted scopes of a specified product registration directly from the IDP for an application.
+        Will return 409 if this feature is not supported by the application.
       parameters:
         - $ref: '#/components/parameters/ApplicationId'
         - $ref: '#/components/parameters/RegistrationId'
@@ -125,48 +116,12 @@ paths:
           $ref: '#/components/responses/NotFound'
         '422':
           $ref: '#/components/responses/UnprocessableContent'
-      tags:
-        - registrations
       security:
         - portalAccessToken: []
+      tags:
+        - registrations
 components:
-  securitySchemes:
-    portalAccessToken:
-      type: apiKey
-      in: cookie
-      name: portalaccesstoken
-      description: >
-        The Developer portal cookie is meant to be used by the Developer API to
-        authenticate with.
   parameters:
-    RegistrationId:
-      name: registrationId
-      in: path
-      required: true
-      description: Contains a unique identifier used by the Portal API for this resource.
-      schema:
-        type: string
-        format: uuid
-    PageSize:
-      name: page[size]
-      description: >-
-        The maximum number of items to include per page. The last page of a
-        collection may include fewer items.
-      required: false
-      in: query
-      allowEmptyValue: true
-      schema:
-        type: integer
-        example: 10
-    PageNumber:
-      name: page[number]
-      description: Determines which page of the entities to retrieve.
-      required: false
-      in: query
-      allowEmptyValue: true
-      schema:
-        type: integer
-        example: 1
     ApplicationId:
       name: applicationId
       in: path
@@ -176,95 +131,545 @@ components:
         type: string
         format: uuid
     FilterByIdEquality:
-      name: filter[id][eq]
-      description: >-
-        Filter by direct equality comparison of the id property with a supplied
-        value.
+      name: 'filter[id][eq]'
+      description: Filter by direct equality comparison of the id property with a supplied value.
       in: query
       required: false
       schema:
         type: string
         example: 5be86298-147b-45ab-bfaf-a1bff97dce39
     FilterByIdEqualityShort:
-      name: filter[id]
-      description: >-
-        Filter by direct equality comparison (short-hand) of the id property
-        with a supplied value.
+      name: 'filter[id]'
+      description: Filter by direct equality comparison (short-hand) of the id property with a supplied value.
       in: query
       required: false
       schema:
         type: string
         example: 5be86298-147b-45ab-bfaf-a1bff97dce39
-    FilterByStatusEquality:
-      name: filter[status][eq]
-      description: >-
-        Filter by direct equality comparison of the status property with a
-        supplied value.
-      in: query
-      required: false
-      schema:
-        type: string
-        enum:
-          - approved
-          - pending
-          - rejected
-          - revoked
-        example: approved
-    FilterByStatusEqualityShort:
-      name: filter[status]
-      description: >-
-        Filter by direct equality comparison (short-hand) of the status property
-        with a supplied value.
-      in: query
-      required: false
-      schema:
-        type: string
-        enum:
-          - approved
-          - pending
-          - rejected
-          - revoked
-        example: approved
     FilterByProductNameEquality:
-      name: filter[product_name][eq]
-      description: >-
-        Filter by direct equality comparison of the product_name property with a
-        supplied value.
+      name: 'filter[product_name][eq]'
+      description: Filter by direct equality comparison of the product_name property with a supplied value.
       in: query
       required: false
       schema:
         type: string
         example: good service
     FilterByProductNameEqualityShort:
-      name: filter[product_name]
-      description: >-
-        Filter by direct equality comparison (short-hand) of the product_name
-        property with a supplied value.
+      name: 'filter[product_name]'
+      description: Filter by direct equality comparison (short-hand) of the product_name property with a supplied value.
       in: query
       required: false
       schema:
         type: string
         example: good service
     FilterByProductVersionNameEquality:
-      name: filter[product_version_name][eq]
-      description: >-
-        Filter by direct equality comparison of the product_version_name
-        property with a supplied value.
+      name: 'filter[product_version_name][eq]'
+      description: Filter by direct equality comparison of the product_version_name property with a supplied value.
       in: query
       required: false
       schema:
         type: string
         example: good service
     FilterByProductVersionNameEqualityShort:
-      name: filter[product_version_name]
-      description: >-
-        Filter by direct equality comparison (short-hand) of the
-        product_version_name property with a supplied value.
+      name: 'filter[product_version_name]'
+      description: Filter by direct equality comparison (short-hand) of the product_version_name property with a supplied value.
       in: query
       required: false
       schema:
         type: string
         example: good service
+    FilterByStatusEquality:
+      name: 'filter[status][eq]'
+      description: Filter by direct equality comparison of the status property with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: approved
+        enum:
+          - approved
+          - pending
+          - rejected
+          - revoked
+    FilterByStatusEqualityShort:
+      name: 'filter[status]'
+      description: Filter by direct equality comparison (short-hand) of the status property with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: approved
+        enum:
+          - approved
+          - pending
+          - rejected
+          - revoked
+    PageNumber:
+      name: 'page[number]'
+      description: Determines which page of the entities to retrieve.
+      required: false
+      in: query
+      allowEmptyValue: true
+      schema:
+        type: integer
+        example: 1
+    PageSize:
+      name: 'page[size]'
+      description: The maximum number of items to include per page. The last page of a collection may include fewer items.
+      required: false
+      in: query
+      allowEmptyValue: true
+      schema:
+        type: integer
+        example: 10
+    RegistrationId:
+      name: registrationId
+      in: path
+      required: true
+      description: Contains a unique identifier used by the Portal API for this resource.
+      schema:
+        type: string
+        format: uuid
+  schemas:
+    CreateRegistrationPayload:
+      description: The payload to create a registration.
+      type: object
+      properties:
+        product_version_id:
+          description: The product version id required for registration.
+          type: string
+          format: uuid
+        scopes:
+          description: 'The requested scopes for the registration, requires developer_managed_scopes to be enabled.'
+          type: array
+          items:
+            type: string
+      additionalProperties: false
+      required:
+        - product_version_id
+      title: CreateRegistrationPayload
+    ListRegistrationsResponse:
+      type: object
+      properties:
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/GetRegistrationResponse'
+      additionalProperties: false
+      required:
+        - data
+        - meta
+    GetRegistrationResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        status:
+          description: The approval status of the registration.
+          type: string
+          enum:
+            - approved
+            - pending
+            - rejected
+            - revoked
+        product_id:
+          description: Contains a unique identifier used by the Portal API for this resource.
+          type: string
+          format: uuid
+        product_name:
+          description: The name of the product. This is the name that is displayed in the developer portal.
+          type: string
+        product_version_id:
+          description: Contains a unique identifier used by the Portal API for this resource.
+          type: string
+          format: uuid
+        product_version_name:
+          description: The name of the product version. This is the version label that is displayed in the developer portal.
+          type: string
+        application_id:
+          description: Contains a unique identifier used by the Portal API for this resource.
+          type: string
+          format: uuid
+        granted_scopes:
+          description: |
+            Cached list of scopes granted for the given application registration.
+            Use `/api/v2/applications/{applicationId}/registrations/{registrationId}/granted-scopes` to get up to date granted scopes from the IDP.
+            This property will be omitted if not supported by the application.
+          type: array
+          items:
+            type: string
+      additionalProperties: false
+      required:
+        - id
+        - status
+        - application_id
+        - product_id
+        - product_name
+        - product_version_id
+        - product_version_name
+        - created_at
+        - updated_at
+    GetGrantedScopesResponse:
+      type: object
+      properties:
+        scopes:
+          $ref: '#/components/schemas/RefreshedGrantedScopes'
+      additionalProperties: false
+      required:
+        - scopes
+    PageMeta:
+      description: Contains pagination query parameters and the total number of objects returned.
+      type: object
+      properties:
+        number:
+          type: number
+          example: 1
+        size:
+          type: number
+          example: 10
+        total:
+          type: number
+          example: 100
+      required:
+        - number
+        - size
+        - total
+    PaginatedMeta:
+      description: returns the pagination information
+      type: object
+      properties:
+        page:
+          $ref: '#/components/schemas/PageMeta'
+      required:
+        - page
+      title: PaginatedMeta
+    UUID:
+      description: Contains a unique identifier used by the API for this resource.
+      type: string
+      format: uuid
+      example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+      readOnly: true
+    CreatedAt:
+      description: An ISO-8601 timestamp representation of entity creation date.
+      type: string
+      format: date-time
+      example: '2022-11-04T20:10:06.927Z'
+      readOnly: true
+    UpdatedAt:
+      description: An ISO-8601 timestamp representation of entity update date.
+      type: string
+      format: date-time
+      example: '2022-11-04T20:10:06.927Z'
+      readOnly: true
+    BaseError:
+      description: standard error
+      type: object
+      properties:
+        status:
+          description: |
+            The HTTP status code of the error. Useful when passing the response
+            body to child properties in a frontend UI. Must be returned as an integer.
+          type: integer
+          readOnly: true
+        title:
+          description: |
+            A short, human-readable summary of the problem. It should not
+            change between occurences of a problem, except for localization.
+            Should be provided as "Sentence case" for direct use in the UI.
+          type: string
+          readOnly: true
+        type:
+          description: The error type.
+          type: string
+          readOnly: true
+        instance:
+          description: |
+            Used to return the correlation ID back to the user, in the format
+            kong:trace:<correlation_id>. This helps us find the relevant logs
+            when a customer reports an issue.
+          type: string
+          readOnly: true
+        detail:
+          description: |
+            A human readable explanation specific to this occurence of the problem.
+            This field may contain request/entity data to help the user understand
+            what went wrong. Enclose variable values in square brackets. Should be
+            provided as "Sentence case" for direct use in the UI.
+          type: string
+          readOnly: true
+      required:
+        - status
+        - title
+        - instance
+        - detail
+      title: Error
+    InvalidRules:
+      description: invalid parameters rules
+      type: string
+      enum:
+        - required
+        - max_length
+        - is_array
+        - is_base64
+        - is_boolean
+        - is_date_time
+        - is_integer
+        - is_null
+        - is_number
+        - is_object
+        - is_string
+        - is_uuid
+        - is_fqdn
+        - is_arn
+        - unknown_property
+        - is_label
+        - matches_regex
+        - invalid
+        - is_supported_network_availability_zone_list
+        - is_supported_network_cidr_block
+        - is_supported_provider_region
+      nullable: true
+      readOnly: true
+    InvalidParameterStandard:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          $ref: '#/components/schemas/InvalidRules'
+        source:
+          type: string
+          example: body
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+      additionalProperties: false
+      required:
+        - field
+        - reason
+    InvalidParameterMinimumLength:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          description: invalid parameters rules
+          type: string
+          enum:
+            - min_length
+            - min_digits
+            - min_lowercase
+            - min_uppercase
+            - min_symbols
+          nullable: false
+          readOnly: true
+        minimum:
+          type: integer
+          example: 8
+        source:
+          type: string
+          example: body
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+      additionalProperties: false
+      required:
+        - field
+        - reason
+        - rule
+        - minimum
+    InvalidParameterChoiceItem:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          description: invalid parameters rules
+          type: string
+          enum:
+            - enum
+          nullable: false
+          readOnly: true
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+        choices:
+          type: array
+          items: {}
+          minimum: 1
+          nullable: false
+          readOnly: true
+          uniqueItems: true
+        source:
+          type: string
+          example: body
+      additionalProperties: false
+      required:
+        - field
+        - reason
+        - rule
+        - choices
+    InvalidParameterDependentItem:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          description: invalid parameters rules
+          type: string
+          enum:
+            - dependent_fields
+          nullable: true
+          readOnly: true
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+        dependents:
+          type: array
+          items: {}
+          nullable: true
+          readOnly: true
+          uniqueItems: true
+        source:
+          type: string
+          example: body
+      additionalProperties: false
+      required:
+        - field
+        - rule
+        - reason
+        - dependents
+    InvalidParameters:
+      description: invalid parameters
+      type: array
+      items:
+        oneOf:
+          - $ref: '#/components/schemas/InvalidParameterStandard'
+          - $ref: '#/components/schemas/InvalidParameterMinimumLength'
+          - $ref: '#/components/schemas/InvalidParameterChoiceItem'
+          - $ref: '#/components/schemas/InvalidParameterDependentItem'
+      minItems: 1
+      nullable: false
+      uniqueItems: true
+    BadRequestError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          required:
+            - invalid_parameters
+          properties:
+            invalid_parameters:
+              $ref: '#/components/schemas/InvalidParameters'
+    UnauthorizedError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 401
+            title:
+              example: Unauthorized
+            type:
+              example: 'https://httpstatuses.com/401'
+            instance:
+              example: 'kong:trace:1234567890'
+            detail:
+              example: Invalid credentials
+    NotFoundError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 404
+            title:
+              example: Not Found
+            type:
+              example: 'https://httpstatuses.com/404'
+            instance:
+              example: 'kong:trace:1234567890'
+            detail:
+              example: Not found
+    ConflictError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 409
+            title:
+              example: Conflict
+            type:
+              example: 'https://httpstatuses.com/409'
+            instance:
+              example: 'kong:trace:1234567890'
+            detail:
+              example: Conflict
+    RefreshedGrantedScopes:
+      description: 'List of granted scopes, directly updated from the IDP'
+      type: array
+      items:
+        type: string
+    UnprocessableContentError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 422
+            title:
+              example: Unprocessable Content
+            type:
+              example: 'https://httpstatuses.com/422'
+            instance:
+              example: 'kong:trace:1234567891'
+            detail:
+              example: Unprocessable Content
+  examples:
+    UnauthorizedExample:
+      value:
+        status: 401
+        title: Unauthorized
+        instance: 'kong:trace:8347343766220159418'
+        detail: Unauthorized
+    NotFoundExample:
+      value:
+        status: 404
+        title: Not Found
+        instance: 'kong:trace:6816496025408232265'
+        detail: Not Found
+    UnprocessableContentExample:
+      value:
+        status: 422
+        title: Unprocessable Content
+        instance: 'kong:trace:8347343766220159419'
+        detail: The requested operation cannot be performed with the provided data
+  requestBodies:
+    CreateRegistration:
+      description: Create an application registration.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateRegistrationPayload'
   responses:
     CreateRegistration:
       description: Registration creation response.
@@ -329,470 +734,15 @@ components:
           examples:
             UnprocessableContentExample:
               $ref: '#/components/examples/UnprocessableContentExample'
-  requestBodies:
-    CreateRegistration:
-      description: Create an application registration.
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CreateRegistrationPayload'
-  schemas:
-    CreateRegistrationPayload:
-      additionalProperties: false
-      type: object
-      title: CreateRegistrationPayload
-      description: The payload to create a registration.
-      required:
-        - product_version_id
-      properties:
-        product_version_id:
-          description: The product version id required for registration.
-          type: string
-          format: uuid
-        scopes:
-          description: >-
-            The requested scopes for the registration, requires
-            developer_managed_scopes to be enabled.
-          type: array
-          items:
-            type: string
-    ListRegistrationsResponse:
-      additionalProperties: false
-      type: object
-      required:
-        - data
-        - meta
-      properties:
-        meta:
-          $ref: '#/components/schemas/PaginatedMeta'
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/GetRegistrationResponse'
-    GetRegistrationResponse:
-      additionalProperties: false
-      type: object
-      required:
-        - id
-        - status
-        - application_id
-        - product_id
-        - product_name
-        - product_version_id
-        - product_version_name
-        - created_at
-        - updated_at
-      properties:
-        id:
-          $ref: '#/components/schemas/UUID'
-        created_at:
-          $ref: '#/components/schemas/CreatedAt'
-        updated_at:
-          $ref: '#/components/schemas/UpdatedAt'
-        status:
-          description: The approval status of the registration.
-          type: string
-          enum:
-            - approved
-            - pending
-            - rejected
-            - revoked
-        product_id:
-          description: >-
-            Contains a unique identifier used by the Portal API for this
-            resource.
-          type: string
-          format: uuid
-        product_name:
-          description: >-
-            The name of the product. This is the name that is displayed in the
-            developer portal.
-          type: string
-        product_version_id:
-          description: >-
-            Contains a unique identifier used by the Portal API for this
-            resource.
-          type: string
-          format: uuid
-        product_version_name:
-          description: >-
-            The name of the product version. This is the version label that is
-            displayed in the developer portal.
-          type: string
-        application_id:
-          description: >-
-            Contains a unique identifier used by the Portal API for this
-            resource.
-          type: string
-          format: uuid
-        granted_scopes:
-          description: >
-            Cached list of scopes granted for the given application
-            registration.
-
-            Use
-            `/api/v2/applications/{applicationId}/registrations/{registrationId}/granted-scopes`
-            to get up to date granted scopes from the IDP.
-
-            This property will be omitted if not supported by the application.
-          type: array
-          items:
-            type: string
-    GetGrantedScopesResponse:
-      additionalProperties: false
-      type: object
-      required:
-        - scopes
-      properties:
-        scopes:
-          $ref: '#/components/schemas/RefreshedGrantedScopes'
-    PageMeta:
-      type: object
-      description: >-
-        Contains pagination query parameters and the total number of objects
-        returned.
-      required:
-        - number
-        - size
-        - total
-      properties:
-        number:
-          type: number
-          example: 1
-        size:
-          type: number
-          example: 10
-        total:
-          type: number
-          example: 100
-    PaginatedMeta:
-      type: object
-      title: PaginatedMeta
-      description: returns the pagination information
-      properties:
-        page:
-          $ref: '#/components/schemas/PageMeta'
-      required:
-        - page
-    UUID:
-      type: string
-      format: uuid
-      example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-      description: Contains a unique identifier used by the API for this resource.
-      readOnly: true
-    CreatedAt:
-      type: string
-      format: date-time
-      example: '2022-11-04T20:10:06.927Z'
-      description: An ISO-8601 timestamp representation of entity creation date.
-      readOnly: true
-    UpdatedAt:
-      type: string
-      format: date-time
-      example: '2022-11-04T20:10:06.927Z'
-      description: An ISO-8601 timestamp representation of entity update date.
-      readOnly: true
-    BaseError:
-      type: object
-      title: Error
-      description: standard error
-      required:
-        - status
-        - title
-        - instance
-        - detail
-      properties:
-        status:
-          type: integer
-          description: >
-            The HTTP status code of the error. Useful when passing the response
-
-            body to child properties in a frontend UI. Must be returned as an
-            integer.
-          readOnly: true
-        title:
-          type: string
-          description: |
-            A short, human-readable summary of the problem. It should not
-            change between occurences of a problem, except for localization.
-            Should be provided as "Sentence case" for direct use in the UI.
-          readOnly: true
-        type:
-          type: string
-          description: The error type.
-          readOnly: true
-        instance:
-          type: string
-          description: |
-            Used to return the correlation ID back to the user, in the format
-            kong:trace:<correlation_id>. This helps us find the relevant logs
-            when a customer reports an issue.
-          readOnly: true
-        detail:
-          type: string
-          description: >
-            A human readable explanation specific to this occurence of the
-            problem.
-
-            This field may contain request/entity data to help the user
-            understand
-
-            what went wrong. Enclose variable values in square brackets. Should
-            be
-
-            provided as "Sentence case" for direct use in the UI.
-          readOnly: true
-    InvalidRules:
-      description: invalid parameters rules
-      type: string
-      readOnly: true
-      nullable: true
-      enum:
-        - required
-        - max_length
-        - is_array
-        - is_base64
-        - is_boolean
-        - is_date_time
-        - is_integer
-        - is_null
-        - is_number
-        - is_object
-        - is_string
-        - is_uuid
-        - is_fqdn
-        - is_arn
-        - unknown_property
-        - is_label
-        - matches_regex
-        - invalid
-        - is_supported_network_availability_zone_list
-        - is_supported_network_cidr_block
-        - is_supported_provider_region
-    InvalidParameterStandard:
-      type: object
-      additionalProperties: false
-      properties:
-        field:
-          type: string
-          example: name
-          readOnly: true
-        rule:
-          $ref: '#/components/schemas/InvalidRules'
-        source:
-          type: string
-          example: body
-        reason:
-          type: string
-          example: is a required field
-          readOnly: true
-      required:
-        - field
-        - reason
-    InvalidParameterMinimumLength:
-      type: object
-      additionalProperties: false
-      properties:
-        field:
-          type: string
-          example: name
-          readOnly: true
-        rule:
-          description: invalid parameters rules
-          type: string
-          readOnly: true
-          nullable: false
-          enum:
-            - min_length
-            - min_digits
-            - min_lowercase
-            - min_uppercase
-            - min_symbols
-        minimum:
-          type: integer
-          example: 8
-        source:
-          type: string
-          example: body
-        reason:
-          type: string
-          example: is a required field
-          readOnly: true
-      required:
-        - field
-        - reason
-        - rule
-        - minimum
-    InvalidParameterChoiceItem:
-      type: object
-      additionalProperties: false
-      properties:
-        field:
-          type: string
-          example: name
-          readOnly: true
-        rule:
-          description: invalid parameters rules
-          type: string
-          readOnly: true
-          nullable: false
-          enum:
-            - enum
-        reason:
-          type: string
-          example: is a required field
-          readOnly: true
-        choices:
-          type: array
-          uniqueItems: true
-          readOnly: true
-          nullable: false
-          minimum: 1
-          items: {}
-        source:
-          type: string
-          example: body
-      required:
-        - field
-        - reason
-        - rule
-        - choices
-    InvalidParameterDependentItem:
-      type: object
-      additionalProperties: false
-      properties:
-        field:
-          type: string
-          example: name
-          readOnly: true
-        rule:
-          description: invalid parameters rules
-          type: string
-          readOnly: true
-          nullable: true
-          enum:
-            - dependent_fields
-        reason:
-          type: string
-          example: is a required field
-          readOnly: true
-        dependents:
-          type: array
-          uniqueItems: true
-          nullable: true
-          items: {}
-          readOnly: true
-        source:
-          type: string
-          example: body
-      required:
-        - field
-        - rule
-        - reason
-        - dependents
-    InvalidParameters:
-      type: array
-      nullable: false
-      uniqueItems: true
-      minItems: 1
-      description: invalid parameters
-      items:
-        oneOf:
-          - $ref: '#/components/schemas/InvalidParameterStandard'
-          - $ref: '#/components/schemas/InvalidParameterMinimumLength'
-          - $ref: '#/components/schemas/InvalidParameterChoiceItem'
-          - $ref: '#/components/schemas/InvalidParameterDependentItem'
-    BadRequestError:
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
-        - type: object
-          required:
-            - invalid_parameters
-          properties:
-            invalid_parameters:
-              $ref: '#/components/schemas/InvalidParameters'
-    UnauthorizedError:
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
-        - type: object
-          properties:
-            status:
-              example: 401
-            title:
-              example: Unauthorized
-            type:
-              example: https://httpstatuses.com/401
-            instance:
-              example: kong:trace:1234567890
-            detail:
-              example: Invalid credentials
-    NotFoundError:
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
-        - type: object
-          properties:
-            status:
-              example: 404
-            title:
-              example: Not Found
-            type:
-              example: https://httpstatuses.com/404
-            instance:
-              example: kong:trace:1234567890
-            detail:
-              example: Not found
-    ConflictError:
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
-        - type: object
-          properties:
-            status:
-              example: 409
-            title:
-              example: Conflict
-            type:
-              example: https://httpstatuses.com/409
-            instance:
-              example: kong:trace:1234567890
-            detail:
-              example: Conflict
-    RefreshedGrantedScopes:
-      description: List of granted scopes, directly updated from the IDP
-      type: array
-      items:
-        type: string
-    UnprocessableContentError:
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
-        - type: object
-          properties:
-            status:
-              example: 422
-            title:
-              example: Unprocessable Content
-            type:
-              example: https://httpstatuses.com/422
-            instance:
-              example: kong:trace:1234567891
-            detail:
-              example: Unprocessable Content
-  examples:
-    UnauthorizedExample:
-      value:
-        status: 401
-        title: Unauthorized
-        instance: kong:trace:8347343766220159418
-        detail: Unauthorized
-    NotFoundExample:
-      value:
-        status: 404
-        title: Not Found
-        instance: kong:trace:6816496025408232265
-        detail: Not Found
-    UnprocessableContentExample:
-      value:
-        status: 422
-        title: Unprocessable Content
-        instance: kong:trace:8347343766220159419
-        detail: The requested operation cannot be performed with the provided data
+  securitySchemes:
+    portalAccessToken:
+      type: apiKey
+      in: cookie
+      name: portalaccesstoken
+      description: |
+        The Developer portal cookie is meant to be used by the Developer API to authenticate with.
+tags:
+  - name: registrations
+    description: |
+      The API for Konnect Portal application registrations. If the portal is public
+      all of the described endpoints will return a 404 error

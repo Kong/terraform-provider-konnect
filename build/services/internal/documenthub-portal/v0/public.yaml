@@ -5,24 +5,19 @@ info:
   version: 0.0.1
   contact:
     name: Kong
-    url: https://konghq.com
+    url: 'https://konghq.com'
 servers:
-  - url: http://documenthub.documenthub.svc.cluster.local:4400/developer/v0
+  - url: 'http://documenthub.documenthub.svc.cluster.local:4400/developer/v0'
     description: Konnect cluster
-security:
-  - bearerAuth: []
-tags:
-  - name: Customization
-    description: customization operations
 paths:
-  /{resourceKind}/{resourceId}/documents:
+  '/{resourceKind}/{resourceId}/documents':
     get:
+      operationId: getManyDocuments
       summary: Get many documents
       description: Get many documents
-      operationId: getManyDocuments
       parameters:
-        - in: header
-          name: Accept
+        - name: Accept
+          in: header
           schema:
             $ref: '#/components/schemas/DocumentContentTypeEnum'
         - $ref: '#/components/parameters/resourceKindParam'
@@ -33,28 +28,28 @@ paths:
         '200':
           description: Tree of documents
           content:
-            text/markdown:
-              schema:
-                type: string
-                description: the markdown content
             application/json:
               schema:
                 $ref: '#/components/schemas/ListDocuments'
             application/vnd.konnect.document-tree+json:
               schema:
                 $ref: '#/components/schemas/ListDocumentsTree'
+            text/markdown:
+              schema:
+                description: the markdown content
+                type: string
         '400':
           $ref: '#/components/responses/BadRequest'
       tags:
         - Customization
-  /{resourceKind}/{resourceId}/documents/tree:
+  '/{resourceKind}/{resourceId}/documents/tree':
     get:
-      description: get the document tree
+      operationId: getDocumentTree
       summary: get the document tree
+      description: get the document tree
       parameters:
         - $ref: '#/components/parameters/resourceKindParam'
         - $ref: '#/components/parameters/resourceId'
-      operationId: getDocumentTree
       responses:
         '200':
           description: Tree of documents
@@ -68,19 +63,19 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Customization
-  /{resourceKind}/{resourceId}/documents/{documentId}:
+  '/{resourceKind}/{resourceId}/documents/{documentId}':
     get:
-      description: get the document by its id
+      operationId: getDocumentById
       summary: get the document by its id
+      description: get the document by its id
       parameters:
-        - in: header
-          name: Accept
+        - name: Accept
+          in: header
           schema:
             $ref: '#/components/schemas/DocumentFormatContentTypeEnum'
         - $ref: '#/components/parameters/resourceKindParam'
         - $ref: '#/components/parameters/resourceId'
         - $ref: '#/components/parameters/documentId'
-      operationId: getDocumentById
       responses:
         '200':
           description: Document
@@ -95,25 +90,25 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Customization
-  /{resourceKind}/{resourceId}/documents/slug/{slug}:
+  '/{resourceKind}/{resourceId}/documents/slug/{slug}':
     get:
-      description: get the document by its slug
+      operationId: getDocumentBySlug
       summary: get the document by its slug
+      description: get the document by its slug
       parameters:
-        - in: header
-          name: Accept
+        - name: Accept
+          in: header
           schema:
             $ref: '#/components/schemas/DocumentFormatContentTypeEnum'
         - $ref: '#/components/parameters/resourceKindParam'
         - $ref: '#/components/parameters/resourceId'
-        - schema:
-            type: string
-          name: slug
+        - name: slug
           in: path
-          required: true
           description: slug of the document
+          required: true
+          schema:
+            type: string
           example: getting-started
-      operationId: getDocumentBySlug
       responses:
         '200':
           description: Document
@@ -131,8 +126,8 @@ paths:
   /has-documentation:
     post:
       operationId: has-documentation
-      description: Has documentation
       summary: Returns wether the resourceKind resourceId pairs has documentation
+      description: Has documentation
       requestBody:
         $ref: '#/components/requestBodies/HasDocumentation'
       responses:
@@ -143,11 +138,53 @@ paths:
               schema:
                 $ref: '#/components/schemas/HasDocumentationResponse'
 components:
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
+  parameters:
+    PageNumber:
+      name: 'page[number]'
+      description: Determines which page of the entities to retrieve.
+      required: false
+      in: query
+      allowEmptyValue: true
+      schema:
+        type: integer
+        example: 1
+    PageSize:
+      name: 'page[size]'
+      description: The maximum number of items to include per page. The last page of a collection may include fewer items.
+      required: false
+      in: query
+      allowEmptyValue: true
+      schema:
+        type: integer
+        example: 10
+    documentId:
+      name: documentId
+      in: path
+      required: true
+      description: Targeted document
+      example: bb84c46a-432d-4314-81e4-478614a52dcb
+      schema:
+        type: string
+        format: uuid
+    resourceId:
+      name: resourceId
+      in: path
+      required: true
+      description: Id of the Konnect resource
+      example: bf138ba2-c9b1-4229-b268-04d9d8a6410b
+      schema:
+        type: string
+        format: uuid
+    resourceKindParam:
+      name: resourceKind
+      in: path
+      required: true
+      description: Kind of the Konnect resource
+      example: services
+      schema:
+        type: string
+        enum:
+          - services
   schemas:
     ResourceKind:
       type: string
@@ -160,12 +197,12 @@ components:
           $ref: '#/components/schemas/ResourceKind'
         resource_ids:
           type: array
-          minItems: 1
-          maxItems: 100
-          uniqueItems: true
           items:
             type: string
             format: uuid
+          maxItems: 100
+          minItems: 1
+          uniqueItems: true
       required:
         - resource_kind
         - resource_ids
@@ -191,126 +228,126 @@ components:
         - has_documentation
         - document_count
     Document:
-      type: object
-      title: Document
       description: a document
+      type: object
+      properties:
+        id:
+          description: the id of the document
+          type: string
+          format: uuid
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        parent_document_id:
+          description: the id of the parent document
+          type: string
+          format: uuid
+          example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
+          nullable: true
+        slug:
+          description: the slug of the document
+          type: string
+          example: getting-started
+        revision:
+          $ref: '#/components/schemas/Revision'
       required:
         - id
         - slug
         - revision
-      properties:
-        id:
-          type: string
-          format: uuid
-          description: the id of the document
-          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
-        parent_document_id:
-          type: string
-          format: uuid
-          description: the id of the parent document
-          nullable: true
-          example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
-        slug:
-          type: string
-          description: the slug of the document
-          example: getting-started
-        revision:
-          $ref: '#/components/schemas/Revision'
+      title: Document
     Revision:
-      type: object
-      title: Revision
       description: revision of a document
-      required:
-        - id
-        - document_id
-        - content
-        - meta
-        - title
+      type: object
       properties:
         id:
+          description: the id of the revision
           type: string
           format: uuid
-          description: the id of the revision
           example: d32d905a-ed33-46a3-a093-d8f536af9a8a
         document_id:
+          description: the id of the document
           type: string
           format: uuid
-          description: the id of the document
           example: d32d905a-ed33-46a3-a093-d8f536af9a8a
         content:
           $ref: '#/components/schemas/DocumentBlock'
         meta:
-          type: object
           description: the metadata of the document
+          type: object
           example:
             title: Hello World
             description: This is a description
-            keywords: hello, world
+            keywords: 'hello, world'
         title:
-          type: string
           description: the title of the document
+          type: string
           example: Hello World
-    DocumentRaw:
-      type: object
-      title: Document
-      description: a document
-      required:
-        - id
-        - slug
-        - revision
-      properties:
-        id:
-          type: string
-          format: uuid
-          description: the id of the document
-          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
-        parent_document_id:
-          type: string
-          format: uuid
-          description: the id of the parent document
-          nullable: true
-          example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
-        slug:
-          type: string
-          description: the slug of the document
-          example: getting-started
-        revision:
-          $ref: '#/components/schemas/RevisionRaw'
-    RevisionRaw:
-      type: object
-      title: Revision
-      description: revision of a document
       required:
         - id
         - document_id
         - content
         - meta
         - title
+      title: Revision
+    DocumentRaw:
+      description: a document
+      type: object
       properties:
         id:
+          description: the id of the document
           type: string
           format: uuid
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        parent_document_id:
+          description: the id of the parent document
+          type: string
+          format: uuid
+          example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
+          nullable: true
+        slug:
+          description: the slug of the document
+          type: string
+          example: getting-started
+        revision:
+          $ref: '#/components/schemas/RevisionRaw'
+      required:
+        - id
+        - slug
+        - revision
+      title: Document
+    RevisionRaw:
+      description: revision of a document
+      type: object
+      properties:
+        id:
           description: the id of the revision
+          type: string
+          format: uuid
           example: d32d905a-ed33-46a3-a093-d8f536af9a8a
         document_id:
+          description: the id of the document
           type: string
           format: uuid
-          description: the id of the document
           example: d32d905a-ed33-46a3-a093-d8f536af9a8a
         content:
-          type: string
           description: Markdown document
+          type: string
         meta:
-          type: object
           description: the metadata of the document
+          type: object
           example:
             title: Hello World
             description: This is a description
-            keywords: hello, world
+            keywords: 'hello, world'
         title:
-          type: string
           description: the title of the document
+          type: string
           example: Hello World
+      required:
+        - id
+        - document_id
+        - content
+        - meta
+        - title
+      title: Revision
     DocumentContentTypeEnum:
       type: string
       default: application/json
@@ -318,14 +355,8 @@ components:
         - application/json
         - application/vnd.konnect.document-tree+json
     PageMeta:
+      description: Contains pagination query parameters and the total number of objects returned.
       type: object
-      description: >-
-        Contains pagination query parameters and the total number of objects
-        returned.
-      required:
-        - number
-        - size
-        - total
       properties:
         number:
           type: number
@@ -336,50 +367,50 @@ components:
         total:
           type: number
           example: 100
+      required:
+        - number
+        - size
+        - total
     PaginatedMeta:
-      type: object
-      title: PaginatedMeta
       description: returns the pagination information
+      type: object
       properties:
         page:
           $ref: '#/components/schemas/PageMeta'
       required:
         - page
+      title: PaginatedMeta
     DocumentItem:
       type: object
-      title: Document item
+      properties:
+        id:
+          description: the id of the document
+          type: string
+          format: uuid
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        parent_document_id:
+          description: the id of the parent document
+          type: string
+          format: uuid
+          example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
+          nullable: true
+        slug:
+          description: the slug of the document
+          type: string
+          example: getting-started
+        title:
+          description: the title of the document
+          type: string
+          example: Getting Started
       additionalProperties: false
       required:
         - id
         - parent_document_id
         - slug
         - title
-      properties:
-        id:
-          type: string
-          format: uuid
-          description: the id of the document
-          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
-        parent_document_id:
-          type: string
-          format: uuid
-          description: the id of the parent document
-          nullable: true
-          example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
-        slug:
-          type: string
-          description: the slug of the document
-          example: getting-started
-        title:
-          type: string
-          description: the title of the document
-          example: Getting Started
+      title: Document item
     ListDocuments:
       type: object
-      additionalProperties: false
-      required:
-        - meta
-        - data
       properties:
         meta:
           $ref: '#/components/schemas/PaginatedMeta'
@@ -387,16 +418,13 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DocumentItem'
-    DocumentTree:
-      type: object
-      title: DocumentTree
-      description: a document tree
+      additionalProperties: false
       required:
-        - id
-        - title
-        - slug
         - meta
-        - children
+        - data
+    DocumentTree:
+      description: a document tree
+      type: object
       properties:
         id:
           type: string
@@ -405,32 +433,36 @@ components:
         parent_document_id:
           type: string
           format: uuid
-          nullable: true
           example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
+          nullable: true
         title:
-          type: string
           description: the title of the document
+          type: string
           example: Getting Started
         slug:
-          type: string
           description: the slug of the document
+          type: string
           example: getting-started
         meta:
-          type: object
           description: the metadata of the document
+          type: object
           example:
             author: Jane Doe
             description: This is a description
-            keywords: hello, world
+            keywords: 'hello, world'
         children:
           type: array
           items:
             $ref: '#/components/schemas/DocumentTree'
+      required:
+        - id
+        - title
+        - slug
+        - meta
+        - children
+      title: DocumentTree
     ListDocumentsTree:
       type: object
-      required:
-        - meta
-        - data
       properties:
         meta:
           $ref: '#/components/schemas/PaginatedMeta'
@@ -438,61 +470,54 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DocumentTree'
+      required:
+        - meta
+        - data
     BaseError:
-      type: object
-      title: Error
       description: standard error
+      type: object
+      properties:
+        status:
+          description: |
+            The HTTP status code of the error. Useful when passing the response
+            body to child properties in a frontend UI. Must be returned as an integer.
+          type: integer
+          readOnly: true
+        title:
+          description: |
+            A short, human-readable summary of the problem. It should not
+            change between occurences of a problem, except for localization.
+            Should be provided as "Sentence case" for direct use in the UI.
+          type: string
+          readOnly: true
+        type:
+          description: The error type.
+          type: string
+          readOnly: true
+        instance:
+          description: |
+            Used to return the correlation ID back to the user, in the format
+            kong:trace:<correlation_id>. This helps us find the relevant logs
+            when a customer reports an issue.
+          type: string
+          readOnly: true
+        detail:
+          description: |
+            A human readable explanation specific to this occurence of the problem.
+            This field may contain request/entity data to help the user understand
+            what went wrong. Enclose variable values in square brackets. Should be
+            provided as "Sentence case" for direct use in the UI.
+          type: string
+          readOnly: true
       required:
         - status
         - title
         - instance
         - detail
-      properties:
-        status:
-          type: integer
-          description: >
-            The HTTP status code of the error. Useful when passing the response
-
-            body to child properties in a frontend UI. Must be returned as an
-            integer.
-          readOnly: true
-        title:
-          type: string
-          description: |
-            A short, human-readable summary of the problem. It should not
-            change between occurences of a problem, except for localization.
-            Should be provided as "Sentence case" for direct use in the UI.
-          readOnly: true
-        type:
-          type: string
-          description: The error type.
-          readOnly: true
-        instance:
-          type: string
-          description: |
-            Used to return the correlation ID back to the user, in the format
-            kong:trace:<correlation_id>. This helps us find the relevant logs
-            when a customer reports an issue.
-          readOnly: true
-        detail:
-          type: string
-          description: >
-            A human readable explanation specific to this occurence of the
-            problem.
-
-            This field may contain request/entity data to help the user
-            understand
-
-            what went wrong. Enclose variable values in square brackets. Should
-            be
-
-            provided as "Sentence case" for direct use in the UI.
-          readOnly: true
+      title: Error
     InvalidRules:
       description: invalid parameters rules
       type: string
-      readOnly: true
-      nullable: true
       enum:
         - required
         - max_length
@@ -515,9 +540,10 @@ components:
         - is_supported_network_availability_zone_list
         - is_supported_network_cidr_block
         - is_supported_provider_region
+      nullable: true
+      readOnly: true
     InvalidParameterStandard:
       type: object
-      additionalProperties: false
       properties:
         field:
           type: string
@@ -532,12 +558,12 @@ components:
           type: string
           example: is a required field
           readOnly: true
+      additionalProperties: false
       required:
         - field
         - reason
     InvalidParameterMinimumLength:
       type: object
-      additionalProperties: false
       properties:
         field:
           type: string
@@ -546,14 +572,14 @@ components:
         rule:
           description: invalid parameters rules
           type: string
-          readOnly: true
-          nullable: false
           enum:
             - min_length
             - min_digits
             - min_lowercase
             - min_uppercase
             - min_symbols
+          nullable: false
+          readOnly: true
         minimum:
           type: integer
           example: 8
@@ -564,6 +590,7 @@ components:
           type: string
           example: is a required field
           readOnly: true
+      additionalProperties: false
       required:
         - field
         - reason
@@ -571,7 +598,6 @@ components:
         - minimum
     InvalidParameterChoiceItem:
       type: object
-      additionalProperties: false
       properties:
         field:
           type: string
@@ -580,24 +606,25 @@ components:
         rule:
           description: invalid parameters rules
           type: string
-          readOnly: true
-          nullable: false
           enum:
             - enum
+          nullable: false
+          readOnly: true
         reason:
           type: string
           example: is a required field
           readOnly: true
         choices:
           type: array
-          uniqueItems: true
-          readOnly: true
-          nullable: false
-          minimum: 1
           items: {}
+          minimum: 1
+          nullable: false
+          readOnly: true
+          uniqueItems: true
         source:
           type: string
           example: body
+      additionalProperties: false
       required:
         - field
         - reason
@@ -605,7 +632,6 @@ components:
         - choices
     InvalidParameterDependentItem:
       type: object
-      additionalProperties: false
       properties:
         field:
           type: string
@@ -614,40 +640,41 @@ components:
         rule:
           description: invalid parameters rules
           type: string
-          readOnly: true
-          nullable: true
           enum:
             - dependent_fields
+          nullable: true
+          readOnly: true
         reason:
           type: string
           example: is a required field
           readOnly: true
         dependents:
           type: array
-          uniqueItems: true
-          nullable: true
           items: {}
+          nullable: true
           readOnly: true
+          uniqueItems: true
         source:
           type: string
           example: body
+      additionalProperties: false
       required:
         - field
         - rule
         - reason
         - dependents
     InvalidParameters:
-      type: array
-      nullable: false
-      uniqueItems: true
-      minItems: 1
       description: invalid parameters
+      type: array
       items:
         oneOf:
           - $ref: '#/components/schemas/InvalidParameterStandard'
           - $ref: '#/components/schemas/InvalidParameterMinimumLength'
           - $ref: '#/components/schemas/InvalidParameterChoiceItem'
           - $ref: '#/components/schemas/InvalidParameterDependentItem'
+      minItems: 1
+      nullable: false
+      uniqueItems: true
     BadRequestError:
       allOf:
         - $ref: '#/components/schemas/BaseError'
@@ -667,9 +694,9 @@ components:
             title:
               example: Not Found
             type:
-              example: https://httpstatuses.com/404
+              example: 'https://httpstatuses.com/404'
             instance:
-              example: kong:trace:1234567890
+              example: 'kong:trace:1234567890'
             detail:
               example: Not found
     DocumentFormatContentTypeEnum:
@@ -681,26 +708,26 @@ components:
         - application/vnd.konnect.document-nodes+json
     BaseNode:
       type: object
-      required:
-        - type
       properties:
         type:
           type: string
+      required:
+        - type
     DocumentBlock:
-      allOf:
-        - $ref: '#/components/schemas/BlockNode'
-        - type: object
-          properties:
-            version:
-              type: string
       description: content of the document
       example:
         type: doc
         content:
           - type: paragraph
             content:
-              - type: text
-                text: Hello World
+              - text: Hello World
+                type: text
+      allOf:
+        - $ref: '#/components/schemas/BlockNode'
+        - type: object
+          properties:
+            version:
+              type: string
     BlockNode:
       allOf:
         - $ref: '#/components/schemas/BaseNode'
@@ -719,8 +746,8 @@ components:
             level:
               description: Level of the heading which maps to HTML <h> tag
               type: number
-              minimum: 1
               maximum: 6
+              minimum: 1
     BlockQuoteBlock:
       allOf:
         - $ref: '#/components/schemas/BlockNode'
@@ -760,22 +787,15 @@ components:
             text:
               type: string
             hardBreak:
-              description: >
+              description: |
                 If this property is true the end of this block should
-
-                be a carriage return and not concatenated to the next Text
-                block.
+                be a carriage return and not concatenated to the next Text block.
               type: boolean
             softBreak:
-              description: >
+              description: |
                 If this property is true the end of this block should should be
-
-                concatenated with a space caracter before the next block. This
-                is
-
-                the flag showing that the parsed markdown block was at the end
-                of
-
+                concatenated with a space caracter before the next block. This is
+                the flag showing that the parsed markdown block was at the end of
                 the line.
               type: boolean
     Emphasis:
@@ -785,13 +805,13 @@ components:
         - type: object
           properties:
             level:
-              type: number
-              minimum: 1
-              maximum: 2
               description: |
                 Level of emphasis
                 1 - italic
                 2 - bold
+              type: number
+              maximum: 2
+              minimum: 1
     Code:
       allOf:
         - $ref: '#/components/schemas/BaseNode'
@@ -830,8 +850,8 @@ components:
         - type: object
           properties:
             checked:
-              type: boolean
               description: State of the checkbox
+              type: boolean
           required:
             - checked
     AlignmentKind:
@@ -846,9 +866,9 @@ components:
       properties:
         alignments:
           type: array
-          nullable: true
           items:
             $ref: '#/components/schemas/AlignmentKind'
+          nullable: true
       required:
         - alignments
     TableBlock:
@@ -871,27 +891,6 @@ components:
         - $ref: '#/components/schemas/BlockNode'
         - $ref: '#/components/schemas/TableAlignments'
     AnyNode:
-      oneOf:
-        - $ref: '#/components/schemas/DocumentBlock'
-        - $ref: '#/components/schemas/HeadingBlock'
-        - $ref: '#/components/schemas/BlockQuoteBlock'
-        - $ref: '#/components/schemas/ParagraphBlock'
-        - $ref: '#/components/schemas/TextBlock'
-        - $ref: '#/components/schemas/BreakBlock'
-        - $ref: '#/components/schemas/CodeBlock'
-        - $ref: '#/components/schemas/ListBlock'
-        - $ref: '#/components/schemas/ListItemBlock'
-        - $ref: '#/components/schemas/Text'
-        - $ref: '#/components/schemas/Emphasis'
-        - $ref: '#/components/schemas/Code'
-        - $ref: '#/components/schemas/Link'
-        - $ref: '#/components/schemas/Image'
-        - $ref: '#/components/schemas/StrikeThrough'
-        - $ref: '#/components/schemas/TableBlock'
-        - $ref: '#/components/schemas/TableHeaderBlock'
-        - $ref: '#/components/schemas/TableCellBlock'
-        - $ref: '#/components/schemas/TableRowBlock'
-        - $ref: '#/components/schemas/TaskCheckbox'
       discriminator:
         propertyName: type
         mapping:
@@ -915,6 +914,34 @@ components:
           table_header: '#/components/schemas/TableHeaderBlock'
           table_cell: '#/components/schemas/TableCellBlock'
           table_row: '#/components/schemas/TableRowBlock'
+      oneOf:
+        - $ref: '#/components/schemas/DocumentBlock'
+        - $ref: '#/components/schemas/HeadingBlock'
+        - $ref: '#/components/schemas/BlockQuoteBlock'
+        - $ref: '#/components/schemas/ParagraphBlock'
+        - $ref: '#/components/schemas/TextBlock'
+        - $ref: '#/components/schemas/BreakBlock'
+        - $ref: '#/components/schemas/CodeBlock'
+        - $ref: '#/components/schemas/ListBlock'
+        - $ref: '#/components/schemas/ListItemBlock'
+        - $ref: '#/components/schemas/Text'
+        - $ref: '#/components/schemas/Emphasis'
+        - $ref: '#/components/schemas/Code'
+        - $ref: '#/components/schemas/Link'
+        - $ref: '#/components/schemas/Image'
+        - $ref: '#/components/schemas/StrikeThrough'
+        - $ref: '#/components/schemas/TableBlock'
+        - $ref: '#/components/schemas/TableHeaderBlock'
+        - $ref: '#/components/schemas/TableCellBlock'
+        - $ref: '#/components/schemas/TableRowBlock'
+        - $ref: '#/components/schemas/TaskCheckbox'
+  examples:
+    NotFoundExample:
+      value:
+        status: 404
+        title: Not Found
+        instance: 'kong:trace:6816496025408232265'
+        detail: Not Found
   requestBodies:
     HasDocumentation:
       description: has documentation
@@ -938,59 +965,13 @@ components:
           examples:
             NotFoundExample:
               $ref: '#/components/examples/NotFoundExample'
-  parameters:
-    resourceKindParam:
-      name: resourceKind
-      in: path
-      required: true
-      description: Kind of the Konnect resource
-      example: services
-      schema:
-        type: string
-        enum:
-          - services
-    resourceId:
-      name: resourceId
-      in: path
-      required: true
-      description: Id of the Konnect resource
-      example: bf138ba2-c9b1-4229-b268-04d9d8a6410b
-      schema:
-        type: string
-        format: uuid
-    documentId:
-      name: documentId
-      in: path
-      required: true
-      description: Targeted document
-      example: bb84c46a-432d-4314-81e4-478614a52dcb
-      schema:
-        type: string
-        format: uuid
-    PageSize:
-      name: page[size]
-      description: >-
-        The maximum number of items to include per page. The last page of a
-        collection may include fewer items.
-      required: false
-      in: query
-      allowEmptyValue: true
-      schema:
-        type: integer
-        example: 10
-    PageNumber:
-      name: page[number]
-      description: Determines which page of the entities to retrieve.
-      required: false
-      in: query
-      allowEmptyValue: true
-      schema:
-        type: integer
-        example: 1
-  examples:
-    NotFoundExample:
-      value:
-        status: 404
-        title: Not Found
-        instance: kong:trace:6816496025408232265
-        detail: Not Found
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+tags:
+  - name: Customization
+    description: customization operations
+security:
+  - bearerAuth: []

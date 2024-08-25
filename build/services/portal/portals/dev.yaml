@@ -5,10 +5,7 @@ info:
   description: N/A (this description is removed during bundling)
   contact:
     name: Kong
-    url: https://cloud.konghq.com
-tags:
-  - name: portal
-    description: The API for retrieving details about a single Konnect Portal.
+    url: 'https://cloud.konghq.com'
 paths:
   /api/v2/portal/customization:
     get:
@@ -18,19 +15,15 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/GetPortalCustomization'
-      tags:
-        - portal
       security:
         - {}
+      tags:
+        - portal
   /api/v2/portal/pages:
     get:
       operationId: list-portal-pages
       summary: List Portal Pages
-      description: >-
-        Returns a paginated list of pages for the portal. Each page has a path,
-        title, and content. Public pages will be returned for non-authenticated
-        users, while both private and public pages will be returned for
-        authenticated users.
+      description: 'Returns a paginated list of pages for the portal. Each page has a path, title, and content. Public pages will be returned for non-authenticated users, while both private and public pages will be returned for authenticated users.'
       parameters:
         - $ref: '#/components/parameters/SortPortalPages'
         - $ref: '#/components/parameters/PageSize'
@@ -46,25 +39,21 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/ListPortalPagesResponse'
-      tags:
-        - portal
       security:
         - portalAccessToken: []
         - {}
+      tags:
+        - portal
   /api/v2/portal/pages/content:
     get:
       operationId: get-portal-page
       summary: Get Portal Page
-      description: >-
-        Returns a single page for the portal. Each page has a path, title, and
-        content. Public pages will be returned for non-authenticated users,
-        while both private and public pages will be returned for authenticated
-        users.
+      description: 'Returns a single page for the portal. Each page has a path, title, and content. Public pages will be returned for non-authenticated users, while both private and public pages will be returned for authenticated users.'
       parameters:
         - name: path
           in: query
-          required: true
           description: The unique identifier of the page
+          required: true
           schema:
             type: string
           example: /about/company
@@ -73,13 +62,101 @@ paths:
           $ref: '#/components/responses/GetPortalPageResponse'
         '404':
           $ref: '#/components/responses/NotFound'
-      tags:
-        - portal
       security:
         - portalAccessToken: []
         - {}
+      tags:
+        - portal
 components:
   parameters:
+    FilterByPathContains:
+      name: 'filter[path][contains]'
+      description: Filter by contains comparison of the path property with a supplied substring
+      in: query
+      required: false
+      schema:
+        type: string
+        example: good
+    FilterByPathEquality:
+      name: 'filter[path][eq]'
+      description: Filter by direct equality comparison of the path property with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: good-page
+    FilterByPathEqualityShort:
+      name: 'filter[path]'
+      description: Filter by direct equality comparison (short-hand) of the path property with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: good-page
+    FilterByPublicEquality:
+      name: 'filter[public][eq]'
+      description: 'Filter by whether the pages returned are public or private. Private pages are only accessible to authenticated users. For authenticated users, results will include both public and private pages if not specified.'
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 'true'
+        enum:
+          - 'true'
+          - 'false'
+    FilterByPublicEqualityShort:
+      name: 'filter[public]'
+      description: 'Filter (short-hand) by whether the pages returned are public or private. Private pages are only accessible to authenticated users. For authenticated users, results will include both public and private pages if not specified.'
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 'true'
+        enum:
+          - 'true'
+          - 'false'
+    FilterByTitleContains:
+      name: 'filter[title][contains]'
+      description: Filter by contains comparison of the title property with a supplied substring
+      in: query
+      required: false
+      schema:
+        type: string
+        example: Good
+    FilterByTitleEquality:
+      name: 'filter[title][eq]'
+      description: Filter by direct equality comparison of the title property with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: Good Page
+    FilterByTitleEqualityShort:
+      name: 'filter[title]'
+      description: Filter by direct equality comparison (short-hand) of the title property with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: Good Page
+    PageNumber:
+      name: 'page[number]'
+      description: Determines which page of the entities to retrieve.
+      required: false
+      in: query
+      allowEmptyValue: true
+      schema:
+        type: integer
+        example: 1
+    PageSize:
+      name: 'page[size]'
+      description: The maximum number of items to include per page. The last page of a collection may include fewer items.
+      required: false
+      in: query
+      allowEmptyValue: true
+      schema:
+        type: integer
+        example: 10
     SortPortalPages:
       name: sort
       description: |
@@ -93,116 +170,212 @@ components:
       required: false
       schema:
         type: string
-    PageSize:
-      name: page[size]
-      description: >-
-        The maximum number of items to include per page. The last page of a
-        collection may include fewer items.
-      required: false
-      in: query
-      allowEmptyValue: true
-      schema:
-        type: integer
-        example: 10
-    PageNumber:
-      name: page[number]
-      description: Determines which page of the entities to retrieve.
-      required: false
-      in: query
-      allowEmptyValue: true
-      schema:
-        type: integer
-        example: 1
-    FilterByTitleEquality:
-      name: filter[title][eq]
-      description: >-
-        Filter by direct equality comparison of the title property with a
-        supplied value.
-      in: query
-      required: false
-      schema:
-        type: string
-        example: Good Page
-    FilterByTitleEqualityShort:
-      name: filter[title]
-      description: >-
-        Filter by direct equality comparison (short-hand) of the title property
-        with a supplied value.
-      in: query
-      required: false
-      schema:
-        type: string
-        example: Good Page
-    FilterByTitleContains:
-      name: filter[title][contains]
-      description: >-
-        Filter by contains comparison of the title property with a supplied
-        substring
-      in: query
-      required: false
-      schema:
-        type: string
-        example: Good
-    FilterByPathEquality:
-      name: filter[path][eq]
-      description: >-
-        Filter by direct equality comparison of the path property with a
-        supplied value.
-      in: query
-      required: false
-      schema:
-        type: string
-        example: good-page
-    FilterByPathEqualityShort:
-      name: filter[path]
-      description: >-
-        Filter by direct equality comparison (short-hand) of the path property
-        with a supplied value.
-      in: query
-      required: false
-      schema:
-        type: string
-        example: good-page
-    FilterByPathContains:
-      name: filter[path][contains]
-      description: >-
-        Filter by contains comparison of the path property with a supplied
-        substring
-      in: query
-      required: false
-      schema:
-        type: string
-        example: good
-    FilterByPublicEquality:
-      name: filter[public][eq]
-      description: >-
-        Filter by whether the pages returned are public or private. Private
-        pages are only accessible to authenticated users. For authenticated
-        users, results will include both public and private pages if not
-        specified.
-      in: query
-      required: false
-      schema:
-        type: string
-        enum:
-          - 'true'
-          - 'false'
-        example: 'true'
-    FilterByPublicEqualityShort:
-      name: filter[public]
-      description: >-
-        Filter (short-hand) by whether the pages returned are public or private.
-        Private pages are only accessible to authenticated users. For
-        authenticated users, results will include both public and private pages
-        if not specified.
-      in: query
-      required: false
-      schema:
-        type: string
-        enum:
-          - 'true'
-          - 'false'
-        example: 'true'
+  schemas:
+    PageId:
+      description: The unique identifier of the page
+      type: string
+      format: uuid
+      example: 582b9327-3eba-4bfe-9438-6066840dbbca
+      title: Page ID
+    PagePath:
+      description: The path of the page with a leading slash
+      type: string
+      example: /my-page
+      title: Page Path
+    PageTitle:
+      description: The title of the page
+      type: string
+      example: My Page
+      title: Page Title
+    PageContent:
+      description: The renderable markdown content of the page
+      type: string
+      example: '# Welcome to the Developer Portal'
+      title: Page Content
+    PagePublicStatus:
+      description: Whether the page is public or private. Private pages are only accessible to authenticated users.
+      type: boolean
+      example: true
+      title: Page Public Status
+    PageDescription:
+      type: string
+      example: A custom page about developer portals
+      title: PageDescription
+    ListPortalPages:
+      description: A paginated list of pages for the portal
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PortalPageInfo'
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
+      additionalProperties: false
+      title: List Portal Pages
+    PortalPageInfo:
+      description: A single page for the portal
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/PageId'
+        path:
+          $ref: '#/components/schemas/PagePath'
+        title:
+          $ref: '#/components/schemas/PageTitle'
+        public:
+          $ref: '#/components/schemas/PagePublicStatus'
+        description:
+          $ref: '#/components/schemas/PageDescription'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
+      required:
+        - id
+        - path
+        - title
+        - public
+        - created_at
+        - updated_at
+      title: Portal Page Info
+    PortalPage:
+      description: A single page for the portal
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/PageId'
+        title:
+          $ref: '#/components/schemas/PageTitle'
+        path:
+          $ref: '#/components/schemas/PagePath'
+        content:
+          $ref: '#/components/schemas/PageContent'
+        public:
+          $ref: '#/components/schemas/PagePublicStatus'
+        description:
+          $ref: '#/components/schemas/PageDescription'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
+      required:
+        - id
+        - title
+        - path
+        - content
+        - public
+        - created_at
+        - updated_at
+      title: Portal Page
+    PortalCustomization:
+      type: object
+      additionalProperties: true
+      title: PortalCustomization
+    CreatedAt:
+      description: An ISO-8601 timestamp representation of entity creation date.
+      type: string
+      format: date-time
+      example: '2022-11-04T20:10:06.927Z'
+      readOnly: true
+    UpdatedAt:
+      description: An ISO-8601 timestamp representation of entity update date.
+      type: string
+      format: date-time
+      example: '2022-11-04T20:10:06.927Z'
+      readOnly: true
+    PageMeta:
+      description: Contains pagination query parameters and the total number of objects returned.
+      type: object
+      properties:
+        number:
+          type: number
+          example: 1
+        size:
+          type: number
+          example: 10
+        total:
+          type: number
+          example: 100
+      required:
+        - number
+        - size
+        - total
+    PaginatedMeta:
+      description: returns the pagination information
+      type: object
+      properties:
+        page:
+          $ref: '#/components/schemas/PageMeta'
+      required:
+        - page
+      title: PaginatedMeta
+    BaseError:
+      description: standard error
+      type: object
+      properties:
+        status:
+          description: |
+            The HTTP status code of the error. Useful when passing the response
+            body to child properties in a frontend UI. Must be returned as an integer.
+          type: integer
+          readOnly: true
+        title:
+          description: |
+            A short, human-readable summary of the problem. It should not
+            change between occurences of a problem, except for localization.
+            Should be provided as "Sentence case" for direct use in the UI.
+          type: string
+          readOnly: true
+        type:
+          description: The error type.
+          type: string
+          readOnly: true
+        instance:
+          description: |
+            Used to return the correlation ID back to the user, in the format
+            kong:trace:<correlation_id>. This helps us find the relevant logs
+            when a customer reports an issue.
+          type: string
+          readOnly: true
+        detail:
+          description: |
+            A human readable explanation specific to this occurence of the problem.
+            This field may contain request/entity data to help the user understand
+            what went wrong. Enclose variable values in square brackets. Should be
+            provided as "Sentence case" for direct use in the UI.
+          type: string
+          readOnly: true
+      required:
+        - status
+        - title
+        - instance
+        - detail
+      title: Error
+    NotFoundError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 404
+            title:
+              example: Not Found
+            type:
+              example: 'https://httpstatuses.com/404'
+            instance:
+              example: 'kong:trace:1234567890'
+            detail:
+              example: Not found
+  examples:
+    NotFoundExample:
+      value:
+        status: 404
+        title: Not Found
+        instance: 'kong:trace:6816496025408232265'
+        detail: Not Found
   responses:
     ListPortalPagesResponse:
       description: Paginated list of portal pages
@@ -257,229 +430,13 @@ components:
           examples:
             NotFoundExample:
               $ref: '#/components/examples/NotFoundExample'
-  schemas:
-    PageId:
-      title: Page ID
-      description: The unique identifier of the page
-      type: string
-      format: uuid
-      example: 582b9327-3eba-4bfe-9438-6066840dbbca
-    PagePath:
-      title: Page Path
-      description: The path of the page with a leading slash
-      type: string
-      example: /my-page
-    PageTitle:
-      title: Page Title
-      description: The title of the page
-      type: string
-      example: My Page
-    PageContent:
-      title: Page Content
-      description: The renderable markdown content of the page
-      type: string
-      example: '# Welcome to the Developer Portal'
-    PagePublicStatus:
-      title: Page Public Status
-      description: >-
-        Whether the page is public or private. Private pages are only accessible
-        to authenticated users.
-      type: boolean
-      example: true
-    PageDescription:
-      title: PageDescription
-      type: string
-      example: A custom page about developer portals
-    ListPortalPages:
-      title: List Portal Pages
-      description: A paginated list of pages for the portal
-      type: object
-      additionalProperties: false
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/PortalPageInfo'
-        meta:
-          $ref: '#/components/schemas/PaginatedMeta'
-    PortalPageInfo:
-      title: Portal Page Info
-      description: A single page for the portal
-      type: object
-      additionalProperties: false
-      properties:
-        id:
-          $ref: '#/components/schemas/PageId'
-        path:
-          $ref: '#/components/schemas/PagePath'
-        title:
-          $ref: '#/components/schemas/PageTitle'
-        public:
-          $ref: '#/components/schemas/PagePublicStatus'
-        description:
-          $ref: '#/components/schemas/PageDescription'
-        created_at:
-          $ref: '#/components/schemas/CreatedAt'
-        updated_at:
-          $ref: '#/components/schemas/UpdatedAt'
-      required:
-        - id
-        - path
-        - title
-        - public
-        - created_at
-        - updated_at
-    PortalPage:
-      title: Portal Page
-      description: A single page for the portal
-      type: object
-      additionalProperties: false
-      properties:
-        id:
-          $ref: '#/components/schemas/PageId'
-        title:
-          $ref: '#/components/schemas/PageTitle'
-        path:
-          $ref: '#/components/schemas/PagePath'
-        content:
-          $ref: '#/components/schemas/PageContent'
-        public:
-          $ref: '#/components/schemas/PagePublicStatus'
-        description:
-          $ref: '#/components/schemas/PageDescription'
-        created_at:
-          $ref: '#/components/schemas/CreatedAt'
-        updated_at:
-          $ref: '#/components/schemas/UpdatedAt'
-      required:
-        - id
-        - title
-        - path
-        - content
-        - public
-        - created_at
-        - updated_at
-    PortalCustomization:
-      title: PortalCustomization
-      type: object
-      additionalProperties: true
-    CreatedAt:
-      type: string
-      format: date-time
-      example: '2022-11-04T20:10:06.927Z'
-      description: An ISO-8601 timestamp representation of entity creation date.
-      readOnly: true
-    UpdatedAt:
-      type: string
-      format: date-time
-      example: '2022-11-04T20:10:06.927Z'
-      description: An ISO-8601 timestamp representation of entity update date.
-      readOnly: true
-    PageMeta:
-      type: object
-      description: >-
-        Contains pagination query parameters and the total number of objects
-        returned.
-      required:
-        - number
-        - size
-        - total
-      properties:
-        number:
-          type: number
-          example: 1
-        size:
-          type: number
-          example: 10
-        total:
-          type: number
-          example: 100
-    PaginatedMeta:
-      type: object
-      title: PaginatedMeta
-      description: returns the pagination information
-      properties:
-        page:
-          $ref: '#/components/schemas/PageMeta'
-      required:
-        - page
-    BaseError:
-      type: object
-      title: Error
-      description: standard error
-      required:
-        - status
-        - title
-        - instance
-        - detail
-      properties:
-        status:
-          type: integer
-          description: >
-            The HTTP status code of the error. Useful when passing the response
-
-            body to child properties in a frontend UI. Must be returned as an
-            integer.
-          readOnly: true
-        title:
-          type: string
-          description: |
-            A short, human-readable summary of the problem. It should not
-            change between occurences of a problem, except for localization.
-            Should be provided as "Sentence case" for direct use in the UI.
-          readOnly: true
-        type:
-          type: string
-          description: The error type.
-          readOnly: true
-        instance:
-          type: string
-          description: |
-            Used to return the correlation ID back to the user, in the format
-            kong:trace:<correlation_id>. This helps us find the relevant logs
-            when a customer reports an issue.
-          readOnly: true
-        detail:
-          type: string
-          description: >
-            A human readable explanation specific to this occurence of the
-            problem.
-
-            This field may contain request/entity data to help the user
-            understand
-
-            what went wrong. Enclose variable values in square brackets. Should
-            be
-
-            provided as "Sentence case" for direct use in the UI.
-          readOnly: true
-    NotFoundError:
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
-        - type: object
-          properties:
-            status:
-              example: 404
-            title:
-              example: Not Found
-            type:
-              example: https://httpstatuses.com/404
-            instance:
-              example: kong:trace:1234567890
-            detail:
-              example: Not found
   securitySchemes:
     portalAccessToken:
       type: apiKey
       in: cookie
       name: portalaccesstoken
-      description: >
-        The Developer portal cookie is meant to be used by the Developer API to
-        authenticate with.
-  examples:
-    NotFoundExample:
-      value:
-        status: 404
-        title: Not Found
-        instance: kong:trace:6816496025408232265
-        detail: Not Found
+      description: |
+        The Developer portal cookie is meant to be used by the Developer API to authenticate with.
+tags:
+  - name: portal
+    description: The API for retrieving details about a single Konnect Portal.

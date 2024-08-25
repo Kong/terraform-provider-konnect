@@ -5,22 +5,20 @@ info:
   description: The management API for Konnect Organization Lifecycle.
   contact:
     name: Kong
-    url: https://konghq.com
+    url: 'https://konghq.com'
 servers:
-  - url: https://global.api.konghq.com/v3
+  - url: 'https://global.api.konghq.com/v3'
     description: Global Base URL
-tags:
-  - name: Organization Lifecycle
 paths:
   /organizations/state:
     post:
-      summary: Sets a new state for an organization.
       operationId: post-organization-state
+      summary: Sets a new state for an organization.
       description: |
         Sets a new state for an organization and creates an organization state 
         history record. An organization can be set to active or inactive.
-      tags:
-        - Organization Lifecycle
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateOrganizationState'
       responses:
         '201':
           $ref: '#/components/responses/OrganizationStateResponse'
@@ -34,26 +32,17 @@ paths:
           $ref: '#/components/responses/OrganizationNotFound'
         '409':
           $ref: '#/components/responses/OrganizationStateConflict'
-      requestBody:
-        $ref: '#/components/requestBodies/UpdateOrganizationState'
-  /organizations/state/history:
-    get:
-      summary: Returns the state history of an organization.
-      operationId: get-organization-state-history
-      description: >
-        Returns the state history of an organization sorted in reverse
-        chronological order.
-
-        Possible states include active, inactive, deleting, and deleted. An
-        organization state 
-
-        will be transitioned to the deleting state if the organization remains
-        inactive for 90 days. 
-
-        After deletion is complete, the state will be transitioned to the final
-        deleted state. 
       tags:
         - Organization Lifecycle
+  /organizations/state/history:
+    get:
+      operationId: get-organization-state-history
+      summary: Returns the state history of an organization.
+      description: |
+        Returns the state history of an organization sorted in reverse chronological order.
+        Possible states include active, inactive, deleting, and deleted. An organization state 
+        will be transitioned to the deleting state if the organization remains inactive for 90 days. 
+        After deletion is complete, the state will be transitioned to the final deleted state. 
       responses:
         '200':
           $ref: '#/components/responses/OrganizationStateHistory'
@@ -63,21 +52,22 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/OrganizationNotFound'
+      tags:
+        - Organization Lifecycle
 components:
   schemas:
     OrganizationState:
       type: object
-      title: Organization State
       properties:
         id:
-          type: string
           description: UUID of the organization.
-          format: uuid
-          readOnly: true
-          example: d99c041a-c7cf-46a2-bf3a-44bb5f75400e
-        state:
           type: string
+          format: uuid
+          example: d99c041a-c7cf-46a2-bf3a-44bb5f75400e
+          readOnly: true
+        state:
           description: State of the organization.
+          type: string
           example: active
           enum:
             - active
@@ -85,79 +75,70 @@ components:
             - deleting
             - deleted
         reason:
-          type: string
           description: The reason for the organization's state.
+          type: string
           example: invoice overdue (30 days)
         service:
-          type: string
           description: The service that modified the state.
+          type: string
           example: kbilling
         changed_by:
-          type: string
           description: |
             The ID of the Konger who modified the state.
+          type: string
           example: 00uerwcs8eC4ifanR256
         created_at:
-          type: string
           description: Date the organization state was created.
+          type: string
           format: date-time
-          readOnly: true
           example: '2023-01-23T17:22:52.150Z'
+          readOnly: true
+      title: Organization State
     BaseError:
-      type: object
-      title: Error
       description: standard error
+      type: object
+      properties:
+        status:
+          description: |
+            The HTTP status code of the error. Useful when passing the response
+            body to child properties in a frontend UI. Must be returned as an integer.
+          type: integer
+          readOnly: true
+        title:
+          description: |
+            A short, human-readable summary of the problem. It should not
+            change between occurences of a problem, except for localization.
+            Should be provided as "Sentence case" for direct use in the UI.
+          type: string
+          readOnly: true
+        type:
+          description: The error type.
+          type: string
+          readOnly: true
+        instance:
+          description: |
+            Used to return the correlation ID back to the user, in the format
+            kong:trace:<correlation_id>. This helps us find the relevant logs
+            when a customer reports an issue.
+          type: string
+          readOnly: true
+        detail:
+          description: |
+            A human readable explanation specific to this occurence of the problem.
+            This field may contain request/entity data to help the user understand
+            what went wrong. Enclose variable values in square brackets. Should be
+            provided as "Sentence case" for direct use in the UI.
+          type: string
+          readOnly: true
       required:
         - status
         - title
         - instance
         - detail
-      properties:
-        status:
-          type: integer
-          description: >
-            The HTTP status code of the error. Useful when passing the response
-
-            body to child properties in a frontend UI. Must be returned as an
-            integer.
-          readOnly: true
-        title:
-          type: string
-          description: |
-            A short, human-readable summary of the problem. It should not
-            change between occurences of a problem, except for localization.
-            Should be provided as "Sentence case" for direct use in the UI.
-          readOnly: true
-        type:
-          type: string
-          description: The error type.
-          readOnly: true
-        instance:
-          type: string
-          description: |
-            Used to return the correlation ID back to the user, in the format
-            kong:trace:<correlation_id>. This helps us find the relevant logs
-            when a customer reports an issue.
-          readOnly: true
-        detail:
-          type: string
-          description: >
-            A human readable explanation specific to this occurence of the
-            problem.
-
-            This field may contain request/entity data to help the user
-            understand
-
-            what went wrong. Enclose variable values in square brackets. Should
-            be
-
-            provided as "Sentence case" for direct use in the UI.
-          readOnly: true
+      title: Error
     InvalidRules:
       description: invalid parameters rules
       type: string
-      readOnly: true
-      nullable: true
       enum:
         - required
         - max_length
@@ -180,9 +161,10 @@ components:
         - is_supported_network_availability_zone_list
         - is_supported_network_cidr_block
         - is_supported_provider_region
+      nullable: true
+      readOnly: true
     InvalidParameterStandard:
       type: object
-      additionalProperties: false
       properties:
         field:
           type: string
@@ -197,12 +179,12 @@ components:
           type: string
           example: is a required field
           readOnly: true
+      additionalProperties: false
       required:
         - field
         - reason
     InvalidParameterMinimumLength:
       type: object
-      additionalProperties: false
       properties:
         field:
           type: string
@@ -211,14 +193,14 @@ components:
         rule:
           description: invalid parameters rules
           type: string
-          readOnly: true
-          nullable: false
           enum:
             - min_length
             - min_digits
             - min_lowercase
             - min_uppercase
             - min_symbols
+          nullable: false
+          readOnly: true
         minimum:
           type: integer
           example: 8
@@ -229,6 +211,7 @@ components:
           type: string
           example: is a required field
           readOnly: true
+      additionalProperties: false
       required:
         - field
         - reason
@@ -236,7 +219,6 @@ components:
         - minimum
     InvalidParameterChoiceItem:
       type: object
-      additionalProperties: false
       properties:
         field:
           type: string
@@ -245,24 +227,25 @@ components:
         rule:
           description: invalid parameters rules
           type: string
-          readOnly: true
-          nullable: false
           enum:
             - enum
+          nullable: false
+          readOnly: true
         reason:
           type: string
           example: is a required field
           readOnly: true
         choices:
           type: array
-          uniqueItems: true
-          readOnly: true
-          nullable: false
-          minimum: 1
           items: {}
+          minimum: 1
+          nullable: false
+          readOnly: true
+          uniqueItems: true
         source:
           type: string
           example: body
+      additionalProperties: false
       required:
         - field
         - reason
@@ -270,7 +253,6 @@ components:
         - choices
     InvalidParameterDependentItem:
       type: object
-      additionalProperties: false
       properties:
         field:
           type: string
@@ -279,40 +261,41 @@ components:
         rule:
           description: invalid parameters rules
           type: string
-          readOnly: true
-          nullable: true
           enum:
             - dependent_fields
+          nullable: true
+          readOnly: true
         reason:
           type: string
           example: is a required field
           readOnly: true
         dependents:
           type: array
-          uniqueItems: true
-          nullable: true
           items: {}
+          nullable: true
           readOnly: true
+          uniqueItems: true
         source:
           type: string
           example: body
+      additionalProperties: false
       required:
         - field
         - rule
         - reason
         - dependents
     InvalidParameters:
-      type: array
-      nullable: false
-      uniqueItems: true
-      minItems: 1
       description: invalid parameters
+      type: array
       items:
         oneOf:
           - $ref: '#/components/schemas/InvalidParameterStandard'
           - $ref: '#/components/schemas/InvalidParameterMinimumLength'
           - $ref: '#/components/schemas/InvalidParameterChoiceItem'
           - $ref: '#/components/schemas/InvalidParameterDependentItem'
+      minItems: 1
+      nullable: false
+      uniqueItems: true
     BadRequestError:
       allOf:
         - $ref: '#/components/schemas/BaseError'
@@ -332,9 +315,9 @@ components:
             title:
               example: Unauthorized
             type:
-              example: https://httpstatuses.com/401
+              example: 'https://httpstatuses.com/401'
             instance:
-              example: kong:trace:1234567890
+              example: 'kong:trace:1234567890'
             detail:
               example: Invalid credentials
     ForbiddenError:
@@ -347,9 +330,9 @@ components:
             title:
               example: Forbidden
             type:
-              example: https://httpstatuses.com/403
+              example: 'https://httpstatuses.com/403'
             instance:
-              example: kong:trace:1234567890
+              example: 'kong:trace:1234567890'
             detail:
               example: Forbidden
     NotFoundError:
@@ -362,9 +345,9 @@ components:
             title:
               example: Not Found
             type:
-              example: https://httpstatuses.com/404
+              example: 'https://httpstatuses.com/404'
             instance:
-              example: kong:trace:1234567890
+              example: 'kong:trace:1234567890'
             detail:
               example: Not found
     ConflictError:
@@ -377,20 +360,14 @@ components:
             title:
               example: Conflict
             type:
-              example: https://httpstatuses.com/409
+              example: 'https://httpstatuses.com/409'
             instance:
-              example: kong:trace:1234567890
+              example: 'kong:trace:1234567890'
             detail:
               example: Conflict
     PageMeta:
+      description: Contains pagination query parameters and the total number of objects returned.
       type: object
-      description: >-
-        Contains pagination query parameters and the total number of objects
-        returned.
-      required:
-        - number
-        - size
-        - total
       properties:
         number:
           type: number
@@ -401,15 +378,89 @@ components:
         total:
           type: number
           example: 100
+      required:
+        - number
+        - size
+        - total
     PaginatedMeta:
-      type: object
-      title: PaginatedMeta
       description: returns the pagination information
+      type: object
       properties:
         page:
           $ref: '#/components/schemas/PageMeta'
       required:
         - page
+      title: PaginatedMeta
+  examples:
+    400InvalidRequestFormat:
+      value:
+        status: 400
+        title: Bad Request
+        instance: 'konnect:trace:3674017986744198214'
+        invalid_parameters:
+          - field: body
+            reason: request format is invalid
+        detail: The request format is invalid
+    404OrganizationStateNotFound:
+      value:
+        status: 404
+        title: Not Found
+        instance: 'konnect:trace:2287285207635123011'
+        detail: The requested organization was not found
+    409OrganizationStateConflict:
+      value:
+        status: 409
+        title: Conflict
+        instance: 'konnect:trace:2287285207635123011'
+        detail: Organization is already set to the requested state
+    UnauthorizedExample:
+      value:
+        status: 401
+        title: Unauthorized
+        instance: 'kong:trace:8347343766220159418'
+        detail: Unauthorized
+    ForbiddenExample:
+      value:
+        status: 403
+        title: Forbidden
+        instance: 'kong:trace:2723154947768991354'
+        detail: You do not have permission to perform this action
+  requestBodies:
+    UpdateOrganizationState:
+      required: true
+      description: The request schema to set an organization's state.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              state:
+                description: The state of the organization to set.
+                type: string
+                example: inactive
+                enum:
+                  - active
+                  - inactive
+              reason:
+                description: The reason for the state change.
+                type: string
+                example: invoice overdue (30 days)
+              changed_by:
+                description: The uuid of the konger who modified the state.
+                type: string
+                example: 00uerwcs8eC4ifanR256
+            required:
+              - state
+          examples:
+            Inactive Example:
+              value:
+                state: inactive
+                reason: invoice overdue (30 days)
+                changed_by: 00uerwcs8eC4ifanR256
+            Active Example:
+              value:
+                state: active
+                reason: organization was created
   responses:
     OrganizationStateResponse:
       description: A response for setting the organization state.
@@ -427,14 +478,11 @@ components:
                 changed_by: 00uerwcs8eC4ifanR256
                 created_at: '2023-01-18T11:35:45.130Z'
     OrganizationStateHistory:
-      description: >-
-        A paginated list response for a collection of organization state
-        changes.
+      description: A paginated list response for a collection of organization state changes.
       content:
         application/json:
           schema:
             type: object
-            title: Organizations State History.
             properties:
               meta:
                 $ref: '#/components/schemas/PaginatedMeta'
@@ -442,6 +490,7 @@ components:
                 type: array
                 items:
                   $ref: '#/components/schemas/OrganizationState'
+            title: Organizations State History.
           examples:
             Example:
               value:
@@ -506,73 +555,5 @@ components:
           examples:
             UnauthorizedExample:
               $ref: '#/components/examples/ForbiddenExample'
-  requestBodies:
-    UpdateOrganizationState:
-      required: true
-      description: The request schema to set an organization's state.
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              state:
-                type: string
-                description: The state of the organization to set.
-                example: inactive
-                enum:
-                  - active
-                  - inactive
-              reason:
-                type: string
-                description: The reason for the state change.
-                example: invoice overdue (30 days)
-              changed_by:
-                type: string
-                description: The uuid of the konger who modified the state.
-                example: 00uerwcs8eC4ifanR256
-            required:
-              - state
-          examples:
-            Inactive Example:
-              value:
-                state: inactive
-                reason: invoice overdue (30 days)
-                changed_by: 00uerwcs8eC4ifanR256
-            Active Example:
-              value:
-                state: active
-                reason: organization was created
-  examples:
-    400InvalidRequestFormat:
-      value:
-        status: 400
-        title: Bad Request
-        instance: konnect:trace:3674017986744198214
-        invalid_parameters:
-          - field: body
-            reason: request format is invalid
-        detail: The request format is invalid
-    404OrganizationStateNotFound:
-      value:
-        status: 404
-        title: Not Found
-        instance: konnect:trace:2287285207635123011
-        detail: The requested organization was not found
-    409OrganizationStateConflict:
-      value:
-        status: 409
-        title: Conflict
-        instance: konnect:trace:2287285207635123011
-        detail: Organization is already set to the requested state
-    UnauthorizedExample:
-      value:
-        status: 401
-        title: Unauthorized
-        instance: kong:trace:8347343766220159418
-        detail: Unauthorized
-    ForbiddenExample:
-      value:
-        status: 403
-        title: Forbidden
-        instance: kong:trace:2723154947768991354
-        detail: You do not have permission to perform this action
+tags:
+  - name: Organization Lifecycle

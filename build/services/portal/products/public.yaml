@@ -5,20 +5,13 @@ info:
   description: N/A (this description is removed during bundling)
   contact:
     name: Kong
-    url: https://cloud.konghq.com
-tags:
-  - name: products
-    description: The API for Konnect Portal Products.
-  - name: versions
-    description: The API for Konnect Portal Product Versions.
-  - name: documentation
-    description: The API for Konnect Portal Product Documentation.
+    url: 'https://cloud.konghq.com'
 paths:
-  /api/v2/products/{productId}:
+  '/api/v2/products/{productId}':
     get:
+      operationId: get-product
       summary: Get a product
       description: Gets the details for an existing published product.
-      operationId: get-product
       parameters:
         - $ref: '#/components/parameters/ProductId'
       responses:
@@ -30,16 +23,16 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
-      tags:
-        - products
       security:
         - portalAccessToken: []
         - {}
+      tags:
+        - products
   /api/v2/products:
     get:
+      operationId: list-products
       summary: List Products
       description: Returns a paginated list of published API Products.
-      operationId: list-products
       parameters:
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageNumber'
@@ -58,16 +51,16 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
-      tags:
-        - products
       security:
         - portalAccessToken: []
         - {}
-  /api/v2/products/{productId}/versions:
+      tags:
+        - products
+  '/api/v2/products/{productId}/versions':
     get:
+      operationId: list-product-versions
       summary: Get page of product versions
       description: Returns paginated list of versions of a given product.
-      operationId: list-product-versions
       parameters:
         - $ref: '#/components/parameters/ProductId'
         - $ref: '#/components/parameters/PageSize'
@@ -84,16 +77,16 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
-      tags:
-        - versions
       security:
         - portalAccessToken: []
         - {}
-  /api/v2/products/{productId}/versions/{productVersionId}:
+      tags:
+        - versions
+  '/api/v2/products/{productId}/versions/{productVersionId}':
     get:
+      operationId: get-product-version
       summary: Get product version
       description: Gets the details for an existing product version.
-      operationId: get-product-version
       parameters:
         - $ref: '#/components/parameters/ProductId'
         - $ref: '#/components/parameters/ProductVersionId'
@@ -106,22 +99,18 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
-      tags:
-        - versions
       security:
         - portalAccessToken: []
         - {}
-  /api/v2/products/{productId}/versions/{productVersionId}/applications:
+      tags:
+        - versions
+  '/api/v2/products/{productId}/versions/{productVersionId}/applications':
     get:
-      summary: Get applications by product version
-      description: >-
-        Get applications that have a registration for a given product version.
-        Any registration for the version will count, regardless of status (i.e.
-        even if it is pending, rejected, or revoked).
-
-        Use the `unregistered` query param to return the inverse, only including
-        applicatons that do not have a registration (regardless of status).
       operationId: get-applications-by-product-version
+      summary: Get applications by product version
+      description: |-
+        Get applications that have a registration for a given product version. Any registration for the version will count, regardless of status (i.e. even if it is pending, rejected, or revoked).
+        Use the `unregistered` query param to return the inverse, only including applicatons that do not have a registration (regardless of status).
       parameters:
         - $ref: '#/components/parameters/ProductId'
         - $ref: '#/components/parameters/ProductVersionId'
@@ -144,17 +133,15 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
-      tags:
-        - versions
       security:
         - portalAccessToken: []
-  /api/v2/products/{productId}/versions/{productVersionId}/spec:
+      tags:
+        - versions
+  '/api/v2/products/{productId}/versions/{productVersionId}/spec':
     get:
-      summary: Get spec for product version
-      description: >-
-        Returns the API specification document attached to given product
-        version. Currently only OpenAPI is supported.
       operationId: get-product-version-spec
+      summary: Get spec for product version
+      description: Returns the API specification document attached to given product version. Currently only OpenAPI is supported.
       parameters:
         - $ref: '#/components/parameters/ProductId'
         - $ref: '#/components/parameters/ProductVersionId'
@@ -169,18 +156,16 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
-      tags:
-        - versions
       security:
         - portalAccessToken: []
         - {}
-  /api/v2/products/{productId}/versions/{productVersionId}/spec/operations:
+      tags:
+        - versions
+  '/api/v2/products/{productId}/versions/{productVersionId}/spec/operations':
     get:
-      summary: Get operations in version spec
-      description: >-
-        Returns list of operations used in the API specification document
-        attached to given product version.
       operationId: get-product-version-spec-operations
+      summary: Get operations in version spec
+      description: Returns list of operations used in the API specification document attached to given product version.
       parameters:
         - $ref: '#/components/parameters/ProductId'
         - $ref: '#/components/parameters/ProductVersionId'
@@ -188,32 +173,27 @@ paths:
         '200':
           $ref: '#/components/responses/ProductVersionSpecOperationsGet'
         '204':
-          description: >-
-            Response when there are no operations to send because no spec is
-            defined for the version.
+          description: Response when there are no operations to send because no spec is defined for the version.
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
-      tags:
-        - versions
       security:
         - portalAccessToken: []
         - {}
-  /api/v2/products/{productId}/documents:
+      tags:
+        - versions
+  '/api/v2/products/{productId}/documents':
     get:
-      summary: List product documents
-      description: >-
-        Returns a list of documents that are associated with a given product.
-        The list is paginated, and is in either a list or tree format (based on
-        the Accept header).
       operationId: list-product-documents
+      summary: List product documents
+      description: 'Returns a list of documents that are associated with a given product. The list is paginated, and is in either a list or tree format (based on the Accept header).'
       parameters:
         - $ref: '#/components/parameters/ProductId'
-        - in: header
-          name: Accept
+        - name: Accept
+          in: header
           schema:
             $ref: '#/components/schemas/DocumentContentTypeEnum'
         - $ref: '#/components/parameters/PageSize'
@@ -234,19 +214,19 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
-      tags:
-        - documentation
       security:
         - portalAccessToken: []
         - {}
-  /api/v2/products/{productId}/documents/{documentId}:
+      tags:
+        - documentation
+  '/api/v2/products/{productId}/documents/{documentId}':
     get:
+      operationId: get-product-document
       summary: Get one product document
       description: Returns the specified document from the product's document tree.
-      operationId: get-product-document
       parameters:
-        - in: header
-          name: Accept
+        - name: Accept
+          in: header
           schema:
             $ref: '#/components/schemas/DocumentFormatContentTypeEnum'
         - $ref: '#/components/parameters/ProductId'
@@ -260,20 +240,18 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
-      tags:
-        - documentation
       security:
         - portalAccessToken: []
         - {}
-  /api/v2/products/{productId}/actions:
+      tags:
+        - documentation
+  '/api/v2/products/{productId}/actions':
     parameters:
       - $ref: '#/components/parameters/ProductId'
     get:
-      summary: Get Product Actions
-      description: >-
-        Get a list of actions that the current developer is allowed to perform
-        on an API product.
       operationId: get-product-actions
+      summary: Get Product Actions
+      description: Get a list of actions that the current developer is allowed to perform on an API product.
       responses:
         '200':
           $ref: '#/components/responses/ProductActions'
@@ -286,23 +264,7 @@ paths:
       tags:
         - products
 components:
-  securitySchemes:
-    portalAccessToken:
-      type: apiKey
-      in: cookie
-      name: portalaccesstoken
-      description: >
-        The Developer portal cookie is meant to be used by the Developer API to
-        authenticate with.
   parameters:
-    ProductId:
-      name: productId
-      in: path
-      required: true
-      description: Contains a unique identifier used by the Portal API for this resource.
-      schema:
-        type: string
-        format: uuid
     DocumentId:
       name: documentId
       in: path
@@ -311,29 +273,114 @@ components:
       schema:
         type: string
         format: uuid
-    QueryUnregisteredApplications:
-      name: unregistered
-      description: >-
-        Return applications that do **not** have a registration for the product
-        version (regardless of registration status).
+    FilterByAuthStrategyEquality:
+      name: 'filter[auth_strategy_id][eq]'
+      description: Filter by the id of the auth strategy supported by the application.
       in: query
       required: false
       schema:
-        type: boolean
-      allowEmptyValue: true
-    PageSize:
-      name: page[size]
-      description: >-
-        The maximum number of items to include per page. The last page of a
-        collection may include fewer items.
-      required: false
+        type: string
+        example: 5be86298-147b-45ab-bfaf-a1bff97dce39
+    FilterByAuthStrategyEqualityShort:
+      name: 'filter[auth_strategy_id]'
+      description: Filter by the id of the auth strategy supported by the application (short-hand).
       in: query
-      allowEmptyValue: true
+      required: false
       schema:
-        type: integer
-        example: 10
+        type: string
+        example: 5be86298-147b-45ab-bfaf-a1bff97dce39
+    FilterByDescriptionContains:
+      name: 'filter[description][contains]'
+      description: Filter by contains comparison of the description property with a supplied substring
+      in: query
+      required: false
+      schema:
+        type: string
+        example: portal
+    FilterByDescriptionEquality:
+      name: 'filter[description][eq]'
+      description: Filter by direct equality comparison of the description property with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: portal
+    FilterByDescriptionEqualityShort:
+      name: 'filter[description]'
+      description: Filter by direct equality comparison (short-hand) of the description property with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: portal
+    FilterByIdEquality:
+      name: 'filter[id][eq]'
+      description: Filter by direct equality comparison of the id property with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 5be86298-147b-45ab-bfaf-a1bff97dce39
+    FilterByIdEqualityShort:
+      name: 'filter[id]'
+      description: Filter by direct equality comparison (short-hand) of the id property with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 5be86298-147b-45ab-bfaf-a1bff97dce39
+    FilterByNameContains:
+      name: 'filter[name][contains]'
+      description: Filter by contains comparison of the name property with a supplied substring
+      in: query
+      required: false
+      schema:
+        type: string
+        example: good service
+    FilterByNameEquality:
+      name: 'filter[name][eq]'
+      description: Filter by direct equality comparison of the name property with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: good service
+    FilterByNameEqualityShort:
+      name: 'filter[name]'
+      description: Filter by direct equality comparison (short-hand) of the name property with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: good service
+    FilterByStatusEquality:
+      name: 'filter[status][eq]'
+      description: Filter by direct equality comparison of the status property with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: approved
+        enum:
+          - approved
+          - pending
+          - rejected
+          - revoked
+    FilterByStatusEqualityShort:
+      name: 'filter[status]'
+      description: Filter by direct equality comparison (short-hand) of the status property with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: approved
+        enum:
+          - approved
+          - pending
+          - rejected
+          - revoked
     PageNumber:
-      name: page[number]
+      name: 'page[number]'
       description: Determines which page of the entities to retrieve.
       required: false
       in: query
@@ -341,86 +388,23 @@ components:
       schema:
         type: integer
         example: 1
-    FilterByNameEquality:
-      name: filter[name][eq]
-      description: >-
-        Filter by direct equality comparison of the name property with a
-        supplied value.
-      in: query
+    PageSize:
+      name: 'page[size]'
+      description: The maximum number of items to include per page. The last page of a collection may include fewer items.
       required: false
+      in: query
+      allowEmptyValue: true
+      schema:
+        type: integer
+        example: 10
+    ProductId:
+      name: productId
+      in: path
+      required: true
+      description: Contains a unique identifier used by the Portal API for this resource.
       schema:
         type: string
-        example: good service
-    FilterByNameEqualityShort:
-      name: filter[name]
-      description: >-
-        Filter by direct equality comparison (short-hand) of the name property
-        with a supplied value.
-      in: query
-      required: false
-      schema:
-        type: string
-        example: good service
-    FilterByNameContains:
-      name: filter[name][contains]
-      description: >-
-        Filter by contains comparison of the name property with a supplied
-        substring
-      in: query
-      required: false
-      schema:
-        type: string
-        example: good service
-    FilterByDescriptionEquality:
-      name: filter[description][eq]
-      description: >-
-        Filter by direct equality comparison of the description property with a
-        supplied value.
-      in: query
-      required: false
-      schema:
-        type: string
-        example: portal
-    FilterByDescriptionEqualityShort:
-      name: filter[description]
-      description: >-
-        Filter by direct equality comparison (short-hand) of the description
-        property with a supplied value.
-      in: query
-      required: false
-      schema:
-        type: string
-        example: portal
-    FilterByDescriptionContains:
-      name: filter[description][contains]
-      description: >-
-        Filter by contains comparison of the description property with a
-        supplied substring
-      in: query
-      required: false
-      schema:
-        type: string
-        example: portal
-    FilterByIdEquality:
-      name: filter[id][eq]
-      description: >-
-        Filter by direct equality comparison of the id property with a supplied
-        value.
-      in: query
-      required: false
-      schema:
-        type: string
-        example: 5be86298-147b-45ab-bfaf-a1bff97dce39
-    FilterByIdEqualityShort:
-      name: filter[id]
-      description: >-
-        Filter by direct equality comparison (short-hand) of the id property
-        with a supplied value.
-      in: query
-      required: false
-      schema:
-        type: string
-        example: 5be86298-147b-45ab-bfaf-a1bff97dce39
+        format: uuid
     ProductVersionId:
       name: productVersionId
       in: path
@@ -429,54 +413,1175 @@ components:
       schema:
         type: string
         format: uuid
-    FilterByStatusEquality:
-      name: filter[status][eq]
-      description: >-
-        Filter by direct equality comparison of the status property with a
-        supplied value.
+    QueryUnregisteredApplications:
+      name: unregistered
+      description: Return applications that do **not** have a registration for the product version (regardless of registration status).
       in: query
       required: false
       schema:
+        type: boolean
+      allowEmptyValue: true
+  schemas:
+    ProductActionsResponse:
+      type: object
+      properties:
+        actions:
+          description: List of actions that can be performed on the API Product
+          type: object
+          additionalProperties: false
+          properties:
+            view:
+              type: boolean
+            register:
+              type: boolean
+            view_documentation:
+              type: boolean
+          required:
+            - view
+            - register
+            - view_documentation
+      example:
+        actions:
+          view: true
+          register: false
+          view_documentation: true
+      additionalProperties: false
+      required:
+        - actions
+      title: Product Actions Response
+    Product:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        name:
+          description: Name of product.
+          type: string
+          example: Billing
+        description:
+          type: string
+          example: API for billing functions
+          nullable: true
+        document_count:
+          description: Number of linked documents in documentation.
+          type: integer
+          example: 3
+          readOnly: true
+        version_count:
+          description: Number of published versions.
+          type: integer
+          example: 2
+          readOnly: true
+        latest_version:
+          $ref: '#/components/schemas/LatestVersion'
+      additionalProperties: false
+      required:
+        - id
+        - created_at
+        - updated_at
+        - name
+      title: Product
+    ProductListPage:
+      type: object
+      properties:
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Product'
+      title: ProductListPage
+    ProductVersion:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        name:
+          description: Name of product version.
+          type: string
+          example: v2.0.0
+        deprecated:
+          description: 'If true, product version is deprecated.'
+          type: boolean
+        registration_configs:
+          description: Configurations for how the product version is able to be registered for by applications.
+          type: array
+          items:
+            $ref: '#/components/schemas/RegistrationConfiguration'
+      additionalProperties: false
+      required:
+        - id
+        - created_at
+        - updated_at
+        - name
+        - deprecated
+        - registration_configs
+    RegistrationConfiguration:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        auth_methods:
+          type: array
+          items:
+            description: Auth Methods enabled for this strategy
+            type: string
+          example:
+            - bearer
+        credential_type:
+          $ref: '#/components/schemas/CredentialType'
+        name:
+          type: string
+        available_scopes:
+          $ref: '#/components/schemas/AvailableScopes'
+        registration_enabled:
+          description: 'If true, application registration is allowed for this configuration.'
+          type: boolean
+          example: true
+        registration_auto_approve:
+          description: 'If true, applications are automatically approved for registration.'
+          type: boolean
+          example: false
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - credential_type
+        - registration_enabled
+        - registration_auto_approve
+    CredentialType:
+      type: string
+      enum:
+        - client_credentials
+        - self_managed_client_credentials
+        - key_auth
+    LatestVersion:
+      type: object
+      properties:
+        name:
+          type: string
+          example: v2.0.0
+          readOnly: true
+        id:
+          $ref: '#/components/schemas/UUID'
+      additionalProperties: false
+      nullable: true
+    ProductVersionListPage:
+      type: object
+      properties:
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductVersion'
+      additionalProperties: false
+      required:
+        - meta
+        - data
+      title: ProductVersionListPage
+    ProductVersionListApplicationsPage:
+      type: object
+      properties:
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductVersionApplication'
+      additionalProperties: false
+      required:
+        - meta
+        - data
+      title: ProductVersionListApplicationsPage
+    ProductVersionApplication:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        name:
+          description: The name of the application
+          type: string
+        registration_id:
+          $ref: '#/components/schemas/NullableUUID'
+        registration_status:
+          type: string
+          enum:
+            - approved
+            - pending
+            - rejected
+            - revoked
+          nullable: true
+        auth_strategy:
+          $ref: '#/components/schemas/AuthStrategy'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - created_at
+        - updated_at
+        - registration_status
+        - registration_id
+      title: ProductVersionApplication
+    ProductVersionSpecDocument:
+      description: API specification document for a product version.
+      type: object
+      properties:
+        api_type:
+          $ref: '#/components/schemas/ApiTypeEnum'
+        content:
+          type: string
+      required:
+        - api_type
+        - content
+      title: ProductVersionSpecDocument
+    ProductVersionSpecOperations:
+      description: List of every operation detailed in a product version spec document.
+      type: object
+      properties:
+        api_type:
+          $ref: '#/components/schemas/ApiTypeEnum'
+        operations:
+          type: array
+          items:
+            type: object
+            required:
+              - path
+              - method
+              - operation_id
+              - tags
+              - summary
+              - deprecated
+            properties:
+              path:
+                type: string
+                example: /pet
+              method:
+                type: string
+                example: post
+              operation_id:
+                type: string
+                example: addPet
+                nullable: true
+              tags:
+                type: array
+                items:
+                  type: string
+                  example: pet
+              summary:
+                type: string
+                example: Add a new Pet to the store
+                nullable: true
+              deprecated:
+                type: boolean
+      required:
+        - api_type
+        - operations
+      title: ProductVersionSpecOperations
+    ApiTypeEnum:
+      type: string
+      enum:
+        - openapi
+    ProductDocument:
+      description: A document for a product. This is a document that is not a part of the API specification.
+      type: object
+      properties:
+        id:
+          allOf:
+            - $ref: '#/components/schemas/UUID'
+            - description: Contains a unique identifier used by the DocumentHub service for this resource.
+              type: string
+        parent_document_id:
+          description: Contains a unique identifier used by the DocumentHub service for this resource.
+          type: string
+          format: uuid
+          example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
+          nullable: true
+        slug:
+          description: Slug of the document. This is used in the URL to identify the document.
+          type: string
+          example: getting-started
+        content:
+          $ref: '#/components/schemas/DocumentBlock'
+        title:
+          description: Title of the document. This is used in the Portal UI to identify the document.
+          type: string
+          example: Hello World
+      required:
+        - id
+        - slug
+        - title
+        - content
+      title: ProductDocument
+    ProductDocumentRaw:
+      description: A document for a product. This is a document that is not a part of the API specification.
+      type: object
+      properties:
+        id:
+          allOf:
+            - $ref: '#/components/schemas/UUID'
+            - description: Contains a unique identifier used by the DocumentHub service for this resource.
+              type: string
+        parent_document_id:
+          description: Contains a unique identifier used by the DocumentHub service for this resource.
+          type: string
+          format: uuid
+          example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
+          nullable: true
+        slug:
+          description: Slug of the document. This is used in the URL to identify the document.
+          type: string
+          example: getting-started
+        content:
+          description: Markdown document
+          example: |
+            # My Kong api
+
+            This api is powered by Konnect
+          type: string
+        title:
+          description: Title of the document. This is used in the Portal UI to identify the document.
+          type: string
+          example: Hello World
+      required:
+        - id
+        - slug
+        - title
+        - content
+      title: ProductDocumentRaw
+    UUID:
+      description: Contains a unique identifier used by the API for this resource.
+      type: string
+      format: uuid
+      example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+      readOnly: true
+    CreatedAt:
+      description: An ISO-8601 timestamp representation of entity creation date.
+      type: string
+      format: date-time
+      example: '2022-11-04T20:10:06.927Z'
+      readOnly: true
+    UpdatedAt:
+      description: An ISO-8601 timestamp representation of entity update date.
+      type: string
+      format: date-time
+      example: '2022-11-04T20:10:06.927Z'
+      readOnly: true
+    BaseError:
+      description: standard error
+      type: object
+      properties:
+        status:
+          description: |
+            The HTTP status code of the error. Useful when passing the response
+            body to child properties in a frontend UI. Must be returned as an integer.
+          type: integer
+          readOnly: true
+        title:
+          description: |
+            A short, human-readable summary of the problem. It should not
+            change between occurences of a problem, except for localization.
+            Should be provided as "Sentence case" for direct use in the UI.
+          type: string
+          readOnly: true
+        type:
+          description: The error type.
+          type: string
+          readOnly: true
+        instance:
+          description: |
+            Used to return the correlation ID back to the user, in the format
+            kong:trace:<correlation_id>. This helps us find the relevant logs
+            when a customer reports an issue.
+          type: string
+          readOnly: true
+        detail:
+          description: |
+            A human readable explanation specific to this occurence of the problem.
+            This field may contain request/entity data to help the user understand
+            what went wrong. Enclose variable values in square brackets. Should be
+            provided as "Sentence case" for direct use in the UI.
+          type: string
+          readOnly: true
+      required:
+        - status
+        - title
+        - instance
+        - detail
+      title: Error
+    InvalidRules:
+      description: invalid parameters rules
+      type: string
+      enum:
+        - required
+        - max_length
+        - is_array
+        - is_base64
+        - is_boolean
+        - is_date_time
+        - is_integer
+        - is_null
+        - is_number
+        - is_object
+        - is_string
+        - is_uuid
+        - is_fqdn
+        - is_arn
+        - unknown_property
+        - is_label
+        - matches_regex
+        - invalid
+        - is_supported_network_availability_zone_list
+        - is_supported_network_cidr_block
+        - is_supported_provider_region
+      nullable: true
+      readOnly: true
+    InvalidParameterStandard:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          $ref: '#/components/schemas/InvalidRules'
+        source:
+          type: string
+          example: body
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+      additionalProperties: false
+      required:
+        - field
+        - reason
+    InvalidParameterMinimumLength:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          description: invalid parameters rules
+          type: string
+          enum:
+            - min_length
+            - min_digits
+            - min_lowercase
+            - min_uppercase
+            - min_symbols
+          nullable: false
+          readOnly: true
+        minimum:
+          type: integer
+          example: 8
+        source:
+          type: string
+          example: body
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+      additionalProperties: false
+      required:
+        - field
+        - reason
+        - rule
+        - minimum
+    InvalidParameterChoiceItem:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          description: invalid parameters rules
+          type: string
+          enum:
+            - enum
+          nullable: false
+          readOnly: true
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+        choices:
+          type: array
+          items: {}
+          minimum: 1
+          nullable: false
+          readOnly: true
+          uniqueItems: true
+        source:
+          type: string
+          example: body
+      additionalProperties: false
+      required:
+        - field
+        - reason
+        - rule
+        - choices
+    InvalidParameterDependentItem:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          description: invalid parameters rules
+          type: string
+          enum:
+            - dependent_fields
+          nullable: true
+          readOnly: true
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+        dependents:
+          type: array
+          items: {}
+          nullable: true
+          readOnly: true
+          uniqueItems: true
+        source:
+          type: string
+          example: body
+      additionalProperties: false
+      required:
+        - field
+        - rule
+        - reason
+        - dependents
+    InvalidParameters:
+      description: invalid parameters
+      type: array
+      items:
+        oneOf:
+          - $ref: '#/components/schemas/InvalidParameterStandard'
+          - $ref: '#/components/schemas/InvalidParameterMinimumLength'
+          - $ref: '#/components/schemas/InvalidParameterChoiceItem'
+          - $ref: '#/components/schemas/InvalidParameterDependentItem'
+      minItems: 1
+      nullable: false
+      uniqueItems: true
+    BadRequestError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          required:
+            - invalid_parameters
+          properties:
+            invalid_parameters:
+              $ref: '#/components/schemas/InvalidParameters'
+    UnauthorizedError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 401
+            title:
+              example: Unauthorized
+            type:
+              example: 'https://httpstatuses.com/401'
+            instance:
+              example: 'kong:trace:1234567890'
+            detail:
+              example: Invalid credentials
+    NotFoundError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 404
+            title:
+              example: Not Found
+            type:
+              example: 'https://httpstatuses.com/404'
+            instance:
+              example: 'kong:trace:1234567890'
+            detail:
+              example: Not found
+    PageMeta:
+      description: Contains pagination query parameters and the total number of objects returned.
+      type: object
+      properties:
+        number:
+          type: number
+          example: 1
+        size:
+          type: number
+          example: 10
+        total:
+          type: number
+          example: 100
+      required:
+        - number
+        - size
+        - total
+    PaginatedMeta:
+      description: returns the pagination information
+      type: object
+      properties:
+        page:
+          $ref: '#/components/schemas/PageMeta'
+      required:
+        - page
+      title: PaginatedMeta
+    AvailableScopes:
+      description: Possible developer selectable scopes for an application. Only present when using DCR Provider that supports it.
+      type: array
+      items:
         type: string
-        enum:
-          - approved
-          - pending
-          - rejected
-          - revoked
-        example: approved
-    FilterByStatusEqualityShort:
-      name: filter[status]
-      description: >-
-        Filter by direct equality comparison (short-hand) of the status property
-        with a supplied value.
-      in: query
-      required: false
-      schema:
+      example:
+        - scope1
+        - scope2
+    NullableUUID:
+      description: Contains a unique identifier for a resource.
+      type: string
+      format: uuid
+      example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+      nullable: true
+    AuthStrategyKeyAuth:
+      description: KeyAuth Auth strategy that the application uses.
+      type: object
+      properties:
+        id:
+          description: The Application Auth Strategy ID.
+          type: string
+          format: uuid
+          example: b9e81174-b5bb-4638-a3c3-8afe61a0abf8
+          readOnly: true
+        name:
+          type: string
+          example: name
+          default: name
+        credential_type:
+          type: string
+          enum:
+            - key_auth
+      required:
+        - id
+        - name
+        - credential_type
+    AuthMethods:
+      type: array
+      items:
+        description: Auth Methods enabled for this strategy
         type: string
-        enum:
-          - approved
-          - pending
-          - rejected
-          - revoked
-        example: approved
-    FilterByAuthStrategyEquality:
-      name: filter[auth_strategy_id][eq]
-      description: Filter by the id of the auth strategy supported by the application.
-      in: query
-      required: false
-      schema:
-        type: string
-        example: 5be86298-147b-45ab-bfaf-a1bff97dce39
-    FilterByAuthStrategyEqualityShort:
-      name: filter[auth_strategy_id]
-      description: >-
-        Filter by the id of the auth strategy supported by the application
-        (short-hand).
-      in: query
-      required: false
-      schema:
-        type: string
-        example: 5be86298-147b-45ab-bfaf-a1bff97dce39
+      example:
+        - bearer
+    AuthStrategyClientCredentials:
+      description: Client Credential Auth strategy that the application uses.
+      type: object
+      properties:
+        id:
+          description: The Application Auth Strategy ID.
+          type: string
+          format: uuid
+          example: b9e81174-b5bb-4638-a3c3-8afe61a0abf8
+          readOnly: true
+        name:
+          type: string
+          example: name
+          default: name
+        credential_type:
+          type: string
+          enum:
+            - client_credentials
+            - self_managed_client_credentials
+        auth_methods:
+          $ref: '#/components/schemas/AuthMethods'
+      required:
+        - id
+        - name
+        - credential_type
+        - auth_methods
+    AuthStrategy:
+      type: object
+      discriminator:
+        propertyName: credential_type
+      oneOf:
+        - $ref: '#/components/schemas/AuthStrategyKeyAuth'
+        - $ref: '#/components/schemas/AuthStrategyClientCredentials'
+    DocumentContentTypeEnum:
+      type: string
+      default: application/json
+      enum:
+        - application/json
+        - application/vnd.konnect.document-tree+json
+    Metadata:
+      description: Contains key value pairs information about entity's metadata.
+      type: object
+      example:
+        owner: John Appleseed
+      additionalProperties: true
+    DocumentItem:
+      type: object
+      properties:
+        id:
+          description: the id of the document
+          type: string
+          format: uuid
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        parent_document_id:
+          description: the id of the parent document
+          type: string
+          format: uuid
+          example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
+          nullable: true
+        slug:
+          description: the slug of the document
+          type: string
+          example: getting-started
+        title:
+          description: the title of the document
+          type: string
+          example: Getting Started
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
+      required:
+        - id
+        - parent_document_id
+        - slug
+        - title
+        - metadata
+        - created_at
+        - updated_at
+      title: Document item
+    ListDocuments:
+      type: object
+      properties:
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/DocumentItem'
+      additionalProperties: false
+      required:
+        - meta
+        - data
+    DocumentTree:
+      description: a document tree
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        parent_document_id:
+          type: string
+          format: uuid
+          example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
+          nullable: true
+        title:
+          description: the title of the document
+          type: string
+          example: Getting Started
+        slug:
+          description: the slug of the document
+          type: string
+          example: getting-started
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+        children:
+          type: array
+          items:
+            $ref: '#/components/schemas/DocumentTree'
+      required:
+        - id
+        - title
+        - slug
+        - metadata
+        - children
+      title: DocumentTree
+    ListDocumentsTree:
+      type: object
+      properties:
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/DocumentTree'
+      required:
+        - meta
+        - data
+    DocumentFormatContentTypeEnum:
+      type: string
+      default: application/json
+      enum:
+        - text/markdown
+        - application/json
+        - application/vnd.konnect.document-nodes+json
+    NodeChildren:
+      description: List of children nodes of the current node
+      type: array
+      items:
+        $ref: '#/components/schemas/ChildNode'
+    HeadingBlock:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - heading
+        level:
+          description: Level of the heading which maps to HTML <h> tag
+          type: number
+          maximum: 6
+          minimum: 1
+        children:
+          $ref: '#/components/schemas/NodeChildren'
+      required:
+        - type
+    BlockQuoteBlock:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - blockquote
+        children:
+          $ref: '#/components/schemas/NodeChildren'
+      required:
+        - type
+    ParagraphBlock:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - paragraph
+        children:
+          $ref: '#/components/schemas/NodeChildren'
+      required:
+        - type
+    TextBlock:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - text_block
+        children:
+          $ref: '#/components/schemas/NodeChildren'
+      required:
+        - type
+    BreakBlock:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - break
+        children:
+          $ref: '#/components/schemas/NodeChildren'
+      required:
+        - type
+    CodeBlock:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - code_block
+        lang:
+          type: string
+        children:
+          $ref: '#/components/schemas/NodeChildren'
+      required:
+        - type
+    ListBlock:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - list
+        isOrdered:
+          description: Defines if the list is ordered or not
+          type: boolean
+        children:
+          $ref: '#/components/schemas/NodeChildren'
+      required:
+        - type
+    ListItemBlock:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - list_item
+        children:
+          $ref: '#/components/schemas/NodeChildren'
+      required:
+        - type
+    Text:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - text
+        text:
+          type: string
+        hardBreak:
+          description: |
+            If this property is true the end of this block should
+            be a carriage return and not concatenated to the next Text block.
+          type: boolean
+        softBreak:
+          description: |
+            If this property is true the end of this block should should be
+            concatenated with a space caracter before the next block. This is
+            the flag showing that the parsed markdown block was at the end of
+            the line.
+          type: boolean
+        children:
+          $ref: '#/components/schemas/NodeChildren'
+      required:
+        - type
+    Emphasis:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - emphasis
+        level:
+          description: |
+            Level of emphasis
+            1 - italic
+            2 - bold
+          type: number
+          maximum: 2
+          minimum: 1
+        children:
+          $ref: '#/components/schemas/NodeChildren'
+      required:
+        - type
+    Code:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - code
+        children:
+          $ref: '#/components/schemas/NodeChildren'
+      required:
+        - type
+    Link:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - link
+        href:
+          description: Target url of the link
+          type: string
+        title:
+          description: Title of the link
+          type: string
+      required:
+        - type
+    Image:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - image
+        url:
+          description: Url of the image
+          type: string
+        alt:
+          description: Alternate tag of the image
+          type: string
+        title:
+          description: Title of the image
+          type: string
+      required:
+        - type
+    StrikeThrough:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - strikethrough
+      required:
+        - type
+    AlignmentKind:
+      type: string
+      enum:
+        - left
+        - right
+        - center
+        - none
+    TableAlignments:
+      type: array
+      items:
+        $ref: '#/components/schemas/AlignmentKind'
+      nullable: true
+    TableBlock:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - table
+        alignments:
+          $ref: '#/components/schemas/TableAlignments'
+        children:
+          $ref: '#/components/schemas/NodeChildren'
+      required:
+        - type
+        - alignments
+    TableHeaderBlock:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - table_header
+        alignments:
+          $ref: '#/components/schemas/TableAlignments'
+        children:
+          $ref: '#/components/schemas/NodeChildren'
+      required:
+        - type
+        - alignments
+    TableCellBlock:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - table_cell
+        alignment:
+          $ref: '#/components/schemas/AlignmentKind'
+        children:
+          $ref: '#/components/schemas/NodeChildren'
+      required:
+        - type
+    TableRowBlock:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - table_row
+        alignments:
+          $ref: '#/components/schemas/TableAlignments'
+        children:
+          $ref: '#/components/schemas/NodeChildren'
+      required:
+        - type
+        - alignments
+    TaskCheckbox:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - task_checkbox
+        checked:
+          description: State of the checkbox
+          type: boolean
+      required:
+        - checked
+        - type
+    ChildNode:
+      type: object
+      discriminator:
+        propertyName: type
+      oneOf:
+        - $ref: '#/components/schemas/HeadingBlock'
+        - $ref: '#/components/schemas/BlockQuoteBlock'
+        - $ref: '#/components/schemas/ParagraphBlock'
+        - $ref: '#/components/schemas/TextBlock'
+        - $ref: '#/components/schemas/BreakBlock'
+        - $ref: '#/components/schemas/CodeBlock'
+        - $ref: '#/components/schemas/ListBlock'
+        - $ref: '#/components/schemas/ListItemBlock'
+        - $ref: '#/components/schemas/Text'
+        - $ref: '#/components/schemas/Emphasis'
+        - $ref: '#/components/schemas/Code'
+        - $ref: '#/components/schemas/Link'
+        - $ref: '#/components/schemas/Image'
+        - $ref: '#/components/schemas/StrikeThrough'
+        - $ref: '#/components/schemas/TableBlock'
+        - $ref: '#/components/schemas/TableHeaderBlock'
+        - $ref: '#/components/schemas/TableCellBlock'
+        - $ref: '#/components/schemas/TableRowBlock'
+        - $ref: '#/components/schemas/TaskCheckbox'
+    DocumentBlock:
+      description: content of the document
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - document
+        version:
+          type: string
+        children:
+          $ref: '#/components/schemas/NodeChildren'
+      example:
+        type: document
+        content:
+          - type: paragraph
+            content:
+              - text: Hello World
+                type: text
+      required:
+        - type
+  examples:
+    ProductActionsExample:
+      value:
+        actions:
+          register: false
+          view: true
+          view_documentation: true
+    UnauthorizedExample:
+      value:
+        status: 401
+        title: Unauthorized
+        instance: 'kong:trace:8347343766220159418'
+        detail: Unauthorized
+    NotFoundExample:
+      value:
+        status: 404
+        title: Not Found
+        instance: 'kong:trace:6816496025408232265'
+        detail: Not Found
   responses:
     ProductActions:
       description: Product actions
@@ -512,9 +1617,7 @@ components:
           schema:
             $ref: '#/components/schemas/ProductVersion'
     ProductVersionListApplications:
-      description: >-
-        Paginated list of applications either registered or not registered for a
-        product version.
+      description: Paginated list of applications either registered or not registered for a product version.
       content:
         application/json:
           schema:
@@ -570,1198 +1673,17 @@ components:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/BaseError'
-  schemas:
-    ProductActionsResponse:
-      title: Product Actions Response
-      type: object
-      additionalProperties: false
-      required:
-        - actions
-      properties:
-        actions:
-          type: object
-          additionalProperties: false
-          required:
-            - view
-            - register
-            - view_documentation
-          properties:
-            view:
-              type: boolean
-            register:
-              type: boolean
-            view_documentation:
-              type: boolean
-          description: List of actions that can be performed on the API Product
-      example:
-        actions:
-          view: true
-          register: false
-          view_documentation: true
-    Product:
-      title: Product
-      type: object
-      additionalProperties: false
-      required:
-        - id
-        - created_at
-        - updated_at
-        - name
-      properties:
-        id:
-          $ref: '#/components/schemas/UUID'
-        created_at:
-          $ref: '#/components/schemas/CreatedAt'
-        updated_at:
-          $ref: '#/components/schemas/UpdatedAt'
-        name:
-          type: string
-          example: Billing
-          description: Name of product.
-        description:
-          type: string
-          nullable: true
-          example: API for billing functions
-        document_count:
-          type: integer
-          example: 3
-          description: Number of linked documents in documentation.
-          readOnly: true
-        version_count:
-          type: integer
-          example: 2
-          description: Number of published versions.
-          readOnly: true
-        latest_version:
-          $ref: '#/components/schemas/LatestVersion'
-    ProductListPage:
-      title: ProductListPage
-      type: object
-      properties:
-        meta:
-          $ref: '#/components/schemas/PaginatedMeta'
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Product'
-    ProductVersion:
-      type: object
-      additionalProperties: false
-      properties:
-        id:
-          $ref: '#/components/schemas/UUID'
-        created_at:
-          $ref: '#/components/schemas/CreatedAt'
-        updated_at:
-          $ref: '#/components/schemas/UpdatedAt'
-        name:
-          type: string
-          example: v2.0.0
-          description: Name of product version.
-        deprecated:
-          type: boolean
-          description: If true, product version is deprecated.
-        registration_configs:
-          description: >-
-            Configurations for how the product version is able to be registered
-            for by applications.
-          type: array
-          items:
-            $ref: '#/components/schemas/RegistrationConfiguration'
-      required:
-        - id
-        - created_at
-        - updated_at
-        - name
-        - deprecated
-        - registration_configs
-    RegistrationConfiguration:
-      type: object
-      additionalProperties: false
-      required:
-        - id
-        - name
-        - credential_type
-        - registration_enabled
-        - registration_auto_approve
-      properties:
-        id:
-          $ref: '#/components/schemas/UUID'
-        auth_methods:
-          type: array
-          items:
-            description: Auth Methods enabled for this strategy
-            type: string
-          example:
-            - bearer
-        credential_type:
-          $ref: '#/components/schemas/CredentialType'
-        name:
-          type: string
-        available_scopes:
-          $ref: '#/components/schemas/AvailableScopes'
-        registration_enabled:
-          type: boolean
-          description: If true, application registration is allowed for this configuration.
-          example: true
-        registration_auto_approve:
-          type: boolean
-          description: If true, applications are automatically approved for registration.
-          example: false
-    CredentialType:
-      type: string
-      enum:
-        - client_credentials
-        - self_managed_client_credentials
-        - key_auth
-    LatestVersion:
-      type: object
-      additionalProperties: false
-      nullable: true
-      properties:
-        name:
-          type: string
-          example: v2.0.0
-          readOnly: true
-        id:
-          $ref: '#/components/schemas/UUID'
-    ProductVersionListPage:
-      title: ProductVersionListPage
-      type: object
-      additionalProperties: false
-      required:
-        - meta
-        - data
-      properties:
-        meta:
-          $ref: '#/components/schemas/PaginatedMeta'
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProductVersion'
-    ProductVersionListApplicationsPage:
-      title: ProductVersionListApplicationsPage
-      type: object
-      additionalProperties: false
-      required:
-        - meta
-        - data
-      properties:
-        meta:
-          $ref: '#/components/schemas/PaginatedMeta'
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProductVersionApplication'
-    ProductVersionApplication:
-      title: ProductVersionApplication
-      type: object
-      additionalProperties: false
-      required:
-        - id
-        - name
-        - created_at
-        - updated_at
-        - registration_status
-        - registration_id
-      properties:
-        id:
-          $ref: '#/components/schemas/UUID'
-        name:
-          description: The name of the application
-          type: string
-        registration_id:
-          $ref: '#/components/schemas/NullableUUID'
-        registration_status:
-          type: string
-          nullable: true
-          enum:
-            - approved
-            - pending
-            - rejected
-            - revoked
-        auth_strategy:
-          $ref: '#/components/schemas/AuthStrategy'
-        created_at:
-          $ref: '#/components/schemas/CreatedAt'
-        updated_at:
-          $ref: '#/components/schemas/UpdatedAt'
-    ProductVersionSpecDocument:
-      type: object
-      title: ProductVersionSpecDocument
-      description: API specification document for a product version.
-      properties:
-        api_type:
-          $ref: '#/components/schemas/ApiTypeEnum'
-        content:
-          type: string
-      required:
-        - api_type
-        - content
-    ProductVersionSpecOperations:
-      type: object
-      title: ProductVersionSpecOperations
-      description: List of every operation detailed in a product version spec document.
-      required:
-        - api_type
-        - operations
-      properties:
-        api_type:
-          $ref: '#/components/schemas/ApiTypeEnum'
-        operations:
-          type: array
-          items:
-            type: object
-            required:
-              - path
-              - method
-              - operation_id
-              - tags
-              - summary
-              - deprecated
-            properties:
-              path:
-                type: string
-                example: /pet
-              method:
-                type: string
-                example: post
-              operation_id:
-                type: string
-                nullable: true
-                example: addPet
-              tags:
-                type: array
-                items:
-                  type: string
-                  example: pet
-              summary:
-                type: string
-                nullable: true
-                example: Add a new Pet to the store
-              deprecated:
-                type: boolean
-    ApiTypeEnum:
-      type: string
-      enum:
-        - openapi
-    ProductDocument:
-      type: object
-      title: ProductDocument
-      description: >-
-        A document for a product. This is a document that is not a part of the
-        API specification.
-      required:
-        - id
-        - slug
-        - title
-        - content
-      properties:
-        id:
-          allOf:
-            - $ref: '#/components/schemas/UUID'
-            - description: >-
-                Contains a unique identifier used by the DocumentHub service for
-                this resource.
-              type: string
-        parent_document_id:
-          type: string
-          format: uuid
-          description: >-
-            Contains a unique identifier used by the DocumentHub service for
-            this resource.
-          nullable: true
-          example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
-        slug:
-          type: string
-          description: >-
-            Slug of the document. This is used in the URL to identify the
-            document.
-          example: getting-started
-        content:
-          $ref: '#/components/schemas/DocumentBlock'
-        title:
-          type: string
-          description: >-
-            Title of the document. This is used in the Portal UI to identify the
-            document.
-          example: Hello World
-    ProductDocumentRaw:
-      type: object
-      title: ProductDocumentRaw
-      description: >-
-        A document for a product. This is a document that is not a part of the
-        API specification.
-      required:
-        - id
-        - slug
-        - title
-        - content
-      properties:
-        id:
-          allOf:
-            - $ref: '#/components/schemas/UUID'
-            - description: >-
-                Contains a unique identifier used by the DocumentHub service for
-                this resource.
-              type: string
-        parent_document_id:
-          type: string
-          format: uuid
-          description: >-
-            Contains a unique identifier used by the DocumentHub service for
-            this resource.
-          nullable: true
-          example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
-        slug:
-          type: string
-          description: >-
-            Slug of the document. This is used in the URL to identify the
-            document.
-          example: getting-started
-        content:
-          type: string
-          description: Markdown document
-          example: |
-            # My Kong api
-
-            This api is powered by Konnect
-        title:
-          type: string
-          description: >-
-            Title of the document. This is used in the Portal UI to identify the
-            document.
-          example: Hello World
-    UUID:
-      type: string
-      format: uuid
-      example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-      description: Contains a unique identifier used by the API for this resource.
-      readOnly: true
-    CreatedAt:
-      type: string
-      format: date-time
-      example: '2022-11-04T20:10:06.927Z'
-      description: An ISO-8601 timestamp representation of entity creation date.
-      readOnly: true
-    UpdatedAt:
-      type: string
-      format: date-time
-      example: '2022-11-04T20:10:06.927Z'
-      description: An ISO-8601 timestamp representation of entity update date.
-      readOnly: true
-    BaseError:
-      type: object
-      title: Error
-      description: standard error
-      required:
-        - status
-        - title
-        - instance
-        - detail
-      properties:
-        status:
-          type: integer
-          description: >
-            The HTTP status code of the error. Useful when passing the response
-
-            body to child properties in a frontend UI. Must be returned as an
-            integer.
-          readOnly: true
-        title:
-          type: string
-          description: |
-            A short, human-readable summary of the problem. It should not
-            change between occurences of a problem, except for localization.
-            Should be provided as "Sentence case" for direct use in the UI.
-          readOnly: true
-        type:
-          type: string
-          description: The error type.
-          readOnly: true
-        instance:
-          type: string
-          description: |
-            Used to return the correlation ID back to the user, in the format
-            kong:trace:<correlation_id>. This helps us find the relevant logs
-            when a customer reports an issue.
-          readOnly: true
-        detail:
-          type: string
-          description: >
-            A human readable explanation specific to this occurence of the
-            problem.
-
-            This field may contain request/entity data to help the user
-            understand
-
-            what went wrong. Enclose variable values in square brackets. Should
-            be
-
-            provided as "Sentence case" for direct use in the UI.
-          readOnly: true
-    InvalidRules:
-      description: invalid parameters rules
-      type: string
-      readOnly: true
-      nullable: true
-      enum:
-        - required
-        - max_length
-        - is_array
-        - is_base64
-        - is_boolean
-        - is_date_time
-        - is_integer
-        - is_null
-        - is_number
-        - is_object
-        - is_string
-        - is_uuid
-        - is_fqdn
-        - is_arn
-        - unknown_property
-        - is_label
-        - matches_regex
-        - invalid
-        - is_supported_network_availability_zone_list
-        - is_supported_network_cidr_block
-        - is_supported_provider_region
-    InvalidParameterStandard:
-      type: object
-      additionalProperties: false
-      properties:
-        field:
-          type: string
-          example: name
-          readOnly: true
-        rule:
-          $ref: '#/components/schemas/InvalidRules'
-        source:
-          type: string
-          example: body
-        reason:
-          type: string
-          example: is a required field
-          readOnly: true
-      required:
-        - field
-        - reason
-    InvalidParameterMinimumLength:
-      type: object
-      additionalProperties: false
-      properties:
-        field:
-          type: string
-          example: name
-          readOnly: true
-        rule:
-          description: invalid parameters rules
-          type: string
-          readOnly: true
-          nullable: false
-          enum:
-            - min_length
-            - min_digits
-            - min_lowercase
-            - min_uppercase
-            - min_symbols
-        minimum:
-          type: integer
-          example: 8
-        source:
-          type: string
-          example: body
-        reason:
-          type: string
-          example: is a required field
-          readOnly: true
-      required:
-        - field
-        - reason
-        - rule
-        - minimum
-    InvalidParameterChoiceItem:
-      type: object
-      additionalProperties: false
-      properties:
-        field:
-          type: string
-          example: name
-          readOnly: true
-        rule:
-          description: invalid parameters rules
-          type: string
-          readOnly: true
-          nullable: false
-          enum:
-            - enum
-        reason:
-          type: string
-          example: is a required field
-          readOnly: true
-        choices:
-          type: array
-          uniqueItems: true
-          readOnly: true
-          nullable: false
-          minimum: 1
-          items: {}
-        source:
-          type: string
-          example: body
-      required:
-        - field
-        - reason
-        - rule
-        - choices
-    InvalidParameterDependentItem:
-      type: object
-      additionalProperties: false
-      properties:
-        field:
-          type: string
-          example: name
-          readOnly: true
-        rule:
-          description: invalid parameters rules
-          type: string
-          readOnly: true
-          nullable: true
-          enum:
-            - dependent_fields
-        reason:
-          type: string
-          example: is a required field
-          readOnly: true
-        dependents:
-          type: array
-          uniqueItems: true
-          nullable: true
-          items: {}
-          readOnly: true
-        source:
-          type: string
-          example: body
-      required:
-        - field
-        - rule
-        - reason
-        - dependents
-    InvalidParameters:
-      type: array
-      nullable: false
-      uniqueItems: true
-      minItems: 1
-      description: invalid parameters
-      items:
-        oneOf:
-          - $ref: '#/components/schemas/InvalidParameterStandard'
-          - $ref: '#/components/schemas/InvalidParameterMinimumLength'
-          - $ref: '#/components/schemas/InvalidParameterChoiceItem'
-          - $ref: '#/components/schemas/InvalidParameterDependentItem'
-    BadRequestError:
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
-        - type: object
-          required:
-            - invalid_parameters
-          properties:
-            invalid_parameters:
-              $ref: '#/components/schemas/InvalidParameters'
-    UnauthorizedError:
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
-        - type: object
-          properties:
-            status:
-              example: 401
-            title:
-              example: Unauthorized
-            type:
-              example: https://httpstatuses.com/401
-            instance:
-              example: kong:trace:1234567890
-            detail:
-              example: Invalid credentials
-    NotFoundError:
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
-        - type: object
-          properties:
-            status:
-              example: 404
-            title:
-              example: Not Found
-            type:
-              example: https://httpstatuses.com/404
-            instance:
-              example: kong:trace:1234567890
-            detail:
-              example: Not found
-    PageMeta:
-      type: object
-      description: >-
-        Contains pagination query parameters and the total number of objects
-        returned.
-      required:
-        - number
-        - size
-        - total
-      properties:
-        number:
-          type: number
-          example: 1
-        size:
-          type: number
-          example: 10
-        total:
-          type: number
-          example: 100
-    PaginatedMeta:
-      type: object
-      title: PaginatedMeta
-      description: returns the pagination information
-      properties:
-        page:
-          $ref: '#/components/schemas/PageMeta'
-      required:
-        - page
-    AvailableScopes:
-      description: >-
-        Possible developer selectable scopes for an application. Only present
-        when using DCR Provider that supports it.
-      type: array
-      items:
-        type: string
-      example:
-        - scope1
-        - scope2
-    NullableUUID:
-      type: string
-      format: uuid
-      example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-      description: Contains a unique identifier for a resource.
-      nullable: true
-    AuthStrategyKeyAuth:
-      description: KeyAuth Auth strategy that the application uses.
-      type: object
-      required:
-        - id
-        - name
-        - credential_type
-      properties:
-        id:
-          type: string
-          format: uuid
-          example: b9e81174-b5bb-4638-a3c3-8afe61a0abf8
-          description: The Application Auth Strategy ID.
-          readOnly: true
-        name:
-          type: string
-          example: name
-          default: name
-        credential_type:
-          type: string
-          enum:
-            - key_auth
-    AuthMethods:
-      type: array
-      items:
-        description: Auth Methods enabled for this strategy
-        type: string
-      example:
-        - bearer
-    AuthStrategyClientCredentials:
-      description: Client Credential Auth strategy that the application uses.
-      type: object
-      required:
-        - id
-        - name
-        - credential_type
-        - auth_methods
-      properties:
-        id:
-          type: string
-          format: uuid
-          example: b9e81174-b5bb-4638-a3c3-8afe61a0abf8
-          description: The Application Auth Strategy ID.
-          readOnly: true
-        name:
-          type: string
-          example: name
-          default: name
-        credential_type:
-          type: string
-          enum:
-            - client_credentials
-            - self_managed_client_credentials
-        auth_methods:
-          $ref: '#/components/schemas/AuthMethods'
-    AuthStrategy:
-      type: object
-      oneOf:
-        - $ref: '#/components/schemas/AuthStrategyKeyAuth'
-        - $ref: '#/components/schemas/AuthStrategyClientCredentials'
-      discriminator:
-        propertyName: credential_type
-    DocumentContentTypeEnum:
-      type: string
-      default: application/json
-      enum:
-        - application/json
-        - application/vnd.konnect.document-tree+json
-    Metadata:
-      type: object
-      description: Contains key value pairs information about entity's metadata.
-      additionalProperties: true
-      example:
-        owner: John Appleseed
-    DocumentItem:
-      type: object
-      title: Document item
-      additionalProperties: false
-      required:
-        - id
-        - parent_document_id
-        - slug
-        - title
-        - metadata
-        - created_at
-        - updated_at
-      properties:
-        id:
-          type: string
-          format: uuid
-          description: the id of the document
-          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
-        parent_document_id:
-          type: string
-          format: uuid
-          description: the id of the parent document
-          nullable: true
-          example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
-        slug:
-          type: string
-          description: the slug of the document
-          example: getting-started
-        title:
-          type: string
-          description: the title of the document
-          example: Getting Started
-        metadata:
-          $ref: '#/components/schemas/Metadata'
-        created_at:
-          $ref: '#/components/schemas/CreatedAt'
-        updated_at:
-          $ref: '#/components/schemas/UpdatedAt'
-    ListDocuments:
-      type: object
-      additionalProperties: false
-      required:
-        - meta
-        - data
-      properties:
-        meta:
-          $ref: '#/components/schemas/PaginatedMeta'
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/DocumentItem'
-    DocumentTree:
-      type: object
-      title: DocumentTree
-      description: a document tree
-      required:
-        - id
-        - title
-        - slug
-        - metadata
-        - children
-      properties:
-        id:
-          type: string
-          format: uuid
-          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
-        parent_document_id:
-          type: string
-          format: uuid
-          nullable: true
-          example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
-        title:
-          type: string
-          description: the title of the document
-          example: Getting Started
-        slug:
-          type: string
-          description: the slug of the document
-          example: getting-started
-        metadata:
-          $ref: '#/components/schemas/Metadata'
-        children:
-          type: array
-          items:
-            $ref: '#/components/schemas/DocumentTree'
-    ListDocumentsTree:
-      type: object
-      required:
-        - meta
-        - data
-      properties:
-        meta:
-          $ref: '#/components/schemas/PaginatedMeta'
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/DocumentTree'
-    DocumentFormatContentTypeEnum:
-      type: string
-      default: application/json
-      enum:
-        - text/markdown
-        - application/json
-        - application/vnd.konnect.document-nodes+json
-    NodeChildren:
-      description: List of children nodes of the current node
-      type: array
-      items:
-        $ref: '#/components/schemas/ChildNode'
-    HeadingBlock:
-      type: object
-      required:
-        - type
-      properties:
-        type:
-          type: string
-          enum:
-            - heading
-        level:
-          description: Level of the heading which maps to HTML <h> tag
-          type: number
-          minimum: 1
-          maximum: 6
-        children:
-          $ref: '#/components/schemas/NodeChildren'
-    BlockQuoteBlock:
-      type: object
-      required:
-        - type
-      properties:
-        type:
-          type: string
-          enum:
-            - blockquote
-        children:
-          $ref: '#/components/schemas/NodeChildren'
-    ParagraphBlock:
-      type: object
-      required:
-        - type
-      properties:
-        type:
-          type: string
-          enum:
-            - paragraph
-        children:
-          $ref: '#/components/schemas/NodeChildren'
-    TextBlock:
-      type: object
-      required:
-        - type
-      properties:
-        type:
-          type: string
-          enum:
-            - text_block
-        children:
-          $ref: '#/components/schemas/NodeChildren'
-    BreakBlock:
-      type: object
-      required:
-        - type
-      properties:
-        type:
-          type: string
-          enum:
-            - break
-        children:
-          $ref: '#/components/schemas/NodeChildren'
-    CodeBlock:
-      type: object
-      required:
-        - type
-      properties:
-        type:
-          type: string
-          enum:
-            - code_block
-        lang:
-          type: string
-        children:
-          $ref: '#/components/schemas/NodeChildren'
-    ListBlock:
-      type: object
-      required:
-        - type
-      properties:
-        type:
-          type: string
-          enum:
-            - list
-        isOrdered:
-          description: Defines if the list is ordered or not
-          type: boolean
-        children:
-          $ref: '#/components/schemas/NodeChildren'
-    ListItemBlock:
-      type: object
-      required:
-        - type
-      properties:
-        type:
-          type: string
-          enum:
-            - list_item
-        children:
-          $ref: '#/components/schemas/NodeChildren'
-    Text:
-      type: object
-      required:
-        - type
-      properties:
-        type:
-          type: string
-          enum:
-            - text
-        text:
-          type: string
-        hardBreak:
-          description: |
-            If this property is true the end of this block should
-            be a carriage return and not concatenated to the next Text block.
-          type: boolean
-        softBreak:
-          description: |
-            If this property is true the end of this block should should be
-            concatenated with a space caracter before the next block. This is
-            the flag showing that the parsed markdown block was at the end of
-            the line.
-          type: boolean
-        children:
-          $ref: '#/components/schemas/NodeChildren'
-    Emphasis:
-      type: object
-      required:
-        - type
-      properties:
-        type:
-          type: string
-          enum:
-            - emphasis
-        level:
-          type: number
-          minimum: 1
-          maximum: 2
-          description: |
-            Level of emphasis
-            1 - italic
-            2 - bold
-        children:
-          $ref: '#/components/schemas/NodeChildren'
-    Code:
-      type: object
-      required:
-        - type
-      properties:
-        type:
-          type: string
-          enum:
-            - code
-        children:
-          $ref: '#/components/schemas/NodeChildren'
-    Link:
-      type: object
-      required:
-        - type
-      properties:
-        type:
-          type: string
-          enum:
-            - link
-        href:
-          description: Target url of the link
-          type: string
-        title:
-          description: Title of the link
-          type: string
-    Image:
-      type: object
-      required:
-        - type
-      properties:
-        type:
-          type: string
-          enum:
-            - image
-        url:
-          description: Url of the image
-          type: string
-        alt:
-          description: Alternate tag of the image
-          type: string
-        title:
-          description: Title of the image
-          type: string
-    StrikeThrough:
-      type: object
-      required:
-        - type
-      properties:
-        type:
-          type: string
-          enum:
-            - strikethrough
-    AlignmentKind:
-      type: string
-      enum:
-        - left
-        - right
-        - center
-        - none
-    TableAlignments:
-      type: array
-      nullable: true
-      items:
-        $ref: '#/components/schemas/AlignmentKind'
-    TableBlock:
-      type: object
-      required:
-        - type
-        - alignments
-      properties:
-        type:
-          type: string
-          enum:
-            - table
-        alignments:
-          $ref: '#/components/schemas/TableAlignments'
-        children:
-          $ref: '#/components/schemas/NodeChildren'
-    TableHeaderBlock:
-      type: object
-      required:
-        - type
-        - alignments
-      properties:
-        type:
-          type: string
-          enum:
-            - table_header
-        alignments:
-          $ref: '#/components/schemas/TableAlignments'
-        children:
-          $ref: '#/components/schemas/NodeChildren'
-    TableCellBlock:
-      type: object
-      required:
-        - type
-      properties:
-        type:
-          type: string
-          enum:
-            - table_cell
-        alignment:
-          $ref: '#/components/schemas/AlignmentKind'
-        children:
-          $ref: '#/components/schemas/NodeChildren'
-    TableRowBlock:
-      type: object
-      required:
-        - type
-        - alignments
-      properties:
-        type:
-          type: string
-          enum:
-            - table_row
-        alignments:
-          $ref: '#/components/schemas/TableAlignments'
-        children:
-          $ref: '#/components/schemas/NodeChildren'
-    TaskCheckbox:
-      type: object
-      required:
-        - checked
-        - type
-      properties:
-        type:
-          type: string
-          enum:
-            - task_checkbox
-        checked:
-          type: boolean
-          description: State of the checkbox
-    ChildNode:
-      type: object
-      oneOf:
-        - $ref: '#/components/schemas/HeadingBlock'
-        - $ref: '#/components/schemas/BlockQuoteBlock'
-        - $ref: '#/components/schemas/ParagraphBlock'
-        - $ref: '#/components/schemas/TextBlock'
-        - $ref: '#/components/schemas/BreakBlock'
-        - $ref: '#/components/schemas/CodeBlock'
-        - $ref: '#/components/schemas/ListBlock'
-        - $ref: '#/components/schemas/ListItemBlock'
-        - $ref: '#/components/schemas/Text'
-        - $ref: '#/components/schemas/Emphasis'
-        - $ref: '#/components/schemas/Code'
-        - $ref: '#/components/schemas/Link'
-        - $ref: '#/components/schemas/Image'
-        - $ref: '#/components/schemas/StrikeThrough'
-        - $ref: '#/components/schemas/TableBlock'
-        - $ref: '#/components/schemas/TableHeaderBlock'
-        - $ref: '#/components/schemas/TableCellBlock'
-        - $ref: '#/components/schemas/TableRowBlock'
-        - $ref: '#/components/schemas/TaskCheckbox'
-      discriminator:
-        propertyName: type
-    DocumentBlock:
-      type: object
-      required:
-        - type
-      properties:
-        type:
-          type: string
-          enum:
-            - document
-        version:
-          type: string
-        children:
-          $ref: '#/components/schemas/NodeChildren'
-      description: content of the document
-      example:
-        type: document
-        content:
-          - type: paragraph
-            content:
-              - type: text
-                text: Hello World
-  examples:
-    ProductActionsExample:
-      value:
-        actions:
-          register: false
-          view: true
-          view_documentation: true
-    UnauthorizedExample:
-      value:
-        status: 401
-        title: Unauthorized
-        instance: kong:trace:8347343766220159418
-        detail: Unauthorized
-    NotFoundExample:
-      value:
-        status: 404
-        title: Not Found
-        instance: kong:trace:6816496025408232265
-        detail: Not Found
+  securitySchemes:
+    portalAccessToken:
+      type: apiKey
+      in: cookie
+      name: portalaccesstoken
+      description: |
+        The Developer portal cookie is meant to be used by the Developer API to authenticate with.
+tags:
+  - name: products
+    description: The API for Konnect Portal Products.
+  - name: versions
+    description: The API for Konnect Portal Product Versions.
+  - name: documentation
+    description: The API for Konnect Portal Product Documentation.

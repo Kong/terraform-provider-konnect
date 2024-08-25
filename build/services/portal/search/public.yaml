@@ -5,18 +5,19 @@ info:
   description: N/A (this description is removed during bundling)
   contact:
     name: Kong
-    url: https://cloud.konghq.com
-tags:
-  - name: search
-    description: The API for Konnect Portal Search.
+    url: 'https://cloud.konghq.com'
 paths:
-  /api/v2/search/{indices}:
+  '/api/v2/search/{indices}':
     get:
-      summary: Search Portal Entities
       operationId: search-portal-entities
-      description: >-
-        Returns paginated search results from the specified entities with the
-        given search parameters.
+      summary: Search Portal Entities
+      description: Returns paginated search results from the specified entities with the given search parameters.
+      parameters:
+        - $ref: '#/components/parameters/SearchIndices'
+        - $ref: '#/components/parameters/SearchQuery'
+        - $ref: '#/components/parameters/SearchJoin'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
       responses:
         '200':
           $ref: '#/components/responses/SearchResponse'
@@ -24,61 +25,15 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
-      parameters:
-        - $ref: '#/components/parameters/SearchIndices'
-        - $ref: '#/components/parameters/SearchQuery'
-        - $ref: '#/components/parameters/SearchJoin'
-        - $ref: '#/components/parameters/PageSize'
-        - $ref: '#/components/parameters/PageNumber'
-      tags:
-        - search
       security:
         - portalAccessToken: []
         - {}
+      tags:
+        - search
 components:
-  securitySchemes:
-    portalAccessToken:
-      type: apiKey
-      in: cookie
-      name: portalaccesstoken
-      description: >
-        The Developer portal cookie is meant to be used by the Developer API to
-        authenticate with.
   parameters:
-    SearchQuery:
-      name: q
-      description: Determines how to filter search results
-      required: false
-      in: query
-      schema:
-        $ref: '#/components/schemas/SearchQueryParameters'
-    SearchJoin:
-      name: join
-      description: Determines which sub-entities to include in search results
-      required: false
-      in: query
-      schema:
-        $ref: '#/components/schemas/SearchJoinParameters'
-    SearchIndices:
-      name: indices
-      description: Determines which entity sets to search
-      required: true
-      in: path
-      schema:
-        $ref: '#/components/schemas/SearchIndicesParameters'
-    PageSize:
-      name: page[size]
-      description: >-
-        The maximum number of items to include per page. The last page of a
-        collection may include fewer items.
-      required: false
-      in: query
-      allowEmptyValue: true
-      schema:
-        type: integer
-        example: 10
     PageNumber:
-      name: page[number]
+      name: 'page[number]'
       description: Determines which page of the entities to retrieve.
       required: false
       in: query
@@ -86,45 +41,45 @@ components:
       schema:
         type: integer
         example: 1
-  responses:
-    SearchResponse:
-      description: Search Results
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/SearchResults'
-          examples:
-            Search Response Example:
-              $ref: '#/components/examples/SearchResponseExample'
-    BadRequest:
-      description: Bad Request
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/BadRequestError'
-    Unauthorized:
-      description: Unauthorized
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/UnauthorizedError'
-          examples:
-            UnauthorizedExample:
-              $ref: '#/components/examples/UnauthorizedExample'
+    PageSize:
+      name: 'page[size]'
+      description: The maximum number of items to include per page. The last page of a collection may include fewer items.
+      required: false
+      in: query
+      allowEmptyValue: true
+      schema:
+        type: integer
+        example: 10
+    SearchIndices:
+      name: indices
+      description: Determines which entity sets to search
+      required: true
+      in: path
+      schema:
+        $ref: '#/components/schemas/SearchIndicesParameters'
+    SearchJoin:
+      name: join
+      description: Determines which sub-entities to include in search results
+      required: false
+      in: query
+      schema:
+        $ref: '#/components/schemas/SearchJoinParameters'
+    SearchQuery:
+      name: q
+      description: Determines how to filter search results
+      required: false
+      in: query
+      schema:
+        $ref: '#/components/schemas/SearchQueryParameters'
   schemas:
     SearchResults:
-      title: SearchResults
       type: object
-      additionalProperties: false
-      required:
-        - data
-        - meta
       properties:
         meta:
           $ref: '#/components/schemas/PaginatedMeta'
         data:
-          type: array
           description: The paginated results that matched the search query
+          type: array
           items:
             type: object
             additionalProperties: false
@@ -136,9 +91,57 @@ components:
             required:
               - index
               - source
+      additionalProperties: false
+      required:
+        - data
+        - meta
+      title: SearchResults
     ProductCatalogIndexSource:
-      title: ProductCatalogIndexSource
       type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        name:
+          description: the name of the product
+          type: string
+          example: Nice Product
+          nullable: true
+          readOnly: true
+        description:
+          description: a description of the product
+          type: string
+          example: A nice product for customers to read about and consume
+          nullable: true
+          readOnly: true
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        document_count:
+          description: Number of product documents available.
+          type: number
+          example: 5
+          readOnly: true
+        version_count:
+          description: Number of product versions.
+          type: number
+          example: 2
+          readOnly: true
+        latest_version:
+          description: Last created version.
+          type: object
+          additionalProperties: false
+          nullable: true
+          properties:
+            name:
+              description: Name of product version.
+              type: string
+              example: v2.0.0
+            id:
+              $ref: '#/components/schemas/UUID'
+          required:
+            - name
+            - id
       additionalProperties: false
       required:
         - id
@@ -148,74 +151,23 @@ components:
         - document_count
         - version_count
         - latest_version
-      properties:
-        id:
-          $ref: '#/components/schemas/UUID'
-        name:
-          type: string
-          example: Nice Product
-          description: the name of the product
-          nullable: true
-          readOnly: true
-        description:
-          type: string
-          example: A nice product for customers to read about and consume
-          description: a description of the product
-          nullable: true
-          readOnly: true
-        created_at:
-          $ref: '#/components/schemas/CreatedAt'
-        updated_at:
-          $ref: '#/components/schemas/UpdatedAt'
-        document_count:
-          type: number
-          example: 5
-          description: Number of product documents available.
-          readOnly: true
-        version_count:
-          type: number
-          example: 2
-          description: Number of product versions.
-          readOnly: true
-        latest_version:
-          type: object
-          description: Last created version.
-          nullable: true
-          required:
-            - name
-            - id
-          additionalProperties: false
-          properties:
-            name:
-              type: string
-              example: v2.0.0
-              description: Name of product version.
-            id:
-              $ref: '#/components/schemas/UUID'
+      title: ProductCatalogIndexSource
     SearchIndicesParameters:
-      title: SearchIndicesParameters
       type: string
       enum:
         - product-catalog
+      title: SearchIndicesParameters
     SearchQueryParameters:
+      type: string
       title: SearchQueryParameters
-      type: string
     SearchJoinParameters:
-      title: SearchJoinParameters
+      description: Accepted values are `versions` and `versions.documents`. Use commas to separate multiple values.
       type: string
-      description: >-
-        Accepted values are `versions` and `versions.documents`. Use commas to
-        separate multiple values.
-      example: versions,versions.documents
+      example: 'versions,versions.documents'
+      title: SearchJoinParameters
     PageMeta:
+      description: Contains pagination query parameters and the total number of objects returned.
       type: object
-      description: >-
-        Contains pagination query parameters and the total number of objects
-        returned.
-      required:
-        - number
-        - size
-        - total
       properties:
         number:
           type: number
@@ -226,88 +178,82 @@ components:
         total:
           type: number
           example: 100
+      required:
+        - number
+        - size
+        - total
     PaginatedMeta:
-      type: object
-      title: PaginatedMeta
       description: returns the pagination information
+      type: object
       properties:
         page:
           $ref: '#/components/schemas/PageMeta'
       required:
         - page
+      title: PaginatedMeta
     UUID:
+      description: Contains a unique identifier used by the API for this resource.
       type: string
       format: uuid
       example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-      description: Contains a unique identifier used by the API for this resource.
       readOnly: true
     CreatedAt:
+      description: An ISO-8601 timestamp representation of entity creation date.
       type: string
       format: date-time
       example: '2022-11-04T20:10:06.927Z'
-      description: An ISO-8601 timestamp representation of entity creation date.
       readOnly: true
     UpdatedAt:
+      description: An ISO-8601 timestamp representation of entity update date.
       type: string
       format: date-time
       example: '2022-11-04T20:10:06.927Z'
-      description: An ISO-8601 timestamp representation of entity update date.
       readOnly: true
     BaseError:
-      type: object
-      title: Error
       description: standard error
+      type: object
+      properties:
+        status:
+          description: |
+            The HTTP status code of the error. Useful when passing the response
+            body to child properties in a frontend UI. Must be returned as an integer.
+          type: integer
+          readOnly: true
+        title:
+          description: |
+            A short, human-readable summary of the problem. It should not
+            change between occurences of a problem, except for localization.
+            Should be provided as "Sentence case" for direct use in the UI.
+          type: string
+          readOnly: true
+        type:
+          description: The error type.
+          type: string
+          readOnly: true
+        instance:
+          description: |
+            Used to return the correlation ID back to the user, in the format
+            kong:trace:<correlation_id>. This helps us find the relevant logs
+            when a customer reports an issue.
+          type: string
+          readOnly: true
+        detail:
+          description: |
+            A human readable explanation specific to this occurence of the problem.
+            This field may contain request/entity data to help the user understand
+            what went wrong. Enclose variable values in square brackets. Should be
+            provided as "Sentence case" for direct use in the UI.
+          type: string
+          readOnly: true
       required:
         - status
         - title
         - instance
         - detail
-      properties:
-        status:
-          type: integer
-          description: >
-            The HTTP status code of the error. Useful when passing the response
-
-            body to child properties in a frontend UI. Must be returned as an
-            integer.
-          readOnly: true
-        title:
-          type: string
-          description: |
-            A short, human-readable summary of the problem. It should not
-            change between occurences of a problem, except for localization.
-            Should be provided as "Sentence case" for direct use in the UI.
-          readOnly: true
-        type:
-          type: string
-          description: The error type.
-          readOnly: true
-        instance:
-          type: string
-          description: |
-            Used to return the correlation ID back to the user, in the format
-            kong:trace:<correlation_id>. This helps us find the relevant logs
-            when a customer reports an issue.
-          readOnly: true
-        detail:
-          type: string
-          description: >
-            A human readable explanation specific to this occurence of the
-            problem.
-
-            This field may contain request/entity data to help the user
-            understand
-
-            what went wrong. Enclose variable values in square brackets. Should
-            be
-
-            provided as "Sentence case" for direct use in the UI.
-          readOnly: true
+      title: Error
     InvalidRules:
       description: invalid parameters rules
       type: string
-      readOnly: true
-      nullable: true
       enum:
         - required
         - max_length
@@ -330,9 +276,10 @@ components:
         - is_supported_network_availability_zone_list
         - is_supported_network_cidr_block
         - is_supported_provider_region
+      nullable: true
+      readOnly: true
     InvalidParameterStandard:
       type: object
-      additionalProperties: false
       properties:
         field:
           type: string
@@ -347,12 +294,12 @@ components:
           type: string
           example: is a required field
           readOnly: true
+      additionalProperties: false
       required:
         - field
         - reason
     InvalidParameterMinimumLength:
       type: object
-      additionalProperties: false
       properties:
         field:
           type: string
@@ -361,14 +308,14 @@ components:
         rule:
           description: invalid parameters rules
           type: string
-          readOnly: true
-          nullable: false
           enum:
             - min_length
             - min_digits
             - min_lowercase
             - min_uppercase
             - min_symbols
+          nullable: false
+          readOnly: true
         minimum:
           type: integer
           example: 8
@@ -379,6 +326,7 @@ components:
           type: string
           example: is a required field
           readOnly: true
+      additionalProperties: false
       required:
         - field
         - reason
@@ -386,7 +334,6 @@ components:
         - minimum
     InvalidParameterChoiceItem:
       type: object
-      additionalProperties: false
       properties:
         field:
           type: string
@@ -395,24 +342,25 @@ components:
         rule:
           description: invalid parameters rules
           type: string
-          readOnly: true
-          nullable: false
           enum:
             - enum
+          nullable: false
+          readOnly: true
         reason:
           type: string
           example: is a required field
           readOnly: true
         choices:
           type: array
-          uniqueItems: true
-          readOnly: true
-          nullable: false
-          minimum: 1
           items: {}
+          minimum: 1
+          nullable: false
+          readOnly: true
+          uniqueItems: true
         source:
           type: string
           example: body
+      additionalProperties: false
       required:
         - field
         - reason
@@ -420,7 +368,6 @@ components:
         - choices
     InvalidParameterDependentItem:
       type: object
-      additionalProperties: false
       properties:
         field:
           type: string
@@ -429,40 +376,41 @@ components:
         rule:
           description: invalid parameters rules
           type: string
-          readOnly: true
-          nullable: true
           enum:
             - dependent_fields
+          nullable: true
+          readOnly: true
         reason:
           type: string
           example: is a required field
           readOnly: true
         dependents:
           type: array
-          uniqueItems: true
-          nullable: true
           items: {}
+          nullable: true
           readOnly: true
+          uniqueItems: true
         source:
           type: string
           example: body
+      additionalProperties: false
       required:
         - field
         - rule
         - reason
         - dependents
     InvalidParameters:
-      type: array
-      nullable: false
-      uniqueItems: true
-      minItems: 1
       description: invalid parameters
+      type: array
       items:
         oneOf:
           - $ref: '#/components/schemas/InvalidParameterStandard'
           - $ref: '#/components/schemas/InvalidParameterMinimumLength'
           - $ref: '#/components/schemas/InvalidParameterChoiceItem'
           - $ref: '#/components/schemas/InvalidParameterDependentItem'
+      minItems: 1
+      nullable: false
+      uniqueItems: true
     BadRequestError:
       allOf:
         - $ref: '#/components/schemas/BaseError'
@@ -482,9 +430,9 @@ components:
             title:
               example: Unauthorized
             type:
-              example: https://httpstatuses.com/401
+              example: 'https://httpstatuses.com/401'
             instance:
-              example: kong:trace:1234567890
+              example: 'kong:trace:1234567890'
             detail:
               example: Invalid credentials
   examples:
@@ -512,5 +460,40 @@ components:
       value:
         status: 401
         title: Unauthorized
-        instance: kong:trace:8347343766220159418
+        instance: 'kong:trace:8347343766220159418'
         detail: Unauthorized
+  responses:
+    SearchResponse:
+      description: Search Results
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SearchResults'
+          examples:
+            Search Response Example:
+              $ref: '#/components/examples/SearchResponseExample'
+    BadRequest:
+      description: Bad Request
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/BadRequestError'
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/UnauthorizedError'
+          examples:
+            UnauthorizedExample:
+              $ref: '#/components/examples/UnauthorizedExample'
+  securitySchemes:
+    portalAccessToken:
+      type: apiKey
+      in: cookie
+      name: portalaccesstoken
+      description: |
+        The Developer portal cookie is meant to be used by the Developer API to authenticate with.
+tags:
+  - name: search
+    description: The API for Konnect Portal Search.

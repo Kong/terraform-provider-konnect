@@ -5,36 +5,30 @@ info:
   description: The management API for Konnect Organization Lifecycle.
   contact:
     name: Kong
-    url: https://konghq.com
+    url: 'https://konghq.com'
 servers:
-  - url: https://global.api.konghq.com/v3
+  - url: 'https://global.api.konghq.com/v3'
     description: Global Base URL
-tags:
-  - name: Organization Lifecycle
 paths:
-  /organizations/{organizationId}/deletion-config:
+  '/organizations/{organizationId}/deletion-config':
     parameters:
-      - schema:
+      - name: organizationId
+        in: path
+        description: The ID of the organization being patched.
+        required: true
+        schema:
           type: string
           format: uuid
           example: d32d905a-ed33-46a3-a093-d8f536af9a8a
-        name: organizationId
-        in: path
-        required: true
-        description: The ID of the organization being patched.
     patch:
-      summary: Sets the deletion configs for a specifed organization.
       operationId: patch-organization-deletion-config
-      description: >
-        Sets the deletion configs for a specified organization. The retention
-        period 
-
-        is the number of days an organization can remain in the inactive state
-        before 
-
+      summary: Sets the deletion configs for a specifed organization.
+      description: |
+        Sets the deletion configs for a specified organization. The retention period 
+        is the number of days an organization can remain in the inactive state before 
         being permanently deleted.
-      tags:
-        - Organization Lifecycle
+      requestBody:
+        $ref: '#/components/requestBodies/DeletionConfigRequest'
       responses:
         '200':
           $ref: '#/components/responses/DeletionConfigResponse'
@@ -46,75 +40,65 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/OrganizationNotFound'
-      requestBody:
-        $ref: '#/components/requestBodies/DeletionConfigRequest'
+      tags:
+        - Organization Lifecycle
 components:
   schemas:
     DeletionConfig:
       type: object
-      title: Deletion Config
       properties:
         retention_period_days:
-          type: integer
           description: The retention period in days.
+          type: integer
           example: 90
-          minimum: 1
           maximum: 365
+          minimum: 1
+      title: Deletion Config
     BaseError:
-      type: object
-      title: Error
       description: standard error
+      type: object
+      properties:
+        status:
+          description: |
+            The HTTP status code of the error. Useful when passing the response
+            body to child properties in a frontend UI. Must be returned as an integer.
+          type: integer
+          readOnly: true
+        title:
+          description: |
+            A short, human-readable summary of the problem. It should not
+            change between occurences of a problem, except for localization.
+            Should be provided as "Sentence case" for direct use in the UI.
+          type: string
+          readOnly: true
+        type:
+          description: The error type.
+          type: string
+          readOnly: true
+        instance:
+          description: |
+            Used to return the correlation ID back to the user, in the format
+            kong:trace:<correlation_id>. This helps us find the relevant logs
+            when a customer reports an issue.
+          type: string
+          readOnly: true
+        detail:
+          description: |
+            A human readable explanation specific to this occurence of the problem.
+            This field may contain request/entity data to help the user understand
+            what went wrong. Enclose variable values in square brackets. Should be
+            provided as "Sentence case" for direct use in the UI.
+          type: string
+          readOnly: true
       required:
         - status
         - title
         - instance
         - detail
-      properties:
-        status:
-          type: integer
-          description: >
-            The HTTP status code of the error. Useful when passing the response
-
-            body to child properties in a frontend UI. Must be returned as an
-            integer.
-          readOnly: true
-        title:
-          type: string
-          description: |
-            A short, human-readable summary of the problem. It should not
-            change between occurences of a problem, except for localization.
-            Should be provided as "Sentence case" for direct use in the UI.
-          readOnly: true
-        type:
-          type: string
-          description: The error type.
-          readOnly: true
-        instance:
-          type: string
-          description: |
-            Used to return the correlation ID back to the user, in the format
-            kong:trace:<correlation_id>. This helps us find the relevant logs
-            when a customer reports an issue.
-          readOnly: true
-        detail:
-          type: string
-          description: >
-            A human readable explanation specific to this occurence of the
-            problem.
-
-            This field may contain request/entity data to help the user
-            understand
-
-            what went wrong. Enclose variable values in square brackets. Should
-            be
-
-            provided as "Sentence case" for direct use in the UI.
-          readOnly: true
+      title: Error
     InvalidRules:
       description: invalid parameters rules
       type: string
-      readOnly: true
-      nullable: true
       enum:
         - required
         - max_length
@@ -137,9 +121,10 @@ components:
         - is_supported_network_availability_zone_list
         - is_supported_network_cidr_block
         - is_supported_provider_region
+      nullable: true
+      readOnly: true
     InvalidParameterStandard:
       type: object
-      additionalProperties: false
       properties:
         field:
           type: string
@@ -154,12 +139,12 @@ components:
           type: string
           example: is a required field
           readOnly: true
+      additionalProperties: false
       required:
         - field
         - reason
     InvalidParameterMinimumLength:
       type: object
-      additionalProperties: false
       properties:
         field:
           type: string
@@ -168,14 +153,14 @@ components:
         rule:
           description: invalid parameters rules
           type: string
-          readOnly: true
-          nullable: false
           enum:
             - min_length
             - min_digits
             - min_lowercase
             - min_uppercase
             - min_symbols
+          nullable: false
+          readOnly: true
         minimum:
           type: integer
           example: 8
@@ -186,6 +171,7 @@ components:
           type: string
           example: is a required field
           readOnly: true
+      additionalProperties: false
       required:
         - field
         - reason
@@ -193,7 +179,6 @@ components:
         - minimum
     InvalidParameterChoiceItem:
       type: object
-      additionalProperties: false
       properties:
         field:
           type: string
@@ -202,24 +187,25 @@ components:
         rule:
           description: invalid parameters rules
           type: string
-          readOnly: true
-          nullable: false
           enum:
             - enum
+          nullable: false
+          readOnly: true
         reason:
           type: string
           example: is a required field
           readOnly: true
         choices:
           type: array
-          uniqueItems: true
-          readOnly: true
-          nullable: false
-          minimum: 1
           items: {}
+          minimum: 1
+          nullable: false
+          readOnly: true
+          uniqueItems: true
         source:
           type: string
           example: body
+      additionalProperties: false
       required:
         - field
         - reason
@@ -227,7 +213,6 @@ components:
         - choices
     InvalidParameterDependentItem:
       type: object
-      additionalProperties: false
       properties:
         field:
           type: string
@@ -236,40 +221,41 @@ components:
         rule:
           description: invalid parameters rules
           type: string
-          readOnly: true
-          nullable: true
           enum:
             - dependent_fields
+          nullable: true
+          readOnly: true
         reason:
           type: string
           example: is a required field
           readOnly: true
         dependents:
           type: array
-          uniqueItems: true
-          nullable: true
           items: {}
+          nullable: true
           readOnly: true
+          uniqueItems: true
         source:
           type: string
           example: body
+      additionalProperties: false
       required:
         - field
         - rule
         - reason
         - dependents
     InvalidParameters:
-      type: array
-      nullable: false
-      uniqueItems: true
-      minItems: 1
       description: invalid parameters
+      type: array
       items:
         oneOf:
           - $ref: '#/components/schemas/InvalidParameterStandard'
           - $ref: '#/components/schemas/InvalidParameterMinimumLength'
           - $ref: '#/components/schemas/InvalidParameterChoiceItem'
           - $ref: '#/components/schemas/InvalidParameterDependentItem'
+      minItems: 1
+      nullable: false
+      uniqueItems: true
     BadRequestError:
       allOf:
         - $ref: '#/components/schemas/BaseError'
@@ -289,9 +275,9 @@ components:
             title:
               example: Unauthorized
             type:
-              example: https://httpstatuses.com/401
+              example: 'https://httpstatuses.com/401'
             instance:
-              example: kong:trace:1234567890
+              example: 'kong:trace:1234567890'
             detail:
               example: Invalid credentials
     ForbiddenError:
@@ -304,9 +290,9 @@ components:
             title:
               example: Forbidden
             type:
-              example: https://httpstatuses.com/403
+              example: 'https://httpstatuses.com/403'
             instance:
-              example: kong:trace:1234567890
+              example: 'kong:trace:1234567890'
             detail:
               example: Forbidden
     NotFoundError:
@@ -319,11 +305,51 @@ components:
             title:
               example: Not Found
             type:
-              example: https://httpstatuses.com/404
+              example: 'https://httpstatuses.com/404'
             instance:
-              example: kong:trace:1234567890
+              example: 'kong:trace:1234567890'
             detail:
               example: Not found
+  examples:
+    400InvalidRequestFormat:
+      value:
+        status: 400
+        title: Bad Request
+        instance: 'konnect:trace:3674017986744198214'
+        invalid_parameters:
+          - field: body
+            reason: request format is invalid
+        detail: The request format is invalid
+    404OrganizationStateNotFound:
+      value:
+        status: 404
+        title: Not Found
+        instance: 'konnect:trace:2287285207635123011'
+        detail: The requested organization was not found
+    UnauthorizedExample:
+      value:
+        status: 401
+        title: Unauthorized
+        instance: 'kong:trace:8347343766220159418'
+        detail: Unauthorized
+    ForbiddenExample:
+      value:
+        status: 403
+        title: Forbidden
+        instance: 'kong:trace:2723154947768991354'
+        detail: You do not have permission to perform this action
+  requestBodies:
+    DeletionConfigRequest:
+      required: true
+      description: The request schema to set an organization's retention period.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DeletionConfig'
+          examples:
+            Example:
+              value:
+                retention_period_days: 90
   responses:
     OrganizationStateBadRequest:
       description: Bad Request
@@ -371,43 +397,5 @@ components:
           examples:
             UnauthorizedExample:
               $ref: '#/components/examples/ForbiddenExample'
-  requestBodies:
-    DeletionConfigRequest:
-      required: true
-      description: The request schema to set an organization's retention period.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/DeletionConfig'
-          examples:
-            Example:
-              value:
-                retention_period_days: 90
-  examples:
-    400InvalidRequestFormat:
-      value:
-        status: 400
-        title: Bad Request
-        instance: konnect:trace:3674017986744198214
-        invalid_parameters:
-          - field: body
-            reason: request format is invalid
-        detail: The request format is invalid
-    404OrganizationStateNotFound:
-      value:
-        status: 404
-        title: Not Found
-        instance: konnect:trace:2287285207635123011
-        detail: The requested organization was not found
-    UnauthorizedExample:
-      value:
-        status: 401
-        title: Unauthorized
-        instance: kong:trace:8347343766220159418
-        detail: Unauthorized
-    ForbiddenExample:
-      value:
-        status: 403
-        title: Forbidden
-        instance: kong:trace:2723154947768991354
-        detail: You do not have permission to perform this action
+tags:
+  - name: Organization Lifecycle

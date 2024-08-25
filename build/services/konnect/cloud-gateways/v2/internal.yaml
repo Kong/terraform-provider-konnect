@@ -5,23 +5,16 @@ info:
   title: Konnect Cloud Gateways
   contact:
     name: Kong
-    url: https://cloud.konghq.com
+    url: 'https://cloud.konghq.com'
 servers:
-  - url: https://global.api.konghq.com/v2
+  - url: 'https://global.api.konghq.com/v2'
     description: Base URL for the global region
-security:
-  - konnectAccessToken: []
-  - personalAccessToken: []
-  - systemAccountAccessToken: []
-tags:
-  - name: Provider Accounts
-  - name: Resource Quotas
 paths:
   /cloud-gateways/provider-accounts:
     post:
+      operationId: create-provider-account
       summary: Create Provider Account
       description: Creates a new provider account for an organization.
-      operationId: create-provider-account
       requestBody:
         required: true
         content:
@@ -41,11 +34,11 @@ paths:
           $ref: '#/components/responses/Conflict'
       tags:
         - Provider Accounts
-  /cloud-gateways/provider-accounts/{providerAccountId}:
+  '/cloud-gateways/provider-accounts/{providerAccountId}':
     delete:
+      operationId: delete-provider-account
       summary: Delete Provider Account
       description: Deletes a provider account by ID.
-      operationId: delete-provider-account
       parameters:
         - $ref: '#/components/parameters/ProviderAccountId'
       responses:
@@ -63,11 +56,10 @@ paths:
         - Provider Accounts
   /cloud-gateways/resource-quotas:
     post:
-      summary: Create Resource Quota
-      description: >
-        Creates a new resource quota, scoped to a given resource, for an
-        organization.
       operationId: create-resource-quota
+      summary: Create Resource Quota
+      description: |
+        Creates a new resource quota, scoped to a given resource, for an organization.
       requestBody:
         required: true
         content:
@@ -87,11 +79,11 @@ paths:
           $ref: '#/components/responses/Conflict'
       tags:
         - Resource Quotas
-  /cloud-gateways/resource-quotas/{resourceQuotaId}:
+  '/cloud-gateways/resource-quotas/{resourceQuotaId}':
     patch:
+      operationId: update-resource-quota
       summary: Update Resource Quota
       description: Updates a resource quota by ID.
-      operationId: update-resource-quota
       parameters:
         - $ref: '#/components/parameters/ResourceQuotaId'
       requestBody:
@@ -114,54 +106,7 @@ paths:
       tags:
         - Resource Quotas
 components:
-  securitySchemes:
-    konnectAccessToken:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
-      description: >
-        The Konnect access token is meant to be used by the Konnect dashboard
-        and the decK CLI authenticate with.
-    personalAccessToken:
-      type: http
-      scheme: bearer
-      bearerFormat: Token
-      description: >
-        The personal access token is meant to be used as an alternative to
-        basic-auth when accessing Konnect via APIs.
-
-        You can generate a Personal Access Token (PAT) from the [personal access
-        token page](https://cloud.konghq.com/global/tokens/) in the Konnect
-        dashboard.
-
-        The PAT token must be passed in the header of a request, for example:
-
-        `curl -X GET 'https://global.api.konghq.com/v2/users/' --header
-        'Authorization: Bearer kpat_xgfT...'`
-    systemAccountAccessToken:
-      type: http
-      scheme: bearer
-      bearerFormat: Token
-      description: >
-        The system account access token is meant for automations and
-        integrations that are not directly associated with a human identity.
-
-        You can generate a system account Access Token by creating a system
-        account and then obtaining a system account access token for that
-        account.
-
-        The access token must be passed in the header of a request, for example:
-
-        `curl -X GET 'https://global.api.konghq.com/v2/users/' --header
-        'Authorization: Bearer spat_i2Ej...'`
   parameters:
-    ResourceQuotaId:
-      name: resourceQuotaId
-      in: path
-      description: The ID of the resource quota to operate on.
-      required: true
-      schema:
-        $ref: '#/components/schemas/ResourceQuotaId'
     ProviderAccountId:
       name: providerAccountId
       in: path
@@ -169,6 +114,518 @@ components:
       required: true
       schema:
         $ref: '#/components/schemas/ProviderAccountId'
+    ResourceQuotaId:
+      name: resourceQuotaId
+      in: path
+      description: The ID of the resource quota to operate on.
+      required: true
+      schema:
+        $ref: '#/components/schemas/ResourceQuotaId'
+  schemas:
+    ProviderAccountId:
+      type: string
+      format: uuid
+      example: 929b2449-c69f-44c4-b6ad-9ecec6f811ae
+    ResourceQuotaId:
+      type: string
+      format: uuid
+      example: 9678f205-49a1-47bb-82d9-d01cafa42a0d
+      readOnly: true
+    ProviderName:
+      description: Name of cloud provider.
+      type: string
+      example: aws
+      enum:
+        - aws
+      title: Provider Name
+    ProviderAccount:
+      description: Object containing mapping for organization and cloud provider to account ID.
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/ProviderAccountId'
+        provider:
+          $ref: '#/components/schemas/ProviderName'
+        provider_account_id:
+          description: ID of the cloud provider account.
+          type: string
+          readOnly: true
+        created_at:
+          description: An RFC-3339 timestamp representation of provider account creation date.
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          readOnly: true
+        updated_at:
+          description: An RFC-3339 timestamp representation of provider account update date.
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          readOnly: true
+      required:
+        - id
+        - provider
+        - provider_account_id
+        - created_at
+        - updated_at
+      title: Cloud Gateway Provider Account
+    CreateProviderAccountRequest:
+      description: Request schema for creating a provider account via automatic account vending.
+      type: object
+      properties:
+        provider:
+          $ref: '#/components/schemas/ProviderName'
+      additionalProperties: false
+      required:
+        - provider
+      title: CreateProviderAccountRequest
+    ResourceQuotaQualifier:
+      description: Enumeration of resources available for quota enforcement.
+      type: string
+      enum:
+        - count/provider-accounts.per-provider
+        - count/networks.not-offline
+        - count/data-planes-estimate
+    ResourceQuotaName:
+      description: The human-readable name of this resource quota.
+      type: string
+      example: Active Networks
+      readOnly: true
+    ResourceQuotaDescription:
+      description: A more verbose description of what this resource quota enforces.
+      type: string
+      example: 'Across the organization, the aggregate number of active networks cannot exceed this value.'
+      readOnly: true
+    ResourceQuotaValue:
+      description: |
+        The aggregate non-negative integer count of this resource that's allowed for the organization.
+      type: integer
+      example: 2
+    ResourceQuota:
+      description: Object containing information about a resource quota for an organization.
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/ResourceQuotaId'
+        resource:
+          $ref: '#/components/schemas/ResourceQuotaQualifier'
+        name:
+          $ref: '#/components/schemas/ResourceQuotaName'
+        description:
+          $ref: '#/components/schemas/ResourceQuotaDescription'
+        value:
+          $ref: '#/components/schemas/ResourceQuotaValue'
+        created_at:
+          description: An RFC-3339 timestamp representation of resource quota creation date.
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          readOnly: true
+        updated_at:
+          description: An RFC-3339 timestamp representation of resource quota update date.
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          readOnly: true
+      required:
+        - id
+        - resource
+        - name
+        - description
+        - value
+        - created_at
+        - updated_at
+      title: Resource Quota
+    CreateResourceQuotaRequest:
+      description: Request schema for creating a resource quota for an organization.
+      type: object
+      properties:
+        resource:
+          $ref: '#/components/schemas/ResourceQuotaQualifier'
+        value:
+          $ref: '#/components/schemas/ResourceQuotaValue'
+      additionalProperties: false
+      required:
+        - resource
+        - value
+      title: CreateResourceQuotaRequest
+    PatchResourceQuotaRequest:
+      description: Request schema for patching a resource quota for an organization.
+      type: object
+      properties:
+        value:
+          $ref: '#/components/schemas/ResourceQuotaValue'
+      additionalProperties: false
+      required:
+        - value
+      title: PatchResourceQuotaRequest
+    BaseError:
+      description: standard error
+      type: object
+      properties:
+        status:
+          description: |
+            The HTTP status code of the error. Useful when passing the response
+            body to child properties in a frontend UI. Must be returned as an integer.
+          type: integer
+          readOnly: true
+        title:
+          description: |
+            A short, human-readable summary of the problem. It should not
+            change between occurences of a problem, except for localization.
+            Should be provided as "Sentence case" for direct use in the UI.
+          type: string
+          readOnly: true
+        type:
+          description: The error type.
+          type: string
+          readOnly: true
+        instance:
+          description: |
+            Used to return the correlation ID back to the user, in the format
+            kong:trace:<correlation_id>. This helps us find the relevant logs
+            when a customer reports an issue.
+          type: string
+          readOnly: true
+        detail:
+          description: |
+            A human readable explanation specific to this occurence of the problem.
+            This field may contain request/entity data to help the user understand
+            what went wrong. Enclose variable values in square brackets. Should be
+            provided as "Sentence case" for direct use in the UI.
+          type: string
+          readOnly: true
+      required:
+        - status
+        - title
+        - instance
+        - detail
+      title: Error
+    InvalidRules:
+      description: invalid parameters rules
+      type: string
+      enum:
+        - required
+        - max_length
+        - is_array
+        - is_base64
+        - is_boolean
+        - is_date_time
+        - is_integer
+        - is_null
+        - is_number
+        - is_object
+        - is_string
+        - is_uuid
+        - is_fqdn
+        - is_arn
+        - unknown_property
+        - is_label
+        - matches_regex
+        - invalid
+        - is_supported_network_availability_zone_list
+        - is_supported_network_cidr_block
+        - is_supported_provider_region
+      nullable: true
+      readOnly: true
+    InvalidParameterStandard:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          $ref: '#/components/schemas/InvalidRules'
+        source:
+          type: string
+          example: body
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+      additionalProperties: false
+      required:
+        - field
+        - reason
+    InvalidParameterMinimumLength:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          description: invalid parameters rules
+          type: string
+          enum:
+            - min_length
+            - min_digits
+            - min_lowercase
+            - min_uppercase
+            - min_symbols
+          nullable: false
+          readOnly: true
+        minimum:
+          type: integer
+          example: 8
+        source:
+          type: string
+          example: body
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+      additionalProperties: false
+      required:
+        - field
+        - reason
+        - rule
+        - minimum
+    InvalidParameterChoiceItem:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          description: invalid parameters rules
+          type: string
+          enum:
+            - enum
+          nullable: false
+          readOnly: true
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+        choices:
+          type: array
+          items: {}
+          minimum: 1
+          nullable: false
+          readOnly: true
+          uniqueItems: true
+        source:
+          type: string
+          example: body
+      additionalProperties: false
+      required:
+        - field
+        - reason
+        - rule
+        - choices
+    InvalidParameterDependentItem:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          description: invalid parameters rules
+          type: string
+          enum:
+            - dependent_fields
+          nullable: true
+          readOnly: true
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+        dependents:
+          type: array
+          items: {}
+          nullable: true
+          readOnly: true
+          uniqueItems: true
+        source:
+          type: string
+          example: body
+      additionalProperties: false
+      required:
+        - field
+        - rule
+        - reason
+        - dependents
+    InvalidParameters:
+      description: invalid parameters
+      type: array
+      items:
+        oneOf:
+          - $ref: '#/components/schemas/InvalidParameterStandard'
+          - $ref: '#/components/schemas/InvalidParameterMinimumLength'
+          - $ref: '#/components/schemas/InvalidParameterChoiceItem'
+          - $ref: '#/components/schemas/InvalidParameterDependentItem'
+      minItems: 1
+      nullable: false
+      uniqueItems: true
+    BadRequestError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          required:
+            - invalid_parameters
+          properties:
+            invalid_parameters:
+              $ref: '#/components/schemas/InvalidParameters'
+    UnauthorizedError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 401
+            title:
+              example: Unauthorized
+            type:
+              example: 'https://httpstatuses.com/401'
+            instance:
+              example: 'kong:trace:1234567890'
+            detail:
+              example: Invalid credentials
+    ForbiddenError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 403
+            title:
+              example: Forbidden
+            type:
+              example: 'https://httpstatuses.com/403'
+            instance:
+              example: 'kong:trace:1234567890'
+            detail:
+              example: Forbidden
+    NotFoundError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 404
+            title:
+              example: Not Found
+            type:
+              example: 'https://httpstatuses.com/404'
+            instance:
+              example: 'kong:trace:1234567890'
+            detail:
+              example: Not found
+    ConflictError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 409
+            title:
+              example: Conflict
+            type:
+              example: 'https://httpstatuses.com/409'
+            instance:
+              example: 'kong:trace:1234567890'
+            detail:
+              example: Conflict
+  examples:
+    PermissionDeniedExample:
+      value:
+        status: 403
+        title: Forbidden
+        instance: 'konnect:trace:2822394689570210664'
+        detail: You do not have permission to perform this action.
+    QuotaExceededExample:
+      value:
+        status: 403
+        title: Quota Exceeded
+        instance: 'konnect:trace:2822394689570210664'
+        detail: 'Maximum number of <quota name> exceeded. Max allowed: <quota value>.'
+    NetworkNameLengthCheckBadRequestExample:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'konnect:trace:2822394689570210664'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: name
+            rule: max_length
+            reason: name must be shorter than or equal to 120 characters
+    TransitGatewayNameLengthCheckBadRequestExample:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'konnect:trace:2822394689570210664'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: name
+            rule: max_length
+            reason: name must be shorter than or equal to 120 characters
+    CustomDomainLengthCheckBadRequestExample:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'konnect:trace:2822394689570210664'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: domain
+            rule: min_length
+            minimum: 1
+            reason: domain must be longer than or equal to 1 characters
+    ConfigurationApiAccessBadRequestExample:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'konnect:trace:2822394689570210664'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: api_access
+            rule: enum
+            choices:
+              - private
+              - public
+              - private+public
+            reason: 'api_access must be one of the following values: private, public, private+public'
+    ConfigurationDataPlaneGroupStaticRequestedInstancesBadRequestExample:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'konnect:trace:2822394689570210664'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: dataplane_groups.0.autoscale.requested_instances
+            rule: is_integer
+            reason: dataplane_groups.0.autoscale.requested_instances must be an integer number
+    ConfigurationDataPlaneGroupAutopilotBaseRpsBadRequestExample:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'konnect:trace:2822394689570210664'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: dataplane_groups.0.autoscale.base_rps
+            rule: is_integer
+            reason: dataplane_groups.0.autoscale.base_rps must be an integer number
+    UnauthorizedExample:
+      value:
+        status: 401
+        title: Unauthorized
+        instance: 'kong:trace:8347343766220159418'
+        detail: Unauthorized
+    ForbiddenExample:
+      value:
+        status: 403
+        title: Forbidden
+        instance: 'kong:trace:2723154947768991354'
+        detail: You do not have permission to perform this action
+    NotFoundExample:
+      value:
+        status: 404
+        title: Not Found
+        instance: 'kong:trace:6816496025408232265'
+        detail: Not Found
   responses:
     CreateProviderAccountResponse:
       description: Response format for creating a provider account.
@@ -198,18 +655,15 @@ components:
             Network Name Length Exceeded:
               $ref: '#/components/examples/NetworkNameLengthCheckBadRequestExample'
             Transit Gateway Name Length Exceeded:
-              $ref: >-
-                #/components/examples/TransitGatewayNameLengthCheckBadRequestExample
+              $ref: '#/components/examples/TransitGatewayNameLengthCheckBadRequestExample'
             Custom Domain Domain Length Too Short:
               $ref: '#/components/examples/CustomDomainLengthCheckBadRequestExample'
             Configuration Api Access Enum Validation:
               $ref: '#/components/examples/ConfigurationApiAccessBadRequestExample'
             Configuration Data-Plane Group Static Request Instances Minimum:
-              $ref: >-
-                #/components/examples/ConfigurationDataPlaneGroupStaticRequestedInstancesBadRequestExample
+              $ref: '#/components/examples/ConfigurationDataPlaneGroupStaticRequestedInstancesBadRequestExample'
             Configuration Data-Plane Group Autopilot Base RPS Minimum:
-              $ref: >-
-                #/components/examples/ConfigurationDataPlaneGroupAutopilotBaseRpsBadRequestExample
+              $ref: '#/components/examples/ConfigurationDataPlaneGroupAutopilotBaseRpsBadRequestExample'
     CloudGatewaysForbidden:
       description: Forbidden
       content:
@@ -254,535 +708,35 @@ components:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/ConflictError'
-  schemas:
-    ProviderAccountId:
-      type: string
-      format: uuid
-      example: 929b2449-c69f-44c4-b6ad-9ecec6f811ae
-    ResourceQuotaId:
-      type: string
-      format: uuid
-      example: 9678f205-49a1-47bb-82d9-d01cafa42a0d
-      readOnly: true
-    ProviderName:
-      title: Provider Name
-      description: Name of cloud provider.
-      type: string
-      enum:
-        - aws
-      example: aws
-    ProviderAccount:
-      title: Cloud Gateway Provider Account
-      description: >-
-        Object containing mapping for organization and cloud provider to account
-        ID.
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/ProviderAccountId'
-        provider:
-          $ref: '#/components/schemas/ProviderName'
-        provider_account_id:
-          type: string
-          description: ID of the cloud provider account.
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          example: '2022-11-04T20:10:06.927Z'
-          description: >-
-            An RFC-3339 timestamp representation of provider account creation
-            date.
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          example: '2022-11-04T20:10:06.927Z'
-          description: >-
-            An RFC-3339 timestamp representation of provider account update
-            date.
-          readOnly: true
-      required:
-        - id
-        - provider
-        - provider_account_id
-        - created_at
-        - updated_at
-    CreateProviderAccountRequest:
-      title: CreateProviderAccountRequest
-      description: >-
-        Request schema for creating a provider account via automatic account
-        vending.
-      type: object
-      additionalProperties: false
-      properties:
-        provider:
-          $ref: '#/components/schemas/ProviderName'
-      required:
-        - provider
-    ResourceQuotaQualifier:
-      description: Enumeration of resources available for quota enforcement.
-      type: string
-      enum:
-        - count/provider-accounts.per-provider
-        - count/networks.not-offline
-        - count/data-planes-estimate
-    ResourceQuotaName:
-      type: string
-      description: The human-readable name of this resource quota.
-      readOnly: true
-      example: Active Networks
-    ResourceQuotaDescription:
-      type: string
-      description: A more verbose description of what this resource quota enforces.
-      readOnly: true
-      example: >-
-        Across the organization, the aggregate number of active networks cannot
-        exceed this value.
-    ResourceQuotaValue:
-      type: integer
-      description: >
-        The aggregate non-negative integer count of this resource that's allowed
-        for the organization.
-      example: 2
-    ResourceQuota:
-      title: Resource Quota
-      description: >-
-        Object containing information about a resource quota for an
-        organization.
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/ResourceQuotaId'
-        resource:
-          $ref: '#/components/schemas/ResourceQuotaQualifier'
-        name:
-          $ref: '#/components/schemas/ResourceQuotaName'
-        description:
-          $ref: '#/components/schemas/ResourceQuotaDescription'
-        value:
-          $ref: '#/components/schemas/ResourceQuotaValue'
-        created_at:
-          type: string
-          format: date-time
-          example: '2022-11-04T20:10:06.927Z'
-          description: >-
-            An RFC-3339 timestamp representation of resource quota creation
-            date.
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          example: '2022-11-04T20:10:06.927Z'
-          description: An RFC-3339 timestamp representation of resource quota update date.
-          readOnly: true
-      required:
-        - id
-        - resource
-        - name
-        - description
-        - value
-        - created_at
-        - updated_at
-    CreateResourceQuotaRequest:
-      title: CreateResourceQuotaRequest
-      description: Request schema for creating a resource quota for an organization.
-      type: object
-      additionalProperties: false
-      properties:
-        resource:
-          $ref: '#/components/schemas/ResourceQuotaQualifier'
-        value:
-          $ref: '#/components/schemas/ResourceQuotaValue'
-      required:
-        - resource
-        - value
-    PatchResourceQuotaRequest:
-      title: PatchResourceQuotaRequest
-      description: Request schema for patching a resource quota for an organization.
-      type: object
-      additionalProperties: false
-      properties:
-        value:
-          $ref: '#/components/schemas/ResourceQuotaValue'
-      required:
-        - value
-    BaseError:
-      type: object
-      title: Error
-      description: standard error
-      required:
-        - status
-        - title
-        - instance
-        - detail
-      properties:
-        status:
-          type: integer
-          description: >
-            The HTTP status code of the error. Useful when passing the response
-
-            body to child properties in a frontend UI. Must be returned as an
-            integer.
-          readOnly: true
-        title:
-          type: string
-          description: |
-            A short, human-readable summary of the problem. It should not
-            change between occurences of a problem, except for localization.
-            Should be provided as "Sentence case" for direct use in the UI.
-          readOnly: true
-        type:
-          type: string
-          description: The error type.
-          readOnly: true
-        instance:
-          type: string
-          description: |
-            Used to return the correlation ID back to the user, in the format
-            kong:trace:<correlation_id>. This helps us find the relevant logs
-            when a customer reports an issue.
-          readOnly: true
-        detail:
-          type: string
-          description: >
-            A human readable explanation specific to this occurence of the
-            problem.
-
-            This field may contain request/entity data to help the user
-            understand
-
-            what went wrong. Enclose variable values in square brackets. Should
-            be
-
-            provided as "Sentence case" for direct use in the UI.
-          readOnly: true
-    InvalidRules:
-      description: invalid parameters rules
-      type: string
-      readOnly: true
-      nullable: true
-      enum:
-        - required
-        - max_length
-        - is_array
-        - is_base64
-        - is_boolean
-        - is_date_time
-        - is_integer
-        - is_null
-        - is_number
-        - is_object
-        - is_string
-        - is_uuid
-        - is_fqdn
-        - is_arn
-        - unknown_property
-        - is_label
-        - matches_regex
-        - invalid
-        - is_supported_network_availability_zone_list
-        - is_supported_network_cidr_block
-        - is_supported_provider_region
-    InvalidParameterStandard:
-      type: object
-      additionalProperties: false
-      properties:
-        field:
-          type: string
-          example: name
-          readOnly: true
-        rule:
-          $ref: '#/components/schemas/InvalidRules'
-        source:
-          type: string
-          example: body
-        reason:
-          type: string
-          example: is a required field
-          readOnly: true
-      required:
-        - field
-        - reason
-    InvalidParameterMinimumLength:
-      type: object
-      additionalProperties: false
-      properties:
-        field:
-          type: string
-          example: name
-          readOnly: true
-        rule:
-          description: invalid parameters rules
-          type: string
-          readOnly: true
-          nullable: false
-          enum:
-            - min_length
-            - min_digits
-            - min_lowercase
-            - min_uppercase
-            - min_symbols
-        minimum:
-          type: integer
-          example: 8
-        source:
-          type: string
-          example: body
-        reason:
-          type: string
-          example: is a required field
-          readOnly: true
-      required:
-        - field
-        - reason
-        - rule
-        - minimum
-    InvalidParameterChoiceItem:
-      type: object
-      additionalProperties: false
-      properties:
-        field:
-          type: string
-          example: name
-          readOnly: true
-        rule:
-          description: invalid parameters rules
-          type: string
-          readOnly: true
-          nullable: false
-          enum:
-            - enum
-        reason:
-          type: string
-          example: is a required field
-          readOnly: true
-        choices:
-          type: array
-          uniqueItems: true
-          readOnly: true
-          nullable: false
-          minimum: 1
-          items: {}
-        source:
-          type: string
-          example: body
-      required:
-        - field
-        - reason
-        - rule
-        - choices
-    InvalidParameterDependentItem:
-      type: object
-      additionalProperties: false
-      properties:
-        field:
-          type: string
-          example: name
-          readOnly: true
-        rule:
-          description: invalid parameters rules
-          type: string
-          readOnly: true
-          nullable: true
-          enum:
-            - dependent_fields
-        reason:
-          type: string
-          example: is a required field
-          readOnly: true
-        dependents:
-          type: array
-          uniqueItems: true
-          nullable: true
-          items: {}
-          readOnly: true
-        source:
-          type: string
-          example: body
-      required:
-        - field
-        - rule
-        - reason
-        - dependents
-    InvalidParameters:
-      type: array
-      nullable: false
-      uniqueItems: true
-      minItems: 1
-      description: invalid parameters
-      items:
-        oneOf:
-          - $ref: '#/components/schemas/InvalidParameterStandard'
-          - $ref: '#/components/schemas/InvalidParameterMinimumLength'
-          - $ref: '#/components/schemas/InvalidParameterChoiceItem'
-          - $ref: '#/components/schemas/InvalidParameterDependentItem'
-    BadRequestError:
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
-        - type: object
-          required:
-            - invalid_parameters
-          properties:
-            invalid_parameters:
-              $ref: '#/components/schemas/InvalidParameters'
-    UnauthorizedError:
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
-        - type: object
-          properties:
-            status:
-              example: 401
-            title:
-              example: Unauthorized
-            type:
-              example: https://httpstatuses.com/401
-            instance:
-              example: kong:trace:1234567890
-            detail:
-              example: Invalid credentials
-    ForbiddenError:
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
-        - type: object
-          properties:
-            status:
-              example: 403
-            title:
-              example: Forbidden
-            type:
-              example: https://httpstatuses.com/403
-            instance:
-              example: kong:trace:1234567890
-            detail:
-              example: Forbidden
-    NotFoundError:
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
-        - type: object
-          properties:
-            status:
-              example: 404
-            title:
-              example: Not Found
-            type:
-              example: https://httpstatuses.com/404
-            instance:
-              example: kong:trace:1234567890
-            detail:
-              example: Not found
-    ConflictError:
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
-        - type: object
-          properties:
-            status:
-              example: 409
-            title:
-              example: Conflict
-            type:
-              example: https://httpstatuses.com/409
-            instance:
-              example: kong:trace:1234567890
-            detail:
-              example: Conflict
-  examples:
-    PermissionDeniedExample:
-      value:
-        status: 403
-        title: Forbidden
-        instance: konnect:trace:2822394689570210664
-        detail: You do not have permission to perform this action.
-    QuotaExceededExample:
-      value:
-        status: 403
-        title: Quota Exceeded
-        instance: konnect:trace:2822394689570210664
-        detail: 'Maximum number of <quota name> exceeded. Max allowed: <quota value>.'
-    NetworkNameLengthCheckBadRequestExample:
-      value:
-        status: 400
-        title: Invalid Request
-        instance: konnect:trace:2822394689570210664
-        detail: Invalid Parameters
-        invalid_parameters:
-          - field: name
-            rule: max_length
-            reason: name must be shorter than or equal to 120 characters
-    TransitGatewayNameLengthCheckBadRequestExample:
-      value:
-        status: 400
-        title: Invalid Request
-        instance: konnect:trace:2822394689570210664
-        detail: Invalid Parameters
-        invalid_parameters:
-          - field: name
-            rule: max_length
-            reason: name must be shorter than or equal to 120 characters
-    CustomDomainLengthCheckBadRequestExample:
-      value:
-        status: 400
-        title: Invalid Request
-        instance: konnect:trace:2822394689570210664
-        detail: Invalid Parameters
-        invalid_parameters:
-          - field: domain
-            rule: min_length
-            minimum: 1
-            reason: domain must be longer than or equal to 1 characters
-    ConfigurationApiAccessBadRequestExample:
-      value:
-        status: 400
-        title: Invalid Request
-        instance: konnect:trace:2822394689570210664
-        detail: Invalid Parameters
-        invalid_parameters:
-          - field: api_access
-            rule: enum
-            choices:
-              - private
-              - public
-              - private+public
-            reason: >-
-              api_access must be one of the following values: private, public,
-              private+public
-    ConfigurationDataPlaneGroupStaticRequestedInstancesBadRequestExample:
-      value:
-        status: 400
-        title: Invalid Request
-        instance: konnect:trace:2822394689570210664
-        detail: Invalid Parameters
-        invalid_parameters:
-          - field: dataplane_groups.0.autoscale.requested_instances
-            rule: is_integer
-            reason: >-
-              dataplane_groups.0.autoscale.requested_instances must be an
-              integer number
-    ConfigurationDataPlaneGroupAutopilotBaseRpsBadRequestExample:
-      value:
-        status: 400
-        title: Invalid Request
-        instance: konnect:trace:2822394689570210664
-        detail: Invalid Parameters
-        invalid_parameters:
-          - field: dataplane_groups.0.autoscale.base_rps
-            rule: is_integer
-            reason: dataplane_groups.0.autoscale.base_rps must be an integer number
-    UnauthorizedExample:
-      value:
-        status: 401
-        title: Unauthorized
-        instance: kong:trace:8347343766220159418
-        detail: Unauthorized
-    ForbiddenExample:
-      value:
-        status: 403
-        title: Forbidden
-        instance: kong:trace:2723154947768991354
-        detail: You do not have permission to perform this action
-    NotFoundExample:
-      value:
-        status: 404
-        title: Not Found
-        instance: kong:trace:6816496025408232265
-        detail: Not Found
+  securitySchemes:
+    konnectAccessToken:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        The Konnect access token is meant to be used by the Konnect dashboard and the decK CLI authenticate with.
+    personalAccessToken:
+      type: http
+      scheme: bearer
+      bearerFormat: Token
+      description: |
+        The personal access token is meant to be used as an alternative to basic-auth when accessing Konnect via APIs.
+        You can generate a Personal Access Token (PAT) from the [personal access token page](https://cloud.konghq.com/global/tokens/) in the Konnect dashboard.
+        The PAT token must be passed in the header of a request, for example:
+        `curl -X GET 'https://global.api.konghq.com/v2/users/' --header 'Authorization: Bearer kpat_xgfT...'`
+    systemAccountAccessToken:
+      type: http
+      scheme: bearer
+      bearerFormat: Token
+      description: |
+        The system account access token is meant for automations and integrations that are not directly associated with a human identity.
+        You can generate a system account Access Token by creating a system account and then obtaining a system account access token for that account.
+        The access token must be passed in the header of a request, for example:
+        `curl -X GET 'https://global.api.konghq.com/v2/users/' --header 'Authorization: Bearer spat_i2Ej...'`
+tags:
+  - name: Provider Accounts
+  - name: Resource Quotas
+security:
+  - konnectAccessToken: []
+  - personalAccessToken: []
+  - systemAccountAccessToken: []
