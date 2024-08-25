@@ -18,6 +18,7 @@ test:
 	mkdir -p tests/e2e/local-plugins/registry.terraform.io/kong/konnect/999.99.9/$(OS)_$(ARCH)
 	go mod tidy
 	go build -o tests/e2e/local-plugins/registry.terraform.io/kong/konnect/999.99.9/$(OS)_$(ARCH)/terraform-provider-konnect_v999.99.9
+	@cd tests/e2e; terraform providers mirror ./local-plugins || true
 	@cd tests/e2e; ls -R local-plugins; terraform init -plugin-dir ./local-plugins; terraform apply -auto-approve; terraform destroy -auto-approve
 
 test-cleanup:
