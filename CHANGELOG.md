@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.7.0
+> Released on 2024/??/??
+
+### Bug fixes
+* Force recreation of `konnect_gateway_*` entities if `control_plane_id` changes
+
 ## 0.6.3
 > Released on 2024/08/25
 
