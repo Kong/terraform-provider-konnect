@@ -269,7 +269,6 @@ func (p *KonnectProvider) DataSources(ctx context.Context) []func() datasource.D
 		NewGatewayUpstreamDataSource,
 		NewGatewayVaultDataSource,
 		NewMeshControlPlaneDataSource,
-		NewPortalDataSource,
 		NewPortalAppearanceDataSource,
 		NewPortalAuthDataSource,
 		NewPortalListDataSource,

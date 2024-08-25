@@ -105,6 +105,11 @@ type AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStr
 	// At least one published product version is using this auth strategy.
 	Active      bool                                                                          `json:"active"`
 	DcrProvider *AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseDcrProvider `json:"dcr_provider"`
+	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
+	//
+	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+	//
+	Labels map[string]string `json:"labels"`
 	// An ISO-8601 timestamp representation of entity creation date.
 	CreatedAt time.Time `json:"created_at"`
 	// An ISO-8601 timestamp representation of entity update date.
@@ -169,6 +174,13 @@ func (o *AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAut
 		return nil
 	}
 	return o.DcrProvider
+}
+
+func (o *AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse) GetLabels() map[string]string {
+	if o == nil {
+		return map[string]string{}
+	}
+	return o.Labels
 }
 
 func (o *AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse) GetCreatedAt() time.Time {
@@ -279,6 +291,11 @@ type AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseAppAuthStrategyK
 	// At least one published product version is using this auth strategy.
 	Active      bool                                                                    `json:"active"`
 	DcrProvider *AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseDcrProvider `json:"dcr_provider"`
+	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
+	//
+	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+	//
+	Labels map[string]string `json:"labels"`
 	// An ISO-8601 timestamp representation of entity creation date.
 	CreatedAt time.Time `json:"created_at"`
 	// An ISO-8601 timestamp representation of entity update date.
@@ -343,6 +360,13 @@ func (o *AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseAppAuthStrat
 		return nil
 	}
 	return o.DcrProvider
+}
+
+func (o *AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseAppAuthStrategyKeyAuthResponse) GetLabels() map[string]string {
+	if o == nil {
+		return map[string]string{}
+	}
+	return o.Labels
 }
 
 func (o *AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseAppAuthStrategyKeyAuthResponse) GetCreatedAt() time.Time {

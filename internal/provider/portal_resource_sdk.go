@@ -118,34 +118,6 @@ func (r *PortalResourceModel) RefreshFromSharedCreatePortalResponse(resp *shared
 	}
 }
 
-func (r *PortalResourceModel) RefreshFromSharedGetPortalResponse(resp *shared.GetPortalResponse) {
-	if resp != nil {
-		r.ApplicationCount = types.NumberValue(big.NewFloat(float64(resp.ApplicationCount)))
-		r.AutoApproveApplications = types.BoolValue(resp.AutoApproveApplications)
-		r.AutoApproveDevelopers = types.BoolValue(resp.AutoApproveDevelopers)
-		r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
-		r.CustomClientDomain = types.StringPointerValue(resp.CustomClientDomain)
-		r.CustomDomain = types.StringPointerValue(resp.CustomDomain)
-		r.DefaultApplicationAuthStrategyID = types.StringPointerValue(resp.DefaultApplicationAuthStrategyID)
-		r.DefaultDomain = types.StringValue(resp.DefaultDomain)
-		r.Description = types.StringPointerValue(resp.Description)
-		r.DeveloperCount = types.NumberValue(big.NewFloat(float64(resp.DeveloperCount)))
-		r.DisplayName = types.StringValue(resp.DisplayName)
-		r.ID = types.StringValue(resp.ID)
-		r.IsPublic = types.BoolValue(resp.IsPublic)
-		if len(resp.Labels) > 0 {
-			r.Labels = make(map[string]types.String)
-			for key, value := range resp.Labels {
-				r.Labels[key] = types.StringValue(value)
-			}
-		}
-		r.Name = types.StringValue(resp.Name)
-		r.PublishedProductCount = types.NumberValue(big.NewFloat(float64(resp.PublishedProductCount)))
-		r.RbacEnabled = types.BoolValue(resp.RbacEnabled)
-		r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
-	}
-}
-
 func (r *PortalResourceModel) ToSharedUpdatePortalRequest() *shared.UpdatePortalRequest {
 	name := new(string)
 	if !r.Name.IsUnknown() && !r.Name.IsNull() {

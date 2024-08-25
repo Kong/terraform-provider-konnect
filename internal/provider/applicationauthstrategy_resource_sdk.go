@@ -31,11 +31,19 @@ func (r *ApplicationAuthStrategyResourceModel) ToSharedCreateAppAuthStrategyRequ
 		configs := shared.AppAuthStrategyKeyAuthRequestConfigs{
 			KeyAuth: keyAuth,
 		}
+		labels := make(map[string]string)
+		for labelsKey, labelsValue := range r.KeyAuth.Labels {
+			var labelsInst string
+			labelsInst = labelsValue.ValueString()
+
+			labels[labelsKey] = labelsInst
+		}
 		appAuthStrategyKeyAuthRequest = &shared.AppAuthStrategyKeyAuthRequest{
 			Name:         name,
 			DisplayName:  displayName,
 			StrategyType: strategyType,
 			Configs:      configs,
+			Labels:       labels,
 		}
 	}
 	if appAuthStrategyKeyAuthRequest != nil {
@@ -67,6 +75,13 @@ func (r *ApplicationAuthStrategyResourceModel) ToSharedCreateAppAuthStrategyRequ
 		for _, authMethodsItem := range r.OpenidConnect.Configs.OpenidConnect.AuthMethods {
 			authMethods = append(authMethods, authMethodsItem.ValueString())
 		}
+		labels1 := make(map[string]string)
+		for labelsKey1, labelsValue1 := range r.OpenidConnect.Configs.OpenidConnect.Labels {
+			var labelsInst1 string
+			labelsInst1 = labelsValue1.ValueString()
+
+			labels1[labelsKey1] = labelsInst1
+		}
 		var additionalProperties interface{}
 		if !r.OpenidConnect.Configs.OpenidConnect.AdditionalProperties.IsUnknown() && !r.OpenidConnect.Configs.OpenidConnect.AdditionalProperties.IsNull() {
 			_ = json.Unmarshal([]byte(r.OpenidConnect.Configs.OpenidConnect.AdditionalProperties.ValueString()), &additionalProperties)
@@ -76,6 +91,7 @@ func (r *ApplicationAuthStrategyResourceModel) ToSharedCreateAppAuthStrategyRequ
 			CredentialClaim:      credentialClaim,
 			Scopes:               scopes,
 			AuthMethods:          authMethods,
+			Labels:               labels1,
 			AdditionalProperties: additionalProperties,
 		}
 		configs1 := shared.AppAuthStrategyOpenIDConnectRequestConfigs{
@@ -87,12 +103,20 @@ func (r *ApplicationAuthStrategyResourceModel) ToSharedCreateAppAuthStrategyRequ
 		} else {
 			dcrProviderID = nil
 		}
+		labels2 := make(map[string]string)
+		for labelsKey2, labelsValue2 := range r.OpenidConnect.Labels {
+			var labelsInst2 string
+			labelsInst2 = labelsValue2.ValueString()
+
+			labels2[labelsKey2] = labelsInst2
+		}
 		appAuthStrategyOpenIDConnectRequest = &shared.AppAuthStrategyOpenIDConnectRequest{
 			Name:          name1,
 			DisplayName:   displayName1,
 			StrategyType:  strategyType1,
 			Configs:       configs1,
 			DcrProviderID: dcrProviderID,
+			Labels:        labels2,
 		}
 	}
 	if appAuthStrategyOpenIDConnectRequest != nil {
@@ -128,6 +152,12 @@ func (r *ApplicationAuthStrategyResourceModel) RefreshFromSharedCreateAppAuthStr
 			r.DisplayName = r.KeyAuth.DisplayName
 			r.KeyAuth.ID = types.StringValue(resp.AppAuthStrategyKeyAuthResponse.ID)
 			r.ID = r.KeyAuth.ID
+			if len(resp.AppAuthStrategyKeyAuthResponse.Labels) > 0 {
+				r.KeyAuth.Labels = make(map[string]types.String)
+				for key, value := range resp.AppAuthStrategyKeyAuthResponse.Labels {
+					r.KeyAuth.Labels[key] = types.StringValue(value)
+				}
+			}
 			r.KeyAuth.Name = types.StringValue(resp.AppAuthStrategyKeyAuthResponse.Name)
 			r.Name = r.KeyAuth.Name
 			r.KeyAuth.StrategyType = types.StringValue(string(resp.AppAuthStrategyKeyAuthResponse.StrategyType))
@@ -152,6 +182,12 @@ func (r *ApplicationAuthStrategyResourceModel) RefreshFromSharedCreateAppAuthStr
 				r.OpenidConnect.Configs.OpenidConnect.CredentialClaim = append(r.OpenidConnect.Configs.OpenidConnect.CredentialClaim, types.StringValue(v))
 			}
 			r.OpenidConnect.Configs.OpenidConnect.Issuer = types.StringValue(resp.AppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.Issuer)
+			if len(resp.AppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.Labels) > 0 {
+				r.OpenidConnect.Configs.OpenidConnect.Labels = make(map[string]types.String)
+				for key1, value1 := range resp.AppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.Labels {
+					r.OpenidConnect.Configs.OpenidConnect.Labels[key1] = types.StringValue(value1)
+				}
+			}
 			r.OpenidConnect.Configs.OpenidConnect.Scopes = []types.String{}
 			for _, v := range resp.AppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.Scopes {
 				r.OpenidConnect.Configs.OpenidConnect.Scopes = append(r.OpenidConnect.Configs.OpenidConnect.Scopes, types.StringValue(v))
@@ -170,6 +206,12 @@ func (r *ApplicationAuthStrategyResourceModel) RefreshFromSharedCreateAppAuthStr
 			r.DisplayName = r.OpenidConnect.DisplayName
 			r.OpenidConnect.ID = types.StringValue(resp.AppAuthStrategyOpenIDConnectResponse.ID)
 			r.ID = r.OpenidConnect.ID
+			if len(resp.AppAuthStrategyOpenIDConnectResponse.Labels) > 0 {
+				r.OpenidConnect.Labels = make(map[string]types.String)
+				for key2, value2 := range resp.AppAuthStrategyOpenIDConnectResponse.Labels {
+					r.OpenidConnect.Labels[key2] = types.StringValue(value2)
+				}
+			}
 			r.OpenidConnect.Name = types.StringValue(resp.AppAuthStrategyOpenIDConnectResponse.Name)
 			r.Name = r.OpenidConnect.Name
 			r.OpenidConnect.StrategyType = types.StringValue(string(resp.AppAuthStrategyOpenIDConnectResponse.StrategyType))
@@ -203,6 +245,12 @@ func (r *ApplicationAuthStrategyResourceModel) RefreshFromSharedGetAppAuthStrate
 			r.DisplayName = r.KeyAuth.DisplayName
 			r.KeyAuth.ID = types.StringValue(resp.AppAuthStrategyKeyAuthResponseAppAuthStrategyKeyAuthResponse.ID)
 			r.ID = r.KeyAuth.ID
+			if len(resp.AppAuthStrategyKeyAuthResponseAppAuthStrategyKeyAuthResponse.Labels) > 0 {
+				r.KeyAuth.Labels = make(map[string]types.String)
+				for key, value := range resp.AppAuthStrategyKeyAuthResponseAppAuthStrategyKeyAuthResponse.Labels {
+					r.KeyAuth.Labels[key] = types.StringValue(value)
+				}
+			}
 			r.KeyAuth.Name = types.StringValue(resp.AppAuthStrategyKeyAuthResponseAppAuthStrategyKeyAuthResponse.Name)
 			r.Name = r.KeyAuth.Name
 			r.KeyAuth.StrategyType = types.StringValue(string(resp.AppAuthStrategyKeyAuthResponseAppAuthStrategyKeyAuthResponse.StrategyType))
@@ -227,6 +275,12 @@ func (r *ApplicationAuthStrategyResourceModel) RefreshFromSharedGetAppAuthStrate
 				r.OpenidConnect.Configs.OpenidConnect.CredentialClaim = append(r.OpenidConnect.Configs.OpenidConnect.CredentialClaim, types.StringValue(v))
 			}
 			r.OpenidConnect.Configs.OpenidConnect.Issuer = types.StringValue(resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.Issuer)
+			if len(resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.Labels) > 0 {
+				r.OpenidConnect.Configs.OpenidConnect.Labels = make(map[string]types.String)
+				for key1, value1 := range resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.Labels {
+					r.OpenidConnect.Configs.OpenidConnect.Labels[key1] = types.StringValue(value1)
+				}
+			}
 			r.OpenidConnect.Configs.OpenidConnect.Scopes = []types.String{}
 			for _, v := range resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.Scopes {
 				r.OpenidConnect.Configs.OpenidConnect.Scopes = append(r.OpenidConnect.Configs.OpenidConnect.Scopes, types.StringValue(v))
@@ -245,6 +299,12 @@ func (r *ApplicationAuthStrategyResourceModel) RefreshFromSharedGetAppAuthStrate
 			r.DisplayName = r.OpenidConnect.DisplayName
 			r.OpenidConnect.ID = types.StringValue(resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.ID)
 			r.ID = r.OpenidConnect.ID
+			if len(resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.Labels) > 0 {
+				r.OpenidConnect.Labels = make(map[string]types.String)
+				for key2, value2 := range resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.Labels {
+					r.OpenidConnect.Labels[key2] = types.StringValue(value2)
+				}
+			}
 			r.OpenidConnect.Name = types.StringValue(resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.Name)
 			r.Name = r.OpenidConnect.Name
 			r.OpenidConnect.StrategyType = types.StringValue(string(resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.StrategyType))
@@ -298,6 +358,12 @@ func (r *ApplicationAuthStrategyResourceModel) RefreshFromSharedUpdateAppAuthStr
 			r.DisplayName = r.KeyAuth.DisplayName
 			r.KeyAuth.ID = types.StringValue(resp.AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseAppAuthStrategyKeyAuthResponse.ID)
 			r.ID = r.KeyAuth.ID
+			if len(resp.AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseAppAuthStrategyKeyAuthResponse.Labels) > 0 {
+				r.KeyAuth.Labels = make(map[string]types.String)
+				for key, value := range resp.AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseAppAuthStrategyKeyAuthResponse.Labels {
+					r.KeyAuth.Labels[key] = types.StringValue(value)
+				}
+			}
 			r.KeyAuth.Name = types.StringValue(resp.AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseAppAuthStrategyKeyAuthResponse.Name)
 			r.Name = r.KeyAuth.Name
 			r.KeyAuth.StrategyType = types.StringValue(string(resp.AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseAppAuthStrategyKeyAuthResponse.StrategyType))
@@ -322,6 +388,12 @@ func (r *ApplicationAuthStrategyResourceModel) RefreshFromSharedUpdateAppAuthStr
 				r.OpenidConnect.Configs.OpenidConnect.CredentialClaim = append(r.OpenidConnect.Configs.OpenidConnect.CredentialClaim, types.StringValue(v))
 			}
 			r.OpenidConnect.Configs.OpenidConnect.Issuer = types.StringValue(resp.AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.Issuer)
+			if len(resp.AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.Labels) > 0 {
+				r.OpenidConnect.Configs.OpenidConnect.Labels = make(map[string]types.String)
+				for key1, value1 := range resp.AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.Labels {
+					r.OpenidConnect.Configs.OpenidConnect.Labels[key1] = types.StringValue(value1)
+				}
+			}
 			r.OpenidConnect.Configs.OpenidConnect.Scopes = []types.String{}
 			for _, v := range resp.AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.Scopes {
 				r.OpenidConnect.Configs.OpenidConnect.Scopes = append(r.OpenidConnect.Configs.OpenidConnect.Scopes, types.StringValue(v))
@@ -340,6 +412,12 @@ func (r *ApplicationAuthStrategyResourceModel) RefreshFromSharedUpdateAppAuthStr
 			r.DisplayName = r.OpenidConnect.DisplayName
 			r.OpenidConnect.ID = types.StringValue(resp.AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse.ID)
 			r.ID = r.OpenidConnect.ID
+			if len(resp.AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse.Labels) > 0 {
+				r.OpenidConnect.Labels = make(map[string]types.String)
+				for key2, value2 := range resp.AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse.Labels {
+					r.OpenidConnect.Labels[key2] = types.StringValue(value2)
+				}
+			}
 			r.OpenidConnect.Name = types.StringValue(resp.AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse.Name)
 			r.Name = r.OpenidConnect.Name
 			r.OpenidConnect.StrategyType = types.StringValue(string(resp.AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse.StrategyType))

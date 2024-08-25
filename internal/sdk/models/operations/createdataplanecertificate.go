@@ -8,7 +8,7 @@ import (
 )
 
 type CreateDataplaneCertificateRequest struct {
-	// The UUID of your control plane. This variable is available in the Konnect manager
+	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// Request body for creating a dp-client-certificate.
 	DataPlaneClientCertificateRequest *shared.DataPlaneClientCertificateRequest `request:"mediaType=application/json"`

@@ -31,6 +31,119 @@ func newPlugins(sdkConfig sdkConfiguration) *Plugins {
 	}
 }
 
+// DeleteACLPlugin - Delete a ACL plugin
+// Delete a ACL plugin
+func (s *Plugins) DeleteACLPlugin(ctx context.Context, request operations.DeleteACLPluginRequest, opts ...operations.Option) (*operations.DeleteACLPluginResponse, error) {
+	hookCtx := hooks.HookContext{
+		Context:        ctx,
+		OperationID:    "delete-acl-plugin",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
+	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
+	}
+
+	req, err := http.NewRequestWithContext(ctx, "DELETE", opURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error creating request: %w", err)
+	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
+
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+		return nil, err
+	}
+
+	req, err = s.sdkConfiguration.Hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
+	if err != nil {
+		return nil, err
+	}
+
+	httpRes, err := s.sdkConfiguration.Client.Do(req)
+	if err != nil || httpRes == nil {
+		if err != nil {
+			err = fmt.Errorf("error sending request: %w", err)
+		} else {
+			err = fmt.Errorf("error sending request: no response")
+		}
+
+		_, err = s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, nil, err)
+		return nil, err
+	} else if utils.MatchStatusCodes([]string{}, httpRes.StatusCode) {
+		_httpRes, err := s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, httpRes, nil)
+		if err != nil {
+			return nil, err
+		} else if _httpRes != nil {
+			httpRes = _httpRes
+		}
+	} else {
+		httpRes, err = s.sdkConfiguration.Hooks.AfterSuccess(hooks.AfterSuccessContext{HookContext: hookCtx}, httpRes)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	res := &operations.DeleteACLPluginResponse{
+		StatusCode:  httpRes.StatusCode,
+		ContentType: httpRes.Header.Get("Content-Type"),
+		RawResponse: httpRes,
+	}
+
+	rawBody, err := io.ReadAll(httpRes.Body)
+	if err != nil {
+		return nil, fmt.Errorf("error reading response body: %w", err)
+	}
+	httpRes.Body.Close()
+	httpRes.Body = io.NopCloser(bytes.NewBuffer(rawBody))
+
+	switch {
+	case httpRes.StatusCode == 204:
+	case httpRes.StatusCode == 401:
+		switch {
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
+			var out shared.GatewayUnauthorizedError
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
+				return nil, err
+			}
+
+			res.GatewayUnauthorizedError = &out
+		default:
+			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
+		}
+	default:
+		return nil, errors.NewSDKError("unknown status code returned", httpRes.StatusCode, string(rawBody), httpRes)
+	}
+
+	return res, nil
+
+}
+
 // GetACLPlugin - Get a ACL plugin
 // Get a ACL plugin
 func (s *Plugins) GetACLPlugin(ctx context.Context, request operations.GetACLPluginRequest, opts ...operations.Option) (*operations.GetACLPluginResponse, error) {
@@ -286,12 +399,12 @@ func (s *Plugins) UpdateACLPlugin(ctx context.Context, request operations.Update
 
 }
 
-// DeleteACLPlugin - Delete a ACL plugin
-// Delete a ACL plugin
-func (s *Plugins) DeleteACLPlugin(ctx context.Context, request operations.DeleteACLPluginRequest, opts ...operations.Option) (*operations.DeleteACLPluginResponse, error) {
+// DeleteAipromptdecoratorPlugin - Delete a AIPromptDecorator plugin
+// Delete a AIPromptDecorator plugin
+func (s *Plugins) DeleteAipromptdecoratorPlugin(ctx context.Context, request operations.DeleteAipromptdecoratorPluginRequest, opts ...operations.Option) (*operations.DeleteAipromptdecoratorPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
-		OperationID:    "delete-acl-plugin",
+		OperationID:    "delete-aipromptdecorator-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
 	}
@@ -364,7 +477,7 @@ func (s *Plugins) DeleteACLPlugin(ctx context.Context, request operations.Delete
 		}
 	}
 
-	res := &operations.DeleteACLPluginResponse{
+	res := &operations.DeleteAipromptdecoratorPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -654,12 +767,12 @@ func (s *Plugins) UpdateAipromptdecoratorPlugin(ctx context.Context, request ope
 
 }
 
-// DeleteAipromptdecoratorPlugin - Delete a AIPromptDecorator plugin
-// Delete a AIPromptDecorator plugin
-func (s *Plugins) DeleteAipromptdecoratorPlugin(ctx context.Context, request operations.DeleteAipromptdecoratorPluginRequest, opts ...operations.Option) (*operations.DeleteAipromptdecoratorPluginResponse, error) {
+// DeleteAipromptguardPlugin - Delete a AIPromptGuard plugin
+// Delete a AIPromptGuard plugin
+func (s *Plugins) DeleteAipromptguardPlugin(ctx context.Context, request operations.DeleteAipromptguardPluginRequest, opts ...operations.Option) (*operations.DeleteAipromptguardPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
-		OperationID:    "delete-aipromptdecorator-plugin",
+		OperationID:    "delete-aipromptguard-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
 	}
@@ -732,7 +845,7 @@ func (s *Plugins) DeleteAipromptdecoratorPlugin(ctx context.Context, request ope
 		}
 	}
 
-	res := &operations.DeleteAipromptdecoratorPluginResponse{
+	res := &operations.DeleteAipromptguardPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -1022,12 +1135,12 @@ func (s *Plugins) UpdateAipromptguardPlugin(ctx context.Context, request operati
 
 }
 
-// DeleteAipromptguardPlugin - Delete a AIPromptGuard plugin
-// Delete a AIPromptGuard plugin
-func (s *Plugins) DeleteAipromptguardPlugin(ctx context.Context, request operations.DeleteAipromptguardPluginRequest, opts ...operations.Option) (*operations.DeleteAipromptguardPluginResponse, error) {
+// DeleteAiprompttemplatePlugin - Delete a AIPromptTemplate plugin
+// Delete a AIPromptTemplate plugin
+func (s *Plugins) DeleteAiprompttemplatePlugin(ctx context.Context, request operations.DeleteAiprompttemplatePluginRequest, opts ...operations.Option) (*operations.DeleteAiprompttemplatePluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
-		OperationID:    "delete-aipromptguard-plugin",
+		OperationID:    "delete-aiprompttemplate-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
 	}
@@ -1100,7 +1213,7 @@ func (s *Plugins) DeleteAipromptguardPlugin(ctx context.Context, request operati
 		}
 	}
 
-	res := &operations.DeleteAipromptguardPluginResponse{
+	res := &operations.DeleteAiprompttemplatePluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -1390,12 +1503,12 @@ func (s *Plugins) UpdateAiprompttemplatePlugin(ctx context.Context, request oper
 
 }
 
-// DeleteAiprompttemplatePlugin - Delete a AIPromptTemplate plugin
-// Delete a AIPromptTemplate plugin
-func (s *Plugins) DeleteAiprompttemplatePlugin(ctx context.Context, request operations.DeleteAiprompttemplatePluginRequest, opts ...operations.Option) (*operations.DeleteAiprompttemplatePluginResponse, error) {
+// DeleteAiproxyPlugin - Delete a AIProxy plugin
+// Delete a AIProxy plugin
+func (s *Plugins) DeleteAiproxyPlugin(ctx context.Context, request operations.DeleteAiproxyPluginRequest, opts ...operations.Option) (*operations.DeleteAiproxyPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
-		OperationID:    "delete-aiprompttemplate-plugin",
+		OperationID:    "delete-aiproxy-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
 	}
@@ -1468,7 +1581,7 @@ func (s *Plugins) DeleteAiprompttemplatePlugin(ctx context.Context, request oper
 		}
 	}
 
-	res := &operations.DeleteAiprompttemplatePluginResponse{
+	res := &operations.DeleteAiproxyPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -1758,12 +1871,12 @@ func (s *Plugins) UpdateAiproxyPlugin(ctx context.Context, request operations.Up
 
 }
 
-// DeleteAiproxyPlugin - Delete a AIProxy plugin
-// Delete a AIProxy plugin
-func (s *Plugins) DeleteAiproxyPlugin(ctx context.Context, request operations.DeleteAiproxyPluginRequest, opts ...operations.Option) (*operations.DeleteAiproxyPluginResponse, error) {
+// DeleteAwslambdaPlugin - Delete a AWSLambda plugin
+// Delete a AWSLambda plugin
+func (s *Plugins) DeleteAwslambdaPlugin(ctx context.Context, request operations.DeleteAwslambdaPluginRequest, opts ...operations.Option) (*operations.DeleteAwslambdaPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
-		OperationID:    "delete-aiproxy-plugin",
+		OperationID:    "delete-awslambda-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
 	}
@@ -1836,7 +1949,7 @@ func (s *Plugins) DeleteAiproxyPlugin(ctx context.Context, request operations.De
 		}
 	}
 
-	res := &operations.DeleteAiproxyPluginResponse{
+	res := &operations.DeleteAwslambdaPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -2126,12 +2239,12 @@ func (s *Plugins) UpdateAwslambdaPlugin(ctx context.Context, request operations.
 
 }
 
-// DeleteAwslambdaPlugin - Delete a AWSLambda plugin
-// Delete a AWSLambda plugin
-func (s *Plugins) DeleteAwslambdaPlugin(ctx context.Context, request operations.DeleteAwslambdaPluginRequest, opts ...operations.Option) (*operations.DeleteAwslambdaPluginResponse, error) {
+// DeleteBasicauthPlugin - Delete a BasicAuth plugin
+// Delete a BasicAuth plugin
+func (s *Plugins) DeleteBasicauthPlugin(ctx context.Context, request operations.DeleteBasicauthPluginRequest, opts ...operations.Option) (*operations.DeleteBasicauthPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
-		OperationID:    "delete-awslambda-plugin",
+		OperationID:    "delete-basicauth-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
 	}
@@ -2204,7 +2317,7 @@ func (s *Plugins) DeleteAwslambdaPlugin(ctx context.Context, request operations.
 		}
 	}
 
-	res := &operations.DeleteAwslambdaPluginResponse{
+	res := &operations.DeleteBasicauthPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -2494,12 +2607,12 @@ func (s *Plugins) UpdateBasicauthPlugin(ctx context.Context, request operations.
 
 }
 
-// DeleteBasicauthPlugin - Delete a BasicAuth plugin
-// Delete a BasicAuth plugin
-func (s *Plugins) DeleteBasicauthPlugin(ctx context.Context, request operations.DeleteBasicauthPluginRequest, opts ...operations.Option) (*operations.DeleteBasicauthPluginResponse, error) {
+// DeleteCorrelationidPlugin - Delete a CorrelationId plugin
+// Delete a CorrelationId plugin
+func (s *Plugins) DeleteCorrelationidPlugin(ctx context.Context, request operations.DeleteCorrelationidPluginRequest, opts ...operations.Option) (*operations.DeleteCorrelationidPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
-		OperationID:    "delete-basicauth-plugin",
+		OperationID:    "delete-correlationid-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
 	}
@@ -2572,7 +2685,7 @@ func (s *Plugins) DeleteBasicauthPlugin(ctx context.Context, request operations.
 		}
 	}
 
-	res := &operations.DeleteBasicauthPluginResponse{
+	res := &operations.DeleteCorrelationidPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -2862,12 +2975,12 @@ func (s *Plugins) UpdateCorrelationidPlugin(ctx context.Context, request operati
 
 }
 
-// DeleteCorrelationidPlugin - Delete a CorrelationId plugin
-// Delete a CorrelationId plugin
-func (s *Plugins) DeleteCorrelationidPlugin(ctx context.Context, request operations.DeleteCorrelationidPluginRequest, opts ...operations.Option) (*operations.DeleteCorrelationidPluginResponse, error) {
+// DeleteCorsPlugin - Delete a CORS plugin
+// Delete a CORS plugin
+func (s *Plugins) DeleteCorsPlugin(ctx context.Context, request operations.DeleteCorsPluginRequest, opts ...operations.Option) (*operations.DeleteCorsPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
-		OperationID:    "delete-correlationid-plugin",
+		OperationID:    "delete-cors-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
 	}
@@ -2940,7 +3053,7 @@ func (s *Plugins) DeleteCorrelationidPlugin(ctx context.Context, request operati
 		}
 	}
 
-	res := &operations.DeleteCorrelationidPluginResponse{
+	res := &operations.DeleteCorsPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -3230,12 +3343,12 @@ func (s *Plugins) UpdateCorsPlugin(ctx context.Context, request operations.Updat
 
 }
 
-// DeleteCorsPlugin - Delete a CORS plugin
-// Delete a CORS plugin
-func (s *Plugins) DeleteCorsPlugin(ctx context.Context, request operations.DeleteCorsPluginRequest, opts ...operations.Option) (*operations.DeleteCorsPluginResponse, error) {
+// DeleteExittransformerPlugin - Delete a ExitTransformer plugin
+// Delete a ExitTransformer plugin
+func (s *Plugins) DeleteExittransformerPlugin(ctx context.Context, request operations.DeleteExittransformerPluginRequest, opts ...operations.Option) (*operations.DeleteExittransformerPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
-		OperationID:    "delete-cors-plugin",
+		OperationID:    "delete-exittransformer-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
 	}
@@ -3308,7 +3421,7 @@ func (s *Plugins) DeleteCorsPlugin(ctx context.Context, request operations.Delet
 		}
 	}
 
-	res := &operations.DeleteCorsPluginResponse{
+	res := &operations.DeleteExittransformerPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -3598,12 +3711,12 @@ func (s *Plugins) UpdateExittransformerPlugin(ctx context.Context, request opera
 
 }
 
-// DeleteExittransformerPlugin - Delete a ExitTransformer plugin
-// Delete a ExitTransformer plugin
-func (s *Plugins) DeleteExittransformerPlugin(ctx context.Context, request operations.DeleteExittransformerPluginRequest, opts ...operations.Option) (*operations.DeleteExittransformerPluginResponse, error) {
+// DeleteFilelogPlugin - Delete a FileLog plugin
+// Delete a FileLog plugin
+func (s *Plugins) DeleteFilelogPlugin(ctx context.Context, request operations.DeleteFilelogPluginRequest, opts ...operations.Option) (*operations.DeleteFilelogPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
-		OperationID:    "delete-exittransformer-plugin",
+		OperationID:    "delete-filelog-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
 	}
@@ -3676,7 +3789,7 @@ func (s *Plugins) DeleteExittransformerPlugin(ctx context.Context, request opera
 		}
 	}
 
-	res := &operations.DeleteExittransformerPluginResponse{
+	res := &operations.DeleteFilelogPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -3966,12 +4079,12 @@ func (s *Plugins) UpdateFilelogPlugin(ctx context.Context, request operations.Up
 
 }
 
-// DeleteFilelogPlugin - Delete a FileLog plugin
-// Delete a FileLog plugin
-func (s *Plugins) DeleteFilelogPlugin(ctx context.Context, request operations.DeleteFilelogPluginRequest, opts ...operations.Option) (*operations.DeleteFilelogPluginResponse, error) {
+// DeleteIprestrictionPlugin - Delete a IpRestriction plugin
+// Delete a IpRestriction plugin
+func (s *Plugins) DeleteIprestrictionPlugin(ctx context.Context, request operations.DeleteIprestrictionPluginRequest, opts ...operations.Option) (*operations.DeleteIprestrictionPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
-		OperationID:    "delete-filelog-plugin",
+		OperationID:    "delete-iprestriction-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
 	}
@@ -4044,7 +4157,7 @@ func (s *Plugins) DeleteFilelogPlugin(ctx context.Context, request operations.De
 		}
 	}
 
-	res := &operations.DeleteFilelogPluginResponse{
+	res := &operations.DeleteIprestrictionPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -4334,12 +4447,12 @@ func (s *Plugins) UpdateIprestrictionPlugin(ctx context.Context, request operati
 
 }
 
-// DeleteIprestrictionPlugin - Delete a IpRestriction plugin
-// Delete a IpRestriction plugin
-func (s *Plugins) DeleteIprestrictionPlugin(ctx context.Context, request operations.DeleteIprestrictionPluginRequest, opts ...operations.Option) (*operations.DeleteIprestrictionPluginResponse, error) {
+// DeleteJqPlugin - Delete a JQ plugin
+// Delete a JQ plugin
+func (s *Plugins) DeleteJqPlugin(ctx context.Context, request operations.DeleteJqPluginRequest, opts ...operations.Option) (*operations.DeleteJqPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
-		OperationID:    "delete-iprestriction-plugin",
+		OperationID:    "delete-jq-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
 	}
@@ -4412,7 +4525,7 @@ func (s *Plugins) DeleteIprestrictionPlugin(ctx context.Context, request operati
 		}
 	}
 
-	res := &operations.DeleteIprestrictionPluginResponse{
+	res := &operations.DeleteJqPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -4702,12 +4815,12 @@ func (s *Plugins) UpdateJqPlugin(ctx context.Context, request operations.UpdateJ
 
 }
 
-// DeleteJqPlugin - Delete a JQ plugin
-// Delete a JQ plugin
-func (s *Plugins) DeleteJqPlugin(ctx context.Context, request operations.DeleteJqPluginRequest, opts ...operations.Option) (*operations.DeleteJqPluginResponse, error) {
+// DeleteJwtPlugin - Delete a JWT plugin
+// Delete a JWT plugin
+func (s *Plugins) DeleteJwtPlugin(ctx context.Context, request operations.DeleteJwtPluginRequest, opts ...operations.Option) (*operations.DeleteJwtPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
-		OperationID:    "delete-jq-plugin",
+		OperationID:    "delete-jwt-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
 	}
@@ -4780,7 +4893,7 @@ func (s *Plugins) DeleteJqPlugin(ctx context.Context, request operations.DeleteJ
 		}
 	}
 
-	res := &operations.DeleteJqPluginResponse{
+	res := &operations.DeleteJwtPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -5070,12 +5183,12 @@ func (s *Plugins) UpdateJwtPlugin(ctx context.Context, request operations.Update
 
 }
 
-// DeleteJwtPlugin - Delete a JWT plugin
-// Delete a JWT plugin
-func (s *Plugins) DeleteJwtPlugin(ctx context.Context, request operations.DeleteJwtPluginRequest, opts ...operations.Option) (*operations.DeleteJwtPluginResponse, error) {
+// DeleteJwtsignerPlugin - Delete a JWTSigner plugin
+// Delete a JWTSigner plugin
+func (s *Plugins) DeleteJwtsignerPlugin(ctx context.Context, request operations.DeleteJwtsignerPluginRequest, opts ...operations.Option) (*operations.DeleteJwtsignerPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
-		OperationID:    "delete-jwt-plugin",
+		OperationID:    "delete-jwtsigner-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
 	}
@@ -5148,7 +5261,7 @@ func (s *Plugins) DeleteJwtPlugin(ctx context.Context, request operations.Delete
 		}
 	}
 
-	res := &operations.DeleteJwtPluginResponse{
+	res := &operations.DeleteJwtsignerPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -5438,12 +5551,12 @@ func (s *Plugins) UpdateJwtsignerPlugin(ctx context.Context, request operations.
 
 }
 
-// DeleteJwtsignerPlugin - Delete a JWTSigner plugin
-// Delete a JWTSigner plugin
-func (s *Plugins) DeleteJwtsignerPlugin(ctx context.Context, request operations.DeleteJwtsignerPluginRequest, opts ...operations.Option) (*operations.DeleteJwtsignerPluginResponse, error) {
+// DeleteKeyauthPlugin - Delete a KeyAuth plugin
+// Delete a KeyAuth plugin
+func (s *Plugins) DeleteKeyauthPlugin(ctx context.Context, request operations.DeleteKeyauthPluginRequest, opts ...operations.Option) (*operations.DeleteKeyauthPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
-		OperationID:    "delete-jwtsigner-plugin",
+		OperationID:    "delete-keyauth-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
 	}
@@ -5516,7 +5629,7 @@ func (s *Plugins) DeleteJwtsignerPlugin(ctx context.Context, request operations.
 		}
 	}
 
-	res := &operations.DeleteJwtsignerPluginResponse{
+	res := &operations.DeleteKeyauthPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -5806,12 +5919,12 @@ func (s *Plugins) UpdateKeyauthPlugin(ctx context.Context, request operations.Up
 
 }
 
-// DeleteKeyauthPlugin - Delete a KeyAuth plugin
-// Delete a KeyAuth plugin
-func (s *Plugins) DeleteKeyauthPlugin(ctx context.Context, request operations.DeleteKeyauthPluginRequest, opts ...operations.Option) (*operations.DeleteKeyauthPluginResponse, error) {
+// DeleteOauth2Plugin - Delete a Oauth2 plugin
+// Delete a Oauth2 plugin
+func (s *Plugins) DeleteOauth2Plugin(ctx context.Context, request operations.DeleteOauth2PluginRequest, opts ...operations.Option) (*operations.DeleteOauth2PluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
-		OperationID:    "delete-keyauth-plugin",
+		OperationID:    "delete-oauth2-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
 	}
@@ -5884,7 +5997,7 @@ func (s *Plugins) DeleteKeyauthPlugin(ctx context.Context, request operations.De
 		}
 	}
 
-	res := &operations.DeleteKeyauthPluginResponse{
+	res := &operations.DeleteOauth2PluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -6174,12 +6287,12 @@ func (s *Plugins) UpdateOauth2Plugin(ctx context.Context, request operations.Upd
 
 }
 
-// DeleteOauth2Plugin - Delete a Oauth2 plugin
-// Delete a Oauth2 plugin
-func (s *Plugins) DeleteOauth2Plugin(ctx context.Context, request operations.DeleteOauth2PluginRequest, opts ...operations.Option) (*operations.DeleteOauth2PluginResponse, error) {
+// DeleteOpenidconnectPlugin - Delete a OpenidConnect plugin
+// Delete a OpenidConnect plugin
+func (s *Plugins) DeleteOpenidconnectPlugin(ctx context.Context, request operations.DeleteOpenidconnectPluginRequest, opts ...operations.Option) (*operations.DeleteOpenidconnectPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
-		OperationID:    "delete-oauth2-plugin",
+		OperationID:    "delete-openidconnect-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
 	}
@@ -6252,7 +6365,7 @@ func (s *Plugins) DeleteOauth2Plugin(ctx context.Context, request operations.Del
 		}
 	}
 
-	res := &operations.DeleteOauth2PluginResponse{
+	res := &operations.DeleteOpenidconnectPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -6542,12 +6655,12 @@ func (s *Plugins) UpdateOpenidconnectPlugin(ctx context.Context, request operati
 
 }
 
-// DeleteOpenidconnectPlugin - Delete a OpenidConnect plugin
-// Delete a OpenidConnect plugin
-func (s *Plugins) DeleteOpenidconnectPlugin(ctx context.Context, request operations.DeleteOpenidconnectPluginRequest, opts ...operations.Option) (*operations.DeleteOpenidconnectPluginResponse, error) {
+// DeleteOpentelemetryPlugin - Delete a Opentelemetry plugin
+// Delete a Opentelemetry plugin
+func (s *Plugins) DeleteOpentelemetryPlugin(ctx context.Context, request operations.DeleteOpentelemetryPluginRequest, opts ...operations.Option) (*operations.DeleteOpentelemetryPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
-		OperationID:    "delete-openidconnect-plugin",
+		OperationID:    "delete-opentelemetry-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
 	}
@@ -6620,7 +6733,7 @@ func (s *Plugins) DeleteOpenidconnectPlugin(ctx context.Context, request operati
 		}
 	}
 
-	res := &operations.DeleteOpenidconnectPluginResponse{
+	res := &operations.DeleteOpentelemetryPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -6910,12 +7023,12 @@ func (s *Plugins) UpdateOpentelemetryPlugin(ctx context.Context, request operati
 
 }
 
-// DeleteOpentelemetryPlugin - Delete a Opentelemetry plugin
-// Delete a Opentelemetry plugin
-func (s *Plugins) DeleteOpentelemetryPlugin(ctx context.Context, request operations.DeleteOpentelemetryPluginRequest, opts ...operations.Option) (*operations.DeleteOpentelemetryPluginResponse, error) {
+// DeletePostfunctionPlugin - Delete a PostFunction plugin
+// Delete a PostFunction plugin
+func (s *Plugins) DeletePostfunctionPlugin(ctx context.Context, request operations.DeletePostfunctionPluginRequest, opts ...operations.Option) (*operations.DeletePostfunctionPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
-		OperationID:    "delete-opentelemetry-plugin",
+		OperationID:    "delete-postfunction-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
 	}
@@ -6988,7 +7101,7 @@ func (s *Plugins) DeleteOpentelemetryPlugin(ctx context.Context, request operati
 		}
 	}
 
-	res := &operations.DeleteOpentelemetryPluginResponse{
+	res := &operations.DeletePostfunctionPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -7278,12 +7391,12 @@ func (s *Plugins) UpdatePostfunctionPlugin(ctx context.Context, request operatio
 
 }
 
-// DeletePostfunctionPlugin - Delete a PostFunction plugin
-// Delete a PostFunction plugin
-func (s *Plugins) DeletePostfunctionPlugin(ctx context.Context, request operations.DeletePostfunctionPluginRequest, opts ...operations.Option) (*operations.DeletePostfunctionPluginResponse, error) {
+// DeletePrefunctionPlugin - Delete a PreFunction plugin
+// Delete a PreFunction plugin
+func (s *Plugins) DeletePrefunctionPlugin(ctx context.Context, request operations.DeletePrefunctionPluginRequest, opts ...operations.Option) (*operations.DeletePrefunctionPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
-		OperationID:    "delete-postfunction-plugin",
+		OperationID:    "delete-prefunction-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
 	}
@@ -7356,7 +7469,7 @@ func (s *Plugins) DeletePostfunctionPlugin(ctx context.Context, request operatio
 		}
 	}
 
-	res := &operations.DeletePostfunctionPluginResponse{
+	res := &operations.DeletePrefunctionPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -7646,12 +7759,12 @@ func (s *Plugins) UpdatePrefunctionPlugin(ctx context.Context, request operation
 
 }
 
-// DeletePrefunctionPlugin - Delete a PreFunction plugin
-// Delete a PreFunction plugin
-func (s *Plugins) DeletePrefunctionPlugin(ctx context.Context, request operations.DeletePrefunctionPluginRequest, opts ...operations.Option) (*operations.DeletePrefunctionPluginResponse, error) {
+// DeletePrometheusPlugin - Delete a Prometheus plugin
+// Delete a Prometheus plugin
+func (s *Plugins) DeletePrometheusPlugin(ctx context.Context, request operations.DeletePrometheusPluginRequest, opts ...operations.Option) (*operations.DeletePrometheusPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
-		OperationID:    "delete-prefunction-plugin",
+		OperationID:    "delete-prometheus-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
 	}
@@ -7724,7 +7837,7 @@ func (s *Plugins) DeletePrefunctionPlugin(ctx context.Context, request operation
 		}
 	}
 
-	res := &operations.DeletePrefunctionPluginResponse{
+	res := &operations.DeletePrometheusPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -8014,12 +8127,12 @@ func (s *Plugins) UpdatePrometheusPlugin(ctx context.Context, request operations
 
 }
 
-// DeletePrometheusPlugin - Delete a Prometheus plugin
-// Delete a Prometheus plugin
-func (s *Plugins) DeletePrometheusPlugin(ctx context.Context, request operations.DeletePrometheusPluginRequest, opts ...operations.Option) (*operations.DeletePrometheusPluginResponse, error) {
+// DeleteProxycachePlugin - Delete a ProxyCache plugin
+// Delete a ProxyCache plugin
+func (s *Plugins) DeleteProxycachePlugin(ctx context.Context, request operations.DeleteProxycachePluginRequest, opts ...operations.Option) (*operations.DeleteProxycachePluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
-		OperationID:    "delete-prometheus-plugin",
+		OperationID:    "delete-proxycache-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
 	}
@@ -8092,7 +8205,7 @@ func (s *Plugins) DeletePrometheusPlugin(ctx context.Context, request operations
 		}
 	}
 
-	res := &operations.DeletePrometheusPluginResponse{
+	res := &operations.DeleteProxycachePluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -8382,12 +8495,12 @@ func (s *Plugins) UpdateProxycachePlugin(ctx context.Context, request operations
 
 }
 
-// DeleteProxycachePlugin - Delete a ProxyCache plugin
-// Delete a ProxyCache plugin
-func (s *Plugins) DeleteProxycachePlugin(ctx context.Context, request operations.DeleteProxycachePluginRequest, opts ...operations.Option) (*operations.DeleteProxycachePluginResponse, error) {
+// DeleteRatelimitingPlugin - Delete a RateLimiting plugin
+// Delete a RateLimiting plugin
+func (s *Plugins) DeleteRatelimitingPlugin(ctx context.Context, request operations.DeleteRatelimitingPluginRequest, opts ...operations.Option) (*operations.DeleteRatelimitingPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
-		OperationID:    "delete-proxycache-plugin",
+		OperationID:    "delete-ratelimiting-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
 	}
@@ -8460,7 +8573,7 @@ func (s *Plugins) DeleteProxycachePlugin(ctx context.Context, request operations
 		}
 	}
 
-	res := &operations.DeleteProxycachePluginResponse{
+	res := &operations.DeleteRatelimitingPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -8750,12 +8863,12 @@ func (s *Plugins) UpdateRatelimitingPlugin(ctx context.Context, request operatio
 
 }
 
-// DeleteRatelimitingPlugin - Delete a RateLimiting plugin
-// Delete a RateLimiting plugin
-func (s *Plugins) DeleteRatelimitingPlugin(ctx context.Context, request operations.DeleteRatelimitingPluginRequest, opts ...operations.Option) (*operations.DeleteRatelimitingPluginResponse, error) {
+// DeleteRatelimitingadvancedPlugin - Delete a RateLimitingAdvanced plugin
+// Delete a RateLimitingAdvanced plugin
+func (s *Plugins) DeleteRatelimitingadvancedPlugin(ctx context.Context, request operations.DeleteRatelimitingadvancedPluginRequest, opts ...operations.Option) (*operations.DeleteRatelimitingadvancedPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
-		OperationID:    "delete-ratelimiting-plugin",
+		OperationID:    "delete-ratelimitingadvanced-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
 	}
@@ -8828,7 +8941,7 @@ func (s *Plugins) DeleteRatelimitingPlugin(ctx context.Context, request operatio
 		}
 	}
 
-	res := &operations.DeleteRatelimitingPluginResponse{
+	res := &operations.DeleteRatelimitingadvancedPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -9118,12 +9231,12 @@ func (s *Plugins) UpdateRatelimitingadvancedPlugin(ctx context.Context, request 
 
 }
 
-// DeleteRatelimitingadvancedPlugin - Delete a RateLimitingAdvanced plugin
-// Delete a RateLimitingAdvanced plugin
-func (s *Plugins) DeleteRatelimitingadvancedPlugin(ctx context.Context, request operations.DeleteRatelimitingadvancedPluginRequest, opts ...operations.Option) (*operations.DeleteRatelimitingadvancedPluginResponse, error) {
+// DeleteRequestterminationPlugin - Delete a RequestTermination plugin
+// Delete a RequestTermination plugin
+func (s *Plugins) DeleteRequestterminationPlugin(ctx context.Context, request operations.DeleteRequestterminationPluginRequest, opts ...operations.Option) (*operations.DeleteRequestterminationPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
-		OperationID:    "delete-ratelimitingadvanced-plugin",
+		OperationID:    "delete-requesttermination-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
 	}
@@ -9196,7 +9309,7 @@ func (s *Plugins) DeleteRatelimitingadvancedPlugin(ctx context.Context, request 
 		}
 	}
 
-	res := &operations.DeleteRatelimitingadvancedPluginResponse{
+	res := &operations.DeleteRequestterminationPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -9486,12 +9599,12 @@ func (s *Plugins) UpdateRequestterminationPlugin(ctx context.Context, request op
 
 }
 
-// DeleteRequestterminationPlugin - Delete a RequestTermination plugin
-// Delete a RequestTermination plugin
-func (s *Plugins) DeleteRequestterminationPlugin(ctx context.Context, request operations.DeleteRequestterminationPluginRequest, opts ...operations.Option) (*operations.DeleteRequestterminationPluginResponse, error) {
+// DeleteRequesttransformerPlugin - Delete a RequestTransformer plugin
+// Delete a RequestTransformer plugin
+func (s *Plugins) DeleteRequesttransformerPlugin(ctx context.Context, request operations.DeleteRequesttransformerPluginRequest, opts ...operations.Option) (*operations.DeleteRequesttransformerPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
-		OperationID:    "delete-requesttermination-plugin",
+		OperationID:    "delete-requesttransformer-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
 	}
@@ -9564,7 +9677,7 @@ func (s *Plugins) DeleteRequestterminationPlugin(ctx context.Context, request op
 		}
 	}
 
-	res := &operations.DeleteRequestterminationPluginResponse{
+	res := &operations.DeleteRequesttransformerPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -9854,12 +9967,12 @@ func (s *Plugins) UpdateRequesttransformerPlugin(ctx context.Context, request op
 
 }
 
-// DeleteRequesttransformerPlugin - Delete a RequestTransformer plugin
-// Delete a RequestTransformer plugin
-func (s *Plugins) DeleteRequesttransformerPlugin(ctx context.Context, request operations.DeleteRequesttransformerPluginRequest, opts ...operations.Option) (*operations.DeleteRequesttransformerPluginResponse, error) {
+// DeleteRequesttransformeradvancedPlugin - Delete a RequestTransformerAdvanced plugin
+// Delete a RequestTransformerAdvanced plugin
+func (s *Plugins) DeleteRequesttransformeradvancedPlugin(ctx context.Context, request operations.DeleteRequesttransformeradvancedPluginRequest, opts ...operations.Option) (*operations.DeleteRequesttransformeradvancedPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
-		OperationID:    "delete-requesttransformer-plugin",
+		OperationID:    "delete-requesttransformeradvanced-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
 	}
@@ -9932,7 +10045,7 @@ func (s *Plugins) DeleteRequesttransformerPlugin(ctx context.Context, request op
 		}
 	}
 
-	res := &operations.DeleteRequesttransformerPluginResponse{
+	res := &operations.DeleteRequesttransformeradvancedPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -10222,12 +10335,12 @@ func (s *Plugins) UpdateRequesttransformeradvancedPlugin(ctx context.Context, re
 
 }
 
-// DeleteRequesttransformeradvancedPlugin - Delete a RequestTransformerAdvanced plugin
-// Delete a RequestTransformerAdvanced plugin
-func (s *Plugins) DeleteRequesttransformeradvancedPlugin(ctx context.Context, request operations.DeleteRequesttransformeradvancedPluginRequest, opts ...operations.Option) (*operations.DeleteRequesttransformeradvancedPluginResponse, error) {
+// DeleteResponsetransformerPlugin - Delete a ResponseTransformer plugin
+// Delete a ResponseTransformer plugin
+func (s *Plugins) DeleteResponsetransformerPlugin(ctx context.Context, request operations.DeleteResponsetransformerPluginRequest, opts ...operations.Option) (*operations.DeleteResponsetransformerPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
-		OperationID:    "delete-requesttransformeradvanced-plugin",
+		OperationID:    "delete-responsetransformer-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
 	}
@@ -10300,7 +10413,7 @@ func (s *Plugins) DeleteRequesttransformeradvancedPlugin(ctx context.Context, re
 		}
 	}
 
-	res := &operations.DeleteRequesttransformeradvancedPluginResponse{
+	res := &operations.DeleteResponsetransformerPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -10590,12 +10703,12 @@ func (s *Plugins) UpdateResponsetransformerPlugin(ctx context.Context, request o
 
 }
 
-// DeleteResponsetransformerPlugin - Delete a ResponseTransformer plugin
-// Delete a ResponseTransformer plugin
-func (s *Plugins) DeleteResponsetransformerPlugin(ctx context.Context, request operations.DeleteResponsetransformerPluginRequest, opts ...operations.Option) (*operations.DeleteResponsetransformerPluginResponse, error) {
+// DeleteResponsetransformeradvancedPlugin - Delete a ResponseTransformerAdvanced plugin
+// Delete a ResponseTransformerAdvanced plugin
+func (s *Plugins) DeleteResponsetransformeradvancedPlugin(ctx context.Context, request operations.DeleteResponsetransformeradvancedPluginRequest, opts ...operations.Option) (*operations.DeleteResponsetransformeradvancedPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
-		OperationID:    "delete-responsetransformer-plugin",
+		OperationID:    "delete-responsetransformeradvanced-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
 	}
@@ -10668,7 +10781,7 @@ func (s *Plugins) DeleteResponsetransformerPlugin(ctx context.Context, request o
 		}
 	}
 
-	res := &operations.DeleteResponsetransformerPluginResponse{
+	res := &operations.DeleteResponsetransformeradvancedPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -10958,12 +11071,12 @@ func (s *Plugins) UpdateResponsetransformeradvancedPlugin(ctx context.Context, r
 
 }
 
-// DeleteResponsetransformeradvancedPlugin - Delete a ResponseTransformerAdvanced plugin
-// Delete a ResponseTransformerAdvanced plugin
-func (s *Plugins) DeleteResponsetransformeradvancedPlugin(ctx context.Context, request operations.DeleteResponsetransformeradvancedPluginRequest, opts ...operations.Option) (*operations.DeleteResponsetransformeradvancedPluginResponse, error) {
+// DeleteSamlPlugin - Delete a Saml plugin
+// Delete a Saml plugin
+func (s *Plugins) DeleteSamlPlugin(ctx context.Context, request operations.DeleteSamlPluginRequest, opts ...operations.Option) (*operations.DeleteSamlPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
-		OperationID:    "delete-responsetransformeradvanced-plugin",
+		OperationID:    "delete-saml-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
 	}
@@ -11036,7 +11149,7 @@ func (s *Plugins) DeleteResponsetransformeradvancedPlugin(ctx context.Context, r
 		}
 	}
 
-	res := &operations.DeleteResponsetransformeradvancedPluginResponse{
+	res := &operations.DeleteSamlPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -11326,12 +11439,12 @@ func (s *Plugins) UpdateSamlPlugin(ctx context.Context, request operations.Updat
 
 }
 
-// DeleteSamlPlugin - Delete a Saml plugin
-// Delete a Saml plugin
-func (s *Plugins) DeleteSamlPlugin(ctx context.Context, request operations.DeleteSamlPluginRequest, opts ...operations.Option) (*operations.DeleteSamlPluginResponse, error) {
+// DeleteStatsdPlugin - Delete a Statsd plugin
+// Delete a Statsd plugin
+func (s *Plugins) DeleteStatsdPlugin(ctx context.Context, request operations.DeleteStatsdPluginRequest, opts ...operations.Option) (*operations.DeleteStatsdPluginResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
-		OperationID:    "delete-saml-plugin",
+		OperationID:    "delete-statsd-plugin",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
 	}
@@ -11404,7 +11517,7 @@ func (s *Plugins) DeleteSamlPlugin(ctx context.Context, request operations.Delet
 		}
 	}
 
-	res := &operations.DeleteSamlPluginResponse{
+	res := &operations.DeleteStatsdPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -11674,119 +11787,6 @@ func (s *Plugins) UpdateStatsdPlugin(ctx context.Context, request operations.Upd
 		default:
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
-	case httpRes.StatusCode == 401:
-		switch {
-		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
-			var out shared.GatewayUnauthorizedError
-			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
-				return nil, err
-			}
-
-			res.GatewayUnauthorizedError = &out
-		default:
-			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
-		}
-	default:
-		return nil, errors.NewSDKError("unknown status code returned", httpRes.StatusCode, string(rawBody), httpRes)
-	}
-
-	return res, nil
-
-}
-
-// DeleteStatsdPlugin - Delete a Statsd plugin
-// Delete a Statsd plugin
-func (s *Plugins) DeleteStatsdPlugin(ctx context.Context, request operations.DeleteStatsdPluginRequest, opts ...operations.Option) (*operations.DeleteStatsdPluginResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "delete-statsd-plugin",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
-	o := operations.Options{}
-	supportedOptions := []string{
-		operations.SupportedOptionTimeout,
-	}
-
-	for _, opt := range opts {
-		if err := opt(&o, supportedOptions...); err != nil {
-			return nil, fmt.Errorf("error applying option: %w", err)
-		}
-	}
-
-	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
-	if err != nil {
-		return nil, fmt.Errorf("error generating URL: %w", err)
-	}
-
-	timeout := o.Timeout
-	if timeout == nil {
-		timeout = s.sdkConfiguration.Timeout
-	}
-
-	if timeout != nil {
-		var cancel context.CancelFunc
-		ctx, cancel = context.WithTimeout(ctx, *timeout)
-		defer cancel()
-	}
-
-	req, err := http.NewRequestWithContext(ctx, "DELETE", opURL, nil)
-	if err != nil {
-		return nil, fmt.Errorf("error creating request: %w", err)
-	}
-	req.Header.Set("Accept", "application/json")
-	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
-
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
-		return nil, err
-	}
-
-	req, err = s.sdkConfiguration.Hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
-	if err != nil {
-		return nil, err
-	}
-
-	httpRes, err := s.sdkConfiguration.Client.Do(req)
-	if err != nil || httpRes == nil {
-		if err != nil {
-			err = fmt.Errorf("error sending request: %w", err)
-		} else {
-			err = fmt.Errorf("error sending request: no response")
-		}
-
-		_, err = s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, nil, err)
-		return nil, err
-	} else if utils.MatchStatusCodes([]string{}, httpRes.StatusCode) {
-		_httpRes, err := s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, httpRes, nil)
-		if err != nil {
-			return nil, err
-		} else if _httpRes != nil {
-			httpRes = _httpRes
-		}
-	} else {
-		httpRes, err = s.sdkConfiguration.Hooks.AfterSuccess(hooks.AfterSuccessContext{HookContext: hookCtx}, httpRes)
-		if err != nil {
-			return nil, err
-		}
-	}
-
-	res := &operations.DeleteStatsdPluginResponse{
-		StatusCode:  httpRes.StatusCode,
-		ContentType: httpRes.Header.Get("Content-Type"),
-		RawResponse: httpRes,
-	}
-
-	rawBody, err := io.ReadAll(httpRes.Body)
-	if err != nil {
-		return nil, fmt.Errorf("error reading response body: %w", err)
-	}
-	httpRes.Body.Close()
-	httpRes.Body = io.NopCloser(bytes.NewBuffer(rawBody))
-
-	switch {
-	case httpRes.StatusCode == 204:
 	case httpRes.StatusCode == 401:
 		switch {
 		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
@@ -15956,118 +15956,6 @@ func (s *Plugins) CreateStatsdPlugin(ctx context.Context, request operations.Cre
 			}
 
 			res.GatewayUnauthorizedError = &out
-		default:
-			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
-		}
-	default:
-		return nil, errors.NewSDKError("unknown status code returned", httpRes.StatusCode, string(rawBody), httpRes)
-	}
-
-	return res, nil
-
-}
-
-// FetchPluginSchema - Fetch plugin schema
-// Get the schema for a plugin
-func (s *Plugins) FetchPluginSchema(ctx context.Context, request operations.FetchPluginSchemaRequest, opts ...operations.Option) (*operations.FetchPluginSchemaResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "fetch-plugin-schema",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
-	o := operations.Options{}
-	supportedOptions := []string{
-		operations.SupportedOptionTimeout,
-	}
-
-	for _, opt := range opts {
-		if err := opt(&o, supportedOptions...); err != nil {
-			return nil, fmt.Errorf("error applying option: %w", err)
-		}
-	}
-
-	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/schemas/plugins/{pluginName}", request, nil)
-	if err != nil {
-		return nil, fmt.Errorf("error generating URL: %w", err)
-	}
-
-	timeout := o.Timeout
-	if timeout == nil {
-		timeout = s.sdkConfiguration.Timeout
-	}
-
-	if timeout != nil {
-		var cancel context.CancelFunc
-		ctx, cancel = context.WithTimeout(ctx, *timeout)
-		defer cancel()
-	}
-
-	req, err := http.NewRequestWithContext(ctx, "GET", opURL, nil)
-	if err != nil {
-		return nil, fmt.Errorf("error creating request: %w", err)
-	}
-	req.Header.Set("Accept", "application/json")
-	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
-
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
-		return nil, err
-	}
-
-	req, err = s.sdkConfiguration.Hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
-	if err != nil {
-		return nil, err
-	}
-
-	httpRes, err := s.sdkConfiguration.Client.Do(req)
-	if err != nil || httpRes == nil {
-		if err != nil {
-			err = fmt.Errorf("error sending request: %w", err)
-		} else {
-			err = fmt.Errorf("error sending request: no response")
-		}
-
-		_, err = s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, nil, err)
-		return nil, err
-	} else if utils.MatchStatusCodes([]string{}, httpRes.StatusCode) {
-		_httpRes, err := s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, httpRes, nil)
-		if err != nil {
-			return nil, err
-		} else if _httpRes != nil {
-			httpRes = _httpRes
-		}
-	} else {
-		httpRes, err = s.sdkConfiguration.Hooks.AfterSuccess(hooks.AfterSuccessContext{HookContext: hookCtx}, httpRes)
-		if err != nil {
-			return nil, err
-		}
-	}
-
-	res := &operations.FetchPluginSchemaResponse{
-		StatusCode:  httpRes.StatusCode,
-		ContentType: httpRes.Header.Get("Content-Type"),
-		RawResponse: httpRes,
-	}
-
-	rawBody, err := io.ReadAll(httpRes.Body)
-	if err != nil {
-		return nil, fmt.Errorf("error reading response body: %w", err)
-	}
-	httpRes.Body.Close()
-	httpRes.Body = io.NopCloser(bytes.NewBuffer(rawBody))
-
-	switch {
-	case httpRes.StatusCode == 200:
-		switch {
-		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
-			var out operations.FetchPluginSchemaResponseBody
-			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
-				return nil, err
-			}
-
-			res.Object = &out
 		default:
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}

@@ -12,6 +12,7 @@ type AppAuthStrategyOpenIDConnectRequest struct {
 	DcrProviderID types.String                               `tfsdk:"dcr_provider_id"`
 	DisplayName   types.String                               `tfsdk:"display_name"`
 	ID            types.String                               `tfsdk:"id"`
+	Labels        map[string]types.String                    `tfsdk:"labels"`
 	Name          types.String                               `tfsdk:"name"`
 	StrategyType  types.String                               `tfsdk:"strategy_type"`
 	UpdatedAt     types.String                               `tfsdk:"updated_at"`

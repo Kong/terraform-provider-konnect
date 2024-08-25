@@ -31,7 +31,7 @@ resource "konnect_serverless_cloud_gateway" "my_serverlesscloudgateway" {
 ### Required
 
 - `cluster_cert` (String) The cluster certificate (public key). Requires replacement if changed.
-- `cluster_cert_key` (String) The cluster certificate key (private key). Requires replacement if changed.
+- `cluster_cert_key` (String, Sensitive) The cluster certificate key (private key). Requires replacement if changed.
 - `control_plane` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--control_plane))
 
 ### Optional

@@ -11,11 +11,16 @@ import (
 // Once authenticated, an application will be granted access to any Product Version it is registered for that is configured for the same Auth Strategy.
 // An OIDC strategy may be used in conjunction with a DCR provider to automatically create the IdP application.
 type AppAuthStrategyConfigOpenIDConnect struct {
-	Issuer               string   `json:"issuer"`
-	CredentialClaim      []string `json:"credential_claim"`
-	Scopes               []string `json:"scopes"`
-	AuthMethods          []string `json:"auth_methods"`
-	AdditionalProperties any      `additionalProperties:"true" json:"-"`
+	Issuer          string   `json:"issuer"`
+	CredentialClaim []string `json:"credential_claim"`
+	Scopes          []string `json:"scopes"`
+	AuthMethods     []string `json:"auth_methods"`
+	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
+	//
+	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+	//
+	Labels               map[string]string `json:"labels,omitempty"`
+	AdditionalProperties any               `additionalProperties:"true" json:"-"`
 }
 
 func (a AppAuthStrategyConfigOpenIDConnect) MarshalJSON() ([]byte, error) {
@@ -55,6 +60,13 @@ func (o *AppAuthStrategyConfigOpenIDConnect) GetAuthMethods() []string {
 		return []string{}
 	}
 	return o.AuthMethods
+}
+
+func (o *AppAuthStrategyConfigOpenIDConnect) GetLabels() map[string]string {
+	if o == nil {
+		return nil
+	}
+	return o.Labels
 }
 
 func (o *AppAuthStrategyConfigOpenIDConnect) GetAdditionalProperties() any {
