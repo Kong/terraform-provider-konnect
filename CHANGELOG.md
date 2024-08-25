@@ -1,6 +1,15 @@
 # Changelog
 
 ## 0.6.2
+> Released on 2024/08/25
+
+### Features
+* Add support for `labels` to `application_auth_strategies`
+
+### Bug fixes
+* The `cluster_cert_key` in `serverless_cloud_gateway` is now marked as `sensitive`
+
+## 0.6.2
 > Released on 2024/07/24
 
 ### Features
