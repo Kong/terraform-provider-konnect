@@ -61,6 +61,11 @@ type AppAuthStrategyOpenIDConnectRequest struct {
 	// JSON-B object containing the configuration for the OIDC strategy
 	Configs       AppAuthStrategyOpenIDConnectRequestConfigs `json:"configs"`
 	DcrProviderID *string                                    `json:"dcr_provider_id,omitempty"`
+	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
+	//
+	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+	//
+	Labels map[string]string `json:"labels,omitempty"`
 }
 
 func (o *AppAuthStrategyOpenIDConnectRequest) GetName() string {
@@ -96,6 +101,13 @@ func (o *AppAuthStrategyOpenIDConnectRequest) GetDcrProviderID() *string {
 		return nil
 	}
 	return o.DcrProviderID
+}
+
+func (o *AppAuthStrategyOpenIDConnectRequest) GetLabels() map[string]string {
+	if o == nil {
+		return nil
+	}
+	return o.Labels
 }
 
 type StrategyType string
@@ -148,6 +160,11 @@ type AppAuthStrategyKeyAuthRequest struct {
 	StrategyType StrategyType `json:"strategy_type"`
 	// JSON-B object containing the configuration for the Key Auth strategy
 	Configs AppAuthStrategyKeyAuthRequestConfigs `json:"configs"`
+	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
+	//
+	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+	//
+	Labels map[string]string `json:"labels,omitempty"`
 }
 
 func (o *AppAuthStrategyKeyAuthRequest) GetName() string {
@@ -176,6 +193,13 @@ func (o *AppAuthStrategyKeyAuthRequest) GetConfigs() AppAuthStrategyKeyAuthReque
 		return AppAuthStrategyKeyAuthRequestConfigs{}
 	}
 	return o.Configs
+}
+
+func (o *AppAuthStrategyKeyAuthRequest) GetLabels() map[string]string {
+	if o == nil {
+		return nil
+	}
+	return o.Labels
 }
 
 type CreateAppAuthStrategyRequestType string

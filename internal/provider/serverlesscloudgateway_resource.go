@@ -69,6 +69,7 @@ func (r *ServerlessCloudGatewayResource) Schema(ctx context.Context, req resourc
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
 				Required:    true,
+				Sensitive:   true,
 				Description: `The cluster certificate key (private key). Requires replacement if changed. `,
 			},
 			"control_plane": schema.SingleNestedAttribute{

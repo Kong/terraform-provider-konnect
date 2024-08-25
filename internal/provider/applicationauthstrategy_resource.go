@@ -12,6 +12,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/mapplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
@@ -20,6 +21,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_boolplanmodifier "github.com/kong/terraform-provider-konnect/internal/planmodifiers/boolplanmodifier"
 	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/internal/planmodifiers/listplanmodifier"
+	speakeasy_mapplanmodifier "github.com/kong/terraform-provider-konnect/internal/planmodifiers/mapplanmodifier"
 	speakeasy_objectplanmodifier "github.com/kong/terraform-provider-konnect/internal/planmodifiers/objectplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
@@ -219,6 +221,20 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 						},
 						Description: `Contains a unique identifier used for this resource.`,
 					},
+					"labels": schema.MapAttribute{
+						Computed: true,
+						PlanModifiers: []planmodifier.Map{
+							mapplanmodifier.RequiresReplaceIfConfigured(),
+							speakeasy_mapplanmodifier.SuppressDiff(speakeasy_mapplanmodifier.ExplicitSuppress),
+						},
+						Optional:    true,
+						ElementType: types.StringType,
+						MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
+							`` + "\n" +
+							`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".` + "\n" +
+							`` + "\n" +
+							`Requires replacement if changed. `,
+					},
 					"name": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -359,6 +375,20 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 											stringvalidator.UTF8LengthAtMost(256),
 										},
 									},
+									"labels": schema.MapAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.Map{
+											mapplanmodifier.RequiresReplaceIfConfigured(),
+											speakeasy_mapplanmodifier.SuppressDiff(speakeasy_mapplanmodifier.ExplicitSuppress),
+										},
+										Optional:    true,
+										ElementType: types.StringType,
+										MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
+											`` + "\n" +
+											`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".` + "\n" +
+											`` + "\n" +
+											`Requires replacement if changed. `,
+									},
 									"scopes": schema.ListAttribute{
 										Computed: true,
 										PlanModifiers: []planmodifier.List{
@@ -478,6 +508,20 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
 						Description: `Contains a unique identifier used for this resource.`,
+					},
+					"labels": schema.MapAttribute{
+						Computed: true,
+						PlanModifiers: []planmodifier.Map{
+							mapplanmodifier.RequiresReplaceIfConfigured(),
+							speakeasy_mapplanmodifier.SuppressDiff(speakeasy_mapplanmodifier.ExplicitSuppress),
+						},
+						Optional:    true,
+						ElementType: types.StringType,
+						MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
+							`` + "\n" +
+							`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".` + "\n" +
+							`` + "\n" +
+							`Requires replacement if changed. `,
 					},
 					"name": schema.StringAttribute{
 						Computed: true,

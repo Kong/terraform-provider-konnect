@@ -5,9 +5,10 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type AppAuthStrategyConfigOpenIDConnect struct {
-	AdditionalProperties types.String   `tfsdk:"additional_properties"`
-	AuthMethods          []types.String `tfsdk:"auth_methods"`
-	CredentialClaim      []types.String `tfsdk:"credential_claim"`
-	Issuer               types.String   `tfsdk:"issuer"`
-	Scopes               []types.String `tfsdk:"scopes"`
+	AdditionalProperties types.String            `tfsdk:"additional_properties"`
+	AuthMethods          []types.String          `tfsdk:"auth_methods"`
+	CredentialClaim      []types.String          `tfsdk:"credential_claim"`
+	Issuer               types.String            `tfsdk:"issuer"`
+	Labels               map[string]types.String `tfsdk:"labels"`
+	Scopes               []types.String          `tfsdk:"scopes"`
 }

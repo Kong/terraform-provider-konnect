@@ -24,7 +24,7 @@ resource "konnect_gateway_custom_plugin_schema" "my_gatewaycustompluginschema" {
 
 ### Required
 
-- `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager
+- `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager.
 - `lua_schema` (String) The custom plugin schema; `jq -Rs '.' schema.lua`.
 
 ### Read-Only

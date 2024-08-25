@@ -42,6 +42,11 @@ Optional:
 - `display_name` (String) The display name of the Auth strategy. This is used to identify the Auth strategy in the Portal UI.
 
 Requires replacement if changed. ; Not Null
+- `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
+
+Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+
+Requires replacement if changed.
 - `name` (String) The name of the auth strategy. This is used to identify the auth strategy in the Konnect UI.
 
 Requires replacement if changed. ; Not Null
@@ -97,6 +102,11 @@ Optional:
 - `display_name` (String) The display name of the Auth strategy. This is used to identify the Auth strategy in the Portal UI.
 
 Requires replacement if changed. ; Not Null
+- `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
+
+Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+
+Requires replacement if changed.
 - `name` (String) The name of the auth strategy. This is used to identify the auth strategy in the Konnect UI.
 
 Requires replacement if changed. ; Not Null
@@ -131,6 +141,11 @@ Optional:
 - `auth_methods` (List of String) Requires replacement if changed. ; Not Null
 - `credential_claim` (List of String) Requires replacement if changed. ; Not Null
 - `issuer` (String) Requires replacement if changed. ; Not Null
+- `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
+
+Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+
+Requires replacement if changed.
 - `scopes` (List of String) Requires replacement if changed. ; Not Null
 
 

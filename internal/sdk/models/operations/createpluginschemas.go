@@ -8,7 +8,7 @@ import (
 )
 
 type CreatePluginSchemasRequest struct {
-	// The UUID of your control plane. This variable is available in the Konnect manager
+	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID      string                      `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	CreatePluginSchemas *shared.CreatePluginSchemas `request:"mediaType=application/json"`
 }

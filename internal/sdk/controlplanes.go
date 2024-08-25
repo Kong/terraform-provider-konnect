@@ -223,7 +223,7 @@ func (s *ControlPlanes) CreateControlPlane(ctx context.Context, request shared.C
 }
 
 // GetControlPlane - Fetch Control Plane
-// Returns information about a team from a given team ID.
+// Returns information about an individual control plane.
 func (s *ControlPlanes) GetControlPlane(ctx context.Context, request operations.GetControlPlaneRequest, opts ...operations.Option) (*operations.GetControlPlaneResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,
