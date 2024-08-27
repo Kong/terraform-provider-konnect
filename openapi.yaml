@@ -13369,6 +13369,23 @@ components:
         name:
           description: 'The name of the Plugin that''s going to be added. Currently, the Plugin must be installed in every Kong instance separately.'
           type: string
+        ordering:
+          type: object
+          properties:
+            after:
+              type: object
+              properties:
+                access:
+                  type: array
+                  items:
+                    type: string
+            before:
+              type: object
+              properties:
+                access:
+                  type: array
+                  items:
+                    type: string
         protocols:
           description: 'A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.'
           type: array

@@ -5,6 +5,7 @@
 
 ### Features
 * Add support for `labels` to `konnect_api_product_version`
+* Add support for `ordering` to `konnect_gateway_plugin`
 
 ### Bug fixes
 * Force recreation of `konnect_gateway_*` entities if `control_plane_id` changes
