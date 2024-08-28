@@ -1530,7 +1530,6 @@ paths:
         '401':
           $ref: '#/components/responses/IdentityUnauthenticated'
       operationId: get-users-me
-      x-internal: true
       security:
         - personalAccessToken: []
         - konnectAccessToken: []
@@ -1618,7 +1617,6 @@ paths:
         '401':
           $ref: '#/components/responses/IdentityUnauthenticated'
       operationId: get-organizations-me
-      x-internal: true
       description: Returns the organization of the user identified in the token of the request.
     patch:
       summary: Update My Organization

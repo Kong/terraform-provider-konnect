@@ -212,20 +212,6 @@ paths:
       tags:
         - Managed System Accounts - Roles
   /users/me:
-    get:
-      operationId: get-users-me
-      summary: Retrieve My User Account
-      description: Returns the user account for the user identified in the token of the request.
-      responses:
-        '200':
-          $ref: '#/components/responses/UserSingle'
-        '401':
-          $ref: '#/components/responses/IdentityUnauthenticated'
-      security:
-        - personalAccessToken: []
-        - konnectAccessToken: []
-      tags:
-        - Me
     delete:
       operationId: delete-users-me
       summary: Delete My User Account
@@ -296,17 +282,6 @@ paths:
       tags:
         - Me
   /organizations/me:
-    get:
-      operationId: get-organizations-me
-      summary: Retrieve My Organization
-      description: Returns the organization of the user identified in the token of the request.
-      responses:
-        '200':
-          $ref: '#/components/responses/MeOrganization'
-        '401':
-          $ref: '#/components/responses/IdentityUnauthenticated'
-      tags:
-        - Me
     patch:
       operationId: update-organizations-me
       summary: Update My Organization
