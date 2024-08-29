@@ -332,6 +332,10 @@ components:
               metadata:
                 author: John Doe
               children: []
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
       required:
         - id
         - title
@@ -339,6 +343,8 @@ components:
         - metadata
         - children
         - status
+        - created_at
+        - updated_at
       title: DocumentTree
     Revision:
       description: revision of a document
@@ -506,6 +512,18 @@ components:
           type: integer
           example: 1
       title: Move document
+    CreatedAt:
+      description: An ISO-8601 timestamp representation of entity creation date.
+      type: string
+      format: date-time
+      example: '2022-11-04T20:10:06.927Z'
+      readOnly: true
+    UpdatedAt:
+      description: An ISO-8601 timestamp representation of entity update date.
+      type: string
+      format: date-time
+      example: '2022-11-04T20:10:06.927Z'
+      readOnly: true
     BaseError:
       description: standard error
       type: object
@@ -617,12 +635,18 @@ components:
           description: the title of the document
           type: string
           example: Getting Started
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
       additionalProperties: false
       required:
         - id
         - parent_document_id
         - slug
         - title
+        - created_at
+        - updated_at
       title: Document item
     DocumentItemWithStatus:
       allOf:

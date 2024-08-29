@@ -9737,6 +9737,10 @@ components:
           description: API product document title
           type: string
           example: API Product Document
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
       additionalProperties: false
       required:
         - id
@@ -9744,6 +9748,8 @@ components:
         - slug
         - title
         - status
+        - created_at
+        - updated_at
       title: API Product Document Summary
     APIProductDocument:
       description: an api product document
@@ -10634,6 +10640,10 @@ components:
               metadata:
                 author: John Doe
               children: []
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
       allOf:
         - type: object
           properties:
@@ -10691,6 +10701,8 @@ components:
         - metadata
         - children
         - status
+        - created_at
+        - updated_at
       title: DocumentTree
     ChildNode:
       type: object
@@ -18551,6 +18563,8 @@ components:
             slug: api-product-document
             status: published
             title: API Product Document
+            created_at: '2022-11-04T20:10:06.927Z'
+            updated_at: '2022-11-04T20:10:06.927Z'
             metadata: {}
             children:
               - children: []
@@ -18560,6 +18574,8 @@ components:
                 slug: api-product-document-child
                 status: published
                 title: API Product Document Child
+                created_at: '2022-11-04T20:10:06.927Z'
+                updated_at: '2022-11-04T20:10:06.927Z'
         meta:
           page:
             number: 1
@@ -18573,6 +18589,8 @@ components:
             slug: api-product-document
             status: published
             title: API Product Document
+            created_at: '2022-11-04T20:10:06.927Z'
+            updated_at: '2022-11-04T20:10:06.927Z'
         meta:
           page:
             number: 1

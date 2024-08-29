@@ -30,7 +30,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ListDocuments'
+                $ref: '#/components/schemas/ListDocumentsPortal'
             application/vnd.konnect.document-tree+json:
               schema:
                 $ref: '#/components/schemas/ListDocumentsTree'
@@ -380,7 +380,7 @@ components:
       required:
         - page
       title: PaginatedMeta
-    DocumentItem:
+    DocumentItemPortal:
       type: object
       properties:
         id:
@@ -409,7 +409,7 @@ components:
         - slug
         - title
       title: Document item
-    ListDocuments:
+    ListDocumentsPortal:
       type: object
       properties:
         meta:
@@ -417,7 +417,7 @@ components:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/DocumentItem'
+            $ref: '#/components/schemas/DocumentItemPortal'
       additionalProperties: false
       required:
         - meta

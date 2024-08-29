@@ -34,7 +34,7 @@ paths:
                 description: the markdown content
             'application/json':
               schema:
-                $ref: '../../documenthub/common/v0/documenthub.yaml#/components/schemas/ListDocuments'
+                $ref: '../../documenthub/common/v0/documenthub.yaml#/components/schemas/ListDocumentsPortal'
             'application/vnd.konnect.document-tree+json':
               schema:
                 $ref: '../../documenthub/common/v0/documenthub.yaml#/components/schemas/ListDocumentsTree'

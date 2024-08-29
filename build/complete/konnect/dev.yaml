@@ -3016,6 +3016,10 @@ components:
               metadata:
                 author: John Doe
               children: []
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
       allOf:
         - type: object
           properties:
@@ -3073,6 +3077,8 @@ components:
         - metadata
         - children
         - status
+        - created_at
+        - updated_at
       title: DocumentTree
     ConflictError:
       allOf:
