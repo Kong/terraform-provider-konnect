@@ -6593,6 +6593,7 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/ProxyURL'
+      format: set
       example:
         - host: example.com
           port: 443
@@ -7124,6 +7125,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ConfigurationDataPlaneGroup'
+          format: set
         entity_version:
           description: |
             Positive, monotonically increasing version integer, to serialize configuration changes.
@@ -7673,6 +7675,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CreateConfigurationDataPlaneGroup'
+          format: set
         api_access:
           $ref: '#/components/schemas/ApiAccess'
       additionalProperties: false
@@ -16442,6 +16445,13 @@ tags:
       - `grpcs`: At least one of `hosts`, `headers`, `paths`, or `snis`
       - `ws`: At least one of `hosts`, `headers`, or `paths`
       - `wss`: At least one of `hosts`, `headers`, `paths`, or `snis`
+
+
+
+
+
+
+
         <br>
         A route can't have both `tls` and `tls_passthrough` protocols at same time.
         <br><br>
