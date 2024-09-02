@@ -1,0 +1,983 @@
+openapi: 3.0.0
+info:
+  contact:
+    email: support@konghq.com
+    name: Kong Inc
+    url: 'https://konghq.com'
+  description: |-
+    OpenAPI 3.0 spec for Kong Gateway's Admin API.
+
+    You can lean more about Kong Gateway at [docs.konghq.com](https://docs.konghq.com)
+    .Give Kong a star at [Kong/kong](https://github.com/kong/kong) repository.
+  license:
+    name: Apache 2.0
+    url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
+  title: Konnect Control Planes Configuration
+  version: 0.0.1
+servers:
+  - url: 'https://us.api.konghq.com/v2'
+  - url: 'https://eu.api.konghq.com/v2'
+  - url: 'https://au.api.konghq.com/v2'
+paths:
+  '/control-planes/{controlPlaneId}/config-stores':
+    get:
+      operationId: list-config-stores
+      summary: List all config stores for a control plane
+      parameters:
+        - $ref: '#/components/parameters/controlPlaneId'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageAfter'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListConfigStoresResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/ConfigStoreUnauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Config Stores
+    post:
+      operationId: create-config-store
+      summary: Create Config Store
+      description: Create a Config Store
+      parameters:
+        - $ref: '#/components/parameters/controlPlaneId'
+      requestBody:
+        $ref: '#/components/requestBodies/CreateConfigStoreRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/ConfigStoreResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+              examples:
+                ConfigStoreNameBadRequestExample:
+                  $ref: '#/components/examples/ConfigStoreNameBadRequestExample'
+        '401':
+          $ref: '#/components/responses/ConfigStoreUnauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+      tags:
+        - Config Stores
+  '/control-planes/{controlPlaneId}/config-stores/{configStoreId}':
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+      - $ref: '#/components/parameters/configStoreId'
+    get:
+      operationId: get-config-store
+      summary: Fetch Config Store
+      description: Returns a Config Store
+      responses:
+        '200':
+          $ref: '#/components/responses/ConfigStoreResponse'
+        '401':
+          $ref: '#/components/responses/ConfigStoreUnauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Config Stores
+    put:
+      operationId: update-config-store
+      summary: Update an individual Config Store
+      description: Updates a Config Store
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateConfigStoreRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/ConfigStoreResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+              examples:
+                ConfigStoreNameBadRequestExample:
+                  $ref: '#/components/examples/ConfigStoreNameBadRequestExample'
+        '401':
+          $ref: '#/components/responses/ConfigStoreUnauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/ConfigStoreNotFound'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+      tags:
+        - Config Stores
+    delete:
+      operationId: delete-config-store
+      summary: Delete Config Store
+      description: Removes a config store
+      parameters:
+        - name: force
+          in: query
+          description: 'If true, delete specified config store and all secrets, even if there are secrets linked to the config store If false, do not allow deletion if there are secrets linked to the config store'
+          schema:
+            type: string
+            default: 'false'
+            enum:
+              - 'true'
+              - 'false'
+      responses:
+        '204':
+          description: Config Store was deleted successfully.
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+              examples:
+                DeleteConfigStoreBadRequestExample:
+                  $ref: '#/components/examples/DeleteConfigStoreBadRequestExample'
+        '401':
+          $ref: '#/components/responses/ConfigStoreUnauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Config Stores
+  '/control-planes/{controlPlaneId}/config-stores/{configStoreId}/secrets':
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+      - $ref: '#/components/parameters/configStoreId'
+    post:
+      operationId: create-config-store-secret
+      summary: Create Config Store Secret
+      description: Creates a secret for a Config Store.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateConfigStoreSecretRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/ConfigStoreSecretResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+              examples:
+                ConfigStoreSecretBadRequestExample:
+                  $ref: '#/components/examples/ConfigStoreSecretBadRequestExample'
+        '401':
+          $ref: '#/components/responses/ConfigStoreSecretUnauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/ConfigStoreSecretNotFound'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+      tags:
+        - Config Store Secrets
+    get:
+      operationId: list-config-store-secrets
+      summary: List Config Store Secrets
+      description: Returns a collection of all secrets for a Config Store.
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageAfter'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListConfigStoreSecretsResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/ConfigStoreSecretUnauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/ConfigStoreSecretNotFound'
+      tags:
+        - Config Store Secrets
+  '/control-planes/{controlPlaneId}/config-stores/{configStoreId}/secrets/{key}':
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+      - $ref: '#/components/parameters/configStoreId'
+      - name: key
+        in: path
+        description: Config Store Secret key
+        required: true
+        schema:
+          type: string
+          example: ConfigStoreSecretKey
+    get:
+      operationId: get-config-store-secret
+      summary: Fetch Config Store Secret
+      description: Returns a secret for the Config Store.
+      responses:
+        '200':
+          $ref: '#/components/responses/ConfigStoreSecretResponse'
+        '401':
+          $ref: '#/components/responses/ConfigStoreSecretUnauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/ConfigStoreSecretNotFound'
+      tags:
+        - Config Store Secrets
+    put:
+      operationId: update-config-store-secret
+      summary: Update Config Store Secret
+      description: Updates a secret for a Config Store.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateConfigStoreSecretRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/ConfigStoreSecretResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+              examples:
+                ConfigStoreSecretBadRequestExample:
+                  $ref: '#/components/examples/ConfigStoreSecretBadRequestExample'
+        '401':
+          $ref: '#/components/responses/ConfigStoreSecretUnauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/ConfigStoreSecretNotFound'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+      tags:
+        - Config Store Secrets
+    delete:
+      operationId: delete-config-store-secret
+      summary: Delete Config Store Secret
+      description: Removes a secret from a Config Store.
+      responses:
+        '204':
+          description: Secret for the Config Store was deleted successfully.
+        '401':
+          $ref: '#/components/responses/ConfigStoreSecretUnauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/ConfigStoreSecretNotFound'
+      tags:
+        - Config Store Secrets
+components:
+  parameters:
+    PageAfter:
+      name: 'page[after]'
+      description: 'Request the next page of data, starting with the item after this parameter.'
+      required: false
+      in: query
+      allowEmptyValue: true
+      schema:
+        type: string
+        example: ewogICJpZCI6ICJoZWxsbyB3b3JsZCIKfQ
+    PageSize:
+      name: 'page[size]'
+      description: The maximum number of items to include per page. The last page of a collection may include fewer items.
+      required: false
+      in: query
+      allowEmptyValue: true
+      schema:
+        type: integer
+        example: 10
+    configStoreId:
+      schema:
+        type: string
+        format: uuid
+        example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+      name: configStoreId
+      in: path
+      required: true
+      description: Config Store identifier
+    controlPlaneId:
+      name: controlPlaneId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 9524ec7d-36d9-465d-a8c5-83a3c9390458
+      description: The UUID of your control plane. This variable is available in the Konnect manager
+  schemas:
+    ConfigStore:
+      type: object
+      properties:
+        id:
+          description: The Config Store ID.
+          type: string
+          format: uuid
+          example: b9e81174-b5bb-4638-a3c3-8afe61a0abf8
+          readOnly: true
+        name:
+          description: The name of the Config Store
+          type: string
+          example: My Name
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+    CreateConfigStore:
+      description: The request schema to create a Config Store.
+      type: object
+      properties:
+        name:
+          type: string
+          example: Config Store
+          maxLength: 100
+          minLength: 1
+      additionalProperties: false
+      title: Create Config Store Request
+    UpdateConfigStore:
+      description: The request schema to update a Config Store.
+      type: object
+      properties:
+        name:
+          type: string
+          example: Config Store
+          maxLength: 100
+          minLength: 1
+      additionalProperties: false
+      title: Update Config Store Request
+    ConfigStoreSecret:
+      type: object
+      properties:
+        key:
+          type: string
+        value:
+          type: string
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+    CreateConfigStoreSecret:
+      type: object
+      properties:
+        key:
+          type: string
+          maxLength: 512
+          minLength: 1
+        value:
+          type: string
+          maxLength: 5120
+          minLength: 1
+      required:
+        - key
+        - value
+    UpdateConfigStoreSecret:
+      type: object
+      properties:
+        value:
+          type: string
+          maxLength: 5120
+          minLength: 1
+      required:
+        - value
+    BaseError:
+      description: standard error
+      type: object
+      properties:
+        status:
+          description: |
+            The HTTP status code of the error. Useful when passing the response
+            body to child properties in a frontend UI. Must be returned as an integer.
+          type: integer
+          readOnly: true
+        title:
+          description: |
+            A short, human-readable summary of the problem. It should not
+            change between occurences of a problem, except for localization.
+            Should be provided as "Sentence case" for direct use in the UI.
+          type: string
+          readOnly: true
+        type:
+          description: The error type.
+          type: string
+          readOnly: true
+        instance:
+          description: |
+            Used to return the correlation ID back to the user, in the format
+            kong:trace:<correlation_id>. This helps us find the relevant logs
+            when a customer reports an issue.
+          type: string
+          readOnly: true
+        detail:
+          description: |
+            A human readable explanation specific to this occurence of the problem.
+            This field may contain request/entity data to help the user understand
+            what went wrong. Enclose variable values in square brackets. Should be
+            provided as "Sentence case" for direct use in the UI.
+          type: string
+          readOnly: true
+      required:
+        - status
+        - title
+        - instance
+        - detail
+      title: Error
+    InvalidRules:
+      description: invalid parameters rules
+      type: string
+      enum:
+        - required
+        - max_length
+        - is_array
+        - is_base64
+        - is_boolean
+        - is_date_time
+        - is_integer
+        - is_null
+        - is_number
+        - is_object
+        - is_string
+        - is_uuid
+        - is_fqdn
+        - is_arn
+        - unknown_property
+        - is_label
+        - matches_regex
+        - invalid
+        - is_supported_network_availability_zone_list
+        - is_supported_network_cidr_block
+        - is_supported_provider_region
+      nullable: true
+      readOnly: true
+    InvalidParameterStandard:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          $ref: '#/components/schemas/InvalidRules'
+        source:
+          type: string
+          example: body
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+      additionalProperties: false
+      required:
+        - field
+        - reason
+    InvalidParameterMinimumLength:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          description: invalid parameters rules
+          type: string
+          enum:
+            - min_length
+            - min_digits
+            - min_lowercase
+            - min_uppercase
+            - min_symbols
+          nullable: false
+          readOnly: true
+        minimum:
+          type: integer
+          example: 8
+        source:
+          type: string
+          example: body
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+      additionalProperties: false
+      required:
+        - field
+        - reason
+        - rule
+        - minimum
+    InvalidParameterChoiceItem:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          description: invalid parameters rules
+          type: string
+          enum:
+            - enum
+          nullable: false
+          readOnly: true
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+        choices:
+          type: array
+          items: {}
+          minimum: 1
+          nullable: false
+          readOnly: true
+          uniqueItems: true
+        source:
+          type: string
+          example: body
+      additionalProperties: false
+      required:
+        - field
+        - reason
+        - rule
+        - choices
+    InvalidParameterDependentItem:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          description: invalid parameters rules
+          type: string
+          enum:
+            - dependent_fields
+          nullable: true
+          readOnly: true
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+        dependents:
+          type: array
+          items: {}
+          nullable: true
+          readOnly: true
+          uniqueItems: true
+        source:
+          type: string
+          example: body
+      additionalProperties: false
+      required:
+        - field
+        - rule
+        - reason
+        - dependents
+    InvalidParameters:
+      description: invalid parameters
+      type: array
+      items:
+        oneOf:
+          - $ref: '#/components/schemas/InvalidParameterStandard'
+          - $ref: '#/components/schemas/InvalidParameterMinimumLength'
+          - $ref: '#/components/schemas/InvalidParameterChoiceItem'
+          - $ref: '#/components/schemas/InvalidParameterDependentItem'
+      minItems: 1
+      nullable: false
+      uniqueItems: true
+    BadRequestError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          required:
+            - invalid_parameters
+          properties:
+            invalid_parameters:
+              $ref: '#/components/schemas/InvalidParameters'
+    UnauthorizedError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 401
+            title:
+              example: Unauthorized
+            type:
+              example: 'https://httpstatuses.com/401'
+            instance:
+              example: 'kong:trace:1234567890'
+            detail:
+              example: Invalid credentials
+    ForbiddenError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 403
+            title:
+              example: Forbidden
+            type:
+              example: 'https://httpstatuses.com/403'
+            instance:
+              example: 'kong:trace:1234567890'
+            detail:
+              example: Forbidden
+    NotFoundError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 404
+            title:
+              example: Not Found
+            type:
+              example: 'https://httpstatuses.com/404'
+            instance:
+              example: 'kong:trace:1234567890'
+            detail:
+              example: Not found
+    CursorMetaPage:
+      type: object
+      properties:
+        first:
+          description: URI to the first page
+          type: string
+          format: path
+        last:
+          description: URI to the last page
+          type: string
+          format: path
+        next:
+          description: URI to the next page
+          type: string
+          format: path
+          nullable: true
+        previous:
+          description: URI to the previous page
+          type: string
+          format: path
+          nullable: true
+        size:
+          description: Requested page size
+          type: number
+          example: 10
+      required:
+        - size
+        - next
+        - previous
+    CursorMeta:
+      description: Pagination metadata.
+      type: object
+      properties:
+        page:
+          $ref: '#/components/schemas/CursorMetaPage'
+      required:
+        - page
+    CreatedAt:
+      description: An ISO-8601 timestamp representation of entity creation date.
+      type: string
+      format: date-time
+      example: '2022-11-04T20:10:06.927Z'
+      readOnly: true
+    UpdatedAt:
+      description: An ISO-8601 timestamp representation of entity update date.
+      type: string
+      format: date-time
+      example: '2022-11-04T20:10:06.927Z'
+      readOnly: true
+    UnsupportedMediaTypeError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 415
+            title:
+              example: UnsupportedMediaType
+            type:
+              example: 'https://httpstatuses.com/415'
+            instance:
+              example: 'kong:trace:1234567890'
+            detail:
+              example: UnsupportedMediaType
+  examples:
+    ConfigStoreExample:
+      value:
+        id: e7a4f6c0-5777-4a37-bcb9-2d37d3b362ee
+        name: Config Store
+        created_at: {}
+        updated_at: {}
+    ConfigStoreSecretExample:
+      value:
+        key: ConfigStoreSecretKey
+        value: ConfigStoreSecretValue
+        created_at: {}
+        updated_at: {}
+    CreateConfigStoreRequestExample:
+      summary: Create Config Store Request
+      value:
+        name: Config Store
+    CreateConfigStoreSecretRequestExample:
+      summary: Create Config Store Secret Request
+      value:
+        key: ConfigStoreSecretKey
+        value: ConfigStoreSecretValue
+    ConfigStoreNameBadRequestExample:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'kong:trace:8405749052424858251'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: name
+            rule: min_length
+            minimum: 1
+            reason: name must be longer than or equal to 1 characters
+    ConfigStoreSecretBadRequestExample:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'kong:trace:8405749052424858251'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: key
+            rule: min_length
+            minimum: 1
+            reason: name must be longer than or equal to 1 characters
+    UpdateConfigStoreRequestExample:
+      summary: Update Config Store Request
+      value:
+        name: Config Store with Updated Name
+    UpdateConfigStoreSecretRequestExample:
+      summary: Update Config Store Secret Request
+      value:
+        value: ConfigStoreSecretValue
+    DeleteConfigStoreBadRequestExample:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'kong:trace:1433447772874964729'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: force
+            rule: required
+            reason: This Config Store has 4 secrets. These must be individually removed before deletion or the force=true query param can be used to automatically delete associated entities.”
+            source: query
+    UnauthorizedExample:
+      value:
+        status: 401
+        title: Unauthorized
+        instance: 'kong:trace:8347343766220159418'
+        detail: Unauthorized
+    ForbiddenExample:
+      value:
+        status: 403
+        title: Forbidden
+        instance: 'kong:trace:2723154947768991354'
+        detail: You do not have permission to perform this action
+    NotFoundExample:
+      value:
+        status: 404
+        title: Not Found
+        instance: 'kong:trace:6816496025408232265'
+        detail: Not Found
+    UnsupportedMediaTypeExample:
+      value:
+        status: 415
+        title: Unsupported Media Type
+        instance: 'kong:trace:8347343766220159418'
+        detail: 'This API only supports requests with `Content-Type: application/json`'
+  requestBodies:
+    CreateConfigStoreRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateConfigStore'
+          examples:
+            CreateConfigStoreRequestExample:
+              $ref: '#/components/examples/CreateConfigStoreRequestExample'
+    CreateConfigStoreSecretRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateConfigStoreSecret'
+          examples:
+            CreateConfigStoreRequestExample:
+              $ref: '#/components/examples/CreateConfigStoreSecretRequestExample'
+    UpdateConfigStoreRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateConfigStore'
+          examples:
+            UpdateConfigStoreRequestExample:
+              $ref: '#/components/examples/UpdateConfigStoreRequestExample'
+    UpdateConfigStoreSecretRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateConfigStoreSecret'
+          examples:
+            UpdateConfigStoreSecretRequestExample:
+              $ref: '#/components/examples/UpdateConfigStoreSecretRequestExample'
+  responses:
+    ListConfigStoresResponse:
+      description: List of Config Stores
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              meta:
+                $ref: '#/components/schemas/CursorMeta'
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ConfigStore'
+            required:
+              - data
+              - meta
+            title: ListConfigStoresResponse
+          examples:
+            Config Stores:
+              value:
+                data:
+                  - id: e7a4f6c0-5777-4a37-bcb9-2d37d3b362ee
+                    name: Config Store
+                    created_at: '2023-01-01T00:00:00.000Z'
+                    updated_at: '2023-01-01T00:00:00.000Z'
+                meta:
+                  page:
+                    size: 1
+                    previous: null
+                    next: '/config-stores?page[after]=dXVpZC01'
+    ListConfigStoreSecretsResponse:
+      description: List of Config Store Secrets
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              meta:
+                $ref: '#/components/schemas/CursorMeta'
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ConfigStoreSecret'
+            required:
+              - data
+              - meta
+            title: ListConfigStoreSecretsResponse
+          examples:
+            Config Store Secrets:
+              value:
+                data:
+                  - key: ConfigStoreSecretKey
+                    value: ConfigStoreSecretValue
+                    created_at: '2023-01-01T00:00:00.000Z'
+                    updated_at: '2023-01-01T00:00:00.000Z'
+                meta:
+                  page:
+                    size: 1
+                    previous: null
+                    next: '/config-stores/e7a4f6c0-5777-4a37-bcb9-2d37d3b362ee/secrets?page[after]=dXVpZC01'
+    ConfigStoreResponse:
+      description: Config Store
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ConfigStore'
+          examples:
+            Create Config Store Response:
+              $ref: '#/components/examples/ConfigStoreExample'
+    ConfigStoreSecretResponse:
+      description: Config Store Secret
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ConfigStoreSecret'
+          examples:
+            Create Config Store Secret Response:
+              $ref: '#/components/examples/ConfigStoreSecretExample'
+    ConfigStoreUnauthorized:
+      description: Unauthorized
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/UnauthorizedError'
+          examples:
+            UnauthorizedExample:
+              $ref: '#/components/examples/UnauthorizedExample'
+    ConfigStoreSecretUnauthorized:
+      description: Unauthorized
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/UnauthorizedError'
+          examples:
+            UnauthorizedExample:
+              $ref: '#/components/examples/UnauthorizedExample'
+    ConfigStoreNotFound:
+      description: Not Found
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/NotFoundError'
+          examples:
+            NotFoundExample:
+              $ref: '#/components/examples/NotFoundExample'
+    ConfigStoreSecretNotFound:
+      description: Not Found
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/NotFoundError'
+          examples:
+            NotFoundExample:
+              $ref: '#/components/examples/NotFoundExample'
+    Forbidden:
+      description: Forbidden
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ForbiddenError'
+          examples:
+            UnauthorizedExample:
+              $ref: '#/components/examples/ForbiddenExample'
+    UnsupportedMediaType:
+      description: Unsupported Media Type
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/UnsupportedMediaTypeError'
+          examples:
+            UnsupportedMediaTypeExample:
+              $ref: '#/components/examples/UnsupportedMediaTypeExample'
+  securitySchemes:
+    konnectAccessToken:
+      type: http
+      scheme: bearer
+      description: The Konnect access token is meant to be used by the Konnect dashboard and the decK CLI to authenticate with.
+    personalAccessToken:
+      type: http
+      scheme: bearer
+      description: The personal access token is meant to be used as an alternative to basic-auth when accessing Konnect via APIs. You can generate a Personal Access Token (PAT) from the personal access token page in the Konnect dashboard.
+tags:
+  - description: Config Stores
+    name: Config Stores
+  - description: Config Store Secrets
+    name: Config Store Secrets
+externalDocs:
+  description: Documentation for Kong Gateway and its APIs
+  url: 'https://docs.konghq.com'
+security:
+  - konnectAccessToken: []
+  - personalAccessToken: []
