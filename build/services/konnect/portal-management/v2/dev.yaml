@@ -164,7 +164,7 @@ paths:
     get:
       operationId: get-portal-customization
       summary: Get Customization
-      description: Returns the customized portal appearance.
+      description: Returns the portal customization options.
       parameters:
         - $ref: '#/components/parameters/parameters-PortalId'
       responses:
@@ -181,7 +181,26 @@ paths:
     put:
       operationId: replace-portal-customization
       summary: Replace Customization
-      description: Replace the customized portal appearance
+      description: Replace the portal customization options.
+      parameters:
+        - $ref: '#/components/parameters/parameters-PortalId'
+      requestBody:
+        $ref: '#/components/requestBodies/ReplacePortalCustomization'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetPortalCustomization'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Customization
+    patch:
+      operationId: update-portal-customization
+      summary: Update Portal Customization
+      description: 'Update the portal customization options, merging properties.'
       parameters:
         - $ref: '#/components/parameters/parameters-PortalId'
       requestBody:

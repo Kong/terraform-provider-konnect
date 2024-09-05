@@ -1120,7 +1120,7 @@ paths:
       x-internal: true
       x-unstable: true
       summary: Get Customization
-      description: Returns the customized portal appearance.
+      description: Returns the portal customization options.
       operationId: get-portal-customization
       parameters:
         - $ref: >-
@@ -1143,8 +1143,33 @@ paths:
       x-internal: true
       x-unstable: true
       summary: Replace Customization
-      description: Replace the customized portal appearance
+      description: Replace the portal customization options.
       operationId: replace-portal-customization
+      parameters:
+        - $ref: >-
+            ../../../../common/definitions/portal.yaml#/components/parameters/PortalId
+      tags:
+        - Portal Customization
+      requestBody:
+        $ref: '#/components/requestBodies/ReplacePortalCustomization'
+      responses:
+        '200':
+          $ref: '../../../../common/definitions/portal.yaml#/components/responses/GetPortalCustomization'
+        '401':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Unauthorized
+        '403':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Forbidden
+        '404':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/NotFound
+    patch:
+      x-internal: true
+      x-unstable: true
+      summary: Update Portal Customization
+      description: Update the portal customization options, merging properties.
+      operationId: update-portal-customization
       parameters:
         - $ref: >-
             ../../../../common/definitions/portal.yaml#/components/parameters/PortalId
