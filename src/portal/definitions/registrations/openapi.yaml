@@ -244,6 +244,7 @@ components:
           type: string
           format: uuid
         granted_scopes:
+          deprecated: true
           description: |
             Cached list of scopes granted for the given application registration.
             Use `/api/v2/applications/{applicationId}/registrations/{registrationId}/granted-scopes` to get up to date granted scopes from the IDP.

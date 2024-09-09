@@ -3411,6 +3411,7 @@ components:
           type: array
           items:
             type: string
+          deprecated: true
       additionalProperties: false
       required:
         - id
