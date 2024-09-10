@@ -487,6 +487,7 @@ overrides:
       - "src/konnect/definitions/analytics-requests/v2/**/openapi.yaml#/paths/~1api-requests/post/responses"
       - "src/konnect/definitions/analytics-explore/v2/**/openapi.yaml#/paths/~1explore/post/responses"
       - "src/portal/definitions/analytics/openapi.yaml#/paths/~1api~1v2~1stats/post/responses"
+      - "src/portal/definitions/analytics/openapi.yaml#/paths/~1api~1v2~1explore/post/responses"
     rules:
       errors-post-not-contain-200: "off"
   # Embedded Kong Gateway core-entities are not expected to pass
