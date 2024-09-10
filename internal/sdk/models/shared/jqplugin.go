@@ -154,6 +154,47 @@ func (o *JQPluginConfig) GetResponseJqProgramOptions() *ResponseJqProgramOptions
 	return o.ResponseJqProgramOptions
 }
 
+type JQPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *JQPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type JQPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *JQPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type JQPluginOrdering struct {
+	After  *JQPluginAfter  `json:"after,omitempty"`
+	Before *JQPluginBefore `json:"before,omitempty"`
+}
+
+func (o *JQPluginOrdering) GetAfter() *JQPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *JQPluginOrdering) GetBefore() *JQPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
 type JQPluginProtocols string
 
 const (
@@ -256,10 +297,11 @@ type JQPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool   `json:"enabled,omitempty"`
-	ID           *string `json:"id,omitempty"`
-	InstanceName *string `json:"instance_name,omitempty"`
-	name         *string `const:"jq" json:"name,omitempty"`
+	Enabled      *bool             `json:"enabled,omitempty"`
+	ID           *string           `json:"id,omitempty"`
+	InstanceName *string           `json:"instance_name,omitempty"`
+	name         *string           `const:"jq" json:"name,omitempty"`
+	Ordering     *JQPluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []JQPluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
@@ -323,6 +365,13 @@ func (o *JQPlugin) GetInstanceName() *string {
 
 func (o *JQPlugin) GetName() *string {
 	return types.String("jq")
+}
+
+func (o *JQPlugin) GetOrdering() *JQPluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
 }
 
 func (o *JQPlugin) GetProtocols() []JQPluginProtocols {

@@ -119,6 +119,47 @@ func (o *JWTPluginConfig) GetURIParamNames() []string {
 	return o.URIParamNames
 }
 
+type JWTPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *JWTPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type JWTPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *JWTPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type JWTPluginOrdering struct {
+	After  *JWTPluginAfter  `json:"after,omitempty"`
+	Before *JWTPluginBefore `json:"before,omitempty"`
+}
+
+func (o *JWTPluginOrdering) GetAfter() *JWTPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *JWTPluginOrdering) GetBefore() *JWTPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
 type JWTPluginProtocols string
 
 const (
@@ -221,10 +262,11 @@ type JWTPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool   `json:"enabled,omitempty"`
-	ID           *string `json:"id,omitempty"`
-	InstanceName *string `json:"instance_name,omitempty"`
-	name         *string `const:"jwt" json:"name,omitempty"`
+	Enabled      *bool              `json:"enabled,omitempty"`
+	ID           *string            `json:"id,omitempty"`
+	InstanceName *string            `json:"instance_name,omitempty"`
+	name         *string            `const:"jwt" json:"name,omitempty"`
+	Ordering     *JWTPluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []JWTPluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
@@ -288,6 +330,13 @@ func (o *JWTPlugin) GetInstanceName() *string {
 
 func (o *JWTPlugin) GetName() *string {
 	return types.String("jwt")
+}
+
+func (o *JWTPlugin) GetOrdering() *JWTPluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
 }
 
 func (o *JWTPlugin) GetProtocols() []JWTPluginProtocols {

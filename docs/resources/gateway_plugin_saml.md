@@ -14,10 +14,104 @@ GatewayPluginSaml Resource
 
 ```terraform
 resource "konnect_gateway_plugin_saml" "my_gatewaypluginsaml" {
+  config = {
+    anonymous                              = "...my_anonymous..."
+    assertion_consumer_path                = "...my_assertion_consumer_path..."
+    idp_certificate                        = "...my_idp_certificate..."
+    idp_sso_url                            = "...my_idp_sso_url..."
+    issuer                                 = "...my_issuer..."
+    nameid_format                          = "Unspecified"
+    request_digest_algorithm               = "SHA1"
+    request_signature_algorithm            = "SHA384"
+    request_signing_certificate            = "...my_request_signing_certificate..."
+    request_signing_key                    = "...my_request_signing_key..."
+    response_digest_algorithm              = "SHA1"
+    response_encryption_key                = "...my_response_encryption_key..."
+    response_signature_algorithm           = "SHA384"
+    session_absolute_timeout               = 8.17
+    session_audience                       = "...my_session_audience..."
+    session_cookie_domain                  = "...my_session_cookie_domain..."
+    session_cookie_http_only               = true
+    session_cookie_name                    = "...my_session_cookie_name..."
+    session_cookie_path                    = "...my_session_cookie_path..."
+    session_cookie_same_site               = "None"
+    session_cookie_secure                  = false
+    session_enforce_same_subject           = false
+    session_hash_storage_key               = true
+    session_hash_subject                   = false
+    session_idling_timeout                 = 3.44
+    session_memcached_host                 = "...my_session_memcached_host..."
+    session_memcached_port                 = 59429
+    session_memcached_prefix               = "...my_session_memcached_prefix..."
+    session_memcached_socket               = "...my_session_memcached_socket..."
+    session_redis_cluster_max_redirections = 7
+    session_redis_cluster_nodes = [
+      {
+        ip   = "...my_ip..."
+        port = 51948
+      }
+    ]
+    session_redis_connect_timeout     = 6
+    session_redis_host                = "...my_session_redis_host..."
+    session_redis_password            = "...my_session_redis_password..."
+    session_redis_port                = 11375
+    session_redis_prefix              = "...my_session_redis_prefix..."
+    session_redis_read_timeout        = 7
+    session_redis_send_timeout        = 1
+    session_redis_server_name         = "...my_session_redis_server_name..."
+    session_redis_socket              = "...my_session_redis_socket..."
+    session_redis_ssl                 = true
+    session_redis_ssl_verify          = true
+    session_redis_username            = "...my_session_redis_username..."
+    session_remember                  = true
+    session_remember_absolute_timeout = 4.84
+    session_remember_cookie_name      = "...my_session_remember_cookie_name..."
+    session_remember_rolling_timeout  = 7.93
+    session_request_headers = [
+      "id"
+    ]
+    session_response_headers = [
+      "id"
+    ]
+    session_rolling_timeout      = 5.35
+    session_secret               = "...my_session_secret..."
+    session_storage              = "cookie"
+    session_store_metadata       = false
+    validate_assertion_signature = false
+  }
+  consumer = {
+    id = "...my_id..."
+  }
+  consumer_group = {
+    id = "...my_id..."
+  }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-  enabled          = false
+  enabled          = true
   instance_name    = "...my_instance_name..."
-  plugin_id        = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+  ordering = {
+    after = {
+      access = [
+        "..."
+      ]
+    }
+    before = {
+      access = [
+        "..."
+      ]
+    }
+  }
+  protocols = [
+    "grpc"
+  ]
+  route = {
+    id = "...my_id..."
+  }
+  service = {
+    id = "...my_id..."
+  }
+  tags = [
+    "..."
+  ]
 }
 ```
 
@@ -26,7 +120,7 @@ resource "konnect_gateway_plugin_saml" "my_gatewaypluginsaml" {
 
 ### Required
 
-- `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager.
+- `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
 
 ### Optional
 
@@ -35,6 +129,7 @@ resource "konnect_gateway_plugin_saml" "my_gatewaypluginsaml" {
 - `consumer_group` (Attributes) (see [below for nested schema](#nestedatt--consumer_group))
 - `enabled` (Boolean) Whether the plugin is applied.
 - `instance_name` (String)
+- `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
 - `protocols` (List of String) A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 - `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used. (see [below for nested schema](#nestedatt--route))
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
@@ -130,6 +225,31 @@ Optional:
 Optional:
 
 - `id` (String)
+
+
+<a id="nestedatt--ordering"></a>
+### Nested Schema for `ordering`
+
+Optional:
+
+- `after` (Attributes) (see [below for nested schema](#nestedatt--ordering--after))
+- `before` (Attributes) (see [below for nested schema](#nestedatt--ordering--before))
+
+<a id="nestedatt--ordering--after"></a>
+### Nested Schema for `ordering.after`
+
+Optional:
+
+- `access` (List of String)
+
+
+<a id="nestedatt--ordering--before"></a>
+### Nested Schema for `ordering.before`
+
+Optional:
+
+- `access` (List of String)
+
 
 
 <a id="nestedatt--route"></a>

@@ -14,10 +14,60 @@ GatewayPluginOauth2 Resource
 
 ```terraform
 resource "konnect_gateway_plugin_oauth2" "my_gatewaypluginoauth2" {
+  config = {
+    accept_http_if_already_terminated = false
+    anonymous                         = "...my_anonymous..."
+    auth_header_name                  = "...my_auth_header_name..."
+    enable_authorization_code         = true
+    enable_client_credentials         = true
+    enable_implicit_grant             = true
+    enable_password_grant             = false
+    global_credentials                = true
+    hide_credentials                  = false
+    mandatory_scope                   = true
+    persistent_refresh_token          = true
+    pkce                              = "strict"
+    provision_key                     = "...my_provision_key..."
+    refresh_token_ttl                 = 43385286.23
+    reuse_refresh_token               = false
+    scopes = [
+      "..."
+    ]
+    token_expiration = 5.01
+  }
+  consumer = {
+    id = "...my_id..."
+  }
+  consumer_group = {
+    id = "...my_id..."
+  }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   enabled          = true
   instance_name    = "...my_instance_name..."
-  plugin_id        = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+  ordering = {
+    after = {
+      access = [
+        "..."
+      ]
+    }
+    before = {
+      access = [
+        "..."
+      ]
+    }
+  }
+  protocols = [
+    "wss"
+  ]
+  route = {
+    id = "...my_id..."
+  }
+  service = {
+    id = "...my_id..."
+  }
+  tags = [
+    "..."
+  ]
 }
 ```
 
@@ -26,7 +76,7 @@ resource "konnect_gateway_plugin_oauth2" "my_gatewaypluginoauth2" {
 
 ### Required
 
-- `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager.
+- `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
 
 ### Optional
 
@@ -35,6 +85,7 @@ resource "konnect_gateway_plugin_oauth2" "my_gatewaypluginoauth2" {
 - `consumer_group` (Attributes) (see [below for nested schema](#nestedatt--consumer_group))
 - `enabled` (Boolean) Whether the plugin is applied.
 - `instance_name` (String)
+- `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
 - `protocols` (List of String) A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 - `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used. (see [below for nested schema](#nestedatt--route))
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
@@ -84,6 +135,31 @@ Optional:
 Optional:
 
 - `id` (String)
+
+
+<a id="nestedatt--ordering"></a>
+### Nested Schema for `ordering`
+
+Optional:
+
+- `after` (Attributes) (see [below for nested schema](#nestedatt--ordering--after))
+- `before` (Attributes) (see [below for nested schema](#nestedatt--ordering--before))
+
+<a id="nestedatt--ordering--after"></a>
+### Nested Schema for `ordering.after`
+
+Optional:
+
+- `access` (List of String)
+
+
+<a id="nestedatt--ordering--before"></a>
+### Nested Schema for `ordering.before`
+
+Optional:
+
+- `access` (List of String)
+
 
 
 <a id="nestedatt--route"></a>

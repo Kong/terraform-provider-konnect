@@ -14,9 +14,14 @@ GatewaySNI Resource
 
 ```terraform
 resource "konnect_gateway_sni" "my_gatewaysni" {
+  certificate = {
+    id = "...my_id..."
+  }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-  name             = "Mr. Terri Stokes"
-  sni_id           = "64c17a1a-b7d7-4a65-a5a4-42e4a7016e7f"
+  name             = "...my_name..."
+  tags = [
+    "..."
+  ]
 }
 ```
 
@@ -25,7 +30,7 @@ resource "konnect_gateway_sni" "my_gatewaysni" {
 
 ### Required
 
-- `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager.
+- `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
 
 ### Optional
 

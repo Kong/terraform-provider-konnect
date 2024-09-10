@@ -67,7 +67,7 @@ func (r *APIProductResource) Schema(ctx context.Context, req resource.SchemaRequ
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
-				Description: `API product identifier`,
+				Description: `The API product ID.`,
 			},
 			"labels": schema.MapAttribute{
 				Computed:    true,
@@ -75,8 +75,7 @@ func (r *APIProductResource) Schema(ctx context.Context, req resource.SchemaRequ
 				ElementType: types.StringType,
 				MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
 					`` + "\n" +
-					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".` + "\n" +
-					``,
+					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
 			},
 			"name": schema.StringAttribute{
 				Required:    true,

@@ -37,6 +37,7 @@ type GatewayPluginStatsdDataSourceModel struct {
 	Enabled        types.Bool                        `tfsdk:"enabled"`
 	ID             types.String                      `tfsdk:"id"`
 	InstanceName   types.String                      `tfsdk:"instance_name"`
+	Ordering       *tfTypes.CreateACLPluginOrdering  `tfsdk:"ordering"`
 	Protocols      []types.String                    `tfsdk:"protocols"`
 	Route          *tfTypes.ACLConsumer              `tfsdk:"route"`
 	Service        *tfTypes.ACLConsumer              `tfsdk:"service"`
@@ -64,8 +65,7 @@ func (r *GatewayPluginStatsdDataSource) Schema(ctx context.Context, req datasour
 						Description: `List of status code ranges that are allowed to be logged in metrics.`,
 					},
 					"consumer_identifier_default": schema.StringAttribute{
-						Computed:    true,
-						Description: `must be one of ["consumer_id", "custom_id", "username"]`,
+						Computed: true,
 					},
 					"flush_timeout": schema.NumberAttribute{
 						Computed: true,
@@ -83,11 +83,11 @@ func (r *GatewayPluginStatsdDataSource) Schema(ctx context.Context, req datasour
 							Attributes: map[string]schema.Attribute{
 								"consumer_identifier": schema.StringAttribute{
 									Computed:    true,
-									Description: `Authenticated user detail. must be one of ["consumer_id", "custom_id", "username"]`,
+									Description: `Authenticated user detail.`,
 								},
 								"name": schema.StringAttribute{
 									Computed:    true,
-									Description: `StatsD metric’s name. must be one of ["kong_latency", "latency", "request_count", "request_per_user", "request_size", "response_size", "status_count", "status_count_per_user", "unique_users", "upstream_latency", "status_count_per_workspace", "status_count_per_user_per_route", "shdict_usage", "cache_datastore_hits_total", "cache_datastore_misses_total"]`,
+									Description: `StatsD metric’s name.`,
 								},
 								"sample_rate": schema.NumberAttribute{
 									Computed:    true,
@@ -95,15 +95,15 @@ func (r *GatewayPluginStatsdDataSource) Schema(ctx context.Context, req datasour
 								},
 								"service_identifier": schema.StringAttribute{
 									Computed:    true,
-									Description: `Service detail. must be one of ["service_id", "service_name", "service_host", "service_name_or_host"]`,
+									Description: `Service detail.`,
 								},
 								"stat_type": schema.StringAttribute{
 									Computed:    true,
-									Description: `Determines what sort of event a metric represents. must be one of ["counter", "gauge", "histogram", "meter", "set", "timer"]`,
+									Description: `Determines what sort of event a metric represents.`,
 								},
 								"workspace_identifier": schema.StringAttribute{
 									Computed:    true,
-									Description: `Workspace detail. must be one of ["workspace_id", "workspace_name"]`,
+									Description: `Workspace detail.`,
 								},
 							},
 						},
@@ -157,12 +157,10 @@ func (r *GatewayPluginStatsdDataSource) Schema(ctx context.Context, req datasour
 						Computed: true,
 					},
 					"service_identifier_default": schema.StringAttribute{
-						Computed:    true,
-						Description: `must be one of ["service_id", "service_name", "service_host", "service_name_or_host"]`,
+						Computed: true,
 					},
 					"tag_style": schema.StringAttribute{
-						Computed:    true,
-						Description: `must be one of ["dogstatsd", "influxdb", "librato", "signalfx"]`,
+						Computed: true,
 					},
 					"udp_packet_size": schema.NumberAttribute{
 						Computed: true,
@@ -171,8 +169,7 @@ func (r *GatewayPluginStatsdDataSource) Schema(ctx context.Context, req datasour
 						Computed: true,
 					},
 					"workspace_identifier_default": schema.StringAttribute{
-						Computed:    true,
-						Description: `must be one of ["workspace_id", "workspace_name"]`,
+						Computed: true,
 					},
 				},
 			},
@@ -210,6 +207,29 @@ func (r *GatewayPluginStatsdDataSource) Schema(ctx context.Context, req datasour
 			},
 			"instance_name": schema.StringAttribute{
 				Computed: true,
+			},
+			"ordering": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"after": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+					"before": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+				},
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,

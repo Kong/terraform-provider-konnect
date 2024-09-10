@@ -582,6 +582,47 @@ func (o *CreateStatsdPluginConfig) GetWorkspaceIdentifierDefault() *CreateStatsd
 	return o.WorkspaceIdentifierDefault
 }
 
+type CreateStatsdPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *CreateStatsdPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type CreateStatsdPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *CreateStatsdPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type CreateStatsdPluginOrdering struct {
+	After  *CreateStatsdPluginAfter  `json:"after,omitempty"`
+	Before *CreateStatsdPluginBefore `json:"before,omitempty"`
+}
+
+func (o *CreateStatsdPluginOrdering) GetAfter() *CreateStatsdPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *CreateStatsdPluginOrdering) GetBefore() *CreateStatsdPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
 type CreateStatsdPluginProtocols string
 
 const (
@@ -682,9 +723,10 @@ func (o *CreateStatsdPluginService) GetID() *string {
 type CreateStatsdPlugin struct {
 	Config *CreateStatsdPluginConfig `json:"config,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool   `json:"enabled,omitempty"`
-	InstanceName *string `json:"instance_name,omitempty"`
-	name         *string `const:"statsd" json:"name,omitempty"`
+	Enabled      *bool                       `json:"enabled,omitempty"`
+	InstanceName *string                     `json:"instance_name,omitempty"`
+	name         *string                     `const:"statsd" json:"name,omitempty"`
+	Ordering     *CreateStatsdPluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []CreateStatsdPluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
@@ -732,6 +774,13 @@ func (o *CreateStatsdPlugin) GetInstanceName() *string {
 
 func (o *CreateStatsdPlugin) GetName() *string {
 	return types.String("statsd")
+}
+
+func (o *CreateStatsdPlugin) GetOrdering() *CreateStatsdPluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
 }
 
 func (o *CreateStatsdPlugin) GetProtocols() []CreateStatsdPluginProtocols {

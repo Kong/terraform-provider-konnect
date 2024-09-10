@@ -485,6 +485,47 @@ func (o *RateLimitingAdvancedPluginConfig) GetWindowType() *WindowType {
 	return o.WindowType
 }
 
+type RateLimitingAdvancedPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *RateLimitingAdvancedPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type RateLimitingAdvancedPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *RateLimitingAdvancedPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type RateLimitingAdvancedPluginOrdering struct {
+	After  *RateLimitingAdvancedPluginAfter  `json:"after,omitempty"`
+	Before *RateLimitingAdvancedPluginBefore `json:"before,omitempty"`
+}
+
+func (o *RateLimitingAdvancedPluginOrdering) GetAfter() *RateLimitingAdvancedPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *RateLimitingAdvancedPluginOrdering) GetBefore() *RateLimitingAdvancedPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
 type RateLimitingAdvancedPluginProtocols string
 
 const (
@@ -587,10 +628,11 @@ type RateLimitingAdvancedPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool   `json:"enabled,omitempty"`
-	ID           *string `json:"id,omitempty"`
-	InstanceName *string `json:"instance_name,omitempty"`
-	name         *string `const:"rate-limiting-advanced" json:"name,omitempty"`
+	Enabled      *bool                               `json:"enabled,omitempty"`
+	ID           *string                             `json:"id,omitempty"`
+	InstanceName *string                             `json:"instance_name,omitempty"`
+	name         *string                             `const:"rate-limiting-advanced" json:"name,omitempty"`
+	Ordering     *RateLimitingAdvancedPluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []RateLimitingAdvancedPluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
@@ -654,6 +696,13 @@ func (o *RateLimitingAdvancedPlugin) GetInstanceName() *string {
 
 func (o *RateLimitingAdvancedPlugin) GetName() *string {
 	return types.String("rate-limiting-advanced")
+}
+
+func (o *RateLimitingAdvancedPlugin) GetOrdering() *RateLimitingAdvancedPluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
 }
 
 func (o *RateLimitingAdvancedPlugin) GetProtocols() []RateLimitingAdvancedPluginProtocols {

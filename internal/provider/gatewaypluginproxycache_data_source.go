@@ -37,6 +37,7 @@ type GatewayPluginProxyCacheDataSourceModel struct {
 	Enabled        types.Bool                            `tfsdk:"enabled"`
 	ID             types.String                          `tfsdk:"id"`
 	InstanceName   types.String                          `tfsdk:"instance_name"`
+	Ordering       *tfTypes.CreateACLPluginOrdering      `tfsdk:"ordering"`
 	Protocols      []types.String                        `tfsdk:"protocols"`
 	Route          *tfTypes.ACLConsumer                  `tfsdk:"route"`
 	Service        *tfTypes.ACLConsumer                  `tfsdk:"service"`
@@ -114,7 +115,7 @@ func (r *GatewayPluginProxyCacheDataSource) Schema(ctx context.Context, req data
 					},
 					"strategy": schema.StringAttribute{
 						Computed:    true,
-						Description: `The backing data store in which to hold cache entities. must be one of ["memory"]`,
+						Description: `The backing data store in which to hold cache entities.`,
 					},
 					"vary_headers": schema.ListAttribute{
 						Computed:    true,
@@ -162,6 +163,29 @@ func (r *GatewayPluginProxyCacheDataSource) Schema(ctx context.Context, req data
 			},
 			"instance_name": schema.StringAttribute{
 				Computed: true,
+			},
+			"ordering": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"after": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+					"before": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+				},
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,

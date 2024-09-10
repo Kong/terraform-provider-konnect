@@ -112,7 +112,7 @@ func (r *GatewayServiceDataSource) Schema(ctx context.Context, req datasource.Sc
 			},
 			"protocol": schema.StringAttribute{
 				Computed:    true,
-				Description: `The protocol used to communicate with the upstream. must be one of ["grpc", "grpcs", "http", "https", "tcp", "tls", "tls_passthrough", "udp", "ws", "wss"]`,
+				Description: `The protocol used to communicate with the upstream.`,
 			},
 			"read_timeout": schema.Int64Attribute{
 				Computed:    true,

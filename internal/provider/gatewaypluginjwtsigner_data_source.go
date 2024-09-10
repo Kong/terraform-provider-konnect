@@ -37,6 +37,7 @@ type GatewayPluginJWTSignerDataSourceModel struct {
 	Enabled        types.Bool                           `tfsdk:"enabled"`
 	ID             types.String                         `tfsdk:"id"`
 	InstanceName   types.String                         `tfsdk:"instance_name"`
+	Ordering       *tfTypes.CreateACLPluginOrdering     `tfsdk:"ordering"`
 	Protocols      []types.String                       `tfsdk:"protocols"`
 	Route          *tfTypes.ACLConsumer                 `tfsdk:"route"`
 	Service        *tfTypes.ACLConsumer                 `tfsdk:"service"`
@@ -185,7 +186,7 @@ func (r *GatewayPluginJWTSignerDataSource) Schema(ctx context.Context, req datas
 					},
 					"access_token_signing_algorithm": schema.StringAttribute{
 						Computed:    true,
-						Description: `When this plugin sets the upstream header as specified with ` + "`" + `config.access_token_upstream_header` + "`" + `, re-signs the original access token using the private keys of the JWT Signer plugin. Specify the algorithm that is used to sign the token. The ` + "`" + `config.access_token_issuer` + "`" + ` specifies which ` + "`" + `keyset` + "`" + ` is used to sign the new token issued by Kong using the specified signing algorithm. must be one of ["HS256", "HS384", "HS512", "RS256", "RS512", "ES256", "ES384", "ES512", "PS256", "PS384", "PS512", "EdDSA"]`,
+						Description: `When this plugin sets the upstream header as specified with ` + "`" + `config.access_token_upstream_header` + "`" + `, re-signs the original access token using the private keys of the JWT Signer plugin. Specify the algorithm that is used to sign the token. The ` + "`" + `config.access_token_issuer` + "`" + ` specifies which ` + "`" + `keyset` + "`" + ` is used to sign the new token issued by Kong using the specified signing algorithm.`,
 					},
 					"access_token_upstream_header": schema.StringAttribute{
 						Computed:    true,
@@ -345,7 +346,7 @@ func (r *GatewayPluginJWTSignerDataSource) Schema(ctx context.Context, req datas
 					},
 					"channel_token_signing_algorithm": schema.StringAttribute{
 						Computed:    true,
-						Description: `When this plugin sets the upstream header as specified with ` + "`" + `config.channel_token_upstream_header` + "`" + `, it also re-signs the original channel token using private keys of this plugin. Specify the algorithm that is used to sign the token. must be one of ["HS256", "HS384", "HS512", "RS256", "RS512", "ES256", "ES384", "ES512", "PS256", "PS384", "PS512", "EdDSA"]`,
+						Description: `When this plugin sets the upstream header as specified with ` + "`" + `config.channel_token_upstream_header` + "`" + `, it also re-signs the original channel token using private keys of this plugin. Specify the algorithm that is used to sign the token.`,
 					},
 					"channel_token_upstream_header": schema.StringAttribute{
 						Computed:    true,
@@ -491,6 +492,29 @@ func (r *GatewayPluginJWTSignerDataSource) Schema(ctx context.Context, req datas
 			},
 			"instance_name": schema.StringAttribute{
 				Computed: true,
+			},
+			"ordering": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"after": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+					"before": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+				},
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,

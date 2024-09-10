@@ -84,6 +84,11 @@ type APIProductVersion struct {
 	//
 	// Deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
 	Deprecated bool `json:"deprecated"`
+	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
+	//
+	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+	//
+	Labels map[string]string `json:"labels"`
 	// The set of errors encountered when trying to sync the auth strategies on the version
 	AuthStrategySyncErrors []AuthStrategySyncError `json:"auth_strategy_sync_errors,omitempty"`
 	// The list of portals which this API product version is configured for
@@ -138,6 +143,13 @@ func (o *APIProductVersion) GetDeprecated() bool {
 		return false
 	}
 	return o.Deprecated
+}
+
+func (o *APIProductVersion) GetLabels() map[string]string {
+	if o == nil {
+		return map[string]string{}
+	}
+	return o.Labels
 }
 
 func (o *APIProductVersion) GetAuthStrategySyncErrors() []AuthStrategySyncError {

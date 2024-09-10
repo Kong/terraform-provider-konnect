@@ -3428,6 +3428,47 @@ func (o *CreateOpenidConnectPluginConfig) GetVerifySignature() *bool {
 	return o.VerifySignature
 }
 
+type CreateOpenidConnectPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *CreateOpenidConnectPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type CreateOpenidConnectPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *CreateOpenidConnectPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type CreateOpenidConnectPluginOrdering struct {
+	After  *CreateOpenidConnectPluginAfter  `json:"after,omitempty"`
+	Before *CreateOpenidConnectPluginBefore `json:"before,omitempty"`
+}
+
+func (o *CreateOpenidConnectPluginOrdering) GetAfter() *CreateOpenidConnectPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *CreateOpenidConnectPluginOrdering) GetBefore() *CreateOpenidConnectPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
 type CreateOpenidConnectPluginProtocols string
 
 const (
@@ -3528,9 +3569,10 @@ func (o *CreateOpenidConnectPluginService) GetID() *string {
 type CreateOpenidConnectPlugin struct {
 	Config *CreateOpenidConnectPluginConfig `json:"config,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool   `json:"enabled,omitempty"`
-	InstanceName *string `json:"instance_name,omitempty"`
-	name         *string `const:"openid-connect" json:"name,omitempty"`
+	Enabled      *bool                              `json:"enabled,omitempty"`
+	InstanceName *string                            `json:"instance_name,omitempty"`
+	name         *string                            `const:"openid-connect" json:"name,omitempty"`
+	Ordering     *CreateOpenidConnectPluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []CreateOpenidConnectPluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
@@ -3578,6 +3620,13 @@ func (o *CreateOpenidConnectPlugin) GetInstanceName() *string {
 
 func (o *CreateOpenidConnectPlugin) GetName() *string {
 	return types.String("openid-connect")
+}
+
+func (o *CreateOpenidConnectPlugin) GetOrdering() *CreateOpenidConnectPluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
 }
 
 func (o *CreateOpenidConnectPlugin) GetProtocols() []CreateOpenidConnectPluginProtocols {

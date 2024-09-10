@@ -14,10 +14,66 @@ GatewayPluginAWSLambda Resource
 
 ```terraform
 resource "konnect_gateway_plugin_aws_lambda" "my_gatewaypluginawslambda" {
+  config = {
+    aws_assume_role_arn       = "...my_aws_assume_role_arn..."
+    aws_imds_protocol_version = "v2"
+    aws_key                   = "...my_aws_key..."
+    aws_region                = "...my_aws_region..."
+    aws_role_session_name     = "...my_aws_role_session_name..."
+    aws_secret                = "...my_aws_secret..."
+    awsgateway_compatible     = true
+    base64_encode_body        = true
+    disable_https             = false
+    forward_request_body      = false
+    forward_request_headers   = true
+    forward_request_method    = true
+    forward_request_uri       = false
+    function_name             = "...my_function_name..."
+    host                      = "...my_host..."
+    invocation_type           = "DryRun"
+    is_proxy_integration      = false
+    keepalive                 = 1.19
+    log_type                  = "None"
+    port                      = 53665
+    proxy_url                 = "...my_proxy_url..."
+    qualifier                 = "...my_qualifier..."
+    skip_large_bodies         = true
+    timeout                   = 7.36
+    unhandled_status          = 728
+  }
+  consumer = {
+    id = "...my_id..."
+  }
+  consumer_group = {
+    id = "...my_id..."
+  }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   enabled          = true
   instance_name    = "...my_instance_name..."
-  plugin_id        = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+  ordering = {
+    after = {
+      access = [
+        "..."
+      ]
+    }
+    before = {
+      access = [
+        "..."
+      ]
+    }
+  }
+  protocols = [
+    "grpc"
+  ]
+  route = {
+    id = "...my_id..."
+  }
+  service = {
+    id = "...my_id..."
+  }
+  tags = [
+    "..."
+  ]
 }
 ```
 
@@ -26,7 +82,7 @@ resource "konnect_gateway_plugin_aws_lambda" "my_gatewaypluginawslambda" {
 
 ### Required
 
-- `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager.
+- `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
 
 ### Optional
 
@@ -35,6 +91,7 @@ resource "konnect_gateway_plugin_aws_lambda" "my_gatewaypluginawslambda" {
 - `consumer_group` (Attributes) (see [below for nested schema](#nestedatt--consumer_group))
 - `enabled` (Boolean) Whether the plugin is applied.
 - `instance_name` (String)
+- `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
 - `protocols` (List of String) A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 - `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used. (see [below for nested schema](#nestedatt--route))
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
@@ -92,6 +149,31 @@ Optional:
 Optional:
 
 - `id` (String)
+
+
+<a id="nestedatt--ordering"></a>
+### Nested Schema for `ordering`
+
+Optional:
+
+- `after` (Attributes) (see [below for nested schema](#nestedatt--ordering--after))
+- `before` (Attributes) (see [below for nested schema](#nestedatt--ordering--before))
+
+<a id="nestedatt--ordering--after"></a>
+### Nested Schema for `ordering.after`
+
+Optional:
+
+- `access` (List of String)
+
+
+<a id="nestedatt--ordering--before"></a>
+### Nested Schema for `ordering.before`
+
+Optional:
+
+- `access` (List of String)
+
 
 
 <a id="nestedatt--route"></a>

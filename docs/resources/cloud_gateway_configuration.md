@@ -14,9 +14,8 @@ CloudGatewayConfiguration Resource
 
 ```terraform
 resource "konnect_cloud_gateway_configuration" "my_cloudgatewayconfiguration" {
-  api_access        = "private"
-  configuration_id  = "edaf40f9-9fb0-4ffe-bb74-4e763a6bd471"
-  control_plane_geo = "au"
+  api_access        = "public"
+  control_plane_geo = "us"
   control_plane_id  = "0949471e-b759-45ba-87ab-ee63fb781388"
   dataplane_groups = [
     {
@@ -26,21 +25,16 @@ resource "konnect_cloud_gateway_configuration" "my_cloudgatewayconfiguration" {
           kind     = "autopilot"
           max_rps  = 1000
         }
+        configuration_data_plane_group_autoscale_static = {
+          instance_type       = "medium"
+          kind                = "static"
+          requested_instances = 3
+        }
       }
       cloud_gateway_network_id = "36ae63d3-efd1-4bec-b246-62aa5d3f5695"
-      created_at               = "2022-11-04T20:10:06.927Z"
-      egress_ip_addresses = [
-        "...",
-      ]
-      id = "cbb8872a-1f83-4806-bf69-fdf0b4783c7e"
-      private_ip_addresses = [
-        "...",
-      ]
-      provider   = "aws"
-      region     = "us-east-2"
-      state      = "terminating"
-      updated_at = "2022-11-04T20:10:06.927Z"
-    },
+      provider                 = "aws"
+      region                   = "us-east-2"
+    }
   ]
   version = "3.2"
 }
@@ -53,12 +47,12 @@ resource "konnect_cloud_gateway_configuration" "my_cloudgatewayconfiguration" {
 
 - `control_plane_geo` (String) Set of control-plane geos supported for deploying cloud-gateways configurations. must be one of ["us", "eu", "au"]
 - `control_plane_id` (String)
-- `dataplane_groups` (Attributes List) List of data-plane groups that describe where to deploy instances, along with how many instances. (see [below for nested schema](#nestedatt--dataplane_groups))
+- `dataplane_groups` (Attributes Set) List of data-plane groups that describe where to deploy instances, along with how many instances. (see [below for nested schema](#nestedatt--dataplane_groups))
 - `version` (String) Supported gateway version.
 
 ### Optional
 
-- `api_access` (String) Type of API access data-plane groups will support for a configuration. must be one of ["private", "public", "private+public"]; Default: "private+public"
+- `api_access` (String) Type of API access data-plane groups will support for a configuration. Default: "private+public"; must be one of ["private", "public", "private+public"]
 
 ### Read-Only
 
@@ -75,7 +69,7 @@ Optional:
 
 - `autoscale` (Attributes) Not Null (see [below for nested schema](#nestedatt--dataplane_groups--autoscale))
 - `cloud_gateway_network_id` (String) Not Null
-- `provider` (String) Name of cloud provider. Not Null; must be one of ["aws"]
+- `provider` (String) Name of cloud provider. Not Null; must be "aws"
 - `region` (String) Region ID for cloud provider region. Not Null
 
 Read-Only:
@@ -101,7 +95,7 @@ Optional:
 Optional:
 
 - `base_rps` (Number) Base number of requests per second that the deployment target should support. Not Null
-- `kind` (String) Not Null; must be one of ["autopilot"]
+- `kind` (String) Not Null; must be "autopilot"
 - `max_rps` (Number) Max number of requests per second that the deployment target should support. If not set, this defaults to 10x base_rps.
 
 
@@ -111,7 +105,7 @@ Optional:
 Optional:
 
 - `instance_type` (String) Instance type name to indicate capacity. Not Null; must be one of ["small", "medium", "large"]
-- `kind` (String) Not Null; must be one of ["static"]
+- `kind` (String) Not Null; must be "static"
 - `requested_instances` (Number) Number of data-planes the deployment target will contain. Not Null
 
 
@@ -124,7 +118,7 @@ Read-Only:
 
 - `autoscale` (Attributes) (see [below for nested schema](#nestedatt--dataplane_group_config--autoscale))
 - `cloud_gateway_network_id` (String)
-- `provider` (String) Name of cloud provider. must be one of ["aws"]
+- `provider` (String) Name of cloud provider. must be "aws"
 - `region` (String) Region ID for cloud provider region.
 
 <a id="nestedatt--dataplane_group_config--autoscale"></a>
@@ -141,7 +135,7 @@ Read-Only:
 Read-Only:
 
 - `base_rps` (Number) Base number of requests per second that the deployment target should support.
-- `kind` (String) must be one of ["autopilot"]
+- `kind` (String) must be "autopilot"
 - `max_rps` (Number) Max number of requests per second that the deployment target should support. If not set, this defaults to 10x base_rps.
 
 
@@ -151,7 +145,7 @@ Read-Only:
 Read-Only:
 
 - `instance_type` (String) Instance type name to indicate capacity. must be one of ["small", "medium", "large"]
-- `kind` (String) must be one of ["static"]
+- `kind` (String) must be "static"
 - `requested_instances` (Number) Number of data-planes the deployment target will contain.
 
 ## Import

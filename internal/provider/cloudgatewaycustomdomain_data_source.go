@@ -56,12 +56,11 @@ func (r *CloudGatewayCustomDomainDataSource) Schema(ctx context.Context, req dat
 			"certificate_id": schema.StringAttribute{
 				Computed: true,
 				MarkdownDescription: `Certificate ID for the certificate representing this domain and stored on data-planes for this` + "\n" +
-					`control-plane. Can be retrieved via the control-planes API for this custom domain's control-plane.` + "\n" +
-					``,
+					`control-plane. Can be retrieved via the control-planes API for this custom domain's control-plane.`,
 			},
 			"control_plane_geo": schema.StringAttribute{
 				Computed:    true,
-				Description: `Set of control-plane geos supported for deploying cloud-gateways configurations. must be one of ["us", "eu", "au"]`,
+				Description: `Set of control-plane geos supported for deploying cloud-gateways configurations.`,
 			},
 			"control_plane_id": schema.StringAttribute{
 				Computed: true,
@@ -77,8 +76,7 @@ func (r *CloudGatewayCustomDomainDataSource) Schema(ctx context.Context, req dat
 			"entity_version": schema.Int64Attribute{
 				Computed: true,
 				MarkdownDescription: `Monotonically-increasing version count of the custom domain, to indicate the order of updates to the custom` + "\n" +
-					`domain.` + "\n" +
-					``,
+					`domain.`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
@@ -86,28 +84,25 @@ func (r *CloudGatewayCustomDomainDataSource) Schema(ctx context.Context, req dat
 			"sni_id": schema.StringAttribute{
 				Computed: true,
 				MarkdownDescription: `Server Name Indication ID for this domain and stored on data-planes for this control-plane. Can be retrieved` + "\n" +
-					`via the control-planes API for this custom domain's control-plane.` + "\n" +
-					``,
+					`via the control-planes API for this custom domain's control-plane.`,
 			},
 			"state": schema.StringAttribute{
 				Computed:    true,
-				Description: `State of the custom domain. must be one of ["created", "initializing", "ready", "terminating", "terminated", "error"]`,
+				Description: `State of the custom domain.`,
 			},
 			"state_metadata": schema.SingleNestedAttribute{
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
 					"reason": schema.StringAttribute{
-						Computed: true,
-						MarkdownDescription: `Reason why the custom domain may be in an erroneous state, reported from backing infrastructure.` + "\n" +
-							``,
+						Computed:    true,
+						Description: `Reason why the custom domain may be in an erroneous state, reported from backing infrastructure.`,
 					},
 					"reported_status": schema.StringAttribute{
 						Computed:    true,
 						Description: `Reported status of the custom domain from backing infrastructure.`,
 					},
 				},
-				MarkdownDescription: `Metadata describing the backing state of the custom domain and why it may be in an erroneous state.` + "\n" +
-					``,
+				Description: `Metadata describing the backing state of the custom domain and why it may be in an erroneous state.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed:    true,

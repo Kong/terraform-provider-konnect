@@ -68,8 +68,7 @@ func (r *PortalProductVersionDataSource) Schema(ctx context.Context, req datasou
 									ElementType: types.StringType,
 								},
 								"credential_type": schema.StringAttribute{
-									Computed:    true,
-									Description: `must be one of ["client_credentials", "self_managed_client_credentials"]`,
+									Computed: true,
 								},
 								"id": schema.StringAttribute{
 									Computed:    true,
@@ -85,8 +84,7 @@ func (r *PortalProductVersionDataSource) Schema(ctx context.Context, req datasou
 							Computed: true,
 							Attributes: map[string]schema.Attribute{
 								"credential_type": schema.StringAttribute{
-									Computed:    true,
-									Description: `must be one of ["key_auth"]`,
+									Computed: true,
 								},
 								"id": schema.StringAttribute{
 									Computed:    true,
@@ -128,7 +126,7 @@ func (r *PortalProductVersionDataSource) Schema(ctx context.Context, req datasou
 			},
 			"publish_status": schema.StringAttribute{
 				Computed:    true,
-				Description: `Publication status of the API product version on the portal. must be one of ["published", "unpublished"]`,
+				Description: `Publication status of the API product version on the portal`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed:    true,

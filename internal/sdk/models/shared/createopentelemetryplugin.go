@@ -412,6 +412,47 @@ func (o *CreateOpentelemetryPluginConfig) GetSendTimeout() *int64 {
 	return o.SendTimeout
 }
 
+type CreateOpentelemetryPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *CreateOpentelemetryPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type CreateOpentelemetryPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *CreateOpentelemetryPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type CreateOpentelemetryPluginOrdering struct {
+	After  *CreateOpentelemetryPluginAfter  `json:"after,omitempty"`
+	Before *CreateOpentelemetryPluginBefore `json:"before,omitempty"`
+}
+
+func (o *CreateOpentelemetryPluginOrdering) GetAfter() *CreateOpentelemetryPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *CreateOpentelemetryPluginOrdering) GetBefore() *CreateOpentelemetryPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
 type CreateOpentelemetryPluginProtocols string
 
 const (
@@ -512,9 +553,10 @@ func (o *CreateOpentelemetryPluginService) GetID() *string {
 type CreateOpentelemetryPlugin struct {
 	Config *CreateOpentelemetryPluginConfig `json:"config,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool   `json:"enabled,omitempty"`
-	InstanceName *string `json:"instance_name,omitempty"`
-	name         *string `const:"opentelemetry" json:"name,omitempty"`
+	Enabled      *bool                              `json:"enabled,omitempty"`
+	InstanceName *string                            `json:"instance_name,omitempty"`
+	name         *string                            `const:"opentelemetry" json:"name,omitempty"`
+	Ordering     *CreateOpentelemetryPluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []CreateOpentelemetryPluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
@@ -562,6 +604,13 @@ func (o *CreateOpentelemetryPlugin) GetInstanceName() *string {
 
 func (o *CreateOpentelemetryPlugin) GetName() *string {
 	return types.String("opentelemetry")
+}
+
+func (o *CreateOpentelemetryPlugin) GetOrdering() *CreateOpentelemetryPluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
 }
 
 func (o *CreateOpentelemetryPlugin) GetProtocols() []CreateOpentelemetryPluginProtocols {

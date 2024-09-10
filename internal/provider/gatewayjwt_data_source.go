@@ -53,8 +53,7 @@ func (r *GatewayJWTDataSource) Schema(ctx context.Context, req datasource.Schema
 
 		Attributes: map[string]schema.Attribute{
 			"algorithm": schema.StringAttribute{
-				Computed:    true,
-				Description: `must be one of ["HS256", "HS384", "HS512", "RS256", "RS384", "RS512", "ES256", "ES384", "ES512", "PS256", "PS384", "PS512", "EdDSA"]`,
+				Computed: true,
 			},
 			"consumer": schema.SingleNestedAttribute{
 				Computed: true,

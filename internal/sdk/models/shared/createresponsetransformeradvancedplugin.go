@@ -362,6 +362,47 @@ func (o *CreateResponseTransformerAdvancedPluginConfig) GetTransform() *CreateRe
 	return o.Transform
 }
 
+type CreateResponseTransformerAdvancedPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *CreateResponseTransformerAdvancedPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type CreateResponseTransformerAdvancedPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *CreateResponseTransformerAdvancedPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type CreateResponseTransformerAdvancedPluginOrdering struct {
+	After  *CreateResponseTransformerAdvancedPluginAfter  `json:"after,omitempty"`
+	Before *CreateResponseTransformerAdvancedPluginBefore `json:"before,omitempty"`
+}
+
+func (o *CreateResponseTransformerAdvancedPluginOrdering) GetAfter() *CreateResponseTransformerAdvancedPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *CreateResponseTransformerAdvancedPluginOrdering) GetBefore() *CreateResponseTransformerAdvancedPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
 type CreateResponseTransformerAdvancedPluginProtocols string
 
 const (
@@ -462,9 +503,10 @@ func (o *CreateResponseTransformerAdvancedPluginService) GetID() *string {
 type CreateResponseTransformerAdvancedPlugin struct {
 	Config *CreateResponseTransformerAdvancedPluginConfig `json:"config,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool   `json:"enabled,omitempty"`
-	InstanceName *string `json:"instance_name,omitempty"`
-	name         *string `const:"response-transformer-advanced" json:"name,omitempty"`
+	Enabled      *bool                                            `json:"enabled,omitempty"`
+	InstanceName *string                                          `json:"instance_name,omitempty"`
+	name         *string                                          `const:"response-transformer-advanced" json:"name,omitempty"`
+	Ordering     *CreateResponseTransformerAdvancedPluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []CreateResponseTransformerAdvancedPluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
@@ -512,6 +554,13 @@ func (o *CreateResponseTransformerAdvancedPlugin) GetInstanceName() *string {
 
 func (o *CreateResponseTransformerAdvancedPlugin) GetName() *string {
 	return types.String("response-transformer-advanced")
+}
+
+func (o *CreateResponseTransformerAdvancedPlugin) GetOrdering() *CreateResponseTransformerAdvancedPluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
 }
 
 func (o *CreateResponseTransformerAdvancedPlugin) GetProtocols() []CreateResponseTransformerAdvancedPluginProtocols {

@@ -37,6 +37,7 @@ type GatewayPluginAIProxyDataSourceModel struct {
 	Enabled        types.Bool                         `tfsdk:"enabled"`
 	ID             types.String                       `tfsdk:"id"`
 	InstanceName   types.String                       `tfsdk:"instance_name"`
+	Ordering       *tfTypes.CreateACLPluginOrdering   `tfsdk:"ordering"`
 	Protocols      []types.String                     `tfsdk:"protocols"`
 	Route          *tfTypes.ACLConsumer               `tfsdk:"route"`
 	Service        *tfTypes.ACLConsumer               `tfsdk:"service"`
@@ -87,7 +88,7 @@ func (r *GatewayPluginAIProxyDataSource) Schema(ctx context.Context, req datasou
 							},
 							"param_location": schema.StringAttribute{
 								Computed:    true,
-								Description: `Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body. must be one of ["query", "body"]`,
+								Description: `Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body.`,
 							},
 							"param_name": schema.StringAttribute{
 								Computed:    true,
@@ -140,7 +141,7 @@ func (r *GatewayPluginAIProxyDataSource) Schema(ctx context.Context, req datasou
 									},
 									"llama2_format": schema.StringAttribute{
 										Computed:    true,
-										Description: `If using llama2 provider, select the upstream message format. must be one of ["raw", "openai", "ollama"]`,
+										Description: `If using llama2 provider, select the upstream message format.`,
 									},
 									"max_tokens": schema.Int64Attribute{
 										Computed:    true,
@@ -148,7 +149,7 @@ func (r *GatewayPluginAIProxyDataSource) Schema(ctx context.Context, req datasou
 									},
 									"mistral_format": schema.StringAttribute{
 										Computed:    true,
-										Description: `If using mistral provider, select the upstream message format. must be one of ["openai", "ollama"]`,
+										Description: `If using mistral provider, select the upstream message format.`,
 									},
 									"temperature": schema.NumberAttribute{
 										Computed:    true,
@@ -175,17 +176,17 @@ func (r *GatewayPluginAIProxyDataSource) Schema(ctx context.Context, req datasou
 							},
 							"provider": schema.StringAttribute{
 								Computed:    true,
-								Description: `AI provider request format - Kong translates requests to and from the specified backend compatible formats. must be one of ["openai", "azure", "anthropic", "cohere", "mistral", "llama2"]`,
+								Description: `AI provider request format - Kong translates requests to and from the specified backend compatible formats.`,
 							},
 						},
 					},
 					"response_streaming": schema.StringAttribute{
 						Computed:    true,
-						Description: `Whether to 'optionally allow', 'deny', or 'always' (force) the streaming of answers via server sent events. must be one of ["allow", "deny", "always"]`,
+						Description: `Whether to 'optionally allow', 'deny', or 'always' (force) the streaming of answers via server sent events.`,
 					},
 					"route_type": schema.StringAttribute{
 						Computed:    true,
-						Description: `The model's operation implementation, for this provider. Set to ` + "`" + `preserve` + "`" + ` to pass through without transformation. must be one of ["llm/v1/chat", "llm/v1/completions", "preserve"]`,
+						Description: `The model's operation implementation, for this provider. Set to ` + "`" + `preserve` + "`" + ` to pass through without transformation.`,
 					},
 				},
 			},
@@ -223,6 +224,29 @@ func (r *GatewayPluginAIProxyDataSource) Schema(ctx context.Context, req datasou
 			},
 			"instance_name": schema.StringAttribute{
 				Computed: true,
+			},
+			"ordering": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"after": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+					"before": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+				},
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,

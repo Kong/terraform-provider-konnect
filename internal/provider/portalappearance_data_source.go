@@ -54,15 +54,15 @@ func (r *PortalAppearanceDataSource) Schema(ctx context.Context, req datasource.
 				Attributes: map[string]schema.Attribute{
 					"base": schema.StringAttribute{
 						Computed:    true,
-						Description: `The name of the font to render in the browser. must be one of ["Roboto", "Inter", "Open Sans", "Lato", "Slabo 27px", "Slabo 13px", "Oswald", "Source Sans Pro", "Montserrat", "Raleway", "PT Sans", "Lora", "Roboto Mono", "Inconsolata", "Source Code Pro", "PT Mono", "Ubuntu Mono", "IBM Plex Mono"]`,
+						Description: `The name of the font to render in the browser.`,
 					},
 					"code": schema.StringAttribute{
 						Computed:    true,
-						Description: `The name of the font to render in the browser. must be one of ["Roboto", "Inter", "Open Sans", "Lato", "Slabo 27px", "Slabo 13px", "Oswald", "Source Sans Pro", "Montserrat", "Raleway", "PT Sans", "Lora", "Roboto Mono", "Inconsolata", "Source Code Pro", "PT Mono", "Ubuntu Mono", "IBM Plex Mono"]`,
+						Description: `The name of the font to render in the browser.`,
 					},
 					"headings": schema.StringAttribute{
 						Computed:    true,
-						Description: `The name of the font to render in the browser. must be one of ["Roboto", "Inter", "Open Sans", "Lato", "Slabo 27px", "Slabo 13px", "Oswald", "Source Sans Pro", "Montserrat", "Raleway", "PT Sans", "Lora", "Roboto Mono", "Inconsolata", "Source Code Pro", "PT Mono", "Ubuntu Mono", "IBM Plex Mono"]`,
+						Description: `The name of the font to render in the browser.`,
 					},
 				},
 				Description: `Font selections to render text in the portal user interface. Must set use_custom_fonts to true to enable using custom font values.`,
@@ -348,7 +348,7 @@ func (r *PortalAppearanceDataSource) Schema(ctx context.Context, req datasource.
 			},
 			"theme_name": schema.StringAttribute{
 				Computed:    true,
-				Description: `Select a pre-existing default theme or specify 'custom' to use custom_theme variables. must be one of ["mint_rocket", "dark_mode", "custom"]`,
+				Description: `Select a pre-existing default theme or specify 'custom' to use custom_theme variables.`,
 			},
 			"use_custom_fonts": schema.BoolAttribute{
 				Computed:    true,

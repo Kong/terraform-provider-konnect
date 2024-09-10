@@ -29,19 +29,20 @@ type GatewayPluginSamlDataSource struct {
 
 // GatewayPluginSamlDataSourceModel describes the data model.
 type GatewayPluginSamlDataSourceModel struct {
-	Config         *tfTypes.CreateSamlPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer            `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLConsumer            `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                    `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                     `tfsdk:"created_at"`
-	Enabled        types.Bool                      `tfsdk:"enabled"`
-	ID             types.String                    `tfsdk:"id"`
-	InstanceName   types.String                    `tfsdk:"instance_name"`
-	Protocols      []types.String                  `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer            `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer            `tfsdk:"service"`
-	Tags           []types.String                  `tfsdk:"tags"`
-	UpdatedAt      types.Int64                     `tfsdk:"updated_at"`
+	Config         *tfTypes.CreateSamlPluginConfig  `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer             `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer             `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                     `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                      `tfsdk:"created_at"`
+	Enabled        types.Bool                       `tfsdk:"enabled"`
+	ID             types.String                     `tfsdk:"id"`
+	InstanceName   types.String                     `tfsdk:"instance_name"`
+	Ordering       *tfTypes.CreateACLPluginOrdering `tfsdk:"ordering"`
+	Protocols      []types.String                   `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer             `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer             `tfsdk:"service"`
+	Tags           []types.String                   `tfsdk:"tags"`
+	UpdatedAt      types.Int64                      `tfsdk:"updated_at"`
 }
 
 // Metadata returns the data source type name.
@@ -80,15 +81,15 @@ func (r *GatewayPluginSamlDataSource) Schema(ctx context.Context, req datasource
 					},
 					"nameid_format": schema.StringAttribute{
 						Computed:    true,
-						Description: `The requested ` + "`" + `NameId` + "`" + ` format. Options available are: - ` + "`" + `Unspecified` + "`" + ` - ` + "`" + `EmailAddress` + "`" + ` - ` + "`" + `Persistent` + "`" + ` - ` + "`" + `Transient` + "`" + `. must be one of ["Unspecified", "EmailAddress", "Persistent", "Transient"]`,
+						Description: `The requested ` + "`" + `NameId` + "`" + ` format. Options available are: - ` + "`" + `Unspecified` + "`" + ` - ` + "`" + `EmailAddress` + "`" + ` - ` + "`" + `Persistent` + "`" + ` - ` + "`" + `Transient` + "`" + ``,
 					},
 					"request_digest_algorithm": schema.StringAttribute{
 						Computed:    true,
-						Description: `The digest algorithm for Authn requests: - ` + "`" + `SHA256` + "`" + ` - ` + "`" + `SHA1` + "`" + `. must be one of ["SHA256", "SHA1"]`,
+						Description: `The digest algorithm for Authn requests: - ` + "`" + `SHA256` + "`" + ` - ` + "`" + `SHA1` + "`" + ``,
 					},
 					"request_signature_algorithm": schema.StringAttribute{
 						Computed:    true,
-						Description: `The signature algorithm for signing Authn requests. Options available are: - ` + "`" + `SHA256` + "`" + ` - ` + "`" + `SHA384` + "`" + ` - ` + "`" + `SHA512` + "`" + `. must be one of ["SHA256", "SHA384", "SHA512"]`,
+						Description: `The signature algorithm for signing Authn requests. Options available are: - ` + "`" + `SHA256` + "`" + ` - ` + "`" + `SHA384` + "`" + ` - ` + "`" + `SHA512` + "`" + ``,
 					},
 					"request_signing_certificate": schema.StringAttribute{
 						Computed:    true,
@@ -100,7 +101,7 @@ func (r *GatewayPluginSamlDataSource) Schema(ctx context.Context, req datasource
 					},
 					"response_digest_algorithm": schema.StringAttribute{
 						Computed:    true,
-						Description: `The algorithm for verifying digest in SAML responses: - ` + "`" + `SHA256` + "`" + ` - ` + "`" + `SHA1` + "`" + `. must be one of ["SHA256", "SHA1"]`,
+						Description: `The algorithm for verifying digest in SAML responses: - ` + "`" + `SHA256` + "`" + ` - ` + "`" + `SHA1` + "`" + ``,
 					},
 					"response_encryption_key": schema.StringAttribute{
 						Computed:    true,
@@ -108,7 +109,7 @@ func (r *GatewayPluginSamlDataSource) Schema(ctx context.Context, req datasource
 					},
 					"response_signature_algorithm": schema.StringAttribute{
 						Computed:    true,
-						Description: `The algorithm for validating signatures in SAML responses. Options available are: - ` + "`" + `SHA256` + "`" + ` - ` + "`" + `SHA384` + "`" + ` - ` + "`" + `SHA512` + "`" + `. must be one of ["SHA256", "SHA384", "SHA512"]`,
+						Description: `The algorithm for validating signatures in SAML responses. Options available are: - ` + "`" + `SHA256` + "`" + ` - ` + "`" + `SHA384` + "`" + ` - ` + "`" + `SHA512` + "`" + ``,
 					},
 					"session_absolute_timeout": schema.NumberAttribute{
 						Computed:    true,
@@ -136,7 +137,7 @@ func (r *GatewayPluginSamlDataSource) Schema(ctx context.Context, req datasource
 					},
 					"session_cookie_same_site": schema.StringAttribute{
 						Computed:    true,
-						Description: `Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks. must be one of ["Strict", "Lax", "None", "Default"]`,
+						Description: `Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks.`,
 					},
 					"session_cookie_secure": schema.BoolAttribute{
 						Computed:    true,
@@ -276,7 +277,7 @@ func (r *GatewayPluginSamlDataSource) Schema(ctx context.Context, req datasource
 					},
 					"session_storage": schema.StringAttribute{
 						Computed:    true,
-						Description: `The session storage for session data: - ` + "`" + `cookie` + "`" + `: stores session data with the session cookie. The session cannot be invalidated or revoked without changing the session secret, but is stateless, and doesn't require a database. - ` + "`" + `memcached` + "`" + `: stores session data in memcached - ` + "`" + `redis` + "`" + `: stores session data in Redis. must be one of ["cookie", "memcache", "memcached", "redis"]`,
+						Description: `The session storage for session data: - ` + "`" + `cookie` + "`" + `: stores session data with the session cookie. The session cannot be invalidated or revoked without changing the session secret, but is stateless, and doesn't require a database. - ` + "`" + `memcached` + "`" + `: stores session data in memcached - ` + "`" + `redis` + "`" + `: stores session data in Redis`,
 					},
 					"session_store_metadata": schema.BoolAttribute{
 						Computed:    true,
@@ -322,6 +323,29 @@ func (r *GatewayPluginSamlDataSource) Schema(ctx context.Context, req datasource
 			},
 			"instance_name": schema.StringAttribute{
 				Computed: true,
+			},
+			"ordering": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"after": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+					"before": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+				},
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,

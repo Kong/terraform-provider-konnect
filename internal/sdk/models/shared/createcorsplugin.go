@@ -131,6 +131,47 @@ func (o *CreateCORSPluginConfig) GetPrivateNetwork() *bool {
 	return o.PrivateNetwork
 }
 
+type CreateCORSPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *CreateCORSPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type CreateCORSPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *CreateCORSPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type CreateCORSPluginOrdering struct {
+	After  *CreateCORSPluginAfter  `json:"after,omitempty"`
+	Before *CreateCORSPluginBefore `json:"before,omitempty"`
+}
+
+func (o *CreateCORSPluginOrdering) GetAfter() *CreateCORSPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *CreateCORSPluginOrdering) GetBefore() *CreateCORSPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
 type CreateCORSPluginProtocols string
 
 const (
@@ -231,9 +272,10 @@ func (o *CreateCORSPluginService) GetID() *string {
 type CreateCORSPlugin struct {
 	Config *CreateCORSPluginConfig `json:"config,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool   `json:"enabled,omitempty"`
-	InstanceName *string `json:"instance_name,omitempty"`
-	name         *string `const:"cors" json:"name,omitempty"`
+	Enabled      *bool                     `json:"enabled,omitempty"`
+	InstanceName *string                   `json:"instance_name,omitempty"`
+	name         *string                   `const:"cors" json:"name,omitempty"`
+	Ordering     *CreateCORSPluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []CreateCORSPluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
@@ -281,6 +323,13 @@ func (o *CreateCORSPlugin) GetInstanceName() *string {
 
 func (o *CreateCORSPlugin) GetName() *string {
 	return types.String("cors")
+}
+
+func (o *CreateCORSPlugin) GetOrdering() *CreateCORSPluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
 }
 
 func (o *CreateCORSPlugin) GetProtocols() []CreateCORSPluginProtocols {

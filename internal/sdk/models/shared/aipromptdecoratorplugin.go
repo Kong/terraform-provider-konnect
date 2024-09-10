@@ -137,6 +137,47 @@ func (o *AIPromptDecoratorPluginConfig) GetPrompts() *Prompts {
 	return o.Prompts
 }
 
+type AIPromptDecoratorPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *AIPromptDecoratorPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type AIPromptDecoratorPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *AIPromptDecoratorPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type AIPromptDecoratorPluginOrdering struct {
+	After  *AIPromptDecoratorPluginAfter  `json:"after,omitempty"`
+	Before *AIPromptDecoratorPluginBefore `json:"before,omitempty"`
+}
+
+func (o *AIPromptDecoratorPluginOrdering) GetAfter() *AIPromptDecoratorPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *AIPromptDecoratorPluginOrdering) GetBefore() *AIPromptDecoratorPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
 type AIPromptDecoratorPluginProtocols string
 
 const (
@@ -239,10 +280,11 @@ type AIPromptDecoratorPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool   `json:"enabled,omitempty"`
-	ID           *string `json:"id,omitempty"`
-	InstanceName *string `json:"instance_name,omitempty"`
-	name         *string `const:"ai-prompt-decorator" json:"name,omitempty"`
+	Enabled      *bool                            `json:"enabled,omitempty"`
+	ID           *string                          `json:"id,omitempty"`
+	InstanceName *string                          `json:"instance_name,omitempty"`
+	name         *string                          `const:"ai-prompt-decorator" json:"name,omitempty"`
+	Ordering     *AIPromptDecoratorPluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []AIPromptDecoratorPluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
@@ -306,6 +348,13 @@ func (o *AIPromptDecoratorPlugin) GetInstanceName() *string {
 
 func (o *AIPromptDecoratorPlugin) GetName() *string {
 	return types.String("ai-prompt-decorator")
+}
+
+func (o *AIPromptDecoratorPlugin) GetOrdering() *AIPromptDecoratorPluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
 }
 
 func (o *AIPromptDecoratorPlugin) GetProtocols() []AIPromptDecoratorPluginProtocols {

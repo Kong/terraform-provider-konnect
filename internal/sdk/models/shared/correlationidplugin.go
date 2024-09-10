@@ -69,6 +69,47 @@ func (o *CorrelationIDPluginConfig) GetHeaderName() *string {
 	return o.HeaderName
 }
 
+type CorrelationIDPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *CorrelationIDPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type CorrelationIDPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *CorrelationIDPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type CorrelationIDPluginOrdering struct {
+	After  *CorrelationIDPluginAfter  `json:"after,omitempty"`
+	Before *CorrelationIDPluginBefore `json:"before,omitempty"`
+}
+
+func (o *CorrelationIDPluginOrdering) GetAfter() *CorrelationIDPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *CorrelationIDPluginOrdering) GetBefore() *CorrelationIDPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
 type CorrelationIDPluginProtocols string
 
 const (
@@ -171,10 +212,11 @@ type CorrelationIDPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool   `json:"enabled,omitempty"`
-	ID           *string `json:"id,omitempty"`
-	InstanceName *string `json:"instance_name,omitempty"`
-	name         *string `const:"correlation-id" json:"name,omitempty"`
+	Enabled      *bool                        `json:"enabled,omitempty"`
+	ID           *string                      `json:"id,omitempty"`
+	InstanceName *string                      `json:"instance_name,omitempty"`
+	name         *string                      `const:"correlation-id" json:"name,omitempty"`
+	Ordering     *CorrelationIDPluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []CorrelationIDPluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
@@ -238,6 +280,13 @@ func (o *CorrelationIDPlugin) GetInstanceName() *string {
 
 func (o *CorrelationIDPlugin) GetName() *string {
 	return types.String("correlation-id")
+}
+
+func (o *CorrelationIDPlugin) GetOrdering() *CorrelationIDPluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
 }
 
 func (o *CorrelationIDPlugin) GetProtocols() []CorrelationIDPluginProtocols {

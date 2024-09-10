@@ -37,6 +37,7 @@ type GatewayPluginRateLimitingAdvancedDataSourceModel struct {
 	Enabled        types.Bool                                      `tfsdk:"enabled"`
 	ID             types.String                                    `tfsdk:"id"`
 	InstanceName   types.String                                    `tfsdk:"instance_name"`
+	Ordering       *tfTypes.CreateACLPluginOrdering                `tfsdk:"ordering"`
 	Protocols      []types.String                                  `tfsdk:"protocols"`
 	Route          *tfTypes.ACLConsumer                            `tfsdk:"route"`
 	Service        *tfTypes.ACLConsumer                            `tfsdk:"service"`
@@ -93,7 +94,7 @@ func (r *GatewayPluginRateLimitingAdvancedDataSource) Schema(ctx context.Context
 					},
 					"identifier": schema.StringAttribute{
 						Computed:    true,
-						Description: `The type of identifier used to generate the rate limit key. Defines the scope used to increment the rate limiting counters. Can be ` + "`" + `ip` + "`" + `, ` + "`" + `credential` + "`" + `, ` + "`" + `consumer` + "`" + `, ` + "`" + `service` + "`" + `, ` + "`" + `header` + "`" + `, ` + "`" + `path` + "`" + ` or ` + "`" + `consumer-group` + "`" + `. must be one of ["ip", "credential", "consumer", "service", "header", "path", "consumer-group"]`,
+						Description: `The type of identifier used to generate the rate limit key. Defines the scope used to increment the rate limiting counters. Can be ` + "`" + `ip` + "`" + `, ` + "`" + `credential` + "`" + `, ` + "`" + `consumer` + "`" + `, ` + "`" + `service` + "`" + `, ` + "`" + `header` + "`" + `, ` + "`" + `path` + "`" + ` or ` + "`" + `consumer-group` + "`" + `.`,
 					},
 					"limit": schema.ListAttribute{
 						Computed:    true,
@@ -167,7 +168,7 @@ func (r *GatewayPluginRateLimitingAdvancedDataSource) Schema(ctx context.Context
 							},
 							"sentinel_role": schema.StringAttribute{
 								Computed:    true,
-								Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["master", "slave", "any"]`,
+								Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel.`,
 							},
 							"sentinel_username": schema.StringAttribute{
 								Computed:    true,
@@ -201,7 +202,7 @@ func (r *GatewayPluginRateLimitingAdvancedDataSource) Schema(ctx context.Context
 					},
 					"strategy": schema.StringAttribute{
 						Computed:    true,
-						Description: `The rate-limiting strategy to use for retrieving and incrementing the limits. Available values are: ` + "`" + `local` + "`" + ` and ` + "`" + `cluster` + "`" + `. must be one of ["cluster", "redis", "local"]`,
+						Description: `The rate-limiting strategy to use for retrieving and incrementing the limits. Available values are: ` + "`" + `local` + "`" + ` and ` + "`" + `cluster` + "`" + `.`,
 					},
 					"sync_rate": schema.NumberAttribute{
 						Computed:    true,
@@ -214,7 +215,7 @@ func (r *GatewayPluginRateLimitingAdvancedDataSource) Schema(ctx context.Context
 					},
 					"window_type": schema.StringAttribute{
 						Computed:    true,
-						Description: `Sets the time window type to either ` + "`" + `sliding` + "`" + ` (default) or ` + "`" + `fixed` + "`" + `. Sliding windows apply the rate limiting logic while taking into account previous hit rates (from the window that immediately precedes the current) using a dynamic weight. Fixed windows consist of buckets that are statically assigned to a definitive time range, each request is mapped to only one fixed window based on its timestamp and will affect only that window's counters. must be one of ["fixed", "sliding"]`,
+						Description: `Sets the time window type to either ` + "`" + `sliding` + "`" + ` (default) or ` + "`" + `fixed` + "`" + `. Sliding windows apply the rate limiting logic while taking into account previous hit rates (from the window that immediately precedes the current) using a dynamic weight. Fixed windows consist of buckets that are statically assigned to a definitive time range, each request is mapped to only one fixed window based on its timestamp and will affect only that window's counters.`,
 					},
 				},
 			},
@@ -252,6 +253,29 @@ func (r *GatewayPluginRateLimitingAdvancedDataSource) Schema(ctx context.Context
 			},
 			"instance_name": schema.StringAttribute{
 				Computed: true,
+			},
+			"ordering": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"after": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+					"before": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+				},
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,

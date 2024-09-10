@@ -12,12 +12,15 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
+	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/internal/validators/stringvalidators"
 )
 
@@ -44,6 +47,7 @@ type GatewayPluginStatsdResourceModel struct {
 	Enabled        types.Bool                        `tfsdk:"enabled"`
 	ID             types.String                      `tfsdk:"id"`
 	InstanceName   types.String                      `tfsdk:"instance_name"`
+	Ordering       *tfTypes.CreateACLPluginOrdering  `tfsdk:"ordering"`
 	Protocols      []types.String                    `tfsdk:"protocols"`
 	Route          *tfTypes.ACLConsumer              `tfsdk:"route"`
 	Service        *tfTypes.ACLConsumer              `tfsdk:"service"`
@@ -98,6 +102,9 @@ func (r *GatewayPluginStatsdResource) Schema(ctx context.Context, req resource.S
 						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
 							Attributes: map[string]schema.Attribute{
 								"consumer_identifier": schema.StringAttribute{
 									Computed:    true,
@@ -322,8 +329,11 @@ func (r *GatewayPluginStatsdResource) Schema(ctx context.Context, req resource.S
 				},
 			},
 			"control_plane_id": schema.StringAttribute{
-				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager.`,
+				Required: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.`,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
@@ -340,6 +350,34 @@ func (r *GatewayPluginStatsdResource) Schema(ctx context.Context, req resource.S
 			"instance_name": schema.StringAttribute{
 				Computed: true,
 				Optional: true,
+			},
+			"ordering": schema.SingleNestedAttribute{
+				Computed: true,
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"after": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+					"before": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+				},
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,

@@ -39,6 +39,47 @@ func (o *AIPromptGuardPluginConfig) GetDenyPatterns() []string {
 	return o.DenyPatterns
 }
 
+type AIPromptGuardPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *AIPromptGuardPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type AIPromptGuardPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *AIPromptGuardPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type AIPromptGuardPluginOrdering struct {
+	After  *AIPromptGuardPluginAfter  `json:"after,omitempty"`
+	Before *AIPromptGuardPluginBefore `json:"before,omitempty"`
+}
+
+func (o *AIPromptGuardPluginOrdering) GetAfter() *AIPromptGuardPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *AIPromptGuardPluginOrdering) GetBefore() *AIPromptGuardPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
 type AIPromptGuardPluginProtocols string
 
 const (
@@ -141,10 +182,11 @@ type AIPromptGuardPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool   `json:"enabled,omitempty"`
-	ID           *string `json:"id,omitempty"`
-	InstanceName *string `json:"instance_name,omitempty"`
-	name         *string `const:"ai-prompt-guard" json:"name,omitempty"`
+	Enabled      *bool                        `json:"enabled,omitempty"`
+	ID           *string                      `json:"id,omitempty"`
+	InstanceName *string                      `json:"instance_name,omitempty"`
+	name         *string                      `const:"ai-prompt-guard" json:"name,omitempty"`
+	Ordering     *AIPromptGuardPluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []AIPromptGuardPluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
@@ -208,6 +250,13 @@ func (o *AIPromptGuardPlugin) GetInstanceName() *string {
 
 func (o *AIPromptGuardPlugin) GetName() *string {
 	return types.String("ai-prompt-guard")
+}
+
+func (o *AIPromptGuardPlugin) GetOrdering() *AIPromptGuardPluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
 }
 
 func (o *AIPromptGuardPlugin) GetProtocols() []AIPromptGuardPluginProtocols {

@@ -1078,6 +1078,47 @@ func (o *JWTSignerPluginConfig) GetVerifyChannelTokenSignature() *bool {
 	return o.VerifyChannelTokenSignature
 }
 
+type JWTSignerPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *JWTSignerPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type JWTSignerPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *JWTSignerPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type JWTSignerPluginOrdering struct {
+	After  *JWTSignerPluginAfter  `json:"after,omitempty"`
+	Before *JWTSignerPluginBefore `json:"before,omitempty"`
+}
+
+func (o *JWTSignerPluginOrdering) GetAfter() *JWTSignerPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *JWTSignerPluginOrdering) GetBefore() *JWTSignerPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
 type JWTSignerPluginProtocols string
 
 const (
@@ -1180,10 +1221,11 @@ type JWTSignerPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool   `json:"enabled,omitempty"`
-	ID           *string `json:"id,omitempty"`
-	InstanceName *string `json:"instance_name,omitempty"`
-	name         *string `const:"jwt-signer" json:"name,omitempty"`
+	Enabled      *bool                    `json:"enabled,omitempty"`
+	ID           *string                  `json:"id,omitempty"`
+	InstanceName *string                  `json:"instance_name,omitempty"`
+	name         *string                  `const:"jwt-signer" json:"name,omitempty"`
+	Ordering     *JWTSignerPluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []JWTSignerPluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
@@ -1247,6 +1289,13 @@ func (o *JWTSignerPlugin) GetInstanceName() *string {
 
 func (o *JWTSignerPlugin) GetName() *string {
 	return types.String("jwt-signer")
+}
+
+func (o *JWTSignerPlugin) GetOrdering() *JWTSignerPluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
 }
 
 func (o *JWTSignerPlugin) GetProtocols() []JWTSignerPluginProtocols {

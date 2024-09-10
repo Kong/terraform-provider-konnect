@@ -14,10 +14,77 @@ GatewayPluginOpentelemetry Resource
 
 ```terraform
 resource "konnect_gateway_plugin_opentelemetry" "my_gatewaypluginopentelemetry" {
+  config = {
+    batch_flush_delay = 7
+    batch_span_count  = 5
+    connect_timeout   = 1207240427
+    endpoint          = "...my_endpoint..."
+    header_type       = "w3c"
+    headers = {
+      "see" : jsonencode("documentation"),
+    }
+    http_response_header_for_traceid = "...my_http_response_header_for_traceid..."
+    propagation = {
+      clear = [
+        "..."
+      ]
+      default_format = "b3"
+      extract = [
+        "ot"
+      ]
+      inject = [
+        "b3"
+      ]
+    }
+    queue = {
+      initial_retry_delay  = 226722
+      max_batch_size       = 779071
+      max_bytes            = 9
+      max_coalescing_delay = 763.01
+      max_entries          = 975127
+      max_retry_delay      = 892016.34
+      max_retry_time       = 0.21
+    }
+    read_timeout = 1485093466
+    resource_attributes = {
+      "see" : jsonencode("documentation"),
+    }
+    sampling_rate = 0.37
+    send_timeout  = 1637096443
+  }
+  consumer = {
+    id = "...my_id..."
+  }
+  consumer_group = {
+    id = "...my_id..."
+  }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   enabled          = true
   instance_name    = "...my_instance_name..."
-  plugin_id        = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+  ordering = {
+    after = {
+      access = [
+        "..."
+      ]
+    }
+    before = {
+      access = [
+        "..."
+      ]
+    }
+  }
+  protocols = [
+    "tls_passthrough"
+  ]
+  route = {
+    id = "...my_id..."
+  }
+  service = {
+    id = "...my_id..."
+  }
+  tags = [
+    "..."
+  ]
 }
 ```
 
@@ -26,7 +93,7 @@ resource "konnect_gateway_plugin_opentelemetry" "my_gatewaypluginopentelemetry" 
 
 ### Required
 
-- `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager.
+- `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
 
 ### Optional
 
@@ -35,6 +102,7 @@ resource "konnect_gateway_plugin_opentelemetry" "my_gatewaypluginopentelemetry" 
 - `consumer_group` (Attributes) (see [below for nested schema](#nestedatt--consumer_group))
 - `enabled` (Boolean) Whether the plugin is applied.
 - `instance_name` (String)
+- `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
 - `protocols` (List of String) A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 - `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used. (see [below for nested schema](#nestedatt--route))
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
@@ -105,6 +173,31 @@ Optional:
 Optional:
 
 - `id` (String)
+
+
+<a id="nestedatt--ordering"></a>
+### Nested Schema for `ordering`
+
+Optional:
+
+- `after` (Attributes) (see [below for nested schema](#nestedatt--ordering--after))
+- `before` (Attributes) (see [below for nested schema](#nestedatt--ordering--before))
+
+<a id="nestedatt--ordering--after"></a>
+### Nested Schema for `ordering.after`
+
+Optional:
+
+- `access` (List of String)
+
+
+<a id="nestedatt--ordering--before"></a>
+### Nested Schema for `ordering.before`
+
+Optional:
+
+- `access` (List of String)
+
 
 
 <a id="nestedatt--route"></a>

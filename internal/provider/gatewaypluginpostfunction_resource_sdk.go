@@ -76,6 +76,33 @@ func (r *GatewayPluginPostFunctionResourceModel) ToSharedCreatePostFunctionPlugi
 	} else {
 		instanceName = nil
 	}
+	var ordering *shared.CreatePostFunctionPluginOrdering
+	if r.Ordering != nil {
+		var after *shared.CreatePostFunctionPluginAfter
+		if r.Ordering.After != nil {
+			var access1 []string = []string{}
+			for _, accessItem1 := range r.Ordering.After.Access {
+				access1 = append(access1, accessItem1.ValueString())
+			}
+			after = &shared.CreatePostFunctionPluginAfter{
+				Access: access1,
+			}
+		}
+		var before *shared.CreatePostFunctionPluginBefore
+		if r.Ordering.Before != nil {
+			var access2 []string = []string{}
+			for _, accessItem2 := range r.Ordering.Before.Access {
+				access2 = append(access2, accessItem2.ValueString())
+			}
+			before = &shared.CreatePostFunctionPluginBefore{
+				Access: access2,
+			}
+		}
+		ordering = &shared.CreatePostFunctionPluginOrdering{
+			After:  after,
+			Before: before,
+		}
+	}
 	var protocols []shared.CreatePostFunctionPluginProtocols = []shared.CreatePostFunctionPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.CreatePostFunctionPluginProtocols(protocolsItem.ValueString()))
@@ -136,6 +163,7 @@ func (r *GatewayPluginPostFunctionResourceModel) ToSharedCreatePostFunctionPlugi
 		Config:        config,
 		Enabled:       enabled,
 		InstanceName:  instanceName,
+		Ordering:      ordering,
 		Protocols:     protocols,
 		Tags:          tags,
 		Consumer:      consumer,
@@ -209,6 +237,29 @@ func (r *GatewayPluginPostFunctionResourceModel) RefreshFromSharedPostFunctionPl
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.InstanceName = types.StringPointerValue(resp.InstanceName)
+		if resp.Ordering == nil {
+			r.Ordering = nil
+		} else {
+			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			if resp.Ordering.After == nil {
+				r.Ordering.After = nil
+			} else {
+				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After.Access = []types.String{}
+				for _, v := range resp.Ordering.After.Access {
+					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				}
+			}
+			if resp.Ordering.Before == nil {
+				r.Ordering.Before = nil
+			} else {
+				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before.Access = []types.String{}
+				for _, v := range resp.Ordering.Before.Access {
+					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				}
+			}
+		}
 		r.Protocols = []types.String{}
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))

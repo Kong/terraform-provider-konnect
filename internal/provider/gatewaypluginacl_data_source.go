@@ -29,19 +29,20 @@ type GatewayPluginACLDataSource struct {
 
 // GatewayPluginACLDataSourceModel describes the data model.
 type GatewayPluginACLDataSourceModel struct {
-	Config         *tfTypes.CreateACLPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer           `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLConsumer           `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                   `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                    `tfsdk:"created_at"`
-	Enabled        types.Bool                     `tfsdk:"enabled"`
-	ID             types.String                   `tfsdk:"id"`
-	InstanceName   types.String                   `tfsdk:"instance_name"`
-	Protocols      []types.String                 `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer           `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer           `tfsdk:"service"`
-	Tags           []types.String                 `tfsdk:"tags"`
-	UpdatedAt      types.Int64                    `tfsdk:"updated_at"`
+	Config         *tfTypes.CreateACLPluginConfig   `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer             `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer             `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                     `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                      `tfsdk:"created_at"`
+	Enabled        types.Bool                       `tfsdk:"enabled"`
+	ID             types.String                     `tfsdk:"id"`
+	InstanceName   types.String                     `tfsdk:"instance_name"`
+	Ordering       *tfTypes.CreateACLPluginOrdering `tfsdk:"ordering"`
+	Protocols      []types.String                   `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer             `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer             `tfsdk:"service"`
+	Tags           []types.String                   `tfsdk:"tags"`
+	UpdatedAt      types.Int64                      `tfsdk:"updated_at"`
 }
 
 // Metadata returns the data source type name.
@@ -111,6 +112,29 @@ func (r *GatewayPluginACLDataSource) Schema(ctx context.Context, req datasource.
 			},
 			"instance_name": schema.StringAttribute{
 				Computed: true,
+			},
+			"ordering": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"after": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+					"before": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+				},
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,

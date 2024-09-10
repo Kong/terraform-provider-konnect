@@ -204,6 +204,47 @@ func (o *CreateRequestTransformerPluginConfig) GetReplace() *CreateRequestTransf
 	return o.Replace
 }
 
+type CreateRequestTransformerPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *CreateRequestTransformerPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type CreateRequestTransformerPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *CreateRequestTransformerPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type CreateRequestTransformerPluginOrdering struct {
+	After  *CreateRequestTransformerPluginAfter  `json:"after,omitempty"`
+	Before *CreateRequestTransformerPluginBefore `json:"before,omitempty"`
+}
+
+func (o *CreateRequestTransformerPluginOrdering) GetAfter() *CreateRequestTransformerPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *CreateRequestTransformerPluginOrdering) GetBefore() *CreateRequestTransformerPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
 type CreateRequestTransformerPluginProtocols string
 
 const (
@@ -304,9 +345,10 @@ func (o *CreateRequestTransformerPluginService) GetID() *string {
 type CreateRequestTransformerPlugin struct {
 	Config *CreateRequestTransformerPluginConfig `json:"config,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool   `json:"enabled,omitempty"`
-	InstanceName *string `json:"instance_name,omitempty"`
-	name         *string `const:"request-transformer" json:"name,omitempty"`
+	Enabled      *bool                                   `json:"enabled,omitempty"`
+	InstanceName *string                                 `json:"instance_name,omitempty"`
+	name         *string                                 `const:"request-transformer" json:"name,omitempty"`
+	Ordering     *CreateRequestTransformerPluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []CreateRequestTransformerPluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
@@ -354,6 +396,13 @@ func (o *CreateRequestTransformerPlugin) GetInstanceName() *string {
 
 func (o *CreateRequestTransformerPlugin) GetName() *string {
 	return types.String("request-transformer")
+}
+
+func (o *CreateRequestTransformerPlugin) GetOrdering() *CreateRequestTransformerPluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
 }
 
 func (o *CreateRequestTransformerPlugin) GetProtocols() []CreateRequestTransformerPluginProtocols {

@@ -14,10 +14,76 @@ GatewayPluginAIProxy Resource
 
 ```terraform
 resource "konnect_gateway_plugin_ai_proxy" "my_gatewaypluginaiproxy" {
+  config = {
+    auth = {
+      azure_client_id            = "...my_azure_client_id..."
+      azure_client_secret        = "...my_azure_client_secret..."
+      azure_tenant_id            = "...my_azure_tenant_id..."
+      azure_use_managed_identity = false
+      header_name                = "...my_header_name..."
+      header_value               = "...my_header_value..."
+      param_location             = "body"
+      param_name                 = "...my_param_name..."
+      param_value                = "...my_param_value..."
+    }
+    logging = {
+      log_payloads   = true
+      log_statistics = false
+    }
+    model = {
+      name = "...my_name..."
+      options = {
+        anthropic_version   = "...my_anthropic_version..."
+        azure_api_version   = "...my_azure_api_version..."
+        azure_deployment_id = "...my_azure_deployment_id..."
+        azure_instance      = "...my_azure_instance..."
+        llama2_format       = "raw"
+        max_tokens          = 3
+        mistral_format      = "openai"
+        temperature         = 2.04
+        top_k               = 113
+        top_p               = 0.81
+        upstream_path       = "...my_upstream_path..."
+        upstream_url        = "...my_upstream_url..."
+      }
+      provider = "cohere"
+    }
+    response_streaming = "always"
+    route_type         = "preserve"
+  }
+  consumer = {
+    id = "...my_id..."
+  }
+  consumer_group = {
+    id = "...my_id..."
+  }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-  enabled          = false
+  enabled          = true
   instance_name    = "...my_instance_name..."
-  plugin_id        = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+  ordering = {
+    after = {
+      access = [
+        "..."
+      ]
+    }
+    before = {
+      access = [
+        "..."
+      ]
+    }
+  }
+  protocols = [
+    "tls"
+  ]
+  route = {
+    id = "...my_id..."
+  }
+  service = {
+    id = "...my_id..."
+  }
+  tags = [
+    "..."
+  ]
 }
 ```
 
@@ -26,7 +92,7 @@ resource "konnect_gateway_plugin_ai_proxy" "my_gatewaypluginaiproxy" {
 
 ### Required
 
-- `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager.
+- `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
 
 ### Optional
 
@@ -35,6 +101,7 @@ resource "konnect_gateway_plugin_ai_proxy" "my_gatewaypluginaiproxy" {
 - `consumer_group` (Attributes) (see [below for nested schema](#nestedatt--consumer_group))
 - `enabled` (Boolean) Whether the plugin is applied.
 - `instance_name` (String)
+- `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
 - `protocols` (List of String) A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 - `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used. (see [below for nested schema](#nestedatt--route))
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
@@ -126,6 +193,31 @@ Optional:
 Optional:
 
 - `id` (String)
+
+
+<a id="nestedatt--ordering"></a>
+### Nested Schema for `ordering`
+
+Optional:
+
+- `after` (Attributes) (see [below for nested schema](#nestedatt--ordering--after))
+- `before` (Attributes) (see [below for nested schema](#nestedatt--ordering--before))
+
+<a id="nestedatt--ordering--after"></a>
+### Nested Schema for `ordering.after`
+
+Optional:
+
+- `access` (List of String)
+
+
+<a id="nestedatt--ordering--before"></a>
+### Nested Schema for `ordering.before`
+
+Optional:
+
+- `access` (List of String)
+
 
 
 <a id="nestedatt--route"></a>

@@ -12,6 +12,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -43,6 +45,7 @@ type GatewayPluginAWSLambdaResourceModel struct {
 	Enabled        types.Bool                           `tfsdk:"enabled"`
 	ID             types.String                         `tfsdk:"id"`
 	InstanceName   types.String                         `tfsdk:"instance_name"`
+	Ordering       *tfTypes.CreateACLPluginOrdering     `tfsdk:"ordering"`
 	Protocols      []types.String                       `tfsdk:"protocols"`
 	Route          *tfTypes.ACLConsumer                 `tfsdk:"route"`
 	Service        *tfTypes.ACLConsumer                 `tfsdk:"service"`
@@ -72,10 +75,7 @@ func (r *GatewayPluginAWSLambdaResource) Schema(ctx context.Context, req resourc
 						Optional:    true,
 						Description: `Identifier to select the IMDS protocol version to use: ` + "`" + `v1` + "`" + ` or ` + "`" + `v2` + "`" + `. must be one of ["v1", "v2"]`,
 						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"v1",
-								"v2",
-							),
+							stringvalidator.OneOf("v1", "v2"),
 						},
 					},
 					"aws_key": schema.StringAttribute{
@@ -96,7 +96,7 @@ func (r *GatewayPluginAWSLambdaResource) Schema(ctx context.Context, req resourc
 					"aws_secret": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The AWS secret credential to be used when invoking the function. `,
+						Description: `The AWS secret credential to be used when invoking the function.`,
 					},
 					"awsgateway_compatible": schema.BoolAttribute{
 						Computed:    true,
@@ -115,7 +115,7 @@ func (r *GatewayPluginAWSLambdaResource) Schema(ctx context.Context, req resourc
 					"forward_request_body": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `An optional value that defines whether the request body is sent in the request_body field of the JSON-encoded request. If the body arguments can be parsed, they are sent in the separate request_body_args field of the request. `,
+						Description: `An optional value that defines whether the request body is sent in the request_body field of the JSON-encoded request. If the body arguments can be parsed, they are sent in the separate request_body_args field of the request.`,
 					},
 					"forward_request_headers": schema.BoolAttribute{
 						Computed:    true,
@@ -235,8 +235,11 @@ func (r *GatewayPluginAWSLambdaResource) Schema(ctx context.Context, req resourc
 				},
 			},
 			"control_plane_id": schema.StringAttribute{
-				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager.`,
+				Required: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.`,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
@@ -253,6 +256,34 @@ func (r *GatewayPluginAWSLambdaResource) Schema(ctx context.Context, req resourc
 			"instance_name": schema.StringAttribute{
 				Computed: true,
 				Optional: true,
+			},
+			"ordering": schema.SingleNestedAttribute{
+				Computed: true,
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"after": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+					"before": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+				},
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,

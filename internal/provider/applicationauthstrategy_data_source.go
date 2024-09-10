@@ -53,9 +53,8 @@ func (r *ApplicationAuthStrategyDataSource) Schema(ctx context.Context, req data
 				Description: `At least one published product version is using this auth strategy.`,
 			},
 			"display_name": schema.StringAttribute{
-				Computed: true,
-				MarkdownDescription: `The display name of the Auth strategy. This is used to identify the Auth strategy in the Portal UI.` + "\n" +
-					``,
+				Computed:    true,
+				Description: `The display name of the Auth strategy. This is used to identify the Auth strategy in the Portal UI.`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
@@ -82,8 +81,7 @@ func (r *ApplicationAuthStrategyDataSource) Schema(ctx context.Context, req data
 								},
 								MarkdownDescription: `The most basic mode to configure an Application Auth Strategy for an API Product Version. ` + "\n" +
 									`Using this mode will allow developers to generate API keys that will authenticate their application requests. ` + "\n" +
-									`Once authenticated, an application will be granted access to any Product Version it is registered for that is configured for Key Auth.` + "\n" +
-									``,
+									`Once authenticated, an application will be granted access to any Product Version it is registered for that is configured for Key Auth.`,
 							},
 						},
 						Description: `JSON-B object containing the configuration for the Key Auth strategy`,
@@ -96,9 +94,8 @@ func (r *ApplicationAuthStrategyDataSource) Schema(ctx context.Context, req data
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
 							"display_name": schema.StringAttribute{
-								Computed: true,
-								MarkdownDescription: `The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI.` + "\n" +
-									``,
+								Computed:    true,
+								Description: `The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI.`,
 							},
 							"id": schema.StringAttribute{
 								Computed:    true,
@@ -109,14 +106,13 @@ func (r *ApplicationAuthStrategyDataSource) Schema(ctx context.Context, req data
 							},
 							"provider_type": schema.StringAttribute{
 								Computed:    true,
-								Description: `The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http. must be one of ["auth0", "azureAd", "curity", "okta", "http"]`,
+								Description: `The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http`,
 							},
 						},
 					},
 					"display_name": schema.StringAttribute{
-						Computed: true,
-						MarkdownDescription: `The display name of the Auth strategy. This is used to identify the Auth strategy in the Portal UI.` + "\n" +
-							``,
+						Computed:    true,
+						Description: `The display name of the Auth strategy. This is used to identify the Auth strategy in the Portal UI.`,
 					},
 					"id": schema.StringAttribute{
 						Computed:    true,
@@ -127,17 +123,14 @@ func (r *ApplicationAuthStrategyDataSource) Schema(ctx context.Context, req data
 						ElementType: types.StringType,
 						MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
 							`` + "\n" +
-							`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".` + "\n" +
-							``,
+							`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
 					},
 					"name": schema.StringAttribute{
-						Computed: true,
-						MarkdownDescription: `The name of the auth strategy. This is used to identify the auth strategy in the Konnect UI.` + "\n" +
-							``,
+						Computed:    true,
+						Description: `The name of the auth strategy. This is used to identify the auth strategy in the Konnect UI.`,
 					},
 					"strategy_type": schema.StringAttribute{
-						Computed:    true,
-						Description: `must be one of ["key_auth"]`,
+						Computed: true,
 					},
 					"updated_at": schema.StringAttribute{
 						Computed:    true,
@@ -147,9 +140,8 @@ func (r *ApplicationAuthStrategyDataSource) Schema(ctx context.Context, req data
 				Description: `Response payload from creating or updating a Key Auth Application Auth Strategy`,
 			},
 			"name": schema.StringAttribute{
-				Computed: true,
-				MarkdownDescription: `The name of the auth strategy. This is used to identify the auth strategy in the Konnect UI.` + "\n" +
-					``,
+				Computed:    true,
+				Description: `The name of the auth strategy. This is used to identify the auth strategy in the Konnect UI.`,
 			},
 			"openid_connect": schema.SingleNestedAttribute{
 				Computed: true,
@@ -184,8 +176,7 @@ func (r *ApplicationAuthStrategyDataSource) Schema(ctx context.Context, req data
 										ElementType: types.StringType,
 										MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
 											`` + "\n" +
-											`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".` + "\n" +
-											``,
+											`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
 									},
 									"scopes": schema.ListAttribute{
 										Computed:    true,
@@ -195,8 +186,7 @@ func (r *ApplicationAuthStrategyDataSource) Schema(ctx context.Context, req data
 								MarkdownDescription: `A more advanced mode to configure an API Product Version’s Application Auth Strategy. ` + "\n" +
 									`Using this mode will allow developers to use API credentials issued from an external IdP that will authenticate their application requests. ` + "\n" +
 									`Once authenticated, an application will be granted access to any Product Version it is registered for that is configured for the same Auth Strategy. ` + "\n" +
-									`An OIDC strategy may be used in conjunction with a DCR provider to automatically create the IdP application.` + "\n" +
-									``,
+									`An OIDC strategy may be used in conjunction with a DCR provider to automatically create the IdP application.`,
 							},
 						},
 						Description: `JSON-B object containing the configuration for the OIDC strategy`,
@@ -209,9 +199,8 @@ func (r *ApplicationAuthStrategyDataSource) Schema(ctx context.Context, req data
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
 							"display_name": schema.StringAttribute{
-								Computed: true,
-								MarkdownDescription: `The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI.` + "\n" +
-									``,
+								Computed:    true,
+								Description: `The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI.`,
 							},
 							"id": schema.StringAttribute{
 								Computed:    true,
@@ -222,14 +211,13 @@ func (r *ApplicationAuthStrategyDataSource) Schema(ctx context.Context, req data
 							},
 							"provider_type": schema.StringAttribute{
 								Computed:    true,
-								Description: `The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http. must be one of ["auth0", "azureAd", "curity", "okta", "http"]`,
+								Description: `The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http`,
 							},
 						},
 					},
 					"display_name": schema.StringAttribute{
-						Computed: true,
-						MarkdownDescription: `The display name of the Auth strategy. This is used to identify the Auth strategy in the Portal UI.` + "\n" +
-							``,
+						Computed:    true,
+						Description: `The display name of the Auth strategy. This is used to identify the Auth strategy in the Portal UI.`,
 					},
 					"id": schema.StringAttribute{
 						Computed:    true,
@@ -240,17 +228,14 @@ func (r *ApplicationAuthStrategyDataSource) Schema(ctx context.Context, req data
 						ElementType: types.StringType,
 						MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
 							`` + "\n" +
-							`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".` + "\n" +
-							``,
+							`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
 					},
 					"name": schema.StringAttribute{
-						Computed: true,
-						MarkdownDescription: `The name of the auth strategy. This is used to identify the auth strategy in the Konnect UI.` + "\n" +
-							``,
+						Computed:    true,
+						Description: `The name of the auth strategy. This is used to identify the auth strategy in the Konnect UI.`,
 					},
 					"strategy_type": schema.StringAttribute{
-						Computed:    true,
-						Description: `must be one of ["openid_connect"]`,
+						Computed: true,
 					},
 					"updated_at": schema.StringAttribute{
 						Computed:    true,

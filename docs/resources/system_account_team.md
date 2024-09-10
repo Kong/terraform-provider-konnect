@@ -14,7 +14,7 @@ SystemAccountTeam Resource
 
 ```terraform
 resource "konnect_system_account_team" "my_systemaccountteam" {
-  account_id = "3d0ceb2f-4a75-4cb8-ab37-229cf509f17b"
+  account_id = "c142bb99-63f0-4565-8737-3cb46283d2d7"
   team_id    = "...my_team_id..."
 }
 ```

@@ -39,6 +39,47 @@ func (o *CreateBasicAuthPluginConfig) GetRealm() *string {
 	return o.Realm
 }
 
+type CreateBasicAuthPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *CreateBasicAuthPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type CreateBasicAuthPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *CreateBasicAuthPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type CreateBasicAuthPluginOrdering struct {
+	After  *CreateBasicAuthPluginAfter  `json:"after,omitempty"`
+	Before *CreateBasicAuthPluginBefore `json:"before,omitempty"`
+}
+
+func (o *CreateBasicAuthPluginOrdering) GetAfter() *CreateBasicAuthPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *CreateBasicAuthPluginOrdering) GetBefore() *CreateBasicAuthPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
 type CreateBasicAuthPluginProtocols string
 
 const (
@@ -139,9 +180,10 @@ func (o *CreateBasicAuthPluginService) GetID() *string {
 type CreateBasicAuthPlugin struct {
 	Config *CreateBasicAuthPluginConfig `json:"config,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool   `json:"enabled,omitempty"`
-	InstanceName *string `json:"instance_name,omitempty"`
-	name         *string `const:"basic-auth" json:"name,omitempty"`
+	Enabled      *bool                          `json:"enabled,omitempty"`
+	InstanceName *string                        `json:"instance_name,omitempty"`
+	name         *string                        `const:"basic-auth" json:"name,omitempty"`
+	Ordering     *CreateBasicAuthPluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []CreateBasicAuthPluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
@@ -189,6 +231,13 @@ func (o *CreateBasicAuthPlugin) GetInstanceName() *string {
 
 func (o *CreateBasicAuthPlugin) GetName() *string {
 	return types.String("basic-auth")
+}
+
+func (o *CreateBasicAuthPlugin) GetOrdering() *CreateBasicAuthPluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
 }
 
 func (o *CreateBasicAuthPlugin) GetProtocols() []CreateBasicAuthPluginProtocols {

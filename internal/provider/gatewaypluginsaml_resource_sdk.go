@@ -414,6 +414,33 @@ func (r *GatewayPluginSamlResourceModel) ToSharedCreateSamlPlugin() *shared.Crea
 	} else {
 		instanceName = nil
 	}
+	var ordering *shared.CreateSamlPluginOrdering
+	if r.Ordering != nil {
+		var after *shared.CreateSamlPluginAfter
+		if r.Ordering.After != nil {
+			var access []string = []string{}
+			for _, accessItem := range r.Ordering.After.Access {
+				access = append(access, accessItem.ValueString())
+			}
+			after = &shared.CreateSamlPluginAfter{
+				Access: access,
+			}
+		}
+		var before *shared.CreateSamlPluginBefore
+		if r.Ordering.Before != nil {
+			var access1 []string = []string{}
+			for _, accessItem1 := range r.Ordering.Before.Access {
+				access1 = append(access1, accessItem1.ValueString())
+			}
+			before = &shared.CreateSamlPluginBefore{
+				Access: access1,
+			}
+		}
+		ordering = &shared.CreateSamlPluginOrdering{
+			After:  after,
+			Before: before,
+		}
+	}
 	var protocols []shared.CreateSamlPluginProtocols = []shared.CreateSamlPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.CreateSamlPluginProtocols(protocolsItem.ValueString()))
@@ -474,6 +501,7 @@ func (r *GatewayPluginSamlResourceModel) ToSharedCreateSamlPlugin() *shared.Crea
 		Config:        config,
 		Enabled:       enabled,
 		InstanceName:  instanceName,
+		Ordering:      ordering,
 		Protocols:     protocols,
 		Tags:          tags,
 		Consumer:      consumer,
@@ -629,6 +657,29 @@ func (r *GatewayPluginSamlResourceModel) RefreshFromSharedSamlPlugin(resp *share
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.InstanceName = types.StringPointerValue(resp.InstanceName)
+		if resp.Ordering == nil {
+			r.Ordering = nil
+		} else {
+			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			if resp.Ordering.After == nil {
+				r.Ordering.After = nil
+			} else {
+				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After.Access = []types.String{}
+				for _, v := range resp.Ordering.After.Access {
+					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				}
+			}
+			if resp.Ordering.Before == nil {
+				r.Ordering.Before = nil
+			} else {
+				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before.Access = []types.String{}
+				for _, v := range resp.Ordering.Before.Access {
+					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				}
+			}
+		}
 		r.Protocols = []types.String{}
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))

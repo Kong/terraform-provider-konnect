@@ -47,6 +47,47 @@ func (o *CreateACLPluginConfig) GetIncludeConsumerGroups() *bool {
 	return o.IncludeConsumerGroups
 }
 
+type CreateACLPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *CreateACLPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type CreateACLPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *CreateACLPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type CreateACLPluginOrdering struct {
+	After  *CreateACLPluginAfter  `json:"after,omitempty"`
+	Before *CreateACLPluginBefore `json:"before,omitempty"`
+}
+
+func (o *CreateACLPluginOrdering) GetAfter() *CreateACLPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *CreateACLPluginOrdering) GetBefore() *CreateACLPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
 type CreateACLPluginProtocols string
 
 const (
@@ -147,9 +188,10 @@ func (o *CreateACLPluginService) GetID() *string {
 type CreateACLPlugin struct {
 	Config *CreateACLPluginConfig `json:"config,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool   `json:"enabled,omitempty"`
-	InstanceName *string `json:"instance_name,omitempty"`
-	name         *string `const:"acl" json:"name,omitempty"`
+	Enabled      *bool                    `json:"enabled,omitempty"`
+	InstanceName *string                  `json:"instance_name,omitempty"`
+	name         *string                  `const:"acl" json:"name,omitempty"`
+	Ordering     *CreateACLPluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []CreateACLPluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
@@ -197,6 +239,13 @@ func (o *CreateACLPlugin) GetInstanceName() *string {
 
 func (o *CreateACLPlugin) GetName() *string {
 	return types.String("acl")
+}
+
+func (o *CreateACLPlugin) GetOrdering() *CreateACLPluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
 }
 
 func (o *CreateACLPlugin) GetProtocols() []CreateACLPluginProtocols {

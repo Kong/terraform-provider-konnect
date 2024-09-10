@@ -66,7 +66,7 @@ func (r *GatewayUpstreamDataSource) Schema(ctx context.Context, req datasource.S
 		Attributes: map[string]schema.Attribute{
 			"algorithm": schema.StringAttribute{
 				Computed:    true,
-				Description: `Which load balancing algorithm to use. must be one of ["consistent-hashing", "least-connections", "round-robin", "latency"]`,
+				Description: `Which load balancing algorithm to use.`,
 			},
 			"client_certificate": schema.SingleNestedAttribute{
 				Computed: true,
@@ -87,7 +87,7 @@ func (r *GatewayUpstreamDataSource) Schema(ctx context.Context, req datasource.S
 			},
 			"hash_fallback": schema.StringAttribute{
 				Computed:    true,
-				Description: `What to use as hashing input if the primary ` + "`" + `hash_on` + "`" + ` does not return a hash (eg. header is missing, or no Consumer identified). Not available if ` + "`" + `hash_on` + "`" + ` is set to ` + "`" + `cookie` + "`" + `. must be one of ["none", "consumer", "ip", "header", "cookie", "path", "query_arg", "uri_capture"]`,
+				Description: `What to use as hashing input if the primary ` + "`" + `hash_on` + "`" + ` does not return a hash (eg. header is missing, or no Consumer identified). Not available if ` + "`" + `hash_on` + "`" + ` is set to ` + "`" + `cookie` + "`" + `.`,
 			},
 			"hash_fallback_header": schema.StringAttribute{
 				Computed:    true,
@@ -103,7 +103,7 @@ func (r *GatewayUpstreamDataSource) Schema(ctx context.Context, req datasource.S
 			},
 			"hash_on": schema.StringAttribute{
 				Computed:    true,
-				Description: `What to use as hashing input. Using ` + "`" + `none` + "`" + ` results in a weighted-round-robin scheme with no hashing. must be one of ["none", "consumer", "ip", "header", "cookie", "path", "query_arg", "uri_capture"]`,
+				Description: `What to use as hashing input. Using ` + "`" + `none` + "`" + ` results in a weighted-round-robin scheme with no hashing.`,
 			},
 			"hash_on_cookie": schema.StringAttribute{
 				Computed:    true,
@@ -166,8 +166,7 @@ func (r *GatewayUpstreamDataSource) Schema(ctx context.Context, req datasource.S
 								Computed: true,
 							},
 							"type": schema.StringAttribute{
-								Computed:    true,
-								Description: `must be one of ["tcp", "http", "https", "grpc", "grpcs"]`,
+								Computed: true,
 							},
 							"unhealthy": schema.SingleNestedAttribute{
 								Computed: true,
@@ -208,8 +207,7 @@ func (r *GatewayUpstreamDataSource) Schema(ctx context.Context, req datasource.S
 								},
 							},
 							"type": schema.StringAttribute{
-								Computed:    true,
-								Description: `must be one of ["tcp", "http", "https", "grpc", "grpcs"]`,
+								Computed: true,
 							},
 							"unhealthy": schema.SingleNestedAttribute{
 								Computed: true,

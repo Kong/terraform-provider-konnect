@@ -68,8 +68,7 @@ func (r *APIProductDataSource) Schema(ctx context.Context, req datasource.Schema
 				ElementType: types.StringType,
 				MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
 					`` + "\n" +
-					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".` + "\n" +
-					``,
+					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
 			},
 			"name": schema.StringAttribute{
 				Computed:    true,
@@ -79,8 +78,7 @@ func (r *APIProductDataSource) Schema(ctx context.Context, req datasource.Schema
 				Computed:    true,
 				ElementType: types.StringType,
 				MarkdownDescription: `The list of portal identifiers which this API product is published to.` + "\n" +
-					`This property is deprecated and will be removed in a future version. Use the ` + "`" + `portals` + "`" + ` property instead.` + "\n" +
-					``,
+					`This property is deprecated and will be removed in a future version. Use the ` + "`" + `portals` + "`" + ` property instead.`,
 			},
 			"portals": schema.ListNestedAttribute{
 				Computed: true,

@@ -37,6 +37,7 @@ type GatewayPluginAIPromptDecoratorDataSourceModel struct {
 	Enabled        types.Bool                                   `tfsdk:"enabled"`
 	ID             types.String                                 `tfsdk:"id"`
 	InstanceName   types.String                                 `tfsdk:"instance_name"`
+	Ordering       *tfTypes.CreateACLPluginOrdering             `tfsdk:"ordering"`
 	Protocols      []types.String                               `tfsdk:"protocols"`
 	Route          *tfTypes.ACLConsumer                         `tfsdk:"route"`
 	Service        *tfTypes.ACLConsumer                         `tfsdk:"service"`
@@ -69,8 +70,7 @@ func (r *GatewayPluginAIPromptDecoratorDataSource) Schema(ctx context.Context, r
 											Computed: true,
 										},
 										"role": schema.StringAttribute{
-											Computed:    true,
-											Description: `must be one of ["system", "assistant", "user"]`,
+											Computed: true,
 										},
 									},
 								},
@@ -84,8 +84,7 @@ func (r *GatewayPluginAIPromptDecoratorDataSource) Schema(ctx context.Context, r
 											Computed: true,
 										},
 										"role": schema.StringAttribute{
-											Computed:    true,
-											Description: `must be one of ["system", "assistant", "user"]`,
+											Computed: true,
 										},
 									},
 								},
@@ -129,6 +128,29 @@ func (r *GatewayPluginAIPromptDecoratorDataSource) Schema(ctx context.Context, r
 			},
 			"instance_name": schema.StringAttribute{
 				Computed: true,
+			},
+			"ordering": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"after": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+					"before": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+				},
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,

@@ -217,6 +217,47 @@ func (o *CreateProxyCachePluginConfig) GetVaryQueryParams() []string {
 	return o.VaryQueryParams
 }
 
+type CreateProxyCachePluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *CreateProxyCachePluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type CreateProxyCachePluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *CreateProxyCachePluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type CreateProxyCachePluginOrdering struct {
+	After  *CreateProxyCachePluginAfter  `json:"after,omitempty"`
+	Before *CreateProxyCachePluginBefore `json:"before,omitempty"`
+}
+
+func (o *CreateProxyCachePluginOrdering) GetAfter() *CreateProxyCachePluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *CreateProxyCachePluginOrdering) GetBefore() *CreateProxyCachePluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
 type CreateProxyCachePluginProtocols string
 
 const (
@@ -317,9 +358,10 @@ func (o *CreateProxyCachePluginService) GetID() *string {
 type CreateProxyCachePlugin struct {
 	Config *CreateProxyCachePluginConfig `json:"config,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool   `json:"enabled,omitempty"`
-	InstanceName *string `json:"instance_name,omitempty"`
-	name         *string `const:"proxy-cache" json:"name,omitempty"`
+	Enabled      *bool                           `json:"enabled,omitempty"`
+	InstanceName *string                         `json:"instance_name,omitempty"`
+	name         *string                         `const:"proxy-cache" json:"name,omitempty"`
+	Ordering     *CreateProxyCachePluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []CreateProxyCachePluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
@@ -367,6 +409,13 @@ func (o *CreateProxyCachePlugin) GetInstanceName() *string {
 
 func (o *CreateProxyCachePlugin) GetName() *string {
 	return types.String("proxy-cache")
+}
+
+func (o *CreateProxyCachePlugin) GetOrdering() *CreateProxyCachePluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
 }
 
 func (o *CreateProxyCachePlugin) GetProtocols() []CreateProxyCachePluginProtocols {

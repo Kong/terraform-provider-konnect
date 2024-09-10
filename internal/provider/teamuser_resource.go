@@ -43,18 +43,18 @@ func (r *TeamUserResource) Schema(ctx context.Context, req resource.SchemaReques
 		MarkdownDescription: "TeamUser Resource",
 		Attributes: map[string]schema.Attribute{
 			"team_id": schema.StringAttribute{
+				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Required:    true,
-				Description: `ID of the team. Requires replacement if changed. `,
+				Description: `ID of the team. Requires replacement if changed.`,
 			},
 			"user_id": schema.StringAttribute{
+				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Required:    true,
-				Description: `User ID. Requires replacement if changed. `,
+				Description: `The user ID for the user being added to a team. Requires replacement if changed.`,
 			},
 		},
 	}

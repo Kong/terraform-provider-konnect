@@ -59,7 +59,7 @@ func (r *CloudGatewayProviderAccountListDataSource) Schema(ctx context.Context, 
 						},
 						"provider": schema.StringAttribute{
 							Computed:    true,
-							Description: `Name of cloud provider. must be one of ["aws"]`,
+							Description: `Name of cloud provider.`,
 						},
 						"provider_account_id": schema.StringAttribute{
 							Computed:    true,

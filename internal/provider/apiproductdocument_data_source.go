@@ -69,8 +69,7 @@ func (r *APIProductDocumentDataSource) Schema(ctx context.Context, req datasourc
 				Description: `The document identifier related to the API product`,
 			},
 			"metadata": schema.SingleNestedAttribute{
-				Computed:   true,
-				Attributes: map[string]schema.Attribute{},
+				Computed: true,
 			},
 			"parent_document_id": schema.StringAttribute{
 				Computed: true,
@@ -79,8 +78,7 @@ func (r *APIProductDocumentDataSource) Schema(ctx context.Context, req datasourc
 				Computed: true,
 			},
 			"status": schema.StringAttribute{
-				Computed:    true,
-				Description: `must be one of ["unpublished", "published"]`,
+				Computed: true,
 			},
 			"title": schema.StringAttribute{
 				Computed: true,

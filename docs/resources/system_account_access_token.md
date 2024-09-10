@@ -15,9 +15,8 @@ SystemAccountAccessToken Resource
 ```terraform
 resource "konnect_system_account_access_token" "my_systemaccountaccesstoken" {
   account_id = "...my_account_id..."
-  expires_at = "2022-01-04T02:34:28.106Z"
-  name       = "Luke Bernhard Sr."
-  token_id   = "...my_token_id..."
+  expires_at = "2022-05-18T00:36:05.961Z"
+  name       = "...my_name..."
 }
 ```
 

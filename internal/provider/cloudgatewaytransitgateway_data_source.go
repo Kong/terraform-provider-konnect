@@ -56,8 +56,7 @@ func (r *CloudGatewayTransitGatewayDataSource) Schema(ctx context.Context, req d
 				Computed:    true,
 				ElementType: types.StringType,
 				MarkdownDescription: `CIDR blocks for constructing a route table for the transit gateway, when attaching to the owning` + "\n" +
-					`network.` + "\n" +
-					``,
+					`network.`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed:    true,
@@ -71,8 +70,7 @@ func (r *CloudGatewayTransitGatewayDataSource) Schema(ctx context.Context, req d
 							Computed:    true,
 							ElementType: types.StringType,
 							MarkdownDescription: `Internal domain names to proxy for DNS resolution from the listed remote DNS server IP addresses,` + "\n" +
-								`for a transit gateway.` + "\n" +
-								``,
+								`for a transit gateway.`,
 						},
 						"remote_dns_server_ip_addresses": schema.ListAttribute{
 							Computed:    true,
@@ -82,14 +80,12 @@ func (r *CloudGatewayTransitGatewayDataSource) Schema(ctx context.Context, req d
 					},
 				},
 				MarkdownDescription: `List of mappings from remote DNS server IP address sets to proxied internal domains, for a transit gateway` + "\n" +
-					`attachment.` + "\n" +
-					``,
+					`attachment.`,
 			},
 			"entity_version": schema.Int64Attribute{
 				Computed: true,
 				MarkdownDescription: `Monotonically-increasing version count of the transit gateway, to indicate the order of updates to the` + "\n" +
-					`transit gateway.` + "\n" +
-					``,
+					`transit gateway.`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
@@ -104,7 +100,7 @@ func (r *CloudGatewayTransitGatewayDataSource) Schema(ctx context.Context, req d
 			},
 			"state": schema.StringAttribute{
 				Computed:    true,
-				Description: `State of the transit gateway. must be one of ["created", "initializing", "ready", "terminating", "terminated"]`,
+				Description: `State of the transit gateway.`,
 			},
 			"transit_gateway_attachment_config": schema.SingleNestedAttribute{
 				Computed: true,
@@ -113,8 +109,7 @@ func (r *CloudGatewayTransitGatewayDataSource) Schema(ctx context.Context, req d
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
 							"kind": schema.StringAttribute{
-								Computed:    true,
-								Description: `must be one of ["aws-transit-gateway-attachment"]`,
+								Computed: true,
 							},
 							"ram_share_arn": schema.StringAttribute{
 								Computed:    true,

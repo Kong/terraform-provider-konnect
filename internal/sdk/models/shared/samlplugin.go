@@ -812,6 +812,47 @@ func (o *SamlPluginConfig) GetValidateAssertionSignature() *bool {
 	return o.ValidateAssertionSignature
 }
 
+type SamlPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *SamlPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type SamlPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *SamlPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type SamlPluginOrdering struct {
+	After  *SamlPluginAfter  `json:"after,omitempty"`
+	Before *SamlPluginBefore `json:"before,omitempty"`
+}
+
+func (o *SamlPluginOrdering) GetAfter() *SamlPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *SamlPluginOrdering) GetBefore() *SamlPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
 type SamlPluginProtocols string
 
 const (
@@ -914,10 +955,11 @@ type SamlPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool   `json:"enabled,omitempty"`
-	ID           *string `json:"id,omitempty"`
-	InstanceName *string `json:"instance_name,omitempty"`
-	name         *string `const:"saml" json:"name,omitempty"`
+	Enabled      *bool               `json:"enabled,omitempty"`
+	ID           *string             `json:"id,omitempty"`
+	InstanceName *string             `json:"instance_name,omitempty"`
+	name         *string             `const:"saml" json:"name,omitempty"`
+	Ordering     *SamlPluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []SamlPluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
@@ -981,6 +1023,13 @@ func (o *SamlPlugin) GetInstanceName() *string {
 
 func (o *SamlPlugin) GetName() *string {
 	return types.String("saml")
+}
+
+func (o *SamlPlugin) GetOrdering() *SamlPluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
 }
 
 func (o *SamlPlugin) GetProtocols() []SamlPluginProtocols {

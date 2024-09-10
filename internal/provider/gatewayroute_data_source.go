@@ -98,7 +98,7 @@ func (r *GatewayRouteDataSource) Schema(ctx context.Context, req datasource.Sche
 			},
 			"https_redirect_status_code": schema.Int64Attribute{
 				Computed:    true,
-				Description: `The status code Kong responds with when all properties of a Route match except the protocol i.e. if the protocol of the request is ` + "`" + `HTTP` + "`" + ` instead of ` + "`" + `HTTPS` + "`" + `. ` + "`" + `Location` + "`" + ` header is injected by Kong if the field is set to 301, 302, 307 or 308. Note: This config applies only if the Route is configured to only accept the ` + "`" + `https` + "`" + ` protocol. must be one of ["426", "301", "302", "307", "308"]`,
+				Description: `The status code Kong responds with when all properties of a Route match except the protocol i.e. if the protocol of the request is ` + "`" + `HTTP` + "`" + ` instead of ` + "`" + `HTTPS` + "`" + `. ` + "`" + `Location` + "`" + ` header is injected by Kong if the field is set to 301, 302, 307 or 308. Note: This config applies only if the Route is configured to only accept the ` + "`" + `https` + "`" + ` protocol.`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
@@ -114,7 +114,7 @@ func (r *GatewayRouteDataSource) Schema(ctx context.Context, req datasource.Sche
 			},
 			"path_handling": schema.StringAttribute{
 				Computed:    true,
-				Description: `Controls how the Service path, Route path and requested path are combined when sending a request to the upstream. See above for a detailed description of each behavior. must be one of ["v0", "v1"]`,
+				Description: `Controls how the Service path, Route path and requested path are combined when sending a request to the upstream. See above for a detailed description of each behavior.`,
 			},
 			"paths": schema.ListAttribute{
 				Computed:    true,

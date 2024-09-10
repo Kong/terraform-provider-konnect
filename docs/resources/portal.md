@@ -14,18 +14,20 @@ Portal Resource
 
 ```terraform
 resource "konnect_portal" "my_portal" {
-  auto_approve_applications            = true
+  auto_approve_applications            = false
   auto_approve_developers              = true
-  custom_client_domain                 = "amused-filly.info"
-  custom_domain                        = "royal-rethinking.name"
+  custom_client_domain                 = "ironclad-blast.net"
+  custom_domain                        = "low-stay.biz"
   default_application_auth_strategy_id = "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
   description                          = "...my_description..."
   display_name                         = "...my_display_name..."
   force                                = "true"
   is_public                            = true
-  name                                 = "Sergio Friesen"
-  portal_id                            = "23ed7698-27f4-4373-9898-81b9ad2cad4e"
-  rbac_enabled                         = true
+  labels = {
+    "see" : "documentation",
+  }
+  name         = "...my_name..."
+  rbac_enabled = true
 }
 ```
 
@@ -45,7 +47,7 @@ resource "konnect_portal" "my_portal" {
 - `default_application_auth_strategy_id` (String) Default strategy ID applied on applications for the portal
 - `description` (String) The description of the portal.
 - `display_name` (String) The display name of the portal. This value will be the portal's `name` in Portal API.
-- `force` (String) If true, delete specified portal and all related entities, even if there are developers registered to portal or if there are portal product versions with application registration enabled. If false, do not allow deletion if there are developers registered to portal or if there are portal product versions with application registration enabled. must be one of ["true", "false"]; Default: "false"
+- `force` (String) If true, delete specified portal and all related entities, even if there are developers registered to portal or if there are portal product versions with application registration enabled. If false, do not allow deletion if there are developers registered to portal or if there are portal product versions with application registration enabled. Default: "false"; must be one of ["true", "false"]
 - `is_public` (Boolean) Whether the portal catalog can be accessed publicly without any developer authentication. Developer accounts and applications cannot be created if the portal is public.
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
 

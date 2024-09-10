@@ -37,6 +37,7 @@ type GatewayPluginOauth2DataSourceModel struct {
 	Enabled        types.Bool                        `tfsdk:"enabled"`
 	ID             types.String                      `tfsdk:"id"`
 	InstanceName   types.String                      `tfsdk:"instance_name"`
+	Ordering       *tfTypes.CreateACLPluginOrdering  `tfsdk:"ordering"`
 	Protocols      []types.String                    `tfsdk:"protocols"`
 	Route          *tfTypes.ACLConsumer              `tfsdk:"route"`
 	Service        *tfTypes.ACLConsumer              `tfsdk:"service"`
@@ -103,7 +104,7 @@ func (r *GatewayPluginOauth2DataSource) Schema(ctx context.Context, req datasour
 					},
 					"pkce": schema.StringAttribute{
 						Computed:    true,
-						Description: `Specifies a mode of how the Proof Key for Code Exchange (PKCE) should be handled by the plugin. must be one of ["none", "lax", "strict"]`,
+						Description: `Specifies a mode of how the Proof Key for Code Exchange (PKCE) should be handled by the plugin.`,
 					},
 					"provision_key": schema.StringAttribute{
 						Computed:    true,
@@ -162,6 +163,29 @@ func (r *GatewayPluginOauth2DataSource) Schema(ctx context.Context, req datasour
 			},
 			"instance_name": schema.StringAttribute{
 				Computed: true,
+			},
+			"ordering": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"after": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+					"before": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+				},
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,

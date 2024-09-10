@@ -60,7 +60,7 @@ func (r *ServerlessCloudGatewayDataSource) Schema(ctx context.Context, req datas
 					},
 					"region": schema.StringAttribute{
 						Computed:    true,
-						Description: `The control plane region. must be one of ["us", "eu", "au"]`,
+						Description: `The control plane region.`,
 					},
 				},
 			},

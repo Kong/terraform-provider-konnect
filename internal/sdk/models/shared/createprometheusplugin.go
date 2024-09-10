@@ -57,6 +57,47 @@ func (o *CreatePrometheusPluginConfig) GetUpstreamHealthMetrics() *bool {
 	return o.UpstreamHealthMetrics
 }
 
+type CreatePrometheusPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *CreatePrometheusPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type CreatePrometheusPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *CreatePrometheusPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type CreatePrometheusPluginOrdering struct {
+	After  *CreatePrometheusPluginAfter  `json:"after,omitempty"`
+	Before *CreatePrometheusPluginBefore `json:"before,omitempty"`
+}
+
+func (o *CreatePrometheusPluginOrdering) GetAfter() *CreatePrometheusPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *CreatePrometheusPluginOrdering) GetBefore() *CreatePrometheusPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
 type CreatePrometheusPluginProtocols string
 
 const (
@@ -157,9 +198,10 @@ func (o *CreatePrometheusPluginService) GetID() *string {
 type CreatePrometheusPlugin struct {
 	Config *CreatePrometheusPluginConfig `json:"config,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool   `json:"enabled,omitempty"`
-	InstanceName *string `json:"instance_name,omitempty"`
-	name         *string `const:"prometheus" json:"name,omitempty"`
+	Enabled      *bool                           `json:"enabled,omitempty"`
+	InstanceName *string                         `json:"instance_name,omitempty"`
+	name         *string                         `const:"prometheus" json:"name,omitempty"`
+	Ordering     *CreatePrometheusPluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []CreatePrometheusPluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
@@ -207,6 +249,13 @@ func (o *CreatePrometheusPlugin) GetInstanceName() *string {
 
 func (o *CreatePrometheusPlugin) GetName() *string {
 	return types.String("prometheus")
+}
+
+func (o *CreatePrometheusPlugin) GetOrdering() *CreatePrometheusPluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
 }
 
 func (o *CreatePrometheusPlugin) GetProtocols() []CreatePrometheusPluginProtocols {

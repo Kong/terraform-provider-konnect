@@ -85,13 +85,11 @@ func (r *CloudGatewayNetworkDataSource) Schema(ctx context.Context, req datasour
 			"default": schema.BoolAttribute{
 				Computed: true,
 				MarkdownDescription: `Whether the network is a default network or not. Default networks are Networks that are created` + "\n" +
-					`automatically by Konnect when an organization is linked to a provider account.` + "\n" +
-					``,
+					`automatically by Konnect when an organization is linked to a provider account.`,
 			},
 			"entity_version": schema.Int64Attribute{
-				Computed: true,
-				MarkdownDescription: `Monotonically-increasing version count of the network, to indicate the order of updates to the network.` + "\n" +
-					``,
+				Computed:    true,
+				Description: `Monotonically-increasing version count of the network, to indicate the order of updates to the network.`,
 			},
 			"firewall": schema.SingleNestedAttribute{
 				Computed: true,
@@ -135,7 +133,7 @@ func (r *CloudGatewayNetworkDataSource) Schema(ctx context.Context, req datasour
 			},
 			"state": schema.StringAttribute{
 				Computed:    true,
-				Description: `State of the network. must be one of ["created", "initializing", "offline", "ready", "terminating", "terminated"]`,
+				Description: `State of the network.`,
 			},
 			"transit_gateway_count": schema.Int64Attribute{
 				Computed:    true,

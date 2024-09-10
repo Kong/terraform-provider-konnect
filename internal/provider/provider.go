@@ -11,6 +11,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	custom "github.com/kong/terraform-provider-konnect/src"
 	"net/http"
 	"os"
 )
@@ -201,6 +202,7 @@ func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resou
 		NewTeamResource,
 		NewTeamRoleResource,
 		NewTeamUserResource,
+		custom.NewCustomPluginResource,
 	}
 }
 

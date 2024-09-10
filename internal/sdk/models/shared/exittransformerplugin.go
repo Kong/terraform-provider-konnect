@@ -38,6 +38,47 @@ func (o *ExitTransformerPluginConfig) GetHandleUnknown() *bool {
 	return o.HandleUnknown
 }
 
+type ExitTransformerPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *ExitTransformerPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type ExitTransformerPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *ExitTransformerPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type ExitTransformerPluginOrdering struct {
+	After  *ExitTransformerPluginAfter  `json:"after,omitempty"`
+	Before *ExitTransformerPluginBefore `json:"before,omitempty"`
+}
+
+func (o *ExitTransformerPluginOrdering) GetAfter() *ExitTransformerPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *ExitTransformerPluginOrdering) GetBefore() *ExitTransformerPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
 type ExitTransformerPluginProtocols string
 
 const (
@@ -140,10 +181,11 @@ type ExitTransformerPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool   `json:"enabled,omitempty"`
-	ID           *string `json:"id,omitempty"`
-	InstanceName *string `json:"instance_name,omitempty"`
-	name         *string `const:"exit-transformer" json:"name,omitempty"`
+	Enabled      *bool                          `json:"enabled,omitempty"`
+	ID           *string                        `json:"id,omitempty"`
+	InstanceName *string                        `json:"instance_name,omitempty"`
+	name         *string                        `const:"exit-transformer" json:"name,omitempty"`
+	Ordering     *ExitTransformerPluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []ExitTransformerPluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
@@ -207,6 +249,13 @@ func (o *ExitTransformerPlugin) GetInstanceName() *string {
 
 func (o *ExitTransformerPlugin) GetName() *string {
 	return types.String("exit-transformer")
+}
+
+func (o *ExitTransformerPlugin) GetOrdering() *ExitTransformerPluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
 }
 
 func (o *ExitTransformerPlugin) GetProtocols() []ExitTransformerPluginProtocols {

@@ -14,16 +14,51 @@ GatewayRoute Resource
 
 ```terraform
 resource "konnect_gateway_route" "my_gatewayroute" {
-  control_plane_id           = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-  https_redirect_status_code = "426"
-  name                       = "Rex Schmeler"
-  path_handling              = "v0"
-  preserve_host              = false
-  regex_priority             = 3
-  request_buffering          = false
-  response_buffering         = false
-  route_id                   = "a4326a41-aa12-44e3-93e4-6b6e58bfb9d7"
-  strip_path                 = true
+  control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+  destinations = [
+    {
+      ip   = "...my_ip..."
+      port = 8
+    }
+  ]
+  headers = {
+    "see" : jsonencode("documentation"),
+  }
+  hosts = [
+    "..."
+  ]
+  https_redirect_status_code = 307
+  methods = [
+    "..."
+  ]
+  name          = "...my_name..."
+  path_handling = "v0"
+  paths = [
+    "..."
+  ]
+  preserve_host = false
+  protocols = [
+    "tcp"
+  ]
+  regex_priority     = 9
+  request_buffering  = false
+  response_buffering = false
+  service = {
+    id = "...my_id..."
+  }
+  snis = [
+    "..."
+  ]
+  sources = [
+    {
+      ip   = "...my_ip..."
+      port = 0
+    }
+  ]
+  strip_path = true
+  tags = [
+    "..."
+  ]
 }
 ```
 
@@ -32,7 +67,7 @@ resource "konnect_gateway_route" "my_gatewayroute" {
 
 ### Required
 
-- `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager.
+- `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
 
 ### Optional
 

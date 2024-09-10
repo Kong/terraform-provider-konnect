@@ -320,6 +320,47 @@ func (o *CreateAWSLambdaPluginConfig) GetUnhandledStatus() *int64 {
 	return o.UnhandledStatus
 }
 
+type CreateAWSLambdaPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *CreateAWSLambdaPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type CreateAWSLambdaPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *CreateAWSLambdaPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type CreateAWSLambdaPluginOrdering struct {
+	After  *CreateAWSLambdaPluginAfter  `json:"after,omitempty"`
+	Before *CreateAWSLambdaPluginBefore `json:"before,omitempty"`
+}
+
+func (o *CreateAWSLambdaPluginOrdering) GetAfter() *CreateAWSLambdaPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *CreateAWSLambdaPluginOrdering) GetBefore() *CreateAWSLambdaPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
 type CreateAWSLambdaPluginProtocols string
 
 const (
@@ -420,9 +461,10 @@ func (o *CreateAWSLambdaPluginService) GetID() *string {
 type CreateAWSLambdaPlugin struct {
 	Config *CreateAWSLambdaPluginConfig `json:"config,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool   `json:"enabled,omitempty"`
-	InstanceName *string `json:"instance_name,omitempty"`
-	name         *string `const:"aws-lambda" json:"name,omitempty"`
+	Enabled      *bool                          `json:"enabled,omitempty"`
+	InstanceName *string                        `json:"instance_name,omitempty"`
+	name         *string                        `const:"aws-lambda" json:"name,omitempty"`
+	Ordering     *CreateAWSLambdaPluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []CreateAWSLambdaPluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
@@ -470,6 +512,13 @@ func (o *CreateAWSLambdaPlugin) GetInstanceName() *string {
 
 func (o *CreateAWSLambdaPlugin) GetName() *string {
 	return types.String("aws-lambda")
+}
+
+func (o *CreateAWSLambdaPlugin) GetOrdering() *CreateAWSLambdaPluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
 }
 
 func (o *CreateAWSLambdaPlugin) GetProtocols() []CreateAWSLambdaPluginProtocols {

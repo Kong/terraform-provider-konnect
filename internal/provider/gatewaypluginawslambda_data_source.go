@@ -37,6 +37,7 @@ type GatewayPluginAWSLambdaDataSourceModel struct {
 	Enabled        types.Bool                           `tfsdk:"enabled"`
 	ID             types.String                         `tfsdk:"id"`
 	InstanceName   types.String                         `tfsdk:"instance_name"`
+	Ordering       *tfTypes.CreateACLPluginOrdering     `tfsdk:"ordering"`
 	Protocols      []types.String                       `tfsdk:"protocols"`
 	Route          *tfTypes.ACLConsumer                 `tfsdk:"route"`
 	Service        *tfTypes.ACLConsumer                 `tfsdk:"service"`
@@ -64,7 +65,7 @@ func (r *GatewayPluginAWSLambdaDataSource) Schema(ctx context.Context, req datas
 					},
 					"aws_imds_protocol_version": schema.StringAttribute{
 						Computed:    true,
-						Description: `Identifier to select the IMDS protocol version to use: ` + "`" + `v1` + "`" + ` or ` + "`" + `v2` + "`" + `. must be one of ["v1", "v2"]`,
+						Description: `Identifier to select the IMDS protocol version to use: ` + "`" + `v1` + "`" + ` or ` + "`" + `v2` + "`" + `.`,
 					},
 					"aws_key": schema.StringAttribute{
 						Computed:    true,
@@ -80,7 +81,7 @@ func (r *GatewayPluginAWSLambdaDataSource) Schema(ctx context.Context, req datas
 					},
 					"aws_secret": schema.StringAttribute{
 						Computed:    true,
-						Description: `The AWS secret credential to be used when invoking the function. `,
+						Description: `The AWS secret credential to be used when invoking the function.`,
 					},
 					"awsgateway_compatible": schema.BoolAttribute{
 						Computed:    true,
@@ -95,7 +96,7 @@ func (r *GatewayPluginAWSLambdaDataSource) Schema(ctx context.Context, req datas
 					},
 					"forward_request_body": schema.BoolAttribute{
 						Computed:    true,
-						Description: `An optional value that defines whether the request body is sent in the request_body field of the JSON-encoded request. If the body arguments can be parsed, they are sent in the separate request_body_args field of the request. `,
+						Description: `An optional value that defines whether the request body is sent in the request_body field of the JSON-encoded request. If the body arguments can be parsed, they are sent in the separate request_body_args field of the request.`,
 					},
 					"forward_request_headers": schema.BoolAttribute{
 						Computed:    true,
@@ -119,7 +120,7 @@ func (r *GatewayPluginAWSLambdaDataSource) Schema(ctx context.Context, req datas
 					},
 					"invocation_type": schema.StringAttribute{
 						Computed:    true,
-						Description: `The InvocationType to use when invoking the function. Available types are RequestResponse, Event, DryRun. must be one of ["RequestResponse", "Event", "DryRun"]`,
+						Description: `The InvocationType to use when invoking the function. Available types are RequestResponse, Event, DryRun.`,
 					},
 					"is_proxy_integration": schema.BoolAttribute{
 						Computed:    true,
@@ -131,7 +132,7 @@ func (r *GatewayPluginAWSLambdaDataSource) Schema(ctx context.Context, req datas
 					},
 					"log_type": schema.StringAttribute{
 						Computed:    true,
-						Description: `The LogType to use when invoking the function. By default, None and Tail are supported. must be one of ["Tail", "None"]`,
+						Description: `The LogType to use when invoking the function. By default, None and Tail are supported.`,
 					},
 					"port": schema.Int64Attribute{
 						Computed:    true,
@@ -193,6 +194,29 @@ func (r *GatewayPluginAWSLambdaDataSource) Schema(ctx context.Context, req datas
 			},
 			"instance_name": schema.StringAttribute{
 				Computed: true,
+			},
+			"ordering": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"after": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+					"before": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+				},
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,

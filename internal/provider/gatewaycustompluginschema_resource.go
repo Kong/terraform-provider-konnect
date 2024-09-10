@@ -10,6 +10,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/kong/terraform-provider-konnect/internal/sdk"
@@ -47,21 +49,23 @@ func (r *GatewayCustomPluginSchemaResource) Schema(ctx context.Context, req reso
 		MarkdownDescription: "GatewayCustomPluginSchema Resource",
 		Attributes: map[string]schema.Attribute{
 			"control_plane_id": schema.StringAttribute{
-				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager.`,
+				Required: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.`,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
 				Description: `An ISO-8604 timestamp representation of custom plugin schema creation date.`,
 			},
 			"lua_schema": schema.StringAttribute{
-				Required: true,
-				MarkdownDescription: `The custom plugin schema; ` + "`" + `jq -Rs '.' schema.lua` + "`" + `.` + "\n" +
-					``,
+				Required:    true,
+				Description: `The custom plugin schema; ` + "`" + `jq -Rs '.' schema.lua` + "`" + `.`,
 			},
 			"name": schema.StringAttribute{
 				Computed:    true,
-				Description: `The custom plugin name`,
+				Description: `The custom plugin name determined by the custom plugin schema.`,
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,

@@ -25,4 +25,4 @@ resource "konnect_team_user" "my_teamuser" {
 ### Required
 
 - `team_id` (String) ID of the team. Requires replacement if changed.
-- `user_id` (String) User ID. Requires replacement if changed.
+- `user_id` (String) The user ID for the user being added to a team. Requires replacement if changed.

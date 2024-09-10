@@ -54,11 +54,11 @@ func (r *CloudGatewayConfigurationDataSource) Schema(ctx context.Context, req da
 		Attributes: map[string]schema.Attribute{
 			"api_access": schema.StringAttribute{
 				Computed:    true,
-				Description: `Type of API access data-plane groups will support for a configuration. must be one of ["private", "public", "private+public"]`,
+				Description: `Type of API access data-plane groups will support for a configuration.`,
 			},
 			"control_plane_geo": schema.StringAttribute{
 				Computed:    true,
-				Description: `Set of control-plane geos supported for deploying cloud-gateways configurations. must be one of ["us", "eu", "au"]`,
+				Description: `Set of control-plane geos supported for deploying cloud-gateways configurations.`,
 			},
 			"control_plane_id": schema.StringAttribute{
 				Computed: true,
@@ -82,8 +82,7 @@ func (r *CloudGatewayConfigurationDataSource) Schema(ctx context.Context, req da
 											Description: `Base number of requests per second that the deployment target should support.`,
 										},
 										"kind": schema.StringAttribute{
-											Computed:    true,
-											Description: `must be one of ["autopilot"]`,
+											Computed: true,
 										},
 										"max_rps": schema.Int64Attribute{
 											Computed:    true,
@@ -97,11 +96,10 @@ func (r *CloudGatewayConfigurationDataSource) Schema(ctx context.Context, req da
 									Attributes: map[string]schema.Attribute{
 										"instance_type": schema.StringAttribute{
 											Computed:    true,
-											Description: `Instance type name to indicate capacity. must be one of ["small", "medium", "large"]`,
+											Description: `Instance type name to indicate capacity.`,
 										},
 										"kind": schema.StringAttribute{
-											Computed:    true,
-											Description: `must be one of ["static"]`,
+											Computed: true,
 										},
 										"requested_instances": schema.Int64Attribute{
 											Computed:    true,
@@ -117,7 +115,7 @@ func (r *CloudGatewayConfigurationDataSource) Schema(ctx context.Context, req da
 						},
 						"provider": schema.StringAttribute{
 							Computed:    true,
-							Description: `Name of cloud provider. must be one of ["aws"]`,
+							Description: `Name of cloud provider.`,
 						},
 						"region": schema.StringAttribute{
 							Computed:    true,
@@ -127,7 +125,7 @@ func (r *CloudGatewayConfigurationDataSource) Schema(ctx context.Context, req da
 				},
 				Description: `Object that describes where data-planes will be deployed to, along with how many instances.`,
 			},
-			"dataplane_groups": schema.ListNestedAttribute{
+			"dataplane_groups": schema.SetNestedAttribute{
 				Computed: true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
@@ -142,8 +140,7 @@ func (r *CloudGatewayConfigurationDataSource) Schema(ctx context.Context, req da
 											Description: `Base number of requests per second that the deployment target should support.`,
 										},
 										"kind": schema.StringAttribute{
-											Computed:    true,
-											Description: `must be one of ["autopilot"]`,
+											Computed: true,
 										},
 										"max_rps": schema.Int64Attribute{
 											Computed:    true,
@@ -157,11 +154,10 @@ func (r *CloudGatewayConfigurationDataSource) Schema(ctx context.Context, req da
 									Attributes: map[string]schema.Attribute{
 										"instance_type": schema.StringAttribute{
 											Computed:    true,
-											Description: `Instance type name to indicate capacity. must be one of ["small", "medium", "large"]`,
+											Description: `Instance type name to indicate capacity.`,
 										},
 										"kind": schema.StringAttribute{
-											Computed:    true,
-											Description: `must be one of ["static"]`,
+											Computed: true,
 										},
 										"requested_instances": schema.Int64Attribute{
 											Computed:    true,
@@ -182,8 +178,7 @@ func (r *CloudGatewayConfigurationDataSource) Schema(ctx context.Context, req da
 						"egress_ip_addresses": schema.ListAttribute{
 							Computed:    true,
 							ElementType: types.StringType,
-							MarkdownDescription: `List of egress IP addresses for the network that this data-plane group runs on.` + "\n" +
-								``,
+							Description: `List of egress IP addresses for the network that this data-plane group runs on.`,
 						},
 						"id": schema.StringAttribute{
 							Computed:    true,
@@ -192,12 +187,11 @@ func (r *CloudGatewayConfigurationDataSource) Schema(ctx context.Context, req da
 						"private_ip_addresses": schema.ListAttribute{
 							Computed:    true,
 							ElementType: types.StringType,
-							MarkdownDescription: `List of private IP addresses of the internal load balancer that proxies traffic to this data-plane group.` + "\n" +
-								``,
+							Description: `List of private IP addresses of the internal load balancer that proxies traffic to this data-plane group.`,
 						},
 						"provider": schema.StringAttribute{
 							Computed:    true,
-							Description: `Name of cloud provider. must be one of ["aws"]`,
+							Description: `Name of cloud provider.`,
 						},
 						"region": schema.StringAttribute{
 							Computed:    true,
@@ -205,7 +199,7 @@ func (r *CloudGatewayConfigurationDataSource) Schema(ctx context.Context, req da
 						},
 						"state": schema.StringAttribute{
 							Computed:    true,
-							Description: `State of the data-plane group. must be one of ["created", "initializing", "ready", "terminating", "terminated"]`,
+							Description: `State of the data-plane group.`,
 						},
 						"updated_at": schema.StringAttribute{
 							Computed:    true,
@@ -214,13 +208,11 @@ func (r *CloudGatewayConfigurationDataSource) Schema(ctx context.Context, req da
 					},
 				},
 				MarkdownDescription: `List of data-plane groups that describe where data-planes will be deployed to, along with how many` + "\n" +
-					`instances.` + "\n" +
-					``,
+					`instances.`,
 			},
 			"entity_version": schema.NumberAttribute{
-				Computed: true,
-				MarkdownDescription: `Positive, monotonically increasing version integer, to serialize configuration changes.` + "\n" +
-					``,
+				Computed:    true,
+				Description: `Positive, monotonically increasing version integer, to serialize configuration changes.`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,

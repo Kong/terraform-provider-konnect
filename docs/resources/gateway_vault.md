@@ -17,9 +17,11 @@ resource "konnect_gateway_vault" "my_gatewayvault" {
   config           = "{ \"see\": \"documentation\" }"
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   description      = "...my_description..."
-  name             = "Victoria Thiel"
+  name             = "...my_name..."
   prefix           = "...my_prefix..."
-  vault_id         = "9d4d6d19-77c6-428e-a965-9bc9647633e9"
+  tags = [
+    "..."
+  ]
 }
 ```
 
@@ -28,7 +30,7 @@ resource "konnect_gateway_vault" "my_gatewayvault" {
 
 ### Required
 
-- `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager.
+- `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
 
 ### Optional
 

@@ -37,6 +37,7 @@ type GatewayPluginRateLimitingDataSourceModel struct {
 	Enabled        types.Bool                              `tfsdk:"enabled"`
 	ID             types.String                            `tfsdk:"id"`
 	InstanceName   types.String                            `tfsdk:"instance_name"`
+	Ordering       *tfTypes.CreateACLPluginOrdering        `tfsdk:"ordering"`
 	Protocols      []types.String                          `tfsdk:"protocols"`
 	Route          *tfTypes.ACLConsumer                    `tfsdk:"route"`
 	Service        *tfTypes.ACLConsumer                    `tfsdk:"service"`
@@ -88,7 +89,7 @@ func (r *GatewayPluginRateLimitingDataSource) Schema(ctx context.Context, req da
 					},
 					"limit_by": schema.StringAttribute{
 						Computed:    true,
-						Description: `The entity that is used when aggregating the limits. must be one of ["consumer", "credential", "ip", "service", "header", "path", "consumer-group"]`,
+						Description: `The entity that is used when aggregating the limits.`,
 					},
 					"minute": schema.NumberAttribute{
 						Computed:    true,
@@ -104,7 +105,7 @@ func (r *GatewayPluginRateLimitingDataSource) Schema(ctx context.Context, req da
 					},
 					"policy": schema.StringAttribute{
 						Computed:    true,
-						Description: `The rate-limiting policies to use for retrieving and incrementing the limits. must be one of ["local", "cluster", "redis"]`,
+						Description: `The rate-limiting policies to use for retrieving and incrementing the limits.`,
 					},
 					"redis": schema.SingleNestedAttribute{
 						Computed: true,
@@ -196,6 +197,29 @@ func (r *GatewayPluginRateLimitingDataSource) Schema(ctx context.Context, req da
 			},
 			"instance_name": schema.StringAttribute{
 				Computed: true,
+			},
+			"ordering": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"after": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+					"before": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+				},
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,

@@ -11,6 +11,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -42,6 +44,7 @@ type GatewayPluginProxyCacheResourceModel struct {
 	Enabled        types.Bool                            `tfsdk:"enabled"`
 	ID             types.String                          `tfsdk:"id"`
 	InstanceName   types.String                          `tfsdk:"instance_name"`
+	Ordering       *tfTypes.CreateACLPluginOrdering      `tfsdk:"ordering"`
 	Protocols      []types.String                        `tfsdk:"protocols"`
 	Route          *tfTypes.ACLConsumer                  `tfsdk:"route"`
 	Service        *tfTypes.ACLConsumer                  `tfsdk:"service"`
@@ -131,11 +134,9 @@ func (r *GatewayPluginProxyCacheResource) Schema(ctx context.Context, req resour
 					"strategy": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The backing data store in which to hold cache entities. must be one of ["memory"]`,
+						Description: `The backing data store in which to hold cache entities. must be "memory"`,
 						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"memory",
-							),
+							stringvalidator.OneOf("memory"),
 						},
 					},
 					"vary_headers": schema.ListAttribute{
@@ -174,8 +175,11 @@ func (r *GatewayPluginProxyCacheResource) Schema(ctx context.Context, req resour
 				},
 			},
 			"control_plane_id": schema.StringAttribute{
-				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager.`,
+				Required: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.`,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
@@ -192,6 +196,34 @@ func (r *GatewayPluginProxyCacheResource) Schema(ctx context.Context, req resour
 			"instance_name": schema.StringAttribute{
 				Computed: true,
 				Optional: true,
+			},
+			"ordering": schema.SingleNestedAttribute{
+				Computed: true,
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"after": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+					"before": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+				},
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,

@@ -14,10 +14,67 @@ GatewayPluginRateLimiting Resource
 
 ```terraform
 resource "konnect_gateway_plugin_rate_limiting" "my_gatewaypluginratelimiting" {
+  config = {
+    day                 = 2.06
+    error_code          = 7.45
+    error_message       = "...my_error_message..."
+    fault_tolerant      = false
+    header_name         = "...my_header_name..."
+    hide_client_headers = false
+    hour                = 0.92
+    limit_by            = "header"
+    minute              = 3.29
+    month               = 7.22
+    path                = "...my_path..."
+    policy              = "cluster"
+    redis = {
+      database    = 3
+      host        = "...my_host..."
+      password    = "...my_password..."
+      port        = 37089
+      server_name = "...my_server_name..."
+      ssl         = false
+      ssl_verify  = true
+      timeout     = 14058319
+      username    = "...my_username..."
+    }
+    second    = 1.89
+    sync_rate = 7.98
+    year      = 0.32
+  }
+  consumer = {
+    id = "...my_id..."
+  }
+  consumer_group = {
+    id = "...my_id..."
+  }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   enabled          = true
   instance_name    = "...my_instance_name..."
-  plugin_id        = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+  ordering = {
+    after = {
+      access = [
+        "..."
+      ]
+    }
+    before = {
+      access = [
+        "..."
+      ]
+    }
+  }
+  protocols = [
+    "grpc"
+  ]
+  route = {
+    id = "...my_id..."
+  }
+  service = {
+    id = "...my_id..."
+  }
+  tags = [
+    "..."
+  ]
 }
 ```
 
@@ -26,7 +83,7 @@ resource "konnect_gateway_plugin_rate_limiting" "my_gatewaypluginratelimiting" {
 
 ### Required
 
-- `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager.
+- `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
 
 ### Optional
 
@@ -35,6 +92,7 @@ resource "konnect_gateway_plugin_rate_limiting" "my_gatewaypluginratelimiting" {
 - `consumer_group` (Attributes) (see [below for nested schema](#nestedatt--consumer_group))
 - `enabled` (Boolean) Whether the plugin is applied.
 - `instance_name` (String)
+- `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
 - `protocols` (List of String) A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 - `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used. (see [below for nested schema](#nestedatt--route))
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
@@ -99,6 +157,31 @@ Optional:
 Optional:
 
 - `id` (String)
+
+
+<a id="nestedatt--ordering"></a>
+### Nested Schema for `ordering`
+
+Optional:
+
+- `after` (Attributes) (see [below for nested schema](#nestedatt--ordering--after))
+- `before` (Attributes) (see [below for nested schema](#nestedatt--ordering--before))
+
+<a id="nestedatt--ordering--after"></a>
+### Nested Schema for `ordering.after`
+
+Optional:
+
+- `access` (List of String)
+
+
+<a id="nestedatt--ordering--before"></a>
+### Nested Schema for `ordering.before`
+
+Optional:
+
+- `access` (List of String)
+
 
 
 <a id="nestedatt--route"></a>
