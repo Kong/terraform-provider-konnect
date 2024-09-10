@@ -2793,6 +2793,7 @@ components:
             portal:
               id: 95606071-49c7-4c2e-ae49-8a86d72a8110
             dcr_provider: null
+            granted_scopes: null
             developer:
               id: 9cd9feff-b4da-4a9f-ba49-cbe83c75ff22
               name: Jane Dev
@@ -2812,6 +2813,7 @@ components:
               id: 95606071-49c7-4c2e-ae49-8a86d72a8110
             dcr_provider:
               id: 7ea06071-49c7-4c2e-ae49-8a86d72a8110
+            granted_scopes: ['openid']
             developer:
               id: 9cd9feff-b4da-4a9f-ba49-cbe83c75ff22
               name: John Dev
@@ -2830,6 +2832,7 @@ components:
         portal:
           id: 95606071-49c7-4c2e-ae49-8a86d72a8110
         dcr_provider: null
+        granted_scopes: null
         developer:
           id: 9cd9feff-b4da-4a9f-ba49-cbe83c75ff22
           name: Jane Dev
@@ -2851,6 +2854,7 @@ components:
           id: 95606071-49c7-4c2e-ae49-8a86d72a8110
         dcr_provider:
           id: 7ea06071-49c7-4c2e-ae49-8a86d72a8110
+        granted_scopes: ['openid']
         developer:
           id: 9cd9feff-b4da-4a9f-ba49-cbe83c75ff22
           name: John Dev
@@ -6216,6 +6220,7 @@ components:
         - portal
         - developer
         - labels
+        - granted_scopes
       properties:
         id:
           $ref: >-
@@ -6287,6 +6292,14 @@ components:
               type: string
         auth_strategy:
           $ref: '#/components/schemas/AuthStrategy'
+        granted_scopes:
+          description: >-
+            List of granted scopes for the application.
+            Null if application type does not support returning granted scopes.
+          type: array
+          nullable: true
+          items:
+            type: string
       example:
         $ref: '#/components/examples/GetApplicationExampleBasic/value'
     ApplicationRegistration:
@@ -6378,7 +6391,13 @@ components:
               description: The name of the developer that created the registration.
               type: string
         granted_scopes:
-          description: List of granted scopes for the registration. Null if application type does not support returning granted scopes.
+          deprecated: true
+          description: >-
+            Cached list of granted scopes for the registration.
+            Identical for all registrations of an applications,
+            use `/portals/{portalId}/applications/{applicationId}`
+            to get up to date granted scopes from the IDP.
+            Null if application type does not support returning granted scopes.
           type: array
           nullable: true
           items:
