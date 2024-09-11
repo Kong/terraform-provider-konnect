@@ -1,10 +1,11 @@
 # Changelog
 
 ## 0.7.0
-> Released on 2024/??/??
+> Released on 2024/09/11
 
 ### Features
 * Add the `konnect_gateway_custom_plugin` resource for managing non-bundled plugins
+* Add support for all bundled Kong plugins
 * Add support for `labels` to `konnect_api_product_version`
 * Add support for `ordering` to `konnect_gateway_plugin`
 
