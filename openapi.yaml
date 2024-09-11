@@ -10454,6 +10454,9 @@ components:
               type: array
               items:
                 type: string
+            always_use_authenticated_groups:
+              description: 'If enabled (`true`), the authenticated groups will always be used even when an authenticated consumer already exists. If the authenticated groups don''t exist, it will fallback to use the groups associated with the consumer. By default the authenticated groups will only be used when there is no consumer or the consumer is anonymous.'
+              type: boolean
             deny:
               description: Arbitrary group names that are not allowed to consume the service or route. One of `config.allow` or `config.deny` must be specified.
               type: array
@@ -10494,6 +10497,10 @@ components:
         config:
           type: object
           properties:
+            max_request_body_size:
+              description: max allowed body size allowed to be introspected
+              type: integer
+              minimum: 0
             prompts:
               type: object
               properties:
@@ -10567,6 +10574,13 @@ components:
                 minLength: 1
                 type: string
               maxLength: 10
+            match_all_roles:
+              description: 'If true, will match all roles in addition to ''user'' role in conversation history.'
+              type: boolean
+            max_request_body_size:
+              description: max allowed body size allowed to be introspected
+              type: integer
+              minimum: 0
         name:
           type: string
           const: ai-prompt-guard
@@ -10586,6 +10600,10 @@ components:
             log_original_request:
               description: Set true to add the original request to the Kong log plugin(s) output.
               type: boolean
+            max_request_body_size:
+              description: max allowed body size allowed to be introspected
+              type: integer
+              minimum: 0
             templates:
               description: Array of templates available to the request context.
               type: array
@@ -10617,6 +10635,15 @@ components:
             auth:
               type: object
               properties:
+                allow_override:
+                  description: 'If enabled, the authorization header or parameter can be overridden in the request by the value configured in the plugin.'
+                  type: boolean
+                aws_access_key_id:
+                  description: Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_ACCESS_KEY_ID environment variable for this plugin instance.
+                  type: string
+                aws_secret_access_key:
+                  description: Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_SECRET_ACCESS_KEY environment variable for this plugin instance.
+                  type: string
                 azure_client_id:
                   description: 'If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client ID.'
                   type: string
@@ -10628,6 +10655,12 @@ components:
                   type: string
                 azure_use_managed_identity:
                   description: Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models.
+                  type: boolean
+                gcp_service_account_json:
+                  description: 'Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable `GCP_SERVICE_ACCOUNT`.'
+                  type: string
+                gcp_use_service_account:
+                  description: Use service account auth for GCP-based providers and models.
                   type: boolean
                 header_name:
                   description: 'If AI model requires authentication via Authorization or API key header, specify its name here.'
@@ -10656,6 +10689,10 @@ components:
                 log_statistics:
                   description: 'If enabled and supported by the driver, will add model usage and token metrics into the Kong log plugin(s) output.'
                   type: boolean
+            max_request_body_size:
+              description: max allowed body size allowed to be introspected
+              type: integer
+              minimum: 0
             model:
               type: object
               properties:
@@ -10678,6 +10715,28 @@ components:
                     azure_instance:
                       description: Instance name for Azure OpenAI hosted models.
                       type: string
+                    bedrock:
+                      type: object
+                      properties:
+                        aws_region:
+                          description: If using AWS providers (Bedrock) you can override the `AWS_REGION` environment variable by setting this option.
+                          type: string
+                    gemini:
+                      type: object
+                      properties:
+                        api_endpoint:
+                          description: 'If running Gemini on Vertex, specify the regional API endpoint (hostname only).'
+                          type: string
+                        location_id:
+                          description: 'If running Gemini on Vertex, specify the location ID.'
+                          type: string
+                        project_id:
+                          description: 'If running Gemini on Vertex, specify the project ID.'
+                          type: string
+                    input_cost:
+                      description: Defines the cost per 1M tokens in your prompt.
+                      type: number
+                      minimum: 0
                     llama2_format:
                       description: 'If using llama2 provider, select the upstream message format.'
                       type: string
@@ -10694,6 +10753,10 @@ components:
                       enum:
                         - openai
                         - ollama
+                    output_cost:
+                      description: Defines the cost per 1M tokens in the output of the AI.
+                      type: number
+                      minimum: 0
                     temperature:
                       description: 'Defines the matching temperature, if using chat or completion models.'
                       type: number
@@ -10725,6 +10788,11 @@ components:
                     - cohere
                     - mistral
                     - llama2
+                    - gemini
+                    - bedrock
+            model_name_header:
+              description: Display the model name selected in the X-Kong-LLM-Model response header
+              type: boolean
             response_streaming:
               description: 'Whether to ''optionally allow'', ''deny'', or ''always'' (force) the streaming of answers via server sent events.'
               type: string
@@ -10773,6 +10841,9 @@ components:
             aws_secret:
               description: 'The AWS secret credential to be used when invoking the function. '
               type: string
+            aws_sts_endpoint_url:
+              description: 'A string representing a URL, such as https://example.com/path/to/resource?q=search.'
+              type: string
             awsgateway_compatible:
               description: An optional value that defines whether the plugin should wrap requests into the Amazon API gateway.
               type: boolean
@@ -10781,6 +10852,12 @@ components:
               type: boolean
             disable_https:
               type: boolean
+            empty_arrays_mode:
+              description: 'An optional value that defines whether Kong should send empty arrays (returned by Lambda function) as `[]` arrays or `{}` objects in JSON responses. The value `legacy` means Kong will send empty arrays as `{}` objects in response'
+              type: string
+              enum:
+                - legacy
+                - correct
             forward_request_body:
               description: 'An optional value that defines whether the request body is sent in the request_body field of the JSON-encoded request. If the body arguments can be parsed, they are sent in the separate request_body_args field of the request. '
               type: boolean
@@ -11479,6 +11556,9 @@ components:
               type: number
               maximum: 31536000
               minimum: 0
+            realm:
+              description: When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value.
+              type: string
             run_on_preflight:
               description: 'A boolean value that indicates whether the plugin should run (and try to authenticate) on OPTIONS preflight requests. If set to false, then OPTIONS requests will always be allowed.'
               type: boolean
@@ -12103,6 +12183,9 @@ components:
             provision_key:
               description: The unique key the plugin has generated when it has been added to the Service.
               type: string
+            realm:
+              description: When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value.
+              type: string
             refresh_token_ttl:
               description: Time-to-live value for data
               type: number
@@ -12260,6 +12343,11 @@ components:
             cache_user_info:
               description: Cache the user info requests.
               type: boolean
+            claims_forbidden:
+              description: 'If given, these claims are forbidden in the token payload.'
+              type: array
+              items:
+                type: string
             client_alg:
               description: The algorithm to use for client_secret_jwt (only HS***) or private_key_jwt authentication.
               type: array
@@ -12374,6 +12462,133 @@ components:
               type: array
               items:
                 type: string
+            cluster_cache_redis:
+              type: object
+              properties:
+                cluster_max_redirections:
+                  description: Maximum retry attempts for redirection.
+                  type: integer
+                cluster_nodes:
+                  description: Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
+                  type: array
+                  items:
+                    properties:
+                      ip:
+                        description: 'A string representing a host name, such as example.com.'
+                        type: string
+                      port:
+                        description: 'An integer representing a port number between 0 and 65535, inclusive.'
+                        type: integer
+                        maximum: 65535
+                        minimum: 0
+                    type: object
+                  minLength: 1
+                connect_timeout:
+                  description: An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+                  type: integer
+                  maximum: 2147483646
+                  minimum: 0
+                connection_is_proxied:
+                  description: 'If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address.'
+                  type: boolean
+                database:
+                  description: Database to use for the Redis connection when using the `redis` strategy
+                  type: integer
+                host:
+                  description: 'A string representing a host name, such as example.com.'
+                  type: string
+                keepalive_backlog:
+                  description: 'Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `keepalive_pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `keepalive_pool_size`.'
+                  type: integer
+                  maximum: 2147483646
+                  minimum: 0
+                keepalive_pool_size:
+                  description: 'The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `keepalive_pool_size` nor `keepalive_backlog` is specified, no pool is created. If `keepalive_pool_size` isn''t specified but `keepalive_backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.'
+                  type: integer
+                  maximum: 2147483646
+                  minimum: 1
+                password:
+                  description: 'Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.'
+                  type: string
+                port:
+                  description: 'An integer representing a port number between 0 and 65535, inclusive.'
+                  type: integer
+                  maximum: 65535
+                  minimum: 0
+                read_timeout:
+                  description: An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+                  type: integer
+                  maximum: 2147483646
+                  minimum: 0
+                send_timeout:
+                  description: An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+                  type: integer
+                  maximum: 2147483646
+                  minimum: 0
+                sentinel_master:
+                  description: Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
+                  type: string
+                sentinel_nodes:
+                  description: Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
+                  type: array
+                  items:
+                    properties:
+                      host:
+                        description: 'A string representing a host name, such as example.com.'
+                        type: string
+                      port:
+                        description: 'An integer representing a port number between 0 and 65535, inclusive.'
+                        type: integer
+                        maximum: 65535
+                        minimum: 0
+                    type: object
+                  minLength: 1
+                sentinel_password:
+                  description: 'Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.'
+                  type: string
+                sentinel_role:
+                  description: Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
+                  type: string
+                  enum:
+                    - master
+                    - slave
+                    - any
+                sentinel_username:
+                  description: 'Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won''t be performed. This requires Redis v6.2.0+.'
+                  type: string
+                server_name:
+                  description: A string representing an SNI (server name indication) value for TLS.
+                  type: string
+                ssl:
+                  description: 'If set to true, uses SSL to connect to Redis.'
+                  type: boolean
+                ssl_verify:
+                  description: 'If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.'
+                  type: boolean
+                username:
+                  description: 'Username to use for Redis connections. If undefined, ACL authentication won''t be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.'
+                  type: string
+              shorthand_fields:
+                cluster_addresses:
+                  items:
+                    type: string
+                  minLength: 1
+                  type: array
+                sentinel_addresses:
+                  items:
+                    type: string
+                  minLength: 1
+                  type: array
+                timeout:
+                  translate_backwards:
+                    - connect_timeout
+                  type: integer
+            cluster_cache_strategy:
+              description: 'The strategy to use for the cluster cache. If set, the plugin will share cache with nodes configured with the same strategy backend. Currentlly only introspection cache is shared.'
+              type: string
+              enum:
+                - 'off'
+                - redis
             consumer_by:
               description: 'Consumer fields used for mapping: - `id`: try to find the matching Consumer by `id` - `username`: try to find the matching Consumer by `username` - `custom_id`: try to find the matching Consumer by `custom_id`.'
               type: array
@@ -12783,6 +12998,133 @@ components:
               items:
                 description: 'A string representing a URL, such as https://example.com/path/to/resource?q=search.'
                 type: string
+            redis:
+              type: object
+              properties:
+                cluster_max_redirections:
+                  description: Maximum retry attempts for redirection.
+                  type: integer
+                cluster_nodes:
+                  description: Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
+                  type: array
+                  items:
+                    properties:
+                      ip:
+                        description: 'A string representing a host name, such as example.com.'
+                        type: string
+                      port:
+                        description: 'An integer representing a port number between 0 and 65535, inclusive.'
+                        type: integer
+                        maximum: 65535
+                        minimum: 0
+                    type: object
+                  minLength: 1
+                connect_timeout:
+                  description: An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+                  type: integer
+                  maximum: 2147483646
+                  minimum: 0
+                connection_is_proxied:
+                  description: 'If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address.'
+                  type: boolean
+                database:
+                  description: Database to use for the Redis connection when using the `redis` strategy
+                  type: integer
+                host:
+                  description: 'A string representing a host name, such as example.com.'
+                  type: string
+                keepalive_backlog:
+                  description: 'Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `keepalive_pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `keepalive_pool_size`.'
+                  type: integer
+                  maximum: 2147483646
+                  minimum: 0
+                keepalive_pool_size:
+                  description: 'The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `keepalive_pool_size` nor `keepalive_backlog` is specified, no pool is created. If `keepalive_pool_size` isn''t specified but `keepalive_backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.'
+                  type: integer
+                  maximum: 2147483646
+                  minimum: 1
+                password:
+                  description: 'Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.'
+                  type: string
+                port:
+                  description: 'An integer representing a port number between 0 and 65535, inclusive.'
+                  type: integer
+                  maximum: 65535
+                  minimum: 0
+                prefix:
+                  description: The Redis session key prefix.
+                  type: string
+                read_timeout:
+                  description: An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+                  type: integer
+                  maximum: 2147483646
+                  minimum: 0
+                send_timeout:
+                  description: An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+                  type: integer
+                  maximum: 2147483646
+                  minimum: 0
+                sentinel_master:
+                  description: Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
+                  type: string
+                sentinel_nodes:
+                  description: Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
+                  type: array
+                  items:
+                    properties:
+                      host:
+                        description: 'A string representing a host name, such as example.com.'
+                        type: string
+                      port:
+                        description: 'An integer representing a port number between 0 and 65535, inclusive.'
+                        type: integer
+                        maximum: 65535
+                        minimum: 0
+                    type: object
+                  minLength: 1
+                sentinel_password:
+                  description: 'Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.'
+                  type: string
+                sentinel_role:
+                  description: Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
+                  type: string
+                  enum:
+                    - master
+                    - slave
+                    - any
+                sentinel_username:
+                  description: 'Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won''t be performed. This requires Redis v6.2.0+.'
+                  type: string
+                server_name:
+                  description: A string representing an SNI (server name indication) value for TLS.
+                  type: string
+                socket:
+                  description: The Redis unix socket path.
+                  type: string
+                ssl:
+                  description: 'If set to true, uses SSL to connect to Redis.'
+                  type: boolean
+                ssl_verify:
+                  description: 'If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.'
+                  type: boolean
+                username:
+                  description: 'Username to use for Redis connections. If undefined, ACL authentication won''t be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.'
+                  type: string
+              shorthand_fields:
+                cluster_addresses:
+                  items:
+                    type: string
+                  minLength: 1
+                  type: array
+                sentinel_addresses:
+                  items:
+                    type: string
+                  minLength: 1
+                  type: array
+                timeout:
+                  translate_backwards:
+                    - connect_timeout
+                  type: integer
             rediscovery_lifetime:
               description: Specifies how long (in seconds) the plugin waits between discovery attempts. Discovery is still triggered on an as-needed basis.
               type: number
@@ -12934,61 +13276,6 @@ components:
               type: string
             session_memcached_socket:
               description: The memcached unix socket path.
-              type: string
-            session_redis_cluster_max_redirections:
-              description: The Redis cluster maximum redirects.
-              type: integer
-            session_redis_cluster_nodes:
-              description: 'The Redis cluster node host. Takes an array of host records, with either `ip` or `host`, and `port` values.'
-              type: array
-              items:
-                properties:
-                  ip:
-                    description: 'A string representing a host name, such as example.com.'
-                    type: string
-                  port:
-                    description: 'An integer representing a port number between 0 and 65535, inclusive.'
-                    type: integer
-                    maximum: 65535
-                    minimum: 0
-                type: object
-            session_redis_connect_timeout:
-              description: Session redis connection timeout in milliseconds.
-              type: integer
-            session_redis_host:
-              description: The Redis host.
-              type: string
-            session_redis_password:
-              description: 'Password to use for Redis connection when the `redis` session storage is defined. If undefined, no AUTH commands are sent to Redis.'
-              type: string
-            session_redis_port:
-              description: The Redis port.
-              type: integer
-              maximum: 65535
-              minimum: 0
-            session_redis_prefix:
-              description: The Redis session key prefix.
-              type: string
-            session_redis_read_timeout:
-              description: Session redis read timeout in milliseconds.
-              type: integer
-            session_redis_send_timeout:
-              description: Session redis send timeout in milliseconds.
-              type: integer
-            session_redis_server_name:
-              description: The SNI used for connecting the Redis server.
-              type: string
-            session_redis_socket:
-              description: The Redis unix socket path.
-              type: string
-            session_redis_ssl:
-              description: Use SSL/TLS for Redis connection.
-              type: boolean
-            session_redis_ssl_verify:
-              description: Verify identity provider server certificate.
-              type: boolean
-            session_redis_username:
-              description: 'Username to use for Redis connection when the `redis` session storage is defined and ACL authentication is desired. If undefined, ACL authentication will not be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.'
               type: string
             session_remember:
               description: Enables or disables persistent sessions.
@@ -13267,8 +13554,87 @@ components:
               type: string
             session_memcache_socket:
               type: string
-            session_redis_cluster_maxredirections:
+            session_redis_cluster_max_redirections:
+              translate_backwards:
+                - redis
+                - cluster_max_redirections
               type: integer
+            session_redis_cluster_nodes:
+              items:
+                properties:
+                  ip:
+                    description: 'A string representing a host name, such as example.com.'
+                    type: string
+                  port:
+                    description: 'An integer representing a port number between 0 and 65535, inclusive.'
+                    type: integer
+                    maximum: 65535
+                    minimum: 0
+                type: object
+              translate_backwards:
+                - redis
+                - cluster_nodes
+              type: array
+            session_redis_connect_timeout:
+              translate_backwards:
+                - redis
+                - connect_timeout
+              type: integer
+            session_redis_host:
+              translate_backwards:
+                - redis
+                - host
+              type: string
+            session_redis_password:
+              translate_backwards:
+                - redis
+                - password
+              type: string
+            session_redis_port:
+              translate_backwards:
+                - redis
+                - port
+              type: integer
+            session_redis_prefix:
+              translate_backwards:
+                - redis
+                - prefix
+              type: string
+            session_redis_read_timeout:
+              translate_backwards:
+                - redis
+                - read_timeout
+              type: integer
+            session_redis_send_timeout:
+              translate_backwards:
+                - redis
+                - send_timeout
+              type: integer
+            session_redis_server_name:
+              translate_backwards:
+                - redis
+                - server_name
+              type: string
+            session_redis_socket:
+              translate_backwards:
+                - redis
+                - socket
+              type: string
+            session_redis_ssl:
+              translate_backwards:
+                - redis
+                - ssl
+              type: boolean
+            session_redis_ssl_verify:
+              translate_backwards:
+                - redis
+                - ssl_verify
+              type: boolean
+            session_redis_username:
+              translate_backwards:
+                - redis
+                - username
+              type: string
             session_strategy:
               type: string
         name:
@@ -13295,9 +13661,6 @@ components:
               type: integer
               maximum: 2147483646
               minimum: 0
-            endpoint:
-              description: 'A string representing a URL, such as https://example.com/path/to/resource?q=search.'
-              type: string
             header_type:
               type: string
               enum:
@@ -13317,6 +13680,9 @@ components:
               additionalProperties: true
             http_response_header_for_traceid:
               type: string
+            logs_endpoint:
+              description: 'A string representing a URL, such as https://example.com/path/to/resource?q=search.'
+              type: string
             propagation:
               type: object
               properties:
@@ -13329,26 +13695,26 @@ components:
                   description: 'The default header format to use when extractors did not match any format in the incoming headers and `inject` is configured with the value: `preserve`. This can happen when no tracing header was found in the request, or the incoming tracing header formats were not included in `extract`.'
                   type: string
                   enum:
+                    - w3c
+                    - datadog
                     - b3
                     - gcp
                     - b3-single
                     - jaeger
                     - aws
                     - ot
-                    - w3c
-                    - datadog
                 extract:
                   description: 'Header formats used to extract tracing context from incoming requests. If multiple values are specified, the first one found will be used for extraction. If left empty, Kong will not extract any tracing context information from incoming requests and generate a trace with no parent and a new trace ID.'
                   type: array
                   items:
                     enum:
+                      - w3c
+                      - datadog
                       - b3
                       - gcp
                       - jaeger
                       - aws
                       - ot
-                      - w3c
-                      - datadog
                     type: string
                 inject:
                   description: 'Header formats used to inject tracing context. The value `preserve` will use the same header format as the incoming request. If multiple values are specified, all of them will be used during injection. If left empty, Kong will not inject any tracing context information in outgoing requests.'
@@ -13356,20 +13722,26 @@ components:
                   items:
                     enum:
                       - preserve
+                      - w3c
+                      - datadog
                       - b3
                       - gcp
                       - b3-single
                       - jaeger
                       - aws
                       - ot
-                      - w3c
-                      - datadog
                     type: string
               required:
                 - default_format
             queue:
               type: object
               properties:
+                concurrency_limit:
+                  description: The number of of queue delivery timers. -1 indicates unlimited.
+                  type: integer
+                  enum:
+                    - -1
+                    - 1
                 initial_retry_delay:
                   description: Time in seconds before the initial retry is made for a failing batch.
                   type: number
@@ -13419,6 +13791,13 @@ components:
               type: integer
               maximum: 2147483646
               minimum: 0
+            traces_endpoint:
+              description: 'A string representing a URL, such as https://example.com/path/to/resource?q=search.'
+              type: string
+          shorthand_fields:
+            endpoint:
+              description: 'A string representing a URL, such as https://example.com/path/to/resource?q=search.'
+              type: string
         name:
           type: string
           const: opentelemetry
@@ -13639,6 +14018,9 @@ components:
         config:
           type: object
           properties:
+            ai_metrics:
+              description: 'A boolean value that determines if ai metrics should be collected. If enabled, the `ai_llm_requests_total`, `ai_llm_cost_total` and `ai_llm_tokens_total` metrics will be exported.'
+              type: boolean
             bandwidth_metrics:
               description: 'A boolean value that determines if bandwidth metrics should be collected. If enabled, `bandwidth_bytes` and `stream_sessions_total` metrics will be exported.'
               type: boolean
@@ -13799,17 +14181,32 @@ components:
             redis:
               type: object
               properties:
-                cluster_addresses:
-                  description: Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Cluster. Each string element must be a hostname. The minimum length of the array is 1 element.
+                cluster_max_redirections:
+                  description: Maximum retry attempts for redirection.
+                  type: integer
+                cluster_nodes:
+                  description: Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
                   type: array
                   items:
-                    type: string
+                    properties:
+                      ip:
+                        description: 'A string representing a host name, such as example.com.'
+                        type: string
+                      port:
+                        description: 'An integer representing a port number between 0 and 65535, inclusive.'
+                        type: integer
+                        maximum: 65535
+                        minimum: 0
+                    type: object
                   minLength: 1
                 connect_timeout:
                   description: An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
                   type: integer
                   maximum: 2147483646
                   minimum: 0
+                connection_is_proxied:
+                  description: 'If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address.'
+                  type: boolean
                 database:
                   description: Database to use for the Redis connection when using the `redis` strategy
                   type: integer
@@ -13844,15 +14241,24 @@ components:
                   type: integer
                   maximum: 2147483646
                   minimum: 0
-                sentinel_addresses:
-                  description: Sentinel addresses to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. Each string element must be a hostname. The minimum length of the array is 1 element.
-                  type: array
-                  items:
-                    type: string
-                  minLength: 1
                 sentinel_master:
                   description: Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
                   type: string
+                sentinel_nodes:
+                  description: Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
+                  type: array
+                  items:
+                    properties:
+                      host:
+                        description: 'A string representing a host name, such as example.com.'
+                        type: string
+                      port:
+                        description: 'An integer representing a port number between 0 and 65535, inclusive.'
+                        type: integer
+                        maximum: 65535
+                        minimum: 0
+                    type: object
+                  minLength: 1
                 sentinel_password:
                   description: 'Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.'
                   type: string
@@ -13875,14 +14281,24 @@ components:
                 ssl_verify:
                   description: 'If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.'
                   type: boolean
-                timeout:
-                  description: An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-                  type: integer
-                  maximum: 2147483646
-                  minimum: 0
                 username:
                   description: 'Username to use for Redis connections. If undefined, ACL authentication won''t be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.'
                   type: string
+              shorthand_fields:
+                cluster_addresses:
+                  items:
+                    type: string
+                  minLength: 1
+                  type: array
+                sentinel_addresses:
+                  items:
+                    type: string
+                  minLength: 1
+                  type: array
+                timeout:
+                  translate_backwards:
+                    - connect_timeout
+                  type: integer
             retry_after_jitter_max:
               description: 'The upper bound of a jitter (random delay) in seconds to be added to the `Retry-After` header of denied requests (status = `429`) in order to prevent all the clients from coming back at the same time. The lower bound of the jitter is `0`; in this case, the `Retry-After` header is equal to the `RateLimit-Reset` header.'
               type: number
@@ -14542,6 +14958,11 @@ components:
                   items:
                     pattern: '^[^:]+:.*$'
                     type: string
+                json:
+                  type: array
+                  items:
+                    pattern: '^[^:]+:.*$'
+                    type: string
             replace:
               type: object
               properties:
@@ -14766,6 +15187,133 @@ components:
                 - EmailAddress
                 - Persistent
                 - Transient
+            redis:
+              type: object
+              properties:
+                cluster_max_redirections:
+                  description: Maximum retry attempts for redirection.
+                  type: integer
+                cluster_nodes:
+                  description: Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
+                  type: array
+                  items:
+                    properties:
+                      ip:
+                        description: 'A string representing a host name, such as example.com.'
+                        type: string
+                      port:
+                        description: 'An integer representing a port number between 0 and 65535, inclusive.'
+                        type: integer
+                        maximum: 65535
+                        minimum: 0
+                    type: object
+                  minLength: 1
+                connect_timeout:
+                  description: An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+                  type: integer
+                  maximum: 2147483646
+                  minimum: 0
+                connection_is_proxied:
+                  description: 'If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address.'
+                  type: boolean
+                database:
+                  description: Database to use for the Redis connection when using the `redis` strategy
+                  type: integer
+                host:
+                  description: 'A string representing a host name, such as example.com.'
+                  type: string
+                keepalive_backlog:
+                  description: 'Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `keepalive_pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `keepalive_pool_size`.'
+                  type: integer
+                  maximum: 2147483646
+                  minimum: 0
+                keepalive_pool_size:
+                  description: 'The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `keepalive_pool_size` nor `keepalive_backlog` is specified, no pool is created. If `keepalive_pool_size` isn''t specified but `keepalive_backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.'
+                  type: integer
+                  maximum: 2147483646
+                  minimum: 1
+                password:
+                  description: 'Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.'
+                  type: string
+                port:
+                  description: 'An integer representing a port number between 0 and 65535, inclusive.'
+                  type: integer
+                  maximum: 65535
+                  minimum: 0
+                prefix:
+                  description: The Redis session key prefix.
+                  type: string
+                read_timeout:
+                  description: An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+                  type: integer
+                  maximum: 2147483646
+                  minimum: 0
+                send_timeout:
+                  description: An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+                  type: integer
+                  maximum: 2147483646
+                  minimum: 0
+                sentinel_master:
+                  description: Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
+                  type: string
+                sentinel_nodes:
+                  description: Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
+                  type: array
+                  items:
+                    properties:
+                      host:
+                        description: 'A string representing a host name, such as example.com.'
+                        type: string
+                      port:
+                        description: 'An integer representing a port number between 0 and 65535, inclusive.'
+                        type: integer
+                        maximum: 65535
+                        minimum: 0
+                    type: object
+                  minLength: 1
+                sentinel_password:
+                  description: 'Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.'
+                  type: string
+                sentinel_role:
+                  description: Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
+                  type: string
+                  enum:
+                    - master
+                    - slave
+                    - any
+                sentinel_username:
+                  description: 'Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won''t be performed. This requires Redis v6.2.0+.'
+                  type: string
+                server_name:
+                  description: A string representing an SNI (server name indication) value for TLS.
+                  type: string
+                socket:
+                  description: The Redis unix socket path.
+                  type: string
+                ssl:
+                  description: 'If set to true, uses SSL to connect to Redis.'
+                  type: boolean
+                ssl_verify:
+                  description: 'If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.'
+                  type: boolean
+                username:
+                  description: 'Username to use for Redis connections. If undefined, ACL authentication won''t be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.'
+                  type: string
+              shorthand_fields:
+                cluster_addresses:
+                  items:
+                    type: string
+                  minLength: 1
+                  type: array
+                sentinel_addresses:
+                  items:
+                    type: string
+                  minLength: 1
+                  type: array
+                timeout:
+                  translate_backwards:
+                    - connect_timeout
+                  type: integer
             request_digest_algorithm:
               description: 'The digest algorithm for Authn requests: - `SHA256` - `SHA1`'
               type: string
@@ -14856,61 +15404,6 @@ components:
             session_memcached_socket:
               description: The memcached unix socket path.
               type: string
-            session_redis_cluster_max_redirections:
-              description: The Redis cluster maximum redirects.
-              type: integer
-            session_redis_cluster_nodes:
-              description: 'The Redis cluster node host. Takes an array of host records, with either `ip` or `host`, and `port` values.'
-              type: array
-              items:
-                properties:
-                  ip:
-                    description: 'A string representing a host name, such as example.com.'
-                    type: string
-                  port:
-                    description: 'An integer representing a port number between 0 and 65535, inclusive.'
-                    type: integer
-                    maximum: 65535
-                    minimum: 0
-                type: object
-            session_redis_connect_timeout:
-              description: The Redis connection timeout in milliseconds.
-              type: integer
-            session_redis_host:
-              description: The Redis host IP.
-              type: string
-            session_redis_password:
-              description: 'Password to use for Redis connection when the `redis` session storage is defined. If undefined, no auth commands are sent to Redis. This value is pulled from'
-              type: string
-            session_redis_port:
-              description: 'An integer representing a port number between 0 and 65535, inclusive.'
-              type: integer
-              maximum: 65535
-              minimum: 0
-            session_redis_prefix:
-              description: The Redis session key prefix.
-              type: string
-            session_redis_read_timeout:
-              description: The Redis read timeout in milliseconds.
-              type: integer
-            session_redis_send_timeout:
-              description: The Redis send timeout in milliseconds.
-              type: integer
-            session_redis_server_name:
-              description: The SNI used for connecting to the Redis server.
-              type: string
-            session_redis_socket:
-              description: The Redis unix socket path.
-              type: string
-            session_redis_ssl:
-              description: Use SSL/TLS for the Redis connection.
-              type: boolean
-            session_redis_ssl_verify:
-              description: Verify the Redis server certificate.
-              type: boolean
-            session_redis_username:
-              description: 'Redis username if the `redis` session storage is defined and ACL authentication is desired.If undefined, ACL authentication will not be performed.  This requires Redis v6.0.0+. The username **cannot** be set to `default`.'
-              type: string
             session_remember:
               description: Enables or disables persistent sessions
               type: boolean
@@ -14995,8 +15488,92 @@ components:
               type: string
             session_memcache_socket:
               type: string
-            session_redis_cluster_maxredirections:
+            session_redis_cluster_max_redirections:
+              translate_backwards:
+                - redis
+                - cluster_max_redirections
               type: integer
+            session_redis_cluster_maxredirections:
+              translate_backwards:
+                - redis
+                - cluster_max_redirections
+              type: integer
+            session_redis_cluster_nodes:
+              items:
+                properties:
+                  ip:
+                    description: 'A string representing a host name, such as example.com.'
+                    type: string
+                  port:
+                    description: 'An integer representing a port number between 0 and 65535, inclusive.'
+                    type: integer
+                    maximum: 65535
+                    minimum: 0
+                type: object
+              translate_backwards:
+                - redis
+                - cluster_nodes
+              type: array
+            session_redis_connect_timeout:
+              translate_backwards:
+                - redis
+                - connect_timeout
+              type: integer
+            session_redis_host:
+              translate_backwards:
+                - redis
+                - host
+              type: string
+            session_redis_password:
+              translate_backwards:
+                - redis
+                - password
+              type: string
+            session_redis_port:
+              translate_backwards:
+                - redis
+                - port
+              type: integer
+            session_redis_prefix:
+              translate_backwards:
+                - redis
+                - prefix
+              type: string
+            session_redis_read_timeout:
+              translate_backwards:
+                - redis
+                - read_timeout
+              type: integer
+            session_redis_send_timeout:
+              translate_backwards:
+                - redis
+                - send_timeout
+              type: integer
+            session_redis_server_name:
+              translate_backwards:
+                - redis
+                - server_name
+              type: string
+            session_redis_socket:
+              translate_backwards:
+                - redis
+                - socket
+              type: string
+            session_redis_ssl:
+              translate_backwards:
+                - redis
+                - ssl
+              type: boolean
+            session_redis_ssl_verify:
+              translate_backwards:
+                - redis
+                - ssl_verify
+              type: boolean
+            session_redis_username:
+              translate_backwards:
+                - redis
+                - username
+              type: string
             session_strategy:
               type: string
         name:
@@ -15190,6 +15767,12 @@ components:
             queue:
               type: object
               properties:
+                concurrency_limit:
+                  description: The number of of queue delivery timers. -1 indicates unlimited.
+                  type: integer
+                  enum:
+                    - -1
+                    - 1
                 initial_retry_delay:
                   description: Time in seconds before the initial retry is made for a failing batch.
                   type: number
