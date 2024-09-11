@@ -4,16 +4,18 @@ package types
 
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
-type CreateAWSLambdaPluginConfig struct {
+type CreateAwsLambdaPluginConfig struct {
 	AwsAssumeRoleArn       types.String `tfsdk:"aws_assume_role_arn"`
 	AwsImdsProtocolVersion types.String `tfsdk:"aws_imds_protocol_version"`
 	AwsKey                 types.String `tfsdk:"aws_key"`
 	AwsRegion              types.String `tfsdk:"aws_region"`
 	AwsRoleSessionName     types.String `tfsdk:"aws_role_session_name"`
 	AwsSecret              types.String `tfsdk:"aws_secret"`
+	AwsStsEndpointURL      types.String `tfsdk:"aws_sts_endpoint_url"`
 	AwsgatewayCompatible   types.Bool   `tfsdk:"awsgateway_compatible"`
 	Base64EncodeBody       types.Bool   `tfsdk:"base64_encode_body"`
 	DisableHTTPS           types.Bool   `tfsdk:"disable_https"`
+	EmptyArraysMode        types.String `tfsdk:"empty_arrays_mode"`
 	ForwardRequestBody     types.Bool   `tfsdk:"forward_request_body"`
 	ForwardRequestHeaders  types.Bool   `tfsdk:"forward_request_headers"`
 	ForwardRequestMethod   types.Bool   `tfsdk:"forward_request_method"`

@@ -92,6 +92,47 @@ func (o *CreatePostFunctionPluginConfig) GetWsUpstreamFrame() []string {
 	return o.WsUpstreamFrame
 }
 
+type CreatePostFunctionPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *CreatePostFunctionPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type CreatePostFunctionPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *CreatePostFunctionPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type CreatePostFunctionPluginOrdering struct {
+	After  *CreatePostFunctionPluginAfter  `json:"after,omitempty"`
+	Before *CreatePostFunctionPluginBefore `json:"before,omitempty"`
+}
+
+func (o *CreatePostFunctionPluginOrdering) GetAfter() *CreatePostFunctionPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *CreatePostFunctionPluginOrdering) GetBefore() *CreatePostFunctionPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
 type CreatePostFunctionPluginProtocols string
 
 const (
@@ -192,9 +233,10 @@ func (o *CreatePostFunctionPluginService) GetID() *string {
 type CreatePostFunctionPlugin struct {
 	Config *CreatePostFunctionPluginConfig `json:"config,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool   `json:"enabled,omitempty"`
-	InstanceName *string `json:"instance_name,omitempty"`
-	name         *string `const:"post-function" json:"name,omitempty"`
+	Enabled      *bool                             `json:"enabled,omitempty"`
+	InstanceName *string                           `json:"instance_name,omitempty"`
+	name         *string                           `const:"post-function" json:"name,omitempty"`
+	Ordering     *CreatePostFunctionPluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []CreatePostFunctionPluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
@@ -242,6 +284,13 @@ func (o *CreatePostFunctionPlugin) GetInstanceName() *string {
 
 func (o *CreatePostFunctionPlugin) GetName() *string {
 	return types.String("post-function")
+}
+
+func (o *CreatePostFunctionPlugin) GetOrdering() *CreatePostFunctionPluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
 }
 
 func (o *CreatePostFunctionPlugin) GetProtocols() []CreatePostFunctionPluginProtocols {

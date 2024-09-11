@@ -63,14 +63,14 @@ func (e *CreateOpentelemetryPluginHeaderType) UnmarshalJSON(data []byte) error {
 type CreateOpentelemetryPluginDefaultFormat string
 
 const (
+	CreateOpentelemetryPluginDefaultFormatW3c      CreateOpentelemetryPluginDefaultFormat = "w3c"
+	CreateOpentelemetryPluginDefaultFormatDatadog  CreateOpentelemetryPluginDefaultFormat = "datadog"
 	CreateOpentelemetryPluginDefaultFormatB3       CreateOpentelemetryPluginDefaultFormat = "b3"
 	CreateOpentelemetryPluginDefaultFormatGcp      CreateOpentelemetryPluginDefaultFormat = "gcp"
 	CreateOpentelemetryPluginDefaultFormatB3Single CreateOpentelemetryPluginDefaultFormat = "b3-single"
 	CreateOpentelemetryPluginDefaultFormatJaeger   CreateOpentelemetryPluginDefaultFormat = "jaeger"
 	CreateOpentelemetryPluginDefaultFormatAws      CreateOpentelemetryPluginDefaultFormat = "aws"
 	CreateOpentelemetryPluginDefaultFormatOt       CreateOpentelemetryPluginDefaultFormat = "ot"
-	CreateOpentelemetryPluginDefaultFormatW3c      CreateOpentelemetryPluginDefaultFormat = "w3c"
-	CreateOpentelemetryPluginDefaultFormatDatadog  CreateOpentelemetryPluginDefaultFormat = "datadog"
 )
 
 func (e CreateOpentelemetryPluginDefaultFormat) ToPointer() *CreateOpentelemetryPluginDefaultFormat {
@@ -82,6 +82,10 @@ func (e *CreateOpentelemetryPluginDefaultFormat) UnmarshalJSON(data []byte) erro
 		return err
 	}
 	switch v {
+	case "w3c":
+		fallthrough
+	case "datadog":
+		fallthrough
 	case "b3":
 		fallthrough
 	case "gcp":
@@ -93,10 +97,6 @@ func (e *CreateOpentelemetryPluginDefaultFormat) UnmarshalJSON(data []byte) erro
 	case "aws":
 		fallthrough
 	case "ot":
-		fallthrough
-	case "w3c":
-		fallthrough
-	case "datadog":
 		*e = CreateOpentelemetryPluginDefaultFormat(v)
 		return nil
 	default:
@@ -107,13 +107,13 @@ func (e *CreateOpentelemetryPluginDefaultFormat) UnmarshalJSON(data []byte) erro
 type CreateOpentelemetryPluginExtract string
 
 const (
+	CreateOpentelemetryPluginExtractW3c     CreateOpentelemetryPluginExtract = "w3c"
+	CreateOpentelemetryPluginExtractDatadog CreateOpentelemetryPluginExtract = "datadog"
 	CreateOpentelemetryPluginExtractB3      CreateOpentelemetryPluginExtract = "b3"
 	CreateOpentelemetryPluginExtractGcp     CreateOpentelemetryPluginExtract = "gcp"
 	CreateOpentelemetryPluginExtractJaeger  CreateOpentelemetryPluginExtract = "jaeger"
 	CreateOpentelemetryPluginExtractAws     CreateOpentelemetryPluginExtract = "aws"
 	CreateOpentelemetryPluginExtractOt      CreateOpentelemetryPluginExtract = "ot"
-	CreateOpentelemetryPluginExtractW3c     CreateOpentelemetryPluginExtract = "w3c"
-	CreateOpentelemetryPluginExtractDatadog CreateOpentelemetryPluginExtract = "datadog"
 )
 
 func (e CreateOpentelemetryPluginExtract) ToPointer() *CreateOpentelemetryPluginExtract {
@@ -125,6 +125,10 @@ func (e *CreateOpentelemetryPluginExtract) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
+	case "w3c":
+		fallthrough
+	case "datadog":
+		fallthrough
 	case "b3":
 		fallthrough
 	case "gcp":
@@ -134,10 +138,6 @@ func (e *CreateOpentelemetryPluginExtract) UnmarshalJSON(data []byte) error {
 	case "aws":
 		fallthrough
 	case "ot":
-		fallthrough
-	case "w3c":
-		fallthrough
-	case "datadog":
 		*e = CreateOpentelemetryPluginExtract(v)
 		return nil
 	default:
@@ -149,14 +149,14 @@ type CreateOpentelemetryPluginInject string
 
 const (
 	CreateOpentelemetryPluginInjectPreserve CreateOpentelemetryPluginInject = "preserve"
+	CreateOpentelemetryPluginInjectW3c      CreateOpentelemetryPluginInject = "w3c"
+	CreateOpentelemetryPluginInjectDatadog  CreateOpentelemetryPluginInject = "datadog"
 	CreateOpentelemetryPluginInjectB3       CreateOpentelemetryPluginInject = "b3"
 	CreateOpentelemetryPluginInjectGcp      CreateOpentelemetryPluginInject = "gcp"
 	CreateOpentelemetryPluginInjectB3Single CreateOpentelemetryPluginInject = "b3-single"
 	CreateOpentelemetryPluginInjectJaeger   CreateOpentelemetryPluginInject = "jaeger"
 	CreateOpentelemetryPluginInjectAws      CreateOpentelemetryPluginInject = "aws"
 	CreateOpentelemetryPluginInjectOt       CreateOpentelemetryPluginInject = "ot"
-	CreateOpentelemetryPluginInjectW3c      CreateOpentelemetryPluginInject = "w3c"
-	CreateOpentelemetryPluginInjectDatadog  CreateOpentelemetryPluginInject = "datadog"
 )
 
 func (e CreateOpentelemetryPluginInject) ToPointer() *CreateOpentelemetryPluginInject {
@@ -170,6 +170,10 @@ func (e *CreateOpentelemetryPluginInject) UnmarshalJSON(data []byte) error {
 	switch v {
 	case "preserve":
 		fallthrough
+	case "w3c":
+		fallthrough
+	case "datadog":
+		fallthrough
 	case "b3":
 		fallthrough
 	case "gcp":
@@ -181,10 +185,6 @@ func (e *CreateOpentelemetryPluginInject) UnmarshalJSON(data []byte) error {
 	case "aws":
 		fallthrough
 	case "ot":
-		fallthrough
-	case "w3c":
-		fallthrough
-	case "datadog":
 		*e = CreateOpentelemetryPluginInject(v)
 		return nil
 	default:
@@ -231,7 +231,36 @@ func (o *CreateOpentelemetryPluginPropagation) GetInject() []CreateOpentelemetry
 	return o.Inject
 }
 
+// CreateOpentelemetryPluginConcurrencyLimit - The number of of queue delivery timers. -1 indicates unlimited.
+type CreateOpentelemetryPluginConcurrencyLimit int64
+
+const (
+	CreateOpentelemetryPluginConcurrencyLimitMinus1 CreateOpentelemetryPluginConcurrencyLimit = -1
+	CreateOpentelemetryPluginConcurrencyLimitOne    CreateOpentelemetryPluginConcurrencyLimit = 1
+)
+
+func (e CreateOpentelemetryPluginConcurrencyLimit) ToPointer() *CreateOpentelemetryPluginConcurrencyLimit {
+	return &e
+}
+func (e *CreateOpentelemetryPluginConcurrencyLimit) UnmarshalJSON(data []byte) error {
+	var v int64
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case -1:
+		fallthrough
+	case 1:
+		*e = CreateOpentelemetryPluginConcurrencyLimit(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for CreateOpentelemetryPluginConcurrencyLimit: %v", v)
+	}
+}
+
 type CreateOpentelemetryPluginQueue struct {
+	// The number of of queue delivery timers. -1 indicates unlimited.
+	ConcurrencyLimit *CreateOpentelemetryPluginConcurrencyLimit `json:"concurrency_limit,omitempty"`
 	// Time in seconds before the initial retry is made for a failing batch.
 	InitialRetryDelay *float64 `json:"initial_retry_delay,omitempty"`
 	// Maximum number of entries that can be processed at a time.
@@ -246,6 +275,13 @@ type CreateOpentelemetryPluginQueue struct {
 	MaxRetryDelay *float64 `json:"max_retry_delay,omitempty"`
 	// Time in seconds before the queue gives up calling a failed handler for a batch.
 	MaxRetryTime *float64 `json:"max_retry_time,omitempty"`
+}
+
+func (o *CreateOpentelemetryPluginQueue) GetConcurrencyLimit() *CreateOpentelemetryPluginConcurrencyLimit {
+	if o == nil {
+		return nil
+	}
+	return o.ConcurrencyLimit
 }
 
 func (o *CreateOpentelemetryPluginQueue) GetInitialRetryDelay() *float64 {
@@ -303,15 +339,15 @@ type CreateOpentelemetryPluginConfig struct {
 	// The number of spans to be sent in a single batch.
 	BatchSpanCount *int64 `json:"batch_span_count,omitempty"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	ConnectTimeout *int64 `json:"connect_timeout,omitempty"`
-	// A string representing a URL, such as https://example.com/path/to/resource?q=search.
-	Endpoint   *string                              `json:"endpoint,omitempty"`
-	HeaderType *CreateOpentelemetryPluginHeaderType `json:"header_type,omitempty"`
+	ConnectTimeout *int64                               `json:"connect_timeout,omitempty"`
+	HeaderType     *CreateOpentelemetryPluginHeaderType `json:"header_type,omitempty"`
 	// The custom headers to be added in the HTTP request sent to the OTLP server. This setting is useful for adding the authentication headers (token) for the APM backend.
-	Headers                      map[string]any                        `json:"headers,omitempty"`
-	HTTPResponseHeaderForTraceid *string                               `json:"http_response_header_for_traceid,omitempty"`
-	Propagation                  *CreateOpentelemetryPluginPropagation `json:"propagation,omitempty"`
-	Queue                        *CreateOpentelemetryPluginQueue       `json:"queue,omitempty"`
+	Headers                      map[string]any `json:"headers,omitempty"`
+	HTTPResponseHeaderForTraceid *string        `json:"http_response_header_for_traceid,omitempty"`
+	// A string representing a URL, such as https://example.com/path/to/resource?q=search.
+	LogsEndpoint *string                               `json:"logs_endpoint,omitempty"`
+	Propagation  *CreateOpentelemetryPluginPropagation `json:"propagation,omitempty"`
+	Queue        *CreateOpentelemetryPluginQueue       `json:"queue,omitempty"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	ReadTimeout        *int64         `json:"read_timeout,omitempty"`
 	ResourceAttributes map[string]any `json:"resource_attributes,omitempty"`
@@ -319,6 +355,8 @@ type CreateOpentelemetryPluginConfig struct {
 	SamplingRate *float64 `json:"sampling_rate,omitempty"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	SendTimeout *int64 `json:"send_timeout,omitempty"`
+	// A string representing a URL, such as https://example.com/path/to/resource?q=search.
+	TracesEndpoint *string `json:"traces_endpoint,omitempty"`
 }
 
 func (o *CreateOpentelemetryPluginConfig) GetBatchFlushDelay() *int64 {
@@ -342,13 +380,6 @@ func (o *CreateOpentelemetryPluginConfig) GetConnectTimeout() *int64 {
 	return o.ConnectTimeout
 }
 
-func (o *CreateOpentelemetryPluginConfig) GetEndpoint() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Endpoint
-}
-
 func (o *CreateOpentelemetryPluginConfig) GetHeaderType() *CreateOpentelemetryPluginHeaderType {
 	if o == nil {
 		return nil
@@ -368,6 +399,13 @@ func (o *CreateOpentelemetryPluginConfig) GetHTTPResponseHeaderForTraceid() *str
 		return nil
 	}
 	return o.HTTPResponseHeaderForTraceid
+}
+
+func (o *CreateOpentelemetryPluginConfig) GetLogsEndpoint() *string {
+	if o == nil {
+		return nil
+	}
+	return o.LogsEndpoint
 }
 
 func (o *CreateOpentelemetryPluginConfig) GetPropagation() *CreateOpentelemetryPluginPropagation {
@@ -410,6 +448,54 @@ func (o *CreateOpentelemetryPluginConfig) GetSendTimeout() *int64 {
 		return nil
 	}
 	return o.SendTimeout
+}
+
+func (o *CreateOpentelemetryPluginConfig) GetTracesEndpoint() *string {
+	if o == nil {
+		return nil
+	}
+	return o.TracesEndpoint
+}
+
+type CreateOpentelemetryPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *CreateOpentelemetryPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type CreateOpentelemetryPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *CreateOpentelemetryPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type CreateOpentelemetryPluginOrdering struct {
+	After  *CreateOpentelemetryPluginAfter  `json:"after,omitempty"`
+	Before *CreateOpentelemetryPluginBefore `json:"before,omitempty"`
+}
+
+func (o *CreateOpentelemetryPluginOrdering) GetAfter() *CreateOpentelemetryPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *CreateOpentelemetryPluginOrdering) GetBefore() *CreateOpentelemetryPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
 }
 
 type CreateOpentelemetryPluginProtocols string
@@ -512,9 +598,10 @@ func (o *CreateOpentelemetryPluginService) GetID() *string {
 type CreateOpentelemetryPlugin struct {
 	Config *CreateOpentelemetryPluginConfig `json:"config,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool   `json:"enabled,omitempty"`
-	InstanceName *string `json:"instance_name,omitempty"`
-	name         *string `const:"opentelemetry" json:"name,omitempty"`
+	Enabled      *bool                              `json:"enabled,omitempty"`
+	InstanceName *string                            `json:"instance_name,omitempty"`
+	name         *string                            `const:"opentelemetry" json:"name,omitempty"`
+	Ordering     *CreateOpentelemetryPluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []CreateOpentelemetryPluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
@@ -562,6 +649,13 @@ func (o *CreateOpentelemetryPlugin) GetInstanceName() *string {
 
 func (o *CreateOpentelemetryPlugin) GetName() *string {
 	return types.String("opentelemetry")
+}
+
+func (o *CreateOpentelemetryPlugin) GetOrdering() *CreateOpentelemetryPluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
 }
 
 func (o *CreateOpentelemetryPlugin) GetProtocols() []CreateOpentelemetryPluginProtocols {

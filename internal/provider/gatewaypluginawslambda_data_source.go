@@ -15,21 +15,21 @@ import (
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
-var _ datasource.DataSource = &GatewayPluginAWSLambdaDataSource{}
-var _ datasource.DataSourceWithConfigure = &GatewayPluginAWSLambdaDataSource{}
+var _ datasource.DataSource = &GatewayPluginAwsLambdaDataSource{}
+var _ datasource.DataSourceWithConfigure = &GatewayPluginAwsLambdaDataSource{}
 
-func NewGatewayPluginAWSLambdaDataSource() datasource.DataSource {
-	return &GatewayPluginAWSLambdaDataSource{}
+func NewGatewayPluginAwsLambdaDataSource() datasource.DataSource {
+	return &GatewayPluginAwsLambdaDataSource{}
 }
 
-// GatewayPluginAWSLambdaDataSource is the data source implementation.
-type GatewayPluginAWSLambdaDataSource struct {
+// GatewayPluginAwsLambdaDataSource is the data source implementation.
+type GatewayPluginAwsLambdaDataSource struct {
 	client *sdk.Konnect
 }
 
-// GatewayPluginAWSLambdaDataSourceModel describes the data model.
-type GatewayPluginAWSLambdaDataSourceModel struct {
-	Config         *tfTypes.CreateAWSLambdaPluginConfig `tfsdk:"config"`
+// GatewayPluginAwsLambdaDataSourceModel describes the data model.
+type GatewayPluginAwsLambdaDataSourceModel struct {
+	Config         *tfTypes.CreateAwsLambdaPluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.ACLConsumer                 `tfsdk:"consumer"`
 	ConsumerGroup  *tfTypes.ACLConsumer                 `tfsdk:"consumer_group"`
 	ControlPlaneID types.String                         `tfsdk:"control_plane_id"`
@@ -37,6 +37,7 @@ type GatewayPluginAWSLambdaDataSourceModel struct {
 	Enabled        types.Bool                           `tfsdk:"enabled"`
 	ID             types.String                         `tfsdk:"id"`
 	InstanceName   types.String                         `tfsdk:"instance_name"`
+	Ordering       *tfTypes.CreateACLPluginOrdering     `tfsdk:"ordering"`
 	Protocols      []types.String                       `tfsdk:"protocols"`
 	Route          *tfTypes.ACLConsumer                 `tfsdk:"route"`
 	Service        *tfTypes.ACLConsumer                 `tfsdk:"service"`
@@ -45,14 +46,14 @@ type GatewayPluginAWSLambdaDataSourceModel struct {
 }
 
 // Metadata returns the data source type name.
-func (r *GatewayPluginAWSLambdaDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+func (r *GatewayPluginAwsLambdaDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_gateway_plugin_aws_lambda"
 }
 
 // Schema defines the schema for the data source.
-func (r *GatewayPluginAWSLambdaDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
+func (r *GatewayPluginAwsLambdaDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "GatewayPluginAWSLambda DataSource",
+		MarkdownDescription: "GatewayPluginAwsLambda DataSource",
 
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
@@ -82,6 +83,10 @@ func (r *GatewayPluginAWSLambdaDataSource) Schema(ctx context.Context, req datas
 						Computed:    true,
 						Description: `The AWS secret credential to be used when invoking the function. `,
 					},
+					"aws_sts_endpoint_url": schema.StringAttribute{
+						Computed:    true,
+						Description: `A string representing a URL, such as https://example.com/path/to/resource?q=search.`,
+					},
 					"awsgateway_compatible": schema.BoolAttribute{
 						Computed:    true,
 						Description: `An optional value that defines whether the plugin should wrap requests into the Amazon API gateway.`,
@@ -92,6 +97,10 @@ func (r *GatewayPluginAWSLambdaDataSource) Schema(ctx context.Context, req datas
 					},
 					"disable_https": schema.BoolAttribute{
 						Computed: true,
+					},
+					"empty_arrays_mode": schema.StringAttribute{
+						Computed:    true,
+						Description: `An optional value that defines whether Kong should send empty arrays (returned by Lambda function) as ` + "`" + `[]` + "`" + ` arrays or ` + "`" + `{}` + "`" + ` objects in JSON responses. The value ` + "`" + `legacy` + "`" + ` means Kong will send empty arrays as ` + "`" + `{}` + "`" + ` objects in response. must be one of ["legacy", "correct"]`,
 					},
 					"forward_request_body": schema.BoolAttribute{
 						Computed:    true,
@@ -178,7 +187,7 @@ func (r *GatewayPluginAWSLambdaDataSource) Schema(ctx context.Context, req datas
 			},
 			"control_plane_id": schema.StringAttribute{
 				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager.`,
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed. `,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
@@ -193,6 +202,29 @@ func (r *GatewayPluginAWSLambdaDataSource) Schema(ctx context.Context, req datas
 			},
 			"instance_name": schema.StringAttribute{
 				Computed: true,
+			},
+			"ordering": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"after": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+					"before": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+				},
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,
@@ -230,7 +262,7 @@ func (r *GatewayPluginAWSLambdaDataSource) Schema(ctx context.Context, req datas
 	}
 }
 
-func (r *GatewayPluginAWSLambdaDataSource) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
+func (r *GatewayPluginAwsLambdaDataSource) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
 	// Prevent panic if the provider has not been configured.
 	if req.ProviderData == nil {
 		return
@@ -250,8 +282,8 @@ func (r *GatewayPluginAWSLambdaDataSource) Configure(ctx context.Context, req da
 	r.client = client
 }
 
-func (r *GatewayPluginAWSLambdaDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
-	var data *GatewayPluginAWSLambdaDataSourceModel
+func (r *GatewayPluginAwsLambdaDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
+	var data *GatewayPluginAwsLambdaDataSourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.Config.Get(ctx, &item)...)
@@ -298,11 +330,11 @@ func (r *GatewayPluginAWSLambdaDataSource) Read(ctx context.Context, req datasou
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.AWSLambdaPlugin != nil) {
+	if !(res.AwsLambdaPlugin != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAWSLambdaPlugin(res.AWSLambdaPlugin)
+	data.RefreshFromSharedAwsLambdaPlugin(res.AwsLambdaPlugin)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

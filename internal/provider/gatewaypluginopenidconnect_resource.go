@@ -12,6 +12,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -43,6 +45,7 @@ type GatewayPluginOpenidConnectResourceModel struct {
 	Enabled        types.Bool                               `tfsdk:"enabled"`
 	ID             types.String                             `tfsdk:"id"`
 	InstanceName   types.String                             `tfsdk:"instance_name"`
+	Ordering       *tfTypes.CreateACLPluginOrdering         `tfsdk:"ordering"`
 	Protocols      []types.String                           `tfsdk:"protocols"`
 	Route          *tfTypes.ACLConsumer                     `tfsdk:"route"`
 	Service        *tfTypes.ACLConsumer                     `tfsdk:"service"`
@@ -229,6 +232,12 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						Optional:    true,
 						Description: `Cache the user info requests.`,
 					},
+					"claims_forbidden": schema.ListAttribute{
+						Computed:    true,
+						Optional:    true,
+						ElementType: types.StringType,
+						Description: `If given, these claims are forbidden in the token payload.`,
+					},
 					"client_alg": schema.ListAttribute{
 						Computed:    true,
 						Optional:    true,
@@ -374,6 +383,187 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `The client secret.`,
+					},
+					"cluster_cache_redis": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"cluster_max_redirections": schema.Int64Attribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `Maximum retry attempts for redirection.`,
+							},
+							"cluster_nodes": schema.ListNestedAttribute{
+								Computed: true,
+								Optional: true,
+								NestedObject: schema.NestedAttributeObject{
+									Attributes: map[string]schema.Attribute{
+										"ip": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `A string representing a host name, such as example.com.`,
+										},
+										"port": schema.Int64Attribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `An integer representing a port number between 0 and 65535, inclusive.`,
+											Validators: []validator.Int64{
+												int64validator.AtMost(65535),
+											},
+										},
+									},
+								},
+								Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.`,
+							},
+							"connect_timeout": schema.Int64Attribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
+								Validators: []validator.Int64{
+									int64validator.AtMost(2147483646),
+								},
+							},
+							"connection_is_proxied": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address.`,
+							},
+							"database": schema.Int64Attribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy`,
+							},
+							"host": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `A string representing a host name, such as example.com.`,
+							},
+							"keepalive_backlog": schema.Int64Attribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `keepalive_pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `keepalive_pool_size` + "`" + `.`,
+								Validators: []validator.Int64{
+									int64validator.AtMost(2147483646),
+								},
+							},
+							"keepalive_pool_size": schema.Int64Attribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `keepalive_pool_size` + "`" + ` nor ` + "`" + `keepalive_backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `keepalive_pool_size` + "`" + ` isn't specified but ` + "`" + `keepalive_backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.`,
+								Validators: []validator.Int64{
+									int64validator.Between(1, 2147483646),
+								},
+							},
+							"password": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.`,
+							},
+							"port": schema.Int64Attribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `An integer representing a port number between 0 and 65535, inclusive.`,
+								Validators: []validator.Int64{
+									int64validator.AtMost(65535),
+								},
+							},
+							"read_timeout": schema.Int64Attribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
+								Validators: []validator.Int64{
+									int64validator.AtMost(2147483646),
+								},
+							},
+							"send_timeout": schema.Int64Attribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
+								Validators: []validator.Int64{
+									int64validator.AtMost(2147483646),
+								},
+							},
+							"sentinel_master": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
+							},
+							"sentinel_nodes": schema.ListNestedAttribute{
+								Computed: true,
+								Optional: true,
+								NestedObject: schema.NestedAttributeObject{
+									Attributes: map[string]schema.Attribute{
+										"host": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `A string representing a host name, such as example.com.`,
+										},
+										"port": schema.Int64Attribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `An integer representing a port number between 0 and 65535, inclusive.`,
+											Validators: []validator.Int64{
+												int64validator.AtMost(65535),
+											},
+										},
+									},
+								},
+								Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
+							},
+							"sentinel_password": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.`,
+							},
+							"sentinel_role": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["master", "slave", "any"]`,
+								Validators: []validator.String{
+									stringvalidator.OneOf(
+										"master",
+										"slave",
+										"any",
+									),
+								},
+							},
+							"sentinel_username": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.`,
+							},
+							"server_name": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `A string representing an SNI (server name indication) value for TLS.`,
+							},
+							"ssl": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `If set to true, uses SSL to connect to Redis.`,
+							},
+							"ssl_verify": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly.`,
+							},
+							"username": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.`,
+							},
+						},
+					},
+					"cluster_cache_strategy": schema.StringAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `The strategy to use for the cluster cache. If set, the plugin will share cache with nodes configured with the same strategy backend. Currentlly only introspection cache is shared. must be one of ["off", "redis"]`,
+						Validators: []validator.String{
+							stringvalidator.OneOf(
+								"off",
+								"redis",
+							),
+						},
 					},
 					"consumer_by": schema.ListAttribute{
 						Computed:    true,
@@ -892,6 +1082,186 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						ElementType: types.StringType,
 						Description: `The redirect URI passed to the authorization and token endpoints.`,
 					},
+					"redis": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"cluster_max_redirections": schema.Int64Attribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `Maximum retry attempts for redirection.`,
+							},
+							"cluster_nodes": schema.ListNestedAttribute{
+								Computed: true,
+								Optional: true,
+								NestedObject: schema.NestedAttributeObject{
+									Attributes: map[string]schema.Attribute{
+										"ip": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `A string representing a host name, such as example.com.`,
+										},
+										"port": schema.Int64Attribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `An integer representing a port number between 0 and 65535, inclusive.`,
+											Validators: []validator.Int64{
+												int64validator.AtMost(65535),
+											},
+										},
+									},
+								},
+								Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.`,
+							},
+							"connect_timeout": schema.Int64Attribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
+								Validators: []validator.Int64{
+									int64validator.AtMost(2147483646),
+								},
+							},
+							"connection_is_proxied": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address.`,
+							},
+							"database": schema.Int64Attribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy`,
+							},
+							"host": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `A string representing a host name, such as example.com.`,
+							},
+							"keepalive_backlog": schema.Int64Attribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `keepalive_pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `keepalive_pool_size` + "`" + `.`,
+								Validators: []validator.Int64{
+									int64validator.AtMost(2147483646),
+								},
+							},
+							"keepalive_pool_size": schema.Int64Attribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `keepalive_pool_size` + "`" + ` nor ` + "`" + `keepalive_backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `keepalive_pool_size` + "`" + ` isn't specified but ` + "`" + `keepalive_backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.`,
+								Validators: []validator.Int64{
+									int64validator.Between(1, 2147483646),
+								},
+							},
+							"password": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.`,
+							},
+							"port": schema.Int64Attribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `An integer representing a port number between 0 and 65535, inclusive.`,
+								Validators: []validator.Int64{
+									int64validator.AtMost(65535),
+								},
+							},
+							"prefix": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `The Redis session key prefix.`,
+							},
+							"read_timeout": schema.Int64Attribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
+								Validators: []validator.Int64{
+									int64validator.AtMost(2147483646),
+								},
+							},
+							"send_timeout": schema.Int64Attribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
+								Validators: []validator.Int64{
+									int64validator.AtMost(2147483646),
+								},
+							},
+							"sentinel_master": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
+							},
+							"sentinel_nodes": schema.ListNestedAttribute{
+								Computed: true,
+								Optional: true,
+								NestedObject: schema.NestedAttributeObject{
+									Attributes: map[string]schema.Attribute{
+										"host": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `A string representing a host name, such as example.com.`,
+										},
+										"port": schema.Int64Attribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `An integer representing a port number between 0 and 65535, inclusive.`,
+											Validators: []validator.Int64{
+												int64validator.AtMost(65535),
+											},
+										},
+									},
+								},
+								Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
+							},
+							"sentinel_password": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.`,
+							},
+							"sentinel_role": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["master", "slave", "any"]`,
+								Validators: []validator.String{
+									stringvalidator.OneOf(
+										"master",
+										"slave",
+										"any",
+									),
+								},
+							},
+							"sentinel_username": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.`,
+							},
+							"server_name": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `A string representing an SNI (server name indication) value for TLS.`,
+							},
+							"socket": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `The Redis unix socket path.`,
+							},
+							"ssl": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `If set to true, uses SSL to connect to Redis.`,
+							},
+							"ssl_verify": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly.`,
+							},
+							"username": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.`,
+							},
+						},
+					},
 					"rediscovery_lifetime": schema.NumberAttribute{
 						Computed:    true,
 						Optional:    true,
@@ -1116,96 +1486,6 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						Computed:    true,
 						Optional:    true,
 						Description: `The memcached unix socket path.`,
-					},
-					"session_redis_cluster_max_redirections": schema.Int64Attribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `The Redis cluster maximum redirects.`,
-					},
-					"session_redis_cluster_nodes": schema.ListNestedAttribute{
-						Computed: true,
-						Optional: true,
-						NestedObject: schema.NestedAttributeObject{
-							Attributes: map[string]schema.Attribute{
-								"ip": schema.StringAttribute{
-									Computed:    true,
-									Optional:    true,
-									Description: `A string representing a host name, such as example.com.`,
-								},
-								"port": schema.Int64Attribute{
-									Computed:    true,
-									Optional:    true,
-									Description: `An integer representing a port number between 0 and 65535, inclusive.`,
-									Validators: []validator.Int64{
-										int64validator.AtMost(65535),
-									},
-								},
-							},
-						},
-						Description: `The Redis cluster node host. Takes an array of host records, with either ` + "`" + `ip` + "`" + ` or ` + "`" + `host` + "`" + `, and ` + "`" + `port` + "`" + ` values.`,
-					},
-					"session_redis_connect_timeout": schema.Int64Attribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `Session redis connection timeout in milliseconds.`,
-					},
-					"session_redis_host": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `The Redis host.`,
-					},
-					"session_redis_password": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `Password to use for Redis connection when the ` + "`" + `redis` + "`" + ` session storage is defined. If undefined, no AUTH commands are sent to Redis.`,
-					},
-					"session_redis_port": schema.Int64Attribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `The Redis port.`,
-						Validators: []validator.Int64{
-							int64validator.AtMost(65535),
-						},
-					},
-					"session_redis_prefix": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `The Redis session key prefix.`,
-					},
-					"session_redis_read_timeout": schema.Int64Attribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `Session redis read timeout in milliseconds.`,
-					},
-					"session_redis_send_timeout": schema.Int64Attribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `Session redis send timeout in milliseconds.`,
-					},
-					"session_redis_server_name": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `The SNI used for connecting the Redis server.`,
-					},
-					"session_redis_socket": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `The Redis unix socket path.`,
-					},
-					"session_redis_ssl": schema.BoolAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `Use SSL/TLS for Redis connection.`,
-					},
-					"session_redis_ssl_verify": schema.BoolAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `Verify identity provider server certificate.`,
-					},
-					"session_redis_username": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `Username to use for Redis connection when the ` + "`" + `redis` + "`" + ` session storage is defined and ACL authentication is desired. If undefined, ACL authentication will not be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.`,
 					},
 					"session_remember": schema.BoolAttribute{
 						Computed:    true,
@@ -1556,8 +1836,11 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 				},
 			},
 			"control_plane_id": schema.StringAttribute{
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
 				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager.`,
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed. `,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
@@ -1574,6 +1857,34 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 			"instance_name": schema.StringAttribute{
 				Computed: true,
 				Optional: true,
+			},
+			"ordering": schema.SingleNestedAttribute{
+				Computed: true,
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"after": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+					"before": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+				},
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,

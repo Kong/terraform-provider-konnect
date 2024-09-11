@@ -65,6 +65,8 @@ type CreateOauth2PluginConfig struct {
 	Pkce *CreateOauth2PluginPkce `json:"pkce,omitempty"`
 	// The unique key the plugin has generated when it has been added to the Service.
 	ProvisionKey *string `json:"provision_key,omitempty"`
+	// When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value.
+	Realm *string `json:"realm,omitempty"`
 	// Time-to-live value for data
 	RefreshTokenTTL *float64 `json:"refresh_token_ttl,omitempty"`
 	// An optional boolean value that indicates whether an OAuth refresh token is reused when refreshing an access token.
@@ -166,6 +168,13 @@ func (o *CreateOauth2PluginConfig) GetProvisionKey() *string {
 	return o.ProvisionKey
 }
 
+func (o *CreateOauth2PluginConfig) GetRealm() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Realm
+}
+
 func (o *CreateOauth2PluginConfig) GetRefreshTokenTTL() *float64 {
 	if o == nil {
 		return nil
@@ -192,6 +201,47 @@ func (o *CreateOauth2PluginConfig) GetTokenExpiration() *float64 {
 		return nil
 	}
 	return o.TokenExpiration
+}
+
+type CreateOauth2PluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *CreateOauth2PluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type CreateOauth2PluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *CreateOauth2PluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type CreateOauth2PluginOrdering struct {
+	After  *CreateOauth2PluginAfter  `json:"after,omitempty"`
+	Before *CreateOauth2PluginBefore `json:"before,omitempty"`
+}
+
+func (o *CreateOauth2PluginOrdering) GetAfter() *CreateOauth2PluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *CreateOauth2PluginOrdering) GetBefore() *CreateOauth2PluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
 }
 
 type CreateOauth2PluginProtocols string
@@ -294,9 +344,10 @@ func (o *CreateOauth2PluginService) GetID() *string {
 type CreateOauth2Plugin struct {
 	Config *CreateOauth2PluginConfig `json:"config,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool   `json:"enabled,omitempty"`
-	InstanceName *string `json:"instance_name,omitempty"`
-	name         *string `const:"oauth2" json:"name,omitempty"`
+	Enabled      *bool                       `json:"enabled,omitempty"`
+	InstanceName *string                     `json:"instance_name,omitempty"`
+	name         *string                     `const:"oauth2" json:"name,omitempty"`
+	Ordering     *CreateOauth2PluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []CreateOauth2PluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
@@ -344,6 +395,13 @@ func (o *CreateOauth2Plugin) GetInstanceName() *string {
 
 func (o *CreateOauth2Plugin) GetName() *string {
 	return types.String("oauth2")
+}
+
+func (o *CreateOauth2Plugin) GetOrdering() *CreateOauth2PluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
 }
 
 func (o *CreateOauth2Plugin) GetProtocols() []CreateOauth2PluginProtocols {

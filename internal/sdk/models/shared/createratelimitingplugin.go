@@ -313,6 +313,47 @@ func (o *CreateRateLimitingPluginConfig) GetYear() *float64 {
 	return o.Year
 }
 
+type CreateRateLimitingPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *CreateRateLimitingPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type CreateRateLimitingPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *CreateRateLimitingPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type CreateRateLimitingPluginOrdering struct {
+	After  *CreateRateLimitingPluginAfter  `json:"after,omitempty"`
+	Before *CreateRateLimitingPluginBefore `json:"before,omitempty"`
+}
+
+func (o *CreateRateLimitingPluginOrdering) GetAfter() *CreateRateLimitingPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *CreateRateLimitingPluginOrdering) GetBefore() *CreateRateLimitingPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
 type CreateRateLimitingPluginProtocols string
 
 const (
@@ -413,9 +454,10 @@ func (o *CreateRateLimitingPluginService) GetID() *string {
 type CreateRateLimitingPlugin struct {
 	Config *CreateRateLimitingPluginConfig `json:"config,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool   `json:"enabled,omitempty"`
-	InstanceName *string `json:"instance_name,omitempty"`
-	name         *string `const:"rate-limiting" json:"name,omitempty"`
+	Enabled      *bool                             `json:"enabled,omitempty"`
+	InstanceName *string                           `json:"instance_name,omitempty"`
+	name         *string                           `const:"rate-limiting" json:"name,omitempty"`
+	Ordering     *CreateRateLimitingPluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []CreateRateLimitingPluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
@@ -463,6 +505,13 @@ func (o *CreateRateLimitingPlugin) GetInstanceName() *string {
 
 func (o *CreateRateLimitingPlugin) GetName() *string {
 	return types.String("rate-limiting")
+}
+
+func (o *CreateRateLimitingPlugin) GetOrdering() *CreateRateLimitingPluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
 }
 
 func (o *CreateRateLimitingPlugin) GetProtocols() []CreateRateLimitingPluginProtocols {

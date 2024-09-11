@@ -11,6 +11,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -21,21 +23,21 @@ import (
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
-var _ resource.Resource = &GatewayPluginAIPromptDecoratorResource{}
-var _ resource.ResourceWithImportState = &GatewayPluginAIPromptDecoratorResource{}
+var _ resource.Resource = &GatewayPluginAiPromptDecoratorResource{}
+var _ resource.ResourceWithImportState = &GatewayPluginAiPromptDecoratorResource{}
 
-func NewGatewayPluginAIPromptDecoratorResource() resource.Resource {
-	return &GatewayPluginAIPromptDecoratorResource{}
+func NewGatewayPluginAiPromptDecoratorResource() resource.Resource {
+	return &GatewayPluginAiPromptDecoratorResource{}
 }
 
-// GatewayPluginAIPromptDecoratorResource defines the resource implementation.
-type GatewayPluginAIPromptDecoratorResource struct {
+// GatewayPluginAiPromptDecoratorResource defines the resource implementation.
+type GatewayPluginAiPromptDecoratorResource struct {
 	client *sdk.Konnect
 }
 
-// GatewayPluginAIPromptDecoratorResourceModel describes the resource data model.
-type GatewayPluginAIPromptDecoratorResourceModel struct {
-	Config         *tfTypes.CreateAIPromptDecoratorPluginConfig `tfsdk:"config"`
+// GatewayPluginAiPromptDecoratorResourceModel describes the resource data model.
+type GatewayPluginAiPromptDecoratorResourceModel struct {
+	Config         *tfTypes.CreateAiPromptDecoratorPluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.ACLConsumer                         `tfsdk:"consumer"`
 	ConsumerGroup  *tfTypes.ACLConsumer                         `tfsdk:"consumer_group"`
 	ControlPlaneID types.String                                 `tfsdk:"control_plane_id"`
@@ -43,6 +45,7 @@ type GatewayPluginAIPromptDecoratorResourceModel struct {
 	Enabled        types.Bool                                   `tfsdk:"enabled"`
 	ID             types.String                                 `tfsdk:"id"`
 	InstanceName   types.String                                 `tfsdk:"instance_name"`
+	Ordering       *tfTypes.CreateACLPluginOrdering             `tfsdk:"ordering"`
 	Protocols      []types.String                               `tfsdk:"protocols"`
 	Route          *tfTypes.ACLConsumer                         `tfsdk:"route"`
 	Service        *tfTypes.ACLConsumer                         `tfsdk:"service"`
@@ -50,18 +53,23 @@ type GatewayPluginAIPromptDecoratorResourceModel struct {
 	UpdatedAt      types.Int64                                  `tfsdk:"updated_at"`
 }
 
-func (r *GatewayPluginAIPromptDecoratorResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+func (r *GatewayPluginAiPromptDecoratorResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_gateway_plugin_ai_prompt_decorator"
 }
 
-func (r *GatewayPluginAIPromptDecoratorResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *GatewayPluginAiPromptDecoratorResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "GatewayPluginAIPromptDecorator Resource",
+		MarkdownDescription: "GatewayPluginAiPromptDecorator Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
+					"max_request_body_size": schema.Int64Attribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `max allowed body size allowed to be introspected`,
+					},
 					"prompts": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
@@ -152,8 +160,11 @@ func (r *GatewayPluginAIPromptDecoratorResource) Schema(ctx context.Context, req
 				},
 			},
 			"control_plane_id": schema.StringAttribute{
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
 				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager.`,
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed. `,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
@@ -170,6 +181,34 @@ func (r *GatewayPluginAIPromptDecoratorResource) Schema(ctx context.Context, req
 			"instance_name": schema.StringAttribute{
 				Computed: true,
 				Optional: true,
+			},
+			"ordering": schema.SingleNestedAttribute{
+				Computed: true,
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"after": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+					"before": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+				},
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,
@@ -213,7 +252,7 @@ func (r *GatewayPluginAIPromptDecoratorResource) Schema(ctx context.Context, req
 	}
 }
 
-func (r *GatewayPluginAIPromptDecoratorResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *GatewayPluginAiPromptDecoratorResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	// Prevent panic if the provider has not been configured.
 	if req.ProviderData == nil {
 		return
@@ -233,8 +272,8 @@ func (r *GatewayPluginAIPromptDecoratorResource) Configure(ctx context.Context, 
 	r.client = client
 }
 
-func (r *GatewayPluginAIPromptDecoratorResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data *GatewayPluginAIPromptDecoratorResourceModel
+func (r *GatewayPluginAiPromptDecoratorResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var data *GatewayPluginAiPromptDecoratorResourceModel
 	var plan types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -254,10 +293,10 @@ func (r *GatewayPluginAIPromptDecoratorResource) Create(ctx context.Context, req
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createAIPromptDecoratorPlugin := data.ToSharedCreateAIPromptDecoratorPlugin()
+	createAiPromptDecoratorPlugin := data.ToSharedCreateAiPromptDecoratorPlugin()
 	request := operations.CreateAipromptdecoratorPluginRequest{
 		ControlPlaneID:                controlPlaneID,
-		CreateAIPromptDecoratorPlugin: createAIPromptDecoratorPlugin,
+		CreateAiPromptDecoratorPlugin: createAiPromptDecoratorPlugin,
 	}
 	res, err := r.client.Plugins.CreateAipromptdecoratorPlugin(ctx, request)
 	if err != nil {
@@ -275,19 +314,19 @@ func (r *GatewayPluginAIPromptDecoratorResource) Create(ctx context.Context, req
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.AIPromptDecoratorPlugin != nil) {
+	if !(res.AiPromptDecoratorPlugin != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAIPromptDecoratorPlugin(res.AIPromptDecoratorPlugin)
+	data.RefreshFromSharedAiPromptDecoratorPlugin(res.AiPromptDecoratorPlugin)
 	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *GatewayPluginAIPromptDecoratorResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data *GatewayPluginAIPromptDecoratorResourceModel
+func (r *GatewayPluginAiPromptDecoratorResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var data *GatewayPluginAiPromptDecoratorResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -334,18 +373,18 @@ func (r *GatewayPluginAIPromptDecoratorResource) Read(ctx context.Context, req r
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.AIPromptDecoratorPlugin != nil) {
+	if !(res.AiPromptDecoratorPlugin != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAIPromptDecoratorPlugin(res.AIPromptDecoratorPlugin)
+	data.RefreshFromSharedAiPromptDecoratorPlugin(res.AiPromptDecoratorPlugin)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *GatewayPluginAIPromptDecoratorResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data *GatewayPluginAIPromptDecoratorResourceModel
+func (r *GatewayPluginAiPromptDecoratorResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var data *GatewayPluginAiPromptDecoratorResourceModel
 	var plan types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -364,11 +403,11 @@ func (r *GatewayPluginAIPromptDecoratorResource) Update(ctx context.Context, req
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createAIPromptDecoratorPlugin := data.ToSharedCreateAIPromptDecoratorPlugin()
+	createAiPromptDecoratorPlugin := data.ToSharedCreateAiPromptDecoratorPlugin()
 	request := operations.UpdateAipromptdecoratorPluginRequest{
 		PluginID:                      pluginID,
 		ControlPlaneID:                controlPlaneID,
-		CreateAIPromptDecoratorPlugin: createAIPromptDecoratorPlugin,
+		CreateAiPromptDecoratorPlugin: createAiPromptDecoratorPlugin,
 	}
 	res, err := r.client.Plugins.UpdateAipromptdecoratorPlugin(ctx, request)
 	if err != nil {
@@ -386,19 +425,19 @@ func (r *GatewayPluginAIPromptDecoratorResource) Update(ctx context.Context, req
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.AIPromptDecoratorPlugin != nil) {
+	if !(res.AiPromptDecoratorPlugin != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAIPromptDecoratorPlugin(res.AIPromptDecoratorPlugin)
+	data.RefreshFromSharedAiPromptDecoratorPlugin(res.AiPromptDecoratorPlugin)
 	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *GatewayPluginAIPromptDecoratorResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var data *GatewayPluginAIPromptDecoratorResourceModel
+func (r *GatewayPluginAiPromptDecoratorResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var data *GatewayPluginAiPromptDecoratorResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -444,7 +483,7 @@ func (r *GatewayPluginAIPromptDecoratorResource) Delete(ctx context.Context, req
 
 }
 
-func (r *GatewayPluginAIPromptDecoratorResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *GatewayPluginAiPromptDecoratorResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
 	dec.DisallowUnknownFields()
 	var data struct {

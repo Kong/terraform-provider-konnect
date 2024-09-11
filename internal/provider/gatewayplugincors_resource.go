@@ -10,6 +10,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
@@ -18,42 +20,43 @@ import (
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
-var _ resource.Resource = &GatewayPluginCORSResource{}
-var _ resource.ResourceWithImportState = &GatewayPluginCORSResource{}
+var _ resource.Resource = &GatewayPluginCorsResource{}
+var _ resource.ResourceWithImportState = &GatewayPluginCorsResource{}
 
-func NewGatewayPluginCORSResource() resource.Resource {
-	return &GatewayPluginCORSResource{}
+func NewGatewayPluginCorsResource() resource.Resource {
+	return &GatewayPluginCorsResource{}
 }
 
-// GatewayPluginCORSResource defines the resource implementation.
-type GatewayPluginCORSResource struct {
+// GatewayPluginCorsResource defines the resource implementation.
+type GatewayPluginCorsResource struct {
 	client *sdk.Konnect
 }
 
-// GatewayPluginCORSResourceModel describes the resource data model.
-type GatewayPluginCORSResourceModel struct {
-	Config         *tfTypes.CreateCORSPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer            `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLConsumer            `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                    `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                     `tfsdk:"created_at"`
-	Enabled        types.Bool                      `tfsdk:"enabled"`
-	ID             types.String                    `tfsdk:"id"`
-	InstanceName   types.String                    `tfsdk:"instance_name"`
-	Protocols      []types.String                  `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer            `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer            `tfsdk:"service"`
-	Tags           []types.String                  `tfsdk:"tags"`
-	UpdatedAt      types.Int64                     `tfsdk:"updated_at"`
+// GatewayPluginCorsResourceModel describes the resource data model.
+type GatewayPluginCorsResourceModel struct {
+	Config         *tfTypes.CreateCorsPluginConfig  `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer             `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer             `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                     `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                      `tfsdk:"created_at"`
+	Enabled        types.Bool                       `tfsdk:"enabled"`
+	ID             types.String                     `tfsdk:"id"`
+	InstanceName   types.String                     `tfsdk:"instance_name"`
+	Ordering       *tfTypes.CreateACLPluginOrdering `tfsdk:"ordering"`
+	Protocols      []types.String                   `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer             `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer             `tfsdk:"service"`
+	Tags           []types.String                   `tfsdk:"tags"`
+	UpdatedAt      types.Int64                      `tfsdk:"updated_at"`
 }
 
-func (r *GatewayPluginCORSResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+func (r *GatewayPluginCorsResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_gateway_plugin_cors"
 }
 
-func (r *GatewayPluginCORSResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *GatewayPluginCorsResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "GatewayPluginCORS Resource",
+		MarkdownDescription: "GatewayPluginCors Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
@@ -127,8 +130,11 @@ func (r *GatewayPluginCORSResource) Schema(ctx context.Context, req resource.Sch
 				},
 			},
 			"control_plane_id": schema.StringAttribute{
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
 				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager.`,
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed. `,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
@@ -145,6 +151,34 @@ func (r *GatewayPluginCORSResource) Schema(ctx context.Context, req resource.Sch
 			"instance_name": schema.StringAttribute{
 				Computed: true,
 				Optional: true,
+			},
+			"ordering": schema.SingleNestedAttribute{
+				Computed: true,
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"after": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+					"before": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+				},
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,
@@ -188,7 +222,7 @@ func (r *GatewayPluginCORSResource) Schema(ctx context.Context, req resource.Sch
 	}
 }
 
-func (r *GatewayPluginCORSResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *GatewayPluginCorsResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	// Prevent panic if the provider has not been configured.
 	if req.ProviderData == nil {
 		return
@@ -208,8 +242,8 @@ func (r *GatewayPluginCORSResource) Configure(ctx context.Context, req resource.
 	r.client = client
 }
 
-func (r *GatewayPluginCORSResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data *GatewayPluginCORSResourceModel
+func (r *GatewayPluginCorsResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var data *GatewayPluginCorsResourceModel
 	var plan types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -229,10 +263,10 @@ func (r *GatewayPluginCORSResource) Create(ctx context.Context, req resource.Cre
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createCORSPlugin := data.ToSharedCreateCORSPlugin()
+	createCorsPlugin := data.ToSharedCreateCorsPlugin()
 	request := operations.CreateCorsPluginRequest{
 		ControlPlaneID:   controlPlaneID,
-		CreateCORSPlugin: createCORSPlugin,
+		CreateCorsPlugin: createCorsPlugin,
 	}
 	res, err := r.client.Plugins.CreateCorsPlugin(ctx, request)
 	if err != nil {
@@ -250,19 +284,19 @@ func (r *GatewayPluginCORSResource) Create(ctx context.Context, req resource.Cre
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.CORSPlugin != nil) {
+	if !(res.CorsPlugin != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedCORSPlugin(res.CORSPlugin)
+	data.RefreshFromSharedCorsPlugin(res.CorsPlugin)
 	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *GatewayPluginCORSResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data *GatewayPluginCORSResourceModel
+func (r *GatewayPluginCorsResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var data *GatewayPluginCorsResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -309,18 +343,18 @@ func (r *GatewayPluginCORSResource) Read(ctx context.Context, req resource.ReadR
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.CORSPlugin != nil) {
+	if !(res.CorsPlugin != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedCORSPlugin(res.CORSPlugin)
+	data.RefreshFromSharedCorsPlugin(res.CorsPlugin)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *GatewayPluginCORSResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data *GatewayPluginCORSResourceModel
+func (r *GatewayPluginCorsResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var data *GatewayPluginCorsResourceModel
 	var plan types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -339,11 +373,11 @@ func (r *GatewayPluginCORSResource) Update(ctx context.Context, req resource.Upd
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createCORSPlugin := data.ToSharedCreateCORSPlugin()
+	createCorsPlugin := data.ToSharedCreateCorsPlugin()
 	request := operations.UpdateCorsPluginRequest{
 		PluginID:         pluginID,
 		ControlPlaneID:   controlPlaneID,
-		CreateCORSPlugin: createCORSPlugin,
+		CreateCorsPlugin: createCorsPlugin,
 	}
 	res, err := r.client.Plugins.UpdateCorsPlugin(ctx, request)
 	if err != nil {
@@ -361,19 +395,19 @@ func (r *GatewayPluginCORSResource) Update(ctx context.Context, req resource.Upd
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.CORSPlugin != nil) {
+	if !(res.CorsPlugin != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedCORSPlugin(res.CORSPlugin)
+	data.RefreshFromSharedCorsPlugin(res.CorsPlugin)
 	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *GatewayPluginCORSResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var data *GatewayPluginCORSResourceModel
+func (r *GatewayPluginCorsResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var data *GatewayPluginCorsResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -419,7 +453,7 @@ func (r *GatewayPluginCORSResource) Delete(ctx context.Context, req resource.Del
 
 }
 
-func (r *GatewayPluginCORSResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *GatewayPluginCorsResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
 	dec.DisallowUnknownFields()
 	var data struct {

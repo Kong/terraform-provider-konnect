@@ -12,6 +12,8 @@ import (
 type ACLPluginConfig struct {
 	// Arbitrary group names that are allowed to consume the service or route. One of `config.allow` or `config.deny` must be specified.
 	Allow []string `json:"allow,omitempty"`
+	// If enabled (`true`), the authenticated groups will always be used even when an authenticated consumer already exists. If the authenticated groups don't exist, it will fallback to use the groups associated with the consumer. By default the authenticated groups will only be used when there is no consumer or the consumer is anonymous.
+	AlwaysUseAuthenticatedGroups *bool `json:"always_use_authenticated_groups,omitempty"`
 	// Arbitrary group names that are not allowed to consume the service or route. One of `config.allow` or `config.deny` must be specified.
 	Deny []string `json:"deny,omitempty"`
 	// If enabled (`true`), prevents the `X-Consumer-Groups` header from being sent in the request to the upstream service.
@@ -24,6 +26,13 @@ func (o *ACLPluginConfig) GetAllow() []string {
 		return nil
 	}
 	return o.Allow
+}
+
+func (o *ACLPluginConfig) GetAlwaysUseAuthenticatedGroups() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.AlwaysUseAuthenticatedGroups
 }
 
 func (o *ACLPluginConfig) GetDeny() []string {
@@ -47,25 +56,66 @@ func (o *ACLPluginConfig) GetIncludeConsumerGroups() *bool {
 	return o.IncludeConsumerGroups
 }
 
-type Protocols string
+type ACLPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *ACLPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type ACLPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *ACLPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type ACLPluginOrdering struct {
+	After  *ACLPluginAfter  `json:"after,omitempty"`
+	Before *ACLPluginBefore `json:"before,omitempty"`
+}
+
+func (o *ACLPluginOrdering) GetAfter() *ACLPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *ACLPluginOrdering) GetBefore() *ACLPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
+type ACLPluginProtocols string
 
 const (
-	ProtocolsGrpc           Protocols = "grpc"
-	ProtocolsGrpcs          Protocols = "grpcs"
-	ProtocolsHTTP           Protocols = "http"
-	ProtocolsHTTPS          Protocols = "https"
-	ProtocolsTCP            Protocols = "tcp"
-	ProtocolsTLS            Protocols = "tls"
-	ProtocolsTLSPassthrough Protocols = "tls_passthrough"
-	ProtocolsUDP            Protocols = "udp"
-	ProtocolsWs             Protocols = "ws"
-	ProtocolsWss            Protocols = "wss"
+	ACLPluginProtocolsGrpc           ACLPluginProtocols = "grpc"
+	ACLPluginProtocolsGrpcs          ACLPluginProtocols = "grpcs"
+	ACLPluginProtocolsHTTP           ACLPluginProtocols = "http"
+	ACLPluginProtocolsHTTPS          ACLPluginProtocols = "https"
+	ACLPluginProtocolsTCP            ACLPluginProtocols = "tcp"
+	ACLPluginProtocolsTLS            ACLPluginProtocols = "tls"
+	ACLPluginProtocolsTLSPassthrough ACLPluginProtocols = "tls_passthrough"
+	ACLPluginProtocolsUDP            ACLPluginProtocols = "udp"
+	ACLPluginProtocolsWs             ACLPluginProtocols = "ws"
+	ACLPluginProtocolsWss            ACLPluginProtocols = "wss"
 )
 
-func (e Protocols) ToPointer() *Protocols {
+func (e ACLPluginProtocols) ToPointer() *ACLPluginProtocols {
 	return &e
 }
-func (e *Protocols) UnmarshalJSON(data []byte) error {
+func (e *ACLPluginProtocols) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -90,10 +140,10 @@ func (e *Protocols) UnmarshalJSON(data []byte) error {
 	case "ws":
 		fallthrough
 	case "wss":
-		*e = Protocols(v)
+		*e = ACLPluginProtocols(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for Protocols: %v", v)
+		return fmt.Errorf("invalid value for ACLPluginProtocols: %v", v)
 	}
 }
 
@@ -149,12 +199,13 @@ type ACLPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool   `json:"enabled,omitempty"`
-	ID           *string `json:"id,omitempty"`
-	InstanceName *string `json:"instance_name,omitempty"`
-	name         *string `const:"acl" json:"name,omitempty"`
+	Enabled      *bool              `json:"enabled,omitempty"`
+	ID           *string            `json:"id,omitempty"`
+	InstanceName *string            `json:"instance_name,omitempty"`
+	name         *string            `const:"acl" json:"name,omitempty"`
+	Ordering     *ACLPluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []Protocols `json:"protocols,omitempty"`
+	Protocols []ACLPluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -218,7 +269,14 @@ func (o *ACLPlugin) GetName() *string {
 	return types.String("acl")
 }
 
-func (o *ACLPlugin) GetProtocols() []Protocols {
+func (o *ACLPlugin) GetOrdering() *ACLPluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
+}
+
+func (o *ACLPlugin) GetProtocols() []ACLPluginProtocols {
 	if o == nil {
 		return nil
 	}

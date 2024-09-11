@@ -239,7 +239,7 @@ func (e *ChannelTokenSigningAlgorithm) UnmarshalJSON(data []byte) error {
 	}
 }
 
-type JWTSignerPluginConfig struct {
+type JwtSignerPluginConfig struct {
 	// When the plugin tries to apply an access token to a Kong consumer mapping, it tries to find a matching Kong consumer from properties defined using this configuration parameter. The parameter can take an array of alues. Valid values are `id`, `username`, and `custom_id`.
 	AccessTokenConsumerBy []AccessTokenConsumerBy `json:"access_token_consumer_by,omitempty"`
 	// When you set a value for this parameter, the plugin tries to map an arbitrary claim specified with this configuration parameter (for example, `sub` or `username`) in an access token to Kong consumer entity.
@@ -427,676 +427,717 @@ type JWTSignerPluginConfig struct {
 	VerifyChannelTokenSignature *bool `json:"verify_channel_token_signature,omitempty"`
 }
 
-func (o *JWTSignerPluginConfig) GetAccessTokenConsumerBy() []AccessTokenConsumerBy {
+func (o *JwtSignerPluginConfig) GetAccessTokenConsumerBy() []AccessTokenConsumerBy {
 	if o == nil {
 		return nil
 	}
 	return o.AccessTokenConsumerBy
 }
 
-func (o *JWTSignerPluginConfig) GetAccessTokenConsumerClaim() []string {
+func (o *JwtSignerPluginConfig) GetAccessTokenConsumerClaim() []string {
 	if o == nil {
 		return nil
 	}
 	return o.AccessTokenConsumerClaim
 }
 
-func (o *JWTSignerPluginConfig) GetAccessTokenIntrospectionAuthorization() *string {
+func (o *JwtSignerPluginConfig) GetAccessTokenIntrospectionAuthorization() *string {
 	if o == nil {
 		return nil
 	}
 	return o.AccessTokenIntrospectionAuthorization
 }
 
-func (o *JWTSignerPluginConfig) GetAccessTokenIntrospectionBodyArgs() *string {
+func (o *JwtSignerPluginConfig) GetAccessTokenIntrospectionBodyArgs() *string {
 	if o == nil {
 		return nil
 	}
 	return o.AccessTokenIntrospectionBodyArgs
 }
 
-func (o *JWTSignerPluginConfig) GetAccessTokenIntrospectionConsumerBy() []AccessTokenIntrospectionConsumerBy {
+func (o *JwtSignerPluginConfig) GetAccessTokenIntrospectionConsumerBy() []AccessTokenIntrospectionConsumerBy {
 	if o == nil {
 		return nil
 	}
 	return o.AccessTokenIntrospectionConsumerBy
 }
 
-func (o *JWTSignerPluginConfig) GetAccessTokenIntrospectionConsumerClaim() []string {
+func (o *JwtSignerPluginConfig) GetAccessTokenIntrospectionConsumerClaim() []string {
 	if o == nil {
 		return nil
 	}
 	return o.AccessTokenIntrospectionConsumerClaim
 }
 
-func (o *JWTSignerPluginConfig) GetAccessTokenIntrospectionEndpoint() *string {
+func (o *JwtSignerPluginConfig) GetAccessTokenIntrospectionEndpoint() *string {
 	if o == nil {
 		return nil
 	}
 	return o.AccessTokenIntrospectionEndpoint
 }
 
-func (o *JWTSignerPluginConfig) GetAccessTokenIntrospectionHint() *string {
+func (o *JwtSignerPluginConfig) GetAccessTokenIntrospectionHint() *string {
 	if o == nil {
 		return nil
 	}
 	return o.AccessTokenIntrospectionHint
 }
 
-func (o *JWTSignerPluginConfig) GetAccessTokenIntrospectionJwtClaim() []string {
+func (o *JwtSignerPluginConfig) GetAccessTokenIntrospectionJwtClaim() []string {
 	if o == nil {
 		return nil
 	}
 	return o.AccessTokenIntrospectionJwtClaim
 }
 
-func (o *JWTSignerPluginConfig) GetAccessTokenIntrospectionLeeway() *float64 {
+func (o *JwtSignerPluginConfig) GetAccessTokenIntrospectionLeeway() *float64 {
 	if o == nil {
 		return nil
 	}
 	return o.AccessTokenIntrospectionLeeway
 }
 
-func (o *JWTSignerPluginConfig) GetAccessTokenIntrospectionScopesClaim() []string {
+func (o *JwtSignerPluginConfig) GetAccessTokenIntrospectionScopesClaim() []string {
 	if o == nil {
 		return nil
 	}
 	return o.AccessTokenIntrospectionScopesClaim
 }
 
-func (o *JWTSignerPluginConfig) GetAccessTokenIntrospectionScopesRequired() []string {
+func (o *JwtSignerPluginConfig) GetAccessTokenIntrospectionScopesRequired() []string {
 	if o == nil {
 		return nil
 	}
 	return o.AccessTokenIntrospectionScopesRequired
 }
 
-func (o *JWTSignerPluginConfig) GetAccessTokenIntrospectionTimeout() *float64 {
+func (o *JwtSignerPluginConfig) GetAccessTokenIntrospectionTimeout() *float64 {
 	if o == nil {
 		return nil
 	}
 	return o.AccessTokenIntrospectionTimeout
 }
 
-func (o *JWTSignerPluginConfig) GetAccessTokenIssuer() *string {
+func (o *JwtSignerPluginConfig) GetAccessTokenIssuer() *string {
 	if o == nil {
 		return nil
 	}
 	return o.AccessTokenIssuer
 }
 
-func (o *JWTSignerPluginConfig) GetAccessTokenJwksURI() *string {
+func (o *JwtSignerPluginConfig) GetAccessTokenJwksURI() *string {
 	if o == nil {
 		return nil
 	}
 	return o.AccessTokenJwksURI
 }
 
-func (o *JWTSignerPluginConfig) GetAccessTokenJwksURIClientCertificate() *string {
+func (o *JwtSignerPluginConfig) GetAccessTokenJwksURIClientCertificate() *string {
 	if o == nil {
 		return nil
 	}
 	return o.AccessTokenJwksURIClientCertificate
 }
 
-func (o *JWTSignerPluginConfig) GetAccessTokenJwksURIClientPassword() *string {
+func (o *JwtSignerPluginConfig) GetAccessTokenJwksURIClientPassword() *string {
 	if o == nil {
 		return nil
 	}
 	return o.AccessTokenJwksURIClientPassword
 }
 
-func (o *JWTSignerPluginConfig) GetAccessTokenJwksURIClientUsername() *string {
+func (o *JwtSignerPluginConfig) GetAccessTokenJwksURIClientUsername() *string {
 	if o == nil {
 		return nil
 	}
 	return o.AccessTokenJwksURIClientUsername
 }
 
-func (o *JWTSignerPluginConfig) GetAccessTokenJwksURIRotatePeriod() *float64 {
+func (o *JwtSignerPluginConfig) GetAccessTokenJwksURIRotatePeriod() *float64 {
 	if o == nil {
 		return nil
 	}
 	return o.AccessTokenJwksURIRotatePeriod
 }
 
-func (o *JWTSignerPluginConfig) GetAccessTokenKeyset() *string {
+func (o *JwtSignerPluginConfig) GetAccessTokenKeyset() *string {
 	if o == nil {
 		return nil
 	}
 	return o.AccessTokenKeyset
 }
 
-func (o *JWTSignerPluginConfig) GetAccessTokenKeysetClientCertificate() *string {
+func (o *JwtSignerPluginConfig) GetAccessTokenKeysetClientCertificate() *string {
 	if o == nil {
 		return nil
 	}
 	return o.AccessTokenKeysetClientCertificate
 }
 
-func (o *JWTSignerPluginConfig) GetAccessTokenKeysetClientPassword() *string {
+func (o *JwtSignerPluginConfig) GetAccessTokenKeysetClientPassword() *string {
 	if o == nil {
 		return nil
 	}
 	return o.AccessTokenKeysetClientPassword
 }
 
-func (o *JWTSignerPluginConfig) GetAccessTokenKeysetClientUsername() *string {
+func (o *JwtSignerPluginConfig) GetAccessTokenKeysetClientUsername() *string {
 	if o == nil {
 		return nil
 	}
 	return o.AccessTokenKeysetClientUsername
 }
 
-func (o *JWTSignerPluginConfig) GetAccessTokenKeysetRotatePeriod() *float64 {
+func (o *JwtSignerPluginConfig) GetAccessTokenKeysetRotatePeriod() *float64 {
 	if o == nil {
 		return nil
 	}
 	return o.AccessTokenKeysetRotatePeriod
 }
 
-func (o *JWTSignerPluginConfig) GetAccessTokenLeeway() *float64 {
+func (o *JwtSignerPluginConfig) GetAccessTokenLeeway() *float64 {
 	if o == nil {
 		return nil
 	}
 	return o.AccessTokenLeeway
 }
 
-func (o *JWTSignerPluginConfig) GetAccessTokenOptional() *bool {
+func (o *JwtSignerPluginConfig) GetAccessTokenOptional() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.AccessTokenOptional
 }
 
-func (o *JWTSignerPluginConfig) GetAccessTokenRequestHeader() *string {
+func (o *JwtSignerPluginConfig) GetAccessTokenRequestHeader() *string {
 	if o == nil {
 		return nil
 	}
 	return o.AccessTokenRequestHeader
 }
 
-func (o *JWTSignerPluginConfig) GetAccessTokenScopesClaim() []string {
+func (o *JwtSignerPluginConfig) GetAccessTokenScopesClaim() []string {
 	if o == nil {
 		return nil
 	}
 	return o.AccessTokenScopesClaim
 }
 
-func (o *JWTSignerPluginConfig) GetAccessTokenScopesRequired() []string {
+func (o *JwtSignerPluginConfig) GetAccessTokenScopesRequired() []string {
 	if o == nil {
 		return nil
 	}
 	return o.AccessTokenScopesRequired
 }
 
-func (o *JWTSignerPluginConfig) GetAccessTokenSigningAlgorithm() *AccessTokenSigningAlgorithm {
+func (o *JwtSignerPluginConfig) GetAccessTokenSigningAlgorithm() *AccessTokenSigningAlgorithm {
 	if o == nil {
 		return nil
 	}
 	return o.AccessTokenSigningAlgorithm
 }
 
-func (o *JWTSignerPluginConfig) GetAccessTokenUpstreamHeader() *string {
+func (o *JwtSignerPluginConfig) GetAccessTokenUpstreamHeader() *string {
 	if o == nil {
 		return nil
 	}
 	return o.AccessTokenUpstreamHeader
 }
 
-func (o *JWTSignerPluginConfig) GetAccessTokenUpstreamLeeway() *float64 {
+func (o *JwtSignerPluginConfig) GetAccessTokenUpstreamLeeway() *float64 {
 	if o == nil {
 		return nil
 	}
 	return o.AccessTokenUpstreamLeeway
 }
 
-func (o *JWTSignerPluginConfig) GetAddAccessTokenClaims() map[string]any {
+func (o *JwtSignerPluginConfig) GetAddAccessTokenClaims() map[string]any {
 	if o == nil {
 		return nil
 	}
 	return o.AddAccessTokenClaims
 }
 
-func (o *JWTSignerPluginConfig) GetAddChannelTokenClaims() map[string]any {
+func (o *JwtSignerPluginConfig) GetAddChannelTokenClaims() map[string]any {
 	if o == nil {
 		return nil
 	}
 	return o.AddChannelTokenClaims
 }
 
-func (o *JWTSignerPluginConfig) GetAddClaims() map[string]any {
+func (o *JwtSignerPluginConfig) GetAddClaims() map[string]any {
 	if o == nil {
 		return nil
 	}
 	return o.AddClaims
 }
 
-func (o *JWTSignerPluginConfig) GetCacheAccessTokenIntrospection() *bool {
+func (o *JwtSignerPluginConfig) GetCacheAccessTokenIntrospection() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.CacheAccessTokenIntrospection
 }
 
-func (o *JWTSignerPluginConfig) GetCacheChannelTokenIntrospection() *bool {
+func (o *JwtSignerPluginConfig) GetCacheChannelTokenIntrospection() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.CacheChannelTokenIntrospection
 }
 
-func (o *JWTSignerPluginConfig) GetChannelTokenConsumerBy() []ChannelTokenConsumerBy {
+func (o *JwtSignerPluginConfig) GetChannelTokenConsumerBy() []ChannelTokenConsumerBy {
 	if o == nil {
 		return nil
 	}
 	return o.ChannelTokenConsumerBy
 }
 
-func (o *JWTSignerPluginConfig) GetChannelTokenConsumerClaim() []string {
+func (o *JwtSignerPluginConfig) GetChannelTokenConsumerClaim() []string {
 	if o == nil {
 		return nil
 	}
 	return o.ChannelTokenConsumerClaim
 }
 
-func (o *JWTSignerPluginConfig) GetChannelTokenIntrospectionAuthorization() *string {
+func (o *JwtSignerPluginConfig) GetChannelTokenIntrospectionAuthorization() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ChannelTokenIntrospectionAuthorization
 }
 
-func (o *JWTSignerPluginConfig) GetChannelTokenIntrospectionBodyArgs() *string {
+func (o *JwtSignerPluginConfig) GetChannelTokenIntrospectionBodyArgs() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ChannelTokenIntrospectionBodyArgs
 }
 
-func (o *JWTSignerPluginConfig) GetChannelTokenIntrospectionConsumerBy() []ChannelTokenIntrospectionConsumerBy {
+func (o *JwtSignerPluginConfig) GetChannelTokenIntrospectionConsumerBy() []ChannelTokenIntrospectionConsumerBy {
 	if o == nil {
 		return nil
 	}
 	return o.ChannelTokenIntrospectionConsumerBy
 }
 
-func (o *JWTSignerPluginConfig) GetChannelTokenIntrospectionConsumerClaim() []string {
+func (o *JwtSignerPluginConfig) GetChannelTokenIntrospectionConsumerClaim() []string {
 	if o == nil {
 		return nil
 	}
 	return o.ChannelTokenIntrospectionConsumerClaim
 }
 
-func (o *JWTSignerPluginConfig) GetChannelTokenIntrospectionEndpoint() *string {
+func (o *JwtSignerPluginConfig) GetChannelTokenIntrospectionEndpoint() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ChannelTokenIntrospectionEndpoint
 }
 
-func (o *JWTSignerPluginConfig) GetChannelTokenIntrospectionHint() *string {
+func (o *JwtSignerPluginConfig) GetChannelTokenIntrospectionHint() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ChannelTokenIntrospectionHint
 }
 
-func (o *JWTSignerPluginConfig) GetChannelTokenIntrospectionJwtClaim() []string {
+func (o *JwtSignerPluginConfig) GetChannelTokenIntrospectionJwtClaim() []string {
 	if o == nil {
 		return nil
 	}
 	return o.ChannelTokenIntrospectionJwtClaim
 }
 
-func (o *JWTSignerPluginConfig) GetChannelTokenIntrospectionLeeway() *float64 {
+func (o *JwtSignerPluginConfig) GetChannelTokenIntrospectionLeeway() *float64 {
 	if o == nil {
 		return nil
 	}
 	return o.ChannelTokenIntrospectionLeeway
 }
 
-func (o *JWTSignerPluginConfig) GetChannelTokenIntrospectionScopesClaim() []string {
+func (o *JwtSignerPluginConfig) GetChannelTokenIntrospectionScopesClaim() []string {
 	if o == nil {
 		return nil
 	}
 	return o.ChannelTokenIntrospectionScopesClaim
 }
 
-func (o *JWTSignerPluginConfig) GetChannelTokenIntrospectionScopesRequired() []string {
+func (o *JwtSignerPluginConfig) GetChannelTokenIntrospectionScopesRequired() []string {
 	if o == nil {
 		return nil
 	}
 	return o.ChannelTokenIntrospectionScopesRequired
 }
 
-func (o *JWTSignerPluginConfig) GetChannelTokenIntrospectionTimeout() *float64 {
+func (o *JwtSignerPluginConfig) GetChannelTokenIntrospectionTimeout() *float64 {
 	if o == nil {
 		return nil
 	}
 	return o.ChannelTokenIntrospectionTimeout
 }
 
-func (o *JWTSignerPluginConfig) GetChannelTokenIssuer() *string {
+func (o *JwtSignerPluginConfig) GetChannelTokenIssuer() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ChannelTokenIssuer
 }
 
-func (o *JWTSignerPluginConfig) GetChannelTokenJwksURI() *string {
+func (o *JwtSignerPluginConfig) GetChannelTokenJwksURI() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ChannelTokenJwksURI
 }
 
-func (o *JWTSignerPluginConfig) GetChannelTokenJwksURIClientCertificate() *string {
+func (o *JwtSignerPluginConfig) GetChannelTokenJwksURIClientCertificate() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ChannelTokenJwksURIClientCertificate
 }
 
-func (o *JWTSignerPluginConfig) GetChannelTokenJwksURIClientPassword() *string {
+func (o *JwtSignerPluginConfig) GetChannelTokenJwksURIClientPassword() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ChannelTokenJwksURIClientPassword
 }
 
-func (o *JWTSignerPluginConfig) GetChannelTokenJwksURIClientUsername() *string {
+func (o *JwtSignerPluginConfig) GetChannelTokenJwksURIClientUsername() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ChannelTokenJwksURIClientUsername
 }
 
-func (o *JWTSignerPluginConfig) GetChannelTokenJwksURIRotatePeriod() *float64 {
+func (o *JwtSignerPluginConfig) GetChannelTokenJwksURIRotatePeriod() *float64 {
 	if o == nil {
 		return nil
 	}
 	return o.ChannelTokenJwksURIRotatePeriod
 }
 
-func (o *JWTSignerPluginConfig) GetChannelTokenKeyset() *string {
+func (o *JwtSignerPluginConfig) GetChannelTokenKeyset() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ChannelTokenKeyset
 }
 
-func (o *JWTSignerPluginConfig) GetChannelTokenKeysetClientCertificate() *string {
+func (o *JwtSignerPluginConfig) GetChannelTokenKeysetClientCertificate() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ChannelTokenKeysetClientCertificate
 }
 
-func (o *JWTSignerPluginConfig) GetChannelTokenKeysetClientPassword() *string {
+func (o *JwtSignerPluginConfig) GetChannelTokenKeysetClientPassword() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ChannelTokenKeysetClientPassword
 }
 
-func (o *JWTSignerPluginConfig) GetChannelTokenKeysetClientUsername() *string {
+func (o *JwtSignerPluginConfig) GetChannelTokenKeysetClientUsername() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ChannelTokenKeysetClientUsername
 }
 
-func (o *JWTSignerPluginConfig) GetChannelTokenKeysetRotatePeriod() *float64 {
+func (o *JwtSignerPluginConfig) GetChannelTokenKeysetRotatePeriod() *float64 {
 	if o == nil {
 		return nil
 	}
 	return o.ChannelTokenKeysetRotatePeriod
 }
 
-func (o *JWTSignerPluginConfig) GetChannelTokenLeeway() *float64 {
+func (o *JwtSignerPluginConfig) GetChannelTokenLeeway() *float64 {
 	if o == nil {
 		return nil
 	}
 	return o.ChannelTokenLeeway
 }
 
-func (o *JWTSignerPluginConfig) GetChannelTokenOptional() *bool {
+func (o *JwtSignerPluginConfig) GetChannelTokenOptional() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.ChannelTokenOptional
 }
 
-func (o *JWTSignerPluginConfig) GetChannelTokenRequestHeader() *string {
+func (o *JwtSignerPluginConfig) GetChannelTokenRequestHeader() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ChannelTokenRequestHeader
 }
 
-func (o *JWTSignerPluginConfig) GetChannelTokenScopesClaim() []string {
+func (o *JwtSignerPluginConfig) GetChannelTokenScopesClaim() []string {
 	if o == nil {
 		return nil
 	}
 	return o.ChannelTokenScopesClaim
 }
 
-func (o *JWTSignerPluginConfig) GetChannelTokenScopesRequired() []string {
+func (o *JwtSignerPluginConfig) GetChannelTokenScopesRequired() []string {
 	if o == nil {
 		return nil
 	}
 	return o.ChannelTokenScopesRequired
 }
 
-func (o *JWTSignerPluginConfig) GetChannelTokenSigningAlgorithm() *ChannelTokenSigningAlgorithm {
+func (o *JwtSignerPluginConfig) GetChannelTokenSigningAlgorithm() *ChannelTokenSigningAlgorithm {
 	if o == nil {
 		return nil
 	}
 	return o.ChannelTokenSigningAlgorithm
 }
 
-func (o *JWTSignerPluginConfig) GetChannelTokenUpstreamHeader() *string {
+func (o *JwtSignerPluginConfig) GetChannelTokenUpstreamHeader() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ChannelTokenUpstreamHeader
 }
 
-func (o *JWTSignerPluginConfig) GetChannelTokenUpstreamLeeway() *float64 {
+func (o *JwtSignerPluginConfig) GetChannelTokenUpstreamLeeway() *float64 {
 	if o == nil {
 		return nil
 	}
 	return o.ChannelTokenUpstreamLeeway
 }
 
-func (o *JWTSignerPluginConfig) GetEnableAccessTokenIntrospection() *bool {
+func (o *JwtSignerPluginConfig) GetEnableAccessTokenIntrospection() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.EnableAccessTokenIntrospection
 }
 
-func (o *JWTSignerPluginConfig) GetEnableChannelTokenIntrospection() *bool {
+func (o *JwtSignerPluginConfig) GetEnableChannelTokenIntrospection() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.EnableChannelTokenIntrospection
 }
 
-func (o *JWTSignerPluginConfig) GetEnableHsSignatures() *bool {
+func (o *JwtSignerPluginConfig) GetEnableHsSignatures() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.EnableHsSignatures
 }
 
-func (o *JWTSignerPluginConfig) GetEnableInstrumentation() *bool {
+func (o *JwtSignerPluginConfig) GetEnableInstrumentation() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.EnableInstrumentation
 }
 
-func (o *JWTSignerPluginConfig) GetOriginalAccessTokenUpstreamHeader() *string {
+func (o *JwtSignerPluginConfig) GetOriginalAccessTokenUpstreamHeader() *string {
 	if o == nil {
 		return nil
 	}
 	return o.OriginalAccessTokenUpstreamHeader
 }
 
-func (o *JWTSignerPluginConfig) GetOriginalChannelTokenUpstreamHeader() *string {
+func (o *JwtSignerPluginConfig) GetOriginalChannelTokenUpstreamHeader() *string {
 	if o == nil {
 		return nil
 	}
 	return o.OriginalChannelTokenUpstreamHeader
 }
 
-func (o *JWTSignerPluginConfig) GetRealm() *string {
+func (o *JwtSignerPluginConfig) GetRealm() *string {
 	if o == nil {
 		return nil
 	}
 	return o.Realm
 }
 
-func (o *JWTSignerPluginConfig) GetRemoveAccessTokenClaims() []string {
+func (o *JwtSignerPluginConfig) GetRemoveAccessTokenClaims() []string {
 	if o == nil {
 		return nil
 	}
 	return o.RemoveAccessTokenClaims
 }
 
-func (o *JWTSignerPluginConfig) GetRemoveChannelTokenClaims() []string {
+func (o *JwtSignerPluginConfig) GetRemoveChannelTokenClaims() []string {
 	if o == nil {
 		return nil
 	}
 	return o.RemoveChannelTokenClaims
 }
 
-func (o *JWTSignerPluginConfig) GetSetAccessTokenClaims() map[string]any {
+func (o *JwtSignerPluginConfig) GetSetAccessTokenClaims() map[string]any {
 	if o == nil {
 		return nil
 	}
 	return o.SetAccessTokenClaims
 }
 
-func (o *JWTSignerPluginConfig) GetSetChannelTokenClaims() map[string]any {
+func (o *JwtSignerPluginConfig) GetSetChannelTokenClaims() map[string]any {
 	if o == nil {
 		return nil
 	}
 	return o.SetChannelTokenClaims
 }
 
-func (o *JWTSignerPluginConfig) GetSetClaims() map[string]any {
+func (o *JwtSignerPluginConfig) GetSetClaims() map[string]any {
 	if o == nil {
 		return nil
 	}
 	return o.SetClaims
 }
 
-func (o *JWTSignerPluginConfig) GetTrustAccessTokenIntrospection() *bool {
+func (o *JwtSignerPluginConfig) GetTrustAccessTokenIntrospection() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.TrustAccessTokenIntrospection
 }
 
-func (o *JWTSignerPluginConfig) GetTrustChannelTokenIntrospection() *bool {
+func (o *JwtSignerPluginConfig) GetTrustChannelTokenIntrospection() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.TrustChannelTokenIntrospection
 }
 
-func (o *JWTSignerPluginConfig) GetVerifyAccessTokenExpiry() *bool {
+func (o *JwtSignerPluginConfig) GetVerifyAccessTokenExpiry() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.VerifyAccessTokenExpiry
 }
 
-func (o *JWTSignerPluginConfig) GetVerifyAccessTokenIntrospectionExpiry() *bool {
+func (o *JwtSignerPluginConfig) GetVerifyAccessTokenIntrospectionExpiry() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.VerifyAccessTokenIntrospectionExpiry
 }
 
-func (o *JWTSignerPluginConfig) GetVerifyAccessTokenIntrospectionScopes() *bool {
+func (o *JwtSignerPluginConfig) GetVerifyAccessTokenIntrospectionScopes() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.VerifyAccessTokenIntrospectionScopes
 }
 
-func (o *JWTSignerPluginConfig) GetVerifyAccessTokenScopes() *bool {
+func (o *JwtSignerPluginConfig) GetVerifyAccessTokenScopes() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.VerifyAccessTokenScopes
 }
 
-func (o *JWTSignerPluginConfig) GetVerifyAccessTokenSignature() *bool {
+func (o *JwtSignerPluginConfig) GetVerifyAccessTokenSignature() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.VerifyAccessTokenSignature
 }
 
-func (o *JWTSignerPluginConfig) GetVerifyChannelTokenExpiry() *bool {
+func (o *JwtSignerPluginConfig) GetVerifyChannelTokenExpiry() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.VerifyChannelTokenExpiry
 }
 
-func (o *JWTSignerPluginConfig) GetVerifyChannelTokenIntrospectionExpiry() *bool {
+func (o *JwtSignerPluginConfig) GetVerifyChannelTokenIntrospectionExpiry() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.VerifyChannelTokenIntrospectionExpiry
 }
 
-func (o *JWTSignerPluginConfig) GetVerifyChannelTokenIntrospectionScopes() *bool {
+func (o *JwtSignerPluginConfig) GetVerifyChannelTokenIntrospectionScopes() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.VerifyChannelTokenIntrospectionScopes
 }
 
-func (o *JWTSignerPluginConfig) GetVerifyChannelTokenScopes() *bool {
+func (o *JwtSignerPluginConfig) GetVerifyChannelTokenScopes() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.VerifyChannelTokenScopes
 }
 
-func (o *JWTSignerPluginConfig) GetVerifyChannelTokenSignature() *bool {
+func (o *JwtSignerPluginConfig) GetVerifyChannelTokenSignature() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.VerifyChannelTokenSignature
 }
 
-type JWTSignerPluginProtocols string
+type JwtSignerPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *JwtSignerPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type JwtSignerPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *JwtSignerPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type JwtSignerPluginOrdering struct {
+	After  *JwtSignerPluginAfter  `json:"after,omitempty"`
+	Before *JwtSignerPluginBefore `json:"before,omitempty"`
+}
+
+func (o *JwtSignerPluginOrdering) GetAfter() *JwtSignerPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *JwtSignerPluginOrdering) GetBefore() *JwtSignerPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
+type JwtSignerPluginProtocols string
 
 const (
-	JWTSignerPluginProtocolsGrpc           JWTSignerPluginProtocols = "grpc"
-	JWTSignerPluginProtocolsGrpcs          JWTSignerPluginProtocols = "grpcs"
-	JWTSignerPluginProtocolsHTTP           JWTSignerPluginProtocols = "http"
-	JWTSignerPluginProtocolsHTTPS          JWTSignerPluginProtocols = "https"
-	JWTSignerPluginProtocolsTCP            JWTSignerPluginProtocols = "tcp"
-	JWTSignerPluginProtocolsTLS            JWTSignerPluginProtocols = "tls"
-	JWTSignerPluginProtocolsTLSPassthrough JWTSignerPluginProtocols = "tls_passthrough"
-	JWTSignerPluginProtocolsUDP            JWTSignerPluginProtocols = "udp"
-	JWTSignerPluginProtocolsWs             JWTSignerPluginProtocols = "ws"
-	JWTSignerPluginProtocolsWss            JWTSignerPluginProtocols = "wss"
+	JwtSignerPluginProtocolsGrpc           JwtSignerPluginProtocols = "grpc"
+	JwtSignerPluginProtocolsGrpcs          JwtSignerPluginProtocols = "grpcs"
+	JwtSignerPluginProtocolsHTTP           JwtSignerPluginProtocols = "http"
+	JwtSignerPluginProtocolsHTTPS          JwtSignerPluginProtocols = "https"
+	JwtSignerPluginProtocolsTCP            JwtSignerPluginProtocols = "tcp"
+	JwtSignerPluginProtocolsTLS            JwtSignerPluginProtocols = "tls"
+	JwtSignerPluginProtocolsTLSPassthrough JwtSignerPluginProtocols = "tls_passthrough"
+	JwtSignerPluginProtocolsUDP            JwtSignerPluginProtocols = "udp"
+	JwtSignerPluginProtocolsWs             JwtSignerPluginProtocols = "ws"
+	JwtSignerPluginProtocolsWss            JwtSignerPluginProtocols = "wss"
 )
 
-func (e JWTSignerPluginProtocols) ToPointer() *JWTSignerPluginProtocols {
+func (e JwtSignerPluginProtocols) ToPointer() *JwtSignerPluginProtocols {
 	return &e
 }
-func (e *JWTSignerPluginProtocols) UnmarshalJSON(data []byte) error {
+func (e *JwtSignerPluginProtocols) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -1121,177 +1162,185 @@ func (e *JWTSignerPluginProtocols) UnmarshalJSON(data []byte) error {
 	case "ws":
 		fallthrough
 	case "wss":
-		*e = JWTSignerPluginProtocols(v)
+		*e = JwtSignerPluginProtocols(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for JWTSignerPluginProtocols: %v", v)
+		return fmt.Errorf("invalid value for JwtSignerPluginProtocols: %v", v)
 	}
 }
 
-// JWTSignerPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-type JWTSignerPluginConsumer struct {
+// JwtSignerPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+type JwtSignerPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *JWTSignerPluginConsumer) GetID() *string {
+func (o *JwtSignerPluginConsumer) GetID() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ID
 }
 
-type JWTSignerPluginConsumerGroup struct {
+type JwtSignerPluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *JWTSignerPluginConsumerGroup) GetID() *string {
+func (o *JwtSignerPluginConsumerGroup) GetID() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ID
 }
 
-// JWTSignerPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-type JWTSignerPluginRoute struct {
+// JwtSignerPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
+type JwtSignerPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *JWTSignerPluginRoute) GetID() *string {
+func (o *JwtSignerPluginRoute) GetID() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ID
 }
 
-// JWTSignerPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-type JWTSignerPluginService struct {
+// JwtSignerPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+type JwtSignerPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *JWTSignerPluginService) GetID() *string {
+func (o *JwtSignerPluginService) GetID() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ID
 }
 
-type JWTSignerPlugin struct {
-	Config *JWTSignerPluginConfig `json:"config,omitempty"`
+type JwtSignerPlugin struct {
+	Config *JwtSignerPluginConfig `json:"config,omitempty"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool   `json:"enabled,omitempty"`
-	ID           *string `json:"id,omitempty"`
-	InstanceName *string `json:"instance_name,omitempty"`
-	name         *string `const:"jwt-signer" json:"name,omitempty"`
+	Enabled      *bool                    `json:"enabled,omitempty"`
+	ID           *string                  `json:"id,omitempty"`
+	InstanceName *string                  `json:"instance_name,omitempty"`
+	name         *string                  `const:"jwt-signer" json:"name,omitempty"`
+	Ordering     *JwtSignerPluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []JWTSignerPluginProtocols `json:"protocols,omitempty"`
+	Protocols []JwtSignerPluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64 `json:"updated_at,omitempty"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *JWTSignerPluginConsumer      `json:"consumer,omitempty"`
-	ConsumerGroup *JWTSignerPluginConsumerGroup `json:"consumer_group,omitempty"`
+	Consumer      *JwtSignerPluginConsumer      `json:"consumer,omitempty"`
+	ConsumerGroup *JwtSignerPluginConsumerGroup `json:"consumer_group,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *JWTSignerPluginRoute `json:"route,omitempty"`
+	Route *JwtSignerPluginRoute `json:"route,omitempty"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *JWTSignerPluginService `json:"service,omitempty"`
+	Service *JwtSignerPluginService `json:"service,omitempty"`
 }
 
-func (j JWTSignerPlugin) MarshalJSON() ([]byte, error) {
+func (j JwtSignerPlugin) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(j, "", false)
 }
 
-func (j *JWTSignerPlugin) UnmarshalJSON(data []byte) error {
+func (j *JwtSignerPlugin) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &j, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *JWTSignerPlugin) GetConfig() *JWTSignerPluginConfig {
+func (o *JwtSignerPlugin) GetConfig() *JwtSignerPluginConfig {
 	if o == nil {
 		return nil
 	}
 	return o.Config
 }
 
-func (o *JWTSignerPlugin) GetCreatedAt() *int64 {
+func (o *JwtSignerPlugin) GetCreatedAt() *int64 {
 	if o == nil {
 		return nil
 	}
 	return o.CreatedAt
 }
 
-func (o *JWTSignerPlugin) GetEnabled() *bool {
+func (o *JwtSignerPlugin) GetEnabled() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.Enabled
 }
 
-func (o *JWTSignerPlugin) GetID() *string {
+func (o *JwtSignerPlugin) GetID() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ID
 }
 
-func (o *JWTSignerPlugin) GetInstanceName() *string {
+func (o *JwtSignerPlugin) GetInstanceName() *string {
 	if o == nil {
 		return nil
 	}
 	return o.InstanceName
 }
 
-func (o *JWTSignerPlugin) GetName() *string {
+func (o *JwtSignerPlugin) GetName() *string {
 	return types.String("jwt-signer")
 }
 
-func (o *JWTSignerPlugin) GetProtocols() []JWTSignerPluginProtocols {
+func (o *JwtSignerPlugin) GetOrdering() *JwtSignerPluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
+}
+
+func (o *JwtSignerPlugin) GetProtocols() []JwtSignerPluginProtocols {
 	if o == nil {
 		return nil
 	}
 	return o.Protocols
 }
 
-func (o *JWTSignerPlugin) GetTags() []string {
+func (o *JwtSignerPlugin) GetTags() []string {
 	if o == nil {
 		return nil
 	}
 	return o.Tags
 }
 
-func (o *JWTSignerPlugin) GetUpdatedAt() *int64 {
+func (o *JwtSignerPlugin) GetUpdatedAt() *int64 {
 	if o == nil {
 		return nil
 	}
 	return o.UpdatedAt
 }
 
-func (o *JWTSignerPlugin) GetConsumer() *JWTSignerPluginConsumer {
+func (o *JwtSignerPlugin) GetConsumer() *JwtSignerPluginConsumer {
 	if o == nil {
 		return nil
 	}
 	return o.Consumer
 }
 
-func (o *JWTSignerPlugin) GetConsumerGroup() *JWTSignerPluginConsumerGroup {
+func (o *JwtSignerPlugin) GetConsumerGroup() *JwtSignerPluginConsumerGroup {
 	if o == nil {
 		return nil
 	}
 	return o.ConsumerGroup
 }
 
-func (o *JWTSignerPlugin) GetRoute() *JWTSignerPluginRoute {
+func (o *JwtSignerPlugin) GetRoute() *JwtSignerPluginRoute {
 	if o == nil {
 		return nil
 	}
 	return o.Route
 }
 
-func (o *JWTSignerPlugin) GetService() *JWTSignerPluginService {
+func (o *JwtSignerPlugin) GetService() *JwtSignerPluginService {
 	if o == nil {
 		return nil
 	}

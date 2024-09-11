@@ -2,6 +2,9 @@
 
 package types
 
-type CreateAIPromptDecoratorPluginConfig struct {
-	Prompts *CreateAIPromptDecoratorPluginPrompts `tfsdk:"prompts"`
+import "github.com/hashicorp/terraform-plugin-framework/types"
+
+type CreateAiPromptDecoratorPluginConfig struct {
+	MaxRequestBodySize types.Int64                           `tfsdk:"max_request_body_size"`
+	Prompts            *CreateAiPromptDecoratorPluginPrompts `tfsdk:"prompts"`
 }

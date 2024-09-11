@@ -137,7 +137,7 @@ func (r *GatewayControlPlaneResource) Schema(ctx context.Context, req resource.S
 				Required:    true,
 				Description: `The name of the control plane.`,
 			},
-			"proxy_urls": schema.ListNestedAttribute{
+			"proxy_urls": schema.SetNestedAttribute{
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{

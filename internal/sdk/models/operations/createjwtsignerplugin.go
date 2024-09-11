@@ -10,7 +10,7 @@ import (
 type CreateJwtsignerPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID        string                        `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateJWTSignerPlugin *shared.CreateJWTSignerPlugin `request:"mediaType=application/json"`
+	CreateJwtSignerPlugin *shared.CreateJwtSignerPlugin `request:"mediaType=application/json"`
 }
 
 func (o *CreateJwtsignerPluginRequest) GetControlPlaneID() string {
@@ -20,11 +20,11 @@ func (o *CreateJwtsignerPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateJwtsignerPluginRequest) GetCreateJWTSignerPlugin() *shared.CreateJWTSignerPlugin {
+func (o *CreateJwtsignerPluginRequest) GetCreateJwtSignerPlugin() *shared.CreateJwtSignerPlugin {
 	if o == nil {
 		return nil
 	}
-	return o.CreateJWTSignerPlugin
+	return o.CreateJwtSignerPlugin
 }
 
 type CreateJwtsignerPluginResponse struct {
@@ -34,8 +34,8 @@ type CreateJwtsignerPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Created JWTSigner plugin
-	JWTSignerPlugin *shared.JWTSignerPlugin
+	// Created JwtSigner plugin
+	JwtSignerPlugin *shared.JwtSignerPlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
@@ -61,11 +61,11 @@ func (o *CreateJwtsignerPluginResponse) GetRawResponse() *http.Response {
 	return o.RawResponse
 }
 
-func (o *CreateJwtsignerPluginResponse) GetJWTSignerPlugin() *shared.JWTSignerPlugin {
+func (o *CreateJwtsignerPluginResponse) GetJwtSignerPlugin() *shared.JwtSignerPlugin {
 	if o == nil {
 		return nil
 	}
-	return o.JWTSignerPlugin
+	return o.JwtSignerPlugin
 }
 
 func (o *CreateJwtsignerPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {

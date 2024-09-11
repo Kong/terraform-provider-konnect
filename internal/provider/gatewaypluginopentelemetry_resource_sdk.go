@@ -31,12 +31,6 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToSharedCreateOpentelemetryPlu
 		} else {
 			connectTimeout = nil
 		}
-		endpoint := new(string)
-		if !r.Config.Endpoint.IsUnknown() && !r.Config.Endpoint.IsNull() {
-			*endpoint = r.Config.Endpoint.ValueString()
-		} else {
-			endpoint = nil
-		}
 		headerType := new(shared.CreateOpentelemetryPluginHeaderType)
 		if !r.Config.HeaderType.IsUnknown() && !r.Config.HeaderType.IsNull() {
 			*headerType = shared.CreateOpentelemetryPluginHeaderType(r.Config.HeaderType.ValueString())
@@ -54,6 +48,12 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToSharedCreateOpentelemetryPlu
 			*httpResponseHeaderForTraceid = r.Config.HTTPResponseHeaderForTraceid.ValueString()
 		} else {
 			httpResponseHeaderForTraceid = nil
+		}
+		logsEndpoint := new(string)
+		if !r.Config.LogsEndpoint.IsUnknown() && !r.Config.LogsEndpoint.IsNull() {
+			*logsEndpoint = r.Config.LogsEndpoint.ValueString()
+		} else {
+			logsEndpoint = nil
 		}
 		var propagation *shared.CreateOpentelemetryPluginPropagation
 		if r.Config.Propagation != nil {
@@ -79,6 +79,12 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToSharedCreateOpentelemetryPlu
 		}
 		var queue *shared.CreateOpentelemetryPluginQueue
 		if r.Config.Queue != nil {
+			concurrencyLimit := new(shared.CreateOpentelemetryPluginConcurrencyLimit)
+			if !r.Config.Queue.ConcurrencyLimit.IsUnknown() && !r.Config.Queue.ConcurrencyLimit.IsNull() {
+				*concurrencyLimit = shared.CreateOpentelemetryPluginConcurrencyLimit(r.Config.Queue.ConcurrencyLimit.ValueInt64())
+			} else {
+				concurrencyLimit = nil
+			}
 			initialRetryDelay := new(float64)
 			if !r.Config.Queue.InitialRetryDelay.IsUnknown() && !r.Config.Queue.InitialRetryDelay.IsNull() {
 				*initialRetryDelay, _ = r.Config.Queue.InitialRetryDelay.ValueBigFloat().Float64()
@@ -122,6 +128,7 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToSharedCreateOpentelemetryPlu
 				maxRetryTime = nil
 			}
 			queue = &shared.CreateOpentelemetryPluginQueue{
+				ConcurrencyLimit:   concurrencyLimit,
 				InitialRetryDelay:  initialRetryDelay,
 				MaxBatchSize:       maxBatchSize,
 				MaxBytes:           maxBytes,
@@ -155,20 +162,27 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToSharedCreateOpentelemetryPlu
 		} else {
 			sendTimeout = nil
 		}
+		tracesEndpoint := new(string)
+		if !r.Config.TracesEndpoint.IsUnknown() && !r.Config.TracesEndpoint.IsNull() {
+			*tracesEndpoint = r.Config.TracesEndpoint.ValueString()
+		} else {
+			tracesEndpoint = nil
+		}
 		config = &shared.CreateOpentelemetryPluginConfig{
 			BatchFlushDelay:              batchFlushDelay,
 			BatchSpanCount:               batchSpanCount,
 			ConnectTimeout:               connectTimeout,
-			Endpoint:                     endpoint,
 			HeaderType:                   headerType,
 			Headers:                      headers,
 			HTTPResponseHeaderForTraceid: httpResponseHeaderForTraceid,
+			LogsEndpoint:                 logsEndpoint,
 			Propagation:                  propagation,
 			Queue:                        queue,
 			ReadTimeout:                  readTimeout,
 			ResourceAttributes:           resourceAttributes,
 			SamplingRate:                 samplingRate,
 			SendTimeout:                  sendTimeout,
+			TracesEndpoint:               tracesEndpoint,
 		}
 	}
 	enabled := new(bool)
@@ -182,6 +196,33 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToSharedCreateOpentelemetryPlu
 		*instanceName = r.InstanceName.ValueString()
 	} else {
 		instanceName = nil
+	}
+	var ordering *shared.CreateOpentelemetryPluginOrdering
+	if r.Ordering != nil {
+		var after *shared.CreateOpentelemetryPluginAfter
+		if r.Ordering.After != nil {
+			var access []string = []string{}
+			for _, accessItem := range r.Ordering.After.Access {
+				access = append(access, accessItem.ValueString())
+			}
+			after = &shared.CreateOpentelemetryPluginAfter{
+				Access: access,
+			}
+		}
+		var before *shared.CreateOpentelemetryPluginBefore
+		if r.Ordering.Before != nil {
+			var access1 []string = []string{}
+			for _, accessItem1 := range r.Ordering.Before.Access {
+				access1 = append(access1, accessItem1.ValueString())
+			}
+			before = &shared.CreateOpentelemetryPluginBefore{
+				Access: access1,
+			}
+		}
+		ordering = &shared.CreateOpentelemetryPluginOrdering{
+			After:  after,
+			Before: before,
+		}
 	}
 	var protocols []shared.CreateOpentelemetryPluginProtocols = []shared.CreateOpentelemetryPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
@@ -243,6 +284,7 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToSharedCreateOpentelemetryPlu
 		Config:        config,
 		Enabled:       enabled,
 		InstanceName:  instanceName,
+		Ordering:      ordering,
 		Protocols:     protocols,
 		Tags:          tags,
 		Consumer:      consumer,
@@ -262,7 +304,6 @@ func (r *GatewayPluginOpentelemetryResourceModel) RefreshFromSharedOpentelemetry
 			r.Config.BatchFlushDelay = types.Int64PointerValue(resp.Config.BatchFlushDelay)
 			r.Config.BatchSpanCount = types.Int64PointerValue(resp.Config.BatchSpanCount)
 			r.Config.ConnectTimeout = types.Int64PointerValue(resp.Config.ConnectTimeout)
-			r.Config.Endpoint = types.StringPointerValue(resp.Config.Endpoint)
 			if resp.Config.HeaderType != nil {
 				r.Config.HeaderType = types.StringValue(string(*resp.Config.HeaderType))
 			} else {
@@ -276,6 +317,7 @@ func (r *GatewayPluginOpentelemetryResourceModel) RefreshFromSharedOpentelemetry
 				}
 			}
 			r.Config.HTTPResponseHeaderForTraceid = types.StringPointerValue(resp.Config.HTTPResponseHeaderForTraceid)
+			r.Config.LogsEndpoint = types.StringPointerValue(resp.Config.LogsEndpoint)
 			if resp.Config.Propagation == nil {
 				r.Config.Propagation = nil
 			} else {
@@ -297,7 +339,12 @@ func (r *GatewayPluginOpentelemetryResourceModel) RefreshFromSharedOpentelemetry
 			if resp.Config.Queue == nil {
 				r.Config.Queue = nil
 			} else {
-				r.Config.Queue = &tfTypes.CreateOpentelemetryPluginQueue{}
+				r.Config.Queue = &tfTypes.CreateDatadogPluginQueue{}
+				if resp.Config.Queue.ConcurrencyLimit != nil {
+					r.Config.Queue.ConcurrencyLimit = types.Int64Value(int64(*resp.Config.Queue.ConcurrencyLimit))
+				} else {
+					r.Config.Queue.ConcurrencyLimit = types.Int64Null()
+				}
 				if resp.Config.Queue.InitialRetryDelay != nil {
 					r.Config.Queue.InitialRetryDelay = types.NumberValue(big.NewFloat(float64(*resp.Config.Queue.InitialRetryDelay)))
 				} else {
@@ -336,6 +383,7 @@ func (r *GatewayPluginOpentelemetryResourceModel) RefreshFromSharedOpentelemetry
 				r.Config.SamplingRate = types.NumberNull()
 			}
 			r.Config.SendTimeout = types.Int64PointerValue(resp.Config.SendTimeout)
+			r.Config.TracesEndpoint = types.StringPointerValue(resp.Config.TracesEndpoint)
 		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
@@ -353,6 +401,29 @@ func (r *GatewayPluginOpentelemetryResourceModel) RefreshFromSharedOpentelemetry
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.InstanceName = types.StringPointerValue(resp.InstanceName)
+		if resp.Ordering == nil {
+			r.Ordering = nil
+		} else {
+			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			if resp.Ordering.After == nil {
+				r.Ordering.After = nil
+			} else {
+				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After.Access = []types.String{}
+				for _, v := range resp.Ordering.After.Access {
+					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				}
+			}
+			if resp.Ordering.Before == nil {
+				r.Ordering.Before = nil
+			} else {
+				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before.Access = []types.String{}
+				for _, v := range resp.Ordering.Before.Access {
+					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				}
+			}
+		}
 		r.Protocols = []types.String{}
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))

@@ -5,10 +5,9 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type Metrics struct {
-	ConsumerIdentifier  types.String `tfsdk:"consumer_identifier"`
-	Name                types.String `tfsdk:"name"`
-	SampleRate          types.Number `tfsdk:"sample_rate"`
-	ServiceIdentifier   types.String `tfsdk:"service_identifier"`
-	StatType            types.String `tfsdk:"stat_type"`
-	WorkspaceIdentifier types.String `tfsdk:"workspace_identifier"`
+	ConsumerIdentifier types.String   `tfsdk:"consumer_identifier"`
+	Name               types.String   `tfsdk:"name"`
+	SampleRate         types.Number   `tfsdk:"sample_rate"`
+	StatType           types.String   `tfsdk:"stat_type"`
+	Tags               []types.String `tfsdk:"tags"`
 }

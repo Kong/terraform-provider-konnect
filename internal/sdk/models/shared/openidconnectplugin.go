@@ -453,18 +453,309 @@ func (o *ClientJwk) GetY() *string {
 	return o.Y
 }
 
-type ConsumerBy string
+type OpenidConnectPluginClusterNodes struct {
+	// A string representing a host name, such as example.com.
+	IP *string `json:"ip,omitempty"`
+	// An integer representing a port number between 0 and 65535, inclusive.
+	Port *int64 `json:"port,omitempty"`
+}
+
+func (o *OpenidConnectPluginClusterNodes) GetIP() *string {
+	if o == nil {
+		return nil
+	}
+	return o.IP
+}
+
+func (o *OpenidConnectPluginClusterNodes) GetPort() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.Port
+}
+
+type OpenidConnectPluginSentinelNodes struct {
+	// A string representing a host name, such as example.com.
+	Host *string `json:"host,omitempty"`
+	// An integer representing a port number between 0 and 65535, inclusive.
+	Port *int64 `json:"port,omitempty"`
+}
+
+func (o *OpenidConnectPluginSentinelNodes) GetHost() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Host
+}
+
+func (o *OpenidConnectPluginSentinelNodes) GetPort() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.Port
+}
+
+// OpenidConnectPluginSentinelRole - Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
+type OpenidConnectPluginSentinelRole string
 
 const (
-	ConsumerByID       ConsumerBy = "id"
-	ConsumerByUsername ConsumerBy = "username"
-	ConsumerByCustomID ConsumerBy = "custom_id"
+	OpenidConnectPluginSentinelRoleMaster OpenidConnectPluginSentinelRole = "master"
+	OpenidConnectPluginSentinelRoleSlave  OpenidConnectPluginSentinelRole = "slave"
+	OpenidConnectPluginSentinelRoleAny    OpenidConnectPluginSentinelRole = "any"
 )
 
-func (e ConsumerBy) ToPointer() *ConsumerBy {
+func (e OpenidConnectPluginSentinelRole) ToPointer() *OpenidConnectPluginSentinelRole {
 	return &e
 }
-func (e *ConsumerBy) UnmarshalJSON(data []byte) error {
+func (e *OpenidConnectPluginSentinelRole) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "master":
+		fallthrough
+	case "slave":
+		fallthrough
+	case "any":
+		*e = OpenidConnectPluginSentinelRole(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for OpenidConnectPluginSentinelRole: %v", v)
+	}
+}
+
+type ClusterCacheRedis struct {
+	// Maximum retry attempts for redirection.
+	ClusterMaxRedirections *int64 `json:"cluster_max_redirections,omitempty"`
+	// Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
+	ClusterNodes []OpenidConnectPluginClusterNodes `json:"cluster_nodes,omitempty"`
+	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+	ConnectTimeout *int64 `json:"connect_timeout,omitempty"`
+	// If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address.
+	ConnectionIsProxied *bool `json:"connection_is_proxied,omitempty"`
+	// Database to use for the Redis connection when using the `redis` strategy
+	Database *int64 `json:"database,omitempty"`
+	// A string representing a host name, such as example.com.
+	Host *string `json:"host,omitempty"`
+	// Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `keepalive_pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `keepalive_pool_size`.
+	KeepaliveBacklog *int64 `json:"keepalive_backlog,omitempty"`
+	// The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `keepalive_pool_size` nor `keepalive_backlog` is specified, no pool is created. If `keepalive_pool_size` isn't specified but `keepalive_backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.
+	KeepalivePoolSize *int64 `json:"keepalive_pool_size,omitempty"`
+	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
+	Password *string `json:"password,omitempty"`
+	// An integer representing a port number between 0 and 65535, inclusive.
+	Port *int64 `json:"port,omitempty"`
+	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+	ReadTimeout *int64 `json:"read_timeout,omitempty"`
+	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+	SendTimeout *int64 `json:"send_timeout,omitempty"`
+	// Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
+	SentinelMaster *string `json:"sentinel_master,omitempty"`
+	// Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
+	SentinelNodes []OpenidConnectPluginSentinelNodes `json:"sentinel_nodes,omitempty"`
+	// Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
+	SentinelPassword *string `json:"sentinel_password,omitempty"`
+	// Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
+	SentinelRole *OpenidConnectPluginSentinelRole `json:"sentinel_role,omitempty"`
+	// Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
+	SentinelUsername *string `json:"sentinel_username,omitempty"`
+	// A string representing an SNI (server name indication) value for TLS.
+	ServerName *string `json:"server_name,omitempty"`
+	// If set to true, uses SSL to connect to Redis.
+	Ssl *bool `json:"ssl,omitempty"`
+	// If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
+	SslVerify *bool `json:"ssl_verify,omitempty"`
+	// Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
+	Username *string `json:"username,omitempty"`
+}
+
+func (o *ClusterCacheRedis) GetClusterMaxRedirections() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.ClusterMaxRedirections
+}
+
+func (o *ClusterCacheRedis) GetClusterNodes() []OpenidConnectPluginClusterNodes {
+	if o == nil {
+		return nil
+	}
+	return o.ClusterNodes
+}
+
+func (o *ClusterCacheRedis) GetConnectTimeout() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectTimeout
+}
+
+func (o *ClusterCacheRedis) GetConnectionIsProxied() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectionIsProxied
+}
+
+func (o *ClusterCacheRedis) GetDatabase() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.Database
+}
+
+func (o *ClusterCacheRedis) GetHost() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Host
+}
+
+func (o *ClusterCacheRedis) GetKeepaliveBacklog() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.KeepaliveBacklog
+}
+
+func (o *ClusterCacheRedis) GetKeepalivePoolSize() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.KeepalivePoolSize
+}
+
+func (o *ClusterCacheRedis) GetPassword() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Password
+}
+
+func (o *ClusterCacheRedis) GetPort() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.Port
+}
+
+func (o *ClusterCacheRedis) GetReadTimeout() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.ReadTimeout
+}
+
+func (o *ClusterCacheRedis) GetSendTimeout() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.SendTimeout
+}
+
+func (o *ClusterCacheRedis) GetSentinelMaster() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SentinelMaster
+}
+
+func (o *ClusterCacheRedis) GetSentinelNodes() []OpenidConnectPluginSentinelNodes {
+	if o == nil {
+		return nil
+	}
+	return o.SentinelNodes
+}
+
+func (o *ClusterCacheRedis) GetSentinelPassword() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SentinelPassword
+}
+
+func (o *ClusterCacheRedis) GetSentinelRole() *OpenidConnectPluginSentinelRole {
+	if o == nil {
+		return nil
+	}
+	return o.SentinelRole
+}
+
+func (o *ClusterCacheRedis) GetSentinelUsername() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SentinelUsername
+}
+
+func (o *ClusterCacheRedis) GetServerName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ServerName
+}
+
+func (o *ClusterCacheRedis) GetSsl() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Ssl
+}
+
+func (o *ClusterCacheRedis) GetSslVerify() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.SslVerify
+}
+
+func (o *ClusterCacheRedis) GetUsername() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Username
+}
+
+// ClusterCacheStrategy - The strategy to use for the cluster cache. If set, the plugin will share cache with nodes configured with the same strategy backend. Currentlly only introspection cache is shared.
+type ClusterCacheStrategy string
+
+const (
+	ClusterCacheStrategyOff   ClusterCacheStrategy = "off"
+	ClusterCacheStrategyRedis ClusterCacheStrategy = "redis"
+)
+
+func (e ClusterCacheStrategy) ToPointer() *ClusterCacheStrategy {
+	return &e
+}
+func (e *ClusterCacheStrategy) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "off":
+		fallthrough
+	case "redis":
+		*e = ClusterCacheStrategy(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for ClusterCacheStrategy: %v", v)
+	}
+}
+
+type OpenidConnectPluginConsumerBy string
+
+const (
+	OpenidConnectPluginConsumerByID       OpenidConnectPluginConsumerBy = "id"
+	OpenidConnectPluginConsumerByUsername OpenidConnectPluginConsumerBy = "username"
+	OpenidConnectPluginConsumerByCustomID OpenidConnectPluginConsumerBy = "custom_id"
+)
+
+func (e OpenidConnectPluginConsumerBy) ToPointer() *OpenidConnectPluginConsumerBy {
+	return &e
+}
+func (e *OpenidConnectPluginConsumerBy) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -475,10 +766,10 @@ func (e *ConsumerBy) UnmarshalJSON(data []byte) error {
 	case "username":
 		fallthrough
 	case "custom_id":
-		*e = ConsumerBy(v)
+		*e = OpenidConnectPluginConsumerBy(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for ConsumerBy: %v", v)
+		return fmt.Errorf("invalid value for OpenidConnectPluginConsumerBy: %v", v)
 	}
 }
 
@@ -970,6 +1261,288 @@ func (e *PushedAuthorizationRequestEndpointAuthMethod) UnmarshalJSON(data []byte
 	}
 }
 
+type OpenidConnectPluginConfigClusterNodes struct {
+	// A string representing a host name, such as example.com.
+	IP *string `json:"ip,omitempty"`
+	// An integer representing a port number between 0 and 65535, inclusive.
+	Port *int64 `json:"port,omitempty"`
+}
+
+func (o *OpenidConnectPluginConfigClusterNodes) GetIP() *string {
+	if o == nil {
+		return nil
+	}
+	return o.IP
+}
+
+func (o *OpenidConnectPluginConfigClusterNodes) GetPort() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.Port
+}
+
+type OpenidConnectPluginConfigSentinelNodes struct {
+	// A string representing a host name, such as example.com.
+	Host *string `json:"host,omitempty"`
+	// An integer representing a port number between 0 and 65535, inclusive.
+	Port *int64 `json:"port,omitempty"`
+}
+
+func (o *OpenidConnectPluginConfigSentinelNodes) GetHost() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Host
+}
+
+func (o *OpenidConnectPluginConfigSentinelNodes) GetPort() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.Port
+}
+
+// OpenidConnectPluginConfigSentinelRole - Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
+type OpenidConnectPluginConfigSentinelRole string
+
+const (
+	OpenidConnectPluginConfigSentinelRoleMaster OpenidConnectPluginConfigSentinelRole = "master"
+	OpenidConnectPluginConfigSentinelRoleSlave  OpenidConnectPluginConfigSentinelRole = "slave"
+	OpenidConnectPluginConfigSentinelRoleAny    OpenidConnectPluginConfigSentinelRole = "any"
+)
+
+func (e OpenidConnectPluginConfigSentinelRole) ToPointer() *OpenidConnectPluginConfigSentinelRole {
+	return &e
+}
+func (e *OpenidConnectPluginConfigSentinelRole) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "master":
+		fallthrough
+	case "slave":
+		fallthrough
+	case "any":
+		*e = OpenidConnectPluginConfigSentinelRole(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for OpenidConnectPluginConfigSentinelRole: %v", v)
+	}
+}
+
+type OpenidConnectPluginRedis struct {
+	// Maximum retry attempts for redirection.
+	ClusterMaxRedirections *int64 `json:"cluster_max_redirections,omitempty"`
+	// Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
+	ClusterNodes []OpenidConnectPluginConfigClusterNodes `json:"cluster_nodes,omitempty"`
+	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+	ConnectTimeout *int64 `json:"connect_timeout,omitempty"`
+	// If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address.
+	ConnectionIsProxied *bool `json:"connection_is_proxied,omitempty"`
+	// Database to use for the Redis connection when using the `redis` strategy
+	Database *int64 `json:"database,omitempty"`
+	// A string representing a host name, such as example.com.
+	Host *string `json:"host,omitempty"`
+	// Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `keepalive_pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `keepalive_pool_size`.
+	KeepaliveBacklog *int64 `json:"keepalive_backlog,omitempty"`
+	// The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `keepalive_pool_size` nor `keepalive_backlog` is specified, no pool is created. If `keepalive_pool_size` isn't specified but `keepalive_backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.
+	KeepalivePoolSize *int64 `json:"keepalive_pool_size,omitempty"`
+	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
+	Password *string `json:"password,omitempty"`
+	// An integer representing a port number between 0 and 65535, inclusive.
+	Port *int64 `json:"port,omitempty"`
+	// The Redis session key prefix.
+	Prefix *string `json:"prefix,omitempty"`
+	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+	ReadTimeout *int64 `json:"read_timeout,omitempty"`
+	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+	SendTimeout *int64 `json:"send_timeout,omitempty"`
+	// Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
+	SentinelMaster *string `json:"sentinel_master,omitempty"`
+	// Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
+	SentinelNodes []OpenidConnectPluginConfigSentinelNodes `json:"sentinel_nodes,omitempty"`
+	// Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
+	SentinelPassword *string `json:"sentinel_password,omitempty"`
+	// Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
+	SentinelRole *OpenidConnectPluginConfigSentinelRole `json:"sentinel_role,omitempty"`
+	// Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
+	SentinelUsername *string `json:"sentinel_username,omitempty"`
+	// A string representing an SNI (server name indication) value for TLS.
+	ServerName *string `json:"server_name,omitempty"`
+	// The Redis unix socket path.
+	Socket *string `json:"socket,omitempty"`
+	// If set to true, uses SSL to connect to Redis.
+	Ssl *bool `json:"ssl,omitempty"`
+	// If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
+	SslVerify *bool `json:"ssl_verify,omitempty"`
+	// Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
+	Username *string `json:"username,omitempty"`
+}
+
+func (o *OpenidConnectPluginRedis) GetClusterMaxRedirections() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.ClusterMaxRedirections
+}
+
+func (o *OpenidConnectPluginRedis) GetClusterNodes() []OpenidConnectPluginConfigClusterNodes {
+	if o == nil {
+		return nil
+	}
+	return o.ClusterNodes
+}
+
+func (o *OpenidConnectPluginRedis) GetConnectTimeout() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectTimeout
+}
+
+func (o *OpenidConnectPluginRedis) GetConnectionIsProxied() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectionIsProxied
+}
+
+func (o *OpenidConnectPluginRedis) GetDatabase() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.Database
+}
+
+func (o *OpenidConnectPluginRedis) GetHost() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Host
+}
+
+func (o *OpenidConnectPluginRedis) GetKeepaliveBacklog() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.KeepaliveBacklog
+}
+
+func (o *OpenidConnectPluginRedis) GetKeepalivePoolSize() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.KeepalivePoolSize
+}
+
+func (o *OpenidConnectPluginRedis) GetPassword() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Password
+}
+
+func (o *OpenidConnectPluginRedis) GetPort() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.Port
+}
+
+func (o *OpenidConnectPluginRedis) GetPrefix() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Prefix
+}
+
+func (o *OpenidConnectPluginRedis) GetReadTimeout() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.ReadTimeout
+}
+
+func (o *OpenidConnectPluginRedis) GetSendTimeout() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.SendTimeout
+}
+
+func (o *OpenidConnectPluginRedis) GetSentinelMaster() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SentinelMaster
+}
+
+func (o *OpenidConnectPluginRedis) GetSentinelNodes() []OpenidConnectPluginConfigSentinelNodes {
+	if o == nil {
+		return nil
+	}
+	return o.SentinelNodes
+}
+
+func (o *OpenidConnectPluginRedis) GetSentinelPassword() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SentinelPassword
+}
+
+func (o *OpenidConnectPluginRedis) GetSentinelRole() *OpenidConnectPluginConfigSentinelRole {
+	if o == nil {
+		return nil
+	}
+	return o.SentinelRole
+}
+
+func (o *OpenidConnectPluginRedis) GetSentinelUsername() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SentinelUsername
+}
+
+func (o *OpenidConnectPluginRedis) GetServerName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ServerName
+}
+
+func (o *OpenidConnectPluginRedis) GetSocket() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Socket
+}
+
+func (o *OpenidConnectPluginRedis) GetSsl() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Ssl
+}
+
+func (o *OpenidConnectPluginRedis) GetSslVerify() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.SslVerify
+}
+
+func (o *OpenidConnectPluginRedis) GetUsername() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Username
+}
+
 type RefreshTokenParamType string
 
 const (
@@ -1114,27 +1687,6 @@ func (e *SessionCookieSameSite) UnmarshalJSON(data []byte) error {
 	default:
 		return fmt.Errorf("invalid value for SessionCookieSameSite: %v", v)
 	}
-}
-
-type SessionRedisClusterNodes struct {
-	// A string representing a host name, such as example.com.
-	IP *string `json:"ip,omitempty"`
-	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `json:"port,omitempty"`
-}
-
-func (o *SessionRedisClusterNodes) GetIP() *string {
-	if o == nil {
-		return nil
-	}
-	return o.IP
-}
-
-func (o *SessionRedisClusterNodes) GetPort() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.Port
 }
 
 type SessionRequestHeaders string
@@ -1414,6 +1966,8 @@ type OpenidConnectPluginConfig struct {
 	CacheTTLResurrect *float64 `json:"cache_ttl_resurrect,omitempty"`
 	// Cache the user info requests.
 	CacheUserInfo *bool `json:"cache_user_info,omitempty"`
+	// If given, these claims are forbidden in the token payload.
+	ClaimsForbidden []string `json:"claims_forbidden,omitempty"`
 	// The algorithm to use for client_secret_jwt (only HS***) or private_key_jwt authentication.
 	ClientAlg []ClientAlg `json:"client_alg,omitempty"`
 	// The client to use for this request (the selection is made with a request parameter with the same name).
@@ -1427,9 +1981,12 @@ type OpenidConnectPluginConfig struct {
 	// The JWK used for the private_key_jwt authentication.
 	ClientJwk []ClientJwk `json:"client_jwk,omitempty"`
 	// The client secret.
-	ClientSecret []string `json:"client_secret,omitempty"`
+	ClientSecret      []string           `json:"client_secret,omitempty"`
+	ClusterCacheRedis *ClusterCacheRedis `json:"cluster_cache_redis,omitempty"`
+	// The strategy to use for the cluster cache. If set, the plugin will share cache with nodes configured with the same strategy backend. Currentlly only introspection cache is shared.
+	ClusterCacheStrategy *ClusterCacheStrategy `json:"cluster_cache_strategy,omitempty"`
 	// Consumer fields used for mapping: - `id`: try to find the matching Consumer by `id` - `username`: try to find the matching Consumer by `username` - `custom_id`: try to find the matching Consumer by `custom_id`.
-	ConsumerBy []ConsumerBy `json:"consumer_by,omitempty"`
+	ConsumerBy []OpenidConnectPluginConsumerBy `json:"consumer_by,omitempty"`
 	// The claim used for consumer mapping. If multiple values are set, it means the claim is inside a nested object of the token payload.
 	ConsumerClaim []string `json:"consumer_claim,omitempty"`
 	// Do not terminate the request if consumer mapping fails.
@@ -1601,7 +2158,8 @@ type OpenidConnectPluginConfig struct {
 	// The pushed authorization request endpoint authentication method: `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
 	PushedAuthorizationRequestEndpointAuthMethod *PushedAuthorizationRequestEndpointAuthMethod `json:"pushed_authorization_request_endpoint_auth_method,omitempty"`
 	// The redirect URI passed to the authorization and token endpoints.
-	RedirectURI []string `json:"redirect_uri,omitempty"`
+	RedirectURI []string                  `json:"redirect_uri,omitempty"`
+	Redis       *OpenidConnectPluginRedis `json:"redis,omitempty"`
 	// Specifies how long (in seconds) the plugin waits between discovery attempts. Discovery is still triggered on an as-needed basis.
 	RediscoveryLifetime *float64 `json:"rediscovery_lifetime,omitempty"`
 	// The name of the parameter used to pass the refresh token.
@@ -1676,34 +2234,6 @@ type OpenidConnectPluginConfig struct {
 	SessionMemcachedPrefix *string `json:"session_memcached_prefix,omitempty"`
 	// The memcached unix socket path.
 	SessionMemcachedSocket *string `json:"session_memcached_socket,omitempty"`
-	// The Redis cluster maximum redirects.
-	SessionRedisClusterMaxRedirections *int64 `json:"session_redis_cluster_max_redirections,omitempty"`
-	// The Redis cluster node host. Takes an array of host records, with either `ip` or `host`, and `port` values.
-	SessionRedisClusterNodes []SessionRedisClusterNodes `json:"session_redis_cluster_nodes,omitempty"`
-	// Session redis connection timeout in milliseconds.
-	SessionRedisConnectTimeout *int64 `json:"session_redis_connect_timeout,omitempty"`
-	// The Redis host.
-	SessionRedisHost *string `json:"session_redis_host,omitempty"`
-	// Password to use for Redis connection when the `redis` session storage is defined. If undefined, no AUTH commands are sent to Redis.
-	SessionRedisPassword *string `json:"session_redis_password,omitempty"`
-	// The Redis port.
-	SessionRedisPort *int64 `json:"session_redis_port,omitempty"`
-	// The Redis session key prefix.
-	SessionRedisPrefix *string `json:"session_redis_prefix,omitempty"`
-	// Session redis read timeout in milliseconds.
-	SessionRedisReadTimeout *int64 `json:"session_redis_read_timeout,omitempty"`
-	// Session redis send timeout in milliseconds.
-	SessionRedisSendTimeout *int64 `json:"session_redis_send_timeout,omitempty"`
-	// The SNI used for connecting the Redis server.
-	SessionRedisServerName *string `json:"session_redis_server_name,omitempty"`
-	// The Redis unix socket path.
-	SessionRedisSocket *string `json:"session_redis_socket,omitempty"`
-	// Use SSL/TLS for Redis connection.
-	SessionRedisSsl *bool `json:"session_redis_ssl,omitempty"`
-	// Verify identity provider server certificate.
-	SessionRedisSslVerify *bool `json:"session_redis_ssl_verify,omitempty"`
-	// Username to use for Redis connection when the `redis` session storage is defined and ACL authentication is desired. If undefined, ACL authentication will not be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
-	SessionRedisUsername *string `json:"session_redis_username,omitempty"`
 	// Enables or disables persistent sessions.
 	SessionRemember *bool `json:"session_remember,omitempty"`
 	// Limits how long the persistent session can be renewed in seconds, until re-authentication is required. 0 disables the checks.
@@ -2028,6 +2558,13 @@ func (o *OpenidConnectPluginConfig) GetCacheUserInfo() *bool {
 	return o.CacheUserInfo
 }
 
+func (o *OpenidConnectPluginConfig) GetClaimsForbidden() []string {
+	if o == nil {
+		return nil
+	}
+	return o.ClaimsForbidden
+}
+
 func (o *OpenidConnectPluginConfig) GetClientAlg() []ClientAlg {
 	if o == nil {
 		return nil
@@ -2077,7 +2614,21 @@ func (o *OpenidConnectPluginConfig) GetClientSecret() []string {
 	return o.ClientSecret
 }
 
-func (o *OpenidConnectPluginConfig) GetConsumerBy() []ConsumerBy {
+func (o *OpenidConnectPluginConfig) GetClusterCacheRedis() *ClusterCacheRedis {
+	if o == nil {
+		return nil
+	}
+	return o.ClusterCacheRedis
+}
+
+func (o *OpenidConnectPluginConfig) GetClusterCacheStrategy() *ClusterCacheStrategy {
+	if o == nil {
+		return nil
+	}
+	return o.ClusterCacheStrategy
+}
+
+func (o *OpenidConnectPluginConfig) GetConsumerBy() []OpenidConnectPluginConsumerBy {
 	if o == nil {
 		return nil
 	}
@@ -2679,6 +3230,13 @@ func (o *OpenidConnectPluginConfig) GetRedirectURI() []string {
 	return o.RedirectURI
 }
 
+func (o *OpenidConnectPluginConfig) GetRedis() *OpenidConnectPluginRedis {
+	if o == nil {
+		return nil
+	}
+	return o.Redis
+}
+
 func (o *OpenidConnectPluginConfig) GetRediscoveryLifetime() *float64 {
 	if o == nil {
 		return nil
@@ -2936,104 +3494,6 @@ func (o *OpenidConnectPluginConfig) GetSessionMemcachedSocket() *string {
 		return nil
 	}
 	return o.SessionMemcachedSocket
-}
-
-func (o *OpenidConnectPluginConfig) GetSessionRedisClusterMaxRedirections() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.SessionRedisClusterMaxRedirections
-}
-
-func (o *OpenidConnectPluginConfig) GetSessionRedisClusterNodes() []SessionRedisClusterNodes {
-	if o == nil {
-		return nil
-	}
-	return o.SessionRedisClusterNodes
-}
-
-func (o *OpenidConnectPluginConfig) GetSessionRedisConnectTimeout() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.SessionRedisConnectTimeout
-}
-
-func (o *OpenidConnectPluginConfig) GetSessionRedisHost() *string {
-	if o == nil {
-		return nil
-	}
-	return o.SessionRedisHost
-}
-
-func (o *OpenidConnectPluginConfig) GetSessionRedisPassword() *string {
-	if o == nil {
-		return nil
-	}
-	return o.SessionRedisPassword
-}
-
-func (o *OpenidConnectPluginConfig) GetSessionRedisPort() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.SessionRedisPort
-}
-
-func (o *OpenidConnectPluginConfig) GetSessionRedisPrefix() *string {
-	if o == nil {
-		return nil
-	}
-	return o.SessionRedisPrefix
-}
-
-func (o *OpenidConnectPluginConfig) GetSessionRedisReadTimeout() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.SessionRedisReadTimeout
-}
-
-func (o *OpenidConnectPluginConfig) GetSessionRedisSendTimeout() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.SessionRedisSendTimeout
-}
-
-func (o *OpenidConnectPluginConfig) GetSessionRedisServerName() *string {
-	if o == nil {
-		return nil
-	}
-	return o.SessionRedisServerName
-}
-
-func (o *OpenidConnectPluginConfig) GetSessionRedisSocket() *string {
-	if o == nil {
-		return nil
-	}
-	return o.SessionRedisSocket
-}
-
-func (o *OpenidConnectPluginConfig) GetSessionRedisSsl() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.SessionRedisSsl
-}
-
-func (o *OpenidConnectPluginConfig) GetSessionRedisSslVerify() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.SessionRedisSslVerify
-}
-
-func (o *OpenidConnectPluginConfig) GetSessionRedisUsername() *string {
-	if o == nil {
-		return nil
-	}
-	return o.SessionRedisUsername
 }
 
 func (o *OpenidConnectPluginConfig) GetSessionRemember() *bool {
@@ -3428,6 +3888,47 @@ func (o *OpenidConnectPluginConfig) GetVerifySignature() *bool {
 	return o.VerifySignature
 }
 
+type OpenidConnectPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *OpenidConnectPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type OpenidConnectPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *OpenidConnectPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type OpenidConnectPluginOrdering struct {
+	After  *OpenidConnectPluginAfter  `json:"after,omitempty"`
+	Before *OpenidConnectPluginBefore `json:"before,omitempty"`
+}
+
+func (o *OpenidConnectPluginOrdering) GetAfter() *OpenidConnectPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *OpenidConnectPluginOrdering) GetBefore() *OpenidConnectPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
 type OpenidConnectPluginProtocols string
 
 const (
@@ -3530,10 +4031,11 @@ type OpenidConnectPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool   `json:"enabled,omitempty"`
-	ID           *string `json:"id,omitempty"`
-	InstanceName *string `json:"instance_name,omitempty"`
-	name         *string `const:"openid-connect" json:"name,omitempty"`
+	Enabled      *bool                        `json:"enabled,omitempty"`
+	ID           *string                      `json:"id,omitempty"`
+	InstanceName *string                      `json:"instance_name,omitempty"`
+	name         *string                      `const:"openid-connect" json:"name,omitempty"`
+	Ordering     *OpenidConnectPluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []OpenidConnectPluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
@@ -3597,6 +4099,13 @@ func (o *OpenidConnectPlugin) GetInstanceName() *string {
 
 func (o *OpenidConnectPlugin) GetName() *string {
 	return types.String("openid-connect")
+}
+
+func (o *OpenidConnectPlugin) GetOrdering() *OpenidConnectPluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
 }
 
 func (o *OpenidConnectPlugin) GetProtocols() []OpenidConnectPluginProtocols {

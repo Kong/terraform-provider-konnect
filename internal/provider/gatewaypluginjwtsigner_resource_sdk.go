@@ -10,12 +10,12 @@ import (
 	"math/big"
 )
 
-func (r *GatewayPluginJWTSignerResourceModel) ToSharedCreateJWTSignerPlugin() *shared.CreateJWTSignerPlugin {
-	var config *shared.CreateJWTSignerPluginConfig
+func (r *GatewayPluginJwtSignerResourceModel) ToSharedCreateJwtSignerPlugin() *shared.CreateJwtSignerPlugin {
+	var config *shared.CreateJwtSignerPluginConfig
 	if r.Config != nil {
-		var accessTokenConsumerBy []shared.CreateJWTSignerPluginAccessTokenConsumerBy = []shared.CreateJWTSignerPluginAccessTokenConsumerBy{}
+		var accessTokenConsumerBy []shared.CreateJwtSignerPluginAccessTokenConsumerBy = []shared.CreateJwtSignerPluginAccessTokenConsumerBy{}
 		for _, accessTokenConsumerByItem := range r.Config.AccessTokenConsumerBy {
-			accessTokenConsumerBy = append(accessTokenConsumerBy, shared.CreateJWTSignerPluginAccessTokenConsumerBy(accessTokenConsumerByItem.ValueString()))
+			accessTokenConsumerBy = append(accessTokenConsumerBy, shared.CreateJwtSignerPluginAccessTokenConsumerBy(accessTokenConsumerByItem.ValueString()))
 		}
 		var accessTokenConsumerClaim []string = []string{}
 		for _, accessTokenConsumerClaimItem := range r.Config.AccessTokenConsumerClaim {
@@ -33,9 +33,9 @@ func (r *GatewayPluginJWTSignerResourceModel) ToSharedCreateJWTSignerPlugin() *s
 		} else {
 			accessTokenIntrospectionBodyArgs = nil
 		}
-		var accessTokenIntrospectionConsumerBy []shared.CreateJWTSignerPluginAccessTokenIntrospectionConsumerBy = []shared.CreateJWTSignerPluginAccessTokenIntrospectionConsumerBy{}
+		var accessTokenIntrospectionConsumerBy []shared.CreateJwtSignerPluginAccessTokenIntrospectionConsumerBy = []shared.CreateJwtSignerPluginAccessTokenIntrospectionConsumerBy{}
 		for _, accessTokenIntrospectionConsumerByItem := range r.Config.AccessTokenIntrospectionConsumerBy {
-			accessTokenIntrospectionConsumerBy = append(accessTokenIntrospectionConsumerBy, shared.CreateJWTSignerPluginAccessTokenIntrospectionConsumerBy(accessTokenIntrospectionConsumerByItem.ValueString()))
+			accessTokenIntrospectionConsumerBy = append(accessTokenIntrospectionConsumerBy, shared.CreateJwtSignerPluginAccessTokenIntrospectionConsumerBy(accessTokenIntrospectionConsumerByItem.ValueString()))
 		}
 		var accessTokenIntrospectionConsumerClaim []string = []string{}
 		for _, accessTokenIntrospectionConsumerClaimItem := range r.Config.AccessTokenIntrospectionConsumerClaim {
@@ -169,9 +169,9 @@ func (r *GatewayPluginJWTSignerResourceModel) ToSharedCreateJWTSignerPlugin() *s
 		for _, accessTokenScopesRequiredItem := range r.Config.AccessTokenScopesRequired {
 			accessTokenScopesRequired = append(accessTokenScopesRequired, accessTokenScopesRequiredItem.ValueString())
 		}
-		accessTokenSigningAlgorithm := new(shared.CreateJWTSignerPluginAccessTokenSigningAlgorithm)
+		accessTokenSigningAlgorithm := new(shared.CreateJwtSignerPluginAccessTokenSigningAlgorithm)
 		if !r.Config.AccessTokenSigningAlgorithm.IsUnknown() && !r.Config.AccessTokenSigningAlgorithm.IsNull() {
-			*accessTokenSigningAlgorithm = shared.CreateJWTSignerPluginAccessTokenSigningAlgorithm(r.Config.AccessTokenSigningAlgorithm.ValueString())
+			*accessTokenSigningAlgorithm = shared.CreateJwtSignerPluginAccessTokenSigningAlgorithm(r.Config.AccessTokenSigningAlgorithm.ValueString())
 		} else {
 			accessTokenSigningAlgorithm = nil
 		}
@@ -217,9 +217,9 @@ func (r *GatewayPluginJWTSignerResourceModel) ToSharedCreateJWTSignerPlugin() *s
 		} else {
 			cacheChannelTokenIntrospection = nil
 		}
-		var channelTokenConsumerBy []shared.CreateJWTSignerPluginChannelTokenConsumerBy = []shared.CreateJWTSignerPluginChannelTokenConsumerBy{}
+		var channelTokenConsumerBy []shared.CreateJwtSignerPluginChannelTokenConsumerBy = []shared.CreateJwtSignerPluginChannelTokenConsumerBy{}
 		for _, channelTokenConsumerByItem := range r.Config.ChannelTokenConsumerBy {
-			channelTokenConsumerBy = append(channelTokenConsumerBy, shared.CreateJWTSignerPluginChannelTokenConsumerBy(channelTokenConsumerByItem.ValueString()))
+			channelTokenConsumerBy = append(channelTokenConsumerBy, shared.CreateJwtSignerPluginChannelTokenConsumerBy(channelTokenConsumerByItem.ValueString()))
 		}
 		var channelTokenConsumerClaim []string = []string{}
 		for _, channelTokenConsumerClaimItem := range r.Config.ChannelTokenConsumerClaim {
@@ -237,9 +237,9 @@ func (r *GatewayPluginJWTSignerResourceModel) ToSharedCreateJWTSignerPlugin() *s
 		} else {
 			channelTokenIntrospectionBodyArgs = nil
 		}
-		var channelTokenIntrospectionConsumerBy []shared.CreateJWTSignerPluginChannelTokenIntrospectionConsumerBy = []shared.CreateJWTSignerPluginChannelTokenIntrospectionConsumerBy{}
+		var channelTokenIntrospectionConsumerBy []shared.CreateJwtSignerPluginChannelTokenIntrospectionConsumerBy = []shared.CreateJwtSignerPluginChannelTokenIntrospectionConsumerBy{}
 		for _, channelTokenIntrospectionConsumerByItem := range r.Config.ChannelTokenIntrospectionConsumerBy {
-			channelTokenIntrospectionConsumerBy = append(channelTokenIntrospectionConsumerBy, shared.CreateJWTSignerPluginChannelTokenIntrospectionConsumerBy(channelTokenIntrospectionConsumerByItem.ValueString()))
+			channelTokenIntrospectionConsumerBy = append(channelTokenIntrospectionConsumerBy, shared.CreateJwtSignerPluginChannelTokenIntrospectionConsumerBy(channelTokenIntrospectionConsumerByItem.ValueString()))
 		}
 		var channelTokenIntrospectionConsumerClaim []string = []string{}
 		for _, channelTokenIntrospectionConsumerClaimItem := range r.Config.ChannelTokenIntrospectionConsumerClaim {
@@ -373,9 +373,9 @@ func (r *GatewayPluginJWTSignerResourceModel) ToSharedCreateJWTSignerPlugin() *s
 		for _, channelTokenScopesRequiredItem := range r.Config.ChannelTokenScopesRequired {
 			channelTokenScopesRequired = append(channelTokenScopesRequired, channelTokenScopesRequiredItem.ValueString())
 		}
-		channelTokenSigningAlgorithm := new(shared.CreateJWTSignerPluginChannelTokenSigningAlgorithm)
+		channelTokenSigningAlgorithm := new(shared.CreateJwtSignerPluginChannelTokenSigningAlgorithm)
 		if !r.Config.ChannelTokenSigningAlgorithm.IsUnknown() && !r.Config.ChannelTokenSigningAlgorithm.IsNull() {
-			*channelTokenSigningAlgorithm = shared.CreateJWTSignerPluginChannelTokenSigningAlgorithm(r.Config.ChannelTokenSigningAlgorithm.ValueString())
+			*channelTokenSigningAlgorithm = shared.CreateJwtSignerPluginChannelTokenSigningAlgorithm(r.Config.ChannelTokenSigningAlgorithm.ValueString())
 		} else {
 			channelTokenSigningAlgorithm = nil
 		}
@@ -531,7 +531,7 @@ func (r *GatewayPluginJWTSignerResourceModel) ToSharedCreateJWTSignerPlugin() *s
 		} else {
 			verifyChannelTokenSignature = nil
 		}
-		config = &shared.CreateJWTSignerPluginConfig{
+		config = &shared.CreateJwtSignerPluginConfig{
 			AccessTokenConsumerBy:                   accessTokenConsumerBy,
 			AccessTokenConsumerClaim:                accessTokenConsumerClaim,
 			AccessTokenIntrospectionAuthorization:   accessTokenIntrospectionAuthorization,
@@ -639,15 +639,42 @@ func (r *GatewayPluginJWTSignerResourceModel) ToSharedCreateJWTSignerPlugin() *s
 	} else {
 		instanceName = nil
 	}
-	var protocols []shared.CreateJWTSignerPluginProtocols = []shared.CreateJWTSignerPluginProtocols{}
+	var ordering *shared.CreateJwtSignerPluginOrdering
+	if r.Ordering != nil {
+		var after *shared.CreateJwtSignerPluginAfter
+		if r.Ordering.After != nil {
+			var access []string = []string{}
+			for _, accessItem := range r.Ordering.After.Access {
+				access = append(access, accessItem.ValueString())
+			}
+			after = &shared.CreateJwtSignerPluginAfter{
+				Access: access,
+			}
+		}
+		var before *shared.CreateJwtSignerPluginBefore
+		if r.Ordering.Before != nil {
+			var access1 []string = []string{}
+			for _, accessItem1 := range r.Ordering.Before.Access {
+				access1 = append(access1, accessItem1.ValueString())
+			}
+			before = &shared.CreateJwtSignerPluginBefore{
+				Access: access1,
+			}
+		}
+		ordering = &shared.CreateJwtSignerPluginOrdering{
+			After:  after,
+			Before: before,
+		}
+	}
+	var protocols []shared.CreateJwtSignerPluginProtocols = []shared.CreateJwtSignerPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
-		protocols = append(protocols, shared.CreateJWTSignerPluginProtocols(protocolsItem.ValueString()))
+		protocols = append(protocols, shared.CreateJwtSignerPluginProtocols(protocolsItem.ValueString()))
 	}
 	var tags []string = []string{}
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	var consumer *shared.CreateJWTSignerPluginConsumer
+	var consumer *shared.CreateJwtSignerPluginConsumer
 	if r.Consumer != nil {
 		id := new(string)
 		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
@@ -655,11 +682,11 @@ func (r *GatewayPluginJWTSignerResourceModel) ToSharedCreateJWTSignerPlugin() *s
 		} else {
 			id = nil
 		}
-		consumer = &shared.CreateJWTSignerPluginConsumer{
+		consumer = &shared.CreateJwtSignerPluginConsumer{
 			ID: id,
 		}
 	}
-	var consumerGroup *shared.CreateJWTSignerPluginConsumerGroup
+	var consumerGroup *shared.CreateJwtSignerPluginConsumerGroup
 	if r.ConsumerGroup != nil {
 		id1 := new(string)
 		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
@@ -667,11 +694,11 @@ func (r *GatewayPluginJWTSignerResourceModel) ToSharedCreateJWTSignerPlugin() *s
 		} else {
 			id1 = nil
 		}
-		consumerGroup = &shared.CreateJWTSignerPluginConsumerGroup{
+		consumerGroup = &shared.CreateJwtSignerPluginConsumerGroup{
 			ID: id1,
 		}
 	}
-	var route *shared.CreateJWTSignerPluginRoute
+	var route *shared.CreateJwtSignerPluginRoute
 	if r.Route != nil {
 		id2 := new(string)
 		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
@@ -679,11 +706,11 @@ func (r *GatewayPluginJWTSignerResourceModel) ToSharedCreateJWTSignerPlugin() *s
 		} else {
 			id2 = nil
 		}
-		route = &shared.CreateJWTSignerPluginRoute{
+		route = &shared.CreateJwtSignerPluginRoute{
 			ID: id2,
 		}
 	}
-	var service *shared.CreateJWTSignerPluginService
+	var service *shared.CreateJwtSignerPluginService
 	if r.Service != nil {
 		id3 := new(string)
 		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
@@ -691,14 +718,15 @@ func (r *GatewayPluginJWTSignerResourceModel) ToSharedCreateJWTSignerPlugin() *s
 		} else {
 			id3 = nil
 		}
-		service = &shared.CreateJWTSignerPluginService{
+		service = &shared.CreateJwtSignerPluginService{
 			ID: id3,
 		}
 	}
-	out := shared.CreateJWTSignerPlugin{
+	out := shared.CreateJwtSignerPlugin{
 		Config:        config,
 		Enabled:       enabled,
 		InstanceName:  instanceName,
+		Ordering:      ordering,
 		Protocols:     protocols,
 		Tags:          tags,
 		Consumer:      consumer,
@@ -709,12 +737,12 @@ func (r *GatewayPluginJWTSignerResourceModel) ToSharedCreateJWTSignerPlugin() *s
 	return &out
 }
 
-func (r *GatewayPluginJWTSignerResourceModel) RefreshFromSharedJWTSignerPlugin(resp *shared.JWTSignerPlugin) {
+func (r *GatewayPluginJwtSignerResourceModel) RefreshFromSharedJwtSignerPlugin(resp *shared.JwtSignerPlugin) {
 	if resp != nil {
 		if resp.Config == nil {
 			r.Config = nil
 		} else {
-			r.Config = &tfTypes.CreateJWTSignerPluginConfig{}
+			r.Config = &tfTypes.CreateJwtSignerPluginConfig{}
 			r.Config.AccessTokenConsumerBy = []types.String{}
 			for _, v := range resp.Config.AccessTokenConsumerBy {
 				r.Config.AccessTokenConsumerBy = append(r.Config.AccessTokenConsumerBy, types.StringValue(string(v)))
@@ -977,6 +1005,29 @@ func (r *GatewayPluginJWTSignerResourceModel) RefreshFromSharedJWTSignerPlugin(r
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.InstanceName = types.StringPointerValue(resp.InstanceName)
+		if resp.Ordering == nil {
+			r.Ordering = nil
+		} else {
+			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			if resp.Ordering.After == nil {
+				r.Ordering.After = nil
+			} else {
+				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After.Access = []types.String{}
+				for _, v := range resp.Ordering.After.Access {
+					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				}
+			}
+			if resp.Ordering.Before == nil {
+				r.Ordering.Before = nil
+			} else {
+				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before.Access = []types.String{}
+				for _, v := range resp.Ordering.Before.Access {
+					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				}
+			}
+		}
 		r.Protocols = []types.String{}
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))

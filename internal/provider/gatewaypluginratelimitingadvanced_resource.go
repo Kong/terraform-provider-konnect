@@ -12,6 +12,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -43,6 +45,7 @@ type GatewayPluginRateLimitingAdvancedResourceModel struct {
 	Enabled        types.Bool                                      `tfsdk:"enabled"`
 	ID             types.String                                    `tfsdk:"id"`
 	InstanceName   types.String                                    `tfsdk:"instance_name"`
+	Ordering       *tfTypes.CreateACLPluginOrdering                `tfsdk:"ordering"`
 	Protocols      []types.String                                  `tfsdk:"protocols"`
 	Route          *tfTypes.ACLConsumer                            `tfsdk:"route"`
 	Service        *tfTypes.ACLConsumer                            `tfsdk:"service"`
@@ -139,11 +142,32 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
-							"cluster_addresses": schema.ListAttribute{
+							"cluster_max_redirections": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								ElementType: types.StringType,
-								Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Cluster. Each string element must be a hostname. The minimum length of the array is 1 element.`,
+								Description: `Maximum retry attempts for redirection.`,
+							},
+							"cluster_nodes": schema.ListNestedAttribute{
+								Computed: true,
+								Optional: true,
+								NestedObject: schema.NestedAttributeObject{
+									Attributes: map[string]schema.Attribute{
+										"ip": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `A string representing a host name, such as example.com.`,
+										},
+										"port": schema.Int64Attribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `An integer representing a port number between 0 and 65535, inclusive.`,
+											Validators: []validator.Int64{
+												int64validator.AtMost(65535),
+											},
+										},
+									},
+								},
+								Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.`,
 							},
 							"connect_timeout": schema.Int64Attribute{
 								Computed:    true,
@@ -152,6 +176,11 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 								Validators: []validator.Int64{
 									int64validator.AtMost(2147483646),
 								},
+							},
+							"connection_is_proxied": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address.`,
 							},
 							"database": schema.Int64Attribute{
 								Computed:    true,
@@ -208,16 +237,32 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 									int64validator.AtMost(2147483646),
 								},
 							},
-							"sentinel_addresses": schema.ListAttribute{
-								Computed:    true,
-								Optional:    true,
-								ElementType: types.StringType,
-								Description: `Sentinel addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. Each string element must be a hostname. The minimum length of the array is 1 element.`,
-							},
 							"sentinel_master": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
 								Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
+							},
+							"sentinel_nodes": schema.ListNestedAttribute{
+								Computed: true,
+								Optional: true,
+								NestedObject: schema.NestedAttributeObject{
+									Attributes: map[string]schema.Attribute{
+										"host": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `A string representing a host name, such as example.com.`,
+										},
+										"port": schema.Int64Attribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `An integer representing a port number between 0 and 65535, inclusive.`,
+											Validators: []validator.Int64{
+												int64validator.AtMost(65535),
+											},
+										},
+									},
+								},
+								Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
 							},
 							"sentinel_password": schema.StringAttribute{
 								Computed:    true,
@@ -255,14 +300,6 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 								Computed:    true,
 								Optional:    true,
 								Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly.`,
-							},
-							"timeout": schema.Int64Attribute{
-								Computed:    true,
-								Optional:    true,
-								Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
-								Validators: []validator.Int64{
-									int64validator.AtMost(2147483646),
-								},
 							},
 							"username": schema.StringAttribute{
 								Computed:    true,
@@ -334,8 +371,11 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 				},
 			},
 			"control_plane_id": schema.StringAttribute{
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
 				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager.`,
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed. `,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
@@ -352,6 +392,34 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 			"instance_name": schema.StringAttribute{
 				Computed: true,
 				Optional: true,
+			},
+			"ordering": schema.SingleNestedAttribute{
+				Computed: true,
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"after": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+					"before": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+				},
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,

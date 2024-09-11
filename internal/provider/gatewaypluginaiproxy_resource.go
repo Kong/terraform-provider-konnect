@@ -12,6 +12,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -21,21 +23,21 @@ import (
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
-var _ resource.Resource = &GatewayPluginAIProxyResource{}
-var _ resource.ResourceWithImportState = &GatewayPluginAIProxyResource{}
+var _ resource.Resource = &GatewayPluginAiProxyResource{}
+var _ resource.ResourceWithImportState = &GatewayPluginAiProxyResource{}
 
-func NewGatewayPluginAIProxyResource() resource.Resource {
-	return &GatewayPluginAIProxyResource{}
+func NewGatewayPluginAiProxyResource() resource.Resource {
+	return &GatewayPluginAiProxyResource{}
 }
 
-// GatewayPluginAIProxyResource defines the resource implementation.
-type GatewayPluginAIProxyResource struct {
+// GatewayPluginAiProxyResource defines the resource implementation.
+type GatewayPluginAiProxyResource struct {
 	client *sdk.Konnect
 }
 
-// GatewayPluginAIProxyResourceModel describes the resource data model.
-type GatewayPluginAIProxyResourceModel struct {
-	Config         *tfTypes.CreateAIProxyPluginConfig `tfsdk:"config"`
+// GatewayPluginAiProxyResourceModel describes the resource data model.
+type GatewayPluginAiProxyResourceModel struct {
+	Config         *tfTypes.CreateAiProxyPluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.ACLConsumer               `tfsdk:"consumer"`
 	ConsumerGroup  *tfTypes.ACLConsumer               `tfsdk:"consumer_group"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
@@ -43,6 +45,7 @@ type GatewayPluginAIProxyResourceModel struct {
 	Enabled        types.Bool                         `tfsdk:"enabled"`
 	ID             types.String                       `tfsdk:"id"`
 	InstanceName   types.String                       `tfsdk:"instance_name"`
+	Ordering       *tfTypes.CreateACLPluginOrdering   `tfsdk:"ordering"`
 	Protocols      []types.String                     `tfsdk:"protocols"`
 	Route          *tfTypes.ACLConsumer               `tfsdk:"route"`
 	Service        *tfTypes.ACLConsumer               `tfsdk:"service"`
@@ -50,13 +53,13 @@ type GatewayPluginAIProxyResourceModel struct {
 	UpdatedAt      types.Int64                        `tfsdk:"updated_at"`
 }
 
-func (r *GatewayPluginAIProxyResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+func (r *GatewayPluginAiProxyResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_gateway_plugin_ai_proxy"
 }
 
-func (r *GatewayPluginAIProxyResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "GatewayPluginAIProxy Resource",
+		MarkdownDescription: "GatewayPluginAiProxy Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
@@ -66,6 +69,21 @@ func (r *GatewayPluginAIProxyResource) Schema(ctx context.Context, req resource.
 						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
+							"allow_override": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `If enabled, the authorization header or parameter can be overridden in the request by the value configured in the plugin.`,
+							},
+							"aws_access_key_id": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_ACCESS_KEY_ID environment variable for this plugin instance.`,
+							},
+							"aws_secret_access_key": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_SECRET_ACCESS_KEY environment variable for this plugin instance.`,
+							},
 							"azure_client_id": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
@@ -85,6 +103,16 @@ func (r *GatewayPluginAIProxyResource) Schema(ctx context.Context, req resource.
 								Computed:    true,
 								Optional:    true,
 								Description: `Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models.`,
+							},
+							"gcp_service_account_json": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable ` + "`" + `GCP_SERVICE_ACCOUNT` + "`" + `.`,
+							},
+							"gcp_use_service_account": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `Use service account auth for GCP-based providers and models.`,
 							},
 							"header_name": schema.StringAttribute{
 								Computed:    true,
@@ -135,6 +163,11 @@ func (r *GatewayPluginAIProxyResource) Schema(ctx context.Context, req resource.
 							},
 						},
 					},
+					"max_request_body_size": schema.Int64Attribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `max allowed body size allowed to be introspected`,
+					},
 					"model": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
@@ -168,6 +201,43 @@ func (r *GatewayPluginAIProxyResource) Schema(ctx context.Context, req resource.
 										Optional:    true,
 										Description: `Instance name for Azure OpenAI hosted models.`,
 									},
+									"bedrock": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"aws_region": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `If using AWS providers (Bedrock) you can override the ` + "`" + `AWS_REGION` + "`" + ` environment variable by setting this option.`,
+											},
+										},
+									},
+									"gemini": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"api_endpoint": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `If running Gemini on Vertex, specify the regional API endpoint (hostname only).`,
+											},
+											"location_id": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `If running Gemini on Vertex, specify the location ID.`,
+											},
+											"project_id": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `If running Gemini on Vertex, specify the project ID.`,
+											},
+										},
+									},
+									"input_cost": schema.NumberAttribute{
+										Computed:    true,
+										Optional:    true,
+										Description: `Defines the cost per 1M tokens in your prompt.`,
+									},
 									"llama2_format": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
@@ -195,6 +265,11 @@ func (r *GatewayPluginAIProxyResource) Schema(ctx context.Context, req resource.
 												"ollama",
 											),
 										},
+									},
+									"output_cost": schema.NumberAttribute{
+										Computed:    true,
+										Optional:    true,
+										Description: `Defines the cost per 1M tokens in the output of the AI.`,
 									},
 									"temperature": schema.NumberAttribute{
 										Computed:    true,
@@ -230,7 +305,7 @@ func (r *GatewayPluginAIProxyResource) Schema(ctx context.Context, req resource.
 							"provider": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `AI provider request format - Kong translates requests to and from the specified backend compatible formats. must be one of ["openai", "azure", "anthropic", "cohere", "mistral", "llama2"]`,
+								Description: `AI provider request format - Kong translates requests to and from the specified backend compatible formats. must be one of ["openai", "azure", "anthropic", "cohere", "mistral", "llama2", "gemini", "bedrock"]`,
 								Validators: []validator.String{
 									stringvalidator.OneOf(
 										"openai",
@@ -239,10 +314,17 @@ func (r *GatewayPluginAIProxyResource) Schema(ctx context.Context, req resource.
 										"cohere",
 										"mistral",
 										"llama2",
+										"gemini",
+										"bedrock",
 									),
 								},
 							},
 						},
+					},
+					"model_name_header": schema.BoolAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `Display the model name selected in the X-Kong-LLM-Model response header`,
 					},
 					"response_streaming": schema.StringAttribute{
 						Computed:    true,
@@ -292,8 +374,11 @@ func (r *GatewayPluginAIProxyResource) Schema(ctx context.Context, req resource.
 				},
 			},
 			"control_plane_id": schema.StringAttribute{
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
 				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager.`,
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed. `,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
@@ -310,6 +395,34 @@ func (r *GatewayPluginAIProxyResource) Schema(ctx context.Context, req resource.
 			"instance_name": schema.StringAttribute{
 				Computed: true,
 				Optional: true,
+			},
+			"ordering": schema.SingleNestedAttribute{
+				Computed: true,
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"after": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+					"before": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+				},
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,
@@ -353,7 +466,7 @@ func (r *GatewayPluginAIProxyResource) Schema(ctx context.Context, req resource.
 	}
 }
 
-func (r *GatewayPluginAIProxyResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *GatewayPluginAiProxyResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	// Prevent panic if the provider has not been configured.
 	if req.ProviderData == nil {
 		return
@@ -373,8 +486,8 @@ func (r *GatewayPluginAIProxyResource) Configure(ctx context.Context, req resour
 	r.client = client
 }
 
-func (r *GatewayPluginAIProxyResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data *GatewayPluginAIProxyResourceModel
+func (r *GatewayPluginAiProxyResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var data *GatewayPluginAiProxyResourceModel
 	var plan types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -394,10 +507,10 @@ func (r *GatewayPluginAIProxyResource) Create(ctx context.Context, req resource.
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createAIProxyPlugin := data.ToSharedCreateAIProxyPlugin()
+	createAiProxyPlugin := data.ToSharedCreateAiProxyPlugin()
 	request := operations.CreateAiproxyPluginRequest{
 		ControlPlaneID:      controlPlaneID,
-		CreateAIProxyPlugin: createAIProxyPlugin,
+		CreateAiProxyPlugin: createAiProxyPlugin,
 	}
 	res, err := r.client.Plugins.CreateAiproxyPlugin(ctx, request)
 	if err != nil {
@@ -415,19 +528,19 @@ func (r *GatewayPluginAIProxyResource) Create(ctx context.Context, req resource.
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.AIProxyPlugin != nil) {
+	if !(res.AiProxyPlugin != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAIProxyPlugin(res.AIProxyPlugin)
+	data.RefreshFromSharedAiProxyPlugin(res.AiProxyPlugin)
 	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *GatewayPluginAIProxyResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data *GatewayPluginAIProxyResourceModel
+func (r *GatewayPluginAiProxyResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var data *GatewayPluginAiProxyResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -474,18 +587,18 @@ func (r *GatewayPluginAIProxyResource) Read(ctx context.Context, req resource.Re
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.AIProxyPlugin != nil) {
+	if !(res.AiProxyPlugin != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAIProxyPlugin(res.AIProxyPlugin)
+	data.RefreshFromSharedAiProxyPlugin(res.AiProxyPlugin)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *GatewayPluginAIProxyResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data *GatewayPluginAIProxyResourceModel
+func (r *GatewayPluginAiProxyResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var data *GatewayPluginAiProxyResourceModel
 	var plan types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -504,11 +617,11 @@ func (r *GatewayPluginAIProxyResource) Update(ctx context.Context, req resource.
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createAIProxyPlugin := data.ToSharedCreateAIProxyPlugin()
+	createAiProxyPlugin := data.ToSharedCreateAiProxyPlugin()
 	request := operations.UpdateAiproxyPluginRequest{
 		PluginID:            pluginID,
 		ControlPlaneID:      controlPlaneID,
-		CreateAIProxyPlugin: createAIProxyPlugin,
+		CreateAiProxyPlugin: createAiProxyPlugin,
 	}
 	res, err := r.client.Plugins.UpdateAiproxyPlugin(ctx, request)
 	if err != nil {
@@ -526,19 +639,19 @@ func (r *GatewayPluginAIProxyResource) Update(ctx context.Context, req resource.
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.AIProxyPlugin != nil) {
+	if !(res.AiProxyPlugin != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAIProxyPlugin(res.AIProxyPlugin)
+	data.RefreshFromSharedAiProxyPlugin(res.AiProxyPlugin)
 	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *GatewayPluginAIProxyResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var data *GatewayPluginAIProxyResourceModel
+func (r *GatewayPluginAiProxyResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var data *GatewayPluginAiProxyResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -584,7 +697,7 @@ func (r *GatewayPluginAIProxyResource) Delete(ctx context.Context, req resource.
 
 }
 
-func (r *GatewayPluginAIProxyResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *GatewayPluginAiProxyResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
 	dec.DisallowUnknownFields()
 	var data struct {

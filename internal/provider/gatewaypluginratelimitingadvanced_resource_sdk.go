@@ -83,15 +83,42 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) ToSharedCreateRateLimit
 		}
 		var redis *shared.CreateRateLimitingAdvancedPluginRedis
 		if r.Config.Redis != nil {
-			var clusterAddresses []string = []string{}
-			for _, clusterAddressesItem := range r.Config.Redis.ClusterAddresses {
-				clusterAddresses = append(clusterAddresses, clusterAddressesItem.ValueString())
+			clusterMaxRedirections := new(int64)
+			if !r.Config.Redis.ClusterMaxRedirections.IsUnknown() && !r.Config.Redis.ClusterMaxRedirections.IsNull() {
+				*clusterMaxRedirections = r.Config.Redis.ClusterMaxRedirections.ValueInt64()
+			} else {
+				clusterMaxRedirections = nil
+			}
+			var clusterNodes []shared.CreateRateLimitingAdvancedPluginClusterNodes = []shared.CreateRateLimitingAdvancedPluginClusterNodes{}
+			for _, clusterNodesItem := range r.Config.Redis.ClusterNodes {
+				ip := new(string)
+				if !clusterNodesItem.IP.IsUnknown() && !clusterNodesItem.IP.IsNull() {
+					*ip = clusterNodesItem.IP.ValueString()
+				} else {
+					ip = nil
+				}
+				port := new(int64)
+				if !clusterNodesItem.Port.IsUnknown() && !clusterNodesItem.Port.IsNull() {
+					*port = clusterNodesItem.Port.ValueInt64()
+				} else {
+					port = nil
+				}
+				clusterNodes = append(clusterNodes, shared.CreateRateLimitingAdvancedPluginClusterNodes{
+					IP:   ip,
+					Port: port,
+				})
 			}
 			connectTimeout := new(int64)
 			if !r.Config.Redis.ConnectTimeout.IsUnknown() && !r.Config.Redis.ConnectTimeout.IsNull() {
 				*connectTimeout = r.Config.Redis.ConnectTimeout.ValueInt64()
 			} else {
 				connectTimeout = nil
+			}
+			connectionIsProxied := new(bool)
+			if !r.Config.Redis.ConnectionIsProxied.IsUnknown() && !r.Config.Redis.ConnectionIsProxied.IsNull() {
+				*connectionIsProxied = r.Config.Redis.ConnectionIsProxied.ValueBool()
+			} else {
+				connectionIsProxied = nil
 			}
 			database := new(int64)
 			if !r.Config.Redis.Database.IsUnknown() && !r.Config.Redis.Database.IsNull() {
@@ -123,11 +150,11 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) ToSharedCreateRateLimit
 			} else {
 				password = nil
 			}
-			port := new(int64)
+			port1 := new(int64)
 			if !r.Config.Redis.Port.IsUnknown() && !r.Config.Redis.Port.IsNull() {
-				*port = r.Config.Redis.Port.ValueInt64()
+				*port1 = r.Config.Redis.Port.ValueInt64()
 			} else {
-				port = nil
+				port1 = nil
 			}
 			readTimeout := new(int64)
 			if !r.Config.Redis.ReadTimeout.IsUnknown() && !r.Config.Redis.ReadTimeout.IsNull() {
@@ -141,15 +168,30 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) ToSharedCreateRateLimit
 			} else {
 				sendTimeout = nil
 			}
-			var sentinelAddresses []string = []string{}
-			for _, sentinelAddressesItem := range r.Config.Redis.SentinelAddresses {
-				sentinelAddresses = append(sentinelAddresses, sentinelAddressesItem.ValueString())
-			}
 			sentinelMaster := new(string)
 			if !r.Config.Redis.SentinelMaster.IsUnknown() && !r.Config.Redis.SentinelMaster.IsNull() {
 				*sentinelMaster = r.Config.Redis.SentinelMaster.ValueString()
 			} else {
 				sentinelMaster = nil
+			}
+			var sentinelNodes []shared.CreateRateLimitingAdvancedPluginSentinelNodes = []shared.CreateRateLimitingAdvancedPluginSentinelNodes{}
+			for _, sentinelNodesItem := range r.Config.Redis.SentinelNodes {
+				host1 := new(string)
+				if !sentinelNodesItem.Host.IsUnknown() && !sentinelNodesItem.Host.IsNull() {
+					*host1 = sentinelNodesItem.Host.ValueString()
+				} else {
+					host1 = nil
+				}
+				port2 := new(int64)
+				if !sentinelNodesItem.Port.IsUnknown() && !sentinelNodesItem.Port.IsNull() {
+					*port2 = sentinelNodesItem.Port.ValueInt64()
+				} else {
+					port2 = nil
+				}
+				sentinelNodes = append(sentinelNodes, shared.CreateRateLimitingAdvancedPluginSentinelNodes{
+					Host: host1,
+					Port: port2,
+				})
 			}
 			sentinelPassword := new(string)
 			if !r.Config.Redis.SentinelPassword.IsUnknown() && !r.Config.Redis.SentinelPassword.IsNull() {
@@ -187,12 +229,6 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) ToSharedCreateRateLimit
 			} else {
 				sslVerify = nil
 			}
-			timeout := new(int64)
-			if !r.Config.Redis.Timeout.IsUnknown() && !r.Config.Redis.Timeout.IsNull() {
-				*timeout = r.Config.Redis.Timeout.ValueInt64()
-			} else {
-				timeout = nil
-			}
 			username := new(string)
 			if !r.Config.Redis.Username.IsUnknown() && !r.Config.Redis.Username.IsNull() {
 				*username = r.Config.Redis.Username.ValueString()
@@ -200,26 +236,27 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) ToSharedCreateRateLimit
 				username = nil
 			}
 			redis = &shared.CreateRateLimitingAdvancedPluginRedis{
-				ClusterAddresses:  clusterAddresses,
-				ConnectTimeout:    connectTimeout,
-				Database:          database,
-				Host:              host,
-				KeepaliveBacklog:  keepaliveBacklog,
-				KeepalivePoolSize: keepalivePoolSize,
-				Password:          password,
-				Port:              port,
-				ReadTimeout:       readTimeout,
-				SendTimeout:       sendTimeout,
-				SentinelAddresses: sentinelAddresses,
-				SentinelMaster:    sentinelMaster,
-				SentinelPassword:  sentinelPassword,
-				SentinelRole:      sentinelRole,
-				SentinelUsername:  sentinelUsername,
-				ServerName:        serverName,
-				Ssl:               ssl,
-				SslVerify:         sslVerify,
-				Timeout:           timeout,
-				Username:          username,
+				ClusterMaxRedirections: clusterMaxRedirections,
+				ClusterNodes:           clusterNodes,
+				ConnectTimeout:         connectTimeout,
+				ConnectionIsProxied:    connectionIsProxied,
+				Database:               database,
+				Host:                   host,
+				KeepaliveBacklog:       keepaliveBacklog,
+				KeepalivePoolSize:      keepalivePoolSize,
+				Password:               password,
+				Port:                   port1,
+				ReadTimeout:            readTimeout,
+				SendTimeout:            sendTimeout,
+				SentinelMaster:         sentinelMaster,
+				SentinelNodes:          sentinelNodes,
+				SentinelPassword:       sentinelPassword,
+				SentinelRole:           sentinelRole,
+				SentinelUsername:       sentinelUsername,
+				ServerName:             serverName,
+				Ssl:                    ssl,
+				SslVerify:              sslVerify,
+				Username:               username,
 			}
 		}
 		retryAfterJitterMax := new(float64)
@@ -284,6 +321,33 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) ToSharedCreateRateLimit
 	} else {
 		instanceName = nil
 	}
+	var ordering *shared.CreateRateLimitingAdvancedPluginOrdering
+	if r.Ordering != nil {
+		var after *shared.CreateRateLimitingAdvancedPluginAfter
+		if r.Ordering.After != nil {
+			var access []string = []string{}
+			for _, accessItem := range r.Ordering.After.Access {
+				access = append(access, accessItem.ValueString())
+			}
+			after = &shared.CreateRateLimitingAdvancedPluginAfter{
+				Access: access,
+			}
+		}
+		var before *shared.CreateRateLimitingAdvancedPluginBefore
+		if r.Ordering.Before != nil {
+			var access1 []string = []string{}
+			for _, accessItem1 := range r.Ordering.Before.Access {
+				access1 = append(access1, accessItem1.ValueString())
+			}
+			before = &shared.CreateRateLimitingAdvancedPluginBefore{
+				Access: access1,
+			}
+		}
+		ordering = &shared.CreateRateLimitingAdvancedPluginOrdering{
+			After:  after,
+			Before: before,
+		}
+	}
 	var protocols []shared.CreateRateLimitingAdvancedPluginProtocols = []shared.CreateRateLimitingAdvancedPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.CreateRateLimitingAdvancedPluginProtocols(protocolsItem.ValueString()))
@@ -344,6 +408,7 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) ToSharedCreateRateLimit
 		Config:        config,
 		Enabled:       enabled,
 		InstanceName:  instanceName,
+		Ordering:      ordering,
 		Protocols:     protocols,
 		Tags:          tags,
 		Consumer:      consumer,
@@ -389,12 +454,25 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) RefreshFromSharedRateLi
 			if resp.Config.Redis == nil {
 				r.Config.Redis = nil
 			} else {
-				r.Config.Redis = &tfTypes.CreateRateLimitingAdvancedPluginRedis{}
-				r.Config.Redis.ClusterAddresses = []types.String{}
-				for _, v := range resp.Config.Redis.ClusterAddresses {
-					r.Config.Redis.ClusterAddresses = append(r.Config.Redis.ClusterAddresses, types.StringValue(v))
+				r.Config.Redis = &tfTypes.CreateGraphqlProxyCacheAdvancedPluginRedis{}
+				r.Config.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Redis.ClusterMaxRedirections)
+				r.Config.Redis.ClusterNodes = []tfTypes.ClusterNodes{}
+				if len(r.Config.Redis.ClusterNodes) > len(resp.Config.Redis.ClusterNodes) {
+					r.Config.Redis.ClusterNodes = r.Config.Redis.ClusterNodes[:len(resp.Config.Redis.ClusterNodes)]
+				}
+				for clusterNodesCount, clusterNodesItem := range resp.Config.Redis.ClusterNodes {
+					var clusterNodes1 tfTypes.ClusterNodes
+					clusterNodes1.IP = types.StringPointerValue(clusterNodesItem.IP)
+					clusterNodes1.Port = types.Int64PointerValue(clusterNodesItem.Port)
+					if clusterNodesCount+1 > len(r.Config.Redis.ClusterNodes) {
+						r.Config.Redis.ClusterNodes = append(r.Config.Redis.ClusterNodes, clusterNodes1)
+					} else {
+						r.Config.Redis.ClusterNodes[clusterNodesCount].IP = clusterNodes1.IP
+						r.Config.Redis.ClusterNodes[clusterNodesCount].Port = clusterNodes1.Port
+					}
 				}
 				r.Config.Redis.ConnectTimeout = types.Int64PointerValue(resp.Config.Redis.ConnectTimeout)
+				r.Config.Redis.ConnectionIsProxied = types.BoolPointerValue(resp.Config.Redis.ConnectionIsProxied)
 				r.Config.Redis.Database = types.Int64PointerValue(resp.Config.Redis.Database)
 				r.Config.Redis.Host = types.StringPointerValue(resp.Config.Redis.Host)
 				r.Config.Redis.KeepaliveBacklog = types.Int64PointerValue(resp.Config.Redis.KeepaliveBacklog)
@@ -403,11 +481,22 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) RefreshFromSharedRateLi
 				r.Config.Redis.Port = types.Int64PointerValue(resp.Config.Redis.Port)
 				r.Config.Redis.ReadTimeout = types.Int64PointerValue(resp.Config.Redis.ReadTimeout)
 				r.Config.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Redis.SendTimeout)
-				r.Config.Redis.SentinelAddresses = []types.String{}
-				for _, v := range resp.Config.Redis.SentinelAddresses {
-					r.Config.Redis.SentinelAddresses = append(r.Config.Redis.SentinelAddresses, types.StringValue(v))
-				}
 				r.Config.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Redis.SentinelMaster)
+				r.Config.Redis.SentinelNodes = []tfTypes.SentinelNodes{}
+				if len(r.Config.Redis.SentinelNodes) > len(resp.Config.Redis.SentinelNodes) {
+					r.Config.Redis.SentinelNodes = r.Config.Redis.SentinelNodes[:len(resp.Config.Redis.SentinelNodes)]
+				}
+				for sentinelNodesCount, sentinelNodesItem := range resp.Config.Redis.SentinelNodes {
+					var sentinelNodes1 tfTypes.SentinelNodes
+					sentinelNodes1.Host = types.StringPointerValue(sentinelNodesItem.Host)
+					sentinelNodes1.Port = types.Int64PointerValue(sentinelNodesItem.Port)
+					if sentinelNodesCount+1 > len(r.Config.Redis.SentinelNodes) {
+						r.Config.Redis.SentinelNodes = append(r.Config.Redis.SentinelNodes, sentinelNodes1)
+					} else {
+						r.Config.Redis.SentinelNodes[sentinelNodesCount].Host = sentinelNodes1.Host
+						r.Config.Redis.SentinelNodes[sentinelNodesCount].Port = sentinelNodes1.Port
+					}
+				}
 				r.Config.Redis.SentinelPassword = types.StringPointerValue(resp.Config.Redis.SentinelPassword)
 				if resp.Config.Redis.SentinelRole != nil {
 					r.Config.Redis.SentinelRole = types.StringValue(string(*resp.Config.Redis.SentinelRole))
@@ -418,7 +507,6 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) RefreshFromSharedRateLi
 				r.Config.Redis.ServerName = types.StringPointerValue(resp.Config.Redis.ServerName)
 				r.Config.Redis.Ssl = types.BoolPointerValue(resp.Config.Redis.Ssl)
 				r.Config.Redis.SslVerify = types.BoolPointerValue(resp.Config.Redis.SslVerify)
-				r.Config.Redis.Timeout = types.Int64PointerValue(resp.Config.Redis.Timeout)
 				r.Config.Redis.Username = types.StringPointerValue(resp.Config.Redis.Username)
 			}
 			if resp.Config.RetryAfterJitterMax != nil {
@@ -462,6 +550,29 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) RefreshFromSharedRateLi
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.InstanceName = types.StringPointerValue(resp.InstanceName)
+		if resp.Ordering == nil {
+			r.Ordering = nil
+		} else {
+			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			if resp.Ordering.After == nil {
+				r.Ordering.After = nil
+			} else {
+				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After.Access = []types.String{}
+				for _, v := range resp.Ordering.After.Access {
+					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				}
+			}
+			if resp.Ordering.Before == nil {
+				r.Ordering.Before = nil
+			} else {
+				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before.Access = []types.String{}
+				for _, v := range resp.Ordering.Before.Access {
+					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				}
+			}
+		}
 		r.Protocols = []types.String{}
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))

@@ -10,6 +10,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
@@ -18,42 +20,43 @@ import (
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
-var _ resource.Resource = &GatewayPluginJWTResource{}
-var _ resource.ResourceWithImportState = &GatewayPluginJWTResource{}
+var _ resource.Resource = &GatewayPluginJwtResource{}
+var _ resource.ResourceWithImportState = &GatewayPluginJwtResource{}
 
-func NewGatewayPluginJWTResource() resource.Resource {
-	return &GatewayPluginJWTResource{}
+func NewGatewayPluginJwtResource() resource.Resource {
+	return &GatewayPluginJwtResource{}
 }
 
-// GatewayPluginJWTResource defines the resource implementation.
-type GatewayPluginJWTResource struct {
+// GatewayPluginJwtResource defines the resource implementation.
+type GatewayPluginJwtResource struct {
 	client *sdk.Konnect
 }
 
-// GatewayPluginJWTResourceModel describes the resource data model.
-type GatewayPluginJWTResourceModel struct {
-	Config         *tfTypes.CreateJWTPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer           `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLConsumer           `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                   `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                    `tfsdk:"created_at"`
-	Enabled        types.Bool                     `tfsdk:"enabled"`
-	ID             types.String                   `tfsdk:"id"`
-	InstanceName   types.String                   `tfsdk:"instance_name"`
-	Protocols      []types.String                 `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer           `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer           `tfsdk:"service"`
-	Tags           []types.String                 `tfsdk:"tags"`
-	UpdatedAt      types.Int64                    `tfsdk:"updated_at"`
+// GatewayPluginJwtResourceModel describes the resource data model.
+type GatewayPluginJwtResourceModel struct {
+	Config         *tfTypes.CreateJwtPluginConfig   `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer             `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer             `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                     `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                      `tfsdk:"created_at"`
+	Enabled        types.Bool                       `tfsdk:"enabled"`
+	ID             types.String                     `tfsdk:"id"`
+	InstanceName   types.String                     `tfsdk:"instance_name"`
+	Ordering       *tfTypes.CreateACLPluginOrdering `tfsdk:"ordering"`
+	Protocols      []types.String                   `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer             `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer             `tfsdk:"service"`
+	Tags           []types.String                   `tfsdk:"tags"`
+	UpdatedAt      types.Int64                      `tfsdk:"updated_at"`
 }
 
-func (r *GatewayPluginJWTResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+func (r *GatewayPluginJwtResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_gateway_plugin_jwt"
 }
 
-func (r *GatewayPluginJWTResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *GatewayPluginJwtResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "GatewayPluginJWT Resource",
+		MarkdownDescription: "GatewayPluginJwt Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
@@ -91,6 +94,11 @@ func (r *GatewayPluginJWTResource) Schema(ctx context.Context, req resource.Sche
 						Computed:    true,
 						Optional:    true,
 						Description: `A value between 0 and 31536000 (365 days) limiting the lifetime of the JWT to maximum_expiration seconds in the future.`,
+					},
+					"realm": schema.StringAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `When authentication fails the plugin sends ` + "`" + `WWW-Authenticate` + "`" + ` header with ` + "`" + `realm` + "`" + ` attribute value.`,
 					},
 					"run_on_preflight": schema.BoolAttribute{
 						Computed:    true,
@@ -132,8 +140,11 @@ func (r *GatewayPluginJWTResource) Schema(ctx context.Context, req resource.Sche
 				},
 			},
 			"control_plane_id": schema.StringAttribute{
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
 				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager.`,
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed. `,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
@@ -150,6 +161,34 @@ func (r *GatewayPluginJWTResource) Schema(ctx context.Context, req resource.Sche
 			"instance_name": schema.StringAttribute{
 				Computed: true,
 				Optional: true,
+			},
+			"ordering": schema.SingleNestedAttribute{
+				Computed: true,
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"after": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+					"before": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+				},
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,
@@ -193,7 +232,7 @@ func (r *GatewayPluginJWTResource) Schema(ctx context.Context, req resource.Sche
 	}
 }
 
-func (r *GatewayPluginJWTResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *GatewayPluginJwtResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	// Prevent panic if the provider has not been configured.
 	if req.ProviderData == nil {
 		return
@@ -213,8 +252,8 @@ func (r *GatewayPluginJWTResource) Configure(ctx context.Context, req resource.C
 	r.client = client
 }
 
-func (r *GatewayPluginJWTResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data *GatewayPluginJWTResourceModel
+func (r *GatewayPluginJwtResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var data *GatewayPluginJwtResourceModel
 	var plan types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -234,10 +273,10 @@ func (r *GatewayPluginJWTResource) Create(ctx context.Context, req resource.Crea
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createJWTPlugin := data.ToSharedCreateJWTPlugin()
+	createJwtPlugin := data.ToSharedCreateJwtPlugin()
 	request := operations.CreateJwtPluginRequest{
 		ControlPlaneID:  controlPlaneID,
-		CreateJWTPlugin: createJWTPlugin,
+		CreateJwtPlugin: createJwtPlugin,
 	}
 	res, err := r.client.Plugins.CreateJwtPlugin(ctx, request)
 	if err != nil {
@@ -255,19 +294,19 @@ func (r *GatewayPluginJWTResource) Create(ctx context.Context, req resource.Crea
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.JWTPlugin != nil) {
+	if !(res.JwtPlugin != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedJWTPlugin(res.JWTPlugin)
+	data.RefreshFromSharedJwtPlugin(res.JwtPlugin)
 	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *GatewayPluginJWTResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data *GatewayPluginJWTResourceModel
+func (r *GatewayPluginJwtResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var data *GatewayPluginJwtResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -314,18 +353,18 @@ func (r *GatewayPluginJWTResource) Read(ctx context.Context, req resource.ReadRe
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.JWTPlugin != nil) {
+	if !(res.JwtPlugin != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedJWTPlugin(res.JWTPlugin)
+	data.RefreshFromSharedJwtPlugin(res.JwtPlugin)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *GatewayPluginJWTResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data *GatewayPluginJWTResourceModel
+func (r *GatewayPluginJwtResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var data *GatewayPluginJwtResourceModel
 	var plan types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -344,11 +383,11 @@ func (r *GatewayPluginJWTResource) Update(ctx context.Context, req resource.Upda
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createJWTPlugin := data.ToSharedCreateJWTPlugin()
+	createJwtPlugin := data.ToSharedCreateJwtPlugin()
 	request := operations.UpdateJwtPluginRequest{
 		PluginID:        pluginID,
 		ControlPlaneID:  controlPlaneID,
-		CreateJWTPlugin: createJWTPlugin,
+		CreateJwtPlugin: createJwtPlugin,
 	}
 	res, err := r.client.Plugins.UpdateJwtPlugin(ctx, request)
 	if err != nil {
@@ -366,19 +405,19 @@ func (r *GatewayPluginJWTResource) Update(ctx context.Context, req resource.Upda
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.JWTPlugin != nil) {
+	if !(res.JwtPlugin != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedJWTPlugin(res.JWTPlugin)
+	data.RefreshFromSharedJwtPlugin(res.JwtPlugin)
 	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *GatewayPluginJWTResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var data *GatewayPluginJWTResourceModel
+func (r *GatewayPluginJwtResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var data *GatewayPluginJwtResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -424,7 +463,7 @@ func (r *GatewayPluginJWTResource) Delete(ctx context.Context, req resource.Dele
 
 }
 
-func (r *GatewayPluginJWTResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *GatewayPluginJwtResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
 	dec.DisallowUnknownFields()
 	var data struct {

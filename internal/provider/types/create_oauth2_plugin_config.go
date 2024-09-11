@@ -18,6 +18,7 @@ type CreateOauth2PluginConfig struct {
 	PersistentRefreshToken        types.Bool     `tfsdk:"persistent_refresh_token"`
 	Pkce                          types.String   `tfsdk:"pkce"`
 	ProvisionKey                  types.String   `tfsdk:"provision_key"`
+	Realm                         types.String   `tfsdk:"realm"`
 	RefreshTokenTTL               types.Number   `tfsdk:"refresh_token_ttl"`
 	ReuseRefreshToken             types.Bool     `tfsdk:"reuse_refresh_token"`
 	Scopes                        []types.String `tfsdk:"scopes"`

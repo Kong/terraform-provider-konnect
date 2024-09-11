@@ -12,7 +12,7 @@ type UpdateAiprompttemplatePluginRequest struct {
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID               string                               `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateAIPromptTemplatePlugin *shared.CreateAIPromptTemplatePlugin `request:"mediaType=application/json"`
+	CreateAiPromptTemplatePlugin *shared.CreateAiPromptTemplatePlugin `request:"mediaType=application/json"`
 }
 
 func (o *UpdateAiprompttemplatePluginRequest) GetPluginID() string {
@@ -29,11 +29,11 @@ func (o *UpdateAiprompttemplatePluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateAiprompttemplatePluginRequest) GetCreateAIPromptTemplatePlugin() *shared.CreateAIPromptTemplatePlugin {
+func (o *UpdateAiprompttemplatePluginRequest) GetCreateAiPromptTemplatePlugin() *shared.CreateAiPromptTemplatePlugin {
 	if o == nil {
 		return nil
 	}
-	return o.CreateAIPromptTemplatePlugin
+	return o.CreateAiPromptTemplatePlugin
 }
 
 type UpdateAiprompttemplatePluginResponse struct {
@@ -43,8 +43,8 @@ type UpdateAiprompttemplatePluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// AIPromptTemplate plugin
-	AIPromptTemplatePlugin *shared.AIPromptTemplatePlugin
+	// AiPromptTemplate plugin
+	AiPromptTemplatePlugin *shared.AiPromptTemplatePlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
@@ -70,11 +70,11 @@ func (o *UpdateAiprompttemplatePluginResponse) GetRawResponse() *http.Response {
 	return o.RawResponse
 }
 
-func (o *UpdateAiprompttemplatePluginResponse) GetAIPromptTemplatePlugin() *shared.AIPromptTemplatePlugin {
+func (o *UpdateAiprompttemplatePluginResponse) GetAiPromptTemplatePlugin() *shared.AiPromptTemplatePlugin {
 	if o == nil {
 		return nil
 	}
-	return o.AIPromptTemplatePlugin
+	return o.AiPromptTemplatePlugin
 }
 
 func (o *UpdateAiprompttemplatePluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {

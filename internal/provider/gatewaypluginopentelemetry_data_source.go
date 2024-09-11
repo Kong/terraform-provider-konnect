@@ -37,6 +37,7 @@ type GatewayPluginOpentelemetryDataSourceModel struct {
 	Enabled        types.Bool                               `tfsdk:"enabled"`
 	ID             types.String                             `tfsdk:"id"`
 	InstanceName   types.String                             `tfsdk:"instance_name"`
+	Ordering       *tfTypes.CreateACLPluginOrdering         `tfsdk:"ordering"`
 	Protocols      []types.String                           `tfsdk:"protocols"`
 	Route          *tfTypes.ACLConsumer                     `tfsdk:"route"`
 	Service        *tfTypes.ACLConsumer                     `tfsdk:"service"`
@@ -70,10 +71,6 @@ func (r *GatewayPluginOpentelemetryDataSource) Schema(ctx context.Context, req d
 						Computed:    true,
 						Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
 					},
-					"endpoint": schema.StringAttribute{
-						Computed:    true,
-						Description: `A string representing a URL, such as https://example.com/path/to/resource?q=search.`,
-					},
 					"header_type": schema.StringAttribute{
 						Computed:    true,
 						Description: `must be one of ["preserve", "ignore", "b3", "b3-single", "w3c", "jaeger", "ot", "aws", "gcp", "datadog"]`,
@@ -86,6 +83,10 @@ func (r *GatewayPluginOpentelemetryDataSource) Schema(ctx context.Context, req d
 					"http_response_header_for_traceid": schema.StringAttribute{
 						Computed: true,
 					},
+					"logs_endpoint": schema.StringAttribute{
+						Computed:    true,
+						Description: `A string representing a URL, such as https://example.com/path/to/resource?q=search.`,
+					},
 					"propagation": schema.SingleNestedAttribute{
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
@@ -96,7 +97,7 @@ func (r *GatewayPluginOpentelemetryDataSource) Schema(ctx context.Context, req d
 							},
 							"default_format": schema.StringAttribute{
 								Computed:    true,
-								Description: `The default header format to use when extractors did not match any format in the incoming headers and ` + "`" + `inject` + "`" + ` is configured with the value: ` + "`" + `preserve` + "`" + `. This can happen when no tracing header was found in the request, or the incoming tracing header formats were not included in ` + "`" + `extract` + "`" + `. must be one of ["b3", "gcp", "b3-single", "jaeger", "aws", "ot", "w3c", "datadog"]`,
+								Description: `The default header format to use when extractors did not match any format in the incoming headers and ` + "`" + `inject` + "`" + ` is configured with the value: ` + "`" + `preserve` + "`" + `. This can happen when no tracing header was found in the request, or the incoming tracing header formats were not included in ` + "`" + `extract` + "`" + `. must be one of ["w3c", "datadog", "b3", "gcp", "b3-single", "jaeger", "aws", "ot"]`,
 							},
 							"extract": schema.ListAttribute{
 								Computed:    true,
@@ -113,6 +114,10 @@ func (r *GatewayPluginOpentelemetryDataSource) Schema(ctx context.Context, req d
 					"queue": schema.SingleNestedAttribute{
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
+							"concurrency_limit": schema.Int64Attribute{
+								Computed:    true,
+								Description: `The number of of queue delivery timers. -1 indicates unlimited. must be one of ["-1", "1"]`,
+							},
 							"initial_retry_delay": schema.NumberAttribute{
 								Computed:    true,
 								Description: `Time in seconds before the initial retry is made for a failing batch.`,
@@ -159,6 +164,10 @@ func (r *GatewayPluginOpentelemetryDataSource) Schema(ctx context.Context, req d
 						Computed:    true,
 						Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
 					},
+					"traces_endpoint": schema.StringAttribute{
+						Computed:    true,
+						Description: `A string representing a URL, such as https://example.com/path/to/resource?q=search.`,
+					},
 				},
 			},
 			"consumer": schema.SingleNestedAttribute{
@@ -180,7 +189,7 @@ func (r *GatewayPluginOpentelemetryDataSource) Schema(ctx context.Context, req d
 			},
 			"control_plane_id": schema.StringAttribute{
 				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager.`,
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed. `,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
@@ -195,6 +204,29 @@ func (r *GatewayPluginOpentelemetryDataSource) Schema(ctx context.Context, req d
 			},
 			"instance_name": schema.StringAttribute{
 				Computed: true,
+			},
+			"ordering": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"after": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+					"before": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+				},
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,

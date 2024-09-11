@@ -290,7 +290,36 @@ func (o *CreateStatsdPluginMetrics) GetWorkspaceIdentifier() *CreateStatsdPlugin
 	return o.WorkspaceIdentifier
 }
 
+// CreateStatsdPluginConcurrencyLimit - The number of of queue delivery timers. -1 indicates unlimited.
+type CreateStatsdPluginConcurrencyLimit int64
+
+const (
+	CreateStatsdPluginConcurrencyLimitMinus1 CreateStatsdPluginConcurrencyLimit = -1
+	CreateStatsdPluginConcurrencyLimitOne    CreateStatsdPluginConcurrencyLimit = 1
+)
+
+func (e CreateStatsdPluginConcurrencyLimit) ToPointer() *CreateStatsdPluginConcurrencyLimit {
+	return &e
+}
+func (e *CreateStatsdPluginConcurrencyLimit) UnmarshalJSON(data []byte) error {
+	var v int64
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case -1:
+		fallthrough
+	case 1:
+		*e = CreateStatsdPluginConcurrencyLimit(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for CreateStatsdPluginConcurrencyLimit: %v", v)
+	}
+}
+
 type CreateStatsdPluginQueue struct {
+	// The number of of queue delivery timers. -1 indicates unlimited.
+	ConcurrencyLimit *CreateStatsdPluginConcurrencyLimit `json:"concurrency_limit,omitempty"`
 	// Time in seconds before the initial retry is made for a failing batch.
 	InitialRetryDelay *float64 `json:"initial_retry_delay,omitempty"`
 	// Maximum number of entries that can be processed at a time.
@@ -305,6 +334,13 @@ type CreateStatsdPluginQueue struct {
 	MaxRetryDelay *float64 `json:"max_retry_delay,omitempty"`
 	// Time in seconds before the queue gives up calling a failed handler for a batch.
 	MaxRetryTime *float64 `json:"max_retry_time,omitempty"`
+}
+
+func (o *CreateStatsdPluginQueue) GetConcurrencyLimit() *CreateStatsdPluginConcurrencyLimit {
+	if o == nil {
+		return nil
+	}
+	return o.ConcurrencyLimit
 }
 
 func (o *CreateStatsdPluginQueue) GetInitialRetryDelay() *float64 {
@@ -582,6 +618,47 @@ func (o *CreateStatsdPluginConfig) GetWorkspaceIdentifierDefault() *CreateStatsd
 	return o.WorkspaceIdentifierDefault
 }
 
+type CreateStatsdPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *CreateStatsdPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type CreateStatsdPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *CreateStatsdPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type CreateStatsdPluginOrdering struct {
+	After  *CreateStatsdPluginAfter  `json:"after,omitempty"`
+	Before *CreateStatsdPluginBefore `json:"before,omitempty"`
+}
+
+func (o *CreateStatsdPluginOrdering) GetAfter() *CreateStatsdPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *CreateStatsdPluginOrdering) GetBefore() *CreateStatsdPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
 type CreateStatsdPluginProtocols string
 
 const (
@@ -682,9 +759,10 @@ func (o *CreateStatsdPluginService) GetID() *string {
 type CreateStatsdPlugin struct {
 	Config *CreateStatsdPluginConfig `json:"config,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool   `json:"enabled,omitempty"`
-	InstanceName *string `json:"instance_name,omitempty"`
-	name         *string `const:"statsd" json:"name,omitempty"`
+	Enabled      *bool                       `json:"enabled,omitempty"`
+	InstanceName *string                     `json:"instance_name,omitempty"`
+	name         *string                     `const:"statsd" json:"name,omitempty"`
+	Ordering     *CreateStatsdPluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []CreateStatsdPluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
@@ -732,6 +810,13 @@ func (o *CreateStatsdPlugin) GetInstanceName() *string {
 
 func (o *CreateStatsdPlugin) GetName() *string {
 	return types.String("statsd")
+}
+
+func (o *CreateStatsdPlugin) GetOrdering() *CreateStatsdPluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
 }
 
 func (o *CreateStatsdPlugin) GetProtocols() []CreateStatsdPluginProtocols {

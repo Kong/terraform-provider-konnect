@@ -37,6 +37,7 @@ type GatewayPluginRequestTransformerAdvancedDataSourceModel struct {
 	Enabled        types.Bool                                            `tfsdk:"enabled"`
 	ID             types.String                                          `tfsdk:"id"`
 	InstanceName   types.String                                          `tfsdk:"instance_name"`
+	Ordering       *tfTypes.CreateACLPluginOrdering                      `tfsdk:"ordering"`
 	Protocols      []types.String                                        `tfsdk:"protocols"`
 	Route          *tfTypes.ACLConsumer                                  `tfsdk:"route"`
 	Service        *tfTypes.ACLConsumer                                  `tfsdk:"service"`
@@ -196,7 +197,7 @@ func (r *GatewayPluginRequestTransformerAdvancedDataSource) Schema(ctx context.C
 			},
 			"control_plane_id": schema.StringAttribute{
 				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager.`,
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed. `,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
@@ -211,6 +212,29 @@ func (r *GatewayPluginRequestTransformerAdvancedDataSource) Schema(ctx context.C
 			},
 			"instance_name": schema.StringAttribute{
 				Computed: true,
+			},
+			"ordering": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"after": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+					"before": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+				},
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,

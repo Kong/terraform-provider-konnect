@@ -10,7 +10,7 @@ import (
 type CreateCorsPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID   string                   `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateCORSPlugin *shared.CreateCORSPlugin `request:"mediaType=application/json"`
+	CreateCorsPlugin *shared.CreateCorsPlugin `request:"mediaType=application/json"`
 }
 
 func (o *CreateCorsPluginRequest) GetControlPlaneID() string {
@@ -20,11 +20,11 @@ func (o *CreateCorsPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateCorsPluginRequest) GetCreateCORSPlugin() *shared.CreateCORSPlugin {
+func (o *CreateCorsPluginRequest) GetCreateCorsPlugin() *shared.CreateCorsPlugin {
 	if o == nil {
 		return nil
 	}
-	return o.CreateCORSPlugin
+	return o.CreateCorsPlugin
 }
 
 type CreateCorsPluginResponse struct {
@@ -34,8 +34,8 @@ type CreateCorsPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Created CORS plugin
-	CORSPlugin *shared.CORSPlugin
+	// Created Cors plugin
+	CorsPlugin *shared.CorsPlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
@@ -61,11 +61,11 @@ func (o *CreateCorsPluginResponse) GetRawResponse() *http.Response {
 	return o.RawResponse
 }
 
-func (o *CreateCorsPluginResponse) GetCORSPlugin() *shared.CORSPlugin {
+func (o *CreateCorsPluginResponse) GetCorsPlugin() *shared.CorsPlugin {
 	if o == nil {
 		return nil
 	}
-	return o.CORSPlugin
+	return o.CorsPlugin
 }
 
 func (o *CreateCorsPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {

@@ -15,21 +15,21 @@ import (
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
-var _ datasource.DataSource = &GatewayPluginJWTSignerDataSource{}
-var _ datasource.DataSourceWithConfigure = &GatewayPluginJWTSignerDataSource{}
+var _ datasource.DataSource = &GatewayPluginJwtSignerDataSource{}
+var _ datasource.DataSourceWithConfigure = &GatewayPluginJwtSignerDataSource{}
 
-func NewGatewayPluginJWTSignerDataSource() datasource.DataSource {
-	return &GatewayPluginJWTSignerDataSource{}
+func NewGatewayPluginJwtSignerDataSource() datasource.DataSource {
+	return &GatewayPluginJwtSignerDataSource{}
 }
 
-// GatewayPluginJWTSignerDataSource is the data source implementation.
-type GatewayPluginJWTSignerDataSource struct {
+// GatewayPluginJwtSignerDataSource is the data source implementation.
+type GatewayPluginJwtSignerDataSource struct {
 	client *sdk.Konnect
 }
 
-// GatewayPluginJWTSignerDataSourceModel describes the data model.
-type GatewayPluginJWTSignerDataSourceModel struct {
-	Config         *tfTypes.CreateJWTSignerPluginConfig `tfsdk:"config"`
+// GatewayPluginJwtSignerDataSourceModel describes the data model.
+type GatewayPluginJwtSignerDataSourceModel struct {
+	Config         *tfTypes.CreateJwtSignerPluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.ACLConsumer                 `tfsdk:"consumer"`
 	ConsumerGroup  *tfTypes.ACLConsumer                 `tfsdk:"consumer_group"`
 	ControlPlaneID types.String                         `tfsdk:"control_plane_id"`
@@ -37,6 +37,7 @@ type GatewayPluginJWTSignerDataSourceModel struct {
 	Enabled        types.Bool                           `tfsdk:"enabled"`
 	ID             types.String                         `tfsdk:"id"`
 	InstanceName   types.String                         `tfsdk:"instance_name"`
+	Ordering       *tfTypes.CreateACLPluginOrdering     `tfsdk:"ordering"`
 	Protocols      []types.String                       `tfsdk:"protocols"`
 	Route          *tfTypes.ACLConsumer                 `tfsdk:"route"`
 	Service        *tfTypes.ACLConsumer                 `tfsdk:"service"`
@@ -45,14 +46,14 @@ type GatewayPluginJWTSignerDataSourceModel struct {
 }
 
 // Metadata returns the data source type name.
-func (r *GatewayPluginJWTSignerDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+func (r *GatewayPluginJwtSignerDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_gateway_plugin_jwt_signer"
 }
 
 // Schema defines the schema for the data source.
-func (r *GatewayPluginJWTSignerDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
+func (r *GatewayPluginJwtSignerDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "GatewayPluginJWTSigner DataSource",
+		MarkdownDescription: "GatewayPluginJwtSigner DataSource",
 
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
@@ -476,7 +477,7 @@ func (r *GatewayPluginJWTSignerDataSource) Schema(ctx context.Context, req datas
 			},
 			"control_plane_id": schema.StringAttribute{
 				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager.`,
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed. `,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
@@ -491,6 +492,29 @@ func (r *GatewayPluginJWTSignerDataSource) Schema(ctx context.Context, req datas
 			},
 			"instance_name": schema.StringAttribute{
 				Computed: true,
+			},
+			"ordering": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"after": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+					"before": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+				},
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,
@@ -528,7 +552,7 @@ func (r *GatewayPluginJWTSignerDataSource) Schema(ctx context.Context, req datas
 	}
 }
 
-func (r *GatewayPluginJWTSignerDataSource) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
+func (r *GatewayPluginJwtSignerDataSource) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
 	// Prevent panic if the provider has not been configured.
 	if req.ProviderData == nil {
 		return
@@ -548,8 +572,8 @@ func (r *GatewayPluginJWTSignerDataSource) Configure(ctx context.Context, req da
 	r.client = client
 }
 
-func (r *GatewayPluginJWTSignerDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
-	var data *GatewayPluginJWTSignerDataSourceModel
+func (r *GatewayPluginJwtSignerDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
+	var data *GatewayPluginJwtSignerDataSourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.Config.Get(ctx, &item)...)
@@ -596,11 +620,11 @@ func (r *GatewayPluginJWTSignerDataSource) Read(ctx context.Context, req datasou
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.JWTSignerPlugin != nil) {
+	if !(res.JwtSignerPlugin != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedJWTSignerPlugin(res.JWTSignerPlugin)
+	data.RefreshFromSharedJwtSignerPlugin(res.JwtSignerPlugin)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

@@ -188,7 +188,7 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 				},
 				Description: `Object that describes where data-planes will be deployed to, along with how many instances.`,
 			},
-			"dataplane_groups": schema.ListNestedAttribute{
+			"dataplane_groups": schema.SetNestedAttribute{
 				Required: true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{

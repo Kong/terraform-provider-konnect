@@ -42,6 +42,288 @@ func (e *NameidFormat) UnmarshalJSON(data []byte) error {
 	}
 }
 
+type SamlPluginClusterNodes struct {
+	// A string representing a host name, such as example.com.
+	IP *string `json:"ip,omitempty"`
+	// An integer representing a port number between 0 and 65535, inclusive.
+	Port *int64 `json:"port,omitempty"`
+}
+
+func (o *SamlPluginClusterNodes) GetIP() *string {
+	if o == nil {
+		return nil
+	}
+	return o.IP
+}
+
+func (o *SamlPluginClusterNodes) GetPort() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.Port
+}
+
+type SamlPluginSentinelNodes struct {
+	// A string representing a host name, such as example.com.
+	Host *string `json:"host,omitempty"`
+	// An integer representing a port number between 0 and 65535, inclusive.
+	Port *int64 `json:"port,omitempty"`
+}
+
+func (o *SamlPluginSentinelNodes) GetHost() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Host
+}
+
+func (o *SamlPluginSentinelNodes) GetPort() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.Port
+}
+
+// SamlPluginSentinelRole - Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
+type SamlPluginSentinelRole string
+
+const (
+	SamlPluginSentinelRoleMaster SamlPluginSentinelRole = "master"
+	SamlPluginSentinelRoleSlave  SamlPluginSentinelRole = "slave"
+	SamlPluginSentinelRoleAny    SamlPluginSentinelRole = "any"
+)
+
+func (e SamlPluginSentinelRole) ToPointer() *SamlPluginSentinelRole {
+	return &e
+}
+func (e *SamlPluginSentinelRole) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "master":
+		fallthrough
+	case "slave":
+		fallthrough
+	case "any":
+		*e = SamlPluginSentinelRole(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for SamlPluginSentinelRole: %v", v)
+	}
+}
+
+type SamlPluginRedis struct {
+	// Maximum retry attempts for redirection.
+	ClusterMaxRedirections *int64 `json:"cluster_max_redirections,omitempty"`
+	// Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
+	ClusterNodes []SamlPluginClusterNodes `json:"cluster_nodes,omitempty"`
+	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+	ConnectTimeout *int64 `json:"connect_timeout,omitempty"`
+	// If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address.
+	ConnectionIsProxied *bool `json:"connection_is_proxied,omitempty"`
+	// Database to use for the Redis connection when using the `redis` strategy
+	Database *int64 `json:"database,omitempty"`
+	// A string representing a host name, such as example.com.
+	Host *string `json:"host,omitempty"`
+	// Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `keepalive_pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `keepalive_pool_size`.
+	KeepaliveBacklog *int64 `json:"keepalive_backlog,omitempty"`
+	// The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `keepalive_pool_size` nor `keepalive_backlog` is specified, no pool is created. If `keepalive_pool_size` isn't specified but `keepalive_backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.
+	KeepalivePoolSize *int64 `json:"keepalive_pool_size,omitempty"`
+	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
+	Password *string `json:"password,omitempty"`
+	// An integer representing a port number between 0 and 65535, inclusive.
+	Port *int64 `json:"port,omitempty"`
+	// The Redis session key prefix.
+	Prefix *string `json:"prefix,omitempty"`
+	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+	ReadTimeout *int64 `json:"read_timeout,omitempty"`
+	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+	SendTimeout *int64 `json:"send_timeout,omitempty"`
+	// Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
+	SentinelMaster *string `json:"sentinel_master,omitempty"`
+	// Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
+	SentinelNodes []SamlPluginSentinelNodes `json:"sentinel_nodes,omitempty"`
+	// Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
+	SentinelPassword *string `json:"sentinel_password,omitempty"`
+	// Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
+	SentinelRole *SamlPluginSentinelRole `json:"sentinel_role,omitempty"`
+	// Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
+	SentinelUsername *string `json:"sentinel_username,omitempty"`
+	// A string representing an SNI (server name indication) value for TLS.
+	ServerName *string `json:"server_name,omitempty"`
+	// The Redis unix socket path.
+	Socket *string `json:"socket,omitempty"`
+	// If set to true, uses SSL to connect to Redis.
+	Ssl *bool `json:"ssl,omitempty"`
+	// If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
+	SslVerify *bool `json:"ssl_verify,omitempty"`
+	// Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
+	Username *string `json:"username,omitempty"`
+}
+
+func (o *SamlPluginRedis) GetClusterMaxRedirections() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.ClusterMaxRedirections
+}
+
+func (o *SamlPluginRedis) GetClusterNodes() []SamlPluginClusterNodes {
+	if o == nil {
+		return nil
+	}
+	return o.ClusterNodes
+}
+
+func (o *SamlPluginRedis) GetConnectTimeout() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectTimeout
+}
+
+func (o *SamlPluginRedis) GetConnectionIsProxied() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectionIsProxied
+}
+
+func (o *SamlPluginRedis) GetDatabase() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.Database
+}
+
+func (o *SamlPluginRedis) GetHost() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Host
+}
+
+func (o *SamlPluginRedis) GetKeepaliveBacklog() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.KeepaliveBacklog
+}
+
+func (o *SamlPluginRedis) GetKeepalivePoolSize() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.KeepalivePoolSize
+}
+
+func (o *SamlPluginRedis) GetPassword() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Password
+}
+
+func (o *SamlPluginRedis) GetPort() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.Port
+}
+
+func (o *SamlPluginRedis) GetPrefix() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Prefix
+}
+
+func (o *SamlPluginRedis) GetReadTimeout() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.ReadTimeout
+}
+
+func (o *SamlPluginRedis) GetSendTimeout() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.SendTimeout
+}
+
+func (o *SamlPluginRedis) GetSentinelMaster() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SentinelMaster
+}
+
+func (o *SamlPluginRedis) GetSentinelNodes() []SamlPluginSentinelNodes {
+	if o == nil {
+		return nil
+	}
+	return o.SentinelNodes
+}
+
+func (o *SamlPluginRedis) GetSentinelPassword() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SentinelPassword
+}
+
+func (o *SamlPluginRedis) GetSentinelRole() *SamlPluginSentinelRole {
+	if o == nil {
+		return nil
+	}
+	return o.SentinelRole
+}
+
+func (o *SamlPluginRedis) GetSentinelUsername() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SentinelUsername
+}
+
+func (o *SamlPluginRedis) GetServerName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ServerName
+}
+
+func (o *SamlPluginRedis) GetSocket() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Socket
+}
+
+func (o *SamlPluginRedis) GetSsl() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Ssl
+}
+
+func (o *SamlPluginRedis) GetSslVerify() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.SslVerify
+}
+
+func (o *SamlPluginRedis) GetUsername() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Username
+}
+
 // RequestDigestAlgorithm - The digest algorithm for Authn requests: - `SHA256` - `SHA1`
 type RequestDigestAlgorithm string
 
@@ -189,27 +471,6 @@ func (e *SamlPluginSessionCookieSameSite) UnmarshalJSON(data []byte) error {
 	}
 }
 
-type SamlPluginSessionRedisClusterNodes struct {
-	// A string representing a host name, such as example.com.
-	IP *string `json:"ip,omitempty"`
-	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `json:"port,omitempty"`
-}
-
-func (o *SamlPluginSessionRedisClusterNodes) GetIP() *string {
-	if o == nil {
-		return nil
-	}
-	return o.IP
-}
-
-func (o *SamlPluginSessionRedisClusterNodes) GetPort() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.Port
-}
-
 type SamlPluginSessionRequestHeaders string
 
 const (
@@ -337,7 +598,8 @@ type SamlPluginConfig struct {
 	// The unique identifier of the IdP application. Formatted as a URL containing information about the IdP so the SP can validate that the SAML assertions it receives are issued from the correct IdP.
 	Issuer *string `json:"issuer,omitempty"`
 	// The requested `NameId` format. Options available are: - `Unspecified` - `EmailAddress` - `Persistent` - `Transient`
-	NameidFormat *NameidFormat `json:"nameid_format,omitempty"`
+	NameidFormat *NameidFormat    `json:"nameid_format,omitempty"`
+	Redis        *SamlPluginRedis `json:"redis,omitempty"`
 	// The digest algorithm for Authn requests: - `SHA256` - `SHA1`
 	RequestDigestAlgorithm *RequestDigestAlgorithm `json:"request_digest_algorithm,omitempty"`
 	// The signature algorithm for signing Authn requests. Options available are: - `SHA256` - `SHA384` - `SHA512`
@@ -384,34 +646,6 @@ type SamlPluginConfig struct {
 	SessionMemcachedPrefix *string `json:"session_memcached_prefix,omitempty"`
 	// The memcached unix socket path.
 	SessionMemcachedSocket *string `json:"session_memcached_socket,omitempty"`
-	// The Redis cluster maximum redirects.
-	SessionRedisClusterMaxRedirections *int64 `json:"session_redis_cluster_max_redirections,omitempty"`
-	// The Redis cluster node host. Takes an array of host records, with either `ip` or `host`, and `port` values.
-	SessionRedisClusterNodes []SamlPluginSessionRedisClusterNodes `json:"session_redis_cluster_nodes,omitempty"`
-	// The Redis connection timeout in milliseconds.
-	SessionRedisConnectTimeout *int64 `json:"session_redis_connect_timeout,omitempty"`
-	// The Redis host IP.
-	SessionRedisHost *string `json:"session_redis_host,omitempty"`
-	// Password to use for Redis connection when the `redis` session storage is defined. If undefined, no auth commands are sent to Redis. This value is pulled from
-	SessionRedisPassword *string `json:"session_redis_password,omitempty"`
-	// An integer representing a port number between 0 and 65535, inclusive.
-	SessionRedisPort *int64 `json:"session_redis_port,omitempty"`
-	// The Redis session key prefix.
-	SessionRedisPrefix *string `json:"session_redis_prefix,omitempty"`
-	// The Redis read timeout in milliseconds.
-	SessionRedisReadTimeout *int64 `json:"session_redis_read_timeout,omitempty"`
-	// The Redis send timeout in milliseconds.
-	SessionRedisSendTimeout *int64 `json:"session_redis_send_timeout,omitempty"`
-	// The SNI used for connecting to the Redis server.
-	SessionRedisServerName *string `json:"session_redis_server_name,omitempty"`
-	// The Redis unix socket path.
-	SessionRedisSocket *string `json:"session_redis_socket,omitempty"`
-	// Use SSL/TLS for the Redis connection.
-	SessionRedisSsl *bool `json:"session_redis_ssl,omitempty"`
-	// Verify the Redis server certificate.
-	SessionRedisSslVerify *bool `json:"session_redis_ssl_verify,omitempty"`
-	// Redis username if the `redis` session storage is defined and ACL authentication is desired.If undefined, ACL authentication will not be performed.  This requires Redis v6.0.0+. The username **cannot** be set to `default`.
-	SessionRedisUsername *string `json:"session_redis_username,omitempty"`
 	// Enables or disables persistent sessions
 	SessionRemember *bool `json:"session_remember,omitempty"`
 	// Persistent session absolute timeout in seconds.
@@ -474,6 +708,13 @@ func (o *SamlPluginConfig) GetNameidFormat() *NameidFormat {
 		return nil
 	}
 	return o.NameidFormat
+}
+
+func (o *SamlPluginConfig) GetRedis() *SamlPluginRedis {
+	if o == nil {
+		return nil
+	}
+	return o.Redis
 }
 
 func (o *SamlPluginConfig) GetRequestDigestAlgorithm() *RequestDigestAlgorithm {
@@ -637,104 +878,6 @@ func (o *SamlPluginConfig) GetSessionMemcachedSocket() *string {
 	return o.SessionMemcachedSocket
 }
 
-func (o *SamlPluginConfig) GetSessionRedisClusterMaxRedirections() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.SessionRedisClusterMaxRedirections
-}
-
-func (o *SamlPluginConfig) GetSessionRedisClusterNodes() []SamlPluginSessionRedisClusterNodes {
-	if o == nil {
-		return nil
-	}
-	return o.SessionRedisClusterNodes
-}
-
-func (o *SamlPluginConfig) GetSessionRedisConnectTimeout() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.SessionRedisConnectTimeout
-}
-
-func (o *SamlPluginConfig) GetSessionRedisHost() *string {
-	if o == nil {
-		return nil
-	}
-	return o.SessionRedisHost
-}
-
-func (o *SamlPluginConfig) GetSessionRedisPassword() *string {
-	if o == nil {
-		return nil
-	}
-	return o.SessionRedisPassword
-}
-
-func (o *SamlPluginConfig) GetSessionRedisPort() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.SessionRedisPort
-}
-
-func (o *SamlPluginConfig) GetSessionRedisPrefix() *string {
-	if o == nil {
-		return nil
-	}
-	return o.SessionRedisPrefix
-}
-
-func (o *SamlPluginConfig) GetSessionRedisReadTimeout() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.SessionRedisReadTimeout
-}
-
-func (o *SamlPluginConfig) GetSessionRedisSendTimeout() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.SessionRedisSendTimeout
-}
-
-func (o *SamlPluginConfig) GetSessionRedisServerName() *string {
-	if o == nil {
-		return nil
-	}
-	return o.SessionRedisServerName
-}
-
-func (o *SamlPluginConfig) GetSessionRedisSocket() *string {
-	if o == nil {
-		return nil
-	}
-	return o.SessionRedisSocket
-}
-
-func (o *SamlPluginConfig) GetSessionRedisSsl() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.SessionRedisSsl
-}
-
-func (o *SamlPluginConfig) GetSessionRedisSslVerify() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.SessionRedisSslVerify
-}
-
-func (o *SamlPluginConfig) GetSessionRedisUsername() *string {
-	if o == nil {
-		return nil
-	}
-	return o.SessionRedisUsername
-}
-
 func (o *SamlPluginConfig) GetSessionRemember() *bool {
 	if o == nil {
 		return nil
@@ -810,6 +953,47 @@ func (o *SamlPluginConfig) GetValidateAssertionSignature() *bool {
 		return nil
 	}
 	return o.ValidateAssertionSignature
+}
+
+type SamlPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *SamlPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type SamlPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *SamlPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type SamlPluginOrdering struct {
+	After  *SamlPluginAfter  `json:"after,omitempty"`
+	Before *SamlPluginBefore `json:"before,omitempty"`
+}
+
+func (o *SamlPluginOrdering) GetAfter() *SamlPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *SamlPluginOrdering) GetBefore() *SamlPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
 }
 
 type SamlPluginProtocols string
@@ -914,10 +1098,11 @@ type SamlPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool   `json:"enabled,omitempty"`
-	ID           *string `json:"id,omitempty"`
-	InstanceName *string `json:"instance_name,omitempty"`
-	name         *string `const:"saml" json:"name,omitempty"`
+	Enabled      *bool               `json:"enabled,omitempty"`
+	ID           *string             `json:"id,omitempty"`
+	InstanceName *string             `json:"instance_name,omitempty"`
+	name         *string             `const:"saml" json:"name,omitempty"`
+	Ordering     *SamlPluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []SamlPluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
@@ -981,6 +1166,13 @@ func (o *SamlPlugin) GetInstanceName() *string {
 
 func (o *SamlPlugin) GetName() *string {
 	return types.String("saml")
+}
+
+func (o *SamlPlugin) GetOrdering() *SamlPluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
 }
 
 func (o *SamlPlugin) GetProtocols() []SamlPluginProtocols {

@@ -8,50 +8,57 @@ import (
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginAIPromptDecoratorResourceModel) ToSharedCreateAIPromptDecoratorPlugin() *shared.CreateAIPromptDecoratorPlugin {
-	var config *shared.CreateAIPromptDecoratorPluginConfig
+func (r *GatewayPluginAiPromptDecoratorResourceModel) ToSharedCreateAiPromptDecoratorPlugin() *shared.CreateAiPromptDecoratorPlugin {
+	var config *shared.CreateAiPromptDecoratorPluginConfig
 	if r.Config != nil {
-		var prompts *shared.CreateAIPromptDecoratorPluginPrompts
+		maxRequestBodySize := new(int64)
+		if !r.Config.MaxRequestBodySize.IsUnknown() && !r.Config.MaxRequestBodySize.IsNull() {
+			*maxRequestBodySize = r.Config.MaxRequestBodySize.ValueInt64()
+		} else {
+			maxRequestBodySize = nil
+		}
+		var prompts *shared.CreateAiPromptDecoratorPluginPrompts
 		if r.Config.Prompts != nil {
-			var append1 []shared.CreateAIPromptDecoratorPluginAppend = []shared.CreateAIPromptDecoratorPluginAppend{}
+			var append1 []shared.CreateAiPromptDecoratorPluginAppend = []shared.CreateAiPromptDecoratorPluginAppend{}
 			for _, appendItem := range r.Config.Prompts.Append {
 				var content string
 				content = appendItem.Content.ValueString()
 
-				role := new(shared.CreateAIPromptDecoratorPluginRole)
+				role := new(shared.CreateAiPromptDecoratorPluginRole)
 				if !appendItem.Role.IsUnknown() && !appendItem.Role.IsNull() {
-					*role = shared.CreateAIPromptDecoratorPluginRole(appendItem.Role.ValueString())
+					*role = shared.CreateAiPromptDecoratorPluginRole(appendItem.Role.ValueString())
 				} else {
 					role = nil
 				}
-				append1 = append(append1, shared.CreateAIPromptDecoratorPluginAppend{
+				append1 = append(append1, shared.CreateAiPromptDecoratorPluginAppend{
 					Content: content,
 					Role:    role,
 				})
 			}
-			var prepend []shared.CreateAIPromptDecoratorPluginPrepend = []shared.CreateAIPromptDecoratorPluginPrepend{}
+			var prepend []shared.CreateAiPromptDecoratorPluginPrepend = []shared.CreateAiPromptDecoratorPluginPrepend{}
 			for _, prependItem := range r.Config.Prompts.Prepend {
 				var content1 string
 				content1 = prependItem.Content.ValueString()
 
-				role1 := new(shared.CreateAIPromptDecoratorPluginConfigRole)
+				role1 := new(shared.CreateAiPromptDecoratorPluginConfigRole)
 				if !prependItem.Role.IsUnknown() && !prependItem.Role.IsNull() {
-					*role1 = shared.CreateAIPromptDecoratorPluginConfigRole(prependItem.Role.ValueString())
+					*role1 = shared.CreateAiPromptDecoratorPluginConfigRole(prependItem.Role.ValueString())
 				} else {
 					role1 = nil
 				}
-				prepend = append(prepend, shared.CreateAIPromptDecoratorPluginPrepend{
+				prepend = append(prepend, shared.CreateAiPromptDecoratorPluginPrepend{
 					Content: content1,
 					Role:    role1,
 				})
 			}
-			prompts = &shared.CreateAIPromptDecoratorPluginPrompts{
+			prompts = &shared.CreateAiPromptDecoratorPluginPrompts{
 				Append:  append1,
 				Prepend: prepend,
 			}
 		}
-		config = &shared.CreateAIPromptDecoratorPluginConfig{
-			Prompts: prompts,
+		config = &shared.CreateAiPromptDecoratorPluginConfig{
+			MaxRequestBodySize: maxRequestBodySize,
+			Prompts:            prompts,
 		}
 	}
 	enabled := new(bool)
@@ -66,15 +73,42 @@ func (r *GatewayPluginAIPromptDecoratorResourceModel) ToSharedCreateAIPromptDeco
 	} else {
 		instanceName = nil
 	}
-	var protocols []shared.CreateAIPromptDecoratorPluginProtocols = []shared.CreateAIPromptDecoratorPluginProtocols{}
+	var ordering *shared.CreateAiPromptDecoratorPluginOrdering
+	if r.Ordering != nil {
+		var after *shared.CreateAiPromptDecoratorPluginAfter
+		if r.Ordering.After != nil {
+			var access []string = []string{}
+			for _, accessItem := range r.Ordering.After.Access {
+				access = append(access, accessItem.ValueString())
+			}
+			after = &shared.CreateAiPromptDecoratorPluginAfter{
+				Access: access,
+			}
+		}
+		var before *shared.CreateAiPromptDecoratorPluginBefore
+		if r.Ordering.Before != nil {
+			var access1 []string = []string{}
+			for _, accessItem1 := range r.Ordering.Before.Access {
+				access1 = append(access1, accessItem1.ValueString())
+			}
+			before = &shared.CreateAiPromptDecoratorPluginBefore{
+				Access: access1,
+			}
+		}
+		ordering = &shared.CreateAiPromptDecoratorPluginOrdering{
+			After:  after,
+			Before: before,
+		}
+	}
+	var protocols []shared.CreateAiPromptDecoratorPluginProtocols = []shared.CreateAiPromptDecoratorPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
-		protocols = append(protocols, shared.CreateAIPromptDecoratorPluginProtocols(protocolsItem.ValueString()))
+		protocols = append(protocols, shared.CreateAiPromptDecoratorPluginProtocols(protocolsItem.ValueString()))
 	}
 	var tags []string = []string{}
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	var consumer *shared.CreateAIPromptDecoratorPluginConsumer
+	var consumer *shared.CreateAiPromptDecoratorPluginConsumer
 	if r.Consumer != nil {
 		id := new(string)
 		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
@@ -82,11 +116,11 @@ func (r *GatewayPluginAIPromptDecoratorResourceModel) ToSharedCreateAIPromptDeco
 		} else {
 			id = nil
 		}
-		consumer = &shared.CreateAIPromptDecoratorPluginConsumer{
+		consumer = &shared.CreateAiPromptDecoratorPluginConsumer{
 			ID: id,
 		}
 	}
-	var consumerGroup *shared.CreateAIPromptDecoratorPluginConsumerGroup
+	var consumerGroup *shared.CreateAiPromptDecoratorPluginConsumerGroup
 	if r.ConsumerGroup != nil {
 		id1 := new(string)
 		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
@@ -94,11 +128,11 @@ func (r *GatewayPluginAIPromptDecoratorResourceModel) ToSharedCreateAIPromptDeco
 		} else {
 			id1 = nil
 		}
-		consumerGroup = &shared.CreateAIPromptDecoratorPluginConsumerGroup{
+		consumerGroup = &shared.CreateAiPromptDecoratorPluginConsumerGroup{
 			ID: id1,
 		}
 	}
-	var route *shared.CreateAIPromptDecoratorPluginRoute
+	var route *shared.CreateAiPromptDecoratorPluginRoute
 	if r.Route != nil {
 		id2 := new(string)
 		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
@@ -106,11 +140,11 @@ func (r *GatewayPluginAIPromptDecoratorResourceModel) ToSharedCreateAIPromptDeco
 		} else {
 			id2 = nil
 		}
-		route = &shared.CreateAIPromptDecoratorPluginRoute{
+		route = &shared.CreateAiPromptDecoratorPluginRoute{
 			ID: id2,
 		}
 	}
-	var service *shared.CreateAIPromptDecoratorPluginService
+	var service *shared.CreateAiPromptDecoratorPluginService
 	if r.Service != nil {
 		id3 := new(string)
 		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
@@ -118,14 +152,15 @@ func (r *GatewayPluginAIPromptDecoratorResourceModel) ToSharedCreateAIPromptDeco
 		} else {
 			id3 = nil
 		}
-		service = &shared.CreateAIPromptDecoratorPluginService{
+		service = &shared.CreateAiPromptDecoratorPluginService{
 			ID: id3,
 		}
 	}
-	out := shared.CreateAIPromptDecoratorPlugin{
+	out := shared.CreateAiPromptDecoratorPlugin{
 		Config:        config,
 		Enabled:       enabled,
 		InstanceName:  instanceName,
+		Ordering:      ordering,
 		Protocols:     protocols,
 		Tags:          tags,
 		Consumer:      consumer,
@@ -136,22 +171,23 @@ func (r *GatewayPluginAIPromptDecoratorResourceModel) ToSharedCreateAIPromptDeco
 	return &out
 }
 
-func (r *GatewayPluginAIPromptDecoratorResourceModel) RefreshFromSharedAIPromptDecoratorPlugin(resp *shared.AIPromptDecoratorPlugin) {
+func (r *GatewayPluginAiPromptDecoratorResourceModel) RefreshFromSharedAiPromptDecoratorPlugin(resp *shared.AiPromptDecoratorPlugin) {
 	if resp != nil {
 		if resp.Config == nil {
 			r.Config = nil
 		} else {
-			r.Config = &tfTypes.CreateAIPromptDecoratorPluginConfig{}
+			r.Config = &tfTypes.CreateAiPromptDecoratorPluginConfig{}
+			r.Config.MaxRequestBodySize = types.Int64PointerValue(resp.Config.MaxRequestBodySize)
 			if resp.Config.Prompts == nil {
 				r.Config.Prompts = nil
 			} else {
-				r.Config.Prompts = &tfTypes.CreateAIPromptDecoratorPluginPrompts{}
-				r.Config.Prompts.Append = []tfTypes.AIPromptDecoratorPluginAppend{}
+				r.Config.Prompts = &tfTypes.CreateAiPromptDecoratorPluginPrompts{}
+				r.Config.Prompts.Append = []tfTypes.AiPromptDecoratorPluginAppend{}
 				if len(r.Config.Prompts.Append) > len(resp.Config.Prompts.Append) {
 					r.Config.Prompts.Append = r.Config.Prompts.Append[:len(resp.Config.Prompts.Append)]
 				}
 				for appendCount, appendItem := range resp.Config.Prompts.Append {
-					var append2 tfTypes.AIPromptDecoratorPluginAppend
+					var append2 tfTypes.AiPromptDecoratorPluginAppend
 					append2.Content = types.StringValue(appendItem.Content)
 					if appendItem.Role != nil {
 						append2.Role = types.StringValue(string(*appendItem.Role))
@@ -165,12 +201,12 @@ func (r *GatewayPluginAIPromptDecoratorResourceModel) RefreshFromSharedAIPromptD
 						r.Config.Prompts.Append[appendCount].Role = append2.Role
 					}
 				}
-				r.Config.Prompts.Prepend = []tfTypes.AIPromptDecoratorPluginAppend{}
+				r.Config.Prompts.Prepend = []tfTypes.AiPromptDecoratorPluginAppend{}
 				if len(r.Config.Prompts.Prepend) > len(resp.Config.Prompts.Prepend) {
 					r.Config.Prompts.Prepend = r.Config.Prompts.Prepend[:len(resp.Config.Prompts.Prepend)]
 				}
 				for prependCount, prependItem := range resp.Config.Prompts.Prepend {
-					var prepend1 tfTypes.AIPromptDecoratorPluginAppend
+					var prepend1 tfTypes.AiPromptDecoratorPluginAppend
 					prepend1.Content = types.StringValue(prependItem.Content)
 					if prependItem.Role != nil {
 						prepend1.Role = types.StringValue(string(*prependItem.Role))
@@ -202,6 +238,29 @@ func (r *GatewayPluginAIPromptDecoratorResourceModel) RefreshFromSharedAIPromptD
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.InstanceName = types.StringPointerValue(resp.InstanceName)
+		if resp.Ordering == nil {
+			r.Ordering = nil
+		} else {
+			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			if resp.Ordering.After == nil {
+				r.Ordering.After = nil
+			} else {
+				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After.Access = []types.String{}
+				for _, v := range resp.Ordering.After.Access {
+					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				}
+			}
+			if resp.Ordering.Before == nil {
+				r.Ordering.Before = nil
+			} else {
+				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before.Access = []types.String{}
+				for _, v := range resp.Ordering.Before.Access {
+					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				}
+			}
+		}
 		r.Protocols = []types.String{}
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))

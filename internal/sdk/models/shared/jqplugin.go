@@ -95,7 +95,7 @@ func (o *ResponseJqProgramOptions) GetSortKeys() *bool {
 	return o.SortKeys
 }
 
-type JQPluginConfig struct {
+type JqPluginConfig struct {
 	RequestIfMediaType       []string                  `json:"request_if_media_type,omitempty"`
 	RequestJqProgram         *string                   `json:"request_jq_program,omitempty"`
 	RequestJqProgramOptions  *RequestJqProgramOptions  `json:"request_jq_program_options,omitempty"`
@@ -105,74 +105,115 @@ type JQPluginConfig struct {
 	ResponseJqProgramOptions *ResponseJqProgramOptions `json:"response_jq_program_options,omitempty"`
 }
 
-func (o *JQPluginConfig) GetRequestIfMediaType() []string {
+func (o *JqPluginConfig) GetRequestIfMediaType() []string {
 	if o == nil {
 		return nil
 	}
 	return o.RequestIfMediaType
 }
 
-func (o *JQPluginConfig) GetRequestJqProgram() *string {
+func (o *JqPluginConfig) GetRequestJqProgram() *string {
 	if o == nil {
 		return nil
 	}
 	return o.RequestJqProgram
 }
 
-func (o *JQPluginConfig) GetRequestJqProgramOptions() *RequestJqProgramOptions {
+func (o *JqPluginConfig) GetRequestJqProgramOptions() *RequestJqProgramOptions {
 	if o == nil {
 		return nil
 	}
 	return o.RequestJqProgramOptions
 }
 
-func (o *JQPluginConfig) GetResponseIfMediaType() []string {
+func (o *JqPluginConfig) GetResponseIfMediaType() []string {
 	if o == nil {
 		return nil
 	}
 	return o.ResponseIfMediaType
 }
 
-func (o *JQPluginConfig) GetResponseIfStatusCode() []int64 {
+func (o *JqPluginConfig) GetResponseIfStatusCode() []int64 {
 	if o == nil {
 		return nil
 	}
 	return o.ResponseIfStatusCode
 }
 
-func (o *JQPluginConfig) GetResponseJqProgram() *string {
+func (o *JqPluginConfig) GetResponseJqProgram() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ResponseJqProgram
 }
 
-func (o *JQPluginConfig) GetResponseJqProgramOptions() *ResponseJqProgramOptions {
+func (o *JqPluginConfig) GetResponseJqProgramOptions() *ResponseJqProgramOptions {
 	if o == nil {
 		return nil
 	}
 	return o.ResponseJqProgramOptions
 }
 
-type JQPluginProtocols string
+type JqPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *JqPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type JqPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *JqPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type JqPluginOrdering struct {
+	After  *JqPluginAfter  `json:"after,omitempty"`
+	Before *JqPluginBefore `json:"before,omitempty"`
+}
+
+func (o *JqPluginOrdering) GetAfter() *JqPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *JqPluginOrdering) GetBefore() *JqPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
+type JqPluginProtocols string
 
 const (
-	JQPluginProtocolsGrpc           JQPluginProtocols = "grpc"
-	JQPluginProtocolsGrpcs          JQPluginProtocols = "grpcs"
-	JQPluginProtocolsHTTP           JQPluginProtocols = "http"
-	JQPluginProtocolsHTTPS          JQPluginProtocols = "https"
-	JQPluginProtocolsTCP            JQPluginProtocols = "tcp"
-	JQPluginProtocolsTLS            JQPluginProtocols = "tls"
-	JQPluginProtocolsTLSPassthrough JQPluginProtocols = "tls_passthrough"
-	JQPluginProtocolsUDP            JQPluginProtocols = "udp"
-	JQPluginProtocolsWs             JQPluginProtocols = "ws"
-	JQPluginProtocolsWss            JQPluginProtocols = "wss"
+	JqPluginProtocolsGrpc           JqPluginProtocols = "grpc"
+	JqPluginProtocolsGrpcs          JqPluginProtocols = "grpcs"
+	JqPluginProtocolsHTTP           JqPluginProtocols = "http"
+	JqPluginProtocolsHTTPS          JqPluginProtocols = "https"
+	JqPluginProtocolsTCP            JqPluginProtocols = "tcp"
+	JqPluginProtocolsTLS            JqPluginProtocols = "tls"
+	JqPluginProtocolsTLSPassthrough JqPluginProtocols = "tls_passthrough"
+	JqPluginProtocolsUDP            JqPluginProtocols = "udp"
+	JqPluginProtocolsWs             JqPluginProtocols = "ws"
+	JqPluginProtocolsWss            JqPluginProtocols = "wss"
 )
 
-func (e JQPluginProtocols) ToPointer() *JQPluginProtocols {
+func (e JqPluginProtocols) ToPointer() *JqPluginProtocols {
 	return &e
 }
-func (e *JQPluginProtocols) UnmarshalJSON(data []byte) error {
+func (e *JqPluginProtocols) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -197,177 +238,185 @@ func (e *JQPluginProtocols) UnmarshalJSON(data []byte) error {
 	case "ws":
 		fallthrough
 	case "wss":
-		*e = JQPluginProtocols(v)
+		*e = JqPluginProtocols(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for JQPluginProtocols: %v", v)
+		return fmt.Errorf("invalid value for JqPluginProtocols: %v", v)
 	}
 }
 
-// JQPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-type JQPluginConsumer struct {
+// JqPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+type JqPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *JQPluginConsumer) GetID() *string {
+func (o *JqPluginConsumer) GetID() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ID
 }
 
-type JQPluginConsumerGroup struct {
+type JqPluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *JQPluginConsumerGroup) GetID() *string {
+func (o *JqPluginConsumerGroup) GetID() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ID
 }
 
-// JQPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-type JQPluginRoute struct {
+// JqPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
+type JqPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *JQPluginRoute) GetID() *string {
+func (o *JqPluginRoute) GetID() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ID
 }
 
-// JQPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-type JQPluginService struct {
+// JqPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+type JqPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *JQPluginService) GetID() *string {
+func (o *JqPluginService) GetID() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ID
 }
 
-type JQPlugin struct {
-	Config *JQPluginConfig `json:"config,omitempty"`
+type JqPlugin struct {
+	Config *JqPluginConfig `json:"config,omitempty"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool   `json:"enabled,omitempty"`
-	ID           *string `json:"id,omitempty"`
-	InstanceName *string `json:"instance_name,omitempty"`
-	name         *string `const:"jq" json:"name,omitempty"`
+	Enabled      *bool             `json:"enabled,omitempty"`
+	ID           *string           `json:"id,omitempty"`
+	InstanceName *string           `json:"instance_name,omitempty"`
+	name         *string           `const:"jq" json:"name,omitempty"`
+	Ordering     *JqPluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []JQPluginProtocols `json:"protocols,omitempty"`
+	Protocols []JqPluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64 `json:"updated_at,omitempty"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *JQPluginConsumer      `json:"consumer,omitempty"`
-	ConsumerGroup *JQPluginConsumerGroup `json:"consumer_group,omitempty"`
+	Consumer      *JqPluginConsumer      `json:"consumer,omitempty"`
+	ConsumerGroup *JqPluginConsumerGroup `json:"consumer_group,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *JQPluginRoute `json:"route,omitempty"`
+	Route *JqPluginRoute `json:"route,omitempty"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *JQPluginService `json:"service,omitempty"`
+	Service *JqPluginService `json:"service,omitempty"`
 }
 
-func (j JQPlugin) MarshalJSON() ([]byte, error) {
+func (j JqPlugin) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(j, "", false)
 }
 
-func (j *JQPlugin) UnmarshalJSON(data []byte) error {
+func (j *JqPlugin) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &j, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *JQPlugin) GetConfig() *JQPluginConfig {
+func (o *JqPlugin) GetConfig() *JqPluginConfig {
 	if o == nil {
 		return nil
 	}
 	return o.Config
 }
 
-func (o *JQPlugin) GetCreatedAt() *int64 {
+func (o *JqPlugin) GetCreatedAt() *int64 {
 	if o == nil {
 		return nil
 	}
 	return o.CreatedAt
 }
 
-func (o *JQPlugin) GetEnabled() *bool {
+func (o *JqPlugin) GetEnabled() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.Enabled
 }
 
-func (o *JQPlugin) GetID() *string {
+func (o *JqPlugin) GetID() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ID
 }
 
-func (o *JQPlugin) GetInstanceName() *string {
+func (o *JqPlugin) GetInstanceName() *string {
 	if o == nil {
 		return nil
 	}
 	return o.InstanceName
 }
 
-func (o *JQPlugin) GetName() *string {
+func (o *JqPlugin) GetName() *string {
 	return types.String("jq")
 }
 
-func (o *JQPlugin) GetProtocols() []JQPluginProtocols {
+func (o *JqPlugin) GetOrdering() *JqPluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
+}
+
+func (o *JqPlugin) GetProtocols() []JqPluginProtocols {
 	if o == nil {
 		return nil
 	}
 	return o.Protocols
 }
 
-func (o *JQPlugin) GetTags() []string {
+func (o *JqPlugin) GetTags() []string {
 	if o == nil {
 		return nil
 	}
 	return o.Tags
 }
 
-func (o *JQPlugin) GetUpdatedAt() *int64 {
+func (o *JqPlugin) GetUpdatedAt() *int64 {
 	if o == nil {
 		return nil
 	}
 	return o.UpdatedAt
 }
 
-func (o *JQPlugin) GetConsumer() *JQPluginConsumer {
+func (o *JqPlugin) GetConsumer() *JqPluginConsumer {
 	if o == nil {
 		return nil
 	}
 	return o.Consumer
 }
 
-func (o *JQPlugin) GetConsumerGroup() *JQPluginConsumerGroup {
+func (o *JqPlugin) GetConsumerGroup() *JqPluginConsumerGroup {
 	if o == nil {
 		return nil
 	}
 	return o.ConsumerGroup
 }
 
-func (o *JQPlugin) GetRoute() *JQPluginRoute {
+func (o *JqPlugin) GetRoute() *JqPluginRoute {
 	if o == nil {
 		return nil
 	}
 	return o.Route
 }
 
-func (o *JQPlugin) GetService() *JQPluginService {
+func (o *JqPlugin) GetService() *JqPluginService {
 	if o == nil {
 		return nil
 	}

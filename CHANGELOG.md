@@ -1,6 +1,19 @@
 # Changelog
 
-## 0.6.2
+## 0.7.0
+> Released on 2024/09/11
+
+### Features
+* Add the `konnect_gateway_custom_plugin` resource for managing non-bundled plugins
+* Add support for all bundled Kong plugins
+* Add support for `labels` to `konnect_api_product_version`
+* Add support for `ordering` to `konnect_gateway_plugin`
+
+### Bug fixes
+* Force recreation of `konnect_gateway_*` entities if `control_plane_id` changes
+* `proxy_urls` on `konnect_control_plane` and `dataplane_groups` on `konnect_cloud_gateway` are now marked as sets rather than list. This makes `terraform diff` ignore the order of items in the list.
+
+## 0.6.3
 > Released on 2024/08/25
 
 ### Features

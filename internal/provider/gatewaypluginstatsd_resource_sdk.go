@@ -91,6 +91,12 @@ func (r *GatewayPluginStatsdResourceModel) ToSharedCreateStatsdPlugin() *shared.
 		}
 		var queue *shared.CreateStatsdPluginQueue
 		if r.Config.Queue != nil {
+			concurrencyLimit := new(shared.CreateStatsdPluginConcurrencyLimit)
+			if !r.Config.Queue.ConcurrencyLimit.IsUnknown() && !r.Config.Queue.ConcurrencyLimit.IsNull() {
+				*concurrencyLimit = shared.CreateStatsdPluginConcurrencyLimit(r.Config.Queue.ConcurrencyLimit.ValueInt64())
+			} else {
+				concurrencyLimit = nil
+			}
 			initialRetryDelay := new(float64)
 			if !r.Config.Queue.InitialRetryDelay.IsUnknown() && !r.Config.Queue.InitialRetryDelay.IsNull() {
 				*initialRetryDelay, _ = r.Config.Queue.InitialRetryDelay.ValueBigFloat().Float64()
@@ -134,6 +140,7 @@ func (r *GatewayPluginStatsdResourceModel) ToSharedCreateStatsdPlugin() *shared.
 				maxRetryTime = nil
 			}
 			queue = &shared.CreateStatsdPluginQueue{
+				ConcurrencyLimit:   concurrencyLimit,
 				InitialRetryDelay:  initialRetryDelay,
 				MaxBatchSize:       maxBatchSize,
 				MaxBytes:           maxBytes,
@@ -216,6 +223,33 @@ func (r *GatewayPluginStatsdResourceModel) ToSharedCreateStatsdPlugin() *shared.
 	} else {
 		instanceName = nil
 	}
+	var ordering *shared.CreateStatsdPluginOrdering
+	if r.Ordering != nil {
+		var after *shared.CreateStatsdPluginAfter
+		if r.Ordering.After != nil {
+			var access []string = []string{}
+			for _, accessItem := range r.Ordering.After.Access {
+				access = append(access, accessItem.ValueString())
+			}
+			after = &shared.CreateStatsdPluginAfter{
+				Access: access,
+			}
+		}
+		var before *shared.CreateStatsdPluginBefore
+		if r.Ordering.Before != nil {
+			var access1 []string = []string{}
+			for _, accessItem1 := range r.Ordering.Before.Access {
+				access1 = append(access1, accessItem1.ValueString())
+			}
+			before = &shared.CreateStatsdPluginBefore{
+				Access: access1,
+			}
+		}
+		ordering = &shared.CreateStatsdPluginOrdering{
+			After:  after,
+			Before: before,
+		}
+	}
 	var protocols []shared.CreateStatsdPluginProtocols = []shared.CreateStatsdPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.CreateStatsdPluginProtocols(protocolsItem.ValueString()))
@@ -276,6 +310,7 @@ func (r *GatewayPluginStatsdResourceModel) ToSharedCreateStatsdPlugin() *shared.
 		Config:        config,
 		Enabled:       enabled,
 		InstanceName:  instanceName,
+		Ordering:      ordering,
 		Protocols:     protocols,
 		Tags:          tags,
 		Consumer:      consumer,
@@ -308,12 +343,12 @@ func (r *GatewayPluginStatsdResourceModel) RefreshFromSharedStatsdPlugin(resp *s
 			}
 			r.Config.Host = types.StringPointerValue(resp.Config.Host)
 			r.Config.HostnameInPrefix = types.BoolPointerValue(resp.Config.HostnameInPrefix)
-			r.Config.Metrics = []tfTypes.Metrics{}
+			r.Config.Metrics = []tfTypes.StatsdPluginMetrics{}
 			if len(r.Config.Metrics) > len(resp.Config.Metrics) {
 				r.Config.Metrics = r.Config.Metrics[:len(resp.Config.Metrics)]
 			}
 			for metricsCount, metricsItem := range resp.Config.Metrics {
-				var metrics1 tfTypes.Metrics
+				var metrics1 tfTypes.StatsdPluginMetrics
 				if metricsItem.ConsumerIdentifier != nil {
 					metrics1.ConsumerIdentifier = types.StringValue(string(*metricsItem.ConsumerIdentifier))
 				} else {
@@ -352,7 +387,12 @@ func (r *GatewayPluginStatsdResourceModel) RefreshFromSharedStatsdPlugin(resp *s
 			if resp.Config.Queue == nil {
 				r.Config.Queue = nil
 			} else {
-				r.Config.Queue = &tfTypes.CreateOpentelemetryPluginQueue{}
+				r.Config.Queue = &tfTypes.CreateDatadogPluginQueue{}
+				if resp.Config.Queue.ConcurrencyLimit != nil {
+					r.Config.Queue.ConcurrencyLimit = types.Int64Value(int64(*resp.Config.Queue.ConcurrencyLimit))
+				} else {
+					r.Config.Queue.ConcurrencyLimit = types.Int64Null()
+				}
 				if resp.Config.Queue.InitialRetryDelay != nil {
 					r.Config.Queue.InitialRetryDelay = types.NumberValue(big.NewFloat(float64(*resp.Config.Queue.InitialRetryDelay)))
 				} else {
@@ -417,6 +457,29 @@ func (r *GatewayPluginStatsdResourceModel) RefreshFromSharedStatsdPlugin(resp *s
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.InstanceName = types.StringPointerValue(resp.InstanceName)
+		if resp.Ordering == nil {
+			r.Ordering = nil
+		} else {
+			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			if resp.Ordering.After == nil {
+				r.Ordering.After = nil
+			} else {
+				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After.Access = []types.String{}
+				for _, v := range resp.Ordering.After.Access {
+					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				}
+			}
+			if resp.Ordering.Before == nil {
+				r.Ordering.Before = nil
+			} else {
+				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before.Access = []types.String{}
+				for _, v := range resp.Ordering.Before.Access {
+					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				}
+			}
+		}
 		r.Protocols = []types.String{}
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))

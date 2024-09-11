@@ -81,8 +81,8 @@ func (e *Policy) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// Redis configuration
-type Redis struct {
+// RateLimitingPluginRedis - Redis configuration
+type RateLimitingPluginRedis struct {
 	// Database to use for the Redis connection when using the `redis` strategy
 	Database *int64 `json:"database,omitempty"`
 	// A string representing a host name, such as example.com.
@@ -103,63 +103,63 @@ type Redis struct {
 	Username *string `json:"username,omitempty"`
 }
 
-func (o *Redis) GetDatabase() *int64 {
+func (o *RateLimitingPluginRedis) GetDatabase() *int64 {
 	if o == nil {
 		return nil
 	}
 	return o.Database
 }
 
-func (o *Redis) GetHost() *string {
+func (o *RateLimitingPluginRedis) GetHost() *string {
 	if o == nil {
 		return nil
 	}
 	return o.Host
 }
 
-func (o *Redis) GetPassword() *string {
+func (o *RateLimitingPluginRedis) GetPassword() *string {
 	if o == nil {
 		return nil
 	}
 	return o.Password
 }
 
-func (o *Redis) GetPort() *int64 {
+func (o *RateLimitingPluginRedis) GetPort() *int64 {
 	if o == nil {
 		return nil
 	}
 	return o.Port
 }
 
-func (o *Redis) GetServerName() *string {
+func (o *RateLimitingPluginRedis) GetServerName() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ServerName
 }
 
-func (o *Redis) GetSsl() *bool {
+func (o *RateLimitingPluginRedis) GetSsl() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.Ssl
 }
 
-func (o *Redis) GetSslVerify() *bool {
+func (o *RateLimitingPluginRedis) GetSslVerify() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.SslVerify
 }
 
-func (o *Redis) GetTimeout() *int64 {
+func (o *RateLimitingPluginRedis) GetTimeout() *int64 {
 	if o == nil {
 		return nil
 	}
 	return o.Timeout
 }
 
-func (o *Redis) GetUsername() *string {
+func (o *RateLimitingPluginRedis) GetUsername() *string {
 	if o == nil {
 		return nil
 	}
@@ -192,7 +192,7 @@ type RateLimitingPluginConfig struct {
 	// The rate-limiting policies to use for retrieving and incrementing the limits.
 	Policy *Policy `json:"policy,omitempty"`
 	// Redis configuration
-	Redis *Redis `json:"redis,omitempty"`
+	Redis *RateLimitingPluginRedis `json:"redis,omitempty"`
 	// The number of HTTP requests that can be made per second.
 	Second *float64 `json:"second,omitempty"`
 	// How often to sync counter data to the central data store. A value of -1 results in synchronous behavior.
@@ -285,7 +285,7 @@ func (o *RateLimitingPluginConfig) GetPolicy() *Policy {
 	return o.Policy
 }
 
-func (o *RateLimitingPluginConfig) GetRedis() *Redis {
+func (o *RateLimitingPluginConfig) GetRedis() *RateLimitingPluginRedis {
 	if o == nil {
 		return nil
 	}
@@ -311,6 +311,47 @@ func (o *RateLimitingPluginConfig) GetYear() *float64 {
 		return nil
 	}
 	return o.Year
+}
+
+type RateLimitingPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *RateLimitingPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type RateLimitingPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *RateLimitingPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type RateLimitingPluginOrdering struct {
+	After  *RateLimitingPluginAfter  `json:"after,omitempty"`
+	Before *RateLimitingPluginBefore `json:"before,omitempty"`
+}
+
+func (o *RateLimitingPluginOrdering) GetAfter() *RateLimitingPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *RateLimitingPluginOrdering) GetBefore() *RateLimitingPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
 }
 
 type RateLimitingPluginProtocols string
@@ -415,10 +456,11 @@ type RateLimitingPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool   `json:"enabled,omitempty"`
-	ID           *string `json:"id,omitempty"`
-	InstanceName *string `json:"instance_name,omitempty"`
-	name         *string `const:"rate-limiting" json:"name,omitempty"`
+	Enabled      *bool                       `json:"enabled,omitempty"`
+	ID           *string                     `json:"id,omitempty"`
+	InstanceName *string                     `json:"instance_name,omitempty"`
+	name         *string                     `const:"rate-limiting" json:"name,omitempty"`
+	Ordering     *RateLimitingPluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []RateLimitingPluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
@@ -482,6 +524,13 @@ func (o *RateLimitingPlugin) GetInstanceName() *string {
 
 func (o *RateLimitingPlugin) GetName() *string {
 	return types.String("rate-limiting")
+}
+
+func (o *RateLimitingPlugin) GetOrdering() *RateLimitingPluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
 }
 
 func (o *RateLimitingPlugin) GetProtocols() []RateLimitingPluginProtocols {

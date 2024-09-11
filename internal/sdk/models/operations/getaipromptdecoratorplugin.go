@@ -35,8 +35,8 @@ type GetAipromptdecoratorPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// AIPromptDecorator plugin
-	AIPromptDecoratorPlugin *shared.AIPromptDecoratorPlugin
+	// AiPromptDecorator plugin
+	AiPromptDecoratorPlugin *shared.AiPromptDecoratorPlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
@@ -62,11 +62,11 @@ func (o *GetAipromptdecoratorPluginResponse) GetRawResponse() *http.Response {
 	return o.RawResponse
 }
 
-func (o *GetAipromptdecoratorPluginResponse) GetAIPromptDecoratorPlugin() *shared.AIPromptDecoratorPlugin {
+func (o *GetAipromptdecoratorPluginResponse) GetAiPromptDecoratorPlugin() *shared.AiPromptDecoratorPlugin {
 	if o == nil {
 		return nil
 	}
-	return o.AIPromptDecoratorPlugin
+	return o.AiPromptDecoratorPlugin
 }
 
 func (o *GetAipromptdecoratorPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {

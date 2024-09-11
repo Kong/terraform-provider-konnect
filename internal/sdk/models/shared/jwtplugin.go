@@ -35,7 +35,7 @@ func (e *ClaimsToVerify) UnmarshalJSON(data []byte) error {
 	}
 }
 
-type JWTPluginConfig struct {
+type JwtPluginConfig struct {
 	// An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails.
 	Anonymous *string `json:"anonymous,omitempty"`
 	// A list of registered claims (according to RFC 7519) that Kong can verify as well. Accepted values: one of exp or nbf.
@@ -48,6 +48,8 @@ type JWTPluginConfig struct {
 	KeyClaimName *string `json:"key_claim_name,omitempty"`
 	// A value between 0 and 31536000 (365 days) limiting the lifetime of the JWT to maximum_expiration seconds in the future.
 	MaximumExpiration *float64 `json:"maximum_expiration,omitempty"`
+	// When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value.
+	Realm *string `json:"realm,omitempty"`
 	// A boolean value that indicates whether the plugin should run (and try to authenticate) on OPTIONS preflight requests. If set to false, then OPTIONS requests will always be allowed.
 	RunOnPreflight *bool `json:"run_on_preflight,omitempty"`
 	// If true, the plugin assumes the credential’s secret to be base64 encoded. You will need to create a base64-encoded secret for your Consumer, and sign your JWT with the original secret.
@@ -56,88 +58,136 @@ type JWTPluginConfig struct {
 	URIParamNames []string `json:"uri_param_names,omitempty"`
 }
 
-func (o *JWTPluginConfig) GetAnonymous() *string {
+func (o *JwtPluginConfig) GetAnonymous() *string {
 	if o == nil {
 		return nil
 	}
 	return o.Anonymous
 }
 
-func (o *JWTPluginConfig) GetClaimsToVerify() []ClaimsToVerify {
+func (o *JwtPluginConfig) GetClaimsToVerify() []ClaimsToVerify {
 	if o == nil {
 		return nil
 	}
 	return o.ClaimsToVerify
 }
 
-func (o *JWTPluginConfig) GetCookieNames() []string {
+func (o *JwtPluginConfig) GetCookieNames() []string {
 	if o == nil {
 		return nil
 	}
 	return o.CookieNames
 }
 
-func (o *JWTPluginConfig) GetHeaderNames() []string {
+func (o *JwtPluginConfig) GetHeaderNames() []string {
 	if o == nil {
 		return nil
 	}
 	return o.HeaderNames
 }
 
-func (o *JWTPluginConfig) GetKeyClaimName() *string {
+func (o *JwtPluginConfig) GetKeyClaimName() *string {
 	if o == nil {
 		return nil
 	}
 	return o.KeyClaimName
 }
 
-func (o *JWTPluginConfig) GetMaximumExpiration() *float64 {
+func (o *JwtPluginConfig) GetMaximumExpiration() *float64 {
 	if o == nil {
 		return nil
 	}
 	return o.MaximumExpiration
 }
 
-func (o *JWTPluginConfig) GetRunOnPreflight() *bool {
+func (o *JwtPluginConfig) GetRealm() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Realm
+}
+
+func (o *JwtPluginConfig) GetRunOnPreflight() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.RunOnPreflight
 }
 
-func (o *JWTPluginConfig) GetSecretIsBase64() *bool {
+func (o *JwtPluginConfig) GetSecretIsBase64() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.SecretIsBase64
 }
 
-func (o *JWTPluginConfig) GetURIParamNames() []string {
+func (o *JwtPluginConfig) GetURIParamNames() []string {
 	if o == nil {
 		return nil
 	}
 	return o.URIParamNames
 }
 
-type JWTPluginProtocols string
+type JwtPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *JwtPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type JwtPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *JwtPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type JwtPluginOrdering struct {
+	After  *JwtPluginAfter  `json:"after,omitempty"`
+	Before *JwtPluginBefore `json:"before,omitempty"`
+}
+
+func (o *JwtPluginOrdering) GetAfter() *JwtPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *JwtPluginOrdering) GetBefore() *JwtPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
+type JwtPluginProtocols string
 
 const (
-	JWTPluginProtocolsGrpc           JWTPluginProtocols = "grpc"
-	JWTPluginProtocolsGrpcs          JWTPluginProtocols = "grpcs"
-	JWTPluginProtocolsHTTP           JWTPluginProtocols = "http"
-	JWTPluginProtocolsHTTPS          JWTPluginProtocols = "https"
-	JWTPluginProtocolsTCP            JWTPluginProtocols = "tcp"
-	JWTPluginProtocolsTLS            JWTPluginProtocols = "tls"
-	JWTPluginProtocolsTLSPassthrough JWTPluginProtocols = "tls_passthrough"
-	JWTPluginProtocolsUDP            JWTPluginProtocols = "udp"
-	JWTPluginProtocolsWs             JWTPluginProtocols = "ws"
-	JWTPluginProtocolsWss            JWTPluginProtocols = "wss"
+	JwtPluginProtocolsGrpc           JwtPluginProtocols = "grpc"
+	JwtPluginProtocolsGrpcs          JwtPluginProtocols = "grpcs"
+	JwtPluginProtocolsHTTP           JwtPluginProtocols = "http"
+	JwtPluginProtocolsHTTPS          JwtPluginProtocols = "https"
+	JwtPluginProtocolsTCP            JwtPluginProtocols = "tcp"
+	JwtPluginProtocolsTLS            JwtPluginProtocols = "tls"
+	JwtPluginProtocolsTLSPassthrough JwtPluginProtocols = "tls_passthrough"
+	JwtPluginProtocolsUDP            JwtPluginProtocols = "udp"
+	JwtPluginProtocolsWs             JwtPluginProtocols = "ws"
+	JwtPluginProtocolsWss            JwtPluginProtocols = "wss"
 )
 
-func (e JWTPluginProtocols) ToPointer() *JWTPluginProtocols {
+func (e JwtPluginProtocols) ToPointer() *JwtPluginProtocols {
 	return &e
 }
-func (e *JWTPluginProtocols) UnmarshalJSON(data []byte) error {
+func (e *JwtPluginProtocols) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -162,177 +212,185 @@ func (e *JWTPluginProtocols) UnmarshalJSON(data []byte) error {
 	case "ws":
 		fallthrough
 	case "wss":
-		*e = JWTPluginProtocols(v)
+		*e = JwtPluginProtocols(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for JWTPluginProtocols: %v", v)
+		return fmt.Errorf("invalid value for JwtPluginProtocols: %v", v)
 	}
 }
 
-// JWTPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-type JWTPluginConsumer struct {
+// JwtPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+type JwtPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *JWTPluginConsumer) GetID() *string {
+func (o *JwtPluginConsumer) GetID() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ID
 }
 
-type JWTPluginConsumerGroup struct {
+type JwtPluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *JWTPluginConsumerGroup) GetID() *string {
+func (o *JwtPluginConsumerGroup) GetID() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ID
 }
 
-// JWTPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-type JWTPluginRoute struct {
+// JwtPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
+type JwtPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *JWTPluginRoute) GetID() *string {
+func (o *JwtPluginRoute) GetID() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ID
 }
 
-// JWTPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-type JWTPluginService struct {
+// JwtPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+type JwtPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *JWTPluginService) GetID() *string {
+func (o *JwtPluginService) GetID() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ID
 }
 
-type JWTPlugin struct {
-	Config *JWTPluginConfig `json:"config,omitempty"`
+type JwtPlugin struct {
+	Config *JwtPluginConfig `json:"config,omitempty"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool   `json:"enabled,omitempty"`
-	ID           *string `json:"id,omitempty"`
-	InstanceName *string `json:"instance_name,omitempty"`
-	name         *string `const:"jwt" json:"name,omitempty"`
+	Enabled      *bool              `json:"enabled,omitempty"`
+	ID           *string            `json:"id,omitempty"`
+	InstanceName *string            `json:"instance_name,omitempty"`
+	name         *string            `const:"jwt" json:"name,omitempty"`
+	Ordering     *JwtPluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []JWTPluginProtocols `json:"protocols,omitempty"`
+	Protocols []JwtPluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64 `json:"updated_at,omitempty"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *JWTPluginConsumer      `json:"consumer,omitempty"`
-	ConsumerGroup *JWTPluginConsumerGroup `json:"consumer_group,omitempty"`
+	Consumer      *JwtPluginConsumer      `json:"consumer,omitempty"`
+	ConsumerGroup *JwtPluginConsumerGroup `json:"consumer_group,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *JWTPluginRoute `json:"route,omitempty"`
+	Route *JwtPluginRoute `json:"route,omitempty"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *JWTPluginService `json:"service,omitempty"`
+	Service *JwtPluginService `json:"service,omitempty"`
 }
 
-func (j JWTPlugin) MarshalJSON() ([]byte, error) {
+func (j JwtPlugin) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(j, "", false)
 }
 
-func (j *JWTPlugin) UnmarshalJSON(data []byte) error {
+func (j *JwtPlugin) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &j, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *JWTPlugin) GetConfig() *JWTPluginConfig {
+func (o *JwtPlugin) GetConfig() *JwtPluginConfig {
 	if o == nil {
 		return nil
 	}
 	return o.Config
 }
 
-func (o *JWTPlugin) GetCreatedAt() *int64 {
+func (o *JwtPlugin) GetCreatedAt() *int64 {
 	if o == nil {
 		return nil
 	}
 	return o.CreatedAt
 }
 
-func (o *JWTPlugin) GetEnabled() *bool {
+func (o *JwtPlugin) GetEnabled() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.Enabled
 }
 
-func (o *JWTPlugin) GetID() *string {
+func (o *JwtPlugin) GetID() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ID
 }
 
-func (o *JWTPlugin) GetInstanceName() *string {
+func (o *JwtPlugin) GetInstanceName() *string {
 	if o == nil {
 		return nil
 	}
 	return o.InstanceName
 }
 
-func (o *JWTPlugin) GetName() *string {
+func (o *JwtPlugin) GetName() *string {
 	return types.String("jwt")
 }
 
-func (o *JWTPlugin) GetProtocols() []JWTPluginProtocols {
+func (o *JwtPlugin) GetOrdering() *JwtPluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
+}
+
+func (o *JwtPlugin) GetProtocols() []JwtPluginProtocols {
 	if o == nil {
 		return nil
 	}
 	return o.Protocols
 }
 
-func (o *JWTPlugin) GetTags() []string {
+func (o *JwtPlugin) GetTags() []string {
 	if o == nil {
 		return nil
 	}
 	return o.Tags
 }
 
-func (o *JWTPlugin) GetUpdatedAt() *int64 {
+func (o *JwtPlugin) GetUpdatedAt() *int64 {
 	if o == nil {
 		return nil
 	}
 	return o.UpdatedAt
 }
 
-func (o *JWTPlugin) GetConsumer() *JWTPluginConsumer {
+func (o *JwtPlugin) GetConsumer() *JwtPluginConsumer {
 	if o == nil {
 		return nil
 	}
 	return o.Consumer
 }
 
-func (o *JWTPlugin) GetConsumerGroup() *JWTPluginConsumerGroup {
+func (o *JwtPlugin) GetConsumerGroup() *JwtPluginConsumerGroup {
 	if o == nil {
 		return nil
 	}
 	return o.ConsumerGroup
 }
 
-func (o *JWTPlugin) GetRoute() *JWTPluginRoute {
+func (o *JwtPlugin) GetRoute() *JwtPluginRoute {
 	if o == nil {
 		return nil
 	}
 	return o.Route
 }
 
-func (o *JWTPlugin) GetService() *JWTPluginService {
+func (o *JwtPlugin) GetService() *JwtPluginService {
 	if o == nil {
 		return nil
 	}

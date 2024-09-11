@@ -24,7 +24,7 @@ func (r *GatewayPluginProxyCacheDataSourceModel) RefreshFromSharedProxyCachePlug
 			if resp.Config.Memory == nil {
 				r.Config.Memory = nil
 			} else {
-				r.Config.Memory = &tfTypes.CreateProxyCachePluginMemory{}
+				r.Config.Memory = &tfTypes.CreateGraphqlProxyCacheAdvancedPluginMemory{}
 				r.Config.Memory.DictionaryName = types.StringPointerValue(resp.Config.Memory.DictionaryName)
 			}
 			r.Config.RequestMethod = []types.String{}
@@ -74,6 +74,29 @@ func (r *GatewayPluginProxyCacheDataSourceModel) RefreshFromSharedProxyCachePlug
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.InstanceName = types.StringPointerValue(resp.InstanceName)
+		if resp.Ordering == nil {
+			r.Ordering = nil
+		} else {
+			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			if resp.Ordering.After == nil {
+				r.Ordering.After = nil
+			} else {
+				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After.Access = []types.String{}
+				for _, v := range resp.Ordering.After.Access {
+					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				}
+			}
+			if resp.Ordering.Before == nil {
+				r.Ordering.Before = nil
+			} else {
+				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before.Access = []types.String{}
+				for _, v := range resp.Ordering.Before.Access {
+					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				}
+			}
+		}
 		r.Protocols = []types.String{}
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))

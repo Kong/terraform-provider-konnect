@@ -8,12 +8,12 @@ import (
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginJQDataSourceModel) RefreshFromSharedJQPlugin(resp *shared.JQPlugin) {
+func (r *GatewayPluginJqDataSourceModel) RefreshFromSharedJqPlugin(resp *shared.JqPlugin) {
 	if resp != nil {
 		if resp.Config == nil {
 			r.Config = nil
 		} else {
-			r.Config = &tfTypes.CreateJQPluginConfig{}
+			r.Config = &tfTypes.CreateJqPluginConfig{}
 			r.Config.RequestIfMediaType = []types.String{}
 			for _, v := range resp.Config.RequestIfMediaType {
 				r.Config.RequestIfMediaType = append(r.Config.RequestIfMediaType, types.StringValue(v))
@@ -22,7 +22,7 @@ func (r *GatewayPluginJQDataSourceModel) RefreshFromSharedJQPlugin(resp *shared.
 			if resp.Config.RequestJqProgramOptions == nil {
 				r.Config.RequestJqProgramOptions = nil
 			} else {
-				r.Config.RequestJqProgramOptions = &tfTypes.CreateJQPluginRequestJQProgramOptions{}
+				r.Config.RequestJqProgramOptions = &tfTypes.CreateJqPluginRequestJqProgramOptions{}
 				r.Config.RequestJqProgramOptions.ASCIIOutput = types.BoolPointerValue(resp.Config.RequestJqProgramOptions.ASCIIOutput)
 				r.Config.RequestJqProgramOptions.CompactOutput = types.BoolPointerValue(resp.Config.RequestJqProgramOptions.CompactOutput)
 				r.Config.RequestJqProgramOptions.JoinOutput = types.BoolPointerValue(resp.Config.RequestJqProgramOptions.JoinOutput)
@@ -41,7 +41,7 @@ func (r *GatewayPluginJQDataSourceModel) RefreshFromSharedJQPlugin(resp *shared.
 			if resp.Config.ResponseJqProgramOptions == nil {
 				r.Config.ResponseJqProgramOptions = nil
 			} else {
-				r.Config.ResponseJqProgramOptions = &tfTypes.CreateJQPluginRequestJQProgramOptions{}
+				r.Config.ResponseJqProgramOptions = &tfTypes.CreateJqPluginRequestJqProgramOptions{}
 				r.Config.ResponseJqProgramOptions.ASCIIOutput = types.BoolPointerValue(resp.Config.ResponseJqProgramOptions.ASCIIOutput)
 				r.Config.ResponseJqProgramOptions.CompactOutput = types.BoolPointerValue(resp.Config.ResponseJqProgramOptions.CompactOutput)
 				r.Config.ResponseJqProgramOptions.JoinOutput = types.BoolPointerValue(resp.Config.ResponseJqProgramOptions.JoinOutput)
@@ -65,6 +65,29 @@ func (r *GatewayPluginJQDataSourceModel) RefreshFromSharedJQPlugin(resp *shared.
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.InstanceName = types.StringPointerValue(resp.InstanceName)
+		if resp.Ordering == nil {
+			r.Ordering = nil
+		} else {
+			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			if resp.Ordering.After == nil {
+				r.Ordering.After = nil
+			} else {
+				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After.Access = []types.String{}
+				for _, v := range resp.Ordering.After.Access {
+					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				}
+			}
+			if resp.Ordering.Before == nil {
+				r.Ordering.Before = nil
+			} else {
+				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before.Access = []types.String{}
+				for _, v := range resp.Ordering.Before.Access {
+					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				}
+			}
+		}
 		r.Protocols = []types.String{}
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))

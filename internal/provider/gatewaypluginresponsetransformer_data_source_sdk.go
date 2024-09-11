@@ -64,10 +64,14 @@ func (r *GatewayPluginResponseTransformerDataSourceModel) RefreshFromSharedRespo
 			if resp.Config.Rename == nil {
 				r.Config.Rename = nil
 			} else {
-				r.Config.Rename = &tfTypes.CreateResponseTransformerPluginRename{}
+				r.Config.Rename = &tfTypes.CreateResponseTransformerPluginRemove{}
 				r.Config.Rename.Headers = []types.String{}
 				for _, v := range resp.Config.Rename.Headers {
 					r.Config.Rename.Headers = append(r.Config.Rename.Headers, types.StringValue(v))
+				}
+				r.Config.Rename.JSON = []types.String{}
+				for _, v := range resp.Config.Rename.JSON {
+					r.Config.Rename.JSON = append(r.Config.Rename.JSON, types.StringValue(v))
 				}
 			}
 			if resp.Config.Replace == nil {
@@ -104,6 +108,29 @@ func (r *GatewayPluginResponseTransformerDataSourceModel) RefreshFromSharedRespo
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.InstanceName = types.StringPointerValue(resp.InstanceName)
+		if resp.Ordering == nil {
+			r.Ordering = nil
+		} else {
+			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			if resp.Ordering.After == nil {
+				r.Ordering.After = nil
+			} else {
+				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After.Access = []types.String{}
+				for _, v := range resp.Ordering.After.Access {
+					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				}
+			}
+			if resp.Ordering.Before == nil {
+				r.Ordering.Before = nil
+			} else {
+				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before.Access = []types.String{}
+				for _, v := range resp.Ordering.Before.Access {
+					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				}
+			}
+		}
 		r.Protocols = []types.String{}
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))

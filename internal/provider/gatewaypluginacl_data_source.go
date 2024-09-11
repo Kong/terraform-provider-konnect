@@ -29,19 +29,20 @@ type GatewayPluginACLDataSource struct {
 
 // GatewayPluginACLDataSourceModel describes the data model.
 type GatewayPluginACLDataSourceModel struct {
-	Config         *tfTypes.CreateACLPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer           `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLConsumer           `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                   `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                    `tfsdk:"created_at"`
-	Enabled        types.Bool                     `tfsdk:"enabled"`
-	ID             types.String                   `tfsdk:"id"`
-	InstanceName   types.String                   `tfsdk:"instance_name"`
-	Protocols      []types.String                 `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer           `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer           `tfsdk:"service"`
-	Tags           []types.String                 `tfsdk:"tags"`
-	UpdatedAt      types.Int64                    `tfsdk:"updated_at"`
+	Config         *tfTypes.CreateACLPluginConfig   `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer             `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer             `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                     `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                      `tfsdk:"created_at"`
+	Enabled        types.Bool                       `tfsdk:"enabled"`
+	ID             types.String                     `tfsdk:"id"`
+	InstanceName   types.String                     `tfsdk:"instance_name"`
+	Ordering       *tfTypes.CreateACLPluginOrdering `tfsdk:"ordering"`
+	Protocols      []types.String                   `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer             `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer             `tfsdk:"service"`
+	Tags           []types.String                   `tfsdk:"tags"`
+	UpdatedAt      types.Int64                      `tfsdk:"updated_at"`
 }
 
 // Metadata returns the data source type name.
@@ -62,6 +63,10 @@ func (r *GatewayPluginACLDataSource) Schema(ctx context.Context, req datasource.
 						Computed:    true,
 						ElementType: types.StringType,
 						Description: `Arbitrary group names that are allowed to consume the service or route. One of ` + "`" + `config.allow` + "`" + ` or ` + "`" + `config.deny` + "`" + ` must be specified.`,
+					},
+					"always_use_authenticated_groups": schema.BoolAttribute{
+						Computed:    true,
+						Description: `If enabled (` + "`" + `true` + "`" + `), the authenticated groups will always be used even when an authenticated consumer already exists. If the authenticated groups don't exist, it will fallback to use the groups associated with the consumer. By default the authenticated groups will only be used when there is no consumer or the consumer is anonymous.`,
 					},
 					"deny": schema.ListAttribute{
 						Computed:    true,
@@ -96,7 +101,7 @@ func (r *GatewayPluginACLDataSource) Schema(ctx context.Context, req datasource.
 			},
 			"control_plane_id": schema.StringAttribute{
 				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager.`,
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed. `,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
@@ -111,6 +116,29 @@ func (r *GatewayPluginACLDataSource) Schema(ctx context.Context, req datasource.
 			},
 			"instance_name": schema.StringAttribute{
 				Computed: true,
+			},
+			"ordering": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"after": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+					"before": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+				},
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,

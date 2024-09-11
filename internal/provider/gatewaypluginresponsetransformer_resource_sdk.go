@@ -72,8 +72,13 @@ func (r *GatewayPluginResponseTransformerResourceModel) ToSharedCreateResponseTr
 			for _, headersItem3 := range r.Config.Rename.Headers {
 				headers3 = append(headers3, headersItem3.ValueString())
 			}
+			var json3 []string = []string{}
+			for _, jsonItem3 := range r.Config.Rename.JSON {
+				json3 = append(json3, jsonItem3.ValueString())
+			}
 			rename = &shared.CreateResponseTransformerPluginRename{
 				Headers: headers3,
+				JSON:    json3,
 			}
 		}
 		var replace *shared.CreateResponseTransformerPluginReplace
@@ -82,9 +87,9 @@ func (r *GatewayPluginResponseTransformerResourceModel) ToSharedCreateResponseTr
 			for _, headersItem4 := range r.Config.Replace.Headers {
 				headers4 = append(headers4, headersItem4.ValueString())
 			}
-			var json3 []string = []string{}
-			for _, jsonItem3 := range r.Config.Replace.JSON {
-				json3 = append(json3, jsonItem3.ValueString())
+			var json4 []string = []string{}
+			for _, jsonItem4 := range r.Config.Replace.JSON {
+				json4 = append(json4, jsonItem4.ValueString())
 			}
 			var jsonTypes2 []shared.CreateResponseTransformerPluginConfigReplaceJSONTypes = []shared.CreateResponseTransformerPluginConfigReplaceJSONTypes{}
 			for _, jsonTypesItem2 := range r.Config.Replace.JSONTypes {
@@ -92,7 +97,7 @@ func (r *GatewayPluginResponseTransformerResourceModel) ToSharedCreateResponseTr
 			}
 			replace = &shared.CreateResponseTransformerPluginReplace{
 				Headers:   headers4,
-				JSON:      json3,
+				JSON:      json4,
 				JSONTypes: jsonTypes2,
 			}
 		}
@@ -115,6 +120,33 @@ func (r *GatewayPluginResponseTransformerResourceModel) ToSharedCreateResponseTr
 		*instanceName = r.InstanceName.ValueString()
 	} else {
 		instanceName = nil
+	}
+	var ordering *shared.CreateResponseTransformerPluginOrdering
+	if r.Ordering != nil {
+		var after *shared.CreateResponseTransformerPluginAfter
+		if r.Ordering.After != nil {
+			var access []string = []string{}
+			for _, accessItem := range r.Ordering.After.Access {
+				access = append(access, accessItem.ValueString())
+			}
+			after = &shared.CreateResponseTransformerPluginAfter{
+				Access: access,
+			}
+		}
+		var before *shared.CreateResponseTransformerPluginBefore
+		if r.Ordering.Before != nil {
+			var access1 []string = []string{}
+			for _, accessItem1 := range r.Ordering.Before.Access {
+				access1 = append(access1, accessItem1.ValueString())
+			}
+			before = &shared.CreateResponseTransformerPluginBefore{
+				Access: access1,
+			}
+		}
+		ordering = &shared.CreateResponseTransformerPluginOrdering{
+			After:  after,
+			Before: before,
+		}
 	}
 	var protocols []shared.CreateResponseTransformerPluginProtocols = []shared.CreateResponseTransformerPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
@@ -176,6 +208,7 @@ func (r *GatewayPluginResponseTransformerResourceModel) ToSharedCreateResponseTr
 		Config:        config,
 		Enabled:       enabled,
 		InstanceName:  instanceName,
+		Ordering:      ordering,
 		Protocols:     protocols,
 		Tags:          tags,
 		Consumer:      consumer,
@@ -242,10 +275,14 @@ func (r *GatewayPluginResponseTransformerResourceModel) RefreshFromSharedRespons
 			if resp.Config.Rename == nil {
 				r.Config.Rename = nil
 			} else {
-				r.Config.Rename = &tfTypes.CreateResponseTransformerPluginRename{}
+				r.Config.Rename = &tfTypes.CreateResponseTransformerPluginRemove{}
 				r.Config.Rename.Headers = []types.String{}
 				for _, v := range resp.Config.Rename.Headers {
 					r.Config.Rename.Headers = append(r.Config.Rename.Headers, types.StringValue(v))
+				}
+				r.Config.Rename.JSON = []types.String{}
+				for _, v := range resp.Config.Rename.JSON {
+					r.Config.Rename.JSON = append(r.Config.Rename.JSON, types.StringValue(v))
 				}
 			}
 			if resp.Config.Replace == nil {
@@ -282,6 +319,29 @@ func (r *GatewayPluginResponseTransformerResourceModel) RefreshFromSharedRespons
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.InstanceName = types.StringPointerValue(resp.InstanceName)
+		if resp.Ordering == nil {
+			r.Ordering = nil
+		} else {
+			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			if resp.Ordering.After == nil {
+				r.Ordering.After = nil
+			} else {
+				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After.Access = []types.String{}
+				for _, v := range resp.Ordering.After.Access {
+					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				}
+			}
+			if resp.Ordering.Before == nil {
+				r.Ordering.Before = nil
+			} else {
+				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before.Access = []types.String{}
+				for _, v := range resp.Ordering.Before.Access {
+					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				}
+			}
+		}
 		r.Protocols = []types.String{}
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))

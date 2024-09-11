@@ -10,7 +10,7 @@ import (
 type CreateAiprompttemplatePluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID               string                               `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateAIPromptTemplatePlugin *shared.CreateAIPromptTemplatePlugin `request:"mediaType=application/json"`
+	CreateAiPromptTemplatePlugin *shared.CreateAiPromptTemplatePlugin `request:"mediaType=application/json"`
 }
 
 func (o *CreateAiprompttemplatePluginRequest) GetControlPlaneID() string {
@@ -20,11 +20,11 @@ func (o *CreateAiprompttemplatePluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateAiprompttemplatePluginRequest) GetCreateAIPromptTemplatePlugin() *shared.CreateAIPromptTemplatePlugin {
+func (o *CreateAiprompttemplatePluginRequest) GetCreateAiPromptTemplatePlugin() *shared.CreateAiPromptTemplatePlugin {
 	if o == nil {
 		return nil
 	}
-	return o.CreateAIPromptTemplatePlugin
+	return o.CreateAiPromptTemplatePlugin
 }
 
 type CreateAiprompttemplatePluginResponse struct {
@@ -34,8 +34,8 @@ type CreateAiprompttemplatePluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Created AIPromptTemplate plugin
-	AIPromptTemplatePlugin *shared.AIPromptTemplatePlugin
+	// Created AiPromptTemplate plugin
+	AiPromptTemplatePlugin *shared.AiPromptTemplatePlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
@@ -61,11 +61,11 @@ func (o *CreateAiprompttemplatePluginResponse) GetRawResponse() *http.Response {
 	return o.RawResponse
 }
 
-func (o *CreateAiprompttemplatePluginResponse) GetAIPromptTemplatePlugin() *shared.AIPromptTemplatePlugin {
+func (o *CreateAiprompttemplatePluginResponse) GetAiPromptTemplatePlugin() *shared.AiPromptTemplatePlugin {
 	if o == nil {
 		return nil
 	}
-	return o.AIPromptTemplatePlugin
+	return o.AiPromptTemplatePlugin
 }
 
 func (o *CreateAiprompttemplatePluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {

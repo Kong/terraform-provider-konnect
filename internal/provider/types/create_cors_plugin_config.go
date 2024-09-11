@@ -4,7 +4,7 @@ package types
 
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
-type CreateCORSPluginConfig struct {
+type CreateCorsPluginConfig struct {
 	Credentials       types.Bool     `tfsdk:"credentials"`
 	ExposedHeaders    []types.String `tfsdk:"exposed_headers"`
 	Headers           []types.String `tfsdk:"headers"`

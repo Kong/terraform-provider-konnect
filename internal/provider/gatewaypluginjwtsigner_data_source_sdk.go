@@ -10,12 +10,12 @@ import (
 	"math/big"
 )
 
-func (r *GatewayPluginJWTSignerDataSourceModel) RefreshFromSharedJWTSignerPlugin(resp *shared.JWTSignerPlugin) {
+func (r *GatewayPluginJwtSignerDataSourceModel) RefreshFromSharedJwtSignerPlugin(resp *shared.JwtSignerPlugin) {
 	if resp != nil {
 		if resp.Config == nil {
 			r.Config = nil
 		} else {
-			r.Config = &tfTypes.CreateJWTSignerPluginConfig{}
+			r.Config = &tfTypes.CreateJwtSignerPluginConfig{}
 			r.Config.AccessTokenConsumerBy = []types.String{}
 			for _, v := range resp.Config.AccessTokenConsumerBy {
 				r.Config.AccessTokenConsumerBy = append(r.Config.AccessTokenConsumerBy, types.StringValue(string(v)))
@@ -278,6 +278,29 @@ func (r *GatewayPluginJWTSignerDataSourceModel) RefreshFromSharedJWTSignerPlugin
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.InstanceName = types.StringPointerValue(resp.InstanceName)
+		if resp.Ordering == nil {
+			r.Ordering = nil
+		} else {
+			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			if resp.Ordering.After == nil {
+				r.Ordering.After = nil
+			} else {
+				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After.Access = []types.String{}
+				for _, v := range resp.Ordering.After.Access {
+					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				}
+			}
+			if resp.Ordering.Before == nil {
+				r.Ordering.Before = nil
+			} else {
+				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before.Access = []types.String{}
+				for _, v := range resp.Ordering.Before.Access {
+					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				}
+			}
+		}
 		r.Protocols = []types.String{}
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))

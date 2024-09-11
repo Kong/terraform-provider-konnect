@@ -10,6 +10,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -20,21 +22,21 @@ import (
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
-var _ resource.Resource = &GatewayPluginAIPromptTemplateResource{}
-var _ resource.ResourceWithImportState = &GatewayPluginAIPromptTemplateResource{}
+var _ resource.Resource = &GatewayPluginAiPromptTemplateResource{}
+var _ resource.ResourceWithImportState = &GatewayPluginAiPromptTemplateResource{}
 
-func NewGatewayPluginAIPromptTemplateResource() resource.Resource {
-	return &GatewayPluginAIPromptTemplateResource{}
+func NewGatewayPluginAiPromptTemplateResource() resource.Resource {
+	return &GatewayPluginAiPromptTemplateResource{}
 }
 
-// GatewayPluginAIPromptTemplateResource defines the resource implementation.
-type GatewayPluginAIPromptTemplateResource struct {
+// GatewayPluginAiPromptTemplateResource defines the resource implementation.
+type GatewayPluginAiPromptTemplateResource struct {
 	client *sdk.Konnect
 }
 
-// GatewayPluginAIPromptTemplateResourceModel describes the resource data model.
-type GatewayPluginAIPromptTemplateResourceModel struct {
-	Config         *tfTypes.CreateAIPromptTemplatePluginConfig `tfsdk:"config"`
+// GatewayPluginAiPromptTemplateResourceModel describes the resource data model.
+type GatewayPluginAiPromptTemplateResourceModel struct {
+	Config         *tfTypes.CreateAiPromptTemplatePluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.ACLConsumer                        `tfsdk:"consumer"`
 	ConsumerGroup  *tfTypes.ACLConsumer                        `tfsdk:"consumer_group"`
 	ControlPlaneID types.String                                `tfsdk:"control_plane_id"`
@@ -42,6 +44,7 @@ type GatewayPluginAIPromptTemplateResourceModel struct {
 	Enabled        types.Bool                                  `tfsdk:"enabled"`
 	ID             types.String                                `tfsdk:"id"`
 	InstanceName   types.String                                `tfsdk:"instance_name"`
+	Ordering       *tfTypes.CreateACLPluginOrdering            `tfsdk:"ordering"`
 	Protocols      []types.String                              `tfsdk:"protocols"`
 	Route          *tfTypes.ACLConsumer                        `tfsdk:"route"`
 	Service        *tfTypes.ACLConsumer                        `tfsdk:"service"`
@@ -49,13 +52,13 @@ type GatewayPluginAIPromptTemplateResourceModel struct {
 	UpdatedAt      types.Int64                                 `tfsdk:"updated_at"`
 }
 
-func (r *GatewayPluginAIPromptTemplateResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+func (r *GatewayPluginAiPromptTemplateResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_gateway_plugin_ai_prompt_template"
 }
 
-func (r *GatewayPluginAIPromptTemplateResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *GatewayPluginAiPromptTemplateResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "GatewayPluginAIPromptTemplate Resource",
+		MarkdownDescription: "GatewayPluginAiPromptTemplate Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
@@ -70,6 +73,11 @@ func (r *GatewayPluginAIPromptTemplateResource) Schema(ctx context.Context, req 
 						Computed:    true,
 						Optional:    true,
 						Description: `Set true to add the original request to the Kong log plugin(s) output.`,
+					},
+					"max_request_body_size": schema.Int64Attribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `max allowed body size allowed to be introspected`,
 					},
 					"templates": schema.ListNestedAttribute{
 						Computed: true,
@@ -120,8 +128,11 @@ func (r *GatewayPluginAIPromptTemplateResource) Schema(ctx context.Context, req 
 				},
 			},
 			"control_plane_id": schema.StringAttribute{
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
 				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager.`,
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed. `,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
@@ -138,6 +149,34 @@ func (r *GatewayPluginAIPromptTemplateResource) Schema(ctx context.Context, req 
 			"instance_name": schema.StringAttribute{
 				Computed: true,
 				Optional: true,
+			},
+			"ordering": schema.SingleNestedAttribute{
+				Computed: true,
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"after": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+					"before": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+				},
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,
@@ -181,7 +220,7 @@ func (r *GatewayPluginAIPromptTemplateResource) Schema(ctx context.Context, req 
 	}
 }
 
-func (r *GatewayPluginAIPromptTemplateResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *GatewayPluginAiPromptTemplateResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	// Prevent panic if the provider has not been configured.
 	if req.ProviderData == nil {
 		return
@@ -201,8 +240,8 @@ func (r *GatewayPluginAIPromptTemplateResource) Configure(ctx context.Context, r
 	r.client = client
 }
 
-func (r *GatewayPluginAIPromptTemplateResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data *GatewayPluginAIPromptTemplateResourceModel
+func (r *GatewayPluginAiPromptTemplateResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var data *GatewayPluginAiPromptTemplateResourceModel
 	var plan types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -222,10 +261,10 @@ func (r *GatewayPluginAIPromptTemplateResource) Create(ctx context.Context, req 
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createAIPromptTemplatePlugin := data.ToSharedCreateAIPromptTemplatePlugin()
+	createAiPromptTemplatePlugin := data.ToSharedCreateAiPromptTemplatePlugin()
 	request := operations.CreateAiprompttemplatePluginRequest{
 		ControlPlaneID:               controlPlaneID,
-		CreateAIPromptTemplatePlugin: createAIPromptTemplatePlugin,
+		CreateAiPromptTemplatePlugin: createAiPromptTemplatePlugin,
 	}
 	res, err := r.client.Plugins.CreateAiprompttemplatePlugin(ctx, request)
 	if err != nil {
@@ -243,19 +282,19 @@ func (r *GatewayPluginAIPromptTemplateResource) Create(ctx context.Context, req 
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.AIPromptTemplatePlugin != nil) {
+	if !(res.AiPromptTemplatePlugin != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAIPromptTemplatePlugin(res.AIPromptTemplatePlugin)
+	data.RefreshFromSharedAiPromptTemplatePlugin(res.AiPromptTemplatePlugin)
 	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *GatewayPluginAIPromptTemplateResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data *GatewayPluginAIPromptTemplateResourceModel
+func (r *GatewayPluginAiPromptTemplateResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var data *GatewayPluginAiPromptTemplateResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -302,18 +341,18 @@ func (r *GatewayPluginAIPromptTemplateResource) Read(ctx context.Context, req re
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.AIPromptTemplatePlugin != nil) {
+	if !(res.AiPromptTemplatePlugin != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAIPromptTemplatePlugin(res.AIPromptTemplatePlugin)
+	data.RefreshFromSharedAiPromptTemplatePlugin(res.AiPromptTemplatePlugin)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *GatewayPluginAIPromptTemplateResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data *GatewayPluginAIPromptTemplateResourceModel
+func (r *GatewayPluginAiPromptTemplateResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var data *GatewayPluginAiPromptTemplateResourceModel
 	var plan types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -332,11 +371,11 @@ func (r *GatewayPluginAIPromptTemplateResource) Update(ctx context.Context, req 
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createAIPromptTemplatePlugin := data.ToSharedCreateAIPromptTemplatePlugin()
+	createAiPromptTemplatePlugin := data.ToSharedCreateAiPromptTemplatePlugin()
 	request := operations.UpdateAiprompttemplatePluginRequest{
 		PluginID:                     pluginID,
 		ControlPlaneID:               controlPlaneID,
-		CreateAIPromptTemplatePlugin: createAIPromptTemplatePlugin,
+		CreateAiPromptTemplatePlugin: createAiPromptTemplatePlugin,
 	}
 	res, err := r.client.Plugins.UpdateAiprompttemplatePlugin(ctx, request)
 	if err != nil {
@@ -354,19 +393,19 @@ func (r *GatewayPluginAIPromptTemplateResource) Update(ctx context.Context, req 
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.AIPromptTemplatePlugin != nil) {
+	if !(res.AiPromptTemplatePlugin != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAIPromptTemplatePlugin(res.AIPromptTemplatePlugin)
+	data.RefreshFromSharedAiPromptTemplatePlugin(res.AiPromptTemplatePlugin)
 	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *GatewayPluginAIPromptTemplateResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var data *GatewayPluginAIPromptTemplateResourceModel
+func (r *GatewayPluginAiPromptTemplateResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var data *GatewayPluginAiPromptTemplateResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -412,7 +451,7 @@ func (r *GatewayPluginAIPromptTemplateResource) Delete(ctx context.Context, req 
 
 }
 
-func (r *GatewayPluginAIPromptTemplateResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *GatewayPluginAiPromptTemplateResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
 	dec.DisallowUnknownFields()
 	var data struct {

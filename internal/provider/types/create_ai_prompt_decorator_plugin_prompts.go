@@ -2,7 +2,7 @@
 
 package types
 
-type CreateAIPromptDecoratorPluginPrompts struct {
-	Append  []AIPromptDecoratorPluginAppend `tfsdk:"append"`
-	Prepend []AIPromptDecoratorPluginAppend `tfsdk:"prepend"`
+type CreateAiPromptDecoratorPluginPrompts struct {
+	Append  []AiPromptDecoratorPluginAppend `tfsdk:"append"`
+	Prepend []AiPromptDecoratorPluginAppend `tfsdk:"prepend"`
 }

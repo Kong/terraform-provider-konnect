@@ -12,6 +12,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -22,21 +24,21 @@ import (
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
-var _ resource.Resource = &GatewayPluginJWTSignerResource{}
-var _ resource.ResourceWithImportState = &GatewayPluginJWTSignerResource{}
+var _ resource.Resource = &GatewayPluginJwtSignerResource{}
+var _ resource.ResourceWithImportState = &GatewayPluginJwtSignerResource{}
 
-func NewGatewayPluginJWTSignerResource() resource.Resource {
-	return &GatewayPluginJWTSignerResource{}
+func NewGatewayPluginJwtSignerResource() resource.Resource {
+	return &GatewayPluginJwtSignerResource{}
 }
 
-// GatewayPluginJWTSignerResource defines the resource implementation.
-type GatewayPluginJWTSignerResource struct {
+// GatewayPluginJwtSignerResource defines the resource implementation.
+type GatewayPluginJwtSignerResource struct {
 	client *sdk.Konnect
 }
 
-// GatewayPluginJWTSignerResourceModel describes the resource data model.
-type GatewayPluginJWTSignerResourceModel struct {
-	Config         *tfTypes.CreateJWTSignerPluginConfig `tfsdk:"config"`
+// GatewayPluginJwtSignerResourceModel describes the resource data model.
+type GatewayPluginJwtSignerResourceModel struct {
+	Config         *tfTypes.CreateJwtSignerPluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.ACLConsumer                 `tfsdk:"consumer"`
 	ConsumerGroup  *tfTypes.ACLConsumer                 `tfsdk:"consumer_group"`
 	ControlPlaneID types.String                         `tfsdk:"control_plane_id"`
@@ -44,6 +46,7 @@ type GatewayPluginJWTSignerResourceModel struct {
 	Enabled        types.Bool                           `tfsdk:"enabled"`
 	ID             types.String                         `tfsdk:"id"`
 	InstanceName   types.String                         `tfsdk:"instance_name"`
+	Ordering       *tfTypes.CreateACLPluginOrdering     `tfsdk:"ordering"`
 	Protocols      []types.String                       `tfsdk:"protocols"`
 	Route          *tfTypes.ACLConsumer                 `tfsdk:"route"`
 	Service        *tfTypes.ACLConsumer                 `tfsdk:"service"`
@@ -51,13 +54,13 @@ type GatewayPluginJWTSignerResourceModel struct {
 	UpdatedAt      types.Int64                          `tfsdk:"updated_at"`
 }
 
-func (r *GatewayPluginJWTSignerResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+func (r *GatewayPluginJwtSignerResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_gateway_plugin_jwt_signer"
 }
 
-func (r *GatewayPluginJWTSignerResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "GatewayPluginJWTSigner Resource",
+		MarkdownDescription: "GatewayPluginJwtSigner Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
@@ -627,8 +630,11 @@ func (r *GatewayPluginJWTSignerResource) Schema(ctx context.Context, req resourc
 				},
 			},
 			"control_plane_id": schema.StringAttribute{
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
 				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager.`,
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed. `,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
@@ -645,6 +651,34 @@ func (r *GatewayPluginJWTSignerResource) Schema(ctx context.Context, req resourc
 			"instance_name": schema.StringAttribute{
 				Computed: true,
 				Optional: true,
+			},
+			"ordering": schema.SingleNestedAttribute{
+				Computed: true,
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"after": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+					"before": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+				},
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,
@@ -688,7 +722,7 @@ func (r *GatewayPluginJWTSignerResource) Schema(ctx context.Context, req resourc
 	}
 }
 
-func (r *GatewayPluginJWTSignerResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *GatewayPluginJwtSignerResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	// Prevent panic if the provider has not been configured.
 	if req.ProviderData == nil {
 		return
@@ -708,8 +742,8 @@ func (r *GatewayPluginJWTSignerResource) Configure(ctx context.Context, req reso
 	r.client = client
 }
 
-func (r *GatewayPluginJWTSignerResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data *GatewayPluginJWTSignerResourceModel
+func (r *GatewayPluginJwtSignerResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var data *GatewayPluginJwtSignerResourceModel
 	var plan types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -729,10 +763,10 @@ func (r *GatewayPluginJWTSignerResource) Create(ctx context.Context, req resourc
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createJWTSignerPlugin := data.ToSharedCreateJWTSignerPlugin()
+	createJwtSignerPlugin := data.ToSharedCreateJwtSignerPlugin()
 	request := operations.CreateJwtsignerPluginRequest{
 		ControlPlaneID:        controlPlaneID,
-		CreateJWTSignerPlugin: createJWTSignerPlugin,
+		CreateJwtSignerPlugin: createJwtSignerPlugin,
 	}
 	res, err := r.client.Plugins.CreateJwtsignerPlugin(ctx, request)
 	if err != nil {
@@ -750,19 +784,19 @@ func (r *GatewayPluginJWTSignerResource) Create(ctx context.Context, req resourc
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.JWTSignerPlugin != nil) {
+	if !(res.JwtSignerPlugin != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedJWTSignerPlugin(res.JWTSignerPlugin)
+	data.RefreshFromSharedJwtSignerPlugin(res.JwtSignerPlugin)
 	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *GatewayPluginJWTSignerResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data *GatewayPluginJWTSignerResourceModel
+func (r *GatewayPluginJwtSignerResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var data *GatewayPluginJwtSignerResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -809,18 +843,18 @@ func (r *GatewayPluginJWTSignerResource) Read(ctx context.Context, req resource.
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.JWTSignerPlugin != nil) {
+	if !(res.JwtSignerPlugin != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedJWTSignerPlugin(res.JWTSignerPlugin)
+	data.RefreshFromSharedJwtSignerPlugin(res.JwtSignerPlugin)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *GatewayPluginJWTSignerResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data *GatewayPluginJWTSignerResourceModel
+func (r *GatewayPluginJwtSignerResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var data *GatewayPluginJwtSignerResourceModel
 	var plan types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -839,11 +873,11 @@ func (r *GatewayPluginJWTSignerResource) Update(ctx context.Context, req resourc
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createJWTSignerPlugin := data.ToSharedCreateJWTSignerPlugin()
+	createJwtSignerPlugin := data.ToSharedCreateJwtSignerPlugin()
 	request := operations.UpdateJwtsignerPluginRequest{
 		PluginID:              pluginID,
 		ControlPlaneID:        controlPlaneID,
-		CreateJWTSignerPlugin: createJWTSignerPlugin,
+		CreateJwtSignerPlugin: createJwtSignerPlugin,
 	}
 	res, err := r.client.Plugins.UpdateJwtsignerPlugin(ctx, request)
 	if err != nil {
@@ -861,19 +895,19 @@ func (r *GatewayPluginJWTSignerResource) Update(ctx context.Context, req resourc
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.JWTSignerPlugin != nil) {
+	if !(res.JwtSignerPlugin != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedJWTSignerPlugin(res.JWTSignerPlugin)
+	data.RefreshFromSharedJwtSignerPlugin(res.JwtSignerPlugin)
 	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *GatewayPluginJWTSignerResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var data *GatewayPluginJWTSignerResourceModel
+func (r *GatewayPluginJwtSignerResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var data *GatewayPluginJwtSignerResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -919,7 +953,7 @@ func (r *GatewayPluginJWTSignerResource) Delete(ctx context.Context, req resourc
 
 }
 
-func (r *GatewayPluginJWTSignerResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *GatewayPluginJwtSignerResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
 	dec.DisallowUnknownFields()
 	var data struct {

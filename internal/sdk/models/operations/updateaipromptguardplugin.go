@@ -12,7 +12,7 @@ type UpdateAipromptguardPluginRequest struct {
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID            string                            `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateAIPromptGuardPlugin *shared.CreateAIPromptGuardPlugin `request:"mediaType=application/json"`
+	CreateAiPromptGuardPlugin *shared.CreateAiPromptGuardPlugin `request:"mediaType=application/json"`
 }
 
 func (o *UpdateAipromptguardPluginRequest) GetPluginID() string {
@@ -29,11 +29,11 @@ func (o *UpdateAipromptguardPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateAipromptguardPluginRequest) GetCreateAIPromptGuardPlugin() *shared.CreateAIPromptGuardPlugin {
+func (o *UpdateAipromptguardPluginRequest) GetCreateAiPromptGuardPlugin() *shared.CreateAiPromptGuardPlugin {
 	if o == nil {
 		return nil
 	}
-	return o.CreateAIPromptGuardPlugin
+	return o.CreateAiPromptGuardPlugin
 }
 
 type UpdateAipromptguardPluginResponse struct {
@@ -43,8 +43,8 @@ type UpdateAipromptguardPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// AIPromptGuard plugin
-	AIPromptGuardPlugin *shared.AIPromptGuardPlugin
+	// AiPromptGuard plugin
+	AiPromptGuardPlugin *shared.AiPromptGuardPlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
@@ -70,11 +70,11 @@ func (o *UpdateAipromptguardPluginResponse) GetRawResponse() *http.Response {
 	return o.RawResponse
 }
 
-func (o *UpdateAipromptguardPluginResponse) GetAIPromptGuardPlugin() *shared.AIPromptGuardPlugin {
+func (o *UpdateAipromptguardPluginResponse) GetAiPromptGuardPlugin() *shared.AiPromptGuardPlugin {
 	if o == nil {
 		return nil
 	}
-	return o.AIPromptGuardPlugin
+	return o.AiPromptGuardPlugin
 }
 
 func (o *UpdateAipromptguardPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
