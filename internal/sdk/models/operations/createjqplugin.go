@@ -10,7 +10,7 @@ import (
 type CreateJqPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string                 `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateJQPlugin *shared.CreateJQPlugin `request:"mediaType=application/json"`
+	CreateJqPlugin *shared.CreateJqPlugin `request:"mediaType=application/json"`
 }
 
 func (o *CreateJqPluginRequest) GetControlPlaneID() string {
@@ -20,11 +20,11 @@ func (o *CreateJqPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateJqPluginRequest) GetCreateJQPlugin() *shared.CreateJQPlugin {
+func (o *CreateJqPluginRequest) GetCreateJqPlugin() *shared.CreateJqPlugin {
 	if o == nil {
 		return nil
 	}
-	return o.CreateJQPlugin
+	return o.CreateJqPlugin
 }
 
 type CreateJqPluginResponse struct {
@@ -34,8 +34,8 @@ type CreateJqPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Created JQ plugin
-	JQPlugin *shared.JQPlugin
+	// Created Jq plugin
+	JqPlugin *shared.JqPlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
@@ -61,11 +61,11 @@ func (o *CreateJqPluginResponse) GetRawResponse() *http.Response {
 	return o.RawResponse
 }
 
-func (o *CreateJqPluginResponse) GetJQPlugin() *shared.JQPlugin {
+func (o *CreateJqPluginResponse) GetJqPlugin() *shared.JqPlugin {
 	if o == nil {
 		return nil
 	}
-	return o.JQPlugin
+	return o.JqPlugin
 }
 
 func (o *CreateJqPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {

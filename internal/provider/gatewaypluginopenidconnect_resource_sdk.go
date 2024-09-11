@@ -174,6 +174,10 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedCreateOpenidConnectPlu
 		} else {
 			cacheUserInfo = nil
 		}
+		var claimsForbidden []string = []string{}
+		for _, claimsForbiddenItem := range r.Config.ClaimsForbidden {
+			claimsForbidden = append(claimsForbidden, claimsForbiddenItem.ValueString())
+		}
 		var clientAlg []shared.CreateOpenidConnectPluginClientAlg = []shared.CreateOpenidConnectPluginClientAlg{}
 		for _, clientAlgItem := range r.Config.ClientAlg {
 			clientAlg = append(clientAlg, shared.CreateOpenidConnectPluginClientAlg(clientAlgItem.ValueString()))
@@ -375,6 +379,190 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedCreateOpenidConnectPlu
 		var clientSecret []string = []string{}
 		for _, clientSecretItem := range r.Config.ClientSecret {
 			clientSecret = append(clientSecret, clientSecretItem.ValueString())
+		}
+		var clusterCacheRedis *shared.CreateOpenidConnectPluginClusterCacheRedis
+		if r.Config.ClusterCacheRedis != nil {
+			clusterMaxRedirections := new(int64)
+			if !r.Config.ClusterCacheRedis.ClusterMaxRedirections.IsUnknown() && !r.Config.ClusterCacheRedis.ClusterMaxRedirections.IsNull() {
+				*clusterMaxRedirections = r.Config.ClusterCacheRedis.ClusterMaxRedirections.ValueInt64()
+			} else {
+				clusterMaxRedirections = nil
+			}
+			var clusterNodes []shared.CreateOpenidConnectPluginClusterNodes = []shared.CreateOpenidConnectPluginClusterNodes{}
+			for _, clusterNodesItem := range r.Config.ClusterCacheRedis.ClusterNodes {
+				ip := new(string)
+				if !clusterNodesItem.IP.IsUnknown() && !clusterNodesItem.IP.IsNull() {
+					*ip = clusterNodesItem.IP.ValueString()
+				} else {
+					ip = nil
+				}
+				port := new(int64)
+				if !clusterNodesItem.Port.IsUnknown() && !clusterNodesItem.Port.IsNull() {
+					*port = clusterNodesItem.Port.ValueInt64()
+				} else {
+					port = nil
+				}
+				clusterNodes = append(clusterNodes, shared.CreateOpenidConnectPluginClusterNodes{
+					IP:   ip,
+					Port: port,
+				})
+			}
+			connectTimeout := new(int64)
+			if !r.Config.ClusterCacheRedis.ConnectTimeout.IsUnknown() && !r.Config.ClusterCacheRedis.ConnectTimeout.IsNull() {
+				*connectTimeout = r.Config.ClusterCacheRedis.ConnectTimeout.ValueInt64()
+			} else {
+				connectTimeout = nil
+			}
+			connectionIsProxied := new(bool)
+			if !r.Config.ClusterCacheRedis.ConnectionIsProxied.IsUnknown() && !r.Config.ClusterCacheRedis.ConnectionIsProxied.IsNull() {
+				*connectionIsProxied = r.Config.ClusterCacheRedis.ConnectionIsProxied.ValueBool()
+			} else {
+				connectionIsProxied = nil
+			}
+			database := new(int64)
+			if !r.Config.ClusterCacheRedis.Database.IsUnknown() && !r.Config.ClusterCacheRedis.Database.IsNull() {
+				*database = r.Config.ClusterCacheRedis.Database.ValueInt64()
+			} else {
+				database = nil
+			}
+			host := new(string)
+			if !r.Config.ClusterCacheRedis.Host.IsUnknown() && !r.Config.ClusterCacheRedis.Host.IsNull() {
+				*host = r.Config.ClusterCacheRedis.Host.ValueString()
+			} else {
+				host = nil
+			}
+			keepaliveBacklog := new(int64)
+			if !r.Config.ClusterCacheRedis.KeepaliveBacklog.IsUnknown() && !r.Config.ClusterCacheRedis.KeepaliveBacklog.IsNull() {
+				*keepaliveBacklog = r.Config.ClusterCacheRedis.KeepaliveBacklog.ValueInt64()
+			} else {
+				keepaliveBacklog = nil
+			}
+			keepalivePoolSize := new(int64)
+			if !r.Config.ClusterCacheRedis.KeepalivePoolSize.IsUnknown() && !r.Config.ClusterCacheRedis.KeepalivePoolSize.IsNull() {
+				*keepalivePoolSize = r.Config.ClusterCacheRedis.KeepalivePoolSize.ValueInt64()
+			} else {
+				keepalivePoolSize = nil
+			}
+			password := new(string)
+			if !r.Config.ClusterCacheRedis.Password.IsUnknown() && !r.Config.ClusterCacheRedis.Password.IsNull() {
+				*password = r.Config.ClusterCacheRedis.Password.ValueString()
+			} else {
+				password = nil
+			}
+			port1 := new(int64)
+			if !r.Config.ClusterCacheRedis.Port.IsUnknown() && !r.Config.ClusterCacheRedis.Port.IsNull() {
+				*port1 = r.Config.ClusterCacheRedis.Port.ValueInt64()
+			} else {
+				port1 = nil
+			}
+			readTimeout := new(int64)
+			if !r.Config.ClusterCacheRedis.ReadTimeout.IsUnknown() && !r.Config.ClusterCacheRedis.ReadTimeout.IsNull() {
+				*readTimeout = r.Config.ClusterCacheRedis.ReadTimeout.ValueInt64()
+			} else {
+				readTimeout = nil
+			}
+			sendTimeout := new(int64)
+			if !r.Config.ClusterCacheRedis.SendTimeout.IsUnknown() && !r.Config.ClusterCacheRedis.SendTimeout.IsNull() {
+				*sendTimeout = r.Config.ClusterCacheRedis.SendTimeout.ValueInt64()
+			} else {
+				sendTimeout = nil
+			}
+			sentinelMaster := new(string)
+			if !r.Config.ClusterCacheRedis.SentinelMaster.IsUnknown() && !r.Config.ClusterCacheRedis.SentinelMaster.IsNull() {
+				*sentinelMaster = r.Config.ClusterCacheRedis.SentinelMaster.ValueString()
+			} else {
+				sentinelMaster = nil
+			}
+			var sentinelNodes []shared.CreateOpenidConnectPluginSentinelNodes = []shared.CreateOpenidConnectPluginSentinelNodes{}
+			for _, sentinelNodesItem := range r.Config.ClusterCacheRedis.SentinelNodes {
+				host1 := new(string)
+				if !sentinelNodesItem.Host.IsUnknown() && !sentinelNodesItem.Host.IsNull() {
+					*host1 = sentinelNodesItem.Host.ValueString()
+				} else {
+					host1 = nil
+				}
+				port2 := new(int64)
+				if !sentinelNodesItem.Port.IsUnknown() && !sentinelNodesItem.Port.IsNull() {
+					*port2 = sentinelNodesItem.Port.ValueInt64()
+				} else {
+					port2 = nil
+				}
+				sentinelNodes = append(sentinelNodes, shared.CreateOpenidConnectPluginSentinelNodes{
+					Host: host1,
+					Port: port2,
+				})
+			}
+			sentinelPassword := new(string)
+			if !r.Config.ClusterCacheRedis.SentinelPassword.IsUnknown() && !r.Config.ClusterCacheRedis.SentinelPassword.IsNull() {
+				*sentinelPassword = r.Config.ClusterCacheRedis.SentinelPassword.ValueString()
+			} else {
+				sentinelPassword = nil
+			}
+			sentinelRole := new(shared.CreateOpenidConnectPluginSentinelRole)
+			if !r.Config.ClusterCacheRedis.SentinelRole.IsUnknown() && !r.Config.ClusterCacheRedis.SentinelRole.IsNull() {
+				*sentinelRole = shared.CreateOpenidConnectPluginSentinelRole(r.Config.ClusterCacheRedis.SentinelRole.ValueString())
+			} else {
+				sentinelRole = nil
+			}
+			sentinelUsername := new(string)
+			if !r.Config.ClusterCacheRedis.SentinelUsername.IsUnknown() && !r.Config.ClusterCacheRedis.SentinelUsername.IsNull() {
+				*sentinelUsername = r.Config.ClusterCacheRedis.SentinelUsername.ValueString()
+			} else {
+				sentinelUsername = nil
+			}
+			serverName := new(string)
+			if !r.Config.ClusterCacheRedis.ServerName.IsUnknown() && !r.Config.ClusterCacheRedis.ServerName.IsNull() {
+				*serverName = r.Config.ClusterCacheRedis.ServerName.ValueString()
+			} else {
+				serverName = nil
+			}
+			ssl := new(bool)
+			if !r.Config.ClusterCacheRedis.Ssl.IsUnknown() && !r.Config.ClusterCacheRedis.Ssl.IsNull() {
+				*ssl = r.Config.ClusterCacheRedis.Ssl.ValueBool()
+			} else {
+				ssl = nil
+			}
+			sslVerify := new(bool)
+			if !r.Config.ClusterCacheRedis.SslVerify.IsUnknown() && !r.Config.ClusterCacheRedis.SslVerify.IsNull() {
+				*sslVerify = r.Config.ClusterCacheRedis.SslVerify.ValueBool()
+			} else {
+				sslVerify = nil
+			}
+			username := new(string)
+			if !r.Config.ClusterCacheRedis.Username.IsUnknown() && !r.Config.ClusterCacheRedis.Username.IsNull() {
+				*username = r.Config.ClusterCacheRedis.Username.ValueString()
+			} else {
+				username = nil
+			}
+			clusterCacheRedis = &shared.CreateOpenidConnectPluginClusterCacheRedis{
+				ClusterMaxRedirections: clusterMaxRedirections,
+				ClusterNodes:           clusterNodes,
+				ConnectTimeout:         connectTimeout,
+				ConnectionIsProxied:    connectionIsProxied,
+				Database:               database,
+				Host:                   host,
+				KeepaliveBacklog:       keepaliveBacklog,
+				KeepalivePoolSize:      keepalivePoolSize,
+				Password:               password,
+				Port:                   port1,
+				ReadTimeout:            readTimeout,
+				SendTimeout:            sendTimeout,
+				SentinelMaster:         sentinelMaster,
+				SentinelNodes:          sentinelNodes,
+				SentinelPassword:       sentinelPassword,
+				SentinelRole:           sentinelRole,
+				SentinelUsername:       sentinelUsername,
+				ServerName:             serverName,
+				Ssl:                    ssl,
+				SslVerify:              sslVerify,
+				Username:               username,
+			}
+		}
+		clusterCacheStrategy := new(shared.CreateOpenidConnectPluginClusterCacheStrategy)
+		if !r.Config.ClusterCacheStrategy.IsUnknown() && !r.Config.ClusterCacheStrategy.IsNull() {
+			*clusterCacheStrategy = shared.CreateOpenidConnectPluginClusterCacheStrategy(r.Config.ClusterCacheStrategy.ValueString())
+		} else {
+			clusterCacheStrategy = nil
 		}
 		var consumerBy []shared.CreateOpenidConnectPluginConsumerBy = []shared.CreateOpenidConnectPluginConsumerBy{}
 		for _, consumerByItem := range r.Config.ConsumerBy {
@@ -834,6 +1022,198 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedCreateOpenidConnectPlu
 		for _, redirectURIItem := range r.Config.RedirectURI {
 			redirectURI = append(redirectURI, redirectURIItem.ValueString())
 		}
+		var redis *shared.CreateOpenidConnectPluginRedis
+		if r.Config.Redis != nil {
+			clusterMaxRedirections1 := new(int64)
+			if !r.Config.Redis.ClusterMaxRedirections.IsUnknown() && !r.Config.Redis.ClusterMaxRedirections.IsNull() {
+				*clusterMaxRedirections1 = r.Config.Redis.ClusterMaxRedirections.ValueInt64()
+			} else {
+				clusterMaxRedirections1 = nil
+			}
+			var clusterNodes1 []shared.CreateOpenidConnectPluginConfigClusterNodes = []shared.CreateOpenidConnectPluginConfigClusterNodes{}
+			for _, clusterNodesItem1 := range r.Config.Redis.ClusterNodes {
+				ip1 := new(string)
+				if !clusterNodesItem1.IP.IsUnknown() && !clusterNodesItem1.IP.IsNull() {
+					*ip1 = clusterNodesItem1.IP.ValueString()
+				} else {
+					ip1 = nil
+				}
+				port3 := new(int64)
+				if !clusterNodesItem1.Port.IsUnknown() && !clusterNodesItem1.Port.IsNull() {
+					*port3 = clusterNodesItem1.Port.ValueInt64()
+				} else {
+					port3 = nil
+				}
+				clusterNodes1 = append(clusterNodes1, shared.CreateOpenidConnectPluginConfigClusterNodes{
+					IP:   ip1,
+					Port: port3,
+				})
+			}
+			connectTimeout1 := new(int64)
+			if !r.Config.Redis.ConnectTimeout.IsUnknown() && !r.Config.Redis.ConnectTimeout.IsNull() {
+				*connectTimeout1 = r.Config.Redis.ConnectTimeout.ValueInt64()
+			} else {
+				connectTimeout1 = nil
+			}
+			connectionIsProxied1 := new(bool)
+			if !r.Config.Redis.ConnectionIsProxied.IsUnknown() && !r.Config.Redis.ConnectionIsProxied.IsNull() {
+				*connectionIsProxied1 = r.Config.Redis.ConnectionIsProxied.ValueBool()
+			} else {
+				connectionIsProxied1 = nil
+			}
+			database1 := new(int64)
+			if !r.Config.Redis.Database.IsUnknown() && !r.Config.Redis.Database.IsNull() {
+				*database1 = r.Config.Redis.Database.ValueInt64()
+			} else {
+				database1 = nil
+			}
+			host2 := new(string)
+			if !r.Config.Redis.Host.IsUnknown() && !r.Config.Redis.Host.IsNull() {
+				*host2 = r.Config.Redis.Host.ValueString()
+			} else {
+				host2 = nil
+			}
+			keepaliveBacklog1 := new(int64)
+			if !r.Config.Redis.KeepaliveBacklog.IsUnknown() && !r.Config.Redis.KeepaliveBacklog.IsNull() {
+				*keepaliveBacklog1 = r.Config.Redis.KeepaliveBacklog.ValueInt64()
+			} else {
+				keepaliveBacklog1 = nil
+			}
+			keepalivePoolSize1 := new(int64)
+			if !r.Config.Redis.KeepalivePoolSize.IsUnknown() && !r.Config.Redis.KeepalivePoolSize.IsNull() {
+				*keepalivePoolSize1 = r.Config.Redis.KeepalivePoolSize.ValueInt64()
+			} else {
+				keepalivePoolSize1 = nil
+			}
+			password1 := new(string)
+			if !r.Config.Redis.Password.IsUnknown() && !r.Config.Redis.Password.IsNull() {
+				*password1 = r.Config.Redis.Password.ValueString()
+			} else {
+				password1 = nil
+			}
+			port4 := new(int64)
+			if !r.Config.Redis.Port.IsUnknown() && !r.Config.Redis.Port.IsNull() {
+				*port4 = r.Config.Redis.Port.ValueInt64()
+			} else {
+				port4 = nil
+			}
+			prefix := new(string)
+			if !r.Config.Redis.Prefix.IsUnknown() && !r.Config.Redis.Prefix.IsNull() {
+				*prefix = r.Config.Redis.Prefix.ValueString()
+			} else {
+				prefix = nil
+			}
+			readTimeout1 := new(int64)
+			if !r.Config.Redis.ReadTimeout.IsUnknown() && !r.Config.Redis.ReadTimeout.IsNull() {
+				*readTimeout1 = r.Config.Redis.ReadTimeout.ValueInt64()
+			} else {
+				readTimeout1 = nil
+			}
+			sendTimeout1 := new(int64)
+			if !r.Config.Redis.SendTimeout.IsUnknown() && !r.Config.Redis.SendTimeout.IsNull() {
+				*sendTimeout1 = r.Config.Redis.SendTimeout.ValueInt64()
+			} else {
+				sendTimeout1 = nil
+			}
+			sentinelMaster1 := new(string)
+			if !r.Config.Redis.SentinelMaster.IsUnknown() && !r.Config.Redis.SentinelMaster.IsNull() {
+				*sentinelMaster1 = r.Config.Redis.SentinelMaster.ValueString()
+			} else {
+				sentinelMaster1 = nil
+			}
+			var sentinelNodes1 []shared.CreateOpenidConnectPluginConfigSentinelNodes = []shared.CreateOpenidConnectPluginConfigSentinelNodes{}
+			for _, sentinelNodesItem1 := range r.Config.Redis.SentinelNodes {
+				host3 := new(string)
+				if !sentinelNodesItem1.Host.IsUnknown() && !sentinelNodesItem1.Host.IsNull() {
+					*host3 = sentinelNodesItem1.Host.ValueString()
+				} else {
+					host3 = nil
+				}
+				port5 := new(int64)
+				if !sentinelNodesItem1.Port.IsUnknown() && !sentinelNodesItem1.Port.IsNull() {
+					*port5 = sentinelNodesItem1.Port.ValueInt64()
+				} else {
+					port5 = nil
+				}
+				sentinelNodes1 = append(sentinelNodes1, shared.CreateOpenidConnectPluginConfigSentinelNodes{
+					Host: host3,
+					Port: port5,
+				})
+			}
+			sentinelPassword1 := new(string)
+			if !r.Config.Redis.SentinelPassword.IsUnknown() && !r.Config.Redis.SentinelPassword.IsNull() {
+				*sentinelPassword1 = r.Config.Redis.SentinelPassword.ValueString()
+			} else {
+				sentinelPassword1 = nil
+			}
+			sentinelRole1 := new(shared.CreateOpenidConnectPluginConfigSentinelRole)
+			if !r.Config.Redis.SentinelRole.IsUnknown() && !r.Config.Redis.SentinelRole.IsNull() {
+				*sentinelRole1 = shared.CreateOpenidConnectPluginConfigSentinelRole(r.Config.Redis.SentinelRole.ValueString())
+			} else {
+				sentinelRole1 = nil
+			}
+			sentinelUsername1 := new(string)
+			if !r.Config.Redis.SentinelUsername.IsUnknown() && !r.Config.Redis.SentinelUsername.IsNull() {
+				*sentinelUsername1 = r.Config.Redis.SentinelUsername.ValueString()
+			} else {
+				sentinelUsername1 = nil
+			}
+			serverName1 := new(string)
+			if !r.Config.Redis.ServerName.IsUnknown() && !r.Config.Redis.ServerName.IsNull() {
+				*serverName1 = r.Config.Redis.ServerName.ValueString()
+			} else {
+				serverName1 = nil
+			}
+			socket := new(string)
+			if !r.Config.Redis.Socket.IsUnknown() && !r.Config.Redis.Socket.IsNull() {
+				*socket = r.Config.Redis.Socket.ValueString()
+			} else {
+				socket = nil
+			}
+			ssl1 := new(bool)
+			if !r.Config.Redis.Ssl.IsUnknown() && !r.Config.Redis.Ssl.IsNull() {
+				*ssl1 = r.Config.Redis.Ssl.ValueBool()
+			} else {
+				ssl1 = nil
+			}
+			sslVerify1 := new(bool)
+			if !r.Config.Redis.SslVerify.IsUnknown() && !r.Config.Redis.SslVerify.IsNull() {
+				*sslVerify1 = r.Config.Redis.SslVerify.ValueBool()
+			} else {
+				sslVerify1 = nil
+			}
+			username1 := new(string)
+			if !r.Config.Redis.Username.IsUnknown() && !r.Config.Redis.Username.IsNull() {
+				*username1 = r.Config.Redis.Username.ValueString()
+			} else {
+				username1 = nil
+			}
+			redis = &shared.CreateOpenidConnectPluginRedis{
+				ClusterMaxRedirections: clusterMaxRedirections1,
+				ClusterNodes:           clusterNodes1,
+				ConnectTimeout:         connectTimeout1,
+				ConnectionIsProxied:    connectionIsProxied1,
+				Database:               database1,
+				Host:                   host2,
+				KeepaliveBacklog:       keepaliveBacklog1,
+				KeepalivePoolSize:      keepalivePoolSize1,
+				Password:               password1,
+				Port:                   port4,
+				Prefix:                 prefix,
+				ReadTimeout:            readTimeout1,
+				SendTimeout:            sendTimeout1,
+				SentinelMaster:         sentinelMaster1,
+				SentinelNodes:          sentinelNodes1,
+				SentinelPassword:       sentinelPassword1,
+				SentinelRole:           sentinelRole1,
+				SentinelUsername:       sentinelUsername1,
+				ServerName:             serverName1,
+				Socket:                 socket,
+				Ssl:                    ssl1,
+				SslVerify:              sslVerify1,
+				Username:               username1,
+			}
+		}
 		rediscoveryLifetime := new(float64)
 		if !r.Config.RediscoveryLifetime.IsUnknown() && !r.Config.RediscoveryLifetime.IsNull() {
 			*rediscoveryLifetime, _ = r.Config.RediscoveryLifetime.ValueBigFloat().Float64()
@@ -1042,103 +1422,6 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedCreateOpenidConnectPlu
 		} else {
 			sessionMemcachedSocket = nil
 		}
-		sessionRedisClusterMaxRedirections := new(int64)
-		if !r.Config.SessionRedisClusterMaxRedirections.IsUnknown() && !r.Config.SessionRedisClusterMaxRedirections.IsNull() {
-			*sessionRedisClusterMaxRedirections = r.Config.SessionRedisClusterMaxRedirections.ValueInt64()
-		} else {
-			sessionRedisClusterMaxRedirections = nil
-		}
-		var sessionRedisClusterNodes []shared.CreateOpenidConnectPluginSessionRedisClusterNodes = []shared.CreateOpenidConnectPluginSessionRedisClusterNodes{}
-		for _, sessionRedisClusterNodesItem := range r.Config.SessionRedisClusterNodes {
-			ip := new(string)
-			if !sessionRedisClusterNodesItem.IP.IsUnknown() && !sessionRedisClusterNodesItem.IP.IsNull() {
-				*ip = sessionRedisClusterNodesItem.IP.ValueString()
-			} else {
-				ip = nil
-			}
-			port := new(int64)
-			if !sessionRedisClusterNodesItem.Port.IsUnknown() && !sessionRedisClusterNodesItem.Port.IsNull() {
-				*port = sessionRedisClusterNodesItem.Port.ValueInt64()
-			} else {
-				port = nil
-			}
-			sessionRedisClusterNodes = append(sessionRedisClusterNodes, shared.CreateOpenidConnectPluginSessionRedisClusterNodes{
-				IP:   ip,
-				Port: port,
-			})
-		}
-		sessionRedisConnectTimeout := new(int64)
-		if !r.Config.SessionRedisConnectTimeout.IsUnknown() && !r.Config.SessionRedisConnectTimeout.IsNull() {
-			*sessionRedisConnectTimeout = r.Config.SessionRedisConnectTimeout.ValueInt64()
-		} else {
-			sessionRedisConnectTimeout = nil
-		}
-		sessionRedisHost := new(string)
-		if !r.Config.SessionRedisHost.IsUnknown() && !r.Config.SessionRedisHost.IsNull() {
-			*sessionRedisHost = r.Config.SessionRedisHost.ValueString()
-		} else {
-			sessionRedisHost = nil
-		}
-		sessionRedisPassword := new(string)
-		if !r.Config.SessionRedisPassword.IsUnknown() && !r.Config.SessionRedisPassword.IsNull() {
-			*sessionRedisPassword = r.Config.SessionRedisPassword.ValueString()
-		} else {
-			sessionRedisPassword = nil
-		}
-		sessionRedisPort := new(int64)
-		if !r.Config.SessionRedisPort.IsUnknown() && !r.Config.SessionRedisPort.IsNull() {
-			*sessionRedisPort = r.Config.SessionRedisPort.ValueInt64()
-		} else {
-			sessionRedisPort = nil
-		}
-		sessionRedisPrefix := new(string)
-		if !r.Config.SessionRedisPrefix.IsUnknown() && !r.Config.SessionRedisPrefix.IsNull() {
-			*sessionRedisPrefix = r.Config.SessionRedisPrefix.ValueString()
-		} else {
-			sessionRedisPrefix = nil
-		}
-		sessionRedisReadTimeout := new(int64)
-		if !r.Config.SessionRedisReadTimeout.IsUnknown() && !r.Config.SessionRedisReadTimeout.IsNull() {
-			*sessionRedisReadTimeout = r.Config.SessionRedisReadTimeout.ValueInt64()
-		} else {
-			sessionRedisReadTimeout = nil
-		}
-		sessionRedisSendTimeout := new(int64)
-		if !r.Config.SessionRedisSendTimeout.IsUnknown() && !r.Config.SessionRedisSendTimeout.IsNull() {
-			*sessionRedisSendTimeout = r.Config.SessionRedisSendTimeout.ValueInt64()
-		} else {
-			sessionRedisSendTimeout = nil
-		}
-		sessionRedisServerName := new(string)
-		if !r.Config.SessionRedisServerName.IsUnknown() && !r.Config.SessionRedisServerName.IsNull() {
-			*sessionRedisServerName = r.Config.SessionRedisServerName.ValueString()
-		} else {
-			sessionRedisServerName = nil
-		}
-		sessionRedisSocket := new(string)
-		if !r.Config.SessionRedisSocket.IsUnknown() && !r.Config.SessionRedisSocket.IsNull() {
-			*sessionRedisSocket = r.Config.SessionRedisSocket.ValueString()
-		} else {
-			sessionRedisSocket = nil
-		}
-		sessionRedisSsl := new(bool)
-		if !r.Config.SessionRedisSsl.IsUnknown() && !r.Config.SessionRedisSsl.IsNull() {
-			*sessionRedisSsl = r.Config.SessionRedisSsl.ValueBool()
-		} else {
-			sessionRedisSsl = nil
-		}
-		sessionRedisSslVerify := new(bool)
-		if !r.Config.SessionRedisSslVerify.IsUnknown() && !r.Config.SessionRedisSslVerify.IsNull() {
-			*sessionRedisSslVerify = r.Config.SessionRedisSslVerify.ValueBool()
-		} else {
-			sessionRedisSslVerify = nil
-		}
-		sessionRedisUsername := new(string)
-		if !r.Config.SessionRedisUsername.IsUnknown() && !r.Config.SessionRedisUsername.IsNull() {
-			*sessionRedisUsername = r.Config.SessionRedisUsername.ValueString()
-		} else {
-			sessionRedisUsername = nil
-		}
 		sessionRemember := new(bool)
 		if !r.Config.SessionRemember.IsUnknown() && !r.Config.SessionRemember.IsNull() {
 			*sessionRemember = r.Config.SessionRemember.ValueBool()
@@ -1195,11 +1478,11 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedCreateOpenidConnectPlu
 		} else {
 			sessionStoreMetadata = nil
 		}
-		sslVerify := new(bool)
+		sslVerify2 := new(bool)
 		if !r.Config.SslVerify.IsUnknown() && !r.Config.SslVerify.IsNull() {
-			*sslVerify = r.Config.SslVerify.ValueBool()
+			*sslVerify2 = r.Config.SslVerify.ValueBool()
 		} else {
-			sslVerify = nil
+			sslVerify2 = nil
 		}
 		timeout := new(float64)
 		if !r.Config.Timeout.IsUnknown() && !r.Config.Timeout.IsNull() {
@@ -1466,6 +1749,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedCreateOpenidConnectPlu
 			CacheTTLNeg:                            cacheTTLNeg,
 			CacheTTLResurrect:                      cacheTTLResurrect,
 			CacheUserInfo:                          cacheUserInfo,
+			ClaimsForbidden:                        claimsForbidden,
 			ClientAlg:                              clientAlg,
 			ClientArg:                              clientArg,
 			ClientAuth:                             clientAuth,
@@ -1473,6 +1757,8 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedCreateOpenidConnectPlu
 			ClientID:                               clientID,
 			ClientJwk:                              clientJwk,
 			ClientSecret:                           clientSecret,
+			ClusterCacheRedis:                      clusterCacheRedis,
+			ClusterCacheStrategy:                   clusterCacheStrategy,
 			ConsumerBy:                             consumerBy,
 			ConsumerClaim:                          consumerClaim,
 			ConsumerOptional:                       consumerOptional,
@@ -1559,6 +1845,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedCreateOpenidConnectPlu
 			PushedAuthorizationRequestEndpoint:     pushedAuthorizationRequestEndpoint,
 			PushedAuthorizationRequestEndpointAuthMethod: pushedAuthorizationRequestEndpointAuthMethod,
 			RedirectURI:                        redirectURI,
+			Redis:                              redis,
 			RediscoveryLifetime:                rediscoveryLifetime,
 			RefreshTokenParamName:              refreshTokenParamName,
 			RefreshTokenParamType:              refreshTokenParamType,
@@ -1596,20 +1883,6 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedCreateOpenidConnectPlu
 			SessionMemcachedPort:               sessionMemcachedPort,
 			SessionMemcachedPrefix:             sessionMemcachedPrefix,
 			SessionMemcachedSocket:             sessionMemcachedSocket,
-			SessionRedisClusterMaxRedirections: sessionRedisClusterMaxRedirections,
-			SessionRedisClusterNodes:           sessionRedisClusterNodes,
-			SessionRedisConnectTimeout:         sessionRedisConnectTimeout,
-			SessionRedisHost:                   sessionRedisHost,
-			SessionRedisPassword:               sessionRedisPassword,
-			SessionRedisPort:                   sessionRedisPort,
-			SessionRedisPrefix:                 sessionRedisPrefix,
-			SessionRedisReadTimeout:            sessionRedisReadTimeout,
-			SessionRedisSendTimeout:            sessionRedisSendTimeout,
-			SessionRedisServerName:             sessionRedisServerName,
-			SessionRedisSocket:                 sessionRedisSocket,
-			SessionRedisSsl:                    sessionRedisSsl,
-			SessionRedisSslVerify:              sessionRedisSslVerify,
-			SessionRedisUsername:               sessionRedisUsername,
 			SessionRemember:                    sessionRemember,
 			SessionRememberAbsoluteTimeout:     sessionRememberAbsoluteTimeout,
 			SessionRememberCookieName:          sessionRememberCookieName,
@@ -1620,7 +1893,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedCreateOpenidConnectPlu
 			SessionSecret:                      sessionSecret,
 			SessionStorage:                     sessionStorage,
 			SessionStoreMetadata:               sessionStoreMetadata,
-			SslVerify:                          sslVerify,
+			SslVerify:                          sslVerify2,
 			Timeout:                            timeout,
 			TLSClientAuthCertID:                tlsClientAuthCertID,
 			TLSClientAuthSslVerify:             tlsClientAuthSslVerify,
@@ -1679,6 +1952,33 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedCreateOpenidConnectPlu
 		*instanceName = r.InstanceName.ValueString()
 	} else {
 		instanceName = nil
+	}
+	var ordering *shared.CreateOpenidConnectPluginOrdering
+	if r.Ordering != nil {
+		var after *shared.CreateOpenidConnectPluginAfter
+		if r.Ordering.After != nil {
+			var access []string = []string{}
+			for _, accessItem := range r.Ordering.After.Access {
+				access = append(access, accessItem.ValueString())
+			}
+			after = &shared.CreateOpenidConnectPluginAfter{
+				Access: access,
+			}
+		}
+		var before *shared.CreateOpenidConnectPluginBefore
+		if r.Ordering.Before != nil {
+			var access1 []string = []string{}
+			for _, accessItem1 := range r.Ordering.Before.Access {
+				access1 = append(access1, accessItem1.ValueString())
+			}
+			before = &shared.CreateOpenidConnectPluginBefore{
+				Access: access1,
+			}
+		}
+		ordering = &shared.CreateOpenidConnectPluginOrdering{
+			After:  after,
+			Before: before,
+		}
 	}
 	var protocols []shared.CreateOpenidConnectPluginProtocols = []shared.CreateOpenidConnectPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
@@ -1740,6 +2040,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedCreateOpenidConnectPlu
 		Config:        config,
 		Enabled:       enabled,
 		InstanceName:  instanceName,
+		Ordering:      ordering,
 		Protocols:     protocols,
 		Tags:          tags,
 		Consumer:      consumer,
@@ -1841,6 +2142,10 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 				r.Config.CacheTTLResurrect = types.NumberNull()
 			}
 			r.Config.CacheUserInfo = types.BoolPointerValue(resp.Config.CacheUserInfo)
+			r.Config.ClaimsForbidden = []types.String{}
+			for _, v := range resp.Config.ClaimsForbidden {
+				r.Config.ClaimsForbidden = append(r.Config.ClaimsForbidden, types.StringValue(v))
+			}
 			r.Config.ClientAlg = []types.String{}
 			for _, v := range resp.Config.ClientAlg {
 				r.Config.ClientAlg = append(r.Config.ClientAlg, types.StringValue(string(v)))
@@ -1858,12 +2163,12 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			for _, v := range resp.Config.ClientID {
 				r.Config.ClientID = append(r.Config.ClientID, types.StringValue(v))
 			}
-			r.Config.ClientJwk = []tfTypes.ClientJwk{}
+			r.Config.ClientJwk = []tfTypes.KonnectApplicationAuthPluginClientJwk{}
 			if len(r.Config.ClientJwk) > len(resp.Config.ClientJwk) {
 				r.Config.ClientJwk = r.Config.ClientJwk[:len(resp.Config.ClientJwk)]
 			}
 			for clientJwkCount, clientJwkItem := range resp.Config.ClientJwk {
-				var clientJwk1 tfTypes.ClientJwk
+				var clientJwk1 tfTypes.KonnectApplicationAuthPluginClientJwk
 				clientJwk1.Alg = types.StringPointerValue(clientJwkItem.Alg)
 				clientJwk1.Crv = types.StringPointerValue(clientJwkItem.Crv)
 				clientJwk1.D = types.StringPointerValue(clientJwkItem.D)
@@ -1928,6 +2233,69 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			r.Config.ClientSecret = []types.String{}
 			for _, v := range resp.Config.ClientSecret {
 				r.Config.ClientSecret = append(r.Config.ClientSecret, types.StringValue(v))
+			}
+			if resp.Config.ClusterCacheRedis == nil {
+				r.Config.ClusterCacheRedis = nil
+			} else {
+				r.Config.ClusterCacheRedis = &tfTypes.CreateGraphqlProxyCacheAdvancedPluginRedis{}
+				r.Config.ClusterCacheRedis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.ClusterCacheRedis.ClusterMaxRedirections)
+				r.Config.ClusterCacheRedis.ClusterNodes = []tfTypes.ClusterNodes{}
+				if len(r.Config.ClusterCacheRedis.ClusterNodes) > len(resp.Config.ClusterCacheRedis.ClusterNodes) {
+					r.Config.ClusterCacheRedis.ClusterNodes = r.Config.ClusterCacheRedis.ClusterNodes[:len(resp.Config.ClusterCacheRedis.ClusterNodes)]
+				}
+				for clusterNodesCount, clusterNodesItem := range resp.Config.ClusterCacheRedis.ClusterNodes {
+					var clusterNodes1 tfTypes.ClusterNodes
+					clusterNodes1.IP = types.StringPointerValue(clusterNodesItem.IP)
+					clusterNodes1.Port = types.Int64PointerValue(clusterNodesItem.Port)
+					if clusterNodesCount+1 > len(r.Config.ClusterCacheRedis.ClusterNodes) {
+						r.Config.ClusterCacheRedis.ClusterNodes = append(r.Config.ClusterCacheRedis.ClusterNodes, clusterNodes1)
+					} else {
+						r.Config.ClusterCacheRedis.ClusterNodes[clusterNodesCount].IP = clusterNodes1.IP
+						r.Config.ClusterCacheRedis.ClusterNodes[clusterNodesCount].Port = clusterNodes1.Port
+					}
+				}
+				r.Config.ClusterCacheRedis.ConnectTimeout = types.Int64PointerValue(resp.Config.ClusterCacheRedis.ConnectTimeout)
+				r.Config.ClusterCacheRedis.ConnectionIsProxied = types.BoolPointerValue(resp.Config.ClusterCacheRedis.ConnectionIsProxied)
+				r.Config.ClusterCacheRedis.Database = types.Int64PointerValue(resp.Config.ClusterCacheRedis.Database)
+				r.Config.ClusterCacheRedis.Host = types.StringPointerValue(resp.Config.ClusterCacheRedis.Host)
+				r.Config.ClusterCacheRedis.KeepaliveBacklog = types.Int64PointerValue(resp.Config.ClusterCacheRedis.KeepaliveBacklog)
+				r.Config.ClusterCacheRedis.KeepalivePoolSize = types.Int64PointerValue(resp.Config.ClusterCacheRedis.KeepalivePoolSize)
+				r.Config.ClusterCacheRedis.Password = types.StringPointerValue(resp.Config.ClusterCacheRedis.Password)
+				r.Config.ClusterCacheRedis.Port = types.Int64PointerValue(resp.Config.ClusterCacheRedis.Port)
+				r.Config.ClusterCacheRedis.ReadTimeout = types.Int64PointerValue(resp.Config.ClusterCacheRedis.ReadTimeout)
+				r.Config.ClusterCacheRedis.SendTimeout = types.Int64PointerValue(resp.Config.ClusterCacheRedis.SendTimeout)
+				r.Config.ClusterCacheRedis.SentinelMaster = types.StringPointerValue(resp.Config.ClusterCacheRedis.SentinelMaster)
+				r.Config.ClusterCacheRedis.SentinelNodes = []tfTypes.SentinelNodes{}
+				if len(r.Config.ClusterCacheRedis.SentinelNodes) > len(resp.Config.ClusterCacheRedis.SentinelNodes) {
+					r.Config.ClusterCacheRedis.SentinelNodes = r.Config.ClusterCacheRedis.SentinelNodes[:len(resp.Config.ClusterCacheRedis.SentinelNodes)]
+				}
+				for sentinelNodesCount, sentinelNodesItem := range resp.Config.ClusterCacheRedis.SentinelNodes {
+					var sentinelNodes1 tfTypes.SentinelNodes
+					sentinelNodes1.Host = types.StringPointerValue(sentinelNodesItem.Host)
+					sentinelNodes1.Port = types.Int64PointerValue(sentinelNodesItem.Port)
+					if sentinelNodesCount+1 > len(r.Config.ClusterCacheRedis.SentinelNodes) {
+						r.Config.ClusterCacheRedis.SentinelNodes = append(r.Config.ClusterCacheRedis.SentinelNodes, sentinelNodes1)
+					} else {
+						r.Config.ClusterCacheRedis.SentinelNodes[sentinelNodesCount].Host = sentinelNodes1.Host
+						r.Config.ClusterCacheRedis.SentinelNodes[sentinelNodesCount].Port = sentinelNodes1.Port
+					}
+				}
+				r.Config.ClusterCacheRedis.SentinelPassword = types.StringPointerValue(resp.Config.ClusterCacheRedis.SentinelPassword)
+				if resp.Config.ClusterCacheRedis.SentinelRole != nil {
+					r.Config.ClusterCacheRedis.SentinelRole = types.StringValue(string(*resp.Config.ClusterCacheRedis.SentinelRole))
+				} else {
+					r.Config.ClusterCacheRedis.SentinelRole = types.StringNull()
+				}
+				r.Config.ClusterCacheRedis.SentinelUsername = types.StringPointerValue(resp.Config.ClusterCacheRedis.SentinelUsername)
+				r.Config.ClusterCacheRedis.ServerName = types.StringPointerValue(resp.Config.ClusterCacheRedis.ServerName)
+				r.Config.ClusterCacheRedis.Ssl = types.BoolPointerValue(resp.Config.ClusterCacheRedis.Ssl)
+				r.Config.ClusterCacheRedis.SslVerify = types.BoolPointerValue(resp.Config.ClusterCacheRedis.SslVerify)
+				r.Config.ClusterCacheRedis.Username = types.StringPointerValue(resp.Config.ClusterCacheRedis.Username)
+			}
+			if resp.Config.ClusterCacheStrategy != nil {
+				r.Config.ClusterCacheStrategy = types.StringValue(string(*resp.Config.ClusterCacheStrategy))
+			} else {
+				r.Config.ClusterCacheStrategy = types.StringNull()
 			}
 			r.Config.ConsumerBy = []types.String{}
 			for _, v := range resp.Config.ConsumerBy {
@@ -2146,6 +2514,66 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			for _, v := range resp.Config.RedirectURI {
 				r.Config.RedirectURI = append(r.Config.RedirectURI, types.StringValue(v))
 			}
+			if resp.Config.Redis == nil {
+				r.Config.Redis = nil
+			} else {
+				r.Config.Redis = &tfTypes.CreateKonnectApplicationAuthPluginRedis{}
+				r.Config.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Redis.ClusterMaxRedirections)
+				r.Config.Redis.ClusterNodes = []tfTypes.ClusterNodes{}
+				if len(r.Config.Redis.ClusterNodes) > len(resp.Config.Redis.ClusterNodes) {
+					r.Config.Redis.ClusterNodes = r.Config.Redis.ClusterNodes[:len(resp.Config.Redis.ClusterNodes)]
+				}
+				for clusterNodesCount1, clusterNodesItem1 := range resp.Config.Redis.ClusterNodes {
+					var clusterNodes3 tfTypes.ClusterNodes
+					clusterNodes3.IP = types.StringPointerValue(clusterNodesItem1.IP)
+					clusterNodes3.Port = types.Int64PointerValue(clusterNodesItem1.Port)
+					if clusterNodesCount1+1 > len(r.Config.Redis.ClusterNodes) {
+						r.Config.Redis.ClusterNodes = append(r.Config.Redis.ClusterNodes, clusterNodes3)
+					} else {
+						r.Config.Redis.ClusterNodes[clusterNodesCount1].IP = clusterNodes3.IP
+						r.Config.Redis.ClusterNodes[clusterNodesCount1].Port = clusterNodes3.Port
+					}
+				}
+				r.Config.Redis.ConnectTimeout = types.Int64PointerValue(resp.Config.Redis.ConnectTimeout)
+				r.Config.Redis.ConnectionIsProxied = types.BoolPointerValue(resp.Config.Redis.ConnectionIsProxied)
+				r.Config.Redis.Database = types.Int64PointerValue(resp.Config.Redis.Database)
+				r.Config.Redis.Host = types.StringPointerValue(resp.Config.Redis.Host)
+				r.Config.Redis.KeepaliveBacklog = types.Int64PointerValue(resp.Config.Redis.KeepaliveBacklog)
+				r.Config.Redis.KeepalivePoolSize = types.Int64PointerValue(resp.Config.Redis.KeepalivePoolSize)
+				r.Config.Redis.Password = types.StringPointerValue(resp.Config.Redis.Password)
+				r.Config.Redis.Port = types.Int64PointerValue(resp.Config.Redis.Port)
+				r.Config.Redis.Prefix = types.StringPointerValue(resp.Config.Redis.Prefix)
+				r.Config.Redis.ReadTimeout = types.Int64PointerValue(resp.Config.Redis.ReadTimeout)
+				r.Config.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Redis.SendTimeout)
+				r.Config.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Redis.SentinelMaster)
+				r.Config.Redis.SentinelNodes = []tfTypes.SentinelNodes{}
+				if len(r.Config.Redis.SentinelNodes) > len(resp.Config.Redis.SentinelNodes) {
+					r.Config.Redis.SentinelNodes = r.Config.Redis.SentinelNodes[:len(resp.Config.Redis.SentinelNodes)]
+				}
+				for sentinelNodesCount1, sentinelNodesItem1 := range resp.Config.Redis.SentinelNodes {
+					var sentinelNodes3 tfTypes.SentinelNodes
+					sentinelNodes3.Host = types.StringPointerValue(sentinelNodesItem1.Host)
+					sentinelNodes3.Port = types.Int64PointerValue(sentinelNodesItem1.Port)
+					if sentinelNodesCount1+1 > len(r.Config.Redis.SentinelNodes) {
+						r.Config.Redis.SentinelNodes = append(r.Config.Redis.SentinelNodes, sentinelNodes3)
+					} else {
+						r.Config.Redis.SentinelNodes[sentinelNodesCount1].Host = sentinelNodes3.Host
+						r.Config.Redis.SentinelNodes[sentinelNodesCount1].Port = sentinelNodes3.Port
+					}
+				}
+				r.Config.Redis.SentinelPassword = types.StringPointerValue(resp.Config.Redis.SentinelPassword)
+				if resp.Config.Redis.SentinelRole != nil {
+					r.Config.Redis.SentinelRole = types.StringValue(string(*resp.Config.Redis.SentinelRole))
+				} else {
+					r.Config.Redis.SentinelRole = types.StringNull()
+				}
+				r.Config.Redis.SentinelUsername = types.StringPointerValue(resp.Config.Redis.SentinelUsername)
+				r.Config.Redis.ServerName = types.StringPointerValue(resp.Config.Redis.ServerName)
+				r.Config.Redis.Socket = types.StringPointerValue(resp.Config.Redis.Socket)
+				r.Config.Redis.Ssl = types.BoolPointerValue(resp.Config.Redis.Ssl)
+				r.Config.Redis.SslVerify = types.BoolPointerValue(resp.Config.Redis.SslVerify)
+				r.Config.Redis.Username = types.StringPointerValue(resp.Config.Redis.Username)
+			}
 			if resp.Config.RediscoveryLifetime != nil {
 				r.Config.RediscoveryLifetime = types.NumberValue(big.NewFloat(float64(*resp.Config.RediscoveryLifetime)))
 			} else {
@@ -2228,34 +2656,6 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			r.Config.SessionMemcachedPort = types.Int64PointerValue(resp.Config.SessionMemcachedPort)
 			r.Config.SessionMemcachedPrefix = types.StringPointerValue(resp.Config.SessionMemcachedPrefix)
 			r.Config.SessionMemcachedSocket = types.StringPointerValue(resp.Config.SessionMemcachedSocket)
-			r.Config.SessionRedisClusterMaxRedirections = types.Int64PointerValue(resp.Config.SessionRedisClusterMaxRedirections)
-			r.Config.SessionRedisClusterNodes = []tfTypes.SessionRedisClusterNodes{}
-			if len(r.Config.SessionRedisClusterNodes) > len(resp.Config.SessionRedisClusterNodes) {
-				r.Config.SessionRedisClusterNodes = r.Config.SessionRedisClusterNodes[:len(resp.Config.SessionRedisClusterNodes)]
-			}
-			for sessionRedisClusterNodesCount, sessionRedisClusterNodesItem := range resp.Config.SessionRedisClusterNodes {
-				var sessionRedisClusterNodes1 tfTypes.SessionRedisClusterNodes
-				sessionRedisClusterNodes1.IP = types.StringPointerValue(sessionRedisClusterNodesItem.IP)
-				sessionRedisClusterNodes1.Port = types.Int64PointerValue(sessionRedisClusterNodesItem.Port)
-				if sessionRedisClusterNodesCount+1 > len(r.Config.SessionRedisClusterNodes) {
-					r.Config.SessionRedisClusterNodes = append(r.Config.SessionRedisClusterNodes, sessionRedisClusterNodes1)
-				} else {
-					r.Config.SessionRedisClusterNodes[sessionRedisClusterNodesCount].IP = sessionRedisClusterNodes1.IP
-					r.Config.SessionRedisClusterNodes[sessionRedisClusterNodesCount].Port = sessionRedisClusterNodes1.Port
-				}
-			}
-			r.Config.SessionRedisConnectTimeout = types.Int64PointerValue(resp.Config.SessionRedisConnectTimeout)
-			r.Config.SessionRedisHost = types.StringPointerValue(resp.Config.SessionRedisHost)
-			r.Config.SessionRedisPassword = types.StringPointerValue(resp.Config.SessionRedisPassword)
-			r.Config.SessionRedisPort = types.Int64PointerValue(resp.Config.SessionRedisPort)
-			r.Config.SessionRedisPrefix = types.StringPointerValue(resp.Config.SessionRedisPrefix)
-			r.Config.SessionRedisReadTimeout = types.Int64PointerValue(resp.Config.SessionRedisReadTimeout)
-			r.Config.SessionRedisSendTimeout = types.Int64PointerValue(resp.Config.SessionRedisSendTimeout)
-			r.Config.SessionRedisServerName = types.StringPointerValue(resp.Config.SessionRedisServerName)
-			r.Config.SessionRedisSocket = types.StringPointerValue(resp.Config.SessionRedisSocket)
-			r.Config.SessionRedisSsl = types.BoolPointerValue(resp.Config.SessionRedisSsl)
-			r.Config.SessionRedisSslVerify = types.BoolPointerValue(resp.Config.SessionRedisSslVerify)
-			r.Config.SessionRedisUsername = types.StringPointerValue(resp.Config.SessionRedisUsername)
 			r.Config.SessionRemember = types.BoolPointerValue(resp.Config.SessionRemember)
 			if resp.Config.SessionRememberAbsoluteTimeout != nil {
 				r.Config.SessionRememberAbsoluteTimeout = types.NumberValue(big.NewFloat(float64(*resp.Config.SessionRememberAbsoluteTimeout)))
@@ -2417,6 +2817,29 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.InstanceName = types.StringPointerValue(resp.InstanceName)
+		if resp.Ordering == nil {
+			r.Ordering = nil
+		} else {
+			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			if resp.Ordering.After == nil {
+				r.Ordering.After = nil
+			} else {
+				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After.Access = []types.String{}
+				for _, v := range resp.Ordering.After.Access {
+					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				}
+			}
+			if resp.Ordering.Before == nil {
+				r.Ordering.Before = nil
+			} else {
+				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before.Access = []types.String{}
+				for _, v := range resp.Ordering.Before.Access {
+					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				}
+			}
+		}
 		r.Protocols = []types.String{}
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))

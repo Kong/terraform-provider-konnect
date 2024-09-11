@@ -37,6 +37,7 @@ type GatewayPluginPrometheusDataSourceModel struct {
 	Enabled        types.Bool                            `tfsdk:"enabled"`
 	ID             types.String                          `tfsdk:"id"`
 	InstanceName   types.String                          `tfsdk:"instance_name"`
+	Ordering       *tfTypes.CreateACLPluginOrdering      `tfsdk:"ordering"`
 	Protocols      []types.String                        `tfsdk:"protocols"`
 	Route          *tfTypes.ACLConsumer                  `tfsdk:"route"`
 	Service        *tfTypes.ACLConsumer                  `tfsdk:"service"`
@@ -58,6 +59,10 @@ func (r *GatewayPluginPrometheusDataSource) Schema(ctx context.Context, req data
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
+					"ai_metrics": schema.BoolAttribute{
+						Computed:    true,
+						Description: `A boolean value that determines if ai metrics should be collected. If enabled, the ` + "`" + `ai_llm_requests_total` + "`" + `, ` + "`" + `ai_llm_cost_total` + "`" + ` and ` + "`" + `ai_llm_tokens_total` + "`" + ` metrics will be exported.`,
+					},
 					"bandwidth_metrics": schema.BoolAttribute{
 						Computed:    true,
 						Description: `A boolean value that determines if bandwidth metrics should be collected. If enabled, ` + "`" + `bandwidth_bytes` + "`" + ` and ` + "`" + `stream_sessions_total` + "`" + ` metrics will be exported.`,
@@ -99,7 +104,7 @@ func (r *GatewayPluginPrometheusDataSource) Schema(ctx context.Context, req data
 			},
 			"control_plane_id": schema.StringAttribute{
 				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager.`,
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed. `,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
@@ -114,6 +119,29 @@ func (r *GatewayPluginPrometheusDataSource) Schema(ctx context.Context, req data
 			},
 			"instance_name": schema.StringAttribute{
 				Computed: true,
+			},
+			"ordering": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"after": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+					"before": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+				},
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,

@@ -4,12 +4,12 @@ package types
 
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
-type CreateJQPluginConfig struct {
+type CreateJqPluginConfig struct {
 	RequestIfMediaType       []types.String                         `tfsdk:"request_if_media_type"`
 	RequestJqProgram         types.String                           `tfsdk:"request_jq_program"`
-	RequestJqProgramOptions  *CreateJQPluginRequestJQProgramOptions `tfsdk:"request_jq_program_options"`
+	RequestJqProgramOptions  *CreateJqPluginRequestJqProgramOptions `tfsdk:"request_jq_program_options"`
 	ResponseIfMediaType      []types.String                         `tfsdk:"response_if_media_type"`
 	ResponseIfStatusCode     []types.Int64                          `tfsdk:"response_if_status_code"`
 	ResponseJqProgram        types.String                           `tfsdk:"response_jq_program"`
-	ResponseJqProgramOptions *CreateJQPluginRequestJQProgramOptions `tfsdk:"response_jq_program_options"`
+	ResponseJqProgramOptions *CreateJqPluginRequestJqProgramOptions `tfsdk:"response_jq_program_options"`
 }

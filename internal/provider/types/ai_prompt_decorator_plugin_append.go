@@ -4,7 +4,7 @@ package types
 
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
-type AIPromptDecoratorPluginAppend struct {
+type AiPromptDecoratorPluginAppend struct {
 	Content types.String `tfsdk:"content"`
 	Role    types.String `tfsdk:"role"`
 }

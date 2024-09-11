@@ -66,6 +66,47 @@ func (o *RequestTerminationPluginConfig) GetTrigger() *string {
 	return o.Trigger
 }
 
+type RequestTerminationPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *RequestTerminationPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type RequestTerminationPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *RequestTerminationPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type RequestTerminationPluginOrdering struct {
+	After  *RequestTerminationPluginAfter  `json:"after,omitempty"`
+	Before *RequestTerminationPluginBefore `json:"before,omitempty"`
+}
+
+func (o *RequestTerminationPluginOrdering) GetAfter() *RequestTerminationPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *RequestTerminationPluginOrdering) GetBefore() *RequestTerminationPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
 type RequestTerminationPluginProtocols string
 
 const (
@@ -168,10 +209,11 @@ type RequestTerminationPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool   `json:"enabled,omitempty"`
-	ID           *string `json:"id,omitempty"`
-	InstanceName *string `json:"instance_name,omitempty"`
-	name         *string `const:"request-termination" json:"name,omitempty"`
+	Enabled      *bool                             `json:"enabled,omitempty"`
+	ID           *string                           `json:"id,omitempty"`
+	InstanceName *string                           `json:"instance_name,omitempty"`
+	name         *string                           `const:"request-termination" json:"name,omitempty"`
+	Ordering     *RequestTerminationPluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []RequestTerminationPluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
@@ -235,6 +277,13 @@ func (o *RequestTerminationPlugin) GetInstanceName() *string {
 
 func (o *RequestTerminationPlugin) GetName() *string {
 	return types.String("request-termination")
+}
+
+func (o *RequestTerminationPlugin) GetOrdering() *RequestTerminationPluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
 }
 
 func (o *RequestTerminationPlugin) GetProtocols() []RequestTerminationPluginProtocols {

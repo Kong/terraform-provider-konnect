@@ -15,44 +15,45 @@ import (
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
-var _ datasource.DataSource = &GatewayPluginJQDataSource{}
-var _ datasource.DataSourceWithConfigure = &GatewayPluginJQDataSource{}
+var _ datasource.DataSource = &GatewayPluginJqDataSource{}
+var _ datasource.DataSourceWithConfigure = &GatewayPluginJqDataSource{}
 
-func NewGatewayPluginJQDataSource() datasource.DataSource {
-	return &GatewayPluginJQDataSource{}
+func NewGatewayPluginJqDataSource() datasource.DataSource {
+	return &GatewayPluginJqDataSource{}
 }
 
-// GatewayPluginJQDataSource is the data source implementation.
-type GatewayPluginJQDataSource struct {
+// GatewayPluginJqDataSource is the data source implementation.
+type GatewayPluginJqDataSource struct {
 	client *sdk.Konnect
 }
 
-// GatewayPluginJQDataSourceModel describes the data model.
-type GatewayPluginJQDataSourceModel struct {
-	Config         *tfTypes.CreateJQPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer          `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLConsumer          `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                  `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                   `tfsdk:"created_at"`
-	Enabled        types.Bool                    `tfsdk:"enabled"`
-	ID             types.String                  `tfsdk:"id"`
-	InstanceName   types.String                  `tfsdk:"instance_name"`
-	Protocols      []types.String                `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer          `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer          `tfsdk:"service"`
-	Tags           []types.String                `tfsdk:"tags"`
-	UpdatedAt      types.Int64                   `tfsdk:"updated_at"`
+// GatewayPluginJqDataSourceModel describes the data model.
+type GatewayPluginJqDataSourceModel struct {
+	Config         *tfTypes.CreateJqPluginConfig    `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer             `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer             `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                     `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                      `tfsdk:"created_at"`
+	Enabled        types.Bool                       `tfsdk:"enabled"`
+	ID             types.String                     `tfsdk:"id"`
+	InstanceName   types.String                     `tfsdk:"instance_name"`
+	Ordering       *tfTypes.CreateACLPluginOrdering `tfsdk:"ordering"`
+	Protocols      []types.String                   `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer             `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer             `tfsdk:"service"`
+	Tags           []types.String                   `tfsdk:"tags"`
+	UpdatedAt      types.Int64                      `tfsdk:"updated_at"`
 }
 
 // Metadata returns the data source type name.
-func (r *GatewayPluginJQDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+func (r *GatewayPluginJqDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_gateway_plugin_jq"
 }
 
 // Schema defines the schema for the data source.
-func (r *GatewayPluginJQDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
+func (r *GatewayPluginJqDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "GatewayPluginJQ DataSource",
+		MarkdownDescription: "GatewayPluginJq DataSource",
 
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
@@ -137,7 +138,7 @@ func (r *GatewayPluginJQDataSource) Schema(ctx context.Context, req datasource.S
 			},
 			"control_plane_id": schema.StringAttribute{
 				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager.`,
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed. `,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
@@ -152,6 +153,29 @@ func (r *GatewayPluginJQDataSource) Schema(ctx context.Context, req datasource.S
 			},
 			"instance_name": schema.StringAttribute{
 				Computed: true,
+			},
+			"ordering": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"after": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+					"before": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+				},
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,
@@ -189,7 +213,7 @@ func (r *GatewayPluginJQDataSource) Schema(ctx context.Context, req datasource.S
 	}
 }
 
-func (r *GatewayPluginJQDataSource) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
+func (r *GatewayPluginJqDataSource) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
 	// Prevent panic if the provider has not been configured.
 	if req.ProviderData == nil {
 		return
@@ -209,8 +233,8 @@ func (r *GatewayPluginJQDataSource) Configure(ctx context.Context, req datasourc
 	r.client = client
 }
 
-func (r *GatewayPluginJQDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
-	var data *GatewayPluginJQDataSourceModel
+func (r *GatewayPluginJqDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
+	var data *GatewayPluginJqDataSourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.Config.Get(ctx, &item)...)
@@ -257,11 +281,11 @@ func (r *GatewayPluginJQDataSource) Read(ctx context.Context, req datasource.Rea
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.JQPlugin != nil) {
+	if !(res.JqPlugin != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedJQPlugin(res.JQPlugin)
+	data.RefreshFromSharedJqPlugin(res.JqPlugin)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

@@ -22,6 +22,12 @@ func (r *APIProductVersionDataSourceModel) RefreshFromSharedAPIProductVersion(re
 			r.GatewayService.RuntimeGroupID = types.StringPointerValue(resp.GatewayService.RuntimeGroupID)
 		}
 		r.ID = types.StringValue(resp.ID)
+		if len(resp.Labels) > 0 {
+			r.Labels = make(map[string]types.String)
+			for key, value := range resp.Labels {
+				r.Labels[key] = types.StringValue(value)
+			}
+		}
 		r.Name = types.StringValue(resp.Name)
 		r.Portals = []tfTypes.APIProductVersionPortal{}
 		if len(r.Portals) > len(resp.Portals) {

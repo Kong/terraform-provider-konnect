@@ -12,12 +12,12 @@ import (
 func (r *GatewayRouteDataSourceModel) RefreshFromSharedRoute(resp *shared.Route) {
 	if resp != nil {
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
-		r.Destinations = []tfTypes.SessionRedisClusterNodes{}
+		r.Destinations = []tfTypes.ClusterNodes{}
 		if len(r.Destinations) > len(resp.Destinations) {
 			r.Destinations = r.Destinations[:len(resp.Destinations)]
 		}
 		for destinationsCount, destinationsItem := range resp.Destinations {
-			var destinations1 tfTypes.SessionRedisClusterNodes
+			var destinations1 tfTypes.ClusterNodes
 			destinations1.IP = types.StringPointerValue(destinationsItem.IP)
 			destinations1.Port = types.Int64PointerValue(destinationsItem.Port)
 			if destinationsCount+1 > len(r.Destinations) {
@@ -76,12 +76,12 @@ func (r *GatewayRouteDataSourceModel) RefreshFromSharedRoute(resp *shared.Route)
 		for _, v := range resp.Snis {
 			r.Snis = append(r.Snis, types.StringValue(v))
 		}
-		r.Sources = []tfTypes.SessionRedisClusterNodes{}
+		r.Sources = []tfTypes.ClusterNodes{}
 		if len(r.Sources) > len(resp.Sources) {
 			r.Sources = r.Sources[:len(resp.Sources)]
 		}
 		for sourcesCount, sourcesItem := range resp.Sources {
-			var sources1 tfTypes.SessionRedisClusterNodes
+			var sources1 tfTypes.ClusterNodes
 			sources1.IP = types.StringPointerValue(sourcesItem.IP)
 			sources1.Port = types.Int64PointerValue(sourcesItem.Port)
 			if sourcesCount+1 > len(r.Sources) {

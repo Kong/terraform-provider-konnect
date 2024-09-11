@@ -57,6 +57,11 @@ type UpdateAPIProductVersionDTO struct {
 	//
 	Notify         *bool                  `json:"notify,omitempty"`
 	GatewayService *GatewayServicePayload `json:"gateway_service,omitempty"`
+	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
+	//
+	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+	//
+	Labels map[string]string `json:"labels,omitempty"`
 }
 
 func (o *UpdateAPIProductVersionDTO) GetName() *string {
@@ -92,4 +97,11 @@ func (o *UpdateAPIProductVersionDTO) GetGatewayService() *GatewayServicePayload 
 		return nil
 	}
 	return o.GatewayService
+}
+
+func (o *UpdateAPIProductVersionDTO) GetLabels() map[string]string {
+	if o == nil {
+		return nil
+	}
+	return o.Labels
 }

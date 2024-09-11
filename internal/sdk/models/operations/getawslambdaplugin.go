@@ -35,8 +35,8 @@ type GetAwslambdaPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// AWSLambda plugin
-	AWSLambdaPlugin *shared.AWSLambdaPlugin
+	// AwsLambda plugin
+	AwsLambdaPlugin *shared.AwsLambdaPlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
@@ -62,11 +62,11 @@ func (o *GetAwslambdaPluginResponse) GetRawResponse() *http.Response {
 	return o.RawResponse
 }
 
-func (o *GetAwslambdaPluginResponse) GetAWSLambdaPlugin() *shared.AWSLambdaPlugin {
+func (o *GetAwslambdaPluginResponse) GetAwsLambdaPlugin() *shared.AwsLambdaPlugin {
 	if o == nil {
 		return nil
 	}
-	return o.AWSLambdaPlugin
+	return o.AwsLambdaPlugin
 }
 
 func (o *GetAwslambdaPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {

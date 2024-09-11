@@ -51,6 +51,48 @@ func (e *CreateRateLimitingAdvancedPluginIdentifier) UnmarshalJSON(data []byte) 
 	}
 }
 
+type CreateRateLimitingAdvancedPluginClusterNodes struct {
+	// A string representing a host name, such as example.com.
+	IP *string `json:"ip,omitempty"`
+	// An integer representing a port number between 0 and 65535, inclusive.
+	Port *int64 `json:"port,omitempty"`
+}
+
+func (o *CreateRateLimitingAdvancedPluginClusterNodes) GetIP() *string {
+	if o == nil {
+		return nil
+	}
+	return o.IP
+}
+
+func (o *CreateRateLimitingAdvancedPluginClusterNodes) GetPort() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.Port
+}
+
+type CreateRateLimitingAdvancedPluginSentinelNodes struct {
+	// A string representing a host name, such as example.com.
+	Host *string `json:"host,omitempty"`
+	// An integer representing a port number between 0 and 65535, inclusive.
+	Port *int64 `json:"port,omitempty"`
+}
+
+func (o *CreateRateLimitingAdvancedPluginSentinelNodes) GetHost() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Host
+}
+
+func (o *CreateRateLimitingAdvancedPluginSentinelNodes) GetPort() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.Port
+}
+
 // CreateRateLimitingAdvancedPluginSentinelRole - Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
 type CreateRateLimitingAdvancedPluginSentinelRole string
 
@@ -82,10 +124,14 @@ func (e *CreateRateLimitingAdvancedPluginSentinelRole) UnmarshalJSON(data []byte
 }
 
 type CreateRateLimitingAdvancedPluginRedis struct {
-	// Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Cluster. Each string element must be a hostname. The minimum length of the array is 1 element.
-	ClusterAddresses []string `json:"cluster_addresses,omitempty"`
+	// Maximum retry attempts for redirection.
+	ClusterMaxRedirections *int64 `json:"cluster_max_redirections,omitempty"`
+	// Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
+	ClusterNodes []CreateRateLimitingAdvancedPluginClusterNodes `json:"cluster_nodes,omitempty"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	ConnectTimeout *int64 `json:"connect_timeout,omitempty"`
+	// If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address.
+	ConnectionIsProxied *bool `json:"connection_is_proxied,omitempty"`
 	// Database to use for the Redis connection when using the `redis` strategy
 	Database *int64 `json:"database,omitempty"`
 	// A string representing a host name, such as example.com.
@@ -102,10 +148,10 @@ type CreateRateLimitingAdvancedPluginRedis struct {
 	ReadTimeout *int64 `json:"read_timeout,omitempty"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	SendTimeout *int64 `json:"send_timeout,omitempty"`
-	// Sentinel addresses to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. Each string element must be a hostname. The minimum length of the array is 1 element.
-	SentinelAddresses []string `json:"sentinel_addresses,omitempty"`
 	// Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
 	SentinelMaster *string `json:"sentinel_master,omitempty"`
+	// Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
+	SentinelNodes []CreateRateLimitingAdvancedPluginSentinelNodes `json:"sentinel_nodes,omitempty"`
 	// Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
 	SentinelPassword *string `json:"sentinel_password,omitempty"`
 	// Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
@@ -118,17 +164,22 @@ type CreateRateLimitingAdvancedPluginRedis struct {
 	Ssl *bool `json:"ssl,omitempty"`
 	// If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
 	SslVerify *bool `json:"ssl_verify,omitempty"`
-	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	Timeout *int64 `json:"timeout,omitempty"`
 	// Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
 	Username *string `json:"username,omitempty"`
 }
 
-func (o *CreateRateLimitingAdvancedPluginRedis) GetClusterAddresses() []string {
+func (o *CreateRateLimitingAdvancedPluginRedis) GetClusterMaxRedirections() *int64 {
 	if o == nil {
 		return nil
 	}
-	return o.ClusterAddresses
+	return o.ClusterMaxRedirections
+}
+
+func (o *CreateRateLimitingAdvancedPluginRedis) GetClusterNodes() []CreateRateLimitingAdvancedPluginClusterNodes {
+	if o == nil {
+		return nil
+	}
+	return o.ClusterNodes
 }
 
 func (o *CreateRateLimitingAdvancedPluginRedis) GetConnectTimeout() *int64 {
@@ -136,6 +187,13 @@ func (o *CreateRateLimitingAdvancedPluginRedis) GetConnectTimeout() *int64 {
 		return nil
 	}
 	return o.ConnectTimeout
+}
+
+func (o *CreateRateLimitingAdvancedPluginRedis) GetConnectionIsProxied() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectionIsProxied
 }
 
 func (o *CreateRateLimitingAdvancedPluginRedis) GetDatabase() *int64 {
@@ -194,18 +252,18 @@ func (o *CreateRateLimitingAdvancedPluginRedis) GetSendTimeout() *int64 {
 	return o.SendTimeout
 }
 
-func (o *CreateRateLimitingAdvancedPluginRedis) GetSentinelAddresses() []string {
-	if o == nil {
-		return nil
-	}
-	return o.SentinelAddresses
-}
-
 func (o *CreateRateLimitingAdvancedPluginRedis) GetSentinelMaster() *string {
 	if o == nil {
 		return nil
 	}
 	return o.SentinelMaster
+}
+
+func (o *CreateRateLimitingAdvancedPluginRedis) GetSentinelNodes() []CreateRateLimitingAdvancedPluginSentinelNodes {
+	if o == nil {
+		return nil
+	}
+	return o.SentinelNodes
 }
 
 func (o *CreateRateLimitingAdvancedPluginRedis) GetSentinelPassword() *string {
@@ -248,13 +306,6 @@ func (o *CreateRateLimitingAdvancedPluginRedis) GetSslVerify() *bool {
 		return nil
 	}
 	return o.SslVerify
-}
-
-func (o *CreateRateLimitingAdvancedPluginRedis) GetTimeout() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.Timeout
 }
 
 func (o *CreateRateLimitingAdvancedPluginRedis) GetUsername() *string {
@@ -485,6 +536,47 @@ func (o *CreateRateLimitingAdvancedPluginConfig) GetWindowType() *CreateRateLimi
 	return o.WindowType
 }
 
+type CreateRateLimitingAdvancedPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *CreateRateLimitingAdvancedPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type CreateRateLimitingAdvancedPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *CreateRateLimitingAdvancedPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type CreateRateLimitingAdvancedPluginOrdering struct {
+	After  *CreateRateLimitingAdvancedPluginAfter  `json:"after,omitempty"`
+	Before *CreateRateLimitingAdvancedPluginBefore `json:"before,omitempty"`
+}
+
+func (o *CreateRateLimitingAdvancedPluginOrdering) GetAfter() *CreateRateLimitingAdvancedPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *CreateRateLimitingAdvancedPluginOrdering) GetBefore() *CreateRateLimitingAdvancedPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
 type CreateRateLimitingAdvancedPluginProtocols string
 
 const (
@@ -585,9 +677,10 @@ func (o *CreateRateLimitingAdvancedPluginService) GetID() *string {
 type CreateRateLimitingAdvancedPlugin struct {
 	Config *CreateRateLimitingAdvancedPluginConfig `json:"config,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool   `json:"enabled,omitempty"`
-	InstanceName *string `json:"instance_name,omitempty"`
-	name         *string `const:"rate-limiting-advanced" json:"name,omitempty"`
+	Enabled      *bool                                     `json:"enabled,omitempty"`
+	InstanceName *string                                   `json:"instance_name,omitempty"`
+	name         *string                                   `const:"rate-limiting-advanced" json:"name,omitempty"`
+	Ordering     *CreateRateLimitingAdvancedPluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []CreateRateLimitingAdvancedPluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
@@ -635,6 +728,13 @@ func (o *CreateRateLimitingAdvancedPlugin) GetInstanceName() *string {
 
 func (o *CreateRateLimitingAdvancedPlugin) GetName() *string {
 	return types.String("rate-limiting-advanced")
+}
+
+func (o *CreateRateLimitingAdvancedPlugin) GetOrdering() *CreateRateLimitingAdvancedPluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
 }
 
 func (o *CreateRateLimitingAdvancedPlugin) GetProtocols() []CreateRateLimitingAdvancedPluginProtocols {

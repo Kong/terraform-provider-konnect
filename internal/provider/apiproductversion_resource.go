@@ -41,6 +41,7 @@ type APIProductVersionResourceModel struct {
 	Deprecated     types.Bool                        `tfsdk:"deprecated"`
 	GatewayService *tfTypes.GatewayServicePayload    `tfsdk:"gateway_service"`
 	ID             types.String                      `tfsdk:"id"`
+	Labels         map[string]types.String           `tfsdk:"labels"`
 	Name           types.String                      `tfsdk:"name"`
 	Portals        []tfTypes.APIProductVersionPortal `tfsdk:"portals"`
 	UpdatedAt      types.String                      `tfsdk:"updated_at"`
@@ -99,6 +100,15 @@ func (r *APIProductVersionResource) Schema(ctx context.Context, req resource.Sch
 			"id": schema.StringAttribute{
 				Computed:    true,
 				Description: `The API product version identifier`,
+			},
+			"labels": schema.MapAttribute{
+				Computed:    true,
+				Optional:    true,
+				ElementType: types.StringType,
+				MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
+					`` + "\n" +
+					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".` + "\n" +
+					``,
 			},
 			"name": schema.StringAttribute{
 				Required:    true,

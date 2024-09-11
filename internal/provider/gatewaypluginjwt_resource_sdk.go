@@ -9,8 +9,8 @@ import (
 	"math/big"
 )
 
-func (r *GatewayPluginJWTResourceModel) ToSharedCreateJWTPlugin() *shared.CreateJWTPlugin {
-	var config *shared.CreateJWTPluginConfig
+func (r *GatewayPluginJwtResourceModel) ToSharedCreateJwtPlugin() *shared.CreateJwtPlugin {
+	var config *shared.CreateJwtPluginConfig
 	if r.Config != nil {
 		anonymous := new(string)
 		if !r.Config.Anonymous.IsUnknown() && !r.Config.Anonymous.IsNull() {
@@ -18,9 +18,9 @@ func (r *GatewayPluginJWTResourceModel) ToSharedCreateJWTPlugin() *shared.Create
 		} else {
 			anonymous = nil
 		}
-		var claimsToVerify []shared.CreateJWTPluginClaimsToVerify = []shared.CreateJWTPluginClaimsToVerify{}
+		var claimsToVerify []shared.CreateJwtPluginClaimsToVerify = []shared.CreateJwtPluginClaimsToVerify{}
 		for _, claimsToVerifyItem := range r.Config.ClaimsToVerify {
-			claimsToVerify = append(claimsToVerify, shared.CreateJWTPluginClaimsToVerify(claimsToVerifyItem.ValueString()))
+			claimsToVerify = append(claimsToVerify, shared.CreateJwtPluginClaimsToVerify(claimsToVerifyItem.ValueString()))
 		}
 		var cookieNames []string = []string{}
 		for _, cookieNamesItem := range r.Config.CookieNames {
@@ -42,6 +42,12 @@ func (r *GatewayPluginJWTResourceModel) ToSharedCreateJWTPlugin() *shared.Create
 		} else {
 			maximumExpiration = nil
 		}
+		realm := new(string)
+		if !r.Config.Realm.IsUnknown() && !r.Config.Realm.IsNull() {
+			*realm = r.Config.Realm.ValueString()
+		} else {
+			realm = nil
+		}
 		runOnPreflight := new(bool)
 		if !r.Config.RunOnPreflight.IsUnknown() && !r.Config.RunOnPreflight.IsNull() {
 			*runOnPreflight = r.Config.RunOnPreflight.ValueBool()
@@ -58,13 +64,14 @@ func (r *GatewayPluginJWTResourceModel) ToSharedCreateJWTPlugin() *shared.Create
 		for _, uriParamNamesItem := range r.Config.URIParamNames {
 			uriParamNames = append(uriParamNames, uriParamNamesItem.ValueString())
 		}
-		config = &shared.CreateJWTPluginConfig{
+		config = &shared.CreateJwtPluginConfig{
 			Anonymous:         anonymous,
 			ClaimsToVerify:    claimsToVerify,
 			CookieNames:       cookieNames,
 			HeaderNames:       headerNames,
 			KeyClaimName:      keyClaimName,
 			MaximumExpiration: maximumExpiration,
+			Realm:             realm,
 			RunOnPreflight:    runOnPreflight,
 			SecretIsBase64:    secretIsBase64,
 			URIParamNames:     uriParamNames,
@@ -82,15 +89,42 @@ func (r *GatewayPluginJWTResourceModel) ToSharedCreateJWTPlugin() *shared.Create
 	} else {
 		instanceName = nil
 	}
-	var protocols []shared.CreateJWTPluginProtocols = []shared.CreateJWTPluginProtocols{}
+	var ordering *shared.CreateJwtPluginOrdering
+	if r.Ordering != nil {
+		var after *shared.CreateJwtPluginAfter
+		if r.Ordering.After != nil {
+			var access []string = []string{}
+			for _, accessItem := range r.Ordering.After.Access {
+				access = append(access, accessItem.ValueString())
+			}
+			after = &shared.CreateJwtPluginAfter{
+				Access: access,
+			}
+		}
+		var before *shared.CreateJwtPluginBefore
+		if r.Ordering.Before != nil {
+			var access1 []string = []string{}
+			for _, accessItem1 := range r.Ordering.Before.Access {
+				access1 = append(access1, accessItem1.ValueString())
+			}
+			before = &shared.CreateJwtPluginBefore{
+				Access: access1,
+			}
+		}
+		ordering = &shared.CreateJwtPluginOrdering{
+			After:  after,
+			Before: before,
+		}
+	}
+	var protocols []shared.CreateJwtPluginProtocols = []shared.CreateJwtPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
-		protocols = append(protocols, shared.CreateJWTPluginProtocols(protocolsItem.ValueString()))
+		protocols = append(protocols, shared.CreateJwtPluginProtocols(protocolsItem.ValueString()))
 	}
 	var tags []string = []string{}
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	var consumer *shared.CreateJWTPluginConsumer
+	var consumer *shared.CreateJwtPluginConsumer
 	if r.Consumer != nil {
 		id := new(string)
 		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
@@ -98,11 +132,11 @@ func (r *GatewayPluginJWTResourceModel) ToSharedCreateJWTPlugin() *shared.Create
 		} else {
 			id = nil
 		}
-		consumer = &shared.CreateJWTPluginConsumer{
+		consumer = &shared.CreateJwtPluginConsumer{
 			ID: id,
 		}
 	}
-	var consumerGroup *shared.CreateJWTPluginConsumerGroup
+	var consumerGroup *shared.CreateJwtPluginConsumerGroup
 	if r.ConsumerGroup != nil {
 		id1 := new(string)
 		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
@@ -110,11 +144,11 @@ func (r *GatewayPluginJWTResourceModel) ToSharedCreateJWTPlugin() *shared.Create
 		} else {
 			id1 = nil
 		}
-		consumerGroup = &shared.CreateJWTPluginConsumerGroup{
+		consumerGroup = &shared.CreateJwtPluginConsumerGroup{
 			ID: id1,
 		}
 	}
-	var route *shared.CreateJWTPluginRoute
+	var route *shared.CreateJwtPluginRoute
 	if r.Route != nil {
 		id2 := new(string)
 		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
@@ -122,11 +156,11 @@ func (r *GatewayPluginJWTResourceModel) ToSharedCreateJWTPlugin() *shared.Create
 		} else {
 			id2 = nil
 		}
-		route = &shared.CreateJWTPluginRoute{
+		route = &shared.CreateJwtPluginRoute{
 			ID: id2,
 		}
 	}
-	var service *shared.CreateJWTPluginService
+	var service *shared.CreateJwtPluginService
 	if r.Service != nil {
 		id3 := new(string)
 		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
@@ -134,14 +168,15 @@ func (r *GatewayPluginJWTResourceModel) ToSharedCreateJWTPlugin() *shared.Create
 		} else {
 			id3 = nil
 		}
-		service = &shared.CreateJWTPluginService{
+		service = &shared.CreateJwtPluginService{
 			ID: id3,
 		}
 	}
-	out := shared.CreateJWTPlugin{
+	out := shared.CreateJwtPlugin{
 		Config:        config,
 		Enabled:       enabled,
 		InstanceName:  instanceName,
+		Ordering:      ordering,
 		Protocols:     protocols,
 		Tags:          tags,
 		Consumer:      consumer,
@@ -152,12 +187,12 @@ func (r *GatewayPluginJWTResourceModel) ToSharedCreateJWTPlugin() *shared.Create
 	return &out
 }
 
-func (r *GatewayPluginJWTResourceModel) RefreshFromSharedJWTPlugin(resp *shared.JWTPlugin) {
+func (r *GatewayPluginJwtResourceModel) RefreshFromSharedJwtPlugin(resp *shared.JwtPlugin) {
 	if resp != nil {
 		if resp.Config == nil {
 			r.Config = nil
 		} else {
-			r.Config = &tfTypes.CreateJWTPluginConfig{}
+			r.Config = &tfTypes.CreateJwtPluginConfig{}
 			r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
 			r.Config.ClaimsToVerify = []types.String{}
 			for _, v := range resp.Config.ClaimsToVerify {
@@ -177,6 +212,7 @@ func (r *GatewayPluginJWTResourceModel) RefreshFromSharedJWTPlugin(resp *shared.
 			} else {
 				r.Config.MaximumExpiration = types.NumberNull()
 			}
+			r.Config.Realm = types.StringPointerValue(resp.Config.Realm)
 			r.Config.RunOnPreflight = types.BoolPointerValue(resp.Config.RunOnPreflight)
 			r.Config.SecretIsBase64 = types.BoolPointerValue(resp.Config.SecretIsBase64)
 			r.Config.URIParamNames = []types.String{}
@@ -200,6 +236,29 @@ func (r *GatewayPluginJWTResourceModel) RefreshFromSharedJWTPlugin(resp *shared.
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.InstanceName = types.StringPointerValue(resp.InstanceName)
+		if resp.Ordering == nil {
+			r.Ordering = nil
+		} else {
+			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			if resp.Ordering.After == nil {
+				r.Ordering.After = nil
+			} else {
+				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After.Access = []types.String{}
+				for _, v := range resp.Ordering.After.Access {
+					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				}
+			}
+			if resp.Ordering.Before == nil {
+				r.Ordering.Before = nil
+			} else {
+				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before.Access = []types.String{}
+				for _, v := range resp.Ordering.Before.Access {
+					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				}
+			}
+		}
 		r.Protocols = []types.String{}
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))

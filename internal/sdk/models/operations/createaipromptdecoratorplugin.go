@@ -10,7 +10,7 @@ import (
 type CreateAipromptdecoratorPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID                string                                `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateAIPromptDecoratorPlugin *shared.CreateAIPromptDecoratorPlugin `request:"mediaType=application/json"`
+	CreateAiPromptDecoratorPlugin *shared.CreateAiPromptDecoratorPlugin `request:"mediaType=application/json"`
 }
 
 func (o *CreateAipromptdecoratorPluginRequest) GetControlPlaneID() string {
@@ -20,11 +20,11 @@ func (o *CreateAipromptdecoratorPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateAipromptdecoratorPluginRequest) GetCreateAIPromptDecoratorPlugin() *shared.CreateAIPromptDecoratorPlugin {
+func (o *CreateAipromptdecoratorPluginRequest) GetCreateAiPromptDecoratorPlugin() *shared.CreateAiPromptDecoratorPlugin {
 	if o == nil {
 		return nil
 	}
-	return o.CreateAIPromptDecoratorPlugin
+	return o.CreateAiPromptDecoratorPlugin
 }
 
 type CreateAipromptdecoratorPluginResponse struct {
@@ -34,8 +34,8 @@ type CreateAipromptdecoratorPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Created AIPromptDecorator plugin
-	AIPromptDecoratorPlugin *shared.AIPromptDecoratorPlugin
+	// Created AiPromptDecorator plugin
+	AiPromptDecoratorPlugin *shared.AiPromptDecoratorPlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
@@ -61,11 +61,11 @@ func (o *CreateAipromptdecoratorPluginResponse) GetRawResponse() *http.Response 
 	return o.RawResponse
 }
 
-func (o *CreateAipromptdecoratorPluginResponse) GetAIPromptDecoratorPlugin() *shared.AIPromptDecoratorPlugin {
+func (o *CreateAipromptdecoratorPluginResponse) GetAiPromptDecoratorPlugin() *shared.AiPromptDecoratorPlugin {
 	if o == nil {
 		return nil
 	}
-	return o.AIPromptDecoratorPlugin
+	return o.AiPromptDecoratorPlugin
 }
 
 func (o *CreateAipromptdecoratorPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {

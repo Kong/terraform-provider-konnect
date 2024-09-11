@@ -11,6 +11,12 @@ import (
 func (r *GatewayPluginPrometheusResourceModel) ToSharedCreatePrometheusPlugin() *shared.CreatePrometheusPlugin {
 	var config *shared.CreatePrometheusPluginConfig
 	if r.Config != nil {
+		aiMetrics := new(bool)
+		if !r.Config.AiMetrics.IsUnknown() && !r.Config.AiMetrics.IsNull() {
+			*aiMetrics = r.Config.AiMetrics.ValueBool()
+		} else {
+			aiMetrics = nil
+		}
 		bandwidthMetrics := new(bool)
 		if !r.Config.BandwidthMetrics.IsUnknown() && !r.Config.BandwidthMetrics.IsNull() {
 			*bandwidthMetrics = r.Config.BandwidthMetrics.ValueBool()
@@ -42,6 +48,7 @@ func (r *GatewayPluginPrometheusResourceModel) ToSharedCreatePrometheusPlugin() 
 			upstreamHealthMetrics = nil
 		}
 		config = &shared.CreatePrometheusPluginConfig{
+			AiMetrics:             aiMetrics,
 			BandwidthMetrics:      bandwidthMetrics,
 			LatencyMetrics:        latencyMetrics,
 			PerConsumer:           perConsumer,
@@ -60,6 +67,33 @@ func (r *GatewayPluginPrometheusResourceModel) ToSharedCreatePrometheusPlugin() 
 		*instanceName = r.InstanceName.ValueString()
 	} else {
 		instanceName = nil
+	}
+	var ordering *shared.CreatePrometheusPluginOrdering
+	if r.Ordering != nil {
+		var after *shared.CreatePrometheusPluginAfter
+		if r.Ordering.After != nil {
+			var access []string = []string{}
+			for _, accessItem := range r.Ordering.After.Access {
+				access = append(access, accessItem.ValueString())
+			}
+			after = &shared.CreatePrometheusPluginAfter{
+				Access: access,
+			}
+		}
+		var before *shared.CreatePrometheusPluginBefore
+		if r.Ordering.Before != nil {
+			var access1 []string = []string{}
+			for _, accessItem1 := range r.Ordering.Before.Access {
+				access1 = append(access1, accessItem1.ValueString())
+			}
+			before = &shared.CreatePrometheusPluginBefore{
+				Access: access1,
+			}
+		}
+		ordering = &shared.CreatePrometheusPluginOrdering{
+			After:  after,
+			Before: before,
+		}
 	}
 	var protocols []shared.CreatePrometheusPluginProtocols = []shared.CreatePrometheusPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
@@ -121,6 +155,7 @@ func (r *GatewayPluginPrometheusResourceModel) ToSharedCreatePrometheusPlugin() 
 		Config:        config,
 		Enabled:       enabled,
 		InstanceName:  instanceName,
+		Ordering:      ordering,
 		Protocols:     protocols,
 		Tags:          tags,
 		Consumer:      consumer,
@@ -137,6 +172,7 @@ func (r *GatewayPluginPrometheusResourceModel) RefreshFromSharedPrometheusPlugin
 			r.Config = nil
 		} else {
 			r.Config = &tfTypes.CreatePrometheusPluginConfig{}
+			r.Config.AiMetrics = types.BoolPointerValue(resp.Config.AiMetrics)
 			r.Config.BandwidthMetrics = types.BoolPointerValue(resp.Config.BandwidthMetrics)
 			r.Config.LatencyMetrics = types.BoolPointerValue(resp.Config.LatencyMetrics)
 			r.Config.PerConsumer = types.BoolPointerValue(resp.Config.PerConsumer)
@@ -159,6 +195,29 @@ func (r *GatewayPluginPrometheusResourceModel) RefreshFromSharedPrometheusPlugin
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.InstanceName = types.StringPointerValue(resp.InstanceName)
+		if resp.Ordering == nil {
+			r.Ordering = nil
+		} else {
+			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			if resp.Ordering.After == nil {
+				r.Ordering.After = nil
+			} else {
+				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After.Access = []types.String{}
+				for _, v := range resp.Ordering.After.Access {
+					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				}
+			}
+			if resp.Ordering.Before == nil {
+				r.Ordering.Before = nil
+			} else {
+				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before.Access = []types.String{}
+				for _, v := range resp.Ordering.Before.Access {
+					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				}
+			}
+		}
 		r.Protocols = []types.String{}
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))

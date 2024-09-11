@@ -35,8 +35,8 @@ type GetCorsPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// CORS plugin
-	CORSPlugin *shared.CORSPlugin
+	// Cors plugin
+	CorsPlugin *shared.CorsPlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
@@ -62,11 +62,11 @@ func (o *GetCorsPluginResponse) GetRawResponse() *http.Response {
 	return o.RawResponse
 }
 
-func (o *GetCorsPluginResponse) GetCORSPlugin() *shared.CORSPlugin {
+func (o *GetCorsPluginResponse) GetCorsPlugin() *shared.CorsPlugin {
 	if o == nil {
 		return nil
 	}
-	return o.CORSPlugin
+	return o.CorsPlugin
 }
 
 func (o *GetCorsPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {

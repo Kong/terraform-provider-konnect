@@ -10,7 +10,7 @@ import (
 type CreateAwslambdaPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID        string                        `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateAWSLambdaPlugin *shared.CreateAWSLambdaPlugin `request:"mediaType=application/json"`
+	CreateAwsLambdaPlugin *shared.CreateAwsLambdaPlugin `request:"mediaType=application/json"`
 }
 
 func (o *CreateAwslambdaPluginRequest) GetControlPlaneID() string {
@@ -20,11 +20,11 @@ func (o *CreateAwslambdaPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateAwslambdaPluginRequest) GetCreateAWSLambdaPlugin() *shared.CreateAWSLambdaPlugin {
+func (o *CreateAwslambdaPluginRequest) GetCreateAwsLambdaPlugin() *shared.CreateAwsLambdaPlugin {
 	if o == nil {
 		return nil
 	}
-	return o.CreateAWSLambdaPlugin
+	return o.CreateAwsLambdaPlugin
 }
 
 type CreateAwslambdaPluginResponse struct {
@@ -34,8 +34,8 @@ type CreateAwslambdaPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Created AWSLambda plugin
-	AWSLambdaPlugin *shared.AWSLambdaPlugin
+	// Created AwsLambda plugin
+	AwsLambdaPlugin *shared.AwsLambdaPlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
@@ -61,11 +61,11 @@ func (o *CreateAwslambdaPluginResponse) GetRawResponse() *http.Response {
 	return o.RawResponse
 }
 
-func (o *CreateAwslambdaPluginResponse) GetAWSLambdaPlugin() *shared.AWSLambdaPlugin {
+func (o *CreateAwslambdaPluginResponse) GetAwsLambdaPlugin() *shared.AwsLambdaPlugin {
 	if o == nil {
 		return nil
 	}
-	return o.AWSLambdaPlugin
+	return o.AwsLambdaPlugin
 }
 
 func (o *CreateAwslambdaPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {

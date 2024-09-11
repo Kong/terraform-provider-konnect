@@ -15,44 +15,45 @@ import (
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
-var _ datasource.DataSource = &GatewayPluginCORSDataSource{}
-var _ datasource.DataSourceWithConfigure = &GatewayPluginCORSDataSource{}
+var _ datasource.DataSource = &GatewayPluginCorsDataSource{}
+var _ datasource.DataSourceWithConfigure = &GatewayPluginCorsDataSource{}
 
-func NewGatewayPluginCORSDataSource() datasource.DataSource {
-	return &GatewayPluginCORSDataSource{}
+func NewGatewayPluginCorsDataSource() datasource.DataSource {
+	return &GatewayPluginCorsDataSource{}
 }
 
-// GatewayPluginCORSDataSource is the data source implementation.
-type GatewayPluginCORSDataSource struct {
+// GatewayPluginCorsDataSource is the data source implementation.
+type GatewayPluginCorsDataSource struct {
 	client *sdk.Konnect
 }
 
-// GatewayPluginCORSDataSourceModel describes the data model.
-type GatewayPluginCORSDataSourceModel struct {
-	Config         *tfTypes.CreateCORSPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer            `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLConsumer            `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                    `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                     `tfsdk:"created_at"`
-	Enabled        types.Bool                      `tfsdk:"enabled"`
-	ID             types.String                    `tfsdk:"id"`
-	InstanceName   types.String                    `tfsdk:"instance_name"`
-	Protocols      []types.String                  `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer            `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer            `tfsdk:"service"`
-	Tags           []types.String                  `tfsdk:"tags"`
-	UpdatedAt      types.Int64                     `tfsdk:"updated_at"`
+// GatewayPluginCorsDataSourceModel describes the data model.
+type GatewayPluginCorsDataSourceModel struct {
+	Config         *tfTypes.CreateCorsPluginConfig  `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer             `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer             `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                     `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                      `tfsdk:"created_at"`
+	Enabled        types.Bool                       `tfsdk:"enabled"`
+	ID             types.String                     `tfsdk:"id"`
+	InstanceName   types.String                     `tfsdk:"instance_name"`
+	Ordering       *tfTypes.CreateACLPluginOrdering `tfsdk:"ordering"`
+	Protocols      []types.String                   `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer             `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer             `tfsdk:"service"`
+	Tags           []types.String                   `tfsdk:"tags"`
+	UpdatedAt      types.Int64                      `tfsdk:"updated_at"`
 }
 
 // Metadata returns the data source type name.
-func (r *GatewayPluginCORSDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+func (r *GatewayPluginCorsDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_gateway_plugin_cors"
 }
 
 // Schema defines the schema for the data source.
-func (r *GatewayPluginCORSDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
+func (r *GatewayPluginCorsDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "GatewayPluginCORS DataSource",
+		MarkdownDescription: "GatewayPluginCors DataSource",
 
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
@@ -115,7 +116,7 @@ func (r *GatewayPluginCORSDataSource) Schema(ctx context.Context, req datasource
 			},
 			"control_plane_id": schema.StringAttribute{
 				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager.`,
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed. `,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
@@ -130,6 +131,29 @@ func (r *GatewayPluginCORSDataSource) Schema(ctx context.Context, req datasource
 			},
 			"instance_name": schema.StringAttribute{
 				Computed: true,
+			},
+			"ordering": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"after": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+					"before": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+				},
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,
@@ -167,7 +191,7 @@ func (r *GatewayPluginCORSDataSource) Schema(ctx context.Context, req datasource
 	}
 }
 
-func (r *GatewayPluginCORSDataSource) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
+func (r *GatewayPluginCorsDataSource) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
 	// Prevent panic if the provider has not been configured.
 	if req.ProviderData == nil {
 		return
@@ -187,8 +211,8 @@ func (r *GatewayPluginCORSDataSource) Configure(ctx context.Context, req datasou
 	r.client = client
 }
 
-func (r *GatewayPluginCORSDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
-	var data *GatewayPluginCORSDataSourceModel
+func (r *GatewayPluginCorsDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
+	var data *GatewayPluginCorsDataSourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.Config.Get(ctx, &item)...)
@@ -235,11 +259,11 @@ func (r *GatewayPluginCORSDataSource) Read(ctx context.Context, req datasource.R
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.CORSPlugin != nil) {
+	if !(res.CorsPlugin != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedCORSPlugin(res.CORSPlugin)
+	data.RefreshFromSharedCorsPlugin(res.CorsPlugin)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

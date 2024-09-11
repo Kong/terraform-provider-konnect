@@ -35,8 +35,8 @@ type GetAiproxyPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// AIProxy plugin
-	AIProxyPlugin *shared.AIProxyPlugin
+	// AiProxy plugin
+	AiProxyPlugin *shared.AiProxyPlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
@@ -62,11 +62,11 @@ func (o *GetAiproxyPluginResponse) GetRawResponse() *http.Response {
 	return o.RawResponse
 }
 
-func (o *GetAiproxyPluginResponse) GetAIProxyPlugin() *shared.AIProxyPlugin {
+func (o *GetAiproxyPluginResponse) GetAiProxyPlugin() *shared.AiProxyPlugin {
 	if o == nil {
 		return nil
 	}
-	return o.AIProxyPlugin
+	return o.AiProxyPlugin
 }
 
 func (o *GetAiproxyPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {

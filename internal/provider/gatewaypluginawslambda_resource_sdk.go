@@ -9,8 +9,8 @@ import (
 	"math/big"
 )
 
-func (r *GatewayPluginAWSLambdaResourceModel) ToSharedCreateAWSLambdaPlugin() *shared.CreateAWSLambdaPlugin {
-	var config *shared.CreateAWSLambdaPluginConfig
+func (r *GatewayPluginAwsLambdaResourceModel) ToSharedCreateAwsLambdaPlugin() *shared.CreateAwsLambdaPlugin {
+	var config *shared.CreateAwsLambdaPluginConfig
 	if r.Config != nil {
 		awsAssumeRoleArn := new(string)
 		if !r.Config.AwsAssumeRoleArn.IsUnknown() && !r.Config.AwsAssumeRoleArn.IsNull() {
@@ -18,9 +18,9 @@ func (r *GatewayPluginAWSLambdaResourceModel) ToSharedCreateAWSLambdaPlugin() *s
 		} else {
 			awsAssumeRoleArn = nil
 		}
-		awsImdsProtocolVersion := new(shared.CreateAWSLambdaPluginAWSImdsProtocolVersion)
+		awsImdsProtocolVersion := new(shared.CreateAwsLambdaPluginAwsImdsProtocolVersion)
 		if !r.Config.AwsImdsProtocolVersion.IsUnknown() && !r.Config.AwsImdsProtocolVersion.IsNull() {
-			*awsImdsProtocolVersion = shared.CreateAWSLambdaPluginAWSImdsProtocolVersion(r.Config.AwsImdsProtocolVersion.ValueString())
+			*awsImdsProtocolVersion = shared.CreateAwsLambdaPluginAwsImdsProtocolVersion(r.Config.AwsImdsProtocolVersion.ValueString())
 		} else {
 			awsImdsProtocolVersion = nil
 		}
@@ -48,6 +48,12 @@ func (r *GatewayPluginAWSLambdaResourceModel) ToSharedCreateAWSLambdaPlugin() *s
 		} else {
 			awsSecret = nil
 		}
+		awsStsEndpointURL := new(string)
+		if !r.Config.AwsStsEndpointURL.IsUnknown() && !r.Config.AwsStsEndpointURL.IsNull() {
+			*awsStsEndpointURL = r.Config.AwsStsEndpointURL.ValueString()
+		} else {
+			awsStsEndpointURL = nil
+		}
 		awsgatewayCompatible := new(bool)
 		if !r.Config.AwsgatewayCompatible.IsUnknown() && !r.Config.AwsgatewayCompatible.IsNull() {
 			*awsgatewayCompatible = r.Config.AwsgatewayCompatible.ValueBool()
@@ -65,6 +71,12 @@ func (r *GatewayPluginAWSLambdaResourceModel) ToSharedCreateAWSLambdaPlugin() *s
 			*disableHTTPS = r.Config.DisableHTTPS.ValueBool()
 		} else {
 			disableHTTPS = nil
+		}
+		emptyArraysMode := new(shared.CreateAwsLambdaPluginEmptyArraysMode)
+		if !r.Config.EmptyArraysMode.IsUnknown() && !r.Config.EmptyArraysMode.IsNull() {
+			*emptyArraysMode = shared.CreateAwsLambdaPluginEmptyArraysMode(r.Config.EmptyArraysMode.ValueString())
+		} else {
+			emptyArraysMode = nil
 		}
 		forwardRequestBody := new(bool)
 		if !r.Config.ForwardRequestBody.IsUnknown() && !r.Config.ForwardRequestBody.IsNull() {
@@ -102,9 +114,9 @@ func (r *GatewayPluginAWSLambdaResourceModel) ToSharedCreateAWSLambdaPlugin() *s
 		} else {
 			host = nil
 		}
-		invocationType := new(shared.CreateAWSLambdaPluginInvocationType)
+		invocationType := new(shared.CreateAwsLambdaPluginInvocationType)
 		if !r.Config.InvocationType.IsUnknown() && !r.Config.InvocationType.IsNull() {
-			*invocationType = shared.CreateAWSLambdaPluginInvocationType(r.Config.InvocationType.ValueString())
+			*invocationType = shared.CreateAwsLambdaPluginInvocationType(r.Config.InvocationType.ValueString())
 		} else {
 			invocationType = nil
 		}
@@ -120,9 +132,9 @@ func (r *GatewayPluginAWSLambdaResourceModel) ToSharedCreateAWSLambdaPlugin() *s
 		} else {
 			keepalive = nil
 		}
-		logType := new(shared.CreateAWSLambdaPluginLogType)
+		logType := new(shared.CreateAwsLambdaPluginLogType)
 		if !r.Config.LogType.IsUnknown() && !r.Config.LogType.IsNull() {
-			*logType = shared.CreateAWSLambdaPluginLogType(r.Config.LogType.ValueString())
+			*logType = shared.CreateAwsLambdaPluginLogType(r.Config.LogType.ValueString())
 		} else {
 			logType = nil
 		}
@@ -162,16 +174,18 @@ func (r *GatewayPluginAWSLambdaResourceModel) ToSharedCreateAWSLambdaPlugin() *s
 		} else {
 			unhandledStatus = nil
 		}
-		config = &shared.CreateAWSLambdaPluginConfig{
+		config = &shared.CreateAwsLambdaPluginConfig{
 			AwsAssumeRoleArn:       awsAssumeRoleArn,
 			AwsImdsProtocolVersion: awsImdsProtocolVersion,
 			AwsKey:                 awsKey,
 			AwsRegion:              awsRegion,
 			AwsRoleSessionName:     awsRoleSessionName,
 			AwsSecret:              awsSecret,
+			AwsStsEndpointURL:      awsStsEndpointURL,
 			AwsgatewayCompatible:   awsgatewayCompatible,
 			Base64EncodeBody:       base64EncodeBody,
 			DisableHTTPS:           disableHTTPS,
+			EmptyArraysMode:        emptyArraysMode,
 			ForwardRequestBody:     forwardRequestBody,
 			ForwardRequestHeaders:  forwardRequestHeaders,
 			ForwardRequestMethod:   forwardRequestMethod,
@@ -202,15 +216,42 @@ func (r *GatewayPluginAWSLambdaResourceModel) ToSharedCreateAWSLambdaPlugin() *s
 	} else {
 		instanceName = nil
 	}
-	var protocols []shared.CreateAWSLambdaPluginProtocols = []shared.CreateAWSLambdaPluginProtocols{}
+	var ordering *shared.CreateAwsLambdaPluginOrdering
+	if r.Ordering != nil {
+		var after *shared.CreateAwsLambdaPluginAfter
+		if r.Ordering.After != nil {
+			var access []string = []string{}
+			for _, accessItem := range r.Ordering.After.Access {
+				access = append(access, accessItem.ValueString())
+			}
+			after = &shared.CreateAwsLambdaPluginAfter{
+				Access: access,
+			}
+		}
+		var before *shared.CreateAwsLambdaPluginBefore
+		if r.Ordering.Before != nil {
+			var access1 []string = []string{}
+			for _, accessItem1 := range r.Ordering.Before.Access {
+				access1 = append(access1, accessItem1.ValueString())
+			}
+			before = &shared.CreateAwsLambdaPluginBefore{
+				Access: access1,
+			}
+		}
+		ordering = &shared.CreateAwsLambdaPluginOrdering{
+			After:  after,
+			Before: before,
+		}
+	}
+	var protocols []shared.CreateAwsLambdaPluginProtocols = []shared.CreateAwsLambdaPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
-		protocols = append(protocols, shared.CreateAWSLambdaPluginProtocols(protocolsItem.ValueString()))
+		protocols = append(protocols, shared.CreateAwsLambdaPluginProtocols(protocolsItem.ValueString()))
 	}
 	var tags []string = []string{}
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	var consumer *shared.CreateAWSLambdaPluginConsumer
+	var consumer *shared.CreateAwsLambdaPluginConsumer
 	if r.Consumer != nil {
 		id := new(string)
 		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
@@ -218,11 +259,11 @@ func (r *GatewayPluginAWSLambdaResourceModel) ToSharedCreateAWSLambdaPlugin() *s
 		} else {
 			id = nil
 		}
-		consumer = &shared.CreateAWSLambdaPluginConsumer{
+		consumer = &shared.CreateAwsLambdaPluginConsumer{
 			ID: id,
 		}
 	}
-	var consumerGroup *shared.CreateAWSLambdaPluginConsumerGroup
+	var consumerGroup *shared.CreateAwsLambdaPluginConsumerGroup
 	if r.ConsumerGroup != nil {
 		id1 := new(string)
 		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
@@ -230,11 +271,11 @@ func (r *GatewayPluginAWSLambdaResourceModel) ToSharedCreateAWSLambdaPlugin() *s
 		} else {
 			id1 = nil
 		}
-		consumerGroup = &shared.CreateAWSLambdaPluginConsumerGroup{
+		consumerGroup = &shared.CreateAwsLambdaPluginConsumerGroup{
 			ID: id1,
 		}
 	}
-	var route *shared.CreateAWSLambdaPluginRoute
+	var route *shared.CreateAwsLambdaPluginRoute
 	if r.Route != nil {
 		id2 := new(string)
 		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
@@ -242,11 +283,11 @@ func (r *GatewayPluginAWSLambdaResourceModel) ToSharedCreateAWSLambdaPlugin() *s
 		} else {
 			id2 = nil
 		}
-		route = &shared.CreateAWSLambdaPluginRoute{
+		route = &shared.CreateAwsLambdaPluginRoute{
 			ID: id2,
 		}
 	}
-	var service *shared.CreateAWSLambdaPluginService
+	var service *shared.CreateAwsLambdaPluginService
 	if r.Service != nil {
 		id3 := new(string)
 		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
@@ -254,14 +295,15 @@ func (r *GatewayPluginAWSLambdaResourceModel) ToSharedCreateAWSLambdaPlugin() *s
 		} else {
 			id3 = nil
 		}
-		service = &shared.CreateAWSLambdaPluginService{
+		service = &shared.CreateAwsLambdaPluginService{
 			ID: id3,
 		}
 	}
-	out := shared.CreateAWSLambdaPlugin{
+	out := shared.CreateAwsLambdaPlugin{
 		Config:        config,
 		Enabled:       enabled,
 		InstanceName:  instanceName,
+		Ordering:      ordering,
 		Protocols:     protocols,
 		Tags:          tags,
 		Consumer:      consumer,
@@ -272,12 +314,12 @@ func (r *GatewayPluginAWSLambdaResourceModel) ToSharedCreateAWSLambdaPlugin() *s
 	return &out
 }
 
-func (r *GatewayPluginAWSLambdaResourceModel) RefreshFromSharedAWSLambdaPlugin(resp *shared.AWSLambdaPlugin) {
+func (r *GatewayPluginAwsLambdaResourceModel) RefreshFromSharedAwsLambdaPlugin(resp *shared.AwsLambdaPlugin) {
 	if resp != nil {
 		if resp.Config == nil {
 			r.Config = nil
 		} else {
-			r.Config = &tfTypes.CreateAWSLambdaPluginConfig{}
+			r.Config = &tfTypes.CreateAwsLambdaPluginConfig{}
 			r.Config.AwsAssumeRoleArn = types.StringPointerValue(resp.Config.AwsAssumeRoleArn)
 			if resp.Config.AwsImdsProtocolVersion != nil {
 				r.Config.AwsImdsProtocolVersion = types.StringValue(string(*resp.Config.AwsImdsProtocolVersion))
@@ -288,9 +330,15 @@ func (r *GatewayPluginAWSLambdaResourceModel) RefreshFromSharedAWSLambdaPlugin(r
 			r.Config.AwsRegion = types.StringPointerValue(resp.Config.AwsRegion)
 			r.Config.AwsRoleSessionName = types.StringPointerValue(resp.Config.AwsRoleSessionName)
 			r.Config.AwsSecret = types.StringPointerValue(resp.Config.AwsSecret)
+			r.Config.AwsStsEndpointURL = types.StringPointerValue(resp.Config.AwsStsEndpointURL)
 			r.Config.AwsgatewayCompatible = types.BoolPointerValue(resp.Config.AwsgatewayCompatible)
 			r.Config.Base64EncodeBody = types.BoolPointerValue(resp.Config.Base64EncodeBody)
 			r.Config.DisableHTTPS = types.BoolPointerValue(resp.Config.DisableHTTPS)
+			if resp.Config.EmptyArraysMode != nil {
+				r.Config.EmptyArraysMode = types.StringValue(string(*resp.Config.EmptyArraysMode))
+			} else {
+				r.Config.EmptyArraysMode = types.StringNull()
+			}
 			r.Config.ForwardRequestBody = types.BoolPointerValue(resp.Config.ForwardRequestBody)
 			r.Config.ForwardRequestHeaders = types.BoolPointerValue(resp.Config.ForwardRequestHeaders)
 			r.Config.ForwardRequestMethod = types.BoolPointerValue(resp.Config.ForwardRequestMethod)
@@ -340,6 +388,29 @@ func (r *GatewayPluginAWSLambdaResourceModel) RefreshFromSharedAWSLambdaPlugin(r
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.InstanceName = types.StringPointerValue(resp.InstanceName)
+		if resp.Ordering == nil {
+			r.Ordering = nil
+		} else {
+			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			if resp.Ordering.After == nil {
+				r.Ordering.After = nil
+			} else {
+				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After.Access = []types.String{}
+				for _, v := range resp.Ordering.After.Access {
+					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				}
+			}
+			if resp.Ordering.Before == nil {
+				r.Ordering.Before = nil
+			} else {
+				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before.Access = []types.String{}
+				for _, v := range resp.Ordering.Before.Access {
+					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				}
+			}
+		}
 		r.Protocols = []types.String{}
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))

@@ -4,8 +4,9 @@ package types
 
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
-type CreateAIPromptTemplatePluginConfig struct {
+type CreateAiPromptTemplatePluginConfig struct {
 	AllowUntemplatedRequests types.Bool  `tfsdk:"allow_untemplated_requests"`
 	LogOriginalRequest       types.Bool  `tfsdk:"log_original_request"`
+	MaxRequestBodySize       types.Int64 `tfsdk:"max_request_body_size"`
 	Templates                []Templates `tfsdk:"templates"`
 }

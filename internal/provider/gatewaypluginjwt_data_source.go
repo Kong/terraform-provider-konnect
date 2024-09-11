@@ -15,44 +15,45 @@ import (
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
-var _ datasource.DataSource = &GatewayPluginJWTDataSource{}
-var _ datasource.DataSourceWithConfigure = &GatewayPluginJWTDataSource{}
+var _ datasource.DataSource = &GatewayPluginJwtDataSource{}
+var _ datasource.DataSourceWithConfigure = &GatewayPluginJwtDataSource{}
 
-func NewGatewayPluginJWTDataSource() datasource.DataSource {
-	return &GatewayPluginJWTDataSource{}
+func NewGatewayPluginJwtDataSource() datasource.DataSource {
+	return &GatewayPluginJwtDataSource{}
 }
 
-// GatewayPluginJWTDataSource is the data source implementation.
-type GatewayPluginJWTDataSource struct {
+// GatewayPluginJwtDataSource is the data source implementation.
+type GatewayPluginJwtDataSource struct {
 	client *sdk.Konnect
 }
 
-// GatewayPluginJWTDataSourceModel describes the data model.
-type GatewayPluginJWTDataSourceModel struct {
-	Config         *tfTypes.CreateJWTPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer           `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLConsumer           `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                   `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                    `tfsdk:"created_at"`
-	Enabled        types.Bool                     `tfsdk:"enabled"`
-	ID             types.String                   `tfsdk:"id"`
-	InstanceName   types.String                   `tfsdk:"instance_name"`
-	Protocols      []types.String                 `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer           `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer           `tfsdk:"service"`
-	Tags           []types.String                 `tfsdk:"tags"`
-	UpdatedAt      types.Int64                    `tfsdk:"updated_at"`
+// GatewayPluginJwtDataSourceModel describes the data model.
+type GatewayPluginJwtDataSourceModel struct {
+	Config         *tfTypes.CreateJwtPluginConfig   `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer             `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer             `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                     `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                      `tfsdk:"created_at"`
+	Enabled        types.Bool                       `tfsdk:"enabled"`
+	ID             types.String                     `tfsdk:"id"`
+	InstanceName   types.String                     `tfsdk:"instance_name"`
+	Ordering       *tfTypes.CreateACLPluginOrdering `tfsdk:"ordering"`
+	Protocols      []types.String                   `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer             `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer             `tfsdk:"service"`
+	Tags           []types.String                   `tfsdk:"tags"`
+	UpdatedAt      types.Int64                      `tfsdk:"updated_at"`
 }
 
 // Metadata returns the data source type name.
-func (r *GatewayPluginJWTDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+func (r *GatewayPluginJwtDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_gateway_plugin_jwt"
 }
 
 // Schema defines the schema for the data source.
-func (r *GatewayPluginJWTDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
+func (r *GatewayPluginJwtDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "GatewayPluginJWT DataSource",
+		MarkdownDescription: "GatewayPluginJwt DataSource",
 
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
@@ -84,6 +85,10 @@ func (r *GatewayPluginJWTDataSource) Schema(ctx context.Context, req datasource.
 					"maximum_expiration": schema.NumberAttribute{
 						Computed:    true,
 						Description: `A value between 0 and 31536000 (365 days) limiting the lifetime of the JWT to maximum_expiration seconds in the future.`,
+					},
+					"realm": schema.StringAttribute{
+						Computed:    true,
+						Description: `When authentication fails the plugin sends ` + "`" + `WWW-Authenticate` + "`" + ` header with ` + "`" + `realm` + "`" + ` attribute value.`,
 					},
 					"run_on_preflight": schema.BoolAttribute{
 						Computed:    true,
@@ -119,7 +124,7 @@ func (r *GatewayPluginJWTDataSource) Schema(ctx context.Context, req datasource.
 			},
 			"control_plane_id": schema.StringAttribute{
 				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager.`,
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed. `,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
@@ -134,6 +139,29 @@ func (r *GatewayPluginJWTDataSource) Schema(ctx context.Context, req datasource.
 			},
 			"instance_name": schema.StringAttribute{
 				Computed: true,
+			},
+			"ordering": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"after": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+					"before": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+				},
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,
@@ -171,7 +199,7 @@ func (r *GatewayPluginJWTDataSource) Schema(ctx context.Context, req datasource.
 	}
 }
 
-func (r *GatewayPluginJWTDataSource) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
+func (r *GatewayPluginJwtDataSource) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
 	// Prevent panic if the provider has not been configured.
 	if req.ProviderData == nil {
 		return
@@ -191,8 +219,8 @@ func (r *GatewayPluginJWTDataSource) Configure(ctx context.Context, req datasour
 	r.client = client
 }
 
-func (r *GatewayPluginJWTDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
-	var data *GatewayPluginJWTDataSourceModel
+func (r *GatewayPluginJwtDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
+	var data *GatewayPluginJwtDataSourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.Config.Get(ctx, &item)...)
@@ -239,11 +267,11 @@ func (r *GatewayPluginJWTDataSource) Read(ctx context.Context, req datasource.Re
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.JWTPlugin != nil) {
+	if !(res.JwtPlugin != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedJWTPlugin(res.JWTPlugin)
+	data.RefreshFromSharedJwtPlugin(res.JwtPlugin)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

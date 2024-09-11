@@ -15,21 +15,21 @@ import (
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
-var _ datasource.DataSource = &GatewayPluginAIPromptDecoratorDataSource{}
-var _ datasource.DataSourceWithConfigure = &GatewayPluginAIPromptDecoratorDataSource{}
+var _ datasource.DataSource = &GatewayPluginAiPromptDecoratorDataSource{}
+var _ datasource.DataSourceWithConfigure = &GatewayPluginAiPromptDecoratorDataSource{}
 
-func NewGatewayPluginAIPromptDecoratorDataSource() datasource.DataSource {
-	return &GatewayPluginAIPromptDecoratorDataSource{}
+func NewGatewayPluginAiPromptDecoratorDataSource() datasource.DataSource {
+	return &GatewayPluginAiPromptDecoratorDataSource{}
 }
 
-// GatewayPluginAIPromptDecoratorDataSource is the data source implementation.
-type GatewayPluginAIPromptDecoratorDataSource struct {
+// GatewayPluginAiPromptDecoratorDataSource is the data source implementation.
+type GatewayPluginAiPromptDecoratorDataSource struct {
 	client *sdk.Konnect
 }
 
-// GatewayPluginAIPromptDecoratorDataSourceModel describes the data model.
-type GatewayPluginAIPromptDecoratorDataSourceModel struct {
-	Config         *tfTypes.CreateAIPromptDecoratorPluginConfig `tfsdk:"config"`
+// GatewayPluginAiPromptDecoratorDataSourceModel describes the data model.
+type GatewayPluginAiPromptDecoratorDataSourceModel struct {
+	Config         *tfTypes.CreateAiPromptDecoratorPluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.ACLConsumer                         `tfsdk:"consumer"`
 	ConsumerGroup  *tfTypes.ACLConsumer                         `tfsdk:"consumer_group"`
 	ControlPlaneID types.String                                 `tfsdk:"control_plane_id"`
@@ -37,6 +37,7 @@ type GatewayPluginAIPromptDecoratorDataSourceModel struct {
 	Enabled        types.Bool                                   `tfsdk:"enabled"`
 	ID             types.String                                 `tfsdk:"id"`
 	InstanceName   types.String                                 `tfsdk:"instance_name"`
+	Ordering       *tfTypes.CreateACLPluginOrdering             `tfsdk:"ordering"`
 	Protocols      []types.String                               `tfsdk:"protocols"`
 	Route          *tfTypes.ACLConsumer                         `tfsdk:"route"`
 	Service        *tfTypes.ACLConsumer                         `tfsdk:"service"`
@@ -45,19 +46,23 @@ type GatewayPluginAIPromptDecoratorDataSourceModel struct {
 }
 
 // Metadata returns the data source type name.
-func (r *GatewayPluginAIPromptDecoratorDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+func (r *GatewayPluginAiPromptDecoratorDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_gateway_plugin_ai_prompt_decorator"
 }
 
 // Schema defines the schema for the data source.
-func (r *GatewayPluginAIPromptDecoratorDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
+func (r *GatewayPluginAiPromptDecoratorDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "GatewayPluginAIPromptDecorator DataSource",
+		MarkdownDescription: "GatewayPluginAiPromptDecorator DataSource",
 
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
+					"max_request_body_size": schema.Int64Attribute{
+						Computed:    true,
+						Description: `max allowed body size allowed to be introspected`,
+					},
 					"prompts": schema.SingleNestedAttribute{
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
@@ -114,7 +119,7 @@ func (r *GatewayPluginAIPromptDecoratorDataSource) Schema(ctx context.Context, r
 			},
 			"control_plane_id": schema.StringAttribute{
 				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager.`,
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed. `,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
@@ -129,6 +134,29 @@ func (r *GatewayPluginAIPromptDecoratorDataSource) Schema(ctx context.Context, r
 			},
 			"instance_name": schema.StringAttribute{
 				Computed: true,
+			},
+			"ordering": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"after": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+					"before": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+				},
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,
@@ -166,7 +194,7 @@ func (r *GatewayPluginAIPromptDecoratorDataSource) Schema(ctx context.Context, r
 	}
 }
 
-func (r *GatewayPluginAIPromptDecoratorDataSource) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
+func (r *GatewayPluginAiPromptDecoratorDataSource) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
 	// Prevent panic if the provider has not been configured.
 	if req.ProviderData == nil {
 		return
@@ -186,8 +214,8 @@ func (r *GatewayPluginAIPromptDecoratorDataSource) Configure(ctx context.Context
 	r.client = client
 }
 
-func (r *GatewayPluginAIPromptDecoratorDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
-	var data *GatewayPluginAIPromptDecoratorDataSourceModel
+func (r *GatewayPluginAiPromptDecoratorDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
+	var data *GatewayPluginAiPromptDecoratorDataSourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.Config.Get(ctx, &item)...)
@@ -234,11 +262,11 @@ func (r *GatewayPluginAIPromptDecoratorDataSource) Read(ctx context.Context, req
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.AIPromptDecoratorPlugin != nil) {
+	if !(res.AiPromptDecoratorPlugin != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAIPromptDecoratorPlugin(res.AIPromptDecoratorPlugin)
+	data.RefreshFromSharedAiPromptDecoratorPlugin(res.AiPromptDecoratorPlugin)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

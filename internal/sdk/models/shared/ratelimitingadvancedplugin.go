@@ -9,23 +9,23 @@ import (
 	"github.com/kong/terraform-provider-konnect/internal/sdk/types"
 )
 
-// Identifier - The type of identifier used to generate the rate limit key. Defines the scope used to increment the rate limiting counters. Can be `ip`, `credential`, `consumer`, `service`, `header`, `path` or `consumer-group`.
-type Identifier string
+// RateLimitingAdvancedPluginIdentifier - The type of identifier used to generate the rate limit key. Defines the scope used to increment the rate limiting counters. Can be `ip`, `credential`, `consumer`, `service`, `header`, `path` or `consumer-group`.
+type RateLimitingAdvancedPluginIdentifier string
 
 const (
-	IdentifierIP            Identifier = "ip"
-	IdentifierCredential    Identifier = "credential"
-	IdentifierConsumer      Identifier = "consumer"
-	IdentifierService       Identifier = "service"
-	IdentifierHeader        Identifier = "header"
-	IdentifierPath          Identifier = "path"
-	IdentifierConsumerGroup Identifier = "consumer-group"
+	RateLimitingAdvancedPluginIdentifierIP            RateLimitingAdvancedPluginIdentifier = "ip"
+	RateLimitingAdvancedPluginIdentifierCredential    RateLimitingAdvancedPluginIdentifier = "credential"
+	RateLimitingAdvancedPluginIdentifierConsumer      RateLimitingAdvancedPluginIdentifier = "consumer"
+	RateLimitingAdvancedPluginIdentifierService       RateLimitingAdvancedPluginIdentifier = "service"
+	RateLimitingAdvancedPluginIdentifierHeader        RateLimitingAdvancedPluginIdentifier = "header"
+	RateLimitingAdvancedPluginIdentifierPath          RateLimitingAdvancedPluginIdentifier = "path"
+	RateLimitingAdvancedPluginIdentifierConsumerGroup RateLimitingAdvancedPluginIdentifier = "consumer-group"
 )
 
-func (e Identifier) ToPointer() *Identifier {
+func (e RateLimitingAdvancedPluginIdentifier) ToPointer() *RateLimitingAdvancedPluginIdentifier {
 	return &e
 }
-func (e *Identifier) UnmarshalJSON(data []byte) error {
+func (e *RateLimitingAdvancedPluginIdentifier) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -44,26 +44,68 @@ func (e *Identifier) UnmarshalJSON(data []byte) error {
 	case "path":
 		fallthrough
 	case "consumer-group":
-		*e = Identifier(v)
+		*e = RateLimitingAdvancedPluginIdentifier(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for Identifier: %v", v)
+		return fmt.Errorf("invalid value for RateLimitingAdvancedPluginIdentifier: %v", v)
 	}
 }
 
-// SentinelRole - Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
-type SentinelRole string
+type RateLimitingAdvancedPluginClusterNodes struct {
+	// A string representing a host name, such as example.com.
+	IP *string `json:"ip,omitempty"`
+	// An integer representing a port number between 0 and 65535, inclusive.
+	Port *int64 `json:"port,omitempty"`
+}
+
+func (o *RateLimitingAdvancedPluginClusterNodes) GetIP() *string {
+	if o == nil {
+		return nil
+	}
+	return o.IP
+}
+
+func (o *RateLimitingAdvancedPluginClusterNodes) GetPort() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.Port
+}
+
+type RateLimitingAdvancedPluginSentinelNodes struct {
+	// A string representing a host name, such as example.com.
+	Host *string `json:"host,omitempty"`
+	// An integer representing a port number between 0 and 65535, inclusive.
+	Port *int64 `json:"port,omitempty"`
+}
+
+func (o *RateLimitingAdvancedPluginSentinelNodes) GetHost() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Host
+}
+
+func (o *RateLimitingAdvancedPluginSentinelNodes) GetPort() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.Port
+}
+
+// RateLimitingAdvancedPluginSentinelRole - Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
+type RateLimitingAdvancedPluginSentinelRole string
 
 const (
-	SentinelRoleMaster SentinelRole = "master"
-	SentinelRoleSlave  SentinelRole = "slave"
-	SentinelRoleAny    SentinelRole = "any"
+	RateLimitingAdvancedPluginSentinelRoleMaster RateLimitingAdvancedPluginSentinelRole = "master"
+	RateLimitingAdvancedPluginSentinelRoleSlave  RateLimitingAdvancedPluginSentinelRole = "slave"
+	RateLimitingAdvancedPluginSentinelRoleAny    RateLimitingAdvancedPluginSentinelRole = "any"
 )
 
-func (e SentinelRole) ToPointer() *SentinelRole {
+func (e RateLimitingAdvancedPluginSentinelRole) ToPointer() *RateLimitingAdvancedPluginSentinelRole {
 	return &e
 }
-func (e *SentinelRole) UnmarshalJSON(data []byte) error {
+func (e *RateLimitingAdvancedPluginSentinelRole) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -74,18 +116,22 @@ func (e *SentinelRole) UnmarshalJSON(data []byte) error {
 	case "slave":
 		fallthrough
 	case "any":
-		*e = SentinelRole(v)
+		*e = RateLimitingAdvancedPluginSentinelRole(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for SentinelRole: %v", v)
+		return fmt.Errorf("invalid value for RateLimitingAdvancedPluginSentinelRole: %v", v)
 	}
 }
 
 type RateLimitingAdvancedPluginRedis struct {
-	// Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Cluster. Each string element must be a hostname. The minimum length of the array is 1 element.
-	ClusterAddresses []string `json:"cluster_addresses,omitempty"`
+	// Maximum retry attempts for redirection.
+	ClusterMaxRedirections *int64 `json:"cluster_max_redirections,omitempty"`
+	// Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
+	ClusterNodes []RateLimitingAdvancedPluginClusterNodes `json:"cluster_nodes,omitempty"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	ConnectTimeout *int64 `json:"connect_timeout,omitempty"`
+	// If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address.
+	ConnectionIsProxied *bool `json:"connection_is_proxied,omitempty"`
 	// Database to use for the Redis connection when using the `redis` strategy
 	Database *int64 `json:"database,omitempty"`
 	// A string representing a host name, such as example.com.
@@ -102,14 +148,14 @@ type RateLimitingAdvancedPluginRedis struct {
 	ReadTimeout *int64 `json:"read_timeout,omitempty"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	SendTimeout *int64 `json:"send_timeout,omitempty"`
-	// Sentinel addresses to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. Each string element must be a hostname. The minimum length of the array is 1 element.
-	SentinelAddresses []string `json:"sentinel_addresses,omitempty"`
 	// Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
 	SentinelMaster *string `json:"sentinel_master,omitempty"`
+	// Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
+	SentinelNodes []RateLimitingAdvancedPluginSentinelNodes `json:"sentinel_nodes,omitempty"`
 	// Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
 	SentinelPassword *string `json:"sentinel_password,omitempty"`
 	// Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
-	SentinelRole *SentinelRole `json:"sentinel_role,omitempty"`
+	SentinelRole *RateLimitingAdvancedPluginSentinelRole `json:"sentinel_role,omitempty"`
 	// Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
 	SentinelUsername *string `json:"sentinel_username,omitempty"`
 	// A string representing an SNI (server name indication) value for TLS.
@@ -118,17 +164,22 @@ type RateLimitingAdvancedPluginRedis struct {
 	Ssl *bool `json:"ssl,omitempty"`
 	// If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
 	SslVerify *bool `json:"ssl_verify,omitempty"`
-	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	Timeout *int64 `json:"timeout,omitempty"`
 	// Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
 	Username *string `json:"username,omitempty"`
 }
 
-func (o *RateLimitingAdvancedPluginRedis) GetClusterAddresses() []string {
+func (o *RateLimitingAdvancedPluginRedis) GetClusterMaxRedirections() *int64 {
 	if o == nil {
 		return nil
 	}
-	return o.ClusterAddresses
+	return o.ClusterMaxRedirections
+}
+
+func (o *RateLimitingAdvancedPluginRedis) GetClusterNodes() []RateLimitingAdvancedPluginClusterNodes {
+	if o == nil {
+		return nil
+	}
+	return o.ClusterNodes
 }
 
 func (o *RateLimitingAdvancedPluginRedis) GetConnectTimeout() *int64 {
@@ -136,6 +187,13 @@ func (o *RateLimitingAdvancedPluginRedis) GetConnectTimeout() *int64 {
 		return nil
 	}
 	return o.ConnectTimeout
+}
+
+func (o *RateLimitingAdvancedPluginRedis) GetConnectionIsProxied() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectionIsProxied
 }
 
 func (o *RateLimitingAdvancedPluginRedis) GetDatabase() *int64 {
@@ -194,18 +252,18 @@ func (o *RateLimitingAdvancedPluginRedis) GetSendTimeout() *int64 {
 	return o.SendTimeout
 }
 
-func (o *RateLimitingAdvancedPluginRedis) GetSentinelAddresses() []string {
-	if o == nil {
-		return nil
-	}
-	return o.SentinelAddresses
-}
-
 func (o *RateLimitingAdvancedPluginRedis) GetSentinelMaster() *string {
 	if o == nil {
 		return nil
 	}
 	return o.SentinelMaster
+}
+
+func (o *RateLimitingAdvancedPluginRedis) GetSentinelNodes() []RateLimitingAdvancedPluginSentinelNodes {
+	if o == nil {
+		return nil
+	}
+	return o.SentinelNodes
 }
 
 func (o *RateLimitingAdvancedPluginRedis) GetSentinelPassword() *string {
@@ -215,7 +273,7 @@ func (o *RateLimitingAdvancedPluginRedis) GetSentinelPassword() *string {
 	return o.SentinelPassword
 }
 
-func (o *RateLimitingAdvancedPluginRedis) GetSentinelRole() *SentinelRole {
+func (o *RateLimitingAdvancedPluginRedis) GetSentinelRole() *RateLimitingAdvancedPluginSentinelRole {
 	if o == nil {
 		return nil
 	}
@@ -248,13 +306,6 @@ func (o *RateLimitingAdvancedPluginRedis) GetSslVerify() *bool {
 		return nil
 	}
 	return o.SslVerify
-}
-
-func (o *RateLimitingAdvancedPluginRedis) GetTimeout() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.Timeout
 }
 
 func (o *RateLimitingAdvancedPluginRedis) GetUsername() *string {
@@ -294,18 +345,18 @@ func (e *RateLimitingAdvancedPluginStrategy) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// WindowType - Sets the time window type to either `sliding` (default) or `fixed`. Sliding windows apply the rate limiting logic while taking into account previous hit rates (from the window that immediately precedes the current) using a dynamic weight. Fixed windows consist of buckets that are statically assigned to a definitive time range, each request is mapped to only one fixed window based on its timestamp and will affect only that window's counters.
-type WindowType string
+// RateLimitingAdvancedPluginWindowType - Sets the time window type to either `sliding` (default) or `fixed`. Sliding windows apply the rate limiting logic while taking into account previous hit rates (from the window that immediately precedes the current) using a dynamic weight. Fixed windows consist of buckets that are statically assigned to a definitive time range, each request is mapped to only one fixed window based on its timestamp and will affect only that window's counters.
+type RateLimitingAdvancedPluginWindowType string
 
 const (
-	WindowTypeFixed   WindowType = "fixed"
-	WindowTypeSliding WindowType = "sliding"
+	RateLimitingAdvancedPluginWindowTypeFixed   RateLimitingAdvancedPluginWindowType = "fixed"
+	RateLimitingAdvancedPluginWindowTypeSliding RateLimitingAdvancedPluginWindowType = "sliding"
 )
 
-func (e WindowType) ToPointer() *WindowType {
+func (e RateLimitingAdvancedPluginWindowType) ToPointer() *RateLimitingAdvancedPluginWindowType {
 	return &e
 }
-func (e *WindowType) UnmarshalJSON(data []byte) error {
+func (e *RateLimitingAdvancedPluginWindowType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -314,10 +365,10 @@ func (e *WindowType) UnmarshalJSON(data []byte) error {
 	case "fixed":
 		fallthrough
 	case "sliding":
-		*e = WindowType(v)
+		*e = RateLimitingAdvancedPluginWindowType(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for WindowType: %v", v)
+		return fmt.Errorf("invalid value for RateLimitingAdvancedPluginWindowType: %v", v)
 	}
 }
 
@@ -339,7 +390,7 @@ type RateLimitingAdvancedPluginConfig struct {
 	// Optionally hide informative response headers that would otherwise provide information about the current status of limits and counters.
 	HideClientHeaders *bool `json:"hide_client_headers,omitempty"`
 	// The type of identifier used to generate the rate limit key. Defines the scope used to increment the rate limiting counters. Can be `ip`, `credential`, `consumer`, `service`, `header`, `path` or `consumer-group`.
-	Identifier *Identifier `json:"identifier,omitempty"`
+	Identifier *RateLimitingAdvancedPluginIdentifier `json:"identifier,omitempty"`
 	// One or more requests-per-window limits to apply. There must be a matching number of window limits and sizes specified.
 	Limit []float64 `json:"limit,omitempty"`
 	// The rate limiting library namespace to use for this plugin instance. Counter data and sync configuration is isolated in each namespace. NOTE: For the plugin instances sharing the same namespace, all the configurations that are required for synchronizing counters, e.g. `strategy`, `redis`, `sync_rate`, `window_size`, `dictionary_name`, need to be the same.
@@ -356,7 +407,7 @@ type RateLimitingAdvancedPluginConfig struct {
 	// One or more window sizes to apply a limit to (defined in seconds). There must be a matching number of window limits and sizes specified.
 	WindowSize []float64 `json:"window_size,omitempty"`
 	// Sets the time window type to either `sliding` (default) or `fixed`. Sliding windows apply the rate limiting logic while taking into account previous hit rates (from the window that immediately precedes the current) using a dynamic weight. Fixed windows consist of buckets that are statically assigned to a definitive time range, each request is mapped to only one fixed window based on its timestamp and will affect only that window's counters.
-	WindowType *WindowType `json:"window_type,omitempty"`
+	WindowType *RateLimitingAdvancedPluginWindowType `json:"window_type,omitempty"`
 }
 
 func (o *RateLimitingAdvancedPluginConfig) GetConsumerGroups() []string {
@@ -415,7 +466,7 @@ func (o *RateLimitingAdvancedPluginConfig) GetHideClientHeaders() *bool {
 	return o.HideClientHeaders
 }
 
-func (o *RateLimitingAdvancedPluginConfig) GetIdentifier() *Identifier {
+func (o *RateLimitingAdvancedPluginConfig) GetIdentifier() *RateLimitingAdvancedPluginIdentifier {
 	if o == nil {
 		return nil
 	}
@@ -478,11 +529,52 @@ func (o *RateLimitingAdvancedPluginConfig) GetWindowSize() []float64 {
 	return o.WindowSize
 }
 
-func (o *RateLimitingAdvancedPluginConfig) GetWindowType() *WindowType {
+func (o *RateLimitingAdvancedPluginConfig) GetWindowType() *RateLimitingAdvancedPluginWindowType {
 	if o == nil {
 		return nil
 	}
 	return o.WindowType
+}
+
+type RateLimitingAdvancedPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *RateLimitingAdvancedPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type RateLimitingAdvancedPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *RateLimitingAdvancedPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type RateLimitingAdvancedPluginOrdering struct {
+	After  *RateLimitingAdvancedPluginAfter  `json:"after,omitempty"`
+	Before *RateLimitingAdvancedPluginBefore `json:"before,omitempty"`
+}
+
+func (o *RateLimitingAdvancedPluginOrdering) GetAfter() *RateLimitingAdvancedPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *RateLimitingAdvancedPluginOrdering) GetBefore() *RateLimitingAdvancedPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
 }
 
 type RateLimitingAdvancedPluginProtocols string
@@ -587,10 +679,11 @@ type RateLimitingAdvancedPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool   `json:"enabled,omitempty"`
-	ID           *string `json:"id,omitempty"`
-	InstanceName *string `json:"instance_name,omitempty"`
-	name         *string `const:"rate-limiting-advanced" json:"name,omitempty"`
+	Enabled      *bool                               `json:"enabled,omitempty"`
+	ID           *string                             `json:"id,omitempty"`
+	InstanceName *string                             `json:"instance_name,omitempty"`
+	name         *string                             `const:"rate-limiting-advanced" json:"name,omitempty"`
+	Ordering     *RateLimitingAdvancedPluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []RateLimitingAdvancedPluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
@@ -654,6 +747,13 @@ func (o *RateLimitingAdvancedPlugin) GetInstanceName() *string {
 
 func (o *RateLimitingAdvancedPlugin) GetName() *string {
 	return types.String("rate-limiting-advanced")
+}
+
+func (o *RateLimitingAdvancedPlugin) GetOrdering() *RateLimitingAdvancedPluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
 }
 
 func (o *RateLimitingAdvancedPlugin) GetProtocols() []RateLimitingAdvancedPluginProtocols {

@@ -31,12 +31,12 @@ func (r *GatewayPluginStatsdDataSourceModel) RefreshFromSharedStatsdPlugin(resp 
 			}
 			r.Config.Host = types.StringPointerValue(resp.Config.Host)
 			r.Config.HostnameInPrefix = types.BoolPointerValue(resp.Config.HostnameInPrefix)
-			r.Config.Metrics = []tfTypes.Metrics{}
+			r.Config.Metrics = []tfTypes.StatsdPluginMetrics{}
 			if len(r.Config.Metrics) > len(resp.Config.Metrics) {
 				r.Config.Metrics = r.Config.Metrics[:len(resp.Config.Metrics)]
 			}
 			for metricsCount, metricsItem := range resp.Config.Metrics {
-				var metrics1 tfTypes.Metrics
+				var metrics1 tfTypes.StatsdPluginMetrics
 				if metricsItem.ConsumerIdentifier != nil {
 					metrics1.ConsumerIdentifier = types.StringValue(string(*metricsItem.ConsumerIdentifier))
 				} else {
@@ -75,7 +75,12 @@ func (r *GatewayPluginStatsdDataSourceModel) RefreshFromSharedStatsdPlugin(resp 
 			if resp.Config.Queue == nil {
 				r.Config.Queue = nil
 			} else {
-				r.Config.Queue = &tfTypes.CreateOpentelemetryPluginQueue{}
+				r.Config.Queue = &tfTypes.CreateDatadogPluginQueue{}
+				if resp.Config.Queue.ConcurrencyLimit != nil {
+					r.Config.Queue.ConcurrencyLimit = types.Int64Value(int64(*resp.Config.Queue.ConcurrencyLimit))
+				} else {
+					r.Config.Queue.ConcurrencyLimit = types.Int64Null()
+				}
 				if resp.Config.Queue.InitialRetryDelay != nil {
 					r.Config.Queue.InitialRetryDelay = types.NumberValue(big.NewFloat(float64(*resp.Config.Queue.InitialRetryDelay)))
 				} else {
@@ -140,6 +145,29 @@ func (r *GatewayPluginStatsdDataSourceModel) RefreshFromSharedStatsdPlugin(resp 
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.InstanceName = types.StringPointerValue(resp.InstanceName)
+		if resp.Ordering == nil {
+			r.Ordering = nil
+		} else {
+			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			if resp.Ordering.After == nil {
+				r.Ordering.After = nil
+			} else {
+				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After.Access = []types.String{}
+				for _, v := range resp.Ordering.After.Access {
+					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				}
+			}
+			if resp.Ordering.Before == nil {
+				r.Ordering.Before = nil
+			} else {
+				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before.Access = []types.String{}
+				for _, v := range resp.Ordering.Before.Access {
+					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				}
+			}
+		}
 		r.Protocols = []types.String{}
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))

@@ -4,7 +4,7 @@ package types
 
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
-type CreateAIProxyPluginLogging struct {
+type CreateAiProxyPluginLogging struct {
 	LogPayloads   types.Bool `tfsdk:"log_payloads"`
 	LogStatistics types.Bool `tfsdk:"log_statistics"`
 }

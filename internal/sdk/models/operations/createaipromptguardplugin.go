@@ -10,7 +10,7 @@ import (
 type CreateAipromptguardPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID            string                            `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateAIPromptGuardPlugin *shared.CreateAIPromptGuardPlugin `request:"mediaType=application/json"`
+	CreateAiPromptGuardPlugin *shared.CreateAiPromptGuardPlugin `request:"mediaType=application/json"`
 }
 
 func (o *CreateAipromptguardPluginRequest) GetControlPlaneID() string {
@@ -20,11 +20,11 @@ func (o *CreateAipromptguardPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateAipromptguardPluginRequest) GetCreateAIPromptGuardPlugin() *shared.CreateAIPromptGuardPlugin {
+func (o *CreateAipromptguardPluginRequest) GetCreateAiPromptGuardPlugin() *shared.CreateAiPromptGuardPlugin {
 	if o == nil {
 		return nil
 	}
-	return o.CreateAIPromptGuardPlugin
+	return o.CreateAiPromptGuardPlugin
 }
 
 type CreateAipromptguardPluginResponse struct {
@@ -34,8 +34,8 @@ type CreateAipromptguardPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Created AIPromptGuard plugin
-	AIPromptGuardPlugin *shared.AIPromptGuardPlugin
+	// Created AiPromptGuard plugin
+	AiPromptGuardPlugin *shared.AiPromptGuardPlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
@@ -61,11 +61,11 @@ func (o *CreateAipromptguardPluginResponse) GetRawResponse() *http.Response {
 	return o.RawResponse
 }
 
-func (o *CreateAipromptguardPluginResponse) GetAIPromptGuardPlugin() *shared.AIPromptGuardPlugin {
+func (o *CreateAipromptguardPluginResponse) GetAiPromptGuardPlugin() *shared.AiPromptGuardPlugin {
 	if o == nil {
 		return nil
 	}
-	return o.AIPromptGuardPlugin
+	return o.AiPromptGuardPlugin
 }
 
 func (o *CreateAipromptguardPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {

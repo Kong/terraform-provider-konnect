@@ -48,6 +48,47 @@ func (o *IPRestrictionPluginConfig) GetStatus() *float64 {
 	return o.Status
 }
 
+type IPRestrictionPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *IPRestrictionPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type IPRestrictionPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *IPRestrictionPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type IPRestrictionPluginOrdering struct {
+	After  *IPRestrictionPluginAfter  `json:"after,omitempty"`
+	Before *IPRestrictionPluginBefore `json:"before,omitempty"`
+}
+
+func (o *IPRestrictionPluginOrdering) GetAfter() *IPRestrictionPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *IPRestrictionPluginOrdering) GetBefore() *IPRestrictionPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
 type IPRestrictionPluginProtocols string
 
 const (
@@ -150,10 +191,11 @@ type IPRestrictionPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool   `json:"enabled,omitempty"`
-	ID           *string `json:"id,omitempty"`
-	InstanceName *string `json:"instance_name,omitempty"`
-	name         *string `const:"ip-restriction" json:"name,omitempty"`
+	Enabled      *bool                        `json:"enabled,omitempty"`
+	ID           *string                      `json:"id,omitempty"`
+	InstanceName *string                      `json:"instance_name,omitempty"`
+	name         *string                      `const:"ip-restriction" json:"name,omitempty"`
+	Ordering     *IPRestrictionPluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []IPRestrictionPluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
@@ -217,6 +259,13 @@ func (o *IPRestrictionPlugin) GetInstanceName() *string {
 
 func (o *IPRestrictionPlugin) GetName() *string {
 	return types.String("ip-restriction")
+}
+
+func (o *IPRestrictionPlugin) GetOrdering() *IPRestrictionPluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
 }
 
 func (o *IPRestrictionPlugin) GetProtocols() []IPRestrictionPluginProtocols {

@@ -39,6 +39,47 @@ func (o *CreateFileLogPluginConfig) GetReopen() *bool {
 	return o.Reopen
 }
 
+type CreateFileLogPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *CreateFileLogPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type CreateFileLogPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *CreateFileLogPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type CreateFileLogPluginOrdering struct {
+	After  *CreateFileLogPluginAfter  `json:"after,omitempty"`
+	Before *CreateFileLogPluginBefore `json:"before,omitempty"`
+}
+
+func (o *CreateFileLogPluginOrdering) GetAfter() *CreateFileLogPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *CreateFileLogPluginOrdering) GetBefore() *CreateFileLogPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
 type CreateFileLogPluginProtocols string
 
 const (
@@ -139,9 +180,10 @@ func (o *CreateFileLogPluginService) GetID() *string {
 type CreateFileLogPlugin struct {
 	Config *CreateFileLogPluginConfig `json:"config,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool   `json:"enabled,omitempty"`
-	InstanceName *string `json:"instance_name,omitempty"`
-	name         *string `const:"file-log" json:"name,omitempty"`
+	Enabled      *bool                        `json:"enabled,omitempty"`
+	InstanceName *string                      `json:"instance_name,omitempty"`
+	name         *string                      `const:"file-log" json:"name,omitempty"`
+	Ordering     *CreateFileLogPluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []CreateFileLogPluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
@@ -189,6 +231,13 @@ func (o *CreateFileLogPlugin) GetInstanceName() *string {
 
 func (o *CreateFileLogPlugin) GetName() *string {
 	return types.String("file-log")
+}
+
+func (o *CreateFileLogPlugin) GetOrdering() *CreateFileLogPluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
 }
 
 func (o *CreateFileLogPlugin) GetProtocols() []CreateFileLogPluginProtocols {

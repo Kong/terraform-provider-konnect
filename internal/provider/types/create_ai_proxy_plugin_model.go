@@ -4,8 +4,8 @@ package types
 
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
-type CreateAIProxyPluginModel struct {
+type CreateAiProxyPluginModel struct {
 	Name     types.String                `tfsdk:"name"`
-	Options  *CreateAIProxyPluginOptions `tfsdk:"options"`
+	Options  *CreateAiProxyPluginOptions `tfsdk:"options"`
 	Provider types.String                `tfsdk:"provider"`
 }

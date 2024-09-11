@@ -10,6 +10,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
@@ -18,42 +20,43 @@ import (
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
-var _ resource.Resource = &GatewayPluginJQResource{}
-var _ resource.ResourceWithImportState = &GatewayPluginJQResource{}
+var _ resource.Resource = &GatewayPluginJqResource{}
+var _ resource.ResourceWithImportState = &GatewayPluginJqResource{}
 
-func NewGatewayPluginJQResource() resource.Resource {
-	return &GatewayPluginJQResource{}
+func NewGatewayPluginJqResource() resource.Resource {
+	return &GatewayPluginJqResource{}
 }
 
-// GatewayPluginJQResource defines the resource implementation.
-type GatewayPluginJQResource struct {
+// GatewayPluginJqResource defines the resource implementation.
+type GatewayPluginJqResource struct {
 	client *sdk.Konnect
 }
 
-// GatewayPluginJQResourceModel describes the resource data model.
-type GatewayPluginJQResourceModel struct {
-	Config         *tfTypes.CreateJQPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer          `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLConsumer          `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                  `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                   `tfsdk:"created_at"`
-	Enabled        types.Bool                    `tfsdk:"enabled"`
-	ID             types.String                  `tfsdk:"id"`
-	InstanceName   types.String                  `tfsdk:"instance_name"`
-	Protocols      []types.String                `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer          `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer          `tfsdk:"service"`
-	Tags           []types.String                `tfsdk:"tags"`
-	UpdatedAt      types.Int64                   `tfsdk:"updated_at"`
+// GatewayPluginJqResourceModel describes the resource data model.
+type GatewayPluginJqResourceModel struct {
+	Config         *tfTypes.CreateJqPluginConfig    `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer             `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer             `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                     `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                      `tfsdk:"created_at"`
+	Enabled        types.Bool                       `tfsdk:"enabled"`
+	ID             types.String                     `tfsdk:"id"`
+	InstanceName   types.String                     `tfsdk:"instance_name"`
+	Ordering       *tfTypes.CreateACLPluginOrdering `tfsdk:"ordering"`
+	Protocols      []types.String                   `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer             `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer             `tfsdk:"service"`
+	Tags           []types.String                   `tfsdk:"tags"`
+	UpdatedAt      types.Int64                      `tfsdk:"updated_at"`
 }
 
-func (r *GatewayPluginJQResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+func (r *GatewayPluginJqResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_gateway_plugin_jq"
 }
 
-func (r *GatewayPluginJQResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *GatewayPluginJqResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "GatewayPluginJQ Resource",
+		MarkdownDescription: "GatewayPluginJq Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
@@ -158,8 +161,11 @@ func (r *GatewayPluginJQResource) Schema(ctx context.Context, req resource.Schem
 				},
 			},
 			"control_plane_id": schema.StringAttribute{
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
 				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager.`,
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed. `,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
@@ -176,6 +182,34 @@ func (r *GatewayPluginJQResource) Schema(ctx context.Context, req resource.Schem
 			"instance_name": schema.StringAttribute{
 				Computed: true,
 				Optional: true,
+			},
+			"ordering": schema.SingleNestedAttribute{
+				Computed: true,
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"after": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+					"before": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+				},
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,
@@ -219,7 +253,7 @@ func (r *GatewayPluginJQResource) Schema(ctx context.Context, req resource.Schem
 	}
 }
 
-func (r *GatewayPluginJQResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *GatewayPluginJqResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	// Prevent panic if the provider has not been configured.
 	if req.ProviderData == nil {
 		return
@@ -239,8 +273,8 @@ func (r *GatewayPluginJQResource) Configure(ctx context.Context, req resource.Co
 	r.client = client
 }
 
-func (r *GatewayPluginJQResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data *GatewayPluginJQResourceModel
+func (r *GatewayPluginJqResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var data *GatewayPluginJqResourceModel
 	var plan types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -260,10 +294,10 @@ func (r *GatewayPluginJQResource) Create(ctx context.Context, req resource.Creat
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createJQPlugin := data.ToSharedCreateJQPlugin()
+	createJqPlugin := data.ToSharedCreateJqPlugin()
 	request := operations.CreateJqPluginRequest{
 		ControlPlaneID: controlPlaneID,
-		CreateJQPlugin: createJQPlugin,
+		CreateJqPlugin: createJqPlugin,
 	}
 	res, err := r.client.Plugins.CreateJqPlugin(ctx, request)
 	if err != nil {
@@ -281,19 +315,19 @@ func (r *GatewayPluginJQResource) Create(ctx context.Context, req resource.Creat
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.JQPlugin != nil) {
+	if !(res.JqPlugin != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedJQPlugin(res.JQPlugin)
+	data.RefreshFromSharedJqPlugin(res.JqPlugin)
 	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *GatewayPluginJQResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data *GatewayPluginJQResourceModel
+func (r *GatewayPluginJqResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var data *GatewayPluginJqResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -340,18 +374,18 @@ func (r *GatewayPluginJQResource) Read(ctx context.Context, req resource.ReadReq
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.JQPlugin != nil) {
+	if !(res.JqPlugin != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedJQPlugin(res.JQPlugin)
+	data.RefreshFromSharedJqPlugin(res.JqPlugin)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *GatewayPluginJQResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data *GatewayPluginJQResourceModel
+func (r *GatewayPluginJqResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var data *GatewayPluginJqResourceModel
 	var plan types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -370,11 +404,11 @@ func (r *GatewayPluginJQResource) Update(ctx context.Context, req resource.Updat
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createJQPlugin := data.ToSharedCreateJQPlugin()
+	createJqPlugin := data.ToSharedCreateJqPlugin()
 	request := operations.UpdateJqPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
-		CreateJQPlugin: createJQPlugin,
+		CreateJqPlugin: createJqPlugin,
 	}
 	res, err := r.client.Plugins.UpdateJqPlugin(ctx, request)
 	if err != nil {
@@ -392,19 +426,19 @@ func (r *GatewayPluginJQResource) Update(ctx context.Context, req resource.Updat
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.JQPlugin != nil) {
+	if !(res.JqPlugin != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedJQPlugin(res.JQPlugin)
+	data.RefreshFromSharedJqPlugin(res.JqPlugin)
 	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *GatewayPluginJQResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var data *GatewayPluginJQResourceModel
+func (r *GatewayPluginJqResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var data *GatewayPluginJqResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -450,7 +484,7 @@ func (r *GatewayPluginJQResource) Delete(ctx context.Context, req resource.Delet
 
 }
 
-func (r *GatewayPluginJQResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *GatewayPluginJqResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
 	dec.DisallowUnknownFields()
 	var data struct {

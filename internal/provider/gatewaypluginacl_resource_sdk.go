@@ -15,6 +15,12 @@ func (r *GatewayPluginACLResourceModel) ToSharedCreateACLPlugin() *shared.Create
 		for _, allowItem := range r.Config.Allow {
 			allow = append(allow, allowItem.ValueString())
 		}
+		alwaysUseAuthenticatedGroups := new(bool)
+		if !r.Config.AlwaysUseAuthenticatedGroups.IsUnknown() && !r.Config.AlwaysUseAuthenticatedGroups.IsNull() {
+			*alwaysUseAuthenticatedGroups = r.Config.AlwaysUseAuthenticatedGroups.ValueBool()
+		} else {
+			alwaysUseAuthenticatedGroups = nil
+		}
 		var deny []string = []string{}
 		for _, denyItem := range r.Config.Deny {
 			deny = append(deny, denyItem.ValueString())
@@ -32,10 +38,11 @@ func (r *GatewayPluginACLResourceModel) ToSharedCreateACLPlugin() *shared.Create
 			includeConsumerGroups = nil
 		}
 		config = &shared.CreateACLPluginConfig{
-			Allow:                 allow,
-			Deny:                  deny,
-			HideGroupsHeader:      hideGroupsHeader,
-			IncludeConsumerGroups: includeConsumerGroups,
+			Allow:                        allow,
+			AlwaysUseAuthenticatedGroups: alwaysUseAuthenticatedGroups,
+			Deny:                         deny,
+			HideGroupsHeader:             hideGroupsHeader,
+			IncludeConsumerGroups:        includeConsumerGroups,
 		}
 	}
 	enabled := new(bool)
@@ -49,6 +56,33 @@ func (r *GatewayPluginACLResourceModel) ToSharedCreateACLPlugin() *shared.Create
 		*instanceName = r.InstanceName.ValueString()
 	} else {
 		instanceName = nil
+	}
+	var ordering *shared.CreateACLPluginOrdering
+	if r.Ordering != nil {
+		var after *shared.CreateACLPluginAfter
+		if r.Ordering.After != nil {
+			var access []string = []string{}
+			for _, accessItem := range r.Ordering.After.Access {
+				access = append(access, accessItem.ValueString())
+			}
+			after = &shared.CreateACLPluginAfter{
+				Access: access,
+			}
+		}
+		var before *shared.CreateACLPluginBefore
+		if r.Ordering.Before != nil {
+			var access1 []string = []string{}
+			for _, accessItem1 := range r.Ordering.Before.Access {
+				access1 = append(access1, accessItem1.ValueString())
+			}
+			before = &shared.CreateACLPluginBefore{
+				Access: access1,
+			}
+		}
+		ordering = &shared.CreateACLPluginOrdering{
+			After:  after,
+			Before: before,
+		}
 	}
 	var protocols []shared.CreateACLPluginProtocols = []shared.CreateACLPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
@@ -110,6 +144,7 @@ func (r *GatewayPluginACLResourceModel) ToSharedCreateACLPlugin() *shared.Create
 		Config:        config,
 		Enabled:       enabled,
 		InstanceName:  instanceName,
+		Ordering:      ordering,
 		Protocols:     protocols,
 		Tags:          tags,
 		Consumer:      consumer,
@@ -130,6 +165,7 @@ func (r *GatewayPluginACLResourceModel) RefreshFromSharedACLPlugin(resp *shared.
 			for _, v := range resp.Config.Allow {
 				r.Config.Allow = append(r.Config.Allow, types.StringValue(v))
 			}
+			r.Config.AlwaysUseAuthenticatedGroups = types.BoolPointerValue(resp.Config.AlwaysUseAuthenticatedGroups)
 			r.Config.Deny = []types.String{}
 			for _, v := range resp.Config.Deny {
 				r.Config.Deny = append(r.Config.Deny, types.StringValue(v))
@@ -153,6 +189,29 @@ func (r *GatewayPluginACLResourceModel) RefreshFromSharedACLPlugin(resp *shared.
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.InstanceName = types.StringPointerValue(resp.InstanceName)
+		if resp.Ordering == nil {
+			r.Ordering = nil
+		} else {
+			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			if resp.Ordering.After == nil {
+				r.Ordering.After = nil
+			} else {
+				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After.Access = []types.String{}
+				for _, v := range resp.Ordering.After.Access {
+					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				}
+			}
+			if resp.Ordering.Before == nil {
+				r.Ordering.Before = nil
+			} else {
+				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before.Access = []types.String{}
+				for _, v := range resp.Ordering.Before.Access {
+					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				}
+			}
+		}
 		r.Protocols = []types.String{}
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))

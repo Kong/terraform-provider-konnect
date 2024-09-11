@@ -5,8 +5,9 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type CreateACLPluginConfig struct {
-	Allow                 []types.String `tfsdk:"allow"`
-	Deny                  []types.String `tfsdk:"deny"`
-	HideGroupsHeader      types.Bool     `tfsdk:"hide_groups_header"`
-	IncludeConsumerGroups types.Bool     `tfsdk:"include_consumer_groups"`
+	Allow                        []types.String `tfsdk:"allow"`
+	AlwaysUseAuthenticatedGroups types.Bool     `tfsdk:"always_use_authenticated_groups"`
+	Deny                         []types.String `tfsdk:"deny"`
+	HideGroupsHeader             types.Bool     `tfsdk:"hide_groups_header"`
+	IncludeConsumerGroups        types.Bool     `tfsdk:"include_consumer_groups"`
 }

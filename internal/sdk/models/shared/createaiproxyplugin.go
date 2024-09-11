@@ -9,18 +9,18 @@ import (
 	"github.com/kong/terraform-provider-konnect/internal/sdk/types"
 )
 
-// CreateAIProxyPluginParamLocation - Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body.
-type CreateAIProxyPluginParamLocation string
+// CreateAiProxyPluginParamLocation - Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body.
+type CreateAiProxyPluginParamLocation string
 
 const (
-	CreateAIProxyPluginParamLocationQuery CreateAIProxyPluginParamLocation = "query"
-	CreateAIProxyPluginParamLocationBody  CreateAIProxyPluginParamLocation = "body"
+	CreateAiProxyPluginParamLocationQuery CreateAiProxyPluginParamLocation = "query"
+	CreateAiProxyPluginParamLocationBody  CreateAiProxyPluginParamLocation = "body"
 )
 
-func (e CreateAIProxyPluginParamLocation) ToPointer() *CreateAIProxyPluginParamLocation {
+func (e CreateAiProxyPluginParamLocation) ToPointer() *CreateAiProxyPluginParamLocation {
 	return &e
 }
-func (e *CreateAIProxyPluginParamLocation) UnmarshalJSON(data []byte) error {
+func (e *CreateAiProxyPluginParamLocation) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -29,14 +29,20 @@ func (e *CreateAIProxyPluginParamLocation) UnmarshalJSON(data []byte) error {
 	case "query":
 		fallthrough
 	case "body":
-		*e = CreateAIProxyPluginParamLocation(v)
+		*e = CreateAiProxyPluginParamLocation(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for CreateAIProxyPluginParamLocation: %v", v)
+		return fmt.Errorf("invalid value for CreateAiProxyPluginParamLocation: %v", v)
 	}
 }
 
-type CreateAIProxyPluginAuth struct {
+type CreateAiProxyPluginAuth struct {
+	// If enabled, the authorization header or parameter can be overridden in the request by the value configured in the plugin.
+	AllowOverride *bool `json:"allow_override,omitempty"`
+	// Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_ACCESS_KEY_ID environment variable for this plugin instance.
+	AwsAccessKeyID *string `json:"aws_access_key_id,omitempty"`
+	// Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_SECRET_ACCESS_KEY environment variable for this plugin instance.
+	AwsSecretAccessKey *string `json:"aws_secret_access_key,omitempty"`
 	// If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client ID.
 	AzureClientID *string `json:"azure_client_id,omitempty"`
 	// If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client secret.
@@ -45,115 +51,196 @@ type CreateAIProxyPluginAuth struct {
 	AzureTenantID *string `json:"azure_tenant_id,omitempty"`
 	// Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models.
 	AzureUseManagedIdentity *bool `json:"azure_use_managed_identity,omitempty"`
+	// Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable `GCP_SERVICE_ACCOUNT`.
+	GcpServiceAccountJSON *string `json:"gcp_service_account_json,omitempty"`
+	// Use service account auth for GCP-based providers and models.
+	GcpUseServiceAccount *bool `json:"gcp_use_service_account,omitempty"`
 	// If AI model requires authentication via Authorization or API key header, specify its name here.
 	HeaderName *string `json:"header_name,omitempty"`
 	// Specify the full auth header value for 'header_name', for example 'Bearer key' or just 'key'.
 	HeaderValue *string `json:"header_value,omitempty"`
 	// Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body.
-	ParamLocation *CreateAIProxyPluginParamLocation `json:"param_location,omitempty"`
+	ParamLocation *CreateAiProxyPluginParamLocation `json:"param_location,omitempty"`
 	// If AI model requires authentication via query parameter, specify its name here.
 	ParamName *string `json:"param_name,omitempty"`
 	// Specify the full parameter value for 'param_name'.
 	ParamValue *string `json:"param_value,omitempty"`
 }
 
-func (o *CreateAIProxyPluginAuth) GetAzureClientID() *string {
+func (o *CreateAiProxyPluginAuth) GetAllowOverride() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.AllowOverride
+}
+
+func (o *CreateAiProxyPluginAuth) GetAwsAccessKeyID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsAccessKeyID
+}
+
+func (o *CreateAiProxyPluginAuth) GetAwsSecretAccessKey() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsSecretAccessKey
+}
+
+func (o *CreateAiProxyPluginAuth) GetAzureClientID() *string {
 	if o == nil {
 		return nil
 	}
 	return o.AzureClientID
 }
 
-func (o *CreateAIProxyPluginAuth) GetAzureClientSecret() *string {
+func (o *CreateAiProxyPluginAuth) GetAzureClientSecret() *string {
 	if o == nil {
 		return nil
 	}
 	return o.AzureClientSecret
 }
 
-func (o *CreateAIProxyPluginAuth) GetAzureTenantID() *string {
+func (o *CreateAiProxyPluginAuth) GetAzureTenantID() *string {
 	if o == nil {
 		return nil
 	}
 	return o.AzureTenantID
 }
 
-func (o *CreateAIProxyPluginAuth) GetAzureUseManagedIdentity() *bool {
+func (o *CreateAiProxyPluginAuth) GetAzureUseManagedIdentity() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.AzureUseManagedIdentity
 }
 
-func (o *CreateAIProxyPluginAuth) GetHeaderName() *string {
+func (o *CreateAiProxyPluginAuth) GetGcpServiceAccountJSON() *string {
+	if o == nil {
+		return nil
+	}
+	return o.GcpServiceAccountJSON
+}
+
+func (o *CreateAiProxyPluginAuth) GetGcpUseServiceAccount() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.GcpUseServiceAccount
+}
+
+func (o *CreateAiProxyPluginAuth) GetHeaderName() *string {
 	if o == nil {
 		return nil
 	}
 	return o.HeaderName
 }
 
-func (o *CreateAIProxyPluginAuth) GetHeaderValue() *string {
+func (o *CreateAiProxyPluginAuth) GetHeaderValue() *string {
 	if o == nil {
 		return nil
 	}
 	return o.HeaderValue
 }
 
-func (o *CreateAIProxyPluginAuth) GetParamLocation() *CreateAIProxyPluginParamLocation {
+func (o *CreateAiProxyPluginAuth) GetParamLocation() *CreateAiProxyPluginParamLocation {
 	if o == nil {
 		return nil
 	}
 	return o.ParamLocation
 }
 
-func (o *CreateAIProxyPluginAuth) GetParamName() *string {
+func (o *CreateAiProxyPluginAuth) GetParamName() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ParamName
 }
 
-func (o *CreateAIProxyPluginAuth) GetParamValue() *string {
+func (o *CreateAiProxyPluginAuth) GetParamValue() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ParamValue
 }
 
-type CreateAIProxyPluginLogging struct {
+type CreateAiProxyPluginLogging struct {
 	// If enabled, will log the request and response body into the Kong log plugin(s) output.
 	LogPayloads *bool `json:"log_payloads,omitempty"`
 	// If enabled and supported by the driver, will add model usage and token metrics into the Kong log plugin(s) output.
 	LogStatistics *bool `json:"log_statistics,omitempty"`
 }
 
-func (o *CreateAIProxyPluginLogging) GetLogPayloads() *bool {
+func (o *CreateAiProxyPluginLogging) GetLogPayloads() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.LogPayloads
 }
 
-func (o *CreateAIProxyPluginLogging) GetLogStatistics() *bool {
+func (o *CreateAiProxyPluginLogging) GetLogStatistics() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.LogStatistics
 }
 
-// CreateAIProxyPluginLlama2Format - If using llama2 provider, select the upstream message format.
-type CreateAIProxyPluginLlama2Format string
+type CreateAiProxyPluginBedrock struct {
+	// If using AWS providers (Bedrock) you can override the `AWS_REGION` environment variable by setting this option.
+	AwsRegion *string `json:"aws_region,omitempty"`
+}
+
+func (o *CreateAiProxyPluginBedrock) GetAwsRegion() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsRegion
+}
+
+type CreateAiProxyPluginGemini struct {
+	// If running Gemini on Vertex, specify the regional API endpoint (hostname only).
+	APIEndpoint *string `json:"api_endpoint,omitempty"`
+	// If running Gemini on Vertex, specify the location ID.
+	LocationID *string `json:"location_id,omitempty"`
+	// If running Gemini on Vertex, specify the project ID.
+	ProjectID *string `json:"project_id,omitempty"`
+}
+
+func (o *CreateAiProxyPluginGemini) GetAPIEndpoint() *string {
+	if o == nil {
+		return nil
+	}
+	return o.APIEndpoint
+}
+
+func (o *CreateAiProxyPluginGemini) GetLocationID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.LocationID
+}
+
+func (o *CreateAiProxyPluginGemini) GetProjectID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ProjectID
+}
+
+// CreateAiProxyPluginLlama2Format - If using llama2 provider, select the upstream message format.
+type CreateAiProxyPluginLlama2Format string
 
 const (
-	CreateAIProxyPluginLlama2FormatRaw    CreateAIProxyPluginLlama2Format = "raw"
-	CreateAIProxyPluginLlama2FormatOpenai CreateAIProxyPluginLlama2Format = "openai"
-	CreateAIProxyPluginLlama2FormatOllama CreateAIProxyPluginLlama2Format = "ollama"
+	CreateAiProxyPluginLlama2FormatRaw    CreateAiProxyPluginLlama2Format = "raw"
+	CreateAiProxyPluginLlama2FormatOpenai CreateAiProxyPluginLlama2Format = "openai"
+	CreateAiProxyPluginLlama2FormatOllama CreateAiProxyPluginLlama2Format = "ollama"
 )
 
-func (e CreateAIProxyPluginLlama2Format) ToPointer() *CreateAIProxyPluginLlama2Format {
+func (e CreateAiProxyPluginLlama2Format) ToPointer() *CreateAiProxyPluginLlama2Format {
 	return &e
 }
-func (e *CreateAIProxyPluginLlama2Format) UnmarshalJSON(data []byte) error {
+func (e *CreateAiProxyPluginLlama2Format) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -164,25 +251,25 @@ func (e *CreateAIProxyPluginLlama2Format) UnmarshalJSON(data []byte) error {
 	case "openai":
 		fallthrough
 	case "ollama":
-		*e = CreateAIProxyPluginLlama2Format(v)
+		*e = CreateAiProxyPluginLlama2Format(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for CreateAIProxyPluginLlama2Format: %v", v)
+		return fmt.Errorf("invalid value for CreateAiProxyPluginLlama2Format: %v", v)
 	}
 }
 
-// CreateAIProxyPluginMistralFormat - If using mistral provider, select the upstream message format.
-type CreateAIProxyPluginMistralFormat string
+// CreateAiProxyPluginMistralFormat - If using mistral provider, select the upstream message format.
+type CreateAiProxyPluginMistralFormat string
 
 const (
-	CreateAIProxyPluginMistralFormatOpenai CreateAIProxyPluginMistralFormat = "openai"
-	CreateAIProxyPluginMistralFormatOllama CreateAIProxyPluginMistralFormat = "ollama"
+	CreateAiProxyPluginMistralFormatOpenai CreateAiProxyPluginMistralFormat = "openai"
+	CreateAiProxyPluginMistralFormatOllama CreateAiProxyPluginMistralFormat = "ollama"
 )
 
-func (e CreateAIProxyPluginMistralFormat) ToPointer() *CreateAIProxyPluginMistralFormat {
+func (e CreateAiProxyPluginMistralFormat) ToPointer() *CreateAiProxyPluginMistralFormat {
 	return &e
 }
-func (e *CreateAIProxyPluginMistralFormat) UnmarshalJSON(data []byte) error {
+func (e *CreateAiProxyPluginMistralFormat) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -191,15 +278,15 @@ func (e *CreateAIProxyPluginMistralFormat) UnmarshalJSON(data []byte) error {
 	case "openai":
 		fallthrough
 	case "ollama":
-		*e = CreateAIProxyPluginMistralFormat(v)
+		*e = CreateAiProxyPluginMistralFormat(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for CreateAIProxyPluginMistralFormat: %v", v)
+		return fmt.Errorf("invalid value for CreateAiProxyPluginMistralFormat: %v", v)
 	}
 }
 
-// CreateAIProxyPluginOptions - Key/value settings for the model
-type CreateAIProxyPluginOptions struct {
+// CreateAiProxyPluginOptions - Key/value settings for the model
+type CreateAiProxyPluginOptions struct {
 	// Defines the schema/API version, if using Anthropic provider.
 	AnthropicVersion *string `json:"anthropic_version,omitempty"`
 	// 'api-version' for Azure OpenAI instances.
@@ -207,13 +294,19 @@ type CreateAIProxyPluginOptions struct {
 	// Deployment ID for Azure OpenAI instances.
 	AzureDeploymentID *string `json:"azure_deployment_id,omitempty"`
 	// Instance name for Azure OpenAI hosted models.
-	AzureInstance *string `json:"azure_instance,omitempty"`
+	AzureInstance *string                     `json:"azure_instance,omitempty"`
+	Bedrock       *CreateAiProxyPluginBedrock `json:"bedrock,omitempty"`
+	Gemini        *CreateAiProxyPluginGemini  `json:"gemini,omitempty"`
+	// Defines the cost per 1M tokens in your prompt.
+	InputCost *float64 `json:"input_cost,omitempty"`
 	// If using llama2 provider, select the upstream message format.
-	Llama2Format *CreateAIProxyPluginLlama2Format `json:"llama2_format,omitempty"`
+	Llama2Format *CreateAiProxyPluginLlama2Format `json:"llama2_format,omitempty"`
 	// Defines the max_tokens, if using chat or completion models.
 	MaxTokens *int64 `json:"max_tokens,omitempty"`
 	// If using mistral provider, select the upstream message format.
-	MistralFormat *CreateAIProxyPluginMistralFormat `json:"mistral_format,omitempty"`
+	MistralFormat *CreateAiProxyPluginMistralFormat `json:"mistral_format,omitempty"`
+	// Defines the cost per 1M tokens in the output of the AI.
+	OutputCost *float64 `json:"output_cost,omitempty"`
 	// Defines the matching temperature, if using chat or completion models.
 	Temperature *float64 `json:"temperature,omitempty"`
 	// Defines the top-k most likely tokens, if supported.
@@ -226,106 +319,136 @@ type CreateAIProxyPluginOptions struct {
 	UpstreamURL *string `json:"upstream_url,omitempty"`
 }
 
-func (o *CreateAIProxyPluginOptions) GetAnthropicVersion() *string {
+func (o *CreateAiProxyPluginOptions) GetAnthropicVersion() *string {
 	if o == nil {
 		return nil
 	}
 	return o.AnthropicVersion
 }
 
-func (o *CreateAIProxyPluginOptions) GetAzureAPIVersion() *string {
+func (o *CreateAiProxyPluginOptions) GetAzureAPIVersion() *string {
 	if o == nil {
 		return nil
 	}
 	return o.AzureAPIVersion
 }
 
-func (o *CreateAIProxyPluginOptions) GetAzureDeploymentID() *string {
+func (o *CreateAiProxyPluginOptions) GetAzureDeploymentID() *string {
 	if o == nil {
 		return nil
 	}
 	return o.AzureDeploymentID
 }
 
-func (o *CreateAIProxyPluginOptions) GetAzureInstance() *string {
+func (o *CreateAiProxyPluginOptions) GetAzureInstance() *string {
 	if o == nil {
 		return nil
 	}
 	return o.AzureInstance
 }
 
-func (o *CreateAIProxyPluginOptions) GetLlama2Format() *CreateAIProxyPluginLlama2Format {
+func (o *CreateAiProxyPluginOptions) GetBedrock() *CreateAiProxyPluginBedrock {
+	if o == nil {
+		return nil
+	}
+	return o.Bedrock
+}
+
+func (o *CreateAiProxyPluginOptions) GetGemini() *CreateAiProxyPluginGemini {
+	if o == nil {
+		return nil
+	}
+	return o.Gemini
+}
+
+func (o *CreateAiProxyPluginOptions) GetInputCost() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.InputCost
+}
+
+func (o *CreateAiProxyPluginOptions) GetLlama2Format() *CreateAiProxyPluginLlama2Format {
 	if o == nil {
 		return nil
 	}
 	return o.Llama2Format
 }
 
-func (o *CreateAIProxyPluginOptions) GetMaxTokens() *int64 {
+func (o *CreateAiProxyPluginOptions) GetMaxTokens() *int64 {
 	if o == nil {
 		return nil
 	}
 	return o.MaxTokens
 }
 
-func (o *CreateAIProxyPluginOptions) GetMistralFormat() *CreateAIProxyPluginMistralFormat {
+func (o *CreateAiProxyPluginOptions) GetMistralFormat() *CreateAiProxyPluginMistralFormat {
 	if o == nil {
 		return nil
 	}
 	return o.MistralFormat
 }
 
-func (o *CreateAIProxyPluginOptions) GetTemperature() *float64 {
+func (o *CreateAiProxyPluginOptions) GetOutputCost() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.OutputCost
+}
+
+func (o *CreateAiProxyPluginOptions) GetTemperature() *float64 {
 	if o == nil {
 		return nil
 	}
 	return o.Temperature
 }
 
-func (o *CreateAIProxyPluginOptions) GetTopK() *int64 {
+func (o *CreateAiProxyPluginOptions) GetTopK() *int64 {
 	if o == nil {
 		return nil
 	}
 	return o.TopK
 }
 
-func (o *CreateAIProxyPluginOptions) GetTopP() *float64 {
+func (o *CreateAiProxyPluginOptions) GetTopP() *float64 {
 	if o == nil {
 		return nil
 	}
 	return o.TopP
 }
 
-func (o *CreateAIProxyPluginOptions) GetUpstreamPath() *string {
+func (o *CreateAiProxyPluginOptions) GetUpstreamPath() *string {
 	if o == nil {
 		return nil
 	}
 	return o.UpstreamPath
 }
 
-func (o *CreateAIProxyPluginOptions) GetUpstreamURL() *string {
+func (o *CreateAiProxyPluginOptions) GetUpstreamURL() *string {
 	if o == nil {
 		return nil
 	}
 	return o.UpstreamURL
 }
 
-// CreateAIProxyPluginProvider - AI provider request format - Kong translates requests to and from the specified backend compatible formats.
-type CreateAIProxyPluginProvider string
+// CreateAiProxyPluginProvider - AI provider request format - Kong translates requests to and from the specified backend compatible formats.
+type CreateAiProxyPluginProvider string
 
 const (
-	CreateAIProxyPluginProviderOpenai    CreateAIProxyPluginProvider = "openai"
-	CreateAIProxyPluginProviderAzure     CreateAIProxyPluginProvider = "azure"
-	CreateAIProxyPluginProviderAnthropic CreateAIProxyPluginProvider = "anthropic"
-	CreateAIProxyPluginProviderCohere    CreateAIProxyPluginProvider = "cohere"
-	CreateAIProxyPluginProviderMistral   CreateAIProxyPluginProvider = "mistral"
-	CreateAIProxyPluginProviderLlama2    CreateAIProxyPluginProvider = "llama2"
+	CreateAiProxyPluginProviderOpenai    CreateAiProxyPluginProvider = "openai"
+	CreateAiProxyPluginProviderAzure     CreateAiProxyPluginProvider = "azure"
+	CreateAiProxyPluginProviderAnthropic CreateAiProxyPluginProvider = "anthropic"
+	CreateAiProxyPluginProviderCohere    CreateAiProxyPluginProvider = "cohere"
+	CreateAiProxyPluginProviderMistral   CreateAiProxyPluginProvider = "mistral"
+	CreateAiProxyPluginProviderLlama2    CreateAiProxyPluginProvider = "llama2"
+	CreateAiProxyPluginProviderGemini    CreateAiProxyPluginProvider = "gemini"
+	CreateAiProxyPluginProviderBedrock   CreateAiProxyPluginProvider = "bedrock"
 )
 
-func (e CreateAIProxyPluginProvider) ToPointer() *CreateAIProxyPluginProvider {
+func (e CreateAiProxyPluginProvider) ToPointer() *CreateAiProxyPluginProvider {
 	return &e
 }
-func (e *CreateAIProxyPluginProvider) UnmarshalJSON(data []byte) error {
+func (e *CreateAiProxyPluginProvider) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -342,56 +465,60 @@ func (e *CreateAIProxyPluginProvider) UnmarshalJSON(data []byte) error {
 	case "mistral":
 		fallthrough
 	case "llama2":
-		*e = CreateAIProxyPluginProvider(v)
+		fallthrough
+	case "gemini":
+		fallthrough
+	case "bedrock":
+		*e = CreateAiProxyPluginProvider(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for CreateAIProxyPluginProvider: %v", v)
+		return fmt.Errorf("invalid value for CreateAiProxyPluginProvider: %v", v)
 	}
 }
 
-type CreateAIProxyPluginModel struct {
+type CreateAiProxyPluginModel struct {
 	// Model name to execute.
 	Name *string `json:"name,omitempty"`
 	// Key/value settings for the model
-	Options *CreateAIProxyPluginOptions `json:"options,omitempty"`
+	Options *CreateAiProxyPluginOptions `json:"options,omitempty"`
 	// AI provider request format - Kong translates requests to and from the specified backend compatible formats.
-	Provider *CreateAIProxyPluginProvider `json:"provider,omitempty"`
+	Provider *CreateAiProxyPluginProvider `json:"provider,omitempty"`
 }
 
-func (o *CreateAIProxyPluginModel) GetName() *string {
+func (o *CreateAiProxyPluginModel) GetName() *string {
 	if o == nil {
 		return nil
 	}
 	return o.Name
 }
 
-func (o *CreateAIProxyPluginModel) GetOptions() *CreateAIProxyPluginOptions {
+func (o *CreateAiProxyPluginModel) GetOptions() *CreateAiProxyPluginOptions {
 	if o == nil {
 		return nil
 	}
 	return o.Options
 }
 
-func (o *CreateAIProxyPluginModel) GetProvider() *CreateAIProxyPluginProvider {
+func (o *CreateAiProxyPluginModel) GetProvider() *CreateAiProxyPluginProvider {
 	if o == nil {
 		return nil
 	}
 	return o.Provider
 }
 
-// CreateAIProxyPluginResponseStreaming - Whether to 'optionally allow', 'deny', or 'always' (force) the streaming of answers via server sent events.
-type CreateAIProxyPluginResponseStreaming string
+// CreateAiProxyPluginResponseStreaming - Whether to 'optionally allow', 'deny', or 'always' (force) the streaming of answers via server sent events.
+type CreateAiProxyPluginResponseStreaming string
 
 const (
-	CreateAIProxyPluginResponseStreamingAllow  CreateAIProxyPluginResponseStreaming = "allow"
-	CreateAIProxyPluginResponseStreamingDeny   CreateAIProxyPluginResponseStreaming = "deny"
-	CreateAIProxyPluginResponseStreamingAlways CreateAIProxyPluginResponseStreaming = "always"
+	CreateAiProxyPluginResponseStreamingAllow  CreateAiProxyPluginResponseStreaming = "allow"
+	CreateAiProxyPluginResponseStreamingDeny   CreateAiProxyPluginResponseStreaming = "deny"
+	CreateAiProxyPluginResponseStreamingAlways CreateAiProxyPluginResponseStreaming = "always"
 )
 
-func (e CreateAIProxyPluginResponseStreaming) ToPointer() *CreateAIProxyPluginResponseStreaming {
+func (e CreateAiProxyPluginResponseStreaming) ToPointer() *CreateAiProxyPluginResponseStreaming {
 	return &e
 }
-func (e *CreateAIProxyPluginResponseStreaming) UnmarshalJSON(data []byte) error {
+func (e *CreateAiProxyPluginResponseStreaming) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -402,26 +529,26 @@ func (e *CreateAIProxyPluginResponseStreaming) UnmarshalJSON(data []byte) error 
 	case "deny":
 		fallthrough
 	case "always":
-		*e = CreateAIProxyPluginResponseStreaming(v)
+		*e = CreateAiProxyPluginResponseStreaming(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for CreateAIProxyPluginResponseStreaming: %v", v)
+		return fmt.Errorf("invalid value for CreateAiProxyPluginResponseStreaming: %v", v)
 	}
 }
 
-// CreateAIProxyPluginRouteType - The model's operation implementation, for this provider. Set to `preserve` to pass through without transformation.
-type CreateAIProxyPluginRouteType string
+// CreateAiProxyPluginRouteType - The model's operation implementation, for this provider. Set to `preserve` to pass through without transformation.
+type CreateAiProxyPluginRouteType string
 
 const (
-	CreateAIProxyPluginRouteTypeLlmV1Chat        CreateAIProxyPluginRouteType = "llm/v1/chat"
-	CreateAIProxyPluginRouteTypeLlmV1Completions CreateAIProxyPluginRouteType = "llm/v1/completions"
-	CreateAIProxyPluginRouteTypePreserve         CreateAIProxyPluginRouteType = "preserve"
+	CreateAiProxyPluginRouteTypeLlmV1Chat        CreateAiProxyPluginRouteType = "llm/v1/chat"
+	CreateAiProxyPluginRouteTypeLlmV1Completions CreateAiProxyPluginRouteType = "llm/v1/completions"
+	CreateAiProxyPluginRouteTypePreserve         CreateAiProxyPluginRouteType = "preserve"
 )
 
-func (e CreateAIProxyPluginRouteType) ToPointer() *CreateAIProxyPluginRouteType {
+func (e CreateAiProxyPluginRouteType) ToPointer() *CreateAiProxyPluginRouteType {
 	return &e
 }
-func (e *CreateAIProxyPluginRouteType) UnmarshalJSON(data []byte) error {
+func (e *CreateAiProxyPluginRouteType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -432,77 +559,136 @@ func (e *CreateAIProxyPluginRouteType) UnmarshalJSON(data []byte) error {
 	case "llm/v1/completions":
 		fallthrough
 	case "preserve":
-		*e = CreateAIProxyPluginRouteType(v)
+		*e = CreateAiProxyPluginRouteType(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for CreateAIProxyPluginRouteType: %v", v)
+		return fmt.Errorf("invalid value for CreateAiProxyPluginRouteType: %v", v)
 	}
 }
 
-type CreateAIProxyPluginConfig struct {
-	Auth    *CreateAIProxyPluginAuth    `json:"auth,omitempty"`
-	Logging *CreateAIProxyPluginLogging `json:"logging,omitempty"`
-	Model   *CreateAIProxyPluginModel   `json:"model,omitempty"`
+type CreateAiProxyPluginConfig struct {
+	Auth    *CreateAiProxyPluginAuth    `json:"auth,omitempty"`
+	Logging *CreateAiProxyPluginLogging `json:"logging,omitempty"`
+	// max allowed body size allowed to be introspected
+	MaxRequestBodySize *int64                    `json:"max_request_body_size,omitempty"`
+	Model              *CreateAiProxyPluginModel `json:"model,omitempty"`
+	// Display the model name selected in the X-Kong-LLM-Model response header
+	ModelNameHeader *bool `json:"model_name_header,omitempty"`
 	// Whether to 'optionally allow', 'deny', or 'always' (force) the streaming of answers via server sent events.
-	ResponseStreaming *CreateAIProxyPluginResponseStreaming `json:"response_streaming,omitempty"`
+	ResponseStreaming *CreateAiProxyPluginResponseStreaming `json:"response_streaming,omitempty"`
 	// The model's operation implementation, for this provider. Set to `preserve` to pass through without transformation.
-	RouteType *CreateAIProxyPluginRouteType `json:"route_type,omitempty"`
+	RouteType *CreateAiProxyPluginRouteType `json:"route_type,omitempty"`
 }
 
-func (o *CreateAIProxyPluginConfig) GetAuth() *CreateAIProxyPluginAuth {
+func (o *CreateAiProxyPluginConfig) GetAuth() *CreateAiProxyPluginAuth {
 	if o == nil {
 		return nil
 	}
 	return o.Auth
 }
 
-func (o *CreateAIProxyPluginConfig) GetLogging() *CreateAIProxyPluginLogging {
+func (o *CreateAiProxyPluginConfig) GetLogging() *CreateAiProxyPluginLogging {
 	if o == nil {
 		return nil
 	}
 	return o.Logging
 }
 
-func (o *CreateAIProxyPluginConfig) GetModel() *CreateAIProxyPluginModel {
+func (o *CreateAiProxyPluginConfig) GetMaxRequestBodySize() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxRequestBodySize
+}
+
+func (o *CreateAiProxyPluginConfig) GetModel() *CreateAiProxyPluginModel {
 	if o == nil {
 		return nil
 	}
 	return o.Model
 }
 
-func (o *CreateAIProxyPluginConfig) GetResponseStreaming() *CreateAIProxyPluginResponseStreaming {
+func (o *CreateAiProxyPluginConfig) GetModelNameHeader() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ModelNameHeader
+}
+
+func (o *CreateAiProxyPluginConfig) GetResponseStreaming() *CreateAiProxyPluginResponseStreaming {
 	if o == nil {
 		return nil
 	}
 	return o.ResponseStreaming
 }
 
-func (o *CreateAIProxyPluginConfig) GetRouteType() *CreateAIProxyPluginRouteType {
+func (o *CreateAiProxyPluginConfig) GetRouteType() *CreateAiProxyPluginRouteType {
 	if o == nil {
 		return nil
 	}
 	return o.RouteType
 }
 
-type CreateAIProxyPluginProtocols string
+type CreateAiProxyPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *CreateAiProxyPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type CreateAiProxyPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *CreateAiProxyPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type CreateAiProxyPluginOrdering struct {
+	After  *CreateAiProxyPluginAfter  `json:"after,omitempty"`
+	Before *CreateAiProxyPluginBefore `json:"before,omitempty"`
+}
+
+func (o *CreateAiProxyPluginOrdering) GetAfter() *CreateAiProxyPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *CreateAiProxyPluginOrdering) GetBefore() *CreateAiProxyPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
+type CreateAiProxyPluginProtocols string
 
 const (
-	CreateAIProxyPluginProtocolsGrpc           CreateAIProxyPluginProtocols = "grpc"
-	CreateAIProxyPluginProtocolsGrpcs          CreateAIProxyPluginProtocols = "grpcs"
-	CreateAIProxyPluginProtocolsHTTP           CreateAIProxyPluginProtocols = "http"
-	CreateAIProxyPluginProtocolsHTTPS          CreateAIProxyPluginProtocols = "https"
-	CreateAIProxyPluginProtocolsTCP            CreateAIProxyPluginProtocols = "tcp"
-	CreateAIProxyPluginProtocolsTLS            CreateAIProxyPluginProtocols = "tls"
-	CreateAIProxyPluginProtocolsTLSPassthrough CreateAIProxyPluginProtocols = "tls_passthrough"
-	CreateAIProxyPluginProtocolsUDP            CreateAIProxyPluginProtocols = "udp"
-	CreateAIProxyPluginProtocolsWs             CreateAIProxyPluginProtocols = "ws"
-	CreateAIProxyPluginProtocolsWss            CreateAIProxyPluginProtocols = "wss"
+	CreateAiProxyPluginProtocolsGrpc           CreateAiProxyPluginProtocols = "grpc"
+	CreateAiProxyPluginProtocolsGrpcs          CreateAiProxyPluginProtocols = "grpcs"
+	CreateAiProxyPluginProtocolsHTTP           CreateAiProxyPluginProtocols = "http"
+	CreateAiProxyPluginProtocolsHTTPS          CreateAiProxyPluginProtocols = "https"
+	CreateAiProxyPluginProtocolsTCP            CreateAiProxyPluginProtocols = "tcp"
+	CreateAiProxyPluginProtocolsTLS            CreateAiProxyPluginProtocols = "tls"
+	CreateAiProxyPluginProtocolsTLSPassthrough CreateAiProxyPluginProtocols = "tls_passthrough"
+	CreateAiProxyPluginProtocolsUDP            CreateAiProxyPluginProtocols = "udp"
+	CreateAiProxyPluginProtocolsWs             CreateAiProxyPluginProtocols = "ws"
+	CreateAiProxyPluginProtocolsWss            CreateAiProxyPluginProtocols = "wss"
 )
 
-func (e CreateAIProxyPluginProtocols) ToPointer() *CreateAIProxyPluginProtocols {
+func (e CreateAiProxyPluginProtocols) ToPointer() *CreateAiProxyPluginProtocols {
 	return &e
 }
-func (e *CreateAIProxyPluginProtocols) UnmarshalJSON(data []byte) error {
+func (e *CreateAiProxyPluginProtocols) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -527,151 +713,159 @@ func (e *CreateAIProxyPluginProtocols) UnmarshalJSON(data []byte) error {
 	case "ws":
 		fallthrough
 	case "wss":
-		*e = CreateAIProxyPluginProtocols(v)
+		*e = CreateAiProxyPluginProtocols(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for CreateAIProxyPluginProtocols: %v", v)
+		return fmt.Errorf("invalid value for CreateAiProxyPluginProtocols: %v", v)
 	}
 }
 
-// CreateAIProxyPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-type CreateAIProxyPluginConsumer struct {
+// CreateAiProxyPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+type CreateAiProxyPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *CreateAIProxyPluginConsumer) GetID() *string {
+func (o *CreateAiProxyPluginConsumer) GetID() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ID
 }
 
-type CreateAIProxyPluginConsumerGroup struct {
+type CreateAiProxyPluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *CreateAIProxyPluginConsumerGroup) GetID() *string {
+func (o *CreateAiProxyPluginConsumerGroup) GetID() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ID
 }
 
-// CreateAIProxyPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-type CreateAIProxyPluginRoute struct {
+// CreateAiProxyPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
+type CreateAiProxyPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *CreateAIProxyPluginRoute) GetID() *string {
+func (o *CreateAiProxyPluginRoute) GetID() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ID
 }
 
-// CreateAIProxyPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-type CreateAIProxyPluginService struct {
+// CreateAiProxyPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+type CreateAiProxyPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *CreateAIProxyPluginService) GetID() *string {
+func (o *CreateAiProxyPluginService) GetID() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ID
 }
 
-type CreateAIProxyPlugin struct {
-	Config *CreateAIProxyPluginConfig `json:"config,omitempty"`
+type CreateAiProxyPlugin struct {
+	Config *CreateAiProxyPluginConfig `json:"config,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool   `json:"enabled,omitempty"`
-	InstanceName *string `json:"instance_name,omitempty"`
-	name         *string `const:"ai-proxy" json:"name,omitempty"`
+	Enabled      *bool                        `json:"enabled,omitempty"`
+	InstanceName *string                      `json:"instance_name,omitempty"`
+	name         *string                      `const:"ai-proxy" json:"name,omitempty"`
+	Ordering     *CreateAiProxyPluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []CreateAIProxyPluginProtocols `json:"protocols,omitempty"`
+	Protocols []CreateAiProxyPluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *CreateAIProxyPluginConsumer      `json:"consumer,omitempty"`
-	ConsumerGroup *CreateAIProxyPluginConsumerGroup `json:"consumer_group,omitempty"`
+	Consumer      *CreateAiProxyPluginConsumer      `json:"consumer,omitempty"`
+	ConsumerGroup *CreateAiProxyPluginConsumerGroup `json:"consumer_group,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *CreateAIProxyPluginRoute `json:"route,omitempty"`
+	Route *CreateAiProxyPluginRoute `json:"route,omitempty"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *CreateAIProxyPluginService `json:"service,omitempty"`
+	Service *CreateAiProxyPluginService `json:"service,omitempty"`
 }
 
-func (c CreateAIProxyPlugin) MarshalJSON() ([]byte, error) {
+func (c CreateAiProxyPlugin) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(c, "", false)
 }
 
-func (c *CreateAIProxyPlugin) UnmarshalJSON(data []byte) error {
+func (c *CreateAiProxyPlugin) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *CreateAIProxyPlugin) GetConfig() *CreateAIProxyPluginConfig {
+func (o *CreateAiProxyPlugin) GetConfig() *CreateAiProxyPluginConfig {
 	if o == nil {
 		return nil
 	}
 	return o.Config
 }
 
-func (o *CreateAIProxyPlugin) GetEnabled() *bool {
+func (o *CreateAiProxyPlugin) GetEnabled() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.Enabled
 }
 
-func (o *CreateAIProxyPlugin) GetInstanceName() *string {
+func (o *CreateAiProxyPlugin) GetInstanceName() *string {
 	if o == nil {
 		return nil
 	}
 	return o.InstanceName
 }
 
-func (o *CreateAIProxyPlugin) GetName() *string {
+func (o *CreateAiProxyPlugin) GetName() *string {
 	return types.String("ai-proxy")
 }
 
-func (o *CreateAIProxyPlugin) GetProtocols() []CreateAIProxyPluginProtocols {
+func (o *CreateAiProxyPlugin) GetOrdering() *CreateAiProxyPluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
+}
+
+func (o *CreateAiProxyPlugin) GetProtocols() []CreateAiProxyPluginProtocols {
 	if o == nil {
 		return nil
 	}
 	return o.Protocols
 }
 
-func (o *CreateAIProxyPlugin) GetTags() []string {
+func (o *CreateAiProxyPlugin) GetTags() []string {
 	if o == nil {
 		return nil
 	}
 	return o.Tags
 }
 
-func (o *CreateAIProxyPlugin) GetConsumer() *CreateAIProxyPluginConsumer {
+func (o *CreateAiProxyPlugin) GetConsumer() *CreateAiProxyPluginConsumer {
 	if o == nil {
 		return nil
 	}
 	return o.Consumer
 }
 
-func (o *CreateAIProxyPlugin) GetConsumerGroup() *CreateAIProxyPluginConsumerGroup {
+func (o *CreateAiProxyPlugin) GetConsumerGroup() *CreateAiProxyPluginConsumerGroup {
 	if o == nil {
 		return nil
 	}
 	return o.ConsumerGroup
 }
 
-func (o *CreateAIProxyPlugin) GetRoute() *CreateAIProxyPluginRoute {
+func (o *CreateAiProxyPlugin) GetRoute() *CreateAiProxyPluginRoute {
 	if o == nil {
 		return nil
 	}
 	return o.Route
 }
 
-func (o *CreateAIProxyPlugin) GetService() *CreateAIProxyPluginService {
+func (o *CreateAiProxyPlugin) GetService() *CreateAiProxyPluginService {
 	if o == nil {
 		return nil
 	}

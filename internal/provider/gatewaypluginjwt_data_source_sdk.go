@@ -9,12 +9,12 @@ import (
 	"math/big"
 )
 
-func (r *GatewayPluginJWTDataSourceModel) RefreshFromSharedJWTPlugin(resp *shared.JWTPlugin) {
+func (r *GatewayPluginJwtDataSourceModel) RefreshFromSharedJwtPlugin(resp *shared.JwtPlugin) {
 	if resp != nil {
 		if resp.Config == nil {
 			r.Config = nil
 		} else {
-			r.Config = &tfTypes.CreateJWTPluginConfig{}
+			r.Config = &tfTypes.CreateJwtPluginConfig{}
 			r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
 			r.Config.ClaimsToVerify = []types.String{}
 			for _, v := range resp.Config.ClaimsToVerify {
@@ -34,6 +34,7 @@ func (r *GatewayPluginJWTDataSourceModel) RefreshFromSharedJWTPlugin(resp *share
 			} else {
 				r.Config.MaximumExpiration = types.NumberNull()
 			}
+			r.Config.Realm = types.StringPointerValue(resp.Config.Realm)
 			r.Config.RunOnPreflight = types.BoolPointerValue(resp.Config.RunOnPreflight)
 			r.Config.SecretIsBase64 = types.BoolPointerValue(resp.Config.SecretIsBase64)
 			r.Config.URIParamNames = []types.String{}
@@ -57,6 +58,29 @@ func (r *GatewayPluginJWTDataSourceModel) RefreshFromSharedJWTPlugin(resp *share
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.InstanceName = types.StringPointerValue(resp.InstanceName)
+		if resp.Ordering == nil {
+			r.Ordering = nil
+		} else {
+			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			if resp.Ordering.After == nil {
+				r.Ordering.After = nil
+			} else {
+				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After.Access = []types.String{}
+				for _, v := range resp.Ordering.After.Access {
+					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				}
+			}
+			if resp.Ordering.Before == nil {
+				r.Ordering.Before = nil
+			} else {
+				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before.Access = []types.String{}
+				for _, v := range resp.Ordering.Before.Access {
+					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				}
+			}
+		}
 		r.Protocols = []types.String{}
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))

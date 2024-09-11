@@ -4,7 +4,7 @@ package types
 
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
-type CreateJWTSignerPluginConfig struct {
+type CreateJwtSignerPluginConfig struct {
 	AccessTokenConsumerBy                   []types.String          `tfsdk:"access_token_consumer_by"`
 	AccessTokenConsumerClaim                []types.String          `tfsdk:"access_token_consumer_claim"`
 	AccessTokenIntrospectionAuthorization   types.String            `tfsdk:"access_token_introspection_authorization"`

@@ -84,6 +84,47 @@ func (o *CreateKeyAuthPluginConfig) GetRunOnPreflight() *bool {
 	return o.RunOnPreflight
 }
 
+type CreateKeyAuthPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *CreateKeyAuthPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type CreateKeyAuthPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *CreateKeyAuthPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type CreateKeyAuthPluginOrdering struct {
+	After  *CreateKeyAuthPluginAfter  `json:"after,omitempty"`
+	Before *CreateKeyAuthPluginBefore `json:"before,omitempty"`
+}
+
+func (o *CreateKeyAuthPluginOrdering) GetAfter() *CreateKeyAuthPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *CreateKeyAuthPluginOrdering) GetBefore() *CreateKeyAuthPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
 type CreateKeyAuthPluginProtocols string
 
 const (
@@ -184,9 +225,10 @@ func (o *CreateKeyAuthPluginService) GetID() *string {
 type CreateKeyAuthPlugin struct {
 	Config *CreateKeyAuthPluginConfig `json:"config,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool   `json:"enabled,omitempty"`
-	InstanceName *string `json:"instance_name,omitempty"`
-	name         *string `const:"key-auth" json:"name,omitempty"`
+	Enabled      *bool                        `json:"enabled,omitempty"`
+	InstanceName *string                      `json:"instance_name,omitempty"`
+	name         *string                      `const:"key-auth" json:"name,omitempty"`
+	Ordering     *CreateKeyAuthPluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []CreateKeyAuthPluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
@@ -234,6 +276,13 @@ func (o *CreateKeyAuthPlugin) GetInstanceName() *string {
 
 func (o *CreateKeyAuthPlugin) GetName() *string {
 	return types.String("key-auth")
+}
+
+func (o *CreateKeyAuthPlugin) GetOrdering() *CreateKeyAuthPluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
 }
 
 func (o *CreateKeyAuthPlugin) GetProtocols() []CreateKeyAuthPluginProtocols {

@@ -56,7 +56,7 @@ func (e *Methods) UnmarshalJSON(data []byte) error {
 	}
 }
 
-type CORSPluginConfig struct {
+type CorsPluginConfig struct {
 	// Flag to determine whether the `Access-Control-Allow-Credentials` header should be sent with `true` as the value.
 	Credentials *bool `json:"credentials,omitempty"`
 	// Value for the `Access-Control-Expose-Headers` header. If not specified, no custom headers are exposed.
@@ -75,81 +75,122 @@ type CORSPluginConfig struct {
 	PrivateNetwork *bool `json:"private_network,omitempty"`
 }
 
-func (o *CORSPluginConfig) GetCredentials() *bool {
+func (o *CorsPluginConfig) GetCredentials() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.Credentials
 }
 
-func (o *CORSPluginConfig) GetExposedHeaders() []string {
+func (o *CorsPluginConfig) GetExposedHeaders() []string {
 	if o == nil {
 		return nil
 	}
 	return o.ExposedHeaders
 }
 
-func (o *CORSPluginConfig) GetHeaders() []string {
+func (o *CorsPluginConfig) GetHeaders() []string {
 	if o == nil {
 		return nil
 	}
 	return o.Headers
 }
 
-func (o *CORSPluginConfig) GetMaxAge() *float64 {
+func (o *CorsPluginConfig) GetMaxAge() *float64 {
 	if o == nil {
 		return nil
 	}
 	return o.MaxAge
 }
 
-func (o *CORSPluginConfig) GetMethods() []Methods {
+func (o *CorsPluginConfig) GetMethods() []Methods {
 	if o == nil {
 		return nil
 	}
 	return o.Methods
 }
 
-func (o *CORSPluginConfig) GetOrigins() []string {
+func (o *CorsPluginConfig) GetOrigins() []string {
 	if o == nil {
 		return nil
 	}
 	return o.Origins
 }
 
-func (o *CORSPluginConfig) GetPreflightContinue() *bool {
+func (o *CorsPluginConfig) GetPreflightContinue() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.PreflightContinue
 }
 
-func (o *CORSPluginConfig) GetPrivateNetwork() *bool {
+func (o *CorsPluginConfig) GetPrivateNetwork() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.PrivateNetwork
 }
 
-type CORSPluginProtocols string
+type CorsPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *CorsPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type CorsPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *CorsPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type CorsPluginOrdering struct {
+	After  *CorsPluginAfter  `json:"after,omitempty"`
+	Before *CorsPluginBefore `json:"before,omitempty"`
+}
+
+func (o *CorsPluginOrdering) GetAfter() *CorsPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *CorsPluginOrdering) GetBefore() *CorsPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
+type CorsPluginProtocols string
 
 const (
-	CORSPluginProtocolsGrpc           CORSPluginProtocols = "grpc"
-	CORSPluginProtocolsGrpcs          CORSPluginProtocols = "grpcs"
-	CORSPluginProtocolsHTTP           CORSPluginProtocols = "http"
-	CORSPluginProtocolsHTTPS          CORSPluginProtocols = "https"
-	CORSPluginProtocolsTCP            CORSPluginProtocols = "tcp"
-	CORSPluginProtocolsTLS            CORSPluginProtocols = "tls"
-	CORSPluginProtocolsTLSPassthrough CORSPluginProtocols = "tls_passthrough"
-	CORSPluginProtocolsUDP            CORSPluginProtocols = "udp"
-	CORSPluginProtocolsWs             CORSPluginProtocols = "ws"
-	CORSPluginProtocolsWss            CORSPluginProtocols = "wss"
+	CorsPluginProtocolsGrpc           CorsPluginProtocols = "grpc"
+	CorsPluginProtocolsGrpcs          CorsPluginProtocols = "grpcs"
+	CorsPluginProtocolsHTTP           CorsPluginProtocols = "http"
+	CorsPluginProtocolsHTTPS          CorsPluginProtocols = "https"
+	CorsPluginProtocolsTCP            CorsPluginProtocols = "tcp"
+	CorsPluginProtocolsTLS            CorsPluginProtocols = "tls"
+	CorsPluginProtocolsTLSPassthrough CorsPluginProtocols = "tls_passthrough"
+	CorsPluginProtocolsUDP            CorsPluginProtocols = "udp"
+	CorsPluginProtocolsWs             CorsPluginProtocols = "ws"
+	CorsPluginProtocolsWss            CorsPluginProtocols = "wss"
 )
 
-func (e CORSPluginProtocols) ToPointer() *CORSPluginProtocols {
+func (e CorsPluginProtocols) ToPointer() *CorsPluginProtocols {
 	return &e
 }
-func (e *CORSPluginProtocols) UnmarshalJSON(data []byte) error {
+func (e *CorsPluginProtocols) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -174,177 +215,185 @@ func (e *CORSPluginProtocols) UnmarshalJSON(data []byte) error {
 	case "ws":
 		fallthrough
 	case "wss":
-		*e = CORSPluginProtocols(v)
+		*e = CorsPluginProtocols(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for CORSPluginProtocols: %v", v)
+		return fmt.Errorf("invalid value for CorsPluginProtocols: %v", v)
 	}
 }
 
-// CORSPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-type CORSPluginConsumer struct {
+// CorsPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+type CorsPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *CORSPluginConsumer) GetID() *string {
+func (o *CorsPluginConsumer) GetID() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ID
 }
 
-type CORSPluginConsumerGroup struct {
+type CorsPluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *CORSPluginConsumerGroup) GetID() *string {
+func (o *CorsPluginConsumerGroup) GetID() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ID
 }
 
-// CORSPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-type CORSPluginRoute struct {
+// CorsPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
+type CorsPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *CORSPluginRoute) GetID() *string {
+func (o *CorsPluginRoute) GetID() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ID
 }
 
-// CORSPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-type CORSPluginService struct {
+// CorsPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+type CorsPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *CORSPluginService) GetID() *string {
+func (o *CorsPluginService) GetID() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ID
 }
 
-type CORSPlugin struct {
-	Config *CORSPluginConfig `json:"config,omitempty"`
+type CorsPlugin struct {
+	Config *CorsPluginConfig `json:"config,omitempty"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool   `json:"enabled,omitempty"`
-	ID           *string `json:"id,omitempty"`
-	InstanceName *string `json:"instance_name,omitempty"`
-	name         *string `const:"cors" json:"name,omitempty"`
+	Enabled      *bool               `json:"enabled,omitempty"`
+	ID           *string             `json:"id,omitempty"`
+	InstanceName *string             `json:"instance_name,omitempty"`
+	name         *string             `const:"cors" json:"name,omitempty"`
+	Ordering     *CorsPluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []CORSPluginProtocols `json:"protocols,omitempty"`
+	Protocols []CorsPluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64 `json:"updated_at,omitempty"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *CORSPluginConsumer      `json:"consumer,omitempty"`
-	ConsumerGroup *CORSPluginConsumerGroup `json:"consumer_group,omitempty"`
+	Consumer      *CorsPluginConsumer      `json:"consumer,omitempty"`
+	ConsumerGroup *CorsPluginConsumerGroup `json:"consumer_group,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *CORSPluginRoute `json:"route,omitempty"`
+	Route *CorsPluginRoute `json:"route,omitempty"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *CORSPluginService `json:"service,omitempty"`
+	Service *CorsPluginService `json:"service,omitempty"`
 }
 
-func (c CORSPlugin) MarshalJSON() ([]byte, error) {
+func (c CorsPlugin) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(c, "", false)
 }
 
-func (c *CORSPlugin) UnmarshalJSON(data []byte) error {
+func (c *CorsPlugin) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *CORSPlugin) GetConfig() *CORSPluginConfig {
+func (o *CorsPlugin) GetConfig() *CorsPluginConfig {
 	if o == nil {
 		return nil
 	}
 	return o.Config
 }
 
-func (o *CORSPlugin) GetCreatedAt() *int64 {
+func (o *CorsPlugin) GetCreatedAt() *int64 {
 	if o == nil {
 		return nil
 	}
 	return o.CreatedAt
 }
 
-func (o *CORSPlugin) GetEnabled() *bool {
+func (o *CorsPlugin) GetEnabled() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.Enabled
 }
 
-func (o *CORSPlugin) GetID() *string {
+func (o *CorsPlugin) GetID() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ID
 }
 
-func (o *CORSPlugin) GetInstanceName() *string {
+func (o *CorsPlugin) GetInstanceName() *string {
 	if o == nil {
 		return nil
 	}
 	return o.InstanceName
 }
 
-func (o *CORSPlugin) GetName() *string {
+func (o *CorsPlugin) GetName() *string {
 	return types.String("cors")
 }
 
-func (o *CORSPlugin) GetProtocols() []CORSPluginProtocols {
+func (o *CorsPlugin) GetOrdering() *CorsPluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
+}
+
+func (o *CorsPlugin) GetProtocols() []CorsPluginProtocols {
 	if o == nil {
 		return nil
 	}
 	return o.Protocols
 }
 
-func (o *CORSPlugin) GetTags() []string {
+func (o *CorsPlugin) GetTags() []string {
 	if o == nil {
 		return nil
 	}
 	return o.Tags
 }
 
-func (o *CORSPlugin) GetUpdatedAt() *int64 {
+func (o *CorsPlugin) GetUpdatedAt() *int64 {
 	if o == nil {
 		return nil
 	}
 	return o.UpdatedAt
 }
 
-func (o *CORSPlugin) GetConsumer() *CORSPluginConsumer {
+func (o *CorsPlugin) GetConsumer() *CorsPluginConsumer {
 	if o == nil {
 		return nil
 	}
 	return o.Consumer
 }
 
-func (o *CORSPlugin) GetConsumerGroup() *CORSPluginConsumerGroup {
+func (o *CorsPlugin) GetConsumerGroup() *CorsPluginConsumerGroup {
 	if o == nil {
 		return nil
 	}
 	return o.ConsumerGroup
 }
 
-func (o *CORSPlugin) GetRoute() *CORSPluginRoute {
+func (o *CorsPlugin) GetRoute() *CorsPluginRoute {
 	if o == nil {
 		return nil
 	}
 	return o.Route
 }
 
-func (o *CORSPlugin) GetService() *CORSPluginService {
+func (o *CorsPlugin) GetService() *CorsPluginService {
 	if o == nil {
 		return nil
 	}

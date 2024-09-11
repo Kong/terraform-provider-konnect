@@ -36,6 +36,33 @@ func (e *AwsImdsProtocolVersion) UnmarshalJSON(data []byte) error {
 	}
 }
 
+// EmptyArraysMode - An optional value that defines whether Kong should send empty arrays (returned by Lambda function) as `[]` arrays or `{}` objects in JSON responses. The value `legacy` means Kong will send empty arrays as `{}` objects in response
+type EmptyArraysMode string
+
+const (
+	EmptyArraysModeLegacy  EmptyArraysMode = "legacy"
+	EmptyArraysModeCorrect EmptyArraysMode = "correct"
+)
+
+func (e EmptyArraysMode) ToPointer() *EmptyArraysMode {
+	return &e
+}
+func (e *EmptyArraysMode) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "legacy":
+		fallthrough
+	case "correct":
+		*e = EmptyArraysMode(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for EmptyArraysMode: %v", v)
+	}
+}
+
 // The InvocationType to use when invoking the function. Available types are RequestResponse, Event, DryRun.
 type InvocationType string
 
@@ -93,7 +120,7 @@ func (e *LogType) UnmarshalJSON(data []byte) error {
 	}
 }
 
-type AWSLambdaPluginConfig struct {
+type AwsLambdaPluginConfig struct {
 	// The target AWS IAM role ARN used to invoke the Lambda function.
 	AwsAssumeRoleArn *string `json:"aws_assume_role_arn,omitempty"`
 	// Identifier to select the IMDS protocol version to use: `v1` or `v2`.
@@ -106,11 +133,15 @@ type AWSLambdaPluginConfig struct {
 	AwsRoleSessionName *string `json:"aws_role_session_name,omitempty"`
 	// The AWS secret credential to be used when invoking the function.
 	AwsSecret *string `json:"aws_secret,omitempty"`
+	// A string representing a URL, such as https://example.com/path/to/resource?q=search.
+	AwsStsEndpointURL *string `json:"aws_sts_endpoint_url,omitempty"`
 	// An optional value that defines whether the plugin should wrap requests into the Amazon API gateway.
 	AwsgatewayCompatible *bool `json:"awsgateway_compatible,omitempty"`
 	// An optional value that Base64-encodes the request body.
 	Base64EncodeBody *bool `json:"base64_encode_body,omitempty"`
 	DisableHTTPS     *bool `json:"disable_https,omitempty"`
+	// An optional value that defines whether Kong should send empty arrays (returned by Lambda function) as `[]` arrays or `{}` objects in JSON responses. The value `legacy` means Kong will send empty arrays as `{}` objects in response
+	EmptyArraysMode *EmptyArraysMode `json:"empty_arrays_mode,omitempty"`
 	// An optional value that defines whether the request body is sent in the request_body field of the JSON-encoded request. If the body arguments can be parsed, they are sent in the separate request_body_args field of the request.
 	ForwardRequestBody *bool `json:"forward_request_body,omitempty"`
 	// An optional value that defines whether the original HTTP request headers are sent as a map in the request_headers field of the JSON-encoded request.
@@ -145,200 +176,255 @@ type AWSLambdaPluginConfig struct {
 	UnhandledStatus *int64 `json:"unhandled_status,omitempty"`
 }
 
-func (o *AWSLambdaPluginConfig) GetAwsAssumeRoleArn() *string {
+func (o *AwsLambdaPluginConfig) GetAwsAssumeRoleArn() *string {
 	if o == nil {
 		return nil
 	}
 	return o.AwsAssumeRoleArn
 }
 
-func (o *AWSLambdaPluginConfig) GetAwsImdsProtocolVersion() *AwsImdsProtocolVersion {
+func (o *AwsLambdaPluginConfig) GetAwsImdsProtocolVersion() *AwsImdsProtocolVersion {
 	if o == nil {
 		return nil
 	}
 	return o.AwsImdsProtocolVersion
 }
 
-func (o *AWSLambdaPluginConfig) GetAwsKey() *string {
+func (o *AwsLambdaPluginConfig) GetAwsKey() *string {
 	if o == nil {
 		return nil
 	}
 	return o.AwsKey
 }
 
-func (o *AWSLambdaPluginConfig) GetAwsRegion() *string {
+func (o *AwsLambdaPluginConfig) GetAwsRegion() *string {
 	if o == nil {
 		return nil
 	}
 	return o.AwsRegion
 }
 
-func (o *AWSLambdaPluginConfig) GetAwsRoleSessionName() *string {
+func (o *AwsLambdaPluginConfig) GetAwsRoleSessionName() *string {
 	if o == nil {
 		return nil
 	}
 	return o.AwsRoleSessionName
 }
 
-func (o *AWSLambdaPluginConfig) GetAwsSecret() *string {
+func (o *AwsLambdaPluginConfig) GetAwsSecret() *string {
 	if o == nil {
 		return nil
 	}
 	return o.AwsSecret
 }
 
-func (o *AWSLambdaPluginConfig) GetAwsgatewayCompatible() *bool {
+func (o *AwsLambdaPluginConfig) GetAwsStsEndpointURL() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsStsEndpointURL
+}
+
+func (o *AwsLambdaPluginConfig) GetAwsgatewayCompatible() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.AwsgatewayCompatible
 }
 
-func (o *AWSLambdaPluginConfig) GetBase64EncodeBody() *bool {
+func (o *AwsLambdaPluginConfig) GetBase64EncodeBody() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.Base64EncodeBody
 }
 
-func (o *AWSLambdaPluginConfig) GetDisableHTTPS() *bool {
+func (o *AwsLambdaPluginConfig) GetDisableHTTPS() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.DisableHTTPS
 }
 
-func (o *AWSLambdaPluginConfig) GetForwardRequestBody() *bool {
+func (o *AwsLambdaPluginConfig) GetEmptyArraysMode() *EmptyArraysMode {
+	if o == nil {
+		return nil
+	}
+	return o.EmptyArraysMode
+}
+
+func (o *AwsLambdaPluginConfig) GetForwardRequestBody() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.ForwardRequestBody
 }
 
-func (o *AWSLambdaPluginConfig) GetForwardRequestHeaders() *bool {
+func (o *AwsLambdaPluginConfig) GetForwardRequestHeaders() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.ForwardRequestHeaders
 }
 
-func (o *AWSLambdaPluginConfig) GetForwardRequestMethod() *bool {
+func (o *AwsLambdaPluginConfig) GetForwardRequestMethod() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.ForwardRequestMethod
 }
 
-func (o *AWSLambdaPluginConfig) GetForwardRequestURI() *bool {
+func (o *AwsLambdaPluginConfig) GetForwardRequestURI() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.ForwardRequestURI
 }
 
-func (o *AWSLambdaPluginConfig) GetFunctionName() *string {
+func (o *AwsLambdaPluginConfig) GetFunctionName() *string {
 	if o == nil {
 		return nil
 	}
 	return o.FunctionName
 }
 
-func (o *AWSLambdaPluginConfig) GetHost() *string {
+func (o *AwsLambdaPluginConfig) GetHost() *string {
 	if o == nil {
 		return nil
 	}
 	return o.Host
 }
 
-func (o *AWSLambdaPluginConfig) GetInvocationType() *InvocationType {
+func (o *AwsLambdaPluginConfig) GetInvocationType() *InvocationType {
 	if o == nil {
 		return nil
 	}
 	return o.InvocationType
 }
 
-func (o *AWSLambdaPluginConfig) GetIsProxyIntegration() *bool {
+func (o *AwsLambdaPluginConfig) GetIsProxyIntegration() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.IsProxyIntegration
 }
 
-func (o *AWSLambdaPluginConfig) GetKeepalive() *float64 {
+func (o *AwsLambdaPluginConfig) GetKeepalive() *float64 {
 	if o == nil {
 		return nil
 	}
 	return o.Keepalive
 }
 
-func (o *AWSLambdaPluginConfig) GetLogType() *LogType {
+func (o *AwsLambdaPluginConfig) GetLogType() *LogType {
 	if o == nil {
 		return nil
 	}
 	return o.LogType
 }
 
-func (o *AWSLambdaPluginConfig) GetPort() *int64 {
+func (o *AwsLambdaPluginConfig) GetPort() *int64 {
 	if o == nil {
 		return nil
 	}
 	return o.Port
 }
 
-func (o *AWSLambdaPluginConfig) GetProxyURL() *string {
+func (o *AwsLambdaPluginConfig) GetProxyURL() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ProxyURL
 }
 
-func (o *AWSLambdaPluginConfig) GetQualifier() *string {
+func (o *AwsLambdaPluginConfig) GetQualifier() *string {
 	if o == nil {
 		return nil
 	}
 	return o.Qualifier
 }
 
-func (o *AWSLambdaPluginConfig) GetSkipLargeBodies() *bool {
+func (o *AwsLambdaPluginConfig) GetSkipLargeBodies() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.SkipLargeBodies
 }
 
-func (o *AWSLambdaPluginConfig) GetTimeout() *float64 {
+func (o *AwsLambdaPluginConfig) GetTimeout() *float64 {
 	if o == nil {
 		return nil
 	}
 	return o.Timeout
 }
 
-func (o *AWSLambdaPluginConfig) GetUnhandledStatus() *int64 {
+func (o *AwsLambdaPluginConfig) GetUnhandledStatus() *int64 {
 	if o == nil {
 		return nil
 	}
 	return o.UnhandledStatus
 }
 
-type AWSLambdaPluginProtocols string
+type AwsLambdaPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *AwsLambdaPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type AwsLambdaPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *AwsLambdaPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type AwsLambdaPluginOrdering struct {
+	After  *AwsLambdaPluginAfter  `json:"after,omitempty"`
+	Before *AwsLambdaPluginBefore `json:"before,omitempty"`
+}
+
+func (o *AwsLambdaPluginOrdering) GetAfter() *AwsLambdaPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *AwsLambdaPluginOrdering) GetBefore() *AwsLambdaPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
+type AwsLambdaPluginProtocols string
 
 const (
-	AWSLambdaPluginProtocolsGrpc           AWSLambdaPluginProtocols = "grpc"
-	AWSLambdaPluginProtocolsGrpcs          AWSLambdaPluginProtocols = "grpcs"
-	AWSLambdaPluginProtocolsHTTP           AWSLambdaPluginProtocols = "http"
-	AWSLambdaPluginProtocolsHTTPS          AWSLambdaPluginProtocols = "https"
-	AWSLambdaPluginProtocolsTCP            AWSLambdaPluginProtocols = "tcp"
-	AWSLambdaPluginProtocolsTLS            AWSLambdaPluginProtocols = "tls"
-	AWSLambdaPluginProtocolsTLSPassthrough AWSLambdaPluginProtocols = "tls_passthrough"
-	AWSLambdaPluginProtocolsUDP            AWSLambdaPluginProtocols = "udp"
-	AWSLambdaPluginProtocolsWs             AWSLambdaPluginProtocols = "ws"
-	AWSLambdaPluginProtocolsWss            AWSLambdaPluginProtocols = "wss"
+	AwsLambdaPluginProtocolsGrpc           AwsLambdaPluginProtocols = "grpc"
+	AwsLambdaPluginProtocolsGrpcs          AwsLambdaPluginProtocols = "grpcs"
+	AwsLambdaPluginProtocolsHTTP           AwsLambdaPluginProtocols = "http"
+	AwsLambdaPluginProtocolsHTTPS          AwsLambdaPluginProtocols = "https"
+	AwsLambdaPluginProtocolsTCP            AwsLambdaPluginProtocols = "tcp"
+	AwsLambdaPluginProtocolsTLS            AwsLambdaPluginProtocols = "tls"
+	AwsLambdaPluginProtocolsTLSPassthrough AwsLambdaPluginProtocols = "tls_passthrough"
+	AwsLambdaPluginProtocolsUDP            AwsLambdaPluginProtocols = "udp"
+	AwsLambdaPluginProtocolsWs             AwsLambdaPluginProtocols = "ws"
+	AwsLambdaPluginProtocolsWss            AwsLambdaPluginProtocols = "wss"
 )
 
-func (e AWSLambdaPluginProtocols) ToPointer() *AWSLambdaPluginProtocols {
+func (e AwsLambdaPluginProtocols) ToPointer() *AwsLambdaPluginProtocols {
 	return &e
 }
-func (e *AWSLambdaPluginProtocols) UnmarshalJSON(data []byte) error {
+func (e *AwsLambdaPluginProtocols) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -363,177 +449,185 @@ func (e *AWSLambdaPluginProtocols) UnmarshalJSON(data []byte) error {
 	case "ws":
 		fallthrough
 	case "wss":
-		*e = AWSLambdaPluginProtocols(v)
+		*e = AwsLambdaPluginProtocols(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for AWSLambdaPluginProtocols: %v", v)
+		return fmt.Errorf("invalid value for AwsLambdaPluginProtocols: %v", v)
 	}
 }
 
-// AWSLambdaPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-type AWSLambdaPluginConsumer struct {
+// AwsLambdaPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+type AwsLambdaPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AWSLambdaPluginConsumer) GetID() *string {
+func (o *AwsLambdaPluginConsumer) GetID() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ID
 }
 
-type AWSLambdaPluginConsumerGroup struct {
+type AwsLambdaPluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AWSLambdaPluginConsumerGroup) GetID() *string {
+func (o *AwsLambdaPluginConsumerGroup) GetID() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ID
 }
 
-// AWSLambdaPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-type AWSLambdaPluginRoute struct {
+// AwsLambdaPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
+type AwsLambdaPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AWSLambdaPluginRoute) GetID() *string {
+func (o *AwsLambdaPluginRoute) GetID() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ID
 }
 
-// AWSLambdaPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-type AWSLambdaPluginService struct {
+// AwsLambdaPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+type AwsLambdaPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AWSLambdaPluginService) GetID() *string {
+func (o *AwsLambdaPluginService) GetID() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ID
 }
 
-type AWSLambdaPlugin struct {
-	Config *AWSLambdaPluginConfig `json:"config,omitempty"`
+type AwsLambdaPlugin struct {
+	Config *AwsLambdaPluginConfig `json:"config,omitempty"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool   `json:"enabled,omitempty"`
-	ID           *string `json:"id,omitempty"`
-	InstanceName *string `json:"instance_name,omitempty"`
-	name         *string `const:"aws-lambda" json:"name,omitempty"`
+	Enabled      *bool                    `json:"enabled,omitempty"`
+	ID           *string                  `json:"id,omitempty"`
+	InstanceName *string                  `json:"instance_name,omitempty"`
+	name         *string                  `const:"aws-lambda" json:"name,omitempty"`
+	Ordering     *AwsLambdaPluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []AWSLambdaPluginProtocols `json:"protocols,omitempty"`
+	Protocols []AwsLambdaPluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64 `json:"updated_at,omitempty"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *AWSLambdaPluginConsumer      `json:"consumer,omitempty"`
-	ConsumerGroup *AWSLambdaPluginConsumerGroup `json:"consumer_group,omitempty"`
+	Consumer      *AwsLambdaPluginConsumer      `json:"consumer,omitempty"`
+	ConsumerGroup *AwsLambdaPluginConsumerGroup `json:"consumer_group,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *AWSLambdaPluginRoute `json:"route,omitempty"`
+	Route *AwsLambdaPluginRoute `json:"route,omitempty"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *AWSLambdaPluginService `json:"service,omitempty"`
+	Service *AwsLambdaPluginService `json:"service,omitempty"`
 }
 
-func (a AWSLambdaPlugin) MarshalJSON() ([]byte, error) {
+func (a AwsLambdaPlugin) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(a, "", false)
 }
 
-func (a *AWSLambdaPlugin) UnmarshalJSON(data []byte) error {
+func (a *AwsLambdaPlugin) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AWSLambdaPlugin) GetConfig() *AWSLambdaPluginConfig {
+func (o *AwsLambdaPlugin) GetConfig() *AwsLambdaPluginConfig {
 	if o == nil {
 		return nil
 	}
 	return o.Config
 }
 
-func (o *AWSLambdaPlugin) GetCreatedAt() *int64 {
+func (o *AwsLambdaPlugin) GetCreatedAt() *int64 {
 	if o == nil {
 		return nil
 	}
 	return o.CreatedAt
 }
 
-func (o *AWSLambdaPlugin) GetEnabled() *bool {
+func (o *AwsLambdaPlugin) GetEnabled() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.Enabled
 }
 
-func (o *AWSLambdaPlugin) GetID() *string {
+func (o *AwsLambdaPlugin) GetID() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ID
 }
 
-func (o *AWSLambdaPlugin) GetInstanceName() *string {
+func (o *AwsLambdaPlugin) GetInstanceName() *string {
 	if o == nil {
 		return nil
 	}
 	return o.InstanceName
 }
 
-func (o *AWSLambdaPlugin) GetName() *string {
+func (o *AwsLambdaPlugin) GetName() *string {
 	return types.String("aws-lambda")
 }
 
-func (o *AWSLambdaPlugin) GetProtocols() []AWSLambdaPluginProtocols {
+func (o *AwsLambdaPlugin) GetOrdering() *AwsLambdaPluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
+}
+
+func (o *AwsLambdaPlugin) GetProtocols() []AwsLambdaPluginProtocols {
 	if o == nil {
 		return nil
 	}
 	return o.Protocols
 }
 
-func (o *AWSLambdaPlugin) GetTags() []string {
+func (o *AwsLambdaPlugin) GetTags() []string {
 	if o == nil {
 		return nil
 	}
 	return o.Tags
 }
 
-func (o *AWSLambdaPlugin) GetUpdatedAt() *int64 {
+func (o *AwsLambdaPlugin) GetUpdatedAt() *int64 {
 	if o == nil {
 		return nil
 	}
 	return o.UpdatedAt
 }
 
-func (o *AWSLambdaPlugin) GetConsumer() *AWSLambdaPluginConsumer {
+func (o *AwsLambdaPlugin) GetConsumer() *AwsLambdaPluginConsumer {
 	if o == nil {
 		return nil
 	}
 	return o.Consumer
 }
 
-func (o *AWSLambdaPlugin) GetConsumerGroup() *AWSLambdaPluginConsumerGroup {
+func (o *AwsLambdaPlugin) GetConsumerGroup() *AwsLambdaPluginConsumerGroup {
 	if o == nil {
 		return nil
 	}
 	return o.ConsumerGroup
 }
 
-func (o *AWSLambdaPlugin) GetRoute() *AWSLambdaPluginRoute {
+func (o *AwsLambdaPlugin) GetRoute() *AwsLambdaPluginRoute {
 	if o == nil {
 		return nil
 	}
 	return o.Route
 }
 
-func (o *AWSLambdaPlugin) GetService() *AWSLambdaPluginService {
+func (o *AwsLambdaPlugin) GetService() *AwsLambdaPluginService {
 	if o == nil {
 		return nil
 	}

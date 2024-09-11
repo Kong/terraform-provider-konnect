@@ -146,6 +146,7 @@ func (o *CreateResponseTransformerPluginRemove) GetJSON() []string {
 
 type CreateResponseTransformerPluginRename struct {
 	Headers []string `json:"headers,omitempty"`
+	JSON    []string `json:"json,omitempty"`
 }
 
 func (o *CreateResponseTransformerPluginRename) GetHeaders() []string {
@@ -153,6 +154,13 @@ func (o *CreateResponseTransformerPluginRename) GetHeaders() []string {
 		return nil
 	}
 	return o.Headers
+}
+
+func (o *CreateResponseTransformerPluginRename) GetJSON() []string {
+	if o == nil {
+		return nil
+	}
+	return o.JSON
 }
 
 type CreateResponseTransformerPluginConfigReplaceJSONTypes string
@@ -256,6 +264,47 @@ func (o *CreateResponseTransformerPluginConfig) GetReplace() *CreateResponseTran
 	return o.Replace
 }
 
+type CreateResponseTransformerPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *CreateResponseTransformerPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type CreateResponseTransformerPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *CreateResponseTransformerPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type CreateResponseTransformerPluginOrdering struct {
+	After  *CreateResponseTransformerPluginAfter  `json:"after,omitempty"`
+	Before *CreateResponseTransformerPluginBefore `json:"before,omitempty"`
+}
+
+func (o *CreateResponseTransformerPluginOrdering) GetAfter() *CreateResponseTransformerPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *CreateResponseTransformerPluginOrdering) GetBefore() *CreateResponseTransformerPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
 type CreateResponseTransformerPluginProtocols string
 
 const (
@@ -356,9 +405,10 @@ func (o *CreateResponseTransformerPluginService) GetID() *string {
 type CreateResponseTransformerPlugin struct {
 	Config *CreateResponseTransformerPluginConfig `json:"config,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool   `json:"enabled,omitempty"`
-	InstanceName *string `json:"instance_name,omitempty"`
-	name         *string `const:"response-transformer" json:"name,omitempty"`
+	Enabled      *bool                                    `json:"enabled,omitempty"`
+	InstanceName *string                                  `json:"instance_name,omitempty"`
+	name         *string                                  `const:"response-transformer" json:"name,omitempty"`
+	Ordering     *CreateResponseTransformerPluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []CreateResponseTransformerPluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
@@ -406,6 +456,13 @@ func (o *CreateResponseTransformerPlugin) GetInstanceName() *string {
 
 func (o *CreateResponseTransformerPlugin) GetName() *string {
 	return types.String("response-transformer")
+}
+
+func (o *CreateResponseTransformerPlugin) GetOrdering() *CreateResponseTransformerPluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
 }
 
 func (o *CreateResponseTransformerPlugin) GetProtocols() []CreateResponseTransformerPluginProtocols {

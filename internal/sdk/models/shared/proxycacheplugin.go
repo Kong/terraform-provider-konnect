@@ -9,12 +9,12 @@ import (
 	"github.com/kong/terraform-provider-konnect/internal/sdk/types"
 )
 
-type Memory struct {
+type ProxyCachePluginMemory struct {
 	// The name of the shared dictionary in which to hold cache entities when the memory strategy is selected. Note that this dictionary currently must be defined manually in the Kong Nginx template.
 	DictionaryName *string `json:"dictionary_name,omitempty"`
 }
 
-func (o *Memory) GetDictionaryName() *string {
+func (o *ProxyCachePluginMemory) GetDictionaryName() *string {
 	if o == nil {
 		return nil
 	}
@@ -84,27 +84,27 @@ func (o *ResponseHeaders) GetAge() *bool {
 	return o.Age
 }
 
-// Strategy - The backing data store in which to hold cache entities.
-type Strategy string
+// ProxyCachePluginStrategy - The backing data store in which to hold cache entities.
+type ProxyCachePluginStrategy string
 
 const (
-	StrategyMemory Strategy = "memory"
+	ProxyCachePluginStrategyMemory ProxyCachePluginStrategy = "memory"
 )
 
-func (e Strategy) ToPointer() *Strategy {
+func (e ProxyCachePluginStrategy) ToPointer() *ProxyCachePluginStrategy {
 	return &e
 }
-func (e *Strategy) UnmarshalJSON(data []byte) error {
+func (e *ProxyCachePluginStrategy) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
 	switch v {
 	case "memory":
-		*e = Strategy(v)
+		*e = ProxyCachePluginStrategy(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for Strategy: %v", v)
+		return fmt.Errorf("invalid value for ProxyCachePluginStrategy: %v", v)
 	}
 }
 
@@ -114,9 +114,9 @@ type ProxyCachePluginConfig struct {
 	// TTL, in seconds, of cache entities.
 	CacheTTL *int64 `json:"cache_ttl,omitempty"`
 	// Upstream response content types considered cacheable. The plugin performs an **exact match** against each specified value.
-	ContentType   []string `json:"content_type,omitempty"`
-	IgnoreURICase *bool    `json:"ignore_uri_case,omitempty"`
-	Memory        *Memory  `json:"memory,omitempty"`
+	ContentType   []string                `json:"content_type,omitempty"`
+	IgnoreURICase *bool                   `json:"ignore_uri_case,omitempty"`
+	Memory        *ProxyCachePluginMemory `json:"memory,omitempty"`
 	// Downstream request methods considered cacheable.
 	RequestMethod []RequestMethod `json:"request_method,omitempty"`
 	// Upstream response status code considered cacheable.
@@ -126,7 +126,7 @@ type ProxyCachePluginConfig struct {
 	// Number of seconds to keep resources in the storage backend. This value is independent of `cache_ttl` or resource TTLs defined by Cache-Control behaviors.
 	StorageTTL *int64 `json:"storage_ttl,omitempty"`
 	// The backing data store in which to hold cache entities.
-	Strategy *Strategy `json:"strategy,omitempty"`
+	Strategy *ProxyCachePluginStrategy `json:"strategy,omitempty"`
 	// Relevant headers considered for the cache key. If undefined, none of the headers are taken into consideration.
 	VaryHeaders []string `json:"vary_headers,omitempty"`
 	// Relevant query parameters considered for the cache key. If undefined, all params are taken into consideration.
@@ -161,7 +161,7 @@ func (o *ProxyCachePluginConfig) GetIgnoreURICase() *bool {
 	return o.IgnoreURICase
 }
 
-func (o *ProxyCachePluginConfig) GetMemory() *Memory {
+func (o *ProxyCachePluginConfig) GetMemory() *ProxyCachePluginMemory {
 	if o == nil {
 		return nil
 	}
@@ -196,7 +196,7 @@ func (o *ProxyCachePluginConfig) GetStorageTTL() *int64 {
 	return o.StorageTTL
 }
 
-func (o *ProxyCachePluginConfig) GetStrategy() *Strategy {
+func (o *ProxyCachePluginConfig) GetStrategy() *ProxyCachePluginStrategy {
 	if o == nil {
 		return nil
 	}
@@ -215,6 +215,47 @@ func (o *ProxyCachePluginConfig) GetVaryQueryParams() []string {
 		return nil
 	}
 	return o.VaryQueryParams
+}
+
+type ProxyCachePluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *ProxyCachePluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type ProxyCachePluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *ProxyCachePluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type ProxyCachePluginOrdering struct {
+	After  *ProxyCachePluginAfter  `json:"after,omitempty"`
+	Before *ProxyCachePluginBefore `json:"before,omitempty"`
+}
+
+func (o *ProxyCachePluginOrdering) GetAfter() *ProxyCachePluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *ProxyCachePluginOrdering) GetBefore() *ProxyCachePluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
 }
 
 type ProxyCachePluginProtocols string
@@ -319,10 +360,11 @@ type ProxyCachePlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool   `json:"enabled,omitempty"`
-	ID           *string `json:"id,omitempty"`
-	InstanceName *string `json:"instance_name,omitempty"`
-	name         *string `const:"proxy-cache" json:"name,omitempty"`
+	Enabled      *bool                     `json:"enabled,omitempty"`
+	ID           *string                   `json:"id,omitempty"`
+	InstanceName *string                   `json:"instance_name,omitempty"`
+	name         *string                   `const:"proxy-cache" json:"name,omitempty"`
+	Ordering     *ProxyCachePluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []ProxyCachePluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
@@ -386,6 +428,13 @@ func (o *ProxyCachePlugin) GetInstanceName() *string {
 
 func (o *ProxyCachePlugin) GetName() *string {
 	return types.String("proxy-cache")
+}
+
+func (o *ProxyCachePlugin) GetOrdering() *ProxyCachePluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
 }
 
 func (o *ProxyCachePlugin) GetProtocols() []ProxyCachePluginProtocols {

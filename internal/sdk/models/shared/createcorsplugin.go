@@ -9,24 +9,24 @@ import (
 	"github.com/kong/terraform-provider-konnect/internal/sdk/types"
 )
 
-type CreateCORSPluginMethods string
+type CreateCorsPluginMethods string
 
 const (
-	CreateCORSPluginMethodsGet     CreateCORSPluginMethods = "GET"
-	CreateCORSPluginMethodsHead    CreateCORSPluginMethods = "HEAD"
-	CreateCORSPluginMethodsPut     CreateCORSPluginMethods = "PUT"
-	CreateCORSPluginMethodsPatch   CreateCORSPluginMethods = "PATCH"
-	CreateCORSPluginMethodsPost    CreateCORSPluginMethods = "POST"
-	CreateCORSPluginMethodsDelete  CreateCORSPluginMethods = "DELETE"
-	CreateCORSPluginMethodsOptions CreateCORSPluginMethods = "OPTIONS"
-	CreateCORSPluginMethodsTrace   CreateCORSPluginMethods = "TRACE"
-	CreateCORSPluginMethodsConnect CreateCORSPluginMethods = "CONNECT"
+	CreateCorsPluginMethodsGet     CreateCorsPluginMethods = "GET"
+	CreateCorsPluginMethodsHead    CreateCorsPluginMethods = "HEAD"
+	CreateCorsPluginMethodsPut     CreateCorsPluginMethods = "PUT"
+	CreateCorsPluginMethodsPatch   CreateCorsPluginMethods = "PATCH"
+	CreateCorsPluginMethodsPost    CreateCorsPluginMethods = "POST"
+	CreateCorsPluginMethodsDelete  CreateCorsPluginMethods = "DELETE"
+	CreateCorsPluginMethodsOptions CreateCorsPluginMethods = "OPTIONS"
+	CreateCorsPluginMethodsTrace   CreateCorsPluginMethods = "TRACE"
+	CreateCorsPluginMethodsConnect CreateCorsPluginMethods = "CONNECT"
 )
 
-func (e CreateCORSPluginMethods) ToPointer() *CreateCORSPluginMethods {
+func (e CreateCorsPluginMethods) ToPointer() *CreateCorsPluginMethods {
 	return &e
 }
-func (e *CreateCORSPluginMethods) UnmarshalJSON(data []byte) error {
+func (e *CreateCorsPluginMethods) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -49,14 +49,14 @@ func (e *CreateCORSPluginMethods) UnmarshalJSON(data []byte) error {
 	case "TRACE":
 		fallthrough
 	case "CONNECT":
-		*e = CreateCORSPluginMethods(v)
+		*e = CreateCorsPluginMethods(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for CreateCORSPluginMethods: %v", v)
+		return fmt.Errorf("invalid value for CreateCorsPluginMethods: %v", v)
 	}
 }
 
-type CreateCORSPluginConfig struct {
+type CreateCorsPluginConfig struct {
 	// Flag to determine whether the `Access-Control-Allow-Credentials` header should be sent with `true` as the value.
 	Credentials *bool `json:"credentials,omitempty"`
 	// Value for the `Access-Control-Expose-Headers` header. If not specified, no custom headers are exposed.
@@ -66,7 +66,7 @@ type CreateCORSPluginConfig struct {
 	// Indicates how long the results of the preflight request can be cached, in `seconds`.
 	MaxAge *float64 `json:"max_age,omitempty"`
 	// 'Value for the `Access-Control-Allow-Methods` header. Available options include `GET`, `HEAD`, `PUT`, `PATCH`, `POST`, `DELETE`, `OPTIONS`, `TRACE`, `CONNECT`. By default, all options are allowed.'
-	Methods []CreateCORSPluginMethods `json:"methods,omitempty"`
+	Methods []CreateCorsPluginMethods `json:"methods,omitempty"`
 	// List of allowed domains for the `Access-Control-Allow-Origin` header. If you want to allow all origins, add `*` as a single value to this configuration field. The accepted values can either be flat strings or PCRE regexes.
 	Origins []string `json:"origins,omitempty"`
 	// A boolean value that instructs the plugin to proxy the `OPTIONS` preflight request to the Upstream service.
@@ -75,81 +75,122 @@ type CreateCORSPluginConfig struct {
 	PrivateNetwork *bool `json:"private_network,omitempty"`
 }
 
-func (o *CreateCORSPluginConfig) GetCredentials() *bool {
+func (o *CreateCorsPluginConfig) GetCredentials() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.Credentials
 }
 
-func (o *CreateCORSPluginConfig) GetExposedHeaders() []string {
+func (o *CreateCorsPluginConfig) GetExposedHeaders() []string {
 	if o == nil {
 		return nil
 	}
 	return o.ExposedHeaders
 }
 
-func (o *CreateCORSPluginConfig) GetHeaders() []string {
+func (o *CreateCorsPluginConfig) GetHeaders() []string {
 	if o == nil {
 		return nil
 	}
 	return o.Headers
 }
 
-func (o *CreateCORSPluginConfig) GetMaxAge() *float64 {
+func (o *CreateCorsPluginConfig) GetMaxAge() *float64 {
 	if o == nil {
 		return nil
 	}
 	return o.MaxAge
 }
 
-func (o *CreateCORSPluginConfig) GetMethods() []CreateCORSPluginMethods {
+func (o *CreateCorsPluginConfig) GetMethods() []CreateCorsPluginMethods {
 	if o == nil {
 		return nil
 	}
 	return o.Methods
 }
 
-func (o *CreateCORSPluginConfig) GetOrigins() []string {
+func (o *CreateCorsPluginConfig) GetOrigins() []string {
 	if o == nil {
 		return nil
 	}
 	return o.Origins
 }
 
-func (o *CreateCORSPluginConfig) GetPreflightContinue() *bool {
+func (o *CreateCorsPluginConfig) GetPreflightContinue() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.PreflightContinue
 }
 
-func (o *CreateCORSPluginConfig) GetPrivateNetwork() *bool {
+func (o *CreateCorsPluginConfig) GetPrivateNetwork() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.PrivateNetwork
 }
 
-type CreateCORSPluginProtocols string
+type CreateCorsPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *CreateCorsPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type CreateCorsPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *CreateCorsPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type CreateCorsPluginOrdering struct {
+	After  *CreateCorsPluginAfter  `json:"after,omitempty"`
+	Before *CreateCorsPluginBefore `json:"before,omitempty"`
+}
+
+func (o *CreateCorsPluginOrdering) GetAfter() *CreateCorsPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *CreateCorsPluginOrdering) GetBefore() *CreateCorsPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
+type CreateCorsPluginProtocols string
 
 const (
-	CreateCORSPluginProtocolsGrpc           CreateCORSPluginProtocols = "grpc"
-	CreateCORSPluginProtocolsGrpcs          CreateCORSPluginProtocols = "grpcs"
-	CreateCORSPluginProtocolsHTTP           CreateCORSPluginProtocols = "http"
-	CreateCORSPluginProtocolsHTTPS          CreateCORSPluginProtocols = "https"
-	CreateCORSPluginProtocolsTCP            CreateCORSPluginProtocols = "tcp"
-	CreateCORSPluginProtocolsTLS            CreateCORSPluginProtocols = "tls"
-	CreateCORSPluginProtocolsTLSPassthrough CreateCORSPluginProtocols = "tls_passthrough"
-	CreateCORSPluginProtocolsUDP            CreateCORSPluginProtocols = "udp"
-	CreateCORSPluginProtocolsWs             CreateCORSPluginProtocols = "ws"
-	CreateCORSPluginProtocolsWss            CreateCORSPluginProtocols = "wss"
+	CreateCorsPluginProtocolsGrpc           CreateCorsPluginProtocols = "grpc"
+	CreateCorsPluginProtocolsGrpcs          CreateCorsPluginProtocols = "grpcs"
+	CreateCorsPluginProtocolsHTTP           CreateCorsPluginProtocols = "http"
+	CreateCorsPluginProtocolsHTTPS          CreateCorsPluginProtocols = "https"
+	CreateCorsPluginProtocolsTCP            CreateCorsPluginProtocols = "tcp"
+	CreateCorsPluginProtocolsTLS            CreateCorsPluginProtocols = "tls"
+	CreateCorsPluginProtocolsTLSPassthrough CreateCorsPluginProtocols = "tls_passthrough"
+	CreateCorsPluginProtocolsUDP            CreateCorsPluginProtocols = "udp"
+	CreateCorsPluginProtocolsWs             CreateCorsPluginProtocols = "ws"
+	CreateCorsPluginProtocolsWss            CreateCorsPluginProtocols = "wss"
 )
 
-func (e CreateCORSPluginProtocols) ToPointer() *CreateCORSPluginProtocols {
+func (e CreateCorsPluginProtocols) ToPointer() *CreateCorsPluginProtocols {
 	return &e
 }
-func (e *CreateCORSPluginProtocols) UnmarshalJSON(data []byte) error {
+func (e *CreateCorsPluginProtocols) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -174,151 +215,159 @@ func (e *CreateCORSPluginProtocols) UnmarshalJSON(data []byte) error {
 	case "ws":
 		fallthrough
 	case "wss":
-		*e = CreateCORSPluginProtocols(v)
+		*e = CreateCorsPluginProtocols(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for CreateCORSPluginProtocols: %v", v)
+		return fmt.Errorf("invalid value for CreateCorsPluginProtocols: %v", v)
 	}
 }
 
-// CreateCORSPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-type CreateCORSPluginConsumer struct {
+// CreateCorsPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+type CreateCorsPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *CreateCORSPluginConsumer) GetID() *string {
+func (o *CreateCorsPluginConsumer) GetID() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ID
 }
 
-type CreateCORSPluginConsumerGroup struct {
+type CreateCorsPluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *CreateCORSPluginConsumerGroup) GetID() *string {
+func (o *CreateCorsPluginConsumerGroup) GetID() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ID
 }
 
-// CreateCORSPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-type CreateCORSPluginRoute struct {
+// CreateCorsPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
+type CreateCorsPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *CreateCORSPluginRoute) GetID() *string {
+func (o *CreateCorsPluginRoute) GetID() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ID
 }
 
-// CreateCORSPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-type CreateCORSPluginService struct {
+// CreateCorsPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+type CreateCorsPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *CreateCORSPluginService) GetID() *string {
+func (o *CreateCorsPluginService) GetID() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ID
 }
 
-type CreateCORSPlugin struct {
-	Config *CreateCORSPluginConfig `json:"config,omitempty"`
+type CreateCorsPlugin struct {
+	Config *CreateCorsPluginConfig `json:"config,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool   `json:"enabled,omitempty"`
-	InstanceName *string `json:"instance_name,omitempty"`
-	name         *string `const:"cors" json:"name,omitempty"`
+	Enabled      *bool                     `json:"enabled,omitempty"`
+	InstanceName *string                   `json:"instance_name,omitempty"`
+	name         *string                   `const:"cors" json:"name,omitempty"`
+	Ordering     *CreateCorsPluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []CreateCORSPluginProtocols `json:"protocols,omitempty"`
+	Protocols []CreateCorsPluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *CreateCORSPluginConsumer      `json:"consumer,omitempty"`
-	ConsumerGroup *CreateCORSPluginConsumerGroup `json:"consumer_group,omitempty"`
+	Consumer      *CreateCorsPluginConsumer      `json:"consumer,omitempty"`
+	ConsumerGroup *CreateCorsPluginConsumerGroup `json:"consumer_group,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *CreateCORSPluginRoute `json:"route,omitempty"`
+	Route *CreateCorsPluginRoute `json:"route,omitempty"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *CreateCORSPluginService `json:"service,omitempty"`
+	Service *CreateCorsPluginService `json:"service,omitempty"`
 }
 
-func (c CreateCORSPlugin) MarshalJSON() ([]byte, error) {
+func (c CreateCorsPlugin) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(c, "", false)
 }
 
-func (c *CreateCORSPlugin) UnmarshalJSON(data []byte) error {
+func (c *CreateCorsPlugin) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *CreateCORSPlugin) GetConfig() *CreateCORSPluginConfig {
+func (o *CreateCorsPlugin) GetConfig() *CreateCorsPluginConfig {
 	if o == nil {
 		return nil
 	}
 	return o.Config
 }
 
-func (o *CreateCORSPlugin) GetEnabled() *bool {
+func (o *CreateCorsPlugin) GetEnabled() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.Enabled
 }
 
-func (o *CreateCORSPlugin) GetInstanceName() *string {
+func (o *CreateCorsPlugin) GetInstanceName() *string {
 	if o == nil {
 		return nil
 	}
 	return o.InstanceName
 }
 
-func (o *CreateCORSPlugin) GetName() *string {
+func (o *CreateCorsPlugin) GetName() *string {
 	return types.String("cors")
 }
 
-func (o *CreateCORSPlugin) GetProtocols() []CreateCORSPluginProtocols {
+func (o *CreateCorsPlugin) GetOrdering() *CreateCorsPluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
+}
+
+func (o *CreateCorsPlugin) GetProtocols() []CreateCorsPluginProtocols {
 	if o == nil {
 		return nil
 	}
 	return o.Protocols
 }
 
-func (o *CreateCORSPlugin) GetTags() []string {
+func (o *CreateCorsPlugin) GetTags() []string {
 	if o == nil {
 		return nil
 	}
 	return o.Tags
 }
 
-func (o *CreateCORSPlugin) GetConsumer() *CreateCORSPluginConsumer {
+func (o *CreateCorsPlugin) GetConsumer() *CreateCorsPluginConsumer {
 	if o == nil {
 		return nil
 	}
 	return o.Consumer
 }
 
-func (o *CreateCORSPlugin) GetConsumerGroup() *CreateCORSPluginConsumerGroup {
+func (o *CreateCorsPlugin) GetConsumerGroup() *CreateCorsPluginConsumerGroup {
 	if o == nil {
 		return nil
 	}
 	return o.ConsumerGroup
 }
 
-func (o *CreateCORSPlugin) GetRoute() *CreateCORSPluginRoute {
+func (o *CreateCorsPlugin) GetRoute() *CreateCorsPluginRoute {
 	if o == nil {
 		return nil
 	}
 	return o.Route
 }
 
-func (o *CreateCORSPlugin) GetService() *CreateCORSPluginService {
+func (o *CreateCorsPlugin) GetService() *CreateCorsPluginService {
 	if o == nil {
 		return nil
 	}

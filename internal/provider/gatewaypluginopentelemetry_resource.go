@@ -13,6 +13,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -46,6 +48,7 @@ type GatewayPluginOpentelemetryResourceModel struct {
 	Enabled        types.Bool                               `tfsdk:"enabled"`
 	ID             types.String                             `tfsdk:"id"`
 	InstanceName   types.String                             `tfsdk:"instance_name"`
+	Ordering       *tfTypes.CreateACLPluginOrdering         `tfsdk:"ordering"`
 	Protocols      []types.String                           `tfsdk:"protocols"`
 	Route          *tfTypes.ACLConsumer                     `tfsdk:"route"`
 	Service        *tfTypes.ACLConsumer                     `tfsdk:"service"`
@@ -83,11 +86,6 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 							int64validator.AtMost(2147483646),
 						},
 					},
-					"endpoint": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `A string representing a URL, such as https://example.com/path/to/resource?q=search.`,
-					},
 					"header_type": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
@@ -120,6 +118,11 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 						Computed: true,
 						Optional: true,
 					},
+					"logs_endpoint": schema.StringAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `A string representing a URL, such as https://example.com/path/to/resource?q=search.`,
+					},
 					"propagation": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
@@ -133,18 +136,18 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 							"default_format": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `The default header format to use when extractors did not match any format in the incoming headers and ` + "`" + `inject` + "`" + ` is configured with the value: ` + "`" + `preserve` + "`" + `. This can happen when no tracing header was found in the request, or the incoming tracing header formats were not included in ` + "`" + `extract` + "`" + `. Not Null; must be one of ["b3", "gcp", "b3-single", "jaeger", "aws", "ot", "w3c", "datadog"]`,
+								Description: `The default header format to use when extractors did not match any format in the incoming headers and ` + "`" + `inject` + "`" + ` is configured with the value: ` + "`" + `preserve` + "`" + `. This can happen when no tracing header was found in the request, or the incoming tracing header formats were not included in ` + "`" + `extract` + "`" + `. Not Null; must be one of ["w3c", "datadog", "b3", "gcp", "b3-single", "jaeger", "aws", "ot"]`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
 									stringvalidator.OneOf(
+										"w3c",
+										"datadog",
 										"b3",
 										"gcp",
 										"b3-single",
 										"jaeger",
 										"aws",
 										"ot",
-										"w3c",
-										"datadog",
 									),
 								},
 							},
@@ -166,6 +169,19 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
+							"concurrency_limit": schema.Int64Attribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `The number of of queue delivery timers. -1 indicates unlimited. must be one of ["-1", "1"]`,
+								Validators: []validator.Int64{
+									int64validator.OneOf(
+										[]int64{
+											-1,
+											1,
+										}...,
+									),
+								},
+							},
 							"initial_retry_delay": schema.NumberAttribute{
 								Computed:    true,
 								Optional:    true,
@@ -238,6 +254,11 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 							int64validator.AtMost(2147483646),
 						},
 					},
+					"traces_endpoint": schema.StringAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `A string representing a URL, such as https://example.com/path/to/resource?q=search.`,
+					},
 				},
 			},
 			"consumer": schema.SingleNestedAttribute{
@@ -262,8 +283,11 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 				},
 			},
 			"control_plane_id": schema.StringAttribute{
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
 				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager.`,
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed. `,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
@@ -280,6 +304,34 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 			"instance_name": schema.StringAttribute{
 				Computed: true,
 				Optional: true,
+			},
+			"ordering": schema.SingleNestedAttribute{
+				Computed: true,
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"after": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+					"before": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+				},
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,

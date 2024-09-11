@@ -8,8 +8,8 @@ import (
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginJQResourceModel) ToSharedCreateJQPlugin() *shared.CreateJQPlugin {
-	var config *shared.CreateJQPluginConfig
+func (r *GatewayPluginJqResourceModel) ToSharedCreateJqPlugin() *shared.CreateJqPlugin {
+	var config *shared.CreateJqPluginConfig
 	if r.Config != nil {
 		var requestIfMediaType []string = []string{}
 		for _, requestIfMediaTypeItem := range r.Config.RequestIfMediaType {
@@ -21,7 +21,7 @@ func (r *GatewayPluginJQResourceModel) ToSharedCreateJQPlugin() *shared.CreateJQ
 		} else {
 			requestJqProgram = nil
 		}
-		var requestJqProgramOptions *shared.CreateJQPluginRequestJQProgramOptions
+		var requestJqProgramOptions *shared.CreateJqPluginRequestJqProgramOptions
 		if r.Config.RequestJqProgramOptions != nil {
 			asciiOutput := new(bool)
 			if !r.Config.RequestJqProgramOptions.ASCIIOutput.IsUnknown() && !r.Config.RequestJqProgramOptions.ASCIIOutput.IsNull() {
@@ -53,7 +53,7 @@ func (r *GatewayPluginJQResourceModel) ToSharedCreateJQPlugin() *shared.CreateJQ
 			} else {
 				sortKeys = nil
 			}
-			requestJqProgramOptions = &shared.CreateJQPluginRequestJQProgramOptions{
+			requestJqProgramOptions = &shared.CreateJqPluginRequestJqProgramOptions{
 				ASCIIOutput:   asciiOutput,
 				CompactOutput: compactOutput,
 				JoinOutput:    joinOutput,
@@ -75,7 +75,7 @@ func (r *GatewayPluginJQResourceModel) ToSharedCreateJQPlugin() *shared.CreateJQ
 		} else {
 			responseJqProgram = nil
 		}
-		var responseJqProgramOptions *shared.CreateJQPluginResponseJQProgramOptions
+		var responseJqProgramOptions *shared.CreateJqPluginResponseJqProgramOptions
 		if r.Config.ResponseJqProgramOptions != nil {
 			asciiOutput1 := new(bool)
 			if !r.Config.ResponseJqProgramOptions.ASCIIOutput.IsUnknown() && !r.Config.ResponseJqProgramOptions.ASCIIOutput.IsNull() {
@@ -107,7 +107,7 @@ func (r *GatewayPluginJQResourceModel) ToSharedCreateJQPlugin() *shared.CreateJQ
 			} else {
 				sortKeys1 = nil
 			}
-			responseJqProgramOptions = &shared.CreateJQPluginResponseJQProgramOptions{
+			responseJqProgramOptions = &shared.CreateJqPluginResponseJqProgramOptions{
 				ASCIIOutput:   asciiOutput1,
 				CompactOutput: compactOutput1,
 				JoinOutput:    joinOutput1,
@@ -115,7 +115,7 @@ func (r *GatewayPluginJQResourceModel) ToSharedCreateJQPlugin() *shared.CreateJQ
 				SortKeys:      sortKeys1,
 			}
 		}
-		config = &shared.CreateJQPluginConfig{
+		config = &shared.CreateJqPluginConfig{
 			RequestIfMediaType:       requestIfMediaType,
 			RequestJqProgram:         requestJqProgram,
 			RequestJqProgramOptions:  requestJqProgramOptions,
@@ -137,15 +137,42 @@ func (r *GatewayPluginJQResourceModel) ToSharedCreateJQPlugin() *shared.CreateJQ
 	} else {
 		instanceName = nil
 	}
-	var protocols []shared.CreateJQPluginProtocols = []shared.CreateJQPluginProtocols{}
+	var ordering *shared.CreateJqPluginOrdering
+	if r.Ordering != nil {
+		var after *shared.CreateJqPluginAfter
+		if r.Ordering.After != nil {
+			var access []string = []string{}
+			for _, accessItem := range r.Ordering.After.Access {
+				access = append(access, accessItem.ValueString())
+			}
+			after = &shared.CreateJqPluginAfter{
+				Access: access,
+			}
+		}
+		var before *shared.CreateJqPluginBefore
+		if r.Ordering.Before != nil {
+			var access1 []string = []string{}
+			for _, accessItem1 := range r.Ordering.Before.Access {
+				access1 = append(access1, accessItem1.ValueString())
+			}
+			before = &shared.CreateJqPluginBefore{
+				Access: access1,
+			}
+		}
+		ordering = &shared.CreateJqPluginOrdering{
+			After:  after,
+			Before: before,
+		}
+	}
+	var protocols []shared.CreateJqPluginProtocols = []shared.CreateJqPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
-		protocols = append(protocols, shared.CreateJQPluginProtocols(protocolsItem.ValueString()))
+		protocols = append(protocols, shared.CreateJqPluginProtocols(protocolsItem.ValueString()))
 	}
 	var tags []string = []string{}
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	var consumer *shared.CreateJQPluginConsumer
+	var consumer *shared.CreateJqPluginConsumer
 	if r.Consumer != nil {
 		id := new(string)
 		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
@@ -153,11 +180,11 @@ func (r *GatewayPluginJQResourceModel) ToSharedCreateJQPlugin() *shared.CreateJQ
 		} else {
 			id = nil
 		}
-		consumer = &shared.CreateJQPluginConsumer{
+		consumer = &shared.CreateJqPluginConsumer{
 			ID: id,
 		}
 	}
-	var consumerGroup *shared.CreateJQPluginConsumerGroup
+	var consumerGroup *shared.CreateJqPluginConsumerGroup
 	if r.ConsumerGroup != nil {
 		id1 := new(string)
 		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
@@ -165,11 +192,11 @@ func (r *GatewayPluginJQResourceModel) ToSharedCreateJQPlugin() *shared.CreateJQ
 		} else {
 			id1 = nil
 		}
-		consumerGroup = &shared.CreateJQPluginConsumerGroup{
+		consumerGroup = &shared.CreateJqPluginConsumerGroup{
 			ID: id1,
 		}
 	}
-	var route *shared.CreateJQPluginRoute
+	var route *shared.CreateJqPluginRoute
 	if r.Route != nil {
 		id2 := new(string)
 		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
@@ -177,11 +204,11 @@ func (r *GatewayPluginJQResourceModel) ToSharedCreateJQPlugin() *shared.CreateJQ
 		} else {
 			id2 = nil
 		}
-		route = &shared.CreateJQPluginRoute{
+		route = &shared.CreateJqPluginRoute{
 			ID: id2,
 		}
 	}
-	var service *shared.CreateJQPluginService
+	var service *shared.CreateJqPluginService
 	if r.Service != nil {
 		id3 := new(string)
 		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
@@ -189,14 +216,15 @@ func (r *GatewayPluginJQResourceModel) ToSharedCreateJQPlugin() *shared.CreateJQ
 		} else {
 			id3 = nil
 		}
-		service = &shared.CreateJQPluginService{
+		service = &shared.CreateJqPluginService{
 			ID: id3,
 		}
 	}
-	out := shared.CreateJQPlugin{
+	out := shared.CreateJqPlugin{
 		Config:        config,
 		Enabled:       enabled,
 		InstanceName:  instanceName,
+		Ordering:      ordering,
 		Protocols:     protocols,
 		Tags:          tags,
 		Consumer:      consumer,
@@ -207,12 +235,12 @@ func (r *GatewayPluginJQResourceModel) ToSharedCreateJQPlugin() *shared.CreateJQ
 	return &out
 }
 
-func (r *GatewayPluginJQResourceModel) RefreshFromSharedJQPlugin(resp *shared.JQPlugin) {
+func (r *GatewayPluginJqResourceModel) RefreshFromSharedJqPlugin(resp *shared.JqPlugin) {
 	if resp != nil {
 		if resp.Config == nil {
 			r.Config = nil
 		} else {
-			r.Config = &tfTypes.CreateJQPluginConfig{}
+			r.Config = &tfTypes.CreateJqPluginConfig{}
 			r.Config.RequestIfMediaType = []types.String{}
 			for _, v := range resp.Config.RequestIfMediaType {
 				r.Config.RequestIfMediaType = append(r.Config.RequestIfMediaType, types.StringValue(v))
@@ -221,7 +249,7 @@ func (r *GatewayPluginJQResourceModel) RefreshFromSharedJQPlugin(resp *shared.JQ
 			if resp.Config.RequestJqProgramOptions == nil {
 				r.Config.RequestJqProgramOptions = nil
 			} else {
-				r.Config.RequestJqProgramOptions = &tfTypes.CreateJQPluginRequestJQProgramOptions{}
+				r.Config.RequestJqProgramOptions = &tfTypes.CreateJqPluginRequestJqProgramOptions{}
 				r.Config.RequestJqProgramOptions.ASCIIOutput = types.BoolPointerValue(resp.Config.RequestJqProgramOptions.ASCIIOutput)
 				r.Config.RequestJqProgramOptions.CompactOutput = types.BoolPointerValue(resp.Config.RequestJqProgramOptions.CompactOutput)
 				r.Config.RequestJqProgramOptions.JoinOutput = types.BoolPointerValue(resp.Config.RequestJqProgramOptions.JoinOutput)
@@ -240,7 +268,7 @@ func (r *GatewayPluginJQResourceModel) RefreshFromSharedJQPlugin(resp *shared.JQ
 			if resp.Config.ResponseJqProgramOptions == nil {
 				r.Config.ResponseJqProgramOptions = nil
 			} else {
-				r.Config.ResponseJqProgramOptions = &tfTypes.CreateJQPluginRequestJQProgramOptions{}
+				r.Config.ResponseJqProgramOptions = &tfTypes.CreateJqPluginRequestJqProgramOptions{}
 				r.Config.ResponseJqProgramOptions.ASCIIOutput = types.BoolPointerValue(resp.Config.ResponseJqProgramOptions.ASCIIOutput)
 				r.Config.ResponseJqProgramOptions.CompactOutput = types.BoolPointerValue(resp.Config.ResponseJqProgramOptions.CompactOutput)
 				r.Config.ResponseJqProgramOptions.JoinOutput = types.BoolPointerValue(resp.Config.ResponseJqProgramOptions.JoinOutput)
@@ -264,6 +292,29 @@ func (r *GatewayPluginJQResourceModel) RefreshFromSharedJQPlugin(resp *shared.JQ
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.InstanceName = types.StringPointerValue(resp.InstanceName)
+		if resp.Ordering == nil {
+			r.Ordering = nil
+		} else {
+			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			if resp.Ordering.After == nil {
+				r.Ordering.After = nil
+			} else {
+				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After.Access = []types.String{}
+				for _, v := range resp.Ordering.After.Access {
+					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				}
+			}
+			if resp.Ordering.Before == nil {
+				r.Ordering.Before = nil
+			} else {
+				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before.Access = []types.String{}
+				for _, v := range resp.Ordering.Before.Access {
+					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				}
+			}
+		}
 		r.Protocols = []types.String{}
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))

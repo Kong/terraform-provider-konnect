@@ -9,20 +9,25 @@ import (
 	"math/big"
 )
 
-func (r *GatewayPluginAIProxyDataSourceModel) RefreshFromSharedAIProxyPlugin(resp *shared.AIProxyPlugin) {
+func (r *GatewayPluginAiProxyDataSourceModel) RefreshFromSharedAiProxyPlugin(resp *shared.AiProxyPlugin) {
 	if resp != nil {
 		if resp.Config == nil {
 			r.Config = nil
 		} else {
-			r.Config = &tfTypes.CreateAIProxyPluginConfig{}
+			r.Config = &tfTypes.CreateAiProxyPluginConfig{}
 			if resp.Config.Auth == nil {
 				r.Config.Auth = nil
 			} else {
-				r.Config.Auth = &tfTypes.CreateAIProxyPluginAuth{}
+				r.Config.Auth = &tfTypes.CreateAiProxyPluginAuth{}
+				r.Config.Auth.AllowOverride = types.BoolPointerValue(resp.Config.Auth.AllowOverride)
+				r.Config.Auth.AwsAccessKeyID = types.StringPointerValue(resp.Config.Auth.AwsAccessKeyID)
+				r.Config.Auth.AwsSecretAccessKey = types.StringPointerValue(resp.Config.Auth.AwsSecretAccessKey)
 				r.Config.Auth.AzureClientID = types.StringPointerValue(resp.Config.Auth.AzureClientID)
 				r.Config.Auth.AzureClientSecret = types.StringPointerValue(resp.Config.Auth.AzureClientSecret)
 				r.Config.Auth.AzureTenantID = types.StringPointerValue(resp.Config.Auth.AzureTenantID)
 				r.Config.Auth.AzureUseManagedIdentity = types.BoolPointerValue(resp.Config.Auth.AzureUseManagedIdentity)
+				r.Config.Auth.GcpServiceAccountJSON = types.StringPointerValue(resp.Config.Auth.GcpServiceAccountJSON)
+				r.Config.Auth.GcpUseServiceAccount = types.BoolPointerValue(resp.Config.Auth.GcpUseServiceAccount)
 				r.Config.Auth.HeaderName = types.StringPointerValue(resp.Config.Auth.HeaderName)
 				r.Config.Auth.HeaderValue = types.StringPointerValue(resp.Config.Auth.HeaderValue)
 				if resp.Config.Auth.ParamLocation != nil {
@@ -36,23 +41,43 @@ func (r *GatewayPluginAIProxyDataSourceModel) RefreshFromSharedAIProxyPlugin(res
 			if resp.Config.Logging == nil {
 				r.Config.Logging = nil
 			} else {
-				r.Config.Logging = &tfTypes.CreateAIProxyPluginLogging{}
+				r.Config.Logging = &tfTypes.CreateAiProxyPluginLogging{}
 				r.Config.Logging.LogPayloads = types.BoolPointerValue(resp.Config.Logging.LogPayloads)
 				r.Config.Logging.LogStatistics = types.BoolPointerValue(resp.Config.Logging.LogStatistics)
 			}
+			r.Config.MaxRequestBodySize = types.Int64PointerValue(resp.Config.MaxRequestBodySize)
 			if resp.Config.Model == nil {
 				r.Config.Model = nil
 			} else {
-				r.Config.Model = &tfTypes.CreateAIProxyPluginModel{}
+				r.Config.Model = &tfTypes.CreateAiProxyPluginModel{}
 				r.Config.Model.Name = types.StringPointerValue(resp.Config.Model.Name)
 				if resp.Config.Model.Options == nil {
 					r.Config.Model.Options = nil
 				} else {
-					r.Config.Model.Options = &tfTypes.CreateAIProxyPluginOptions{}
+					r.Config.Model.Options = &tfTypes.CreateAiProxyPluginOptions{}
 					r.Config.Model.Options.AnthropicVersion = types.StringPointerValue(resp.Config.Model.Options.AnthropicVersion)
 					r.Config.Model.Options.AzureAPIVersion = types.StringPointerValue(resp.Config.Model.Options.AzureAPIVersion)
 					r.Config.Model.Options.AzureDeploymentID = types.StringPointerValue(resp.Config.Model.Options.AzureDeploymentID)
 					r.Config.Model.Options.AzureInstance = types.StringPointerValue(resp.Config.Model.Options.AzureInstance)
+					if resp.Config.Model.Options.Bedrock == nil {
+						r.Config.Model.Options.Bedrock = nil
+					} else {
+						r.Config.Model.Options.Bedrock = &tfTypes.CreateAiProxyPluginBedrock{}
+						r.Config.Model.Options.Bedrock.AwsRegion = types.StringPointerValue(resp.Config.Model.Options.Bedrock.AwsRegion)
+					}
+					if resp.Config.Model.Options.Gemini == nil {
+						r.Config.Model.Options.Gemini = nil
+					} else {
+						r.Config.Model.Options.Gemini = &tfTypes.CreateAiProxyPluginGemini{}
+						r.Config.Model.Options.Gemini.APIEndpoint = types.StringPointerValue(resp.Config.Model.Options.Gemini.APIEndpoint)
+						r.Config.Model.Options.Gemini.LocationID = types.StringPointerValue(resp.Config.Model.Options.Gemini.LocationID)
+						r.Config.Model.Options.Gemini.ProjectID = types.StringPointerValue(resp.Config.Model.Options.Gemini.ProjectID)
+					}
+					if resp.Config.Model.Options.InputCost != nil {
+						r.Config.Model.Options.InputCost = types.NumberValue(big.NewFloat(float64(*resp.Config.Model.Options.InputCost)))
+					} else {
+						r.Config.Model.Options.InputCost = types.NumberNull()
+					}
 					if resp.Config.Model.Options.Llama2Format != nil {
 						r.Config.Model.Options.Llama2Format = types.StringValue(string(*resp.Config.Model.Options.Llama2Format))
 					} else {
@@ -63,6 +88,11 @@ func (r *GatewayPluginAIProxyDataSourceModel) RefreshFromSharedAIProxyPlugin(res
 						r.Config.Model.Options.MistralFormat = types.StringValue(string(*resp.Config.Model.Options.MistralFormat))
 					} else {
 						r.Config.Model.Options.MistralFormat = types.StringNull()
+					}
+					if resp.Config.Model.Options.OutputCost != nil {
+						r.Config.Model.Options.OutputCost = types.NumberValue(big.NewFloat(float64(*resp.Config.Model.Options.OutputCost)))
+					} else {
+						r.Config.Model.Options.OutputCost = types.NumberNull()
 					}
 					if resp.Config.Model.Options.Temperature != nil {
 						r.Config.Model.Options.Temperature = types.NumberValue(big.NewFloat(float64(*resp.Config.Model.Options.Temperature)))
@@ -84,6 +114,7 @@ func (r *GatewayPluginAIProxyDataSourceModel) RefreshFromSharedAIProxyPlugin(res
 					r.Config.Model.Provider = types.StringNull()
 				}
 			}
+			r.Config.ModelNameHeader = types.BoolPointerValue(resp.Config.ModelNameHeader)
 			if resp.Config.ResponseStreaming != nil {
 				r.Config.ResponseStreaming = types.StringValue(string(*resp.Config.ResponseStreaming))
 			} else {
@@ -111,6 +142,29 @@ func (r *GatewayPluginAIProxyDataSourceModel) RefreshFromSharedAIProxyPlugin(res
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.InstanceName = types.StringPointerValue(resp.InstanceName)
+		if resp.Ordering == nil {
+			r.Ordering = nil
+		} else {
+			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			if resp.Ordering.After == nil {
+				r.Ordering.After = nil
+			} else {
+				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After.Access = []types.String{}
+				for _, v := range resp.Ordering.After.Access {
+					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				}
+			}
+			if resp.Ordering.Before == nil {
+				r.Ordering.Before = nil
+			} else {
+				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before.Access = []types.String{}
+				for _, v := range resp.Ordering.Before.Access {
+					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				}
+			}
+		}
 		r.Protocols = []types.String{}
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))

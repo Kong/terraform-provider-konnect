@@ -9,8 +9,8 @@ import (
 	"math/big"
 )
 
-func (r *GatewayPluginCORSResourceModel) ToSharedCreateCORSPlugin() *shared.CreateCORSPlugin {
-	var config *shared.CreateCORSPluginConfig
+func (r *GatewayPluginCorsResourceModel) ToSharedCreateCorsPlugin() *shared.CreateCorsPlugin {
+	var config *shared.CreateCorsPluginConfig
 	if r.Config != nil {
 		credentials := new(bool)
 		if !r.Config.Credentials.IsUnknown() && !r.Config.Credentials.IsNull() {
@@ -32,9 +32,9 @@ func (r *GatewayPluginCORSResourceModel) ToSharedCreateCORSPlugin() *shared.Crea
 		} else {
 			maxAge = nil
 		}
-		var methods []shared.CreateCORSPluginMethods = []shared.CreateCORSPluginMethods{}
+		var methods []shared.CreateCorsPluginMethods = []shared.CreateCorsPluginMethods{}
 		for _, methodsItem := range r.Config.Methods {
-			methods = append(methods, shared.CreateCORSPluginMethods(methodsItem.ValueString()))
+			methods = append(methods, shared.CreateCorsPluginMethods(methodsItem.ValueString()))
 		}
 		var origins []string = []string{}
 		for _, originsItem := range r.Config.Origins {
@@ -52,7 +52,7 @@ func (r *GatewayPluginCORSResourceModel) ToSharedCreateCORSPlugin() *shared.Crea
 		} else {
 			privateNetwork = nil
 		}
-		config = &shared.CreateCORSPluginConfig{
+		config = &shared.CreateCorsPluginConfig{
 			Credentials:       credentials,
 			ExposedHeaders:    exposedHeaders,
 			Headers:           headers,
@@ -75,15 +75,42 @@ func (r *GatewayPluginCORSResourceModel) ToSharedCreateCORSPlugin() *shared.Crea
 	} else {
 		instanceName = nil
 	}
-	var protocols []shared.CreateCORSPluginProtocols = []shared.CreateCORSPluginProtocols{}
+	var ordering *shared.CreateCorsPluginOrdering
+	if r.Ordering != nil {
+		var after *shared.CreateCorsPluginAfter
+		if r.Ordering.After != nil {
+			var access []string = []string{}
+			for _, accessItem := range r.Ordering.After.Access {
+				access = append(access, accessItem.ValueString())
+			}
+			after = &shared.CreateCorsPluginAfter{
+				Access: access,
+			}
+		}
+		var before *shared.CreateCorsPluginBefore
+		if r.Ordering.Before != nil {
+			var access1 []string = []string{}
+			for _, accessItem1 := range r.Ordering.Before.Access {
+				access1 = append(access1, accessItem1.ValueString())
+			}
+			before = &shared.CreateCorsPluginBefore{
+				Access: access1,
+			}
+		}
+		ordering = &shared.CreateCorsPluginOrdering{
+			After:  after,
+			Before: before,
+		}
+	}
+	var protocols []shared.CreateCorsPluginProtocols = []shared.CreateCorsPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
-		protocols = append(protocols, shared.CreateCORSPluginProtocols(protocolsItem.ValueString()))
+		protocols = append(protocols, shared.CreateCorsPluginProtocols(protocolsItem.ValueString()))
 	}
 	var tags []string = []string{}
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	var consumer *shared.CreateCORSPluginConsumer
+	var consumer *shared.CreateCorsPluginConsumer
 	if r.Consumer != nil {
 		id := new(string)
 		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
@@ -91,11 +118,11 @@ func (r *GatewayPluginCORSResourceModel) ToSharedCreateCORSPlugin() *shared.Crea
 		} else {
 			id = nil
 		}
-		consumer = &shared.CreateCORSPluginConsumer{
+		consumer = &shared.CreateCorsPluginConsumer{
 			ID: id,
 		}
 	}
-	var consumerGroup *shared.CreateCORSPluginConsumerGroup
+	var consumerGroup *shared.CreateCorsPluginConsumerGroup
 	if r.ConsumerGroup != nil {
 		id1 := new(string)
 		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
@@ -103,11 +130,11 @@ func (r *GatewayPluginCORSResourceModel) ToSharedCreateCORSPlugin() *shared.Crea
 		} else {
 			id1 = nil
 		}
-		consumerGroup = &shared.CreateCORSPluginConsumerGroup{
+		consumerGroup = &shared.CreateCorsPluginConsumerGroup{
 			ID: id1,
 		}
 	}
-	var route *shared.CreateCORSPluginRoute
+	var route *shared.CreateCorsPluginRoute
 	if r.Route != nil {
 		id2 := new(string)
 		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
@@ -115,11 +142,11 @@ func (r *GatewayPluginCORSResourceModel) ToSharedCreateCORSPlugin() *shared.Crea
 		} else {
 			id2 = nil
 		}
-		route = &shared.CreateCORSPluginRoute{
+		route = &shared.CreateCorsPluginRoute{
 			ID: id2,
 		}
 	}
-	var service *shared.CreateCORSPluginService
+	var service *shared.CreateCorsPluginService
 	if r.Service != nil {
 		id3 := new(string)
 		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
@@ -127,14 +154,15 @@ func (r *GatewayPluginCORSResourceModel) ToSharedCreateCORSPlugin() *shared.Crea
 		} else {
 			id3 = nil
 		}
-		service = &shared.CreateCORSPluginService{
+		service = &shared.CreateCorsPluginService{
 			ID: id3,
 		}
 	}
-	out := shared.CreateCORSPlugin{
+	out := shared.CreateCorsPlugin{
 		Config:        config,
 		Enabled:       enabled,
 		InstanceName:  instanceName,
+		Ordering:      ordering,
 		Protocols:     protocols,
 		Tags:          tags,
 		Consumer:      consumer,
@@ -145,12 +173,12 @@ func (r *GatewayPluginCORSResourceModel) ToSharedCreateCORSPlugin() *shared.Crea
 	return &out
 }
 
-func (r *GatewayPluginCORSResourceModel) RefreshFromSharedCORSPlugin(resp *shared.CORSPlugin) {
+func (r *GatewayPluginCorsResourceModel) RefreshFromSharedCorsPlugin(resp *shared.CorsPlugin) {
 	if resp != nil {
 		if resp.Config == nil {
 			r.Config = nil
 		} else {
-			r.Config = &tfTypes.CreateCORSPluginConfig{}
+			r.Config = &tfTypes.CreateCorsPluginConfig{}
 			r.Config.Credentials = types.BoolPointerValue(resp.Config.Credentials)
 			r.Config.ExposedHeaders = []types.String{}
 			for _, v := range resp.Config.ExposedHeaders {
@@ -192,6 +220,29 @@ func (r *GatewayPluginCORSResourceModel) RefreshFromSharedCORSPlugin(resp *share
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.InstanceName = types.StringPointerValue(resp.InstanceName)
+		if resp.Ordering == nil {
+			r.Ordering = nil
+		} else {
+			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			if resp.Ordering.After == nil {
+				r.Ordering.After = nil
+			} else {
+				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After.Access = []types.String{}
+				for _, v := range resp.Ordering.After.Access {
+					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				}
+			}
+			if resp.Ordering.Before == nil {
+				r.Ordering.Before = nil
+			} else {
+				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before.Access = []types.String{}
+				for _, v := range resp.Ordering.Before.Access {
+					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				}
+			}
+		}
 		r.Protocols = []types.String{}
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))

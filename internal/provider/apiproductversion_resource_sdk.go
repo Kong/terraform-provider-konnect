@@ -19,6 +19,13 @@ func (r *APIProductVersionResourceModel) ToSharedCreateAPIProductVersionDTO() *s
 	} else {
 		deprecated = nil
 	}
+	labels := make(map[string]string)
+	for labelsKey, labelsValue := range r.Labels {
+		var labelsInst string
+		labelsInst = labelsValue.ValueString()
+
+		labels[labelsKey] = labelsInst
+	}
 	var gatewayService *shared.GatewayServicePayload
 	if r.GatewayService != nil {
 		var id string
@@ -35,6 +42,7 @@ func (r *APIProductVersionResourceModel) ToSharedCreateAPIProductVersionDTO() *s
 	out := shared.CreateAPIProductVersionDTO{
 		Name:           name,
 		Deprecated:     deprecated,
+		Labels:         labels,
 		GatewayService: gatewayService,
 	}
 	return &out
@@ -53,6 +61,12 @@ func (r *APIProductVersionResourceModel) RefreshFromSharedAPIProductVersion(resp
 			r.GatewayService.RuntimeGroupID = types.StringPointerValue(resp.GatewayService.RuntimeGroupID)
 		}
 		r.ID = types.StringValue(resp.ID)
+		if len(resp.Labels) > 0 {
+			r.Labels = make(map[string]types.String)
+			for key, value := range resp.Labels {
+				r.Labels[key] = types.StringValue(value)
+			}
+		}
 		r.Name = types.StringValue(resp.Name)
 		r.Portals = []tfTypes.APIProductVersionPortal{}
 		if len(r.Portals) > len(resp.Portals) {
@@ -122,10 +136,18 @@ func (r *APIProductVersionResourceModel) ToSharedUpdateAPIProductVersionDTO() *s
 			ControlPlaneID: controlPlaneID,
 		}
 	}
+	labels := make(map[string]string)
+	for labelsKey, labelsValue := range r.Labels {
+		var labelsInst string
+		labelsInst = labelsValue.ValueString()
+
+		labels[labelsKey] = labelsInst
+	}
 	out := shared.UpdateAPIProductVersionDTO{
 		Name:           name,
 		Deprecated:     deprecated,
 		GatewayService: gatewayService,
+		Labels:         labels,
 	}
 	return &out
 }

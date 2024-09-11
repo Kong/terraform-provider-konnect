@@ -12,6 +12,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -21,21 +23,21 @@ import (
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
-var _ resource.Resource = &GatewayPluginAWSLambdaResource{}
-var _ resource.ResourceWithImportState = &GatewayPluginAWSLambdaResource{}
+var _ resource.Resource = &GatewayPluginAwsLambdaResource{}
+var _ resource.ResourceWithImportState = &GatewayPluginAwsLambdaResource{}
 
-func NewGatewayPluginAWSLambdaResource() resource.Resource {
-	return &GatewayPluginAWSLambdaResource{}
+func NewGatewayPluginAwsLambdaResource() resource.Resource {
+	return &GatewayPluginAwsLambdaResource{}
 }
 
-// GatewayPluginAWSLambdaResource defines the resource implementation.
-type GatewayPluginAWSLambdaResource struct {
+// GatewayPluginAwsLambdaResource defines the resource implementation.
+type GatewayPluginAwsLambdaResource struct {
 	client *sdk.Konnect
 }
 
-// GatewayPluginAWSLambdaResourceModel describes the resource data model.
-type GatewayPluginAWSLambdaResourceModel struct {
-	Config         *tfTypes.CreateAWSLambdaPluginConfig `tfsdk:"config"`
+// GatewayPluginAwsLambdaResourceModel describes the resource data model.
+type GatewayPluginAwsLambdaResourceModel struct {
+	Config         *tfTypes.CreateAwsLambdaPluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.ACLConsumer                 `tfsdk:"consumer"`
 	ConsumerGroup  *tfTypes.ACLConsumer                 `tfsdk:"consumer_group"`
 	ControlPlaneID types.String                         `tfsdk:"control_plane_id"`
@@ -43,6 +45,7 @@ type GatewayPluginAWSLambdaResourceModel struct {
 	Enabled        types.Bool                           `tfsdk:"enabled"`
 	ID             types.String                         `tfsdk:"id"`
 	InstanceName   types.String                         `tfsdk:"instance_name"`
+	Ordering       *tfTypes.CreateACLPluginOrdering     `tfsdk:"ordering"`
 	Protocols      []types.String                       `tfsdk:"protocols"`
 	Route          *tfTypes.ACLConsumer                 `tfsdk:"route"`
 	Service        *tfTypes.ACLConsumer                 `tfsdk:"service"`
@@ -50,13 +53,13 @@ type GatewayPluginAWSLambdaResourceModel struct {
 	UpdatedAt      types.Int64                          `tfsdk:"updated_at"`
 }
 
-func (r *GatewayPluginAWSLambdaResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+func (r *GatewayPluginAwsLambdaResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_gateway_plugin_aws_lambda"
 }
 
-func (r *GatewayPluginAWSLambdaResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *GatewayPluginAwsLambdaResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "GatewayPluginAWSLambda Resource",
+		MarkdownDescription: "GatewayPluginAwsLambda Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
@@ -98,6 +101,11 @@ func (r *GatewayPluginAWSLambdaResource) Schema(ctx context.Context, req resourc
 						Optional:    true,
 						Description: `The AWS secret credential to be used when invoking the function. `,
 					},
+					"aws_sts_endpoint_url": schema.StringAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `A string representing a URL, such as https://example.com/path/to/resource?q=search.`,
+					},
 					"awsgateway_compatible": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
@@ -111,6 +119,17 @@ func (r *GatewayPluginAWSLambdaResource) Schema(ctx context.Context, req resourc
 					"disable_https": schema.BoolAttribute{
 						Computed: true,
 						Optional: true,
+					},
+					"empty_arrays_mode": schema.StringAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `An optional value that defines whether Kong should send empty arrays (returned by Lambda function) as ` + "`" + `[]` + "`" + ` arrays or ` + "`" + `{}` + "`" + ` objects in JSON responses. The value ` + "`" + `legacy` + "`" + ` means Kong will send empty arrays as ` + "`" + `{}` + "`" + ` objects in response. must be one of ["legacy", "correct"]`,
+						Validators: []validator.String{
+							stringvalidator.OneOf(
+								"legacy",
+								"correct",
+							),
+						},
 					},
 					"forward_request_body": schema.BoolAttribute{
 						Computed:    true,
@@ -235,8 +254,11 @@ func (r *GatewayPluginAWSLambdaResource) Schema(ctx context.Context, req resourc
 				},
 			},
 			"control_plane_id": schema.StringAttribute{
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
 				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager.`,
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed. `,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
@@ -253,6 +275,34 @@ func (r *GatewayPluginAWSLambdaResource) Schema(ctx context.Context, req resourc
 			"instance_name": schema.StringAttribute{
 				Computed: true,
 				Optional: true,
+			},
+			"ordering": schema.SingleNestedAttribute{
+				Computed: true,
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"after": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+					"before": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"access": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								ElementType: types.StringType,
+							},
+						},
+					},
+				},
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,
@@ -296,7 +346,7 @@ func (r *GatewayPluginAWSLambdaResource) Schema(ctx context.Context, req resourc
 	}
 }
 
-func (r *GatewayPluginAWSLambdaResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *GatewayPluginAwsLambdaResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	// Prevent panic if the provider has not been configured.
 	if req.ProviderData == nil {
 		return
@@ -316,8 +366,8 @@ func (r *GatewayPluginAWSLambdaResource) Configure(ctx context.Context, req reso
 	r.client = client
 }
 
-func (r *GatewayPluginAWSLambdaResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data *GatewayPluginAWSLambdaResourceModel
+func (r *GatewayPluginAwsLambdaResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var data *GatewayPluginAwsLambdaResourceModel
 	var plan types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -337,10 +387,10 @@ func (r *GatewayPluginAWSLambdaResource) Create(ctx context.Context, req resourc
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createAWSLambdaPlugin := data.ToSharedCreateAWSLambdaPlugin()
+	createAwsLambdaPlugin := data.ToSharedCreateAwsLambdaPlugin()
 	request := operations.CreateAwslambdaPluginRequest{
 		ControlPlaneID:        controlPlaneID,
-		CreateAWSLambdaPlugin: createAWSLambdaPlugin,
+		CreateAwsLambdaPlugin: createAwsLambdaPlugin,
 	}
 	res, err := r.client.Plugins.CreateAwslambdaPlugin(ctx, request)
 	if err != nil {
@@ -358,19 +408,19 @@ func (r *GatewayPluginAWSLambdaResource) Create(ctx context.Context, req resourc
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.AWSLambdaPlugin != nil) {
+	if !(res.AwsLambdaPlugin != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAWSLambdaPlugin(res.AWSLambdaPlugin)
+	data.RefreshFromSharedAwsLambdaPlugin(res.AwsLambdaPlugin)
 	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *GatewayPluginAWSLambdaResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data *GatewayPluginAWSLambdaResourceModel
+func (r *GatewayPluginAwsLambdaResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var data *GatewayPluginAwsLambdaResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -417,18 +467,18 @@ func (r *GatewayPluginAWSLambdaResource) Read(ctx context.Context, req resource.
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.AWSLambdaPlugin != nil) {
+	if !(res.AwsLambdaPlugin != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAWSLambdaPlugin(res.AWSLambdaPlugin)
+	data.RefreshFromSharedAwsLambdaPlugin(res.AwsLambdaPlugin)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *GatewayPluginAWSLambdaResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data *GatewayPluginAWSLambdaResourceModel
+func (r *GatewayPluginAwsLambdaResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var data *GatewayPluginAwsLambdaResourceModel
 	var plan types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -447,11 +497,11 @@ func (r *GatewayPluginAWSLambdaResource) Update(ctx context.Context, req resourc
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createAWSLambdaPlugin := data.ToSharedCreateAWSLambdaPlugin()
+	createAwsLambdaPlugin := data.ToSharedCreateAwsLambdaPlugin()
 	request := operations.UpdateAwslambdaPluginRequest{
 		PluginID:              pluginID,
 		ControlPlaneID:        controlPlaneID,
-		CreateAWSLambdaPlugin: createAWSLambdaPlugin,
+		CreateAwsLambdaPlugin: createAwsLambdaPlugin,
 	}
 	res, err := r.client.Plugins.UpdateAwslambdaPlugin(ctx, request)
 	if err != nil {
@@ -469,19 +519,19 @@ func (r *GatewayPluginAWSLambdaResource) Update(ctx context.Context, req resourc
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.AWSLambdaPlugin != nil) {
+	if !(res.AwsLambdaPlugin != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAWSLambdaPlugin(res.AWSLambdaPlugin)
+	data.RefreshFromSharedAwsLambdaPlugin(res.AwsLambdaPlugin)
 	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *GatewayPluginAWSLambdaResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var data *GatewayPluginAWSLambdaResourceModel
+func (r *GatewayPluginAwsLambdaResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var data *GatewayPluginAwsLambdaResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -527,7 +577,7 @@ func (r *GatewayPluginAWSLambdaResource) Delete(ctx context.Context, req resourc
 
 }
 
-func (r *GatewayPluginAWSLambdaResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *GatewayPluginAwsLambdaResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
 	dec.DisallowUnknownFields()
 	var data struct {

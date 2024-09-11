@@ -38,19 +38,19 @@ func (e *ConsumerIdentifierDefault) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// ConsumerIdentifier - Authenticated user detail.
-type ConsumerIdentifier string
+// StatsdPluginConsumerIdentifier - Authenticated user detail.
+type StatsdPluginConsumerIdentifier string
 
 const (
-	ConsumerIdentifierConsumerID ConsumerIdentifier = "consumer_id"
-	ConsumerIdentifierCustomID   ConsumerIdentifier = "custom_id"
-	ConsumerIdentifierUsername   ConsumerIdentifier = "username"
+	StatsdPluginConsumerIdentifierConsumerID StatsdPluginConsumerIdentifier = "consumer_id"
+	StatsdPluginConsumerIdentifierCustomID   StatsdPluginConsumerIdentifier = "custom_id"
+	StatsdPluginConsumerIdentifierUsername   StatsdPluginConsumerIdentifier = "username"
 )
 
-func (e ConsumerIdentifier) ToPointer() *ConsumerIdentifier {
+func (e StatsdPluginConsumerIdentifier) ToPointer() *StatsdPluginConsumerIdentifier {
 	return &e
 }
-func (e *ConsumerIdentifier) UnmarshalJSON(data []byte) error {
+func (e *StatsdPluginConsumerIdentifier) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -61,38 +61,38 @@ func (e *ConsumerIdentifier) UnmarshalJSON(data []byte) error {
 	case "custom_id":
 		fallthrough
 	case "username":
-		*e = ConsumerIdentifier(v)
+		*e = StatsdPluginConsumerIdentifier(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for ConsumerIdentifier: %v", v)
+		return fmt.Errorf("invalid value for StatsdPluginConsumerIdentifier: %v", v)
 	}
 }
 
-// Name - StatsD metric’s name.
-type Name string
+// StatsdPluginName - StatsD metric’s name.
+type StatsdPluginName string
 
 const (
-	NameKongLatency                Name = "kong_latency"
-	NameLatency                    Name = "latency"
-	NameRequestCount               Name = "request_count"
-	NameRequestPerUser             Name = "request_per_user"
-	NameRequestSize                Name = "request_size"
-	NameResponseSize               Name = "response_size"
-	NameStatusCount                Name = "status_count"
-	NameStatusCountPerUser         Name = "status_count_per_user"
-	NameUniqueUsers                Name = "unique_users"
-	NameUpstreamLatency            Name = "upstream_latency"
-	NameStatusCountPerWorkspace    Name = "status_count_per_workspace"
-	NameStatusCountPerUserPerRoute Name = "status_count_per_user_per_route"
-	NameShdictUsage                Name = "shdict_usage"
-	NameCacheDatastoreHitsTotal    Name = "cache_datastore_hits_total"
-	NameCacheDatastoreMissesTotal  Name = "cache_datastore_misses_total"
+	StatsdPluginNameKongLatency                StatsdPluginName = "kong_latency"
+	StatsdPluginNameLatency                    StatsdPluginName = "latency"
+	StatsdPluginNameRequestCount               StatsdPluginName = "request_count"
+	StatsdPluginNameRequestPerUser             StatsdPluginName = "request_per_user"
+	StatsdPluginNameRequestSize                StatsdPluginName = "request_size"
+	StatsdPluginNameResponseSize               StatsdPluginName = "response_size"
+	StatsdPluginNameStatusCount                StatsdPluginName = "status_count"
+	StatsdPluginNameStatusCountPerUser         StatsdPluginName = "status_count_per_user"
+	StatsdPluginNameUniqueUsers                StatsdPluginName = "unique_users"
+	StatsdPluginNameUpstreamLatency            StatsdPluginName = "upstream_latency"
+	StatsdPluginNameStatusCountPerWorkspace    StatsdPluginName = "status_count_per_workspace"
+	StatsdPluginNameStatusCountPerUserPerRoute StatsdPluginName = "status_count_per_user_per_route"
+	StatsdPluginNameShdictUsage                StatsdPluginName = "shdict_usage"
+	StatsdPluginNameCacheDatastoreHitsTotal    StatsdPluginName = "cache_datastore_hits_total"
+	StatsdPluginNameCacheDatastoreMissesTotal  StatsdPluginName = "cache_datastore_misses_total"
 )
 
-func (e Name) ToPointer() *Name {
+func (e StatsdPluginName) ToPointer() *StatsdPluginName {
 	return &e
 }
-func (e *Name) UnmarshalJSON(data []byte) error {
+func (e *StatsdPluginName) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -127,10 +127,10 @@ func (e *Name) UnmarshalJSON(data []byte) error {
 	case "cache_datastore_hits_total":
 		fallthrough
 	case "cache_datastore_misses_total":
-		*e = Name(v)
+		*e = StatsdPluginName(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for Name: %v", v)
+		return fmt.Errorf("invalid value for StatsdPluginName: %v", v)
 	}
 }
 
@@ -167,22 +167,22 @@ func (e *ServiceIdentifier) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// StatType - Determines what sort of event a metric represents.
-type StatType string
+// StatsdPluginStatType - Determines what sort of event a metric represents.
+type StatsdPluginStatType string
 
 const (
-	StatTypeCounter   StatType = "counter"
-	StatTypeGauge     StatType = "gauge"
-	StatTypeHistogram StatType = "histogram"
-	StatTypeMeter     StatType = "meter"
-	StatTypeSet       StatType = "set"
-	StatTypeTimer     StatType = "timer"
+	StatsdPluginStatTypeCounter   StatsdPluginStatType = "counter"
+	StatsdPluginStatTypeGauge     StatsdPluginStatType = "gauge"
+	StatsdPluginStatTypeHistogram StatsdPluginStatType = "histogram"
+	StatsdPluginStatTypeMeter     StatsdPluginStatType = "meter"
+	StatsdPluginStatTypeSet       StatsdPluginStatType = "set"
+	StatsdPluginStatTypeTimer     StatsdPluginStatType = "timer"
 )
 
-func (e StatType) ToPointer() *StatType {
+func (e StatsdPluginStatType) ToPointer() *StatsdPluginStatType {
 	return &e
 }
-func (e *StatType) UnmarshalJSON(data []byte) error {
+func (e *StatsdPluginStatType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -199,10 +199,10 @@ func (e *StatType) UnmarshalJSON(data []byte) error {
 	case "set":
 		fallthrough
 	case "timer":
-		*e = StatType(v)
+		*e = StatsdPluginStatType(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for StatType: %v", v)
+		return fmt.Errorf("invalid value for StatsdPluginStatType: %v", v)
 	}
 }
 
@@ -233,64 +233,93 @@ func (e *WorkspaceIdentifier) UnmarshalJSON(data []byte) error {
 	}
 }
 
-type Metrics struct {
+type StatsdPluginMetrics struct {
 	// Authenticated user detail.
-	ConsumerIdentifier *ConsumerIdentifier `json:"consumer_identifier,omitempty"`
+	ConsumerIdentifier *StatsdPluginConsumerIdentifier `json:"consumer_identifier,omitempty"`
 	// StatsD metric’s name.
-	Name Name `json:"name"`
+	Name StatsdPluginName `json:"name"`
 	// Sampling rate
 	SampleRate *float64 `json:"sample_rate,omitempty"`
 	// Service detail.
 	ServiceIdentifier *ServiceIdentifier `json:"service_identifier,omitempty"`
 	// Determines what sort of event a metric represents.
-	StatType StatType `json:"stat_type"`
+	StatType StatsdPluginStatType `json:"stat_type"`
 	// Workspace detail.
 	WorkspaceIdentifier *WorkspaceIdentifier `json:"workspace_identifier,omitempty"`
 }
 
-func (o *Metrics) GetConsumerIdentifier() *ConsumerIdentifier {
+func (o *StatsdPluginMetrics) GetConsumerIdentifier() *StatsdPluginConsumerIdentifier {
 	if o == nil {
 		return nil
 	}
 	return o.ConsumerIdentifier
 }
 
-func (o *Metrics) GetName() Name {
+func (o *StatsdPluginMetrics) GetName() StatsdPluginName {
 	if o == nil {
-		return Name("")
+		return StatsdPluginName("")
 	}
 	return o.Name
 }
 
-func (o *Metrics) GetSampleRate() *float64 {
+func (o *StatsdPluginMetrics) GetSampleRate() *float64 {
 	if o == nil {
 		return nil
 	}
 	return o.SampleRate
 }
 
-func (o *Metrics) GetServiceIdentifier() *ServiceIdentifier {
+func (o *StatsdPluginMetrics) GetServiceIdentifier() *ServiceIdentifier {
 	if o == nil {
 		return nil
 	}
 	return o.ServiceIdentifier
 }
 
-func (o *Metrics) GetStatType() StatType {
+func (o *StatsdPluginMetrics) GetStatType() StatsdPluginStatType {
 	if o == nil {
-		return StatType("")
+		return StatsdPluginStatType("")
 	}
 	return o.StatType
 }
 
-func (o *Metrics) GetWorkspaceIdentifier() *WorkspaceIdentifier {
+func (o *StatsdPluginMetrics) GetWorkspaceIdentifier() *WorkspaceIdentifier {
 	if o == nil {
 		return nil
 	}
 	return o.WorkspaceIdentifier
 }
 
+// StatsdPluginConcurrencyLimit - The number of of queue delivery timers. -1 indicates unlimited.
+type StatsdPluginConcurrencyLimit int64
+
+const (
+	StatsdPluginConcurrencyLimitMinus1 StatsdPluginConcurrencyLimit = -1
+	StatsdPluginConcurrencyLimitOne    StatsdPluginConcurrencyLimit = 1
+)
+
+func (e StatsdPluginConcurrencyLimit) ToPointer() *StatsdPluginConcurrencyLimit {
+	return &e
+}
+func (e *StatsdPluginConcurrencyLimit) UnmarshalJSON(data []byte) error {
+	var v int64
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case -1:
+		fallthrough
+	case 1:
+		*e = StatsdPluginConcurrencyLimit(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for StatsdPluginConcurrencyLimit: %v", v)
+	}
+}
+
 type StatsdPluginQueue struct {
+	// The number of of queue delivery timers. -1 indicates unlimited.
+	ConcurrencyLimit *StatsdPluginConcurrencyLimit `json:"concurrency_limit,omitempty"`
 	// Time in seconds before the initial retry is made for a failing batch.
 	InitialRetryDelay *float64 `json:"initial_retry_delay,omitempty"`
 	// Maximum number of entries that can be processed at a time.
@@ -305,6 +334,13 @@ type StatsdPluginQueue struct {
 	MaxRetryDelay *float64 `json:"max_retry_delay,omitempty"`
 	// Time in seconds before the queue gives up calling a failed handler for a batch.
 	MaxRetryTime *float64 `json:"max_retry_time,omitempty"`
+}
+
+func (o *StatsdPluginQueue) GetConcurrencyLimit() *StatsdPluginConcurrencyLimit {
+	if o == nil {
+		return nil
+	}
+	return o.ConcurrencyLimit
 }
 
 func (o *StatsdPluginQueue) GetInitialRetryDelay() *float64 {
@@ -455,7 +491,7 @@ type StatsdPluginConfig struct {
 	Host             *string `json:"host,omitempty"`
 	HostnameInPrefix *bool   `json:"hostname_in_prefix,omitempty"`
 	// List of metrics to be logged.
-	Metrics []Metrics `json:"metrics,omitempty"`
+	Metrics []StatsdPluginMetrics `json:"metrics,omitempty"`
 	// The port of StatsD server to send data to.
 	Port *int64 `json:"port,omitempty"`
 	// String to prefix to each metric's name.
@@ -505,7 +541,7 @@ func (o *StatsdPluginConfig) GetHostnameInPrefix() *bool {
 	return o.HostnameInPrefix
 }
 
-func (o *StatsdPluginConfig) GetMetrics() []Metrics {
+func (o *StatsdPluginConfig) GetMetrics() []StatsdPluginMetrics {
 	if o == nil {
 		return nil
 	}
@@ -580,6 +616,47 @@ func (o *StatsdPluginConfig) GetWorkspaceIdentifierDefault() *WorkspaceIdentifie
 		return nil
 	}
 	return o.WorkspaceIdentifierDefault
+}
+
+type StatsdPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *StatsdPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type StatsdPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *StatsdPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type StatsdPluginOrdering struct {
+	After  *StatsdPluginAfter  `json:"after,omitempty"`
+	Before *StatsdPluginBefore `json:"before,omitempty"`
+}
+
+func (o *StatsdPluginOrdering) GetAfter() *StatsdPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *StatsdPluginOrdering) GetBefore() *StatsdPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
 }
 
 type StatsdPluginProtocols string
@@ -684,10 +761,11 @@ type StatsdPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool   `json:"enabled,omitempty"`
-	ID           *string `json:"id,omitempty"`
-	InstanceName *string `json:"instance_name,omitempty"`
-	name         *string `const:"statsd" json:"name,omitempty"`
+	Enabled      *bool                 `json:"enabled,omitempty"`
+	ID           *string               `json:"id,omitempty"`
+	InstanceName *string               `json:"instance_name,omitempty"`
+	name         *string               `const:"statsd" json:"name,omitempty"`
+	Ordering     *StatsdPluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []StatsdPluginProtocols `json:"protocols,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
@@ -751,6 +829,13 @@ func (o *StatsdPlugin) GetInstanceName() *string {
 
 func (o *StatsdPlugin) GetName() *string {
 	return types.String("statsd")
+}
+
+func (o *StatsdPlugin) GetOrdering() *StatsdPluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
 }
 
 func (o *StatsdPlugin) GetProtocols() []StatsdPluginProtocols {

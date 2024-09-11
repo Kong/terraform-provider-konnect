@@ -29,28 +29,28 @@ type GatewayRouteDataSource struct {
 
 // GatewayRouteDataSourceModel describes the data model.
 type GatewayRouteDataSourceModel struct {
-	ControlPlaneID          types.String                       `tfsdk:"control_plane_id"`
-	CreatedAt               types.Int64                        `tfsdk:"created_at"`
-	Destinations            []tfTypes.SessionRedisClusterNodes `tfsdk:"destinations"`
-	Headers                 map[string]types.String            `tfsdk:"headers"`
-	Hosts                   []types.String                     `tfsdk:"hosts"`
-	HTTPSRedirectStatusCode types.Int64                        `tfsdk:"https_redirect_status_code"`
-	ID                      types.String                       `tfsdk:"id"`
-	Methods                 []types.String                     `tfsdk:"methods"`
-	Name                    types.String                       `tfsdk:"name"`
-	PathHandling            types.String                       `tfsdk:"path_handling"`
-	Paths                   []types.String                     `tfsdk:"paths"`
-	PreserveHost            types.Bool                         `tfsdk:"preserve_host"`
-	Protocols               []types.String                     `tfsdk:"protocols"`
-	RegexPriority           types.Int64                        `tfsdk:"regex_priority"`
-	RequestBuffering        types.Bool                         `tfsdk:"request_buffering"`
-	ResponseBuffering       types.Bool                         `tfsdk:"response_buffering"`
-	Service                 *tfTypes.ACLConsumer               `tfsdk:"service"`
-	Snis                    []types.String                     `tfsdk:"snis"`
-	Sources                 []tfTypes.SessionRedisClusterNodes `tfsdk:"sources"`
-	StripPath               types.Bool                         `tfsdk:"strip_path"`
-	Tags                    []types.String                     `tfsdk:"tags"`
-	UpdatedAt               types.Int64                        `tfsdk:"updated_at"`
+	ControlPlaneID          types.String            `tfsdk:"control_plane_id"`
+	CreatedAt               types.Int64             `tfsdk:"created_at"`
+	Destinations            []tfTypes.ClusterNodes  `tfsdk:"destinations"`
+	Headers                 map[string]types.String `tfsdk:"headers"`
+	Hosts                   []types.String          `tfsdk:"hosts"`
+	HTTPSRedirectStatusCode types.Int64             `tfsdk:"https_redirect_status_code"`
+	ID                      types.String            `tfsdk:"id"`
+	Methods                 []types.String          `tfsdk:"methods"`
+	Name                    types.String            `tfsdk:"name"`
+	PathHandling            types.String            `tfsdk:"path_handling"`
+	Paths                   []types.String          `tfsdk:"paths"`
+	PreserveHost            types.Bool              `tfsdk:"preserve_host"`
+	Protocols               []types.String          `tfsdk:"protocols"`
+	RegexPriority           types.Int64             `tfsdk:"regex_priority"`
+	RequestBuffering        types.Bool              `tfsdk:"request_buffering"`
+	ResponseBuffering       types.Bool              `tfsdk:"response_buffering"`
+	Service                 *tfTypes.ACLConsumer    `tfsdk:"service"`
+	Snis                    []types.String          `tfsdk:"snis"`
+	Sources                 []tfTypes.ClusterNodes  `tfsdk:"sources"`
+	StripPath               types.Bool              `tfsdk:"strip_path"`
+	Tags                    []types.String          `tfsdk:"tags"`
+	UpdatedAt               types.Int64             `tfsdk:"updated_at"`
 }
 
 // Metadata returns the data source type name.
@@ -66,7 +66,7 @@ func (r *GatewayRouteDataSource) Schema(ctx context.Context, req datasource.Sche
 		Attributes: map[string]schema.Attribute{
 			"control_plane_id": schema.StringAttribute{
 				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager.`,
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed. `,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,

@@ -6,6 +6,6 @@ type CreateResponseTransformerPluginConfig struct {
 	Add     *CreateResponseTransformerPluginAdd    `tfsdk:"add"`
 	Append  *CreateResponseTransformerPluginAdd    `tfsdk:"append"`
 	Remove  *CreateResponseTransformerPluginRemove `tfsdk:"remove"`
-	Rename  *CreateResponseTransformerPluginRename `tfsdk:"rename"`
+	Rename  *CreateResponseTransformerPluginRemove `tfsdk:"rename"`
 	Replace *CreateResponseTransformerPluginAdd    `tfsdk:"replace"`
 }

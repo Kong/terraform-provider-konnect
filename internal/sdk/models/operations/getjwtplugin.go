@@ -35,8 +35,8 @@ type GetJwtPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// JWT plugin
-	JWTPlugin *shared.JWTPlugin
+	// Jwt plugin
+	JwtPlugin *shared.JwtPlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
@@ -62,11 +62,11 @@ func (o *GetJwtPluginResponse) GetRawResponse() *http.Response {
 	return o.RawResponse
 }
 
-func (o *GetJwtPluginResponse) GetJWTPlugin() *shared.JWTPlugin {
+func (o *GetJwtPluginResponse) GetJwtPlugin() *shared.JwtPlugin {
 	if o == nil {
 		return nil
 	}
-	return o.JWTPlugin
+	return o.JwtPlugin
 }
 
 func (o *GetJwtPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
