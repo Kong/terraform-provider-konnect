@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.0
+> Released on 2024/09/11
+
+### Features
+
+* Released `terraform-provider-konnect` as GA 🎉
+
 ## 0.7.0
 > Released on 2024/09/11
 

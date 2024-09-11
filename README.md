@@ -1,7 +1,5 @@
 # terraform-provider-konnect
 
-> This provider is available as a [BETA](https://docs.konghq.com/konnect/availability-stages/#beta) release.
-
 This repository contains a Terraform provider for [Kong Konnect](https://konghq.com/products/kong-konnect/register?utm_source=github&utm_campaign=terraform&utm_content=terraform-provider-konnect).
 
 ## Capabilities
@@ -29,36 +27,7 @@ This provider can manage the following resources:
 - Service
 - Route
 - Plugins
-  - ACL
-  - AI Prompt Decorator
-  - AI Prompt Guard
-  - AI Prompt Template
-  - AI Proxy
-  - AWS Lambda
-  - Basic Auth
-  - Correlation ID
-  - CORS
-  - File Log
-  - IP Restriction
-  - JQ
-  - JWT
-  - JWT Signer
-  - KeyAuth
-  - OAuth2
-  - OpenID Connect
-  - OpenTelemetry
-  - Pre-function
-  - Prometheus
-  - Proxy Cache
-  - Rate Limiting
-  - Rate Limiting Advanced
-  - Request Termination
-  - Request Transformer
-  - Request Transformer Advanced
-  - Response Transformer
-  - Response Transformer Advanced
-  - SAML
-  - Exit Transformer
+- Custom Plugins
 - Consumers
 - Consumer Groups
   - Consumer Group Members
@@ -136,42 +105,11 @@ e.g. `KONNECT_TOKEN=kpat_YOUR_PAT terraform apply`
 
 ## Examples
 
-The examples directory contains sample usage for all supported resources. For a full list of supported parameters for each resource, see the [Konnect API documentation](https://docs.konghq.com/api/).
+The examples directory contains sample usage for all supported resources. For a full list of supported parameters for each resource, see the [provider documentation](https://registry.terraform.io/providers/Kong/konnect/latest/docs).
 
-The examples will reference resources that are expected to exist in your manifests e.g. `konnect_gateway_control_plane.tfdemo.id`. Update the references to match the names that you have given your resources.
-
-### OneOf resources
-
-When a resource has multiple representations the configuration must be placed inside a key that identifies which schema you want to use.
-
-Let's work through a concrete example.
-
-The `konnect_application_auth_strategy` resource supports multiple authentication strategies. The API specification marks `strategy_type` as the discriminator, which is how the API figures out which schema it should use for validation.
-
-This means that the `konnect_application_auth_strategy` resource has a sub key that matches the values in `strategy_type`. If `strategy_type` is `key_auth`, the resource looks like the following:
-
-```hcl
-resource "konnect_application_auth_strategy" "my_applicationauthstrategy" {
-  key_auth = {
-    name          = "my-application-auth-strategy"
-    # Other parameters omitted
-  }
-}
-```
-
-## FAQ
-
-### Why do you only support specific plugins?
-
-Kong Gateway's plugin entity supports any JSON blob in the `config` field, and will automatically fill in any default values. This does not work well with Terraform, which requires a predefined schema in order to track default values in the state file.
-
-In order to support idempotent plan and apply operations, this provider has one resource per plugin.
-
-If you require a plugin that is not currently supported, please open an issue.
+The examples in this repo reference resources that are expected to exist in your manifests e.g. `konnect_gateway_control_plane.tfdemo.id`. Update the references to match the names that you have given your resources.
 
 <!-- No SDK Installation -->
 <!-- No SDK Example Usage -->
 <!-- No SDK Available Operations -->
 <!-- Placeholder for Future Speakeasy SDK Sections -->
-
-

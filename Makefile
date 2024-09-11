@@ -10,6 +10,11 @@ speakeasy: check-speakeasy
 	@git checkout -- README.md examples/README.md
 	@rm USAGE.md
 
+FILES=$(shell find internal/provider -type f | grep data_source | grep -v portallist | grep -v cloudgatewayprovideraccountlist)
+remove-data-sources:
+	@if [ -n "$(FILES)" ]; then rm $(FILES); fi
+	@rm -r examples/data-sources
+
 check-speakeasy:
 	@command -v speakeasy >/dev/null 2>&1 || { echo >&2 "speakeasy CLI is not installed. Please install before continuing."; exit 1; }
 
