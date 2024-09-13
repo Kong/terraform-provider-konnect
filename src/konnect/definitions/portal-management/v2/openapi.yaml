@@ -2117,6 +2117,127 @@ paths:
             ../../../../common/definitions/errors.yaml#/components/responses/Forbidden
       tags:
         - Portal Team Roles
+  /portals/{portalId}/identity-providers:
+    parameters:
+      - $ref: '../../../../common/definitions/portal.yaml#/components/parameters/PortalId'
+    get:
+      summary: Retrieve Identity Providers
+      description: |
+        Retrieves the identity providers available within the portal. This operation provides information about
+        various identity providers for SAML or OIDC authentication integrations.
+      operationId: get-portal-identity-providers
+      x-internal: true
+      x-unstable: true
+      parameters:
+        - schema:
+            type: object
+            properties:
+              type:
+                $ref: '../../../../common/definitions/filters.yaml#/components/schemas/StringFieldEqualsFilter'
+          in: query
+          name: filter
+          description: Filter identity providers returned in the response.
+          required: false
+          style: deepObject
+      responses:
+        '200':
+          $ref: '../../../../common/definitions/identity_provider.yaml#/components/responses/IdentityProvider'
+        '401':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+      tags:
+        - Portal Auth Settings
+    post:
+      summary: Create Identity Provider
+      description: |
+        Creates a new identity provider. This operation allows the creation of a new identity provider for
+        authentication purposes.
+      operationId: create-portal-identity-provider
+      x-internal: true
+      x-unstable: true
+      requestBody:
+        $ref: '../../../../common/definitions/identity_provider.yaml#/components/requestBodies/CreateIdentityProviderRequest'
+      responses:
+        '201':
+          $ref: '../../../../common/definitions/identity_provider.yaml#/components/responses/IdentityProvider'
+        '400':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+      tags:
+        - Portal Auth Settings
+  '/portals/{portalId}/identity-providers/{id}':
+    parameters:
+      - $ref: '../../../../common/definitions/portal.yaml#/components/parameters/PortalId'
+      - $ref: '../../../../common/definitions/identity_provider.yaml#/components/parameters/IdentityProviderId'
+    get:
+      summary: Get Identity Provider
+      description: |
+        Retrieves the configuration of a single identity provider. This operation returns information about a 
+        specific identity provider's settings and authentication integration details.
+      operationId: get-portal-identity-provider
+      x-internal: true
+      x-unstable: true
+      responses:
+        '200':
+          $ref: '../../../../common/definitions/identity_provider.yaml#/components/responses/IdentityProvider'
+        '400':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+        '404':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+      tags:
+        - Portal Auth Settings
+    patch:
+      summary: Update Identity Provider
+      description: |
+        Updates the configuration of an existing identity provider. This operation allows modifications to be made
+        to an existing identity provider's configuration.
+      operationId: update-portal-identity-provider
+      x-internal: true
+      x-unstable: true
+      requestBody:
+        $ref: '../../../../common/definitions/identity_provider.yaml#/components/requestBodies/UpdateIdentityProviderRequest'
+      responses:
+        '200':
+          $ref: '../../../../common/definitions/identity_provider.yaml#/components/responses/IdentityProvider'
+        '400':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+        '404':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+      tags:
+        - Portal Auth Settings
+    delete:
+      summary: Delete Identity Provider
+      description: |
+        Deletes an existing identity provider configuration. This operation removes a specific identity provider
+        from the portal.
+      operationId: delete-portal-identity-provider
+      x-internal: true
+      x-unstable: true
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+        '404':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+      tags:
+        - Portal Auth Settings
 components:
   examples:
     400-request-format-is-invalid:

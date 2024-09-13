@@ -1330,6 +1330,117 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Portal Customization
+  '/v2/portals/{portalId}/identity-providers':
+    parameters:
+      - $ref: '#/components/parameters/parameters-PortalId'
+    get:
+      operationId: get-portal-identity-providers
+      summary: Retrieve Identity Providers
+      description: |
+        Retrieves the identity providers available within the portal. This operation provides information about
+        various identity providers for SAML or OIDC authentication integrations.
+      parameters:
+        - name: filter
+          in: query
+          description: Filter identity providers returned in the response.
+          required: false
+          schema:
+            type: object
+            properties:
+              type:
+                $ref: '#/components/schemas/schemas-StringFieldEqualsFilter'
+          style: deepObject
+      responses:
+        '200':
+          $ref: '#/components/responses/IdentityProvider'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Portal Auth Settings
+    post:
+      operationId: create-portal-identity-provider
+      summary: Create Identity Provider
+      description: |
+        Creates a new identity provider. This operation allows the creation of a new identity provider for
+        authentication purposes.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateIdentityProviderRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/IdentityProvider'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Portal Auth Settings
+  '/v2/portals/{portalId}/identity-providers/{id}':
+    parameters:
+      - $ref: '#/components/parameters/parameters-PortalId'
+      - $ref: '#/components/parameters/IdentityProviderId'
+    get:
+      operationId: get-portal-identity-provider
+      summary: Get Identity Provider
+      description: |
+        Retrieves the configuration of a single identity provider. This operation returns information about a 
+        specific identity provider's settings and authentication integration details.
+      responses:
+        '200':
+          $ref: '#/components/responses/IdentityProvider'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Auth Settings
+    patch:
+      operationId: update-portal-identity-provider
+      summary: Update Identity Provider
+      description: |
+        Updates the configuration of an existing identity provider. This operation allows modifications to be made
+        to an existing identity provider's configuration.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateIdentityProviderRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/IdentityProvider'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Auth Settings
+    delete:
+      operationId: delete-portal-identity-provider
+      summary: Delete Identity Provider
+      description: |
+        Deletes an existing identity provider configuration. This operation removes a specific identity provider
+        from the portal.
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Auth Settings
   '/v2/portals/{portalId}/pages':
     get:
       operationId: list-portal-pages
@@ -2325,6 +2436,15 @@ components:
       schema:
         $ref: '#/components/schemas/DiscoverySuggestionRuleFilterParameters'
       style: deepObject
+    IdentityProviderId:
+      schema:
+        type: string
+        format: uuid
+        example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+      name: id
+      in: path
+      required: true
+      description: ID of the identity provider.
     InstalledAddonFilter:
       name: filter
       description: Filters a collection of installed add-ons.
@@ -4127,6 +4247,10 @@ components:
       type: object
       additionalProperties: true
       title: PortalCustomization
+    schemas-StringFieldEqualsFilter:
+      description: Filter a string value by exact match.
+      type: string
+      title: StringFieldEqualsFilter
     ServerlessCloudGateway:
       description: A serverless cloud gateway
       type: object
@@ -9167,6 +9291,8 @@ tags:
   - name: Organization Lifecycle
   - name: Portals
     description: APIs related to Configuration of Konnect Developer Portals.
+  - name: Portal Auth Settings
+    description: APIs related to Konnect Developer Portal Authentication Settings.
   - name: Portal Customization
     description: APIs related to Konnect Developer Portal Customization.
   - name: Portal Pages
