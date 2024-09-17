@@ -760,11 +760,10 @@ paths:
       summary: Update Portal Audit Log Replay Job
       description: Updates a job to re-send audit logs to an portal's webhook.
       operationId: update-portal-audit-log-replay-job
-      x-internal: true
-      x-unstable: true
       requestBody:
         $ref: '#/components/requestBodies/ReplacePortalAuditLogReplayJob'
       tags: [ Portal Audit Logs ]
+      x-internal: true
       responses:
         '202':
           $ref: '#/components/responses/PortalAuditLogReplayJob'
@@ -782,9 +781,8 @@ paths:
       summary: Get Portal Audit Log Replay Job
       description: Returns the audit log replay job's configuration and status.
       operationId: get-portal-audit-log-replay-job
-      x-internal: true
-      x-unstable: true
       tags: [ Portal Audit Logs ]
+      x-internal: true
       responses:
         '200':
           $ref: '#/components/responses/PortalAuditLogReplayJob'
@@ -802,11 +800,10 @@ paths:
       summary: Update Portal Audit Log Webhook
       description: Updates the configuration for a webhook to receive audit logs.
       operationId: update-portal-audit-log-webhook
-      x-internal: true
-      x-unstable: true
       requestBody:
         $ref: '#/components/requestBodies/UpdatePortalAuditLogWebhook'
       tags: [ Portal Audit Logs ]
+      x-internal: true
       responses:
         '200':
           $ref: '#/components/responses/PortalAuditLogWebhook'
@@ -822,9 +819,8 @@ paths:
       summary: Get Portal Audit Log Webhook
       description: Returns configuration for the audit log webhook.
       operationId: get-portal-audit-log-webhook
-      x-internal: true
-      x-unstable: true
       tags: [ Portal Audit Logs ]
+      x-internal: true
       responses:
         '200':
           $ref: '#/components/responses/PortalAuditLogWebhook'
@@ -842,9 +838,8 @@ paths:
       summary: Get Portal Audit Log Webhook Status
       description: Returns status of the audit log webhook.
       operationId: get-portal-audit-log-webhook-status
-      x-internal: true
-      x-unstable: true
       tags: [ Portal Audit Logs ]
+      x-internal: true
       responses:
         '200':
           $ref: '#/components/responses/PortalAuditLogWebhookStatus'
@@ -4532,7 +4527,7 @@ components:
                 format: date-time
                 readOnly: true
     PortalAuditLogWebhook:
-      description: Get response for portal audit log webhook
+      description: Portal audit log webhook response
       content:
         application/json:
           schema:

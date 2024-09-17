@@ -45,7 +45,7 @@ paths:
           $ref: '#/components/responses/Forbidden'
       tags:
         - Audit Logs
-  '/audit-log-destination/{auditLogDestinationId}':
+  '/audit-log-destinations/{auditLogDestinationId}':
     parameters:
       - $ref: '#/components/parameters/AuditLogDestinationId'
     get:
@@ -112,6 +112,13 @@ components:
       description: Audit Log Destination Schema
       type: object
       properties:
+        id:
+          description: The unique ID of the audit log destination.
+          type: string
+          format: uuid
+        name:
+          description: The name of the audit log destination.
+          type: string
         endpoint:
           description: The endpoint that will receive audit log messages.
           type: string
@@ -140,8 +147,8 @@ components:
           format: date-time
           readOnly: true
       example:
-        Get Audit Log Destination:
-          $ref: '#/components/examples/Get-Audit-Log-Destination'
+        Audit Log Destination:
+          $ref: '#/components/examples/Audit-Log-Destination'
       title: AuditLogDestination
     BaseError:
       description: standard error
@@ -441,9 +448,27 @@ components:
         endpoint: 'https://example.com/audit-log-json'
         log_format: json
         skip_ssl_verification: false
-    Get-Audit-Log-Destination:
+    Audit-Log-Destinations:
+      value:
+        data:
+          - id: 07ec3858-066b-4629-bdc5-d4aa893b424d
+            name: Destination-1
+            endpoint: 'https://example.com/audit-log'
+            log_format: cef
+            skip_ssl_verification: false
+            created_at: '2023-03-20T09:29:14.52Z'
+            updated_at: '2023-03-21T09:29:14.52Z'
+          - id: e4374fdc-1f15-4da9-b2e8-7f13d822efe8
+            name: Destination-2
+            endpoint: 'https://example.com/audit-log'
+            log_format: json
+            skip_ssl_verification: false
+            created_at: '2023-03-20T09:29:14.52Z'
+            updated_at: '2023-03-21T09:29:14.52Z'
+    Audit-Log-Destination:
       value:
         id: 07ec3858-066b-4629-bdc5-d4aa893b424d
+        name: My Destination
         endpoint: 'https://example.com/audit-log'
         log_format: cef
         skip_ssl_verification: false
@@ -451,6 +476,8 @@ components:
         updated_at: '2023-03-21T09:29:14.52Z'
     Create-Audit-Log-Destination:
       value:
+        id: 07ec3858-066b-4629-bdc5-d4aa893b424d
+        name: My Destination
         endpoint: 'https://example.com/audit-log'
         authorization: Bearer token
         log_format: cef
@@ -481,6 +508,10 @@ components:
           schema:
             type: object
             properties:
+              name:
+                description: The name of the audit log destination.
+                type: string
+                example: My Destination
               endpoint:
                 description: The endpoint that will receive audit log messages.
                 type: string
@@ -515,6 +546,10 @@ components:
           schema:
             type: object
             properties:
+              name:
+                description: The name of the audit log destination.
+                type: string
+                example: My Destination
               endpoint:
                 description: The endpoint that will receive audit log messages.
                 type: string
@@ -544,16 +579,16 @@ components:
               $ref: '#/components/examples/Update-Audit-Log-Destination'
   responses:
     AuditLogDestinationSingle:
-      description: Get response for audit log destination
+      description: Audit log destination response
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/AuditLogDestination'
           examples:
-            Get Audit Log Destination:
-              $ref: '#/components/examples/Get-Audit-Log-Destination'
+            Audit Log Destination:
+              $ref: '#/components/examples/Audit-Log-Destination'
     AuditLogDestinationCollection:
-      description: Get response for audit log destinations
+      description: Response for audit log destinations
       content:
         application/json:
           schema:
@@ -566,7 +601,7 @@ components:
             title: Audit Log Destinations Response
           examples:
             Audit Log Destination Collection:
-              $ref: '#/components/examples/Get-Audit-Log-Destination'
+              $ref: '#/components/examples/Audit-Log-Destinations'
     AuditLogDestinationBadRequest:
       description: Bad Request
       content:

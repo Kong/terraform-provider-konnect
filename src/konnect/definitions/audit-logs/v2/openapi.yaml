@@ -106,7 +106,6 @@ paths:
       operationId: get-audit-log-destinations
       tags: [ Audit Logs ]
       x-internal: true
-      x-unstable: true
       responses:
         '200':
           $ref: '#/components/responses/AuditLogDestinationCollection'
@@ -120,7 +119,6 @@ paths:
       operationId: create-audit-log-destination
       tags: [ Audit Logs ]
       x-internal: true
-      x-unstable: true
       requestBody:
         $ref: '#/components/requestBodies/CreateAuditLogDestination'
       responses:
@@ -132,7 +130,7 @@ paths:
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '403':
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
-  /audit-log-destination/{auditLogDestinationId}:
+  /audit-log-destinations/{auditLogDestinationId}:
     parameters:
       - $ref: >-
           ../../../../common/definitions/konnect_properties.yaml#/components/parameters/AuditLogDestinationId
@@ -142,7 +140,6 @@ paths:
       operationId: get-audit-log-destination
       tags: [Audit Logs]
       x-internal: true
-      x-unstable: true
       responses:
         '200':
           $ref: '#/components/responses/AuditLogDestinationSingle'
@@ -160,7 +157,6 @@ paths:
         $ref: '#/components/requestBodies/UpdateAuditLogDestination'
       tags: [ Audit Logs ]
       x-internal: true
-      x-unstable: true
       responses:
         '200':
           $ref: '#/components/responses/AuditLogDestinationSingle'
@@ -178,7 +174,6 @@ paths:
       operationId: delete-audit-log-destination
       tags: [ Audit Logs ]
       x-internal: true
-      x-unstable: true
       responses:
         '204':
           description: No Content
@@ -253,16 +248,16 @@ components:
             Get Audit Log Webhook:
               $ref: '#/components/examples/Get-Audit-Log-Webhook'
     AuditLogDestinationSingle:
-      description: Get response for audit log destination
+      description: Audit log destination response
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/AuditLogDestination'
           examples:
-            Get Audit Log Destination:
-              $ref: '#/components/examples/Get-Audit-Log-Destination'
+            Audit Log Destination:
+              $ref: '#/components/examples/Audit-Log-Destination'
     AuditLogDestinationCollection:
-      description: Get response for audit log destinations
+      description: Response for audit log destinations
       content:
         application/json:
           schema:
@@ -275,7 +270,7 @@ components:
                   $ref: '#/components/schemas/AuditLogDestination'
           examples:
             Audit Log Destination Collection:
-              $ref: '#/components/examples/Get-Audit-Log-Destination'
+              $ref: '#/components/examples/Audit-Log-Destinations'
     AuditLogWebhookStatus:
       description: Get response for audit log webhook status
       content:
@@ -442,6 +437,10 @@ components:
           schema:
             type: object
             properties:
+              name:
+                type: string
+                example: My Destination
+                description: The name of the audit log destination.
               endpoint:
                 type: string
                 example: 'https://example.com/audit-logs'
@@ -474,6 +473,10 @@ components:
           schema:
             type: object
             properties:
+              name:
+                type: string
+                example: My Destination
+                description: The name of the audit log destination.
               endpoint:
                 type: string
                 example: 'https://example.com/audit-logs'
@@ -570,24 +573,27 @@ components:
         log_format: cef
         skip_ssl_verification: false
         updated_at: '2023-03-21T09:29:14.52Z'
-    Get-Audit-Log-Destinations:
+    Audit-Log-Destinations:
       value:
         data:
           - id: 07ec3858-066b-4629-bdc5-d4aa893b424d
+            name: Destination-1
             endpoint: https://example.com/audit-log
             log_format: cef
             skip_ssl_verification: false
             created_at: '2023-03-20T09:29:14.52Z'
             updated_at: '2023-03-21T09:29:14.52Z'
           - id: e4374fdc-1f15-4da9-b2e8-7f13d822efe8
+            name: Destination-2
             endpoint: https://example.com/audit-log
-            log_format: cef
+            log_format: json
             skip_ssl_verification: false
             created_at: '2023-03-20T09:29:14.52Z'
             updated_at: '2023-03-21T09:29:14.52Z'
-    Get-Audit-Log-Destination:
+    Audit-Log-Destination:
       value:
         id: 07ec3858-066b-4629-bdc5-d4aa893b424d
+        name: My Destination
         endpoint: https://example.com/audit-log
         log_format: cef
         skip_ssl_verification: false
@@ -595,6 +601,8 @@ components:
         updated_at: '2023-03-21T09:29:14.52Z'
     Create-Audit-Log-Destination:
       value:
+        id: 07ec3858-066b-4629-bdc5-d4aa893b424d
+        name: My Destination
         endpoint: https://example.com/audit-log
         authorization: 'Bearer token'
         log_format: cef
@@ -627,6 +635,13 @@ components:
        type: object
        description: Audit Log Destination Schema
        properties:
+         id:
+           type: string
+           format: uuid
+           description: The unique ID of the audit log destination.
+         name:
+           type: string
+           description: The name of the audit log destination.
          endpoint:
            type: string
            example: 'https://example.com/audit-logs'
@@ -654,8 +669,8 @@ components:
            format: date-time
            readOnly: true
        example:
-         Get Audit Log Destination:
-           $ref: '#/components/examples/Get-Audit-Log-Destination'
+         Audit Log Destination:
+           $ref: '#/components/examples/Audit-Log-Destination'
     JWK:
       title: JWK
       type: object
