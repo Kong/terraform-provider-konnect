@@ -1,0 +1,429 @@
+openapi: 3.0.3
+info:
+  title: Konnect external consumers auth api
+  version: 0.0.1
+servers:
+  - url: 'http://us.identity.konghq.com'
+    description: US geo
+  - url: 'http://eu.identity.konghq.com'
+    description: EU geo
+  - url: 'http://au.identity.konghq.com'
+    description: AU geo
+paths:
+  '/{realmId}/v0':
+    parameters:
+      - $ref: '#/components/parameters/realmId'
+    get:
+      operationId: retrieve-realm
+      summary: Retrieve a realm
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthConsumerRealm'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - realms
+  '/{realmId}/v0/authenticate':
+    parameters:
+      - $ref: '#/components/parameters/realmId'
+    post:
+      operationId: authenticate-in-realm
+      summary: Authenticate on this realm
+      requestBody:
+        $ref: '#/components/requestBodies/AuthenticateBody'
+      responses:
+        '201':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticateResponseBody'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - realms
+components:
+  parameters:
+    realmId:
+      name: realmId
+      in: path
+      required: true
+      description: Id of the realm
+      schema:
+        type: string
+        format: uuid
+  schemas:
+    AuthConsumerRealm:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        ttl:
+          type: integer
+        negative_ttl:
+          type: integer
+        consumer_groups:
+          $ref: '#/components/schemas/ConsumerGroups'
+      required:
+        - id
+        - name
+        - ttl
+        - negative_ttl
+        - consumer_groups
+    AuthenticateBody:
+      type: object
+      properties:
+        secret:
+          type: string
+        meta:
+          type: object
+          default: {}
+      required:
+        - secret
+    AuthenticateResponseBody:
+      type: object
+      properties:
+        id:
+          type: string
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        username:
+          type: string
+        custom_id:
+          type: string
+        type:
+          type: string
+        tags:
+          $ref: '#/components/schemas/Tags'
+        username_lower:
+          type: string
+        ttl:
+          type: integer
+        negative_ttl:
+          type: integer
+        consumer_group_names:
+          type: array
+          items:
+            type: string
+        credential:
+          $ref: '#/components/schemas/AuthenticateCredential'
+        meta:
+          type: object
+      required:
+        - id
+        - created_at
+        - updated_at
+        - username
+        - custom_id
+        - type
+        - tags
+        - username_lower
+        - ttl
+        - negative_ttl
+        - consumer_group_names
+        - meta
+    AuthenticateCredential:
+      type: object
+      properties:
+        id:
+          type: string
+          nullable: true
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        tags:
+          $ref: '#/components/schemas/Tags'
+      required:
+        - id
+        - created_at
+        - tags
+    ConsumerGroups:
+      type: array
+      items:
+        type: string
+        uniqueItems: true
+    BaseError:
+      description: standard error
+      type: object
+      properties:
+        status:
+          description: |
+            The HTTP status code of the error. Useful when passing the response
+            body to child properties in a frontend UI. Must be returned as an integer.
+          type: integer
+          readOnly: true
+        title:
+          description: |
+            A short, human-readable summary of the problem. It should not
+            change between occurences of a problem, except for localization.
+            Should be provided as "Sentence case" for direct use in the UI.
+          type: string
+          readOnly: true
+        type:
+          description: The error type.
+          type: string
+          readOnly: true
+        instance:
+          description: |
+            Used to return the correlation ID back to the user, in the format
+            kong:trace:<correlation_id>. This helps us find the relevant logs
+            when a customer reports an issue.
+          type: string
+          readOnly: true
+        detail:
+          description: |
+            A human readable explanation specific to this occurence of the problem.
+            This field may contain request/entity data to help the user understand
+            what went wrong. Enclose variable values in square brackets. Should be
+            provided as "Sentence case" for direct use in the UI.
+          type: string
+          readOnly: true
+      required:
+        - status
+        - title
+        - instance
+        - detail
+      title: Error
+    NotFoundError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 404
+            title:
+              example: Not Found
+            type:
+              example: 'https://httpstatuses.com/404'
+            instance:
+              example: 'kong:trace:1234567890'
+            detail:
+              example: Not found
+    CreatedAt:
+      description: An ISO-8601 timestamp representation of entity creation date.
+      type: string
+      format: date-time
+      example: '2022-11-04T20:10:06.927Z'
+      readOnly: true
+    UpdatedAt:
+      description: An ISO-8601 timestamp representation of entity update date.
+      type: string
+      format: date-time
+      example: '2022-11-04T20:10:06.927Z'
+      readOnly: true
+    Tags:
+      type: array
+      items:
+        type: string
+      uniqueItems: true
+    InvalidRules:
+      description: invalid parameters rules
+      type: string
+      enum:
+        - required
+        - max_length
+        - is_array
+        - is_base64
+        - is_boolean
+        - is_date_time
+        - is_integer
+        - is_null
+        - is_number
+        - is_object
+        - is_string
+        - is_uuid
+        - is_fqdn
+        - is_arn
+        - unknown_property
+        - is_label
+        - matches_regex
+        - invalid
+        - is_supported_network_availability_zone_list
+        - is_supported_network_cidr_block
+        - is_supported_provider_region
+      nullable: true
+      readOnly: true
+    InvalidParameterStandard:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          $ref: '#/components/schemas/InvalidRules'
+        source:
+          type: string
+          example: body
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+      additionalProperties: false
+      required:
+        - field
+        - reason
+    InvalidParameterMinimumLength:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          description: invalid parameters rules
+          type: string
+          enum:
+            - min_length
+            - min_digits
+            - min_lowercase
+            - min_uppercase
+            - min_symbols
+          nullable: false
+          readOnly: true
+        minimum:
+          type: integer
+          example: 8
+        source:
+          type: string
+          example: body
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+      additionalProperties: false
+      required:
+        - field
+        - reason
+        - rule
+        - minimum
+    InvalidParameterChoiceItem:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          description: invalid parameters rules
+          type: string
+          enum:
+            - enum
+          nullable: false
+          readOnly: true
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+        choices:
+          type: array
+          items: {}
+          minimum: 1
+          nullable: false
+          readOnly: true
+          uniqueItems: true
+        source:
+          type: string
+          example: body
+      additionalProperties: false
+      required:
+        - field
+        - reason
+        - rule
+        - choices
+    InvalidParameterDependentItem:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          description: invalid parameters rules
+          type: string
+          enum:
+            - dependent_fields
+          nullable: true
+          readOnly: true
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+        dependents:
+          type: array
+          items: {}
+          nullable: true
+          readOnly: true
+          uniqueItems: true
+        source:
+          type: string
+          example: body
+      additionalProperties: false
+      required:
+        - field
+        - rule
+        - reason
+        - dependents
+    InvalidParameters:
+      description: invalid parameters
+      type: array
+      items:
+        oneOf:
+          - $ref: '#/components/schemas/InvalidParameterStandard'
+          - $ref: '#/components/schemas/InvalidParameterMinimumLength'
+          - $ref: '#/components/schemas/InvalidParameterChoiceItem'
+          - $ref: '#/components/schemas/InvalidParameterDependentItem'
+      minItems: 1
+      nullable: false
+      uniqueItems: true
+    BadRequestError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          required:
+            - invalid_parameters
+          properties:
+            invalid_parameters:
+              $ref: '#/components/schemas/InvalidParameters'
+  examples:
+    NotFoundExample:
+      value:
+        status: 404
+        title: Not Found
+        instance: 'kong:trace:6816496025408232265'
+        detail: Not Found
+  requestBodies:
+    AuthenticateBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthenticateBody'
+  responses:
+    NotFound:
+      description: Not Found
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/NotFoundError'
+          examples:
+            NotFoundExample:
+              $ref: '#/components/examples/NotFoundExample'
+    BadRequest:
+      description: Bad Request
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/BadRequestError'
+tags:
+  - name: realms
+    description: realms

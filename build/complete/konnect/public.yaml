@@ -13715,6 +13715,60 @@ components:
       required:
         - page
       title: CursorPaginatedMetaWithSizeAndTotal
+    ConsumerGroups:
+      type: array
+      items:
+        type: string
+        uniqueItems: true
+    Tags:
+      type: array
+      items:
+        type: string
+      uniqueItems: true
+    Consumer:
+      type: object
+      properties:
+        id:
+          description: The Consumer ID.
+          type: string
+          format: uuid
+          example: b9e81174-b5bb-4638-a3c3-8afe61a0abf8
+          readOnly: true
+        username:
+          description: The unique username of the Consumer. You must send either this field or `custom_id` with the request.
+          type: string
+        custom_id:
+          description: Field for storing an existing unique ID for the Consumer - useful for mapping Kong with users in your existing database. You must send either this field or `username` with the request.
+          type: string
+        type:
+          type: string
+        tags:
+          description: An optional set of strings associated with the Consumer for grouping and filtering.
+          type: array
+          items:
+            type: string
+          $ref: '#/components/schemas/Tags'
+        consumer_groups:
+          $ref: '#/components/schemas/ConsumerGroups'
+        created_at:
+          description: Unix epoch when the resource was created.
+          type: integer
+          $ref: '#/components/schemas/CreatedAt'
+          readOnly: true
+        updated_at:
+          description: Unix epoch when the resource was last updated.
+          type: integer
+          $ref: '#/components/schemas/UpdatedAt'
+          readOnly: true
+      required:
+        - id
+        - username
+        - custom_id
+        - type
+        - tags
+        - consumer_groups
+        - created_at
+        - updated_at
     IdP:
       description: |-
         The IdP object contains the configuration data for the OIDC authentication integration.
@@ -17323,31 +17377,6 @@ components:
           description: Unix epoch when the resource was last updated.
           type: integer
           readOnly: true
-    Consumer:
-      type: object
-      properties:
-        created_at:
-          description: Unix epoch when the resource was created.
-          type: integer
-          readOnly: true
-        custom_id:
-          description: Field for storing an existing unique ID for the Consumer - useful for mapping Kong with users in your existing database. You must send either this field or `username` with the request.
-          type: string
-        id:
-          type: string
-          readOnly: true
-        tags:
-          description: An optional set of strings associated with the Consumer for grouping and filtering.
-          type: array
-          items:
-            type: string
-        updated_at:
-          description: Unix epoch when the resource was last updated.
-          type: integer
-          readOnly: true
-        username:
-          description: The unique username of the Consumer. You must send either this field or `custom_id` with the request.
-          type: string
     ConsumerGroup:
       type: object
       properties:
@@ -25536,6 +25565,10 @@ components:
       scheme: bearer
       bearerFormat: JWT
       description: The Konnect access token is meant to be used by the Konnect dashboard and the decK CLI to authenticate with.
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
 tags:
   - name: Custom Reports
   - name: API Requests
@@ -25711,4 +25744,5 @@ security:
   - personalAccessToken: []
   - systemAccountAccessToken: []
   - konnectAccessToken: []
+  - bearerAuth: []
   - serviceAccessToken: []

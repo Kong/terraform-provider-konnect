@@ -1,0 +1,154 @@
+openapi: 3.0.3
+info:
+  title: Konnect external consumers auth api
+  version: 0.0.1
+servers:
+  - url: http://us.identity.konghq.com
+    description: US geo
+  - url: http://eu.identity.konghq.com
+    description: EU geo
+  - url: http://au.identity.konghq.com
+    description: AU geo
+tags:
+  - name: realms
+    description: realms
+x-unstable: true
+x-internal: true
+paths:
+  /{realmId}/v0:
+    parameters:
+      - $ref: "../../../../common/definitions/external_consumers.yaml#/components/parameters/realmId"
+    get:
+      x-unstable: true
+      x-internal: true
+      tags: [realms]
+      operationId: retrieve-realm
+      summary: Retrieve a realm
+      responses:
+        "200":
+          description: "success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthConsumerRealm"
+        "404":
+          $ref:  '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+  /{realmId}/v0/authenticate:
+    parameters:
+      - $ref: "../../../../common/definitions/external_consumers.yaml#/components/parameters/realmId"
+    post:
+      x-unstable: true
+      x-internal: true
+      tags: [realms]
+      operationId: authenticate-in-realm
+      summary: Authenticate on this realm
+      requestBody:
+        $ref: "#/components/requestBodies/AuthenticateBody"
+      responses:
+        "201":
+          description: "success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthenticateResponseBody"
+        "400":
+          $ref:  '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        "404":
+          $ref:  '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+components:
+  schemas:
+    AuthConsumerRealm:
+      type: object
+      required:
+        - id
+        - name
+        - ttl
+        - negative_ttl
+        - consumer_groups
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        ttl:
+          type: integer
+        negative_ttl:
+          type: integer
+        consumer_groups:
+          $ref: "../../../../common/definitions/external_consumers.yaml#/components/schemas/ConsumerGroups"
+    AuthenticateBody:
+      type: object
+      required:
+      - secret
+      properties:
+        secret:
+          type: string
+        meta:
+          type: object
+          default: {}
+    AuthenticateResponseBody:
+      type: object
+      required:
+        - id
+        - created_at
+        - updated_at
+        - username
+        - custom_id
+        - type
+        - tags
+        - username_lower
+        - ttl
+        - negative_ttl
+        - consumer_group_names
+        - meta
+      properties:
+        id:
+          type: string
+        created_at:
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
+        username:
+          type: string
+        custom_id:
+          type: string
+        type:
+          type: string
+        tags:
+          $ref: "../../../../common/definitions/external_consumers.yaml#/components/schemas/Tags"
+        username_lower:
+          type: string
+        ttl:
+          type: integer
+        negative_ttl:
+          type: integer
+        consumer_group_names:
+          type: array
+          items:
+            type: string
+        credential:
+          $ref: "#/components/schemas/AuthenticateCredential"
+        meta:
+          type: object
+    AuthenticateCredential:
+      type: object
+      required:
+        - id
+        - created_at
+        - tags
+      properties:
+        id:
+          type: string
+          nullable: true
+        created_at:
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
+        tags:
+          $ref: "../../../../common/definitions/external_consumers.yaml#/components/schemas/Tags"
+  requestBodies:
+    AuthenticateBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthenticateBody'
+  responses: {}

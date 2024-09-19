@@ -2979,6 +2979,10 @@ components:
       scheme: bearer
       bearerFormat: JWT
       description: The Konnect access token is meant to be used by the Konnect dashboard and the decK CLI to authenticate with.
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
 tags:
   - name: Audit Logs
   - name: Provider Accounts
@@ -2997,4 +3001,5 @@ security:
   - personalAccessToken: []
   - systemAccountAccessToken: []
   - konnectAccessToken: []
+  - bearerAuth: []
   - serviceAccessToken: []

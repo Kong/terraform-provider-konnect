@@ -1,0 +1,54 @@
+components:
+  schemas:
+    ConsumerGroups:
+      type: array
+      items:
+        type: string
+        uniqueItems: true
+    Tags:
+      type: array
+      items:
+        type: string
+      uniqueItems: true
+    Consumer:
+      type: object
+      required:
+        - id
+        - username
+        - custom_id
+        - type
+        - tags
+        - consumer_groups
+        - created_at
+        - updated_at
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: b9e81174-b5bb-4638-a3c3-8afe61a0abf8
+          description: The Consumer ID.
+          readOnly: true
+        username:
+          type: string
+        custom_id:
+          type: string
+        type:
+          type: string
+        tags:
+          $ref: "#/components/schemas/Tags"
+        consumer_groups:
+          $ref: "#/components/schemas/ConsumerGroups"
+        created_at:
+          $ref: "./konnect_properties.yaml#/components/schemas/CreatedAt"
+        updated_at:
+          $ref: "./konnect_properties.yaml#/components/schemas/UpdatedAt"
+  parameters:
+    realmId:
+      name: realmId
+      in: path
+      required: true
+      description: Id of the realm
+      schema:
+        type: string
+        format: uuid
+        

@@ -598,3 +598,8 @@ overrides:
       - "src/internal/definitions/documenthub-portal/v0/openapi.yaml#/paths/~1has-documentation/post/responses"
     rules:
       errors-post-not-contain-200: "off"
+  - files:
+    - "src/konnect/definitions/external-consumers-auth/**/openapi.yaml"
+    rules:
+      server-url-must-contain-version-aip-3101: "off"
+      server-in-approved-list: "off"

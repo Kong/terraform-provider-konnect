@@ -1,0 +1,631 @@
+openapi: 3.0.3
+info:
+  title: Konnect external consumers admin api
+  version: 0.0.1
+servers:
+  - url: https://us.api.konghq.com/v0
+    description: US Region Base URL
+  - url: https://eu.api.konghq.com/v0
+    description: EU Region Base URL
+  - url: https://au.api.konghq.com/v0
+    description: AU Region Base URL
+security:
+  - bearerAuth: []
+tags:
+  - name: realms
+    description: realms
+  - name: consumers
+    description: consumers
+  - name: keys
+    description: keys
+x-unstable: true
+x-internal: true
+paths:
+  /realms:
+    get:
+      x-unstable: true
+      x-internal: true
+      operationId: list-realms
+      description: "list realms"
+      summary: List realms
+      tags: [realms]
+      responses:
+        "200":
+          description: "success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListRealms"
+    post:
+      x-unstable: true
+      x-internal: true
+      operationId: create-realm
+      description: "create realm"
+      summary: Create a realm
+      tags: [realms]
+      requestBody:
+        $ref: "#/components/requestBodies/CreateConsumerRealm"
+      responses:
+        "201":
+          $ref: "#/components/responses/CreateConsumerRealmResponse"
+  /realms/{realmId}:
+    parameters:
+      - $ref: "../../../../common/definitions/external_consumers.yaml#/components/parameters/realmId"
+    get:
+      x-unstable: true
+      x-internal: true
+      operationId: get-realm
+      description: "get realm"
+      summary: Get a realm
+      tags: [realms]
+      responses:
+        "200":
+          description: "success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConsumerRealm"
+    patch:
+      x-unstable: true
+      x-internal: true
+      operationId: update-realm
+      description: "update realm"
+      summary: Update a realm
+      tags: [realms]
+      requestBody:
+        $ref: "#/components/requestBodies/UpdateConsumerRealm"
+      responses:
+        "200":
+          description: "success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConsumerRealm"
+    delete:
+      x-unstable: true
+      x-internal: true
+      operationId: delete-realm
+      description: "delete realm"
+      summary: Delete a realm
+      parameters:
+        - schema:
+            type: string
+            default: 'false'
+            enum:
+              - 'true'
+              - 'false'
+          name: force
+          in: query
+          description: >-
+            If true, delete specified realm and all underlying entities (consumers/apiKeys).
+            If false, do not allow deletion if there are underlying entities.
+      tags: [realms]
+      responses:
+        "204":
+          description: "success"
+        "400":
+          $ref:  '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        "404":
+          $ref:  '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+  /realms/{realmId}/consumers:
+    parameters:
+      - $ref: "../../../../common/definitions/external_consumers.yaml#/components/parameters/realmId"
+    get:
+      x-unstable: true
+      x-internal: true
+      operationId: list-consumers-per-realm
+      description: "list consumers"
+      summary: List consumers
+      tags: [consumers]
+      responses:
+        "200":
+          description: "success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListConsumers"
+        "404":
+          $ref:  '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+    post:
+      x-unstable: true
+      x-internal: true
+      operationId: create-consumer
+      description: "create consumer"
+      summary: Create a consumer
+      tags: [consumers]
+      requestBody:
+        $ref: "#/components/requestBodies/CreateConsumer"
+      responses:
+        "201":
+          $ref: "#/components/responses/CreateConsumerResponse"
+        "400":
+          $ref:  '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        "404":
+          $ref:  '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+  /realms/{realmId}/consumers/{consumerId}:
+    parameters:
+      - $ref: "../../../../common/definitions/external_consumers.yaml#/components/parameters/realmId"
+      - $ref: "#/components/parameters/consumerId"
+    get:
+      x-unstable: true
+      x-internal: true
+      operationId: get-consumer
+      description: "get consumer"
+      summary: Get a consumer
+      tags: [consumers]
+      responses:
+        "200":
+          description: "success"
+          content:
+            application/json:
+              schema:
+                $ref: "../../../../common/definitions/external_consumers.yaml#/components/schemas/Consumer"
+        "404":
+          $ref:  '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+    patch:
+      x-unstable: true
+      x-internal: true
+      operationId: update-consumer
+      description: "update consumer"
+      summary: Update a consumer
+      requestBody:
+        $ref: "#/components/requestBodies/UpdateConsumer"
+      tags: [consumers]
+      responses:
+        "200":
+          description: "success"
+          content:
+            application/json:
+              schema:
+                $ref: "../../../../common/definitions/external_consumers.yaml#/components/schemas/Consumer"
+        "400":
+          $ref:  '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        "404":
+          $ref:  '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+    delete:
+      x-unstable: true
+      x-internal: true
+      operationId: delete-consumer
+      description: "delete consumer"
+      summary: Delete a consumer
+      tags: [consumers]
+      responses:
+        "204":
+          description: "success"
+        "404":
+          description: "not found"
+  /realms/{realmId}/consumers/{consumerId}/move:
+    parameters:
+      - $ref: "../../../../common/definitions/external_consumers.yaml#/components/parameters/realmId"
+      - $ref: "#/components/parameters/consumerId"
+    post:
+      x-unstable: true
+      x-internal: true
+      operationId: move-consumer
+      description: "move consumer"
+      summary: Change the realm of a consumer
+      tags: [consumers]
+      requestBody:
+        $ref: "#/components/requestBodies/MoveConsumer"
+      responses:
+        "201":
+          $ref: "#/components/responses/MoveConsumerResponse"
+        "400":
+          $ref:  '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        "404":
+          $ref:  '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+  /realms/{realmId}/consumers/{consumerId}/keys:
+    parameters:
+      - $ref: "../../../../common/definitions/external_consumers.yaml#/components/parameters/realmId"
+      - $ref: "#/components/parameters/consumerId"
+    get:
+      x-unstable: true
+      x-internal: true
+      operationId: list-consumer-keys
+      description: "list keys"
+      summary: List keys
+      tags: [keys]
+      responses:
+        "200":
+          description: "success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListKeys"
+        "404":
+          $ref:  '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+    post:
+      x-unstable: true
+      x-internal: true
+      operationId: create-consumer-key
+      description: "create key"
+      summary: Create a key
+      tags: [keys]
+      requestBody:
+        $ref: "#/components/requestBodies/CreateApiKey"
+      responses:
+        "201":
+          description: "success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateApiKeyResult"
+        "400":
+          $ref:  '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        "404":
+          $ref:  '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+  /realms/{realmId}/consumers/{consumerId}/keys/{keyId}:
+    parameters:
+      - $ref: "../../../../common/definitions/external_consumers.yaml#/components/parameters/realmId"
+      - $ref: "#/components/parameters/consumerId"
+      - $ref: "#/components/parameters/keyId"
+    get:
+      x-unstable: true
+      x-internal: true
+      operationId: get-consumer-key
+      description: "get key"
+      summary: Get a key
+      tags: [keys]
+      responses:
+        "200":
+          description: "success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiKey"
+        "404":
+          $ref:  '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+    delete:
+      x-unstable: true
+      x-internal: true
+      operationId: delete-consumer-key
+      description: "delete key"
+      summary: Delete a key
+      tags: [keys]
+      responses:
+        "204":
+          description: "success"
+        "404":
+          description: "not found"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  parameters:
+    keyId:
+      name: keyId
+      in: path
+      required: true
+      description: Id of the key
+      schema:
+        type: string
+    credentialId:
+      name: credentialId
+      in: path
+      required: true
+      description: Id of the credential
+      schema:
+        type: string
+    consumerId:
+      name: consumerId
+      in: path
+      required: true
+      description: Id of the of the consumer
+      schema:
+        type: string
+  schemas:
+    CreateApiKeyPayload:
+      oneOf:
+      - $ref: '#/components/schemas/CreateApiKeyPayloadNew'
+      - $ref: '#/components/schemas/CreateApiKeyPayloadLegacy'
+    CreateApiKeyPayloadNew:
+      type: object
+      additionalProperties: false
+      properties:
+        type:
+          type: string
+          default: new
+          enum: [new]
+        tags:
+          $ref: "../../../../common/definitions/external_consumers.yaml#/components/schemas/Tags"
+    CreateApiKeyPayloadLegacy:
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - secret
+      properties:
+        type:
+          type: string
+          default: legacy
+          enum: [legacy]
+        tags:
+          $ref: "../../../../common/definitions/external_consumers.yaml#/components/schemas/Tags"
+        secret:
+          type: string
+          description: secret to be created. Must be unique within the realm. If not specified a secret will be automatically generated.
+    CreateApiKeyResult:
+      type: object
+      required:
+        - id
+        - type
+        - secret
+        - created_at
+        - updated_at
+        - tags
+      properties:
+        id:
+          type: string
+        type:
+          $ref: "#/components/schemas/KeyTypeEnum"
+        secret:
+          type: string
+          x-speakeasy-param-sensitive: true
+        created_at:
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
+        tags:
+          $ref: "../../../../common/definitions/external_consumers.yaml#/components/schemas/Tags"
+    KeyTypeEnum:
+      type: string
+      enum:
+        - legacy
+        - new
+    ApiKey:
+      type: object
+      required:
+        - id
+        - created_at
+        - type
+        - tags
+      properties:
+        id:
+          type: string
+        created_at:
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
+        tags:
+          $ref: "../../../../common/definitions/external_consumers.yaml#/components/schemas/Tags"
+        type:
+          $ref: "#/components/schemas/KeyTypeEnum"
+    CursorMetaPage:
+      type: object
+      required:
+        - size
+        - next
+        - previous
+      properties:
+        next:
+          description: URI to the next page
+          type: string
+          format: path
+          nullable: true
+        previous:
+          description: URI to the previous page
+          type: string
+          format: path
+          nullable: true
+        size:
+          description: Requested page size
+          type: number
+          example: 10
+    ListRealms:
+      type: object
+      required:
+        - data
+        - meta
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/ConsumerRealm"
+        meta:
+          $ref: "#/components/schemas/CursorMetaPage"
+    ListConsumers:
+      type: object
+      required:
+        - data
+        - meta
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "../../../../common/definitions/external_consumers.yaml#/components/schemas/Consumer"
+        meta:
+          $ref: "#/components/schemas/CursorMetaPage"
+    ListKeys:
+      type: object
+      required:
+        - data
+        - meta
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/ApiKey"
+        meta:
+          $ref: "#/components/schemas/CursorMetaPage"
+    ConsumerRealm:
+      type: object
+      required:
+        - id
+        - name
+        - allowed_control_planes
+        - ttl
+        - negative_ttl
+        - consumer_groups
+        - created_at
+        - updated_at
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        ttl:
+          type: integer
+        negative_ttl:
+          type: integer
+        consumer_groups:
+          $ref: "../../../../common/definitions/external_consumers.yaml#/components/schemas/ConsumerGroups"
+        allowed_control_planes:
+          $ref: "#/components/schemas/AllowedControlPlanes"
+        created_at:
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
+    RealmReference:
+      type: object
+      required:
+        - realm_id
+      properties:
+        realm_id:
+          type: string
+    MoveConsumerRequest:
+      type: object
+      required:
+        - target_realm_id
+      properties:
+        target_realm_id:
+          type: string
+    ConsumerRealmCreateRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - name
+      properties:
+        name:
+          type: string
+        allowed_control_planes:
+          $ref: "#/components/schemas/AllowedControlPlanes"
+        ttl:
+          type: integer
+          minimum: 5
+          default: 10
+          description: |
+            Time to Live in minutes of the consumer for this realm in the gateway cache.
+        negative_ttl:
+          type: integer
+          minimum: 5
+          default: 10
+          description: |
+            Time to Live in minutes of the negative consumer for this realm in the gateway cache.
+        consumer_groups:
+          $ref: "../../../../common/definitions/external_consumers.yaml#/components/schemas/ConsumerGroups"
+    UpdateConsumerPayload:
+      type: object
+      additionalProperties: false
+      properties:
+        custom_id:
+          type: string
+        username:
+          type: string
+        type:
+          type: string
+        tags:
+          $ref: "../../../../common/definitions/external_consumers.yaml#/components/schemas/Tags"
+        consumer_groups:
+          $ref: "../../../../common/definitions/external_consumers.yaml#/components/schemas/ConsumerGroups"
+    ConsumerRealmUpdateRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        name:
+          type: string
+        allowed_control_planes:
+          type: array
+          items:
+            type: string
+            format: uuid
+            uniqueItems: true
+        consumer_groups:
+          $ref: "../../../../common/definitions/external_consumers.yaml#/components/schemas/ConsumerGroups"
+        ttl:
+          type: integer
+          minimum: 5
+          description: |
+            Time to Live in minutes of the consumer for this realm in the gateway cache.
+        negative_ttl:
+          type: integer
+          minimum: 5
+          description: |
+            Time to Live in minutes of the negative consumer for this realm in the gateway cache
+    ConsumerCreateRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - username
+      properties:
+        username:
+          type: string
+        consumer_groups:
+          $ref: "../../../../common/definitions/external_consumers.yaml#/components/schemas/ConsumerGroups"
+        custom_id:
+          type: string
+        type:
+          type: string
+        tags:
+          $ref: "../../../../common/definitions/external_consumers.yaml#/components/schemas/Tags"
+    AllowedControlPlanes:
+      type: array
+      items:
+        type: string
+        format: uuid
+        uniqueItems: true
+  requestBodies:
+    UpdateConsumer:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/UpdateConsumerPayload"
+    CreateApiKey:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/CreateApiKeyPayload"
+    UpdateConsumerRealm:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ConsumerRealmUpdateRequest"
+    CreateConsumerRealm:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ConsumerRealmCreateRequest"
+    CreateConsumer:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ConsumerCreateRequest"
+    MoveConsumer:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/MoveConsumerRequest"
+  responses:
+    CreateConsumerResponse:
+      description: "success"
+      content:
+        application/json:
+          schema:
+            $ref: "../../../../common/definitions/external_consumers.yaml#/components/schemas/Consumer"
+    CreateConsumerRealmResponse:
+      description: "success"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ConsumerRealm"
+    MoveConsumerResponse:
+      description: "success"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RealmReference"
