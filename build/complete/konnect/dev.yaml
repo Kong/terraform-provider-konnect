@@ -3665,6 +3665,35 @@ components:
           oeq: 3bbfd3a-e9ab-48a9-9881-ed589e4615d1
         example-4:
           neq: 3bbfd3a-e9ab-48a9-9881-ed589e4615d1
+    CursorMetaPage:
+      type: object
+      properties:
+        first:
+          description: URI to the first page
+          type: string
+          format: path
+        last:
+          description: URI to the last page
+          type: string
+          format: path
+        next:
+          description: URI to the next page
+          type: string
+          format: path
+          nullable: true
+        previous:
+          description: URI to the previous page
+          type: string
+          format: path
+          nullable: true
+        size:
+          description: Requested page size
+          type: number
+          example: 10
+      required:
+        - size
+        - next
+        - previous
     CreateApiKeyPayload:
       oneOf:
         - $ref: '#/components/schemas/CreateApiKeyPayloadNew'
@@ -3740,35 +3769,6 @@ components:
         - created_at
         - type
         - tags
-    CursorMetaPage:
-      type: object
-      properties:
-        next:
-          description: URI to the next page
-          type: string
-          format: path
-          nullable: true
-        previous:
-          description: URI to the previous page
-          type: string
-          format: path
-          nullable: true
-        size:
-          description: Requested page size
-          type: number
-          example: 10
-        first:
-          description: URI to the first page
-          type: string
-          format: path
-        last:
-          description: URI to the last page
-          type: string
-          format: path
-      required:
-        - size
-        - next
-        - previous
     ListRealms:
       type: object
       properties:

@@ -19,6 +19,20 @@ paths:
       operationId: get-audit-log-destinations
       summary: Get Audit Log Destinations
       description: Returns configuration for the audit log destinations.
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageAfter'
+        - $ref: '#/components/parameters/PageBefore'
+        - name: filter
+          in: query
+          description: Filter destinations returned in the response.
+          required: false
+          schema:
+            type: object
+            properties:
+              name:
+                $ref: '#/components/schemas/StringFieldFilter'
+          style: deepObject
       responses:
         '200':
           $ref: '#/components/responses/AuditLogDestinationCollection'
@@ -107,7 +121,46 @@ components:
       in: path
       required: true
       description: ID of the Audit Log Destination.
+    PageAfter:
+      name: 'page[after]'
+      description: 'Request the next page of data, starting with the item after this parameter.'
+      required: false
+      in: query
+      allowEmptyValue: true
+      schema:
+        type: string
+        example: ewogICJpZCI6ICJoZWxsbyB3b3JsZCIKfQ
+    PageBefore:
+      name: 'page[before]'
+      description: 'Request the next page of data, starting with the item before this parameter.'
+      required: false
+      in: query
+      allowEmptyValue: true
+      schema:
+        type: string
+        example: ewogICJpZCI6ICJoZWxsbyB3b3JsZCIKfQ
+    PageSize:
+      name: 'page[size]'
+      description: The maximum number of items to include per page. The last page of a collection may include fewer items.
+      required: false
+      in: query
+      allowEmptyValue: true
+      schema:
+        type: integer
+        example: 10
   schemas:
+    ListAuditLogDestinations:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuditLogDestination'
+        meta:
+          $ref: '#/components/schemas/CursorMetaPage'
+      required:
+        - data
+        - meta
     AuditLogDestination:
       description: Audit Log Destination Schema
       type: object
@@ -391,6 +444,54 @@ components:
           properties:
             invalid_parameters:
               $ref: '#/components/schemas/InvalidParameters'
+    StringFieldEqualsFilter:
+      description: Filter a string value by exact match.
+      type: string
+      title: StringFieldEqualsFilter
+    StringFieldContainsFilter:
+      description: Filter a string value field by partial contains.
+      type: object
+      properties:
+        contains:
+          type: string
+      required:
+        - contains
+      title: StringFieldContainsFilter
+    StringFieldFilter:
+      description: Filter a string value field either by exact match or partial contains.
+      oneOf:
+        - $ref: '#/components/schemas/StringFieldEqualsFilter'
+        - $ref: '#/components/schemas/StringFieldContainsFilter'
+      title: StringFieldFilter
+    CursorMetaPage:
+      type: object
+      properties:
+        first:
+          description: URI to the first page
+          type: string
+          format: path
+        last:
+          description: URI to the last page
+          type: string
+          format: path
+        next:
+          description: URI to the next page
+          type: string
+          format: path
+          nullable: true
+        previous:
+          description: URI to the previous page
+          type: string
+          format: path
+          nullable: true
+        size:
+          description: Requested page size
+          type: number
+          example: 10
+      required:
+        - size
+        - next
+        - previous
     NotFoundError:
       allOf:
         - $ref: '#/components/schemas/BaseError'
@@ -465,6 +566,10 @@ components:
             skip_ssl_verification: false
             created_at: '2023-03-20T09:29:14.52Z'
             updated_at: '2023-03-21T09:29:14.52Z'
+        meta:
+          next: /api/v2/audit-log-destinations?page%5Bafter%5D=f11CXlAMGEVFB0AEQw19QhNYMV5CCkFYSltZUFgPSBJHFwwWFg%3D%3D&page%5Bsize%5=1
+          previous: /api/v2/audit-log-destinations?page%5Bbefore%5D=dl8UWVYPEUZFA0sHQw19EUVYMV5BDhcISl1WWVgNQRBBS1gSFw%3D%3D&page%5Bsize%5D=1
+          size: 10
     Audit-Log-Destination:
       value:
         id: 07ec3858-066b-4629-bdc5-d4aa893b424d
@@ -592,13 +697,7 @@ components:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              data:
-                type: array
-                items:
-                  $ref: '#/components/schemas/AuditLogDestination'
-            title: Audit Log Destinations Response
+            $ref: '#/components/schemas/ListAuditLogDestinations'
           examples:
             Audit Log Destination Collection:
               $ref: '#/components/examples/Audit-Log-Destinations'
