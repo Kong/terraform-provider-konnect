@@ -2026,8 +2026,9 @@ components:
         invalid_parameters:
           - field: sort
             rule: enum
-            choices: []
-            reason: "\"sort\" field must contain any of: []"
+            choices:
+              - name
+            reason: "\"sort\" field must contain any of: [name]"
     InvalidSortQueryNameBadRequestExample:
       value:
         status: 400

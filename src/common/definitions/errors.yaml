@@ -234,7 +234,7 @@ components:
           uniqueItems: true
           readOnly: true
           nullable: false
-          minimum: 1
+          minItems: 1
           items: {}
         source:
           type: string

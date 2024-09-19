@@ -10481,7 +10481,7 @@ components:
         choices:
           type: array
           items: {}
-          minimum: 1
+          minItems: 1
           nullable: false
           readOnly: true
           uniqueItems: true
@@ -18741,8 +18741,9 @@ components:
         invalid_parameters:
           - field: sort
             rule: enum
-            choices: []
-            reason: '"sort" field must contain any of: []'
+            choices:
+              - name
+            reason: '"sort" field must contain any of: [name]'
     InvalidSortQueryNameBadRequestExample:
       value:
         status: 400
