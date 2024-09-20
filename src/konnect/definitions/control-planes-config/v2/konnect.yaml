@@ -1141,14 +1141,14 @@ components:
       value:
         id: e7a4f6c0-5777-4a37-bcb9-2d37d3b362ee
         name: Config Store
-        created_at: 2024-01-01T00:00:00.000Z
-        updated_at: 2024-01-01T00:00:00.000Z
+        created_at: '2024-01-01T00:00:00.000Z'
+        updated_at: '2024-01-01T00:00:00.000Z'
     ConfigStoreSecretExample:
       value:
         key: ConfigStoreSecretKey
         value: ConfigStoreSecretValue
-        created_at: 2024-01-01T00:00:00.000Z
-        updated_at: 2024-01-01T00:00:00.000Z
+        created_at: '2024-01-01T00:00:00.000Z'
+        updated_at: '2024-01-01T00:00:00.000Z'
     CreateConfigStoreRequestExample:
       summary: Create Config Store Request
       value:
