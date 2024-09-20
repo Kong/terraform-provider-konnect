@@ -516,7 +516,7 @@ paths:
     get:
       operationId: list-sni-with-certificate
       summary: List all SNIs associated with a Certificate
-      description: List all SNIs associated with a a Certificate
+      description: List all SNIs associated with a Certificate
       parameters:
         - $ref: '#/components/parameters/CertificateId'
         - $ref: '#/components/parameters/PaginationSize'
@@ -567,8 +567,8 @@ paths:
   '/control-planes/{controlPlaneId}/core-entities/certificates/{CertificateId}/snis/{SNIId}':
     delete:
       operationId: delete-sni-with-certificate
-      summary: Delete a an SNI associated with a a Certificate
-      description: Delete a an SNI associated with a a Certificate using ID or name.
+      summary: Delete a an SNI associated with a Certificate
+      description: Delete a an SNI associated with a Certificate using ID or name.
       parameters:
         - $ref: '#/components/parameters/CertificateId'
         - $ref: '#/components/parameters/SNIId'
@@ -889,11 +889,41 @@ paths:
           $ref: '#/components/responses/HTTP401Error'
       tags:
         - Consumers
+  '/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerId}/consumer_groups':
+    get:
+      operationId: list-consumer-groups-for-consumer
+      summary: List all Consumer Groups a Consumer belongs to
+      description: List all Consumer Groups a Consumer belongs to
+      parameters:
+        - $ref: '#/components/parameters/ConsumerId'
+        - $ref: '#/components/parameters/PaginationSize'
+        - $ref: '#/components/parameters/PaginationOffset'
+        - $ref: '#/components/parameters/PaginationTagsFilter'
+      responses:
+        '200':
+          description: A successful response listing consumer groups
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ConsumerGroup'
+                  next:
+                    $ref: '#/components/schemas/PaginationNextResponse'
+                  offset:
+                    $ref: '#/components/schemas/PaginationOffsetResponse'
+      tags:
+        - Consumer Groups
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
   '/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/acls':
     get:
       operationId: list-acl-with-consumer
       summary: List all ACLs associated with a Consumer
-      description: List all ACLs associated with a a Consumer
+      description: List all ACLs associated with a Consumer
       parameters:
         - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
         - $ref: '#/components/parameters/PaginationSize'
@@ -944,8 +974,8 @@ paths:
   '/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/acls/{ACLId}':
     delete:
       operationId: delete-acl-with-consumer
-      summary: Delete a an ACL associated with a a Consumer
-      description: Delete a an ACL associated with a a Consumer using ID.
+      summary: Delete a an ACL associated with a Consumer
+      description: Delete a an ACL associated with a Consumer using ID.
       parameters:
         - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
         - $ref: '#/components/parameters/ACLId'
@@ -1001,7 +1031,7 @@ paths:
     get:
       operationId: list-basic-auth-with-consumer
       summary: List all Basic-auth credentials associated with a Consumer
-      description: List all Basic-auth credentials associated with a a Consumer
+      description: List all Basic-auth credentials associated with a Consumer
       parameters:
         - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
         - $ref: '#/components/parameters/PaginationSize'
@@ -1052,8 +1082,8 @@ paths:
   '/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/basic-auth/{BasicAuthId}':
     delete:
       operationId: delete-basic-auth-with-consumer
-      summary: Delete a a Basic-auth credential associated with a a Consumer
-      description: Delete a a Basic-auth credential associated with a a Consumer using ID.
+      summary: Delete a a Basic-auth credential associated with a Consumer
+      description: Delete a a Basic-auth credential associated with a Consumer using ID.
       parameters:
         - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
         - $ref: '#/components/parameters/BasicAuthId'
@@ -1109,7 +1139,7 @@ paths:
     get:
       operationId: list-hmac-auth-with-consumer
       summary: List all HMAC-auth credentials associated with a Consumer
-      description: List all HMAC-auth credentials associated with a a Consumer
+      description: List all HMAC-auth credentials associated with a Consumer
       parameters:
         - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
         - $ref: '#/components/parameters/PaginationSize'
@@ -1160,8 +1190,8 @@ paths:
   '/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/hmac-auth/{HMACAuthId}':
     delete:
       operationId: delete-hmac-auth-with-consumer
-      summary: Delete a a HMAC-auth credential associated with a a Consumer
-      description: Delete a a HMAC-auth credential associated with a a Consumer using ID.
+      summary: Delete a a HMAC-auth credential associated with a Consumer
+      description: Delete a a HMAC-auth credential associated with a Consumer using ID.
       parameters:
         - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
         - $ref: '#/components/parameters/HMACAuthId'
@@ -1217,7 +1247,7 @@ paths:
     get:
       operationId: list-jwt-with-consumer
       summary: List all JWTs associated with a Consumer
-      description: List all JWTs associated with a a Consumer
+      description: List all JWTs associated with a Consumer
       parameters:
         - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
         - $ref: '#/components/parameters/PaginationSize'
@@ -1268,8 +1298,8 @@ paths:
   '/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/jwt/{JWTId}':
     delete:
       operationId: delete-jwt-with-consumer
-      summary: Delete a a JWT associated with a a Consumer
-      description: Delete a a JWT associated with a a Consumer using ID.
+      summary: Delete a a JWT associated with a Consumer
+      description: Delete a a JWT associated with a Consumer using ID.
       parameters:
         - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
         - $ref: '#/components/parameters/JWTId'
@@ -1325,7 +1355,7 @@ paths:
     get:
       operationId: list-key-auth-with-consumer
       summary: List all API-keys associated with a Consumer
-      description: List all API-keys associated with a a Consumer
+      description: List all API-keys associated with a Consumer
       parameters:
         - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
         - $ref: '#/components/parameters/PaginationSize'
@@ -1376,8 +1406,8 @@ paths:
   '/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/key-auth/{KeyAuthId}':
     delete:
       operationId: delete-key-auth-with-consumer
-      summary: Delete a an API-key associated with a a Consumer
-      description: Delete a an API-key associated with a a Consumer using ID.
+      summary: Delete a an API-key associated with a Consumer
+      description: Delete a an API-key associated with a Consumer using ID.
       parameters:
         - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
         - $ref: '#/components/parameters/KeyAuthId'
@@ -1962,7 +1992,7 @@ paths:
     get:
       operationId: list-plugin-with-route
       summary: List all Plugins associated with a Route
-      description: List all Plugins associated with a a Route
+      description: List all Plugins associated with a Route
       parameters:
         - $ref: '#/components/parameters/RouteId'
         - $ref: '#/components/parameters/PaginationSize'
@@ -2013,8 +2043,8 @@ paths:
   '/control-planes/{controlPlaneId}/core-entities/routes/{RouteId}/plugins/{PluginId}':
     delete:
       operationId: delete-plugin-with-route
-      summary: Delete a a Plugin associated with a a Route
-      description: Delete a a Plugin associated with a a Route using ID.
+      summary: Delete a a Plugin associated with a Route
+      description: Delete a a Plugin associated with a Route using ID.
       parameters:
         - $ref: '#/components/parameters/RouteId'
         - $ref: '#/components/parameters/PluginId'
@@ -2207,7 +2237,7 @@ paths:
     get:
       operationId: list-plugin-with-service
       summary: List all Plugins associated with a Service
-      description: List all Plugins associated with a a Service
+      description: List all Plugins associated with a Service
       parameters:
         - $ref: '#/components/parameters/ServiceId'
         - $ref: '#/components/parameters/PaginationSize'
@@ -2258,8 +2288,8 @@ paths:
   '/control-planes/{controlPlaneId}/core-entities/services/{ServiceId}/plugins/{PluginId}':
     delete:
       operationId: delete-plugin-with-service
-      summary: Delete a a Plugin associated with a a Service
-      description: Delete a a Plugin associated with a a Service using ID.
+      summary: Delete a a Plugin associated with a Service
+      description: Delete a a Plugin associated with a Service using ID.
       parameters:
         - $ref: '#/components/parameters/ServiceId'
         - $ref: '#/components/parameters/PluginId'
@@ -2315,7 +2345,7 @@ paths:
     get:
       operationId: list-route-with-service
       summary: List all Routes associated with a Service
-      description: List all Routes associated with a a Service
+      description: List all Routes associated with a Service
       parameters:
         - $ref: '#/components/parameters/ServiceId'
         - $ref: '#/components/parameters/PaginationSize'
@@ -2366,8 +2396,8 @@ paths:
   '/control-planes/{controlPlaneId}/core-entities/services/{ServiceId}/routes/{RouteId}':
     delete:
       operationId: delete-route-with-service
-      summary: Delete a a Route associated with a a Service
-      description: Delete a a Route associated with a a Service using ID or name.
+      summary: Delete a a Route associated with a Service
+      description: Delete a a Route associated with a Service using ID or name.
       parameters:
         - $ref: '#/components/parameters/ServiceId'
         - $ref: '#/components/parameters/RouteId'
@@ -2641,7 +2671,7 @@ paths:
     get:
       operationId: list-target-with-upstream
       summary: List all Targets associated with an Upstream
-      description: List all Targets associated with a an Upstream
+      description: List all Targets associated with an Upstream
       parameters:
         - $ref: '#/components/parameters/UpstreamIdForTarget'
         - $ref: '#/components/parameters/PaginationSize'
@@ -2692,8 +2722,8 @@ paths:
   '/control-planes/{controlPlaneId}/core-entities/upstreams/{UpstreamIdForTarget}/targets/{TargetId}':
     delete:
       operationId: delete-target-with-upstream
-      summary: Delete a a Target associated with a an Upstream
-      description: Delete a a Target associated with a an Upstream using ID or target.
+      summary: Delete a a Target associated with an Upstream
+      description: Delete a a Target associated with an Upstream using ID or target.
       parameters:
         - $ref: '#/components/parameters/UpstreamIdForTarget'
         - $ref: '#/components/parameters/TargetId'
@@ -3524,7 +3554,21 @@ components:
           type: string
         ordering:
           type: object
-          additionalProperties: true
+          properties:
+            after:
+              type: object
+              properties:
+                access:
+                  type: array
+                  items:
+                    type: string
+            before:
+              type: object
+              properties:
+                access:
+                  type: array
+                  items:
+                    type: string
         protocols:
           description: 'A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.'
           type: array
@@ -4101,6 +4145,7 @@ components:
         config:
           description: The configuration properties for the Vault which can be found on the vaults' documentation page.
           type: object
+          additionalProperties: true
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
