@@ -192,6 +192,27 @@ paths:
       parameters:
         - $ref: ../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize
         - $ref: ../../../../common/definitions/metadatas.yaml#/components/parameters/PageAfter
+    put:
+      summary: Upsert Control Plane Group Members
+      operationId: put-control-planes-id-group-memberships
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: ../../../../common/definitions/errors.yaml#/components/responses/BadRequest
+        '401':
+          $ref: ../../../../common/definitions/errors.yaml#/components/responses/Unauthorized
+        '403':
+          $ref: ../../../../common/definitions/errors.yaml#/components/responses/Forbidden
+        '404':
+          $ref: ../../../../common/definitions/errors.yaml#/components/responses/NotFound
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+      requestBody:
+        $ref: '#/components/requestBodies/GroupMemebershipUpsert'
+      tags:
+        - Control Plane Groups
+      description: Adds one or more control planes as a member of a control plane group.
   '/control-planes/{id}/group-memberships/add':
     parameters:
       - schema:
@@ -1175,6 +1196,19 @@ components:
                   - id: 778a0474-687d-41af-8e51-a0488d790586
                   - id: fa85f8e8-2e5a-496e-b6d0-4e534eaab459
       description: Request body for removing a list of child control planes from a control plane group membership.
+    GroupMemebershipUpsert:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/GroupMembership"
+          examples:
+            Example 1:
+              value:
+                members:
+                  - id: 1beb9ad3-d21b-4090-b6e3-574784d1166d
+                  - id: 778a0474-687d-41af-8e51-a0488d790586
+                  - id: fa85f8e8-2e5a-496e-b6d0-4e534eaab459
+      description: Request body for upserting a list of child control planes to a control plane group membership.
 security:
   - personalAccessToken: []
   - systemAccountAccessToken: []

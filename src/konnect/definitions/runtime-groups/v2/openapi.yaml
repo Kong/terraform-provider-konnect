@@ -188,6 +188,27 @@ paths:
       parameters:
         - $ref: ../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize
         - $ref: ../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber
+    put:
+      summary: Upsert Composite RG Members
+      operationId: put-runtime-groups-id-composite-memberships
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: ../../../../common/definitions/errors.yaml#/components/responses/BadRequest
+        '401':
+          $ref: ../../../../common/definitions/errors.yaml#/components/responses/Unauthorized
+        '403':
+          $ref: ../../../../common/definitions/errors.yaml#/components/responses/Forbidden
+        '404':
+          $ref: ../../../../common/definitions/errors.yaml#/components/responses/NotFound
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+      requestBody:
+        $ref: '#/components/requestBodies/CompositeMemebershipUpsert'
+      tags:
+        - Composite Runtime Groups
+      description: Upserts runtime groups as a member of a composite runtime group.
   '/runtime-groups/{id}/composite-memberships/add':
     parameters:
       - schema:
@@ -1162,6 +1183,27 @@ components:
                   - id: 778a0474-687d-41af-8e51-a0488d790586
                   - id: fa85f8e8-2e5a-496e-b6d0-4e534eaab459
       description: Request body for removing a list of child runtime groups from a composite runtime group membership.
+    CompositeMemebershipUpsert:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              members:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+          examples:
+            Example 1:
+              value:
+                members:
+                  - id: 1beb9ad3-d21b-4090-b6e3-574784d1166d
+                  - id: 778a0474-687d-41af-8e51-a0488d790586
+                  - id: fa85f8e8-2e5a-496e-b6d0-4e534eaab459
+      description: Request body for upserting a list of child runtime groups to a composite runtime group membership.
 security:
   - personalAccessToken: []
   - systemAccountAccessToken: []
