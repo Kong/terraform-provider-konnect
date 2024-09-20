@@ -298,7 +298,11 @@ components:
         name:
           type: string
           description: Name of the developer portal.
+        canonical_domain:
+          type: string
+          description: The canonical domain of the developer portal.
       required:
+        - canonical_domain
         - portal_id
         - org_id
         - is_public
