@@ -8416,7 +8416,7 @@ components:
         type: string
         format: uuid
         example: 9524ec7d-36d9-465d-a8c5-83a3c9390458
-      description: The UUID of your control plane. This variable is available in the Konnect manager
+      description: The UUID of your control plane. This variable is available in the Konnect manager.
     pagination-size:
       description: Number of resources to be returned.
       in: query
@@ -12407,6 +12407,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ConfigurationDataPlaneGroup'
+          format: set
         entity_version:
           description: |
             Positive, monotonically increasing version integer, to serialize configuration changes.
@@ -12971,6 +12972,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CreateConfigurationDataPlaneGroup'
+          format: set
         api_access:
           $ref: '#/components/schemas/ApiAccess'
       additionalProperties: false
@@ -13680,6 +13682,7 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/ProxyURL'
+      format: set
       example:
         - host: example.com
           port: 443

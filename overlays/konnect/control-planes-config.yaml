@@ -19,10 +19,6 @@ actions:
         type: string
 
   # Plugin
-  # This triggers a bug in Koko right now
-  - target: $["components"]["schemas"]["PluginWithoutParents"]["properties"]["ordering"]
-    remove: true
-
   - target: $["components"]["schemas"]["PluginWithoutParents"]["properties"]["config"]
     update:
       x-speakeasy-type-override: any

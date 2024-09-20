@@ -944,6 +944,7 @@ components:
       title: ProxyURLs
       description: Array of proxy URLs associated with reaching the data-planes connected to a control-plane.
       type: array
+      format: set
       items:
         $ref: '#/components/schemas/ProxyURL'
       example:

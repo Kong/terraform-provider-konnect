@@ -1420,6 +1420,7 @@ components:
           $ref: '#/components/schemas/ConfigurationDataPlaneGroupConfigs'
         dataplane_groups:
           type: array
+          format: set
           description: |
             List of data-plane groups that describe where data-planes will be deployed to, along with how many
             instances.
@@ -2002,6 +2003,7 @@ components:
           $ref: '#/components/schemas/GatewayVersion'
         dataplane_groups:
           type: array
+          format: set
           description: List of data-plane groups that describe where to deploy instances, along with how many instances.
           items:
             $ref: '#/components/schemas/CreateConfigurationDataPlaneGroup'

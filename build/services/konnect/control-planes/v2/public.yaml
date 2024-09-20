@@ -758,6 +758,7 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/ProxyURL'
+      format: set
       example:
         - host: example.com
           port: 443

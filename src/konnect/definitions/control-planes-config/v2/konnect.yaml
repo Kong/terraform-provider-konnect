@@ -609,6 +609,7 @@ components:
       schema:
         type: string
     controlPlaneId:
+      x-speakeasy-param-force-new: true
       name: controlPlaneId
       in: path
       required: true
@@ -618,7 +619,7 @@ components:
         example: 9524ec7d-36d9-465d-a8c5-83a3c9390458
       description: >-
         The UUID of your control plane. This variable is available in the
-        Konnect manager
+        Konnect manager.
     page_size:
       name: page_size
       in: query

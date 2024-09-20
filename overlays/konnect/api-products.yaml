@@ -19,15 +19,6 @@ actions:
     update:
       required:
         - portal_ids
-  # Labels aren't allowed on APIProductVersions
-  - target: $["components"]["schemas"]["APIProductVersion"]["properties"]["labels"]
-    remove: true
-  - target: $["components"]["schemas"]["APIProductVersion"]["required"][5]
-    remove: true
-  - target: $["components"]["schemas"]["CreateAPIProductVersionDTO"]["properties"]["labels"]
-    remove: true
-  - target: $["components"]["schemas"]["UpdateAPIProductVersionDTO"]["properties"]["labels"]
-    remove: true
   
   # We don't need the AST for content
   - target: $["components"]["examples"]["APIProductDocumentExample"]["value"]["ast"]

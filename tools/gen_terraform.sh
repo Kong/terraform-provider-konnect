@@ -28,5 +28,8 @@ apply_overlay overlays/konnect/remove-defaults.yaml
 # Remove non-annotated fields
 node $DIR/filter-terraform-operations.js
 
+# Reformat the spec
+npx openapi-format --sortFile .openapi-format-sort.json build/complete/terraform/public.yaml -o build/complete/terraform/public.yaml;
+
 # Copy to TF provider folder
 cp $DIR/../build/complete/terraform/public.yaml $DIR/../../terraform-provider-konnect/openapi.yaml

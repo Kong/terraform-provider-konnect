@@ -46,7 +46,15 @@ async function main() {
 
     // Filter down paths to the groups that we need
     let tf = filterOperations(complete, function (node) {
-      return node["x-speakeasy-entity-operation"];
+
+      const pluginOperations = [
+        "create-plugin",
+        "delete-plugin",
+        "get-plugin",
+        "fetch-plugin-schema",
+        "upsert-plugin",
+      ];
+      return node["x-speakeasy-entity-operation"] || pluginOperations.includes(node.operationId);
     });
 
     tf = removeNodeWithKey(tf, 'x-examples');
