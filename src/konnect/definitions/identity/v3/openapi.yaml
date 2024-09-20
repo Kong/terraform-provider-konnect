@@ -42,6 +42,23 @@ paths:
           $ref: '#/components/responses/IdentityNotFound'
       tags:
         - SSO Auth0
+  /internal/users:
+    get:
+      operationId: get-users-internal
+      x-internal: true
+      summary: Retrieves users matching a provided auth0 subject and email.
+      description: "The response contains user ids and (non-deleted, non-deleting) organization ids for users associated with provided auth0 user subject."
+      parameters:
+        - name: aid
+          in: query
+          schema:
+            type: string
+          description: "Auth0 User ID"
+      responses:
+        '200':
+          $ref: '#/components/responses/InternalUsers'
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
   /internal/oauth/device/authorize:
     post:
       operationId: post-oauth-device-authorize
@@ -1728,6 +1745,27 @@ components:
           examples:
             Get Impersonation Settings:
               $ref: '#/components/examples/GetImpersonationSettings'
+    InternalUsers:
+      description: A get action paginated response of users and organization IDs.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              meta:
+                $ref: '../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserOrgIDs'
+          examples:
+            Internal Users Collection:
+              value:
+                meta:
+                  page:
+                    number: 1
+                    size: 1
+                    total: 10
     UpdateImpersonationSettingsResponse:
       description: Response for Update Impersonation Settings endpoint
       content:
@@ -4625,6 +4663,21 @@ components:
                   example: 'This role grants access to read-only permissions to DCR providers.'
                   enum:
                     - 'This role grants access to read-only permissions to DCR providers.'
+    UserOrgIDs:
+      title: User with Organization IDs only.
+      description: User with Organization IDs only.
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: ID of a user.
+          readOnly: true
+        organization_id:
+          type: string
+          format: uuid
+          description: organization ID of a user.
+          readOnly: true
 
   securitySchemes:
     systemAccountAccessToken:

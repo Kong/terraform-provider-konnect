@@ -547,6 +547,24 @@ paths:
         - url: 'https://global.api.konghq.com/'
       tags:
         - Managed System Accounts - Roles
+  /v3/internal/users:
+    get:
+      operationId: get-users-internal
+      summary: Retrieves users matching a provided auth0 subject and email.
+      description: 'The response contains user ids and (non-deleted, non-deleting) organization ids for users associated with provided auth0 user subject.'
+      parameters:
+        - name: aid
+          in: query
+          description: Auth0 User ID
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/InternalUsers'
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
+      servers:
+        - url: 'https://global.api.konghq.com/'
   /v3/logout:
     post:
       operationId: logout
@@ -1624,6 +1642,21 @@ components:
       title: BooleanFieldFilter
       x-examples:
         example-1: true
+    UserOrgIDs:
+      description: User with Organization IDs only.
+      type: object
+      properties:
+        id:
+          description: ID of a user.
+          type: string
+          format: uuid
+          readOnly: true
+        organization_id:
+          description: organization ID of a user.
+          type: string
+          format: uuid
+          readOnly: true
+      title: User with Organization IDs only.
     OrganizationState:
       type: object
       properties:
@@ -2535,6 +2568,27 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Auth0Registration'
+    InternalUsers:
+      description: A get action paginated response of users and organization IDs.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              meta:
+                $ref: '#/components/schemas/PaginatedMeta'
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserOrgIDs'
+          examples:
+            Internal Users Collection:
+              value:
+                meta:
+                  page:
+                    number: 1
+                    size: 1
+                    total: 10
     Auth0OrganizationsCollection:
       description: A paginated list response for a collection of auth0 organizations.
       content:
