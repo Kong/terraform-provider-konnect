@@ -226,6 +226,7 @@ components:
                         x-foreign: true
                   type: object
         ACLWithoutParents:
+            additionalProperties: false
             properties:
                 created_at:
                     description: Unix epoch when the resource was created.
@@ -234,7 +235,6 @@ components:
                 group:
                     type: string
                 id:
-                    readOnly: true
                     type: string
                 tags:
                     items:
@@ -254,13 +254,13 @@ components:
                         x-foreign: true
                   type: object
         BasicAuthWithoutParents:
+            additionalProperties: false
             properties:
                 created_at:
                     description: Unix epoch when the resource was created.
                     readOnly: true
                     type: integer
                 id:
-                    readOnly: true
                     type: string
                 password:
                     type: string
@@ -272,6 +272,7 @@ components:
                     type: string
             type: object
         CACertificate:
+            additionalProperties: false
             properties:
                 cert:
                     description: PEM-encoded public certificate of the CA.
@@ -284,7 +285,6 @@ components:
                     readOnly: true
                     type: integer
                 id:
-                    readOnly: true
                     type: string
                 tags:
                     description: An optional set of strings associated with the Certificate for grouping and filtering.
@@ -297,6 +297,7 @@ components:
                     type: integer
             type: object
         Certificate:
+            additionalProperties: false
             properties:
                 cert:
                     description: PEM-encoded public certificate chain of the SSL key pair. This field is _referenceable_, which means it can be securely stored as a [secret](/gateway/latest/plan-and-deploy/security/secrets-management/getting-started) in a vault. References must follow a [specific format](/gateway/latest/plan-and-deploy/security/secrets-management/reference-format).
@@ -309,7 +310,6 @@ components:
                     readOnly: true
                     type: integer
                 id:
-                    readOnly: true
                     type: string
                 key:
                     description: PEM-encoded private key of the SSL key pair. This field is _referenceable_, which means it can be securely stored as a [secret](/gateway/latest/plan-and-deploy/security/secrets-management/getting-started) in a vault. References must follow a [specific format](/gateway/latest/plan-and-deploy/security/secrets-management/reference-format).
@@ -328,6 +328,7 @@ components:
                     type: integer
             type: object
         Consumer:
+            additionalProperties: false
             properties:
                 created_at:
                     description: Unix epoch when the resource was created.
@@ -337,7 +338,6 @@ components:
                     description: Field for storing an existing unique ID for the Consumer - useful for mapping Kong with users in your existing database. You must send either this field or `username` with the request.
                     type: string
                 id:
-                    readOnly: true
                     type: string
                 tags:
                     description: An optional set of strings associated with the Consumer for grouping and filtering.
@@ -353,13 +353,13 @@ components:
                     type: string
             type: object
         ConsumerGroup:
+            additionalProperties: false
             properties:
                 created_at:
                     description: Unix epoch when the resource was created.
                     readOnly: true
                     type: integer
                 id:
-                    readOnly: true
                     type: string
                 name:
                     type: string
@@ -400,13 +400,13 @@ components:
                         x-foreign: true
                   type: object
         HMACAuthWithoutParents:
+            additionalProperties: false
             properties:
                 created_at:
                     description: Unix epoch when the resource was created.
                     readOnly: true
                     type: integer
                 id:
-                    readOnly: true
                     type: string
                 secret:
                     type: string
@@ -430,6 +430,7 @@ components:
                         x-foreign: true
                   type: object
         JWTWithoutParents:
+            additionalProperties: false
             properties:
                 algorithm:
                     default: HS256
@@ -453,7 +454,6 @@ components:
                     readOnly: true
                     type: integer
                 id:
-                    readOnly: true
                     type: string
                 key:
                     type: string
@@ -467,13 +467,13 @@ components:
                     type: array
             type: object
         Key:
+            additionalProperties: false
             properties:
                 created_at:
                     description: Unix epoch when the resource was created.
                     readOnly: true
                     type: integer
                 id:
-                    readOnly: true
                     type: string
                 jwk:
                     description: A JSON Web Key represented as a string.
@@ -523,13 +523,13 @@ components:
                         x-foreign: true
                   type: object
         KeyAuthWithoutParents:
+            additionalProperties: false
             properties:
                 created_at:
                     description: Unix epoch when the resource was created.
                     readOnly: true
                     type: integer
                 id:
-                    readOnly: true
                     type: string
                 key:
                     type: string
@@ -539,13 +539,13 @@ components:
                     type: array
             type: object
         KeySet:
+            additionalProperties: false
             properties:
                 created_at:
                     description: Unix epoch when the resource was created.
                     readOnly: true
                     type: integer
                 id:
-                    readOnly: true
                     type: string
                 name:
                     type: string
@@ -601,6 +601,7 @@ components:
                         x-foreign: true
                   type: object
         PluginWithoutParents:
+            additionalProperties: false
             properties:
                 config:
                     additionalProperties: true
@@ -615,7 +616,6 @@ components:
                     description: Whether the plugin is applied.
                     type: boolean
                 id:
-                    readOnly: true
                     type: string
                 instance_name:
                     type: string
@@ -684,6 +684,7 @@ components:
                         x-foreign: true
                   type: object
         RouteWithoutParents:
+            additionalProperties: false
             properties:
                 created_at:
                     description: Unix epoch when the resource was created.
@@ -719,7 +720,6 @@ components:
                         - 308
                     type: integer
                 id:
-                    readOnly: true
                     type: string
                 methods:
                     description: A list of HTTP methods that match this Route.
@@ -819,13 +819,13 @@ components:
                         x-foreign: true
                   type: object
         SNIWithoutParents:
+            additionalProperties: false
             properties:
                 created_at:
                     description: Unix epoch when the resource was created.
                     readOnly: true
                     type: integer
                 id:
-                    readOnly: true
                     type: string
                 name:
                     description: The SNI name to associate with the given certificate.
@@ -841,6 +841,7 @@ components:
                     type: integer
             type: object
         Service:
+            additionalProperties: false
             properties:
                 ca_certificates:
                     description: Array of `CA Certificate` object UUIDs that are used to build the trust store while verifying upstream server's TLS certificate. If set to `null` when Nginx default is respected. If default CA list in Nginx are not specified and TLS verification is enabled, then handshake with upstream server will always fail (because no CA are trusted).
@@ -871,7 +872,6 @@ components:
                     description: The host of the upstream server. Note that the host value is case sensitive.
                     type: string
                 id:
-                    readOnly: true
                     type: string
                 name:
                     description: The Service name.
@@ -943,13 +943,13 @@ components:
                         x-foreign: true
                   type: object
         TargetWithoutParents:
+            additionalProperties: false
             properties:
                 created_at:
                     description: Unix epoch when the resource was created.
                     readOnly: true
                     type: number
                 id:
-                    readOnly: true
                     type: string
                 tags:
                     description: An optional set of strings associated with the Target for grouping and filtering.
@@ -969,6 +969,7 @@ components:
                     type: integer
             type: object
         Upstream:
+            additionalProperties: false
             properties:
                 algorithm:
                     default: round-robin
@@ -1187,7 +1188,6 @@ components:
                     description: The hostname to be used as `Host` header when proxying requests through Kong.
                     type: string
                 id:
-                    readOnly: true
                     type: string
                 name:
                     description: This is a hostname, which must be equal to the `host` of a Service.
@@ -1211,6 +1211,7 @@ components:
                     type: boolean
             type: object
         Vault:
+            additionalProperties: false
             properties:
                 config:
                     additionalProperties: true
@@ -1224,7 +1225,6 @@ components:
                     description: The description of the Vault entity.
                     type: string
                 id:
-                    readOnly: true
                     type: string
                 name:
                     description: The name of the Vault that's going to be added. Currently, the Vault implementation must be installed in every Kong instance.

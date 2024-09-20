@@ -3976,6 +3976,7 @@ components:
           type: integer
           $ref: '#/components/schemas/UpdatedAt'
           readOnly: true
+      additionalProperties: false
       required:
         - id
         - username

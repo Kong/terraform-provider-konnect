@@ -9248,11 +9248,11 @@ components:
           type: string
         id:
           type: string
-          readOnly: true
         tags:
           type: array
           items:
             type: string
+      additionalProperties: false
     AcmePlugin:
       x-speakeasy-entity: GatewayPluginAcme
       allOf:
@@ -10517,7 +10517,6 @@ components:
           readOnly: true
         id:
           type: string
-          readOnly: true
         password:
           type: string
         tags:
@@ -10526,6 +10525,7 @@ components:
             type: string
         username:
           type: string
+      additionalProperties: false
     BotDetectionPlugin:
       x-speakeasy-entity: GatewayPluginBotDetection
       allOf:
@@ -10569,7 +10569,6 @@ components:
           readOnly: true
         id:
           type: string
-          readOnly: true
         tags:
           description: An optional set of strings associated with the Certificate for grouping and filtering.
           type: array
@@ -10579,6 +10578,7 @@ components:
           description: Unix epoch when the resource was last updated.
           type: integer
           readOnly: true
+      additionalProperties: false
     CanaryPlugin:
       x-speakeasy-entity: GatewayPluginCanary
       allOf:
@@ -10676,7 +10676,6 @@ components:
           readOnly: true
         id:
           type: string
-          readOnly: true
         key:
           description: 'PEM-encoded private key of the SSL key pair. This field is _referenceable_, which means it can be securely stored as a [secret](/gateway/latest/plan-and-deploy/security/secrets-management/getting-started) in a vault. References must follow a [specific format](/gateway/latest/plan-and-deploy/security/secrets-management/reference-format).'
           type: string
@@ -10692,6 +10691,7 @@ components:
           description: Unix epoch when the resource was last updated.
           type: integer
           readOnly: true
+      additionalProperties: false
     Consumer:
       x-speakeasy-entity: GatewayConsumer
       type: object
@@ -10705,7 +10705,6 @@ components:
           type: string
         id:
           type: string
-          readOnly: true
         tags:
           description: An optional set of strings associated with the Consumer for grouping and filtering.
           type: array
@@ -10718,6 +10717,7 @@ components:
         username:
           description: The unique username of the Consumer. You must send either this field or `custom_id` with the request.
           type: string
+      additionalProperties: false
     ConsumerGroup:
       x-speakeasy-entity: GatewayConsumerGroup
       type: object
@@ -10728,7 +10728,6 @@ components:
           readOnly: true
         id:
           type: string
-          readOnly: true
         name:
           type: string
         tags:
@@ -10739,6 +10738,7 @@ components:
           description: Unix epoch when the resource was last updated.
           type: integer
           readOnly: true
+      additionalProperties: false
     ConsumerGroupInsideWrapper:
       type: object
       properties:
@@ -11975,7 +11975,6 @@ components:
           readOnly: true
         id:
           type: string
-          readOnly: true
         secret:
           type: string
         tags:
@@ -11984,6 +11983,7 @@ components:
             type: string
         username:
           type: string
+      additionalProperties: false
     HmacAuthPlugin:
       x-speakeasy-entity: GatewayPluginHmacAuth
       allOf:
@@ -12211,7 +12211,6 @@ components:
           readOnly: true
         id:
           type: string
-          readOnly: true
         key:
           type: string
         rsa_public_key:
@@ -12222,6 +12221,7 @@ components:
           type: array
           items:
             type: string
+      additionalProperties: false
     JqPlugin:
       x-speakeasy-entity: GatewayPluginJq
       allOf:
@@ -13107,7 +13107,6 @@ components:
           readOnly: true
         id:
           type: string
-          readOnly: true
         jwk:
           description: A JSON Web Key represented as a string.
           type: string
@@ -13142,6 +13141,7 @@ components:
           description: Unix epoch when the resource was last updated.
           type: integer
           readOnly: true
+      additionalProperties: false
     KeyAuth:
       allOf:
         - $ref: '#/components/schemas/KeyAuthWithoutParents'
@@ -13259,13 +13259,13 @@ components:
           readOnly: true
         id:
           type: string
-          readOnly: true
         key:
           type: string
         tags:
           type: array
           items:
             type: string
+      additionalProperties: false
     KeySet:
       x-speakeasy-entity: GatewayKeySet
       type: object
@@ -13276,7 +13276,6 @@ components:
           readOnly: true
         id:
           type: string
-          readOnly: true
         name:
           type: string
         tags:
@@ -13287,6 +13286,7 @@ components:
           description: Unix epoch when the resource was last updated.
           type: integer
           readOnly: true
+      additionalProperties: false
     KonnectApplicationAuthPlugin:
       x-speakeasy-entity: GatewayPluginKonnectApplicationAuth
       allOf:
@@ -17362,7 +17362,6 @@ components:
           default: true
         id:
           type: string
-          readOnly: true
         instance_name:
           type: string
         name:
@@ -17415,6 +17414,7 @@ components:
           description: Unix epoch when the resource was last updated.
           type: integer
           readOnly: true
+      additionalProperties: false
     PostFunctionPlugin:
       x-speakeasy-entity: GatewayPluginPostFunction
       allOf:
@@ -19240,7 +19240,6 @@ components:
             - 308
         id:
           type: string
-          readOnly: true
         methods:
           description: A list of HTTP methods that match this Route.
           type: array
@@ -19324,6 +19323,7 @@ components:
           description: Unix epoch when the resource was last updated.
           type: integer
           readOnly: true
+      additionalProperties: false
     SNI:
       allOf:
         - $ref: '#/components/schemas/SNIWithoutParents'
@@ -19348,7 +19348,6 @@ components:
           readOnly: true
         id:
           type: string
-          readOnly: true
         name:
           description: The SNI name to associate with the given certificate.
           type: string
@@ -19361,6 +19360,7 @@ components:
           description: Unix epoch when the resource was last updated.
           type: integer
           readOnly: true
+      additionalProperties: false
     SamlPlugin:
       x-speakeasy-entity: GatewayPluginSaml
       allOf:
@@ -19862,7 +19862,6 @@ components:
           type: string
         id:
           type: string
-          readOnly: true
         name:
           description: The Service name.
           type: string
@@ -19919,6 +19918,7 @@ components:
           description: The timeout in milliseconds between two successive write operations for transmitting a request to the upstream server.
           type: integer
           default: 60000
+      additionalProperties: false
     SessionPlugin:
       x-speakeasy-entity: GatewayPluginSession
       allOf:
@@ -20551,7 +20551,6 @@ components:
           readOnly: true
         id:
           type: string
-          readOnly: true
         tags:
           description: An optional set of strings associated with the Target for grouping and filtering.
           type: array
@@ -20568,6 +20567,7 @@ components:
           description: 'The weight this target gets within the upstream loadbalancer (`0`-`65535`). If the hostname resolves to an SRV record, the `weight` value will be overridden by the value from the DNS record.'
           type: integer
           default: 100
+      additionalProperties: false
     TcpLogPlugin:
       x-speakeasy-entity: GatewayPluginTcpLog
       allOf:
@@ -20915,7 +20915,6 @@ components:
           type: string
         id:
           type: string
-          readOnly: true
         name:
           description: 'This is a hostname, which must be equal to the `host` of a Service.'
           type: string
@@ -20936,6 +20935,7 @@ components:
           description: 'If set, the balancer will use SRV hostname(if DNS Answer has SRV record) as the proxy upstream `Host`.'
           type: boolean
           default: false
+      additionalProperties: false
     UpstreamTimeoutPlugin:
       x-speakeasy-entity: GatewayPluginUpstreamTimeout
       allOf:
@@ -20981,7 +20981,6 @@ components:
           type: string
         id:
           type: string
-          readOnly: true
         name:
           description: 'The name of the Vault that''s going to be added. Currently, the Vault implementation must be installed in every Kong instance.'
           type: string
@@ -20997,6 +20996,7 @@ components:
           description: Unix epoch when the resource was last updated.
           type: integer
           readOnly: true
+      additionalProperties: false
     VaultAuthPlugin:
       x-speakeasy-entity: GatewayPluginVaultAuth
       allOf:
