@@ -24,6 +24,8 @@ paths:
         - $ref: '#/components/parameters/FilterByProductNameEqualityShort'
         - $ref: '#/components/parameters/FilterByProductVersionNameEquality'
         - $ref: '#/components/parameters/FilterByProductVersionNameEqualityShort'
+        - $ref: '#/components/parameters/FilterByProductVersionNameContains'
+        - $ref: '#/components/parameters/FilterByProductNameContains'
       responses:
         '200':
           $ref: '#/components/responses/ListRegistrations'
@@ -146,6 +148,14 @@ components:
       schema:
         type: string
         example: 5be86298-147b-45ab-bfaf-a1bff97dce39
+    FilterByProductNameContains:
+      name: 'filter[product_name][contains]'
+      description: Filter by contains comparison of the product_name property with a supplied substring
+      in: query
+      required: false
+      schema:
+        type: string
+        example: good service
     FilterByProductNameEquality:
       name: 'filter[product_name][eq]'
       description: Filter by direct equality comparison of the product_name property with a supplied value.
@@ -157,6 +167,14 @@ components:
     FilterByProductNameEqualityShort:
       name: 'filter[product_name]'
       description: Filter by direct equality comparison (short-hand) of the product_name property with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: good service
+    FilterByProductVersionNameContains:
+      name: 'filter[product_version_name][contains]'
+      description: Filter by contains comparison of the product_version_name property with a supplied substring
       in: query
       required: false
       schema:

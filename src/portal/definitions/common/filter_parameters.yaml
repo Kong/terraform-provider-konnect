@@ -58,6 +58,14 @@ components:
       schema:
         type: string
         example: 'good service'
+    FilterByProductNameContains:
+      name: 'filter[product_name][contains]'
+      description: Filter by contains comparison of the product_name property with a supplied substring
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 'good service'
     FilterByProductVersionNameEquality:
       name: 'filter[product_version_name][eq]'
       description: Filter by direct equality comparison of the product_version_name property with a supplied value.
@@ -69,6 +77,14 @@ components:
     FilterByProductVersionNameEqualityShort:
       name: 'filter[product_version_name]'
       description: Filter by direct equality comparison (short-hand) of the product_version_name property with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 'good service'
+    FilterByProductVersionNameContains:
+      name: 'filter[product_version_name][contains]'
+      description: Filter by contains comparison of the product_version_name property with a supplied substring
       in: query
       required: false
       schema:

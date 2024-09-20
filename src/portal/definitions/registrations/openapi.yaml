@@ -24,6 +24,8 @@ paths:
         - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByProductNameEqualityShort'
         - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByProductVersionNameEquality'
         - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByProductVersionNameEqualityShort'
+        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByProductVersionNameContains'
+        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByProductNameContains'
       responses:
         '200':
           $ref: '#/components/responses/ListRegistrations'
