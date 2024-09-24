@@ -7983,18 +7983,6 @@ components:
             rule: is_date
             choices: []
             reason: end must be a valid date in ISO format
-          - field: time_range.time_range
-            rule: unknown_property
-            choices: []
-            reason: property time_range should not exist
-          - field: time_range.start_date
-            rule: is_date
-            choices: []
-            reason: start must be a valid date in ISO format
-          - field: time_range.end_date
-            rule: is_date
-            choices: []
-            reason: end must be a valid date in ISO format
     UnauthorizedExample:
       value:
         status: 401
@@ -8234,10 +8222,6 @@ components:
         detail: Could not parse request body
         instance: 'konnect:trace:3674017986744198214'
         invalid_parameters:
-          - field: body
-            reason: request format is invalid
-          - field: body
-            reason: request format is invalid
           - field: body
             reason: request format is invalid
     400-cannot-be-blank:

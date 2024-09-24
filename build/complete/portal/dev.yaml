@@ -859,3 +859,9 @@ tags:
     description: The API for querying Application Analytics. Application Analytics is only available for private portals.
   - name: portal
     description: The API for retrieving details about a single Konnect Portal.
+x-errors:
+  granted-scopes-unavailable:
+    description: |
+      The IDP used does not support granted scopes.
+    resolution: |
+      Switch to an IDP that allows you to grant specific scopes.
