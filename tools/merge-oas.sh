@@ -28,6 +28,9 @@ for PRODUCT in "${PRODUCTS[@]}"; do
   # Move any global.api.konghq.com server blocks to be per-operation
   node ./tools/move-global-server-block.js $PRODUCT
 
+  # Flatten allOf references where needed
+  node ./tools/flatten-allof.js $PRODUCT
+
   # Add beta warnings
   node ./tools/process-computed.js $PRODUCT
 

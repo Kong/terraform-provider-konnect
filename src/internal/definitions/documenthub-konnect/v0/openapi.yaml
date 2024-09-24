@@ -199,7 +199,6 @@ components:
       maxLength: 80
       example: path-for-seo
     PublishStatus:
-      description: document publish status
       type: string
       enum:
       - published

@@ -20,11 +20,11 @@ components:
       maxProperties: 50
       description: |
         Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
-        
+
         Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
       additionalProperties:
         type: string
-        pattern: '^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$'
+        pattern: "^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$"
         minLength: 1
         maxLength: 63
     LabelsUpdate:
@@ -32,14 +32,52 @@ components:
       nullable: true
       description: |
         Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
-        
+
+        Labels are intended to store **INTERNAL** metadata.
+
         Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
       example:
         env: test
       maxProperties: 50
       additionalProperties:
         type: string
-        pattern: '^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$'
+        pattern: "^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$"
+        minLength: 1
+        maxLength: 63
+        nullable: true
+      writeOnly: true
+    Metadata:
+      title: Metadata
+      type: object
+      example:
+        category: finance
+      maxProperties: 50
+      description: |
+        Metadata stores information about an entity that can be used for filtering a list of objects.
+
+        Metadata is intended to store **PUBLIC** metadata. 
+
+        Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+      additionalProperties:
+        type: string
+        pattern: "^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$"
+        minLength: 1
+        maxLength: 63
+    MetadataUpdate:
+      title: MetadataUpdate
+      type: object
+      example:
+        category: finance
+      maxProperties: 50
+      description: |
+        Metadata stores information about an entity that can be used for filtering a list of objects.
+
+        Metadata is intended to store **PUBLIC** metadata. 
+
+        Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+      additionalProperties:
+        type: string
+        pattern: "^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$"
         minLength: 1
         maxLength: 63
         nullable: true
@@ -47,13 +85,13 @@ components:
     CreatedAt:
       type: string
       format: date-time
-      example: '2022-11-04T20:10:06.927Z'
+      example: "2022-11-04T20:10:06.927Z"
       description: An ISO-8601 timestamp representation of entity creation date.
       readOnly: true
     UpdatedAt:
       type: string
       format: date-time
-      example: '2022-11-04T20:10:06.927Z'
+      example: "2022-11-04T20:10:06.927Z"
       description: An ISO-8601 timestamp representation of entity update date.
       readOnly: true
   parameters:

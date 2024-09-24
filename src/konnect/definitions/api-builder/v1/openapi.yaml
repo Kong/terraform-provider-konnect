@@ -1,0 +1,1228 @@
+openapi: 3.0.3
+info:
+  title: Konnect API Builder
+  version: 0.1.0
+  description: The specification for the API Builder Service.
+  contact:
+    name: Kong
+    url: "https://cloud.konghq.com"
+tags:
+  - name: API
+  - name: API Documentation
+  - name: API Specification
+servers:
+  - url: "https://us.api.konghq.com/v1"
+    description: US Region Base URL
+  - url: "https://eu.api.konghq.com/v1"
+    description: EU Region Base URL
+  - url: "https://au.api.konghq.com/v1"
+    description: AU Region Base URL
+security:
+  - konnectAccessToken: []
+  - personalAccessToken: []
+  - systemAccountAccessToken: []
+paths:
+  /apis:
+    post:
+      x-internal: true
+      x-unstable: true
+      summary: Create API
+      description: Creates an API.
+      operationId: create-api
+      responses:
+        "201":
+          $ref: "#/components/responses/ApiResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: "../../../../common/definitions/errors.yaml#/components/schemas/BadRequestError"
+              examples:
+                ApiNameBadRequestExample:
+                  $ref: "#/components/examples/ApiNameBadRequestExample"
+        "401":
+          $ref: "#/components/responses/ApiUnauthorized"
+        "403":
+          $ref: "#/components/responses/ApiForbidden"
+        "404":
+          $ref: "#/components/responses/ApiNotFound"
+        "415":
+          $ref: "../../../../common/definitions/errors.yaml#/components/responses/UnsupportedMediaType"
+      tags:
+        - API
+      requestBody:
+        $ref: "#/components/requestBodies/CreateApiRequest"
+    get:
+      x-internal: true
+      x-unstable: true
+      parameters:
+        - $ref: "../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize"
+        - $ref: "../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber"
+        - $ref: "#/components/parameters/ApiFilters"
+        - $ref: "#/components/parameters/ApiSort"
+      summary: List APIs
+      description: Returns a collection of all APIs.
+      operationId: list-apis
+      responses:
+        "200":
+          $ref: "#/components/responses/ListApiResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: "../../../../common/definitions/errors.yaml#/components/schemas/BadRequestError"
+              examples:
+                InvalidApiSortQueryBadRequestExample:
+                  $ref: "#/components/examples/InvalidApiSortQueryNameBadRequestExample"
+        "401":
+          $ref: "#/components/responses/ApiUnauthorized"
+        "403":
+          $ref: "#/components/responses/ApiForbidden"
+        "404":
+          $ref: "#/components/responses/ApiNotFound"
+      tags:
+        - API
+  /apis/{apiId}:
+    parameters:
+      - schema:
+          type: string
+          format: uuid
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        name: apiId
+        description: The API identifier
+        in: path
+        required: true
+    get:
+      x-internal: true
+      x-unstable: true
+      summary: Fetch API
+      description: Fetches an API.
+      operationId: fetch-api
+      responses:
+        "200":
+          $ref: "#/components/responses/ApiResponse"
+        "401":
+          $ref: "#/components/responses/ApiUnauthorized"
+        "403":
+          $ref: "#/components/responses/ApiForbidden"
+        "404":
+          $ref: "#/components/responses/ApiNotFound"
+      tags:
+        - API
+    patch:
+      x-internal: true
+      x-unstable: true
+      summary: Update API
+      description: Updates an API.
+      operationId: update-api
+      responses:
+        "200":
+          $ref: "#/components/responses/ApiResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: "../../../../common/definitions/errors.yaml#/components/schemas/BadRequestError"
+              examples:
+                ApiNameBadRequestExample:
+                  $ref: "#/components/examples/ApiNameBadRequestExample"
+        "401":
+          $ref: "#/components/responses/ApiUnauthorized"
+        "403":
+          $ref: "#/components/responses/ApiForbidden"
+        "404":
+          $ref: "#/components/responses/ApiNotFound"
+        "415":
+          $ref: "../../../../common/definitions/errors.yaml#/components/responses/UnsupportedMediaType"
+      tags:
+        - API
+      requestBody:
+        $ref: "#/components/requestBodies/UpdateApiRequest"
+    delete:
+      x-internal: true
+      x-unstable: true
+      summary: Delete API
+      description: Deletes an API.
+      operationId: delete-api
+      responses:
+        "204":
+          description: API was deleted successfully.
+        "401":
+          $ref: "#/components/responses/ApiUnauthorized"
+        "403":
+          $ref: "#/components/responses/ApiForbidden"
+        "404":
+          $ref: "#/components/responses/ApiNotFound"
+      tags:
+        - API
+  /api/{apiId}/documents:
+    parameters:
+      - schema:
+          type: string
+          format: uuid
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        name: apiId
+        description: The API identifier
+        in: path
+        required: true
+    post:
+      x-internal: true
+      x-unstable: true
+      summary: Create API Document
+      description: |
+        Publish a new document attached to an API.
+
+        All configuration options may be provided in the frontmatter section of `content`. If you set values in both the `POST` request _and_ in the frontmatter, the values in the `POST` request will take precedence.
+      operationId: create-api-document
+      responses:
+        "201":
+          $ref: "#/components/responses/ApiDocumentResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: "../../../../common/definitions/errors.yaml#/components/schemas/BadRequestError"
+              examples:
+                ApiNameBadRequestExample:
+                  $ref: "#/components/examples/ApiDocumentBadRequestExample"
+        "401":
+          $ref: "#/components/responses/ApiUnauthorized"
+        "403":
+          $ref: "#/components/responses/ApiForbidden"
+        "404":
+          $ref: "#/components/responses/ApiNotFound"
+        "409":
+          $ref: "#/components/responses/ApiSlugConflict"
+        "415":
+          $ref: "../../../../common/definitions/errors.yaml#/components/responses/UnsupportedMediaType"
+      requestBody:
+        $ref: "#/components/requestBodies/CreateApiDocumentRequest"
+      tags:
+        - API Documentation
+    get:
+      x-internal: true
+      x-unstable: true
+      parameters:
+        - $ref: "../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize"
+        - $ref: "../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber"
+        - name: filter
+          description: Filters API Documents in the response.
+          required: false
+          in: query
+          schema:
+            $ref: "#/components/schemas/ApiDocumentFilterParameters"
+          style: deepObject
+      summary: List API Documents
+      description: Returns a collection of all documents for an API.
+      operationId: list-api-documents
+      responses:
+        "200":
+          $ref: "#/components/responses/ListApiDocumentResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: "../../../../common/definitions/errors.yaml#/components/schemas/BadRequestError"
+              examples:
+                InvalidApiSortQueryBadRequestExample:
+                  $ref: "#/components/examples/InvalidApiSortQueryBadRequestExample"
+        "401":
+          $ref: "#/components/responses/ApiUnauthorized"
+        "403":
+          $ref: "#/components/responses/ApiForbidden"
+        "404":
+          $ref: "#/components/responses/ApiNotFound"
+      tags:
+        - API Documentation
+  /api/{apiId}/documents/{documentId}:
+    parameters:
+      - schema:
+          type: string
+          format: uuid
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        name: apiId
+        description: The API identifier
+        in: path
+        required: true
+      - schema:
+          type: string
+          format: uuid
+          example: de5c9818-be5c-42e6-b514-e3d4bc30ddeb
+        name: documentId
+        description: The document identifier related to the API
+        in: path
+        required: true
+    get:
+      x-internal: true
+      x-unstable: true
+      summary: Fetch API Document
+      description: Returns a document for the API.
+      operationId: fetch-api-document
+      responses:
+        "200":
+          $ref: "#/components/responses/ApiDocumentResponse"
+        "401":
+          $ref: "#/components/responses/ApiUnauthorized"
+        "403":
+          $ref: "#/components/responses/ApiForbidden"
+        "404":
+          $ref: "#/components/responses/ApiNotFound"
+      tags:
+        - API Documentation
+    patch:
+      x-internal: true
+      x-unstable: true
+      summary: Update an API Document
+      description: Updates a document for an API.
+      operationId: update-api-document
+      responses:
+        "200":
+          $ref: "#/components/responses/ApiDocumentResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: "../../../../common/definitions/errors.yaml#/components/schemas/BadRequestError"
+              examples:
+                ApiNameBadRequestExample:
+                  $ref: "#/components/examples/ApiDocumentBadRequestExample"
+        "401":
+          $ref: "#/components/responses/ApiUnauthorized"
+        "403":
+          $ref: "#/components/responses/ApiForbidden"
+        "404":
+          $ref: "#/components/responses/ApiNotFound"
+        "409":
+          $ref: "#/components/responses/ApiSlugConflict"
+        "415":
+          $ref: "../../../../common/definitions/errors.yaml#/components/responses/UnsupportedMediaType"
+      tags:
+        - API Documentation
+      requestBody:
+        $ref: "#/components/requestBodies/UpdateApiDocumentRequest"
+    delete:
+      x-internal: true
+      x-unstable: true
+      summary: Delete API Documentation
+      description: Removes a document from an API.
+      operationId: delete-api-document
+      responses:
+        "204":
+          description: Document for the API was deleted successfully.
+        "401":
+          $ref: "#/components/responses/ApiUnauthorized"
+        "403":
+          $ref: "#/components/responses/ApiForbidden"
+        "404":
+          $ref: "#/components/responses/ApiNotFound"
+      tags:
+        - API Documentation
+  /api/{apiId}/specifications:
+    parameters:
+      - schema:
+          type: string
+          format: uuid
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        name: apiId
+        description: The API identifier
+        in: path
+        required: true
+    post:
+      x-internal: true
+      x-unstable: true
+      summary: Create API Specification
+      description: |
+        Creates a specification for an API.
+        **Note:** You can only have one specification for an API.
+      operationId: create-api-spec
+      responses:
+        "201":
+          $ref: "#/components/responses/ApiSpecResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: "../../../../common/definitions/errors.yaml#/components/schemas/BadRequestError"
+              examples:
+                ApiSpecContentBadRequestExample:
+                  $ref: "#/components/examples/ApiSpecContentBadRequestExample"
+        "401":
+          $ref: "#/components/responses/ApiUnauthorized"
+        "403":
+          $ref: "#/components/responses/ApiForbidden"
+        "404":
+          $ref: "#/components/responses/ApiNotFound"
+        "409":
+          $ref: "#/components/responses/ApiSpecConflict"
+        "415":
+          $ref: "../../../../common/definitions/errors.yaml#/components/responses/UnsupportedMediaType"
+      tags:
+        - API Specification
+      requestBody:
+        $ref: "#/components/requestBodies/CreateApiSpecRequest"
+    get:
+      x-internal: true
+      x-unstable: true
+      summary: List API Specifications
+      description: |
+        Returns a list of specifications for an API.
+        **Note:** You can only have one specification for an API.
+      operationId: list-api-specs
+      parameters:
+        - $ref: "../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize"
+        - $ref: "../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber"
+        - name: filter
+          description: Filters API Specs in the response.
+          required: false
+          in: query
+          schema:
+            $ref: "#/components/schemas/ApiSpecFilterParameters"
+          style: deepObject
+      responses:
+        "200":
+          $ref: "#/components/responses/ListApiSpecResponse"
+        "401":
+          $ref: "#/components/responses/ApiUnauthorized"
+        "403":
+          $ref: "#/components/responses/ApiForbidden"
+        "404":
+          $ref: "#/components/responses/ApiNotFound"
+      tags:
+        - API Specification
+  /api/{apiId}/specifications/{specId}:
+    parameters:
+      - schema:
+          type: string
+          format: uuid
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        name: apiId
+        description: The API identifier
+        in: path
+        required: true
+      - schema:
+          type: string
+          format: uuid
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        name: specId
+        description: The API specification identifier
+        in: path
+        required: true
+    get:
+      x-internal: true
+      x-unstable: true
+      summary: Fetch API Specification
+      description: Fetches the specification of an API.
+      operationId: fetch-api-spec
+      responses:
+        "200":
+          $ref: "#/components/responses/ApiSpecResponse"
+        "401":
+          $ref: "#/components/responses/ApiUnauthorized"
+        "403":
+          $ref: "#/components/responses/ApiForbidden"
+        "404":
+          $ref: "#/components/responses/ApiNotFound"
+      tags:
+        - API Specification
+    patch:
+      x-internal: true
+      x-unstable: true
+      summary: Update API Specification
+      description: Updates the specification of an API.
+      operationId: update-api-spec
+      responses:
+        "200":
+          $ref: "#/components/responses/ApiSpecResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: "../../../../common/definitions/errors.yaml#/components/schemas/BadRequestError"
+              examples:
+                ApiSpecContentBadRequestExample:
+                  $ref: "#/components/examples/ApiSpecContentBadRequestExample"
+        "401":
+          $ref: "#/components/responses/ApiUnauthorized"
+        "403":
+          $ref: "#/components/responses/ApiForbidden"
+        "404":
+          $ref: "#/components/responses/ApiNotFound"
+        "409":
+          $ref: "#/components/responses/ApiSpecHiddenConflict"
+        "415":
+          $ref: "../../../../common/definitions/errors.yaml#/components/responses/UnsupportedMediaType"
+      tags:
+        - API Specification
+      requestBody:
+        $ref: "#/components/requestBodies/UpdateApiSpecRequest"
+    delete:
+      x-internal: true
+      x-unstable: true
+      summary: Delete API Specification
+      description: Deletes the specification of an API.
+      operationId: delete-api-spec
+      responses:
+        "204":
+          description: API Specification was deleted successfully.
+        "401":
+          $ref: "#/components/responses/ApiUnauthorized"
+        "403":
+          $ref: "#/components/responses/ApiForbidden"
+        "404":
+          $ref: "#/components/responses/ApiNotFound"
+      tags:
+        - API Specification
+components:
+  parameters:
+    ApiFilters:
+      name: filter
+      description: Filters APIs in the response.
+      required: false
+      in: query
+      schema:
+        $ref: "#/components/schemas/ApiFilterParameters"
+      style: deepObject
+    ApiSort:
+      name: sort
+      description: |
+        Sorts a collection of APIs. Supported sort attributes are:
+          - name
+          - version
+          - created_at
+          - updated_at
+      required: false
+      in: query
+      schema:
+        $ref: "../../../../common/definitions/aip_filters.yaml#/components/schemas/SortQuery"
+  requestBodies:
+    CreateApiRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            x-flatten-allOf: true
+            allOf:
+              - $ref: "#/components/schemas/Api"
+              - required:
+                  - name
+          examples:
+            CreateApiMinimal:
+              $ref: "#/components/examples/CreateApiRequestMinimalExample"
+            CreateApiFull:
+              $ref: "#/components/examples/CreateApiRequestFullExample"
+    CreateApiSpecRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            x-flatten-allOf: true
+            allOf:
+              - $ref: "#/components/schemas/ApiSpec"
+              - required:
+                  - content
+          examples:
+            CreateApiSpecRequestExample:
+              $ref: "#/components/examples/CreateApiSpecRequestExample"
+    CreateApiDocumentRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            x-flatten-allOf: true
+            allOf:
+              - $ref: "#/components/schemas/ApiDocument"
+              - required:
+                  - content
+          examples:
+            CreateApiDocumentRequestMinimalExample:
+              $ref: "#/components/examples/CreateApiDocumentRequestMinimalExample"
+            CreateApiDocumentRequestExample:
+              $ref: "#/components/examples/CreateApiDocumentRequestExample"
+    UpdateApiRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            x-flatten-allOf: true
+            allOf:
+              - $ref: "#/components/schemas/Api"
+              - type: object
+                properties:
+                  labels:
+                    $ref: "../../../../common/definitions/konnect_properties.yaml#/components/schemas/LabelsUpdate"
+                  metadata:
+                    $ref: "../../../../common/definitions/konnect_properties.yaml#/components/schemas/MetadataUpdate"
+          examples:
+            UpdateApiName:
+              $ref: "#/components/examples/UpdateApiNameRequestExample"
+            UpdateApiVersion:
+              $ref: "#/components/examples/UpdateApiVersionRequestExample"
+    UpdateApiDocumentRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ApiDocument"
+          examples:
+            UpdateApiDocumentAttributes:
+              $ref: "#/components/examples/UpdateApiDocumentAttributesRequestExample"
+            UpdateApiDocumentContent:
+              $ref: "#/components/examples/UpdateApiDocumentContentRequestExample"
+            UpdateApiDocumentAttributesAndContent:
+              $ref: "#/components/examples/UpdateApiDocumentAttributesAndContentRequestExample"
+    UpdateApiSpecRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ApiSpec"
+          examples:
+            UpdateApiSpecContentRequest:
+              $ref: "#/components/examples/UpdateApiSpecContentRequestExample"
+  responses:
+    ApiSlugConflict:
+      description: Conflict - `slug` property must be unique
+      content:
+        application/problem+json:
+          schema: # Not using common ConflictError since documenthub is not returning details
+            type: object
+            required:
+              - status
+              - title
+              - instance
+            properties:
+              status:
+                type: number
+              title:
+                type: string
+              type:
+                type: string
+              instance:
+                type: string
+          examples:
+            ApiSlugConflictExample:
+              $ref: "#/components/examples/ApiSlugConflictExample"
+    ApiSpecConflict:
+      description: Conflict - An API may only have one specification
+      content:
+        application/problem+json:
+          schema:
+            $ref: "../../../../common/definitions/errors.yaml#/components/schemas/ConflictError"
+          examples:
+            ApiSpecConflictExample:
+              $ref: "#/components/examples/ApiSpecConflictExample"
+    ApiSpecHiddenConflict:
+      description: Conflict - name attribute must be unique across specifications
+      content:
+        application/problem+json:
+          schema:
+            $ref: "../../../../common/definitions/errors.yaml#/components/schemas/ConflictError"
+          examples:
+            ApiSpecConflictExample:
+              $ref: "#/components/examples/ApiSpecHiddenConflictExample"
+    ApiUnauthorized:
+      description: ApiUnauthorized
+      content:
+        application/problem+json:
+          schema:
+            $ref: "../../../../common/definitions/errors.yaml#/components/schemas/UnauthorizedError"
+          examples:
+            ApiUnauthorizedExample:
+              $ref: "#/components/examples/ApiUnauthorizedExample"
+    ApiNotFound:
+      description: Not Found
+      content:
+        application/problem+json:
+          schema:
+            $ref: "../../../../common/definitions/errors.yaml#/components/schemas/NotFoundError"
+          examples:
+            ApiNotFoundExample:
+              $ref: "#/components/examples/ApiNotFoundExample"
+    ApiForbidden:
+      description: ApiForbidden
+      content:
+        application/problem+json:
+          schema:
+            $ref: "../../../../common/definitions/errors.yaml#/components/schemas/ForbiddenError"
+          examples:
+            ApiForbiddenExample:
+              $ref: "#/components/examples/ApiForbiddenExample"
+    ApiResponse:
+      description: API
+      content:
+        application/json:
+          schema:
+            title: ApiResponse
+            x-flatten-allOf: true
+            allOf:
+              - $ref: "#/components/schemas/Api"
+              - required:
+                  - id
+                  - name
+                  - version
+                  - labels
+                  - metadata
+                  - created_at
+                  - updated_at
+          examples:
+            CreateApiResponse:
+              $ref: "#/components/examples/ApiExample"
+    ListApiResponse:
+      description: List of APIs
+      content:
+        application/json:
+          schema:
+            title: ListApiResponse
+            type: object
+            required:
+              - data
+              - meta
+            additionalProperties: false
+            properties:
+              meta:
+                $ref: "../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta"
+              data:
+                type: array
+                items:
+                  x-flatten-allOf: true
+                  allOf:
+                    - $ref: "#/components/schemas/Api"
+                    - required:
+                        - id
+                        - name
+                        - version
+                        - labels
+                        - metadata
+                        - created_at
+                        - updated_at
+          examples:
+            ApiCollection:
+              value:
+                data:
+                  - id: 9f5061ce-78f6-4452-9108-ad7c02821fd5
+                    name: myAPI
+                    version: v1
+                    metadata:
+                      group: accounts
+                    labels:
+                      env: test
+                    created_at: 2023-01-01T00:00:00.000Z
+                    updated_at: 2023-01-01T00:00:00.000Z
+                meta:
+                  page:
+                    number: 1
+                    size: 1
+                    total: 10
+    ApiDocumentResponse:
+      description: API document
+      content:
+        application/json:
+          schema:
+            x-flatten-allOf: true
+            allOf:
+              - $ref: "#/components/schemas/ApiDocument"
+              - required:
+                  - id
+                  - parent_document_id
+                  - title
+                  - slug
+                  - status
+                  - content
+                  - updated_at
+                  - created_at
+          examples:
+            CreateApiDocumentResponse:
+              $ref: "#/components/examples/ApiDocumentExample"
+    ListApiDocumentResponse:
+      description: List of API documents
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - data
+              - meta
+            additionalProperties: false
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ApiDocumentSummary"
+              meta:
+                $ref: "../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta"
+          examples:
+            ListApiDocumentResponse:
+              $ref: "#/components/examples/ListApiDocumentSummaryExample"
+    ApiSpecResponse:
+      description: API specification
+      content:
+        application/json:
+          schema:
+            x-flatten-allOf: true
+            allOf:
+              - $ref: "#/components/schemas/ApiSpec"
+              - required:
+                  - id
+                  - content
+                  - type
+                  - created_at
+                  - updated_at
+          examples:
+            ApiSpecResponse:
+              $ref: "#/components/examples/ApiSpecExample"
+    ListApiSpecResponse:
+      description: List of API specifications
+      content:
+        application/json:
+          schema:
+            title: ListApiSpecResponse
+            type: object
+            required:
+              - data
+              - meta
+            additionalProperties: false
+            properties:
+              meta:
+                $ref: "../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta"
+              data:
+                type: array
+                items:
+                  x-flatten-allOf: true
+                  allOf:
+                    - $ref: "#/components/schemas/ApiSpec"
+                    - required:
+                        - id
+                        - content
+                        - type
+                        - created_at
+                        - updated_at
+          examples:
+            ListApiSpecResponse:
+              $ref: "#/components/examples/ListApiSpecExample"
+  schemas:
+    ################################
+    ## API
+    ################################
+    Api:
+      title: API
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 9f5061ce-78f6-4452-9108-ad7c02821fd5
+          description: The API identifier.
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+          minLength: 1
+          description: |
+            The name of your API. The `name + version` combination must be unique for each API you publish.
+          example: MyAPI
+        version:
+          type: string
+          maxLength: 255
+          minLength: 1
+          description: An optional version for your API. Leave this empty if your API is unversioned.
+          nullable: true
+        labels:
+          $ref: "../../../../common/definitions/konnect_properties.yaml#/components/schemas/Labels"
+        metadata:
+          $ref: "../../../../common/definitions/konnect_properties.yaml#/components/schemas/Metadata"
+        created_at:
+          $ref: "../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt"
+        updated_at:
+          $ref: "../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt"
+
+    ################################
+    ## API Documents
+    ################################
+    ApiDocumentId:
+      type: string
+      format: uuid
+      example: de5c9818-be5c-42e6-b514-e3d4bc30ddeb
+      description: The API document identifier.
+      readOnly: true
+    ApiDocumentContent:
+      type: string
+      description: Raw markdown content to display in your Portal
+    ApiDocumentTitle:
+      type: string
+      description: The title of the document. Used to populate the `<title>` tag for the page
+      example: API Document
+    ApiDocumentStatus:
+      x-flatten-allOf: true
+      allOf:
+        - $ref: "../../../../internal/definitions/documenthub-konnect/v0/openapi.yaml#/components/schemas/PublishStatus"
+        - description: If `status=published` the document will be visible in your live portal
+    ApiDocumentParentDocumentId:
+      type: string
+      format: uuid
+      nullable: true
+      description: |
+        API Documents may be rendered as a tree of files.
+
+        Specify the `id` of another API Document as the `parent_document_id` to add some heirarchy do your documents.
+      example: null
+    ApiDocumentSlug:
+      type: string
+      pattern: '^[\w-]+$'
+      description: |
+        The `slug` is used in generated URLs to provide human readable paths.
+
+        Defaults to `slugify(title)`
+      example: api-document
+
+    ApiDocumentSummary:
+      title: API Document Summary
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - title
+        - slug
+        - status
+        - parent_document_id
+        - created_at
+        - updated_at
+      properties:
+        id:
+          $ref: "#/components/schemas/ApiDocumentId"
+        title:
+          $ref: "#/components/schemas/ApiDocumentTitle"
+        slug:
+          $ref: "#/components/schemas/ApiDocumentSlug"
+        status:
+          $ref: "#/components/schemas/ApiDocumentStatus"
+        parent_document_id:
+          $ref: "#/components/schemas/ApiDocumentParentDocumentId"
+        created_at:
+          $ref: "../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt"
+        updated_at:
+          $ref: "../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt"
+
+    ApiDocument:
+      type: object
+      title: ApiDocument
+      additionalProperties: false
+      properties:
+        id:
+          $ref: "#/components/schemas/ApiDocumentId"
+        content:
+          $ref: "#/components/schemas/ApiDocumentContent"
+        title:
+          $ref: "#/components/schemas/ApiDocumentTitle"
+        slug:
+          $ref: "#/components/schemas/ApiDocumentSlug"
+        status:
+          $ref: "#/components/schemas/ApiDocumentStatus"
+        parent_document_id:
+          $ref: "#/components/schemas/ApiDocumentParentDocumentId"
+        created_at:
+          $ref: "../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt"
+        updated_at:
+          $ref: "../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt"
+
+    ################################
+    ## API Specification
+    ################################
+
+    ApiSpec:
+      title: API Specification
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 7710d5c4-d902-410b-992f-18b814155b53
+          description: The API specification identifier.
+          readOnly: true
+        content:
+          type: string
+          description: |
+            The raw content of your API specification.
+          example: "{\"openapi\":\"3.0.3\",\"info\":{\"title\":\"Example API\",\"version\":\"1.0.0\"},\"paths\":{\"/example\":{\"get\":{\"summary\":\"Example endpoint\",\"responses\":{\"200\":{\"description\":\"Successful response\"}}}}}"
+        type:
+          type: string
+          example: oas3
+          description: |
+            The type of specification being stored. This allows us to render the specification correctly.
+
+            If this field is not set, it will be autodetected from `content`
+          enum:
+            - oas3
+            - asyncapi
+        created_at:
+          $ref: "../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt"
+        updated_at:
+          $ref: "../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt"
+
+    ################################
+    ## Filter Parameters
+    ################################
+
+    ApiFilterParameters:
+      title: "ApiFilterParameters"
+      type: object
+      properties:
+        id:
+          $ref: "../../../../common/definitions/aip_filters.yaml#/components/schemas/UuidFieldFilter"
+        name:
+          $ref: "../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter"
+        version:
+          $ref: "../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter"
+        labels:
+          $ref: "../../../../common/definitions/aip_filters.yaml#/components/schemas/LabelsFieldFilter"
+        metadata:
+          $ref: "../../../../common/definitions/aip_filters.yaml#/components/schemas/MetadataFieldFilter"
+        created_at:
+          $ref: "../../../../common/definitions/aip_filters.yaml#/components/schemas/DateTimeFieldFilter"
+        updated_at:
+          $ref: "../../../../common/definitions/aip_filters.yaml#/components/schemas/DateTimeFieldFilter"
+
+    ApiDocumentFilterParameters:
+      title: "ApiDocumentFilterParameters"
+      type: object
+      properties:
+        status:
+          $ref: "../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter"
+
+    ApiSpecFilterParameters:
+      title: "ApiSpecFilterParameters"
+      type: object
+      properties:
+        type:
+          $ref: "../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter"
+
+
+  ################################
+  ## Other schemas
+  ################################
+
+  securitySchemes:
+    konnectAccessToken:
+      $ref: "../../../../common/definitions/security.yaml#/components/securitySchemes/konnectAccessToken"
+    personalAccessToken:
+      $ref: "../../../../common/definitions/security.yaml#/components/securitySchemes/personalAccessToken"
+    systemAccountAccessToken:
+      $ref: "../../../../common/definitions/security.yaml#/components/securitySchemes/systemAccountAccessToken"
+  examples:
+    ApiExample:
+      value:
+        id: 9f5061ce-78f6-4452-9108-ad7c02821fd5
+        name: myAPI
+        version: v1
+        labels:
+          env: test
+        metadata: {}
+        created_at: 2023-01-01T00:00:00.000Z
+        updated_at: 2023-01-01T00:00:00.000Z
+    ApiSpecExample:
+      value:
+        id: 7710d5c4-d902-410b-992f-18b814155b53
+        content: "{\"openapi\":\"3.0.3\",\"info\":{\"title\":\"Example API\",\"version\":\"1.0.0\"},\"paths\":{\"/example\":{\"get\":{\"summary\":\"Example endpoint\",\"responses\":{\"200\":{\"description\":\"Successful response\"}}}}}"
+        type: oas3
+        created_at: 2023-01-01T00:00:00.000Z
+        updated_at: 2023-01-01T00:00:00.000Z
+    ListApiSpecExample:
+      value:
+        data:
+          - id: 7710d5c4-d902-410b-992f-18b814155b53
+            content: "{\"openapi\":\"3.0.3\",\"info\":{\"title\":\"Example API\",\"version\":\"1.0.0\"},\"paths\":{\"/example\":{\"get\":{\"summary\":\"Example endpoint\",\"responses\":{\"200\":{\"description\":\"Successful response\"}}}}}"
+            type: 'oas3'
+            created_at: 2023-01-01T00:00:00.000Z
+            updated_at: 2023-01-01T00:00:00.000Z
+        meta:
+          page:
+            number: 1
+            size: 1
+            total: 1
+    CreateApiRequestMinimalExample:
+      summary: Create API Request (Minimal)
+      value:
+        name: myAPI
+    CreateApiRequestFullExample:
+      summary: Create API Request (Full)
+      value:
+        name: myAPI
+        version: v1
+        labels:
+          env: test
+    CreateApiSpecRequestExample:
+      summary: Create API Specification Request
+      value:
+        content: "{\"openapi\":\"3.0.3\",\"info\":{\"title\":\"Example API\",\"version\":\"1.0.0\"},\"paths\":{\"/example\":{\"get\":{\"summary\":\"Example endpoint\",\"responses\":{\"200\":{\"description\":\"Successful response\"}}}}}"
+        type: oas3
+    UpdateApiNameRequestExample:
+      summary: Update API Name
+      value:
+        name: new API name
+    UpdateApiVersionRequestExample:
+      summary: Update API Version
+      value:
+        version: v2
+    UpdateApiSpecContentRequestExample:
+      summary: Update API Spec Content
+      value:
+        content: "{\"openapi\":\"3.0.3\",\"info\":{\"title\":\"Example API\",\"version\":\"1.0.1\"},\"paths\":{\"/example\":{\"get\":{\"summary\":\"Example endpoint\",\"responses\":{\"200\":{\"description\":\"Successful response\"}}}}}"
+    ApiDocumentExample:
+      value:
+        id: de5c9818-be5c-42e6-b514-e3d4bc30ddeb
+        parent_document_id: null
+        title: API Document
+        slug: api-document
+        status: published
+        content: "# API Document Header"
+        created_at: 2023-01-01T00:00:00.000Z
+        updated_at: 2023-01-01T00:00:00.000Z
+    ListApiDocumentSummaryExample:
+      value:
+        data:
+          - id: de5c9818-be5c-42e6-b514-e3d4bc30ddeb
+            slug: api-document
+            status: published
+            title: API Document
+            parent_document_id: null
+            created_at: 2023-01-01T00:00:00.000Z
+            updated_at: 2023-01-01T00:00:00.000Z
+        meta:
+          page:
+            number: 1
+            size: 1
+            total: 10
+    CreateApiDocumentRequestExample:
+      summary: Create API Document Request
+      value:
+        slug: api-document
+        status: published
+        title: API Document
+        content: "# API Document Header"
+        parent_document_id: 417a2aed-9a75-4eca-a943-fa7d88ed6a73
+    CreateApiDocumentRequestMinimalExample:
+      summary: Create API Document Request (Minimal)
+      value:
+        slug: api-document
+        status: published
+        title: API Document
+        content: "# API Document Header"
+    UpdateApiDocumentAttributesRequestExample:
+      summary: Update API Document Attributes Request
+      value:
+        parent_document_id: dd4e1b98-3629-4dd3-acc0-759a726ffee2
+        slug: api-document
+        status: published
+        title: API Document
+    UpdateApiDocumentContentRequestExample:
+      summary: Update API Document Content Request
+      value:
+        content: "# Updated API Document Header"
+    UpdateApiDocumentAttributesAndContentRequestExample:
+      summary: Update API Document Attributes and Content Request
+      value:
+        parent_document_id: dd4e1b98-3629-4dd3-acc0-759a726ffee2
+        slug: api-document
+        status: published
+        title: API Document
+        content: "# Updated API Document Header"
+    ApiNameBadRequestExample:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: kong:trace:8405749052424858251
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: name
+            rule: min_length
+            minimum: 1
+            reason: name must be longer than or equal to 1 characters
+    ApiDocumentBadRequestExample:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: kong:trace:5832302153563197721
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: slug
+            rule: matches_regex
+            reason: "slug must match /^[\\w-]+$/ regular expression"
+    ApiSpecContentBadRequestExample:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: kong:trace:1433447772874964729
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: content
+            rule: min_length
+            minimum: 1
+            reason: content must be longer than or equal to 1 characters
+    ApiUnauthorizedExample:
+      value:
+        status: 401
+        title: ApiUnauthorized
+        instance: kong:trace:8347343766220159418
+        detail: ApiUnauthorized
+    ApiNotFoundExample:
+      value:
+        status: 404
+        title: Not Found
+        instance: kong:trace:6816496025408232265
+        detail: Not Found
+    ApiForbiddenExample:
+      value:
+        status: 403
+        title: ApiForbidden
+        instance: kong:trace:2723154947768991354
+        detail: You do not have permission to perform this action
+    ApiSlugConflictExample:
+      value:
+        status: 409
+        title: Conflict
+        instance: kong:trace:3169213858331814220
+    ApiSpecConflictExample:
+      value:
+        status: 409
+        title: Conflict
+        instance: kong:trace:3169213858331814220
+        detail: "Specification for API '9f5061ce-78f6-4452-9108-ad7c02821fd5' already exists"
+    ApiSpecHiddenConflictExample:
+      value:
+        status: 409
+        title: Conflict
+        instance: kong:trace:9039922446017540182
+        detail: "Key (api_id, path)=(23380be0-c15e-4ca8-bcf7-43aadddc91b1, hidden.yaml) already exists."
+    InvalidApiSortQueryBadRequestExample:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: kong:trace:4725061142075238974
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: sort
+            rule: enum
+            choices:
+              - name
+            reason: '"sort" field must contain any of: [name]'
+    InvalidApiSortQueryNameBadRequestExample:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: kong:trace:4725061142075238974
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: sort
+            rule: enum
+            choices:
+              - name
+            reason: '"sort" field must contain any of: [name]'

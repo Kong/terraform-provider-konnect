@@ -240,7 +240,6 @@ components:
       maxLength: 80
       pattern: '^[\w-]+$'
     PublishStatus:
-      description: document publish status
       type: string
       enum:
         - published

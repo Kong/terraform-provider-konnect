@@ -211,3 +211,15 @@ components:
               - `filter[labels.env]=dev`
               - `filter[labels.env][ocontains]=dev,test`
         - $ref: '#/components/schemas/StringFieldFilter'
+    MetadataFieldFilter:
+      x-flatten-allOf: true
+      allOf:
+        - title: MetadataFieldFilter
+          description: |
+            Filters on the resource's `labels` field. Filters must use dot-notation to identify
+            the label key that will be used to filter the results. For example:
+              - `filter[metadata.collection]`
+              - `filter[metadata.collection][neq]=accounts`
+              - `filter[metadata.collection]=accounts`
+              - `filter[metadata.collection][ocontains]=accounts,invoices`
+        - $ref: '#/components/schemas/StringFieldFilter'

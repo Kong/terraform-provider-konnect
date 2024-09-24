@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -e
 
 # Merge the generated and hand maintained OAS files for Control Planes Config
 FILES=(
