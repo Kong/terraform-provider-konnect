@@ -1588,11 +1588,11 @@ components:
       type: object
       properties:
         basic_auth_enabled:
-          description: The organization has basic auth enabled.
+          description: The portal has basic auth enabled or disabled.
           type: boolean
           example: true
         oidc_auth_enabled:
-          description: The organization has OIDC disabled.
+          description: The portal has OIDC enabled or disabled.
           type: boolean
           example: false
         oidc_team_mapping_enabled:

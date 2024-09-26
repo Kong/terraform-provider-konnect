@@ -5172,15 +5172,21 @@ components:
       title: PortalAuthenticationSettingsResponse
       description: The developer authentication settings for a portal.
       type: object
+      x-property-annotations:
+        saml_auth_enabled: [x-unstable, x-internal]
       properties:
         basic_auth_enabled:
           type: boolean
           example: true
-          description: The organization has basic auth enabled.
+          description: The portal has basic auth enabled or disabled.
         oidc_auth_enabled:
           type: boolean
           example: false
-          description: The organization has OIDC disabled.
+          description: The portal has OIDC enabled or disabled.
+        saml_auth_enabled:
+          type: boolean
+          example: false
+          description: The portal has SAML enabled or disabled.
         oidc_team_mapping_enabled:
           type: boolean
           example: true
