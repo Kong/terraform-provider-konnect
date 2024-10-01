@@ -1585,6 +1585,9 @@ components:
       title: Network
       description: Object containing information about a network to be used in configurations.
       type: object
+      x-property-annotations:
+        ddos_protection: [ x-unstable, x-internal ]
+        firewall: [ x-unstable, x-internal ]
       properties:
         id:
           $ref: '#/components/schemas/NetworkId'
@@ -1661,6 +1664,9 @@ components:
       description: Request schema for creating a network.
       type: object
       additionalProperties: false
+      x-property-annotations:
+        ddos_protection: [ x-unstable, x-internal ]
+        firewall: [ x-unstable, x-internal ]
       properties:
         name:
           $ref: '#/components/schemas/NetworkName'
@@ -1688,6 +1694,8 @@ components:
       description: Request schema for updating a network.
       type: object
       additionalProperties: false
+      x-property-annotations:
+        firewall: [ x-unstable, x-internal ]
       properties:
         name:
           $ref: '#/components/schemas/NetworkName'
