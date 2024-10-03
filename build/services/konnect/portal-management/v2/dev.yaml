@@ -259,6 +259,58 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Portal Pages
+  '/portals/{portalId}/authentication-settings':
+    parameters:
+      - $ref: '#/components/parameters/parameters-PortalId'
+    get:
+      operationId: get-portal-authentication-settings
+      summary: Get Auth Settings
+      description: 'Returns the developer authentication configuration for a portal, which determines how developers can log in and how they are assigned to teams.'
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalAuthenticationSettings'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      tags:
+        - Portal Auth Settings
+    patch:
+      operationId: update-portal-authentication-settings
+      summary: Update Auth Settings
+      description: Updates the developer authentication configuration for a portal. Developers can be allowed to login using basic auth (email & password) or use Single-Sign-On (SSO) through an OIDC Identity Provider (IdP). Developers can be automatically assigned to teams by mapping claims from thier IdP account.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdatePortalAuthenticationSettings'
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalAuthenticationSettings'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+              examples:
+                UpdateAuthSettingsBadRequestExample1:
+                  $ref: '#/components/examples/UpdateAuthSettingsBadRequestExample1'
+                UpdateAuthSettingsBadRequestExample2:
+                  $ref: '#/components/examples/UpdateAuthSettingsBadRequestExample2'
+                UpdateAuthSettingsBadRequestExample3:
+                  $ref: '#/components/examples/UpdateAuthSettingsBadRequestExample3'
+                UpdateAuthSettingsBadRequestExample4:
+                  $ref: '#/components/examples/UpdateAuthSettingsBadRequestExample4'
+                UpdateAuthSettingsBadRequestExample5:
+                  $ref: '#/components/examples/UpdateAuthSettingsBadRequestExample5'
+                UpdateAuthSettingsBadRequestExample6:
+                  $ref: '#/components/examples/UpdateAuthSettingsBadRequestExample6'
+                UpdateAuthSettingsBadRequestExample7:
+                  $ref: '#/components/examples/UpdateAuthSettingsBadRequestExample7'
+                UpdateAuthSettingsBadRequestExample8:
+                  $ref: '#/components/examples/UpdateAuthSettingsBadRequestExample8'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Portal Auth Settings
   '/portals/{portalId}/identity-providers':
     parameters:
       - $ref: '#/components/parameters/parameters-PortalId'
@@ -602,6 +654,170 @@ components:
         - data
         - meta
       title: ListPortalPagesResponse
+    PortalClaimMappings:
+      description: Mappings from a portal developer atribute to an Identity Provider claim.
+      type: object
+      properties:
+        name:
+          type: string
+          example: name
+          default: name
+        email:
+          type: string
+          example: email
+          default: email
+        groups:
+          type: string
+          example: custom-group-claim
+          default: groups
+      example:
+        name: name
+        email: email
+        groups: custom-group-claim
+      maxProperties: 3
+      minProperties: 0
+      title: PortalClaimMappings
+    PortalOIDCConfig:
+      description: Configuration properties for an OpenID Connect Identity Provider.
+      type: object
+      properties:
+        issuer:
+          type: string
+          example: 'https://identity.example.com/v2'
+        client_id:
+          type: string
+          example: x7id0o42lklas0blidl2
+        scopes:
+          type: array
+          items:
+            type: string
+            default: openid
+          example:
+            - email
+            - openid
+            - profile
+          default:
+            - email
+            - openid
+            - profile
+        claim_mappings:
+          $ref: '#/components/schemas/PortalClaimMappings'
+      example:
+        issuer: 'https://identity.example.com/v2'
+        client_id: x7id0o42lklas0blidl2
+        scopes:
+          - email
+          - openid
+          - profile
+        claim_mappings:
+          name: name
+          email: email
+          groups: custom-group-claim
+      required:
+        - issuer
+        - client_id
+      title: PortalOIDCConfig
+    PortalAuthenticationSettingsResponse:
+      description: The developer authentication settings for a portal.
+      type: object
+      properties:
+        basic_auth_enabled:
+          description: The portal has basic auth enabled or disabled.
+          type: boolean
+          example: true
+        oidc_auth_enabled:
+          description: The portal has OIDC enabled or disabled.
+          type: boolean
+          example: false
+        saml_auth_enabled:
+          description: The portal has SAML enabled or disabled.
+          type: boolean
+          example: false
+        oidc_team_mapping_enabled:
+          description: IdP groups determine the Portal Teams a developer has.
+          type: boolean
+          example: true
+        konnect_mapping_enabled:
+          description: A Konnect Identity Admin assigns teams to a developer.
+          type: boolean
+          example: false
+        oidc_config:
+          $ref: '#/components/schemas/PortalOIDCConfig'
+      example:
+        basic_auth_enabled: true
+        oidc_auth_enabled: true
+        oidc_team_mapping_enabled: true
+        konnect_mapping_enabled: false
+        oidc_config:
+          issuer: 'https://identity.example.com/v2'
+          client_id: x7id0o42lklas0blidl2
+          scopes:
+            - email
+            - openid
+            - profile
+          claim_mappings:
+            name: name
+            email: email
+            groups: custom-group-claim
+      required:
+        - basic_auth_enabled
+        - konnect_mapping_enabled
+        - oidc_auth_enabled
+        - oidc_team_mapping_enabled
+      title: PortalAuthenticationSettingsResponse
+    PortalAuthenticationSettingsUpdateRequest:
+      description: Properties to update a portal's developer auth settings.
+      type: object
+      properties:
+        basic_auth_enabled:
+          description: The organization has basic auth enabled.
+          type: boolean
+          example: true
+        oidc_auth_enabled:
+          description: The organization has OIDC disabled.
+          type: boolean
+          example: false
+        oidc_team_mapping_enabled:
+          description: Whether IdP groups determine the Konnect Portal teams a developer has.
+          type: boolean
+          example: true
+        konnect_mapping_enabled:
+          description: Whether a Konnect Identity Admin assigns teams to a developer.
+          type: boolean
+          example: false
+        oidc_issuer:
+          type: string
+        oidc_client_id:
+          type: string
+        oidc_client_secret:
+          type: string
+        oidc_scopes:
+          type: array
+          items:
+            type: string
+            default: openid
+          default:
+            - email
+            - openid
+            - profile
+        oidc_claim_mappings:
+          $ref: '#/components/schemas/PortalClaimMappings'
+      example:
+        basic_auth_enabled: true
+        oidc_auth_enabled: true
+        oidc_team_mapping_enabled: true
+        konnect_mapping_enabled: false
+        oidc_issuer: 'https://identity.example.com/v2'
+        oidc_client_id: x7id0o42lklas0blidl2
+        oidc_scopes:
+          - email
+          - openid
+          - profile
+        oidc_claim_mappings:
+          name: name
+          email: email
+          groups: custom-group-claim
+      title: PortalAuthenticationSettingsUpdateRequest
     PortalPagesFilters:
       type: object
       properties:
@@ -1346,6 +1562,48 @@ components:
             - $ref: '#/components/schemas/SAMLIdentityProviderConfig'
       title: Identity Provider
   examples:
+    UpdatePortalAuthenticationSettingsExample1:
+      value:
+        basic_auth_enabled: true
+        oidc_auth_enabled: true
+        oidc_team_mapping_enabled: true
+        konnect_mapping_enabled: false
+        oidc_issuer: 'https://identity.example.com/v2'
+        oidc_client_id: x7id0o42lklas0blidl2
+        oidc_scopes:
+          - email
+          - openid
+          - profile
+        oidc_claim_mappings:
+          name: name
+          email: email
+          groups: custom-group-claim
+    UpdatePortalAuthenticationSettingsExampleDisableBasicAuth:
+      value:
+        basic_auth_enabled: false
+    UpdatePortalAuthenticationSettingsExampleEnableOIDC:
+      value:
+        oidc_auth_enabled: true
+        oidc_team_mapping_enabled: false
+        konnect_mapping_enabled: true
+        oidc_issuer: 'https://identity.example.com/v2'
+        oidc_client_id: x7id0o42lklas0blidl2
+        oidc_scopes:
+          - email
+          - openid
+          - profile
+        oidc_claim_mappings:
+          name: name
+          email: email
+          groups: custom-group-claim
+    UpdatePortalAuthenticationSettingsExampleEnableOIDCTeamMapping:
+      value:
+        oidc_team_mapping_enabled: true
+        konnect_mapping_enabled: true
+        oidc_claim_mappings:
+          name: name
+          email: email
+          groups: custom-group-claim
     CreatePortalPageExample1:
       value:
         title: Getting Started
@@ -1358,6 +1616,23 @@ components:
         title: About Us
         path: /about-us
         content: Welcome to the About Us page. This is where you can learn about our company.
+    PortalAuthenticationSettingsExample1:
+      value:
+        basic_auth_enabled: true
+        oidc_auth_enabled: true
+        oidc_team_mapping_enabled: true
+        konnect_mapping_enabled: true
+        oidc_config:
+          issuer: 'https://identity.example.com/v2'
+          client_id: x7id0o42lklas0blidl2
+          scopes:
+            - email
+            - openid
+            - profile
+          claim_mappings:
+            name: name
+            email: email
+            groups: custom-group-claim
     PortalPageExample1:
       value:
         id: 8f9fd312-a987-4628-b4c5-bb4f4fddd5f7
@@ -1405,6 +1680,94 @@ components:
           - field: title
             rule: max_length
             reason: value of "title" must not exceed 512 characters
+            source: body
+    UpdateAuthSettingsBadRequestExample1:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'kong:trace:1433447772874964729'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: basic_auth_enabled
+            rule: is_boolean
+            reason: value of "basic_auth_enabled" must be true or false
+            source: body
+    UpdateAuthSettingsBadRequestExample2:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'kong:trace:1433447772874964729'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: oidc_auth_enabled
+            rule: is_boolean
+            reason: value of "oidc_auth_enabled" must be true or false
+            source: body
+    UpdateAuthSettingsBadRequestExample3:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'kong:trace:1433447772874964729'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: oidc_team_mapping_enabled
+            rule: is_boolean
+            reason: value of "oidc_team_mapping_enabled" must be true or false
+            source: body
+    UpdateAuthSettingsBadRequestExample4:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'kong:trace:1433447772874964729'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: konnect_mapping_enabled
+            rule: is_boolean
+            reason: value of "konnect_mapping_enabled" must be true or false
+            source: body
+    UpdateAuthSettingsBadRequestExample5:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'kong:trace:1433447772874964729'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: oidc_issuer
+            rule: is_string
+            reason: value of "oidc_issuer" must be a utf-8 string
+            source: body
+    UpdateAuthSettingsBadRequestExample6:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'kong:trace:1433447772874964729'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: oidc_client_id
+            rule: is_string
+            reason: value of "oidc_client_id" must be a utf-8 string
+            source: body
+    UpdateAuthSettingsBadRequestExample7:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'kong:trace:1433447772874964729'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: oidc_client_secret
+            rule: is_string
+            reason: value of "oidc_client_secret" must be a utf-8 string
+            source: body
+    UpdateAuthSettingsBadRequestExample8:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'kong:trace:1433447772874964729'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: oidc_scopes
+            rule: is_array
+            reason: '"oidc_scopes" must be an array'
             source: body
     ListPortalPagesBadRequestExample1:
       value:
@@ -1567,6 +1930,21 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/PortalConfig'
+    UpdatePortalAuthenticationSettings:
+      description: Update a portal's developer authentication settings.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalAuthenticationSettingsUpdateRequest'
+          examples:
+            Example 1:
+              $ref: '#/components/examples/UpdatePortalAuthenticationSettingsExample1'
+            Disable Basic Developer Auth:
+              $ref: '#/components/examples/UpdatePortalAuthenticationSettingsExampleDisableBasicAuth'
+            Enable OIDC Developer Auth:
+              $ref: '#/components/examples/UpdatePortalAuthenticationSettingsExampleEnableOIDC'
+            Enable OIDC Team Mapping:
+              $ref: '#/components/examples/UpdatePortalAuthenticationSettingsExampleEnableOIDCTeamMapping'
     CreatePortalPage:
       description: Create a page in a portal.
       required: true
@@ -1624,6 +2002,15 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/PortalConfig'
+    PortalAuthenticationSettings:
+      description: Details about a portal's authentication settings.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalAuthenticationSettingsResponse'
+          examples:
+            Example 1:
+              $ref: '#/components/examples/PortalAuthenticationSettingsExample1'
     PortalPage:
       description: Details about a page in a portal.
       content:

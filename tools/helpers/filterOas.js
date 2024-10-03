@@ -54,7 +54,7 @@ function removeFromExamples(doc, node, key, isRef = false){
   }
 }
 
-function annotateWithTarget(doc, targetIsValid, callback, targetKey) {
+function annotateWithTarget(doc, targetIsValid, callback, targetKey, includeParentFromAnnotations = false) {
   return traverse(doc).forEach(function (node) {
     if (!this.node) {
       return;
@@ -70,6 +70,14 @@ function annotateWithTarget(doc, targetIsValid, callback, targetKey) {
         this.node['x-target-specification'] = [];
       }
       this.node['x-target-specification'].push(targetKey);
+
+      // Make sure the original target is included if we're processing based on x-property-annotations
+      if (includeParentFromAnnotations) {
+        if (isDev(this.node)){ this.node['x-target-specification'].push("dev"); }
+        if (isInternal(this.node)){ this.node['x-target-specification'].push("internal"); }
+        if (isPrivate(this.node)){ this.node['x-target-specification'].push("private"); }
+        if (isPublic(this.node)){ this.node['x-target-specification'].push("public"); }
+      }
     }
   });
 
@@ -208,6 +216,30 @@ function filterPathsToTarget(doc, target) {
 
 }
 
+function isDev(node){
+  return node["x-internal"] && node["x-unstable"];
+}
+
+function isInternal(node){
+  return node["x-internal"] && !node["x-unstable"];
+}
+
+function isPublic(node){
+  return !node["x-internal"] && !node["x-unstable"] && !node["x-private"];
+}
+
+function isPrivate(node){
+  return node["x-private"];
+}
+
+// Annotate any paths with a target specification
+function isPath(t){
+  if (!t.node || !t.node["operationId"]) {
+    return false;
+  }
+  return true;
+}
+
 function splitByVisibility(doc) {
 
   // Remove speakeasy annotations
@@ -220,30 +252,6 @@ function splitByVisibility(doc) {
         this.remove();
       }
     });
-  }
-
-  function isDev(node){
-    return node["x-internal"] && node["x-unstable"];
-  }
-
-  function isInternal(node){
-    return node["x-internal"] && !node["x-unstable"];
-  }
-
-  function isPublic(node){
-    return !node["x-internal"] && !node["x-unstable"] && !node["x-private"];
-  }
-
-  function isPrivate(node){
-    return node["x-private"];
-  }
-
-  // Annotate any paths with a target specification
-  function isPath(t){
-    if (!t.node || !t.node["operationId"]) {
-      return false;
-    }
-    return true;
   }
 
   annotateWithTarget(doc, isPath, isDev, 'dev');
@@ -262,9 +270,69 @@ function splitByVisibility(doc) {
     return true;
   }
 
+  // Annotate based on x-internal and x-unstable
   annotateWithTarget(doc, isSchema, isDev, 'dev');
   annotateWithTarget(doc, isSchema, isInternal, 'internal');
   annotateWithTarget(doc, isSchema, isPrivate, 'private');
+
+  function hasDevProperties(node){
+    if (!node['x-property-annotations']){
+      return false;
+    }
+
+    const matchingProperties = [];
+    const annotations = node['x-property-annotations'];
+    for (let k in annotations){
+      if (annotations[k].includes('x-internal') && annotations[k].includes('x-unstable')){
+        matchingProperties.push(k);
+      }
+    }
+
+    if (matchingProperties.length > 0){
+      return true;
+    }
+  }
+
+  function hasInternalProperties(node){
+    if (!node['x-property-annotations']){
+      return false;
+    }
+
+    const matchingProperties = [];
+    const annotations = node['x-property-annotations'];
+    for (let k in annotations){
+      if (annotations[k].includes('x-internal') && !annotations[k].includes('x-unstable')){
+        matchingProperties.push(k);
+      }
+    }
+
+    if (matchingProperties.length > 0){
+      return true;
+    }
+  }
+
+  function hasPrivateProperties(node){
+    if (!node['x-property-annotations']){
+      return false;
+    }
+
+    const matchingProperties = [];
+    const annotations = node['x-property-annotations'];
+    for (let k in annotations){
+      if (annotations[k].includes('x-private')) {
+        matchingProperties.push(k);
+      }
+    }
+
+    if (matchingProperties.length > 0){
+      return true;
+    }
+  }
+
+  // Annotate based on x-property-annotations
+  annotateWithTarget(doc, isSchema, hasDevProperties, 'dev', true);
+  annotateWithTarget(doc, isSchema, hasInternalProperties, 'internal', true);
+  annotateWithTarget(doc, isSchema, hasPrivateProperties, 'private', true);
 
   // For any schema that are annotated with a target specification,
   // annotate the paths that use them

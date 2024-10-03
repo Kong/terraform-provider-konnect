@@ -773,6 +773,83 @@ paths:
           $ref: '#/components/responses/ApiNotFound'
       tags:
         - API
+  /v2/cloud-gateways/networks:
+    get:
+      operationId: list-networks
+      summary: List Networks
+      description: Returns a paginated list of networks.
+      parameters:
+        - $ref: '#/components/parameters/NetworksFilter'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListNetworksResponse'
+        '400':
+          $ref: '#/components/responses/CloudGatewaysBadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      servers:
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Networks
+    post:
+      operationId: create-network
+      summary: Create Network
+      description: Creates a new network for a given provider account.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateNetworkRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/CreateNetworkResponse'
+        '400':
+          $ref: '#/components/responses/CloudGatewaysBadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/CloudGatewaysForbidden'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      servers:
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Networks
+  '/v2/cloud-gateways/networks/{networkId}':
+    patch:
+      operationId: update-network
+      summary: Update Network
+      description: Updates a network by ID.
+      parameters:
+        - $ref: '#/components/parameters/NetworkId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchNetworkRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/PatchNetworkResponse'
+        '400':
+          $ref: '#/components/responses/CloudGatewaysBadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/CloudGatewaysForbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      servers:
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Networks
   '/v2/control-planes/{controlPlaneId}/config-stores':
     get:
       operationId: list-config-stores
@@ -1760,6 +1837,58 @@ paths:
           $ref: '#/components/responses/Internal'
       tags:
         - Metadata Field
+  '/v2/portals/{portalId}/authentication-settings':
+    parameters:
+      - $ref: '#/components/parameters/parameters-PortalId'
+    get:
+      operationId: get-portal-authentication-settings
+      summary: Get Auth Settings
+      description: 'Returns the developer authentication configuration for a portal, which determines how developers can log in and how they are assigned to teams.'
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalAuthenticationSettings'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      tags:
+        - Portal Auth Settings
+    patch:
+      operationId: update-portal-authentication-settings
+      summary: Update Auth Settings
+      description: Updates the developer authentication configuration for a portal. Developers can be allowed to login using basic auth (email & password) or use Single-Sign-On (SSO) through an OIDC Identity Provider (IdP). Developers can be automatically assigned to teams by mapping claims from thier IdP account.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdatePortalAuthenticationSettings'
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalAuthenticationSettings'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+              examples:
+                UpdateAuthSettingsBadRequestExample1:
+                  $ref: '#/components/examples/UpdateAuthSettingsBadRequestExample1'
+                UpdateAuthSettingsBadRequestExample2:
+                  $ref: '#/components/examples/UpdateAuthSettingsBadRequestExample2'
+                UpdateAuthSettingsBadRequestExample3:
+                  $ref: '#/components/examples/UpdateAuthSettingsBadRequestExample3'
+                UpdateAuthSettingsBadRequestExample4:
+                  $ref: '#/components/examples/UpdateAuthSettingsBadRequestExample4'
+                UpdateAuthSettingsBadRequestExample5:
+                  $ref: '#/components/examples/UpdateAuthSettingsBadRequestExample5'
+                UpdateAuthSettingsBadRequestExample6:
+                  $ref: '#/components/examples/UpdateAuthSettingsBadRequestExample6'
+                UpdateAuthSettingsBadRequestExample7:
+                  $ref: '#/components/examples/UpdateAuthSettingsBadRequestExample7'
+                UpdateAuthSettingsBadRequestExample8:
+                  $ref: '#/components/examples/UpdateAuthSettingsBadRequestExample8'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Portal Auth Settings
   '/v2/portals/{portalId}/config':
     parameters:
       - $ref: '#/components/parameters/parameters-PortalId'
@@ -3032,6 +3161,21 @@ components:
       in: query
       schema:
         $ref: '#/components/schemas/SortQuery'
+    NetworkId:
+      name: networkId
+      in: path
+      description: The network to operate on.
+      required: true
+      schema:
+        $ref: '#/components/schemas/NetworkId'
+    NetworksFilter:
+      name: filter
+      description: Filters supported for networks.
+      required: false
+      in: query
+      schema:
+        $ref: '#/components/schemas/NetworksFilterParameters'
+      style: deepObject
     PageAfter:
       name: 'page[after]'
       description: 'Request the next page of data, starting with the item after this parameter.'
@@ -4455,6 +4599,283 @@ components:
         - size
         - next
         - previous
+    NetworkId:
+      type: string
+      format: uuid
+      example: 36ae63d3-efd1-4bec-b246-62aa5d3f5695
+    ProviderAccountId:
+      type: string
+      format: uuid
+      example: 929b2449-c69f-44c4-b6ad-9ecec6f811ae
+    ProviderRegionId:
+      description: Region ID for cloud provider region.
+      type: string
+      example: us-east-2
+      title: Provider Region ID
+    NetworkState:
+      description: State of the network.
+      enum:
+        - created
+        - initializing
+        - offline
+        - ready
+        - terminating
+        - terminated
+      readOnly: true
+      title: Network State
+    NetworkFirewallConfig:
+      description: Firewall configuration for a network.
+      type: object
+      properties:
+        allowed_cidr_blocks:
+          description: List of allowed CIDR blocks to access a network.
+          type: array
+          items:
+            type: string
+          example:
+            - 10.0.0.0/8
+          title: Allowed CIDR Blocks
+        denied_cidr_blocks:
+          description: List of denied CIDR blocks to access a network.
+          type: array
+          items:
+            type: string
+          example:
+            - 10.100.0.0/16
+          title: Denied CIDR Blocks
+      additionalProperties: false
+      title: Network Firewall Config
+    NetworkProviderMetadata:
+      description: Metadata describing attributes returned by cloud-provider for the network.
+      type: object
+      properties:
+        vpc_id:
+          type: string
+          title: VPC ID
+        subnet_ids:
+          type: array
+          items:
+            type: string
+          title: Subnet IDs
+      additionalProperties: false
+      readOnly: true
+      title: Network Provider Metadata
+    NetworkName:
+      description: Human-readable name of the network.
+      type: string
+      example: us-east-2 network
+      title: Network Name
+    NetworkCIDRBlock:
+      description: CIDR block configuration for the network.
+      type: string
+      example: 10.0.0.0/8
+      title: Network CIDR Block
+    NetworkDDOSProtection:
+      description: Whether DDOS protection is enabled for the network.
+      type: boolean
+      example: false
+      title: Network DDOS Protection
+    NetworkAvailabilityZones:
+      description: List of availability zones that the network is attached to.
+      type: array
+      items:
+        type: string
+      example:
+        - use2-az1
+        - use2-az2
+        - use2-az3
+    Network:
+      description: Object containing information about a network to be used in configurations.
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/NetworkId'
+        name:
+          $ref: '#/components/schemas/NetworkName'
+        default:
+          description: |
+            Whether the network is a default network or not. Default networks are Networks that are created
+            automatically by Konnect when an organization is linked to a provider account.
+          type: boolean
+          example: false
+        cloud_gateway_provider_account_id:
+          $ref: '#/components/schemas/ProviderAccountId'
+        region:
+          $ref: '#/components/schemas/ProviderRegionId'
+        availability_zones:
+          $ref: '#/components/schemas/NetworkAvailabilityZones'
+        cidr_block:
+          $ref: '#/components/schemas/NetworkCIDRBlock'
+        firewall:
+          $ref: '#/components/schemas/NetworkFirewallConfig'
+        ddos_protection:
+          $ref: '#/components/schemas/NetworkDDOSProtection'
+        state:
+          $ref: '#/components/schemas/NetworkState'
+        provider_metadata:
+          $ref: '#/components/schemas/NetworkProviderMetadata'
+        transit_gateway_count:
+          description: The number of transit gateways attached to this network.
+          type: integer
+          example: 0
+          readOnly: true
+        configuration_reference_count:
+          description: The number of configurations that reference this network.
+          type: integer
+          example: 0
+          readOnly: true
+        entity_version:
+          description: |
+            Monotonically-increasing version count of the network, to indicate the order of updates to the network.
+          type: integer
+          example: 1
+          readOnly: true
+        created_at:
+          description: An RFC-3339 timestamp representation of network creation date.
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          readOnly: true
+        updated_at:
+          description: An RFC-3339 timestamp representation of network update date.
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          readOnly: true
+      required:
+        - id
+        - name
+        - default
+        - cloud_gateway_provider_account_id
+        - region
+        - availability_zones
+        - cidr_block
+        - provider_metadata
+        - state
+        - transit_gateway_count
+        - configuration_reference_count
+        - entity_version
+        - created_at
+        - updated_at
+      title: Network
+    CreateNetworkRequest:
+      description: Request schema for creating a network.
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/NetworkName'
+        cloud_gateway_provider_account_id:
+          $ref: '#/components/schemas/ProviderAccountId'
+        region:
+          $ref: '#/components/schemas/ProviderRegionId'
+        availability_zones:
+          $ref: '#/components/schemas/NetworkAvailabilityZones'
+        cidr_block:
+          $ref: '#/components/schemas/NetworkCIDRBlock'
+        firewall:
+          $ref: '#/components/schemas/NetworkFirewallConfig'
+        ddos_protection:
+          $ref: '#/components/schemas/NetworkDDOSProtection'
+      additionalProperties: false
+      required:
+        - name
+        - cloud_gateway_provider_account_id
+        - region
+        - availability_zones
+        - cidr_block
+      title: CreateNetworkRequest
+    PatchNetworkRequest:
+      description: Request schema for updating a network.
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/NetworkName'
+        firewall:
+          $ref: '#/components/schemas/NetworkFirewallConfig'
+      additionalProperties: false
+      title: PatchNetworkRequest
+    NetworksFilterParameters:
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/CloudGatewaysStringFieldFilterOverride'
+        state:
+          $ref: '#/components/schemas/NetworkStateFieldFilter'
+      additionalProperties: false
+      title: NetworksFilterParameters
+    CloudGatewaysStringFieldFilterOverride:
+      oneOf:
+        - $ref: '#/components/schemas/CloudGatewaysStringFieldEqualsFilterOverride'
+        - $ref: '#/components/schemas/StringFieldContainsFilter'
+        - $ref: '#/components/schemas/StringFieldNEQFilter'
+        - $ref: '#/components/schemas/StringFieldOEQFilter'
+        - $ref: '#/components/schemas/StringFieldOContainsFilter'
+      title: CloudGatewaysStringFieldFilterOverride
+    CloudGatewaysStringFieldEqualsFilterOverride:
+      description: Filters on the given string field value by exact match.
+      oneOf:
+        - type: string
+        - type: object
+          title: StringFieldEqualsComparison
+          additionalProperties: false
+          properties:
+            eq:
+              type: string
+          required:
+            - eq
+      title: StringFieldEqualsFilter
+      x-examples:
+        example-1: equals-some-value
+        example-2:
+          eq: some-value
+    NetworkStateFieldFilter:
+      oneOf:
+        - $ref: '#/components/schemas/NetworkStateFieldEqualsFilter'
+        - $ref: '#/components/schemas/NetworkStateFieldNotEqualsFilter'
+        - $ref: '#/components/schemas/NetworkStateFieldOrEqualityFilter'
+      title: NetworkStateFieldFilter
+    NetworkStateFieldEqualsFilter:
+      description: Filter a network state by exact match.
+      oneOf:
+        - $ref: '#/components/schemas/NetworkState'
+        - type: object
+          title: NetworkStateFieldEqualsComparison
+          properties:
+            eq:
+              $ref: '#/components/schemas/NetworkState'
+          required:
+            - eq
+      title: NetworkStateFieldEqualsFilter
+      x-examples:
+        example-1: ready
+        example-2:
+          eq: ready
+    NetworkStateFieldNotEqualsFilter:
+      description: Filter a network state by inequality match.
+      type: object
+      properties:
+        neq:
+          $ref: '#/components/schemas/NetworkState'
+      required:
+        - neq
+      title: NetworkStateFieldNotEqualsFilter
+      x-examples:
+        example-1:
+          neq: ready
+    NetworkStateFieldOrEqualityFilter:
+      description: |
+        Filter a network state by determining if the value is equal to any in a set of values, where the set is a
+        comma-delimited list.
+      type: object
+      properties:
+        oeq:
+          type: string
+      required:
+        - oeq
+      title: NetworkStateFieldOrEqualityFilter
+      x-examples:
+        example-1:
+          oeq: 'ready,initializing'
     CreateApiKeyPayload:
       oneOf:
         - $ref: '#/components/schemas/CreateApiKeyPayloadNew'
@@ -5405,6 +5826,170 @@ components:
         - data
         - meta
       title: ListPortalPagesResponse
+    PortalClaimMappings:
+      description: Mappings from a portal developer atribute to an Identity Provider claim.
+      type: object
+      properties:
+        name:
+          type: string
+          example: name
+          default: name
+        email:
+          type: string
+          example: email
+          default: email
+        groups:
+          type: string
+          example: custom-group-claim
+          default: groups
+      example:
+        name: name
+        email: email
+        groups: custom-group-claim
+      maxProperties: 3
+      minProperties: 0
+      title: PortalClaimMappings
+    PortalOIDCConfig:
+      description: Configuration properties for an OpenID Connect Identity Provider.
+      type: object
+      properties:
+        issuer:
+          type: string
+          example: 'https://identity.example.com/v2'
+        client_id:
+          type: string
+          example: x7id0o42lklas0blidl2
+        scopes:
+          type: array
+          items:
+            type: string
+            default: openid
+          example:
+            - email
+            - openid
+            - profile
+          default:
+            - email
+            - openid
+            - profile
+        claim_mappings:
+          $ref: '#/components/schemas/PortalClaimMappings'
+      example:
+        issuer: 'https://identity.example.com/v2'
+        client_id: x7id0o42lklas0blidl2
+        scopes:
+          - email
+          - openid
+          - profile
+        claim_mappings:
+          name: name
+          email: email
+          groups: custom-group-claim
+      required:
+        - issuer
+        - client_id
+      title: PortalOIDCConfig
+    PortalAuthenticationSettingsResponse:
+      description: The developer authentication settings for a portal.
+      type: object
+      properties:
+        basic_auth_enabled:
+          description: The portal has basic auth enabled or disabled.
+          type: boolean
+          example: true
+        oidc_auth_enabled:
+          description: The portal has OIDC enabled or disabled.
+          type: boolean
+          example: false
+        saml_auth_enabled:
+          description: The portal has SAML enabled or disabled.
+          type: boolean
+          example: false
+        oidc_team_mapping_enabled:
+          description: IdP groups determine the Portal Teams a developer has.
+          type: boolean
+          example: true
+        konnect_mapping_enabled:
+          description: A Konnect Identity Admin assigns teams to a developer.
+          type: boolean
+          example: false
+        oidc_config:
+          $ref: '#/components/schemas/PortalOIDCConfig'
+      example:
+        basic_auth_enabled: true
+        oidc_auth_enabled: true
+        oidc_team_mapping_enabled: true
+        konnect_mapping_enabled: false
+        oidc_config:
+          issuer: 'https://identity.example.com/v2'
+          client_id: x7id0o42lklas0blidl2
+          scopes:
+            - email
+            - openid
+            - profile
+          claim_mappings:
+            name: name
+            email: email
+            groups: custom-group-claim
+      required:
+        - basic_auth_enabled
+        - konnect_mapping_enabled
+        - oidc_auth_enabled
+        - oidc_team_mapping_enabled
+      title: PortalAuthenticationSettingsResponse
+    PortalAuthenticationSettingsUpdateRequest:
+      description: Properties to update a portal's developer auth settings.
+      type: object
+      properties:
+        basic_auth_enabled:
+          description: The organization has basic auth enabled.
+          type: boolean
+          example: true
+        oidc_auth_enabled:
+          description: The organization has OIDC disabled.
+          type: boolean
+          example: false
+        oidc_team_mapping_enabled:
+          description: Whether IdP groups determine the Konnect Portal teams a developer has.
+          type: boolean
+          example: true
+        konnect_mapping_enabled:
+          description: Whether a Konnect Identity Admin assigns teams to a developer.
+          type: boolean
+          example: false
+        oidc_issuer:
+          type: string
+        oidc_client_id:
+          type: string
+        oidc_client_secret:
+          type: string
+        oidc_scopes:
+          type: array
+          items:
+            type: string
+            default: openid
+          default:
+            - email
+            - openid
+            - profile
+        oidc_claim_mappings:
+          $ref: '#/components/schemas/PortalClaimMappings'
+      example:
+        basic_auth_enabled: true
+        oidc_auth_enabled: true
+        oidc_team_mapping_enabled: true
+        konnect_mapping_enabled: false
+        oidc_issuer: 'https://identity.example.com/v2'
+        oidc_client_id: x7id0o42lklas0blidl2
+        oidc_scopes:
+          - email
+          - openid
+          - profile
+        oidc_claim_mappings:
+          name: name
+          email: email
+          groups: custom-group-claim
+      title: PortalAuthenticationSettingsUpdateRequest
     PortalPagesFilters:
       type: object
       properties:
@@ -8224,6 +8809,83 @@ components:
         invalid_parameters:
           - field: body
             reason: request format is invalid
+    PermissionDeniedExample:
+      value:
+        status: 403
+        title: Forbidden
+        instance: 'konnect:trace:2822394689570210664'
+        detail: You do not have permission to perform this action.
+    QuotaExceededExample:
+      value:
+        status: 403
+        title: Quota Exceeded
+        instance: 'konnect:trace:2822394689570210664'
+        detail: 'Maximum number of <quota name> exceeded. Max allowed: <quota value>.'
+    NetworkNameLengthCheckBadRequestExample:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'konnect:trace:2822394689570210664'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: name
+            rule: max_length
+            reason: name must be shorter than or equal to 120 characters
+    TransitGatewayNameLengthCheckBadRequestExample:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'konnect:trace:2822394689570210664'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: name
+            rule: max_length
+            reason: name must be shorter than or equal to 120 characters
+    CustomDomainLengthCheckBadRequestExample:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'konnect:trace:2822394689570210664'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: domain
+            rule: min_length
+            minimum: 1
+            reason: domain must be longer than or equal to 1 characters
+    ConfigurationApiAccessBadRequestExample:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'konnect:trace:2822394689570210664'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: api_access
+            rule: enum
+            choices:
+              - private
+              - public
+              - private+public
+            reason: 'api_access must be one of the following values: private, public, private+public'
+    ConfigurationDataPlaneGroupStaticRequestedInstancesBadRequestExample:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'konnect:trace:2822394689570210664'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: dataplane_groups.0.autoscale.requested_instances
+            rule: is_integer
+            reason: dataplane_groups.0.autoscale.requested_instances must be an integer number
+    ConfigurationDataPlaneGroupAutopilotBaseRpsBadRequestExample:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'konnect:trace:2822394689570210664'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: dataplane_groups.0.autoscale.base_rps
+            rule: is_integer
+            reason: dataplane_groups.0.autoscale.base_rps must be an integer number
     400-cannot-be-blank:
       value:
         status: 400
@@ -8497,6 +9159,48 @@ components:
         title: Not Found
         instance: 'konnect:trace:2287285207635123011'
         detail: The requested organization was not found
+    UpdatePortalAuthenticationSettingsExample1:
+      value:
+        basic_auth_enabled: true
+        oidc_auth_enabled: true
+        oidc_team_mapping_enabled: true
+        konnect_mapping_enabled: false
+        oidc_issuer: 'https://identity.example.com/v2'
+        oidc_client_id: x7id0o42lklas0blidl2
+        oidc_scopes:
+          - email
+          - openid
+          - profile
+        oidc_claim_mappings:
+          name: name
+          email: email
+          groups: custom-group-claim
+    UpdatePortalAuthenticationSettingsExampleDisableBasicAuth:
+      value:
+        basic_auth_enabled: false
+    UpdatePortalAuthenticationSettingsExampleEnableOIDC:
+      value:
+        oidc_auth_enabled: true
+        oidc_team_mapping_enabled: false
+        konnect_mapping_enabled: true
+        oidc_issuer: 'https://identity.example.com/v2'
+        oidc_client_id: x7id0o42lklas0blidl2
+        oidc_scopes:
+          - email
+          - openid
+          - profile
+        oidc_claim_mappings:
+          name: name
+          email: email
+          groups: custom-group-claim
+    UpdatePortalAuthenticationSettingsExampleEnableOIDCTeamMapping:
+      value:
+        oidc_team_mapping_enabled: true
+        konnect_mapping_enabled: true
+        oidc_claim_mappings:
+          name: name
+          email: email
+          groups: custom-group-claim
     CreatePortalPageExample1:
       value:
         title: Getting Started
@@ -8509,6 +9213,23 @@ components:
         title: About Us
         path: /about-us
         content: Welcome to the About Us page. This is where you can learn about our company.
+    PortalAuthenticationSettingsExample1:
+      value:
+        basic_auth_enabled: true
+        oidc_auth_enabled: true
+        oidc_team_mapping_enabled: true
+        konnect_mapping_enabled: true
+        oidc_config:
+          issuer: 'https://identity.example.com/v2'
+          client_id: x7id0o42lklas0blidl2
+          scopes:
+            - email
+            - openid
+            - profile
+          claim_mappings:
+            name: name
+            email: email
+            groups: custom-group-claim
     PortalPageExample1:
       value:
         id: 8f9fd312-a987-4628-b4c5-bb4f4fddd5f7
@@ -8556,6 +9277,94 @@ components:
           - field: title
             rule: max_length
             reason: value of "title" must not exceed 512 characters
+            source: body
+    UpdateAuthSettingsBadRequestExample1:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'kong:trace:1433447772874964729'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: basic_auth_enabled
+            rule: is_boolean
+            reason: value of "basic_auth_enabled" must be true or false
+            source: body
+    UpdateAuthSettingsBadRequestExample2:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'kong:trace:1433447772874964729'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: oidc_auth_enabled
+            rule: is_boolean
+            reason: value of "oidc_auth_enabled" must be true or false
+            source: body
+    UpdateAuthSettingsBadRequestExample3:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'kong:trace:1433447772874964729'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: oidc_team_mapping_enabled
+            rule: is_boolean
+            reason: value of "oidc_team_mapping_enabled" must be true or false
+            source: body
+    UpdateAuthSettingsBadRequestExample4:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'kong:trace:1433447772874964729'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: konnect_mapping_enabled
+            rule: is_boolean
+            reason: value of "konnect_mapping_enabled" must be true or false
+            source: body
+    UpdateAuthSettingsBadRequestExample5:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'kong:trace:1433447772874964729'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: oidc_issuer
+            rule: is_string
+            reason: value of "oidc_issuer" must be a utf-8 string
+            source: body
+    UpdateAuthSettingsBadRequestExample6:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'kong:trace:1433447772874964729'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: oidc_client_id
+            rule: is_string
+            reason: value of "oidc_client_id" must be a utf-8 string
+            source: body
+    UpdateAuthSettingsBadRequestExample7:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'kong:trace:1433447772874964729'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: oidc_client_secret
+            rule: is_string
+            reason: value of "oidc_client_secret" must be a utf-8 string
+            source: body
+    UpdateAuthSettingsBadRequestExample8:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'kong:trace:1433447772874964729'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: oidc_scopes
+            rule: is_array
+            reason: '"oidc_scopes" must be an array'
             source: body
     ListPortalPagesBadRequestExample1:
       value:
@@ -8933,6 +9742,21 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/PortalConfig'
+    UpdatePortalAuthenticationSettings:
+      description: Update a portal's developer authentication settings.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalAuthenticationSettingsUpdateRequest'
+          examples:
+            Example 1:
+              $ref: '#/components/examples/UpdatePortalAuthenticationSettingsExample1'
+            Disable Basic Developer Auth:
+              $ref: '#/components/examples/UpdatePortalAuthenticationSettingsExampleDisableBasicAuth'
+            Enable OIDC Developer Auth:
+              $ref: '#/components/examples/UpdatePortalAuthenticationSettingsExampleEnableOIDC'
+            Enable OIDC Team Mapping:
+              $ref: '#/components/examples/UpdatePortalAuthenticationSettingsExampleEnableOIDCTeamMapping'
     CreatePortalPage:
       description: Create a page in a portal.
       required: true
@@ -9675,6 +10499,65 @@ components:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/ConflictError'
+    ListNetworksResponse:
+      description: A paginated list for a collection of networks.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              meta:
+                $ref: '#/components/schemas/PaginatedMeta'
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Network'
+            required:
+              - meta
+              - data
+            title: ListNetworksResponse
+    CreateNetworkResponse:
+      description: Response format for creating a network.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Network'
+    PatchNetworkResponse:
+      description: Response format for patching a network.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Network'
+    CloudGatewaysBadRequest:
+      description: Bad Request
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/BadRequestError'
+          examples:
+            Network Name Length Exceeded:
+              $ref: '#/components/examples/NetworkNameLengthCheckBadRequestExample'
+            Transit Gateway Name Length Exceeded:
+              $ref: '#/components/examples/TransitGatewayNameLengthCheckBadRequestExample'
+            Custom Domain Domain Length Too Short:
+              $ref: '#/components/examples/CustomDomainLengthCheckBadRequestExample'
+            Configuration Api Access Enum Validation:
+              $ref: '#/components/examples/ConfigurationApiAccessBadRequestExample'
+            Configuration Data-Plane Group Static Request Instances Minimum:
+              $ref: '#/components/examples/ConfigurationDataPlaneGroupStaticRequestedInstancesBadRequestExample'
+            Configuration Data-Plane Group Autopilot Base RPS Minimum:
+              $ref: '#/components/examples/ConfigurationDataPlaneGroupAutopilotBaseRpsBadRequestExample'
+    CloudGatewaysForbidden:
+      description: Forbidden
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ForbiddenError'
+          examples:
+            Permission Denied:
+              $ref: '#/components/examples/PermissionDeniedExample'
+            Quota Exceeded:
+              $ref: '#/components/examples/QuotaExceededExample'
     CreateConsumerResponse:
       description: success
       content:
@@ -10388,6 +11271,15 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/PortalConfig'
+    PortalAuthenticationSettings:
+      description: Details about a portal's authentication settings.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalAuthenticationSettingsResponse'
+          examples:
+            Example 1:
+              $ref: '#/components/examples/PortalAuthenticationSettingsExample1'
     PortalPage:
       description: Details about a page in a portal.
       content:
@@ -10897,6 +11789,7 @@ tags:
   - name: API
   - name: API Documentation
   - name: API Specification
+  - name: Networks
   - name: realms
     description: realms
   - name: consumers
