@@ -158,7 +158,7 @@ paths:
           $ref: "#/components/responses/ApiNotFound"
       tags:
         - API
-  /api/{apiId}/documents:
+  /apis/{apiId}/documents:
     parameters:
       - schema:
           type: string
@@ -239,7 +239,7 @@ paths:
           $ref: "#/components/responses/ApiNotFound"
       tags:
         - API Documentation
-  /api/{apiId}/documents/{documentId}:
+  /apis/{apiId}/documents/{documentId}:
     parameters:
       - schema:
           type: string
@@ -323,7 +323,7 @@ paths:
           $ref: "#/components/responses/ApiNotFound"
       tags:
         - API Documentation
-  /api/{apiId}/specifications:
+  /apis/{apiId}/specifications:
     parameters:
       - schema:
           type: string
@@ -396,7 +396,7 @@ paths:
           $ref: "#/components/responses/ApiNotFound"
       tags:
         - API Specification
-  /api/{apiId}/specifications/{specId}:
+  /apis/{apiId}/specifications/{specId}:
     parameters:
       - schema:
           type: string

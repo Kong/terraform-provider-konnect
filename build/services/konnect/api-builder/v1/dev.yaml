@@ -140,7 +140,7 @@ paths:
           $ref: '#/components/responses/ApiNotFound'
       tags:
         - API
-  '/api/{apiId}/documents':
+  '/apis/{apiId}/documents':
     parameters:
       - name: apiId
         in: path
@@ -217,7 +217,7 @@ paths:
           $ref: '#/components/responses/ApiNotFound'
       tags:
         - API Documentation
-  '/api/{apiId}/documents/{documentId}':
+  '/apis/{apiId}/documents/{documentId}':
     parameters:
       - name: apiId
         in: path
@@ -295,7 +295,7 @@ paths:
           $ref: '#/components/responses/ApiNotFound'
       tags:
         - API Documentation
-  '/api/{apiId}/specifications':
+  '/apis/{apiId}/specifications':
     parameters:
       - name: apiId
         in: path
@@ -364,7 +364,7 @@ paths:
           $ref: '#/components/responses/ApiNotFound'
       tags:
         - API Specification
-  '/api/{apiId}/specifications/{specId}':
+  '/apis/{apiId}/specifications/{specId}':
     parameters:
       - name: apiId
         in: path
