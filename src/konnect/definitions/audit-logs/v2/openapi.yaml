@@ -197,6 +197,8 @@ paths:
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
         '404':
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+        '409':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Conflict'
 components:
   responses:
     AuditLogReplayJob:
