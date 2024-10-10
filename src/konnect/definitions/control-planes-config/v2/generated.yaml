@@ -2872,6 +2872,7 @@ components:
         consumer:
           type: object
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
@@ -2882,12 +2883,15 @@ components:
           readOnly: true
         group:
           type: string
+          nullable: true
         id:
           type: string
+          nullable: true
         tags:
           type: array
           items:
             type: string
+          nullable: true
       example:
         consumer:
           id: 84a73fb8-50fc-44a7-a4d5-aa17728ee83f
@@ -2902,12 +2906,15 @@ components:
           readOnly: true
         group:
           type: string
+          nullable: true
         id:
           type: string
+          nullable: true
         tags:
           type: array
           items:
             type: string
+          nullable: true
       example:
         group: foo
         id: b1f34145-0343-41a4-9602-4c69dec2f269
@@ -2918,6 +2925,7 @@ components:
         consumer:
           type: object
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
@@ -2928,14 +2936,18 @@ components:
           readOnly: true
         id:
           type: string
+          nullable: true
         password:
           type: string
+          nullable: true
         tags:
           type: array
           items:
             type: string
+          nullable: true
         username:
           type: string
+          nullable: true
       example:
         consumer:
           id: 84a73fb8-50fc-44a7-a4d5-aa17728ee83f
@@ -2951,14 +2963,18 @@ components:
           readOnly: true
         id:
           type: string
+          nullable: true
         password:
           type: string
+          nullable: true
         tags:
           type: array
           items:
             type: string
+          nullable: true
         username:
           type: string
+          nullable: true
       example:
         id: b2f34145-0343-41a4-9602-4c69dec2f269
         password: hashedsoopersecretvalue
@@ -2974,17 +2990,20 @@ components:
         cert_digest:
           description: 'SHA256 hex digest of the public certificate. This field is read-only and it cannot be set by the caller, the value is automatically computed.'
           type: string
+          nullable: true
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
           readOnly: true
         id:
           type: string
+          nullable: true
         tags:
           description: An optional set of strings associated with the Certificate for grouping and filtering.
           type: array
           items:
             type: string
+          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
@@ -3008,23 +3027,27 @@ components:
         cert_alt:
           description: 'PEM-encoded public certificate chain of the alternate SSL key pair. This should only be set if you have both RSA and ECDSA types of certificate available and would like Kong to prefer serving using ECDSA certs when client advertises support for it. This field is _referenceable_, which means it can be securely stored as a [secret](/gateway/latest/plan-and-deploy/security/secrets-management/getting-started) in a vault. References must follow a [specific format](/gateway/latest/plan-and-deploy/security/secrets-management/reference-format).'
           type: string
+          nullable: true
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
           readOnly: true
         id:
           type: string
+          nullable: true
         key:
           description: 'PEM-encoded private key of the SSL key pair. This field is _referenceable_, which means it can be securely stored as a [secret](/gateway/latest/plan-and-deploy/security/secrets-management/getting-started) in a vault. References must follow a [specific format](/gateway/latest/plan-and-deploy/security/secrets-management/reference-format).'
           type: string
         key_alt:
           description: 'PEM-encoded private key of the alternate SSL key pair. This should only be set if you have both RSA and ECDSA types of certificate available and would like Kong to prefer serving using ECDSA certs when client advertises support for it. This field is _referenceable_, which means it can be securely stored as a [secret](/gateway/latest/plan-and-deploy/security/secrets-management/getting-started) in a vault. References must follow a [specific format](/gateway/latest/plan-and-deploy/security/secrets-management/reference-format).'
           type: string
+          nullable: true
         tags:
           description: An optional set of strings associated with the Certificate for grouping and filtering.
           type: array
           items:
             type: string
+          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
@@ -3054,13 +3077,16 @@ components:
         custom_id:
           description: Field for storing an existing unique ID for the Consumer - useful for mapping Kong with users in your existing database. You must send either this field or `username` with the request.
           type: string
+          nullable: true
         id:
           type: string
+          nullable: true
         tags:
           description: An optional set of strings associated with the Consumer for grouping and filtering.
           type: array
           items:
             type: string
+          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
@@ -3068,6 +3094,7 @@ components:
         username:
           description: The unique username of the Consumer. You must send either this field or `custom_id` with the request.
           type: string
+          nullable: true
       example:
         custom_id: '4200'
         id: 8a388226-80e8-4027-a486-25e4f7db5d21
@@ -3084,12 +3111,14 @@ components:
           readOnly: true
         id:
           type: string
+          nullable: true
         name:
           type: string
         tags:
           type: array
           items:
             type: string
+          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
@@ -3118,6 +3147,7 @@ components:
         consumer:
           type: object
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
@@ -3128,14 +3158,18 @@ components:
           readOnly: true
         id:
           type: string
+          nullable: true
         secret:
           type: string
+          nullable: true
         tags:
           type: array
           items:
             type: string
+          nullable: true
         username:
           type: string
+          nullable: true
       example:
         consumer:
           id: 84a73fb8-50fc-44a7-a4d5-aa17728ee83f
@@ -3151,14 +3185,18 @@ components:
           readOnly: true
         id:
           type: string
+          nullable: true
         secret:
           type: string
+          nullable: true
         tags:
           type: array
           items:
             type: string
+          nullable: true
         username:
           type: string
+          nullable: true
       example:
         id: 75695322-e8a0-4109-aed4-5416b0308d85
         secret: wQazJ304DW5huJklHgUfjfiSyCyTAEDZ
@@ -3184,9 +3222,11 @@ components:
             - PS384
             - PS512
             - EdDSA
+          nullable: true
         consumer:
           type: object
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
@@ -3197,16 +3237,21 @@ components:
           readOnly: true
         id:
           type: string
+          nullable: true
         key:
           type: string
+          nullable: true
         rsa_public_key:
           type: string
+          nullable: true
         secret:
           type: string
+          nullable: true
         tags:
           type: array
           items:
             type: string
+          nullable: true
       example:
         algorithm: HS256
         consumer:
@@ -3234,22 +3279,28 @@ components:
             - PS384
             - PS512
             - EdDSA
+          nullable: true
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
           readOnly: true
         id:
           type: string
+          nullable: true
         key:
           type: string
+          nullable: true
         rsa_public_key:
           type: string
+          nullable: true
         secret:
           type: string
+          nullable: true
         tags:
           type: array
           items:
             type: string
+          nullable: true
       example:
         algorithm: HS256
         id: 75695322-e8a0-4109-aed4-5416b0308d85
@@ -3266,18 +3317,22 @@ components:
           readOnly: true
         id:
           type: string
+          nullable: true
         jwk:
           description: A JSON Web Key represented as a string.
           type: string
+          nullable: true
         kid:
           description: A unique identifier for a key.
           type: string
         name:
           description: The name to associate with the given keys.
           type: string
+          nullable: true
         pem:
           description: A keypair in PEM format.
           type: object
+          nullable: true
           properties:
             private_key:
               type: string
@@ -3287,6 +3342,7 @@ components:
           description: The id (an UUID) of the key-set with which to associate the key.
           type: object
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
@@ -3296,6 +3352,7 @@ components:
           type: array
           items:
             type: string
+          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
@@ -3319,6 +3376,7 @@ components:
         consumer:
           type: object
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
@@ -3329,12 +3387,15 @@ components:
           readOnly: true
         id:
           type: string
+          nullable: true
         key:
           type: string
+          nullable: true
         tags:
           type: array
           items:
             type: string
+          nullable: true
       example:
         consumer:
           id: 84a73fb8-50fc-44a7-a4d5-aa17728ee83f
@@ -3349,12 +3410,15 @@ components:
           readOnly: true
         id:
           type: string
+          nullable: true
         key:
           type: string
+          nullable: true
         tags:
           type: array
           items:
             type: string
+          nullable: true
       example:
         id: b2f34145-0343-41a4-9602-4c69dec2f269
         key: IL1deIyHyQA40WpeLeA1bIUXuvTwlGjo
@@ -3368,12 +3432,15 @@ components:
           readOnly: true
         id:
           type: string
+          nullable: true
         name:
           type: string
+          nullable: true
         tags:
           type: array
           items:
             type: string
+          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
@@ -3402,6 +3469,7 @@ components:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
@@ -3409,6 +3477,7 @@ components:
         consumer_group:
           type: object
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
@@ -3421,15 +3490,19 @@ components:
           description: Whether the plugin is applied.
           type: boolean
           default: true
+          nullable: true
         id:
           type: string
+          nullable: true
         instance_name:
           type: string
+          nullable: true
         name:
           description: 'The name of the Plugin that''s going to be added. Currently, the Plugin must be installed in every Kong instance separately.'
           type: string
         ordering:
           type: object
+          nullable: true
           properties:
             after:
               type: object
@@ -3466,10 +3539,12 @@ components:
             - grpcs
             - http
             - https
+          nullable: true
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.'
           type: object
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
@@ -3478,6 +3553,7 @@ components:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
@@ -3487,6 +3563,7 @@ components:
           type: array
           items:
             type: string
+          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
@@ -3528,15 +3605,19 @@ components:
           description: Whether the plugin is applied.
           type: boolean
           default: true
+          nullable: true
         id:
           type: string
+          nullable: true
         instance_name:
           type: string
+          nullable: true
         name:
           description: 'The name of the Plugin that''s going to be added. Currently, the Plugin must be installed in every Kong instance separately.'
           type: string
         ordering:
           type: object
+          nullable: true
           properties:
             after:
               type: object
@@ -3573,11 +3654,13 @@ components:
             - grpcs
             - http
             - https
+          nullable: true
         tags:
           description: An optional set of strings associated with the Plugin for grouping and filtering.
           type: array
           items:
             type: string
+          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
@@ -3622,16 +3705,19 @@ components:
               port:
                 type: integer
             type: object
+          nullable: true
         headers:
           description: 'One or more lists of values indexed by header name that will cause this Route to match if present in the request. The `Host` header cannot be used with this attribute: hosts should be specified using the `hosts` attribute. When `headers` contains only one value and that value starts with the special prefix `~*`, the value is interpreted as a regular expression.'
           type: object
           additionalProperties:
             type: string
+          nullable: true
         hosts:
           description: A list of domain names that match this Route. Note that the hosts value is case sensitive.
           type: array
           items:
             type: string
+          nullable: true
         https_redirect_status_code:
           description: 'The status code Kong responds with when all properties of a Route match except the protocol i.e. if the protocol of the request is `HTTP` instead of `HTTPS`. `Location` header is injected by Kong if the field is set to 301, 302, 307 or 308. Note: This config applies only if the Route is configured to only accept the `https` protocol.'
           type: integer
@@ -3642,16 +3728,20 @@ components:
             - 302
             - 307
             - 308
+          nullable: true
         id:
           type: string
+          nullable: true
         methods:
           description: A list of HTTP methods that match this Route.
           type: array
           items:
             type: string
+          nullable: true
         name:
           description: 'The name of the Route. Route names must be unique, and they are case sensitive. For example, there can be two different Routes named "test" and "Test".'
           type: string
+          nullable: true
         path_handling:
           description: 'Controls how the Service path, Route path and requested path are combined when sending a request to the upstream. See above for a detailed description of each behavior.'
           type: string
@@ -3659,15 +3749,18 @@ components:
           enum:
             - v0
             - v1
+          nullable: true
         paths:
           description: A list of paths that match this Route.
           type: array
           items:
             type: string
+          nullable: true
         preserve_host:
           description: 'When matching a Route via one of the `hosts` domain names, use the request `Host` header in the upstream request headers. If set to `false`, the upstream `Host` header will be that of the Service''s `host`.'
           type: boolean
           default: false
+          nullable: true
         protocols:
           description: 'An array of the protocols this Route should allow. See the [Route Object](#route-object) section for a list of accepted protocols. When set to only `"https"`, HTTP requests are answered with an upgrade error. When set to only `"http"`, HTTPS requests are answered with an error.'
           type: array
@@ -3687,22 +3780,27 @@ components:
           default:
             - http
             - https
+          nullable: true
         regex_priority:
           description: 'A number used to choose which route resolves a given request when several routes match it using regexes simultaneously. When two routes match the path and have the same `regex_priority`, the older one (lowest `created_at`) is used. Note that the priority for non-regex routes is different (longer non-regex routes are matched before shorter ones).'
           type: integer
           default: 0
+          nullable: true
         request_buffering:
           description: 'Whether to enable request body buffering or not. With HTTP 1.1, it may make sense to turn this off on services that receive data with chunked transfer encoding.'
           type: boolean
           default: true
+          nullable: true
         response_buffering:
           description: 'Whether to enable response body buffering or not. With HTTP 1.1, it may make sense to turn this off on services that send data with chunked transfer encoding.'
           type: boolean
           default: true
+          nullable: true
         service:
           description: The Service this Route is associated to. This is where the Route proxies traffic to.
           type: object
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
@@ -3712,6 +3810,7 @@ components:
           type: array
           items:
             type: string
+          nullable: true
         sources:
           description: A list of IP sources of incoming connections that match this Route when using stream routing. Each entry is an object with fields "ip" (optionally in CIDR range notation) and/or "port".
           type: array
@@ -3722,15 +3821,18 @@ components:
               port:
                 type: integer
             type: object
+          nullable: true
         strip_path:
           description: 'When matching a Route via one of the `paths`, strip the matching prefix from the upstream request URL.'
           type: boolean
           default: true
+          nullable: true
         tags:
           description: An optional set of strings associated with the Route for grouping and filtering.
           type: array
           items:
             type: string
+          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
@@ -3764,16 +3866,19 @@ components:
               port:
                 type: integer
             type: object
+          nullable: true
         headers:
           description: 'One or more lists of values indexed by header name that will cause this Route to match if present in the request. The `Host` header cannot be used with this attribute: hosts should be specified using the `hosts` attribute. When `headers` contains only one value and that value starts with the special prefix `~*`, the value is interpreted as a regular expression.'
           type: object
           additionalProperties:
             type: string
+          nullable: true
         hosts:
           description: A list of domain names that match this Route. Note that the hosts value is case sensitive.
           type: array
           items:
             type: string
+          nullable: true
         https_redirect_status_code:
           description: 'The status code Kong responds with when all properties of a Route match except the protocol i.e. if the protocol of the request is `HTTP` instead of `HTTPS`. `Location` header is injected by Kong if the field is set to 301, 302, 307 or 308. Note: This config applies only if the Route is configured to only accept the `https` protocol.'
           type: integer
@@ -3784,16 +3889,20 @@ components:
             - 302
             - 307
             - 308
+          nullable: true
         id:
           type: string
+          nullable: true
         methods:
           description: A list of HTTP methods that match this Route.
           type: array
           items:
             type: string
+          nullable: true
         name:
           description: 'The name of the Route. Route names must be unique, and they are case sensitive. For example, there can be two different Routes named "test" and "Test".'
           type: string
+          nullable: true
         path_handling:
           description: 'Controls how the Service path, Route path and requested path are combined when sending a request to the upstream. See above for a detailed description of each behavior.'
           type: string
@@ -3801,15 +3910,18 @@ components:
           enum:
             - v0
             - v1
+          nullable: true
         paths:
           description: A list of paths that match this Route.
           type: array
           items:
             type: string
+          nullable: true
         preserve_host:
           description: 'When matching a Route via one of the `hosts` domain names, use the request `Host` header in the upstream request headers. If set to `false`, the upstream `Host` header will be that of the Service''s `host`.'
           type: boolean
           default: false
+          nullable: true
         protocols:
           description: 'An array of the protocols this Route should allow. See the [Route Object](#route-object) section for a list of accepted protocols. When set to only `"https"`, HTTP requests are answered with an upgrade error. When set to only `"http"`, HTTPS requests are answered with an error.'
           type: array
@@ -3829,23 +3941,28 @@ components:
           default:
             - http
             - https
+          nullable: true
         regex_priority:
           description: 'A number used to choose which route resolves a given request when several routes match it using regexes simultaneously. When two routes match the path and have the same `regex_priority`, the older one (lowest `created_at`) is used. Note that the priority for non-regex routes is different (longer non-regex routes are matched before shorter ones).'
           type: integer
           default: 0
+          nullable: true
         request_buffering:
           description: 'Whether to enable request body buffering or not. With HTTP 1.1, it may make sense to turn this off on services that receive data with chunked transfer encoding.'
           type: boolean
           default: true
+          nullable: true
         response_buffering:
           description: 'Whether to enable response body buffering or not. With HTTP 1.1, it may make sense to turn this off on services that send data with chunked transfer encoding.'
           type: boolean
           default: true
+          nullable: true
         snis:
           description: A list of SNIs that match this Route when using stream routing.
           type: array
           items:
             type: string
+          nullable: true
         sources:
           description: A list of IP sources of incoming connections that match this Route when using stream routing. Each entry is an object with fields "ip" (optionally in CIDR range notation) and/or "port".
           type: array
@@ -3856,15 +3973,18 @@ components:
               port:
                 type: integer
             type: object
+          nullable: true
         strip_path:
           description: 'When matching a Route via one of the `paths`, strip the matching prefix from the upstream request URL.'
           type: boolean
           default: true
+          nullable: true
         tags:
           description: An optional set of strings associated with the Route for grouping and filtering.
           type: array
           items:
             type: string
+          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
@@ -3897,6 +4017,7 @@ components:
           readOnly: true
         id:
           type: string
+          nullable: true
         name:
           description: The SNI name to associate with the given certificate.
           type: string
@@ -3905,6 +4026,7 @@ components:
           type: array
           items:
             type: string
+          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
@@ -3927,6 +4049,7 @@ components:
           readOnly: true
         id:
           type: string
+          nullable: true
         name:
           description: The SNI name to associate with the given certificate.
           type: string
@@ -3935,6 +4058,7 @@ components:
           type: array
           items:
             type: string
+          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
@@ -3945,7 +4069,6 @@ components:
       additionalProperties: false
       required:
         - name
-        - certificate
     Service:
       description: 'Service entities, as the name implies, are abstractions of each of your own upstream services. Examples of Services would be a data transformation microservice, a billing API, etc. The main attribute of a Service is its URL (where Kong should proxy traffic to), which can be set as a single string or by specifying its `protocol`, `host`, `port` and `path` individually. Services are associated to Routes (a Service can have many Routes associated with it). Routes are entry-points in Kong and define rules to match client requests. Once a Route is matched, Kong proxies the request to its associated Service. See the [Proxy Reference][proxy-reference] for a detailed explanation of how Kong proxies traffic.'
       type: object
@@ -3955,10 +4078,12 @@ components:
           type: array
           items:
             type: string
+          nullable: true
         client_certificate:
           description: Certificate to be used as client certificate while TLS handshaking to the upstream server.
           type: object
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
@@ -3967,6 +4092,7 @@ components:
           description: The timeout in milliseconds for establishing a connection to the upstream server.
           type: integer
           default: 60000
+          nullable: true
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
@@ -3975,17 +4101,21 @@ components:
           description: 'Whether the Service is active. If set to `false`, the proxy behavior will be as if any routes attached to it do not exist (404). Default: `true`.'
           type: boolean
           default: true
+          nullable: true
         host:
           description: The host of the upstream server. Note that the host value is case sensitive.
           type: string
         id:
           type: string
+          nullable: true
         name:
           description: The Service name.
           type: string
+          nullable: true
         path:
           description: The path to be used in requests to the upstream server.
           type: string
+          nullable: true
         port:
           description: The upstream server port.
           type: integer
@@ -4009,21 +4139,26 @@ components:
           description: The timeout in milliseconds between two successive read operations for transmitting a request to the upstream server.
           type: integer
           default: 60000
+          nullable: true
         retries:
           description: The number of retries to execute upon failure to proxy.
           type: integer
           default: 5
+          nullable: true
         tags:
           description: An optional set of strings associated with the Service for grouping and filtering.
           type: array
           items:
             type: string
+          nullable: true
         tls_verify:
           description: 'Whether to enable verification of upstream server TLS certificate. If set to `null`, then the Nginx default is respected.'
           type: boolean
+          nullable: true
         tls_verify_depth:
           description: 'Maximum depth of chain while verifying Upstream server''s TLS certificate. If set to `null`, then the Nginx default is respected.'
           type: integer
+          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
@@ -4036,6 +4171,7 @@ components:
           description: The timeout in milliseconds between two successive write operations for transmitting a request to the upstream server.
           type: integer
           default: 60000
+          nullable: true
       example:
         host: example.internal
         id: 49fd316e-c457-481c-9fc7-8079153e4f3c
@@ -4058,14 +4194,17 @@ components:
           readOnly: true
         id:
           type: string
+          nullable: true
         tags:
           description: An optional set of strings associated with the Target for grouping and filtering.
           type: array
           items:
             type: string
+          nullable: true
         target:
           description: 'The target address (ip or hostname) and port. If the hostname resolves to an SRV record, the `port` value will be overridden by the value from the DNS record.'
           type: string
+          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: number
@@ -4073,6 +4212,7 @@ components:
         upstream:
           type: object
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
@@ -4081,6 +4221,7 @@ components:
           description: 'The weight this target gets within the upstream loadbalancer (`0`-`65535`). If the hostname resolves to an SRV record, the `weight` value will be overridden by the value from the DNS record.'
           type: integer
           default: 100
+          nullable: true
       example:
         id: 089292a7-ba3d-4d88-acf0-97b4b2e2621a
         target: 203.0.113.42
@@ -4097,14 +4238,17 @@ components:
           readOnly: true
         id:
           type: string
+          nullable: true
         tags:
           description: An optional set of strings associated with the Target for grouping and filtering.
           type: array
           items:
             type: string
+          nullable: true
         target:
           description: 'The target address (ip or hostname) and port. If the hostname resolves to an SRV record, the `port` value will be overridden by the value from the DNS record.'
           type: string
+          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: number
@@ -4113,6 +4257,7 @@ components:
           description: 'The weight this target gets within the upstream loadbalancer (`0`-`65535`). If the hostname resolves to an SRV record, the `weight` value will be overridden by the value from the DNS record.'
           type: integer
           default: 100
+          nullable: true
       example:
         id: 089292a7-ba3d-4d88-acf0-97b4b2e2621a
         target: 203.0.113.42
@@ -4131,10 +4276,12 @@ components:
             - least-connections
             - round-robin
             - latency
+          nullable: true
         client_certificate:
           description: 'If set, the certificate to be used as client certificate while TLS handshaking to the upstream server.'
           type: object
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
@@ -4156,15 +4303,19 @@ components:
             - path
             - query_arg
             - uri_capture
+          nullable: true
         hash_fallback_header:
           description: The header name to take the value from as hash input. Only required when `hash_fallback` is set to `header`.
           type: string
+          nullable: true
         hash_fallback_query_arg:
           description: The name of the query string argument to take the value from as hash input. Only required when `hash_fallback` is set to `query_arg`.
           type: string
+          nullable: true
         hash_fallback_uri_capture:
           description: The name of the route URI capture to take the value from as hash input. Only required when `hash_fallback` is set to `uri_capture`.
           type: string
+          nullable: true
         hash_on:
           description: What to use as hashing input. Using `none` results in a weighted-round-robin scheme with no hashing.
           type: string
@@ -4178,24 +4329,31 @@ components:
             - path
             - query_arg
             - uri_capture
+          nullable: true
         hash_on_cookie:
           description: 'The cookie name to take the value from as hash input. Only required when `hash_on` or `hash_fallback` is set to `cookie`. If the specified cookie is not in the request, Kong will generate a value and set the cookie in the response.'
           type: string
+          nullable: true
         hash_on_cookie_path:
           description: The cookie path to set in the response headers. Only required when `hash_on` or `hash_fallback` is set to `cookie`.
           type: string
           default: /
+          nullable: true
         hash_on_header:
           description: The header name to take the value from as hash input. Only required when `hash_on` is set to `header`.
           type: string
+          nullable: true
         hash_on_query_arg:
           description: The name of the query string argument to take the value from as hash input. Only required when `hash_on` is set to `query_arg`.
           type: string
+          nullable: true
         hash_on_uri_capture:
           description: The name of the route URI capture to take the value from as hash input. Only required when `hash_on` is set to `uri_capture`.
           type: string
+          nullable: true
         healthchecks:
           type: object
+          nullable: true
           properties:
             active:
               type: object
@@ -4339,8 +4497,10 @@ components:
         host_header:
           description: The hostname to be used as `Host` header when proxying requests through Kong.
           type: string
+          nullable: true
         id:
           type: string
+          nullable: true
         name:
           description: 'This is a hostname, which must be equal to the `host` of a Service.'
           type: string
@@ -4348,11 +4508,13 @@ components:
           description: 'The number of slots in the load balancer algorithm. If `algorithm` is set to `round-robin`, this setting determines the maximum number of slots. If `algorithm` is set to `consistent-hashing`, this setting determines the actual number of slots in the algorithm. Accepts an integer in the range `10`-`65536`.'
           type: integer
           default: 10000
+          nullable: true
         tags:
           description: An optional set of strings associated with the Upstream for grouping and filtering.
           type: array
           items:
             type: string
+          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
@@ -4361,6 +4523,7 @@ components:
           description: 'If set, the balancer will use SRV hostname(if DNS Answer has SRV record) as the proxy upstream `Host`.'
           type: boolean
           default: false
+          nullable: true
       example:
         algorithm: round-robin
         hash_fallback: none
@@ -4440,6 +4603,7 @@ components:
           description: The configuration properties for the Vault which can be found on the vaults' documentation page.
           type: object
           additionalProperties: true
+          nullable: true
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
@@ -4447,8 +4611,10 @@ components:
         description:
           description: The description of the Vault entity.
           type: string
+          nullable: true
         id:
           type: string
+          nullable: true
         name:
           description: 'The name of the Vault that''s going to be added. Currently, the Vault implementation must be installed in every Kong instance.'
           type: string
@@ -4460,6 +4626,7 @@ components:
           type: array
           items:
             type: string
+          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
@@ -4470,6 +4637,7 @@ components:
         description: environment variable based vault
         id: 2747d1e5-8246-4f65-a939-b392f1ee17f8
         name: env
+        prefix: env
         tags:
           - foo
           - bar

@@ -5132,13 +5132,16 @@ components:
           type: string
           format: uuid
           example: b9e81174-b5bb-4638-a3c3-8afe61a0abf8
+          nullable: true
           readOnly: true
         username:
           description: The unique username of the Consumer. You must send either this field or `custom_id` with the request.
           type: string
+          nullable: true
         custom_id:
           description: Field for storing an existing unique ID for the Consumer - useful for mapping Kong with users in your existing database. You must send either this field or `username` with the request.
           type: string
+          nullable: true
         type:
           type: string
         tags:
@@ -5147,6 +5150,7 @@ components:
           items:
             type: string
           $ref: '#/components/schemas/Tags'
+          nullable: true
         consumer_groups:
           $ref: '#/components/schemas/ConsumerGroups'
         created_at:
