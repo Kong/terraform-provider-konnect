@@ -5124,6 +5124,7 @@ components:
         type: string
       uniqueItems: true
     Consumer:
+      description: 'The Consumer object represents a consumer - or a user - of a Service. You can either rely on Kong as the primary datastore, or you can map the consumer list with your database to keep consistency between Kong and your existing primary datastore.'
       type: object
       properties:
         id:
@@ -5158,6 +5159,12 @@ components:
           type: integer
           $ref: '#/components/schemas/UpdatedAt'
           readOnly: true
+      example:
+        custom_id: '4200'
+        id: 8a388226-80e8-4027-a486-25e4f7db5d21
+        tags:
+          - silver-tier
+        username: bob-the-builder
       additionalProperties: false
       required:
         - id
