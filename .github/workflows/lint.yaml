@@ -44,15 +44,4 @@ jobs:
 
       # Step to check if generated openapi files are sorted
       - name: Run openapi-format and check for changes
-        run: |
-          FILES=(generated.yaml generated-with-plugins.yaml)
-          for f in "${FILES[@]}"; do
-            npx openapi-format --sortFile .openapi-format-sort.json -o ./src/konnect/definitions/control-planes-config/v2/$f ./src/konnect/definitions/control-planes-config/v2/$f
-          done
-
-          # Check if there are any changes
-          if [[ $(git status --porcelain) ]]; then
-            echo "The konnect generated files are not sorted. Please run the formatter and commit the changes."
-            git diff
-            exit 1
-          fi
+        run: make lint-check

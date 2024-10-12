@@ -1451,6 +1451,114 @@ paths:
           $ref: '#/components/responses/HTTP401Error'
       tags:
         - KeySets
+  '/control-planes/{controlPlaneId}/core-entities/key-sets/{KeySetId}/keys':
+    get:
+      operationId: list-key-with-key-set
+      summary: List all Keys associated with a KeySet
+      description: List all Keys associated with a KeySet
+      parameters:
+        - $ref: '#/components/parameters/KeySetId'
+        - $ref: '#/components/parameters/PaginationSize'
+        - $ref: '#/components/parameters/PaginationOffset'
+        - $ref: '#/components/parameters/PaginationTagsFilter'
+      responses:
+        '200':
+          description: A successful response listing Keys
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Key'
+                  next:
+                    $ref: '#/components/schemas/PaginationNextResponse'
+                  offset:
+                    $ref: '#/components/schemas/PaginationOffsetResponse'
+      tags:
+        - Keys
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+    post:
+      operationId: create-key-with-key-set
+      summary: Create a new Key associated with a KeySet
+      description: Create a new Key associated with a KeySet
+      parameters:
+        - $ref: '#/components/parameters/KeySetId'
+      requestBody:
+        description: Description of new Key for creation
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KeyWithoutParents'
+      responses:
+        '201':
+          description: Successfully created Key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Key'
+      tags:
+        - Keys
+  '/control-planes/{controlPlaneId}/core-entities/key-sets/{KeySetId}/keys/{KeyId}':
+    delete:
+      operationId: delete-key-with-key-set
+      summary: Delete a a Key associated with a KeySet
+      description: Delete a a Key associated with a KeySet using ID or name.
+      parameters:
+        - $ref: '#/components/parameters/KeySetId'
+        - $ref: '#/components/parameters/KeyId'
+      responses:
+        '204':
+          description: Successfully deleted Key or the resource didn't exist
+      tags:
+        - Keys
+    get:
+      operationId: get-key-with-key-set
+      summary: Fetch a Key associated with a KeySet
+      description: Get a Key associated with a KeySet using ID or name.
+      parameters:
+        - $ref: '#/components/parameters/KeySetId'
+        - $ref: '#/components/parameters/KeyId'
+      responses:
+        '200':
+          description: Successfully fetched Key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Key'
+        '404':
+          description: Resource does not exist
+      tags:
+        - Keys
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+    put:
+      operationId: upsert-key-with-key-set
+      summary: Upsert a Key associated with a KeySet
+      description: Create or Update a Key associated with a KeySet using ID or name.
+      parameters:
+        - $ref: '#/components/parameters/KeySetId'
+        - $ref: '#/components/parameters/KeyId'
+      requestBody:
+        description: Description of the Key
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KeyWithoutParents'
+      responses:
+        '200':
+          description: Successfully upserted Key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Key'
+      tags:
+        - Keys
   '/control-planes/{controlPlaneId}/core-entities/keys':
     get:
       operationId: list-key
@@ -2897,6 +3005,7 @@ components:
           id: 84a73fb8-50fc-44a7-a4d5-aa17728ee83f
         group: foo
         id: b1f34145-0343-41a4-9602-4c69dec2f269
+      additionalProperties: false
     ACLWithoutParents:
       type: object
       properties:
@@ -2954,6 +3063,7 @@ components:
         id: b2f34145-0343-41a4-9602-4c69dec2f269
         password: hashedsoopersecretvalue
         username: darius
+      additionalProperties: false
     BasicAuthWithoutParents:
       type: object
       properties:
@@ -3176,6 +3286,7 @@ components:
         id: 75695322-e8a0-4109-aed4-5416b0308d85
         secret: wQazJ304DW5huJklHgUfjfiSyCyTAEDZ
         username: xerxes
+      additionalProperties: false
     HMACAuthWithoutParents:
       type: object
       properties:
@@ -3259,6 +3370,7 @@ components:
         id: 75695322-e8a0-4109-aed4-5416b0308d85
         key: YJdmaDvVTJxtcWRCvkMikc8oELgAVNcz
         secret: C50k0bcahDhLNhLKSUBSR1OMiFGzNZ7X
+      additionalProperties: false
     JWTWithoutParents:
       type: object
       properties:
@@ -3401,6 +3513,7 @@ components:
           id: 84a73fb8-50fc-44a7-a4d5-aa17728ee83f
         id: b2f34145-0343-41a4-9602-4c69dec2f269
         key: IL1deIyHyQA40WpeLeA1bIUXuvTwlGjo
+      additionalProperties: false
     KeyAuthWithoutParents:
       type: object
       properties:
@@ -3451,6 +3564,69 @@ components:
         tags:
           - idp-keys
       additionalProperties: false
+    KeyWithoutParents:
+      description: 'A Key object holds a representation of asymmetric keys in various formats. When Kong or a Kong plugin requires a specific public or private key to perform certain operations, it can use this entity.'
+      type: object
+      properties:
+        created_at:
+          description: Unix epoch when the resource was created.
+          type: integer
+          readOnly: true
+        id:
+          type: string
+          nullable: true
+        jwk:
+          description: A JSON Web Key represented as a string.
+          type: string
+          nullable: true
+        kid:
+          description: A unique identifier for a key.
+          type: string
+        name:
+          description: The name to associate with the given keys.
+          type: string
+          nullable: true
+        pem:
+          description: A keypair in PEM format.
+          type: object
+          nullable: true
+          properties:
+            private_key:
+              type: string
+            public_key:
+              type: string
+        set:
+          description: The id (an UUID) of the key-set with which to associate the key.
+          type: object
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-foreign: true
+        tags:
+          description: An optional set of strings associated with the Key for grouping and filtering.
+          type: array
+          items:
+            type: string
+          nullable: true
+        updated_at:
+          description: Unix epoch when the resource was last updated.
+          type: integer
+          readOnly: true
+      example:
+        id: d958f66b-8e99-44d2-b0b4-edd5bbf24658
+        jwk: '{"alg":"RSA",  "kid": "42",  ...}'
+        kid: '42'
+        name: a-key
+        pem:
+          private_key: '-----BEGIN'
+          public_key: '-----BEGIN'
+        set:
+          id: b86b331c-dcd0-4b3e-97ce-47c5a9543031
+      additionalProperties: false
+      required:
+        - kid
     PaginationNextResponse:
       description: URI to the next page (may be null)
       type: string
@@ -3586,6 +3762,7 @@ components:
           - grpcs
           - http
           - https
+      additionalProperties: false
       required:
         - name
         - config
@@ -3848,6 +4025,7 @@ components:
           - /v2
         service:
           id: bd380f99-659d-415e-b0e7-72ea05df3218
+      additionalProperties: false
     RouteWithoutParents:
       description: 'Route entities define rules to match client requests. Each Route is associated with a Service, and a Service may have multiple Routes associated to it. Every request matching a given Route will be proxied to its associated Service. The combination of Routes and Services (and the separation of concerns between them) offers a powerful routing mechanism with which it is possible to define fine-grained entry-points in Kong leading to different upstream services of your infrastructure. You need at least one matching rule that applies to the protocol being matched by the Route.'
       type: object
@@ -4036,6 +4214,7 @@ components:
           id: bd380f99-659d-415e-b0e7-72ea05df3218
         id: 36c4566c-14cc-4132-9011-4139fcbbe50a
         name: some.example.org
+      additionalProperties: false
       required:
         - name
         - certificate
@@ -4228,6 +4407,7 @@ components:
         upstream:
           id: 5f1d7e76-2fed-4806-a6af-869984f025cb
         weight: 100
+      additionalProperties: false
     TargetWithoutParents:
       description: 'A target is an ip address/hostname with a port that identifies an instance of a backend service. Every upstream can have many targets, and the targets can be dynamically added, modified, or deleted. Changes take effect on the fly. To disable a target, post a new one with `weight=0`; alternatively, use the `DELETE` convenience method to accomplish the same. The current target object definition is the one with the latest `created_at`.'
       type: object
