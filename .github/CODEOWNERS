@@ -17,7 +17,7 @@ src/internal/definitions/documenthub*       @Kong/team-devx
 
 # Gateway Manager
 src/konnect/definitions/control-planes/**           @Kong/team-konnectx-be
-src/konnect/definitions/control-planes-config/**/konnect.yaml    @Kong/team-konnectx-be
+src/konnect/definitions/control-planes-config/**/konnect.yaml    @Kong/team-konnectx-be @Kong/koko-engineering
 src/konnect/definitions/control-planes-config/**/generated.yaml    @Kong/team-apiops
 src/konnect/definitions/control-planes-config/**/generated-with-plugins.yaml    @Kong/team-apiops
 src/konnect/definitions/runtime-groups/**           @Kong/team-konnectx-be
