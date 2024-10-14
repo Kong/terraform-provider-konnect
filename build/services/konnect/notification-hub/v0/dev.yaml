@@ -1,0 +1,1084 @@
+openapi: 3.0.2
+info:
+  title: Konnect Notification Hub
+  version: 1.0.0
+  description: Notification Hub API for Konnect.
+  contact:
+    name: Kong
+    url: 'https://konghq.com'
+servers:
+  - url: 'https://global.api.konghq.com/v0'
+    description: Global Base URL
+paths:
+  /notifications/me/inbox:
+    get:
+      operationId: list-notifications
+      summary: List available notifications.
+      description: List available notifications.
+      parameters:
+        - $ref: '#/components/parameters/PageBefore'
+        - $ref: '#/components/parameters/PageAfter'
+        - $ref: '#/components/parameters/NotificationFilter'
+      responses:
+        '200':
+          $ref: '#/components/responses/NotificationListResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Notifications
+  '/notifications/me/inbox/{notificationId}':
+    get:
+      operationId: get-notification-details
+      summary: Get notification details.
+      description: Get notification details.
+      parameters:
+        - $ref: '#/components/parameters/notificationId'
+      responses:
+        '200':
+          $ref: '#/components/responses/NotificationResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Notifications
+    patch:
+      operationId: update-notification
+      summary: Update notification.
+      description: Update notification.
+      parameters:
+        - $ref: '#/components/parameters/notificationId'
+      requestBody:
+        $ref: '#/components/requestBodies/NotificationUpdateRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/NotificationResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Notifications
+    delete:
+      operationId: delete-notification
+      summary: Delete notification.
+      description: Delete notification.
+      parameters:
+        - $ref: '#/components/parameters/notificationId'
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Notifications
+  /notifications/me/configurations:
+    get:
+      operationId: list-user-configurations
+      summary: List available user configurations.
+      description: List available user configurations.
+      parameters:
+        - $ref: '#/components/parameters/PageBefore'
+        - $ref: '#/components/parameters/PageAfter'
+        - $ref: '#/components/parameters/ConfigurationFilter'
+      responses:
+        '200':
+          $ref: '#/components/responses/UserConfigurationListResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Notifications
+  '/notifications/me/configurations/{eventId}/subscriptions':
+    get:
+      operationId: list-event-subscriptions
+      summary: List event subscriptions.
+      description: List event subscriptions.
+      parameters:
+        - $ref: '#/components/parameters/eventId'
+      responses:
+        '200':
+          $ref: '#/components/responses/EventSubscriptionListResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Notifications
+    post:
+      operationId: create-event-subscription
+      summary: Create a new subscription for an event.
+      description: Create a new subscription for an event.
+      parameters:
+        - $ref: '#/components/parameters/eventId'
+      requestBody:
+        $ref: '#/components/requestBodies/EventSubscriptionRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/EventSubscriptionResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Notifications
+  '/notifications/me/configurations/{eventId}/subscriptions/{subscriptionId}':
+    parameters:
+      - $ref: '#/components/parameters/eventId'
+      - $ref: '#/components/parameters/subscriptionId'
+    get:
+      operationId: get-event-subscription
+      summary: Get subscription for an event.
+      description: Get subscription for an event.
+      responses:
+        '200':
+          $ref: '#/components/responses/EventSubscriptionResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Notifications
+    patch:
+      operationId: update-event-subscription
+      summary: Update subscription for an event.
+      description: Update subscription for an event.
+      requestBody:
+        $ref: '#/components/requestBodies/EventSubscriptionRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/EventSubscriptionResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Notifications
+    delete:
+      operationId: delete-event-subscription
+      summary: Delete subscription associated with event.
+      description: Delete subscription associated with event.
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Notifications
+components:
+  parameters:
+    ConfigurationFilter:
+      name: filter
+      description: Filters a collection of configurations.
+      required: false
+      in: query
+      schema:
+        $ref: '#/components/schemas/ConfigurationFilterParameters'
+      style: deepObject
+    NotificationFilter:
+      name: filter
+      description: Filters a collection of notifications.
+      required: false
+      in: query
+      schema:
+        $ref: '#/components/schemas/NotificationFilterParameters'
+      style: deepObject
+    PageAfter:
+      name: 'page[after]'
+      description: 'Request the next page of data, starting with the item after this parameter.'
+      required: false
+      in: query
+      allowEmptyValue: true
+      schema:
+        type: string
+        example: ewogICJpZCI6ICJoZWxsbyB3b3JsZCIKfQ
+    PageBefore:
+      name: 'page[before]'
+      description: 'Request the next page of data, starting with the item before this parameter.'
+      required: false
+      in: query
+      allowEmptyValue: true
+      schema:
+        type: string
+        example: ewogICJpZCI6ICJoZWxsbyB3b3JsZCIKfQ
+    eventId:
+      name: eventId
+      in: path
+      required: true
+      description: Formatted string ID of the notification event.
+      schema:
+        type: string
+        example: invoice-ready
+    notificationId:
+      name: notificationId
+      in: path
+      required: true
+      description: ID of the notification.
+      schema:
+        $ref: '#/components/schemas/UUID'
+    subscriptionId:
+      name: subscriptionId
+      in: path
+      required: true
+      description: Subscription ID of the user configuration.
+      schema:
+        type: string
+  schemas:
+    NotificationFilterParameters:
+      type: object
+      properties:
+        title:
+          $ref: '#/components/schemas/StringFieldFilter'
+        description:
+          $ref: '#/components/schemas/StringFieldFilter'
+        namespace:
+          $ref: '#/components/schemas/StringFieldFilter'
+        region:
+          $ref: '#/components/schemas/StringFieldFilter'
+        status:
+          $ref: '#/components/schemas/StringFieldFilter'
+      additionalProperties: false
+      title: NotificationFilterParameters
+    ConfigurationFilterParameters:
+      type: object
+      properties:
+        event_title:
+          $ref: '#/components/schemas/StringFieldFilter'
+        event_description:
+          $ref: '#/components/schemas/StringFieldFilter'
+        event_namespace:
+          $ref: '#/components/schemas/StringFieldFilter'
+        region:
+          $ref: '#/components/schemas/StringFieldFilter'
+      additionalProperties: false
+      title: ConfigurationFilterParameters
+    Notification:
+      description: Properties of a notification.
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        title:
+          type: string
+        description:
+          type: string
+        status:
+          $ref: '#/components/schemas/NotificationStatus'
+        region:
+          $ref: '#/components/schemas/NotificationRegion'
+        namespace:
+          type: string
+        entity_id:
+          description: ID of the entity. Use '*' to represent all entities of this type.
+          type: string
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
+      required:
+        - id
+        - title
+        - description
+        - status
+        - region
+        - namespace
+        - entity_id
+        - created_at
+        - updated_at
+    NotificationUpdatePayload:
+      description: Status of the notification.
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/NotificationStatus'
+      required:
+        - status
+    NotificationStatus:
+      description: Status of the notification.
+      type: string
+      enum:
+        - READ
+        - UNREAD
+        - ARCHIVED
+    NotificationRegion:
+      description: Region associated to a notification.
+      type: string
+      enum:
+        - US
+        - EU
+        - AU
+        - '*'
+    NotificationChannel:
+      description: Channel subscription details for an event.
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/NotificationChannelType'
+        enabled:
+          type: boolean
+      required:
+        - type
+        - enabled
+    NotificationChannelType:
+      type: string
+      enum:
+        - EMAIL
+        - IN_APP
+    UserConfiguration:
+      description: Properties of an event.
+      type: object
+      properties:
+        event_id:
+          type: string
+        event_title:
+          type: string
+        event_description:
+          type: string
+        event_namespace:
+          type: string
+        event_subscription_count:
+          type: integer
+          default: 0
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - event_id
+        - event_title
+        - event_description
+        - event_namespace
+        - event_subscription_count
+        - created_at
+        - updated_at
+    EventSubscriptionResponse:
+      description: Properties associated with an event subscription.
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        regions:
+          type: array
+          items:
+            $ref: '#/components/schemas/NotificationRegion'
+        entities:
+          type: array
+          items:
+            type: string
+            description: ID of the entity. Use '*' to represent all entities of this type.
+        channels:
+          type: array
+          items:
+            $ref: '#/components/schemas/NotificationChannel'
+        enabled:
+          description: Enable/Disable complete subscription within an event.
+          type: boolean
+      required:
+        - regions
+        - entities
+        - channels
+        - enabled
+    EventSubscription:
+      description: Properties associated with an event subscription.
+      type: object
+      properties:
+        regions:
+          type: array
+          items:
+            $ref: '#/components/schemas/NotificationRegion'
+        entities:
+          type: array
+          items:
+            type: string
+            description: ID of the entity. Use '*' to represent all entities of this type.
+        channels:
+          type: array
+          items:
+            $ref: '#/components/schemas/NotificationChannel'
+        enabled:
+          description: Enable/Disable complete subscription within an event.
+          type: boolean
+      required:
+        - regions
+        - entities
+        - channels
+        - enabled
+    StringFieldEqualsFilter:
+      description: Filter a string value by exact match.
+      type: string
+      title: StringFieldEqualsFilter
+    StringFieldContainsFilter:
+      description: Filter a string value field by partial contains.
+      type: object
+      properties:
+        contains:
+          type: string
+      required:
+        - contains
+      title: StringFieldContainsFilter
+    StringFieldFilter:
+      description: Filter a string value field either by exact match or partial contains.
+      oneOf:
+        - $ref: '#/components/schemas/StringFieldEqualsFilter'
+        - $ref: '#/components/schemas/StringFieldContainsFilter'
+      title: StringFieldFilter
+    UUID:
+      description: Contains a unique identifier used for this resource.
+      type: string
+      format: uuid
+      example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+      readOnly: true
+    CreatedAt:
+      description: An ISO-8601 timestamp representation of entity creation date.
+      type: string
+      format: date-time
+      example: '2022-11-04T20:10:06.927Z'
+      readOnly: true
+    UpdatedAt:
+      description: An ISO-8601 timestamp representation of entity update date.
+      type: string
+      format: date-time
+      example: '2022-11-04T20:10:06.927Z'
+      readOnly: true
+    CursorMetaPage:
+      type: object
+      properties:
+        first:
+          description: URI to the first page
+          type: string
+          format: path
+        last:
+          description: URI to the last page
+          type: string
+          format: path
+        next:
+          description: URI to the next page
+          type: string
+          format: path
+          nullable: true
+        previous:
+          description: URI to the previous page
+          type: string
+          format: path
+          nullable: true
+        size:
+          description: Requested page size
+          type: number
+          example: 10
+      required:
+        - size
+        - next
+        - previous
+    BaseError:
+      description: standard error
+      type: object
+      properties:
+        status:
+          description: |
+            The HTTP status code of the error. Useful when passing the response
+            body to child properties in a frontend UI. Must be returned as an integer.
+          type: integer
+          readOnly: true
+        title:
+          description: |
+            A short, human-readable summary of the problem. It should not
+            change between occurences of a problem, except for localization.
+            Should be provided as "Sentence case" for direct use in the UI.
+          type: string
+          readOnly: true
+        type:
+          description: The error type.
+          type: string
+          readOnly: true
+        instance:
+          description: |
+            Used to return the correlation ID back to the user, in the format
+            kong:trace:<correlation_id>. This helps us find the relevant logs
+            when a customer reports an issue.
+          type: string
+          readOnly: true
+        detail:
+          description: |
+            A human readable explanation specific to this occurence of the problem.
+            This field may contain request/entity data to help the user understand
+            what went wrong. Enclose variable values in square brackets. Should be
+            provided as "Sentence case" for direct use in the UI.
+          type: string
+          readOnly: true
+      required:
+        - status
+        - title
+        - instance
+        - detail
+      title: Error
+    InvalidRules:
+      description: invalid parameters rules
+      type: string
+      enum:
+        - required
+        - max_length
+        - is_array
+        - is_base64
+        - is_boolean
+        - is_date_time
+        - is_integer
+        - is_null
+        - is_number
+        - is_object
+        - is_string
+        - is_uuid
+        - is_fqdn
+        - is_arn
+        - unknown_property
+        - is_label
+        - matches_regex
+        - invalid
+        - is_supported_network_availability_zone_list
+        - is_supported_network_cidr_block
+        - is_supported_provider_region
+      nullable: true
+      readOnly: true
+    InvalidParameterStandard:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          $ref: '#/components/schemas/InvalidRules'
+        source:
+          type: string
+          example: body
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+      additionalProperties: false
+      required:
+        - field
+        - reason
+    InvalidParameterMinimumLength:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          description: invalid parameters rules
+          type: string
+          enum:
+            - min_length
+            - min_digits
+            - min_lowercase
+            - min_uppercase
+            - min_symbols
+          nullable: false
+          readOnly: true
+        minimum:
+          type: integer
+          example: 8
+        source:
+          type: string
+          example: body
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+      additionalProperties: false
+      required:
+        - field
+        - reason
+        - rule
+        - minimum
+    InvalidParameterChoiceItem:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          description: invalid parameters rules
+          type: string
+          enum:
+            - enum
+          nullable: false
+          readOnly: true
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+        choices:
+          type: array
+          items: {}
+          minItems: 1
+          nullable: false
+          readOnly: true
+          uniqueItems: true
+        source:
+          type: string
+          example: body
+      additionalProperties: false
+      required:
+        - field
+        - reason
+        - rule
+        - choices
+    InvalidParameterDependentItem:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          description: invalid parameters rules
+          type: string
+          enum:
+            - dependent_fields
+          nullable: true
+          readOnly: true
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+        dependents:
+          type: array
+          items: {}
+          nullable: true
+          readOnly: true
+          uniqueItems: true
+        source:
+          type: string
+          example: body
+      additionalProperties: false
+      required:
+        - field
+        - rule
+        - reason
+        - dependents
+    InvalidParameters:
+      description: invalid parameters
+      type: array
+      items:
+        oneOf:
+          - $ref: '#/components/schemas/InvalidParameterStandard'
+          - $ref: '#/components/schemas/InvalidParameterMinimumLength'
+          - $ref: '#/components/schemas/InvalidParameterChoiceItem'
+          - $ref: '#/components/schemas/InvalidParameterDependentItem'
+      minItems: 1
+      nullable: false
+      uniqueItems: true
+    BadRequestError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          required:
+            - invalid_parameters
+          properties:
+            invalid_parameters:
+              $ref: '#/components/schemas/InvalidParameters'
+    UnauthorizedError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 401
+            title:
+              example: Unauthorized
+            type:
+              example: 'https://httpstatuses.com/401'
+            instance:
+              example: 'kong:trace:1234567890'
+            detail:
+              example: Invalid credentials
+    ForbiddenError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 403
+            title:
+              example: Forbidden
+            type:
+              example: 'https://httpstatuses.com/403'
+            instance:
+              example: 'kong:trace:1234567890'
+            detail:
+              example: Forbidden
+    NotFoundError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 404
+            title:
+              example: Not Found
+            type:
+              example: 'https://httpstatuses.com/404'
+            instance:
+              example: 'kong:trace:1234567890'
+            detail:
+              example: Not found
+  examples:
+    NotificationUpdatePayload:
+      value:
+        status: READ
+    NotificationResponse:
+      summary: Notification Response
+      value:
+        id: 93f8380e-7798-4566-99e3-2edf2b57d289
+        title: Data Plane Out Of Sync
+        description: Data Plane has been out of sync for >5 minutes.
+        status: UNREAD
+        region: US
+        namespace: dev-portal
+        entity_id: control-plane-1
+        created_at: '2023-01-01T00:00:00.000Z'
+        updated_at: '2023-01-01T00:00:00.000Z'
+    NotificationListResponse:
+      summary: List Notifications Response
+      value:
+        data:
+          - id: 93f8380e-7798-4566-99e3-2edf2b57d289
+            title: Data Plane Out Of Sync
+            description: Data Plane has been out of sync for >5 minutes.
+            status: UNREAD
+            region: US
+            namespace: gateway-manager
+            entity_id: control-plane-1
+            created_at: '2023-01-01T00:00:00.000Z'
+            updated_at: '2023-01-01T00:00:00.000Z'
+          - id: 93f8380e-7798-4566-99e3-2edf2b57d290
+            title: Invoice Ready
+            description: Your March invoice is ready.
+            status: UNREAD
+            region: EU
+            namespace: settings
+            entity_id: control-plane-1
+            created_at: '2023-01-01T00:00:00.000Z'
+            updated_at: '2023-01-01T00:00:00.000Z'
+          - id: 93f8380e-7798-4566-99e3-2edf2b57d291
+            title: Credits Expiring
+            description: You have X credits expiring.
+            status: READ
+            region: EU
+            namespace: settings
+            entity_id: control-plane-1
+            created_at: '2023-01-01T00:00:00.000Z'
+            updated_at: '2023-01-01T00:00:00.000Z'
+          - id: 93f8380e-7798-4566-99e3-2edf2b57d291
+            title: Mesh Zone Offline
+            description: Mesh Zone is offline.
+            status: ARCHIVED
+            region: US
+            namespace: mesh-manager
+            entity_id: control-plane-1
+            created_at: '2023-01-01T00:00:00.000Z'
+            updated_at: '2023-01-01T00:00:00.000Z'
+        meta:
+          next: ''
+          previous: ''
+          size: 10
+    EventSubscriptionPayload:
+      value:
+        regions:
+          - US
+          - EU
+        entities:
+          - control-plane-1
+          - control-plane-2
+        channels:
+          - type: IN_APP
+            enabled: true
+          - type: EMAIL
+            enabled: true
+        enabled: true
+        created_at: '2023-01-01T00:00:00.000Z'
+        updated_at: '2023-01-01T00:00:00.000Z'
+    UserConfigurationListResponse:
+      value:
+        data:
+          - event_id: data-plane-out-of-sync
+            event_title: Data Plane Out of Sync
+            event_description: Data Plane has been out of sync for >5 minutes.
+            event_namespace: gateway-manager
+            event_subscription_count: 2
+            created_at: '2023-01-01T00:00:00.000Z'
+            updated_at: '2023-01-01T00:00:00.000Z'
+          - event_id: api-products-weekly-summary
+            event_title: API Products Weekly Summary
+            event_description: Your API Products summary is available.
+            event_namespace: api-products
+            event_subscription_count: 2
+            created_at: '2023-01-01T00:00:00.000Z'
+            updated_at: '2023-01-01T00:00:00.000Z'
+        meta:
+          next: ''
+          previous: ''
+          size: 10
+    EventSubscriptionListResponse:
+      value:
+        data:
+          - id: 93f8380e-7798-4566-99e3-2edf2b57d291
+            regions:
+              - US
+              - EU
+            entities:
+              - control-plane-1
+              - control-plane-2
+            channels:
+              - type: IN_APP
+                enabled: true
+              - type: EMAIL
+                enabled: true
+            enabled: true
+            created_at: '2023-01-01T00:00:00.000Z'
+            updated_at: '2023-01-01T00:00:00.000Z'
+          - id: 93f8380e-7798-4566-99e3-2edf2b57d292
+            regions:
+              - '*'
+            entities:
+              - '*'
+            channels:
+              - type: IN_APP
+                enabled: true
+              - type: EMAIL
+                enabled: true
+            enabled: true
+            created_at: '2023-01-01T00:00:00.000Z'
+            updated_at: '2023-01-01T00:00:00.000Z'
+        meta:
+          next: ''
+          previous: ''
+          size: 10
+    EventSubscriptionResponse:
+      value:
+        id: 93f8380e-7798-4566-99e3-2edf2b57d292
+        regions:
+          - '*'
+        entities:
+          - '*'
+        channels:
+          - type: IN_APP
+            enabled: true
+          - type: EMAIL
+            enabled: true
+        enabled: true
+        created_at: '2023-01-01T00:00:00.000Z'
+        updated_at: '2023-01-01T00:00:00.000Z'
+    UnauthorizedExample:
+      value:
+        status: 401
+        title: Unauthorized
+        instance: 'kong:trace:8347343766220159418'
+        detail: Unauthorized
+    ForbiddenExample:
+      value:
+        status: 403
+        title: Forbidden
+        instance: 'kong:trace:2723154947768991354'
+        detail: You do not have permission to perform this action
+    NotFoundExample:
+      value:
+        status: 404
+        title: Not Found
+        instance: 'kong:trace:6816496025408232265'
+        detail: Not Found
+  requestBodies:
+    NotificationUpdateRequest:
+      description: Request body schema for updating notification status.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/NotificationUpdatePayload'
+          examples:
+            Example Request Body:
+              $ref: '#/components/examples/NotificationUpdatePayload'
+    EventSubscriptionRequest:
+      description: Request body schema for creating/updating event subscription.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EventSubscription'
+          examples:
+            Example Request Body:
+              $ref: '#/components/examples/EventSubscriptionPayload'
+  responses:
+    NotificationResponse:
+      description: View a single notification.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Notification'
+          examples:
+            Notification:
+              $ref: '#/components/examples/NotificationResponse'
+    NotificationListResponse:
+      description: A paginated list response for a collection of notifications
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Notification'
+              meta:
+                $ref: '#/components/schemas/CursorMetaPage'
+            additionalProperties: false
+            required:
+              - data
+              - meta
+          examples:
+            Notifications List:
+              $ref: '#/components/examples/NotificationListResponse'
+    UserConfigurationListResponse:
+      description: A paginated list response for all notification events and user subscriptions.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserConfiguration'
+              meta:
+                $ref: '#/components/schemas/CursorMetaPage'
+            additionalProperties: false
+            required:
+              - data
+              - meta
+          examples:
+            User Configurations List:
+              $ref: '#/components/examples/UserConfigurationListResponse'
+    EventSubscriptionListResponse:
+      description: A paginated list response for all subscriptions associated with an event.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EventSubscriptionResponse'
+              meta:
+                $ref: '#/components/schemas/CursorMetaPage'
+            additionalProperties: false
+            required:
+              - data
+              - meta
+          examples:
+            Event Subscriptions List:
+              $ref: '#/components/examples/EventSubscriptionListResponse'
+    EventSubscriptionResponse:
+      description: Response containing specific subscription details associated with an event.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EventSubscriptionResponse'
+          examples:
+            Event Subscription:
+              $ref: '#/components/examples/EventSubscriptionResponse'
+    BadRequest:
+      description: Bad Request
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/BadRequestError'
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/UnauthorizedError'
+          examples:
+            UnauthorizedExample:
+              $ref: '#/components/examples/UnauthorizedExample'
+    Forbidden:
+      description: Forbidden
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ForbiddenError'
+          examples:
+            UnauthorizedExample:
+              $ref: '#/components/examples/ForbiddenExample'
+    NotFound:
+      description: Not Found
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/NotFoundError'
+          examples:
+            NotFoundExample:
+              $ref: '#/components/examples/NotFoundExample'
+  securitySchemes:
+    personalAccessToken:
+      type: http
+      scheme: bearer
+      bearerFormat: Token
+      description: |
+        The personal access token is meant to be used as an alternative to basic-auth when accessing Konnect via APIs.
+        You can generate a Personal Access Token (PAT) from the [personal access token page](https://cloud.konghq.com/global/tokens/) in the Konnect dashboard.
+        The PAT token must be passed in the header of a request, for example:
+        `curl -X GET 'https://global.api.konghq.com/v2/users/' --header 'Authorization: Bearer kpat_xgfT...'`
+tags:
+  - name: Notifications
+    description: Operations related to notifications
+security:
+  - personalAccessToken: []

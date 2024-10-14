@@ -1,0 +1,707 @@
+openapi: 3.0.2
+info:
+  title: Konnect Notification Hub
+  version: 1.0.0
+  description: Notification Hub API for Konnect.
+  contact:
+    name: Kong
+    url: "https://konghq.com"
+servers:
+  - url: "https://global.api.konghq.com/v0"
+    description: Global Base URL
+paths:
+  /notifications/me/inbox:
+    get:
+      summary: List available notifications.
+      description: List available notifications.
+      x-internal: true
+      x-unstable: true
+      operationId: list-notifications
+      parameters:
+        - $ref: "../../../../common/definitions/metadatas.yaml#/components/parameters/PageBefore"
+        - $ref: "../../../../common/definitions/metadatas.yaml#/components/parameters/PageAfter"
+        - $ref: "#/components/parameters/NotificationFilter"
+      responses:
+        "200":
+          $ref: "#/components/responses/NotificationListResponse"
+        "400":
+          $ref: "../../../../common/definitions/errors.yaml#/components/responses/BadRequest"
+        "401":
+          $ref: "../../../../common/definitions/errors.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "../../../../common/definitions/errors.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "../../../../common/definitions/errors.yaml#/components/responses/NotFound"
+      tags:
+        - Notifications
+
+  /notifications/me/inbox/{notificationId}:
+    get:
+      summary: Get notification details.
+      description: Get notification details.
+      x-internal: true
+      x-unstable: true
+      operationId: get-notification-details
+      parameters:
+        - $ref: "#/components/parameters/notificationId"
+      responses:
+        "200":
+          $ref: "#/components/responses/NotificationResponse"
+        "401":
+          $ref: "../../../../common/definitions/errors.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "../../../../common/definitions/errors.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "../../../../common/definitions/errors.yaml#/components/responses/NotFound"
+      tags:
+        - Notifications
+    patch:
+      summary: Update notification.
+      description: Update notification.
+      x-internal: true
+      x-unstable: true
+      operationId: update-notification
+      parameters:
+        - $ref: "#/components/parameters/notificationId"
+      requestBody:
+        $ref: "#/components/requestBodies/NotificationUpdateRequest"
+      responses:
+        "200":
+          $ref: "#/components/responses/NotificationResponse"
+        "400":
+          $ref: "../../../../common/definitions/errors.yaml#/components/responses/BadRequest"
+        "401":
+          $ref: "../../../../common/definitions/errors.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "../../../../common/definitions/errors.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "../../../../common/definitions/errors.yaml#/components/responses/NotFound"
+      tags:
+        - Notifications
+    delete:
+      summary: Delete notification.
+      description: Delete notification.
+      x-internal: true
+      x-unstable: true
+      operationId: delete-notification
+      parameters:
+        - $ref: "#/components/parameters/notificationId"
+      responses:
+        "204":
+          description: No Content
+        "401":
+          $ref: "../../../../common/definitions/errors.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "../../../../common/definitions/errors.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "../../../../common/definitions/errors.yaml#/components/responses/NotFound"
+      tags:
+        - Notifications
+
+  /notifications/me/configurations:
+    get:
+      summary: List available user configurations.
+      description: List available user configurations.
+      x-internal: true
+      x-unstable: true
+      operationId: list-user-configurations
+      parameters:
+        - $ref: "../../../../common/definitions/metadatas.yaml#/components/parameters/PageBefore"
+        - $ref: "../../../../common/definitions/metadatas.yaml#/components/parameters/PageAfter"
+        - $ref: "#/components/parameters/ConfigurationFilter"
+      responses:
+        "200":
+          $ref: "#/components/responses/UserConfigurationListResponse"
+        "400":
+          $ref: "../../../../common/definitions/errors.yaml#/components/responses/BadRequest"
+        "401":
+          $ref: "../../../../common/definitions/errors.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "../../../../common/definitions/errors.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "../../../../common/definitions/errors.yaml#/components/responses/NotFound"
+      tags:
+        - Notifications
+
+  /notifications/me/configurations/{eventId}/subscriptions:
+    get:
+      summary: List event subscriptions.
+      description: List event subscriptions.
+      x-internal: true
+      x-unstable: true
+      operationId: list-event-subscriptions
+      parameters:
+        - $ref: "#/components/parameters/eventId"
+      responses:
+        "200":
+          $ref: "#/components/responses/EventSubscriptionListResponse"
+        "400":
+          $ref: "../../../../common/definitions/errors.yaml#/components/responses/BadRequest"
+        "401":
+          $ref: "../../../../common/definitions/errors.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "../../../../common/definitions/errors.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "../../../../common/definitions/errors.yaml#/components/responses/NotFound"
+      tags:
+        - Notifications
+    post:
+      summary: Create a new subscription for an event.
+      description: Create a new subscription for an event.
+      x-internal: true
+      x-unstable: true
+      operationId: create-event-subscription
+      parameters:
+        - $ref: "#/components/parameters/eventId"
+      requestBody:
+        $ref: "#/components/requestBodies/EventSubscriptionRequest"
+      responses:
+        "201":
+          $ref: "#/components/responses/EventSubscriptionResponse"
+        "400":
+          $ref: "../../../../common/definitions/errors.yaml#/components/responses/BadRequest"
+        "401":
+          $ref: "../../../../common/definitions/errors.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "../../../../common/definitions/errors.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "../../../../common/definitions/errors.yaml#/components/responses/NotFound"
+      tags:
+        - Notifications
+
+  /notifications/me/configurations/{eventId}/subscriptions/{subscriptionId}:
+    parameters:
+      - $ref: "#/components/parameters/eventId"
+      - $ref: "#/components/parameters/subscriptionId"
+    get:
+      summary: Get subscription for an event.
+      description: Get subscription for an event.
+      x-internal: true
+      x-unstable: true
+      operationId: get-event-subscription
+      responses:
+        "200":
+          $ref: "#/components/responses/EventSubscriptionResponse"
+        "400":
+          $ref: "../../../../common/definitions/errors.yaml#/components/responses/BadRequest"
+        "401":
+          $ref: "../../../../common/definitions/errors.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "../../../../common/definitions/errors.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "../../../../common/definitions/errors.yaml#/components/responses/NotFound"
+      tags:
+        - Notifications
+    patch:
+      summary: Update subscription for an event.
+      description: Update subscription for an event.
+      x-internal: true
+      x-unstable: true
+      operationId: update-event-subscription
+      requestBody:
+        $ref: "#/components/requestBodies/EventSubscriptionRequest"
+      responses:
+        "200":
+          $ref: "#/components/responses/EventSubscriptionResponse"
+        "400":
+          $ref: "../../../../common/definitions/errors.yaml#/components/responses/BadRequest"
+        "401":
+          $ref: "../../../../common/definitions/errors.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "../../../../common/definitions/errors.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "../../../../common/definitions/errors.yaml#/components/responses/NotFound"
+      tags:
+        - Notifications
+    delete:
+      summary: Delete subscription associated with event.
+      description: Delete subscription associated with event.
+      x-internal: true
+      x-unstable: true
+      operationId: delete-event-subscription
+      responses:
+        "204":
+          description: No Content
+        "401":
+          $ref: "../../../../common/definitions/errors.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "../../../../common/definitions/errors.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "../../../../common/definitions/errors.yaml#/components/responses/NotFound"
+      tags:
+        - Notifications
+
+components:
+  parameters:
+    notificationId:
+      name: notificationId
+      in: path
+      required: true
+      description: ID of the notification.
+      schema:
+        $ref: "../../../../common/definitions/konnect_properties.yaml#/components/schemas/UUID"
+    eventId:
+      name: eventId
+      in: path
+      required: true
+      description: Formatted string ID of the notification event.
+      schema:
+        type: string
+        example: invoice-ready
+    subscriptionId:
+      name: subscriptionId
+      in: path
+      required: true
+      description: Subscription ID of the user configuration.
+      schema:
+        # UUID v7 regex not supported in https://datatracker.ietf.org/doc/html/rfc4122
+        # TODO: Type should be changed back to uuid once kin-openapi aligns to https://www.rfc-editor.org/rfc/rfc9562.html
+        type: string
+    NotificationFilter:
+      name: filter
+      description: Filters a collection of notifications.
+      required: false
+      in: query
+      schema:
+        $ref: '#/components/schemas/NotificationFilterParameters'
+      style: deepObject
+    ConfigurationFilter:
+      name: filter
+      description: Filters a collection of configurations.
+      required: false
+      in: query
+      schema:
+        $ref: '#/components/schemas/ConfigurationFilterParameters'
+      style: deepObject
+  requestBodies:
+    NotificationUpdateRequest:
+      description: Request body schema for updating notification status.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/NotificationUpdatePayload"
+          examples:
+            Example Request Body:
+              $ref: "#/components/examples/NotificationUpdatePayload"
+    EventSubscriptionRequest:
+      description: Request body schema for creating/updating event subscription.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/EventSubscription"
+          examples:
+            Example Request Body:
+              $ref: "#/components/examples/EventSubscriptionPayload"
+
+  responses:
+    NotificationResponse:
+      description: View a single notification.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Notification"
+          examples:
+            Notification:
+              $ref: "#/components/examples/NotificationResponse"
+    NotificationListResponse:
+      description: A paginated list response for a collection of notifications
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: false
+            required:
+              - data
+              - meta
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Notification"
+              meta:
+                $ref: "../../../../common/definitions/metadatas.yaml#/components/schemas/CursorMetaPage"
+          examples:
+            Notifications List:
+              $ref: "#/components/examples/NotificationListResponse"
+    UserConfigurationListResponse:
+      description: A paginated list response for all notification events and user subscriptions.
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: false
+            required:
+              - data
+              - meta
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: "#/components/schemas/UserConfiguration"
+              meta:
+                $ref: "../../../../common/definitions/metadatas.yaml#/components/schemas/CursorMetaPage"
+          examples:
+            User Configurations List:
+              $ref: "#/components/examples/UserConfigurationListResponse"
+    EventSubscriptionListResponse:
+      description: A paginated list response for all subscriptions associated with an event.
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: false
+            required:
+              - data
+              - meta
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: "#/components/schemas/EventSubscriptionResponse"
+              meta:
+                $ref: "../../../../common/definitions/metadatas.yaml#/components/schemas/CursorMetaPage"
+          examples:
+            Event Subscriptions List:
+              $ref: "#/components/examples/EventSubscriptionListResponse"
+    EventSubscriptionResponse:
+      description: Response containing specific subscription details associated with an event.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/EventSubscriptionResponse"
+          examples:
+            Event Subscription:
+              $ref: "#/components/examples/EventSubscriptionResponse"
+
+  schemas:
+    # Filters
+    NotificationFilterParameters:
+      title: NotificationFilterParameters
+      type: object
+      additionalProperties: false
+      properties:
+        title:
+          $ref: "../../../../common/definitions/filters.yaml#/components/schemas/StringFieldFilter"
+        description:
+          $ref: "../../../../common/definitions/filters.yaml#/components/schemas/StringFieldFilter"
+        namespace:
+          $ref: "../../../../common/definitions/filters.yaml#/components/schemas/StringFieldFilter"
+        region:
+          $ref: "../../../../common/definitions/filters.yaml#/components/schemas/StringFieldFilter"
+        status:
+          $ref: "../../../../common/definitions/filters.yaml#/components/schemas/StringFieldFilter"
+    ConfigurationFilterParameters:
+      title: ConfigurationFilterParameters
+      type: object
+      additionalProperties: false
+      properties:
+        event_title:
+          $ref: "../../../../common/definitions/filters.yaml#/components/schemas/StringFieldFilter"
+        event_description:
+          $ref: "../../../../common/definitions/filters.yaml#/components/schemas/StringFieldFilter"
+        event_namespace:
+          $ref: "../../../../common/definitions/filters.yaml#/components/schemas/StringFieldFilter"
+        region:
+          $ref: "../../../../common/definitions/filters.yaml#/components/schemas/StringFieldFilter"
+
+    # Notification Related Schema
+    Notification:
+      type: object
+      description: Properties of a notification.
+      additionalProperties: false
+      required:
+        - id
+        - title
+        - description
+        - status
+        - region
+        - namespace
+        - entity_id
+        - created_at
+        - updated_at
+      properties:
+        id:
+          $ref: "../../../../common/definitions/konnect_properties.yaml#/components/schemas/UUID"
+        title:
+          type: string
+        description:
+          type: string
+        status:
+          $ref: "#/components/schemas/NotificationStatus"
+        region:
+          $ref: "#/components/schemas/NotificationRegion"
+        namespace:
+          type: string
+        entity_id:
+          type: string
+          description: ID of the entity. Use '*' to represent all entities of this type.
+        created_at:
+          $ref: "../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt"
+        updated_at:
+          $ref: "../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt"
+    NotificationUpdatePayload:
+      description: Status of the notification.
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          $ref: "#/components/schemas/NotificationStatus"
+    NotificationStatus:
+      type: string
+      description: Status of the notification.
+      enum:
+        - READ
+        - UNREAD
+        - ARCHIVED
+    NotificationRegion:
+      type: string
+      description: Region associated to a notification.
+      enum:
+        - US
+        - EU
+        - AU
+        - "*"
+    NotificationChannel:
+      type: object
+      description: Channel subscription details for an event.
+      required:
+        - type
+        - enabled
+      properties:
+        type:
+          $ref: "#/components/schemas/NotificationChannelType"
+        enabled:
+          type: boolean
+    NotificationChannelType:
+      type: string
+      enum:
+        - EMAIL
+        - IN_APP
+
+    # User configuration properties
+    UserConfiguration:
+      description: Properties of an event.
+      type: object
+      required:
+        - event_id
+        - event_title
+        - event_description
+        - event_namespace
+        - event_subscription_count
+        - created_at
+        - updated_at
+      properties:
+        event_id:
+          type: string
+        event_title:
+          type: string
+        event_description:
+          type: string
+        event_namespace:
+          type: string
+        event_subscription_count:
+          type: integer
+          default: 0
+        created_at:
+          $ref: "../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt"
+        updated_at:
+          $ref: "../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt"
+    EventSubscriptionResponse:
+      description: Subscription response associated with a notification event.
+      type: object
+      required:
+        - id
+        - created_at
+        - updated_at
+      x-flatten-allOf: true
+      allOf:
+        - properties:
+            id:
+              $ref: "../../../../common/definitions/konnect_properties.yaml#/components/schemas/UUID"
+            created_at:
+              $ref: "../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt"
+            updated_at:
+              $ref: "../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt"
+        - $ref: "#/components/schemas/EventSubscription"
+    EventSubscription:
+      description: Properties associated with an event subscription.
+      type: object
+      required:
+        - regions
+        - entities
+        - channels
+        - enabled
+      properties:
+        regions:
+          type: array
+          items:
+            $ref: "#/components/schemas/NotificationRegion"
+        entities:
+          type: array
+          items:
+            type: string
+            description: ID of the entity. Use '*' to represent all entities of this type.
+        channels:
+          type: array
+          items:
+            $ref: "#/components/schemas/NotificationChannel"
+        enabled:
+          type: boolean
+          description: Enable/Disable complete subscription within an event.
+
+  examples:
+    NotificationUpdatePayload:
+      value:
+        status: READ
+    NotificationResponse:
+      summary: Notification Response
+      value:
+        id: 93f8380e-7798-4566-99e3-2edf2b57d289
+        title: Data Plane Out Of Sync
+        description: Data Plane has been out of sync for >5 minutes.
+        status: UNREAD
+        region: US
+        namespace: dev-portal
+        entity_id: control-plane-1
+        created_at: 2023-01-01T00:00:00.000Z
+        updated_at: 2023-01-01T00:00:00.000Z
+    NotificationListResponse:
+      summary: List Notifications Response
+      value:
+        data:
+          - id: 93f8380e-7798-4566-99e3-2edf2b57d289
+            title: Data Plane Out Of Sync
+            description: Data Plane has been out of sync for >5 minutes.
+            status: UNREAD
+            region: US
+            namespace: gateway-manager
+            entity_id: control-plane-1
+            created_at: 2023-01-01T00:00:00.000Z
+            updated_at: 2023-01-01T00:00:00.000Z
+          - id: 93f8380e-7798-4566-99e3-2edf2b57d290
+            title: Invoice Ready
+            description: Your March invoice is ready.
+            status: UNREAD
+            region: EU
+            namespace: settings
+            entity_id: control-plane-1
+            created_at: 2023-01-01T00:00:00.000Z
+            updated_at: 2023-01-01T00:00:00.000Z
+          - id: 93f8380e-7798-4566-99e3-2edf2b57d291
+            title: Credits Expiring
+            description: You have X credits expiring.
+            status: READ
+            region: EU
+            namespace: settings
+            entity_id: control-plane-1
+            created_at: 2023-01-01T00:00:00.000Z
+            updated_at: 2023-01-01T00:00:00.000Z
+          - id: 93f8380e-7798-4566-99e3-2edf2b57d291
+            title: Mesh Zone Offline
+            description: Mesh Zone is offline.
+            status: ARCHIVED
+            region: US
+            namespace: mesh-manager
+            entity_id: control-plane-1
+            created_at: 2023-01-01T00:00:00.000Z
+            updated_at: 2023-01-01T00:00:00.000Z
+        meta:
+          next: ""
+          previous: ""
+          size: 10
+    EventSubscriptionPayload:
+      value:
+        regions:
+          - US
+          - EU
+        entities:
+          - control-plane-1
+          - control-plane-2
+        channels:
+          - type: IN_APP
+            enabled: true
+          - type: EMAIL
+            enabled: true
+        enabled: true
+        created_at: 2023-01-01T00:00:00.000Z
+        updated_at: 2023-01-01T00:00:00.000Z
+    UserConfigurationListResponse:
+      value:
+        data:
+          - event_id: data-plane-out-of-sync
+            event_title: Data Plane Out of Sync
+            event_description: Data Plane has been out of sync for >5 minutes.
+            event_namespace: gateway-manager
+            event_subscription_count: 2
+            created_at: 2023-01-01T00:00:00.000Z
+            updated_at: 2023-01-01T00:00:00.000Z
+          - event_id: api-products-weekly-summary
+            event_title: API Products Weekly Summary
+            event_description: Your API Products summary is available.
+            event_namespace: api-products
+            event_subscription_count: 2
+            created_at: 2023-01-01T00:00:00.000Z
+            updated_at: 2023-01-01T00:00:00.000Z
+        meta:
+          next: ""
+          previous: ""
+          size: 10
+    EventSubscriptionListResponse:
+      value:
+        data:
+          - id: 93f8380e-7798-4566-99e3-2edf2b57d291
+            regions:
+              - US
+              - EU
+            entities:
+              - control-plane-1
+              - control-plane-2
+            channels:
+              - type: IN_APP
+                enabled: true
+              - type: EMAIL
+                enabled: true
+            enabled: true
+            created_at: 2023-01-01T00:00:00.000Z
+            updated_at: 2023-01-01T00:00:00.000Z
+          - id: 93f8380e-7798-4566-99e3-2edf2b57d292
+            regions:
+              - "*"
+            entities:
+              - "*"
+            channels:
+              - type: IN_APP
+                enabled: true
+              - type: EMAIL
+                enabled: true
+            enabled: true
+            created_at: 2023-01-01T00:00:00.000Z
+            updated_at: 2023-01-01T00:00:00.000Z
+        meta:
+          next: ""
+          previous: ""
+          size: 10
+    EventSubscriptionResponse:
+      value:
+        id: 93f8380e-7798-4566-99e3-2edf2b57d292
+        regions:
+          - "*"
+        entities:
+          - "*"
+        channels:
+          - type: IN_APP
+            enabled: true
+          - type: EMAIL
+            enabled: true
+        enabled: true
+        created_at: 2023-01-01T00:00:00.000Z
+        updated_at: 2023-01-01T00:00:00.000Z
+  securitySchemes:
+    personalAccessToken:
+      $ref: "../../../../common/definitions/security.yaml#/components/securitySchemes/personalAccessToken"
+security:
+  - personalAccessToken: []
+tags:
+  - name: Notifications
+    description: Operations related to notifications
