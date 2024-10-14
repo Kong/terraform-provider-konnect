@@ -13087,7 +13087,7 @@ components:
       type: string
       maxLength: 256
     UUID:
-      description: Contains a unique identifier used for this resource.
+      description: Contains a unique identifier used by the API for this resource.
       type: string
       format: uuid
       example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7

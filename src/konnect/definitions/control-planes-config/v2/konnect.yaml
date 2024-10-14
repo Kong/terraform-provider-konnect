@@ -588,6 +588,99 @@ paths:
       tags:
         - Config Store Secrets
 
+  /control-planes/{controlPlaneId}/observability/debug-sessions:
+    get:
+      summary: List all debug sessions for a control plane
+      operationId: list-debug-sessions
+      x-internal: true
+      x-unstable: true
+      parameters:
+        - $ref: '#/components/parameters/controlPlaneId'
+        - $ref: >-
+            ../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize
+        - $ref: >-
+            ../../../../common/definitions/metadatas.yaml#/components/parameters/PageAfter
+      responses:
+        '200':
+          $ref: '#/components/responses/ListDebugSessionsResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '../../../../common/definitions/errors.yaml#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/DebugSessionUnauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Debug Sessions
+    post:
+      x-internal: true
+      x-unstable: true
+      summary: Create Debug Session
+      description: Create Debug Session
+      operationId: create-debug-session
+      responses:
+        '201':
+          $ref: '#/components/responses/DebugSessionResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '../../../../common/definitions/errors.yaml#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/DebugSessionUnauthorized'
+        '415':
+          $ref:  '../../../../common/definitions/errors.yaml#/components/responses/UnsupportedMediaType'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      parameters:
+        - $ref: '#/components/parameters/controlPlaneId'
+      requestBody:
+        $ref: '#/components/requestBodies/CreateDebugSessionRequest'
+      tags:
+        - Debug Sessions
+  /control-planes/{controlPlaneId}/observability/debug-sessions/{debugSessionId}:
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+      - $ref: '#/components/parameters/debugSessionId'
+    get:
+      x-internal: true
+      x-unstable: true
+      summary: Fetch a Debug Session
+      description: Returns a Debug Session
+      operationId: get-debug-session
+      responses:
+        '200':
+          $ref: '#/components/responses/DebugSessionResponse'
+        '401':
+          $ref: '#/components/responses/DebugSessionUnauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Debug Sessions
+  /control-planes/{controlPlaneId}/observability/debug-sessions/{debugSessionId}/stop:
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+      - $ref: '#/components/parameters/debugSessionId'
+    post:
+      x-internal: true
+      x-unstable: true
+      summary: Stops an active Debug Session
+      description: Stops an active Debug Session
+      operationId: stop-debug-session
+      responses:
+        '200':
+          $ref: '#/components/responses/DebugSessionStopResponse'
+        '401':
+          $ref: '#/components/responses/DebugSessionUnauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Debug Sessions
+
 components:
   parameters:
     pagination-size:
@@ -643,6 +736,15 @@ components:
       in: path
       required: true
       description: Config Store identifier
+    debugSessionId:
+      schema:
+        type: string
+        format: uuid
+        example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+      name: debugSessionId
+      in: path
+      required: true
+      description: Debug Session identifier
   schemas:
     DataPlaneClientCertificate:
       type: object
@@ -736,6 +838,41 @@ components:
           type: string
           minLength: 1
           maxLength: 5120
+    DebugSession:
+      type: object
+      properties:
+        id:
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
+        max_samples:
+          type: integer
+          description: The maximum amount of samples to collect per data plane.
+          example: 10
+        target_finish_at:
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          description: An ISO-8601 timestamp in which the sampling must stop in case the max samples are not reached.
+          nullable: true
+        stopped_at:
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          description: An ISO-8601 timestamp representation of stop date.
+          readOnly: true
+        completed_at:
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          description: An ISO-8601 timestamp representation of completion date.
+          readOnly: true
+        created_at:
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
+        targets:
+          type: array
+          items:
+            $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID_RW'
 
   requestBodies:
     DataPlaneClientCertificateRequest:
@@ -811,6 +948,15 @@ components:
           examples:
             UpdateConfigStoreSecretRequestExample:
               $ref: '#/components/examples/UpdateConfigStoreSecretRequestExample'
+    CreateDebugSessionRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DebugSession'
+          examples:
+            CreateDebugSessionRequestExample:
+              $ref: '#/components/examples/CreateDebugSessionRequestExample'
   responses:
     DataPlaneClientCertificateResponse:
       description: Response body for retrieving a dp-client-certificate.
@@ -1136,6 +1282,62 @@ components:
           examples:
             NotFoundExample:
               $ref: '../../../../common/definitions/errors.yaml#/components/examples/NotFoundExample'
+    DebugSessionUnauthorized:
+      description: Unauthorized
+      content:
+        application/problem+json:
+          schema:
+            $ref: '../../../../common/definitions/errors.yaml#/components/schemas/UnauthorizedError'
+          examples:
+            UnauthorizedExample:
+              $ref: '../../../../common/definitions/errors.yaml#/components/examples/UnauthorizedExample'
+    ListDebugSessionsResponse:
+      description: List of DebugSessions
+      content:
+        application/json:
+          schema:
+            title: ListDebugSessionsResponse
+            type: object
+            required:
+              - data
+              - meta
+            properties:
+              meta:
+                $ref: '../../../../common/definitions/metadatas.yaml#/components/schemas/CursorMeta'
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DebugSession'
+          examples:
+            Debug Sessions:
+              value:
+                data:
+                  - id: e7a4f6c0-5777-4a37-bcb9-2d37d3b362ee
+                    max_samples: 10
+                    target_finish_at: '2024-10-01T20:10:06.927Z'
+                    created_at: '2024-10-01T20:00:00.000Z'
+                    updated_at: '2024-10-01T20:00:00.000Z'
+                meta:
+                  page:
+                    size: 10
+                    next: null
+                    previous: null
+    DebugSessionResponse:
+      description: Debug Session Response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DebugSession'
+          examples:
+            Create Debug Session Response:
+              $ref: '#/components/examples/DebugSessionExample'
+    DebugSessionStopResponse:
+      description: Debug Session Stop Response
+      content:
+        application/json:
+          schema:
+            type: object
+
   examples:
     ConfigStoreExample:
       value:
@@ -1201,6 +1403,19 @@ components:
              This Config Store has 4 secrets.
              These must be individually removed before deletion or the force=true query param can be used to automatically delete associated entities.”
             source: query
+    CreateDebugSessionRequestExample:
+      summary: Create Debug Session Request
+      value:
+        id: e7a4f6c0-5777-4a37-bcb9-2d37d3b362ee
+        max_samples: 10
+        targets: ['ae853602-23c7-4218-9071-82fdef3a1efe']
+    DebugSessionExample:
+      value:
+        id: e7a4f6c0-5777-4a37-bcb9-2d37d3b362ee
+        max_samples: 10
+        target_finish_at: '2024-10-01T20:10:06.927Z'
+        created_at: '2024-10-01T20:10:00.000Z'
+        updated_at: '2024-10-01T20:10:00.000Z'
   securitySchemes:
     konnectAccessToken:
       type: http
@@ -1229,3 +1444,5 @@ tags:
     name: Config Stores
   - description: Config Store Secrets
     name: Config Store Secrets
+  - description: Debug Sessions
+    name: Debug Sessions

@@ -272,6 +272,88 @@ paths:
           $ref: '#/components/responses/ConfigStoreSecretNotFound'
       tags:
         - Config Store Secrets
+  '/control-planes/{controlPlaneId}/observability/debug-sessions':
+    get:
+      operationId: list-debug-sessions
+      summary: List all debug sessions for a control plane
+      parameters:
+        - $ref: '#/components/parameters/controlPlaneId'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageAfter'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListDebugSessionsResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/DebugSessionUnauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Debug Sessions
+    post:
+      operationId: create-debug-session
+      summary: Create Debug Session
+      description: Create Debug Session
+      parameters:
+        - $ref: '#/components/parameters/controlPlaneId'
+      requestBody:
+        $ref: '#/components/requestBodies/CreateDebugSessionRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/DebugSessionResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/DebugSessionUnauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+      tags:
+        - Debug Sessions
+  '/control-planes/{controlPlaneId}/observability/debug-sessions/{debugSessionId}':
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+      - $ref: '#/components/parameters/debugSessionId'
+    get:
+      operationId: get-debug-session
+      summary: Fetch a Debug Session
+      description: Returns a Debug Session
+      responses:
+        '200':
+          $ref: '#/components/responses/DebugSessionResponse'
+        '401':
+          $ref: '#/components/responses/DebugSessionUnauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Debug Sessions
+  '/control-planes/{controlPlaneId}/observability/debug-sessions/{debugSessionId}/stop':
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+      - $ref: '#/components/parameters/debugSessionId'
+    post:
+      operationId: stop-debug-session
+      summary: Stops an active Debug Session
+      description: Stops an active Debug Session
+      responses:
+        '200':
+          $ref: '#/components/responses/DebugSessionStopResponse'
+        '401':
+          $ref: '#/components/responses/DebugSessionUnauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Debug Sessions
 components:
   parameters:
     PageAfter:
@@ -310,6 +392,15 @@ components:
         format: uuid
         example: 9524ec7d-36d9-465d-a8c5-83a3c9390458
       description: The UUID of your control plane. This variable is available in the Konnect manager.
+    debugSessionId:
+      schema:
+        type: string
+        format: uuid
+        example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+      name: debugSessionId
+      in: path
+      required: true
+      description: Debug Session identifier
   schemas:
     ConfigStore:
       type: object
@@ -384,6 +475,41 @@ components:
           minLength: 1
       required:
         - value
+    DebugSession:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        max_samples:
+          description: The maximum amount of samples to collect per data plane.
+          type: integer
+          example: 10
+        target_finish_at:
+          description: An ISO-8601 timestamp in which the sampling must stop in case the max samples are not reached.
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          nullable: true
+        stopped_at:
+          description: An ISO-8601 timestamp representation of stop date.
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          readOnly: true
+        completed_at:
+          description: An ISO-8601 timestamp representation of completion date.
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          readOnly: true
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        targets:
+          type: array
+          items:
+            $ref: '#/components/schemas/UUID_RW'
     BaseError:
       description: standard error
       type: object
@@ -704,6 +830,17 @@ components:
               example: 'kong:trace:1234567890'
             detail:
               example: UnsupportedMediaType
+    UUID:
+      description: Contains a unique identifier used by the API for this resource.
+      type: string
+      format: uuid
+      example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+      readOnly: true
+    UUID_RW:
+      description: Contains a unique identifier used by the API for this resource.
+      type: string
+      format: uuid
+      example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
   examples:
     ConfigStoreExample:
       value:
@@ -767,6 +904,20 @@ components:
             rule: required
             reason: This Config Store has 4 secrets. These must be individually removed before deletion or the force=true query param can be used to automatically delete associated entities.”
             source: query
+    CreateDebugSessionRequestExample:
+      summary: Create Debug Session Request
+      value:
+        id: e7a4f6c0-5777-4a37-bcb9-2d37d3b362ee
+        max_samples: 10
+        targets:
+          - ae853602-23c7-4218-9071-82fdef3a1efe
+    DebugSessionExample:
+      value:
+        id: e7a4f6c0-5777-4a37-bcb9-2d37d3b362ee
+        max_samples: 10
+        target_finish_at: '2024-10-01T20:10:06.927Z'
+        created_at: '2024-10-01T20:10:00.000Z'
+        updated_at: '2024-10-01T20:10:00.000Z'
     UnauthorizedExample:
       value:
         status: 401
@@ -828,6 +979,15 @@ components:
           examples:
             UpdateConfigStoreSecretRequestExample:
               $ref: '#/components/examples/UpdateConfigStoreSecretRequestExample'
+    CreateDebugSessionRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DebugSession'
+          examples:
+            CreateDebugSessionRequestExample:
+              $ref: '#/components/examples/CreateDebugSessionRequestExample'
   responses:
     ListConfigStoresResponse:
       description: List of Config Stores
@@ -943,6 +1103,61 @@ components:
           examples:
             NotFoundExample:
               $ref: '#/components/examples/NotFoundExample'
+    DebugSessionUnauthorized:
+      description: Unauthorized
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/UnauthorizedError'
+          examples:
+            UnauthorizedExample:
+              $ref: '#/components/examples/UnauthorizedExample'
+    ListDebugSessionsResponse:
+      description: List of DebugSessions
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              meta:
+                $ref: '#/components/schemas/CursorMeta'
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DebugSession'
+            required:
+              - data
+              - meta
+            title: ListDebugSessionsResponse
+          examples:
+            Debug Sessions:
+              value:
+                data:
+                  - id: e7a4f6c0-5777-4a37-bcb9-2d37d3b362ee
+                    max_samples: 10
+                    target_finish_at: '2024-10-01T20:10:06.927Z'
+                    created_at: '2024-10-01T20:00:00.000Z'
+                    updated_at: '2024-10-01T20:00:00.000Z'
+                meta:
+                  page:
+                    size: 10
+                    next: null
+                    previous: null
+    DebugSessionResponse:
+      description: Debug Session Response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DebugSession'
+          examples:
+            Create Debug Session Response:
+              $ref: '#/components/examples/DebugSessionExample'
+    DebugSessionStopResponse:
+      description: Debug Session Stop Response
+      content:
+        application/json:
+          schema:
+            type: object
     Forbidden:
       description: Forbidden
       content:
@@ -975,6 +1190,8 @@ tags:
     name: Config Stores
   - description: Config Store Secrets
     name: Config Store Secrets
+  - description: Debug Sessions
+    name: Debug Sessions
 externalDocs:
   description: Documentation for Kong Gateway and its APIs
   url: 'https://docs.konghq.com'
