@@ -6587,11 +6587,6 @@ components:
       required:
         - data
       title: PortalConfig
-    UUID_RW:
-      description: Contains a unique identifier used by the API for this resource.
-      type: string
-      format: uuid
-      example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
     PortalCustomization:
       type: object
       additionalProperties: true
@@ -9082,6 +9077,11 @@ components:
           description: The maximum amount of samples to collect per data plane.
           type: integer
           example: 10
+        sampling_rule:
+          description: An expression used to filter the requests to sample.
+          type: string
+          example: http.path == "/my-path"
+          nullable: true
         target_finish_at:
           description: An ISO-8601 timestamp in which the sampling must stop in case the max samples are not reached.
           type: string
@@ -9105,9 +9105,13 @@ components:
         updated_at:
           $ref: '#/components/schemas/UpdatedAt'
         targets:
+          description: The data plane nodes to collect samples from.
           type: array
           items:
-            $ref: '#/components/schemas/UUID_RW'
+            type: string
+            format: uuid
+            example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+            description: Unique identifier of the data plane node.
   examples:
     BadRequestExample:
       value:

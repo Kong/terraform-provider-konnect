@@ -847,6 +847,11 @@ components:
           type: integer
           description: The maximum amount of samples to collect per data plane.
           example: 10
+        sampling_rule:
+          type: string
+          example: 'http.path == "/my-path"'
+          description: An expression used to filter the requests to sample.
+          nullable: true
         target_finish_at:
           type: string
           format: date-time
@@ -871,8 +876,12 @@ components:
           $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
         targets:
           type: array
+          description: The data plane nodes to collect samples from.
           items:
-            $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID_RW'
+            type: string
+            format: uuid
+            example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+            description: Unique identifier of the data plane node.
 
   requestBodies:
     DataPlaneClientCertificateRequest:
