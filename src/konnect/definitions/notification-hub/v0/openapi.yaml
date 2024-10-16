@@ -239,7 +239,9 @@ components:
       required: true
       description: ID of the notification.
       schema:
-        $ref: "../../../../common/definitions/konnect_properties.yaml#/components/schemas/UUID"
+        # UUID v7 regex not supported in https://datatracker.ietf.org/doc/html/rfc4122
+        # TODO: Type should be changed back to uuid once kin-openapi aligns to https://www.rfc-editor.org/rfc/rfc9562.html
+        type: string
     eventId:
       name: eventId
       in: path

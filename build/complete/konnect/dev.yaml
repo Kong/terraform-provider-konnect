@@ -3637,7 +3637,7 @@ components:
       required: true
       description: ID of the notification.
       schema:
-        $ref: '#/components/schemas/UUID'
+        type: string
     parameters-PortalId:
       schema:
         type: string
