@@ -222,6 +222,20 @@ paths:
         - url: 'https://global.api.konghq.com/'
       tags:
         - Resource Quotas
+  /v2/internal/logstreams:
+    post:
+      operationId: create-authn-failure-audit-logs
+      summary: Create Authentication failure logs
+      description: This webhook endpoint Creates login failure audit logs using log stream sent by external vendor services (Currently Auth0).
+      requestBody:
+        $ref: '#/components/requestBodies/AuthFailureLogs'
+      responses:
+        '204':
+          description: No Content
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Audit Logs
   '/v2/portals/{portalId}/audit-log-replay-job':
     parameters:
       - $ref: '#/components/parameters/parameters-PortalId'
@@ -1268,6 +1282,32 @@ components:
         Audit Log Destination:
           $ref: '#/components/examples/Audit-Log-Destination'
       title: AuditLogDestination
+    StreamLog:
+      description: Auth Failure Log Stream Schema
+      type: object
+      properties:
+        data:
+          description: Log data
+          type: object
+          properties:
+            user_id:
+              description: Auth0 user ID
+              type: string
+            date:
+              description: Date when the log is created
+              type: string
+              format: date-time
+              readOnly: true
+            ip:
+              description: IP address of the client which failed to authenticate
+              type: string
+            type:
+              description: Type of authentication failure
+              type: string
+            user_agent:
+              description: User Agent of client which failed to authenticate
+              type: string
+      title: StreamLog
     CursorMetaPage:
       type: object
       properties:
@@ -1801,6 +1841,15 @@ components:
         authorization: Bearer token
         log_format: cef
         skip_ssl_verification: false
+    Auth-Failure-Logs:
+      value:
+        logs:
+          - data:
+              user_id: auth0|1234
+              date: '2024-09-03T04:23:06.115Z'
+              ip: 127.0.0.1
+              type: fp
+              user_agent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36'
     PermissionDeniedExample:
       value:
         status: 403
@@ -2173,6 +2222,20 @@ components:
           examples:
             Update Audit Log Destination:
               $ref: '#/components/examples/Update-Audit-Log-Destination'
+    AuthFailureLogs:
+      description: The request schema to create authentication failure audit logs.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              logs:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StreamLog'
+          examples:
+            Auth-Failure-Logs:
+              $ref: '#/components/examples/Auth-Failure-Logs'
     Auth0Registration:
       content:
         application/json:

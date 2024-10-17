@@ -199,6 +199,22 @@ paths:
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
         '409':
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/Conflict'
+  /internal/logstreams:
+    post:
+      summary: Create Authentication failure logs
+      description:
+        This webhook endpoint Creates login failure audit logs using
+        log stream sent by external vendor services (Currently Auth0).
+      operationId: create-authn-failure-audit-logs
+      tags: [ Audit Logs ]
+      x-internal: true
+      requestBody:
+        $ref: '#/components/requestBodies/AuthFailureLogs'
+      responses:
+        '204':
+          description: No Content
+        '403':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
 components:
   responses:
     AuditLogReplayJob:
@@ -512,6 +528,21 @@ components:
           examples:
             Update Audit Log Destination:
               $ref: '#/components/examples/Update-Audit-Log-Destination'
+    AuthFailureLogs:
+      description: The request schema to create authentication failure audit logs.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              logs:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StreamLog'
+          examples:
+            Auth-Failure-Logs:
+              $ref: '#/components/examples/Auth-Failure-Logs'
+
   securitySchemes:
     personalAccessToken:
       $ref: '../../../../common/definitions/security.yaml#/components/securitySchemes/personalAccessToken'
@@ -643,6 +674,15 @@ components:
         kid: 3f60bc4376c937154f3c004ebd180433ac0d03e6
         crv: Ed25519
         x: XWxGtApfcqmKI7p0OKnF5JSEWMVoLsytFXLEP7xZ_l8
+    Auth-Failure-Logs:
+      value:
+        logs:
+          - data:
+              user_id: "auth0|1234"
+              date: "2024-09-03T04:23:06.115Z"
+              ip: "127.0.0.1"
+              type: fp
+              user_agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36"
   schemas:
     ListAuditLogDestinations:
       type: object
@@ -697,6 +737,32 @@ components:
        example:
          Audit Log Destination:
            $ref: '#/components/examples/Audit-Log-Destination'
+    StreamLog:
+      title: StreamLog
+      type: object
+      description: Auth Failure Log Stream Schema
+      properties:
+        data:
+          type: object
+          description: Log data
+          properties:
+            user_id:
+              type: string
+              description: Auth0 user ID
+            date:
+              type: string
+              description: Date when the log is created
+              format: date-time
+              readOnly: true
+            ip:
+              type: string
+              description: IP address of the client which failed to authenticate
+            type:
+              type: string
+              description: Type of authentication failure
+            user_agent:
+              type: string
+              description: User Agent of client which failed to authenticate
     JWK:
       title: JWK
       type: object
