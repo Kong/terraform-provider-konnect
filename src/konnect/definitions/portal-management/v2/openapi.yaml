@@ -763,7 +763,6 @@ paths:
       requestBody:
         $ref: '#/components/requestBodies/ReplacePortalAuditLogReplayJob'
       tags: [ Portal Audit Logs ]
-      x-internal: true
       responses:
         '202':
           $ref: '#/components/responses/PortalAuditLogReplayJob'
@@ -782,7 +781,6 @@ paths:
       description: Returns the audit log replay job's configuration and status.
       operationId: get-portal-audit-log-replay-job
       tags: [ Portal Audit Logs ]
-      x-internal: true
       responses:
         '200':
           $ref: '#/components/responses/PortalAuditLogReplayJob'
@@ -803,7 +801,6 @@ paths:
       requestBody:
         $ref: '#/components/requestBodies/UpdatePortalAuditLogWebhook'
       tags: [ Portal Audit Logs ]
-      x-internal: true
       responses:
         '200':
           $ref: '#/components/responses/PortalAuditLogWebhook'
@@ -820,7 +817,6 @@ paths:
       description: Returns configuration for the audit log webhook.
       operationId: get-portal-audit-log-webhook
       tags: [ Portal Audit Logs ]
-      x-internal: true
       responses:
         '200':
           $ref: '#/components/responses/PortalAuditLogWebhook'
@@ -839,7 +835,6 @@ paths:
       description: Returns status of the audit log webhook.
       operationId: get-portal-audit-log-webhook-status
       tags: [ Portal Audit Logs ]
-      x-internal: true
       responses:
         '200':
           $ref: '#/components/responses/PortalAuditLogWebhookStatus'

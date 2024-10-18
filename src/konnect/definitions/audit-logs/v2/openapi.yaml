@@ -105,7 +105,6 @@ paths:
       description: Returns configuration for the audit log destinations.
       operationId: get-audit-log-destinations
       tags: [ Audit Logs ]
-      x-internal: true
       parameters:
         - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
         - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageAfter'
@@ -132,7 +131,6 @@ paths:
       description: Creates a configuration for the audit log destination.
       operationId: create-audit-log-destination
       tags: [ Audit Logs ]
-      x-internal: true
       requestBody:
         $ref: '#/components/requestBodies/CreateAuditLogDestination'
       responses:
@@ -153,7 +151,6 @@ paths:
       description: Returns configuration for the audit log destination.
       operationId: get-audit-log-destination
       tags: [Audit Logs]
-      x-internal: true
       responses:
         '200':
           $ref: '#/components/responses/AuditLogDestinationSingle'
@@ -170,7 +167,6 @@ paths:
       requestBody:
         $ref: '#/components/requestBodies/UpdateAuditLogDestination'
       tags: [ Audit Logs ]
-      x-internal: true
       responses:
         '200':
           $ref: '#/components/responses/AuditLogDestinationSingle'
@@ -187,7 +183,6 @@ paths:
       description: Deletes configuration for the audit log destination.
       operationId: delete-audit-log-destination
       tags: [ Audit Logs ]
-      x-internal: true
       responses:
         '204':
           description: No Content
@@ -206,8 +201,8 @@ paths:
         This webhook endpoint Creates login failure audit logs using
         log stream sent by external vendor services (Currently Auth0).
       operationId: create-authn-failure-audit-logs
-      tags: [ Audit Logs ]
       x-internal: true
+      tags: [ Audit Logs ]
       requestBody:
         $ref: '#/components/requestBodies/AuthFailureLogs'
       responses:
