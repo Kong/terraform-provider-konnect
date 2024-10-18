@@ -4,6 +4,7 @@ products:
       - "konnect/definitions/**/openapi.yaml"
     notMatch:
       - "konnect/definitions/identity/v2/openapi.yaml"
+      - "konnect/definitions/cloud-gateways/v3/openapi.yaml"
       - "konnect/definitions/runtime-groups/v2/openapi.yaml"
       - "konnect/definitions/runtime-groups-config/v2/openapi.yaml"
 
