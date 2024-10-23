@@ -1772,16 +1772,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageNumber'
-        - $ref: '#/components/parameters/FilterByNameEquality'
-        - $ref: '#/components/parameters/FilterByNameEqualityShort'
-        - $ref: '#/components/parameters/FilterByNameContains'
-        - $ref: '#/components/parameters/FilterByNameNotEquals'
-        - $ref: '#/components/parameters/FilterByIdEquality'
-        - $ref: '#/components/parameters/FilterByIdEqualityShort'
-        - $ref: '#/components/parameters/FilterByIdsEquality'
-        - $ref: '#/components/parameters/FilterByClusterTypeEquality'
-        - $ref: '#/components/parameters/FilterByClusterTypeEqualityShort'
-        - $ref: '#/components/parameters/FilterByClusterTypeNotEquals'
+        - $ref: '#/components/parameters/ControlPlaneFilter'
         - $ref: '#/components/parameters/FilterByLabels'
         - $ref: '#/components/parameters/ControlPlaneSort'
       responses:
@@ -8126,6 +8117,14 @@ components:
       required: true
       schema:
         type: string
+    ControlPlaneFilter:
+      name: filter
+      description: Filters a collection of control-planes.
+      required: false
+      in: query
+      schema:
+        $ref: '#/components/schemas/ControlPlaneFilterParameters'
+      style: deepObject
     ControlPlaneSort:
       name: sort
       description: |
@@ -8170,54 +8169,6 @@ components:
       description: The developer ID
       schema:
         $ref: '#/components/schemas/UUID'
-    FilterByClusterTypeEquality:
-      name: 'filter[cluster_type][eq]'
-      description: Filter by direct equality comparison of the cluster_type property with a supplied value.
-      in: query
-      required: false
-      schema:
-        type: string
-      example: CLUSTER_TYPE_CONTROL_PLANE
-    FilterByClusterTypeEqualityShort:
-      name: 'filter[cluster_type]'
-      description: Filter by direct equality comparison (short-hand) of the cluster_type property with a supplied value.
-      in: query
-      required: false
-      schema:
-        type: string
-        example: CLUSTER_TYPE_CONTROL_PLANE
-    FilterByClusterTypeNotEquals:
-      name: 'filter[cluster_type][neq]'
-      description: Filter by non-equality comparison of the cluster_type property with a supplied value.
-      in: query
-      required: false
-      schema:
-        type: string
-        example: test
-    FilterByIdEquality:
-      name: 'filter[id][eq]'
-      description: Filter by direct equality comparison of the id property with a supplied value.
-      in: query
-      required: false
-      schema:
-        type: string
-        example: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-    FilterByIdEqualityShort:
-      name: 'filter[id]'
-      description: Filter by direct equality comparison (short-hand) of the id property with a supplied value.
-      in: query
-      required: false
-      schema:
-        type: string
-        example: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-    FilterByIdsEquality:
-      name: 'filter[id][oeq]'
-      description: Filter by direct equality comparison of id property with multiple supplied values.
-      in: query
-      required: false
-      schema:
-        type: string
-        example: 'some-value,some-other-value'
     FilterByLabels:
       name: labels
       description: Filter control planes in the response by associated labels.
@@ -8226,38 +8177,6 @@ components:
       schema:
         type: string
         example: 'key:value,existCheck'
-    FilterByNameContains:
-      name: 'filter[name][contains]'
-      description: Filter by contains comparison of the name property with a supplied substring.
-      in: query
-      required: false
-      schema:
-        type: string
-        example: test
-    FilterByNameEquality:
-      name: 'filter[name][eq]'
-      description: Filter by direct equality comparison of the name property with a supplied value.
-      in: query
-      required: false
-      schema:
-        type: string
-        example: test
-    FilterByNameEqualityShort:
-      name: 'filter[name]'
-      description: Filter by direct equality comparison (short-hand) of the name property with a supplied value.
-      in: query
-      required: false
-      schema:
-        type: string
-        example: test
-    FilterByNameNotEquals:
-      name: 'filter[name][neq]'
-      description: Filter by non-equality comparison of the name property with a supplied value.
-      in: query
-      required: false
-      schema:
-        type: string
-        example: test
     FilterDcrProvidersById:
       name: 'filter[id][eq]'
       description: filters DCR Providers by their id
@@ -14885,6 +14804,12 @@ components:
           example: '2022-11-04T20:10:06.927Z'
           readOnly: true
       additionalProperties: false
+      required:
+        - id
+        - name
+        - config
+        - created_at
+        - updated_at
       x-examples:
         Example 1:
           id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
@@ -15024,6 +14949,33 @@ components:
           port: 443
           protocol: https
       title: ProxyURLs
+    ControlPlaneFilterParameters:
+      type: object
+      properties:
+        id:
+          oneOf:
+            - $ref: '#/components/schemas/StringFieldEqualsFilter'
+            - $ref: '#/components/schemas/StringFieldOEQFilter'
+        name:
+          oneOf:
+            - $ref: '#/components/schemas/StringFieldEqualsFilter'
+            - $ref: '#/components/schemas/StringFieldContainsFilter'
+            - $ref: '#/components/schemas/StringFieldNEQFilter'
+        cluster_type:
+          oneOf:
+            - $ref: '#/components/schemas/StringFieldEqualsFilter'
+            - $ref: '#/components/schemas/StringFieldNEQFilter'
+        cloud_gateway:
+          $ref: '#/components/schemas/BooleanFieldFilter'
+      additionalProperties: false
+      title: ControlPlaneFilterParameters
+    BooleanFieldFilter:
+      description: Filter by a boolean value (true/false).
+      type: boolean
+      example: true
+      title: BooleanFieldFilter
+      x-examples:
+        example-1: true
     CursorMetaWithSizeAndTotal:
       type: object
       properties:
@@ -15422,13 +15374,6 @@ components:
         expires_at: '2022-12-31T12:52:23Z'
         last_used_at: '2022-10-24T13:05:42Z'
       title: System Account Access Token
-    BooleanFieldFilter:
-      description: Filter by a boolean value (true/false).
-      type: boolean
-      example: true
-      title: BooleanFieldFilter
-      x-examples:
-        example-1: true
     SearchCursorMeta:
       description: Pagination metadata.
       type: object

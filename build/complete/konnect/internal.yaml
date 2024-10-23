@@ -1079,6 +1079,13 @@ components:
       required:
         - value
       title: PatchResourceQuotaRequest
+    BooleanFieldFilter:
+      description: Filter by a boolean value (true/false).
+      type: boolean
+      example: true
+      title: BooleanFieldFilter
+      x-examples:
+        example-1: true
     BaseDeviceAuthorizationGrantBadRequest:
       type: object
       properties:
@@ -1282,13 +1289,6 @@ components:
         parameters:
           zoneName: zone3
       title: ParameterizedAssignedRole
-    BooleanFieldFilter:
-      description: Filter by a boolean value (true/false).
-      type: boolean
-      example: true
-      title: BooleanFieldFilter
-      x-examples:
-        example-1: true
     UserOrgIDs:
       description: User with Organization IDs only.
       type: object

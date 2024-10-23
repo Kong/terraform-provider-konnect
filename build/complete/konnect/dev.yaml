@@ -5201,6 +5201,13 @@ components:
       x-examples:
         example-1:
           oeq: 'ready,initializing'
+    BooleanFieldFilter:
+      description: Filter by a boolean value (true/false).
+      type: boolean
+      example: true
+      title: BooleanFieldFilter
+      x-examples:
+        example-1: true
     CreateApiKeyPayload:
       oneOf:
         - $ref: '#/components/schemas/CreateApiKeyPayloadNew'
@@ -5768,13 +5775,6 @@ components:
           readOnly: true
       additionalProperties: false
       title: SAML Identity Provider Config
-    BooleanFieldFilter:
-      description: Filter by a boolean value (true/false).
-      type: boolean
-      example: true
-      title: BooleanFieldFilter
-      x-examples:
-        example-1: true
     PortalsRoles:
       type: object
       properties:
