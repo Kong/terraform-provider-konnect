@@ -737,6 +737,10 @@ components:
           description: IdP groups determine the Portal Teams a developer has.
           type: boolean
           example: true
+        idp_mapping_enabled:
+          description: IdP groups determine the Portal Teams a developer has. This will soon replace oidc_team_mapping_enabled.
+          type: boolean
+          example: true
         konnect_mapping_enabled:
           description: A Konnect Identity Admin assigns teams to a developer.
           type: boolean
@@ -777,6 +781,10 @@ components:
           description: The organization has OIDC disabled.
           type: boolean
           example: false
+        saml_auth_enabled:
+          description: The portal has SAML enabled or disabled.
+          type: boolean
+          example: false
         oidc_team_mapping_enabled:
           description: Whether IdP groups determine the Konnect Portal teams a developer has.
           type: boolean
@@ -785,6 +793,10 @@ components:
           description: Whether a Konnect Identity Admin assigns teams to a developer.
           type: boolean
           example: false
+        idp_mapping_enabled:
+          description: Whether IdP groups determine the Konnect Portal teams a developer has. This will soon replace oidc_team_mapping_enabled.
+          type: boolean
+          example: true
         oidc_issuer:
           type: string
         oidc_client_id:
@@ -1566,8 +1578,10 @@ components:
       value:
         basic_auth_enabled: true
         oidc_auth_enabled: true
+        saml_auth_enabled: true
         oidc_team_mapping_enabled: true
         konnect_mapping_enabled: false
+        idp_mapping_enabled: true
         oidc_issuer: 'https://identity.example.com/v2'
         oidc_client_id: x7id0o42lklas0blidl2
         oidc_scopes:
@@ -1620,8 +1634,10 @@ components:
       value:
         basic_auth_enabled: true
         oidc_auth_enabled: true
+        saml_auth_enabled: true
         oidc_team_mapping_enabled: true
         konnect_mapping_enabled: true
+        idp_mapping_enabled: true
         oidc_config:
           issuer: 'https://identity.example.com/v2'
           client_id: x7id0o42lklas0blidl2

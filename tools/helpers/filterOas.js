@@ -125,6 +125,17 @@ function removeReferencesTo(doc, schemaPath, originalNode) {
   });
 }
 
+function withReferencesTo(doc, schemaPath, callback) {
+  return traverse(doc).forEach(function () {
+    if (!this.node) {
+      return;
+    }
+    if (this.node['$ref'] && this.node['$ref'] == `#/${schemaPath}`) {
+      return callback(this);
+    }
+  });
+}
+
 function includePathsUsedBySchema(doc, schemaPath, targetSpec, alreadyVisited = {}) {
 
   if (!targetSpec){
@@ -179,15 +190,19 @@ function forEachSchema(doc, callback) {
   });
 }
 
-function forEachResponse(doc, callback) {
+function forEachRequestOrResponse(doc, callback) {
   return traverse(doc).forEach(function () {
-    if (!this.node || !this.path.join('.').includes("components.responses")) {
+    const isRequestOrResponse =
+      this.path.join('.').includes("components.responses") ||
+      this.path.join('.').includes("components.requestBodies");
+
+    if (!this.node || !isRequestOrResponse) {
       return;
     }
     if (this.path.length !== 6) {
       return;
     }
-    callback(this);
+    return callback(this);
   });
 }
 
@@ -372,6 +387,11 @@ function splitByVisibility(doc) {
     for (let k in a) {
       if (propertyIsInternal(a[k]) ){
         delete t.node.properties[k];
+
+        // Remove from referenced examples
+        withReferencesTo(dev, t.path.join('/'), function (n){
+          removeFromExamples(dev, n.parent.node, k);
+        });
       }
     }
   });
@@ -382,6 +402,11 @@ function splitByVisibility(doc) {
     for (let k in a) {
       if (propertyIsDev(a[k])){
         delete t.node.properties[k];
+
+        // Remove from referenced examples
+        withReferencesTo(internal, t.path.join('/'), function (n){
+          removeFromExamples(internal, n.parent.node, k);
+        });
       }
     }
   });
@@ -392,39 +417,44 @@ function splitByVisibility(doc) {
     for (let k in a) {
       if (!propertyIsPublic(a[k])){
         delete t.node.properties[k];
+
+        // Remove from referenced examples
+        withReferencesTo(public, t.path.join('/'), function (n){
+          removeFromExamples(public, n.parent.node, k);
+        });
       }
     }
   });
 
-  // Handle property annotations in responses
-  forEachResponse(dev, function (t) {
+  // Handle property annotations in requests and responses
+  forEachRequestOrResponse(dev, function (t) {
     const a = t.node['x-property-annotations'];
     if (!a){ return; }
     for (let k in a) {
       if (propertyIsInternal(a[k]) ){
-        removeFromExamples(dev, t.parent.node, k);
+        removeFromExamples(dev, t.node, k);
         delete t.node.properties[k];
       }
     }
   });
 
-  forEachResponse(internal, function (t) {
+  forEachRequestOrResponse(internal, function (t) {
     const a = t.node['x-property-annotations'];
     if (!a){ return; }
     for (let k in a) {
       if (propertyIsDev(a[k])){
-        removeFromExamples(internal, t.parent.node, k);
+        removeFromExamples(internal, t.node, k);
         delete t.node.properties[k];
       }
     }
   });
 
-  forEachResponse(public, function (t) {
+  forEachRequestOrResponse(public, function (t) {
     const a = t.node['x-property-annotations'];
     if (!a){ return; }
     for (let k in a) {
       if (!propertyIsPublic(a[k])){
-        removeFromExamples(public, t.parent.node, k);
+        removeFromExamples(public, t.node, k);
         delete t.node.properties[k];
       }
     }
