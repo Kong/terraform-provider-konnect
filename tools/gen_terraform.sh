@@ -2,6 +2,8 @@
 mkdir -p build/complete/terraform
 
 export KEEP_SPEAKEASY_ANNOTATIONS=1
+export REQUIRE_SPEAKEASY_ENTITY_OPERATION=1
+export SDK_NAME=terraform
 
 # Get path to current file
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
@@ -26,7 +28,7 @@ apply_overlay overlays/konnect/complex-filters.yaml
 apply_overlay overlays/konnect/remove-defaults.yaml
 
 # Remove non-annotated fields
-node $DIR/filter-terraform-operations.js
+node $DIR/filter-operations.js
 
 # Reformat the spec
 npx openapi-format --sortFile .openapi-format-sort.json build/complete/terraform/public.yaml -o build/complete/terraform/public.yaml;

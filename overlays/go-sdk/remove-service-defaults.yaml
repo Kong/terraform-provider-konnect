@@ -1,0 +1,7 @@
+overlay: 1.0.0
+info:
+  title: Go SDK overlay
+  version: 0.0.0
+actions:
+  - target: $["components"]["schemas"]["CreateServiceWithoutParents"]["properties"][*]["default"]
+    remove: true

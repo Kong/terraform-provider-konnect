@@ -40,22 +40,26 @@ function isEmptyOperation(node) {
   return allowedKeys.length == 0;
 }
 async function main() {
+    const sdkName = process.env.SDK_NAME;
     const baseDir = `${__dirname}/..`;
-    const tfFile = `${baseDir}/build/complete/terraform/public.yaml`;
+    const tfFile = `${baseDir}/build/complete/${sdkName}/public.yaml`;
     complete = yaml.load(await fs.readFile(tfFile));
 
-    // Filter down paths to the groups that we need
-    let tf = filterOperations(complete, function (node) {
+    let tf = complete;
 
-      const pluginOperations = [
-        "create-plugin",
-        "delete-plugin",
-        "get-plugin",
-        "fetch-plugin-schema",
-        "upsert-plugin",
-      ];
-      return node["x-speakeasy-entity-operation"] || pluginOperations.includes(node.operationId);
-    });
+    if (process.env.REQUIRE_SPEAKEASY_ENTITY_OPERATION === "1") {
+      // Filter down paths to the groups that we need
+      tf = filterOperations(complete, function (node) {
+        const pluginOperations = [
+          "create-plugin",
+          "delete-plugin",
+          "get-plugin",
+          "fetch-plugin-schema",
+          "upsert-plugin",
+        ];
+        return node["x-speakeasy-entity-operation"] || pluginOperations.includes(node.operationId);
+      });
+    }
 
     tf = removeNodeWithKey(tf, 'x-examples');
     tf = removeNodeWithKey(tf, 'examples');

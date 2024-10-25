@@ -30,3 +30,10 @@ products:
       - "konnect/definitions/identity/v3/openapi.yaml"
       - "konnect/definitions/serverless-cloud-gateways/v0/openapi.yaml"
     notMatch: []
+
+  go-sdk:
+    match:
+      - "konnect/definitions/control-planes/v2/openapi.yaml"
+      - "konnect/definitions/control-planes-config/v2/openapi.yaml"
+      - "konnect/definitions/identity/v3/openapi.yaml"
+    notMatch: []

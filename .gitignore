@@ -3,6 +3,7 @@ src/konnect/definitions/control-planes-config/v2/openapi.yaml
 
 # Not committed to repo
 build/complete/terraform
+build/complete/go-sdk
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
