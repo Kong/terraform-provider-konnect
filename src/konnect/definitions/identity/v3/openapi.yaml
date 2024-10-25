@@ -3433,6 +3433,7 @@ components:
                 example: Control Planes
                 description: The type of entity.
                 enum:
+                  - APIs
                   - API Products
                   - Application Auth Strategies
                   - Audit Logs
