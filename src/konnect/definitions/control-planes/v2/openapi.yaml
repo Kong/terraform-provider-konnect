@@ -658,8 +658,9 @@ components:
           description: The ClusterType value of the cluster associated with the Control Plane.
           example: CLUSTER_TYPE_CONTROL_PLANE
           enum:
+            # cluster types are transformed via kgateway plugin execution from the following enumerated values to a
+            # mapping that's understood by the underlying API service.
             - CLUSTER_TYPE_CONTROL_PLANE
-            - CLUSTER_TYPE_HYBRID
             - CLUSTER_TYPE_K8S_INGRESS_CONTROLLER
             - CLUSTER_TYPE_CONTROL_PLANE_GROUP
             - CLUSTER_TYPE_SERVERLESS
