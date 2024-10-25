@@ -46,16 +46,16 @@ components:
         maxLength: 63
         nullable: true
       writeOnly: true
-    Metadata:
-      title: Metadata
+    PublicLabels:
+      title: PublicLabels
       type: object
       example:
         category: finance
       maxProperties: 50
       description: |
-        Metadata stores information about an entity that can be used for filtering a list of objects.
+        Public labels store information about an entity that can be used for filtering a list of objects.
 
-        Metadata is intended to store **PUBLIC** metadata. 
+        Public labels are intended to store **PUBLIC** metadata. 
 
         Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
       additionalProperties:
@@ -63,16 +63,16 @@ components:
         pattern: "^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$"
         minLength: 1
         maxLength: 63
-    MetadataUpdate:
-      title: MetadataUpdate
+    PublicLabelsUpdate:
+      title: PublicLabelsUpdate
       type: object
       example:
         category: finance
       maxProperties: 50
       description: |
-        Metadata stores information about an entity that can be used for filtering a list of objects.
+        Public labels store information about an entity that can be used for filtering a list of objects.
 
-        Metadata is intended to store **PUBLIC** metadata. 
+        Public labels are intended to store **PUBLIC** metadata.
 
         Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
       additionalProperties:

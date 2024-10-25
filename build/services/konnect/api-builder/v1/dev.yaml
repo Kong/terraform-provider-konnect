@@ -608,8 +608,8 @@ components:
           $ref: '#/components/schemas/StringFieldFilter'
         labels:
           $ref: '#/components/schemas/LabelsFieldFilter'
-        metadata:
-          $ref: '#/components/schemas/MetadataFieldFilter'
+        public_labels:
+          $ref: '#/components/schemas/PublicLabelsFieldFilter'
         created_at:
           $ref: '#/components/schemas/DateTimeFieldFilter'
         updated_at:
@@ -743,7 +743,7 @@ components:
               - `filter[labels.env]=dev`
               - `filter[labels.env][ocontains]=dev,test`
         - $ref: '#/components/schemas/StringFieldFilter'
-    MetadataFieldFilter:
+    PublicLabelsFieldFilter:
       description: Filters on the given string field value by either exact or fuzzy match.
       oneOf:
         - $ref: '#/components/schemas/StringFieldEqualsFilter'
@@ -889,11 +889,11 @@ components:
         maxLength: 63
       maxProperties: 50
       title: Labels
-    Metadata:
+    PublicLabels:
       description: |
-        Metadata stores information about an entity that can be used for filtering a list of objects.
+        Public labels store information about an entity that can be used for filtering a list of objects.
 
-        Metadata is intended to store **PUBLIC** metadata. 
+        Public labels are intended to store **PUBLIC** metadata. 
 
         Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
       type: object
@@ -905,7 +905,7 @@ components:
         minLength: 1
         maxLength: 63
       maxProperties: 50
-      title: Metadata
+      title: PublicLabels
     CreatedAt:
       description: An ISO-8601 timestamp representation of entity creation date.
       type: string
@@ -1208,11 +1208,11 @@ components:
       maxProperties: 50
       nullable: true
       writeOnly: true
-    MetadataUpdate:
+    PublicLabelsUpdate:
       description: |
-        Metadata stores information about an entity that can be used for filtering a list of objects.
+        Public labels store information about an entity that can be used for filtering a list of objects.
 
-        Metadata is intended to store **PUBLIC** metadata. 
+        Public labels are intended to store **PUBLIC** metadata.
 
         Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
       type: object
@@ -1225,7 +1225,7 @@ components:
         maxLength: 63
         nullable: true
       maxProperties: 50
-      title: MetadataUpdate
+      title: PublicLabelsUpdate
       writeOnly: true
     ConflictError:
       allOf:
@@ -1250,7 +1250,7 @@ components:
         version: v1
         labels:
           env: test
-        metadata: {}
+        public_labels: {}
         created_at: '2023-01-01T00:00:00.000Z'
         updated_at: '2023-01-01T00:00:00.000Z'
     ApiSpecExample:
@@ -1486,8 +1486,8 @@ components:
                 nullable: true
               labels:
                 $ref: '#/components/schemas/Labels'
-              metadata:
-                $ref: '#/components/schemas/Metadata'
+              public_labels:
+                $ref: '#/components/schemas/PublicLabels'
               created_at:
                 $ref: '#/components/schemas/CreatedAt'
               updated_at:
@@ -1600,8 +1600,8 @@ components:
                 nullable: true
               labels:
                 $ref: '#/components/schemas/LabelsUpdate'
-              metadata:
-                $ref: '#/components/schemas/MetadataUpdate'
+              public_labels:
+                $ref: '#/components/schemas/PublicLabelsUpdate'
               created_at:
                 $ref: '#/components/schemas/CreatedAt'
               updated_at:
@@ -1731,8 +1731,8 @@ components:
                 nullable: true
               labels:
                 $ref: '#/components/schemas/Labels'
-              metadata:
-                $ref: '#/components/schemas/Metadata'
+              public_labels:
+                $ref: '#/components/schemas/PublicLabels'
               created_at:
                 $ref: '#/components/schemas/CreatedAt'
               updated_at:
@@ -1743,7 +1743,7 @@ components:
               - name
               - version
               - labels
-              - metadata
+              - public_labels
               - created_at
               - updated_at
             title: API
@@ -1787,8 +1787,8 @@ components:
                       nullable: true
                     labels:
                       $ref: '#/components/schemas/Labels'
-                    metadata:
-                      $ref: '#/components/schemas/Metadata'
+                    public_labels:
+                      $ref: '#/components/schemas/PublicLabels'
                     created_at:
                       $ref: '#/components/schemas/CreatedAt'
                     updated_at:
@@ -1798,7 +1798,7 @@ components:
                     - name
                     - version
                     - labels
-                    - metadata
+                    - public_labels
                     - created_at
                     - updated_at
             additionalProperties: false
@@ -1813,7 +1813,7 @@ components:
                   - id: 9f5061ce-78f6-4452-9108-ad7c02821fd5
                     name: myAPI
                     version: v1
-                    metadata:
+                    public_labels:
                       group: accounts
                     labels:
                       env: test

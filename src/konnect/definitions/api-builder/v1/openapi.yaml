@@ -558,8 +558,8 @@ components:
                 properties:
                   labels:
                     $ref: "../../../../common/definitions/konnect_properties.yaml#/components/schemas/LabelsUpdate"
-                  metadata:
-                    $ref: "../../../../common/definitions/konnect_properties.yaml#/components/schemas/MetadataUpdate"
+                  public_labels:
+                    $ref: "../../../../common/definitions/konnect_properties.yaml#/components/schemas/PublicLabelsUpdate"
           examples:
             UpdateApiName:
               $ref: "#/components/examples/UpdateApiNameRequestExample"
@@ -669,7 +669,7 @@ components:
                   - name
                   - version
                   - labels
-                  - metadata
+                  - public_labels
                   - created_at
                   - updated_at
           examples:
@@ -700,7 +700,7 @@ components:
                         - name
                         - version
                         - labels
-                        - metadata
+                        - public_labels
                         - created_at
                         - updated_at
           examples:
@@ -710,7 +710,7 @@ components:
                   - id: 9f5061ce-78f6-4452-9108-ad7c02821fd5
                     name: myAPI
                     version: v1
-                    metadata:
+                    public_labels:
                       group: accounts
                     labels:
                       env: test
@@ -837,8 +837,8 @@ components:
           nullable: true
         labels:
           $ref: "../../../../common/definitions/konnect_properties.yaml#/components/schemas/Labels"
-        metadata:
-          $ref: "../../../../common/definitions/konnect_properties.yaml#/components/schemas/Metadata"
+        public_labels:
+          $ref: "../../../../common/definitions/konnect_properties.yaml#/components/schemas/PublicLabels"
         created_at:
           $ref: "../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt"
         updated_at:
@@ -984,8 +984,8 @@ components:
           $ref: "../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter"
         labels:
           $ref: "../../../../common/definitions/aip_filters.yaml#/components/schemas/LabelsFieldFilter"
-        metadata:
-          $ref: "../../../../common/definitions/aip_filters.yaml#/components/schemas/MetadataFieldFilter"
+        public_labels:
+          $ref: "../../../../common/definitions/aip_filters.yaml#/components/schemas/PublicLabelsFieldFilter"
         created_at:
           $ref: "../../../../common/definitions/aip_filters.yaml#/components/schemas/DateTimeFieldFilter"
         updated_at:
@@ -1025,7 +1025,7 @@ components:
         version: v1
         labels:
           env: test
-        metadata: {}
+        public_labels: {}
         created_at: 2023-01-01T00:00:00.000Z
         updated_at: 2023-01-01T00:00:00.000Z
     ApiSpecExample:
