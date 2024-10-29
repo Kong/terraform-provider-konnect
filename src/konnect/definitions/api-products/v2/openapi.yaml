@@ -1007,6 +1007,8 @@ components:
           $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter'
         publish_status:
           $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter'
+        gateway_service_id:
+          $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/UuidFieldFilter'
     SortQuery:
       title: SortQuery
       type: string

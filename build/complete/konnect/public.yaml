@@ -11190,6 +11190,8 @@ components:
           $ref: '#/components/schemas/StringFieldFilter'
         publish_status:
           $ref: '#/components/schemas/StringFieldFilter'
+        gateway_service_id:
+          $ref: '#/components/schemas/UuidFieldFilter'
       title: APIProductVersionFilterParameters
     APIProductPortals:
       description: The list of portals which this API product is published to
