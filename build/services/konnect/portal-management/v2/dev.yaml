@@ -1416,11 +1416,6 @@ components:
       example: true
       default: false
       title: Identity Provider Enabled Property
-    IdentityProviderLoginPath:
-      description: The path used for initiating login requests with the identity provider.
-      type: string
-      example: myapp
-      title: Identity Provider Login Path Property
     OIDCIdentityProviderIssuer:
       description: The issuer URI of the identity provider. This is the URL where the provider's metadata can be obtained.
       type: string
@@ -1533,8 +1528,6 @@ components:
           $ref: '#/components/schemas/IdentityProviderType'
         enabled:
           $ref: '#/components/schemas/IdentityProviderEnabled'
-        login_path:
-          $ref: '#/components/schemas/IdentityProviderLoginPath'
         config:
           type: object
           oneOf:
@@ -1551,8 +1544,6 @@ components:
       properties:
         type:
           $ref: '#/components/schemas/IdentityProviderType'
-        login_path:
-          $ref: '#/components/schemas/IdentityProviderLoginPath'
         config:
           type: object
           oneOf:
@@ -1565,8 +1556,6 @@ components:
       properties:
         enabled:
           $ref: '#/components/schemas/IdentityProviderEnabled'
-        login_path:
-          $ref: '#/components/schemas/IdentityProviderLoginPath'
         config:
           type: object
           oneOf:
@@ -1830,7 +1819,6 @@ components:
         id: 66da2d42-469d-48cd-9ff3-0db135dd82d8
         type: oidc
         enabled: false
-        login_path: the-oidc-konnect-org
         config:
           issuer_url: 'https://konghq.okta.com/oauth2/default'
           client_id: 0oaqhb43ckTZ02j1F357
@@ -1849,7 +1837,6 @@ components:
         id: a2c3156d-ebb1-432b-b2f1-edcc5f133c60
         type: saml
         enabled: true
-        login_path: the-saml-konnect-org
         config:
           idp_metadata_url: 'https://mocksaml.com/api/saml/metadata'
           sp_entity_id: 'https://cloud.konghq.com/sp/00000000-0000-0000-0000-000000000000'
@@ -1862,7 +1849,6 @@ components:
         id: a2c3156d-ebb1-432b-b2f1-edcc5f133c60
         type: saml
         enabled: true
-        login_path: the-saml-konnect-org
         config:
           idp_metadata_xml: |
             <?xml version="1.0" encoding="UTF-8"?>
@@ -1877,7 +1863,6 @@ components:
     CreateOIDCIdentityProvider:
       value:
         type: oidc
-        login_path: the-oidc-konnect-org
         config:
           issuer_url: 'https://konghq.okta.com/oauth2/default'
           client_id: 0oaqhb43ckTZ02j1F357
@@ -1892,13 +1877,11 @@ components:
     CreateSAMLIdentityProviderWithMetadataURL:
       value:
         type: saml
-        login_path: the-saml-konnect-org
         config:
           idp_metadata_url: 'https://mocksaml.com/api/saml/metadata'
     CreateSAMLIdentityProviderWithMetadata:
       value:
         type: saml
-        login_path: the-saml-konnect-org
         config:
           idp_metadata_xml: |
             <?xml version="1.0" encoding="UTF-8"?>
@@ -1908,7 +1891,6 @@ components:
     UpdateOIDCIdentityProvider:
       value:
         enabled: true
-        login_path: the-oidc-konnect-org
         config:
           issuer_url: 'https://konghq.okta.com/oauth2/default'
           client_id: 0oaqhb43ckTZ02j1F357
@@ -1923,12 +1905,8 @@ components:
     UpdateSAMLIdentityProvider:
       value:
         enabled: true
-        login_path: the-saml-konnect-org
         config:
           idp_metadata_url: 'https://mocksaml.com/api/saml/metadata'
-    UpdateIdentityProviderLoginPath:
-      value:
-        login_path: the-konnect-org
   requestBodies:
     UpdatePortalConfig:
       description: Request schema to replace the portal configuration.
@@ -2009,8 +1987,6 @@ components:
               $ref: '#/components/examples/UpdateOIDCIdentityProvider'
             Update SAML Identity Provider:
               $ref: '#/components/examples/UpdateSAMLIdentityProvider'
-            Update Identity Provider Login Path:
-              $ref: '#/components/examples/UpdateIdentityProviderLoginPath'
   responses:
     GetPortalConfig:
       description: Response for a portal configuration
