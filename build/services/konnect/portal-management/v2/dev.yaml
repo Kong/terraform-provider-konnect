@@ -16,7 +16,7 @@ servers:
 paths:
   '/portals/{portalId}/config':
     parameters:
-      - $ref: '#/components/parameters/parameters-PortalId'
+      - $ref: '#/components/parameters/PortalId'
     get:
       operationId: get-portal-config
       summary: Get a portal configuration
@@ -72,7 +72,7 @@ paths:
       summary: Get Customization
       description: Returns the portal customization options.
       parameters:
-        - $ref: '#/components/parameters/parameters-PortalId'
+        - $ref: '#/components/parameters/PortalId'
       responses:
         '200':
           $ref: '#/components/responses/GetPortalCustomization'
@@ -89,7 +89,7 @@ paths:
       summary: Replace Customization
       description: Replace the portal customization options.
       parameters:
-        - $ref: '#/components/parameters/parameters-PortalId'
+        - $ref: '#/components/parameters/PortalId'
       requestBody:
         $ref: '#/components/requestBodies/ReplacePortalCustomization'
       responses:
@@ -108,7 +108,7 @@ paths:
       summary: Update Portal Customization
       description: 'Update the portal customization options, merging properties.'
       parameters:
-        - $ref: '#/components/parameters/parameters-PortalId'
+        - $ref: '#/components/parameters/PortalId'
       requestBody:
         $ref: '#/components/requestBodies/ReplacePortalCustomization'
       responses:
@@ -122,146 +122,9 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Portal Customization
-  '/portals/{portalId}/pages':
-    get:
-      operationId: list-portal-pages
-      summary: List Portal Pages
-      description: Returns the paginated list of custom pages that have been created for this portal.
-      parameters:
-        - $ref: '#/components/parameters/SortPortalPages'
-        - $ref: '#/components/parameters/parameters-PortalId'
-        - $ref: '#/components/parameters/PageSize'
-        - $ref: '#/components/parameters/PageNumber'
-        - name: filter
-          in: query
-          description: Filter pages returned in the response.
-          required: false
-          schema:
-            $ref: '#/components/schemas/PortalPagesFilters'
-          style: deepObject
-      responses:
-        '200':
-          $ref: '#/components/responses/ListPortalPages'
-        '400':
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/BadRequestError'
-              examples:
-                ListPortalPagesBadRequestExample1:
-                  $ref: '#/components/examples/ListPortalPagesBadRequestExample1'
-                ListPortalPagesBadRequestExample2:
-                  $ref: '#/components/examples/ListPortalPagesBadRequestExample2'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-      tags:
-        - Portal Pages
-    post:
-      operationId: create-portal-page
-      summary: Create Portal Page
-      description: 'Creates a new custom page for this portal. Custom pages can be used to display static content, documentation, or other information to developers.'
-      parameters:
-        - $ref: '#/components/parameters/parameters-PortalId'
-      requestBody:
-        $ref: '#/components/requestBodies/CreatePortalPage'
-      responses:
-        '201':
-          $ref: '#/components/responses/PortalPage'
-        '400':
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/BadRequestError'
-              examples:
-                UpdatePortalPageBadRequestExample1:
-                  $ref: '#/components/examples/UpdatePortalPageBadRequestExample1'
-                'UpdatePortalPageBadRequestExample2:':
-                  $ref: '#/components/examples/UpdatePortalPageBadRequestExample2'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-      tags:
-        - Portal Pages
-  '/portals/{portalId}/pages/{pageId}':
-    get:
-      operationId: get-portal-page
-      summary: Get Portal Page
-      description: 'Returns the configuration of a single custom page for this portal. Custom pages can be used to display static content, documentation, or other information to developers.'
-      parameters:
-        - $ref: '#/components/parameters/parameters-PortalId'
-        - $ref: '#/components/parameters/PageId'
-      responses:
-        '200':
-          $ref: '#/components/responses/PortalPage'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-      tags:
-        - Portal Pages
-    patch:
-      operationId: update-portal-page
-      summary: Update Portal Page
-      description: Updates the configuration of a single custom page for this portal.
-      parameters:
-        - $ref: '#/components/parameters/parameters-PortalId'
-        - $ref: '#/components/parameters/PageId'
-      requestBody:
-        $ref: '#/components/requestBodies/UpdatePortalPage'
-      responses:
-        '200':
-          $ref: '#/components/responses/PortalPage'
-        '400':
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/BadRequestError'
-              examples:
-                'UpdatePortalPageBadRequestExample1:':
-                  $ref: '#/components/examples/UpdatePortalPageBadRequestExample1'
-                'UpdatePortalPageBadRequestExample2:':
-                  $ref: '#/components/examples/UpdatePortalPageBadRequestExample2'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-      tags:
-        - Portal Pages
-    delete:
-      operationId: delete-portal-page
-      summary: Delete Portal Page
-      description: Deletes a single custom page for this portal.
-      parameters:
-        - $ref: '#/components/parameters/parameters-PortalId'
-        - $ref: '#/components/parameters/PageId'
-      responses:
-        '204':
-          description: No Content
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-      tags:
-        - Portal Pages
   '/portals/{portalId}/authentication-settings':
     parameters:
-      - $ref: '#/components/parameters/parameters-PortalId'
+      - $ref: '#/components/parameters/PortalId'
     get:
       operationId: get-portal-authentication-settings
       summary: Get Auth Settings
@@ -313,7 +176,7 @@ paths:
         - Portal Auth Settings
   '/portals/{portalId}/identity-providers':
     parameters:
-      - $ref: '#/components/parameters/parameters-PortalId'
+      - $ref: '#/components/parameters/PortalId'
     get:
       operationId: get-portal-identity-providers
       summary: Retrieve Identity Providers
@@ -361,7 +224,7 @@ paths:
         - Portal Auth Settings
   '/portals/{portalId}/identity-providers/{id}':
     parameters:
-      - $ref: '#/components/parameters/parameters-PortalId'
+      - $ref: '#/components/parameters/PortalId'
       - $ref: '#/components/parameters/IdentityProviderId'
     get:
       operationId: get-portal-identity-provider
@@ -433,47 +296,7 @@ components:
       in: path
       required: true
       description: ID of the identity provider.
-    PageId:
-      schema:
-        type: string
-        format: uuid
-        example: ebbac5b0-ac89-45c3-9d2e-c4542c657e79
-      name: pageId
-      in: path
-      required: true
-      description: ID of the page.
-    PageNumber:
-      name: 'page[number]'
-      description: Determines which page of the entities to retrieve.
-      required: false
-      in: query
-      allowEmptyValue: true
-      schema:
-        type: integer
-        example: 1
-    PageSize:
-      name: 'page[size]'
-      description: The maximum number of items to include per page. The last page of a collection may include fewer items.
-      required: false
-      in: query
-      allowEmptyValue: true
-      schema:
-        type: integer
-        example: 10
-    SortPortalPages:
-      name: sort
-      description: |
-        Sorts a collection of portal pages. Supported sort attributes are:
-          - created_at
-          - updated_at
-          - path
-          - title
-          - public
-      in: query
-      required: false
-      schema:
-        type: string
-    parameters-PortalId:
+    PortalId:
       schema:
         type: string
         format: uuid
@@ -482,178 +305,6 @@ components:
       required: true
       description: ID of the portal.
   schemas:
-    PagePath:
-      description: The path of a page in a portal with a leading slash.
-      type: string
-      example: /my-page
-      maxLength: 512
-      title: PagePath
-    PageTitle:
-      description: The title of a page in a portal.
-      type: string
-      example: My Page
-      maxLength: 512
-      title: PageTitle
-    PageContent:
-      description: The renderable markdown content of a page in a portal.
-      type: string
-      example: '# Welcome to My Page'
-      maxLength: 1000000
-      title: PageContent
-    PagePublicStatus:
-      description: Whether a page is publicly accessible to non-authenticated users. Defaults to false.
-      type: boolean
-      example: true
-      title: PagePublicStatus
-    PagePublishStatus:
-      description: Whether a page is visible on a given portal. Defaults to false.
-      type: boolean
-      example: true
-      title: PagePublishStatus
-    PageDescription:
-      type: string
-      example: A custom page about developer portals
-      maxLength: 160
-      title: PageDescription
-    PagePublicStatusWithDefault:
-      description: Whether a page is publicly accessible to non-authenticated users.
-      type: boolean
-      example: true
-      default: false
-      title: PagePublicStatusWithDefault
-    UpdatePortalPageRequest:
-      description: Update a page in a portal.
-      type: object
-      properties:
-        path:
-          $ref: '#/components/schemas/PagePath'
-        title:
-          $ref: '#/components/schemas/PageTitle'
-        content:
-          $ref: '#/components/schemas/PageContent'
-        public:
-          $ref: '#/components/schemas/PagePublicStatus'
-        published:
-          $ref: '#/components/schemas/PagePublishStatus'
-        description:
-          $ref: '#/components/schemas/PageDescription'
-      additionalProperties: false
-      title: UpdatePortalPageRequest
-    CreatePortalPageRequest:
-      description: Create a page in a portal.
-      type: object
-      properties:
-        path:
-          $ref: '#/components/schemas/PagePath'
-        title:
-          $ref: '#/components/schemas/PageTitle'
-        content:
-          $ref: '#/components/schemas/PageContent'
-        public:
-          $ref: '#/components/schemas/PagePublicStatusWithDefault'
-        published:
-          $ref: '#/components/schemas/PagePublishStatus'
-        description:
-          $ref: '#/components/schemas/PageDescription'
-      additionalProperties: false
-      required:
-        - path
-        - title
-        - content
-      title: CreatePortalPageRequest
-    PortalPageInfo:
-      description: Information about a page in a portal.
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/UUID'
-        path:
-          $ref: '#/components/schemas/PagePath'
-        title:
-          $ref: '#/components/schemas/PageTitle'
-        public:
-          $ref: '#/components/schemas/PagePublicStatus'
-        published:
-          $ref: '#/components/schemas/PagePublishStatus'
-        description:
-          $ref: '#/components/schemas/PageDescription'
-        created_at:
-          $ref: '#/components/schemas/CreatedAt'
-        updated_at:
-          $ref: '#/components/schemas/UpdatedAt'
-      additionalProperties: false
-      required:
-        - id
-        - path
-        - title
-        - public
-        - created_at
-        - updated_at
-        - published
-      title: PortalPageInfo
-    PortalPageResponse:
-      description: Details about a page in a portal.
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/UUID'
-        path:
-          $ref: '#/components/schemas/PagePath'
-        title:
-          $ref: '#/components/schemas/PageTitle'
-        content:
-          $ref: '#/components/schemas/PageContent'
-        public:
-          $ref: '#/components/schemas/PagePublicStatus'
-        published:
-          $ref: '#/components/schemas/PagePublishStatus'
-        description:
-          $ref: '#/components/schemas/PageDescription'
-        created_at:
-          $ref: '#/components/schemas/CreatedAt'
-        updated_at:
-          $ref: '#/components/schemas/UpdatedAt'
-      additionalProperties: false
-      required:
-        - id
-        - path
-        - title
-        - content
-        - public
-        - published
-        - created_at
-        - updated_at
-      title: PortalPageResponse
-    ListPortalPagesResponse:
-      description: A paginated list of custom pages in a portal.
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/PortalPageInfo'
-        meta:
-          $ref: '#/components/schemas/PaginatedMeta'
-      example:
-        data:
-          - id: 437c7192-fea0-4f35-8478-c8d57783f8c1
-            path: /my-page
-            title: My Page
-            public: true
-            published: true
-            description: A custom page
-            created_at: '2021-01-01T00:00:00Z'
-            updated_at: '2021-01-01T00:00:00Z'
-        meta:
-          page:
-            number: 1
-            size: 10
-            total: 1
-      additionalProperties: false
-      required:
-        - data
-        - meta
-      title: ListPortalPagesResponse
     PortalClaimMappings:
       description: Mappings from a portal developer atribute to an Identity Provider claim.
       type: object
@@ -830,23 +481,6 @@ components:
           email: email
           groups: custom-group-claim
       title: PortalAuthenticationSettingsUpdateRequest
-    PortalPagesFilters:
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/UuidFieldFilter'
-        path:
-          $ref: '#/components/schemas/StringFieldFilter'
-        title:
-          $ref: '#/components/schemas/StringFieldFilter'
-        public:
-          $ref: '#/components/schemas/BooleanFieldFilter'
-        created_at:
-          $ref: '#/components/schemas/DateTimeFieldFilter'
-        updated_at:
-          $ref: '#/components/schemas/DateTimeFieldFilter'
-      additionalProperties: false
-      title: PortalPagesFilters
     PortalMenuItem:
       type: object
       properties:
@@ -907,143 +541,6 @@ components:
       required:
         - data
       title: PortalConfig
-    StringFieldEqualsFilter:
-      description: Filters on the given string field value by exact match.
-      oneOf:
-        - type: string
-        - type: object
-          title: StringFieldEqualsComparison
-          additionalProperties: false
-          properties:
-            eq:
-              type: string
-          required:
-            - eq
-      title: StringFieldEqualsFilter
-      x-examples:
-        example-1: equals-some-value
-        example-2:
-          eq: some-value
-    StringFieldOEQFilter:
-      description: Returns entities that exact match any of the comma-delimited phrases in the filter string.
-      type: object
-      properties:
-        oeq:
-          type: string
-      additionalProperties: false
-      required:
-        - oeq
-      title: StringFieldOEQFilter
-      x-examples:
-        example-1:
-          oeq: 'some-value,some-other-value'
-    StringFieldNEQFilter:
-      description: Filters on the given string field value by exact match inequality.
-      type: object
-      properties:
-        neq:
-          type: string
-      additionalProperties: false
-      required:
-        - neq
-      title: StringFieldNEQFilter
-      x-examples:
-        example-1:
-          neq: not-this-value
-    UuidFieldFilter:
-      description: Filters on the given UUID field value by exact match.
-      oneOf:
-        - $ref: '#/components/schemas/StringFieldEqualsFilter'
-        - $ref: '#/components/schemas/StringFieldOEQFilter'
-        - $ref: '#/components/schemas/StringFieldNEQFilter'
-      title: UuidFieldFilter
-      x-examples:
-        example-1: 3bbfd3a-e9ab-48a9-9881-ed589e4615d1
-        example-2:
-          eq: 3bbfd3a-e9ab-48a9-9881-ed589e4615d1
-        example-3:
-          oeq: 3bbfd3a-e9ab-48a9-9881-ed589e4615d1
-        example-4:
-          neq: 3bbfd3a-e9ab-48a9-9881-ed589e4615d1
-    StringFieldContainsFilter:
-      description: Filters on the given string field value by fuzzy match.
-      type: object
-      properties:
-        contains:
-          type: string
-      additionalProperties: false
-      required:
-        - contains
-      title: StringFieldContainsFilter
-      x-examples:
-        example-1:
-          contains: some-value
-    StringFieldOContainsFilter:
-      description: Returns entities that fuzzy-match any of the comma-delimited phrases in the filter string.
-      type: object
-      properties:
-        ocontains:
-          type: string
-      additionalProperties: false
-      required:
-        - ocontains
-      title: StringFieldOContainsFilter
-      x-examples:
-        example-1:
-          ocontains: 'this-value,or-that-value'
-    StringFieldFilter:
-      description: Filters on the given string field value by either exact or fuzzy match.
-      oneOf:
-        - $ref: '#/components/schemas/StringFieldEqualsFilter'
-        - $ref: '#/components/schemas/StringFieldContainsFilter'
-        - $ref: '#/components/schemas/StringFieldOContainsFilter'
-        - $ref: '#/components/schemas/StringFieldOEQFilter'
-        - $ref: '#/components/schemas/StringFieldNEQFilter'
-      title: StringFieldFilter
-      x-examples:
-        example-1: equals-some-value
-        example-2:
-          eq: some-value
-        example-3:
-          contains: some-value
-        example-4:
-          ocontains: 'some-potential,value'
-        example-5:
-          oeq: 'some-potential,value'
-        example-6:
-          neq: not-this-value
-    BooleanFieldFilter:
-      description: Filter by a boolean value (true/false).
-      type: boolean
-      title: BooleanFieldFilter
-      x-examples:
-        example-1: true
-    PageMeta:
-      description: Contains pagination query parameters and the total number of objects returned.
-      type: object
-      properties:
-        number:
-          type: number
-          example: 1
-        size:
-          type: number
-          example: 10
-        total:
-          type: number
-          example: 100
-      required:
-        - number
-        - size
-        - total
-    PaginatedMeta:
-      description: returns the pagination information
-      type: object
-      properties:
-        page:
-          $ref: '#/components/schemas/PageMeta'
-      required:
-        - page
-      title: PaginatedMeta
     UUID:
       description: Contains a unique identifier used for this resource.
       type: string
@@ -1318,81 +815,6 @@ components:
               example: 'kong:trace:1234567890'
             detail:
               example: Not found
-    DateTimeFieldFilter:
-      description: Filters on the given datetime (RFC-3339) field value.
-      oneOf:
-        - type: string
-          format: date-time
-          description: Value strictly equals given RFC-3339 formatted timestamp in UTC
-          example: '2022-03-30T07:20:50Z'
-        - type: object
-          title: DateTimeFieldEqualsFilter
-          additionalProperties: false
-          properties:
-            eq:
-              description: Value strictly equals given RFC-3339 formatted timestamp in UTC
-              type: string
-              format: date-time
-              example: '2022-03-30T07:20:50Z'
-          required:
-            - eq
-        - type: object
-          title: DateTimeFieldLTFilter
-          additionalProperties: false
-          properties:
-            lt:
-              description: Value is less than the given RFC-3339 formatted timestamp in UTC
-              type: string
-              format: date-time
-              example: '2022-03-30T07:20:50Z'
-          required:
-            - lt
-        - type: object
-          title: DateTimeFieldLTEFilter
-          additionalProperties: false
-          properties:
-            lte:
-              description: Value is less than or equal to the given RFC-3339 formatted timestamp in UTC
-              type: string
-              format: date-time
-              example: '2022-03-30T07:20:50Z'
-          required:
-            - lte
-        - type: object
-          title: DateTimeFieldGTFilter
-          additionalProperties: false
-          properties:
-            lt:
-              description: Value is greater than the given RFC-3339 formatted timestamp in UTC
-              type: string
-              format: date-time
-              example: '2022-03-30T07:20:50Z'
-          required:
-            - gt
-        - type: object
-          title: DateTimeFieldGTEFilter
-          additionalProperties: false
-          properties:
-            lte:
-              description: Value is greater than or equal to the given RFC-3339 formatted timestamp in UTC
-              type: string
-              format: date-time
-              example: '2022-03-30T07:20:50Z'
-          required:
-            - gte
-      title: DateTimeFieldFilter
-      x-examples:
-        datetime_field_1: '2022-03-30T07:20:50Z'
-        datetime_field_2:
-          eq: '2022-03-30T07:20:50Z'
-        datetime_field_3:
-          lt: '2022-03-30T07:20:50Z'
-        datetime_field_4:
-          lte: '2022-03-30T07:20:50Z'
-        datetime_field_5:
-          gt: '2022-03-30T07:20:50Z'
-        datetime_field_6:
-          gte: '2022-03-30T07:20:50Z'
     PortalCustomization:
       type: object
       additionalProperties: true
@@ -1607,18 +1029,6 @@ components:
           name: name
           email: email
           groups: custom-group-claim
-    CreatePortalPageExample1:
-      value:
-        title: Getting Started
-        path: /getting-started
-        content: Welcome to the Getting Started page. This is where you can learn how to use our APIs.
-        public: true
-        published: true
-    UpdatePortalPageExample1:
-      value:
-        title: About Us
-        path: /about-us
-        content: Welcome to the About Us page. This is where you can learn about our company.
     PortalAuthenticationSettingsExample1:
       value:
         basic_auth_enabled: true
@@ -1638,54 +1048,6 @@ components:
             name: name
             email: email
             groups: custom-group-claim
-    PortalPageExample1:
-      value:
-        id: 8f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-        path: /
-        title: Home
-        content: Welcome to the home page of the portal. This is where you can find information about the portal and its products.
-        public: true
-        published: true
-        created_at: '2022-02-07T17:46:57.52Z'
-        updated_at: '2022-10-08T17:00:00.52Z'
-    ListPortalPagesExample1:
-      value:
-        meta:
-          page:
-            number: 1
-            size: 10
-            total: 1
-        data:
-          - id: 8f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-            path: /
-            title: Home
-            public: true
-            published: true
-            description: A custom page
-            created_at: '2022-02-07T17:46:57.52Z'
-            updated_at: '2022-10-08T17:00:00.52Z'
-    UpdatePortalPageBadRequestExample1:
-      value:
-        status: 400
-        title: Invalid Request
-        instance: 'kong:trace:1433447772874964729'
-        detail: Invalid Parameters
-        invalid_parameters:
-          - field: my_property
-            rule: unknown_property
-            reason: '"my_property" is not allowed'
-            source: body
-    UpdatePortalPageBadRequestExample2:
-      value:
-        status: 400
-        title: Invalid Request
-        instance: 'kong:trace:1433447772874964729'
-        detail: Invalid Parameters
-        invalid_parameters:
-          - field: title
-            rule: max_length
-            reason: value of "title" must not exceed 512 characters
-            source: body
     UpdateAuthSettingsBadRequestExample1:
       value:
         status: 400
@@ -1774,28 +1136,6 @@ components:
             rule: is_array
             reason: '"oidc_scopes" must be an array'
             source: body
-    ListPortalPagesBadRequestExample1:
-      value:
-        status: 400
-        title: Invalid Request
-        instance: 'kong:trace:1433447772874964729'
-        detail: Invalid Parameters
-        invalid_parameters:
-          - field: 'page[size]'
-            rule: is_number
-            reason: '"page[size]" must be a number'
-            source: query
-    ListPortalPagesBadRequestExample2:
-      value:
-        status: 400
-        title: Invalid Request
-        instance: 'kong:trace:1433447772874964729'
-        detail: Invalid Parameters
-        invalid_parameters:
-          - field: 'filter[my_attribute]'
-            rule: unknown_property
-            reason: '"filter[my_attribute]" is not allowed'
-            source: query
     UnauthorizedExample:
       value:
         status: 401
@@ -1939,26 +1279,6 @@ components:
               $ref: '#/components/examples/UpdatePortalAuthenticationSettingsExampleEnableOIDC'
             Enable OIDC Team Mapping:
               $ref: '#/components/examples/UpdatePortalAuthenticationSettingsExampleEnableOIDCTeamMapping'
-    CreatePortalPage:
-      description: Create a page in a portal.
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CreatePortalPageRequest'
-          examples:
-            Example 1:
-              $ref: '#/components/examples/CreatePortalPageExample1'
-    UpdatePortalPage:
-      description: Update a page in a portal.
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/UpdatePortalPageRequest'
-          examples:
-            Example 1:
-              $ref: '#/components/examples/UpdatePortalPageExample1'
     CreateIdentityProviderRequest:
       description: |
         An object representing the configuration for creating a new identity provider. This configuration may pertain  to either an OIDC or a SAML identity provider.
@@ -2003,24 +1323,6 @@ components:
           examples:
             Example 1:
               $ref: '#/components/examples/PortalAuthenticationSettingsExample1'
-    PortalPage:
-      description: Details about a page in a portal.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/PortalPageResponse'
-          examples:
-            Example 1:
-              $ref: '#/components/examples/PortalPageExample1'
-    ListPortalPages:
-      description: A paginated list of custom pages in a portal.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ListPortalPagesResponse'
-          examples:
-            Example 1:
-              $ref: '#/components/examples/ListPortalPagesExample1'
     Unauthorized:
       description: Unauthorized
       content:
@@ -2100,8 +1402,6 @@ tags:
     description: APIs related to Konnect Developer Portal Authentication Settings.
   - name: Portal Customization
     description: APIs related to Konnect Developer Portal Customization.
-  - name: Portal Pages
-    description: APIs related to Konnect Developer Portal Custom Pages.
 security:
   - personalAccessToken: []
   - systemAccountAccessToken: []

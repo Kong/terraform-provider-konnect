@@ -2117,7 +2117,7 @@ paths:
         - Metadata Field
   '/v2/portals/{portalId}/authentication-settings':
     parameters:
-      - $ref: '#/components/parameters/parameters-PortalId'
+      - $ref: '#/components/parameters/PortalId'
     get:
       operationId: get-portal-authentication-settings
       summary: Get Auth Settings
@@ -2169,7 +2169,7 @@ paths:
         - Portal Auth Settings
   '/v2/portals/{portalId}/config':
     parameters:
-      - $ref: '#/components/parameters/parameters-PortalId'
+      - $ref: '#/components/parameters/PortalId'
     get:
       operationId: get-portal-config
       summary: Get a portal configuration
@@ -2225,7 +2225,7 @@ paths:
       summary: Get Customization
       description: Returns the portal customization options.
       parameters:
-        - $ref: '#/components/parameters/parameters-PortalId'
+        - $ref: '#/components/parameters/PortalId'
       responses:
         '200':
           $ref: '#/components/responses/GetPortalCustomization'
@@ -2242,7 +2242,7 @@ paths:
       summary: Replace Customization
       description: Replace the portal customization options.
       parameters:
-        - $ref: '#/components/parameters/parameters-PortalId'
+        - $ref: '#/components/parameters/PortalId'
       requestBody:
         $ref: '#/components/requestBodies/ReplacePortalCustomization'
       responses:
@@ -2261,7 +2261,7 @@ paths:
       summary: Update Portal Customization
       description: 'Update the portal customization options, merging properties.'
       parameters:
-        - $ref: '#/components/parameters/parameters-PortalId'
+        - $ref: '#/components/parameters/PortalId'
       requestBody:
         $ref: '#/components/requestBodies/ReplacePortalCustomization'
       responses:
@@ -2277,7 +2277,7 @@ paths:
         - Portal Customization
   '/v2/portals/{portalId}/identity-providers':
     parameters:
-      - $ref: '#/components/parameters/parameters-PortalId'
+      - $ref: '#/components/parameters/PortalId'
     get:
       operationId: get-portal-identity-providers
       summary: Retrieve Identity Providers
@@ -2325,7 +2325,7 @@ paths:
         - Portal Auth Settings
   '/v2/portals/{portalId}/identity-providers/{id}':
     parameters:
-      - $ref: '#/components/parameters/parameters-PortalId'
+      - $ref: '#/components/parameters/PortalId'
       - $ref: '#/components/parameters/IdentityProviderId'
     get:
       operationId: get-portal-identity-provider
@@ -2386,143 +2386,6 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Portal Auth Settings
-  '/v2/portals/{portalId}/pages':
-    get:
-      operationId: list-portal-pages
-      summary: List Portal Pages
-      description: Returns the paginated list of custom pages that have been created for this portal.
-      parameters:
-        - $ref: '#/components/parameters/SortPortalPages'
-        - $ref: '#/components/parameters/parameters-PortalId'
-        - $ref: '#/components/parameters/PageSize'
-        - $ref: '#/components/parameters/PageNumber'
-        - name: filter
-          in: query
-          description: Filter pages returned in the response.
-          required: false
-          schema:
-            $ref: '#/components/schemas/PortalPagesFilters'
-          style: deepObject
-      responses:
-        '200':
-          $ref: '#/components/responses/ListPortalPages'
-        '400':
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/BadRequestError'
-              examples:
-                ListPortalPagesBadRequestExample1:
-                  $ref: '#/components/examples/ListPortalPagesBadRequestExample1'
-                ListPortalPagesBadRequestExample2:
-                  $ref: '#/components/examples/ListPortalPagesBadRequestExample2'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-      tags:
-        - Portal Pages
-    post:
-      operationId: create-portal-page
-      summary: Create Portal Page
-      description: 'Creates a new custom page for this portal. Custom pages can be used to display static content, documentation, or other information to developers.'
-      parameters:
-        - $ref: '#/components/parameters/parameters-PortalId'
-      requestBody:
-        $ref: '#/components/requestBodies/CreatePortalPage'
-      responses:
-        '201':
-          $ref: '#/components/responses/PortalPage'
-        '400':
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/BadRequestError'
-              examples:
-                UpdatePortalPageBadRequestExample1:
-                  $ref: '#/components/examples/UpdatePortalPageBadRequestExample1'
-                'UpdatePortalPageBadRequestExample2:':
-                  $ref: '#/components/examples/UpdatePortalPageBadRequestExample2'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-      tags:
-        - Portal Pages
-  '/v2/portals/{portalId}/pages/{pageId}':
-    get:
-      operationId: get-portal-page
-      summary: Get Portal Page
-      description: 'Returns the configuration of a single custom page for this portal. Custom pages can be used to display static content, documentation, or other information to developers.'
-      parameters:
-        - $ref: '#/components/parameters/parameters-PortalId'
-        - $ref: '#/components/parameters/PageId'
-      responses:
-        '200':
-          $ref: '#/components/responses/PortalPage'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-      tags:
-        - Portal Pages
-    patch:
-      operationId: update-portal-page
-      summary: Update Portal Page
-      description: Updates the configuration of a single custom page for this portal.
-      parameters:
-        - $ref: '#/components/parameters/parameters-PortalId'
-        - $ref: '#/components/parameters/PageId'
-      requestBody:
-        $ref: '#/components/requestBodies/UpdatePortalPage'
-      responses:
-        '200':
-          $ref: '#/components/responses/PortalPage'
-        '400':
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/BadRequestError'
-              examples:
-                'UpdatePortalPageBadRequestExample1:':
-                  $ref: '#/components/examples/UpdatePortalPageBadRequestExample1'
-                'UpdatePortalPageBadRequestExample2:':
-                  $ref: '#/components/examples/UpdatePortalPageBadRequestExample2'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-      tags:
-        - Portal Pages
-    delete:
-      operationId: delete-portal-page
-      summary: Delete Portal Page
-      description: Deletes a single custom page for this portal.
-      parameters:
-        - $ref: '#/components/parameters/parameters-PortalId'
-        - $ref: '#/components/parameters/PageId'
-      responses:
-        '204':
-          description: No Content
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-      tags:
-        - Portal Pages
   /v2/servicehub/add-ons:
     get:
       operationId: list-add-ons
@@ -3262,6 +3125,143 @@ paths:
         - url: 'https://global.api.konghq.com/'
       tags:
         - Organization Lifecycle
+  '/v3/portals/{portalId}/pages':
+    get:
+      operationId: list-portal-pages
+      summary: List Portal Pages
+      description: Returns the paginated list of custom pages that have been created for this portal.
+      parameters:
+        - $ref: '#/components/parameters/SortPortalPages'
+        - $ref: '#/components/parameters/PortalId'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+        - name: filter
+          in: query
+          description: Filter pages returned in the response.
+          required: false
+          schema:
+            $ref: '#/components/schemas/PortalPagesFilters'
+          style: deepObject
+      responses:
+        '200':
+          $ref: '#/components/responses/ListPortalPages'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+              examples:
+                ListPortalPagesBadRequestExample1:
+                  $ref: '#/components/examples/ListPortalPagesBadRequestExample1'
+                ListPortalPagesBadRequestExample2:
+                  $ref: '#/components/examples/ListPortalPagesBadRequestExample2'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Pages
+    post:
+      operationId: create-portal-page
+      summary: Create Portal Page
+      description: 'Creates a new custom page for this portal. Custom pages can be used to display static content, documentation, or other information to developers.'
+      parameters:
+        - $ref: '#/components/parameters/PortalId'
+      requestBody:
+        $ref: '#/components/requestBodies/CreatePortalPage'
+      responses:
+        '201':
+          $ref: '#/components/responses/PortalPage'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+              examples:
+                UpdatePortalPageBadRequestExample1:
+                  $ref: '#/components/examples/UpdatePortalPageBadRequestExample1'
+                'UpdatePortalPageBadRequestExample2:':
+                  $ref: '#/components/examples/UpdatePortalPageBadRequestExample2'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Pages
+  '/v3/portals/{portalId}/pages/{pageId}':
+    get:
+      operationId: get-portal-page
+      summary: Get Portal Page
+      description: 'Returns the configuration of a single custom page for this portal. Custom pages can be used to display static content, documentation, or other information to developers.'
+      parameters:
+        - $ref: '#/components/parameters/PortalId'
+        - $ref: '#/components/parameters/PageId'
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalPage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Pages
+    patch:
+      operationId: update-portal-page
+      summary: Update Portal Page
+      description: Updates the configuration of a single custom page for this portal.
+      parameters:
+        - $ref: '#/components/parameters/PortalId'
+        - $ref: '#/components/parameters/PageId'
+      requestBody:
+        $ref: '#/components/requestBodies/UpdatePortalPage'
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalPage'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+              examples:
+                'UpdatePortalPageBadRequestExample1:':
+                  $ref: '#/components/examples/UpdatePortalPageBadRequestExample1'
+                'UpdatePortalPageBadRequestExample2:':
+                  $ref: '#/components/examples/UpdatePortalPageBadRequestExample2'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Pages
+    delete:
+      operationId: delete-portal-page
+      summary: Delete Portal Page
+      description: Deletes a single custom page for this portal.
+      parameters:
+        - $ref: '#/components/parameters/PortalId'
+        - $ref: '#/components/parameters/PageId'
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Pages
   /v3/roles:
     get:
       operationId: get-predefined-roles
@@ -3515,6 +3515,14 @@ components:
         type: integer
         example: 10
       allowEmptyValue: true
+    PortalId:
+      schema:
+        type: string
+        format: uuid
+      name: portalId
+      in: path
+      required: true
+      description: ID of the portal.
     ServiceFilter:
       name: filter
       description: Filters a collection of services.
@@ -3638,14 +3646,6 @@ components:
       description: ID of the notification.
       schema:
         type: string
-    parameters-PortalId:
-      schema:
-        type: string
-        format: uuid
-      name: portalId
-      in: path
-      required: true
-      description: ID of the portal.
     realmId:
       name: realmId
       in: path
@@ -6167,178 +6167,6 @@ components:
           maximum: 365
           minimum: 1
       title: Deletion Config
-    PagePath:
-      description: The path of a page in a portal with a leading slash.
-      type: string
-      example: /my-page
-      maxLength: 512
-      title: PagePath
-    PageTitle:
-      description: The title of a page in a portal.
-      type: string
-      example: My Page
-      maxLength: 512
-      title: PageTitle
-    PageContent:
-      description: The renderable markdown content of a page in a portal.
-      type: string
-      example: '# Welcome to My Page'
-      maxLength: 1000000
-      title: PageContent
-    PagePublicStatus:
-      description: Whether a page is publicly accessible to non-authenticated users. Defaults to false.
-      type: boolean
-      example: true
-      title: PagePublicStatus
-    PagePublishStatus:
-      description: Whether a page is visible on a given portal. Defaults to false.
-      type: boolean
-      example: true
-      title: PagePublishStatus
-    PageDescription:
-      type: string
-      example: A custom page about developer portals
-      maxLength: 160
-      title: PageDescription
-    PagePublicStatusWithDefault:
-      description: Whether a page is publicly accessible to non-authenticated users.
-      type: boolean
-      example: true
-      default: false
-      title: PagePublicStatusWithDefault
-    UpdatePortalPageRequest:
-      description: Update a page in a portal.
-      type: object
-      properties:
-        path:
-          $ref: '#/components/schemas/PagePath'
-        title:
-          $ref: '#/components/schemas/PageTitle'
-        content:
-          $ref: '#/components/schemas/PageContent'
-        public:
-          $ref: '#/components/schemas/PagePublicStatus'
-        published:
-          $ref: '#/components/schemas/PagePublishStatus'
-        description:
-          $ref: '#/components/schemas/PageDescription'
-      additionalProperties: false
-      title: UpdatePortalPageRequest
-    CreatePortalPageRequest:
-      description: Create a page in a portal.
-      type: object
-      properties:
-        path:
-          $ref: '#/components/schemas/PagePath'
-        title:
-          $ref: '#/components/schemas/PageTitle'
-        content:
-          $ref: '#/components/schemas/PageContent'
-        public:
-          $ref: '#/components/schemas/PagePublicStatusWithDefault'
-        published:
-          $ref: '#/components/schemas/PagePublishStatus'
-        description:
-          $ref: '#/components/schemas/PageDescription'
-      additionalProperties: false
-      required:
-        - path
-        - title
-        - content
-      title: CreatePortalPageRequest
-    PortalPageInfo:
-      description: Information about a page in a portal.
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/UUID'
-        path:
-          $ref: '#/components/schemas/PagePath'
-        title:
-          $ref: '#/components/schemas/PageTitle'
-        public:
-          $ref: '#/components/schemas/PagePublicStatus'
-        published:
-          $ref: '#/components/schemas/PagePublishStatus'
-        description:
-          $ref: '#/components/schemas/PageDescription'
-        created_at:
-          $ref: '#/components/schemas/CreatedAt'
-        updated_at:
-          $ref: '#/components/schemas/UpdatedAt'
-      additionalProperties: false
-      required:
-        - id
-        - path
-        - title
-        - public
-        - created_at
-        - updated_at
-        - published
-      title: PortalPageInfo
-    PortalPageResponse:
-      description: Details about a page in a portal.
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/UUID'
-        path:
-          $ref: '#/components/schemas/PagePath'
-        title:
-          $ref: '#/components/schemas/PageTitle'
-        content:
-          $ref: '#/components/schemas/PageContent'
-        public:
-          $ref: '#/components/schemas/PagePublicStatus'
-        published:
-          $ref: '#/components/schemas/PagePublishStatus'
-        description:
-          $ref: '#/components/schemas/PageDescription'
-        created_at:
-          $ref: '#/components/schemas/CreatedAt'
-        updated_at:
-          $ref: '#/components/schemas/UpdatedAt'
-      additionalProperties: false
-      required:
-        - id
-        - path
-        - title
-        - content
-        - public
-        - published
-        - created_at
-        - updated_at
-      title: PortalPageResponse
-    ListPortalPagesResponse:
-      description: A paginated list of custom pages in a portal.
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/PortalPageInfo'
-        meta:
-          $ref: '#/components/schemas/PaginatedMeta'
-      example:
-        data:
-          - id: 437c7192-fea0-4f35-8478-c8d57783f8c1
-            path: /my-page
-            title: My Page
-            public: true
-            published: true
-            description: A custom page
-            created_at: '2021-01-01T00:00:00Z'
-            updated_at: '2021-01-01T00:00:00Z'
-        meta:
-          page:
-            number: 1
-            size: 10
-            total: 1
-      additionalProperties: false
-      required:
-        - data
-        - meta
-      title: ListPortalPagesResponse
     PortalClaimMappings:
       description: Mappings from a portal developer atribute to an Identity Provider claim.
       type: object
@@ -6515,23 +6343,6 @@ components:
           email: email
           groups: custom-group-claim
       title: PortalAuthenticationSettingsUpdateRequest
-    PortalPagesFilters:
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/UuidFieldFilter'
-        path:
-          $ref: '#/components/schemas/StringFieldFilter'
-        title:
-          $ref: '#/components/schemas/StringFieldFilter'
-        public:
-          $ref: '#/components/schemas/BooleanFieldFilter'
-        created_at:
-          $ref: '#/components/schemas/DateTimeFieldFilter'
-        updated_at:
-          $ref: '#/components/schemas/DateTimeFieldFilter'
-      additionalProperties: false
-      title: PortalPagesFilters
     PortalMenuItem:
       type: object
       properties:
@@ -6600,6 +6411,195 @@ components:
       description: Filter a string value by exact match.
       type: string
       title: StringFieldEqualsFilter
+    PortalPagesFilters:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UuidFieldFilter'
+        path:
+          $ref: '#/components/schemas/StringFieldFilter'
+        title:
+          $ref: '#/components/schemas/StringFieldFilter'
+        public:
+          $ref: '#/components/schemas/BooleanFieldFilter'
+        created_at:
+          $ref: '#/components/schemas/DateTimeFieldFilter'
+        updated_at:
+          $ref: '#/components/schemas/DateTimeFieldFilter'
+      additionalProperties: false
+      title: PortalPagesFilters
+    PagePath:
+      description: The path of a page in a portal with a leading slash.
+      type: string
+      example: /my-page
+      maxLength: 512
+      title: PagePath
+    PageTitle:
+      description: The title of a page in a portal.
+      type: string
+      example: My Page
+      maxLength: 512
+      title: PageTitle
+    PageContent:
+      description: The renderable markdown content of a page in a portal.
+      type: string
+      example: '# Welcome to My Page'
+      maxLength: 1000000
+      title: PageContent
+    PagePublicStatus:
+      description: Whether a page is publicly accessible to non-authenticated users. Defaults to false.
+      type: boolean
+      example: true
+      title: PagePublicStatus
+    PagePublishStatus:
+      description: Whether a page is visible on a given portal. Defaults to false.
+      type: boolean
+      example: true
+      title: PagePublishStatus
+    PageDescription:
+      type: string
+      example: A custom page about developer portals
+      maxLength: 160
+      title: PageDescription
+    PagePublicStatusWithDefault:
+      description: Whether a page is publicly accessible to non-authenticated users.
+      type: boolean
+      example: true
+      default: false
+      title: PagePublicStatusWithDefault
+    UpdatePortalPageRequest:
+      description: Update a page in a portal.
+      type: object
+      properties:
+        path:
+          $ref: '#/components/schemas/PagePath'
+        title:
+          $ref: '#/components/schemas/PageTitle'
+        content:
+          $ref: '#/components/schemas/PageContent'
+        public:
+          $ref: '#/components/schemas/PagePublicStatus'
+        published:
+          $ref: '#/components/schemas/PagePublishStatus'
+        description:
+          $ref: '#/components/schemas/PageDescription'
+      additionalProperties: false
+      title: UpdatePortalPageRequest
+    CreatePortalPageRequest:
+      description: Create a page in a portal.
+      type: object
+      properties:
+        path:
+          $ref: '#/components/schemas/PagePath'
+        title:
+          $ref: '#/components/schemas/PageTitle'
+        content:
+          $ref: '#/components/schemas/PageContent'
+        public:
+          $ref: '#/components/schemas/PagePublicStatusWithDefault'
+        published:
+          $ref: '#/components/schemas/PagePublishStatus'
+        description:
+          $ref: '#/components/schemas/PageDescription'
+      additionalProperties: false
+      required:
+        - path
+        - title
+        - content
+      title: CreatePortalPageRequest
+    PortalPageInfo:
+      description: Information about a page in a portal.
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        path:
+          $ref: '#/components/schemas/PagePath'
+        title:
+          $ref: '#/components/schemas/PageTitle'
+        public:
+          $ref: '#/components/schemas/PagePublicStatus'
+        published:
+          $ref: '#/components/schemas/PagePublishStatus'
+        description:
+          $ref: '#/components/schemas/PageDescription'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
+      required:
+        - id
+        - path
+        - title
+        - public
+        - created_at
+        - updated_at
+        - published
+      title: PortalPageInfo
+    PortalPageResponse:
+      description: Details about a page in a portal.
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        path:
+          $ref: '#/components/schemas/PagePath'
+        title:
+          $ref: '#/components/schemas/PageTitle'
+        content:
+          $ref: '#/components/schemas/PageContent'
+        public:
+          $ref: '#/components/schemas/PagePublicStatus'
+        published:
+          $ref: '#/components/schemas/PagePublishStatus'
+        description:
+          $ref: '#/components/schemas/PageDescription'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
+      required:
+        - id
+        - path
+        - title
+        - content
+        - public
+        - published
+        - created_at
+        - updated_at
+      title: PortalPageResponse
+    ListPortalPagesResponse:
+      description: A paginated list of custom pages in a portal.
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PortalPageInfo'
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
+      example:
+        data:
+          - id: 437c7192-fea0-4f35-8478-c8d57783f8c1
+            path: /my-page
+            title: My Page
+            public: true
+            published: true
+            description: A custom page
+            created_at: '2021-01-01T00:00:00Z'
+            updated_at: '2021-01-01T00:00:00Z'
+        meta:
+          page:
+            number: 1
+            size: 10
+            total: 1
+      additionalProperties: false
+      required:
+        - data
+        - meta
+      title: ListPortalPagesResponse
     ServerlessCloudGateway:
       description: A serverless cloud gateway
       type: object
@@ -9935,18 +9935,6 @@ components:
           name: name
           email: email
           groups: custom-group-claim
-    CreatePortalPageExample1:
-      value:
-        title: Getting Started
-        path: /getting-started
-        content: Welcome to the Getting Started page. This is where you can learn how to use our APIs.
-        public: true
-        published: true
-    UpdatePortalPageExample1:
-      value:
-        title: About Us
-        path: /about-us
-        content: Welcome to the About Us page. This is where you can learn about our company.
     PortalAuthenticationSettingsExample1:
       value:
         basic_auth_enabled: true
@@ -9966,54 +9954,6 @@ components:
             name: name
             email: email
             groups: custom-group-claim
-    PortalPageExample1:
-      value:
-        id: 8f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-        path: /
-        title: Home
-        content: Welcome to the home page of the portal. This is where you can find information about the portal and its products.
-        public: true
-        published: true
-        created_at: '2022-02-07T17:46:57.52Z'
-        updated_at: '2022-10-08T17:00:00.52Z'
-    ListPortalPagesExample1:
-      value:
-        meta:
-          page:
-            number: 1
-            size: 10
-            total: 1
-        data:
-          - id: 8f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-            path: /
-            title: Home
-            public: true
-            published: true
-            description: A custom page
-            created_at: '2022-02-07T17:46:57.52Z'
-            updated_at: '2022-10-08T17:00:00.52Z'
-    UpdatePortalPageBadRequestExample1:
-      value:
-        status: 400
-        title: Invalid Request
-        instance: 'kong:trace:1433447772874964729'
-        detail: Invalid Parameters
-        invalid_parameters:
-          - field: my_property
-            rule: unknown_property
-            reason: '"my_property" is not allowed'
-            source: body
-    UpdatePortalPageBadRequestExample2:
-      value:
-        status: 400
-        title: Invalid Request
-        instance: 'kong:trace:1433447772874964729'
-        detail: Invalid Parameters
-        invalid_parameters:
-          - field: title
-            rule: max_length
-            reason: value of "title" must not exceed 512 characters
-            source: body
     UpdateAuthSettingsBadRequestExample1:
       value:
         status: 400
@@ -10102,6 +10042,44 @@ components:
             rule: is_array
             reason: '"oidc_scopes" must be an array'
             source: body
+    CreatePortalPageExample1:
+      value:
+        title: Getting Started
+        path: /getting-started
+        content: Welcome to the Getting Started page. This is where you can learn how to use our APIs.
+        public: true
+        published: true
+    UpdatePortalPageExample1:
+      value:
+        title: About Us
+        path: /about-us
+        content: Welcome to the About Us page. This is where you can learn about our company.
+    PortalPageExample1:
+      value:
+        id: 8f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+        path: /
+        title: Home
+        content: Welcome to the home page of the portal. This is where you can find information about the portal and its products.
+        public: true
+        published: true
+        created_at: '2022-02-07T17:46:57.52Z'
+        updated_at: '2022-10-08T17:00:00.52Z'
+    ListPortalPagesExample1:
+      value:
+        meta:
+          page:
+            number: 1
+            size: 10
+            total: 1
+        data:
+          - id: 8f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+            path: /
+            title: Home
+            public: true
+            published: true
+            description: A custom page
+            created_at: '2022-02-07T17:46:57.52Z'
+            updated_at: '2022-10-08T17:00:00.52Z'
     ListPortalPagesBadRequestExample1:
       value:
         status: 400
@@ -10124,6 +10102,28 @@ components:
             rule: unknown_property
             reason: '"filter[my_attribute]" is not allowed'
             source: query
+    UpdatePortalPageBadRequestExample1:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'kong:trace:1433447772874964729'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: my_property
+            rule: unknown_property
+            reason: '"my_property" is not allowed'
+            source: body
+    UpdatePortalPageBadRequestExample2:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'kong:trace:1433447772874964729'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: title
+            rule: max_length
+            reason: value of "title" must not exceed 512 characters
+            source: body
     ServerlessCloudGatewayExample:
       value:
         control_plane:
@@ -12135,6 +12135,12 @@ components:
           examples:
             Example 1:
               $ref: '#/components/examples/PortalAuthenticationSettingsExample1'
+    GetPortalCustomization:
+      description: Response for a portal customization
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalCustomization'
     PortalPage:
       description: Details about a page in a portal.
       content:
@@ -12153,12 +12159,6 @@ components:
           examples:
             Example 1:
               $ref: '#/components/examples/ListPortalPagesExample1'
-    GetPortalCustomization:
-      description: Response for a portal customization
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/PortalCustomization'
     UpdateServerlessCloudGatewayResponse:
       description: A response to updating a serverless cloud gateway.
       content:

@@ -60,7 +60,7 @@ paths:
         - {}
       tags:
         - portal
-  /api/v2/portal/pages:
+  /api/v3/portal/pages:
     get:
       operationId: list-portal-pages
       summary: List Portal Pages
@@ -85,7 +85,7 @@ paths:
         - {}
       tags:
         - portal
-  /api/v2/portal/pages/content:
+  /api/v3/portal/pages/content:
     get:
       operationId: get-portal-page
       summary: Get Portal Page

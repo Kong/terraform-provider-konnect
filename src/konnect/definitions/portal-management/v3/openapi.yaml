@@ -1,0 +1,559 @@
+openapi: 3.0.3
+info:
+  title: Portal Management
+  version: 3.0.0
+  description: The management API for Portals
+  contact:
+    name: Kong
+    url: https://konghq.com
+servers:
+  - url: https://us.api.konghq.com/v3
+    description: US Region Base URL
+  - url: https://eu.api.konghq.com/v3
+    description: EU Region Base URL
+  - url: https://au.api.konghq.com/v3
+    description: AU Region Base URL
+paths:
+  /portals/{portalId}/pages:
+    get:
+      x-internal: true
+      x-unstable: true
+      summary: List Portal Pages
+      description: >-
+        Returns the paginated list of custom pages that have been created for this portal.
+      operationId: list-portal-pages
+      parameters:
+        - $ref: '#/components/parameters/SortPortalPages'
+        - $ref: >-
+            ../../../../common/definitions/portal.yaml#/components/parameters/PortalId
+        - $ref: >-
+            ../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize
+        - $ref: >-
+            ../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber
+        - in: query
+          name: filter
+          description: Filter pages returned in the response.
+          required: false
+          style: deepObject
+          schema:
+            $ref: '#/components/schemas/PortalPagesFilters'
+      tags:
+        - Portal Pages
+      responses:
+        '200':
+          $ref: '#/components/responses/ListPortalPages'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: >-
+                  ../../../../common/definitions/errors.yaml#/components/schemas/BadRequestError
+              examples:
+                ListPortalPagesBadRequestExample1:
+                  $ref: >-
+                    #/components/examples/ListPortalPagesBadRequestExample1
+                ListPortalPagesBadRequestExample2:
+                  $ref: >-
+                    #/components/examples/ListPortalPagesBadRequestExample2
+        '401':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Unauthorized
+        '403':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Forbidden
+        '404':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/NotFound
+    post:
+      x-internal: true
+      x-unstable: true
+      summary: Create Portal Page
+      description: >-
+        Creates a new custom page for this portal. Custom pages can be used to
+        display static content, documentation, or other information to developers.
+      operationId: create-portal-page
+      requestBody:
+        $ref: '#/components/requestBodies/CreatePortalPage'
+      parameters:
+        - $ref: >-
+            ../../../../common/definitions/portal.yaml#/components/parameters/PortalId
+      tags:
+        - Portal Pages
+      responses:
+        '201':
+          $ref: '#/components/responses/PortalPage'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: >-
+                  ../../../../common/definitions/errors.yaml#/components/schemas/BadRequestError
+              examples:
+                UpdatePortalPageBadRequestExample1:
+                  $ref: >-
+                    #/components/examples/UpdatePortalPageBadRequestExample1
+                UpdatePortalPageBadRequestExample2::
+                  $ref: >-
+                    #/components/examples/UpdatePortalPageBadRequestExample2
+        '401':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Unauthorized
+        '403':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Forbidden
+        '404':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/NotFound
+  /portals/{portalId}/pages/{pageId}:
+    get:
+      x-internal: true
+      x-unstable: true
+      summary: Get Portal Page
+      description: >-
+        Returns the configuration of a single custom page for this portal. Custom
+        pages can be used to display static content, documentation, or other
+        information to developers.
+      operationId: get-portal-page
+      parameters:
+        - $ref: >-
+            ../../../../common/definitions/portal.yaml#/components/parameters/PortalId
+        - $ref: >-
+            ../../../../common/definitions/portal.yaml#/components/parameters/PageId
+      tags:
+        - Portal Pages
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalPage'
+        '401':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Unauthorized
+        '403':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Forbidden
+        '404':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/NotFound
+    patch:
+      x-internal: true
+      x-unstable: true
+      summary: Update Portal Page
+      description: >-
+        Updates the configuration of a single custom page for this portal.
+      operationId: update-portal-page
+      requestBody:
+        $ref: '#/components/requestBodies/UpdatePortalPage'
+      parameters:
+        - $ref: >-
+            ../../../../common/definitions/portal.yaml#/components/parameters/PortalId
+        - $ref: >-
+            ../../../../common/definitions/portal.yaml#/components/parameters/PageId
+      tags:
+        - Portal Pages
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalPage'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: >-
+                  ../../../../common/definitions/errors.yaml#/components/schemas/BadRequestError
+              examples:
+                UpdatePortalPageBadRequestExample1::
+                  $ref: >-
+                    #/components/examples/UpdatePortalPageBadRequestExample1
+                UpdatePortalPageBadRequestExample2::
+                  $ref: >-
+                    #/components/examples/UpdatePortalPageBadRequestExample2
+        '401':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Unauthorized
+        '403':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Forbidden
+        '404':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/NotFound
+    delete:
+      x-internal: true
+      x-unstable: true
+      summary: Delete Portal Page
+      description: >-
+        Deletes a single custom page for this portal.
+      operationId: delete-portal-page
+      parameters:
+        - $ref: >-
+            ../../../../common/definitions/portal.yaml#/components/parameters/PortalId
+        - $ref: >-
+            ../../../../common/definitions/portal.yaml#/components/parameters/PageId
+      tags:
+        - Portal Pages
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Unauthorized
+        '403':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Forbidden
+        '404':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/NotFound
+components:
+  examples:
+    CreatePortalPageExample1:
+      value:
+        title: Getting Started
+        path: /getting-started
+        content: >-
+          Welcome to the Getting Started page. This is where you can learn how
+          to use our APIs.
+        public: true
+        published: true
+    UpdatePortalPageExample1:
+      value:
+        title: About Us
+        path: /about-us
+        content: >-
+          Welcome to the About Us page. This is where you can learn about our
+          company.
+    PortalPageExample1:
+      value:
+        id: 8f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+        path: /
+        title: Home
+        content: >-
+          Welcome to the home page of the portal. This is where you can find
+          information about the portal and its products.
+        public: true
+        published: true
+        created_at: '2022-02-07T17:46:57.52Z'
+        updated_at: '2022-10-08T17:00:00.52Z'
+    ListPortalPagesExample1:
+      value:
+        meta:
+          page:
+            number: 1
+            size: 10
+            total: 1
+        data:
+          - id: 8f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+            path: /
+            title: Home
+            public: true
+            published: true
+            description: 'A custom page'
+            created_at: '2022-02-07T17:46:57.52Z'
+            updated_at: '2022-10-08T17:00:00.52Z'
+    ListPortalPagesBadRequestExample1:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: kong:trace:1433447772874964729
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: page[size]
+            rule: is_number
+            reason: '"page[size]" must be a number'
+            source: query
+    ListPortalPagesBadRequestExample2:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: kong:trace:1433447772874964729
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: filter[my_attribute]
+            rule: unknown_property
+            reason: '"filter[my_attribute]" is not allowed'
+            source: query
+    UpdatePortalPageBadRequestExample1:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: kong:trace:1433447772874964729
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: my_property
+            rule: unknown_property
+            reason: '"my_property" is not allowed'
+            source: body
+    UpdatePortalPageBadRequestExample2:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: kong:trace:1433447772874964729
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: title
+            rule: max_length
+            reason: value of "title" must not exceed 512 characters
+            source: body
+  requestBodies:
+    CreatePortalPage:
+      description: Create a page in a portal.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreatePortalPageRequest'
+          examples:
+            Example 1:
+              $ref: '#/components/examples/CreatePortalPageExample1'
+    UpdatePortalPage:
+      description: Update a page in a portal.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdatePortalPageRequest'
+          examples:
+            Example 1:
+              $ref: '#/components/examples/UpdatePortalPageExample1'
+  parameters:
+    SortPortalPages:
+      name: 'sort'
+      description: |
+        Sorts a collection of portal pages. Supported sort attributes are:
+          - created_at
+          - updated_at
+          - path
+          - title
+          - public
+      in: query
+      required: false
+      schema:
+        type: string
+  responses:
+    PortalPage:
+      description: Details about a page in a portal.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalPageResponse'
+          examples:
+            Example 1:
+              $ref: '#/components/examples/PortalPageExample1'
+    ListPortalPages:
+      description: A paginated list of custom pages in a portal.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ListPortalPagesResponse'
+          examples:
+            Example 1:
+              $ref: '#/components/examples/ListPortalPagesExample1'
+  schemas:
+    PortalPagesFilters:
+      title: PortalPagesFilters
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/UuidFieldFilter'
+        path:
+          $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter'
+        title:
+          $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter'
+        public:
+          $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/BooleanFieldFilter'
+        created_at:
+          $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/DateTimeFieldFilter'
+        updated_at:
+          $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/DateTimeFieldFilter'
+    PagePath:
+      title: PagePath
+      description: The path of a page in a portal with a leading slash.
+      type: string
+      maxLength: 512
+      example: /my-page
+    PageTitle:
+      title: PageTitle
+      description: The title of a page in a portal.
+      type: string
+      maxLength: 512
+      example: My Page
+    PageContent:
+      title: PageContent
+      description: The renderable markdown content of a page in a portal.
+      type: string
+      maxLength: 1000000
+      example: '# Welcome to My Page'
+    PagePublicStatus:
+      title: PagePublicStatus
+      description: Whether a page is publicly accessible to non-authenticated users. Defaults to false.
+      type: boolean
+      example: true
+    PagePublishStatus:
+      title: PagePublishStatus
+      description: Whether a page is visible on a given portal. Defaults to false.
+      type: boolean
+      example: true
+    PageDescription:
+      title: PageDescription
+      type: string
+      maxLength: 160
+      example: 'A custom page about developer portals'
+    PagePublicStatusWithDefault:
+      title: PagePublicStatusWithDefault
+      description: Whether a page is publicly accessible to non-authenticated users.
+      type: boolean
+      default: false
+      example: true
+    UpdatePortalPageRequest:
+      title: UpdatePortalPageRequest
+      description: Update a page in a portal.
+      type: object
+      additionalProperties: false
+      properties:
+        path:
+          $ref: '#/components/schemas/PagePath'
+        title:
+          $ref: '#/components/schemas/PageTitle'
+        content:
+          $ref: '#/components/schemas/PageContent'
+        public:
+          $ref: '#/components/schemas/PagePublicStatus'
+        published:
+          $ref: '#/components/schemas/PagePublishStatus'
+        description:
+          $ref: '#/components/schemas/PageDescription'
+    CreatePortalPageRequest:
+      title: CreatePortalPageRequest
+      description: Create a page in a portal.
+      type: object
+      additionalProperties: false
+      required:
+        - path
+        - title
+        - content
+      properties:
+        path:
+          $ref: '#/components/schemas/PagePath'
+        title:
+          $ref: '#/components/schemas/PageTitle'
+        content:
+          $ref: '#/components/schemas/PageContent'
+        public:
+          $ref: '#/components/schemas/PagePublicStatusWithDefault'
+        published:
+          $ref: '#/components/schemas/PagePublishStatus'
+        description:
+          $ref: '#/components/schemas/PageDescription'
+    PortalPageInfo:
+      title: PortalPageInfo
+      description: Information about a page in a portal.
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - path
+        - title
+        - public
+        - created_at
+        - updated_at
+        - published
+      properties:
+        id:
+          $ref: >-
+            ../../../../common/definitions/konnect_properties.yaml#/components/schemas/UUID
+        path:
+          $ref: '#/components/schemas/PagePath'
+        title:
+          $ref: '#/components/schemas/PageTitle'
+        public:
+          $ref: '#/components/schemas/PagePublicStatus'
+        published:
+          $ref: '#/components/schemas/PagePublishStatus'
+        description:
+          $ref: '#/components/schemas/PageDescription'
+        created_at:
+          $ref: >-
+            ../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt
+        updated_at:
+          $ref: >-
+            ../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt
+    PortalPageResponse:
+      title: PortalPageResponse
+      description: Details about a page in a portal.
+      additionalProperties: false
+      type: object
+      required:
+        - id
+        - path
+        - title
+        - content
+        - public
+        - published
+        - created_at
+        - updated_at
+      properties:
+        id:
+          $ref: >-
+            ../../../../common/definitions/konnect_properties.yaml#/components/schemas/UUID
+        path:
+          $ref: '#/components/schemas/PagePath'
+        title:
+          $ref: '#/components/schemas/PageTitle'
+        content:
+          $ref: '#/components/schemas/PageContent'
+        public:
+          $ref: '#/components/schemas/PagePublicStatus'
+        published:
+          $ref: '#/components/schemas/PagePublishStatus'
+        description:
+          $ref: '#/components/schemas/PageDescription'
+        created_at:
+          $ref: >-
+            ../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt
+        updated_at:
+          $ref: >-
+            ../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt
+    ListPortalPagesResponse:
+      title: ListPortalPagesResponse
+      description: A paginated list of custom pages in a portal.
+      additionalProperties: false
+      type: object
+      required:
+        - data
+        - meta
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PortalPageInfo'
+        meta:
+          $ref: >-
+            ../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta
+      example:
+        data:
+          - id: 437c7192-fea0-4f35-8478-c8d57783f8c1
+            path: /my-page
+            title: My Page
+            public: true
+            published: true
+            description: 'A custom page'
+            created_at: '2021-01-01T00:00:00Z'
+            updated_at: '2021-01-01T00:00:00Z'
+        meta:
+          page:
+            number: 1
+            size: 10
+            total: 1
+  securitySchemes:
+    personalAccessToken:
+      $ref: >-
+        ../../../../common/definitions/security.yaml#/components/securitySchemes/personalAccessToken
+    systemAccountAccessToken:
+      $ref: >-
+        ../../../../common/definitions/security.yaml#/components/securitySchemes/systemAccountAccessToken
+security:
+  - personalAccessToken: []
+  - systemAccountAccessToken: []
+tags:
+  - name: Portal Pages
+    description: APIs related to Konnect Developer Portal Custom Pages.

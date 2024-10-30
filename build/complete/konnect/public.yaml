@@ -5372,7 +5372,7 @@ paths:
       summary: Get Appearance Configuration
       description: 'Returns the current portal appearance configuration including any custom theme, colors, fonts, and image settings. Portals using the fully-customizable portal client may override or ignore these settings by disregarding them in the code.'
       parameters:
-        - $ref: '#/components/parameters/parameters-PortalId'
+        - $ref: '#/components/parameters/PortalId'
       responses:
         '200':
           $ref: '#/components/responses/GetPortalAppearance'
@@ -5389,7 +5389,7 @@ paths:
       summary: Update Appearance Configuration
       description: 'Updates the current appearance configuration for this portal including setting pre-defined or custom themes, fonts, colors, and images. Note that portals using the fully-customizable portal client may override or ignore these settings by disregarding them in the code.'
       parameters:
-        - $ref: '#/components/parameters/parameters-PortalId'
+        - $ref: '#/components/parameters/PortalId'
       requestBody:
         $ref: '#/components/requestBodies/UpdatePortalAppearance'
       responses:
@@ -5420,7 +5420,7 @@ paths:
       summary: Get Portal Catalog Cover
       description: Returns the portal catalog cover or returns the default
       parameters:
-        - $ref: '#/components/parameters/parameters-PortalId'
+        - $ref: '#/components/parameters/PortalId'
       responses:
         '200':
           $ref: '#/components/responses/GetPortalCatalogCoverResponse'
@@ -5438,7 +5438,7 @@ paths:
       summary: Get Portal Logo
       description: Returns the portal logo or returns the default
       parameters:
-        - $ref: '#/components/parameters/parameters-PortalId'
+        - $ref: '#/components/parameters/PortalId'
       responses:
         '200':
           $ref: '#/components/responses/GetPortalLogoResponse'
@@ -5456,7 +5456,7 @@ paths:
       summary: List Application Registrations by Portal
       description: 'Lists all of the application registrations and their current status (e.g., approved or pending) for this portal. Each registration is associated with a single API product version. Access is provided through the credentials issued to the application that contains each registration.'
       parameters:
-        - $ref: '#/components/parameters/parameters-PortalId'
+        - $ref: '#/components/parameters/PortalId'
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageNumber'
         - $ref: '#/components/parameters/SortListAllApplicationRegistrations'
@@ -5508,7 +5508,7 @@ paths:
       summary: List Applications
       description: 'Lists applications created by developers in this portal. Each application can be registered for various API Products (by version), issuing credentials for API request access. If using DCR, an application will be linked to an Identity Provider''s application by its `reference_id`.'
       parameters:
-        - $ref: '#/components/parameters/parameters-PortalId'
+        - $ref: '#/components/parameters/PortalId'
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageNumber'
         - $ref: '#/components/parameters/SortApplications'
@@ -5560,7 +5560,7 @@ paths:
       summary: Get Application by Portal
       description: 'Returns the configuration of a single application in this portal. If an application is linked to a DCR Provider, the `dcr_provider.id` and `reference_id` can be used to correlate it. An application manages a set of credentials and registrations for specific API product versions.'
       parameters:
-        - $ref: '#/components/parameters/parameters-PortalId'
+        - $ref: '#/components/parameters/PortalId'
         - $ref: '#/components/parameters/ApplicationId'
       responses:
         '200':
@@ -5578,7 +5578,7 @@ paths:
       summary: Delete Application by Portal
       description: 'Delete a single application in this portal, along with its registrations and credentials.'
       parameters:
-        - $ref: '#/components/parameters/parameters-PortalId'
+        - $ref: '#/components/parameters/PortalId'
         - $ref: '#/components/parameters/ApplicationId'
       responses:
         '204':
@@ -5597,7 +5597,7 @@ paths:
       summary: List Registrations by Application
       description: 'Lists each API product version that this application is registered for and their current status (e.g., pending, approved, rejected, revoked).'
       parameters:
-        - $ref: '#/components/parameters/parameters-PortalId'
+        - $ref: '#/components/parameters/PortalId'
         - $ref: '#/components/parameters/ApplicationId'
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageNumber'
@@ -5640,7 +5640,7 @@ paths:
         - Portal Application Registrations
   '/v2/portals/{portalId}/applications/{applicationId}/registrations/{registrationId}':
     parameters:
-      - $ref: '#/components/parameters/parameters-PortalId'
+      - $ref: '#/components/parameters/PortalId'
       - $ref: '#/components/parameters/ApplicationId'
       - $ref: '#/components/parameters/RegistrationId'
     get:
@@ -5707,7 +5707,7 @@ paths:
       summary: List Granted Scopes
       description: Lists the granted scopes for this application registration. This is the list of scopes that will be sent to the API when making requests.
       parameters:
-        - $ref: '#/components/parameters/parameters-PortalId'
+        - $ref: '#/components/parameters/PortalId'
         - $ref: '#/components/parameters/ApplicationId'
         - $ref: '#/components/parameters/RegistrationId'
       responses:
@@ -5721,7 +5721,7 @@ paths:
         - Portal Application Registrations
   '/v2/portals/{portalId}/audit-log-replay-job':
     parameters:
-      - $ref: '#/components/parameters/parameters-PortalId'
+      - $ref: '#/components/parameters/PortalId'
     put:
       operationId: update-portal-audit-log-replay-job
       summary: Update Portal Audit Log Replay Job
@@ -5760,7 +5760,7 @@ paths:
         - Portal Audit Logs
   '/v2/portals/{portalId}/audit-log-webhook':
     parameters:
-      - $ref: '#/components/parameters/parameters-PortalId'
+      - $ref: '#/components/parameters/PortalId'
     patch:
       operationId: update-portal-audit-log-webhook
       summary: Update Portal Audit Log Webhook
@@ -5797,7 +5797,7 @@ paths:
         - Portal Audit Logs
   '/v2/portals/{portalId}/audit-log-webhook/status':
     parameters:
-      - $ref: '#/components/parameters/parameters-PortalId'
+      - $ref: '#/components/parameters/PortalId'
     get:
       operationId: get-portal-audit-log-webhook-status
       summary: Get Portal Audit Log Webhook Status
@@ -5815,7 +5815,7 @@ paths:
         - Portal Audit Logs
   '/v2/portals/{portalId}/authentication-settings':
     parameters:
-      - $ref: '#/components/parameters/parameters-PortalId'
+      - $ref: '#/components/parameters/PortalId'
     get:
       operationId: get-portal-authentication-settings
       summary: Get Auth Settings
@@ -5867,7 +5867,7 @@ paths:
         - Portal Auth Settings
   '/v2/portals/{portalId}/developers':
     parameters:
-      - $ref: '#/components/parameters/parameters-PortalId'
+      - $ref: '#/components/parameters/PortalId'
     get:
       operationId: list-portal-developers
       summary: List Developers
@@ -5918,14 +5918,14 @@ paths:
         - Portal Developers
   '/v2/portals/{portalId}/developers/{developerId}':
     parameters:
-      - $ref: '#/components/parameters/parameters-PortalId'
+      - $ref: '#/components/parameters/PortalId'
       - $ref: '#/components/parameters/DeveloperId'
     get:
       operationId: get-developer
       summary: Get Developer
       description: 'Returns information about a single developer in this portal. Each developer manages a set applications, providing them credentials to access registered API product versions. Developer registration access can be limited to specific API products using RBAC.'
       parameters:
-        - $ref: '#/components/parameters/parameters-PortalId'
+        - $ref: '#/components/parameters/PortalId'
         - $ref: '#/components/parameters/DeveloperId'
       responses:
         '200':
@@ -5982,7 +5982,7 @@ paths:
   '/v2/portals/{portalId}/developers/{developerId}/teams':
     parameters:
       - $ref: '#/components/parameters/parameters-DeveloperId'
-      - $ref: '#/components/parameters/parameters-PortalId'
+      - $ref: '#/components/parameters/PortalId'
     get:
       operationId: list-portal-developer-teams
       summary: List Developer Teams
@@ -6003,7 +6003,7 @@ paths:
         - Portal Team Membership
   '/v2/portals/{portalId}/identity-provider/team-group-mappings':
     parameters:
-      - $ref: '#/components/parameters/parameters-PortalId'
+      - $ref: '#/components/parameters/PortalId'
     get:
       operationId: list-portal-team-group-mappings
       summary: List Team Group Mappings
@@ -6177,7 +6177,7 @@ paths:
         - Portal Product Versions
   '/v2/portals/{portalId}/products':
     parameters:
-      - $ref: '#/components/parameters/parameters-PortalId'
+      - $ref: '#/components/parameters/PortalId'
     get:
       operationId: list-portal-products
       summary: List Portal Products
@@ -6211,7 +6211,7 @@ paths:
         - Portal Products
   '/v2/portals/{portalId}/publish':
     parameters:
-      - $ref: '#/components/parameters/parameters-PortalId'
+      - $ref: '#/components/parameters/PortalId'
     post:
       operationId: publish-api-products
       summary: Publish Multiples Products
@@ -6237,7 +6237,7 @@ paths:
         - API Products
   '/v2/portals/{portalId}/teams':
     parameters:
-      - $ref: '#/components/parameters/parameters-PortalId'
+      - $ref: '#/components/parameters/PortalId'
     get:
       operationId: list-portal-teams
       summary: List Teams
@@ -6299,7 +6299,7 @@ paths:
   '/v2/portals/{portalId}/teams/{teamId}':
     parameters:
       - $ref: '#/components/parameters/TeamId'
-      - $ref: '#/components/parameters/parameters-PortalId'
+      - $ref: '#/components/parameters/PortalId'
     get:
       operationId: get-portal-team
       summary: Get Team
@@ -6349,7 +6349,7 @@ paths:
         - Portal Teams
   '/v2/portals/{portalId}/teams/{teamId}/assigned-roles':
     parameters:
-      - $ref: '#/components/parameters/parameters-PortalId'
+      - $ref: '#/components/parameters/PortalId'
       - $ref: '#/components/parameters/TeamId'
       - $ref: '#/components/parameters/PageSize'
       - $ref: '#/components/parameters/PageNumber'
@@ -6405,7 +6405,7 @@ paths:
   '/v2/portals/{portalId}/teams/{teamId}/assigned-roles/{roleId}':
     parameters:
       - $ref: '#/components/parameters/RoleId'
-      - $ref: '#/components/parameters/parameters-PortalId'
+      - $ref: '#/components/parameters/PortalId'
       - $ref: '#/components/parameters/TeamId'
     delete:
       operationId: remove-role-from-portal-team
@@ -6424,7 +6424,7 @@ paths:
         - Portal Team Roles
   '/v2/portals/{portalId}/teams/{teamId}/developers':
     parameters:
-      - $ref: '#/components/parameters/parameters-PortalId'
+      - $ref: '#/components/parameters/PortalId'
       - $ref: '#/components/parameters/TeamId'
     get:
       operationId: list-portal-team-developers
@@ -6474,7 +6474,7 @@ paths:
         - Portal Team Membership
   '/v2/portals/{portalId}/teams/{teamId}/developers/{developerId}':
     parameters:
-      - $ref: '#/components/parameters/parameters-PortalId'
+      - $ref: '#/components/parameters/PortalId'
       - $ref: '#/components/parameters/parameters-DeveloperId'
       - $ref: '#/components/parameters/TeamId'
     delete:
@@ -6498,7 +6498,7 @@ paths:
       summary: Verify Custom Domains
       description: 'Verifies the current status of the custom hosted domain for this portal, indicating whether the appropriate CNAME properties have propagated and if a corresponding SSL certificate has been generated.'
       parameters:
-        - $ref: '#/components/parameters/parameters-PortalId'
+        - $ref: '#/components/parameters/PortalId'
       responses:
         '200':
           $ref: '#/components/responses/VerifyPortalDomains'
@@ -8434,12 +8434,13 @@ components:
       schema:
         type: string
     PortalId:
+      schema:
+        type: string
+        format: uuid
       name: portalId
-      description: portal identifier
       in: path
       required: true
-      schema:
-        $ref: '#/components/schemas/schemas-UUID'
+      description: ID of the portal.
     PortalProductFilter:
       name: filter
       description: Filters a collection of Portal Products.
@@ -8736,14 +8737,6 @@ components:
       in: path
       required: true
       description: ID of the developer.
-    parameters-PortalId:
-      schema:
-        type: string
-        format: uuid
-      name: portalId
-      in: path
-      required: true
-      description: ID of the portal.
   schemas:
     BaseError:
       description: standard error
