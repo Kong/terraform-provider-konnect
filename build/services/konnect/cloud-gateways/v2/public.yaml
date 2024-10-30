@@ -1116,6 +1116,14 @@ components:
         - created_at
         - updated_at
       title: Cloud Gateway Provider Account
+    NetworkCreateState:
+      description: Initial state for creating a network.
+      type: string
+      default: initializing
+      enum:
+        - initializing
+        - offline
+      title: Network Create State
     NetworkState:
       description: State of the network.
       enum:
@@ -1245,6 +1253,8 @@ components:
           $ref: '#/components/schemas/NetworkAvailabilityZones'
         cidr_block:
           $ref: '#/components/schemas/NetworkCIDRBlock'
+        state:
+          $ref: '#/components/schemas/NetworkCreateState'
       additionalProperties: false
       required:
         - name
@@ -1635,6 +1645,7 @@ components:
         - count/provider-accounts.per-provider
         - count/networks.not-offline
         - count/data-planes-estimate
+        - count/serverless-data-planes-estimate
     ResourceQuotaName:
       description: The human-readable name of this resource quota.
       type: string

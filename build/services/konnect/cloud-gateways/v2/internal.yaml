@@ -187,6 +187,7 @@ components:
         - count/provider-accounts.per-provider
         - count/networks.not-offline
         - count/data-planes-estimate
+        - count/serverless-data-planes-estimate
     ResourceQuotaName:
       description: The human-readable name of this resource quota.
       type: string

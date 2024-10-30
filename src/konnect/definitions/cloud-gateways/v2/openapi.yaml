@@ -1543,6 +1543,14 @@ components:
         - provider_account_id
         - created_at
         - updated_at
+    NetworkCreateState:
+      title: Network Create State
+      description: Initial state for creating a network.
+      type: string
+      default: initializing
+      enum:
+        - initializing
+        - offline
     NetworkState:
       title: Network State
       description: State of the network.
@@ -1717,6 +1725,8 @@ components:
           $ref: '#/components/schemas/NetworkFirewallConfig'
         ddos_protection:
           $ref: '#/components/schemas/NetworkDDOSProtection'
+        state:
+          $ref: '#/components/schemas/NetworkCreateState'
       required:
         - name
         - cloud_gateway_provider_account_id
@@ -2122,6 +2132,7 @@ components:
         - 'count/provider-accounts.per-provider'
         - 'count/networks.not-offline'
         - 'count/data-planes-estimate'
+        - 'count/serverless-data-planes-estimate'
     ResourceQuotaName:
       type: string
       description: The human-readable name of this resource quota.

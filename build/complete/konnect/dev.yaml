@@ -4930,6 +4930,14 @@ components:
       type: string
       example: us-east-2
       title: Provider Region ID
+    NetworkCreateState:
+      description: Initial state for creating a network.
+      type: string
+      default: initializing
+      enum:
+        - initializing
+        - offline
+      title: Network Create State
     NetworkState:
       description: State of the network.
       enum:
@@ -5094,6 +5102,8 @@ components:
           $ref: '#/components/schemas/NetworkFirewallConfig'
         ddos_protection:
           $ref: '#/components/schemas/NetworkDDOSProtection'
+        state:
+          $ref: '#/components/schemas/NetworkCreateState'
       additionalProperties: false
       required:
         - name
