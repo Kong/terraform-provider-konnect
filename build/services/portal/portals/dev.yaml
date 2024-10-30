@@ -7,6 +7,18 @@ info:
     name: Kong
     url: 'https://cloud.konghq.com'
 paths:
+  /api/v2/portal:
+    get:
+      operationId: get-portal-context
+      summary: Get portal context
+      description: Return the portal context object.
+      responses:
+        '200':
+          $ref: '#/components/responses/GetPortalContextResponse'
+      security:
+        - {}
+      tags:
+        - portal
   /api/v2/portal/customization:
     get:
       operationId: get-portal-customization
@@ -171,6 +183,65 @@ components:
       schema:
         type: string
   schemas:
+    PortalContext:
+      description: describe the portal execution context
+      type: object
+      properties:
+        portal_id:
+          type: string
+          format: uuid
+        org_id:
+          type: string
+          format: uuid
+        featureset_id:
+          type: string
+        feature_set:
+          description: String that determines feature set group developer belongs to when logged in
+          type: string
+        basic_auth_enabled:
+          description: Whether the portal can be accessed via email and password
+          type: boolean
+        oidc_auth_enabled:
+          description: Whether the portal can be accessed via authentication with Single Sign On (SSO) through OpenID Connect (OIDC) from a third-party Identity Provider
+          type: boolean
+        saml_auth_enabled:
+          description: Whether the portal can be accessed via SAML authentication
+          type: boolean
+        is_public:
+          description: Whether the portal catalog can be accessed by non-authenticated users
+          type: boolean
+        rbac_enabled:
+          description: Whether the portal is protected with Role-Based Access Control
+          type: boolean
+        dcr_provider_ids:
+          description: The unique identifiers of each available client provider when using Dynamic Client Registration
+          type: array
+          items:
+            type: string
+            format: uuid
+        allowed_time_period:
+          description: Allowed time period for Analytics queries
+          type: string
+        name:
+          description: Name of the developer portal.
+          type: string
+        canonical_domain:
+          description: The canonical domain of the developer portal.
+          type: string
+      additionalProperties: false
+      required:
+        - canonical_domain
+        - portal_id
+        - org_id
+        - is_public
+        - featureset_id
+        - basic_auth_enabled
+        - oidc_auth_enabled
+        - rbac_enabled
+        - dcr_provider_ids
+        - allowed_time_period
+        - name
+      title: Portal Context
     PageId:
       description: The unique identifier of the page
       type: string
@@ -377,6 +448,12 @@ components:
         instance: 'kong:trace:6816496025408232265'
         detail: Not Found
   responses:
+    GetPortalContextResponse:
+      description: portal context
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalContext'
     ListPortalPagesResponse:
       description: Paginated list of portal pages
       content:

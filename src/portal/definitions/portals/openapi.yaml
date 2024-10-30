@@ -262,6 +262,8 @@ components:
       description: describe the portal execution context
       type: object
       additionalProperties: false
+      x-property-annotations:
+        saml_auth_enabled: [ x-unstable, x-internal ]
       properties:
         portal_id:
           type: string
@@ -280,6 +282,9 @@ components:
         oidc_auth_enabled:
           type: boolean
           description: Whether the portal can be accessed via authentication with Single Sign On (SSO) through OpenID Connect (OIDC) from a third-party Identity Provider
+        saml_auth_enabled:
+          type: boolean
+          description: Whether the portal can be accessed via SAML authentication
         is_public:
           type: boolean
           description: Whether the portal catalog can be accessed by non-authenticated users
