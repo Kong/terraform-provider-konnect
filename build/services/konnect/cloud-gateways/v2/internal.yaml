@@ -137,6 +137,7 @@ components:
       example: aws
       enum:
         - aws
+        - azure
       title: Provider Name
     ProviderAccount:
       description: Object containing mapping for organization and cloud provider to account ID.

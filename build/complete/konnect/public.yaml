@@ -13539,6 +13539,7 @@ components:
       example: aws
       enum:
         - aws
+        - azure
       title: Provider Name
     Provider:
       description: Description of cloud provider that runs cloud gateway instances.
@@ -13971,48 +13972,62 @@ components:
         - terminated
       readOnly: true
       title: Transit Gateway State
-    BaseTransitGatewayAttachmentConfig:
+    AwsTransitGatewayAttachmentConfig:
       type: object
       properties:
         kind:
-          description: |
-            Kind of transit gateway attachment to create, dictating which cloud provider to peer with and required
-            parameters to create a transit gateway attachment in that cloud provider.
           enum:
             - aws-transit-gateway-attachment
-      discriminator:
-        propertyName: kind
-        mapping:
-          aws-transit-gateway-attachment: '#/components/schemas/AwsTransitGatewayAttachmentConfig'
+          title: AWS Transit Gateway Attachment Type
+        transit_gateway_id:
+          description: AWS Transit Gateway ID to create attachment to.
+          type: string
+          title: Transit Gateway ID
+        ram_share_arn:
+          description: Resource Share ARN to verify request to create transit gateway attachment.
+          type: string
+          title: RAM Share ARN
+      additionalProperties: false
       required:
         - kind
-      title: Base Transit Gateway Attachment Config
-    AwsTransitGatewayAttachmentConfig:
-      allOf:
-        - $ref: '#/components/schemas/BaseTransitGatewayAttachmentConfig'
-        - type: object
-          additionalProperties: false
-          properties:
-            kind:
-              enum:
-                - aws-transit-gateway-attachment
-              title: AWS Transit Gateway Attachment Type
-            transit_gateway_id:
-              description: AWS Transit Gateway ID to create attachment to.
-              type: string
-              title: Transit Gateway ID
-            ram_share_arn:
-              description: Resource Share ARN to verify request to create transit gateway attachment.
-              type: string
-              title: RAM Share ARN
-          required:
-            - kind
-            - transit_gateway_id
-            - ram_share_arn
+        - transit_gateway_id
+        - ram_share_arn
       title: AWS Transit Gateway Attachment Config
+    AzureVNETPeeringAttachmentConfig:
+      type: object
+      properties:
+        kind:
+          enum:
+            - azure-vnet-peering-attachment
+          title: Azure VNET Peering Attachment Type
+        tenant_id:
+          description: Tenant ID for the Azure VNET Peering attachment.
+          type: string
+          title: Tenant ID
+        subscription_id:
+          description: Subscription ID for the Azure VNET Peering attachment.
+          type: string
+          title: Subscription ID
+        resource_group_name:
+          description: Resource Group Name for the Azure VNET Peering attachment.
+          type: string
+          title: Resource Group Name
+        vnet_name:
+          description: VNET Name for the Azure VNET Peering attachment.
+          type: string
+          title: VNET Name
+      additionalProperties: false
+      required:
+        - kind
+        - tenant_id
+        - subscription_id
+        - resource_group_name
+        - vnet_name
+      title: Azure VNET Peering Attachment Config
     TransitGatewayAttachmentConfig:
       oneOf:
         - $ref: '#/components/schemas/AwsTransitGatewayAttachmentConfig'
+        - $ref: '#/components/schemas/AzureVNETPeeringAttachmentConfig'
       title: Transit Gateway Attachment Config
     TransitGatewayDnsConfig:
       description: |
@@ -14100,31 +14115,59 @@ components:
       required:
         - id
         - name
-        - cidr_blocks
         - transit_gateway_attachment_config
+        - cidr_blocks
         - dns_config
         - state
         - entity_version
         - created_at
         - updated_at
       title: Transit Gateway
-    CreateTransitGatewayRequest:
-      description: Request schema for creating a transit gateway.
+    BaseCreateTransitGatewayRequest:
+      description: Base request schema for creating a transit gateway.
       type: object
       properties:
         name:
           $ref: '#/components/schemas/TransitGatewayName'
-        cidr_blocks:
-          $ref: '#/components/schemas/TransitGatewayCIDRBlocks'
-        transit_gateway_attachment_config:
-          $ref: '#/components/schemas/TransitGatewayAttachmentConfig'
         dns_config:
           $ref: '#/components/schemas/TransitGatewayDnsConfig'
-      additionalProperties: false
       required:
         - name
-        - cidr_blocks
-        - transit_gateway_attachment_config
+      title: Base Create Transit Gateway Request
+    AwsCreateTransitGatewayRequest:
+      description: Request schema for creating an AWS transit gateway.
+      additionalProperties: false
+      allOf:
+        - $ref: '#/components/schemas/BaseCreateTransitGatewayRequest'
+        - type: object
+          properties:
+            cidr_blocks:
+              $ref: '#/components/schemas/TransitGatewayCIDRBlocks'
+            transit_gateway_attachment_config:
+              $ref: '#/components/schemas/AwsTransitGatewayAttachmentConfig'
+          required:
+            - cidr_blocks
+            - transit_gateway_attachment_config
+      title: AWS Create Transit Gateway Request
+    AzureCreateTransitGatewayRequest:
+      description: Request schema for creating an Azure transit gateway through VNET peering.
+      additionalProperties: false
+      allOf:
+        - $ref: '#/components/schemas/BaseCreateTransitGatewayRequest'
+        - type: object
+          properties:
+            transit_gateway_attachment_config:
+              $ref: '#/components/schemas/AzureVNETPeeringAttachmentConfig'
+          required:
+            - transit_gateway_attachment_config
+      title: Azure Create Transit Gateway Request
+    CreateTransitGatewayRequest:
+      description: Request schema for creating a transit gateway.
+      type: object
+      additionalProperties: false
+      oneOf:
+        - $ref: '#/components/schemas/AwsCreateTransitGatewayRequest'
+        - $ref: '#/components/schemas/AzureCreateTransitGatewayRequest'
       title: CreateTransitGatewayRequest
     CustomDomainState:
       description: State of the custom domain.
