@@ -13614,6 +13614,34 @@ components:
         - kind
         - base_rps
       title: Configuration Autoscale Autopilot
+    ConfigurationDataPlaneGroupEnvironment:
+      description: Array of environment variables to set for a data-plane group.
+      type: array
+      items:
+        $ref: '#/components/schemas/ConfigurationDataPlaneGroupEnvironmentField'
+      title: Configuration Data-Plane Group Environment
+    ConfigurationDataPlaneGroupEnvironmentField:
+      description: Environment variable name and value to set for a data-plane group.
+      type: object
+      properties:
+        name:
+          description: |
+            Name of the environment variable field to set for the data-plane group. Must be prefixed by KONG_.
+          type: string
+          format: '^KONG_[a-zA-Z_]+[a-zA-Z0-9_]*'
+          example: KONG_LOG_LEVEL
+          maxLength: 120
+          minLength: 6
+        value:
+          description: Value assigned to the environment variable field for the data-plane group.
+          type: string
+          example: INFO
+          maxLength: 120
+          minLength: 1
+      required:
+        - name
+        - value
+      title: Configuration Data-Plane Group Environment Field
     ConfigurationDataPlaneGroupConfig:
       description: 'Object that describes where a data-plane group will be deployed to, along with how many instances.'
       type: object
@@ -13626,6 +13654,8 @@ components:
           $ref: '#/components/schemas/NetworkId'
         autoscale:
           $ref: '#/components/schemas/ConfigurationDataPlaneGroupAutoscale'
+        environment:
+          $ref: '#/components/schemas/ConfigurationDataPlaneGroupEnvironment'
       additionalProperties: false
       required:
         - autoscale
@@ -13651,6 +13681,8 @@ components:
           $ref: '#/components/schemas/ProviderRegionId'
         autoscale:
           $ref: '#/components/schemas/ConfigurationDataPlaneGroupAutoscale'
+        environment:
+          $ref: '#/components/schemas/ConfigurationDataPlaneGroupEnvironment'
         cloud_gateway_network_id:
           $ref: '#/components/schemas/NetworkId'
         state:
@@ -13771,6 +13803,8 @@ components:
           $ref: '#/components/schemas/NetworkId'
         autoscale:
           $ref: '#/components/schemas/ConfigurationDataPlaneGroupAutoscale'
+        environment:
+          $ref: '#/components/schemas/ConfigurationDataPlaneGroupEnvironment'
       additionalProperties: false
       required:
         - autoscale
