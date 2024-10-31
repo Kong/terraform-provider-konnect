@@ -15,6 +15,10 @@ paths:
       operationId: list-realms
       summary: List realms
       description: list realms
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageBefore'
+        - $ref: '#/components/parameters/PageAfter'
       responses:
         '200':
           description: success
@@ -96,6 +100,10 @@ paths:
       operationId: list-consumers-per-realm
       summary: List consumers
       description: list consumers
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageBefore'
+        - $ref: '#/components/parameters/PageAfter'
       responses:
         '200':
           description: success
@@ -198,6 +206,10 @@ paths:
       operationId: list-consumer-keys
       summary: List keys
       description: list keys
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageBefore'
+        - $ref: '#/components/parameters/PageAfter'
       responses:
         '200':
           description: success
@@ -261,6 +273,33 @@ paths:
         - keys
 components:
   parameters:
+    PageAfter:
+      name: 'page[after]'
+      description: 'Request the next page of data, starting with the item after this parameter.'
+      required: false
+      in: query
+      allowEmptyValue: true
+      schema:
+        type: string
+        example: ewogICJpZCI6ICJoZWxsbyB3b3JsZCIKfQ
+    PageBefore:
+      name: 'page[before]'
+      description: 'Request the next page of data, starting with the item before this parameter.'
+      required: false
+      in: query
+      allowEmptyValue: true
+      schema:
+        type: string
+        example: ewogICJpZCI6ICJoZWxsbyB3b3JsZCIKfQ
+    PageSize:
+      name: 'page[size]'
+      description: The maximum number of items to include per page. The last page of a collection may include fewer items.
+      required: false
+      in: query
+      allowEmptyValue: true
+      schema:
+        type: integer
+        example: 10
     consumerId:
       name: consumerId
       in: path

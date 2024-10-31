@@ -259,6 +259,10 @@ paths:
       operationId: list-realms
       summary: List realms
       description: list realms
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageBefore'
+        - $ref: '#/components/parameters/PageAfter'
       responses:
         '200':
           description: success
@@ -340,6 +344,10 @@ paths:
       operationId: list-consumers-per-realm
       summary: List consumers
       description: list consumers
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageBefore'
+        - $ref: '#/components/parameters/PageAfter'
       responses:
         '200':
           description: success
@@ -423,6 +431,10 @@ paths:
       operationId: list-consumer-keys
       summary: List keys
       description: list keys
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageBefore'
+        - $ref: '#/components/parameters/PageAfter'
       responses:
         '200':
           description: success

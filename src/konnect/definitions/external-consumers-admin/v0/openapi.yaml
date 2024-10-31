@@ -28,6 +28,10 @@ paths:
       operationId: list-realms
       description: "list realms"
       summary: List realms
+      parameters:
+        - $ref: ../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize
+        - $ref: ../../../../common/definitions/metadatas.yaml#/components/parameters/PageBefore
+        - $ref: ../../../../common/definitions/metadatas.yaml#/components/parameters/PageAfter
       tags: [realms]
       responses:
         "200":
@@ -116,6 +120,10 @@ paths:
       operationId: list-consumers-per-realm
       description: "list consumers"
       summary: List consumers
+      parameters:
+        - $ref: ../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize
+        - $ref: ../../../../common/definitions/metadatas.yaml#/components/parameters/PageBefore
+        - $ref: ../../../../common/definitions/metadatas.yaml#/components/parameters/PageAfter
       tags: [consumers]
       responses:
         "200":
@@ -224,6 +232,10 @@ paths:
       operationId: list-consumer-keys
       description: "list keys"
       summary: List keys
+      parameters:
+        - $ref: ../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize
+        - $ref: ../../../../common/definitions/metadatas.yaml#/components/parameters/PageBefore
+        - $ref: ../../../../common/definitions/metadatas.yaml#/components/parameters/PageAfter
       tags: [keys]
       responses:
         "200":
