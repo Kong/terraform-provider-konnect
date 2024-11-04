@@ -529,6 +529,32 @@ paths:
       tags:
         - Consumer Groups
   '/control-planes/{controlPlaneId}/core-entities/consumer_groups/{ConsumerGroupId}/consumers':
+    get:
+      operationId: list-consumers-for-consumer-group
+      summary: List all Consumers in a Consumer Group
+      description: List all consumers in a consumer group
+      parameters:
+        - $ref: '#/components/parameters/PaginationSize'
+        - $ref: '#/components/parameters/PaginationOffset'
+        - $ref: '#/components/parameters/PaginationTagsFilter'
+      responses:
+        '200':
+          description: A successful response listing of consumers
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Consumer'
+                  next:
+                    $ref: '#/components/schemas/PaginationNextResponse'
+                  offset:
+                    $ref: '#/components/schemas/PaginationOffsetResponse'
+      tags:
+        - Consumer Groups
     parameters:
       - $ref: '#/components/parameters/ConsumerGroupIdManageConsumers'
       - $ref: '#/components/parameters/controlPlaneId'
@@ -582,6 +608,114 @@ paths:
         schema:
           type: string
       - $ref: '#/components/parameters/controlPlaneId'
+  '/control-planes/{controlPlaneId}/core-entities/consumer_groups/{ConsumerGroupId}/plugins':
+    get:
+      operationId: list-plugin-with-consumer_group
+      summary: List all Plugins associated with a Consumer Group
+      description: List all Plugins associated with a Consumer Group
+      parameters:
+        - $ref: '#/components/parameters/ConsumerGroupId'
+        - $ref: '#/components/parameters/PaginationSize'
+        - $ref: '#/components/parameters/PaginationOffset'
+        - $ref: '#/components/parameters/PaginationTagsFilter'
+      responses:
+        '200':
+          description: A successful response listing Plugins
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Plugin'
+                  next:
+                    $ref: '#/components/schemas/PaginationNextResponse'
+                  offset:
+                    $ref: '#/components/schemas/PaginationOffsetResponse'
+      tags:
+        - Plugins
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+    post:
+      operationId: create-plugin-with-consumer_group
+      summary: Create a new Plugin associated with a Consumer Group
+      description: Create a new Plugin associated with a Consumer Group
+      parameters:
+        - $ref: '#/components/parameters/ConsumerGroupId'
+      requestBody:
+        description: Description of new Plugin for creation
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PluginWithoutParents'
+      responses:
+        '201':
+          description: Successfully created Plugin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Plugin'
+      tags:
+        - Plugins
+  '/control-planes/{controlPlaneId}/core-entities/consumer_groups/{ConsumerGroupId}/plugins/{PluginId}':
+    delete:
+      operationId: delete-plugin-with-consumer_group
+      summary: Delete a a Plugin associated with a Consumer Group
+      description: Delete a a Plugin associated with a Consumer Group using ID.
+      parameters:
+        - $ref: '#/components/parameters/ConsumerGroupId'
+        - $ref: '#/components/parameters/PluginId'
+      responses:
+        '204':
+          description: Successfully deleted Plugin or the resource didn't exist
+      tags:
+        - Plugins
+    get:
+      operationId: get-plugin-with-consumer_group
+      summary: Fetch a Plugin associated with a Consumer Group
+      description: Get a Plugin associated with a Consumer Group using ID.
+      parameters:
+        - $ref: '#/components/parameters/ConsumerGroupId'
+        - $ref: '#/components/parameters/PluginId'
+      responses:
+        '200':
+          description: Successfully fetched Plugin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Plugin'
+        '404':
+          description: Resource does not exist
+      tags:
+        - Plugins
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+    put:
+      operationId: upsert-plugin-with-consumer_group
+      summary: Upsert a Plugin associated with a Consumer Group
+      description: Create or Update a Plugin associated with a Consumer Group using ID.
+      parameters:
+        - $ref: '#/components/parameters/ConsumerGroupId'
+        - $ref: '#/components/parameters/PluginId'
+      requestBody:
+        description: Description of the Plugin
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PluginWithoutParents'
+      responses:
+        '200':
+          description: Successfully upserted Plugin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Plugin'
+      tags:
+        - Plugins
   '/control-planes/{controlPlaneId}/core-entities/consumers':
     get:
       operationId: list-consumer
@@ -721,6 +855,53 @@ paths:
                     $ref: '#/components/schemas/PaginationNextResponse'
                   offset:
                     $ref: '#/components/schemas/PaginationOffsetResponse'
+      tags:
+        - Consumer Groups
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+    post:
+      operationId: add-consumer-to-specific-consumer-group
+      summary: Add consumer to a specific consumer group
+      description: Add a consumer to a consumer group
+      parameters:
+        - $ref: '#/components/parameters/ConsumerId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                group:
+                  type: string
+                  example: fedee695-2ae2-4e45-877a-776d9b2fc793
+                  x-speakeasy-name-override: group
+      responses:
+        '201':
+          description: Consumer added to a specific group
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  consumer:
+                    $ref: '#/components/schemas/Consumer'
+                  consumer_groups:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ConsumerGroup'
+      tags:
+        - Consumer Groups
+  '/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerId}/consumer_groups/{ConsumerGroupId}':
+    delete:
+      operationId: remove-consumer-from-consumer-group
+      summary: Remove consumer from consumer group
+      description: Removes a consumer from a consumer group. This operation does not delete the consumer group.
+      parameters:
+        - $ref: '#/components/parameters/ConsumerId'
+        - $ref: '#/components/parameters/ConsumerGroupId'
+      responses:
+        '204':
+          description: Consumer removed from group
       tags:
         - Consumer Groups
     parameters:
@@ -1280,6 +1461,114 @@ paths:
                 $ref: '#/components/schemas/KeyAuth'
       tags:
         - API-keys
+  '/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/plugins':
+    get:
+      operationId: list-plugin-with-consumer
+      summary: List all Plugins associated with a Consumer
+      description: List all Plugins associated with a Consumer
+      parameters:
+        - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
+        - $ref: '#/components/parameters/PaginationSize'
+        - $ref: '#/components/parameters/PaginationOffset'
+        - $ref: '#/components/parameters/PaginationTagsFilter'
+      responses:
+        '200':
+          description: A successful response listing Plugins
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Plugin'
+                  next:
+                    $ref: '#/components/schemas/PaginationNextResponse'
+                  offset:
+                    $ref: '#/components/schemas/PaginationOffsetResponse'
+      tags:
+        - Plugins
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+    post:
+      operationId: create-plugin-with-consumer
+      summary: Create a new Plugin associated with a Consumer
+      description: Create a new Plugin associated with a Consumer
+      parameters:
+        - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
+      requestBody:
+        description: Description of new Plugin for creation
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PluginWithoutParents'
+      responses:
+        '201':
+          description: Successfully created Plugin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Plugin'
+      tags:
+        - Plugins
+  '/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/plugins/{PluginId}':
+    delete:
+      operationId: delete-plugin-with-consumer
+      summary: Delete a a Plugin associated with a Consumer
+      description: Delete a a Plugin associated with a Consumer using ID.
+      parameters:
+        - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
+        - $ref: '#/components/parameters/PluginId'
+      responses:
+        '204':
+          description: Successfully deleted Plugin or the resource didn't exist
+      tags:
+        - Plugins
+    get:
+      operationId: get-plugin-with-consumer
+      summary: Fetch a Plugin associated with a Consumer
+      description: Get a Plugin associated with a Consumer using ID.
+      parameters:
+        - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
+        - $ref: '#/components/parameters/PluginId'
+      responses:
+        '200':
+          description: Successfully fetched Plugin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Plugin'
+        '404':
+          description: Resource does not exist
+      tags:
+        - Plugins
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+    put:
+      operationId: upsert-plugin-with-consumer
+      summary: Upsert a Plugin associated with a Consumer
+      description: Create or Update a Plugin associated with a Consumer using ID.
+      parameters:
+        - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
+        - $ref: '#/components/parameters/PluginId'
+      requestBody:
+        description: Description of the Plugin
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PluginWithoutParents'
+      responses:
+        '200':
+          description: Successfully upserted Plugin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Plugin'
+      tags:
+        - Plugins
   '/control-planes/{controlPlaneId}/core-entities/hmac-auths':
     get:
       operationId: list-hmac-auth
@@ -1772,7 +2061,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ACLPlugin'
+              $ref: '#/components/schemas/CreateACLPlugin'
       responses:
         '201':
           description: Created ACL plugin
@@ -1796,7 +2085,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AcmePlugin'
+              $ref: '#/components/schemas/CreateAcmePlugin'
       responses:
         '201':
           description: Created Acme plugin
@@ -1820,7 +2109,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AiPromptDecoratorPlugin'
+              $ref: '#/components/schemas/CreateAiPromptDecoratorPlugin'
       responses:
         '201':
           description: Created AiPromptDecorator plugin
@@ -1844,7 +2133,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AiPromptGuardPlugin'
+              $ref: '#/components/schemas/CreateAiPromptGuardPlugin'
       responses:
         '201':
           description: Created AiPromptGuard plugin
@@ -1868,7 +2157,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AiPromptTemplatePlugin'
+              $ref: '#/components/schemas/CreateAiPromptTemplatePlugin'
       responses:
         '201':
           description: Created AiPromptTemplate plugin
@@ -1892,7 +2181,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AiProxyPlugin'
+              $ref: '#/components/schemas/CreateAiProxyPlugin'
       responses:
         '201':
           description: Created AiProxy plugin
@@ -1916,7 +2205,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AiRequestTransformerPlugin'
+              $ref: '#/components/schemas/CreateAiRequestTransformerPlugin'
       responses:
         '201':
           description: Created AiRequestTransformer plugin
@@ -1940,7 +2229,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AiResponseTransformerPlugin'
+              $ref: '#/components/schemas/CreateAiResponseTransformerPlugin'
       responses:
         '201':
           description: Created AiResponseTransformer plugin
@@ -1964,7 +2253,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AwsLambdaPlugin'
+              $ref: '#/components/schemas/CreateAwsLambdaPlugin'
       responses:
         '201':
           description: Created AwsLambda plugin
@@ -1988,7 +2277,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AzureFunctionsPlugin'
+              $ref: '#/components/schemas/CreateAzureFunctionsPlugin'
       responses:
         '201':
           description: Created AzureFunctions plugin
@@ -2012,7 +2301,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BasicAuthPlugin'
+              $ref: '#/components/schemas/CreateBasicAuthPlugin'
       responses:
         '201':
           description: Created BasicAuth plugin
@@ -2036,7 +2325,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BotDetectionPlugin'
+              $ref: '#/components/schemas/CreateBotDetectionPlugin'
       responses:
         '201':
           description: Created BotDetection plugin
@@ -2060,7 +2349,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CanaryPlugin'
+              $ref: '#/components/schemas/CreateCanaryPlugin'
       responses:
         '201':
           description: Created Canary plugin
@@ -2084,7 +2373,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CorrelationIdPlugin'
+              $ref: '#/components/schemas/CreateCorrelationIdPlugin'
       responses:
         '201':
           description: Created CorrelationId plugin
@@ -2108,7 +2397,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CorsPlugin'
+              $ref: '#/components/schemas/CreateCorsPlugin'
       responses:
         '201':
           description: Created Cors plugin
@@ -2132,7 +2421,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DatadogPlugin'
+              $ref: '#/components/schemas/CreateDatadogPlugin'
       responses:
         '201':
           description: Created Datadog plugin
@@ -2156,7 +2445,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DegraphqlPlugin'
+              $ref: '#/components/schemas/CreateDegraphqlPlugin'
       responses:
         '201':
           description: Created Degraphql plugin
@@ -2180,7 +2469,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ExitTransformerPlugin'
+              $ref: '#/components/schemas/CreateExitTransformerPlugin'
       responses:
         '201':
           description: Created ExitTransformer plugin
@@ -2204,7 +2493,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/FileLogPlugin'
+              $ref: '#/components/schemas/CreateFileLogPlugin'
       responses:
         '201':
           description: Created FileLog plugin
@@ -2228,7 +2517,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ForwardProxyPlugin'
+              $ref: '#/components/schemas/CreateForwardProxyPlugin'
       responses:
         '201':
           description: Created ForwardProxy plugin
@@ -2252,7 +2541,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/GraphqlProxyCacheAdvancedPlugin'
+              $ref: '#/components/schemas/CreateGraphqlProxyCacheAdvancedPlugin'
       responses:
         '201':
           description: Created GraphqlProxyCacheAdvanced plugin
@@ -2276,7 +2565,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/GraphqlRateLimitingAdvancedPlugin'
+              $ref: '#/components/schemas/CreateGraphqlRateLimitingAdvancedPlugin'
       responses:
         '201':
           description: Created GraphqlRateLimitingAdvanced plugin
@@ -2300,7 +2589,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/GrpcGatewayPlugin'
+              $ref: '#/components/schemas/CreateGrpcGatewayPlugin'
       responses:
         '201':
           description: Created GrpcGateway plugin
@@ -2324,7 +2613,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/GrpcWebPlugin'
+              $ref: '#/components/schemas/CreateGrpcWebPlugin'
       responses:
         '201':
           description: Created GrpcWeb plugin
@@ -2348,7 +2637,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/HmacAuthPlugin'
+              $ref: '#/components/schemas/CreateHmacAuthPlugin'
       responses:
         '201':
           description: Created HmacAuth plugin
@@ -2372,7 +2661,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/HttpLogPlugin'
+              $ref: '#/components/schemas/CreateHttpLogPlugin'
       responses:
         '201':
           description: Created HttpLog plugin
@@ -2396,7 +2685,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/IpRestrictionPlugin'
+              $ref: '#/components/schemas/CreateIpRestrictionPlugin'
       responses:
         '201':
           description: Created IpRestriction plugin
@@ -2420,7 +2709,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/JqPlugin'
+              $ref: '#/components/schemas/CreateJqPlugin'
       responses:
         '201':
           description: Created Jq plugin
@@ -2444,7 +2733,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/JweDecryptPlugin'
+              $ref: '#/components/schemas/CreateJweDecryptPlugin'
       responses:
         '201':
           description: Created JweDecrypt plugin
@@ -2468,7 +2757,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/JwtPlugin'
+              $ref: '#/components/schemas/CreateJwtPlugin'
       responses:
         '201':
           description: Created Jwt plugin
@@ -2492,7 +2781,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/JwtSignerPlugin'
+              $ref: '#/components/schemas/CreateJwtSignerPlugin'
       responses:
         '201':
           description: Created JwtSigner plugin
@@ -2516,7 +2805,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/KafkaLogPlugin'
+              $ref: '#/components/schemas/CreateKafkaLogPlugin'
       responses:
         '201':
           description: Created KafkaLog plugin
@@ -2540,7 +2829,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/KafkaUpstreamPlugin'
+              $ref: '#/components/schemas/CreateKafkaUpstreamPlugin'
       responses:
         '201':
           description: Created KafkaUpstream plugin
@@ -2564,7 +2853,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/KeyAuthPlugin'
+              $ref: '#/components/schemas/CreateKeyAuthPlugin'
       responses:
         '201':
           description: Created KeyAuth plugin
@@ -2588,7 +2877,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/KeyAuthEncPlugin'
+              $ref: '#/components/schemas/CreateKeyAuthEncPlugin'
       responses:
         '201':
           description: Created KeyAuthEnc plugin
@@ -2612,7 +2901,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/KonnectApplicationAuthPlugin'
+              $ref: '#/components/schemas/CreateKonnectApplicationAuthPlugin'
       responses:
         '201':
           description: Created KonnectApplicationAuth plugin
@@ -2636,7 +2925,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/LdapAuthPlugin'
+              $ref: '#/components/schemas/CreateLdapAuthPlugin'
       responses:
         '201':
           description: Created LdapAuth plugin
@@ -2660,7 +2949,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/LdapAuthAdvancedPlugin'
+              $ref: '#/components/schemas/CreateLdapAuthAdvancedPlugin'
       responses:
         '201':
           description: Created LdapAuthAdvanced plugin
@@ -2684,7 +2973,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/LogglyPlugin'
+              $ref: '#/components/schemas/CreateLogglyPlugin'
       responses:
         '201':
           description: Created Loggly plugin
@@ -2708,7 +2997,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/MockingPlugin'
+              $ref: '#/components/schemas/CreateMockingPlugin'
       responses:
         '201':
           description: Created Mocking plugin
@@ -2732,7 +3021,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/MtlsAuthPlugin'
+              $ref: '#/components/schemas/CreateMtlsAuthPlugin'
       responses:
         '201':
           description: Created MtlsAuth plugin
@@ -2756,7 +3045,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/OasValidationPlugin'
+              $ref: '#/components/schemas/CreateOasValidationPlugin'
       responses:
         '201':
           description: Created OasValidation plugin
@@ -2780,7 +3069,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Oauth2Plugin'
+              $ref: '#/components/schemas/CreateOauth2Plugin'
       responses:
         '201':
           description: Created Oauth2 plugin
@@ -2804,7 +3093,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Oauth2IntrospectionPlugin'
+              $ref: '#/components/schemas/CreateOauth2IntrospectionPlugin'
       responses:
         '201':
           description: Created Oauth2Introspection plugin
@@ -2828,7 +3117,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/OpaPlugin'
+              $ref: '#/components/schemas/CreateOpaPlugin'
       responses:
         '201':
           description: Created Opa plugin
@@ -2852,7 +3141,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/OpenidConnectPlugin'
+              $ref: '#/components/schemas/CreateOpenidConnectPlugin'
       responses:
         '201':
           description: Created OpenidConnect plugin
@@ -2876,7 +3165,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/OpentelemetryPlugin'
+              $ref: '#/components/schemas/CreateOpentelemetryPlugin'
       responses:
         '201':
           description: Created Opentelemetry plugin
@@ -2900,7 +3189,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PostFunctionPlugin'
+              $ref: '#/components/schemas/CreatePostFunctionPlugin'
       responses:
         '201':
           description: Created PostFunction plugin
@@ -2924,7 +3213,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PreFunctionPlugin'
+              $ref: '#/components/schemas/CreatePreFunctionPlugin'
       responses:
         '201':
           description: Created PreFunction plugin
@@ -2948,7 +3237,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PrometheusPlugin'
+              $ref: '#/components/schemas/CreatePrometheusPlugin'
       responses:
         '201':
           description: Created Prometheus plugin
@@ -2972,7 +3261,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ProxyCachePlugin'
+              $ref: '#/components/schemas/CreateProxyCachePlugin'
       responses:
         '201':
           description: Created ProxyCache plugin
@@ -2996,7 +3285,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ProxyCacheAdvancedPlugin'
+              $ref: '#/components/schemas/CreateProxyCacheAdvancedPlugin'
       responses:
         '201':
           description: Created ProxyCacheAdvanced plugin
@@ -3020,7 +3309,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RateLimitingPlugin'
+              $ref: '#/components/schemas/CreateRateLimitingPlugin'
       responses:
         '201':
           description: Created RateLimiting plugin
@@ -3044,7 +3333,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RateLimitingAdvancedPlugin'
+              $ref: '#/components/schemas/CreateRateLimitingAdvancedPlugin'
       responses:
         '201':
           description: Created RateLimitingAdvanced plugin
@@ -3068,7 +3357,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RequestSizeLimitingPlugin'
+              $ref: '#/components/schemas/CreateRequestSizeLimitingPlugin'
       responses:
         '201':
           description: Created RequestSizeLimiting plugin
@@ -3092,7 +3381,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RequestTerminationPlugin'
+              $ref: '#/components/schemas/CreateRequestTerminationPlugin'
       responses:
         '201':
           description: Created RequestTermination plugin
@@ -3116,7 +3405,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RequestTransformerPlugin'
+              $ref: '#/components/schemas/CreateRequestTransformerPlugin'
       responses:
         '201':
           description: Created RequestTransformer plugin
@@ -3140,7 +3429,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RequestTransformerAdvancedPlugin'
+              $ref: '#/components/schemas/CreateRequestTransformerAdvancedPlugin'
       responses:
         '201':
           description: Created RequestTransformerAdvanced plugin
@@ -3164,7 +3453,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RequestValidatorPlugin'
+              $ref: '#/components/schemas/CreateRequestValidatorPlugin'
       responses:
         '201':
           description: Created RequestValidator plugin
@@ -3188,7 +3477,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ResponseRatelimitingPlugin'
+              $ref: '#/components/schemas/CreateResponseRatelimitingPlugin'
       responses:
         '201':
           description: Created ResponseRatelimiting plugin
@@ -3212,7 +3501,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ResponseTransformerPlugin'
+              $ref: '#/components/schemas/CreateResponseTransformerPlugin'
       responses:
         '201':
           description: Created ResponseTransformer plugin
@@ -3236,7 +3525,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ResponseTransformerAdvancedPlugin'
+              $ref: '#/components/schemas/CreateResponseTransformerAdvancedPlugin'
       responses:
         '201':
           description: Created ResponseTransformerAdvanced plugin
@@ -3260,7 +3549,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RouteByHeaderPlugin'
+              $ref: '#/components/schemas/CreateRouteByHeaderPlugin'
       responses:
         '201':
           description: Created RouteByHeader plugin
@@ -3284,7 +3573,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RouteTransformerAdvancedPlugin'
+              $ref: '#/components/schemas/CreateRouteTransformerAdvancedPlugin'
       responses:
         '201':
           description: Created RouteTransformerAdvanced plugin
@@ -3308,7 +3597,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SamlPlugin'
+              $ref: '#/components/schemas/CreateSamlPlugin'
       responses:
         '201':
           description: Created Saml plugin
@@ -3332,7 +3621,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SessionPlugin'
+              $ref: '#/components/schemas/CreateSessionPlugin'
       responses:
         '201':
           description: Created Session plugin
@@ -3356,7 +3645,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/StatsdPlugin'
+              $ref: '#/components/schemas/CreateStatsdPlugin'
       responses:
         '201':
           description: Created Statsd plugin
@@ -3380,7 +3669,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/StatsdAdvancedPlugin'
+              $ref: '#/components/schemas/CreateStatsdAdvancedPlugin'
       responses:
         '201':
           description: Created StatsdAdvanced plugin
@@ -3404,7 +3693,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SyslogPlugin'
+              $ref: '#/components/schemas/CreateSyslogPlugin'
       responses:
         '201':
           description: Created Syslog plugin
@@ -3428,7 +3717,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TcpLogPlugin'
+              $ref: '#/components/schemas/CreateTcpLogPlugin'
       responses:
         '201':
           description: Created TcpLog plugin
@@ -3452,7 +3741,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TlsHandshakeModifierPlugin'
+              $ref: '#/components/schemas/CreateTlsHandshakeModifierPlugin'
       responses:
         '201':
           description: Created TlsHandshakeModifier plugin
@@ -3476,7 +3765,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TlsMetadataHeadersPlugin'
+              $ref: '#/components/schemas/CreateTlsMetadataHeadersPlugin'
       responses:
         '201':
           description: Created TlsMetadataHeaders plugin
@@ -3500,7 +3789,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UdpLogPlugin'
+              $ref: '#/components/schemas/CreateUdpLogPlugin'
       responses:
         '201':
           description: Created UdpLog plugin
@@ -3524,7 +3813,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpstreamTimeoutPlugin'
+              $ref: '#/components/schemas/CreateUpstreamTimeoutPlugin'
       responses:
         '201':
           description: Created UpstreamTimeout plugin
@@ -3548,7 +3837,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/VaultAuthPlugin'
+              $ref: '#/components/schemas/CreateVaultAuthPlugin'
       responses:
         '201':
           description: Created VaultAuth plugin
@@ -3572,7 +3861,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/WebsocketSizeLimitPlugin'
+              $ref: '#/components/schemas/CreateWebsocketSizeLimitPlugin'
       responses:
         '201':
           description: Created WebsocketSizeLimit plugin
@@ -3596,7 +3885,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/WebsocketValidatorPlugin'
+              $ref: '#/components/schemas/CreateWebsocketValidatorPlugin'
       responses:
         '201':
           description: Created WebsocketValidator plugin
@@ -3620,7 +3909,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/XmlThreatProtectionPlugin'
+              $ref: '#/components/schemas/CreateXmlThreatProtectionPlugin'
       responses:
         '201':
           description: Created XmlThreatProtection plugin
@@ -3644,7 +3933,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ZipkinPlugin'
+              $ref: '#/components/schemas/CreateZipkinPlugin'
       responses:
         '201':
           description: Created Zipkin plugin
@@ -3755,7 +4044,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ACLPlugin'
+              $ref: '#/components/schemas/CreateACLPlugin'
       responses:
         '200':
           description: ACL plugin
@@ -3810,7 +4099,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AcmePlugin'
+              $ref: '#/components/schemas/CreateAcmePlugin'
       responses:
         '200':
           description: Acme plugin
@@ -3865,7 +4154,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AiPromptDecoratorPlugin'
+              $ref: '#/components/schemas/CreateAiPromptDecoratorPlugin'
       responses:
         '200':
           description: AiPromptDecorator plugin
@@ -3920,7 +4209,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AiPromptGuardPlugin'
+              $ref: '#/components/schemas/CreateAiPromptGuardPlugin'
       responses:
         '200':
           description: AiPromptGuard plugin
@@ -3975,7 +4264,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AiPromptTemplatePlugin'
+              $ref: '#/components/schemas/CreateAiPromptTemplatePlugin'
       responses:
         '200':
           description: AiPromptTemplate plugin
@@ -4030,7 +4319,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AiProxyPlugin'
+              $ref: '#/components/schemas/CreateAiProxyPlugin'
       responses:
         '200':
           description: AiProxy plugin
@@ -4085,7 +4374,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AiRequestTransformerPlugin'
+              $ref: '#/components/schemas/CreateAiRequestTransformerPlugin'
       responses:
         '200':
           description: AiRequestTransformer plugin
@@ -4140,7 +4429,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AiResponseTransformerPlugin'
+              $ref: '#/components/schemas/CreateAiResponseTransformerPlugin'
       responses:
         '200':
           description: AiResponseTransformer plugin
@@ -4195,7 +4484,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AwsLambdaPlugin'
+              $ref: '#/components/schemas/CreateAwsLambdaPlugin'
       responses:
         '200':
           description: AwsLambda plugin
@@ -4250,7 +4539,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AzureFunctionsPlugin'
+              $ref: '#/components/schemas/CreateAzureFunctionsPlugin'
       responses:
         '200':
           description: AzureFunctions plugin
@@ -4305,7 +4594,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BasicAuthPlugin'
+              $ref: '#/components/schemas/CreateBasicAuthPlugin'
       responses:
         '200':
           description: BasicAuth plugin
@@ -4360,7 +4649,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BotDetectionPlugin'
+              $ref: '#/components/schemas/CreateBotDetectionPlugin'
       responses:
         '200':
           description: BotDetection plugin
@@ -4415,7 +4704,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CanaryPlugin'
+              $ref: '#/components/schemas/CreateCanaryPlugin'
       responses:
         '200':
           description: Canary plugin
@@ -4470,7 +4759,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CorrelationIdPlugin'
+              $ref: '#/components/schemas/CreateCorrelationIdPlugin'
       responses:
         '200':
           description: CorrelationId plugin
@@ -4525,7 +4814,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CorsPlugin'
+              $ref: '#/components/schemas/CreateCorsPlugin'
       responses:
         '200':
           description: Cors plugin
@@ -4580,7 +4869,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DatadogPlugin'
+              $ref: '#/components/schemas/CreateDatadogPlugin'
       responses:
         '200':
           description: Datadog plugin
@@ -4635,7 +4924,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DegraphqlPlugin'
+              $ref: '#/components/schemas/CreateDegraphqlPlugin'
       responses:
         '200':
           description: Degraphql plugin
@@ -4690,7 +4979,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ExitTransformerPlugin'
+              $ref: '#/components/schemas/CreateExitTransformerPlugin'
       responses:
         '200':
           description: ExitTransformer plugin
@@ -4745,7 +5034,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/FileLogPlugin'
+              $ref: '#/components/schemas/CreateFileLogPlugin'
       responses:
         '200':
           description: FileLog plugin
@@ -4800,7 +5089,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ForwardProxyPlugin'
+              $ref: '#/components/schemas/CreateForwardProxyPlugin'
       responses:
         '200':
           description: ForwardProxy plugin
@@ -4855,7 +5144,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/GraphqlProxyCacheAdvancedPlugin'
+              $ref: '#/components/schemas/CreateGraphqlProxyCacheAdvancedPlugin'
       responses:
         '200':
           description: GraphqlProxyCacheAdvanced plugin
@@ -4910,7 +5199,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/GraphqlRateLimitingAdvancedPlugin'
+              $ref: '#/components/schemas/CreateGraphqlRateLimitingAdvancedPlugin'
       responses:
         '200':
           description: GraphqlRateLimitingAdvanced plugin
@@ -4965,7 +5254,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/GrpcGatewayPlugin'
+              $ref: '#/components/schemas/CreateGrpcGatewayPlugin'
       responses:
         '200':
           description: GrpcGateway plugin
@@ -5020,7 +5309,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/GrpcWebPlugin'
+              $ref: '#/components/schemas/CreateGrpcWebPlugin'
       responses:
         '200':
           description: GrpcWeb plugin
@@ -5075,7 +5364,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/HmacAuthPlugin'
+              $ref: '#/components/schemas/CreateHmacAuthPlugin'
       responses:
         '200':
           description: HmacAuth plugin
@@ -5130,7 +5419,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/HttpLogPlugin'
+              $ref: '#/components/schemas/CreateHttpLogPlugin'
       responses:
         '200':
           description: HttpLog plugin
@@ -5185,7 +5474,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/IpRestrictionPlugin'
+              $ref: '#/components/schemas/CreateIpRestrictionPlugin'
       responses:
         '200':
           description: IpRestriction plugin
@@ -5240,7 +5529,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/JqPlugin'
+              $ref: '#/components/schemas/CreateJqPlugin'
       responses:
         '200':
           description: Jq plugin
@@ -5295,7 +5584,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/JweDecryptPlugin'
+              $ref: '#/components/schemas/CreateJweDecryptPlugin'
       responses:
         '200':
           description: JweDecrypt plugin
@@ -5350,7 +5639,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/JwtPlugin'
+              $ref: '#/components/schemas/CreateJwtPlugin'
       responses:
         '200':
           description: Jwt plugin
@@ -5405,7 +5694,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/JwtSignerPlugin'
+              $ref: '#/components/schemas/CreateJwtSignerPlugin'
       responses:
         '200':
           description: JwtSigner plugin
@@ -5460,7 +5749,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/KafkaLogPlugin'
+              $ref: '#/components/schemas/CreateKafkaLogPlugin'
       responses:
         '200':
           description: KafkaLog plugin
@@ -5515,7 +5804,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/KafkaUpstreamPlugin'
+              $ref: '#/components/schemas/CreateKafkaUpstreamPlugin'
       responses:
         '200':
           description: KafkaUpstream plugin
@@ -5570,7 +5859,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/KeyAuthPlugin'
+              $ref: '#/components/schemas/CreateKeyAuthPlugin'
       responses:
         '200':
           description: KeyAuth plugin
@@ -5625,7 +5914,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/KeyAuthEncPlugin'
+              $ref: '#/components/schemas/CreateKeyAuthEncPlugin'
       responses:
         '200':
           description: KeyAuthEnc plugin
@@ -5680,7 +5969,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/KonnectApplicationAuthPlugin'
+              $ref: '#/components/schemas/CreateKonnectApplicationAuthPlugin'
       responses:
         '200':
           description: KonnectApplicationAuth plugin
@@ -5735,7 +6024,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/LdapAuthPlugin'
+              $ref: '#/components/schemas/CreateLdapAuthPlugin'
       responses:
         '200':
           description: LdapAuth plugin
@@ -5790,7 +6079,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/LdapAuthAdvancedPlugin'
+              $ref: '#/components/schemas/CreateLdapAuthAdvancedPlugin'
       responses:
         '200':
           description: LdapAuthAdvanced plugin
@@ -5845,7 +6134,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/LogglyPlugin'
+              $ref: '#/components/schemas/CreateLogglyPlugin'
       responses:
         '200':
           description: Loggly plugin
@@ -5900,7 +6189,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/MockingPlugin'
+              $ref: '#/components/schemas/CreateMockingPlugin'
       responses:
         '200':
           description: Mocking plugin
@@ -5955,7 +6244,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/MtlsAuthPlugin'
+              $ref: '#/components/schemas/CreateMtlsAuthPlugin'
       responses:
         '200':
           description: MtlsAuth plugin
@@ -6010,7 +6299,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/OasValidationPlugin'
+              $ref: '#/components/schemas/CreateOasValidationPlugin'
       responses:
         '200':
           description: OasValidation plugin
@@ -6065,7 +6354,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Oauth2Plugin'
+              $ref: '#/components/schemas/CreateOauth2Plugin'
       responses:
         '200':
           description: Oauth2 plugin
@@ -6120,7 +6409,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Oauth2IntrospectionPlugin'
+              $ref: '#/components/schemas/CreateOauth2IntrospectionPlugin'
       responses:
         '200':
           description: Oauth2Introspection plugin
@@ -6175,7 +6464,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/OpaPlugin'
+              $ref: '#/components/schemas/CreateOpaPlugin'
       responses:
         '200':
           description: Opa plugin
@@ -6230,7 +6519,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/OpenidConnectPlugin'
+              $ref: '#/components/schemas/CreateOpenidConnectPlugin'
       responses:
         '200':
           description: OpenidConnect plugin
@@ -6285,7 +6574,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/OpentelemetryPlugin'
+              $ref: '#/components/schemas/CreateOpentelemetryPlugin'
       responses:
         '200':
           description: Opentelemetry plugin
@@ -6340,7 +6629,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PostFunctionPlugin'
+              $ref: '#/components/schemas/CreatePostFunctionPlugin'
       responses:
         '200':
           description: PostFunction plugin
@@ -6395,7 +6684,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PreFunctionPlugin'
+              $ref: '#/components/schemas/CreatePreFunctionPlugin'
       responses:
         '200':
           description: PreFunction plugin
@@ -6450,7 +6739,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PrometheusPlugin'
+              $ref: '#/components/schemas/CreatePrometheusPlugin'
       responses:
         '200':
           description: Prometheus plugin
@@ -6505,7 +6794,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ProxyCachePlugin'
+              $ref: '#/components/schemas/CreateProxyCachePlugin'
       responses:
         '200':
           description: ProxyCache plugin
@@ -6560,7 +6849,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ProxyCacheAdvancedPlugin'
+              $ref: '#/components/schemas/CreateProxyCacheAdvancedPlugin'
       responses:
         '200':
           description: ProxyCacheAdvanced plugin
@@ -6615,7 +6904,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RateLimitingPlugin'
+              $ref: '#/components/schemas/CreateRateLimitingPlugin'
       responses:
         '200':
           description: RateLimiting plugin
@@ -6670,7 +6959,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RateLimitingAdvancedPlugin'
+              $ref: '#/components/schemas/CreateRateLimitingAdvancedPlugin'
       responses:
         '200':
           description: RateLimitingAdvanced plugin
@@ -6725,7 +7014,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RequestSizeLimitingPlugin'
+              $ref: '#/components/schemas/CreateRequestSizeLimitingPlugin'
       responses:
         '200':
           description: RequestSizeLimiting plugin
@@ -6780,7 +7069,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RequestTerminationPlugin'
+              $ref: '#/components/schemas/CreateRequestTerminationPlugin'
       responses:
         '200':
           description: RequestTermination plugin
@@ -6835,7 +7124,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RequestTransformerPlugin'
+              $ref: '#/components/schemas/CreateRequestTransformerPlugin'
       responses:
         '200':
           description: RequestTransformer plugin
@@ -6890,7 +7179,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RequestTransformerAdvancedPlugin'
+              $ref: '#/components/schemas/CreateRequestTransformerAdvancedPlugin'
       responses:
         '200':
           description: RequestTransformerAdvanced plugin
@@ -6945,7 +7234,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RequestValidatorPlugin'
+              $ref: '#/components/schemas/CreateRequestValidatorPlugin'
       responses:
         '200':
           description: RequestValidator plugin
@@ -7000,7 +7289,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ResponseRatelimitingPlugin'
+              $ref: '#/components/schemas/CreateResponseRatelimitingPlugin'
       responses:
         '200':
           description: ResponseRatelimiting plugin
@@ -7055,7 +7344,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ResponseTransformerPlugin'
+              $ref: '#/components/schemas/CreateResponseTransformerPlugin'
       responses:
         '200':
           description: ResponseTransformer plugin
@@ -7110,7 +7399,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ResponseTransformerAdvancedPlugin'
+              $ref: '#/components/schemas/CreateResponseTransformerAdvancedPlugin'
       responses:
         '200':
           description: ResponseTransformerAdvanced plugin
@@ -7165,7 +7454,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RouteByHeaderPlugin'
+              $ref: '#/components/schemas/CreateRouteByHeaderPlugin'
       responses:
         '200':
           description: RouteByHeader plugin
@@ -7220,7 +7509,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RouteTransformerAdvancedPlugin'
+              $ref: '#/components/schemas/CreateRouteTransformerAdvancedPlugin'
       responses:
         '200':
           description: RouteTransformerAdvanced plugin
@@ -7275,7 +7564,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SamlPlugin'
+              $ref: '#/components/schemas/CreateSamlPlugin'
       responses:
         '200':
           description: Saml plugin
@@ -7330,7 +7619,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SessionPlugin'
+              $ref: '#/components/schemas/CreateSessionPlugin'
       responses:
         '200':
           description: Session plugin
@@ -7385,7 +7674,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/StatsdPlugin'
+              $ref: '#/components/schemas/CreateStatsdPlugin'
       responses:
         '200':
           description: Statsd plugin
@@ -7440,7 +7729,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/StatsdAdvancedPlugin'
+              $ref: '#/components/schemas/CreateStatsdAdvancedPlugin'
       responses:
         '200':
           description: StatsdAdvanced plugin
@@ -7495,7 +7784,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SyslogPlugin'
+              $ref: '#/components/schemas/CreateSyslogPlugin'
       responses:
         '200':
           description: Syslog plugin
@@ -7550,7 +7839,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TcpLogPlugin'
+              $ref: '#/components/schemas/CreateTcpLogPlugin'
       responses:
         '200':
           description: TcpLog plugin
@@ -7605,7 +7894,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TlsHandshakeModifierPlugin'
+              $ref: '#/components/schemas/CreateTlsHandshakeModifierPlugin'
       responses:
         '200':
           description: TlsHandshakeModifier plugin
@@ -7660,7 +7949,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TlsMetadataHeadersPlugin'
+              $ref: '#/components/schemas/CreateTlsMetadataHeadersPlugin'
       responses:
         '200':
           description: TlsMetadataHeaders plugin
@@ -7715,7 +8004,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UdpLogPlugin'
+              $ref: '#/components/schemas/CreateUdpLogPlugin'
       responses:
         '200':
           description: UdpLog plugin
@@ -7770,7 +8059,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpstreamTimeoutPlugin'
+              $ref: '#/components/schemas/CreateUpstreamTimeoutPlugin'
       responses:
         '200':
           description: UpstreamTimeout plugin
@@ -7825,7 +8114,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/VaultAuthPlugin'
+              $ref: '#/components/schemas/CreateVaultAuthPlugin'
       responses:
         '200':
           description: VaultAuth plugin
@@ -7880,7 +8169,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/WebsocketSizeLimitPlugin'
+              $ref: '#/components/schemas/CreateWebsocketSizeLimitPlugin'
       responses:
         '200':
           description: WebsocketSizeLimit plugin
@@ -7935,7 +8224,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/WebsocketValidatorPlugin'
+              $ref: '#/components/schemas/CreateWebsocketValidatorPlugin'
       responses:
         '200':
           description: WebsocketValidator plugin
@@ -7990,7 +8279,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/XmlThreatProtectionPlugin'
+              $ref: '#/components/schemas/CreateXmlThreatProtectionPlugin'
       responses:
         '200':
           description: XmlThreatProtection plugin
@@ -8045,7 +8334,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ZipkinPlugin'
+              $ref: '#/components/schemas/CreateZipkinPlugin'
       responses:
         '200':
           description: Zipkin plugin
@@ -9140,14 +9429,13 @@ components:
         type: string
       x-speakeasy-name-override: consumer_group_id
     ConsumerId:
-      description: ID of the Consumer to lookup
-      example: c1059869-6fa7-4329-a5f5-5946d14ca2c5
+      description: The UUID of the consumer.
+      example: 123e4567-e89b-12d3-a456-426614174000
       in: path
       name: ConsumerId
       required: true
       schema:
         type: string
-      x-speakeasy-match: id
     ConsumerIdForNestedEntities:
       description: Consumer ID for nested entities
       example: f28acbfa-c866-4587-b688-0208ac24df21
@@ -11052,6 +11340,401 @@ components:
         name:
           type: string
           const: cors
+    CreateACLPlugin:
+      x-speakeasy-entity: GatewayPluginACL
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/ACLPluginConfig'
+    CreateAcmePlugin:
+      x-speakeasy-entity: GatewayPluginAcme
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/AcmePluginConfig'
+    CreateAiPromptDecoratorPlugin:
+      x-speakeasy-entity: GatewayPluginAiPromptDecorator
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/AiPromptDecoratorPluginConfig'
+    CreateAiPromptGuardPlugin:
+      x-speakeasy-entity: GatewayPluginAiPromptGuard
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/AiPromptGuardPluginConfig'
+    CreateAiPromptTemplatePlugin:
+      x-speakeasy-entity: GatewayPluginAiPromptTemplate
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/AiPromptTemplatePluginConfig'
+    CreateAiProxyPlugin:
+      x-speakeasy-entity: GatewayPluginAiProxy
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/AiProxyPluginConfig'
+    CreateAiRequestTransformerPlugin:
+      x-speakeasy-entity: GatewayPluginAiRequestTransformer
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/AiRequestTransformerPluginConfig'
+    CreateAiResponseTransformerPlugin:
+      x-speakeasy-entity: GatewayPluginAiResponseTransformer
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/AiResponseTransformerPluginConfig'
+    CreateAwsLambdaPlugin:
+      x-speakeasy-entity: GatewayPluginAwsLambda
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/AwsLambdaPluginConfig'
+    CreateAzureFunctionsPlugin:
+      x-speakeasy-entity: GatewayPluginAzureFunctions
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/AzureFunctionsPluginConfig'
+    CreateBasicAuthPlugin:
+      x-speakeasy-entity: GatewayPluginBasicAuth
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/BasicAuthPluginConfig'
+    CreateBotDetectionPlugin:
+      x-speakeasy-entity: GatewayPluginBotDetection
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/BotDetectionPluginConfig'
+    CreateCanaryPlugin:
+      x-speakeasy-entity: GatewayPluginCanary
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/CanaryPluginConfig'
+    CreateCorrelationIdPlugin:
+      x-speakeasy-entity: GatewayPluginCorrelationId
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/CorrelationIdPluginConfig'
+    CreateCorsPlugin:
+      x-speakeasy-entity: GatewayPluginCors
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/CorsPluginConfig'
+    CreateDatadogPlugin:
+      x-speakeasy-entity: GatewayPluginDatadog
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/DatadogPluginConfig'
+    CreateDegraphqlPlugin:
+      x-speakeasy-entity: GatewayPluginDegraphql
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/DegraphqlPluginConfig'
+    CreateExitTransformerPlugin:
+      x-speakeasy-entity: GatewayPluginExitTransformer
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/ExitTransformerPluginConfig'
+    CreateFileLogPlugin:
+      x-speakeasy-entity: GatewayPluginFileLog
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/FileLogPluginConfig'
+    CreateForwardProxyPlugin:
+      x-speakeasy-entity: GatewayPluginForwardProxy
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/ForwardProxyPluginConfig'
+    CreateGraphqlProxyCacheAdvancedPlugin:
+      x-speakeasy-entity: GatewayPluginGraphqlProxyCacheAdvanced
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/GraphqlProxyCacheAdvancedPluginConfig'
+    CreateGraphqlRateLimitingAdvancedPlugin:
+      x-speakeasy-entity: GatewayPluginGraphqlRateLimitingAdvanced
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/GraphqlRateLimitingAdvancedPluginConfig'
+    CreateGrpcGatewayPlugin:
+      x-speakeasy-entity: GatewayPluginGrpcGateway
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/GrpcGatewayPluginConfig'
+    CreateGrpcWebPlugin:
+      x-speakeasy-entity: GatewayPluginGrpcWeb
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/GrpcWebPluginConfig'
+    CreateHmacAuthPlugin:
+      x-speakeasy-entity: GatewayPluginHmacAuth
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/HmacAuthPluginConfig'
+    CreateHttpLogPlugin:
+      x-speakeasy-entity: GatewayPluginHttpLog
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/HttpLogPluginConfig'
+    CreateIpRestrictionPlugin:
+      x-speakeasy-entity: GatewayPluginIpRestriction
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/IpRestrictionPluginConfig'
+    CreateJqPlugin:
+      x-speakeasy-entity: GatewayPluginJq
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/JqPluginConfig'
+    CreateJweDecryptPlugin:
+      x-speakeasy-entity: GatewayPluginJweDecrypt
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/JweDecryptPluginConfig'
+    CreateJwtPlugin:
+      x-speakeasy-entity: GatewayPluginJwt
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/JwtPluginConfig'
+    CreateJwtSignerPlugin:
+      x-speakeasy-entity: GatewayPluginJwtSigner
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/JwtSignerPluginConfig'
+    CreateKafkaLogPlugin:
+      x-speakeasy-entity: GatewayPluginKafkaLog
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/KafkaLogPluginConfig'
+    CreateKafkaUpstreamPlugin:
+      x-speakeasy-entity: GatewayPluginKafkaUpstream
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/KafkaUpstreamPluginConfig'
+    CreateKeyAuthEncPlugin:
+      x-speakeasy-entity: GatewayPluginKeyAuthEnc
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/KeyAuthEncPluginConfig'
+    CreateKeyAuthPlugin:
+      x-speakeasy-entity: GatewayPluginKeyAuth
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/KeyAuthPluginConfig'
+    CreateKonnectApplicationAuthPlugin:
+      x-speakeasy-entity: GatewayPluginKonnectApplicationAuth
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/KonnectApplicationAuthPluginConfig'
+    CreateLdapAuthAdvancedPlugin:
+      x-speakeasy-entity: GatewayPluginLdapAuthAdvanced
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/LdapAuthAdvancedPluginConfig'
+    CreateLdapAuthPlugin:
+      x-speakeasy-entity: GatewayPluginLdapAuth
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/LdapAuthPluginConfig'
+    CreateLogglyPlugin:
+      x-speakeasy-entity: GatewayPluginLoggly
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/LogglyPluginConfig'
+    CreateMockingPlugin:
+      x-speakeasy-entity: GatewayPluginMocking
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/MockingPluginConfig'
+    CreateMtlsAuthPlugin:
+      x-speakeasy-entity: GatewayPluginMtlsAuth
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/MtlsAuthPluginConfig'
+    CreateOasValidationPlugin:
+      x-speakeasy-entity: GatewayPluginOasValidation
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/OasValidationPluginConfig'
+    CreateOauth2IntrospectionPlugin:
+      x-speakeasy-entity: GatewayPluginOauth2Introspection
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/Oauth2IntrospectionPluginConfig'
+    CreateOauth2Plugin:
+      x-speakeasy-entity: GatewayPluginOauth2
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/Oauth2PluginConfig'
+    CreateOpaPlugin:
+      x-speakeasy-entity: GatewayPluginOpa
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/OpaPluginConfig'
+    CreateOpenidConnectPlugin:
+      x-speakeasy-entity: GatewayPluginOpenidConnect
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/OpenidConnectPluginConfig'
+    CreateOpentelemetryPlugin:
+      x-speakeasy-entity: GatewayPluginOpentelemetry
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/OpentelemetryPluginConfig'
+    CreatePostFunctionPlugin:
+      x-speakeasy-entity: GatewayPluginPostFunction
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/PostFunctionPluginConfig'
+    CreatePreFunctionPlugin:
+      x-speakeasy-entity: GatewayPluginPreFunction
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/PreFunctionPluginConfig'
+    CreatePrometheusPlugin:
+      x-speakeasy-entity: GatewayPluginPrometheus
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/PrometheusPluginConfig'
+    CreateProxyCacheAdvancedPlugin:
+      x-speakeasy-entity: GatewayPluginProxyCacheAdvanced
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/ProxyCacheAdvancedPluginConfig'
+    CreateProxyCachePlugin:
+      x-speakeasy-entity: GatewayPluginProxyCache
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/ProxyCachePluginConfig'
+    CreateRateLimitingAdvancedPlugin:
+      x-speakeasy-entity: GatewayPluginRateLimitingAdvanced
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/RateLimitingAdvancedPluginConfig'
+    CreateRateLimitingPlugin:
+      x-speakeasy-entity: GatewayPluginRateLimiting
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/RateLimitingPluginConfig'
+    CreateRequestSizeLimitingPlugin:
+      x-speakeasy-entity: GatewayPluginRequestSizeLimiting
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/RequestSizeLimitingPluginConfig'
+    CreateRequestTerminationPlugin:
+      x-speakeasy-entity: GatewayPluginRequestTermination
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/RequestTerminationPluginConfig'
+    CreateRequestTransformerAdvancedPlugin:
+      x-speakeasy-entity: GatewayPluginRequestTransformerAdvanced
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/RequestTransformerAdvancedPluginConfig'
+    CreateRequestTransformerPlugin:
+      x-speakeasy-entity: GatewayPluginRequestTransformer
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/RequestTransformerPluginConfig'
+    CreateRequestValidatorPlugin:
+      x-speakeasy-entity: GatewayPluginRequestValidator
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/RequestValidatorPluginConfig'
+    CreateResponseRatelimitingPlugin:
+      x-speakeasy-entity: GatewayPluginResponseRatelimiting
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/ResponseRatelimitingPluginConfig'
+    CreateResponseTransformerAdvancedPlugin:
+      x-speakeasy-entity: GatewayPluginResponseTransformerAdvanced
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/ResponseTransformerAdvancedPluginConfig'
+    CreateResponseTransformerPlugin:
+      x-speakeasy-entity: GatewayPluginResponseTransformer
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/ResponseTransformerPluginConfig'
+    CreateRouteByHeaderPlugin:
+      x-speakeasy-entity: GatewayPluginRouteByHeader
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/RouteByHeaderPluginConfig'
+    CreateRouteTransformerAdvancedPlugin:
+      x-speakeasy-entity: GatewayPluginRouteTransformerAdvanced
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/RouteTransformerAdvancedPluginConfig'
+    CreateSamlPlugin:
+      x-speakeasy-entity: GatewayPluginSaml
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/SamlPluginConfig'
+    CreateSessionPlugin:
+      x-speakeasy-entity: GatewayPluginSession
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/SessionPluginConfig'
+    CreateStatsdAdvancedPlugin:
+      x-speakeasy-entity: GatewayPluginStatsdAdvanced
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/StatsdAdvancedPluginConfig'
+    CreateStatsdPlugin:
+      x-speakeasy-entity: GatewayPluginStatsd
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/StatsdPluginConfig'
+    CreateSyslogPlugin:
+      x-speakeasy-entity: GatewayPluginSyslog
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/SyslogPluginConfig'
+    CreateTcpLogPlugin:
+      x-speakeasy-entity: GatewayPluginTcpLog
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/TcpLogPluginConfig'
+    CreateTlsHandshakeModifierPlugin:
+      x-speakeasy-entity: GatewayPluginTlsHandshakeModifier
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/TlsHandshakeModifierPluginConfig'
+    CreateTlsMetadataHeadersPlugin:
+      x-speakeasy-entity: GatewayPluginTlsMetadataHeaders
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/TlsMetadataHeadersPluginConfig'
+    CreateUdpLogPlugin:
+      x-speakeasy-entity: GatewayPluginUdpLog
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/UdpLogPluginConfig'
+    CreateUpstreamTimeoutPlugin:
+      x-speakeasy-entity: GatewayPluginUpstreamTimeout
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/UpstreamTimeoutPluginConfig'
+    CreateVaultAuthPlugin:
+      x-speakeasy-entity: GatewayPluginVaultAuth
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/VaultAuthPluginConfig'
+    CreateWebsocketSizeLimitPlugin:
+      x-speakeasy-entity: GatewayPluginWebsocketSizeLimit
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/WebsocketSizeLimitPluginConfig'
+    CreateWebsocketValidatorPlugin:
+      x-speakeasy-entity: GatewayPluginWebsocketValidator
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/WebsocketValidatorPluginConfig'
+    CreateXmlThreatProtectionPlugin:
+      x-speakeasy-entity: GatewayPluginXmlThreatProtection
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/XmlThreatProtectionPluginConfig'
+    CreateZipkinPlugin:
+      x-speakeasy-entity: GatewayPluginZipkin
+      allOf:
+        - $ref: '#/components/schemas/Plugin'
+        - $ref: '#/components/schemas/ZipkinPluginConfig'
     DatadogPlugin:
       x-speakeasy-entity: GatewayPluginDatadog
       allOf:

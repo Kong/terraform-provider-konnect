@@ -2317,6 +2317,32 @@ paths:
       tags:
         - Consumer Groups
   '/v2/control-planes/{controlPlaneId}/core-entities/consumer_groups/{ConsumerGroupId}/consumers':
+    get:
+      operationId: list-consumers-for-consumer-group
+      summary: List all Consumers in a Consumer Group
+      description: List all consumers in a consumer group
+      parameters:
+        - $ref: '#/components/parameters/PaginationSize'
+        - $ref: '#/components/parameters/PaginationOffset'
+        - $ref: '#/components/parameters/PaginationTagsFilter'
+      responses:
+        '200':
+          description: A successful response listing of consumers
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Consumer'
+                  next:
+                    $ref: '#/components/schemas/PaginationNextResponse'
+                  offset:
+                    $ref: '#/components/schemas/PaginationOffsetResponse'
+      tags:
+        - Consumer Groups
     parameters:
       - $ref: '#/components/parameters/ConsumerGroupIdManageConsumers'
       - $ref: '#/components/parameters/controlPlaneId'
@@ -2367,6 +2393,114 @@ paths:
         schema:
           type: string
       - $ref: '#/components/parameters/controlPlaneId'
+  '/v2/control-planes/{controlPlaneId}/core-entities/consumer_groups/{ConsumerGroupId}/plugins':
+    get:
+      operationId: list-plugin-with-consumer_group
+      summary: List all Plugins associated with a Consumer Group
+      description: List all Plugins associated with a Consumer Group
+      parameters:
+        - $ref: '#/components/parameters/ConsumerGroupId'
+        - $ref: '#/components/parameters/PaginationSize'
+        - $ref: '#/components/parameters/PaginationOffset'
+        - $ref: '#/components/parameters/PaginationTagsFilter'
+      responses:
+        '200':
+          description: A successful response listing Plugins
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Plugin'
+                  next:
+                    $ref: '#/components/schemas/PaginationNextResponse'
+                  offset:
+                    $ref: '#/components/schemas/PaginationOffsetResponse'
+      tags:
+        - Plugins
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+    post:
+      operationId: create-plugin-with-consumer_group
+      summary: Create a new Plugin associated with a Consumer Group
+      description: Create a new Plugin associated with a Consumer Group
+      parameters:
+        - $ref: '#/components/parameters/ConsumerGroupId'
+      requestBody:
+        description: Description of new Plugin for creation
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PluginWithoutParents'
+      responses:
+        '201':
+          description: Successfully created Plugin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Plugin'
+      tags:
+        - Plugins
+  '/v2/control-planes/{controlPlaneId}/core-entities/consumer_groups/{ConsumerGroupId}/plugins/{PluginId}':
+    delete:
+      operationId: delete-plugin-with-consumer_group
+      summary: Delete a a Plugin associated with a Consumer Group
+      description: Delete a a Plugin associated with a Consumer Group using ID.
+      parameters:
+        - $ref: '#/components/parameters/ConsumerGroupId'
+        - $ref: '#/components/parameters/PluginId'
+      responses:
+        '204':
+          description: Successfully deleted Plugin or the resource didn't exist
+      tags:
+        - Plugins
+    get:
+      operationId: get-plugin-with-consumer_group
+      summary: Fetch a Plugin associated with a Consumer Group
+      description: Get a Plugin associated with a Consumer Group using ID.
+      parameters:
+        - $ref: '#/components/parameters/ConsumerGroupId'
+        - $ref: '#/components/parameters/PluginId'
+      responses:
+        '200':
+          description: Successfully fetched Plugin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Plugin'
+        '404':
+          description: Resource does not exist
+      tags:
+        - Plugins
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+    put:
+      operationId: upsert-plugin-with-consumer_group
+      summary: Upsert a Plugin associated with a Consumer Group
+      description: Create or Update a Plugin associated with a Consumer Group using ID.
+      parameters:
+        - $ref: '#/components/parameters/ConsumerGroupId'
+        - $ref: '#/components/parameters/PluginId'
+      requestBody:
+        description: Description of the Plugin
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PluginWithoutParents'
+      responses:
+        '200':
+          description: Successfully upserted Plugin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Plugin'
+      tags:
+        - Plugins
   '/v2/control-planes/{controlPlaneId}/core-entities/consumers':
     get:
       operationId: list-consumer
@@ -2502,6 +2636,52 @@ paths:
                     $ref: '#/components/schemas/PaginationNextResponse'
                   offset:
                     $ref: '#/components/schemas/PaginationOffsetResponse'
+      tags:
+        - Consumer Groups
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+    post:
+      operationId: add-consumer-to-specific-consumer-group
+      summary: Add consumer to a specific consumer group
+      description: Add a consumer to a consumer group
+      parameters:
+        - $ref: '#/components/parameters/ConsumerId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                group:
+                  type: string
+                  example: fedee695-2ae2-4e45-877a-776d9b2fc793
+      responses:
+        '201':
+          description: Consumer added to a specific group
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  consumer:
+                    $ref: '#/components/schemas/Consumer'
+                  consumer_groups:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ConsumerGroup'
+      tags:
+        - Consumer Groups
+  '/v2/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerId}/consumer_groups/{ConsumerGroupId}':
+    delete:
+      operationId: remove-consumer-from-consumer-group
+      summary: Remove consumer from consumer group
+      description: Removes a consumer from a consumer group. This operation does not delete the consumer group.
+      parameters:
+        - $ref: '#/components/parameters/ConsumerId'
+        - $ref: '#/components/parameters/ConsumerGroupId'
+      responses:
+        '204':
+          description: Consumer removed from group
       tags:
         - Consumer Groups
     parameters:
@@ -3046,6 +3226,114 @@ paths:
                 $ref: '#/components/schemas/KeyAuth'
       tags:
         - API-keys
+  '/v2/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/plugins':
+    get:
+      operationId: list-plugin-with-consumer
+      summary: List all Plugins associated with a Consumer
+      description: List all Plugins associated with a Consumer
+      parameters:
+        - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
+        - $ref: '#/components/parameters/PaginationSize'
+        - $ref: '#/components/parameters/PaginationOffset'
+        - $ref: '#/components/parameters/PaginationTagsFilter'
+      responses:
+        '200':
+          description: A successful response listing Plugins
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Plugin'
+                  next:
+                    $ref: '#/components/schemas/PaginationNextResponse'
+                  offset:
+                    $ref: '#/components/schemas/PaginationOffsetResponse'
+      tags:
+        - Plugins
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+    post:
+      operationId: create-plugin-with-consumer
+      summary: Create a new Plugin associated with a Consumer
+      description: Create a new Plugin associated with a Consumer
+      parameters:
+        - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
+      requestBody:
+        description: Description of new Plugin for creation
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PluginWithoutParents'
+      responses:
+        '201':
+          description: Successfully created Plugin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Plugin'
+      tags:
+        - Plugins
+  '/v2/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/plugins/{PluginId}':
+    delete:
+      operationId: delete-plugin-with-consumer
+      summary: Delete a a Plugin associated with a Consumer
+      description: Delete a a Plugin associated with a Consumer using ID.
+      parameters:
+        - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
+        - $ref: '#/components/parameters/PluginId'
+      responses:
+        '204':
+          description: Successfully deleted Plugin or the resource didn't exist
+      tags:
+        - Plugins
+    get:
+      operationId: get-plugin-with-consumer
+      summary: Fetch a Plugin associated with a Consumer
+      description: Get a Plugin associated with a Consumer using ID.
+      parameters:
+        - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
+        - $ref: '#/components/parameters/PluginId'
+      responses:
+        '200':
+          description: Successfully fetched Plugin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Plugin'
+        '404':
+          description: Resource does not exist
+      tags:
+        - Plugins
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+    put:
+      operationId: upsert-plugin-with-consumer
+      summary: Upsert a Plugin associated with a Consumer
+      description: Create or Update a Plugin associated with a Consumer using ID.
+      parameters:
+        - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
+        - $ref: '#/components/parameters/PluginId'
+      requestBody:
+        description: Description of the Plugin
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PluginWithoutParents'
+      responses:
+        '200':
+          description: Successfully upserted Plugin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Plugin'
+      tags:
+        - Plugins
   '/v2/control-planes/{controlPlaneId}/core-entities/hmac-auths':
     get:
       operationId: list-hmac-auth
