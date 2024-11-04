@@ -8437,6 +8437,7 @@ components:
       schema:
         type: string
         format: uuid
+        example: f32d905a-ed33-46a3-a093-d8f536af9a8a
       name: portalId
       in: path
       required: true

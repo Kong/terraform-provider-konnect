@@ -10,6 +10,7 @@ tags:
   - name: API
   - name: API Documentation
   - name: API Specification
+  - name: API Publication
 servers:
   - url: "https://us.api.konghq.com/v1"
     description: US Region Base URL
@@ -17,6 +18,8 @@ servers:
     description: EU Region Base URL
   - url: "https://au.api.konghq.com/v1"
     description: AU Region Base URL
+  - url: "https://me.api.konghq.com/v1"
+    description: ME Region Base URL
 security:
   - konnectAccessToken: []
   - personalAccessToken: []
@@ -86,14 +89,7 @@ paths:
         - API
   /apis/{apiId}:
     parameters:
-      - schema:
-          type: string
-          format: uuid
-          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
-        name: apiId
-        description: The API identifier
-        in: path
-        required: true
+      - $ref: "#/components/parameters/ApiId"
     get:
       x-internal: true
       x-unstable: true
@@ -160,14 +156,7 @@ paths:
         - API
   /apis/{apiId}/documents:
     parameters:
-      - schema:
-          type: string
-          format: uuid
-          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
-        name: apiId
-        description: The API identifier
-        in: path
-        required: true
+      - $ref: "#/components/parameters/ApiId"
     post:
       x-internal: true
       x-unstable: true
@@ -209,13 +198,7 @@ paths:
       parameters:
         - $ref: "../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize"
         - $ref: "../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber"
-        - name: filter
-          description: Filters API Documents in the response.
-          required: false
-          in: query
-          schema:
-            $ref: "#/components/schemas/ApiDocumentFilterParameters"
-          style: deepObject
+        - $ref: "#/components/parameters/ApiDocumentFilters"
       summary: List API Documents
       description: Returns a collection of all documents for an API.
       operationId: list-api-documents
@@ -241,22 +224,8 @@ paths:
         - API Documentation
   /apis/{apiId}/documents/{documentId}:
     parameters:
-      - schema:
-          type: string
-          format: uuid
-          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
-        name: apiId
-        description: The API identifier
-        in: path
-        required: true
-      - schema:
-          type: string
-          format: uuid
-          example: de5c9818-be5c-42e6-b514-e3d4bc30ddeb
-        name: documentId
-        description: The document identifier related to the API
-        in: path
-        required: true
+      - $ref: "#/components/parameters/ApiId"
+      - $ref: "#/components/parameters/DocumentId"
     get:
       x-internal: true
       x-unstable: true
@@ -325,14 +294,7 @@ paths:
         - API Documentation
   /apis/{apiId}/specifications:
     parameters:
-      - schema:
-          type: string
-          format: uuid
-          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
-        name: apiId
-        description: The API identifier
-        in: path
-        required: true
+      - $ref: "#/components/parameters/ApiId"
     post:
       x-internal: true
       x-unstable: true
@@ -378,13 +340,7 @@ paths:
       parameters:
         - $ref: "../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize"
         - $ref: "../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber"
-        - name: filter
-          description: Filters API Specs in the response.
-          required: false
-          in: query
-          schema:
-            $ref: "#/components/schemas/ApiSpecFilterParameters"
-          style: deepObject
+        - $ref: "#/components/parameters/ApiSpecFilters"
       responses:
         "200":
           $ref: "#/components/responses/ListApiSpecResponse"
@@ -398,22 +354,8 @@ paths:
         - API Specification
   /apis/{apiId}/specifications/{specId}:
     parameters:
-      - schema:
-          type: string
-          format: uuid
-          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
-        name: apiId
-        description: The API identifier
-        in: path
-        required: true
-      - schema:
-          type: string
-          format: uuid
-          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
-        name: specId
-        description: The API specification identifier
-        in: path
-        required: true
+      - $ref: "#/components/parameters/ApiId"
+      - $ref: "#/components/parameters/SpecId"
     get:
       x-internal: true
       x-unstable: true
@@ -480,8 +422,134 @@ paths:
           $ref: "#/components/responses/ApiNotFound"
       tags:
         - API Specification
+  /apis/{apiId}/publications/{portalId}:
+    parameters:
+      - $ref: "#/components/parameters/ApiId"
+      - $ref: "#/components/parameters/PortalId"
+    put:
+      x-internal: true
+      x-unstable: true
+      summary: Publish API
+      description: |
+        Publish an API to a portal.
+      operationId: publish-api-to-portal
+      responses:
+        "200":
+          $ref: "#/components/responses/ApiPublicationResponse"
+        "400":
+          $ref: "#/components/responses/ApiPublicationBadRequest"
+        "401":
+          $ref: "#/components/responses/ApiUnauthorized"
+        "403":
+          $ref: "#/components/responses/ApiForbidden"
+        "404":
+          $ref: "#/components/responses/ApiNotFound"
+      tags:
+        - API Publication
+      requestBody:
+        $ref: "#/components/requestBodies/PutApiPublicationRequest"
+    get:
+      x-internal: true
+      x-unstable: true
+      summary: Fetch Publication
+      description: |
+        Retrieve an API's publication in a portal.
+        If the API is not published to the portal, a 404 response is returned.
+      operationId: fetch-publication
+      responses:
+        "200":
+          $ref: "#/components/responses/ApiPublicationResponse"
+        "401":
+          $ref: "#/components/responses/ApiUnauthorized"
+        "403":
+          $ref: "#/components/responses/ApiForbidden"
+        "404":
+          $ref: "#/components/responses/ApiNotFound"
+      tags:
+        - API Publication
+    delete:
+      x-internal: true
+      x-unstable: true
+      summary: Delete Publication
+      description: Unpublish an API from a portal.
+      operationId: delete-publication
+      responses:
+        "204":
+          description: API was successfully unpublished from portal.
+        "401":
+          $ref: "#/components/responses/ApiUnauthorized"
+        "403":
+          $ref: "#/components/responses/ApiForbidden"
+        "404":
+          $ref: "#/components/responses/ApiNotFound"
+      tags:
+        - API Publication
+  /publications:
+    get:
+      x-internal: true
+      x-unstable: true
+      parameters:
+        - $ref: "../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize"
+        - $ref: "../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber"
+        - $ref: "#/components/parameters/ApiPublicationFilters"
+      summary: List Publications
+      description: Returns a collection of all API Publications.
+      operationId: list-api-publications
+      responses:
+        "200":
+          $ref: "#/components/responses/ListApiPublicationResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: "../../../../common/definitions/errors.yaml#/components/schemas/BadRequestError"
+        "401":
+          $ref: "#/components/responses/ApiUnauthorized"
+        "403":
+          $ref: "#/components/responses/ApiForbidden"
+        "404":
+          $ref: "#/components/responses/ApiNotFound"
+      tags:
+        - API Publication
 components:
   parameters:
+    ApiId:
+      schema:
+        type: string
+        format: uuid
+        example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+      name: apiId
+      in: path
+      required: true
+      description: The API identifier
+    DocumentId:
+      schema:
+        type: string
+        format: uuid
+        example: de5c9818-be5c-42e6-b514-e3d4bc30ddeb
+      name: documentId
+      description: The document identifier related to the API
+      in: path
+      required: true
+    SpecId:
+      schema:
+        type: string
+        format: uuid
+        example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+      name: specId
+      description: The API specification identifier
+      in: path
+      required: true
+    PortalId:
+      schema:
+        type: string
+        format: uuid
+        example: f32d905a-ed33-46a3-a093-d8f536af9a8a
+      name: portalId
+      in: path
+      required: true
+      description: The Portal identifier
     ApiFilters:
       name: filter
       description: Filters APIs in the response.
@@ -502,6 +570,30 @@ components:
       in: query
       schema:
         $ref: "../../../../common/definitions/aip_filters.yaml#/components/schemas/SortQuery"
+    ApiDocumentFilters:
+      name: filter
+      description: Filters API Documents in the response.
+      required: false
+      in: query
+      schema:
+        $ref: "#/components/schemas/ApiDocumentFilterParameters"
+      style: deepObject
+    ApiSpecFilters:
+      name: filter
+      description: Filters API Specs in the response.
+      required: false
+      in: query
+      schema:
+        $ref: "#/components/schemas/ApiSpecFilterParameters"
+      style: deepObject
+    ApiPublicationFilters:
+      name: filter
+      description: Filters API Publications in the response.
+      required: false
+      in: query
+      schema:
+        $ref: "#/components/schemas/ApiPublicationFilterParameters"
+      style: deepObject
   requestBodies:
     CreateApiRequest:
       required: true
@@ -587,6 +679,12 @@ components:
           examples:
             UpdateApiSpecContentRequest:
               $ref: "#/components/examples/UpdateApiSpecContentRequestExample"
+    PutApiPublicationRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ApiPublication"
   responses:
     ApiSlugConflict:
       description: Conflict - `slug` property must be unique
@@ -655,6 +753,12 @@ components:
           examples:
             ApiForbiddenExample:
               $ref: "#/components/examples/ApiForbiddenExample"
+    ApiPublicationBadRequest:
+      description: Bad Request
+      content:
+        application/problem+json:
+          schema:
+            $ref: "../../../../common/definitions/errors.yaml#/components/schemas/BadRequestError"
     ApiResponse:
       description: API
       content:
@@ -807,6 +911,36 @@ components:
           examples:
             ListApiSpecResponse:
               $ref: "#/components/examples/ListApiSpecExample"
+    ApiPublicationResponse:
+      description: An API publication in a portal
+      content:
+        application/json:
+          schema:
+            x-flatten-allOf: true
+            allOf:
+              - $ref: "#/components/schemas/ApiPublication"
+              - required:
+                  - created_at
+                  - updated_at
+    ListApiPublicationResponse:
+      description: Paginated list of API publications
+      content:
+        application/json:
+          schema:
+            title: ListApiPublications
+            type: object
+            required:
+              - data
+              - meta
+            additionalProperties: false
+            properties:
+              meta:
+                $ref: "../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta"
+              data:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ApiPublicationListItem"
+
   schemas:
     ################################
     ## API
@@ -913,7 +1047,7 @@ components:
 
     ApiDocument:
       type: object
-      title: ApiDocument
+      title: API Document
       additionalProperties: false
       properties:
         id:
@@ -969,6 +1103,49 @@ components:
           $ref: "../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt"
 
     ################################
+    ## API Publication
+    ################################
+
+    ApiPublicationListItem:
+      title: API Publication
+      type: object
+      description: An API publication in a portal
+      additionalProperties: false
+      required:
+        - api_id
+        - portal_id
+        - created_at
+        - updated_at
+      properties:
+        api_id:
+          type: string
+          format: uuid
+          example: 9f5061ce-78f6-4452-9108-ad7c02821fd5
+          description: The API identifier.
+          readOnly: true
+        portal_id:
+          type: string
+          format: uuid
+          example: 7710d5c4-d902-410b-992f-18b814155b53
+          description: The portal identifier.
+          readOnly: true
+        created_at:
+          $ref: "../../../../common/definitions/konnect_properties.yaml#/components/schemas/CreatedAt"
+        updated_at:
+          $ref: "../../../../common/definitions/konnect_properties.yaml#/components/schemas/UpdatedAt"
+
+    ApiPublication:
+      title: API Publication
+      type: object
+      description: An API publication in a portal
+      additionalProperties: false
+      properties:
+        created_at:
+          $ref: "../../../../common/definitions/konnect_properties.yaml#/components/schemas/CreatedAt"
+        updated_at:
+          $ref: "../../../../common/definitions/konnect_properties.yaml#/components/schemas/UpdatedAt"
+
+    ################################
     ## Filter Parameters
     ################################
 
@@ -1004,6 +1181,15 @@ components:
       properties:
         type:
           $ref: "../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter"
+
+    ApiPublicationFilterParameters:
+      title: "ApiPublicationFilterParameters"
+      type: object
+      properties:
+        portal_id:
+          $ref: "../../../../common/definitions/aip_filters.yaml#/components/schemas/UuidFieldFilter"
+        api_id:
+          $ref: "../../../../common/definitions/aip_filters.yaml#/components/schemas/UuidFieldFilter"
 
 
   ################################

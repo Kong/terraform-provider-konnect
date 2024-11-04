@@ -13,6 +13,8 @@ servers:
     description: EU Region Base URL
   - url: 'https://au.api.konghq.com/v1'
     description: AU Region Base URL
+  - url: 'https://me.api.konghq.com/v1'
+    description: ME Region Base URL
 paths:
   /apis:
     post:
@@ -74,14 +76,7 @@ paths:
         - API
   '/apis/{apiId}':
     parameters:
-      - name: apiId
-        in: path
-        description: The API identifier
-        required: true
-        schema:
-          type: string
-          format: uuid
-          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+      - $ref: '#/components/parameters/ApiId'
     get:
       operationId: fetch-api
       summary: Fetch API
@@ -142,14 +137,7 @@ paths:
         - API
   '/apis/{apiId}/documents':
     parameters:
-      - name: apiId
-        in: path
-        description: The API identifier
-        required: true
-        schema:
-          type: string
-          format: uuid
-          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+      - $ref: '#/components/parameters/ApiId'
     post:
       operationId: create-api-document
       summary: Create API Document
@@ -190,13 +178,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageNumber'
-        - name: filter
-          in: query
-          description: Filters API Documents in the response.
-          required: false
-          schema:
-            $ref: '#/components/schemas/ApiDocumentFilterParameters'
-          style: deepObject
+        - $ref: '#/components/parameters/ApiDocumentFilters'
       responses:
         '200':
           $ref: '#/components/responses/ListApiDocumentResponse'
@@ -219,22 +201,8 @@ paths:
         - API Documentation
   '/apis/{apiId}/documents/{documentId}':
     parameters:
-      - name: apiId
-        in: path
-        description: The API identifier
-        required: true
-        schema:
-          type: string
-          format: uuid
-          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
-      - name: documentId
-        in: path
-        description: The document identifier related to the API
-        required: true
-        schema:
-          type: string
-          format: uuid
-          example: de5c9818-be5c-42e6-b514-e3d4bc30ddeb
+      - $ref: '#/components/parameters/ApiId'
+      - $ref: '#/components/parameters/DocumentId'
     get:
       operationId: fetch-api-document
       summary: Fetch API Document
@@ -297,14 +265,7 @@ paths:
         - API Documentation
   '/apis/{apiId}/specifications':
     parameters:
-      - name: apiId
-        in: path
-        description: The API identifier
-        required: true
-        schema:
-          type: string
-          format: uuid
-          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+      - $ref: '#/components/parameters/ApiId'
     post:
       operationId: create-api-spec
       summary: Create API Specification
@@ -346,13 +307,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageNumber'
-        - name: filter
-          in: query
-          description: Filters API Specs in the response.
-          required: false
-          schema:
-            $ref: '#/components/schemas/ApiSpecFilterParameters'
-          style: deepObject
+        - $ref: '#/components/parameters/ApiSpecFilters'
       responses:
         '200':
           $ref: '#/components/responses/ListApiSpecResponse'
@@ -366,22 +321,8 @@ paths:
         - API Specification
   '/apis/{apiId}/specifications/{specId}':
     parameters:
-      - name: apiId
-        in: path
-        description: The API identifier
-        required: true
-        schema:
-          type: string
-          format: uuid
-          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
-      - name: specId
-        in: path
-        description: The API specification identifier
-        required: true
-        schema:
-          type: string
-          format: uuid
-          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+      - $ref: '#/components/parameters/ApiId'
+      - $ref: '#/components/parameters/SpecId'
     get:
       operationId: fetch-api-spec
       summary: Fetch API Specification
@@ -442,8 +383,98 @@ paths:
           $ref: '#/components/responses/ApiNotFound'
       tags:
         - API Specification
+  '/apis/{apiId}/publications/{portalId}':
+    parameters:
+      - $ref: '#/components/parameters/ApiId'
+      - $ref: '#/components/parameters/PortalId'
+    put:
+      operationId: publish-api-to-portal
+      summary: Publish API
+      description: |
+        Publish an API to a portal.
+      requestBody:
+        $ref: '#/components/requestBodies/PutApiPublicationRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/ApiPublicationResponse'
+        '400':
+          $ref: '#/components/responses/ApiPublicationBadRequest'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+      tags:
+        - API Publication
+    get:
+      operationId: fetch-publication
+      summary: Fetch Publication
+      description: |
+        Retrieve an API's publication in a portal.
+        If the API is not published to the portal, a 404 response is returned.
+      responses:
+        '200':
+          $ref: '#/components/responses/ApiPublicationResponse'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+      tags:
+        - API Publication
+    delete:
+      operationId: delete-publication
+      summary: Delete Publication
+      description: Unpublish an API from a portal.
+      responses:
+        '204':
+          description: API was successfully unpublished from portal.
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+      tags:
+        - API Publication
+  /publications:
+    get:
+      operationId: list-api-publications
+      summary: List Publications
+      description: Returns a collection of all API Publications.
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/ApiPublicationFilters'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListApiPublicationResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+      tags:
+        - API Publication
 components:
   parameters:
+    ApiDocumentFilters:
+      name: filter
+      description: Filters API Documents in the response.
+      required: false
+      in: query
+      schema:
+        $ref: '#/components/schemas/ApiDocumentFilterParameters'
+      style: deepObject
     ApiFilters:
       name: filter
       description: Filters APIs in the response.
@@ -451,6 +482,23 @@ components:
       in: query
       schema:
         $ref: '#/components/schemas/ApiFilterParameters'
+      style: deepObject
+    ApiId:
+      schema:
+        type: string
+        format: uuid
+        example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+      name: apiId
+      in: path
+      required: true
+      description: The API identifier
+    ApiPublicationFilters:
+      name: filter
+      description: Filters API Publications in the response.
+      required: false
+      in: query
+      schema:
+        $ref: '#/components/schemas/ApiPublicationFilterParameters'
       style: deepObject
     ApiSort:
       name: sort
@@ -464,6 +512,23 @@ components:
       in: query
       schema:
         $ref: '#/components/schemas/SortQuery'
+    ApiSpecFilters:
+      name: filter
+      description: Filters API Specs in the response.
+      required: false
+      in: query
+      schema:
+        $ref: '#/components/schemas/ApiSpecFilterParameters'
+      style: deepObject
+    DocumentId:
+      schema:
+        type: string
+        format: uuid
+        example: de5c9818-be5c-42e6-b514-e3d4bc30ddeb
+      name: documentId
+      description: The document identifier related to the API
+      in: path
+      required: true
     PageNumber:
       name: 'page[number]'
       description: Determines which page of the entities to retrieve.
@@ -482,6 +547,24 @@ components:
       schema:
         type: integer
         example: 10
+    PortalId:
+      schema:
+        type: string
+        format: uuid
+        example: f32d905a-ed33-46a3-a093-d8f536af9a8a
+      name: portalId
+      in: path
+      required: true
+      description: The Portal identifier
+    SpecId:
+      schema:
+        type: string
+        format: uuid
+        example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+      name: specId
+      description: The API specification identifier
+      in: path
+      required: true
   schemas:
     ApiDocumentId:
       description: The API document identifier.
@@ -566,7 +649,7 @@ components:
         updated_at:
           $ref: '#/components/schemas/UpdatedAt'
       additionalProperties: false
-      title: ApiDocument
+      title: API Document
     ApiSpec:
       type: object
       properties:
@@ -597,6 +680,43 @@ components:
           $ref: '#/components/schemas/UpdatedAt'
       additionalProperties: false
       title: API Specification
+    ApiPublicationListItem:
+      description: An API publication in a portal
+      type: object
+      properties:
+        api_id:
+          description: The API identifier.
+          type: string
+          format: uuid
+          example: 9f5061ce-78f6-4452-9108-ad7c02821fd5
+          readOnly: true
+        portal_id:
+          description: The portal identifier.
+          type: string
+          format: uuid
+          example: 7710d5c4-d902-410b-992f-18b814155b53
+          readOnly: true
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
+      required:
+        - api_id
+        - portal_id
+        - created_at
+        - updated_at
+      title: API Publication
+    ApiPublication:
+      description: An API publication in a portal
+      type: object
+      properties:
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
+      title: API Publication
     ApiFilterParameters:
       type: object
       properties:
@@ -627,6 +747,14 @@ components:
         type:
           $ref: '#/components/schemas/StringFieldFilter'
       title: ApiSpecFilterParameters
+    ApiPublicationFilterParameters:
+      type: object
+      properties:
+        portal_id:
+          $ref: '#/components/schemas/UuidFieldFilter'
+        api_id:
+          $ref: '#/components/schemas/UuidFieldFilter'
+      title: ApiPublicationFilterParameters
     StringFieldEqualsFilter:
       description: Filters on the given string field value by exact match.
       oneOf:
@@ -1566,7 +1694,7 @@ components:
             additionalProperties: false
             required:
               - content
-            title: ApiDocument
+            title: API Document
           examples:
             CreateApiDocumentRequestMinimalExample:
               $ref: '#/components/examples/CreateApiDocumentRequestMinimalExample'
@@ -1635,6 +1763,12 @@ components:
           examples:
             UpdateApiSpecContentRequest:
               $ref: '#/components/examples/UpdateApiSpecContentRequestExample'
+    PutApiPublicationRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiPublication'
   responses:
     ApiSlugConflict:
       description: Conflict - `slug` property must be unique
@@ -1703,6 +1837,12 @@ components:
           examples:
             ApiForbiddenExample:
               $ref: '#/components/examples/ApiForbiddenExample'
+    ApiPublicationBadRequest:
+      description: Bad Request
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/BadRequestError'
     ApiResponse:
       description: API
       content:
@@ -1857,7 +1997,7 @@ components:
               - content
               - updated_at
               - created_at
-            title: ApiDocument
+            title: API Document
           examples:
             CreateApiDocumentResponse:
               $ref: '#/components/examples/ApiDocumentExample'
@@ -1979,6 +2119,41 @@ components:
           examples:
             ListApiSpecResponse:
               $ref: '#/components/examples/ListApiSpecExample'
+    ApiPublicationResponse:
+      description: An API publication in a portal
+      content:
+        application/json:
+          schema:
+            description: An API publication in a portal
+            type: object
+            properties:
+              created_at:
+                $ref: '#/components/schemas/CreatedAt'
+              updated_at:
+                $ref: '#/components/schemas/UpdatedAt'
+            additionalProperties: false
+            required:
+              - created_at
+              - updated_at
+            title: API Publication
+    ListApiPublicationResponse:
+      description: Paginated list of API publications
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              meta:
+                $ref: '#/components/schemas/PaginatedMeta'
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApiPublicationListItem'
+            additionalProperties: false
+            required:
+              - data
+              - meta
+            title: ListApiPublications
     UnsupportedMediaType:
       description: Unsupported Media Type
       content:
@@ -2017,6 +2192,7 @@ tags:
   - name: API
   - name: API Documentation
   - name: API Specification
+  - name: API Publication
 security:
   - konnectAccessToken: []
   - personalAccessToken: []
