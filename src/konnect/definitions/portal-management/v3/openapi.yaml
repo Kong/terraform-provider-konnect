@@ -293,6 +293,7 @@ components:
             rule: max_length
             reason: value of "title" must not exceed 512 characters
             source: body
+            maximum: 512
   requestBodies:
     CreatePortalPage:
       description: Create a page in a portal.

@@ -3227,6 +3227,7 @@ components:
             rule: max_length
             reason: value of "custom_domain" must not exceed 1024 characters
             source: body
+            maximum: 1024
     UpdatePortalBadRequestExample7:
       value:
         status: 400
@@ -3238,6 +3239,7 @@ components:
             rule: max_length
             reason: value of "custom_client_domain" must not exceed 1024 characters
             source: body
+            maximum: 1024
     DeletePortalBadRequestExample1:
       value:
         status: 400
@@ -3616,6 +3618,7 @@ components:
             rule: max_length
             reason: value of "description" must not exceed 250 characters
             source: body
+            maximum: 250
     AddDeveloperToTeamBadRequestExample1:
       value:
         status: 400

@@ -793,6 +793,7 @@ components:
           - field: name
             rule: max_length
             reason: 'name must be shorter than or equal to 120 characters'
+            maximum: 120
     TransitGatewayNameLengthCheckBadRequestExample:
       value:
         status: 400
@@ -803,6 +804,7 @@ components:
           - field: name
             rule: max_length
             reason: 'name must be shorter than or equal to 120 characters'
+            maximum: 120
     CustomDomainLengthCheckBadRequestExample:
       value:
         status: 400

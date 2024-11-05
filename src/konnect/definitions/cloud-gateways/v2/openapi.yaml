@@ -1923,7 +1923,6 @@ components:
     AwsCreateTransitGatewayRequest:
       title: AWS Create Transit Gateway Request
       description: Request schema for creating an AWS transit gateway.
-      additionalProperties: false
       allOf:
         - $ref: '#/components/schemas/BaseCreateTransitGatewayRequest'
         - type: object
@@ -1938,7 +1937,6 @@ components:
     AzureCreateTransitGatewayRequest:
       title: Azure Create Transit Gateway Request
       description: Request schema for creating an Azure transit gateway through VNET peering.
-      additionalProperties: false
       allOf:
         - $ref: '#/components/schemas/BaseCreateTransitGatewayRequest'
         - type: object
@@ -1951,7 +1949,6 @@ components:
       title: 'CreateTransitGatewayRequest'
       description: Request schema for creating a transit gateway.
       type: object
-      additionalProperties: false
       oneOf:
         - $ref: '#/components/schemas/AwsCreateTransitGatewayRequest'
         - $ref: '#/components/schemas/AzureCreateTransitGatewayRequest'
@@ -2541,6 +2538,7 @@ components:
           - field: name
             rule: max_length
             reason: 'name must be shorter than or equal to 120 characters'
+            maximum: 120
     TransitGatewayNameLengthCheckBadRequestExample:
       value:
         status: 400
@@ -2551,6 +2549,7 @@ components:
           - field: name
             rule: max_length
             reason: 'name must be shorter than or equal to 120 characters'
+            maximum: 120
     CustomDomainLengthCheckBadRequestExample:
       value:
         status: 400
