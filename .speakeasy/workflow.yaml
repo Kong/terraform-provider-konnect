@@ -1,0 +1,10 @@
+workflowVersion: 1.0.0
+speakeasyVersion: latest
+sources:
+    kong:
+        inputs:
+            - location: openapi.yaml
+targets:
+    terraform:
+        target: terraform
+        source: kong
