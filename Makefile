@@ -3,7 +3,7 @@
 all: speakeasy
 
 speakeasy: check-speakeasy
-	speakeasy generate sdk --lang terraform -o . -s ./openapi.yaml
+	speakeasy run --skip-versioning --output console
 	@go mod tidy
 	@go generate .
 	@git clean -fd examples docs > /dev/null
