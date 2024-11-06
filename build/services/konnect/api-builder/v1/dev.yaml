@@ -582,6 +582,7 @@ components:
     ApiDocumentStatus:
       description: If `status=published` the document will be visible in your live portal
       type: string
+      default: unpublished
       enum:
         - published
         - unpublished
@@ -615,6 +616,8 @@ components:
           $ref: '#/components/schemas/ApiDocumentStatus'
         parent_document_id:
           $ref: '#/components/schemas/ApiDocumentParentDocumentId'
+        labels:
+          $ref: '#/components/schemas/Labels'
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -626,6 +629,7 @@ components:
         - slug
         - status
         - parent_document_id
+        - labels
         - created_at
         - updated_at
       title: API Document Summary
@@ -644,6 +648,8 @@ components:
           $ref: '#/components/schemas/ApiDocumentStatus'
         parent_document_id:
           $ref: '#/components/schemas/ApiDocumentParentDocumentId'
+        labels:
+          $ref: '#/components/schemas/Labels'
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -1471,6 +1477,8 @@ components:
         slug: api-document
         status: published
         content: '# API Document Header'
+        labels:
+          type: tutorial
         created_at: '2023-01-01T00:00:00.000Z'
         updated_at: '2023-01-01T00:00:00.000Z'
     ListApiDocumentSummaryExample:
@@ -1480,6 +1488,8 @@ components:
             slug: api-document
             status: published
             title: API Document
+            labels:
+              type: tutorial
             parent_document_id: null
             created_at: '2023-01-01T00:00:00.000Z'
             updated_at: '2023-01-01T00:00:00.000Z'
@@ -1721,6 +1731,8 @@ components:
                 $ref: '#/components/schemas/ApiDocumentStatus'
               parent_document_id:
                 $ref: '#/components/schemas/ApiDocumentParentDocumentId'
+              labels:
+                $ref: '#/components/schemas/Labels'
               created_at:
                 $ref: '#/components/schemas/CreatedAt'
               updated_at:
@@ -2017,6 +2029,8 @@ components:
                 $ref: '#/components/schemas/ApiDocumentStatus'
               parent_document_id:
                 $ref: '#/components/schemas/ApiDocumentParentDocumentId'
+              labels:
+                $ref: '#/components/schemas/Labels'
               created_at:
                 $ref: '#/components/schemas/CreatedAt'
               updated_at:
@@ -2029,6 +2043,7 @@ components:
               - slug
               - status
               - content
+              - labels
               - updated_at
               - created_at
             title: API Document
