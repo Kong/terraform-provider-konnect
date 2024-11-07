@@ -400,6 +400,40 @@ paths:
         - url: 'https://global.api.konghq.com/'
       tags:
         - Authentication
+  '/v3/organizations/{organizationId}/deletion-config':
+    parameters:
+      - name: organizationId
+        in: path
+        description: The ID of the organization being patched.
+        required: true
+        schema:
+          type: string
+          format: uuid
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+    patch:
+      operationId: patch-organization-deletion-config
+      summary: Sets the deletion configs for a specifed organization.
+      description: |
+        Sets the deletion configs for a specified organization. The retention period 
+        is the number of days an organization can remain in the inactive state before 
+        being permanently deleted.
+      requestBody:
+        $ref: '#/components/requestBodies/DeletionConfigRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/DeletionConfigResponse'
+        '400':
+          $ref: '#/components/responses/OrganizationStateBadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/OrganizationNotFound'
+      servers:
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Organization Lifecycle
   /v3/organizations/me:
     patch:
       operationId: update-organizations-me
@@ -1378,6 +1412,16 @@ components:
           example: '2023-01-23T17:22:52.150Z'
           readOnly: true
       title: Organization State
+    DeletionConfig:
+      type: object
+      properties:
+        retention_period_days:
+          description: The retention period in days.
+          type: integer
+          example: 90
+          maximum: 365
+          minimum: 1
+      title: Deletion Config
   examples:
     UnauthorizedExample:
       value:
@@ -1876,6 +1920,17 @@ components:
               value:
                 state: active
                 reason: organization was created
+    DeletionConfigRequest:
+      required: true
+      description: The request schema to set an organization's retention period.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DeletionConfig'
+          examples:
+            Example:
+              value:
+                retention_period_days: 90
   responses:
     Unauthorized:
       description: Unauthorized
@@ -2498,6 +2553,16 @@ components:
           examples:
             Conflict:
               $ref: '#/components/examples/409OrganizationStateConflict'
+    DeletionConfigResponse:
+      description: The response schema for setting an organization's retention period.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DeletionConfig'
+          examples:
+            Example:
+              value:
+                retention_period_days: 90
   securitySchemes:
     personalAccessToken:
       type: http
