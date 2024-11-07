@@ -334,6 +334,8 @@ paths:
           $ref: '#/components/responses/IdentityBadRequest'
         '404':
           $ref: '#/components/responses/IdentityNotFound'
+        '409':
+          $ref: '#/components/responses/IdentityConflict'
       description: Adds a user to a team.
       requestBody:
         $ref: '#/components/requestBodies/AddUserToTeam'
