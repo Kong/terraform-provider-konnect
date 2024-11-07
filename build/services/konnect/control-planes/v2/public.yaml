@@ -184,7 +184,7 @@ paths:
       summary: Upsert Control Plane Group Members
       description: Adds one or more control planes as a member of a control plane group.
       requestBody:
-        $ref: '#/components/requestBodies/GroupMemebershipUpsert'
+        $ref: '#/components/requestBodies/GroupMembershipUpsert'
       responses:
         '204':
           description: No Content
@@ -213,7 +213,7 @@ paths:
       summary: Add Control Plane Group Members
       description: Adds one or more control planes as a member of a control plane group.
       requestBody:
-        $ref: '#/components/requestBodies/GroupMemebershipAdd'
+        $ref: '#/components/requestBodies/GroupMembershipAdd'
       responses:
         '204':
           description: No Content
@@ -374,9 +374,13 @@ components:
           type: array
           items:
             type: object
+            required:
+              - id
             properties:
               id:
                 type: string
+      required:
+        - members
     CreateControlPlaneRequest:
       description: The request schema for the create control plane request.
       type: object
@@ -583,6 +587,11 @@ components:
             - CONFLICT
             - UNKNOWN
           readOnly: true
+      required:
+        - id
+        - created_at
+        - updated_at
+        - state
       title: GroupStatus
     GroupConflict:
       description: The Group Conflict object contains information about a conflict in a control plane group.
@@ -601,6 +610,10 @@ components:
           readOnly: true
         resource:
           $ref: '#/components/schemas/GroupConflictResource'
+      required:
+        - cluster_id
+        - description
+        - resource
       title: GroupConflict
     GroupConflictResource:
       description: A resource causing a conflict in a control plane group.
@@ -1343,7 +1356,7 @@ components:
         instance: 'kong:trace:6816496025408232265'
         detail: Not Found
   requestBodies:
-    GroupMemebershipAdd:
+    GroupMembershipAdd:
       content:
         application/json:
           schema:
@@ -1369,7 +1382,7 @@ components:
                   - id: 778a0474-687d-41af-8e51-a0488d790586
                   - id: fa85f8e8-2e5a-496e-b6d0-4e534eaab459
       description: Request body for removing a list of child control planes from a control plane group membership.
-    GroupMemebershipUpsert:
+    GroupMembershipUpsert:
       content:
         application/json:
           schema:
@@ -1563,6 +1576,9 @@ components:
                 type: array
                 items:
                   $ref: '#/components/schemas/ControlPlane'
+            required:
+              - meta
+              - data
           examples:
             List Group Memberships Example:
               $ref: '#/components/examples/ListGroupMembershipsExample'

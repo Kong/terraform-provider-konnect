@@ -26,7 +26,7 @@ paths:
       description: Retrieve the expected config hash for this control plane. The expected config hash can be used to verify if the config hash of a data plane node is up to date with the control plane. The config hash will be the same if they are in sync.
       responses:
         '200':
-          $ref: '#/components/responses/get-expected-config-hash'
+          $ref: '#/components/responses/GetExpectedConfigHashResponse'
       tags:
         - DP Nodes
     parameters:
@@ -5972,7 +5972,7 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/DataPlaneClientCertificate'
-    get-expected-config-hash:
+    GetExpectedConfigHashResponse:
       description: Response body for retrieving the expected config hash of the control plane.
       content:
         application/json:
@@ -5988,6 +5988,10 @@ components:
               updated_at:
                 description: Date the control plane configuration was last updated.
                 type: integer
+            required:
+              - expected_hash
+              - created_at
+              - updated_at
     ListDataPlaneCertificatesResponse:
       description: Example response
       content:

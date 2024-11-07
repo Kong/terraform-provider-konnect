@@ -34,7 +34,7 @@ paths:
         - DP Nodes
       responses:
         '200':
-          $ref: '#/components/responses/get-expected-config-hash'
+          $ref: '#/components/responses/GetExpectedConfigHashResponse'
       operationId: get-expected-config-hash
       description: >-
         Retrieve the expected config hash for this control plane. The expected
@@ -973,7 +973,7 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/DataPlaneClientCertificate"
-    get-expected-config-hash:
+    GetExpectedConfigHashResponse:
       description: >-
         Response body for retrieving the expected config hash of the control
         plane.
@@ -981,6 +981,10 @@ components:
         application/json:
           schema:
             type: object
+            required:
+              - expected_hash
+              - created_at
+              - updated_at
             properties:
               expected_hash:
                 type: string

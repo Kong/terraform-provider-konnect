@@ -38,7 +38,7 @@ paths:
         - $ref: '#/components/parameters/ControlPlaneSort'
       tags:
         - Control Planes
-    parameters: []
+    parameters: [ ]
     post:
       x-speakeasy-entity-operation: GatewayControlPlane#create
       summary: Create Control Plane
@@ -200,7 +200,7 @@ paths:
         '503':
           $ref: '#/components/responses/ServiceUnavailable'
       requestBody:
-        $ref: '#/components/requestBodies/GroupMemebershipUpsert'
+        $ref: '#/components/requestBodies/GroupMembershipUpsert'
       tags:
         - Control Plane Groups
       description: Adds one or more control planes as a member of a control plane group.
@@ -230,7 +230,7 @@ paths:
         '503':
           $ref: '#/components/responses/ServiceUnavailable'
       requestBody:
-        $ref: '#/components/requestBodies/GroupMemebershipAdd'
+        $ref: '#/components/requestBodies/GroupMembershipAdd'
       tags:
         - Control Plane Groups
       description: Adds one or more control planes as a member of a control plane group.
@@ -598,6 +598,9 @@ components:
         application/json:
           schema:
             type: object
+            required:
+              - meta
+              - data
             properties:
               meta:
                 $ref: ../../../../common/definitions/metadatas.yaml#/components/schemas/CursorPaginatedMetaWithSizeAndTotal
@@ -630,11 +633,15 @@ components:
     GroupMembership:
       x-speakeasy-entity: GatewayControlPlaneMembership
       type: object
+      required:
+        - members
       properties:
         members:
           type: array
           items:
             type: object
+            required:
+              - id
             properties:
               id:
                 type: string
@@ -819,6 +826,11 @@ components:
       title: GroupStatus
       type: object
       description: The Group Status object contains information about the status of a control plane group.
+      required:
+        - id
+        - created_at
+        - updated_at
+        - state
       properties:
         id:
           type: string
@@ -856,6 +868,10 @@ components:
       title: GroupConflict
       type: object
       description: The Group Conflict object contains information about a conflict in a control plane group.
+      required:
+        - cluster_id
+        - description
+        - resource
       properties:
         cluster_id:
           type: string
@@ -1166,7 +1182,7 @@ components:
             created_at: '2023-03-23T22:25:30.907Z'
             updated_at: '2023-03-30T16:18:12.067Z'
   requestBodies:
-    GroupMemebershipAdd:
+    GroupMembershipAdd:
       content:
         application/json:
           schema:
@@ -1192,7 +1208,7 @@ components:
                   - id: 778a0474-687d-41af-8e51-a0488d790586
                   - id: fa85f8e8-2e5a-496e-b6d0-4e534eaab459
       description: Request body for removing a list of child control planes from a control plane group membership.
-    GroupMemebershipUpsert:
+    GroupMembershipUpsert:
       content:
         application/json:
           schema:
