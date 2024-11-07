@@ -1430,6 +1430,114 @@ paths:
                 $ref: '#/components/schemas/KeyAuth'
       tags:
         - API-keys
+  '/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/mtls-auth':
+    get:
+      operationId: list-mtls-auth-with-consumer
+      summary: List all MTLS-auth credentials associated with a Consumer
+      description: List all MTLS-auth credentials associated with a Consumer
+      parameters:
+        - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
+        - $ref: '#/components/parameters/PaginationSize'
+        - $ref: '#/components/parameters/PaginationOffset'
+        - $ref: '#/components/parameters/PaginationTagsFilter'
+      responses:
+        '200':
+          description: A successful response listing MTLS-auth credentials
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/MTLSAuth'
+                  next:
+                    $ref: '#/components/schemas/PaginationNextResponse'
+                  offset:
+                    $ref: '#/components/schemas/PaginationOffsetResponse'
+      tags:
+        - MTLS-auth credentials
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+    post:
+      operationId: create-mtls-auth-with-consumer
+      summary: Create a new MTLS-auth credential associated with a Consumer
+      description: Create a new MTLS-auth credential associated with a Consumer
+      parameters:
+        - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
+      requestBody:
+        description: Description of new MTLS-auth credential for creation
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MTLSAuthWithoutParents'
+      responses:
+        '201':
+          description: Successfully created MTLS-auth credential
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MTLSAuth'
+      tags:
+        - MTLS-auth credentials
+  '/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/mtls-auth/{MTLSAuthId}':
+    delete:
+      operationId: delete-mtls-auth-with-consumer
+      summary: Delete a a MTLS-auth credential associated with a Consumer
+      description: Delete a a MTLS-auth credential associated with a Consumer using ID.
+      parameters:
+        - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
+        - $ref: '#/components/parameters/MTLSAuthId'
+      responses:
+        '204':
+          description: Successfully deleted MTLS-auth credential or the resource didn't exist
+      tags:
+        - MTLS-auth credentials
+    get:
+      operationId: get-mtls-auth-with-consumer
+      summary: Fetch a MTLS-auth credential associated with a Consumer
+      description: Get a MTLS-auth credential associated with a Consumer using ID.
+      parameters:
+        - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
+        - $ref: '#/components/parameters/MTLSAuthId'
+      responses:
+        '200':
+          description: Successfully fetched MTLS-auth credential
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MTLSAuth'
+        '404':
+          description: Resource does not exist
+      tags:
+        - MTLS-auth credentials
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+    put:
+      operationId: upsert-mtls-auth-with-consumer
+      summary: Upsert a MTLS-auth credential associated with a Consumer
+      description: Create or Update a MTLS-auth credential associated with a Consumer using ID.
+      parameters:
+        - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
+        - $ref: '#/components/parameters/MTLSAuthId'
+      requestBody:
+        description: Description of the MTLS-auth credential
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MTLSAuthWithoutParents'
+      responses:
+        '200':
+          description: Successfully upserted MTLS-auth credential
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MTLSAuth'
+      tags:
+        - MTLS-auth credentials
   '/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/plugins':
     get:
       operationId: list-plugin-with-consumer
@@ -1957,6 +2065,37 @@ paths:
           $ref: '#/components/responses/HTTP401Error'
       tags:
         - Keys
+  '/control-planes/{controlPlaneId}/core-entities/mtls-auths':
+    get:
+      operationId: list-mtls-auth
+      summary: List all MTLS-auth credentials
+      description: List all MTLS-auth credentials
+      parameters:
+        - $ref: '#/components/parameters/PaginationSize'
+        - $ref: '#/components/parameters/PaginationOffset'
+        - $ref: '#/components/parameters/PaginationTagsFilter'
+      responses:
+        '200':
+          description: A successful response listing MTLS-auth credentials
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/MTLSAuth'
+                  next:
+                    $ref: '#/components/schemas/PaginationNextResponse'
+                  offset:
+                    $ref: '#/components/schemas/PaginationOffsetResponse'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - MTLS-auth credentials
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
   '/control-planes/{controlPlaneId}/core-entities/plugins':
     get:
       operationId: list-plugin
@@ -3176,6 +3315,14 @@ components:
       required: true
       schema:
         type: string
+    MTLSAuthId:
+      description: ID of the MTLS-auth credential to lookup
+      example: ''
+      in: path
+      name: MTLSAuthId
+      required: true
+      schema:
+        type: string
     PaginationOffset:
       description: Offset from which to return the next set of resources. Use the value of the 'offset' field from the response of a list operation as input here to paginate through all the resources
       in: query
@@ -3916,6 +4063,78 @@ components:
       additionalProperties: false
       required:
         - kid
+    MTLSAuth:
+      type: object
+      properties:
+        ca_certificate:
+          type: object
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-foreign: true
+        consumer:
+          type: object
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-foreign: true
+        created_at:
+          description: Unix epoch when the resource was created.
+          type: integer
+          readOnly: true
+        id:
+          type: string
+          nullable: true
+        subject_name:
+          type: string
+          nullable: true
+        tags:
+          type: array
+          items:
+            type: string
+          nullable: true
+      example:
+        ca_certificate: bd1f8ca6-cb6b-437f-a4ab-9ce5555fbf1c
+        consumer:
+          id: 84a73fb8-50fc-44a7-a4d5-aa17728ee83f
+        id: b2f34145-0343-41a4-9602-4c69dec2f269
+        subject_name: CA_Subject_Name
+      additionalProperties: false
+    MTLSAuthWithoutParents:
+      type: object
+      properties:
+        ca_certificate:
+          type: object
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-foreign: true
+        created_at:
+          description: Unix epoch when the resource was created.
+          type: integer
+          readOnly: true
+        id:
+          type: string
+          nullable: true
+        subject_name:
+          type: string
+          nullable: true
+        tags:
+          type: array
+          items:
+            type: string
+          nullable: true
+      example:
+        ca_certificate: bd1f8ca6-cb6b-437f-a4ab-9ce5555fbf1c
+        id: b2f34145-0343-41a4-9602-4c69dec2f269
+        subject_name: CA_Subject_Name
+      additionalProperties: false
     PaginationNextResponse:
       description: URI to the next page (may be null)
       type: string
@@ -5237,6 +5456,7 @@ tags:
   - name: Basic-auth credentials
   - name: JWTs
   - name: HMAC-auth credentials
+  - name: MTLS-auth credentials
   - name: ACLs
 externalDocs:
   description: Documentation for Kong Gateway and its APIs
