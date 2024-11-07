@@ -14540,11 +14540,6 @@ components:
         - resource_group_name
         - vnet_name
       title: Azure VNET Peering Attachment Config
-    TransitGatewayAttachmentConfig:
-      oneOf:
-        - $ref: '#/components/schemas/AwsTransitGatewayAttachmentConfig'
-        - $ref: '#/components/schemas/AzureVNETPeeringAttachmentConfig'
-      title: Transit Gateway Attachment Config
     TransitGatewayDnsConfig:
       description: |
         List of mappings from remote DNS server IP address sets to proxied internal domains, for a transit gateway
@@ -14593,20 +14588,19 @@ components:
         - 100.64.0.0/10
         - 172.16.0.0/12
       title: Transit Gateway CIDR Blocks
-    TransitGateway:
-      description: Object containing information about a transit gateway.
+    AwsTransitGatewayResponse:
       type: object
       properties:
-        id:
-          $ref: '#/components/schemas/TransitGatewayId'
         name:
           $ref: '#/components/schemas/TransitGatewayName'
+        dns_config:
+          $ref: '#/components/schemas/TransitGatewayDnsConfig'
         cidr_blocks:
           $ref: '#/components/schemas/TransitGatewayCIDRBlocks'
         transit_gateway_attachment_config:
-          $ref: '#/components/schemas/TransitGatewayAttachmentConfig'
-        dns_config:
-          $ref: '#/components/schemas/TransitGatewayDnsConfig'
+          $ref: '#/components/schemas/AwsTransitGatewayAttachmentConfig'
+        id:
+          $ref: '#/components/schemas/TransitGatewayId'
         state:
           $ref: '#/components/schemas/TransitGatewayState'
         entity_version:
@@ -14629,58 +14623,107 @@ components:
           example: '2022-11-04T20:10:06.927Z'
           readOnly: true
       required:
-        - id
         - name
-        - transit_gateway_attachment_config
         - cidr_blocks
+        - transit_gateway_attachment_config
         - dns_config
+        - id
         - state
         - entity_version
         - created_at
         - updated_at
-      title: Transit Gateway
-    BaseCreateTransitGatewayRequest:
-      description: Base request schema for creating a transit gateway.
+      title: AWS Transit Gateway
+    AzureTransitGatewayResponse:
       type: object
       properties:
         name:
           $ref: '#/components/schemas/TransitGatewayName'
         dns_config:
           $ref: '#/components/schemas/TransitGatewayDnsConfig'
+        transit_gateway_attachment_config:
+          $ref: '#/components/schemas/AzureVNETPeeringAttachmentConfig'
+        id:
+          $ref: '#/components/schemas/TransitGatewayId'
+        state:
+          $ref: '#/components/schemas/TransitGatewayState'
+        entity_version:
+          description: |
+            Monotonically-increasing version count of the transit gateway, to indicate the order of updates to the
+            transit gateway.
+          type: integer
+          example: 1
+          readOnly: true
+        created_at:
+          description: An RFC-3339 timestamp representation of transit gateway creation date.
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          readOnly: true
+        updated_at:
+          description: An RFC-3339 timestamp representation of transit gateway update date.
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          readOnly: true
       required:
         - name
-      title: Base Create Transit Gateway Request
-    AwsCreateTransitGatewayRequest:
-      description: Request schema for creating an AWS transit gateway.
-      allOf:
-        - $ref: '#/components/schemas/BaseCreateTransitGatewayRequest'
-        - type: object
-          properties:
-            cidr_blocks:
-              $ref: '#/components/schemas/TransitGatewayCIDRBlocks'
-            transit_gateway_attachment_config:
-              $ref: '#/components/schemas/AwsTransitGatewayAttachmentConfig'
-          required:
-            - cidr_blocks
-            - transit_gateway_attachment_config
-      title: AWS Create Transit Gateway Request
-    AzureCreateTransitGatewayRequest:
-      description: Request schema for creating an Azure transit gateway through VNET peering.
-      allOf:
-        - $ref: '#/components/schemas/BaseCreateTransitGatewayRequest'
-        - type: object
-          properties:
-            transit_gateway_attachment_config:
-              $ref: '#/components/schemas/AzureVNETPeeringAttachmentConfig'
-          required:
-            - transit_gateway_attachment_config
-      title: Azure Create Transit Gateway Request
+        - transit_gateway_attachment_config
+        - id
+        - dns_config
+        - state
+        - entity_version
+        - created_at
+        - updated_at
+      title: Azure Transit Gateway
+    TransitGatewayResponse:
+      oneOf:
+        - $ref: '#/components/schemas/AwsTransitGatewayResponse'
+        - $ref: '#/components/schemas/AzureTransitGatewayResponse'
+    CreateAwsTransitGateway:
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/TransitGatewayName'
+        dns_config:
+          $ref: '#/components/schemas/TransitGatewayDnsConfig'
+        cidr_blocks:
+          $ref: '#/components/schemas/TransitGatewayCIDRBlocks'
+        transit_gateway_attachment_config:
+          $ref: '#/components/schemas/AwsTransitGatewayAttachmentConfig'
+      required:
+        - name
+        - cidr_blocks
+        - transit_gateway_attachment_config
+        - id
+        - state
+        - entity_version
+        - created_at
+        - updated_at
+      title: AWS Transit Gateway
+    CreateAzureTransitGateway:
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/TransitGatewayName'
+        dns_config:
+          $ref: '#/components/schemas/TransitGatewayDnsConfig'
+        transit_gateway_attachment_config:
+          $ref: '#/components/schemas/AzureVNETPeeringAttachmentConfig'
+      required:
+        - name
+        - transit_gateway_attachment_config
+        - id
+        - state
+        - entity_version
+        - created_at
+        - updated_at
+      title: Azure Transit Gateway
     CreateTransitGatewayRequest:
       description: Request schema for creating a transit gateway.
       type: object
       oneOf:
-        - $ref: '#/components/schemas/AwsCreateTransitGatewayRequest'
-        - $ref: '#/components/schemas/AzureCreateTransitGatewayRequest'
+        - $ref: '#/components/schemas/CreateAwsTransitGateway'
+        - $ref: '#/components/schemas/CreateAzureTransitGateway'
       title: CreateTransitGatewayRequest
     CustomDomainState:
       description: State of the custom domain.
@@ -26328,7 +26371,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/TransitGateway'
+            $ref: '#/components/schemas/TransitGatewayResponse'
     ListTransitGatewaysResponse:
       description: A paginated list for a collection of transit gateways for a network.
       content:
@@ -26341,7 +26384,7 @@ components:
               data:
                 type: array
                 items:
-                  $ref: '#/components/schemas/TransitGateway'
+                  $ref: '#/components/schemas/TransitGatewayResponse'
             required:
               - meta
               - data
@@ -26351,7 +26394,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/TransitGateway'
+            $ref: '#/components/schemas/TransitGatewayResponse'
     ListProviderAccountsResponse:
       description: A paginated list for a collection of provider accounts.
       content:

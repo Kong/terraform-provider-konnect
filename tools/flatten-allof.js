@@ -45,6 +45,7 @@ async function expandAllOf(oas) {
 }
 
 async function updateNode(oas, item) {
+  const merge = mergician({appendArrays: true, dedupArrays: true});
   // Generate all interim paths from the root to the current node
   const toDeref = item.path;
   toDeref.push("allOf");
@@ -70,7 +71,7 @@ async function updateNode(oas, item) {
   });
 
   const subSchema = traverse(x).get(toDeref);
-  item.update(mergician({}, ...subSchema));
+  item.update(merge({}, ...subSchema));
 }
 
 main();
