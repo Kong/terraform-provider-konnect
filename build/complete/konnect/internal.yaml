@@ -700,6 +700,13 @@ components:
         example-1: equals-some-value
         example-2:
           eq: some-value
+    BooleanFieldFilter:
+      description: Filter by a boolean value (true/false).
+      type: boolean
+      example: true
+      title: BooleanFieldFilter
+      x-examples:
+        example-1: true
     PageMeta:
       description: Contains pagination query parameters and the total number of objects returned.
       type: object
@@ -1115,13 +1122,6 @@ components:
       required:
         - value
       title: PatchResourceQuotaRequest
-    BooleanFieldFilter:
-      description: Filter by a boolean value (true/false).
-      type: boolean
-      example: true
-      title: BooleanFieldFilter
-      x-examples:
-        example-1: true
     BaseDeviceAuthorizationGrantBadRequest:
       type: object
       properties:

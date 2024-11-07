@@ -11092,6 +11092,13 @@ components:
           oeq: 'some-potential,value'
         example-6:
           neq: not-this-value
+    BooleanFieldFilter:
+      description: Filter by a boolean value (true/false).
+      type: boolean
+      example: true
+      title: BooleanFieldFilter
+      x-examples:
+        example-1: true
     DateTimeFieldFilter:
       description: Filters on the given datetime (RFC-3339) field value.
       oneOf:
@@ -15370,13 +15377,6 @@ components:
           $ref: '#/components/schemas/BooleanFieldFilter'
       additionalProperties: false
       title: ControlPlaneFilterParameters
-    BooleanFieldFilter:
-      description: Filter by a boolean value (true/false).
-      type: boolean
-      example: true
-      title: BooleanFieldFilter
-      x-examples:
-        example-1: true
     CursorMetaWithSizeAndTotal:
       type: object
       properties:

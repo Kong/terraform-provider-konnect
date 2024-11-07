@@ -14,6 +14,7 @@ src/konnect/definitions/portal-management/**  @Kong/team-devx
 src/konnect/definitions/api-products/**       @Kong/team-devx
 src/konnect/definitions/application-auth-strategies/**       @Kong/team-devx
 src/internal/definitions/documenthub*       @Kong/team-devx
+src/konnect/definitions/api-builder*       @Kong/team-devx
 
 # Gateway Manager
 src/konnect/definitions/control-planes/**           @Kong/team-konnectx-be

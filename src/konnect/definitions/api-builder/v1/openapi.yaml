@@ -774,6 +774,7 @@ components:
                   - version
                   - labels
                   - public_labels
+                  - deprecated
                   - created_at
                   - updated_at
           examples:
@@ -805,6 +806,7 @@ components:
                         - version
                         - labels
                         - public_labels
+                        - deprecated
                         - created_at
                         - updated_at
           examples:
@@ -818,6 +820,7 @@ components:
                       group: accounts
                     labels:
                       env: test
+                    deprecated: false
                     created_at: 2023-01-01T00:00:00.000Z
                     updated_at: 2023-01-01T00:00:00.000Z
                 meta:
@@ -970,6 +973,10 @@ components:
           minLength: 1
           description: An optional version for your API. Leave this empty if your API is unversioned.
           nullable: true
+        deprecated:
+          type: boolean
+          default: false
+          description: Marks this API as deprecated.
         labels:
           $ref: "../../../../common/definitions/konnect_properties.yaml#/components/schemas/Labels"
         public_labels:
@@ -1170,6 +1177,8 @@ components:
           $ref: "../../../../common/definitions/aip_filters.yaml#/components/schemas/LabelsFieldFilter"
         public_labels:
           $ref: "../../../../common/definitions/aip_filters.yaml#/components/schemas/PublicLabelsFieldFilter"
+        deprecated:
+          $ref: "../../../../common/definitions/aip_filters.yaml#/components/schemas/BooleanFieldFilter"
         created_at:
           $ref: "../../../../common/definitions/aip_filters.yaml#/components/schemas/DateTimeFieldFilter"
         updated_at:
@@ -1219,6 +1228,7 @@ components:
         labels:
           env: test
         public_labels: {}
+        deprecated: false
         created_at: 2023-01-01T00:00:00.000Z
         updated_at: 2023-01-01T00:00:00.000Z
     ApiSpecExample:

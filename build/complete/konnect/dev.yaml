@@ -4346,6 +4346,8 @@ components:
           $ref: '#/components/schemas/LabelsFieldFilter'
         public_labels:
           $ref: '#/components/schemas/PublicLabelsFieldFilter'
+        deprecated:
+          $ref: '#/components/schemas/BooleanFieldFilter'
         created_at:
           $ref: '#/components/schemas/DateTimeFieldFilter'
         updated_at:
@@ -4512,6 +4514,13 @@ components:
           oeq: 'some-potential,value'
         example-6:
           neq: not-this-value
+    BooleanFieldFilter:
+      description: Filter by a boolean value (true/false).
+      type: boolean
+      example: true
+      title: BooleanFieldFilter
+      x-examples:
+        example-1: true
     DateTimeFieldFilter:
       description: Filters on the given datetime (RFC-3339) field value.
       oneOf:
@@ -5374,13 +5383,6 @@ components:
       x-examples:
         example-1:
           oeq: 'ready,initializing'
-    BooleanFieldFilter:
-      description: Filter by a boolean value (true/false).
-      type: boolean
-      example: true
-      title: BooleanFieldFilter
-      x-examples:
-        example-1: true
     CreateApiKeyPayload:
       oneOf:
         - $ref: '#/components/schemas/CreateApiKeyPayloadNew'
@@ -9354,6 +9356,7 @@ components:
         labels:
           env: test
         public_labels: {}
+        deprecated: false
         created_at: '2023-01-01T00:00:00.000Z'
         updated_at: '2023-01-01T00:00:00.000Z'
     ApiSpecExample:
@@ -10429,6 +10432,10 @@ components:
                 maxLength: 255
                 minLength: 1
                 nullable: true
+              deprecated:
+                description: Marks this API as deprecated.
+                type: boolean
+                default: false
               labels:
                 $ref: '#/components/schemas/Labels'
               public_labels:
@@ -10545,6 +10552,10 @@ components:
                 maxLength: 255
                 minLength: 1
                 nullable: true
+              deprecated:
+                description: Marks this API as deprecated.
+                type: boolean
+                default: false
               labels:
                 $ref: '#/components/schemas/LabelsUpdate'
               public_labels:
@@ -11212,6 +11223,10 @@ components:
                 maxLength: 255
                 minLength: 1
                 nullable: true
+              deprecated:
+                description: Marks this API as deprecated.
+                type: boolean
+                default: false
               labels:
                 $ref: '#/components/schemas/Labels'
               public_labels:
@@ -11227,6 +11242,7 @@ components:
               - version
               - labels
               - public_labels
+              - deprecated
               - created_at
               - updated_at
             title: API
@@ -11268,6 +11284,10 @@ components:
                       maxLength: 255
                       minLength: 1
                       nullable: true
+                    deprecated:
+                      description: Marks this API as deprecated.
+                      type: boolean
+                      default: false
                     labels:
                       $ref: '#/components/schemas/Labels'
                     public_labels:
@@ -11282,6 +11302,7 @@ components:
                     - version
                     - labels
                     - public_labels
+                    - deprecated
                     - created_at
                     - updated_at
             additionalProperties: false
@@ -11300,6 +11321,7 @@ components:
                       group: accounts
                     labels:
                       env: test
+                    deprecated: false
                     created_at: '2023-01-01T00:00:00.000Z'
                     updated_at: '2023-01-01T00:00:00.000Z'
                 meta:
