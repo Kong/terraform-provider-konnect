@@ -517,6 +517,8 @@ components:
                 enum:
                   - active
                   - inactive
+                  - deleting
+                  - deleted
               reason:
                 description: The reason for the state change.
                 type: string

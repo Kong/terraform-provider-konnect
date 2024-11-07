@@ -2536,6 +2536,8 @@ components:
                 enum:
                   - active
                   - inactive
+                  - deleting
+                  - deleted
               retention_period_days:
                 type: integer
                 description: The number of days an organization spends inactive before being deleted.

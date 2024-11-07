@@ -234,7 +234,7 @@ components:
                 type: string
                 description: The state of the organization to set.
                 example: inactive
-                enum: [active, inactive]
+                enum: [active, inactive, deleting, deleted]
               reason:
                 type: string
                 description: The reason for the state change.
