@@ -17,7 +17,6 @@ import (
 	"github.com/kong/terraform-provider-konnect/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/internal/validators"
-	custom_stringvalidators "github.com/kong/terraform-provider-konnect/internal/validators/stringvalidators"
 	"regexp"
 )
 
@@ -84,8 +83,7 @@ func (r *APIProductSpecificationResource) Schema(ctx context.Context, req resour
 				Description: `The name of the API product version specification`,
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthBetween(1, 255),
-					stringvalidator.RegexMatches(regexp.MustCompile(`(((((^.+(?:\.yaml|\.yml|\.json)$|.+(\.yaml|\.yml|\.json))|^.+(?:\.yaml|\.yml|\.json)$)|.+(\.yaml|\.yml|\.json))|.+(\.yaml|\.yml|\.json))|^.+(?:\.yaml|\.yml|\.json)$)`), "must match pattern "+regexp.MustCompile(`(((((^.+(?:\.yaml|\.yml|\.json)$|.+(\.yaml|\.yml|\.json))|^.+(?:\.yaml|\.yml|\.json)$)|.+(\.yaml|\.yml|\.json))|.+(\.yaml|\.yml|\.json))|^.+(?:\.yaml|\.yml|\.json)$)`).String()),
-					custom_stringvalidators.OpenAPISpecFilenameValidator(),
+					stringvalidator.RegexMatches(regexp.MustCompile(`^.+(?:\.yaml|\.yml|\.json)$`), "must match pattern "+regexp.MustCompile(`^.+(?:\.yaml|\.yml|\.json)$`).String()),
 				},
 			},
 			"updated_at": schema.StringAttribute{
