@@ -3,7 +3,6 @@
 package provider
 
 import (
-	"encoding/json"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
@@ -29,10 +28,11 @@ func (r *GatewayRouteResourceModel) ToSharedRouteInput() *shared.RouteInput {
 			Port: port,
 		})
 	}
-	headers := make(map[string]interface{})
+	headers := make(map[string]string)
 	for headersKey, headersValue := range r.Headers {
-		var headersInst interface{}
-		_ = json.Unmarshal([]byte(headersValue.ValueString()), &headersInst)
+		var headersInst string
+		headersInst = headersValue.ValueString()
+
 		headers[headersKey] = headersInst
 	}
 	var hosts []string = []string{}
@@ -44,6 +44,12 @@ func (r *GatewayRouteResourceModel) ToSharedRouteInput() *shared.RouteInput {
 		*httpsRedirectStatusCode = shared.HTTPSRedirectStatusCode(r.HTTPSRedirectStatusCode.ValueInt64())
 	} else {
 		httpsRedirectStatusCode = nil
+	}
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
 	}
 	var methods []string = []string{}
 	for _, methodsItem := range r.Methods {
@@ -93,6 +99,18 @@ func (r *GatewayRouteResourceModel) ToSharedRouteInput() *shared.RouteInput {
 	} else {
 		responseBuffering = nil
 	}
+	var service *shared.RouteService
+	if r.Service != nil {
+		id1 := new(string)
+		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
+			*id1 = r.Service.ID.ValueString()
+		} else {
+			id1 = nil
+		}
+		service = &shared.RouteService{
+			ID: id1,
+		}
+	}
 	var snis []string = []string{}
 	for _, snisItem := range r.Snis {
 		snis = append(snis, snisItem.ValueString())
@@ -126,23 +144,12 @@ func (r *GatewayRouteResourceModel) ToSharedRouteInput() *shared.RouteInput {
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	var service *shared.RouteService
-	if r.Service != nil {
-		id := new(string)
-		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
-			*id = r.Service.ID.ValueString()
-		} else {
-			id = nil
-		}
-		service = &shared.RouteService{
-			ID: id,
-		}
-	}
 	out := shared.RouteInput{
 		Destinations:            destinations,
 		Headers:                 headers,
 		Hosts:                   hosts,
 		HTTPSRedirectStatusCode: httpsRedirectStatusCode,
+		ID:                      id,
 		Methods:                 methods,
 		Name:                    name,
 		PathHandling:            pathHandling,
@@ -152,11 +159,11 @@ func (r *GatewayRouteResourceModel) ToSharedRouteInput() *shared.RouteInput {
 		RegexPriority:           regexPriority,
 		RequestBuffering:        requestBuffering,
 		ResponseBuffering:       responseBuffering,
+		Service:                 service,
 		Snis:                    snis,
 		Sources:                 sources,
 		StripPath:               stripPath,
 		Tags:                    tags,
-		Service:                 service,
 	}
 	return &out
 }
@@ -182,8 +189,7 @@ func (r *GatewayRouteResourceModel) RefreshFromSharedRoute(resp *shared.Route) {
 		if len(resp.Headers) > 0 {
 			r.Headers = make(map[string]types.String)
 			for key, value := range resp.Headers {
-				result, _ := json.Marshal(value)
-				r.Headers[key] = types.StringValue(string(result))
+				r.Headers[key] = types.StringValue(value)
 			}
 		}
 		r.Hosts = []types.String{}

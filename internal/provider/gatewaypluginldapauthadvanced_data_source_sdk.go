@@ -11,56 +11,51 @@ import (
 
 func (r *GatewayPluginLdapAuthAdvancedDataSourceModel) RefreshFromSharedLdapAuthAdvancedPlugin(resp *shared.LdapAuthAdvancedPlugin) {
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
+		r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
+		r.Config.Attribute = types.StringPointerValue(resp.Config.Attribute)
+		r.Config.BaseDn = types.StringPointerValue(resp.Config.BaseDn)
+		r.Config.BindDn = types.StringPointerValue(resp.Config.BindDn)
+		if resp.Config.CacheTTL != nil {
+			r.Config.CacheTTL = types.NumberValue(big.NewFloat(float64(*resp.Config.CacheTTL)))
 		} else {
-			r.Config = &tfTypes.CreateLdapAuthAdvancedPluginConfig{}
-			r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
-			r.Config.Attribute = types.StringPointerValue(resp.Config.Attribute)
-			r.Config.BaseDn = types.StringPointerValue(resp.Config.BaseDn)
-			r.Config.BindDn = types.StringPointerValue(resp.Config.BindDn)
-			if resp.Config.CacheTTL != nil {
-				r.Config.CacheTTL = types.NumberValue(big.NewFloat(float64(*resp.Config.CacheTTL)))
-			} else {
-				r.Config.CacheTTL = types.NumberNull()
-			}
-			r.Config.ConsumerBy = []types.String{}
-			for _, v := range resp.Config.ConsumerBy {
-				r.Config.ConsumerBy = append(r.Config.ConsumerBy, types.StringValue(string(v)))
-			}
-			r.Config.ConsumerOptional = types.BoolPointerValue(resp.Config.ConsumerOptional)
-			r.Config.GroupBaseDn = types.StringPointerValue(resp.Config.GroupBaseDn)
-			r.Config.GroupMemberAttribute = types.StringPointerValue(resp.Config.GroupMemberAttribute)
-			r.Config.GroupNameAttribute = types.StringPointerValue(resp.Config.GroupNameAttribute)
-			r.Config.GroupsRequired = []types.String{}
-			for _, v := range resp.Config.GroupsRequired {
-				r.Config.GroupsRequired = append(r.Config.GroupsRequired, types.StringValue(v))
-			}
-			r.Config.HeaderType = types.StringPointerValue(resp.Config.HeaderType)
-			r.Config.HideCredentials = types.BoolPointerValue(resp.Config.HideCredentials)
-			if resp.Config.Keepalive != nil {
-				r.Config.Keepalive = types.NumberValue(big.NewFloat(float64(*resp.Config.Keepalive)))
-			} else {
-				r.Config.Keepalive = types.NumberNull()
-			}
-			r.Config.LdapHost = types.StringPointerValue(resp.Config.LdapHost)
-			r.Config.LdapPassword = types.StringPointerValue(resp.Config.LdapPassword)
-			if resp.Config.LdapPort != nil {
-				r.Config.LdapPort = types.NumberValue(big.NewFloat(float64(*resp.Config.LdapPort)))
-			} else {
-				r.Config.LdapPort = types.NumberNull()
-			}
-			r.Config.Ldaps = types.BoolPointerValue(resp.Config.Ldaps)
-			r.Config.LogSearchResults = types.BoolPointerValue(resp.Config.LogSearchResults)
-			r.Config.Realm = types.StringPointerValue(resp.Config.Realm)
-			r.Config.StartTLS = types.BoolPointerValue(resp.Config.StartTLS)
-			if resp.Config.Timeout != nil {
-				r.Config.Timeout = types.NumberValue(big.NewFloat(float64(*resp.Config.Timeout)))
-			} else {
-				r.Config.Timeout = types.NumberNull()
-			}
-			r.Config.VerifyLdapHost = types.BoolPointerValue(resp.Config.VerifyLdapHost)
+			r.Config.CacheTTL = types.NumberNull()
 		}
+		r.Config.ConsumerBy = []types.String{}
+		for _, v := range resp.Config.ConsumerBy {
+			r.Config.ConsumerBy = append(r.Config.ConsumerBy, types.StringValue(string(v)))
+		}
+		r.Config.ConsumerOptional = types.BoolPointerValue(resp.Config.ConsumerOptional)
+		r.Config.GroupBaseDn = types.StringPointerValue(resp.Config.GroupBaseDn)
+		r.Config.GroupMemberAttribute = types.StringPointerValue(resp.Config.GroupMemberAttribute)
+		r.Config.GroupNameAttribute = types.StringPointerValue(resp.Config.GroupNameAttribute)
+		r.Config.GroupsRequired = []types.String{}
+		for _, v := range resp.Config.GroupsRequired {
+			r.Config.GroupsRequired = append(r.Config.GroupsRequired, types.StringValue(v))
+		}
+		r.Config.HeaderType = types.StringPointerValue(resp.Config.HeaderType)
+		r.Config.HideCredentials = types.BoolPointerValue(resp.Config.HideCredentials)
+		if resp.Config.Keepalive != nil {
+			r.Config.Keepalive = types.NumberValue(big.NewFloat(float64(*resp.Config.Keepalive)))
+		} else {
+			r.Config.Keepalive = types.NumberNull()
+		}
+		r.Config.LdapHost = types.StringPointerValue(resp.Config.LdapHost)
+		r.Config.LdapPassword = types.StringPointerValue(resp.Config.LdapPassword)
+		if resp.Config.LdapPort != nil {
+			r.Config.LdapPort = types.NumberValue(big.NewFloat(float64(*resp.Config.LdapPort)))
+		} else {
+			r.Config.LdapPort = types.NumberNull()
+		}
+		r.Config.Ldaps = types.BoolPointerValue(resp.Config.Ldaps)
+		r.Config.LogSearchResults = types.BoolPointerValue(resp.Config.LogSearchResults)
+		r.Config.Realm = types.StringPointerValue(resp.Config.Realm)
+		r.Config.StartTLS = types.BoolPointerValue(resp.Config.StartTLS)
+		if resp.Config.Timeout != nil {
+			r.Config.Timeout = types.NumberValue(big.NewFloat(float64(*resp.Config.Timeout)))
+		} else {
+			r.Config.Timeout = types.NumberNull()
+		}
+		r.Config.VerifyLdapHost = types.BoolPointerValue(resp.Config.VerifyLdapHost)
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
@@ -80,11 +75,11 @@ func (r *GatewayPluginLdapAuthAdvancedDataSourceModel) RefreshFromSharedLdapAuth
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			r.Ordering = &tfTypes.ACLPluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After = &tfTypes.ACLPluginAfter{}
 				r.Ordering.After.Access = []types.String{}
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -93,7 +88,7 @@ func (r *GatewayPluginLdapAuthAdvancedDataSourceModel) RefreshFromSharedLdapAuth
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
 				r.Ordering.Before.Access = []types.String{}
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))

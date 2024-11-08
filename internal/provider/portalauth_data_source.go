@@ -50,7 +50,7 @@ func (r *PortalAuthDataSource) Schema(ctx context.Context, req datasource.Schema
 		Attributes: map[string]schema.Attribute{
 			"basic_auth_enabled": schema.BoolAttribute{
 				Computed:    true,
-				Description: `The organization has basic auth enabled.`,
+				Description: `The portal has basic auth enabled or disabled.`,
 			},
 			"konnect_mapping_enabled": schema.BoolAttribute{
 				Computed:    true,
@@ -58,7 +58,7 @@ func (r *PortalAuthDataSource) Schema(ctx context.Context, req datasource.Schema
 			},
 			"oidc_auth_enabled": schema.BoolAttribute{
 				Computed:    true,
-				Description: `The organization has OIDC disabled.`,
+				Description: `The portal has OIDC enabled or disabled.`,
 			},
 			"oidc_config": schema.SingleNestedAttribute{
 				Computed: true,

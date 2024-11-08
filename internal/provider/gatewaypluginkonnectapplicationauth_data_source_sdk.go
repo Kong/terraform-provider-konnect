@@ -11,778 +11,773 @@ import (
 
 func (r *GatewayPluginKonnectApplicationAuthDataSourceModel) RefreshFromSharedKonnectApplicationAuthPlugin(resp *shared.KonnectApplicationAuthPlugin) {
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
+		if resp.Config.AuthType != nil {
+			r.Config.AuthType = types.StringValue(string(*resp.Config.AuthType))
 		} else {
-			r.Config = &tfTypes.CreateKonnectApplicationAuthPluginConfig{}
-			if resp.Config.AuthType != nil {
-				r.Config.AuthType = types.StringValue(string(*resp.Config.AuthType))
-			} else {
-				r.Config.AuthType = types.StringNull()
+			r.Config.AuthType = types.StringNull()
+		}
+		r.Config.KeyNames = []types.String{}
+		for _, v := range resp.Config.KeyNames {
+			r.Config.KeyNames = append(r.Config.KeyNames, types.StringValue(v))
+		}
+		r.Config.Scope = types.StringPointerValue(resp.Config.Scope)
+		if resp.Config.V2Strategies == nil {
+			r.Config.V2Strategies = nil
+		} else {
+			r.Config.V2Strategies = &tfTypes.V2Strategies{}
+			r.Config.V2Strategies.KeyAuth = []tfTypes.KonnectApplicationAuthPluginKeyAuth{}
+			if len(r.Config.V2Strategies.KeyAuth) > len(resp.Config.V2Strategies.KeyAuth) {
+				r.Config.V2Strategies.KeyAuth = r.Config.V2Strategies.KeyAuth[:len(resp.Config.V2Strategies.KeyAuth)]
 			}
-			r.Config.KeyNames = []types.String{}
-			for _, v := range resp.Config.KeyNames {
-				r.Config.KeyNames = append(r.Config.KeyNames, types.StringValue(v))
+			for keyAuthCount, keyAuthItem := range resp.Config.V2Strategies.KeyAuth {
+				var keyAuth1 tfTypes.KonnectApplicationAuthPluginKeyAuth
+				keyAuth1.Config.KeyNames = []types.String{}
+				for _, v := range keyAuthItem.Config.KeyNames {
+					keyAuth1.Config.KeyNames = append(keyAuth1.Config.KeyNames, types.StringValue(v))
+				}
+				keyAuth1.StrategyID = types.StringValue(keyAuthItem.StrategyID)
+				if keyAuthCount+1 > len(r.Config.V2Strategies.KeyAuth) {
+					r.Config.V2Strategies.KeyAuth = append(r.Config.V2Strategies.KeyAuth, keyAuth1)
+				} else {
+					r.Config.V2Strategies.KeyAuth[keyAuthCount].Config = keyAuth1.Config
+					r.Config.V2Strategies.KeyAuth[keyAuthCount].StrategyID = keyAuth1.StrategyID
+				}
 			}
-			r.Config.Scope = types.StringPointerValue(resp.Config.Scope)
-			if resp.Config.V2Strategies == nil {
-				r.Config.V2Strategies = nil
-			} else {
-				r.Config.V2Strategies = &tfTypes.CreateKonnectApplicationAuthPluginV2Strategies{}
-				r.Config.V2Strategies.KeyAuth = []tfTypes.KonnectApplicationAuthPluginKeyAuth{}
-				if len(r.Config.V2Strategies.KeyAuth) > len(resp.Config.V2Strategies.KeyAuth) {
-					r.Config.V2Strategies.KeyAuth = r.Config.V2Strategies.KeyAuth[:len(resp.Config.V2Strategies.KeyAuth)]
-				}
-				for keyAuthCount, keyAuthItem := range resp.Config.V2Strategies.KeyAuth {
-					var keyAuth1 tfTypes.KonnectApplicationAuthPluginKeyAuth
-					keyAuth1.Config.KeyNames = []types.String{}
-					for _, v := range keyAuthItem.Config.KeyNames {
-						keyAuth1.Config.KeyNames = append(keyAuth1.Config.KeyNames, types.StringValue(v))
+			r.Config.V2Strategies.OpenidConnect = []tfTypes.OpenidConnect{}
+			if len(r.Config.V2Strategies.OpenidConnect) > len(resp.Config.V2Strategies.OpenidConnect) {
+				r.Config.V2Strategies.OpenidConnect = r.Config.V2Strategies.OpenidConnect[:len(resp.Config.V2Strategies.OpenidConnect)]
+			}
+			for openidConnectCount, openidConnectItem := range resp.Config.V2Strategies.OpenidConnect {
+				var openidConnect1 tfTypes.OpenidConnect
+				if openidConnectItem.Config == nil {
+					openidConnect1.Config = nil
+				} else {
+					openidConnect1.Config = &tfTypes.KonnectApplicationAuthPluginConfigConfig{}
+					openidConnect1.Config.Anonymous = types.StringPointerValue(openidConnectItem.Config.Anonymous)
+					openidConnect1.Config.Audience = []types.String{}
+					for _, v := range openidConnectItem.Config.Audience {
+						openidConnect1.Config.Audience = append(openidConnect1.Config.Audience, types.StringValue(v))
 					}
-					keyAuth1.StrategyID = types.StringValue(keyAuthItem.StrategyID)
-					if keyAuthCount+1 > len(r.Config.V2Strategies.KeyAuth) {
-						r.Config.V2Strategies.KeyAuth = append(r.Config.V2Strategies.KeyAuth, keyAuth1)
+					openidConnect1.Config.AudienceClaim = []types.String{}
+					for _, v := range openidConnectItem.Config.AudienceClaim {
+						openidConnect1.Config.AudienceClaim = append(openidConnect1.Config.AudienceClaim, types.StringValue(v))
+					}
+					openidConnect1.Config.AudienceRequired = []types.String{}
+					for _, v := range openidConnectItem.Config.AudienceRequired {
+						openidConnect1.Config.AudienceRequired = append(openidConnect1.Config.AudienceRequired, types.StringValue(v))
+					}
+					openidConnect1.Config.AuthMethods = []types.String{}
+					for _, v := range openidConnectItem.Config.AuthMethods {
+						openidConnect1.Config.AuthMethods = append(openidConnect1.Config.AuthMethods, types.StringValue(string(v)))
+					}
+					openidConnect1.Config.AuthenticatedGroupsClaim = []types.String{}
+					for _, v := range openidConnectItem.Config.AuthenticatedGroupsClaim {
+						openidConnect1.Config.AuthenticatedGroupsClaim = append(openidConnect1.Config.AuthenticatedGroupsClaim, types.StringValue(v))
+					}
+					openidConnect1.Config.AuthorizationCookieDomain = types.StringPointerValue(openidConnectItem.Config.AuthorizationCookieDomain)
+					openidConnect1.Config.AuthorizationCookieHTTPOnly = types.BoolPointerValue(openidConnectItem.Config.AuthorizationCookieHTTPOnly)
+					openidConnect1.Config.AuthorizationCookieName = types.StringPointerValue(openidConnectItem.Config.AuthorizationCookieName)
+					openidConnect1.Config.AuthorizationCookiePath = types.StringPointerValue(openidConnectItem.Config.AuthorizationCookiePath)
+					if openidConnectItem.Config.AuthorizationCookieSameSite != nil {
+						openidConnect1.Config.AuthorizationCookieSameSite = types.StringValue(string(*openidConnectItem.Config.AuthorizationCookieSameSite))
 					} else {
-						r.Config.V2Strategies.KeyAuth[keyAuthCount].Config = keyAuth1.Config
-						r.Config.V2Strategies.KeyAuth[keyAuthCount].StrategyID = keyAuth1.StrategyID
+						openidConnect1.Config.AuthorizationCookieSameSite = types.StringNull()
 					}
-				}
-				r.Config.V2Strategies.OpenidConnect = []tfTypes.OpenidConnect{}
-				if len(r.Config.V2Strategies.OpenidConnect) > len(resp.Config.V2Strategies.OpenidConnect) {
-					r.Config.V2Strategies.OpenidConnect = r.Config.V2Strategies.OpenidConnect[:len(resp.Config.V2Strategies.OpenidConnect)]
-				}
-				for openidConnectCount, openidConnectItem := range resp.Config.V2Strategies.OpenidConnect {
-					var openidConnect1 tfTypes.OpenidConnect
-					if openidConnectItem.Config == nil {
-						openidConnect1.Config = nil
+					openidConnect1.Config.AuthorizationCookieSecure = types.BoolPointerValue(openidConnectItem.Config.AuthorizationCookieSecure)
+					openidConnect1.Config.AuthorizationEndpoint = types.StringPointerValue(openidConnectItem.Config.AuthorizationEndpoint)
+					openidConnect1.Config.AuthorizationQueryArgsClient = []types.String{}
+					for _, v := range openidConnectItem.Config.AuthorizationQueryArgsClient {
+						openidConnect1.Config.AuthorizationQueryArgsClient = append(openidConnect1.Config.AuthorizationQueryArgsClient, types.StringValue(v))
+					}
+					openidConnect1.Config.AuthorizationQueryArgsNames = []types.String{}
+					for _, v := range openidConnectItem.Config.AuthorizationQueryArgsNames {
+						openidConnect1.Config.AuthorizationQueryArgsNames = append(openidConnect1.Config.AuthorizationQueryArgsNames, types.StringValue(v))
+					}
+					openidConnect1.Config.AuthorizationQueryArgsValues = []types.String{}
+					for _, v := range openidConnectItem.Config.AuthorizationQueryArgsValues {
+						openidConnect1.Config.AuthorizationQueryArgsValues = append(openidConnect1.Config.AuthorizationQueryArgsValues, types.StringValue(v))
+					}
+					if openidConnectItem.Config.AuthorizationRollingTimeout != nil {
+						openidConnect1.Config.AuthorizationRollingTimeout = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.AuthorizationRollingTimeout)))
 					} else {
-						openidConnect1.Config = &tfTypes.CreateKonnectApplicationAuthPluginConfigConfig{}
-						openidConnect1.Config.Anonymous = types.StringPointerValue(openidConnectItem.Config.Anonymous)
-						openidConnect1.Config.Audience = []types.String{}
-						for _, v := range openidConnectItem.Config.Audience {
-							openidConnect1.Config.Audience = append(openidConnect1.Config.Audience, types.StringValue(v))
-						}
-						openidConnect1.Config.AudienceClaim = []types.String{}
-						for _, v := range openidConnectItem.Config.AudienceClaim {
-							openidConnect1.Config.AudienceClaim = append(openidConnect1.Config.AudienceClaim, types.StringValue(v))
-						}
-						openidConnect1.Config.AudienceRequired = []types.String{}
-						for _, v := range openidConnectItem.Config.AudienceRequired {
-							openidConnect1.Config.AudienceRequired = append(openidConnect1.Config.AudienceRequired, types.StringValue(v))
-						}
-						openidConnect1.Config.AuthMethods = []types.String{}
-						for _, v := range openidConnectItem.Config.AuthMethods {
-							openidConnect1.Config.AuthMethods = append(openidConnect1.Config.AuthMethods, types.StringValue(string(v)))
-						}
-						openidConnect1.Config.AuthenticatedGroupsClaim = []types.String{}
-						for _, v := range openidConnectItem.Config.AuthenticatedGroupsClaim {
-							openidConnect1.Config.AuthenticatedGroupsClaim = append(openidConnect1.Config.AuthenticatedGroupsClaim, types.StringValue(v))
-						}
-						openidConnect1.Config.AuthorizationCookieDomain = types.StringPointerValue(openidConnectItem.Config.AuthorizationCookieDomain)
-						openidConnect1.Config.AuthorizationCookieHTTPOnly = types.BoolPointerValue(openidConnectItem.Config.AuthorizationCookieHTTPOnly)
-						openidConnect1.Config.AuthorizationCookieName = types.StringPointerValue(openidConnectItem.Config.AuthorizationCookieName)
-						openidConnect1.Config.AuthorizationCookiePath = types.StringPointerValue(openidConnectItem.Config.AuthorizationCookiePath)
-						if openidConnectItem.Config.AuthorizationCookieSameSite != nil {
-							openidConnect1.Config.AuthorizationCookieSameSite = types.StringValue(string(*openidConnectItem.Config.AuthorizationCookieSameSite))
-						} else {
-							openidConnect1.Config.AuthorizationCookieSameSite = types.StringNull()
-						}
-						openidConnect1.Config.AuthorizationCookieSecure = types.BoolPointerValue(openidConnectItem.Config.AuthorizationCookieSecure)
-						openidConnect1.Config.AuthorizationEndpoint = types.StringPointerValue(openidConnectItem.Config.AuthorizationEndpoint)
-						openidConnect1.Config.AuthorizationQueryArgsClient = []types.String{}
-						for _, v := range openidConnectItem.Config.AuthorizationQueryArgsClient {
-							openidConnect1.Config.AuthorizationQueryArgsClient = append(openidConnect1.Config.AuthorizationQueryArgsClient, types.StringValue(v))
-						}
-						openidConnect1.Config.AuthorizationQueryArgsNames = []types.String{}
-						for _, v := range openidConnectItem.Config.AuthorizationQueryArgsNames {
-							openidConnect1.Config.AuthorizationQueryArgsNames = append(openidConnect1.Config.AuthorizationQueryArgsNames, types.StringValue(v))
-						}
-						openidConnect1.Config.AuthorizationQueryArgsValues = []types.String{}
-						for _, v := range openidConnectItem.Config.AuthorizationQueryArgsValues {
-							openidConnect1.Config.AuthorizationQueryArgsValues = append(openidConnect1.Config.AuthorizationQueryArgsValues, types.StringValue(v))
-						}
-						if openidConnectItem.Config.AuthorizationRollingTimeout != nil {
-							openidConnect1.Config.AuthorizationRollingTimeout = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.AuthorizationRollingTimeout)))
-						} else {
-							openidConnect1.Config.AuthorizationRollingTimeout = types.NumberNull()
-						}
-						openidConnect1.Config.BearerTokenCookieName = types.StringPointerValue(openidConnectItem.Config.BearerTokenCookieName)
-						openidConnect1.Config.BearerTokenParamType = []types.String{}
-						for _, v := range openidConnectItem.Config.BearerTokenParamType {
-							openidConnect1.Config.BearerTokenParamType = append(openidConnect1.Config.BearerTokenParamType, types.StringValue(string(v)))
-						}
-						openidConnect1.Config.ByUsernameIgnoreCase = types.BoolPointerValue(openidConnectItem.Config.ByUsernameIgnoreCase)
-						openidConnect1.Config.CacheIntrospection = types.BoolPointerValue(openidConnectItem.Config.CacheIntrospection)
-						openidConnect1.Config.CacheTokenExchange = types.BoolPointerValue(openidConnectItem.Config.CacheTokenExchange)
-						openidConnect1.Config.CacheTokens = types.BoolPointerValue(openidConnectItem.Config.CacheTokens)
-						openidConnect1.Config.CacheTokensSalt = types.StringPointerValue(openidConnectItem.Config.CacheTokensSalt)
-						if openidConnectItem.Config.CacheTTL != nil {
-							openidConnect1.Config.CacheTTL = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.CacheTTL)))
-						} else {
-							openidConnect1.Config.CacheTTL = types.NumberNull()
-						}
-						if openidConnectItem.Config.CacheTTLMax != nil {
-							openidConnect1.Config.CacheTTLMax = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.CacheTTLMax)))
-						} else {
-							openidConnect1.Config.CacheTTLMax = types.NumberNull()
-						}
-						if openidConnectItem.Config.CacheTTLMin != nil {
-							openidConnect1.Config.CacheTTLMin = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.CacheTTLMin)))
-						} else {
-							openidConnect1.Config.CacheTTLMin = types.NumberNull()
-						}
-						if openidConnectItem.Config.CacheTTLNeg != nil {
-							openidConnect1.Config.CacheTTLNeg = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.CacheTTLNeg)))
-						} else {
-							openidConnect1.Config.CacheTTLNeg = types.NumberNull()
-						}
-						if openidConnectItem.Config.CacheTTLResurrect != nil {
-							openidConnect1.Config.CacheTTLResurrect = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.CacheTTLResurrect)))
-						} else {
-							openidConnect1.Config.CacheTTLResurrect = types.NumberNull()
-						}
-						openidConnect1.Config.CacheUserInfo = types.BoolPointerValue(openidConnectItem.Config.CacheUserInfo)
-						openidConnect1.Config.ClaimsForbidden = []types.String{}
-						for _, v := range openidConnectItem.Config.ClaimsForbidden {
-							openidConnect1.Config.ClaimsForbidden = append(openidConnect1.Config.ClaimsForbidden, types.StringValue(v))
-						}
-						openidConnect1.Config.ClientAlg = []types.String{}
-						for _, v := range openidConnectItem.Config.ClientAlg {
-							openidConnect1.Config.ClientAlg = append(openidConnect1.Config.ClientAlg, types.StringValue(string(v)))
-						}
-						openidConnect1.Config.ClientArg = types.StringPointerValue(openidConnectItem.Config.ClientArg)
-						openidConnect1.Config.ClientAuth = []types.String{}
-						for _, v := range openidConnectItem.Config.ClientAuth {
-							openidConnect1.Config.ClientAuth = append(openidConnect1.Config.ClientAuth, types.StringValue(string(v)))
-						}
-						openidConnect1.Config.ClientCredentialsParamType = []types.String{}
-						for _, v := range openidConnectItem.Config.ClientCredentialsParamType {
-							openidConnect1.Config.ClientCredentialsParamType = append(openidConnect1.Config.ClientCredentialsParamType, types.StringValue(string(v)))
-						}
-						openidConnect1.Config.ClientID = []types.String{}
-						for _, v := range openidConnectItem.Config.ClientID {
-							openidConnect1.Config.ClientID = append(openidConnect1.Config.ClientID, types.StringValue(v))
-						}
-						openidConnect1.Config.ClientJwk = []tfTypes.KonnectApplicationAuthPluginClientJwk{}
-						for clientJwkCount, clientJwkItem := range openidConnectItem.Config.ClientJwk {
-							var clientJwk1 tfTypes.KonnectApplicationAuthPluginClientJwk
-							clientJwk1.Alg = types.StringPointerValue(clientJwkItem.Alg)
-							clientJwk1.Crv = types.StringPointerValue(clientJwkItem.Crv)
-							clientJwk1.D = types.StringPointerValue(clientJwkItem.D)
-							clientJwk1.Dp = types.StringPointerValue(clientJwkItem.Dp)
-							clientJwk1.Dq = types.StringPointerValue(clientJwkItem.Dq)
-							clientJwk1.E = types.StringPointerValue(clientJwkItem.E)
-							clientJwk1.Issuer = types.StringPointerValue(clientJwkItem.Issuer)
-							clientJwk1.K = types.StringPointerValue(clientJwkItem.K)
-							clientJwk1.KeyOps = []types.String{}
-							for _, v := range clientJwkItem.KeyOps {
-								clientJwk1.KeyOps = append(clientJwk1.KeyOps, types.StringValue(v))
-							}
-							clientJwk1.Kid = types.StringPointerValue(clientJwkItem.Kid)
-							clientJwk1.Kty = types.StringPointerValue(clientJwkItem.Kty)
-							clientJwk1.N = types.StringPointerValue(clientJwkItem.N)
-							clientJwk1.Oth = types.StringPointerValue(clientJwkItem.Oth)
-							clientJwk1.P = types.StringPointerValue(clientJwkItem.P)
-							clientJwk1.Q = types.StringPointerValue(clientJwkItem.Q)
-							clientJwk1.Qi = types.StringPointerValue(clientJwkItem.Qi)
-							clientJwk1.R = types.StringPointerValue(clientJwkItem.R)
-							clientJwk1.T = types.StringPointerValue(clientJwkItem.T)
-							clientJwk1.Use = types.StringPointerValue(clientJwkItem.Use)
-							clientJwk1.X = types.StringPointerValue(clientJwkItem.X)
-							clientJwk1.X5c = []types.String{}
-							for _, v := range clientJwkItem.X5c {
-								clientJwk1.X5c = append(clientJwk1.X5c, types.StringValue(v))
-							}
-							clientJwk1.X5t = types.StringPointerValue(clientJwkItem.X5t)
-							clientJwk1.X5tNumberS256 = types.StringPointerValue(clientJwkItem.X5tNumberS256)
-							clientJwk1.X5u = types.StringPointerValue(clientJwkItem.X5u)
-							clientJwk1.Y = types.StringPointerValue(clientJwkItem.Y)
-							if clientJwkCount+1 > len(openidConnect1.Config.ClientJwk) {
-								openidConnect1.Config.ClientJwk = append(openidConnect1.Config.ClientJwk, clientJwk1)
-							} else {
-								openidConnect1.Config.ClientJwk[clientJwkCount].Alg = clientJwk1.Alg
-								openidConnect1.Config.ClientJwk[clientJwkCount].Crv = clientJwk1.Crv
-								openidConnect1.Config.ClientJwk[clientJwkCount].D = clientJwk1.D
-								openidConnect1.Config.ClientJwk[clientJwkCount].Dp = clientJwk1.Dp
-								openidConnect1.Config.ClientJwk[clientJwkCount].Dq = clientJwk1.Dq
-								openidConnect1.Config.ClientJwk[clientJwkCount].E = clientJwk1.E
-								openidConnect1.Config.ClientJwk[clientJwkCount].Issuer = clientJwk1.Issuer
-								openidConnect1.Config.ClientJwk[clientJwkCount].K = clientJwk1.K
-								openidConnect1.Config.ClientJwk[clientJwkCount].KeyOps = clientJwk1.KeyOps
-								openidConnect1.Config.ClientJwk[clientJwkCount].Kid = clientJwk1.Kid
-								openidConnect1.Config.ClientJwk[clientJwkCount].Kty = clientJwk1.Kty
-								openidConnect1.Config.ClientJwk[clientJwkCount].N = clientJwk1.N
-								openidConnect1.Config.ClientJwk[clientJwkCount].Oth = clientJwk1.Oth
-								openidConnect1.Config.ClientJwk[clientJwkCount].P = clientJwk1.P
-								openidConnect1.Config.ClientJwk[clientJwkCount].Q = clientJwk1.Q
-								openidConnect1.Config.ClientJwk[clientJwkCount].Qi = clientJwk1.Qi
-								openidConnect1.Config.ClientJwk[clientJwkCount].R = clientJwk1.R
-								openidConnect1.Config.ClientJwk[clientJwkCount].T = clientJwk1.T
-								openidConnect1.Config.ClientJwk[clientJwkCount].Use = clientJwk1.Use
-								openidConnect1.Config.ClientJwk[clientJwkCount].X = clientJwk1.X
-								openidConnect1.Config.ClientJwk[clientJwkCount].X5c = clientJwk1.X5c
-								openidConnect1.Config.ClientJwk[clientJwkCount].X5t = clientJwk1.X5t
-								openidConnect1.Config.ClientJwk[clientJwkCount].X5tNumberS256 = clientJwk1.X5tNumberS256
-								openidConnect1.Config.ClientJwk[clientJwkCount].X5u = clientJwk1.X5u
-								openidConnect1.Config.ClientJwk[clientJwkCount].Y = clientJwk1.Y
-							}
-						}
-						openidConnect1.Config.ClientSecret = []types.String{}
-						for _, v := range openidConnectItem.Config.ClientSecret {
-							openidConnect1.Config.ClientSecret = append(openidConnect1.Config.ClientSecret, types.StringValue(v))
-						}
-						openidConnect1.Config.ClusterCacheRedis.ClusterMaxRedirections = types.Int64PointerValue(openidConnectItem.Config.ClusterCacheRedis.ClusterMaxRedirections)
-						openidConnect1.Config.ClusterCacheRedis.ClusterNodes = []tfTypes.ClusterNodes{}
-						for clusterNodesCount, clusterNodesItem := range openidConnectItem.Config.ClusterCacheRedis.ClusterNodes {
-							var clusterNodes1 tfTypes.ClusterNodes
-							clusterNodes1.IP = types.StringPointerValue(clusterNodesItem.IP)
-							clusterNodes1.Port = types.Int64PointerValue(clusterNodesItem.Port)
-							if clusterNodesCount+1 > len(openidConnect1.Config.ClusterCacheRedis.ClusterNodes) {
-								openidConnect1.Config.ClusterCacheRedis.ClusterNodes = append(openidConnect1.Config.ClusterCacheRedis.ClusterNodes, clusterNodes1)
-							} else {
-								openidConnect1.Config.ClusterCacheRedis.ClusterNodes[clusterNodesCount].IP = clusterNodes1.IP
-								openidConnect1.Config.ClusterCacheRedis.ClusterNodes[clusterNodesCount].Port = clusterNodes1.Port
-							}
-						}
-						openidConnect1.Config.ClusterCacheRedis.ConnectTimeout = types.Int64PointerValue(openidConnectItem.Config.ClusterCacheRedis.ConnectTimeout)
-						openidConnect1.Config.ClusterCacheRedis.ConnectionIsProxied = types.BoolPointerValue(openidConnectItem.Config.ClusterCacheRedis.ConnectionIsProxied)
-						openidConnect1.Config.ClusterCacheRedis.Database = types.Int64PointerValue(openidConnectItem.Config.ClusterCacheRedis.Database)
-						openidConnect1.Config.ClusterCacheRedis.Host = types.StringPointerValue(openidConnectItem.Config.ClusterCacheRedis.Host)
-						openidConnect1.Config.ClusterCacheRedis.KeepaliveBacklog = types.Int64PointerValue(openidConnectItem.Config.ClusterCacheRedis.KeepaliveBacklog)
-						openidConnect1.Config.ClusterCacheRedis.KeepalivePoolSize = types.Int64PointerValue(openidConnectItem.Config.ClusterCacheRedis.KeepalivePoolSize)
-						openidConnect1.Config.ClusterCacheRedis.Password = types.StringPointerValue(openidConnectItem.Config.ClusterCacheRedis.Password)
-						openidConnect1.Config.ClusterCacheRedis.Port = types.Int64PointerValue(openidConnectItem.Config.ClusterCacheRedis.Port)
-						openidConnect1.Config.ClusterCacheRedis.ReadTimeout = types.Int64PointerValue(openidConnectItem.Config.ClusterCacheRedis.ReadTimeout)
-						openidConnect1.Config.ClusterCacheRedis.SendTimeout = types.Int64PointerValue(openidConnectItem.Config.ClusterCacheRedis.SendTimeout)
-						openidConnect1.Config.ClusterCacheRedis.SentinelMaster = types.StringPointerValue(openidConnectItem.Config.ClusterCacheRedis.SentinelMaster)
-						openidConnect1.Config.ClusterCacheRedis.SentinelNodes = []tfTypes.SentinelNodes{}
-						for sentinelNodesCount, sentinelNodesItem := range openidConnectItem.Config.ClusterCacheRedis.SentinelNodes {
-							var sentinelNodes1 tfTypes.SentinelNodes
-							sentinelNodes1.Host = types.StringPointerValue(sentinelNodesItem.Host)
-							sentinelNodes1.Port = types.Int64PointerValue(sentinelNodesItem.Port)
-							if sentinelNodesCount+1 > len(openidConnect1.Config.ClusterCacheRedis.SentinelNodes) {
-								openidConnect1.Config.ClusterCacheRedis.SentinelNodes = append(openidConnect1.Config.ClusterCacheRedis.SentinelNodes, sentinelNodes1)
-							} else {
-								openidConnect1.Config.ClusterCacheRedis.SentinelNodes[sentinelNodesCount].Host = sentinelNodes1.Host
-								openidConnect1.Config.ClusterCacheRedis.SentinelNodes[sentinelNodesCount].Port = sentinelNodes1.Port
-							}
-						}
-						openidConnect1.Config.ClusterCacheRedis.SentinelPassword = types.StringPointerValue(openidConnectItem.Config.ClusterCacheRedis.SentinelPassword)
-						if openidConnectItem.Config.ClusterCacheRedis.SentinelRole != nil {
-							openidConnect1.Config.ClusterCacheRedis.SentinelRole = types.StringValue(string(*openidConnectItem.Config.ClusterCacheRedis.SentinelRole))
-						} else {
-							openidConnect1.Config.ClusterCacheRedis.SentinelRole = types.StringNull()
-						}
-						openidConnect1.Config.ClusterCacheRedis.SentinelUsername = types.StringPointerValue(openidConnectItem.Config.ClusterCacheRedis.SentinelUsername)
-						openidConnect1.Config.ClusterCacheRedis.ServerName = types.StringPointerValue(openidConnectItem.Config.ClusterCacheRedis.ServerName)
-						openidConnect1.Config.ClusterCacheRedis.Ssl = types.BoolPointerValue(openidConnectItem.Config.ClusterCacheRedis.Ssl)
-						openidConnect1.Config.ClusterCacheRedis.SslVerify = types.BoolPointerValue(openidConnectItem.Config.ClusterCacheRedis.SslVerify)
-						openidConnect1.Config.ClusterCacheRedis.Username = types.StringPointerValue(openidConnectItem.Config.ClusterCacheRedis.Username)
-						if openidConnectItem.Config.ClusterCacheStrategy != nil {
-							openidConnect1.Config.ClusterCacheStrategy = types.StringValue(string(*openidConnectItem.Config.ClusterCacheStrategy))
-						} else {
-							openidConnect1.Config.ClusterCacheStrategy = types.StringNull()
-						}
-						openidConnect1.Config.ConsumerBy = []types.String{}
-						for _, v := range openidConnectItem.Config.ConsumerBy {
-							openidConnect1.Config.ConsumerBy = append(openidConnect1.Config.ConsumerBy, types.StringValue(string(v)))
-						}
-						openidConnect1.Config.ConsumerClaim = []types.String{}
-						for _, v := range openidConnectItem.Config.ConsumerClaim {
-							openidConnect1.Config.ConsumerClaim = append(openidConnect1.Config.ConsumerClaim, types.StringValue(v))
-						}
-						openidConnect1.Config.ConsumerOptional = types.BoolPointerValue(openidConnectItem.Config.ConsumerOptional)
-						openidConnect1.Config.CredentialClaim = []types.String{}
-						for _, v := range openidConnectItem.Config.CredentialClaim {
-							openidConnect1.Config.CredentialClaim = append(openidConnect1.Config.CredentialClaim, types.StringValue(v))
-						}
-						openidConnect1.Config.DisableSession = []types.String{}
-						for _, v := range openidConnectItem.Config.DisableSession {
-							openidConnect1.Config.DisableSession = append(openidConnect1.Config.DisableSession, types.StringValue(string(v)))
-						}
-						openidConnect1.Config.DiscoveryHeadersNames = []types.String{}
-						for _, v := range openidConnectItem.Config.DiscoveryHeadersNames {
-							openidConnect1.Config.DiscoveryHeadersNames = append(openidConnect1.Config.DiscoveryHeadersNames, types.StringValue(v))
-						}
-						openidConnect1.Config.DiscoveryHeadersValues = []types.String{}
-						for _, v := range openidConnectItem.Config.DiscoveryHeadersValues {
-							openidConnect1.Config.DiscoveryHeadersValues = append(openidConnect1.Config.DiscoveryHeadersValues, types.StringValue(v))
-						}
-						openidConnect1.Config.DisplayErrors = types.BoolPointerValue(openidConnectItem.Config.DisplayErrors)
-						openidConnect1.Config.Domains = []types.String{}
-						for _, v := range openidConnectItem.Config.Domains {
-							openidConnect1.Config.Domains = append(openidConnect1.Config.Domains, types.StringValue(v))
-						}
-						openidConnect1.Config.DownstreamAccessTokenHeader = types.StringPointerValue(openidConnectItem.Config.DownstreamAccessTokenHeader)
-						openidConnect1.Config.DownstreamAccessTokenJwkHeader = types.StringPointerValue(openidConnectItem.Config.DownstreamAccessTokenJwkHeader)
-						openidConnect1.Config.DownstreamHeadersClaims = []types.String{}
-						for _, v := range openidConnectItem.Config.DownstreamHeadersClaims {
-							openidConnect1.Config.DownstreamHeadersClaims = append(openidConnect1.Config.DownstreamHeadersClaims, types.StringValue(v))
-						}
-						openidConnect1.Config.DownstreamHeadersNames = []types.String{}
-						for _, v := range openidConnectItem.Config.DownstreamHeadersNames {
-							openidConnect1.Config.DownstreamHeadersNames = append(openidConnect1.Config.DownstreamHeadersNames, types.StringValue(v))
-						}
-						openidConnect1.Config.DownstreamIDTokenHeader = types.StringPointerValue(openidConnectItem.Config.DownstreamIDTokenHeader)
-						openidConnect1.Config.DownstreamIDTokenJwkHeader = types.StringPointerValue(openidConnectItem.Config.DownstreamIDTokenJwkHeader)
-						openidConnect1.Config.DownstreamIntrospectionHeader = types.StringPointerValue(openidConnectItem.Config.DownstreamIntrospectionHeader)
-						openidConnect1.Config.DownstreamIntrospectionJwtHeader = types.StringPointerValue(openidConnectItem.Config.DownstreamIntrospectionJwtHeader)
-						openidConnect1.Config.DownstreamRefreshTokenHeader = types.StringPointerValue(openidConnectItem.Config.DownstreamRefreshTokenHeader)
-						openidConnect1.Config.DownstreamSessionIDHeader = types.StringPointerValue(openidConnectItem.Config.DownstreamSessionIDHeader)
-						openidConnect1.Config.DownstreamUserInfoHeader = types.StringPointerValue(openidConnectItem.Config.DownstreamUserInfoHeader)
-						openidConnect1.Config.DownstreamUserInfoJwtHeader = types.StringPointerValue(openidConnectItem.Config.DownstreamUserInfoJwtHeader)
-						if openidConnectItem.Config.DpopProofLifetime != nil {
-							openidConnect1.Config.DpopProofLifetime = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.DpopProofLifetime)))
-						} else {
-							openidConnect1.Config.DpopProofLifetime = types.NumberNull()
-						}
-						openidConnect1.Config.DpopUseNonce = types.BoolPointerValue(openidConnectItem.Config.DpopUseNonce)
-						openidConnect1.Config.EnableHsSignatures = types.BoolPointerValue(openidConnectItem.Config.EnableHsSignatures)
-						openidConnect1.Config.EndSessionEndpoint = types.StringPointerValue(openidConnectItem.Config.EndSessionEndpoint)
-						openidConnect1.Config.ExposeErrorCode = types.BoolPointerValue(openidConnectItem.Config.ExposeErrorCode)
-						openidConnect1.Config.ExtraJwksUris = []types.String{}
-						for _, v := range openidConnectItem.Config.ExtraJwksUris {
-							openidConnect1.Config.ExtraJwksUris = append(openidConnect1.Config.ExtraJwksUris, types.StringValue(v))
-						}
-						openidConnect1.Config.ForbiddenDestroySession = types.BoolPointerValue(openidConnectItem.Config.ForbiddenDestroySession)
-						openidConnect1.Config.ForbiddenErrorMessage = types.StringPointerValue(openidConnectItem.Config.ForbiddenErrorMessage)
-						openidConnect1.Config.ForbiddenRedirectURI = []types.String{}
-						for _, v := range openidConnectItem.Config.ForbiddenRedirectURI {
-							openidConnect1.Config.ForbiddenRedirectURI = append(openidConnect1.Config.ForbiddenRedirectURI, types.StringValue(v))
-						}
-						openidConnect1.Config.GroupsClaim = []types.String{}
-						for _, v := range openidConnectItem.Config.GroupsClaim {
-							openidConnect1.Config.GroupsClaim = append(openidConnect1.Config.GroupsClaim, types.StringValue(v))
-						}
-						openidConnect1.Config.GroupsRequired = []types.String{}
-						for _, v := range openidConnectItem.Config.GroupsRequired {
-							openidConnect1.Config.GroupsRequired = append(openidConnect1.Config.GroupsRequired, types.StringValue(v))
-						}
-						openidConnect1.Config.HideCredentials = types.BoolPointerValue(openidConnectItem.Config.HideCredentials)
-						openidConnect1.Config.HTTPProxy = types.StringPointerValue(openidConnectItem.Config.HTTPProxy)
-						openidConnect1.Config.HTTPProxyAuthorization = types.StringPointerValue(openidConnectItem.Config.HTTPProxyAuthorization)
-						if openidConnectItem.Config.HTTPVersion != nil {
-							openidConnect1.Config.HTTPVersion = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.HTTPVersion)))
-						} else {
-							openidConnect1.Config.HTTPVersion = types.NumberNull()
-						}
-						openidConnect1.Config.HTTPSProxy = types.StringPointerValue(openidConnectItem.Config.HTTPSProxy)
-						openidConnect1.Config.HTTPSProxyAuthorization = types.StringPointerValue(openidConnectItem.Config.HTTPSProxyAuthorization)
-						openidConnect1.Config.IDTokenParamName = types.StringPointerValue(openidConnectItem.Config.IDTokenParamName)
-						openidConnect1.Config.IDTokenParamType = []types.String{}
-						for _, v := range openidConnectItem.Config.IDTokenParamType {
-							openidConnect1.Config.IDTokenParamType = append(openidConnect1.Config.IDTokenParamType, types.StringValue(string(v)))
-						}
-						openidConnect1.Config.IgnoreSignature = []types.String{}
-						for _, v := range openidConnectItem.Config.IgnoreSignature {
-							openidConnect1.Config.IgnoreSignature = append(openidConnect1.Config.IgnoreSignature, types.StringValue(string(v)))
-						}
-						openidConnect1.Config.IntrospectJwtTokens = types.BoolPointerValue(openidConnectItem.Config.IntrospectJwtTokens)
-						if openidConnectItem.Config.IntrospectionAccept != nil {
-							openidConnect1.Config.IntrospectionAccept = types.StringValue(string(*openidConnectItem.Config.IntrospectionAccept))
-						} else {
-							openidConnect1.Config.IntrospectionAccept = types.StringNull()
-						}
-						openidConnect1.Config.IntrospectionCheckActive = types.BoolPointerValue(openidConnectItem.Config.IntrospectionCheckActive)
-						openidConnect1.Config.IntrospectionEndpoint = types.StringPointerValue(openidConnectItem.Config.IntrospectionEndpoint)
-						if openidConnectItem.Config.IntrospectionEndpointAuthMethod != nil {
-							openidConnect1.Config.IntrospectionEndpointAuthMethod = types.StringValue(string(*openidConnectItem.Config.IntrospectionEndpointAuthMethod))
-						} else {
-							openidConnect1.Config.IntrospectionEndpointAuthMethod = types.StringNull()
-						}
-						openidConnect1.Config.IntrospectionHeadersClient = []types.String{}
-						for _, v := range openidConnectItem.Config.IntrospectionHeadersClient {
-							openidConnect1.Config.IntrospectionHeadersClient = append(openidConnect1.Config.IntrospectionHeadersClient, types.StringValue(v))
-						}
-						openidConnect1.Config.IntrospectionHeadersNames = []types.String{}
-						for _, v := range openidConnectItem.Config.IntrospectionHeadersNames {
-							openidConnect1.Config.IntrospectionHeadersNames = append(openidConnect1.Config.IntrospectionHeadersNames, types.StringValue(v))
-						}
-						openidConnect1.Config.IntrospectionHeadersValues = []types.String{}
-						for _, v := range openidConnectItem.Config.IntrospectionHeadersValues {
-							openidConnect1.Config.IntrospectionHeadersValues = append(openidConnect1.Config.IntrospectionHeadersValues, types.StringValue(v))
-						}
-						openidConnect1.Config.IntrospectionHint = types.StringPointerValue(openidConnectItem.Config.IntrospectionHint)
-						openidConnect1.Config.IntrospectionPostArgsClient = []types.String{}
-						for _, v := range openidConnectItem.Config.IntrospectionPostArgsClient {
-							openidConnect1.Config.IntrospectionPostArgsClient = append(openidConnect1.Config.IntrospectionPostArgsClient, types.StringValue(v))
-						}
-						openidConnect1.Config.IntrospectionPostArgsNames = []types.String{}
-						for _, v := range openidConnectItem.Config.IntrospectionPostArgsNames {
-							openidConnect1.Config.IntrospectionPostArgsNames = append(openidConnect1.Config.IntrospectionPostArgsNames, types.StringValue(v))
-						}
-						openidConnect1.Config.IntrospectionPostArgsValues = []types.String{}
-						for _, v := range openidConnectItem.Config.IntrospectionPostArgsValues {
-							openidConnect1.Config.IntrospectionPostArgsValues = append(openidConnect1.Config.IntrospectionPostArgsValues, types.StringValue(v))
-						}
-						openidConnect1.Config.IntrospectionTokenParamName = types.StringPointerValue(openidConnectItem.Config.IntrospectionTokenParamName)
-						openidConnect1.Config.Issuer = types.StringValue(openidConnectItem.Config.Issuer)
-						openidConnect1.Config.IssuersAllowed = []types.String{}
-						for _, v := range openidConnectItem.Config.IssuersAllowed {
-							openidConnect1.Config.IssuersAllowed = append(openidConnect1.Config.IssuersAllowed, types.StringValue(v))
-						}
-						openidConnect1.Config.JwtSessionClaim = types.StringPointerValue(openidConnectItem.Config.JwtSessionClaim)
-						openidConnect1.Config.JwtSessionCookie = types.StringPointerValue(openidConnectItem.Config.JwtSessionCookie)
-						openidConnect1.Config.Keepalive = types.BoolPointerValue(openidConnectItem.Config.Keepalive)
-						if openidConnectItem.Config.Leeway != nil {
-							openidConnect1.Config.Leeway = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.Leeway)))
-						} else {
-							openidConnect1.Config.Leeway = types.NumberNull()
-						}
-						if openidConnectItem.Config.LoginAction != nil {
-							openidConnect1.Config.LoginAction = types.StringValue(string(*openidConnectItem.Config.LoginAction))
-						} else {
-							openidConnect1.Config.LoginAction = types.StringNull()
-						}
-						openidConnect1.Config.LoginMethods = []types.String{}
-						for _, v := range openidConnectItem.Config.LoginMethods {
-							openidConnect1.Config.LoginMethods = append(openidConnect1.Config.LoginMethods, types.StringValue(string(v)))
-						}
-						if openidConnectItem.Config.LoginRedirectMode != nil {
-							openidConnect1.Config.LoginRedirectMode = types.StringValue(string(*openidConnectItem.Config.LoginRedirectMode))
-						} else {
-							openidConnect1.Config.LoginRedirectMode = types.StringNull()
-						}
-						openidConnect1.Config.LoginRedirectURI = []types.String{}
-						for _, v := range openidConnectItem.Config.LoginRedirectURI {
-							openidConnect1.Config.LoginRedirectURI = append(openidConnect1.Config.LoginRedirectURI, types.StringValue(v))
-						}
-						openidConnect1.Config.LoginTokens = []types.String{}
-						for _, v := range openidConnectItem.Config.LoginTokens {
-							openidConnect1.Config.LoginTokens = append(openidConnect1.Config.LoginTokens, types.StringValue(string(v)))
-						}
-						openidConnect1.Config.LogoutMethods = []types.String{}
-						for _, v := range openidConnectItem.Config.LogoutMethods {
-							openidConnect1.Config.LogoutMethods = append(openidConnect1.Config.LogoutMethods, types.StringValue(string(v)))
-						}
-						openidConnect1.Config.LogoutPostArg = types.StringPointerValue(openidConnectItem.Config.LogoutPostArg)
-						openidConnect1.Config.LogoutQueryArg = types.StringPointerValue(openidConnectItem.Config.LogoutQueryArg)
-						openidConnect1.Config.LogoutRedirectURI = []types.String{}
-						for _, v := range openidConnectItem.Config.LogoutRedirectURI {
-							openidConnect1.Config.LogoutRedirectURI = append(openidConnect1.Config.LogoutRedirectURI, types.StringValue(v))
-						}
-						openidConnect1.Config.LogoutRevoke = types.BoolPointerValue(openidConnectItem.Config.LogoutRevoke)
-						openidConnect1.Config.LogoutRevokeAccessToken = types.BoolPointerValue(openidConnectItem.Config.LogoutRevokeAccessToken)
-						openidConnect1.Config.LogoutRevokeRefreshToken = types.BoolPointerValue(openidConnectItem.Config.LogoutRevokeRefreshToken)
-						openidConnect1.Config.LogoutURISuffix = types.StringPointerValue(openidConnectItem.Config.LogoutURISuffix)
-						if openidConnectItem.Config.MaxAge != nil {
-							openidConnect1.Config.MaxAge = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.MaxAge)))
-						} else {
-							openidConnect1.Config.MaxAge = types.NumberNull()
-						}
-						openidConnect1.Config.MtlsIntrospectionEndpoint = types.StringPointerValue(openidConnectItem.Config.MtlsIntrospectionEndpoint)
-						openidConnect1.Config.MtlsRevocationEndpoint = types.StringPointerValue(openidConnectItem.Config.MtlsRevocationEndpoint)
-						openidConnect1.Config.MtlsTokenEndpoint = types.StringPointerValue(openidConnectItem.Config.MtlsTokenEndpoint)
-						openidConnect1.Config.NoProxy = types.StringPointerValue(openidConnectItem.Config.NoProxy)
-						openidConnect1.Config.PasswordParamType = []types.String{}
-						for _, v := range openidConnectItem.Config.PasswordParamType {
-							openidConnect1.Config.PasswordParamType = append(openidConnect1.Config.PasswordParamType, types.StringValue(string(v)))
-						}
-						openidConnect1.Config.PreserveQueryArgs = types.BoolPointerValue(openidConnectItem.Config.PreserveQueryArgs)
-						openidConnect1.Config.ProofOfPossessionAuthMethodsValidation = types.BoolPointerValue(openidConnectItem.Config.ProofOfPossessionAuthMethodsValidation)
-						if openidConnectItem.Config.ProofOfPossessionDpop != nil {
-							openidConnect1.Config.ProofOfPossessionDpop = types.StringValue(string(*openidConnectItem.Config.ProofOfPossessionDpop))
-						} else {
-							openidConnect1.Config.ProofOfPossessionDpop = types.StringNull()
-						}
-						if openidConnectItem.Config.ProofOfPossessionMtls != nil {
-							openidConnect1.Config.ProofOfPossessionMtls = types.StringValue(string(*openidConnectItem.Config.ProofOfPossessionMtls))
-						} else {
-							openidConnect1.Config.ProofOfPossessionMtls = types.StringNull()
-						}
-						openidConnect1.Config.PushedAuthorizationRequestEndpoint = types.StringPointerValue(openidConnectItem.Config.PushedAuthorizationRequestEndpoint)
-						if openidConnectItem.Config.PushedAuthorizationRequestEndpointAuthMethod != nil {
-							openidConnect1.Config.PushedAuthorizationRequestEndpointAuthMethod = types.StringValue(string(*openidConnectItem.Config.PushedAuthorizationRequestEndpointAuthMethod))
-						} else {
-							openidConnect1.Config.PushedAuthorizationRequestEndpointAuthMethod = types.StringNull()
-						}
-						openidConnect1.Config.RedirectURI = []types.String{}
-						for _, v := range openidConnectItem.Config.RedirectURI {
-							openidConnect1.Config.RedirectURI = append(openidConnect1.Config.RedirectURI, types.StringValue(v))
-						}
-						openidConnect1.Config.Redis.ClusterMaxRedirections = types.Int64PointerValue(openidConnectItem.Config.Redis.ClusterMaxRedirections)
-						openidConnect1.Config.Redis.ClusterNodes = []tfTypes.ClusterNodes{}
-						for clusterNodesCount1, clusterNodesItem1 := range openidConnectItem.Config.Redis.ClusterNodes {
-							var clusterNodes3 tfTypes.ClusterNodes
-							clusterNodes3.IP = types.StringPointerValue(clusterNodesItem1.IP)
-							clusterNodes3.Port = types.Int64PointerValue(clusterNodesItem1.Port)
-							if clusterNodesCount1+1 > len(openidConnect1.Config.Redis.ClusterNodes) {
-								openidConnect1.Config.Redis.ClusterNodes = append(openidConnect1.Config.Redis.ClusterNodes, clusterNodes3)
-							} else {
-								openidConnect1.Config.Redis.ClusterNodes[clusterNodesCount1].IP = clusterNodes3.IP
-								openidConnect1.Config.Redis.ClusterNodes[clusterNodesCount1].Port = clusterNodes3.Port
-							}
-						}
-						openidConnect1.Config.Redis.ConnectTimeout = types.Int64PointerValue(openidConnectItem.Config.Redis.ConnectTimeout)
-						openidConnect1.Config.Redis.ConnectionIsProxied = types.BoolPointerValue(openidConnectItem.Config.Redis.ConnectionIsProxied)
-						openidConnect1.Config.Redis.Database = types.Int64PointerValue(openidConnectItem.Config.Redis.Database)
-						openidConnect1.Config.Redis.Host = types.StringPointerValue(openidConnectItem.Config.Redis.Host)
-						openidConnect1.Config.Redis.KeepaliveBacklog = types.Int64PointerValue(openidConnectItem.Config.Redis.KeepaliveBacklog)
-						openidConnect1.Config.Redis.KeepalivePoolSize = types.Int64PointerValue(openidConnectItem.Config.Redis.KeepalivePoolSize)
-						openidConnect1.Config.Redis.Password = types.StringPointerValue(openidConnectItem.Config.Redis.Password)
-						openidConnect1.Config.Redis.Port = types.Int64PointerValue(openidConnectItem.Config.Redis.Port)
-						openidConnect1.Config.Redis.Prefix = types.StringPointerValue(openidConnectItem.Config.Redis.Prefix)
-						openidConnect1.Config.Redis.ReadTimeout = types.Int64PointerValue(openidConnectItem.Config.Redis.ReadTimeout)
-						openidConnect1.Config.Redis.SendTimeout = types.Int64PointerValue(openidConnectItem.Config.Redis.SendTimeout)
-						openidConnect1.Config.Redis.SentinelMaster = types.StringPointerValue(openidConnectItem.Config.Redis.SentinelMaster)
-						openidConnect1.Config.Redis.SentinelNodes = []tfTypes.SentinelNodes{}
-						for sentinelNodesCount1, sentinelNodesItem1 := range openidConnectItem.Config.Redis.SentinelNodes {
-							var sentinelNodes3 tfTypes.SentinelNodes
-							sentinelNodes3.Host = types.StringPointerValue(sentinelNodesItem1.Host)
-							sentinelNodes3.Port = types.Int64PointerValue(sentinelNodesItem1.Port)
-							if sentinelNodesCount1+1 > len(openidConnect1.Config.Redis.SentinelNodes) {
-								openidConnect1.Config.Redis.SentinelNodes = append(openidConnect1.Config.Redis.SentinelNodes, sentinelNodes3)
-							} else {
-								openidConnect1.Config.Redis.SentinelNodes[sentinelNodesCount1].Host = sentinelNodes3.Host
-								openidConnect1.Config.Redis.SentinelNodes[sentinelNodesCount1].Port = sentinelNodes3.Port
-							}
-						}
-						openidConnect1.Config.Redis.SentinelPassword = types.StringPointerValue(openidConnectItem.Config.Redis.SentinelPassword)
-						if openidConnectItem.Config.Redis.SentinelRole != nil {
-							openidConnect1.Config.Redis.SentinelRole = types.StringValue(string(*openidConnectItem.Config.Redis.SentinelRole))
-						} else {
-							openidConnect1.Config.Redis.SentinelRole = types.StringNull()
-						}
-						openidConnect1.Config.Redis.SentinelUsername = types.StringPointerValue(openidConnectItem.Config.Redis.SentinelUsername)
-						openidConnect1.Config.Redis.ServerName = types.StringPointerValue(openidConnectItem.Config.Redis.ServerName)
-						openidConnect1.Config.Redis.Socket = types.StringPointerValue(openidConnectItem.Config.Redis.Socket)
-						openidConnect1.Config.Redis.Ssl = types.BoolPointerValue(openidConnectItem.Config.Redis.Ssl)
-						openidConnect1.Config.Redis.SslVerify = types.BoolPointerValue(openidConnectItem.Config.Redis.SslVerify)
-						openidConnect1.Config.Redis.Username = types.StringPointerValue(openidConnectItem.Config.Redis.Username)
-						if openidConnectItem.Config.RediscoveryLifetime != nil {
-							openidConnect1.Config.RediscoveryLifetime = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.RediscoveryLifetime)))
-						} else {
-							openidConnect1.Config.RediscoveryLifetime = types.NumberNull()
-						}
-						openidConnect1.Config.RefreshTokenParamName = types.StringPointerValue(openidConnectItem.Config.RefreshTokenParamName)
-						openidConnect1.Config.RefreshTokenParamType = []types.String{}
-						for _, v := range openidConnectItem.Config.RefreshTokenParamType {
-							openidConnect1.Config.RefreshTokenParamType = append(openidConnect1.Config.RefreshTokenParamType, types.StringValue(string(v)))
-						}
-						openidConnect1.Config.RefreshTokens = types.BoolPointerValue(openidConnectItem.Config.RefreshTokens)
-						openidConnect1.Config.RequireProofKeyForCodeExchange = types.BoolPointerValue(openidConnectItem.Config.RequireProofKeyForCodeExchange)
-						openidConnect1.Config.RequirePushedAuthorizationRequests = types.BoolPointerValue(openidConnectItem.Config.RequirePushedAuthorizationRequests)
-						openidConnect1.Config.RequireSignedRequestObject = types.BoolPointerValue(openidConnectItem.Config.RequireSignedRequestObject)
-						openidConnect1.Config.ResolveDistributedClaims = types.BoolPointerValue(openidConnectItem.Config.ResolveDistributedClaims)
-						if openidConnectItem.Config.ResponseMode != nil {
-							openidConnect1.Config.ResponseMode = types.StringValue(string(*openidConnectItem.Config.ResponseMode))
-						} else {
-							openidConnect1.Config.ResponseMode = types.StringNull()
-						}
-						openidConnect1.Config.ResponseType = []types.String{}
-						for _, v := range openidConnectItem.Config.ResponseType {
-							openidConnect1.Config.ResponseType = append(openidConnect1.Config.ResponseType, types.StringValue(v))
-						}
-						openidConnect1.Config.Reverify = types.BoolPointerValue(openidConnectItem.Config.Reverify)
-						openidConnect1.Config.RevocationEndpoint = types.StringPointerValue(openidConnectItem.Config.RevocationEndpoint)
-						if openidConnectItem.Config.RevocationEndpointAuthMethod != nil {
-							openidConnect1.Config.RevocationEndpointAuthMethod = types.StringValue(string(*openidConnectItem.Config.RevocationEndpointAuthMethod))
-						} else {
-							openidConnect1.Config.RevocationEndpointAuthMethod = types.StringNull()
-						}
-						openidConnect1.Config.RevocationTokenParamName = types.StringPointerValue(openidConnectItem.Config.RevocationTokenParamName)
-						openidConnect1.Config.RolesClaim = []types.String{}
-						for _, v := range openidConnectItem.Config.RolesClaim {
-							openidConnect1.Config.RolesClaim = append(openidConnect1.Config.RolesClaim, types.StringValue(v))
-						}
-						openidConnect1.Config.RolesRequired = []types.String{}
-						for _, v := range openidConnectItem.Config.RolesRequired {
-							openidConnect1.Config.RolesRequired = append(openidConnect1.Config.RolesRequired, types.StringValue(v))
-						}
-						openidConnect1.Config.RunOnPreflight = types.BoolPointerValue(openidConnectItem.Config.RunOnPreflight)
-						openidConnect1.Config.Scopes = []types.String{}
-						for _, v := range openidConnectItem.Config.Scopes {
-							openidConnect1.Config.Scopes = append(openidConnect1.Config.Scopes, types.StringValue(v))
-						}
-						openidConnect1.Config.ScopesClaim = []types.String{}
-						for _, v := range openidConnectItem.Config.ScopesClaim {
-							openidConnect1.Config.ScopesClaim = append(openidConnect1.Config.ScopesClaim, types.StringValue(v))
-						}
-						openidConnect1.Config.ScopesRequired = []types.String{}
-						for _, v := range openidConnectItem.Config.ScopesRequired {
-							openidConnect1.Config.ScopesRequired = append(openidConnect1.Config.ScopesRequired, types.StringValue(v))
-						}
-						openidConnect1.Config.SearchUserInfo = types.BoolPointerValue(openidConnectItem.Config.SearchUserInfo)
-						if openidConnectItem.Config.SessionAbsoluteTimeout != nil {
-							openidConnect1.Config.SessionAbsoluteTimeout = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.SessionAbsoluteTimeout)))
-						} else {
-							openidConnect1.Config.SessionAbsoluteTimeout = types.NumberNull()
-						}
-						openidConnect1.Config.SessionAudience = types.StringPointerValue(openidConnectItem.Config.SessionAudience)
-						openidConnect1.Config.SessionCookieDomain = types.StringPointerValue(openidConnectItem.Config.SessionCookieDomain)
-						openidConnect1.Config.SessionCookieHTTPOnly = types.BoolPointerValue(openidConnectItem.Config.SessionCookieHTTPOnly)
-						openidConnect1.Config.SessionCookieName = types.StringPointerValue(openidConnectItem.Config.SessionCookieName)
-						openidConnect1.Config.SessionCookiePath = types.StringPointerValue(openidConnectItem.Config.SessionCookiePath)
-						if openidConnectItem.Config.SessionCookieSameSite != nil {
-							openidConnect1.Config.SessionCookieSameSite = types.StringValue(string(*openidConnectItem.Config.SessionCookieSameSite))
-						} else {
-							openidConnect1.Config.SessionCookieSameSite = types.StringNull()
-						}
-						openidConnect1.Config.SessionCookieSecure = types.BoolPointerValue(openidConnectItem.Config.SessionCookieSecure)
-						openidConnect1.Config.SessionEnforceSameSubject = types.BoolPointerValue(openidConnectItem.Config.SessionEnforceSameSubject)
-						openidConnect1.Config.SessionHashStorageKey = types.BoolPointerValue(openidConnectItem.Config.SessionHashStorageKey)
-						openidConnect1.Config.SessionHashSubject = types.BoolPointerValue(openidConnectItem.Config.SessionHashSubject)
-						if openidConnectItem.Config.SessionIdlingTimeout != nil {
-							openidConnect1.Config.SessionIdlingTimeout = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.SessionIdlingTimeout)))
-						} else {
-							openidConnect1.Config.SessionIdlingTimeout = types.NumberNull()
-						}
-						openidConnect1.Config.SessionMemcachedHost = types.StringPointerValue(openidConnectItem.Config.SessionMemcachedHost)
-						openidConnect1.Config.SessionMemcachedPort = types.Int64PointerValue(openidConnectItem.Config.SessionMemcachedPort)
-						openidConnect1.Config.SessionMemcachedPrefix = types.StringPointerValue(openidConnectItem.Config.SessionMemcachedPrefix)
-						openidConnect1.Config.SessionMemcachedSocket = types.StringPointerValue(openidConnectItem.Config.SessionMemcachedSocket)
-						openidConnect1.Config.SessionRemember = types.BoolPointerValue(openidConnectItem.Config.SessionRemember)
-						if openidConnectItem.Config.SessionRememberAbsoluteTimeout != nil {
-							openidConnect1.Config.SessionRememberAbsoluteTimeout = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.SessionRememberAbsoluteTimeout)))
-						} else {
-							openidConnect1.Config.SessionRememberAbsoluteTimeout = types.NumberNull()
-						}
-						openidConnect1.Config.SessionRememberCookieName = types.StringPointerValue(openidConnectItem.Config.SessionRememberCookieName)
-						if openidConnectItem.Config.SessionRememberRollingTimeout != nil {
-							openidConnect1.Config.SessionRememberRollingTimeout = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.SessionRememberRollingTimeout)))
-						} else {
-							openidConnect1.Config.SessionRememberRollingTimeout = types.NumberNull()
-						}
-						openidConnect1.Config.SessionRequestHeaders = []types.String{}
-						for _, v := range openidConnectItem.Config.SessionRequestHeaders {
-							openidConnect1.Config.SessionRequestHeaders = append(openidConnect1.Config.SessionRequestHeaders, types.StringValue(string(v)))
-						}
-						openidConnect1.Config.SessionResponseHeaders = []types.String{}
-						for _, v := range openidConnectItem.Config.SessionResponseHeaders {
-							openidConnect1.Config.SessionResponseHeaders = append(openidConnect1.Config.SessionResponseHeaders, types.StringValue(string(v)))
-						}
-						if openidConnectItem.Config.SessionRollingTimeout != nil {
-							openidConnect1.Config.SessionRollingTimeout = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.SessionRollingTimeout)))
-						} else {
-							openidConnect1.Config.SessionRollingTimeout = types.NumberNull()
-						}
-						openidConnect1.Config.SessionSecret = types.StringPointerValue(openidConnectItem.Config.SessionSecret)
-						if openidConnectItem.Config.SessionStorage != nil {
-							openidConnect1.Config.SessionStorage = types.StringValue(string(*openidConnectItem.Config.SessionStorage))
-						} else {
-							openidConnect1.Config.SessionStorage = types.StringNull()
-						}
-						openidConnect1.Config.SessionStoreMetadata = types.BoolPointerValue(openidConnectItem.Config.SessionStoreMetadata)
-						openidConnect1.Config.SslVerify = types.BoolPointerValue(openidConnectItem.Config.SslVerify)
-						if openidConnectItem.Config.Timeout != nil {
-							openidConnect1.Config.Timeout = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.Timeout)))
-						} else {
-							openidConnect1.Config.Timeout = types.NumberNull()
-						}
-						openidConnect1.Config.TLSClientAuthCertID = types.StringPointerValue(openidConnectItem.Config.TLSClientAuthCertID)
-						openidConnect1.Config.TLSClientAuthSslVerify = types.BoolPointerValue(openidConnectItem.Config.TLSClientAuthSslVerify)
-						openidConnect1.Config.TokenCacheKeyIncludeScope = types.BoolPointerValue(openidConnectItem.Config.TokenCacheKeyIncludeScope)
-						openidConnect1.Config.TokenEndpoint = types.StringPointerValue(openidConnectItem.Config.TokenEndpoint)
-						if openidConnectItem.Config.TokenEndpointAuthMethod != nil {
-							openidConnect1.Config.TokenEndpointAuthMethod = types.StringValue(string(*openidConnectItem.Config.TokenEndpointAuthMethod))
-						} else {
-							openidConnect1.Config.TokenEndpointAuthMethod = types.StringNull()
-						}
-						openidConnect1.Config.TokenExchangeEndpoint = types.StringPointerValue(openidConnectItem.Config.TokenExchangeEndpoint)
-						openidConnect1.Config.TokenHeadersClient = []types.String{}
-						for _, v := range openidConnectItem.Config.TokenHeadersClient {
-							openidConnect1.Config.TokenHeadersClient = append(openidConnect1.Config.TokenHeadersClient, types.StringValue(v))
-						}
-						openidConnect1.Config.TokenHeadersGrants = []types.String{}
-						for _, v := range openidConnectItem.Config.TokenHeadersGrants {
-							openidConnect1.Config.TokenHeadersGrants = append(openidConnect1.Config.TokenHeadersGrants, types.StringValue(string(v)))
-						}
-						openidConnect1.Config.TokenHeadersNames = []types.String{}
-						for _, v := range openidConnectItem.Config.TokenHeadersNames {
-							openidConnect1.Config.TokenHeadersNames = append(openidConnect1.Config.TokenHeadersNames, types.StringValue(v))
-						}
-						openidConnect1.Config.TokenHeadersPrefix = types.StringPointerValue(openidConnectItem.Config.TokenHeadersPrefix)
-						openidConnect1.Config.TokenHeadersReplay = []types.String{}
-						for _, v := range openidConnectItem.Config.TokenHeadersReplay {
-							openidConnect1.Config.TokenHeadersReplay = append(openidConnect1.Config.TokenHeadersReplay, types.StringValue(v))
-						}
-						openidConnect1.Config.TokenHeadersValues = []types.String{}
-						for _, v := range openidConnectItem.Config.TokenHeadersValues {
-							openidConnect1.Config.TokenHeadersValues = append(openidConnect1.Config.TokenHeadersValues, types.StringValue(v))
-						}
-						openidConnect1.Config.TokenPostArgsClient = []types.String{}
-						for _, v := range openidConnectItem.Config.TokenPostArgsClient {
-							openidConnect1.Config.TokenPostArgsClient = append(openidConnect1.Config.TokenPostArgsClient, types.StringValue(v))
-						}
-						openidConnect1.Config.TokenPostArgsNames = []types.String{}
-						for _, v := range openidConnectItem.Config.TokenPostArgsNames {
-							openidConnect1.Config.TokenPostArgsNames = append(openidConnect1.Config.TokenPostArgsNames, types.StringValue(v))
-						}
-						openidConnect1.Config.TokenPostArgsValues = []types.String{}
-						for _, v := range openidConnectItem.Config.TokenPostArgsValues {
-							openidConnect1.Config.TokenPostArgsValues = append(openidConnect1.Config.TokenPostArgsValues, types.StringValue(v))
-						}
-						openidConnect1.Config.UnauthorizedDestroySession = types.BoolPointerValue(openidConnectItem.Config.UnauthorizedDestroySession)
-						openidConnect1.Config.UnauthorizedErrorMessage = types.StringPointerValue(openidConnectItem.Config.UnauthorizedErrorMessage)
-						openidConnect1.Config.UnauthorizedRedirectURI = []types.String{}
-						for _, v := range openidConnectItem.Config.UnauthorizedRedirectURI {
-							openidConnect1.Config.UnauthorizedRedirectURI = append(openidConnect1.Config.UnauthorizedRedirectURI, types.StringValue(v))
-						}
-						openidConnect1.Config.UnexpectedRedirectURI = []types.String{}
-						for _, v := range openidConnectItem.Config.UnexpectedRedirectURI {
-							openidConnect1.Config.UnexpectedRedirectURI = append(openidConnect1.Config.UnexpectedRedirectURI, types.StringValue(v))
-						}
-						openidConnect1.Config.UpstreamAccessTokenHeader = types.StringPointerValue(openidConnectItem.Config.UpstreamAccessTokenHeader)
-						openidConnect1.Config.UpstreamAccessTokenJwkHeader = types.StringPointerValue(openidConnectItem.Config.UpstreamAccessTokenJwkHeader)
-						openidConnect1.Config.UpstreamHeadersClaims = []types.String{}
-						for _, v := range openidConnectItem.Config.UpstreamHeadersClaims {
-							openidConnect1.Config.UpstreamHeadersClaims = append(openidConnect1.Config.UpstreamHeadersClaims, types.StringValue(v))
-						}
-						openidConnect1.Config.UpstreamHeadersNames = []types.String{}
-						for _, v := range openidConnectItem.Config.UpstreamHeadersNames {
-							openidConnect1.Config.UpstreamHeadersNames = append(openidConnect1.Config.UpstreamHeadersNames, types.StringValue(v))
-						}
-						openidConnect1.Config.UpstreamIDTokenHeader = types.StringPointerValue(openidConnectItem.Config.UpstreamIDTokenHeader)
-						openidConnect1.Config.UpstreamIDTokenJwkHeader = types.StringPointerValue(openidConnectItem.Config.UpstreamIDTokenJwkHeader)
-						openidConnect1.Config.UpstreamIntrospectionHeader = types.StringPointerValue(openidConnectItem.Config.UpstreamIntrospectionHeader)
-						openidConnect1.Config.UpstreamIntrospectionJwtHeader = types.StringPointerValue(openidConnectItem.Config.UpstreamIntrospectionJwtHeader)
-						openidConnect1.Config.UpstreamRefreshTokenHeader = types.StringPointerValue(openidConnectItem.Config.UpstreamRefreshTokenHeader)
-						openidConnect1.Config.UpstreamSessionIDHeader = types.StringPointerValue(openidConnectItem.Config.UpstreamSessionIDHeader)
-						openidConnect1.Config.UpstreamUserInfoHeader = types.StringPointerValue(openidConnectItem.Config.UpstreamUserInfoHeader)
-						openidConnect1.Config.UpstreamUserInfoJwtHeader = types.StringPointerValue(openidConnectItem.Config.UpstreamUserInfoJwtHeader)
-						if openidConnectItem.Config.UserinfoAccept != nil {
-							openidConnect1.Config.UserinfoAccept = types.StringValue(string(*openidConnectItem.Config.UserinfoAccept))
-						} else {
-							openidConnect1.Config.UserinfoAccept = types.StringNull()
-						}
-						openidConnect1.Config.UserinfoEndpoint = types.StringPointerValue(openidConnectItem.Config.UserinfoEndpoint)
-						openidConnect1.Config.UserinfoHeadersClient = []types.String{}
-						for _, v := range openidConnectItem.Config.UserinfoHeadersClient {
-							openidConnect1.Config.UserinfoHeadersClient = append(openidConnect1.Config.UserinfoHeadersClient, types.StringValue(v))
-						}
-						openidConnect1.Config.UserinfoHeadersNames = []types.String{}
-						for _, v := range openidConnectItem.Config.UserinfoHeadersNames {
-							openidConnect1.Config.UserinfoHeadersNames = append(openidConnect1.Config.UserinfoHeadersNames, types.StringValue(v))
-						}
-						openidConnect1.Config.UserinfoHeadersValues = []types.String{}
-						for _, v := range openidConnectItem.Config.UserinfoHeadersValues {
-							openidConnect1.Config.UserinfoHeadersValues = append(openidConnect1.Config.UserinfoHeadersValues, types.StringValue(v))
-						}
-						openidConnect1.Config.UserinfoQueryArgsClient = []types.String{}
-						for _, v := range openidConnectItem.Config.UserinfoQueryArgsClient {
-							openidConnect1.Config.UserinfoQueryArgsClient = append(openidConnect1.Config.UserinfoQueryArgsClient, types.StringValue(v))
-						}
-						openidConnect1.Config.UserinfoQueryArgsNames = []types.String{}
-						for _, v := range openidConnectItem.Config.UserinfoQueryArgsNames {
-							openidConnect1.Config.UserinfoQueryArgsNames = append(openidConnect1.Config.UserinfoQueryArgsNames, types.StringValue(v))
-						}
-						openidConnect1.Config.UserinfoQueryArgsValues = []types.String{}
-						for _, v := range openidConnectItem.Config.UserinfoQueryArgsValues {
-							openidConnect1.Config.UserinfoQueryArgsValues = append(openidConnect1.Config.UserinfoQueryArgsValues, types.StringValue(v))
-						}
-						openidConnect1.Config.UsingPseudoIssuer = types.BoolPointerValue(openidConnectItem.Config.UsingPseudoIssuer)
-						openidConnect1.Config.VerifyClaims = types.BoolPointerValue(openidConnectItem.Config.VerifyClaims)
-						openidConnect1.Config.VerifyNonce = types.BoolPointerValue(openidConnectItem.Config.VerifyNonce)
-						openidConnect1.Config.VerifyParameters = types.BoolPointerValue(openidConnectItem.Config.VerifyParameters)
-						openidConnect1.Config.VerifySignature = types.BoolPointerValue(openidConnectItem.Config.VerifySignature)
+						openidConnect1.Config.AuthorizationRollingTimeout = types.NumberNull()
 					}
-					openidConnect1.StrategyID = types.StringValue(openidConnectItem.StrategyID)
-					if openidConnectCount+1 > len(r.Config.V2Strategies.OpenidConnect) {
-						r.Config.V2Strategies.OpenidConnect = append(r.Config.V2Strategies.OpenidConnect, openidConnect1)
+					openidConnect1.Config.BearerTokenCookieName = types.StringPointerValue(openidConnectItem.Config.BearerTokenCookieName)
+					openidConnect1.Config.BearerTokenParamType = []types.String{}
+					for _, v := range openidConnectItem.Config.BearerTokenParamType {
+						openidConnect1.Config.BearerTokenParamType = append(openidConnect1.Config.BearerTokenParamType, types.StringValue(string(v)))
+					}
+					openidConnect1.Config.ByUsernameIgnoreCase = types.BoolPointerValue(openidConnectItem.Config.ByUsernameIgnoreCase)
+					openidConnect1.Config.CacheIntrospection = types.BoolPointerValue(openidConnectItem.Config.CacheIntrospection)
+					openidConnect1.Config.CacheTokenExchange = types.BoolPointerValue(openidConnectItem.Config.CacheTokenExchange)
+					openidConnect1.Config.CacheTokens = types.BoolPointerValue(openidConnectItem.Config.CacheTokens)
+					openidConnect1.Config.CacheTokensSalt = types.StringPointerValue(openidConnectItem.Config.CacheTokensSalt)
+					if openidConnectItem.Config.CacheTTL != nil {
+						openidConnect1.Config.CacheTTL = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.CacheTTL)))
 					} else {
-						r.Config.V2Strategies.OpenidConnect[openidConnectCount].Config = openidConnect1.Config
-						r.Config.V2Strategies.OpenidConnect[openidConnectCount].StrategyID = openidConnect1.StrategyID
+						openidConnect1.Config.CacheTTL = types.NumberNull()
 					}
+					if openidConnectItem.Config.CacheTTLMax != nil {
+						openidConnect1.Config.CacheTTLMax = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.CacheTTLMax)))
+					} else {
+						openidConnect1.Config.CacheTTLMax = types.NumberNull()
+					}
+					if openidConnectItem.Config.CacheTTLMin != nil {
+						openidConnect1.Config.CacheTTLMin = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.CacheTTLMin)))
+					} else {
+						openidConnect1.Config.CacheTTLMin = types.NumberNull()
+					}
+					if openidConnectItem.Config.CacheTTLNeg != nil {
+						openidConnect1.Config.CacheTTLNeg = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.CacheTTLNeg)))
+					} else {
+						openidConnect1.Config.CacheTTLNeg = types.NumberNull()
+					}
+					if openidConnectItem.Config.CacheTTLResurrect != nil {
+						openidConnect1.Config.CacheTTLResurrect = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.CacheTTLResurrect)))
+					} else {
+						openidConnect1.Config.CacheTTLResurrect = types.NumberNull()
+					}
+					openidConnect1.Config.CacheUserInfo = types.BoolPointerValue(openidConnectItem.Config.CacheUserInfo)
+					openidConnect1.Config.ClaimsForbidden = []types.String{}
+					for _, v := range openidConnectItem.Config.ClaimsForbidden {
+						openidConnect1.Config.ClaimsForbidden = append(openidConnect1.Config.ClaimsForbidden, types.StringValue(v))
+					}
+					openidConnect1.Config.ClientAlg = []types.String{}
+					for _, v := range openidConnectItem.Config.ClientAlg {
+						openidConnect1.Config.ClientAlg = append(openidConnect1.Config.ClientAlg, types.StringValue(string(v)))
+					}
+					openidConnect1.Config.ClientArg = types.StringPointerValue(openidConnectItem.Config.ClientArg)
+					openidConnect1.Config.ClientAuth = []types.String{}
+					for _, v := range openidConnectItem.Config.ClientAuth {
+						openidConnect1.Config.ClientAuth = append(openidConnect1.Config.ClientAuth, types.StringValue(string(v)))
+					}
+					openidConnect1.Config.ClientCredentialsParamType = []types.String{}
+					for _, v := range openidConnectItem.Config.ClientCredentialsParamType {
+						openidConnect1.Config.ClientCredentialsParamType = append(openidConnect1.Config.ClientCredentialsParamType, types.StringValue(string(v)))
+					}
+					openidConnect1.Config.ClientID = []types.String{}
+					for _, v := range openidConnectItem.Config.ClientID {
+						openidConnect1.Config.ClientID = append(openidConnect1.Config.ClientID, types.StringValue(v))
+					}
+					openidConnect1.Config.ClientJwk = []tfTypes.KonnectApplicationAuthPluginClientJwk{}
+					for clientJwkCount, clientJwkItem := range openidConnectItem.Config.ClientJwk {
+						var clientJwk1 tfTypes.KonnectApplicationAuthPluginClientJwk
+						clientJwk1.Alg = types.StringPointerValue(clientJwkItem.Alg)
+						clientJwk1.Crv = types.StringPointerValue(clientJwkItem.Crv)
+						clientJwk1.D = types.StringPointerValue(clientJwkItem.D)
+						clientJwk1.Dp = types.StringPointerValue(clientJwkItem.Dp)
+						clientJwk1.Dq = types.StringPointerValue(clientJwkItem.Dq)
+						clientJwk1.E = types.StringPointerValue(clientJwkItem.E)
+						clientJwk1.Issuer = types.StringPointerValue(clientJwkItem.Issuer)
+						clientJwk1.K = types.StringPointerValue(clientJwkItem.K)
+						clientJwk1.KeyOps = []types.String{}
+						for _, v := range clientJwkItem.KeyOps {
+							clientJwk1.KeyOps = append(clientJwk1.KeyOps, types.StringValue(v))
+						}
+						clientJwk1.Kid = types.StringPointerValue(clientJwkItem.Kid)
+						clientJwk1.Kty = types.StringPointerValue(clientJwkItem.Kty)
+						clientJwk1.N = types.StringPointerValue(clientJwkItem.N)
+						clientJwk1.Oth = types.StringPointerValue(clientJwkItem.Oth)
+						clientJwk1.P = types.StringPointerValue(clientJwkItem.P)
+						clientJwk1.Q = types.StringPointerValue(clientJwkItem.Q)
+						clientJwk1.Qi = types.StringPointerValue(clientJwkItem.Qi)
+						clientJwk1.R = types.StringPointerValue(clientJwkItem.R)
+						clientJwk1.T = types.StringPointerValue(clientJwkItem.T)
+						clientJwk1.Use = types.StringPointerValue(clientJwkItem.Use)
+						clientJwk1.X = types.StringPointerValue(clientJwkItem.X)
+						clientJwk1.X5c = []types.String{}
+						for _, v := range clientJwkItem.X5c {
+							clientJwk1.X5c = append(clientJwk1.X5c, types.StringValue(v))
+						}
+						clientJwk1.X5t = types.StringPointerValue(clientJwkItem.X5t)
+						clientJwk1.X5tNumberS256 = types.StringPointerValue(clientJwkItem.X5tNumberS256)
+						clientJwk1.X5u = types.StringPointerValue(clientJwkItem.X5u)
+						clientJwk1.Y = types.StringPointerValue(clientJwkItem.Y)
+						if clientJwkCount+1 > len(openidConnect1.Config.ClientJwk) {
+							openidConnect1.Config.ClientJwk = append(openidConnect1.Config.ClientJwk, clientJwk1)
+						} else {
+							openidConnect1.Config.ClientJwk[clientJwkCount].Alg = clientJwk1.Alg
+							openidConnect1.Config.ClientJwk[clientJwkCount].Crv = clientJwk1.Crv
+							openidConnect1.Config.ClientJwk[clientJwkCount].D = clientJwk1.D
+							openidConnect1.Config.ClientJwk[clientJwkCount].Dp = clientJwk1.Dp
+							openidConnect1.Config.ClientJwk[clientJwkCount].Dq = clientJwk1.Dq
+							openidConnect1.Config.ClientJwk[clientJwkCount].E = clientJwk1.E
+							openidConnect1.Config.ClientJwk[clientJwkCount].Issuer = clientJwk1.Issuer
+							openidConnect1.Config.ClientJwk[clientJwkCount].K = clientJwk1.K
+							openidConnect1.Config.ClientJwk[clientJwkCount].KeyOps = clientJwk1.KeyOps
+							openidConnect1.Config.ClientJwk[clientJwkCount].Kid = clientJwk1.Kid
+							openidConnect1.Config.ClientJwk[clientJwkCount].Kty = clientJwk1.Kty
+							openidConnect1.Config.ClientJwk[clientJwkCount].N = clientJwk1.N
+							openidConnect1.Config.ClientJwk[clientJwkCount].Oth = clientJwk1.Oth
+							openidConnect1.Config.ClientJwk[clientJwkCount].P = clientJwk1.P
+							openidConnect1.Config.ClientJwk[clientJwkCount].Q = clientJwk1.Q
+							openidConnect1.Config.ClientJwk[clientJwkCount].Qi = clientJwk1.Qi
+							openidConnect1.Config.ClientJwk[clientJwkCount].R = clientJwk1.R
+							openidConnect1.Config.ClientJwk[clientJwkCount].T = clientJwk1.T
+							openidConnect1.Config.ClientJwk[clientJwkCount].Use = clientJwk1.Use
+							openidConnect1.Config.ClientJwk[clientJwkCount].X = clientJwk1.X
+							openidConnect1.Config.ClientJwk[clientJwkCount].X5c = clientJwk1.X5c
+							openidConnect1.Config.ClientJwk[clientJwkCount].X5t = clientJwk1.X5t
+							openidConnect1.Config.ClientJwk[clientJwkCount].X5tNumberS256 = clientJwk1.X5tNumberS256
+							openidConnect1.Config.ClientJwk[clientJwkCount].X5u = clientJwk1.X5u
+							openidConnect1.Config.ClientJwk[clientJwkCount].Y = clientJwk1.Y
+						}
+					}
+					openidConnect1.Config.ClientSecret = []types.String{}
+					for _, v := range openidConnectItem.Config.ClientSecret {
+						openidConnect1.Config.ClientSecret = append(openidConnect1.Config.ClientSecret, types.StringValue(v))
+					}
+					openidConnect1.Config.ClusterCacheRedis.ClusterMaxRedirections = types.Int64PointerValue(openidConnectItem.Config.ClusterCacheRedis.ClusterMaxRedirections)
+					openidConnect1.Config.ClusterCacheRedis.ClusterNodes = []tfTypes.ClusterNodes{}
+					for clusterNodesCount, clusterNodesItem := range openidConnectItem.Config.ClusterCacheRedis.ClusterNodes {
+						var clusterNodes1 tfTypes.ClusterNodes
+						clusterNodes1.IP = types.StringPointerValue(clusterNodesItem.IP)
+						clusterNodes1.Port = types.Int64PointerValue(clusterNodesItem.Port)
+						if clusterNodesCount+1 > len(openidConnect1.Config.ClusterCacheRedis.ClusterNodes) {
+							openidConnect1.Config.ClusterCacheRedis.ClusterNodes = append(openidConnect1.Config.ClusterCacheRedis.ClusterNodes, clusterNodes1)
+						} else {
+							openidConnect1.Config.ClusterCacheRedis.ClusterNodes[clusterNodesCount].IP = clusterNodes1.IP
+							openidConnect1.Config.ClusterCacheRedis.ClusterNodes[clusterNodesCount].Port = clusterNodes1.Port
+						}
+					}
+					openidConnect1.Config.ClusterCacheRedis.ConnectTimeout = types.Int64PointerValue(openidConnectItem.Config.ClusterCacheRedis.ConnectTimeout)
+					openidConnect1.Config.ClusterCacheRedis.ConnectionIsProxied = types.BoolPointerValue(openidConnectItem.Config.ClusterCacheRedis.ConnectionIsProxied)
+					openidConnect1.Config.ClusterCacheRedis.Database = types.Int64PointerValue(openidConnectItem.Config.ClusterCacheRedis.Database)
+					openidConnect1.Config.ClusterCacheRedis.Host = types.StringPointerValue(openidConnectItem.Config.ClusterCacheRedis.Host)
+					openidConnect1.Config.ClusterCacheRedis.KeepaliveBacklog = types.Int64PointerValue(openidConnectItem.Config.ClusterCacheRedis.KeepaliveBacklog)
+					openidConnect1.Config.ClusterCacheRedis.KeepalivePoolSize = types.Int64PointerValue(openidConnectItem.Config.ClusterCacheRedis.KeepalivePoolSize)
+					openidConnect1.Config.ClusterCacheRedis.Password = types.StringPointerValue(openidConnectItem.Config.ClusterCacheRedis.Password)
+					openidConnect1.Config.ClusterCacheRedis.Port = types.Int64PointerValue(openidConnectItem.Config.ClusterCacheRedis.Port)
+					openidConnect1.Config.ClusterCacheRedis.ReadTimeout = types.Int64PointerValue(openidConnectItem.Config.ClusterCacheRedis.ReadTimeout)
+					openidConnect1.Config.ClusterCacheRedis.SendTimeout = types.Int64PointerValue(openidConnectItem.Config.ClusterCacheRedis.SendTimeout)
+					openidConnect1.Config.ClusterCacheRedis.SentinelMaster = types.StringPointerValue(openidConnectItem.Config.ClusterCacheRedis.SentinelMaster)
+					openidConnect1.Config.ClusterCacheRedis.SentinelNodes = []tfTypes.SentinelNodes{}
+					for sentinelNodesCount, sentinelNodesItem := range openidConnectItem.Config.ClusterCacheRedis.SentinelNodes {
+						var sentinelNodes1 tfTypes.SentinelNodes
+						sentinelNodes1.Host = types.StringPointerValue(sentinelNodesItem.Host)
+						sentinelNodes1.Port = types.Int64PointerValue(sentinelNodesItem.Port)
+						if sentinelNodesCount+1 > len(openidConnect1.Config.ClusterCacheRedis.SentinelNodes) {
+							openidConnect1.Config.ClusterCacheRedis.SentinelNodes = append(openidConnect1.Config.ClusterCacheRedis.SentinelNodes, sentinelNodes1)
+						} else {
+							openidConnect1.Config.ClusterCacheRedis.SentinelNodes[sentinelNodesCount].Host = sentinelNodes1.Host
+							openidConnect1.Config.ClusterCacheRedis.SentinelNodes[sentinelNodesCount].Port = sentinelNodes1.Port
+						}
+					}
+					openidConnect1.Config.ClusterCacheRedis.SentinelPassword = types.StringPointerValue(openidConnectItem.Config.ClusterCacheRedis.SentinelPassword)
+					if openidConnectItem.Config.ClusterCacheRedis.SentinelRole != nil {
+						openidConnect1.Config.ClusterCacheRedis.SentinelRole = types.StringValue(string(*openidConnectItem.Config.ClusterCacheRedis.SentinelRole))
+					} else {
+						openidConnect1.Config.ClusterCacheRedis.SentinelRole = types.StringNull()
+					}
+					openidConnect1.Config.ClusterCacheRedis.SentinelUsername = types.StringPointerValue(openidConnectItem.Config.ClusterCacheRedis.SentinelUsername)
+					openidConnect1.Config.ClusterCacheRedis.ServerName = types.StringPointerValue(openidConnectItem.Config.ClusterCacheRedis.ServerName)
+					openidConnect1.Config.ClusterCacheRedis.Ssl = types.BoolPointerValue(openidConnectItem.Config.ClusterCacheRedis.Ssl)
+					openidConnect1.Config.ClusterCacheRedis.SslVerify = types.BoolPointerValue(openidConnectItem.Config.ClusterCacheRedis.SslVerify)
+					openidConnect1.Config.ClusterCacheRedis.Username = types.StringPointerValue(openidConnectItem.Config.ClusterCacheRedis.Username)
+					if openidConnectItem.Config.ClusterCacheStrategy != nil {
+						openidConnect1.Config.ClusterCacheStrategy = types.StringValue(string(*openidConnectItem.Config.ClusterCacheStrategy))
+					} else {
+						openidConnect1.Config.ClusterCacheStrategy = types.StringNull()
+					}
+					openidConnect1.Config.ConsumerBy = []types.String{}
+					for _, v := range openidConnectItem.Config.ConsumerBy {
+						openidConnect1.Config.ConsumerBy = append(openidConnect1.Config.ConsumerBy, types.StringValue(string(v)))
+					}
+					openidConnect1.Config.ConsumerClaim = []types.String{}
+					for _, v := range openidConnectItem.Config.ConsumerClaim {
+						openidConnect1.Config.ConsumerClaim = append(openidConnect1.Config.ConsumerClaim, types.StringValue(v))
+					}
+					openidConnect1.Config.ConsumerOptional = types.BoolPointerValue(openidConnectItem.Config.ConsumerOptional)
+					openidConnect1.Config.CredentialClaim = []types.String{}
+					for _, v := range openidConnectItem.Config.CredentialClaim {
+						openidConnect1.Config.CredentialClaim = append(openidConnect1.Config.CredentialClaim, types.StringValue(v))
+					}
+					openidConnect1.Config.DisableSession = []types.String{}
+					for _, v := range openidConnectItem.Config.DisableSession {
+						openidConnect1.Config.DisableSession = append(openidConnect1.Config.DisableSession, types.StringValue(string(v)))
+					}
+					openidConnect1.Config.DiscoveryHeadersNames = []types.String{}
+					for _, v := range openidConnectItem.Config.DiscoveryHeadersNames {
+						openidConnect1.Config.DiscoveryHeadersNames = append(openidConnect1.Config.DiscoveryHeadersNames, types.StringValue(v))
+					}
+					openidConnect1.Config.DiscoveryHeadersValues = []types.String{}
+					for _, v := range openidConnectItem.Config.DiscoveryHeadersValues {
+						openidConnect1.Config.DiscoveryHeadersValues = append(openidConnect1.Config.DiscoveryHeadersValues, types.StringValue(v))
+					}
+					openidConnect1.Config.DisplayErrors = types.BoolPointerValue(openidConnectItem.Config.DisplayErrors)
+					openidConnect1.Config.Domains = []types.String{}
+					for _, v := range openidConnectItem.Config.Domains {
+						openidConnect1.Config.Domains = append(openidConnect1.Config.Domains, types.StringValue(v))
+					}
+					openidConnect1.Config.DownstreamAccessTokenHeader = types.StringPointerValue(openidConnectItem.Config.DownstreamAccessTokenHeader)
+					openidConnect1.Config.DownstreamAccessTokenJwkHeader = types.StringPointerValue(openidConnectItem.Config.DownstreamAccessTokenJwkHeader)
+					openidConnect1.Config.DownstreamHeadersClaims = []types.String{}
+					for _, v := range openidConnectItem.Config.DownstreamHeadersClaims {
+						openidConnect1.Config.DownstreamHeadersClaims = append(openidConnect1.Config.DownstreamHeadersClaims, types.StringValue(v))
+					}
+					openidConnect1.Config.DownstreamHeadersNames = []types.String{}
+					for _, v := range openidConnectItem.Config.DownstreamHeadersNames {
+						openidConnect1.Config.DownstreamHeadersNames = append(openidConnect1.Config.DownstreamHeadersNames, types.StringValue(v))
+					}
+					openidConnect1.Config.DownstreamIDTokenHeader = types.StringPointerValue(openidConnectItem.Config.DownstreamIDTokenHeader)
+					openidConnect1.Config.DownstreamIDTokenJwkHeader = types.StringPointerValue(openidConnectItem.Config.DownstreamIDTokenJwkHeader)
+					openidConnect1.Config.DownstreamIntrospectionHeader = types.StringPointerValue(openidConnectItem.Config.DownstreamIntrospectionHeader)
+					openidConnect1.Config.DownstreamIntrospectionJwtHeader = types.StringPointerValue(openidConnectItem.Config.DownstreamIntrospectionJwtHeader)
+					openidConnect1.Config.DownstreamRefreshTokenHeader = types.StringPointerValue(openidConnectItem.Config.DownstreamRefreshTokenHeader)
+					openidConnect1.Config.DownstreamSessionIDHeader = types.StringPointerValue(openidConnectItem.Config.DownstreamSessionIDHeader)
+					openidConnect1.Config.DownstreamUserInfoHeader = types.StringPointerValue(openidConnectItem.Config.DownstreamUserInfoHeader)
+					openidConnect1.Config.DownstreamUserInfoJwtHeader = types.StringPointerValue(openidConnectItem.Config.DownstreamUserInfoJwtHeader)
+					if openidConnectItem.Config.DpopProofLifetime != nil {
+						openidConnect1.Config.DpopProofLifetime = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.DpopProofLifetime)))
+					} else {
+						openidConnect1.Config.DpopProofLifetime = types.NumberNull()
+					}
+					openidConnect1.Config.DpopUseNonce = types.BoolPointerValue(openidConnectItem.Config.DpopUseNonce)
+					openidConnect1.Config.EnableHsSignatures = types.BoolPointerValue(openidConnectItem.Config.EnableHsSignatures)
+					openidConnect1.Config.EndSessionEndpoint = types.StringPointerValue(openidConnectItem.Config.EndSessionEndpoint)
+					openidConnect1.Config.ExposeErrorCode = types.BoolPointerValue(openidConnectItem.Config.ExposeErrorCode)
+					openidConnect1.Config.ExtraJwksUris = []types.String{}
+					for _, v := range openidConnectItem.Config.ExtraJwksUris {
+						openidConnect1.Config.ExtraJwksUris = append(openidConnect1.Config.ExtraJwksUris, types.StringValue(v))
+					}
+					openidConnect1.Config.ForbiddenDestroySession = types.BoolPointerValue(openidConnectItem.Config.ForbiddenDestroySession)
+					openidConnect1.Config.ForbiddenErrorMessage = types.StringPointerValue(openidConnectItem.Config.ForbiddenErrorMessage)
+					openidConnect1.Config.ForbiddenRedirectURI = []types.String{}
+					for _, v := range openidConnectItem.Config.ForbiddenRedirectURI {
+						openidConnect1.Config.ForbiddenRedirectURI = append(openidConnect1.Config.ForbiddenRedirectURI, types.StringValue(v))
+					}
+					openidConnect1.Config.GroupsClaim = []types.String{}
+					for _, v := range openidConnectItem.Config.GroupsClaim {
+						openidConnect1.Config.GroupsClaim = append(openidConnect1.Config.GroupsClaim, types.StringValue(v))
+					}
+					openidConnect1.Config.GroupsRequired = []types.String{}
+					for _, v := range openidConnectItem.Config.GroupsRequired {
+						openidConnect1.Config.GroupsRequired = append(openidConnect1.Config.GroupsRequired, types.StringValue(v))
+					}
+					openidConnect1.Config.HideCredentials = types.BoolPointerValue(openidConnectItem.Config.HideCredentials)
+					openidConnect1.Config.HTTPProxy = types.StringPointerValue(openidConnectItem.Config.HTTPProxy)
+					openidConnect1.Config.HTTPProxyAuthorization = types.StringPointerValue(openidConnectItem.Config.HTTPProxyAuthorization)
+					if openidConnectItem.Config.HTTPVersion != nil {
+						openidConnect1.Config.HTTPVersion = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.HTTPVersion)))
+					} else {
+						openidConnect1.Config.HTTPVersion = types.NumberNull()
+					}
+					openidConnect1.Config.HTTPSProxy = types.StringPointerValue(openidConnectItem.Config.HTTPSProxy)
+					openidConnect1.Config.HTTPSProxyAuthorization = types.StringPointerValue(openidConnectItem.Config.HTTPSProxyAuthorization)
+					openidConnect1.Config.IDTokenParamName = types.StringPointerValue(openidConnectItem.Config.IDTokenParamName)
+					openidConnect1.Config.IDTokenParamType = []types.String{}
+					for _, v := range openidConnectItem.Config.IDTokenParamType {
+						openidConnect1.Config.IDTokenParamType = append(openidConnect1.Config.IDTokenParamType, types.StringValue(string(v)))
+					}
+					openidConnect1.Config.IgnoreSignature = []types.String{}
+					for _, v := range openidConnectItem.Config.IgnoreSignature {
+						openidConnect1.Config.IgnoreSignature = append(openidConnect1.Config.IgnoreSignature, types.StringValue(string(v)))
+					}
+					openidConnect1.Config.IntrospectJwtTokens = types.BoolPointerValue(openidConnectItem.Config.IntrospectJwtTokens)
+					if openidConnectItem.Config.IntrospectionAccept != nil {
+						openidConnect1.Config.IntrospectionAccept = types.StringValue(string(*openidConnectItem.Config.IntrospectionAccept))
+					} else {
+						openidConnect1.Config.IntrospectionAccept = types.StringNull()
+					}
+					openidConnect1.Config.IntrospectionCheckActive = types.BoolPointerValue(openidConnectItem.Config.IntrospectionCheckActive)
+					openidConnect1.Config.IntrospectionEndpoint = types.StringPointerValue(openidConnectItem.Config.IntrospectionEndpoint)
+					if openidConnectItem.Config.IntrospectionEndpointAuthMethod != nil {
+						openidConnect1.Config.IntrospectionEndpointAuthMethod = types.StringValue(string(*openidConnectItem.Config.IntrospectionEndpointAuthMethod))
+					} else {
+						openidConnect1.Config.IntrospectionEndpointAuthMethod = types.StringNull()
+					}
+					openidConnect1.Config.IntrospectionHeadersClient = []types.String{}
+					for _, v := range openidConnectItem.Config.IntrospectionHeadersClient {
+						openidConnect1.Config.IntrospectionHeadersClient = append(openidConnect1.Config.IntrospectionHeadersClient, types.StringValue(v))
+					}
+					openidConnect1.Config.IntrospectionHeadersNames = []types.String{}
+					for _, v := range openidConnectItem.Config.IntrospectionHeadersNames {
+						openidConnect1.Config.IntrospectionHeadersNames = append(openidConnect1.Config.IntrospectionHeadersNames, types.StringValue(v))
+					}
+					openidConnect1.Config.IntrospectionHeadersValues = []types.String{}
+					for _, v := range openidConnectItem.Config.IntrospectionHeadersValues {
+						openidConnect1.Config.IntrospectionHeadersValues = append(openidConnect1.Config.IntrospectionHeadersValues, types.StringValue(v))
+					}
+					openidConnect1.Config.IntrospectionHint = types.StringPointerValue(openidConnectItem.Config.IntrospectionHint)
+					openidConnect1.Config.IntrospectionPostArgsClient = []types.String{}
+					for _, v := range openidConnectItem.Config.IntrospectionPostArgsClient {
+						openidConnect1.Config.IntrospectionPostArgsClient = append(openidConnect1.Config.IntrospectionPostArgsClient, types.StringValue(v))
+					}
+					openidConnect1.Config.IntrospectionPostArgsNames = []types.String{}
+					for _, v := range openidConnectItem.Config.IntrospectionPostArgsNames {
+						openidConnect1.Config.IntrospectionPostArgsNames = append(openidConnect1.Config.IntrospectionPostArgsNames, types.StringValue(v))
+					}
+					openidConnect1.Config.IntrospectionPostArgsValues = []types.String{}
+					for _, v := range openidConnectItem.Config.IntrospectionPostArgsValues {
+						openidConnect1.Config.IntrospectionPostArgsValues = append(openidConnect1.Config.IntrospectionPostArgsValues, types.StringValue(v))
+					}
+					openidConnect1.Config.IntrospectionTokenParamName = types.StringPointerValue(openidConnectItem.Config.IntrospectionTokenParamName)
+					openidConnect1.Config.Issuer = types.StringValue(openidConnectItem.Config.Issuer)
+					openidConnect1.Config.IssuersAllowed = []types.String{}
+					for _, v := range openidConnectItem.Config.IssuersAllowed {
+						openidConnect1.Config.IssuersAllowed = append(openidConnect1.Config.IssuersAllowed, types.StringValue(v))
+					}
+					openidConnect1.Config.JwtSessionClaim = types.StringPointerValue(openidConnectItem.Config.JwtSessionClaim)
+					openidConnect1.Config.JwtSessionCookie = types.StringPointerValue(openidConnectItem.Config.JwtSessionCookie)
+					openidConnect1.Config.Keepalive = types.BoolPointerValue(openidConnectItem.Config.Keepalive)
+					if openidConnectItem.Config.Leeway != nil {
+						openidConnect1.Config.Leeway = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.Leeway)))
+					} else {
+						openidConnect1.Config.Leeway = types.NumberNull()
+					}
+					if openidConnectItem.Config.LoginAction != nil {
+						openidConnect1.Config.LoginAction = types.StringValue(string(*openidConnectItem.Config.LoginAction))
+					} else {
+						openidConnect1.Config.LoginAction = types.StringNull()
+					}
+					openidConnect1.Config.LoginMethods = []types.String{}
+					for _, v := range openidConnectItem.Config.LoginMethods {
+						openidConnect1.Config.LoginMethods = append(openidConnect1.Config.LoginMethods, types.StringValue(string(v)))
+					}
+					if openidConnectItem.Config.LoginRedirectMode != nil {
+						openidConnect1.Config.LoginRedirectMode = types.StringValue(string(*openidConnectItem.Config.LoginRedirectMode))
+					} else {
+						openidConnect1.Config.LoginRedirectMode = types.StringNull()
+					}
+					openidConnect1.Config.LoginRedirectURI = []types.String{}
+					for _, v := range openidConnectItem.Config.LoginRedirectURI {
+						openidConnect1.Config.LoginRedirectURI = append(openidConnect1.Config.LoginRedirectURI, types.StringValue(v))
+					}
+					openidConnect1.Config.LoginTokens = []types.String{}
+					for _, v := range openidConnectItem.Config.LoginTokens {
+						openidConnect1.Config.LoginTokens = append(openidConnect1.Config.LoginTokens, types.StringValue(string(v)))
+					}
+					openidConnect1.Config.LogoutMethods = []types.String{}
+					for _, v := range openidConnectItem.Config.LogoutMethods {
+						openidConnect1.Config.LogoutMethods = append(openidConnect1.Config.LogoutMethods, types.StringValue(string(v)))
+					}
+					openidConnect1.Config.LogoutPostArg = types.StringPointerValue(openidConnectItem.Config.LogoutPostArg)
+					openidConnect1.Config.LogoutQueryArg = types.StringPointerValue(openidConnectItem.Config.LogoutQueryArg)
+					openidConnect1.Config.LogoutRedirectURI = []types.String{}
+					for _, v := range openidConnectItem.Config.LogoutRedirectURI {
+						openidConnect1.Config.LogoutRedirectURI = append(openidConnect1.Config.LogoutRedirectURI, types.StringValue(v))
+					}
+					openidConnect1.Config.LogoutRevoke = types.BoolPointerValue(openidConnectItem.Config.LogoutRevoke)
+					openidConnect1.Config.LogoutRevokeAccessToken = types.BoolPointerValue(openidConnectItem.Config.LogoutRevokeAccessToken)
+					openidConnect1.Config.LogoutRevokeRefreshToken = types.BoolPointerValue(openidConnectItem.Config.LogoutRevokeRefreshToken)
+					openidConnect1.Config.LogoutURISuffix = types.StringPointerValue(openidConnectItem.Config.LogoutURISuffix)
+					if openidConnectItem.Config.MaxAge != nil {
+						openidConnect1.Config.MaxAge = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.MaxAge)))
+					} else {
+						openidConnect1.Config.MaxAge = types.NumberNull()
+					}
+					openidConnect1.Config.MtlsIntrospectionEndpoint = types.StringPointerValue(openidConnectItem.Config.MtlsIntrospectionEndpoint)
+					openidConnect1.Config.MtlsRevocationEndpoint = types.StringPointerValue(openidConnectItem.Config.MtlsRevocationEndpoint)
+					openidConnect1.Config.MtlsTokenEndpoint = types.StringPointerValue(openidConnectItem.Config.MtlsTokenEndpoint)
+					openidConnect1.Config.NoProxy = types.StringPointerValue(openidConnectItem.Config.NoProxy)
+					openidConnect1.Config.PasswordParamType = []types.String{}
+					for _, v := range openidConnectItem.Config.PasswordParamType {
+						openidConnect1.Config.PasswordParamType = append(openidConnect1.Config.PasswordParamType, types.StringValue(string(v)))
+					}
+					openidConnect1.Config.PreserveQueryArgs = types.BoolPointerValue(openidConnectItem.Config.PreserveQueryArgs)
+					openidConnect1.Config.ProofOfPossessionAuthMethodsValidation = types.BoolPointerValue(openidConnectItem.Config.ProofOfPossessionAuthMethodsValidation)
+					if openidConnectItem.Config.ProofOfPossessionDpop != nil {
+						openidConnect1.Config.ProofOfPossessionDpop = types.StringValue(string(*openidConnectItem.Config.ProofOfPossessionDpop))
+					} else {
+						openidConnect1.Config.ProofOfPossessionDpop = types.StringNull()
+					}
+					if openidConnectItem.Config.ProofOfPossessionMtls != nil {
+						openidConnect1.Config.ProofOfPossessionMtls = types.StringValue(string(*openidConnectItem.Config.ProofOfPossessionMtls))
+					} else {
+						openidConnect1.Config.ProofOfPossessionMtls = types.StringNull()
+					}
+					openidConnect1.Config.PushedAuthorizationRequestEndpoint = types.StringPointerValue(openidConnectItem.Config.PushedAuthorizationRequestEndpoint)
+					if openidConnectItem.Config.PushedAuthorizationRequestEndpointAuthMethod != nil {
+						openidConnect1.Config.PushedAuthorizationRequestEndpointAuthMethod = types.StringValue(string(*openidConnectItem.Config.PushedAuthorizationRequestEndpointAuthMethod))
+					} else {
+						openidConnect1.Config.PushedAuthorizationRequestEndpointAuthMethod = types.StringNull()
+					}
+					openidConnect1.Config.RedirectURI = []types.String{}
+					for _, v := range openidConnectItem.Config.RedirectURI {
+						openidConnect1.Config.RedirectURI = append(openidConnect1.Config.RedirectURI, types.StringValue(v))
+					}
+					openidConnect1.Config.Redis.ClusterMaxRedirections = types.Int64PointerValue(openidConnectItem.Config.Redis.ClusterMaxRedirections)
+					openidConnect1.Config.Redis.ClusterNodes = []tfTypes.ClusterNodes{}
+					for clusterNodesCount1, clusterNodesItem1 := range openidConnectItem.Config.Redis.ClusterNodes {
+						var clusterNodes3 tfTypes.ClusterNodes
+						clusterNodes3.IP = types.StringPointerValue(clusterNodesItem1.IP)
+						clusterNodes3.Port = types.Int64PointerValue(clusterNodesItem1.Port)
+						if clusterNodesCount1+1 > len(openidConnect1.Config.Redis.ClusterNodes) {
+							openidConnect1.Config.Redis.ClusterNodes = append(openidConnect1.Config.Redis.ClusterNodes, clusterNodes3)
+						} else {
+							openidConnect1.Config.Redis.ClusterNodes[clusterNodesCount1].IP = clusterNodes3.IP
+							openidConnect1.Config.Redis.ClusterNodes[clusterNodesCount1].Port = clusterNodes3.Port
+						}
+					}
+					openidConnect1.Config.Redis.ConnectTimeout = types.Int64PointerValue(openidConnectItem.Config.Redis.ConnectTimeout)
+					openidConnect1.Config.Redis.ConnectionIsProxied = types.BoolPointerValue(openidConnectItem.Config.Redis.ConnectionIsProxied)
+					openidConnect1.Config.Redis.Database = types.Int64PointerValue(openidConnectItem.Config.Redis.Database)
+					openidConnect1.Config.Redis.Host = types.StringPointerValue(openidConnectItem.Config.Redis.Host)
+					openidConnect1.Config.Redis.KeepaliveBacklog = types.Int64PointerValue(openidConnectItem.Config.Redis.KeepaliveBacklog)
+					openidConnect1.Config.Redis.KeepalivePoolSize = types.Int64PointerValue(openidConnectItem.Config.Redis.KeepalivePoolSize)
+					openidConnect1.Config.Redis.Password = types.StringPointerValue(openidConnectItem.Config.Redis.Password)
+					openidConnect1.Config.Redis.Port = types.Int64PointerValue(openidConnectItem.Config.Redis.Port)
+					openidConnect1.Config.Redis.Prefix = types.StringPointerValue(openidConnectItem.Config.Redis.Prefix)
+					openidConnect1.Config.Redis.ReadTimeout = types.Int64PointerValue(openidConnectItem.Config.Redis.ReadTimeout)
+					openidConnect1.Config.Redis.SendTimeout = types.Int64PointerValue(openidConnectItem.Config.Redis.SendTimeout)
+					openidConnect1.Config.Redis.SentinelMaster = types.StringPointerValue(openidConnectItem.Config.Redis.SentinelMaster)
+					openidConnect1.Config.Redis.SentinelNodes = []tfTypes.SentinelNodes{}
+					for sentinelNodesCount1, sentinelNodesItem1 := range openidConnectItem.Config.Redis.SentinelNodes {
+						var sentinelNodes3 tfTypes.SentinelNodes
+						sentinelNodes3.Host = types.StringPointerValue(sentinelNodesItem1.Host)
+						sentinelNodes3.Port = types.Int64PointerValue(sentinelNodesItem1.Port)
+						if sentinelNodesCount1+1 > len(openidConnect1.Config.Redis.SentinelNodes) {
+							openidConnect1.Config.Redis.SentinelNodes = append(openidConnect1.Config.Redis.SentinelNodes, sentinelNodes3)
+						} else {
+							openidConnect1.Config.Redis.SentinelNodes[sentinelNodesCount1].Host = sentinelNodes3.Host
+							openidConnect1.Config.Redis.SentinelNodes[sentinelNodesCount1].Port = sentinelNodes3.Port
+						}
+					}
+					openidConnect1.Config.Redis.SentinelPassword = types.StringPointerValue(openidConnectItem.Config.Redis.SentinelPassword)
+					if openidConnectItem.Config.Redis.SentinelRole != nil {
+						openidConnect1.Config.Redis.SentinelRole = types.StringValue(string(*openidConnectItem.Config.Redis.SentinelRole))
+					} else {
+						openidConnect1.Config.Redis.SentinelRole = types.StringNull()
+					}
+					openidConnect1.Config.Redis.SentinelUsername = types.StringPointerValue(openidConnectItem.Config.Redis.SentinelUsername)
+					openidConnect1.Config.Redis.ServerName = types.StringPointerValue(openidConnectItem.Config.Redis.ServerName)
+					openidConnect1.Config.Redis.Socket = types.StringPointerValue(openidConnectItem.Config.Redis.Socket)
+					openidConnect1.Config.Redis.Ssl = types.BoolPointerValue(openidConnectItem.Config.Redis.Ssl)
+					openidConnect1.Config.Redis.SslVerify = types.BoolPointerValue(openidConnectItem.Config.Redis.SslVerify)
+					openidConnect1.Config.Redis.Username = types.StringPointerValue(openidConnectItem.Config.Redis.Username)
+					if openidConnectItem.Config.RediscoveryLifetime != nil {
+						openidConnect1.Config.RediscoveryLifetime = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.RediscoveryLifetime)))
+					} else {
+						openidConnect1.Config.RediscoveryLifetime = types.NumberNull()
+					}
+					openidConnect1.Config.RefreshTokenParamName = types.StringPointerValue(openidConnectItem.Config.RefreshTokenParamName)
+					openidConnect1.Config.RefreshTokenParamType = []types.String{}
+					for _, v := range openidConnectItem.Config.RefreshTokenParamType {
+						openidConnect1.Config.RefreshTokenParamType = append(openidConnect1.Config.RefreshTokenParamType, types.StringValue(string(v)))
+					}
+					openidConnect1.Config.RefreshTokens = types.BoolPointerValue(openidConnectItem.Config.RefreshTokens)
+					openidConnect1.Config.RequireProofKeyForCodeExchange = types.BoolPointerValue(openidConnectItem.Config.RequireProofKeyForCodeExchange)
+					openidConnect1.Config.RequirePushedAuthorizationRequests = types.BoolPointerValue(openidConnectItem.Config.RequirePushedAuthorizationRequests)
+					openidConnect1.Config.RequireSignedRequestObject = types.BoolPointerValue(openidConnectItem.Config.RequireSignedRequestObject)
+					openidConnect1.Config.ResolveDistributedClaims = types.BoolPointerValue(openidConnectItem.Config.ResolveDistributedClaims)
+					if openidConnectItem.Config.ResponseMode != nil {
+						openidConnect1.Config.ResponseMode = types.StringValue(string(*openidConnectItem.Config.ResponseMode))
+					} else {
+						openidConnect1.Config.ResponseMode = types.StringNull()
+					}
+					openidConnect1.Config.ResponseType = []types.String{}
+					for _, v := range openidConnectItem.Config.ResponseType {
+						openidConnect1.Config.ResponseType = append(openidConnect1.Config.ResponseType, types.StringValue(v))
+					}
+					openidConnect1.Config.Reverify = types.BoolPointerValue(openidConnectItem.Config.Reverify)
+					openidConnect1.Config.RevocationEndpoint = types.StringPointerValue(openidConnectItem.Config.RevocationEndpoint)
+					if openidConnectItem.Config.RevocationEndpointAuthMethod != nil {
+						openidConnect1.Config.RevocationEndpointAuthMethod = types.StringValue(string(*openidConnectItem.Config.RevocationEndpointAuthMethod))
+					} else {
+						openidConnect1.Config.RevocationEndpointAuthMethod = types.StringNull()
+					}
+					openidConnect1.Config.RevocationTokenParamName = types.StringPointerValue(openidConnectItem.Config.RevocationTokenParamName)
+					openidConnect1.Config.RolesClaim = []types.String{}
+					for _, v := range openidConnectItem.Config.RolesClaim {
+						openidConnect1.Config.RolesClaim = append(openidConnect1.Config.RolesClaim, types.StringValue(v))
+					}
+					openidConnect1.Config.RolesRequired = []types.String{}
+					for _, v := range openidConnectItem.Config.RolesRequired {
+						openidConnect1.Config.RolesRequired = append(openidConnect1.Config.RolesRequired, types.StringValue(v))
+					}
+					openidConnect1.Config.RunOnPreflight = types.BoolPointerValue(openidConnectItem.Config.RunOnPreflight)
+					openidConnect1.Config.Scopes = []types.String{}
+					for _, v := range openidConnectItem.Config.Scopes {
+						openidConnect1.Config.Scopes = append(openidConnect1.Config.Scopes, types.StringValue(v))
+					}
+					openidConnect1.Config.ScopesClaim = []types.String{}
+					for _, v := range openidConnectItem.Config.ScopesClaim {
+						openidConnect1.Config.ScopesClaim = append(openidConnect1.Config.ScopesClaim, types.StringValue(v))
+					}
+					openidConnect1.Config.ScopesRequired = []types.String{}
+					for _, v := range openidConnectItem.Config.ScopesRequired {
+						openidConnect1.Config.ScopesRequired = append(openidConnect1.Config.ScopesRequired, types.StringValue(v))
+					}
+					openidConnect1.Config.SearchUserInfo = types.BoolPointerValue(openidConnectItem.Config.SearchUserInfo)
+					if openidConnectItem.Config.SessionAbsoluteTimeout != nil {
+						openidConnect1.Config.SessionAbsoluteTimeout = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.SessionAbsoluteTimeout)))
+					} else {
+						openidConnect1.Config.SessionAbsoluteTimeout = types.NumberNull()
+					}
+					openidConnect1.Config.SessionAudience = types.StringPointerValue(openidConnectItem.Config.SessionAudience)
+					openidConnect1.Config.SessionCookieDomain = types.StringPointerValue(openidConnectItem.Config.SessionCookieDomain)
+					openidConnect1.Config.SessionCookieHTTPOnly = types.BoolPointerValue(openidConnectItem.Config.SessionCookieHTTPOnly)
+					openidConnect1.Config.SessionCookieName = types.StringPointerValue(openidConnectItem.Config.SessionCookieName)
+					openidConnect1.Config.SessionCookiePath = types.StringPointerValue(openidConnectItem.Config.SessionCookiePath)
+					if openidConnectItem.Config.SessionCookieSameSite != nil {
+						openidConnect1.Config.SessionCookieSameSite = types.StringValue(string(*openidConnectItem.Config.SessionCookieSameSite))
+					} else {
+						openidConnect1.Config.SessionCookieSameSite = types.StringNull()
+					}
+					openidConnect1.Config.SessionCookieSecure = types.BoolPointerValue(openidConnectItem.Config.SessionCookieSecure)
+					openidConnect1.Config.SessionEnforceSameSubject = types.BoolPointerValue(openidConnectItem.Config.SessionEnforceSameSubject)
+					openidConnect1.Config.SessionHashStorageKey = types.BoolPointerValue(openidConnectItem.Config.SessionHashStorageKey)
+					openidConnect1.Config.SessionHashSubject = types.BoolPointerValue(openidConnectItem.Config.SessionHashSubject)
+					if openidConnectItem.Config.SessionIdlingTimeout != nil {
+						openidConnect1.Config.SessionIdlingTimeout = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.SessionIdlingTimeout)))
+					} else {
+						openidConnect1.Config.SessionIdlingTimeout = types.NumberNull()
+					}
+					openidConnect1.Config.SessionMemcachedHost = types.StringPointerValue(openidConnectItem.Config.SessionMemcachedHost)
+					openidConnect1.Config.SessionMemcachedPort = types.Int64PointerValue(openidConnectItem.Config.SessionMemcachedPort)
+					openidConnect1.Config.SessionMemcachedPrefix = types.StringPointerValue(openidConnectItem.Config.SessionMemcachedPrefix)
+					openidConnect1.Config.SessionMemcachedSocket = types.StringPointerValue(openidConnectItem.Config.SessionMemcachedSocket)
+					openidConnect1.Config.SessionRemember = types.BoolPointerValue(openidConnectItem.Config.SessionRemember)
+					if openidConnectItem.Config.SessionRememberAbsoluteTimeout != nil {
+						openidConnect1.Config.SessionRememberAbsoluteTimeout = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.SessionRememberAbsoluteTimeout)))
+					} else {
+						openidConnect1.Config.SessionRememberAbsoluteTimeout = types.NumberNull()
+					}
+					openidConnect1.Config.SessionRememberCookieName = types.StringPointerValue(openidConnectItem.Config.SessionRememberCookieName)
+					if openidConnectItem.Config.SessionRememberRollingTimeout != nil {
+						openidConnect1.Config.SessionRememberRollingTimeout = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.SessionRememberRollingTimeout)))
+					} else {
+						openidConnect1.Config.SessionRememberRollingTimeout = types.NumberNull()
+					}
+					openidConnect1.Config.SessionRequestHeaders = []types.String{}
+					for _, v := range openidConnectItem.Config.SessionRequestHeaders {
+						openidConnect1.Config.SessionRequestHeaders = append(openidConnect1.Config.SessionRequestHeaders, types.StringValue(string(v)))
+					}
+					openidConnect1.Config.SessionResponseHeaders = []types.String{}
+					for _, v := range openidConnectItem.Config.SessionResponseHeaders {
+						openidConnect1.Config.SessionResponseHeaders = append(openidConnect1.Config.SessionResponseHeaders, types.StringValue(string(v)))
+					}
+					if openidConnectItem.Config.SessionRollingTimeout != nil {
+						openidConnect1.Config.SessionRollingTimeout = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.SessionRollingTimeout)))
+					} else {
+						openidConnect1.Config.SessionRollingTimeout = types.NumberNull()
+					}
+					openidConnect1.Config.SessionSecret = types.StringPointerValue(openidConnectItem.Config.SessionSecret)
+					if openidConnectItem.Config.SessionStorage != nil {
+						openidConnect1.Config.SessionStorage = types.StringValue(string(*openidConnectItem.Config.SessionStorage))
+					} else {
+						openidConnect1.Config.SessionStorage = types.StringNull()
+					}
+					openidConnect1.Config.SessionStoreMetadata = types.BoolPointerValue(openidConnectItem.Config.SessionStoreMetadata)
+					openidConnect1.Config.SslVerify = types.BoolPointerValue(openidConnectItem.Config.SslVerify)
+					if openidConnectItem.Config.Timeout != nil {
+						openidConnect1.Config.Timeout = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.Timeout)))
+					} else {
+						openidConnect1.Config.Timeout = types.NumberNull()
+					}
+					openidConnect1.Config.TLSClientAuthCertID = types.StringPointerValue(openidConnectItem.Config.TLSClientAuthCertID)
+					openidConnect1.Config.TLSClientAuthSslVerify = types.BoolPointerValue(openidConnectItem.Config.TLSClientAuthSslVerify)
+					openidConnect1.Config.TokenCacheKeyIncludeScope = types.BoolPointerValue(openidConnectItem.Config.TokenCacheKeyIncludeScope)
+					openidConnect1.Config.TokenEndpoint = types.StringPointerValue(openidConnectItem.Config.TokenEndpoint)
+					if openidConnectItem.Config.TokenEndpointAuthMethod != nil {
+						openidConnect1.Config.TokenEndpointAuthMethod = types.StringValue(string(*openidConnectItem.Config.TokenEndpointAuthMethod))
+					} else {
+						openidConnect1.Config.TokenEndpointAuthMethod = types.StringNull()
+					}
+					openidConnect1.Config.TokenExchangeEndpoint = types.StringPointerValue(openidConnectItem.Config.TokenExchangeEndpoint)
+					openidConnect1.Config.TokenHeadersClient = []types.String{}
+					for _, v := range openidConnectItem.Config.TokenHeadersClient {
+						openidConnect1.Config.TokenHeadersClient = append(openidConnect1.Config.TokenHeadersClient, types.StringValue(v))
+					}
+					openidConnect1.Config.TokenHeadersGrants = []types.String{}
+					for _, v := range openidConnectItem.Config.TokenHeadersGrants {
+						openidConnect1.Config.TokenHeadersGrants = append(openidConnect1.Config.TokenHeadersGrants, types.StringValue(string(v)))
+					}
+					openidConnect1.Config.TokenHeadersNames = []types.String{}
+					for _, v := range openidConnectItem.Config.TokenHeadersNames {
+						openidConnect1.Config.TokenHeadersNames = append(openidConnect1.Config.TokenHeadersNames, types.StringValue(v))
+					}
+					openidConnect1.Config.TokenHeadersPrefix = types.StringPointerValue(openidConnectItem.Config.TokenHeadersPrefix)
+					openidConnect1.Config.TokenHeadersReplay = []types.String{}
+					for _, v := range openidConnectItem.Config.TokenHeadersReplay {
+						openidConnect1.Config.TokenHeadersReplay = append(openidConnect1.Config.TokenHeadersReplay, types.StringValue(v))
+					}
+					openidConnect1.Config.TokenHeadersValues = []types.String{}
+					for _, v := range openidConnectItem.Config.TokenHeadersValues {
+						openidConnect1.Config.TokenHeadersValues = append(openidConnect1.Config.TokenHeadersValues, types.StringValue(v))
+					}
+					openidConnect1.Config.TokenPostArgsClient = []types.String{}
+					for _, v := range openidConnectItem.Config.TokenPostArgsClient {
+						openidConnect1.Config.TokenPostArgsClient = append(openidConnect1.Config.TokenPostArgsClient, types.StringValue(v))
+					}
+					openidConnect1.Config.TokenPostArgsNames = []types.String{}
+					for _, v := range openidConnectItem.Config.TokenPostArgsNames {
+						openidConnect1.Config.TokenPostArgsNames = append(openidConnect1.Config.TokenPostArgsNames, types.StringValue(v))
+					}
+					openidConnect1.Config.TokenPostArgsValues = []types.String{}
+					for _, v := range openidConnectItem.Config.TokenPostArgsValues {
+						openidConnect1.Config.TokenPostArgsValues = append(openidConnect1.Config.TokenPostArgsValues, types.StringValue(v))
+					}
+					openidConnect1.Config.UnauthorizedDestroySession = types.BoolPointerValue(openidConnectItem.Config.UnauthorizedDestroySession)
+					openidConnect1.Config.UnauthorizedErrorMessage = types.StringPointerValue(openidConnectItem.Config.UnauthorizedErrorMessage)
+					openidConnect1.Config.UnauthorizedRedirectURI = []types.String{}
+					for _, v := range openidConnectItem.Config.UnauthorizedRedirectURI {
+						openidConnect1.Config.UnauthorizedRedirectURI = append(openidConnect1.Config.UnauthorizedRedirectURI, types.StringValue(v))
+					}
+					openidConnect1.Config.UnexpectedRedirectURI = []types.String{}
+					for _, v := range openidConnectItem.Config.UnexpectedRedirectURI {
+						openidConnect1.Config.UnexpectedRedirectURI = append(openidConnect1.Config.UnexpectedRedirectURI, types.StringValue(v))
+					}
+					openidConnect1.Config.UpstreamAccessTokenHeader = types.StringPointerValue(openidConnectItem.Config.UpstreamAccessTokenHeader)
+					openidConnect1.Config.UpstreamAccessTokenJwkHeader = types.StringPointerValue(openidConnectItem.Config.UpstreamAccessTokenJwkHeader)
+					openidConnect1.Config.UpstreamHeadersClaims = []types.String{}
+					for _, v := range openidConnectItem.Config.UpstreamHeadersClaims {
+						openidConnect1.Config.UpstreamHeadersClaims = append(openidConnect1.Config.UpstreamHeadersClaims, types.StringValue(v))
+					}
+					openidConnect1.Config.UpstreamHeadersNames = []types.String{}
+					for _, v := range openidConnectItem.Config.UpstreamHeadersNames {
+						openidConnect1.Config.UpstreamHeadersNames = append(openidConnect1.Config.UpstreamHeadersNames, types.StringValue(v))
+					}
+					openidConnect1.Config.UpstreamIDTokenHeader = types.StringPointerValue(openidConnectItem.Config.UpstreamIDTokenHeader)
+					openidConnect1.Config.UpstreamIDTokenJwkHeader = types.StringPointerValue(openidConnectItem.Config.UpstreamIDTokenJwkHeader)
+					openidConnect1.Config.UpstreamIntrospectionHeader = types.StringPointerValue(openidConnectItem.Config.UpstreamIntrospectionHeader)
+					openidConnect1.Config.UpstreamIntrospectionJwtHeader = types.StringPointerValue(openidConnectItem.Config.UpstreamIntrospectionJwtHeader)
+					openidConnect1.Config.UpstreamRefreshTokenHeader = types.StringPointerValue(openidConnectItem.Config.UpstreamRefreshTokenHeader)
+					openidConnect1.Config.UpstreamSessionIDHeader = types.StringPointerValue(openidConnectItem.Config.UpstreamSessionIDHeader)
+					openidConnect1.Config.UpstreamUserInfoHeader = types.StringPointerValue(openidConnectItem.Config.UpstreamUserInfoHeader)
+					openidConnect1.Config.UpstreamUserInfoJwtHeader = types.StringPointerValue(openidConnectItem.Config.UpstreamUserInfoJwtHeader)
+					if openidConnectItem.Config.UserinfoAccept != nil {
+						openidConnect1.Config.UserinfoAccept = types.StringValue(string(*openidConnectItem.Config.UserinfoAccept))
+					} else {
+						openidConnect1.Config.UserinfoAccept = types.StringNull()
+					}
+					openidConnect1.Config.UserinfoEndpoint = types.StringPointerValue(openidConnectItem.Config.UserinfoEndpoint)
+					openidConnect1.Config.UserinfoHeadersClient = []types.String{}
+					for _, v := range openidConnectItem.Config.UserinfoHeadersClient {
+						openidConnect1.Config.UserinfoHeadersClient = append(openidConnect1.Config.UserinfoHeadersClient, types.StringValue(v))
+					}
+					openidConnect1.Config.UserinfoHeadersNames = []types.String{}
+					for _, v := range openidConnectItem.Config.UserinfoHeadersNames {
+						openidConnect1.Config.UserinfoHeadersNames = append(openidConnect1.Config.UserinfoHeadersNames, types.StringValue(v))
+					}
+					openidConnect1.Config.UserinfoHeadersValues = []types.String{}
+					for _, v := range openidConnectItem.Config.UserinfoHeadersValues {
+						openidConnect1.Config.UserinfoHeadersValues = append(openidConnect1.Config.UserinfoHeadersValues, types.StringValue(v))
+					}
+					openidConnect1.Config.UserinfoQueryArgsClient = []types.String{}
+					for _, v := range openidConnectItem.Config.UserinfoQueryArgsClient {
+						openidConnect1.Config.UserinfoQueryArgsClient = append(openidConnect1.Config.UserinfoQueryArgsClient, types.StringValue(v))
+					}
+					openidConnect1.Config.UserinfoQueryArgsNames = []types.String{}
+					for _, v := range openidConnectItem.Config.UserinfoQueryArgsNames {
+						openidConnect1.Config.UserinfoQueryArgsNames = append(openidConnect1.Config.UserinfoQueryArgsNames, types.StringValue(v))
+					}
+					openidConnect1.Config.UserinfoQueryArgsValues = []types.String{}
+					for _, v := range openidConnectItem.Config.UserinfoQueryArgsValues {
+						openidConnect1.Config.UserinfoQueryArgsValues = append(openidConnect1.Config.UserinfoQueryArgsValues, types.StringValue(v))
+					}
+					openidConnect1.Config.UsingPseudoIssuer = types.BoolPointerValue(openidConnectItem.Config.UsingPseudoIssuer)
+					openidConnect1.Config.VerifyClaims = types.BoolPointerValue(openidConnectItem.Config.VerifyClaims)
+					openidConnect1.Config.VerifyNonce = types.BoolPointerValue(openidConnectItem.Config.VerifyNonce)
+					openidConnect1.Config.VerifyParameters = types.BoolPointerValue(openidConnectItem.Config.VerifyParameters)
+					openidConnect1.Config.VerifySignature = types.BoolPointerValue(openidConnectItem.Config.VerifySignature)
+				}
+				openidConnect1.StrategyID = types.StringValue(openidConnectItem.StrategyID)
+				if openidConnectCount+1 > len(r.Config.V2Strategies.OpenidConnect) {
+					r.Config.V2Strategies.OpenidConnect = append(r.Config.V2Strategies.OpenidConnect, openidConnect1)
+				} else {
+					r.Config.V2Strategies.OpenidConnect[openidConnectCount].Config = openidConnect1.Config
+					r.Config.V2Strategies.OpenidConnect[openidConnectCount].StrategyID = openidConnect1.StrategyID
 				}
 			}
 		}
@@ -805,11 +800,11 @@ func (r *GatewayPluginKonnectApplicationAuthDataSourceModel) RefreshFromSharedKo
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			r.Ordering = &tfTypes.ACLPluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After = &tfTypes.ACLPluginAfter{}
 				r.Ordering.After.Access = []types.String{}
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -818,7 +813,7 @@ func (r *GatewayPluginKonnectApplicationAuthDataSourceModel) RefreshFromSharedKo
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
 				r.Ordering.Before.Access = []types.String{}
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))

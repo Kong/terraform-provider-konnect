@@ -10,18 +10,13 @@ import (
 
 func (r *GatewayPluginCorrelationIDDataSourceModel) RefreshFromSharedCorrelationIDPlugin(resp *shared.CorrelationIDPlugin) {
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
+		r.Config.EchoDownstream = types.BoolPointerValue(resp.Config.EchoDownstream)
+		if resp.Config.Generator != nil {
+			r.Config.Generator = types.StringValue(string(*resp.Config.Generator))
 		} else {
-			r.Config = &tfTypes.CreateCorrelationIDPluginConfig{}
-			r.Config.EchoDownstream = types.BoolPointerValue(resp.Config.EchoDownstream)
-			if resp.Config.Generator != nil {
-				r.Config.Generator = types.StringValue(string(*resp.Config.Generator))
-			} else {
-				r.Config.Generator = types.StringNull()
-			}
-			r.Config.HeaderName = types.StringPointerValue(resp.Config.HeaderName)
+			r.Config.Generator = types.StringNull()
 		}
+		r.Config.HeaderName = types.StringPointerValue(resp.Config.HeaderName)
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
@@ -41,11 +36,11 @@ func (r *GatewayPluginCorrelationIDDataSourceModel) RefreshFromSharedCorrelation
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			r.Ordering = &tfTypes.ACLPluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After = &tfTypes.ACLPluginAfter{}
 				r.Ordering.After.Access = []types.String{}
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -54,7 +49,7 @@ func (r *GatewayPluginCorrelationIDDataSourceModel) RefreshFromSharedCorrelation
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
 				r.Ordering.Before.Access = []types.String{}
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))

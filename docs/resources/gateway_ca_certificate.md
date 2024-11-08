@@ -17,6 +17,7 @@ resource "konnect_gateway_ca_certificate" "my_gatewaycacertificate" {
   cert             = "...my_cert..."
   cert_digest      = "...my_cert_digest..."
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+  id               = "...my_id..."
   tags = [
     "..."
   ]
@@ -28,11 +29,11 @@ resource "konnect_gateway_ca_certificate" "my_gatewaycacertificate" {
 
 ### Required
 
+- `cert` (String) PEM-encoded public certificate of the CA.
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
 
 ### Optional
 
-- `cert` (String) PEM-encoded public certificate of the CA.
 - `cert_digest` (String) SHA256 hex digest of the public certificate. This field is read-only and it cannot be set by the caller, the value is automatically computed.
 - `tags` (List of String) An optional set of strings associated with the Certificate for grouping and filtering.
 

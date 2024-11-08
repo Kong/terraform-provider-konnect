@@ -9,164 +9,185 @@ import (
 	"math/big"
 )
 
-func (r *GatewayPluginDatadogResourceModel) ToSharedCreateDatadogPlugin() *shared.CreateDatadogPlugin {
-	var config *shared.CreateDatadogPluginConfig
-	if r.Config != nil {
-		consumerTag := new(string)
-		if !r.Config.ConsumerTag.IsUnknown() && !r.Config.ConsumerTag.IsNull() {
-			*consumerTag = r.Config.ConsumerTag.ValueString()
+func (r *GatewayPluginDatadogResourceModel) ToSharedDatadogPluginInput() *shared.DatadogPluginInput {
+	consumerTag := new(string)
+	if !r.Config.ConsumerTag.IsUnknown() && !r.Config.ConsumerTag.IsNull() {
+		*consumerTag = r.Config.ConsumerTag.ValueString()
+	} else {
+		consumerTag = nil
+	}
+	flushTimeout := new(float64)
+	if !r.Config.FlushTimeout.IsUnknown() && !r.Config.FlushTimeout.IsNull() {
+		*flushTimeout, _ = r.Config.FlushTimeout.ValueBigFloat().Float64()
+	} else {
+		flushTimeout = nil
+	}
+	host := new(string)
+	if !r.Config.Host.IsUnknown() && !r.Config.Host.IsNull() {
+		*host = r.Config.Host.ValueString()
+	} else {
+		host = nil
+	}
+	var metrics []shared.Metrics = []shared.Metrics{}
+	for _, metricsItem := range r.Config.Metrics {
+		consumerIdentifier := new(shared.ConsumerIdentifier)
+		if !metricsItem.ConsumerIdentifier.IsUnknown() && !metricsItem.ConsumerIdentifier.IsNull() {
+			*consumerIdentifier = shared.ConsumerIdentifier(metricsItem.ConsumerIdentifier.ValueString())
 		} else {
-			consumerTag = nil
+			consumerIdentifier = nil
 		}
-		flushTimeout := new(float64)
-		if !r.Config.FlushTimeout.IsUnknown() && !r.Config.FlushTimeout.IsNull() {
-			*flushTimeout, _ = r.Config.FlushTimeout.ValueBigFloat().Float64()
+		name := shared.Name(metricsItem.Name.ValueString())
+		sampleRate := new(float64)
+		if !metricsItem.SampleRate.IsUnknown() && !metricsItem.SampleRate.IsNull() {
+			*sampleRate, _ = metricsItem.SampleRate.ValueBigFloat().Float64()
 		} else {
-			flushTimeout = nil
+			sampleRate = nil
 		}
-		host := new(string)
-		if !r.Config.Host.IsUnknown() && !r.Config.Host.IsNull() {
-			*host = r.Config.Host.ValueString()
+		statType := shared.StatType(metricsItem.StatType.ValueString())
+		var tags []string = []string{}
+		for _, tagsItem := range metricsItem.Tags {
+			tags = append(tags, tagsItem.ValueString())
+		}
+		metrics = append(metrics, shared.Metrics{
+			ConsumerIdentifier: consumerIdentifier,
+			Name:               name,
+			SampleRate:         sampleRate,
+			StatType:           statType,
+			Tags:               tags,
+		})
+	}
+	port := new(int64)
+	if !r.Config.Port.IsUnknown() && !r.Config.Port.IsNull() {
+		*port = r.Config.Port.ValueInt64()
+	} else {
+		port = nil
+	}
+	prefix := new(string)
+	if !r.Config.Prefix.IsUnknown() && !r.Config.Prefix.IsNull() {
+		*prefix = r.Config.Prefix.ValueString()
+	} else {
+		prefix = nil
+	}
+	var queue *shared.Queue
+	if r.Config.Queue != nil {
+		concurrencyLimit := new(shared.ConcurrencyLimit)
+		if !r.Config.Queue.ConcurrencyLimit.IsUnknown() && !r.Config.Queue.ConcurrencyLimit.IsNull() {
+			*concurrencyLimit = shared.ConcurrencyLimit(r.Config.Queue.ConcurrencyLimit.ValueInt64())
 		} else {
-			host = nil
+			concurrencyLimit = nil
 		}
-		var metrics []shared.CreateDatadogPluginMetrics = []shared.CreateDatadogPluginMetrics{}
-		for _, metricsItem := range r.Config.Metrics {
-			consumerIdentifier := new(shared.CreateDatadogPluginConsumerIdentifier)
-			if !metricsItem.ConsumerIdentifier.IsUnknown() && !metricsItem.ConsumerIdentifier.IsNull() {
-				*consumerIdentifier = shared.CreateDatadogPluginConsumerIdentifier(metricsItem.ConsumerIdentifier.ValueString())
-			} else {
-				consumerIdentifier = nil
-			}
-			name := shared.CreateDatadogPluginName(metricsItem.Name.ValueString())
-			sampleRate := new(float64)
-			if !metricsItem.SampleRate.IsUnknown() && !metricsItem.SampleRate.IsNull() {
-				*sampleRate, _ = metricsItem.SampleRate.ValueBigFloat().Float64()
-			} else {
-				sampleRate = nil
-			}
-			statType := shared.CreateDatadogPluginStatType(metricsItem.StatType.ValueString())
-			var tags []string = []string{}
-			for _, tagsItem := range metricsItem.Tags {
-				tags = append(tags, tagsItem.ValueString())
-			}
-			metrics = append(metrics, shared.CreateDatadogPluginMetrics{
-				ConsumerIdentifier: consumerIdentifier,
-				Name:               name,
-				SampleRate:         sampleRate,
-				StatType:           statType,
-				Tags:               tags,
-			})
-		}
-		port := new(int64)
-		if !r.Config.Port.IsUnknown() && !r.Config.Port.IsNull() {
-			*port = r.Config.Port.ValueInt64()
+		initialRetryDelay := new(float64)
+		if !r.Config.Queue.InitialRetryDelay.IsUnknown() && !r.Config.Queue.InitialRetryDelay.IsNull() {
+			*initialRetryDelay, _ = r.Config.Queue.InitialRetryDelay.ValueBigFloat().Float64()
 		} else {
-			port = nil
+			initialRetryDelay = nil
 		}
-		prefix := new(string)
-		if !r.Config.Prefix.IsUnknown() && !r.Config.Prefix.IsNull() {
-			*prefix = r.Config.Prefix.ValueString()
+		maxBatchSize := new(int64)
+		if !r.Config.Queue.MaxBatchSize.IsUnknown() && !r.Config.Queue.MaxBatchSize.IsNull() {
+			*maxBatchSize = r.Config.Queue.MaxBatchSize.ValueInt64()
 		} else {
-			prefix = nil
+			maxBatchSize = nil
 		}
-		var queue *shared.CreateDatadogPluginQueue
-		if r.Config.Queue != nil {
-			concurrencyLimit := new(shared.CreateDatadogPluginConcurrencyLimit)
-			if !r.Config.Queue.ConcurrencyLimit.IsUnknown() && !r.Config.Queue.ConcurrencyLimit.IsNull() {
-				*concurrencyLimit = shared.CreateDatadogPluginConcurrencyLimit(r.Config.Queue.ConcurrencyLimit.ValueInt64())
-			} else {
-				concurrencyLimit = nil
-			}
-			initialRetryDelay := new(float64)
-			if !r.Config.Queue.InitialRetryDelay.IsUnknown() && !r.Config.Queue.InitialRetryDelay.IsNull() {
-				*initialRetryDelay, _ = r.Config.Queue.InitialRetryDelay.ValueBigFloat().Float64()
-			} else {
-				initialRetryDelay = nil
-			}
-			maxBatchSize := new(int64)
-			if !r.Config.Queue.MaxBatchSize.IsUnknown() && !r.Config.Queue.MaxBatchSize.IsNull() {
-				*maxBatchSize = r.Config.Queue.MaxBatchSize.ValueInt64()
-			} else {
-				maxBatchSize = nil
-			}
-			maxBytes := new(int64)
-			if !r.Config.Queue.MaxBytes.IsUnknown() && !r.Config.Queue.MaxBytes.IsNull() {
-				*maxBytes = r.Config.Queue.MaxBytes.ValueInt64()
-			} else {
-				maxBytes = nil
-			}
-			maxCoalescingDelay := new(float64)
-			if !r.Config.Queue.MaxCoalescingDelay.IsUnknown() && !r.Config.Queue.MaxCoalescingDelay.IsNull() {
-				*maxCoalescingDelay, _ = r.Config.Queue.MaxCoalescingDelay.ValueBigFloat().Float64()
-			} else {
-				maxCoalescingDelay = nil
-			}
-			maxEntries := new(int64)
-			if !r.Config.Queue.MaxEntries.IsUnknown() && !r.Config.Queue.MaxEntries.IsNull() {
-				*maxEntries = r.Config.Queue.MaxEntries.ValueInt64()
-			} else {
-				maxEntries = nil
-			}
-			maxRetryDelay := new(float64)
-			if !r.Config.Queue.MaxRetryDelay.IsUnknown() && !r.Config.Queue.MaxRetryDelay.IsNull() {
-				*maxRetryDelay, _ = r.Config.Queue.MaxRetryDelay.ValueBigFloat().Float64()
-			} else {
-				maxRetryDelay = nil
-			}
-			maxRetryTime := new(float64)
-			if !r.Config.Queue.MaxRetryTime.IsUnknown() && !r.Config.Queue.MaxRetryTime.IsNull() {
-				*maxRetryTime, _ = r.Config.Queue.MaxRetryTime.ValueBigFloat().Float64()
-			} else {
-				maxRetryTime = nil
-			}
-			queue = &shared.CreateDatadogPluginQueue{
-				ConcurrencyLimit:   concurrencyLimit,
-				InitialRetryDelay:  initialRetryDelay,
-				MaxBatchSize:       maxBatchSize,
-				MaxBytes:           maxBytes,
-				MaxCoalescingDelay: maxCoalescingDelay,
-				MaxEntries:         maxEntries,
-				MaxRetryDelay:      maxRetryDelay,
-				MaxRetryTime:       maxRetryTime,
-			}
-		}
-		queueSize := new(int64)
-		if !r.Config.QueueSize.IsUnknown() && !r.Config.QueueSize.IsNull() {
-			*queueSize = r.Config.QueueSize.ValueInt64()
+		maxBytes := new(int64)
+		if !r.Config.Queue.MaxBytes.IsUnknown() && !r.Config.Queue.MaxBytes.IsNull() {
+			*maxBytes = r.Config.Queue.MaxBytes.ValueInt64()
 		} else {
-			queueSize = nil
+			maxBytes = nil
 		}
-		retryCount := new(int64)
-		if !r.Config.RetryCount.IsUnknown() && !r.Config.RetryCount.IsNull() {
-			*retryCount = r.Config.RetryCount.ValueInt64()
+		maxCoalescingDelay := new(float64)
+		if !r.Config.Queue.MaxCoalescingDelay.IsUnknown() && !r.Config.Queue.MaxCoalescingDelay.IsNull() {
+			*maxCoalescingDelay, _ = r.Config.Queue.MaxCoalescingDelay.ValueBigFloat().Float64()
 		} else {
-			retryCount = nil
+			maxCoalescingDelay = nil
 		}
-		serviceNameTag := new(string)
-		if !r.Config.ServiceNameTag.IsUnknown() && !r.Config.ServiceNameTag.IsNull() {
-			*serviceNameTag = r.Config.ServiceNameTag.ValueString()
+		maxEntries := new(int64)
+		if !r.Config.Queue.MaxEntries.IsUnknown() && !r.Config.Queue.MaxEntries.IsNull() {
+			*maxEntries = r.Config.Queue.MaxEntries.ValueInt64()
 		} else {
-			serviceNameTag = nil
+			maxEntries = nil
 		}
-		statusTag := new(string)
-		if !r.Config.StatusTag.IsUnknown() && !r.Config.StatusTag.IsNull() {
-			*statusTag = r.Config.StatusTag.ValueString()
+		maxRetryDelay := new(float64)
+		if !r.Config.Queue.MaxRetryDelay.IsUnknown() && !r.Config.Queue.MaxRetryDelay.IsNull() {
+			*maxRetryDelay, _ = r.Config.Queue.MaxRetryDelay.ValueBigFloat().Float64()
 		} else {
-			statusTag = nil
+			maxRetryDelay = nil
 		}
-		config = &shared.CreateDatadogPluginConfig{
-			ConsumerTag:    consumerTag,
-			FlushTimeout:   flushTimeout,
-			Host:           host,
-			Metrics:        metrics,
-			Port:           port,
-			Prefix:         prefix,
-			Queue:          queue,
-			QueueSize:      queueSize,
-			RetryCount:     retryCount,
-			ServiceNameTag: serviceNameTag,
-			StatusTag:      statusTag,
+		maxRetryTime := new(float64)
+		if !r.Config.Queue.MaxRetryTime.IsUnknown() && !r.Config.Queue.MaxRetryTime.IsNull() {
+			*maxRetryTime, _ = r.Config.Queue.MaxRetryTime.ValueBigFloat().Float64()
+		} else {
+			maxRetryTime = nil
+		}
+		queue = &shared.Queue{
+			ConcurrencyLimit:   concurrencyLimit,
+			InitialRetryDelay:  initialRetryDelay,
+			MaxBatchSize:       maxBatchSize,
+			MaxBytes:           maxBytes,
+			MaxCoalescingDelay: maxCoalescingDelay,
+			MaxEntries:         maxEntries,
+			MaxRetryDelay:      maxRetryDelay,
+			MaxRetryTime:       maxRetryTime,
+		}
+	}
+	queueSize := new(int64)
+	if !r.Config.QueueSize.IsUnknown() && !r.Config.QueueSize.IsNull() {
+		*queueSize = r.Config.QueueSize.ValueInt64()
+	} else {
+		queueSize = nil
+	}
+	retryCount := new(int64)
+	if !r.Config.RetryCount.IsUnknown() && !r.Config.RetryCount.IsNull() {
+		*retryCount = r.Config.RetryCount.ValueInt64()
+	} else {
+		retryCount = nil
+	}
+	serviceNameTag := new(string)
+	if !r.Config.ServiceNameTag.IsUnknown() && !r.Config.ServiceNameTag.IsNull() {
+		*serviceNameTag = r.Config.ServiceNameTag.ValueString()
+	} else {
+		serviceNameTag = nil
+	}
+	statusTag := new(string)
+	if !r.Config.StatusTag.IsUnknown() && !r.Config.StatusTag.IsNull() {
+		*statusTag = r.Config.StatusTag.ValueString()
+	} else {
+		statusTag = nil
+	}
+	config := shared.DatadogPluginConfig{
+		ConsumerTag:    consumerTag,
+		FlushTimeout:   flushTimeout,
+		Host:           host,
+		Metrics:        metrics,
+		Port:           port,
+		Prefix:         prefix,
+		Queue:          queue,
+		QueueSize:      queueSize,
+		RetryCount:     retryCount,
+		ServiceNameTag: serviceNameTag,
+		StatusTag:      statusTag,
+	}
+	var consumer *shared.DatadogPluginConsumer
+	if r.Consumer != nil {
+		id := new(string)
+		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
+			*id = r.Consumer.ID.ValueString()
+		} else {
+			id = nil
+		}
+		consumer = &shared.DatadogPluginConsumer{
+			ID: id,
+		}
+	}
+	var consumerGroup *shared.DatadogPluginConsumerGroup
+	if r.ConsumerGroup != nil {
+		id1 := new(string)
+		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
+			*id1 = r.ConsumerGroup.ID.ValueString()
+		} else {
+			id1 = nil
+		}
+		consumerGroup = &shared.DatadogPluginConsumerGroup{
+			ID: id1,
 		}
 	}
 	enabled := new(bool)
@@ -175,195 +196,173 @@ func (r *GatewayPluginDatadogResourceModel) ToSharedCreateDatadogPlugin() *share
 	} else {
 		enabled = nil
 	}
+	id2 := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id2 = r.ID.ValueString()
+	} else {
+		id2 = nil
+	}
 	instanceName := new(string)
 	if !r.InstanceName.IsUnknown() && !r.InstanceName.IsNull() {
 		*instanceName = r.InstanceName.ValueString()
 	} else {
 		instanceName = nil
 	}
-	var ordering *shared.CreateDatadogPluginOrdering
+	var ordering *shared.DatadogPluginOrdering
 	if r.Ordering != nil {
-		var after *shared.CreateDatadogPluginAfter
+		var after *shared.DatadogPluginAfter
 		if r.Ordering.After != nil {
 			var access []string = []string{}
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
-			after = &shared.CreateDatadogPluginAfter{
+			after = &shared.DatadogPluginAfter{
 				Access: access,
 			}
 		}
-		var before *shared.CreateDatadogPluginBefore
+		var before *shared.DatadogPluginBefore
 		if r.Ordering.Before != nil {
 			var access1 []string = []string{}
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
-			before = &shared.CreateDatadogPluginBefore{
+			before = &shared.DatadogPluginBefore{
 				Access: access1,
 			}
 		}
-		ordering = &shared.CreateDatadogPluginOrdering{
+		ordering = &shared.DatadogPluginOrdering{
 			After:  after,
 			Before: before,
 		}
 	}
-	var protocols []shared.CreateDatadogPluginProtocols = []shared.CreateDatadogPluginProtocols{}
+	var protocols []shared.DatadogPluginProtocols = []shared.DatadogPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
-		protocols = append(protocols, shared.CreateDatadogPluginProtocols(protocolsItem.ValueString()))
+		protocols = append(protocols, shared.DatadogPluginProtocols(protocolsItem.ValueString()))
+	}
+	var route *shared.DatadogPluginRoute
+	if r.Route != nil {
+		id3 := new(string)
+		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
+			*id3 = r.Route.ID.ValueString()
+		} else {
+			id3 = nil
+		}
+		route = &shared.DatadogPluginRoute{
+			ID: id3,
+		}
+	}
+	var service *shared.DatadogPluginService
+	if r.Service != nil {
+		id4 := new(string)
+		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
+			*id4 = r.Service.ID.ValueString()
+		} else {
+			id4 = nil
+		}
+		service = &shared.DatadogPluginService{
+			ID: id4,
+		}
 	}
 	var tags1 []string = []string{}
 	for _, tagsItem1 := range r.Tags {
 		tags1 = append(tags1, tagsItem1.ValueString())
 	}
-	var consumer *shared.CreateDatadogPluginConsumer
-	if r.Consumer != nil {
-		id := new(string)
-		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
-			*id = r.Consumer.ID.ValueString()
-		} else {
-			id = nil
-		}
-		consumer = &shared.CreateDatadogPluginConsumer{
-			ID: id,
-		}
-	}
-	var consumerGroup *shared.CreateDatadogPluginConsumerGroup
-	if r.ConsumerGroup != nil {
-		id1 := new(string)
-		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
-			*id1 = r.ConsumerGroup.ID.ValueString()
-		} else {
-			id1 = nil
-		}
-		consumerGroup = &shared.CreateDatadogPluginConsumerGroup{
-			ID: id1,
-		}
-	}
-	var route *shared.CreateDatadogPluginRoute
-	if r.Route != nil {
-		id2 := new(string)
-		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
-			*id2 = r.Route.ID.ValueString()
-		} else {
-			id2 = nil
-		}
-		route = &shared.CreateDatadogPluginRoute{
-			ID: id2,
-		}
-	}
-	var service *shared.CreateDatadogPluginService
-	if r.Service != nil {
-		id3 := new(string)
-		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
-			*id3 = r.Service.ID.ValueString()
-		} else {
-			id3 = nil
-		}
-		service = &shared.CreateDatadogPluginService{
-			ID: id3,
-		}
-	}
-	out := shared.CreateDatadogPlugin{
+	out := shared.DatadogPluginInput{
 		Config:        config,
+		Consumer:      consumer,
+		ConsumerGroup: consumerGroup,
 		Enabled:       enabled,
+		ID:            id2,
 		InstanceName:  instanceName,
 		Ordering:      ordering,
 		Protocols:     protocols,
-		Tags:          tags1,
-		Consumer:      consumer,
-		ConsumerGroup: consumerGroup,
 		Route:         route,
 		Service:       service,
+		Tags:          tags1,
 	}
 	return &out
 }
 
 func (r *GatewayPluginDatadogResourceModel) RefreshFromSharedDatadogPlugin(resp *shared.DatadogPlugin) {
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
+		r.Config.ConsumerTag = types.StringPointerValue(resp.Config.ConsumerTag)
+		if resp.Config.FlushTimeout != nil {
+			r.Config.FlushTimeout = types.NumberValue(big.NewFloat(float64(*resp.Config.FlushTimeout)))
 		} else {
-			r.Config = &tfTypes.CreateDatadogPluginConfig{}
-			r.Config.ConsumerTag = types.StringPointerValue(resp.Config.ConsumerTag)
-			if resp.Config.FlushTimeout != nil {
-				r.Config.FlushTimeout = types.NumberValue(big.NewFloat(float64(*resp.Config.FlushTimeout)))
-			} else {
-				r.Config.FlushTimeout = types.NumberNull()
-			}
-			r.Config.Host = types.StringPointerValue(resp.Config.Host)
-			r.Config.Metrics = []tfTypes.Metrics{}
-			if len(r.Config.Metrics) > len(resp.Config.Metrics) {
-				r.Config.Metrics = r.Config.Metrics[:len(resp.Config.Metrics)]
-			}
-			for metricsCount, metricsItem := range resp.Config.Metrics {
-				var metrics1 tfTypes.Metrics
-				if metricsItem.ConsumerIdentifier != nil {
-					metrics1.ConsumerIdentifier = types.StringValue(string(*metricsItem.ConsumerIdentifier))
-				} else {
-					metrics1.ConsumerIdentifier = types.StringNull()
-				}
-				metrics1.Name = types.StringValue(string(metricsItem.Name))
-				if metricsItem.SampleRate != nil {
-					metrics1.SampleRate = types.NumberValue(big.NewFloat(float64(*metricsItem.SampleRate)))
-				} else {
-					metrics1.SampleRate = types.NumberNull()
-				}
-				metrics1.StatType = types.StringValue(string(metricsItem.StatType))
-				metrics1.Tags = []types.String{}
-				for _, v := range metricsItem.Tags {
-					metrics1.Tags = append(metrics1.Tags, types.StringValue(v))
-				}
-				if metricsCount+1 > len(r.Config.Metrics) {
-					r.Config.Metrics = append(r.Config.Metrics, metrics1)
-				} else {
-					r.Config.Metrics[metricsCount].ConsumerIdentifier = metrics1.ConsumerIdentifier
-					r.Config.Metrics[metricsCount].Name = metrics1.Name
-					r.Config.Metrics[metricsCount].SampleRate = metrics1.SampleRate
-					r.Config.Metrics[metricsCount].StatType = metrics1.StatType
-					r.Config.Metrics[metricsCount].Tags = metrics1.Tags
-				}
-			}
-			r.Config.Port = types.Int64PointerValue(resp.Config.Port)
-			r.Config.Prefix = types.StringPointerValue(resp.Config.Prefix)
-			if resp.Config.Queue == nil {
-				r.Config.Queue = nil
-			} else {
-				r.Config.Queue = &tfTypes.CreateDatadogPluginQueue{}
-				if resp.Config.Queue.ConcurrencyLimit != nil {
-					r.Config.Queue.ConcurrencyLimit = types.Int64Value(int64(*resp.Config.Queue.ConcurrencyLimit))
-				} else {
-					r.Config.Queue.ConcurrencyLimit = types.Int64Null()
-				}
-				if resp.Config.Queue.InitialRetryDelay != nil {
-					r.Config.Queue.InitialRetryDelay = types.NumberValue(big.NewFloat(float64(*resp.Config.Queue.InitialRetryDelay)))
-				} else {
-					r.Config.Queue.InitialRetryDelay = types.NumberNull()
-				}
-				r.Config.Queue.MaxBatchSize = types.Int64PointerValue(resp.Config.Queue.MaxBatchSize)
-				r.Config.Queue.MaxBytes = types.Int64PointerValue(resp.Config.Queue.MaxBytes)
-				if resp.Config.Queue.MaxCoalescingDelay != nil {
-					r.Config.Queue.MaxCoalescingDelay = types.NumberValue(big.NewFloat(float64(*resp.Config.Queue.MaxCoalescingDelay)))
-				} else {
-					r.Config.Queue.MaxCoalescingDelay = types.NumberNull()
-				}
-				r.Config.Queue.MaxEntries = types.Int64PointerValue(resp.Config.Queue.MaxEntries)
-				if resp.Config.Queue.MaxRetryDelay != nil {
-					r.Config.Queue.MaxRetryDelay = types.NumberValue(big.NewFloat(float64(*resp.Config.Queue.MaxRetryDelay)))
-				} else {
-					r.Config.Queue.MaxRetryDelay = types.NumberNull()
-				}
-				if resp.Config.Queue.MaxRetryTime != nil {
-					r.Config.Queue.MaxRetryTime = types.NumberValue(big.NewFloat(float64(*resp.Config.Queue.MaxRetryTime)))
-				} else {
-					r.Config.Queue.MaxRetryTime = types.NumberNull()
-				}
-			}
-			r.Config.QueueSize = types.Int64PointerValue(resp.Config.QueueSize)
-			r.Config.RetryCount = types.Int64PointerValue(resp.Config.RetryCount)
-			r.Config.ServiceNameTag = types.StringPointerValue(resp.Config.ServiceNameTag)
-			r.Config.StatusTag = types.StringPointerValue(resp.Config.StatusTag)
+			r.Config.FlushTimeout = types.NumberNull()
 		}
+		r.Config.Host = types.StringPointerValue(resp.Config.Host)
+		r.Config.Metrics = []tfTypes.Metrics{}
+		if len(r.Config.Metrics) > len(resp.Config.Metrics) {
+			r.Config.Metrics = r.Config.Metrics[:len(resp.Config.Metrics)]
+		}
+		for metricsCount, metricsItem := range resp.Config.Metrics {
+			var metrics1 tfTypes.Metrics
+			if metricsItem.ConsumerIdentifier != nil {
+				metrics1.ConsumerIdentifier = types.StringValue(string(*metricsItem.ConsumerIdentifier))
+			} else {
+				metrics1.ConsumerIdentifier = types.StringNull()
+			}
+			metrics1.Name = types.StringValue(string(metricsItem.Name))
+			if metricsItem.SampleRate != nil {
+				metrics1.SampleRate = types.NumberValue(big.NewFloat(float64(*metricsItem.SampleRate)))
+			} else {
+				metrics1.SampleRate = types.NumberNull()
+			}
+			metrics1.StatType = types.StringValue(string(metricsItem.StatType))
+			metrics1.Tags = []types.String{}
+			for _, v := range metricsItem.Tags {
+				metrics1.Tags = append(metrics1.Tags, types.StringValue(v))
+			}
+			if metricsCount+1 > len(r.Config.Metrics) {
+				r.Config.Metrics = append(r.Config.Metrics, metrics1)
+			} else {
+				r.Config.Metrics[metricsCount].ConsumerIdentifier = metrics1.ConsumerIdentifier
+				r.Config.Metrics[metricsCount].Name = metrics1.Name
+				r.Config.Metrics[metricsCount].SampleRate = metrics1.SampleRate
+				r.Config.Metrics[metricsCount].StatType = metrics1.StatType
+				r.Config.Metrics[metricsCount].Tags = metrics1.Tags
+			}
+		}
+		r.Config.Port = types.Int64PointerValue(resp.Config.Port)
+		r.Config.Prefix = types.StringPointerValue(resp.Config.Prefix)
+		if resp.Config.Queue == nil {
+			r.Config.Queue = nil
+		} else {
+			r.Config.Queue = &tfTypes.Queue{}
+			if resp.Config.Queue.ConcurrencyLimit != nil {
+				r.Config.Queue.ConcurrencyLimit = types.Int64Value(int64(*resp.Config.Queue.ConcurrencyLimit))
+			} else {
+				r.Config.Queue.ConcurrencyLimit = types.Int64Null()
+			}
+			if resp.Config.Queue.InitialRetryDelay != nil {
+				r.Config.Queue.InitialRetryDelay = types.NumberValue(big.NewFloat(float64(*resp.Config.Queue.InitialRetryDelay)))
+			} else {
+				r.Config.Queue.InitialRetryDelay = types.NumberNull()
+			}
+			r.Config.Queue.MaxBatchSize = types.Int64PointerValue(resp.Config.Queue.MaxBatchSize)
+			r.Config.Queue.MaxBytes = types.Int64PointerValue(resp.Config.Queue.MaxBytes)
+			if resp.Config.Queue.MaxCoalescingDelay != nil {
+				r.Config.Queue.MaxCoalescingDelay = types.NumberValue(big.NewFloat(float64(*resp.Config.Queue.MaxCoalescingDelay)))
+			} else {
+				r.Config.Queue.MaxCoalescingDelay = types.NumberNull()
+			}
+			r.Config.Queue.MaxEntries = types.Int64PointerValue(resp.Config.Queue.MaxEntries)
+			if resp.Config.Queue.MaxRetryDelay != nil {
+				r.Config.Queue.MaxRetryDelay = types.NumberValue(big.NewFloat(float64(*resp.Config.Queue.MaxRetryDelay)))
+			} else {
+				r.Config.Queue.MaxRetryDelay = types.NumberNull()
+			}
+			if resp.Config.Queue.MaxRetryTime != nil {
+				r.Config.Queue.MaxRetryTime = types.NumberValue(big.NewFloat(float64(*resp.Config.Queue.MaxRetryTime)))
+			} else {
+				r.Config.Queue.MaxRetryTime = types.NumberNull()
+			}
+		}
+		r.Config.QueueSize = types.Int64PointerValue(resp.Config.QueueSize)
+		r.Config.RetryCount = types.Int64PointerValue(resp.Config.RetryCount)
+		r.Config.ServiceNameTag = types.StringPointerValue(resp.Config.ServiceNameTag)
+		r.Config.StatusTag = types.StringPointerValue(resp.Config.StatusTag)
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
@@ -383,11 +382,11 @@ func (r *GatewayPluginDatadogResourceModel) RefreshFromSharedDatadogPlugin(resp 
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			r.Ordering = &tfTypes.ACLPluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After = &tfTypes.ACLPluginAfter{}
 				r.Ordering.After.Access = []types.String{}
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -396,7 +395,7 @@ func (r *GatewayPluginDatadogResourceModel) RefreshFromSharedDatadogPlugin(resp 
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
 				r.Ordering.Before.Access = []types.String{}
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))

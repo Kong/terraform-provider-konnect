@@ -9,8 +9,8 @@ import (
 
 type CreateForwardproxyPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID           string                           `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateForwardProxyPlugin *shared.CreateForwardProxyPlugin `request:"mediaType=application/json"`
+	ControlPlaneID     string                          `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	ForwardProxyPlugin *shared.ForwardProxyPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateForwardproxyPluginRequest) GetControlPlaneID() string {
@@ -20,11 +20,11 @@ func (o *CreateForwardproxyPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateForwardproxyPluginRequest) GetCreateForwardProxyPlugin() *shared.CreateForwardProxyPlugin {
+func (o *CreateForwardproxyPluginRequest) GetForwardProxyPlugin() *shared.ForwardProxyPluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreateForwardProxyPlugin
+	return o.ForwardProxyPlugin
 }
 
 type CreateForwardproxyPluginResponse struct {

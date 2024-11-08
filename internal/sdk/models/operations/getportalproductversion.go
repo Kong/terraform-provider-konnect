@@ -10,7 +10,7 @@ import (
 type GetPortalProductVersionRequest struct {
 	// API product version identifier
 	ProductVersionID string `pathParam:"style=simple,explode=false,name=productVersionId"`
-	// portal identifier
+	// ID of the portal.
 	PortalID string `pathParam:"style=simple,explode=false,name=portalId"`
 }
 

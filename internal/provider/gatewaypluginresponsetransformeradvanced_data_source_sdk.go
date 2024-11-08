@@ -10,130 +10,125 @@ import (
 
 func (r *GatewayPluginResponseTransformerAdvancedDataSourceModel) RefreshFromSharedResponseTransformerAdvancedPlugin(resp *shared.ResponseTransformerAdvancedPlugin) {
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
+		if resp.Config.Add == nil {
+			r.Config.Add = nil
 		} else {
-			r.Config = &tfTypes.CreateResponseTransformerAdvancedPluginConfig{}
-			if resp.Config.Add == nil {
-				r.Config.Add = nil
-			} else {
-				r.Config.Add = &tfTypes.CreateResponseTransformerAdvancedPluginAdd{}
-				r.Config.Add.Headers = []types.String{}
-				for _, v := range resp.Config.Add.Headers {
-					r.Config.Add.Headers = append(r.Config.Add.Headers, types.StringValue(v))
-				}
-				r.Config.Add.IfStatus = []types.String{}
-				for _, v := range resp.Config.Add.IfStatus {
-					r.Config.Add.IfStatus = append(r.Config.Add.IfStatus, types.StringValue(v))
-				}
-				r.Config.Add.JSON = []types.String{}
-				for _, v := range resp.Config.Add.JSON {
-					r.Config.Add.JSON = append(r.Config.Add.JSON, types.StringValue(v))
-				}
-				r.Config.Add.JSONTypes = []types.String{}
-				for _, v := range resp.Config.Add.JSONTypes {
-					r.Config.Add.JSONTypes = append(r.Config.Add.JSONTypes, types.StringValue(string(v)))
-				}
+			r.Config.Add = &tfTypes.ResponseTransformerAdvancedPluginAdd{}
+			r.Config.Add.Headers = []types.String{}
+			for _, v := range resp.Config.Add.Headers {
+				r.Config.Add.Headers = append(r.Config.Add.Headers, types.StringValue(v))
 			}
-			if resp.Config.Allow == nil {
-				r.Config.Allow = nil
-			} else {
-				r.Config.Allow = &tfTypes.CreateResponseTransformerAdvancedPluginAllow{}
-				r.Config.Allow.JSON = []types.String{}
-				for _, v := range resp.Config.Allow.JSON {
-					r.Config.Allow.JSON = append(r.Config.Allow.JSON, types.StringValue(v))
-				}
+			r.Config.Add.IfStatus = []types.String{}
+			for _, v := range resp.Config.Add.IfStatus {
+				r.Config.Add.IfStatus = append(r.Config.Add.IfStatus, types.StringValue(v))
 			}
-			if resp.Config.Append == nil {
-				r.Config.Append = nil
-			} else {
-				r.Config.Append = &tfTypes.CreateResponseTransformerAdvancedPluginAdd{}
-				r.Config.Append.Headers = []types.String{}
-				for _, v := range resp.Config.Append.Headers {
-					r.Config.Append.Headers = append(r.Config.Append.Headers, types.StringValue(v))
-				}
-				r.Config.Append.IfStatus = []types.String{}
-				for _, v := range resp.Config.Append.IfStatus {
-					r.Config.Append.IfStatus = append(r.Config.Append.IfStatus, types.StringValue(v))
-				}
-				r.Config.Append.JSON = []types.String{}
-				for _, v := range resp.Config.Append.JSON {
-					r.Config.Append.JSON = append(r.Config.Append.JSON, types.StringValue(v))
-				}
-				r.Config.Append.JSONTypes = []types.String{}
-				for _, v := range resp.Config.Append.JSONTypes {
-					r.Config.Append.JSONTypes = append(r.Config.Append.JSONTypes, types.StringValue(string(v)))
-				}
+			r.Config.Add.JSON = []types.String{}
+			for _, v := range resp.Config.Add.JSON {
+				r.Config.Add.JSON = append(r.Config.Add.JSON, types.StringValue(v))
 			}
-			r.Config.DotsInKeys = types.BoolPointerValue(resp.Config.DotsInKeys)
-			if resp.Config.Remove == nil {
-				r.Config.Remove = nil
-			} else {
-				r.Config.Remove = &tfTypes.CreateResponseTransformerAdvancedPluginRemove{}
-				r.Config.Remove.Headers = []types.String{}
-				for _, v := range resp.Config.Remove.Headers {
-					r.Config.Remove.Headers = append(r.Config.Remove.Headers, types.StringValue(v))
-				}
-				r.Config.Remove.IfStatus = []types.String{}
-				for _, v := range resp.Config.Remove.IfStatus {
-					r.Config.Remove.IfStatus = append(r.Config.Remove.IfStatus, types.StringValue(v))
-				}
-				r.Config.Remove.JSON = []types.String{}
-				for _, v := range resp.Config.Remove.JSON {
-					r.Config.Remove.JSON = append(r.Config.Remove.JSON, types.StringValue(v))
-				}
+			r.Config.Add.JSONTypes = []types.String{}
+			for _, v := range resp.Config.Add.JSONTypes {
+				r.Config.Add.JSONTypes = append(r.Config.Add.JSONTypes, types.StringValue(string(v)))
 			}
-			if resp.Config.Rename == nil {
-				r.Config.Rename = nil
-			} else {
-				r.Config.Rename = &tfTypes.CreateResponseTransformerAdvancedPluginRename{}
-				r.Config.Rename.Headers = []types.String{}
-				for _, v := range resp.Config.Rename.Headers {
-					r.Config.Rename.Headers = append(r.Config.Rename.Headers, types.StringValue(v))
-				}
-				r.Config.Rename.IfStatus = []types.String{}
-				for _, v := range resp.Config.Rename.IfStatus {
-					r.Config.Rename.IfStatus = append(r.Config.Rename.IfStatus, types.StringValue(v))
-				}
+		}
+		if resp.Config.Allow == nil {
+			r.Config.Allow = nil
+		} else {
+			r.Config.Allow = &tfTypes.ResponseTransformerAdvancedPluginAllow{}
+			r.Config.Allow.JSON = []types.String{}
+			for _, v := range resp.Config.Allow.JSON {
+				r.Config.Allow.JSON = append(r.Config.Allow.JSON, types.StringValue(v))
 			}
-			if resp.Config.Replace == nil {
-				r.Config.Replace = nil
-			} else {
-				r.Config.Replace = &tfTypes.CreateResponseTransformerAdvancedPluginReplace{}
-				r.Config.Replace.Body = types.StringPointerValue(resp.Config.Replace.Body)
-				r.Config.Replace.Headers = []types.String{}
-				for _, v := range resp.Config.Replace.Headers {
-					r.Config.Replace.Headers = append(r.Config.Replace.Headers, types.StringValue(v))
-				}
-				r.Config.Replace.IfStatus = []types.String{}
-				for _, v := range resp.Config.Replace.IfStatus {
-					r.Config.Replace.IfStatus = append(r.Config.Replace.IfStatus, types.StringValue(v))
-				}
-				r.Config.Replace.JSON = []types.String{}
-				for _, v := range resp.Config.Replace.JSON {
-					r.Config.Replace.JSON = append(r.Config.Replace.JSON, types.StringValue(v))
-				}
-				r.Config.Replace.JSONTypes = []types.String{}
-				for _, v := range resp.Config.Replace.JSONTypes {
-					r.Config.Replace.JSONTypes = append(r.Config.Replace.JSONTypes, types.StringValue(string(v)))
-				}
+		}
+		if resp.Config.Append == nil {
+			r.Config.Append = nil
+		} else {
+			r.Config.Append = &tfTypes.ResponseTransformerAdvancedPluginAdd{}
+			r.Config.Append.Headers = []types.String{}
+			for _, v := range resp.Config.Append.Headers {
+				r.Config.Append.Headers = append(r.Config.Append.Headers, types.StringValue(v))
 			}
-			if resp.Config.Transform == nil {
-				r.Config.Transform = nil
-			} else {
-				r.Config.Transform = &tfTypes.CreateResponseTransformerAdvancedPluginTransform{}
-				r.Config.Transform.Functions = []types.String{}
-				for _, v := range resp.Config.Transform.Functions {
-					r.Config.Transform.Functions = append(r.Config.Transform.Functions, types.StringValue(v))
-				}
-				r.Config.Transform.IfStatus = []types.String{}
-				for _, v := range resp.Config.Transform.IfStatus {
-					r.Config.Transform.IfStatus = append(r.Config.Transform.IfStatus, types.StringValue(v))
-				}
-				r.Config.Transform.JSON = []types.String{}
-				for _, v := range resp.Config.Transform.JSON {
-					r.Config.Transform.JSON = append(r.Config.Transform.JSON, types.StringValue(v))
-				}
+			r.Config.Append.IfStatus = []types.String{}
+			for _, v := range resp.Config.Append.IfStatus {
+				r.Config.Append.IfStatus = append(r.Config.Append.IfStatus, types.StringValue(v))
+			}
+			r.Config.Append.JSON = []types.String{}
+			for _, v := range resp.Config.Append.JSON {
+				r.Config.Append.JSON = append(r.Config.Append.JSON, types.StringValue(v))
+			}
+			r.Config.Append.JSONTypes = []types.String{}
+			for _, v := range resp.Config.Append.JSONTypes {
+				r.Config.Append.JSONTypes = append(r.Config.Append.JSONTypes, types.StringValue(string(v)))
+			}
+		}
+		r.Config.DotsInKeys = types.BoolPointerValue(resp.Config.DotsInKeys)
+		if resp.Config.Remove == nil {
+			r.Config.Remove = nil
+		} else {
+			r.Config.Remove = &tfTypes.ResponseTransformerAdvancedPluginRemove{}
+			r.Config.Remove.Headers = []types.String{}
+			for _, v := range resp.Config.Remove.Headers {
+				r.Config.Remove.Headers = append(r.Config.Remove.Headers, types.StringValue(v))
+			}
+			r.Config.Remove.IfStatus = []types.String{}
+			for _, v := range resp.Config.Remove.IfStatus {
+				r.Config.Remove.IfStatus = append(r.Config.Remove.IfStatus, types.StringValue(v))
+			}
+			r.Config.Remove.JSON = []types.String{}
+			for _, v := range resp.Config.Remove.JSON {
+				r.Config.Remove.JSON = append(r.Config.Remove.JSON, types.StringValue(v))
+			}
+		}
+		if resp.Config.Rename == nil {
+			r.Config.Rename = nil
+		} else {
+			r.Config.Rename = &tfTypes.ResponseTransformerAdvancedPluginRename{}
+			r.Config.Rename.Headers = []types.String{}
+			for _, v := range resp.Config.Rename.Headers {
+				r.Config.Rename.Headers = append(r.Config.Rename.Headers, types.StringValue(v))
+			}
+			r.Config.Rename.IfStatus = []types.String{}
+			for _, v := range resp.Config.Rename.IfStatus {
+				r.Config.Rename.IfStatus = append(r.Config.Rename.IfStatus, types.StringValue(v))
+			}
+		}
+		if resp.Config.Replace == nil {
+			r.Config.Replace = nil
+		} else {
+			r.Config.Replace = &tfTypes.ResponseTransformerAdvancedPluginReplace{}
+			r.Config.Replace.Body = types.StringPointerValue(resp.Config.Replace.Body)
+			r.Config.Replace.Headers = []types.String{}
+			for _, v := range resp.Config.Replace.Headers {
+				r.Config.Replace.Headers = append(r.Config.Replace.Headers, types.StringValue(v))
+			}
+			r.Config.Replace.IfStatus = []types.String{}
+			for _, v := range resp.Config.Replace.IfStatus {
+				r.Config.Replace.IfStatus = append(r.Config.Replace.IfStatus, types.StringValue(v))
+			}
+			r.Config.Replace.JSON = []types.String{}
+			for _, v := range resp.Config.Replace.JSON {
+				r.Config.Replace.JSON = append(r.Config.Replace.JSON, types.StringValue(v))
+			}
+			r.Config.Replace.JSONTypes = []types.String{}
+			for _, v := range resp.Config.Replace.JSONTypes {
+				r.Config.Replace.JSONTypes = append(r.Config.Replace.JSONTypes, types.StringValue(string(v)))
+			}
+		}
+		if resp.Config.Transform == nil {
+			r.Config.Transform = nil
+		} else {
+			r.Config.Transform = &tfTypes.Transform{}
+			r.Config.Transform.Functions = []types.String{}
+			for _, v := range resp.Config.Transform.Functions {
+				r.Config.Transform.Functions = append(r.Config.Transform.Functions, types.StringValue(v))
+			}
+			r.Config.Transform.IfStatus = []types.String{}
+			for _, v := range resp.Config.Transform.IfStatus {
+				r.Config.Transform.IfStatus = append(r.Config.Transform.IfStatus, types.StringValue(v))
+			}
+			r.Config.Transform.JSON = []types.String{}
+			for _, v := range resp.Config.Transform.JSON {
+				r.Config.Transform.JSON = append(r.Config.Transform.JSON, types.StringValue(v))
 			}
 		}
 		if resp.Consumer == nil {
@@ -155,11 +150,11 @@ func (r *GatewayPluginResponseTransformerAdvancedDataSourceModel) RefreshFromSha
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			r.Ordering = &tfTypes.ACLPluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After = &tfTypes.ACLPluginAfter{}
 				r.Ordering.After.Access = []types.String{}
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -168,7 +163,7 @@ func (r *GatewayPluginResponseTransformerAdvancedDataSourceModel) RefreshFromSha
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
 				r.Ordering.Before.Access = []types.String{}
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))

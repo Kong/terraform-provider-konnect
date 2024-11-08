@@ -148,8 +148,8 @@ func (s *ACLs) CreateACLWithConsumer(ctx context.Context, request operations.Cre
 
 }
 
-// DeleteACLWithConsumer - Delete a an ACL associated with a a Consumer
-// Delete a an ACL associated with a a Consumer using ID.
+// DeleteACLWithConsumer - Delete a an ACL associated with a Consumer
+// Delete a an ACL associated with a Consumer using ID.
 func (s *ACLs) DeleteACLWithConsumer(ctx context.Context, request operations.DeleteACLWithConsumerRequest, opts ...operations.Option) (*operations.DeleteACLWithConsumerResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,

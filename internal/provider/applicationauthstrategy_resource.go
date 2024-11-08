@@ -77,7 +77,7 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
-				Description: `Contains a unique identifier used for this resource.`,
+				Description: `Contains a unique identifier used by the API for this resource.`,
 			},
 			"key_auth": schema.SingleNestedAttribute{
 				Computed: true,
@@ -170,7 +170,7 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 								PlanModifiers: []planmodifier.String{
 									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 								},
-								Description: `Contains a unique identifier used for this resource.`,
+								Description: `Contains a unique identifier used by the API for this resource.`,
 							},
 							"name": schema.StringAttribute{
 								Computed: true,
@@ -214,7 +214,7 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 						PlanModifiers: []planmodifier.String{
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
-						Description: `Contains a unique identifier used for this resource.`,
+						Description: `Contains a unique identifier used by the API for this resource.`,
 					},
 					"labels": schema.MapAttribute{
 						Computed: true,
@@ -438,7 +438,7 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 								PlanModifiers: []planmodifier.String{
 									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 								},
-								Description: `Contains a unique identifier used for this resource.`,
+								Description: `Contains a unique identifier used by the API for this resource.`,
 							},
 							"name": schema.StringAttribute{
 								Computed: true,
@@ -491,7 +491,7 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 						PlanModifiers: []planmodifier.String{
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
-						Description: `Contains a unique identifier used for this resource.`,
+						Description: `Contains a unique identifier used by the API for this resource.`,
 					},
 					"labels": schema.MapAttribute{
 						Computed: true,

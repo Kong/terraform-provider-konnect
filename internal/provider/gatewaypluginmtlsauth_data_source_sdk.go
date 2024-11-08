@@ -11,53 +11,48 @@ import (
 
 func (r *GatewayPluginMtlsAuthDataSourceModel) RefreshFromSharedMtlsAuthPlugin(resp *shared.MtlsAuthPlugin) {
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
+		r.Config.AllowPartialChain = types.BoolPointerValue(resp.Config.AllowPartialChain)
+		r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
+		if resp.Config.AuthenticatedGroupBy != nil {
+			r.Config.AuthenticatedGroupBy = types.StringValue(string(*resp.Config.AuthenticatedGroupBy))
 		} else {
-			r.Config = &tfTypes.CreateMtlsAuthPluginConfig{}
-			r.Config.AllowPartialChain = types.BoolPointerValue(resp.Config.AllowPartialChain)
-			r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
-			if resp.Config.AuthenticatedGroupBy != nil {
-				r.Config.AuthenticatedGroupBy = types.StringValue(string(*resp.Config.AuthenticatedGroupBy))
-			} else {
-				r.Config.AuthenticatedGroupBy = types.StringNull()
-			}
-			r.Config.CaCertificates = []types.String{}
-			for _, v := range resp.Config.CaCertificates {
-				r.Config.CaCertificates = append(r.Config.CaCertificates, types.StringValue(v))
-			}
-			if resp.Config.CacheTTL != nil {
-				r.Config.CacheTTL = types.NumberValue(big.NewFloat(float64(*resp.Config.CacheTTL)))
-			} else {
-				r.Config.CacheTTL = types.NumberNull()
-			}
-			if resp.Config.CertCacheTTL != nil {
-				r.Config.CertCacheTTL = types.NumberValue(big.NewFloat(float64(*resp.Config.CertCacheTTL)))
-			} else {
-				r.Config.CertCacheTTL = types.NumberNull()
-			}
-			r.Config.ConsumerBy = []types.String{}
-			for _, v := range resp.Config.ConsumerBy {
-				r.Config.ConsumerBy = append(r.Config.ConsumerBy, types.StringValue(string(v)))
-			}
-			r.Config.DefaultConsumer = types.StringPointerValue(resp.Config.DefaultConsumer)
-			r.Config.HTTPProxyHost = types.StringPointerValue(resp.Config.HTTPProxyHost)
-			r.Config.HTTPProxyPort = types.Int64PointerValue(resp.Config.HTTPProxyPort)
-			if resp.Config.HTTPTimeout != nil {
-				r.Config.HTTPTimeout = types.NumberValue(big.NewFloat(float64(*resp.Config.HTTPTimeout)))
-			} else {
-				r.Config.HTTPTimeout = types.NumberNull()
-			}
-			r.Config.HTTPSProxyHost = types.StringPointerValue(resp.Config.HTTPSProxyHost)
-			r.Config.HTTPSProxyPort = types.Int64PointerValue(resp.Config.HTTPSProxyPort)
-			if resp.Config.RevocationCheckMode != nil {
-				r.Config.RevocationCheckMode = types.StringValue(string(*resp.Config.RevocationCheckMode))
-			} else {
-				r.Config.RevocationCheckMode = types.StringNull()
-			}
-			r.Config.SendCaDn = types.BoolPointerValue(resp.Config.SendCaDn)
-			r.Config.SkipConsumerLookup = types.BoolPointerValue(resp.Config.SkipConsumerLookup)
+			r.Config.AuthenticatedGroupBy = types.StringNull()
 		}
+		r.Config.CaCertificates = []types.String{}
+		for _, v := range resp.Config.CaCertificates {
+			r.Config.CaCertificates = append(r.Config.CaCertificates, types.StringValue(v))
+		}
+		if resp.Config.CacheTTL != nil {
+			r.Config.CacheTTL = types.NumberValue(big.NewFloat(float64(*resp.Config.CacheTTL)))
+		} else {
+			r.Config.CacheTTL = types.NumberNull()
+		}
+		if resp.Config.CertCacheTTL != nil {
+			r.Config.CertCacheTTL = types.NumberValue(big.NewFloat(float64(*resp.Config.CertCacheTTL)))
+		} else {
+			r.Config.CertCacheTTL = types.NumberNull()
+		}
+		r.Config.ConsumerBy = []types.String{}
+		for _, v := range resp.Config.ConsumerBy {
+			r.Config.ConsumerBy = append(r.Config.ConsumerBy, types.StringValue(string(v)))
+		}
+		r.Config.DefaultConsumer = types.StringPointerValue(resp.Config.DefaultConsumer)
+		r.Config.HTTPProxyHost = types.StringPointerValue(resp.Config.HTTPProxyHost)
+		r.Config.HTTPProxyPort = types.Int64PointerValue(resp.Config.HTTPProxyPort)
+		if resp.Config.HTTPTimeout != nil {
+			r.Config.HTTPTimeout = types.NumberValue(big.NewFloat(float64(*resp.Config.HTTPTimeout)))
+		} else {
+			r.Config.HTTPTimeout = types.NumberNull()
+		}
+		r.Config.HTTPSProxyHost = types.StringPointerValue(resp.Config.HTTPSProxyHost)
+		r.Config.HTTPSProxyPort = types.Int64PointerValue(resp.Config.HTTPSProxyPort)
+		if resp.Config.RevocationCheckMode != nil {
+			r.Config.RevocationCheckMode = types.StringValue(string(*resp.Config.RevocationCheckMode))
+		} else {
+			r.Config.RevocationCheckMode = types.StringNull()
+		}
+		r.Config.SendCaDn = types.BoolPointerValue(resp.Config.SendCaDn)
+		r.Config.SkipConsumerLookup = types.BoolPointerValue(resp.Config.SkipConsumerLookup)
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
@@ -77,11 +72,11 @@ func (r *GatewayPluginMtlsAuthDataSourceModel) RefreshFromSharedMtlsAuthPlugin(r
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			r.Ordering = &tfTypes.ACLPluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After = &tfTypes.ACLPluginAfter{}
 				r.Ordering.After.Access = []types.String{}
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -90,7 +85,7 @@ func (r *GatewayPluginMtlsAuthDataSourceModel) RefreshFromSharedMtlsAuthPlugin(r
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
 				r.Ordering.Before.Access = []types.String{}
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))

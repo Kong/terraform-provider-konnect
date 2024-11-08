@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/utils"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/types"
 )
 
 type BasicAuthPluginConfig struct {
@@ -37,6 +36,29 @@ func (o *BasicAuthPluginConfig) GetRealm() *string {
 		return nil
 	}
 	return o.Realm
+}
+
+// BasicAuthPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+type BasicAuthPluginConsumer struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *BasicAuthPluginConsumer) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+type BasicAuthPluginConsumerGroup struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *BasicAuthPluginConsumerGroup) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
 }
 
 type BasicAuthPluginAfter struct {
@@ -130,29 +152,6 @@ func (e *BasicAuthPluginProtocols) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// BasicAuthPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-type BasicAuthPluginConsumer struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *BasicAuthPluginConsumer) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-type BasicAuthPluginConsumerGroup struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *BasicAuthPluginConsumerGroup) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
 // BasicAuthPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
 type BasicAuthPluginRoute struct {
 	ID *string `json:"id,omitempty"`
@@ -177,29 +176,30 @@ func (o *BasicAuthPluginService) GetID() *string {
 	return o.ID
 }
 
+// BasicAuthPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type BasicAuthPlugin struct {
-	Config *BasicAuthPluginConfig `json:"config,omitempty"`
+	Config BasicAuthPluginConfig `json:"config"`
+	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+	Consumer      *BasicAuthPluginConsumer      `json:"consumer,omitempty"`
+	ConsumerGroup *BasicAuthPluginConsumerGroup `json:"consumer_group,omitempty"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
 	Enabled      *bool                    `json:"enabled,omitempty"`
 	ID           *string                  `json:"id,omitempty"`
 	InstanceName *string                  `json:"instance_name,omitempty"`
-	name         *string                  `const:"basic-auth" json:"name,omitempty"`
+	name         string                   `const:"basic-auth" json:"name"`
 	Ordering     *BasicAuthPluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []BasicAuthPluginProtocols `json:"protocols,omitempty"`
-	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
-	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64 `json:"updated_at,omitempty"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *BasicAuthPluginConsumer      `json:"consumer,omitempty"`
-	ConsumerGroup *BasicAuthPluginConsumerGroup `json:"consumer_group,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
 	Route *BasicAuthPluginRoute `json:"route,omitempty"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 	Service *BasicAuthPluginService `json:"service,omitempty"`
+	// An optional set of strings associated with the Plugin for grouping and filtering.
+	Tags []string `json:"tags,omitempty"`
+	// Unix epoch when the resource was last updated.
+	UpdatedAt *int64 `json:"updated_at,omitempty"`
 }
 
 func (b BasicAuthPlugin) MarshalJSON() ([]byte, error) {
@@ -213,11 +213,25 @@ func (b *BasicAuthPlugin) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *BasicAuthPlugin) GetConfig() *BasicAuthPluginConfig {
+func (o *BasicAuthPlugin) GetConfig() BasicAuthPluginConfig {
+	if o == nil {
+		return BasicAuthPluginConfig{}
+	}
+	return o.Config
+}
+
+func (o *BasicAuthPlugin) GetConsumer() *BasicAuthPluginConsumer {
 	if o == nil {
 		return nil
 	}
-	return o.Config
+	return o.Consumer
+}
+
+func (o *BasicAuthPlugin) GetConsumerGroup() *BasicAuthPluginConsumerGroup {
+	if o == nil {
+		return nil
+	}
+	return o.ConsumerGroup
 }
 
 func (o *BasicAuthPlugin) GetCreatedAt() *int64 {
@@ -248,8 +262,8 @@ func (o *BasicAuthPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *BasicAuthPlugin) GetName() *string {
-	return types.String("basic-auth")
+func (o *BasicAuthPlugin) GetName() string {
+	return "basic-auth"
 }
 
 func (o *BasicAuthPlugin) GetOrdering() *BasicAuthPluginOrdering {
@@ -266,6 +280,20 @@ func (o *BasicAuthPlugin) GetProtocols() []BasicAuthPluginProtocols {
 	return o.Protocols
 }
 
+func (o *BasicAuthPlugin) GetRoute() *BasicAuthPluginRoute {
+	if o == nil {
+		return nil
+	}
+	return o.Route
+}
+
+func (o *BasicAuthPlugin) GetService() *BasicAuthPluginService {
+	if o == nil {
+		return nil
+	}
+	return o.Service
+}
+
 func (o *BasicAuthPlugin) GetTags() []string {
 	if o == nil {
 		return nil
@@ -280,30 +308,116 @@ func (o *BasicAuthPlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *BasicAuthPlugin) GetConsumer() *BasicAuthPluginConsumer {
+// BasicAuthPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
+type BasicAuthPluginInput struct {
+	Config BasicAuthPluginConfig `json:"config"`
+	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+	Consumer      *BasicAuthPluginConsumer      `json:"consumer,omitempty"`
+	ConsumerGroup *BasicAuthPluginConsumerGroup `json:"consumer_group,omitempty"`
+	// Whether the plugin is applied.
+	Enabled      *bool                    `json:"enabled,omitempty"`
+	ID           *string                  `json:"id,omitempty"`
+	InstanceName *string                  `json:"instance_name,omitempty"`
+	name         string                   `const:"basic-auth" json:"name"`
+	Ordering     *BasicAuthPluginOrdering `json:"ordering,omitempty"`
+	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
+	Protocols []BasicAuthPluginProtocols `json:"protocols,omitempty"`
+	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
+	Route *BasicAuthPluginRoute `json:"route,omitempty"`
+	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+	Service *BasicAuthPluginService `json:"service,omitempty"`
+	// An optional set of strings associated with the Plugin for grouping and filtering.
+	Tags []string `json:"tags,omitempty"`
+}
+
+func (b BasicAuthPluginInput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(b, "", false)
+}
+
+func (b *BasicAuthPluginInput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &b, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *BasicAuthPluginInput) GetConfig() BasicAuthPluginConfig {
+	if o == nil {
+		return BasicAuthPluginConfig{}
+	}
+	return o.Config
+}
+
+func (o *BasicAuthPluginInput) GetConsumer() *BasicAuthPluginConsumer {
 	if o == nil {
 		return nil
 	}
 	return o.Consumer
 }
 
-func (o *BasicAuthPlugin) GetConsumerGroup() *BasicAuthPluginConsumerGroup {
+func (o *BasicAuthPluginInput) GetConsumerGroup() *BasicAuthPluginConsumerGroup {
 	if o == nil {
 		return nil
 	}
 	return o.ConsumerGroup
 }
 
-func (o *BasicAuthPlugin) GetRoute() *BasicAuthPluginRoute {
+func (o *BasicAuthPluginInput) GetEnabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Enabled
+}
+
+func (o *BasicAuthPluginInput) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *BasicAuthPluginInput) GetInstanceName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.InstanceName
+}
+
+func (o *BasicAuthPluginInput) GetName() string {
+	return "basic-auth"
+}
+
+func (o *BasicAuthPluginInput) GetOrdering() *BasicAuthPluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
+}
+
+func (o *BasicAuthPluginInput) GetProtocols() []BasicAuthPluginProtocols {
+	if o == nil {
+		return nil
+	}
+	return o.Protocols
+}
+
+func (o *BasicAuthPluginInput) GetRoute() *BasicAuthPluginRoute {
 	if o == nil {
 		return nil
 	}
 	return o.Route
 }
 
-func (o *BasicAuthPlugin) GetService() *BasicAuthPluginService {
+func (o *BasicAuthPluginInput) GetService() *BasicAuthPluginService {
 	if o == nil {
 		return nil
 	}
 	return o.Service
+}
+
+func (o *BasicAuthPluginInput) GetTags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Tags
 }

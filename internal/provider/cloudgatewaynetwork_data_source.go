@@ -34,10 +34,8 @@ type CloudGatewayNetworkDataSourceModel struct {
 	CloudGatewayProviderAccountID types.String                    `tfsdk:"cloud_gateway_provider_account_id"`
 	ConfigurationReferenceCount   types.Int64                     `tfsdk:"configuration_reference_count"`
 	CreatedAt                     types.String                    `tfsdk:"created_at"`
-	DdosProtection                types.Bool                      `tfsdk:"ddos_protection"`
 	Default                       types.Bool                      `tfsdk:"default"`
 	EntityVersion                 types.Int64                     `tfsdk:"entity_version"`
-	Firewall                      *tfTypes.NetworkFirewallConfig  `tfsdk:"firewall"`
 	ID                            types.String                    `tfsdk:"id"`
 	Name                          types.String                    `tfsdk:"name"`
 	ProviderMetadata              tfTypes.NetworkProviderMetadata `tfsdk:"provider_metadata"`
@@ -78,10 +76,6 @@ func (r *CloudGatewayNetworkDataSource) Schema(ctx context.Context, req datasour
 				Computed:    true,
 				Description: `An RFC-3339 timestamp representation of network creation date.`,
 			},
-			"ddos_protection": schema.BoolAttribute{
-				Computed:    true,
-				Description: `Whether DDOS protection is enabled for the network.`,
-			},
 			"default": schema.BoolAttribute{
 				Computed: true,
 				MarkdownDescription: `Whether the network is a default network or not. Default networks are Networks that are created` + "\n" +
@@ -90,22 +84,6 @@ func (r *CloudGatewayNetworkDataSource) Schema(ctx context.Context, req datasour
 			"entity_version": schema.Int64Attribute{
 				Computed:    true,
 				Description: `Monotonically-increasing version count of the network, to indicate the order of updates to the network.`,
-			},
-			"firewall": schema.SingleNestedAttribute{
-				Computed: true,
-				Attributes: map[string]schema.Attribute{
-					"allowed_cidr_blocks": schema.ListAttribute{
-						Computed:    true,
-						ElementType: types.StringType,
-						Description: `List of allowed CIDR blocks to access a network.`,
-					},
-					"denied_cidr_blocks": schema.ListAttribute{
-						Computed:    true,
-						ElementType: types.StringType,
-						Description: `List of denied CIDR blocks to access a network.`,
-					},
-				},
-				Description: `Firewall configuration for a network.`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,

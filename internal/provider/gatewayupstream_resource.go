@@ -7,7 +7,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-framework-validators/mapvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -20,7 +19,6 @@ import (
 	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
-	"github.com/kong/terraform-provider-konnect/internal/validators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -195,9 +193,6 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
-								Validators: []validator.Map{
-									mapvalidator.ValueStringsAre(validators.IsValidJSON()),
-								},
 							},
 							"healthy": schema.SingleNestedAttribute{
 								Computed: true,
@@ -348,10 +343,10 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
+				Optional: true,
 			},
 			"name": schema.StringAttribute{
-				Computed:    true,
-				Optional:    true,
+				Required:    true,
 				Description: `This is a hostname, which must be equal to the ` + "`" + `host` + "`" + ` of a Service.`,
 			},
 			"slots": schema.Int64Attribute{

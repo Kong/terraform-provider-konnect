@@ -33,7 +33,7 @@ resource "konnect_gateway_upstream" "my_gatewayupstream" {
     active = {
       concurrency = 6
       headers = {
-        "see" : jsonencode("documentation"),
+        env = "test"
       }
       healthy = {
         http_statuses = [
@@ -77,6 +77,7 @@ resource "konnect_gateway_upstream" "my_gatewayupstream" {
     threshold = 3.63
   }
   host_header = "...my_host_header..."
+  id          = "...my_id..."
   name        = "...my_name..."
   slots       = 0
   tags = [
@@ -92,6 +93,7 @@ resource "konnect_gateway_upstream" "my_gatewayupstream" {
 ### Required
 
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
+- `name` (String) This is a hostname, which must be equal to the `host` of a Service.
 
 ### Optional
 
@@ -109,7 +111,6 @@ resource "konnect_gateway_upstream" "my_gatewayupstream" {
 - `hash_on_uri_capture` (String) The name of the route URI capture to take the value from as hash input. Only required when `hash_on` is set to `uri_capture`.
 - `healthchecks` (Attributes) (see [below for nested schema](#nestedatt--healthchecks))
 - `host_header` (String) The hostname to be used as `Host` header when proxying requests through Kong.
-- `name` (String) This is a hostname, which must be equal to the `host` of a Service.
 - `slots` (Number) The number of slots in the load balancer algorithm. If `algorithm` is set to `round-robin`, this setting determines the maximum number of slots. If `algorithm` is set to `consistent-hashing`, this setting determines the actual number of slots in the algorithm. Accepts an integer in the range `10`-`65536`.
 - `tags` (List of String) An optional set of strings associated with the Upstream for grouping and filtering.
 - `use_srv_name` (Boolean) If set, the balancer will use SRV hostname(if DNS Answer has SRV record) as the proxy upstream `Host`.

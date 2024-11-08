@@ -43,6 +43,8 @@ type AddUserToTeamResponse struct {
 	BadRequestError *shared.BadRequestError
 	// Not Found
 	NotFoundError *shared.NotFoundError
+	// Conflict
+	ConflictError *shared.ConflictError
 }
 
 func (o *AddUserToTeamResponse) GetContentType() string {
@@ -78,4 +80,11 @@ func (o *AddUserToTeamResponse) GetNotFoundError() *shared.NotFoundError {
 		return nil
 	}
 	return o.NotFoundError
+}
+
+func (o *AddUserToTeamResponse) GetConflictError() *shared.ConflictError {
+	if o == nil {
+		return nil
+	}
+	return o.ConflictError
 }

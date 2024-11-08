@@ -10,18 +10,13 @@ import (
 
 func (r *GatewayPluginJweDecryptDataSourceModel) RefreshFromSharedJweDecryptPlugin(resp *shared.JweDecryptPlugin) {
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
-		} else {
-			r.Config = &tfTypes.CreateJweDecryptPluginConfig{}
-			r.Config.ForwardHeaderName = types.StringPointerValue(resp.Config.ForwardHeaderName)
-			r.Config.KeySets = []types.String{}
-			for _, v := range resp.Config.KeySets {
-				r.Config.KeySets = append(r.Config.KeySets, types.StringValue(v))
-			}
-			r.Config.LookupHeaderName = types.StringPointerValue(resp.Config.LookupHeaderName)
-			r.Config.Strict = types.BoolPointerValue(resp.Config.Strict)
+		r.Config.ForwardHeaderName = types.StringPointerValue(resp.Config.ForwardHeaderName)
+		r.Config.KeySets = []types.String{}
+		for _, v := range resp.Config.KeySets {
+			r.Config.KeySets = append(r.Config.KeySets, types.StringValue(v))
 		}
+		r.Config.LookupHeaderName = types.StringPointerValue(resp.Config.LookupHeaderName)
+		r.Config.Strict = types.BoolPointerValue(resp.Config.Strict)
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
@@ -41,11 +36,11 @@ func (r *GatewayPluginJweDecryptDataSourceModel) RefreshFromSharedJweDecryptPlug
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			r.Ordering = &tfTypes.ACLPluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After = &tfTypes.ACLPluginAfter{}
 				r.Ordering.After.Access = []types.String{}
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -54,7 +49,7 @@ func (r *GatewayPluginJweDecryptDataSourceModel) RefreshFromSharedJweDecryptPlug
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
 				r.Ordering.Before.Access = []types.String{}
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))

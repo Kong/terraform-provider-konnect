@@ -14,6 +14,12 @@ func (r *GatewayConsumerResourceModel) ToSharedConsumerInput() *shared.ConsumerI
 	} else {
 		customID = nil
 	}
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
+	}
 	var tags []string = []string{}
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
@@ -26,6 +32,7 @@ func (r *GatewayConsumerResourceModel) ToSharedConsumerInput() *shared.ConsumerI
 	}
 	out := shared.ConsumerInput{
 		CustomID: customID,
+		ID:       id,
 		Tags:     tags,
 		Username: username,
 	}

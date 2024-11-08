@@ -39,20 +39,20 @@ type GatewayPluginStatsdAdvancedResource struct {
 
 // GatewayPluginStatsdAdvancedResourceModel describes the resource data model.
 type GatewayPluginStatsdAdvancedResourceModel struct {
-	Config         *tfTypes.CreateStatsdAdvancedPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer                      `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLConsumer                      `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                              `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                               `tfsdk:"created_at"`
-	Enabled        types.Bool                                `tfsdk:"enabled"`
-	ID             types.String                              `tfsdk:"id"`
-	InstanceName   types.String                              `tfsdk:"instance_name"`
-	Ordering       *tfTypes.CreateACLPluginOrdering          `tfsdk:"ordering"`
-	Protocols      []types.String                            `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer                      `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer                      `tfsdk:"service"`
-	Tags           []types.String                            `tfsdk:"tags"`
-	UpdatedAt      types.Int64                               `tfsdk:"updated_at"`
+	Config         tfTypes.StatsdAdvancedPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer               `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer               `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                        `tfsdk:"created_at"`
+	Enabled        types.Bool                         `tfsdk:"enabled"`
+	ID             types.String                       `tfsdk:"id"`
+	InstanceName   types.String                       `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering         `tfsdk:"ordering"`
+	Protocols      []types.String                     `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer               `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer               `tfsdk:"service"`
+	Tags           []types.String                     `tfsdk:"tags"`
+	UpdatedAt      types.Int64                        `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginStatsdAdvancedResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -64,8 +64,7 @@ func (r *GatewayPluginStatsdAdvancedResource) Schema(ctx context.Context, req re
 		MarkdownDescription: "GatewayPluginStatsdAdvanced Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"allow_status_codes": schema.ListAttribute{
 						Computed:    true,
@@ -331,6 +330,7 @@ func (r *GatewayPluginStatsdAdvancedResource) Schema(ctx context.Context, req re
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
+				Optional: true,
 			},
 			"instance_name": schema.StringAttribute{
 				Computed: true,
@@ -447,10 +447,10 @@ func (r *GatewayPluginStatsdAdvancedResource) Create(ctx context.Context, req re
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createStatsdAdvancedPlugin := data.ToSharedCreateStatsdAdvancedPlugin()
+	statsdAdvancedPlugin := data.ToSharedStatsdAdvancedPluginInput()
 	request := operations.CreateStatsdadvancedPluginRequest{
-		ControlPlaneID:             controlPlaneID,
-		CreateStatsdAdvancedPlugin: createStatsdAdvancedPlugin,
+		ControlPlaneID:       controlPlaneID,
+		StatsdAdvancedPlugin: statsdAdvancedPlugin,
 	}
 	res, err := r.client.Plugins.CreateStatsdadvancedPlugin(ctx, request)
 	if err != nil {
@@ -557,11 +557,11 @@ func (r *GatewayPluginStatsdAdvancedResource) Update(ctx context.Context, req re
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createStatsdAdvancedPlugin := data.ToSharedCreateStatsdAdvancedPlugin()
+	statsdAdvancedPlugin := data.ToSharedStatsdAdvancedPluginInput()
 	request := operations.UpdateStatsdadvancedPluginRequest{
-		PluginID:                   pluginID,
-		ControlPlaneID:             controlPlaneID,
-		CreateStatsdAdvancedPlugin: createStatsdAdvancedPlugin,
+		PluginID:             pluginID,
+		ControlPlaneID:       controlPlaneID,
+		StatsdAdvancedPlugin: statsdAdvancedPlugin,
 	}
 	res, err := r.client.Plugins.UpdateStatsdadvancedPlugin(ctx, request)
 	if err != nil {

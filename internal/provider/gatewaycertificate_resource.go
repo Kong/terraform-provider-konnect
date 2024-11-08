@@ -40,6 +40,7 @@ type GatewayCertificateResourceModel struct {
 	ID             types.String   `tfsdk:"id"`
 	Key            types.String   `tfsdk:"key"`
 	KeyAlt         types.String   `tfsdk:"key_alt"`
+	Snis           []types.String `tfsdk:"snis"`
 	Tags           []types.String `tfsdk:"tags"`
 	UpdatedAt      types.Int64    `tfsdk:"updated_at"`
 }
@@ -53,8 +54,7 @@ func (r *GatewayCertificateResource) Schema(ctx context.Context, req resource.Sc
 		MarkdownDescription: "GatewayCertificate Resource",
 		Attributes: map[string]schema.Attribute{
 			"cert": schema.StringAttribute{
-				Computed:    true,
-				Optional:    true,
+				Required:    true,
 				Description: `PEM-encoded public certificate chain of the SSL key pair. This field is _referenceable_, which means it can be securely stored as a [secret](/gateway/latest/plan-and-deploy/security/secrets-management/getting-started) in a vault. References must follow a [specific format](/gateway/latest/plan-and-deploy/security/secrets-management/reference-format).`,
 			},
 			"cert_alt": schema.StringAttribute{
@@ -75,16 +75,21 @@ func (r *GatewayCertificateResource) Schema(ctx context.Context, req resource.Sc
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
+				Optional: true,
 			},
 			"key": schema.StringAttribute{
-				Computed:    true,
-				Optional:    true,
+				Required:    true,
 				Description: `PEM-encoded private key of the SSL key pair. This field is _referenceable_, which means it can be securely stored as a [secret](/gateway/latest/plan-and-deploy/security/secrets-management/getting-started) in a vault. References must follow a [specific format](/gateway/latest/plan-and-deploy/security/secrets-management/reference-format).`,
 			},
 			"key_alt": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
 				Description: `PEM-encoded private key of the alternate SSL key pair. This should only be set if you have both RSA and ECDSA types of certificate available and would like Kong to prefer serving using ECDSA certs when client advertises support for it. This field is _referenceable_, which means it can be securely stored as a [secret](/gateway/latest/plan-and-deploy/security/secrets-management/getting-started) in a vault. References must follow a [specific format](/gateway/latest/plan-and-deploy/security/secrets-management/reference-format).`,
+			},
+			"snis": schema.ListAttribute{
+				Computed:    true,
+				Optional:    true,
+				ElementType: types.StringType,
 			},
 			"tags": schema.ListAttribute{
 				Computed:    true,

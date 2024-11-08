@@ -15,6 +15,7 @@ GatewayKey Resource
 ```terraform
 resource "konnect_gateway_key" "my_gatewaykey" {
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+  id               = "...my_id..."
   jwk              = "...my_jwk..."
   kid              = "...my_kid..."
   name             = "...my_name..."
@@ -37,11 +38,11 @@ resource "konnect_gateway_key" "my_gatewaykey" {
 ### Required
 
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
+- `kid` (String) A unique identifier for a key.
 
 ### Optional
 
 - `jwk` (String) A JSON Web Key represented as a string.
-- `kid` (String) A unique identifier for a key.
 - `name` (String) The name to associate with the given keys.
 - `pem` (Attributes) A keypair in PEM format. (see [below for nested schema](#nestedatt--pem))
 - `set` (Attributes) The id (an UUID) of the key-set with which to associate the key. (see [below for nested schema](#nestedatt--set))

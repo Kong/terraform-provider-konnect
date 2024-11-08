@@ -37,20 +37,20 @@ type GatewayPluginOpaResource struct {
 
 // GatewayPluginOpaResourceModel describes the resource data model.
 type GatewayPluginOpaResourceModel struct {
-	Config         *tfTypes.CreateOpaPluginConfig   `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer             `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLConsumer             `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                     `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                      `tfsdk:"created_at"`
-	Enabled        types.Bool                       `tfsdk:"enabled"`
-	ID             types.String                     `tfsdk:"id"`
-	InstanceName   types.String                     `tfsdk:"instance_name"`
-	Ordering       *tfTypes.CreateACLPluginOrdering `tfsdk:"ordering"`
-	Protocols      []types.String                   `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer             `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer             `tfsdk:"service"`
-	Tags           []types.String                   `tfsdk:"tags"`
-	UpdatedAt      types.Int64                      `tfsdk:"updated_at"`
+	Config         tfTypes.OpaPluginConfig    `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer       `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer       `tfsdk:"consumer_group"`
+	ControlPlaneID types.String               `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                `tfsdk:"created_at"`
+	Enabled        types.Bool                 `tfsdk:"enabled"`
+	ID             types.String               `tfsdk:"id"`
+	InstanceName   types.String               `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering `tfsdk:"ordering"`
+	Protocols      []types.String             `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer       `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer       `tfsdk:"service"`
+	Tags           []types.String             `tfsdk:"tags"`
+	UpdatedAt      types.Int64                `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginOpaResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -62,8 +62,7 @@ func (r *GatewayPluginOpaResource) Schema(ctx context.Context, req resource.Sche
 		MarkdownDescription: "GatewayPluginOpa Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"include_body_in_opa_input": schema.BoolAttribute{
 						Computed: true,
@@ -169,6 +168,7 @@ func (r *GatewayPluginOpaResource) Schema(ctx context.Context, req resource.Sche
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
+				Optional: true,
 			},
 			"instance_name": schema.StringAttribute{
 				Computed: true,
@@ -285,10 +285,10 @@ func (r *GatewayPluginOpaResource) Create(ctx context.Context, req resource.Crea
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createOpaPlugin := data.ToSharedCreateOpaPlugin()
+	opaPlugin := data.ToSharedOpaPluginInput()
 	request := operations.CreateOpaPluginRequest{
-		ControlPlaneID:  controlPlaneID,
-		CreateOpaPlugin: createOpaPlugin,
+		ControlPlaneID: controlPlaneID,
+		OpaPlugin:      opaPlugin,
 	}
 	res, err := r.client.Plugins.CreateOpaPlugin(ctx, request)
 	if err != nil {
@@ -395,11 +395,11 @@ func (r *GatewayPluginOpaResource) Update(ctx context.Context, req resource.Upda
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createOpaPlugin := data.ToSharedCreateOpaPlugin()
+	opaPlugin := data.ToSharedOpaPluginInput()
 	request := operations.UpdateOpaPluginRequest{
-		PluginID:        pluginID,
-		ControlPlaneID:  controlPlaneID,
-		CreateOpaPlugin: createOpaPlugin,
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+		OpaPlugin:      opaPlugin,
 	}
 	res, err := r.client.Plugins.UpdateOpaPlugin(ctx, request)
 	if err != nil {

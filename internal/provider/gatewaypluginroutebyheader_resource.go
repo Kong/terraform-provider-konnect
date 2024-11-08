@@ -40,20 +40,20 @@ type GatewayPluginRouteByHeaderResource struct {
 
 // GatewayPluginRouteByHeaderResourceModel describes the resource data model.
 type GatewayPluginRouteByHeaderResourceModel struct {
-	Config         *tfTypes.CreateRouteByHeaderPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer                     `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLConsumer                     `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                             `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                              `tfsdk:"created_at"`
-	Enabled        types.Bool                               `tfsdk:"enabled"`
-	ID             types.String                             `tfsdk:"id"`
-	InstanceName   types.String                             `tfsdk:"instance_name"`
-	Ordering       *tfTypes.CreateACLPluginOrdering         `tfsdk:"ordering"`
-	Protocols      []types.String                           `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer                     `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer                     `tfsdk:"service"`
-	Tags           []types.String                           `tfsdk:"tags"`
-	UpdatedAt      types.Int64                              `tfsdk:"updated_at"`
+	Config         tfTypes.RouteByHeaderPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer              `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer              `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                      `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                       `tfsdk:"created_at"`
+	Enabled        types.Bool                        `tfsdk:"enabled"`
+	ID             types.String                      `tfsdk:"id"`
+	InstanceName   types.String                      `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering        `tfsdk:"ordering"`
+	Protocols      []types.String                    `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer              `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer              `tfsdk:"service"`
+	Tags           []types.String                    `tfsdk:"tags"`
+	UpdatedAt      types.Int64                       `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginRouteByHeaderResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -65,8 +65,7 @@ func (r *GatewayPluginRouteByHeaderResource) Schema(ctx context.Context, req res
 		MarkdownDescription: "GatewayPluginRouteByHeader Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"rules": schema.ListNestedAttribute{
 						Computed: true,
@@ -139,6 +138,7 @@ func (r *GatewayPluginRouteByHeaderResource) Schema(ctx context.Context, req res
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
+				Optional: true,
 			},
 			"instance_name": schema.StringAttribute{
 				Computed: true,
@@ -255,10 +255,10 @@ func (r *GatewayPluginRouteByHeaderResource) Create(ctx context.Context, req res
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createRouteByHeaderPlugin := data.ToSharedCreateRouteByHeaderPlugin()
+	routeByHeaderPlugin := data.ToSharedRouteByHeaderPluginInput()
 	request := operations.CreateRoutebyheaderPluginRequest{
-		ControlPlaneID:            controlPlaneID,
-		CreateRouteByHeaderPlugin: createRouteByHeaderPlugin,
+		ControlPlaneID:      controlPlaneID,
+		RouteByHeaderPlugin: routeByHeaderPlugin,
 	}
 	res, err := r.client.Plugins.CreateRoutebyheaderPlugin(ctx, request)
 	if err != nil {
@@ -365,11 +365,11 @@ func (r *GatewayPluginRouteByHeaderResource) Update(ctx context.Context, req res
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createRouteByHeaderPlugin := data.ToSharedCreateRouteByHeaderPlugin()
+	routeByHeaderPlugin := data.ToSharedRouteByHeaderPluginInput()
 	request := operations.UpdateRoutebyheaderPluginRequest{
-		PluginID:                  pluginID,
-		ControlPlaneID:            controlPlaneID,
-		CreateRouteByHeaderPlugin: createRouteByHeaderPlugin,
+		PluginID:            pluginID,
+		ControlPlaneID:      controlPlaneID,
+		RouteByHeaderPlugin: routeByHeaderPlugin,
 	}
 	res, err := r.client.Plugins.UpdateRoutebyheaderPlugin(ctx, request)
 	if err != nil {

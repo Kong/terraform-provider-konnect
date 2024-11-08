@@ -34,20 +34,20 @@ type GatewayPluginBasicAuthResource struct {
 
 // GatewayPluginBasicAuthResourceModel describes the resource data model.
 type GatewayPluginBasicAuthResourceModel struct {
-	Config         *tfTypes.CreateBasicAuthPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer                 `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLConsumer                 `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                         `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                          `tfsdk:"created_at"`
-	Enabled        types.Bool                           `tfsdk:"enabled"`
-	ID             types.String                         `tfsdk:"id"`
-	InstanceName   types.String                         `tfsdk:"instance_name"`
-	Ordering       *tfTypes.CreateACLPluginOrdering     `tfsdk:"ordering"`
-	Protocols      []types.String                       `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer                 `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer                 `tfsdk:"service"`
-	Tags           []types.String                       `tfsdk:"tags"`
-	UpdatedAt      types.Int64                          `tfsdk:"updated_at"`
+	Config         tfTypes.BasicAuthPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer          `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer          `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                  `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                   `tfsdk:"created_at"`
+	Enabled        types.Bool                    `tfsdk:"enabled"`
+	ID             types.String                  `tfsdk:"id"`
+	InstanceName   types.String                  `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering    `tfsdk:"ordering"`
+	Protocols      []types.String                `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer          `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer          `tfsdk:"service"`
+	Tags           []types.String                `tfsdk:"tags"`
+	UpdatedAt      types.Int64                   `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginBasicAuthResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -59,8 +59,7 @@ func (r *GatewayPluginBasicAuthResource) Schema(ctx context.Context, req resourc
 		MarkdownDescription: "GatewayPluginBasicAuth Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"anonymous": schema.StringAttribute{
 						Computed:    true,
@@ -118,6 +117,7 @@ func (r *GatewayPluginBasicAuthResource) Schema(ctx context.Context, req resourc
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
+				Optional: true,
 			},
 			"instance_name": schema.StringAttribute{
 				Computed: true,
@@ -234,10 +234,10 @@ func (r *GatewayPluginBasicAuthResource) Create(ctx context.Context, req resourc
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createBasicAuthPlugin := data.ToSharedCreateBasicAuthPlugin()
+	basicAuthPlugin := data.ToSharedBasicAuthPluginInput()
 	request := operations.CreateBasicauthPluginRequest{
-		ControlPlaneID:        controlPlaneID,
-		CreateBasicAuthPlugin: createBasicAuthPlugin,
+		ControlPlaneID:  controlPlaneID,
+		BasicAuthPlugin: basicAuthPlugin,
 	}
 	res, err := r.client.Plugins.CreateBasicauthPlugin(ctx, request)
 	if err != nil {
@@ -344,11 +344,11 @@ func (r *GatewayPluginBasicAuthResource) Update(ctx context.Context, req resourc
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createBasicAuthPlugin := data.ToSharedCreateBasicAuthPlugin()
+	basicAuthPlugin := data.ToSharedBasicAuthPluginInput()
 	request := operations.UpdateBasicauthPluginRequest{
-		PluginID:              pluginID,
-		ControlPlaneID:        controlPlaneID,
-		CreateBasicAuthPlugin: createBasicAuthPlugin,
+		PluginID:        pluginID,
+		ControlPlaneID:  controlPlaneID,
+		BasicAuthPlugin: basicAuthPlugin,
 	}
 	res, err := r.client.Plugins.UpdateBasicauthPlugin(ctx, request)
 	if err != nil {

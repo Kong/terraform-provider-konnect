@@ -10,44 +10,39 @@ import (
 
 func (r *GatewayPluginJqDataSourceModel) RefreshFromSharedJqPlugin(resp *shared.JqPlugin) {
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
+		r.Config.RequestIfMediaType = []types.String{}
+		for _, v := range resp.Config.RequestIfMediaType {
+			r.Config.RequestIfMediaType = append(r.Config.RequestIfMediaType, types.StringValue(v))
+		}
+		r.Config.RequestJqProgram = types.StringPointerValue(resp.Config.RequestJqProgram)
+		if resp.Config.RequestJqProgramOptions == nil {
+			r.Config.RequestJqProgramOptions = nil
 		} else {
-			r.Config = &tfTypes.CreateJqPluginConfig{}
-			r.Config.RequestIfMediaType = []types.String{}
-			for _, v := range resp.Config.RequestIfMediaType {
-				r.Config.RequestIfMediaType = append(r.Config.RequestIfMediaType, types.StringValue(v))
-			}
-			r.Config.RequestJqProgram = types.StringPointerValue(resp.Config.RequestJqProgram)
-			if resp.Config.RequestJqProgramOptions == nil {
-				r.Config.RequestJqProgramOptions = nil
-			} else {
-				r.Config.RequestJqProgramOptions = &tfTypes.CreateJqPluginRequestJqProgramOptions{}
-				r.Config.RequestJqProgramOptions.ASCIIOutput = types.BoolPointerValue(resp.Config.RequestJqProgramOptions.ASCIIOutput)
-				r.Config.RequestJqProgramOptions.CompactOutput = types.BoolPointerValue(resp.Config.RequestJqProgramOptions.CompactOutput)
-				r.Config.RequestJqProgramOptions.JoinOutput = types.BoolPointerValue(resp.Config.RequestJqProgramOptions.JoinOutput)
-				r.Config.RequestJqProgramOptions.RawOutput = types.BoolPointerValue(resp.Config.RequestJqProgramOptions.RawOutput)
-				r.Config.RequestJqProgramOptions.SortKeys = types.BoolPointerValue(resp.Config.RequestJqProgramOptions.SortKeys)
-			}
-			r.Config.ResponseIfMediaType = []types.String{}
-			for _, v := range resp.Config.ResponseIfMediaType {
-				r.Config.ResponseIfMediaType = append(r.Config.ResponseIfMediaType, types.StringValue(v))
-			}
-			r.Config.ResponseIfStatusCode = []types.Int64{}
-			for _, v := range resp.Config.ResponseIfStatusCode {
-				r.Config.ResponseIfStatusCode = append(r.Config.ResponseIfStatusCode, types.Int64Value(v))
-			}
-			r.Config.ResponseJqProgram = types.StringPointerValue(resp.Config.ResponseJqProgram)
-			if resp.Config.ResponseJqProgramOptions == nil {
-				r.Config.ResponseJqProgramOptions = nil
-			} else {
-				r.Config.ResponseJqProgramOptions = &tfTypes.CreateJqPluginRequestJqProgramOptions{}
-				r.Config.ResponseJqProgramOptions.ASCIIOutput = types.BoolPointerValue(resp.Config.ResponseJqProgramOptions.ASCIIOutput)
-				r.Config.ResponseJqProgramOptions.CompactOutput = types.BoolPointerValue(resp.Config.ResponseJqProgramOptions.CompactOutput)
-				r.Config.ResponseJqProgramOptions.JoinOutput = types.BoolPointerValue(resp.Config.ResponseJqProgramOptions.JoinOutput)
-				r.Config.ResponseJqProgramOptions.RawOutput = types.BoolPointerValue(resp.Config.ResponseJqProgramOptions.RawOutput)
-				r.Config.ResponseJqProgramOptions.SortKeys = types.BoolPointerValue(resp.Config.ResponseJqProgramOptions.SortKeys)
-			}
+			r.Config.RequestJqProgramOptions = &tfTypes.RequestJqProgramOptions{}
+			r.Config.RequestJqProgramOptions.ASCIIOutput = types.BoolPointerValue(resp.Config.RequestJqProgramOptions.ASCIIOutput)
+			r.Config.RequestJqProgramOptions.CompactOutput = types.BoolPointerValue(resp.Config.RequestJqProgramOptions.CompactOutput)
+			r.Config.RequestJqProgramOptions.JoinOutput = types.BoolPointerValue(resp.Config.RequestJqProgramOptions.JoinOutput)
+			r.Config.RequestJqProgramOptions.RawOutput = types.BoolPointerValue(resp.Config.RequestJqProgramOptions.RawOutput)
+			r.Config.RequestJqProgramOptions.SortKeys = types.BoolPointerValue(resp.Config.RequestJqProgramOptions.SortKeys)
+		}
+		r.Config.ResponseIfMediaType = []types.String{}
+		for _, v := range resp.Config.ResponseIfMediaType {
+			r.Config.ResponseIfMediaType = append(r.Config.ResponseIfMediaType, types.StringValue(v))
+		}
+		r.Config.ResponseIfStatusCode = []types.Int64{}
+		for _, v := range resp.Config.ResponseIfStatusCode {
+			r.Config.ResponseIfStatusCode = append(r.Config.ResponseIfStatusCode, types.Int64Value(v))
+		}
+		r.Config.ResponseJqProgram = types.StringPointerValue(resp.Config.ResponseJqProgram)
+		if resp.Config.ResponseJqProgramOptions == nil {
+			r.Config.ResponseJqProgramOptions = nil
+		} else {
+			r.Config.ResponseJqProgramOptions = &tfTypes.RequestJqProgramOptions{}
+			r.Config.ResponseJqProgramOptions.ASCIIOutput = types.BoolPointerValue(resp.Config.ResponseJqProgramOptions.ASCIIOutput)
+			r.Config.ResponseJqProgramOptions.CompactOutput = types.BoolPointerValue(resp.Config.ResponseJqProgramOptions.CompactOutput)
+			r.Config.ResponseJqProgramOptions.JoinOutput = types.BoolPointerValue(resp.Config.ResponseJqProgramOptions.JoinOutput)
+			r.Config.ResponseJqProgramOptions.RawOutput = types.BoolPointerValue(resp.Config.ResponseJqProgramOptions.RawOutput)
+			r.Config.ResponseJqProgramOptions.SortKeys = types.BoolPointerValue(resp.Config.ResponseJqProgramOptions.SortKeys)
 		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
@@ -68,11 +63,11 @@ func (r *GatewayPluginJqDataSourceModel) RefreshFromSharedJqPlugin(resp *shared.
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			r.Ordering = &tfTypes.ACLPluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After = &tfTypes.ACLPluginAfter{}
 				r.Ordering.After.Access = []types.String{}
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -81,7 +76,7 @@ func (r *GatewayPluginJqDataSourceModel) RefreshFromSharedJqPlugin(resp *shared.
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
 				r.Ordering.Before.Access = []types.String{}
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))

@@ -10,22 +10,17 @@ import (
 
 func (r *GatewayPluginACLDataSourceModel) RefreshFromSharedACLPlugin(resp *shared.ACLPlugin) {
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
-		} else {
-			r.Config = &tfTypes.CreateACLPluginConfig{}
-			r.Config.Allow = []types.String{}
-			for _, v := range resp.Config.Allow {
-				r.Config.Allow = append(r.Config.Allow, types.StringValue(v))
-			}
-			r.Config.AlwaysUseAuthenticatedGroups = types.BoolPointerValue(resp.Config.AlwaysUseAuthenticatedGroups)
-			r.Config.Deny = []types.String{}
-			for _, v := range resp.Config.Deny {
-				r.Config.Deny = append(r.Config.Deny, types.StringValue(v))
-			}
-			r.Config.HideGroupsHeader = types.BoolPointerValue(resp.Config.HideGroupsHeader)
-			r.Config.IncludeConsumerGroups = types.BoolPointerValue(resp.Config.IncludeConsumerGroups)
+		r.Config.Allow = []types.String{}
+		for _, v := range resp.Config.Allow {
+			r.Config.Allow = append(r.Config.Allow, types.StringValue(v))
 		}
+		r.Config.AlwaysUseAuthenticatedGroups = types.BoolPointerValue(resp.Config.AlwaysUseAuthenticatedGroups)
+		r.Config.Deny = []types.String{}
+		for _, v := range resp.Config.Deny {
+			r.Config.Deny = append(r.Config.Deny, types.StringValue(v))
+		}
+		r.Config.HideGroupsHeader = types.BoolPointerValue(resp.Config.HideGroupsHeader)
+		r.Config.IncludeConsumerGroups = types.BoolPointerValue(resp.Config.IncludeConsumerGroups)
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
@@ -45,11 +40,11 @@ func (r *GatewayPluginACLDataSourceModel) RefreshFromSharedACLPlugin(resp *share
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			r.Ordering = &tfTypes.ACLPluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After = &tfTypes.ACLPluginAfter{}
 				r.Ordering.After.Access = []types.String{}
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -58,7 +53,7 @@ func (r *GatewayPluginACLDataSourceModel) RefreshFromSharedACLPlugin(resp *share
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
 				r.Ordering.Before.Access = []types.String{}
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))

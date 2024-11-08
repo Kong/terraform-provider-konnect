@@ -37,20 +37,20 @@ type GatewayPluginAiResponseTransformerResource struct {
 
 // GatewayPluginAiResponseTransformerResourceModel describes the resource data model.
 type GatewayPluginAiResponseTransformerResourceModel struct {
-	Config         *tfTypes.CreateAiResponseTransformerPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer                             `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLConsumer                             `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                                     `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                                      `tfsdk:"created_at"`
-	Enabled        types.Bool                                       `tfsdk:"enabled"`
-	ID             types.String                                     `tfsdk:"id"`
-	InstanceName   types.String                                     `tfsdk:"instance_name"`
-	Ordering       *tfTypes.CreateACLPluginOrdering                 `tfsdk:"ordering"`
-	Protocols      []types.String                                   `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer                             `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer                             `tfsdk:"service"`
-	Tags           []types.String                                   `tfsdk:"tags"`
-	UpdatedAt      types.Int64                                      `tfsdk:"updated_at"`
+	Config         tfTypes.AiResponseTransformerPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer                      `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer                      `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                              `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                               `tfsdk:"created_at"`
+	Enabled        types.Bool                                `tfsdk:"enabled"`
+	ID             types.String                              `tfsdk:"id"`
+	InstanceName   types.String                              `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering                `tfsdk:"ordering"`
+	Protocols      []types.String                            `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer                      `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer                      `tfsdk:"service"`
+	Tags           []types.String                            `tfsdk:"tags"`
+	UpdatedAt      types.Int64                               `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginAiResponseTransformerResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -62,8 +62,7 @@ func (r *GatewayPluginAiResponseTransformerResource) Schema(ctx context.Context,
 		MarkdownDescription: "GatewayPluginAiResponseTransformer Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"http_proxy_host": schema.StringAttribute{
 						Computed:    true,
@@ -431,6 +430,7 @@ func (r *GatewayPluginAiResponseTransformerResource) Schema(ctx context.Context,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
+				Optional: true,
 			},
 			"instance_name": schema.StringAttribute{
 				Computed: true,
@@ -547,10 +547,10 @@ func (r *GatewayPluginAiResponseTransformerResource) Create(ctx context.Context,
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createAiResponseTransformerPlugin := data.ToSharedCreateAiResponseTransformerPlugin()
+	aiResponseTransformerPlugin := data.ToSharedAiResponseTransformerPluginInput()
 	request := operations.CreateAiresponsetransformerPluginRequest{
-		ControlPlaneID:                    controlPlaneID,
-		CreateAiResponseTransformerPlugin: createAiResponseTransformerPlugin,
+		ControlPlaneID:              controlPlaneID,
+		AiResponseTransformerPlugin: aiResponseTransformerPlugin,
 	}
 	res, err := r.client.Plugins.CreateAiresponsetransformerPlugin(ctx, request)
 	if err != nil {
@@ -657,11 +657,11 @@ func (r *GatewayPluginAiResponseTransformerResource) Update(ctx context.Context,
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createAiResponseTransformerPlugin := data.ToSharedCreateAiResponseTransformerPlugin()
+	aiResponseTransformerPlugin := data.ToSharedAiResponseTransformerPluginInput()
 	request := operations.UpdateAiresponsetransformerPluginRequest{
-		PluginID:                          pluginID,
-		ControlPlaneID:                    controlPlaneID,
-		CreateAiResponseTransformerPlugin: createAiResponseTransformerPlugin,
+		PluginID:                    pluginID,
+		ControlPlaneID:              controlPlaneID,
+		AiResponseTransformerPlugin: aiResponseTransformerPlugin,
 	}
 	res, err := r.client.Plugins.UpdateAiresponsetransformerPlugin(ctx, request)
 	if err != nil {

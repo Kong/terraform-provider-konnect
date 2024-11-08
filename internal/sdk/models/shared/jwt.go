@@ -79,14 +79,14 @@ func (o *JWTConsumer) GetID() *string {
 
 type Jwt struct {
 	Algorithm *JWTAlgorithm `json:"algorithm,omitempty"`
+	Consumer  *JWTConsumer  `json:"consumer,omitempty"`
 	// Unix epoch when the resource was created.
-	CreatedAt    *int64       `json:"created_at,omitempty"`
-	ID           *string      `json:"id,omitempty"`
-	Key          *string      `json:"key,omitempty"`
-	RsaPublicKey *string      `json:"rsa_public_key,omitempty"`
-	Secret       *string      `json:"secret,omitempty"`
-	Tags         []string     `json:"tags,omitempty"`
-	Consumer     *JWTConsumer `json:"consumer,omitempty"`
+	CreatedAt    *int64   `json:"created_at,omitempty"`
+	ID           *string  `json:"id,omitempty"`
+	Key          *string  `json:"key,omitempty"`
+	RsaPublicKey *string  `json:"rsa_public_key,omitempty"`
+	Secret       *string  `json:"secret,omitempty"`
+	Tags         []string `json:"tags,omitempty"`
 }
 
 func (o *Jwt) GetAlgorithm() *JWTAlgorithm {
@@ -94,6 +94,13 @@ func (o *Jwt) GetAlgorithm() *JWTAlgorithm {
 		return nil
 	}
 	return o.Algorithm
+}
+
+func (o *Jwt) GetConsumer() *JWTConsumer {
+	if o == nil {
+		return nil
+	}
+	return o.Consumer
 }
 
 func (o *Jwt) GetCreatedAt() *int64 {
@@ -136,11 +143,4 @@ func (o *Jwt) GetTags() []string {
 		return nil
 	}
 	return o.Tags
-}
-
-func (o *Jwt) GetConsumer() *JWTConsumer {
-	if o == nil {
-		return nil
-	}
-	return o.Consumer
 }

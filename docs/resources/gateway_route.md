@@ -22,12 +22,13 @@ resource "konnect_gateway_route" "my_gatewayroute" {
     }
   ]
   headers = {
-    "see" : jsonencode("documentation"),
+    env = "test"
   }
   hosts = [
     "..."
   ]
   https_redirect_status_code = 307
+  id                         = "...my_id..."
   methods = [
     "..."
   ]

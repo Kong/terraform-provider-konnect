@@ -37,20 +37,20 @@ type GatewayPluginMtlsAuthResource struct {
 
 // GatewayPluginMtlsAuthResourceModel describes the resource data model.
 type GatewayPluginMtlsAuthResourceModel struct {
-	Config         *tfTypes.CreateMtlsAuthPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer                `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLConsumer                `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                        `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                         `tfsdk:"created_at"`
-	Enabled        types.Bool                          `tfsdk:"enabled"`
-	ID             types.String                        `tfsdk:"id"`
-	InstanceName   types.String                        `tfsdk:"instance_name"`
-	Ordering       *tfTypes.CreateACLPluginOrdering    `tfsdk:"ordering"`
-	Protocols      []types.String                      `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer                `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer                `tfsdk:"service"`
-	Tags           []types.String                      `tfsdk:"tags"`
-	UpdatedAt      types.Int64                         `tfsdk:"updated_at"`
+	Config         tfTypes.MtlsAuthPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer         `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer         `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                 `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                  `tfsdk:"created_at"`
+	Enabled        types.Bool                   `tfsdk:"enabled"`
+	ID             types.String                 `tfsdk:"id"`
+	InstanceName   types.String                 `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering   `tfsdk:"ordering"`
+	Protocols      []types.String               `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer         `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer         `tfsdk:"service"`
+	Tags           []types.String               `tfsdk:"tags"`
+	UpdatedAt      types.Int64                  `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginMtlsAuthResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -62,8 +62,7 @@ func (r *GatewayPluginMtlsAuthResource) Schema(ctx context.Context, req resource
 		MarkdownDescription: "GatewayPluginMtlsAuth Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"allow_partial_chain": schema.BoolAttribute{
 						Computed:    true,
@@ -204,6 +203,7 @@ func (r *GatewayPluginMtlsAuthResource) Schema(ctx context.Context, req resource
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
+				Optional: true,
 			},
 			"instance_name": schema.StringAttribute{
 				Computed: true,
@@ -320,10 +320,10 @@ func (r *GatewayPluginMtlsAuthResource) Create(ctx context.Context, req resource
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createMtlsAuthPlugin := data.ToSharedCreateMtlsAuthPlugin()
+	mtlsAuthPlugin := data.ToSharedMtlsAuthPluginInput()
 	request := operations.CreateMtlsauthPluginRequest{
-		ControlPlaneID:       controlPlaneID,
-		CreateMtlsAuthPlugin: createMtlsAuthPlugin,
+		ControlPlaneID: controlPlaneID,
+		MtlsAuthPlugin: mtlsAuthPlugin,
 	}
 	res, err := r.client.Plugins.CreateMtlsauthPlugin(ctx, request)
 	if err != nil {
@@ -430,11 +430,11 @@ func (r *GatewayPluginMtlsAuthResource) Update(ctx context.Context, req resource
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createMtlsAuthPlugin := data.ToSharedCreateMtlsAuthPlugin()
+	mtlsAuthPlugin := data.ToSharedMtlsAuthPluginInput()
 	request := operations.UpdateMtlsauthPluginRequest{
-		PluginID:             pluginID,
-		ControlPlaneID:       controlPlaneID,
-		CreateMtlsAuthPlugin: createMtlsAuthPlugin,
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+		MtlsAuthPlugin: mtlsAuthPlugin,
 	}
 	res, err := r.client.Plugins.UpdateMtlsauthPlugin(ctx, request)
 	if err != nil {

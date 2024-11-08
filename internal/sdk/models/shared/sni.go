@@ -14,18 +14,26 @@ func (o *SNICertificate) GetID() *string {
 	return o.ID
 }
 
+// Sni - An SNI object represents a many-to-one mapping of hostnames to a certificate. That is, a certificate object can have many hostnames associated with it; when Kong receives an SSL request, it uses the SNI field in the Client Hello to lookup the certificate object based on the SNI associated with the certificate.
 type Sni struct {
+	// The id (a UUID) of the certificate with which to associate the SNI hostname. The Certificate must have a valid private key associated with it to be used by the SNI object.
+	Certificate SNICertificate `json:"certificate"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64  `json:"created_at,omitempty"`
 	ID        *string `json:"id,omitempty"`
 	// The SNI name to associate with the given certificate.
-	Name *string `json:"name,omitempty"`
+	Name string `json:"name"`
 	// An optional set of strings associated with the SNIs for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64 `json:"updated_at,omitempty"`
-	// The id (a UUID) of the certificate with which to associate the SNI hostname. The Certificate must have a valid private key associated with it to be used by the SNI object.
-	Certificate *SNICertificate `json:"certificate,omitempty"`
+}
+
+func (o *Sni) GetCertificate() SNICertificate {
+	if o == nil {
+		return SNICertificate{}
+	}
+	return o.Certificate
 }
 
 func (o *Sni) GetCreatedAt() *int64 {
@@ -42,9 +50,9 @@ func (o *Sni) GetID() *string {
 	return o.ID
 }
 
-func (o *Sni) GetName() *string {
+func (o *Sni) GetName() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.Name
 }
@@ -63,25 +71,34 @@ func (o *Sni) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *Sni) GetCertificate() *SNICertificate {
+// SNIInput - An SNI object represents a many-to-one mapping of hostnames to a certificate. That is, a certificate object can have many hostnames associated with it; when Kong receives an SSL request, it uses the SNI field in the Client Hello to lookup the certificate object based on the SNI associated with the certificate.
+type SNIInput struct {
+	// The id (a UUID) of the certificate with which to associate the SNI hostname. The Certificate must have a valid private key associated with it to be used by the SNI object.
+	Certificate SNICertificate `json:"certificate"`
+	ID          *string        `json:"id,omitempty"`
+	// The SNI name to associate with the given certificate.
+	Name string `json:"name"`
+	// An optional set of strings associated with the SNIs for grouping and filtering.
+	Tags []string `json:"tags,omitempty"`
+}
+
+func (o *SNIInput) GetCertificate() SNICertificate {
 	if o == nil {
-		return nil
+		return SNICertificate{}
 	}
 	return o.Certificate
 }
 
-type SNIInput struct {
-	// The SNI name to associate with the given certificate.
-	Name *string `json:"name,omitempty"`
-	// An optional set of strings associated with the SNIs for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
-	// The id (a UUID) of the certificate with which to associate the SNI hostname. The Certificate must have a valid private key associated with it to be used by the SNI object.
-	Certificate *SNICertificate `json:"certificate,omitempty"`
-}
-
-func (o *SNIInput) GetName() *string {
+func (o *SNIInput) GetID() *string {
 	if o == nil {
 		return nil
+	}
+	return o.ID
+}
+
+func (o *SNIInput) GetName() string {
+	if o == nil {
+		return ""
 	}
 	return o.Name
 }
@@ -91,11 +108,4 @@ func (o *SNIInput) GetTags() []string {
 		return nil
 	}
 	return o.Tags
-}
-
-func (o *SNIInput) GetCertificate() *SNICertificate {
-	if o == nil {
-		return nil
-	}
-	return o.Certificate
 }

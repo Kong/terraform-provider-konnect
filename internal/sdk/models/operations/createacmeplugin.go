@@ -9,8 +9,8 @@ import (
 
 type CreateAcmePluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID   string                   `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateAcmePlugin *shared.CreateAcmePlugin `request:"mediaType=application/json"`
+	ControlPlaneID string                  `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	AcmePlugin     *shared.AcmePluginInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateAcmePluginRequest) GetControlPlaneID() string {
@@ -20,11 +20,11 @@ func (o *CreateAcmePluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateAcmePluginRequest) GetCreateAcmePlugin() *shared.CreateAcmePlugin {
+func (o *CreateAcmePluginRequest) GetAcmePlugin() *shared.AcmePluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreateAcmePlugin
+	return o.AcmePlugin
 }
 
 type CreateAcmePluginResponse struct {

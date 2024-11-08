@@ -148,8 +148,8 @@ func (s *BasicAuthCredentials) CreateBasicAuthWithConsumer(ctx context.Context, 
 
 }
 
-// DeleteBasicAuthWithConsumer - Delete a a Basic-auth credential associated with a a Consumer
-// Delete a a Basic-auth credential associated with a a Consumer using ID.
+// DeleteBasicAuthWithConsumer - Delete a a Basic-auth credential associated with a Consumer
+// Delete a a Basic-auth credential associated with a Consumer using ID.
 func (s *BasicAuthCredentials) DeleteBasicAuthWithConsumer(ctx context.Context, request operations.DeleteBasicAuthWithConsumerRequest, opts ...operations.Option) (*operations.DeleteBasicAuthWithConsumerResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,

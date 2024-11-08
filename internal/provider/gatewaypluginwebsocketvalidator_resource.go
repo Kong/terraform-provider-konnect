@@ -37,20 +37,20 @@ type GatewayPluginWebsocketValidatorResource struct {
 
 // GatewayPluginWebsocketValidatorResourceModel describes the resource data model.
 type GatewayPluginWebsocketValidatorResourceModel struct {
-	Config         *tfTypes.CreateWebsocketValidatorPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer                          `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLConsumer                          `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                                  `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                                   `tfsdk:"created_at"`
-	Enabled        types.Bool                                    `tfsdk:"enabled"`
-	ID             types.String                                  `tfsdk:"id"`
-	InstanceName   types.String                                  `tfsdk:"instance_name"`
-	Ordering       *tfTypes.CreateACLPluginOrdering              `tfsdk:"ordering"`
-	Protocols      []types.String                                `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer                          `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer                          `tfsdk:"service"`
-	Tags           []types.String                                `tfsdk:"tags"`
-	UpdatedAt      types.Int64                                   `tfsdk:"updated_at"`
+	Config         tfTypes.WebsocketValidatorPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer                   `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer                   `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                           `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                            `tfsdk:"created_at"`
+	Enabled        types.Bool                             `tfsdk:"enabled"`
+	ID             types.String                           `tfsdk:"id"`
+	InstanceName   types.String                           `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering             `tfsdk:"ordering"`
+	Protocols      []types.String                         `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer                   `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer                   `tfsdk:"service"`
+	Tags           []types.String                         `tfsdk:"tags"`
+	UpdatedAt      types.Int64                            `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginWebsocketValidatorResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -62,8 +62,7 @@ func (r *GatewayPluginWebsocketValidatorResource) Schema(ctx context.Context, re
 		MarkdownDescription: "GatewayPluginWebsocketValidator Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"client": schema.SingleNestedAttribute{
 						Computed: true,
@@ -210,6 +209,7 @@ func (r *GatewayPluginWebsocketValidatorResource) Schema(ctx context.Context, re
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
+				Optional: true,
 			},
 			"instance_name": schema.StringAttribute{
 				Computed: true,
@@ -326,10 +326,10 @@ func (r *GatewayPluginWebsocketValidatorResource) Create(ctx context.Context, re
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createWebsocketValidatorPlugin := data.ToSharedCreateWebsocketValidatorPlugin()
+	websocketValidatorPlugin := data.ToSharedWebsocketValidatorPluginInput()
 	request := operations.CreateWebsocketvalidatorPluginRequest{
-		ControlPlaneID:                 controlPlaneID,
-		CreateWebsocketValidatorPlugin: createWebsocketValidatorPlugin,
+		ControlPlaneID:           controlPlaneID,
+		WebsocketValidatorPlugin: websocketValidatorPlugin,
 	}
 	res, err := r.client.Plugins.CreateWebsocketvalidatorPlugin(ctx, request)
 	if err != nil {
@@ -436,11 +436,11 @@ func (r *GatewayPluginWebsocketValidatorResource) Update(ctx context.Context, re
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createWebsocketValidatorPlugin := data.ToSharedCreateWebsocketValidatorPlugin()
+	websocketValidatorPlugin := data.ToSharedWebsocketValidatorPluginInput()
 	request := operations.UpdateWebsocketvalidatorPluginRequest{
-		PluginID:                       pluginID,
-		ControlPlaneID:                 controlPlaneID,
-		CreateWebsocketValidatorPlugin: createWebsocketValidatorPlugin,
+		PluginID:                 pluginID,
+		ControlPlaneID:           controlPlaneID,
+		WebsocketValidatorPlugin: websocketValidatorPlugin,
 	}
 	res, err := r.client.Plugins.UpdateWebsocketvalidatorPlugin(ctx, request)
 	if err != nil {

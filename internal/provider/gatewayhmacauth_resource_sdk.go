@@ -9,6 +9,12 @@ import (
 )
 
 func (r *GatewayHMACAuthResourceModel) ToSharedHMACAuthWithoutParents() *shared.HMACAuthWithoutParents {
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
+	}
 	secret := new(string)
 	if !r.Secret.IsUnknown() && !r.Secret.IsNull() {
 		*secret = r.Secret.ValueString()
@@ -26,6 +32,7 @@ func (r *GatewayHMACAuthResourceModel) ToSharedHMACAuthWithoutParents() *shared.
 		username = nil
 	}
 	out := shared.HMACAuthWithoutParents{
+		ID:       id,
 		Secret:   secret,
 		Tags:     tags,
 		Username: username,

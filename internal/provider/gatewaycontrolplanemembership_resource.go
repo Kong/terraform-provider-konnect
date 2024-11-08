@@ -33,8 +33,8 @@ type GatewayControlPlaneMembershipResource struct {
 
 // GatewayControlPlaneMembershipResourceModel describes the resource data model.
 type GatewayControlPlaneMembershipResourceModel struct {
-	ID      types.String          `tfsdk:"id"`
-	Members []tfTypes.ACLConsumer `tfsdk:"members"`
+	ID      types.String      `tfsdk:"id"`
+	Members []tfTypes.Members `tfsdk:"members"`
 }
 
 func (r *GatewayControlPlaneMembershipResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -53,7 +53,7 @@ func (r *GatewayControlPlaneMembershipResource) Schema(ctx context.Context, req 
 				Description: `ID of a control plane group. Requires replacement if changed.`,
 			},
 			"members": schema.ListNestedAttribute{
-				Optional: true,
+				Required: true,
 				PlanModifiers: []planmodifier.List{
 					listplanmodifier.RequiresReplaceIfConfigured(),
 				},
@@ -63,7 +63,7 @@ func (r *GatewayControlPlaneMembershipResource) Schema(ctx context.Context, req 
 					},
 					Attributes: map[string]schema.Attribute{
 						"id": schema.StringAttribute{
-							Optional: true,
+							Required: true,
 							PlanModifiers: []planmodifier.String{
 								stringplanmodifier.RequiresReplaceIfConfigured(),
 							},

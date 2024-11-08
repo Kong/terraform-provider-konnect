@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/utils"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/types"
 )
 
 type TCPLogPluginConfig struct {
@@ -73,6 +72,29 @@ func (o *TCPLogPluginConfig) GetTLSSni() *string {
 		return nil
 	}
 	return o.TLSSni
+}
+
+// TCPLogPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+type TCPLogPluginConsumer struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *TCPLogPluginConsumer) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+type TCPLogPluginConsumerGroup struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *TCPLogPluginConsumerGroup) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
 }
 
 type TCPLogPluginAfter struct {
@@ -166,29 +188,6 @@ func (e *TCPLogPluginProtocols) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// TCPLogPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-type TCPLogPluginConsumer struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *TCPLogPluginConsumer) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-type TCPLogPluginConsumerGroup struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *TCPLogPluginConsumerGroup) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
 // TCPLogPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
 type TCPLogPluginRoute struct {
 	ID *string `json:"id,omitempty"`
@@ -213,29 +212,30 @@ func (o *TCPLogPluginService) GetID() *string {
 	return o.ID
 }
 
+// TCPLogPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type TCPLogPlugin struct {
-	Config *TCPLogPluginConfig `json:"config,omitempty"`
+	Config TCPLogPluginConfig `json:"config"`
+	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+	Consumer      *TCPLogPluginConsumer      `json:"consumer,omitempty"`
+	ConsumerGroup *TCPLogPluginConsumerGroup `json:"consumer_group,omitempty"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
 	Enabled      *bool                 `json:"enabled,omitempty"`
 	ID           *string               `json:"id,omitempty"`
 	InstanceName *string               `json:"instance_name,omitempty"`
-	name         *string               `const:"tcp-log" json:"name,omitempty"`
+	name         string                `const:"tcp-log" json:"name"`
 	Ordering     *TCPLogPluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []TCPLogPluginProtocols `json:"protocols,omitempty"`
-	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
-	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64 `json:"updated_at,omitempty"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *TCPLogPluginConsumer      `json:"consumer,omitempty"`
-	ConsumerGroup *TCPLogPluginConsumerGroup `json:"consumer_group,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
 	Route *TCPLogPluginRoute `json:"route,omitempty"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 	Service *TCPLogPluginService `json:"service,omitempty"`
+	// An optional set of strings associated with the Plugin for grouping and filtering.
+	Tags []string `json:"tags,omitempty"`
+	// Unix epoch when the resource was last updated.
+	UpdatedAt *int64 `json:"updated_at,omitempty"`
 }
 
 func (t TCPLogPlugin) MarshalJSON() ([]byte, error) {
@@ -249,11 +249,25 @@ func (t *TCPLogPlugin) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *TCPLogPlugin) GetConfig() *TCPLogPluginConfig {
+func (o *TCPLogPlugin) GetConfig() TCPLogPluginConfig {
+	if o == nil {
+		return TCPLogPluginConfig{}
+	}
+	return o.Config
+}
+
+func (o *TCPLogPlugin) GetConsumer() *TCPLogPluginConsumer {
 	if o == nil {
 		return nil
 	}
-	return o.Config
+	return o.Consumer
+}
+
+func (o *TCPLogPlugin) GetConsumerGroup() *TCPLogPluginConsumerGroup {
+	if o == nil {
+		return nil
+	}
+	return o.ConsumerGroup
 }
 
 func (o *TCPLogPlugin) GetCreatedAt() *int64 {
@@ -284,8 +298,8 @@ func (o *TCPLogPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *TCPLogPlugin) GetName() *string {
-	return types.String("tcp-log")
+func (o *TCPLogPlugin) GetName() string {
+	return "tcp-log"
 }
 
 func (o *TCPLogPlugin) GetOrdering() *TCPLogPluginOrdering {
@@ -302,6 +316,20 @@ func (o *TCPLogPlugin) GetProtocols() []TCPLogPluginProtocols {
 	return o.Protocols
 }
 
+func (o *TCPLogPlugin) GetRoute() *TCPLogPluginRoute {
+	if o == nil {
+		return nil
+	}
+	return o.Route
+}
+
+func (o *TCPLogPlugin) GetService() *TCPLogPluginService {
+	if o == nil {
+		return nil
+	}
+	return o.Service
+}
+
 func (o *TCPLogPlugin) GetTags() []string {
 	if o == nil {
 		return nil
@@ -316,30 +344,116 @@ func (o *TCPLogPlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *TCPLogPlugin) GetConsumer() *TCPLogPluginConsumer {
+// TCPLogPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
+type TCPLogPluginInput struct {
+	Config TCPLogPluginConfig `json:"config"`
+	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+	Consumer      *TCPLogPluginConsumer      `json:"consumer,omitempty"`
+	ConsumerGroup *TCPLogPluginConsumerGroup `json:"consumer_group,omitempty"`
+	// Whether the plugin is applied.
+	Enabled      *bool                 `json:"enabled,omitempty"`
+	ID           *string               `json:"id,omitempty"`
+	InstanceName *string               `json:"instance_name,omitempty"`
+	name         string                `const:"tcp-log" json:"name"`
+	Ordering     *TCPLogPluginOrdering `json:"ordering,omitempty"`
+	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
+	Protocols []TCPLogPluginProtocols `json:"protocols,omitempty"`
+	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
+	Route *TCPLogPluginRoute `json:"route,omitempty"`
+	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+	Service *TCPLogPluginService `json:"service,omitempty"`
+	// An optional set of strings associated with the Plugin for grouping and filtering.
+	Tags []string `json:"tags,omitempty"`
+}
+
+func (t TCPLogPluginInput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *TCPLogPluginInput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *TCPLogPluginInput) GetConfig() TCPLogPluginConfig {
+	if o == nil {
+		return TCPLogPluginConfig{}
+	}
+	return o.Config
+}
+
+func (o *TCPLogPluginInput) GetConsumer() *TCPLogPluginConsumer {
 	if o == nil {
 		return nil
 	}
 	return o.Consumer
 }
 
-func (o *TCPLogPlugin) GetConsumerGroup() *TCPLogPluginConsumerGroup {
+func (o *TCPLogPluginInput) GetConsumerGroup() *TCPLogPluginConsumerGroup {
 	if o == nil {
 		return nil
 	}
 	return o.ConsumerGroup
 }
 
-func (o *TCPLogPlugin) GetRoute() *TCPLogPluginRoute {
+func (o *TCPLogPluginInput) GetEnabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Enabled
+}
+
+func (o *TCPLogPluginInput) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *TCPLogPluginInput) GetInstanceName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.InstanceName
+}
+
+func (o *TCPLogPluginInput) GetName() string {
+	return "tcp-log"
+}
+
+func (o *TCPLogPluginInput) GetOrdering() *TCPLogPluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
+}
+
+func (o *TCPLogPluginInput) GetProtocols() []TCPLogPluginProtocols {
+	if o == nil {
+		return nil
+	}
+	return o.Protocols
+}
+
+func (o *TCPLogPluginInput) GetRoute() *TCPLogPluginRoute {
 	if o == nil {
 		return nil
 	}
 	return o.Route
 }
 
-func (o *TCPLogPlugin) GetService() *TCPLogPluginService {
+func (o *TCPLogPluginInput) GetService() *TCPLogPluginService {
 	if o == nil {
 		return nil
 	}
 	return o.Service
+}
+
+func (o *TCPLogPluginInput) GetTags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Tags
 }

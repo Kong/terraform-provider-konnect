@@ -11,8 +11,8 @@ type UpdateOpaPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID  string                  `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateOpaPlugin *shared.CreateOpaPlugin `request:"mediaType=application/json"`
+	ControlPlaneID string                 `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	OpaPlugin      *shared.OpaPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *UpdateOpaPluginRequest) GetPluginID() string {
@@ -29,11 +29,11 @@ func (o *UpdateOpaPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateOpaPluginRequest) GetCreateOpaPlugin() *shared.CreateOpaPlugin {
+func (o *UpdateOpaPluginRequest) GetOpaPlugin() *shared.OpaPluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreateOpaPlugin
+	return o.OpaPlugin
 }
 
 type UpdateOpaPluginResponse struct {

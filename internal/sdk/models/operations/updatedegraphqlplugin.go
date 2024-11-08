@@ -11,8 +11,8 @@ type UpdateDegraphqlPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID        string                        `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateDegraphqlPlugin *shared.CreateDegraphqlPlugin `request:"mediaType=application/json"`
+	ControlPlaneID  string                       `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	DegraphqlPlugin *shared.DegraphqlPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *UpdateDegraphqlPluginRequest) GetPluginID() string {
@@ -29,11 +29,11 @@ func (o *UpdateDegraphqlPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateDegraphqlPluginRequest) GetCreateDegraphqlPlugin() *shared.CreateDegraphqlPlugin {
+func (o *UpdateDegraphqlPluginRequest) GetDegraphqlPlugin() *shared.DegraphqlPluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreateDegraphqlPlugin
+	return o.DegraphqlPlugin
 }
 
 type UpdateDegraphqlPluginResponse struct {

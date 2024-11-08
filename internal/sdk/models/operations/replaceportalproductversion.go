@@ -10,7 +10,7 @@ import (
 type ReplacePortalProductVersionRequest struct {
 	// API product version identifier
 	ProductVersionID string `pathParam:"style=simple,explode=false,name=productVersionId"`
-	// portal identifier
+	// ID of the portal.
 	PortalID                           string                                    `pathParam:"style=simple,explode=false,name=portalId"`
 	ReplacePortalProductVersionPayload shared.ReplacePortalProductVersionPayload `request:"mediaType=application/json"`
 }

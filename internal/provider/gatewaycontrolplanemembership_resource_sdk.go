@@ -9,12 +9,9 @@ import (
 func (r *GatewayControlPlaneMembershipResourceModel) ToSharedGroupMembership() *shared.GroupMembership {
 	var members []shared.Members = []shared.Members{}
 	for _, membersItem := range r.Members {
-		id := new(string)
-		if !membersItem.ID.IsUnknown() && !membersItem.ID.IsNull() {
-			*id = membersItem.ID.ValueString()
-		} else {
-			id = nil
-		}
+		var id string
+		id = membersItem.ID.ValueString()
+
 		members = append(members, shared.Members{
 			ID: id,
 		})

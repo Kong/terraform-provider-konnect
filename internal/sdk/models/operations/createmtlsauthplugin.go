@@ -9,8 +9,8 @@ import (
 
 type CreateMtlsauthPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID       string                       `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateMtlsAuthPlugin *shared.CreateMtlsAuthPlugin `request:"mediaType=application/json"`
+	ControlPlaneID string                      `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	MtlsAuthPlugin *shared.MtlsAuthPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateMtlsauthPluginRequest) GetControlPlaneID() string {
@@ -20,11 +20,11 @@ func (o *CreateMtlsauthPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateMtlsauthPluginRequest) GetCreateMtlsAuthPlugin() *shared.CreateMtlsAuthPlugin {
+func (o *CreateMtlsauthPluginRequest) GetMtlsAuthPlugin() *shared.MtlsAuthPluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreateMtlsAuthPlugin
+	return o.MtlsAuthPlugin
 }
 
 type CreateMtlsauthPluginResponse struct {

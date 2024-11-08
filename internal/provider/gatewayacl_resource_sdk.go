@@ -15,12 +15,19 @@ func (r *GatewayACLResourceModel) ToSharedACLWithoutParents() *shared.ACLWithout
 	} else {
 		group = nil
 	}
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
+	}
 	var tags []string = []string{}
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
 	out := shared.ACLWithoutParents{
 		Group: group,
+		ID:    id,
 		Tags:  tags,
 	}
 	return &out

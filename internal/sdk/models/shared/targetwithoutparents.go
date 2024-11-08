@@ -2,13 +2,22 @@
 
 package shared
 
+// TargetWithoutParents - A target is an ip address/hostname with a port that identifies an instance of a backend service. Every upstream can have many targets, and the targets can be dynamically added, modified, or deleted. Changes take effect on the fly. To disable a target, post a new one with `weight=0`; alternatively, use the `DELETE` convenience method to accomplish the same. The current target object definition is the one with the latest `created_at`.
 type TargetWithoutParents struct {
+	ID *string `json:"id,omitempty"`
 	// An optional set of strings associated with the Target for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// The target address (ip or hostname) and port. If the hostname resolves to an SRV record, the `port` value will be overridden by the value from the DNS record.
 	Target *string `json:"target,omitempty"`
 	// The weight this target gets within the upstream loadbalancer (`0`-`65535`). If the hostname resolves to an SRV record, the `weight` value will be overridden by the value from the DNS record.
 	Weight *int64 `json:"weight,omitempty"`
+}
+
+func (o *TargetWithoutParents) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
 }
 
 func (o *TargetWithoutParents) GetTags() []string {

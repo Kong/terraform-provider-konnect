@@ -83,12 +83,20 @@ func (r *GatewayBasicAuthResource) Schema(ctx context.Context, req resource.Sche
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
+				Optional: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
+				Description: `Requires replacement if changed.`,
 			},
 			"password": schema.StringAttribute{
+				Computed:  true,
 				Optional:  true,
 				Sensitive: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `Requires replacement if changed.`,
 			},
@@ -186,42 +194,6 @@ func (r *GatewayBasicAuthResource) Create(ctx context.Context, req resource.Crea
 		return
 	}
 	data.RefreshFromSharedBasicAuth(res.BasicAuth)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
-	var controlPlaneId1 string
-	controlPlaneId1 = data.ControlPlaneID.ValueString()
-
-	var consumerId1 string
-	consumerId1 = data.ConsumerID.ValueString()
-
-	var basicAuthID string
-	basicAuthID = data.ID.ValueString()
-
-	request1 := operations.GetBasicAuthWithConsumerRequest{
-		ControlPlaneID: controlPlaneId1,
-		ConsumerID:     consumerId1,
-		BasicAuthID:    basicAuthID,
-	}
-	res1, err := r.client.BasicAuthCredentials.GetBasicAuthWithConsumer(ctx, request1)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res1 != nil && res1.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
-		}
-		return
-	}
-	if res1 == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
-		return
-	}
-	if res1.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
-		return
-	}
-	if !(res1.BasicAuth != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
-		return
-	}
-	data.RefreshFromSharedBasicAuth(res1.BasicAuth)
 	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state

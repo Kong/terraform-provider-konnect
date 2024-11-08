@@ -125,6 +125,7 @@ func (e *RoleName) UnmarshalJSON(data []byte) error {
 type EntityTypeName string
 
 const (
+	EntityTypeNameApIs                      EntityTypeName = "APIs"
 	EntityTypeNameAPIProducts               EntityTypeName = "API Products"
 	EntityTypeNameApplicationAuthStrategies EntityTypeName = "Application Auth Strategies"
 	EntityTypeNameAuditLogs                 EntityTypeName = "Audit Logs"
@@ -146,6 +147,8 @@ func (e *EntityTypeName) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
+	case "APIs":
+		fallthrough
 	case "API Products":
 		fallthrough
 	case "Application Auth Strategies":

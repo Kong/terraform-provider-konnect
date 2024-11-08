@@ -39,20 +39,20 @@ type GatewayPluginZipkinResource struct {
 
 // GatewayPluginZipkinResourceModel describes the resource data model.
 type GatewayPluginZipkinResourceModel struct {
-	Config         *tfTypes.CreateZipkinPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer              `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLConsumer              `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                      `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                       `tfsdk:"created_at"`
-	Enabled        types.Bool                        `tfsdk:"enabled"`
-	ID             types.String                      `tfsdk:"id"`
-	InstanceName   types.String                      `tfsdk:"instance_name"`
-	Ordering       *tfTypes.CreateACLPluginOrdering  `tfsdk:"ordering"`
-	Protocols      []types.String                    `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer              `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer              `tfsdk:"service"`
-	Tags           []types.String                    `tfsdk:"tags"`
-	UpdatedAt      types.Int64                       `tfsdk:"updated_at"`
+	Config         tfTypes.ZipkinPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer       `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer       `tfsdk:"consumer_group"`
+	ControlPlaneID types.String               `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                `tfsdk:"created_at"`
+	Enabled        types.Bool                 `tfsdk:"enabled"`
+	ID             types.String               `tfsdk:"id"`
+	InstanceName   types.String               `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering `tfsdk:"ordering"`
+	Protocols      []types.String             `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer       `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer       `tfsdk:"service"`
+	Tags           []types.String             `tfsdk:"tags"`
+	UpdatedAt      types.Int64                `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginZipkinResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -64,8 +64,7 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 		MarkdownDescription: "GatewayPluginZipkin Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"connect_timeout": schema.Int64Attribute{
 						Computed:    true,
@@ -357,6 +356,7 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
+				Optional: true,
 			},
 			"instance_name": schema.StringAttribute{
 				Computed: true,
@@ -473,10 +473,10 @@ func (r *GatewayPluginZipkinResource) Create(ctx context.Context, req resource.C
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createZipkinPlugin := data.ToSharedCreateZipkinPlugin()
+	zipkinPlugin := data.ToSharedZipkinPluginInput()
 	request := operations.CreateZipkinPluginRequest{
-		ControlPlaneID:     controlPlaneID,
-		CreateZipkinPlugin: createZipkinPlugin,
+		ControlPlaneID: controlPlaneID,
+		ZipkinPlugin:   zipkinPlugin,
 	}
 	res, err := r.client.Plugins.CreateZipkinPlugin(ctx, request)
 	if err != nil {
@@ -583,11 +583,11 @@ func (r *GatewayPluginZipkinResource) Update(ctx context.Context, req resource.U
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createZipkinPlugin := data.ToSharedCreateZipkinPlugin()
+	zipkinPlugin := data.ToSharedZipkinPluginInput()
 	request := operations.UpdateZipkinPluginRequest{
-		PluginID:           pluginID,
-		ControlPlaneID:     controlPlaneID,
-		CreateZipkinPlugin: createZipkinPlugin,
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+		ZipkinPlugin:   zipkinPlugin,
 	}
 	res, err := r.client.Plugins.UpdateZipkinPlugin(ctx, request)
 	if err != nil {

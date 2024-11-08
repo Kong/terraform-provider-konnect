@@ -10,12 +10,7 @@ import (
 
 func (r *GatewayPluginGrpcGatewayDataSourceModel) RefreshFromSharedGrpcGatewayPlugin(resp *shared.GrpcGatewayPlugin) {
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
-		} else {
-			r.Config = &tfTypes.CreateGrpcGatewayPluginConfig{}
-			r.Config.Proto = types.StringPointerValue(resp.Config.Proto)
-		}
+		r.Config.Proto = types.StringPointerValue(resp.Config.Proto)
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
@@ -35,11 +30,11 @@ func (r *GatewayPluginGrpcGatewayDataSourceModel) RefreshFromSharedGrpcGatewayPl
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			r.Ordering = &tfTypes.ACLPluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After = &tfTypes.ACLPluginAfter{}
 				r.Ordering.After.Access = []types.String{}
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -48,7 +43,7 @@ func (r *GatewayPluginGrpcGatewayDataSourceModel) RefreshFromSharedGrpcGatewayPl
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
 				r.Ordering.Before.Access = []types.String{}
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))

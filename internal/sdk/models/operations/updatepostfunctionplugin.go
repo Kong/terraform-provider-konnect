@@ -11,8 +11,8 @@ type UpdatePostfunctionPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID           string                           `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreatePostFunctionPlugin *shared.CreatePostFunctionPlugin `request:"mediaType=application/json"`
+	ControlPlaneID     string                          `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	PostFunctionPlugin *shared.PostFunctionPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *UpdatePostfunctionPluginRequest) GetPluginID() string {
@@ -29,11 +29,11 @@ func (o *UpdatePostfunctionPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdatePostfunctionPluginRequest) GetCreatePostFunctionPlugin() *shared.CreatePostFunctionPlugin {
+func (o *UpdatePostfunctionPluginRequest) GetPostFunctionPlugin() *shared.PostFunctionPluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreatePostFunctionPlugin
+	return o.PostFunctionPlugin
 }
 
 type UpdatePostfunctionPluginResponse struct {

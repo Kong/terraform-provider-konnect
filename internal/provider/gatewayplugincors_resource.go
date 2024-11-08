@@ -34,20 +34,20 @@ type GatewayPluginCorsResource struct {
 
 // GatewayPluginCorsResourceModel describes the resource data model.
 type GatewayPluginCorsResourceModel struct {
-	Config         *tfTypes.CreateCorsPluginConfig  `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer             `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLConsumer             `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                     `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                      `tfsdk:"created_at"`
-	Enabled        types.Bool                       `tfsdk:"enabled"`
-	ID             types.String                     `tfsdk:"id"`
-	InstanceName   types.String                     `tfsdk:"instance_name"`
-	Ordering       *tfTypes.CreateACLPluginOrdering `tfsdk:"ordering"`
-	Protocols      []types.String                   `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer             `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer             `tfsdk:"service"`
-	Tags           []types.String                   `tfsdk:"tags"`
-	UpdatedAt      types.Int64                      `tfsdk:"updated_at"`
+	Config         tfTypes.CorsPluginConfig   `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer       `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer       `tfsdk:"consumer_group"`
+	ControlPlaneID types.String               `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                `tfsdk:"created_at"`
+	Enabled        types.Bool                 `tfsdk:"enabled"`
+	ID             types.String               `tfsdk:"id"`
+	InstanceName   types.String               `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering `tfsdk:"ordering"`
+	Protocols      []types.String             `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer       `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer       `tfsdk:"service"`
+	Tags           []types.String             `tfsdk:"tags"`
+	UpdatedAt      types.Int64                `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginCorsResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -59,8 +59,7 @@ func (r *GatewayPluginCorsResource) Schema(ctx context.Context, req resource.Sch
 		MarkdownDescription: "GatewayPluginCors Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"credentials": schema.BoolAttribute{
 						Computed:    true,
@@ -147,6 +146,7 @@ func (r *GatewayPluginCorsResource) Schema(ctx context.Context, req resource.Sch
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
+				Optional: true,
 			},
 			"instance_name": schema.StringAttribute{
 				Computed: true,
@@ -263,10 +263,10 @@ func (r *GatewayPluginCorsResource) Create(ctx context.Context, req resource.Cre
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createCorsPlugin := data.ToSharedCreateCorsPlugin()
+	corsPlugin := data.ToSharedCorsPluginInput()
 	request := operations.CreateCorsPluginRequest{
-		ControlPlaneID:   controlPlaneID,
-		CreateCorsPlugin: createCorsPlugin,
+		ControlPlaneID: controlPlaneID,
+		CorsPlugin:     corsPlugin,
 	}
 	res, err := r.client.Plugins.CreateCorsPlugin(ctx, request)
 	if err != nil {
@@ -373,11 +373,11 @@ func (r *GatewayPluginCorsResource) Update(ctx context.Context, req resource.Upd
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createCorsPlugin := data.ToSharedCreateCorsPlugin()
+	corsPlugin := data.ToSharedCorsPluginInput()
 	request := operations.UpdateCorsPluginRequest{
-		PluginID:         pluginID,
-		ControlPlaneID:   controlPlaneID,
-		CreateCorsPlugin: createCorsPlugin,
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+		CorsPlugin:     corsPlugin,
 	}
 	res, err := r.client.Plugins.UpdateCorsPlugin(ctx, request)
 	if err != nil {

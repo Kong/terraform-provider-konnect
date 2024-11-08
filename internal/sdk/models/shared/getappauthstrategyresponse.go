@@ -51,7 +51,7 @@ func (o *AppAuthStrategyOpenIDConnectResponseGetAppAuthStrategyResponseConfigs) 
 }
 
 type AppAuthStrategyOpenIDConnectResponseGetAppAuthStrategyResponseDcrProvider struct {
-	// Contains a unique identifier used for this resource.
+	// Contains a unique identifier used by the API for this resource.
 	ID   string `json:"id"`
 	Name string `json:"name"`
 	// The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI.
@@ -91,7 +91,7 @@ func (o *AppAuthStrategyOpenIDConnectResponseGetAppAuthStrategyResponseDcrProvid
 
 // AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse - Response payload from creating an OIDC Application Auth Strategy
 type AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse struct {
-	// Contains a unique identifier used for this resource.
+	// Contains a unique identifier used by the API for this resource.
 	ID string `json:"id"`
 	// The name of the auth strategy. This is used to identify the auth strategy in the Konnect UI.
 	//
@@ -237,7 +237,7 @@ func (o *AppAuthStrategyKeyAuthResponseGetAppAuthStrategyResponseConfigs) GetKey
 }
 
 type AppAuthStrategyKeyAuthResponseDcrProvider struct {
-	// Contains a unique identifier used for this resource.
+	// Contains a unique identifier used by the API for this resource.
 	ID   string `json:"id"`
 	Name string `json:"name"`
 	// The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI.
@@ -277,7 +277,7 @@ func (o *AppAuthStrategyKeyAuthResponseDcrProvider) GetProviderType() DcrProvide
 
 // AppAuthStrategyKeyAuthResponseAppAuthStrategyKeyAuthResponse - Response payload from creating or updating a Key Auth Application Auth Strategy
 type AppAuthStrategyKeyAuthResponseAppAuthStrategyKeyAuthResponse struct {
-	// Contains a unique identifier used for this resource.
+	// Contains a unique identifier used by the API for this resource.
 	ID string `json:"id"`
 	// The name of the auth strategy. This is used to identify the auth strategy in the Konnect UI.
 	//

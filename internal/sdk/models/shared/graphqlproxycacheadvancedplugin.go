@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/utils"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/types"
 )
 
 type Memory struct {
@@ -367,6 +366,29 @@ func (o *GraphqlProxyCacheAdvancedPluginConfig) GetVaryHeaders() []string {
 	return o.VaryHeaders
 }
 
+// GraphqlProxyCacheAdvancedPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+type GraphqlProxyCacheAdvancedPluginConsumer struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *GraphqlProxyCacheAdvancedPluginConsumer) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+type GraphqlProxyCacheAdvancedPluginConsumerGroup struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *GraphqlProxyCacheAdvancedPluginConsumerGroup) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
 type GraphqlProxyCacheAdvancedPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
@@ -458,29 +480,6 @@ func (e *GraphqlProxyCacheAdvancedPluginProtocols) UnmarshalJSON(data []byte) er
 	}
 }
 
-// GraphqlProxyCacheAdvancedPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-type GraphqlProxyCacheAdvancedPluginConsumer struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *GraphqlProxyCacheAdvancedPluginConsumer) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-type GraphqlProxyCacheAdvancedPluginConsumerGroup struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *GraphqlProxyCacheAdvancedPluginConsumerGroup) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
 // GraphqlProxyCacheAdvancedPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
 type GraphqlProxyCacheAdvancedPluginRoute struct {
 	ID *string `json:"id,omitempty"`
@@ -505,29 +504,30 @@ func (o *GraphqlProxyCacheAdvancedPluginService) GetID() *string {
 	return o.ID
 }
 
+// GraphqlProxyCacheAdvancedPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type GraphqlProxyCacheAdvancedPlugin struct {
-	Config *GraphqlProxyCacheAdvancedPluginConfig `json:"config,omitempty"`
+	Config GraphqlProxyCacheAdvancedPluginConfig `json:"config"`
+	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+	Consumer      *GraphqlProxyCacheAdvancedPluginConsumer      `json:"consumer,omitempty"`
+	ConsumerGroup *GraphqlProxyCacheAdvancedPluginConsumerGroup `json:"consumer_group,omitempty"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
 	Enabled      *bool                                    `json:"enabled,omitempty"`
 	ID           *string                                  `json:"id,omitempty"`
 	InstanceName *string                                  `json:"instance_name,omitempty"`
-	name         *string                                  `const:"graphql-proxy-cache-advanced" json:"name,omitempty"`
+	name         string                                   `const:"graphql-proxy-cache-advanced" json:"name"`
 	Ordering     *GraphqlProxyCacheAdvancedPluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []GraphqlProxyCacheAdvancedPluginProtocols `json:"protocols,omitempty"`
-	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
-	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64 `json:"updated_at,omitempty"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *GraphqlProxyCacheAdvancedPluginConsumer      `json:"consumer,omitempty"`
-	ConsumerGroup *GraphqlProxyCacheAdvancedPluginConsumerGroup `json:"consumer_group,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
 	Route *GraphqlProxyCacheAdvancedPluginRoute `json:"route,omitempty"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 	Service *GraphqlProxyCacheAdvancedPluginService `json:"service,omitempty"`
+	// An optional set of strings associated with the Plugin for grouping and filtering.
+	Tags []string `json:"tags,omitempty"`
+	// Unix epoch when the resource was last updated.
+	UpdatedAt *int64 `json:"updated_at,omitempty"`
 }
 
 func (g GraphqlProxyCacheAdvancedPlugin) MarshalJSON() ([]byte, error) {
@@ -541,11 +541,25 @@ func (g *GraphqlProxyCacheAdvancedPlugin) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *GraphqlProxyCacheAdvancedPlugin) GetConfig() *GraphqlProxyCacheAdvancedPluginConfig {
+func (o *GraphqlProxyCacheAdvancedPlugin) GetConfig() GraphqlProxyCacheAdvancedPluginConfig {
+	if o == nil {
+		return GraphqlProxyCacheAdvancedPluginConfig{}
+	}
+	return o.Config
+}
+
+func (o *GraphqlProxyCacheAdvancedPlugin) GetConsumer() *GraphqlProxyCacheAdvancedPluginConsumer {
 	if o == nil {
 		return nil
 	}
-	return o.Config
+	return o.Consumer
+}
+
+func (o *GraphqlProxyCacheAdvancedPlugin) GetConsumerGroup() *GraphqlProxyCacheAdvancedPluginConsumerGroup {
+	if o == nil {
+		return nil
+	}
+	return o.ConsumerGroup
 }
 
 func (o *GraphqlProxyCacheAdvancedPlugin) GetCreatedAt() *int64 {
@@ -576,8 +590,8 @@ func (o *GraphqlProxyCacheAdvancedPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *GraphqlProxyCacheAdvancedPlugin) GetName() *string {
-	return types.String("graphql-proxy-cache-advanced")
+func (o *GraphqlProxyCacheAdvancedPlugin) GetName() string {
+	return "graphql-proxy-cache-advanced"
 }
 
 func (o *GraphqlProxyCacheAdvancedPlugin) GetOrdering() *GraphqlProxyCacheAdvancedPluginOrdering {
@@ -594,6 +608,20 @@ func (o *GraphqlProxyCacheAdvancedPlugin) GetProtocols() []GraphqlProxyCacheAdva
 	return o.Protocols
 }
 
+func (o *GraphqlProxyCacheAdvancedPlugin) GetRoute() *GraphqlProxyCacheAdvancedPluginRoute {
+	if o == nil {
+		return nil
+	}
+	return o.Route
+}
+
+func (o *GraphqlProxyCacheAdvancedPlugin) GetService() *GraphqlProxyCacheAdvancedPluginService {
+	if o == nil {
+		return nil
+	}
+	return o.Service
+}
+
 func (o *GraphqlProxyCacheAdvancedPlugin) GetTags() []string {
 	if o == nil {
 		return nil
@@ -608,30 +636,116 @@ func (o *GraphqlProxyCacheAdvancedPlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *GraphqlProxyCacheAdvancedPlugin) GetConsumer() *GraphqlProxyCacheAdvancedPluginConsumer {
+// GraphqlProxyCacheAdvancedPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
+type GraphqlProxyCacheAdvancedPluginInput struct {
+	Config GraphqlProxyCacheAdvancedPluginConfig `json:"config"`
+	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+	Consumer      *GraphqlProxyCacheAdvancedPluginConsumer      `json:"consumer,omitempty"`
+	ConsumerGroup *GraphqlProxyCacheAdvancedPluginConsumerGroup `json:"consumer_group,omitempty"`
+	// Whether the plugin is applied.
+	Enabled      *bool                                    `json:"enabled,omitempty"`
+	ID           *string                                  `json:"id,omitempty"`
+	InstanceName *string                                  `json:"instance_name,omitempty"`
+	name         string                                   `const:"graphql-proxy-cache-advanced" json:"name"`
+	Ordering     *GraphqlProxyCacheAdvancedPluginOrdering `json:"ordering,omitempty"`
+	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
+	Protocols []GraphqlProxyCacheAdvancedPluginProtocols `json:"protocols,omitempty"`
+	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
+	Route *GraphqlProxyCacheAdvancedPluginRoute `json:"route,omitempty"`
+	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+	Service *GraphqlProxyCacheAdvancedPluginService `json:"service,omitempty"`
+	// An optional set of strings associated with the Plugin for grouping and filtering.
+	Tags []string `json:"tags,omitempty"`
+}
+
+func (g GraphqlProxyCacheAdvancedPluginInput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GraphqlProxyCacheAdvancedPluginInput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *GraphqlProxyCacheAdvancedPluginInput) GetConfig() GraphqlProxyCacheAdvancedPluginConfig {
+	if o == nil {
+		return GraphqlProxyCacheAdvancedPluginConfig{}
+	}
+	return o.Config
+}
+
+func (o *GraphqlProxyCacheAdvancedPluginInput) GetConsumer() *GraphqlProxyCacheAdvancedPluginConsumer {
 	if o == nil {
 		return nil
 	}
 	return o.Consumer
 }
 
-func (o *GraphqlProxyCacheAdvancedPlugin) GetConsumerGroup() *GraphqlProxyCacheAdvancedPluginConsumerGroup {
+func (o *GraphqlProxyCacheAdvancedPluginInput) GetConsumerGroup() *GraphqlProxyCacheAdvancedPluginConsumerGroup {
 	if o == nil {
 		return nil
 	}
 	return o.ConsumerGroup
 }
 
-func (o *GraphqlProxyCacheAdvancedPlugin) GetRoute() *GraphqlProxyCacheAdvancedPluginRoute {
+func (o *GraphqlProxyCacheAdvancedPluginInput) GetEnabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Enabled
+}
+
+func (o *GraphqlProxyCacheAdvancedPluginInput) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *GraphqlProxyCacheAdvancedPluginInput) GetInstanceName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.InstanceName
+}
+
+func (o *GraphqlProxyCacheAdvancedPluginInput) GetName() string {
+	return "graphql-proxy-cache-advanced"
+}
+
+func (o *GraphqlProxyCacheAdvancedPluginInput) GetOrdering() *GraphqlProxyCacheAdvancedPluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
+}
+
+func (o *GraphqlProxyCacheAdvancedPluginInput) GetProtocols() []GraphqlProxyCacheAdvancedPluginProtocols {
+	if o == nil {
+		return nil
+	}
+	return o.Protocols
+}
+
+func (o *GraphqlProxyCacheAdvancedPluginInput) GetRoute() *GraphqlProxyCacheAdvancedPluginRoute {
 	if o == nil {
 		return nil
 	}
 	return o.Route
 }
 
-func (o *GraphqlProxyCacheAdvancedPlugin) GetService() *GraphqlProxyCacheAdvancedPluginService {
+func (o *GraphqlProxyCacheAdvancedPluginInput) GetService() *GraphqlProxyCacheAdvancedPluginService {
 	if o == nil {
 		return nil
 	}
 	return o.Service
+}
+
+func (o *GraphqlProxyCacheAdvancedPluginInput) GetTags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Tags
 }

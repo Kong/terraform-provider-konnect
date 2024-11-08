@@ -8,41 +8,62 @@ import (
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginAiPromptGuardResourceModel) ToSharedCreateAiPromptGuardPlugin() *shared.CreateAiPromptGuardPlugin {
-	var config *shared.CreateAiPromptGuardPluginConfig
-	if r.Config != nil {
-		allowAllConversationHistory := new(bool)
-		if !r.Config.AllowAllConversationHistory.IsUnknown() && !r.Config.AllowAllConversationHistory.IsNull() {
-			*allowAllConversationHistory = r.Config.AllowAllConversationHistory.ValueBool()
+func (r *GatewayPluginAiPromptGuardResourceModel) ToSharedAiPromptGuardPluginInput() *shared.AiPromptGuardPluginInput {
+	allowAllConversationHistory := new(bool)
+	if !r.Config.AllowAllConversationHistory.IsUnknown() && !r.Config.AllowAllConversationHistory.IsNull() {
+		*allowAllConversationHistory = r.Config.AllowAllConversationHistory.ValueBool()
+	} else {
+		allowAllConversationHistory = nil
+	}
+	var allowPatterns []string = []string{}
+	for _, allowPatternsItem := range r.Config.AllowPatterns {
+		allowPatterns = append(allowPatterns, allowPatternsItem.ValueString())
+	}
+	var denyPatterns []string = []string{}
+	for _, denyPatternsItem := range r.Config.DenyPatterns {
+		denyPatterns = append(denyPatterns, denyPatternsItem.ValueString())
+	}
+	matchAllRoles := new(bool)
+	if !r.Config.MatchAllRoles.IsUnknown() && !r.Config.MatchAllRoles.IsNull() {
+		*matchAllRoles = r.Config.MatchAllRoles.ValueBool()
+	} else {
+		matchAllRoles = nil
+	}
+	maxRequestBodySize := new(int64)
+	if !r.Config.MaxRequestBodySize.IsUnknown() && !r.Config.MaxRequestBodySize.IsNull() {
+		*maxRequestBodySize = r.Config.MaxRequestBodySize.ValueInt64()
+	} else {
+		maxRequestBodySize = nil
+	}
+	config := shared.AiPromptGuardPluginConfig{
+		AllowAllConversationHistory: allowAllConversationHistory,
+		AllowPatterns:               allowPatterns,
+		DenyPatterns:                denyPatterns,
+		MatchAllRoles:               matchAllRoles,
+		MaxRequestBodySize:          maxRequestBodySize,
+	}
+	var consumer *shared.AiPromptGuardPluginConsumer
+	if r.Consumer != nil {
+		id := new(string)
+		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
+			*id = r.Consumer.ID.ValueString()
 		} else {
-			allowAllConversationHistory = nil
+			id = nil
 		}
-		var allowPatterns []string = []string{}
-		for _, allowPatternsItem := range r.Config.AllowPatterns {
-			allowPatterns = append(allowPatterns, allowPatternsItem.ValueString())
+		consumer = &shared.AiPromptGuardPluginConsumer{
+			ID: id,
 		}
-		var denyPatterns []string = []string{}
-		for _, denyPatternsItem := range r.Config.DenyPatterns {
-			denyPatterns = append(denyPatterns, denyPatternsItem.ValueString())
-		}
-		matchAllRoles := new(bool)
-		if !r.Config.MatchAllRoles.IsUnknown() && !r.Config.MatchAllRoles.IsNull() {
-			*matchAllRoles = r.Config.MatchAllRoles.ValueBool()
+	}
+	var consumerGroup *shared.AiPromptGuardPluginConsumerGroup
+	if r.ConsumerGroup != nil {
+		id1 := new(string)
+		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
+			*id1 = r.ConsumerGroup.ID.ValueString()
 		} else {
-			matchAllRoles = nil
+			id1 = nil
 		}
-		maxRequestBodySize := new(int64)
-		if !r.Config.MaxRequestBodySize.IsUnknown() && !r.Config.MaxRequestBodySize.IsNull() {
-			*maxRequestBodySize = r.Config.MaxRequestBodySize.ValueInt64()
-		} else {
-			maxRequestBodySize = nil
-		}
-		config = &shared.CreateAiPromptGuardPluginConfig{
-			AllowAllConversationHistory: allowAllConversationHistory,
-			AllowPatterns:               allowPatterns,
-			DenyPatterns:                denyPatterns,
-			MatchAllRoles:               matchAllRoles,
-			MaxRequestBodySize:          maxRequestBodySize,
+		consumerGroup = &shared.AiPromptGuardPluginConsumerGroup{
+			ID: id1,
 		}
 	}
 	enabled := new(bool)
@@ -51,128 +72,106 @@ func (r *GatewayPluginAiPromptGuardResourceModel) ToSharedCreateAiPromptGuardPlu
 	} else {
 		enabled = nil
 	}
+	id2 := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id2 = r.ID.ValueString()
+	} else {
+		id2 = nil
+	}
 	instanceName := new(string)
 	if !r.InstanceName.IsUnknown() && !r.InstanceName.IsNull() {
 		*instanceName = r.InstanceName.ValueString()
 	} else {
 		instanceName = nil
 	}
-	var ordering *shared.CreateAiPromptGuardPluginOrdering
+	var ordering *shared.AiPromptGuardPluginOrdering
 	if r.Ordering != nil {
-		var after *shared.CreateAiPromptGuardPluginAfter
+		var after *shared.AiPromptGuardPluginAfter
 		if r.Ordering.After != nil {
 			var access []string = []string{}
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
-			after = &shared.CreateAiPromptGuardPluginAfter{
+			after = &shared.AiPromptGuardPluginAfter{
 				Access: access,
 			}
 		}
-		var before *shared.CreateAiPromptGuardPluginBefore
+		var before *shared.AiPromptGuardPluginBefore
 		if r.Ordering.Before != nil {
 			var access1 []string = []string{}
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
-			before = &shared.CreateAiPromptGuardPluginBefore{
+			before = &shared.AiPromptGuardPluginBefore{
 				Access: access1,
 			}
 		}
-		ordering = &shared.CreateAiPromptGuardPluginOrdering{
+		ordering = &shared.AiPromptGuardPluginOrdering{
 			After:  after,
 			Before: before,
 		}
 	}
-	var protocols []shared.CreateAiPromptGuardPluginProtocols = []shared.CreateAiPromptGuardPluginProtocols{}
+	var protocols []shared.AiPromptGuardPluginProtocols = []shared.AiPromptGuardPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
-		protocols = append(protocols, shared.CreateAiPromptGuardPluginProtocols(protocolsItem.ValueString()))
+		protocols = append(protocols, shared.AiPromptGuardPluginProtocols(protocolsItem.ValueString()))
+	}
+	var route *shared.AiPromptGuardPluginRoute
+	if r.Route != nil {
+		id3 := new(string)
+		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
+			*id3 = r.Route.ID.ValueString()
+		} else {
+			id3 = nil
+		}
+		route = &shared.AiPromptGuardPluginRoute{
+			ID: id3,
+		}
+	}
+	var service *shared.AiPromptGuardPluginService
+	if r.Service != nil {
+		id4 := new(string)
+		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
+			*id4 = r.Service.ID.ValueString()
+		} else {
+			id4 = nil
+		}
+		service = &shared.AiPromptGuardPluginService{
+			ID: id4,
+		}
 	}
 	var tags []string = []string{}
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	var consumer *shared.CreateAiPromptGuardPluginConsumer
-	if r.Consumer != nil {
-		id := new(string)
-		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
-			*id = r.Consumer.ID.ValueString()
-		} else {
-			id = nil
-		}
-		consumer = &shared.CreateAiPromptGuardPluginConsumer{
-			ID: id,
-		}
-	}
-	var consumerGroup *shared.CreateAiPromptGuardPluginConsumerGroup
-	if r.ConsumerGroup != nil {
-		id1 := new(string)
-		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
-			*id1 = r.ConsumerGroup.ID.ValueString()
-		} else {
-			id1 = nil
-		}
-		consumerGroup = &shared.CreateAiPromptGuardPluginConsumerGroup{
-			ID: id1,
-		}
-	}
-	var route *shared.CreateAiPromptGuardPluginRoute
-	if r.Route != nil {
-		id2 := new(string)
-		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
-			*id2 = r.Route.ID.ValueString()
-		} else {
-			id2 = nil
-		}
-		route = &shared.CreateAiPromptGuardPluginRoute{
-			ID: id2,
-		}
-	}
-	var service *shared.CreateAiPromptGuardPluginService
-	if r.Service != nil {
-		id3 := new(string)
-		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
-			*id3 = r.Service.ID.ValueString()
-		} else {
-			id3 = nil
-		}
-		service = &shared.CreateAiPromptGuardPluginService{
-			ID: id3,
-		}
-	}
-	out := shared.CreateAiPromptGuardPlugin{
+	out := shared.AiPromptGuardPluginInput{
 		Config:        config,
+		Consumer:      consumer,
+		ConsumerGroup: consumerGroup,
 		Enabled:       enabled,
+		ID:            id2,
 		InstanceName:  instanceName,
 		Ordering:      ordering,
 		Protocols:     protocols,
-		Tags:          tags,
-		Consumer:      consumer,
-		ConsumerGroup: consumerGroup,
 		Route:         route,
 		Service:       service,
+		Tags:          tags,
 	}
 	return &out
 }
 
 func (r *GatewayPluginAiPromptGuardResourceModel) RefreshFromSharedAiPromptGuardPlugin(resp *shared.AiPromptGuardPlugin) {
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
-		} else {
-			r.Config = &tfTypes.CreateAiPromptGuardPluginConfig{}
-			r.Config.AllowAllConversationHistory = types.BoolPointerValue(resp.Config.AllowAllConversationHistory)
-			r.Config.AllowPatterns = []types.String{}
-			for _, v := range resp.Config.AllowPatterns {
-				r.Config.AllowPatterns = append(r.Config.AllowPatterns, types.StringValue(v))
-			}
-			r.Config.DenyPatterns = []types.String{}
-			for _, v := range resp.Config.DenyPatterns {
-				r.Config.DenyPatterns = append(r.Config.DenyPatterns, types.StringValue(v))
-			}
-			r.Config.MatchAllRoles = types.BoolPointerValue(resp.Config.MatchAllRoles)
-			r.Config.MaxRequestBodySize = types.Int64PointerValue(resp.Config.MaxRequestBodySize)
+		r.Config.AllowAllConversationHistory = types.BoolPointerValue(resp.Config.AllowAllConversationHistory)
+		r.Config.AllowPatterns = []types.String{}
+		for _, v := range resp.Config.AllowPatterns {
+			r.Config.AllowPatterns = append(r.Config.AllowPatterns, types.StringValue(v))
 		}
+		r.Config.DenyPatterns = []types.String{}
+		for _, v := range resp.Config.DenyPatterns {
+			r.Config.DenyPatterns = append(r.Config.DenyPatterns, types.StringValue(v))
+		}
+		r.Config.MatchAllRoles = types.BoolPointerValue(resp.Config.MatchAllRoles)
+		r.Config.MaxRequestBodySize = types.Int64PointerValue(resp.Config.MaxRequestBodySize)
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
@@ -192,11 +191,11 @@ func (r *GatewayPluginAiPromptGuardResourceModel) RefreshFromSharedAiPromptGuard
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			r.Ordering = &tfTypes.ACLPluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After = &tfTypes.ACLPluginAfter{}
 				r.Ordering.After.Access = []types.String{}
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -205,7 +204,7 @@ func (r *GatewayPluginAiPromptGuardResourceModel) RefreshFromSharedAiPromptGuard
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
 				r.Ordering.Before.Access = []types.String{}
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))

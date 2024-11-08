@@ -10,18 +10,13 @@ import (
 
 func (r *GatewayPluginVaultAuthDataSourceModel) RefreshFromSharedVaultAuthPlugin(resp *shared.VaultAuthPlugin) {
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
-		} else {
-			r.Config = &tfTypes.CreateVaultAuthPluginConfig{}
-			r.Config.AccessTokenName = types.StringPointerValue(resp.Config.AccessTokenName)
-			r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
-			r.Config.HideCredentials = types.BoolPointerValue(resp.Config.HideCredentials)
-			r.Config.RunOnPreflight = types.BoolPointerValue(resp.Config.RunOnPreflight)
-			r.Config.SecretTokenName = types.StringPointerValue(resp.Config.SecretTokenName)
-			r.Config.TokensInBody = types.BoolPointerValue(resp.Config.TokensInBody)
-			r.Config.Vault = types.StringPointerValue(resp.Config.Vault)
-		}
+		r.Config.AccessTokenName = types.StringPointerValue(resp.Config.AccessTokenName)
+		r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
+		r.Config.HideCredentials = types.BoolPointerValue(resp.Config.HideCredentials)
+		r.Config.RunOnPreflight = types.BoolPointerValue(resp.Config.RunOnPreflight)
+		r.Config.SecretTokenName = types.StringPointerValue(resp.Config.SecretTokenName)
+		r.Config.TokensInBody = types.BoolPointerValue(resp.Config.TokensInBody)
+		r.Config.Vault = types.StringPointerValue(resp.Config.Vault)
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
@@ -41,11 +36,11 @@ func (r *GatewayPluginVaultAuthDataSourceModel) RefreshFromSharedVaultAuthPlugin
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			r.Ordering = &tfTypes.ACLPluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After = &tfTypes.ACLPluginAfter{}
 				r.Ordering.After.Access = []types.String{}
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -54,7 +49,7 @@ func (r *GatewayPluginVaultAuthDataSourceModel) RefreshFromSharedVaultAuthPlugin
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
 				r.Ordering.Before.Access = []types.String{}
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))

@@ -61,7 +61,7 @@ Read-Only:
 - `description` (String) The description of the portal.
 - `developer_count` (Number) Number of developers using the portal.
 - `display_name` (String) The display name of the portal. This value will be the portal's `name` in Portal API.
-- `id` (String) Contains a unique identifier used for this resource.
+- `id` (String) Contains a unique identifier used by the API for this resource.
 - `is_public` (Boolean) Whether the portal catalog can be accessed publicly without any developer authentication. Developer accounts and applications cannot be created if the portal is public.
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
 

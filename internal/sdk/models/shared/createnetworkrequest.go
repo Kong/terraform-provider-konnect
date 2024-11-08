@@ -13,10 +13,6 @@ type CreateNetworkRequest struct {
 	AvailabilityZones []string `json:"availability_zones"`
 	// CIDR block configuration for the network.
 	CidrBlock string `json:"cidr_block"`
-	// Firewall configuration for a network.
-	Firewall *NetworkFirewallConfig `json:"firewall,omitempty"`
-	// Whether DDOS protection is enabled for the network.
-	DdosProtection *bool `json:"ddos_protection,omitempty"`
 }
 
 func (o *CreateNetworkRequest) GetName() string {
@@ -52,18 +48,4 @@ func (o *CreateNetworkRequest) GetCidrBlock() string {
 		return ""
 	}
 	return o.CidrBlock
-}
-
-func (o *CreateNetworkRequest) GetFirewall() *NetworkFirewallConfig {
-	if o == nil {
-		return nil
-	}
-	return o.Firewall
-}
-
-func (o *CreateNetworkRequest) GetDdosProtection() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.DdosProtection
 }

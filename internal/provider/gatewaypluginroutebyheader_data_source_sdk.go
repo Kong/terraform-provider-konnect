@@ -11,30 +11,25 @@ import (
 
 func (r *GatewayPluginRouteByHeaderDataSourceModel) RefreshFromSharedRouteByHeaderPlugin(resp *shared.RouteByHeaderPlugin) {
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
-		} else {
-			r.Config = &tfTypes.CreateRouteByHeaderPluginConfig{}
-			r.Config.Rules = []tfTypes.Rules{}
-			if len(r.Config.Rules) > len(resp.Config.Rules) {
-				r.Config.Rules = r.Config.Rules[:len(resp.Config.Rules)]
+		r.Config.Rules = []tfTypes.Rules{}
+		if len(r.Config.Rules) > len(resp.Config.Rules) {
+			r.Config.Rules = r.Config.Rules[:len(resp.Config.Rules)]
+		}
+		for rulesCount, rulesItem := range resp.Config.Rules {
+			var rules1 tfTypes.Rules
+			if len(rulesItem.Condition) > 0 {
+				rules1.Condition = make(map[string]types.String)
+				for key, value := range rulesItem.Condition {
+					result, _ := json.Marshal(value)
+					rules1.Condition[key] = types.StringValue(string(result))
+				}
 			}
-			for rulesCount, rulesItem := range resp.Config.Rules {
-				var rules1 tfTypes.Rules
-				if len(rulesItem.Condition) > 0 {
-					rules1.Condition = make(map[string]types.String)
-					for key, value := range rulesItem.Condition {
-						result, _ := json.Marshal(value)
-						rules1.Condition[key] = types.StringValue(string(result))
-					}
-				}
-				rules1.UpstreamName = types.StringValue(rulesItem.UpstreamName)
-				if rulesCount+1 > len(r.Config.Rules) {
-					r.Config.Rules = append(r.Config.Rules, rules1)
-				} else {
-					r.Config.Rules[rulesCount].Condition = rules1.Condition
-					r.Config.Rules[rulesCount].UpstreamName = rules1.UpstreamName
-				}
+			rules1.UpstreamName = types.StringValue(rulesItem.UpstreamName)
+			if rulesCount+1 > len(r.Config.Rules) {
+				r.Config.Rules = append(r.Config.Rules, rules1)
+			} else {
+				r.Config.Rules[rulesCount].Condition = rules1.Condition
+				r.Config.Rules[rulesCount].UpstreamName = rules1.UpstreamName
 			}
 		}
 		if resp.Consumer == nil {
@@ -56,11 +51,11 @@ func (r *GatewayPluginRouteByHeaderDataSourceModel) RefreshFromSharedRouteByHead
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			r.Ordering = &tfTypes.ACLPluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After = &tfTypes.ACLPluginAfter{}
 				r.Ordering.After.Access = []types.String{}
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -69,7 +64,7 @@ func (r *GatewayPluginRouteByHeaderDataSourceModel) RefreshFromSharedRouteByHead
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
 				r.Ordering.Before.Access = []types.String{}
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))

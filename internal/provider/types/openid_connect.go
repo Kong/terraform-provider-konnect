@@ -5,6 +5,6 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type OpenidConnect struct {
-	Config     *CreateKonnectApplicationAuthPluginConfigConfig `tfsdk:"config"`
-	StrategyID types.String                                    `tfsdk:"strategy_id"`
+	Config     *KonnectApplicationAuthPluginConfigConfig `tfsdk:"config"`
+	StrategyID types.String                              `tfsdk:"strategy_id"`
 }

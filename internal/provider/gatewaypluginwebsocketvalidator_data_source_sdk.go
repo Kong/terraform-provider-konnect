@@ -10,47 +10,42 @@ import (
 
 func (r *GatewayPluginWebsocketValidatorDataSourceModel) RefreshFromSharedWebsocketValidatorPlugin(resp *shared.WebsocketValidatorPlugin) {
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
+		if resp.Config.Client == nil {
+			r.Config.Client = nil
 		} else {
-			r.Config = &tfTypes.CreateWebsocketValidatorPluginConfig{}
-			if resp.Config.Client == nil {
-				r.Config.Client = nil
+			r.Config.Client = &tfTypes.Client{}
+			if resp.Config.Client.Binary == nil {
+				r.Config.Client.Binary = nil
 			} else {
-				r.Config.Client = &tfTypes.CreateWebsocketValidatorPluginClient{}
-				if resp.Config.Client.Binary == nil {
-					r.Config.Client.Binary = nil
-				} else {
-					r.Config.Client.Binary = &tfTypes.CreateWebsocketValidatorPluginBinary{}
-					r.Config.Client.Binary.Schema = types.StringValue(resp.Config.Client.Binary.Schema)
-					r.Config.Client.Binary.Type = types.StringValue(string(resp.Config.Client.Binary.Type))
-				}
-				if resp.Config.Client.Text == nil {
-					r.Config.Client.Text = nil
-				} else {
-					r.Config.Client.Text = &tfTypes.CreateWebsocketValidatorPluginBinary{}
-					r.Config.Client.Text.Schema = types.StringValue(resp.Config.Client.Text.Schema)
-					r.Config.Client.Text.Type = types.StringValue(string(resp.Config.Client.Text.Type))
-				}
+				r.Config.Client.Binary = &tfTypes.Binary{}
+				r.Config.Client.Binary.Schema = types.StringValue(resp.Config.Client.Binary.Schema)
+				r.Config.Client.Binary.Type = types.StringValue(string(resp.Config.Client.Binary.Type))
 			}
-			if resp.Config.Upstream == nil {
-				r.Config.Upstream = nil
+			if resp.Config.Client.Text == nil {
+				r.Config.Client.Text = nil
 			} else {
-				r.Config.Upstream = &tfTypes.CreateWebsocketValidatorPluginClient{}
-				if resp.Config.Upstream.Binary == nil {
-					r.Config.Upstream.Binary = nil
-				} else {
-					r.Config.Upstream.Binary = &tfTypes.CreateWebsocketValidatorPluginBinary{}
-					r.Config.Upstream.Binary.Schema = types.StringValue(resp.Config.Upstream.Binary.Schema)
-					r.Config.Upstream.Binary.Type = types.StringValue(string(resp.Config.Upstream.Binary.Type))
-				}
-				if resp.Config.Upstream.Text == nil {
-					r.Config.Upstream.Text = nil
-				} else {
-					r.Config.Upstream.Text = &tfTypes.CreateWebsocketValidatorPluginBinary{}
-					r.Config.Upstream.Text.Schema = types.StringValue(resp.Config.Upstream.Text.Schema)
-					r.Config.Upstream.Text.Type = types.StringValue(string(resp.Config.Upstream.Text.Type))
-				}
+				r.Config.Client.Text = &tfTypes.Binary{}
+				r.Config.Client.Text.Schema = types.StringValue(resp.Config.Client.Text.Schema)
+				r.Config.Client.Text.Type = types.StringValue(string(resp.Config.Client.Text.Type))
+			}
+		}
+		if resp.Config.Upstream == nil {
+			r.Config.Upstream = nil
+		} else {
+			r.Config.Upstream = &tfTypes.Client{}
+			if resp.Config.Upstream.Binary == nil {
+				r.Config.Upstream.Binary = nil
+			} else {
+				r.Config.Upstream.Binary = &tfTypes.Binary{}
+				r.Config.Upstream.Binary.Schema = types.StringValue(resp.Config.Upstream.Binary.Schema)
+				r.Config.Upstream.Binary.Type = types.StringValue(string(resp.Config.Upstream.Binary.Type))
+			}
+			if resp.Config.Upstream.Text == nil {
+				r.Config.Upstream.Text = nil
+			} else {
+				r.Config.Upstream.Text = &tfTypes.Binary{}
+				r.Config.Upstream.Text.Schema = types.StringValue(resp.Config.Upstream.Text.Schema)
+				r.Config.Upstream.Text.Type = types.StringValue(string(resp.Config.Upstream.Text.Type))
 			}
 		}
 		if resp.Consumer == nil {
@@ -72,11 +67,11 @@ func (r *GatewayPluginWebsocketValidatorDataSourceModel) RefreshFromSharedWebsoc
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			r.Ordering = &tfTypes.ACLPluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After = &tfTypes.ACLPluginAfter{}
 				r.Ordering.After.Access = []types.String{}
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -85,7 +80,7 @@ func (r *GatewayPluginWebsocketValidatorDataSourceModel) RefreshFromSharedWebsoc
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
 				r.Ordering.Before.Access = []types.String{}
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))

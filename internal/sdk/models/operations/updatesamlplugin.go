@@ -11,8 +11,8 @@ type UpdateSamlPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID   string                   `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateSamlPlugin *shared.CreateSamlPlugin `request:"mediaType=application/json"`
+	ControlPlaneID string                  `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	SamlPlugin     *shared.SamlPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *UpdateSamlPluginRequest) GetPluginID() string {
@@ -29,11 +29,11 @@ func (o *UpdateSamlPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateSamlPluginRequest) GetCreateSamlPlugin() *shared.CreateSamlPlugin {
+func (o *UpdateSamlPluginRequest) GetSamlPlugin() *shared.SamlPluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreateSamlPlugin
+	return o.SamlPlugin
 }
 
 type UpdateSamlPluginResponse struct {

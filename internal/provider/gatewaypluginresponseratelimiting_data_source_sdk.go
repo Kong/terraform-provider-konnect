@@ -11,45 +11,40 @@ import (
 
 func (r *GatewayPluginResponseRatelimitingDataSourceModel) RefreshFromSharedResponseRatelimitingPlugin(resp *shared.ResponseRatelimitingPlugin) {
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
+		r.Config.BlockOnFirstViolation = types.BoolPointerValue(resp.Config.BlockOnFirstViolation)
+		r.Config.FaultTolerant = types.BoolPointerValue(resp.Config.FaultTolerant)
+		r.Config.HeaderName = types.StringPointerValue(resp.Config.HeaderName)
+		r.Config.HideClientHeaders = types.BoolPointerValue(resp.Config.HideClientHeaders)
+		if resp.Config.LimitBy != nil {
+			r.Config.LimitBy = types.StringValue(string(*resp.Config.LimitBy))
 		} else {
-			r.Config = &tfTypes.CreateResponseRatelimitingPluginConfig{}
-			r.Config.BlockOnFirstViolation = types.BoolPointerValue(resp.Config.BlockOnFirstViolation)
-			r.Config.FaultTolerant = types.BoolPointerValue(resp.Config.FaultTolerant)
-			r.Config.HeaderName = types.StringPointerValue(resp.Config.HeaderName)
-			r.Config.HideClientHeaders = types.BoolPointerValue(resp.Config.HideClientHeaders)
-			if resp.Config.LimitBy != nil {
-				r.Config.LimitBy = types.StringValue(string(*resp.Config.LimitBy))
-			} else {
-				r.Config.LimitBy = types.StringNull()
+			r.Config.LimitBy = types.StringNull()
+		}
+		if len(resp.Config.Limits) > 0 {
+			r.Config.Limits = make(map[string]types.String)
+			for key, value := range resp.Config.Limits {
+				result, _ := json.Marshal(value)
+				r.Config.Limits[key] = types.StringValue(string(result))
 			}
-			if len(resp.Config.Limits) > 0 {
-				r.Config.Limits = make(map[string]types.String)
-				for key, value := range resp.Config.Limits {
-					result, _ := json.Marshal(value)
-					r.Config.Limits[key] = types.StringValue(string(result))
-				}
-			}
-			if resp.Config.Policy != nil {
-				r.Config.Policy = types.StringValue(string(*resp.Config.Policy))
-			} else {
-				r.Config.Policy = types.StringNull()
-			}
-			if resp.Config.Redis == nil {
-				r.Config.Redis = nil
-			} else {
-				r.Config.Redis = &tfTypes.CreateRateLimitingPluginRedis{}
-				r.Config.Redis.Database = types.Int64PointerValue(resp.Config.Redis.Database)
-				r.Config.Redis.Host = types.StringPointerValue(resp.Config.Redis.Host)
-				r.Config.Redis.Password = types.StringPointerValue(resp.Config.Redis.Password)
-				r.Config.Redis.Port = types.Int64PointerValue(resp.Config.Redis.Port)
-				r.Config.Redis.ServerName = types.StringPointerValue(resp.Config.Redis.ServerName)
-				r.Config.Redis.Ssl = types.BoolPointerValue(resp.Config.Redis.Ssl)
-				r.Config.Redis.SslVerify = types.BoolPointerValue(resp.Config.Redis.SslVerify)
-				r.Config.Redis.Timeout = types.Int64PointerValue(resp.Config.Redis.Timeout)
-				r.Config.Redis.Username = types.StringPointerValue(resp.Config.Redis.Username)
-			}
+		}
+		if resp.Config.Policy != nil {
+			r.Config.Policy = types.StringValue(string(*resp.Config.Policy))
+		} else {
+			r.Config.Policy = types.StringNull()
+		}
+		if resp.Config.Redis == nil {
+			r.Config.Redis = nil
+		} else {
+			r.Config.Redis = &tfTypes.RateLimitingPluginRedis{}
+			r.Config.Redis.Database = types.Int64PointerValue(resp.Config.Redis.Database)
+			r.Config.Redis.Host = types.StringPointerValue(resp.Config.Redis.Host)
+			r.Config.Redis.Password = types.StringPointerValue(resp.Config.Redis.Password)
+			r.Config.Redis.Port = types.Int64PointerValue(resp.Config.Redis.Port)
+			r.Config.Redis.ServerName = types.StringPointerValue(resp.Config.Redis.ServerName)
+			r.Config.Redis.Ssl = types.BoolPointerValue(resp.Config.Redis.Ssl)
+			r.Config.Redis.SslVerify = types.BoolPointerValue(resp.Config.Redis.SslVerify)
+			r.Config.Redis.Timeout = types.Int64PointerValue(resp.Config.Redis.Timeout)
+			r.Config.Redis.Username = types.StringPointerValue(resp.Config.Redis.Username)
 		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
@@ -70,11 +65,11 @@ func (r *GatewayPluginResponseRatelimitingDataSourceModel) RefreshFromSharedResp
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			r.Ordering = &tfTypes.ACLPluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After = &tfTypes.ACLPluginAfter{}
 				r.Ordering.After.Access = []types.String{}
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -83,7 +78,7 @@ func (r *GatewayPluginResponseRatelimitingDataSourceModel) RefreshFromSharedResp
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
 				r.Ordering.Before.Access = []types.String{}
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
