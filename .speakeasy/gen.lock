@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 39535cfd7b398832cccc00c833bb1a11
+  docChecksum: ccdd7452882669a55bcdbad970f818d6
   docVersion: 2.0.0
   speakeasyVersion: 1.430.0
   generationVersion: 2.449.0
@@ -1719,6 +1719,7 @@ generatedFiles:
   - internal/sdk/models/shared/internalservererror.go
   - internal/sdk/models/shared/invalidparameterchoiceitem.go
   - internal/sdk/models/shared/invalidparameterdependentitem.go
+  - internal/sdk/models/shared/invalidparametermaximumlength.go
   - internal/sdk/models/shared/invalidparameterminimumlength.go
   - internal/sdk/models/shared/invalidparameters.go
   - internal/sdk/models/shared/invalidparameterstandard.go
@@ -1903,7 +1904,7 @@ examples:
         "201":
           application/json: {"control_plane": {"id": "d32d905a-ed33-46a3-a093-d8f536af9a8a", "prefix": "518da50bf7", "region": "us"}, "gateway_endpoint": "us-kong-4594857kpl.kongcloud.dev", "created_at": "2023-01-11T02:30:42.227Z", "updated_at": "2023-01-11T02:30:42.227Z", "labels": {"env": "test"}}
         "400":
-          application/problem+json: {"status": 151995, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_length", "minimum": 8, "source": "body", "reason": "is a required field"}, {"field": "name", "rule": "min_symbols", "minimum": 8, "source": "body", "reason": "is a required field"}, {"field": "name", "source": "body", "reason": "is a required field"}]}
+          application/problem+json: {"status": 151995, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_length", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}, {"field": "name", "rule": "min_symbols", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}, {"field": "name", "source": "body", "reason": "is a required field"}]}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -2172,7 +2173,7 @@ examples:
         "200":
           application/json: {"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "FirstVersion", "gateway_service": {"id": "09b4786a-3e48-4631-8f6b-62d1d8e1a7f3", "control_plane_id": "e4d9ebb1-26b4-426a-b00e-cb67044f3baf"}, "publish_status": "unpublished", "deprecated": false, "labels": {"env": "test"}, "auth_strategy_sync_errors": [{"plugin_name": "konnect-application-auth", "value": "plugin_sync_error_comm", "message": "Unable to connect to the control plane to update plugin"}], "portals": [{"portal_id": "35a2624c-49fc-4764-99e1-224ed819f200", "portal_name": "Developer Portal", "portal_product_version_id": "35a2624c-49fc-4764-99e1-224ed819f200", "publish_status": "published", "deprecated": false, "application_registration_enabled": true, "auto_approve_registration": false, "auth_strategies": [{"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "Key Auth"}]}], "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
-          application/problem+json: {"status": 130366, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_symbols", "minimum": 8, "source": "body", "reason": "is a required field"}, {"field": "name", "source": "body", "reason": "is a required field"}]}
+          application/problem+json: {"status": 130366, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_symbols", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}, {"field": "name", "source": "body", "reason": "is a required field"}]}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -2206,7 +2207,7 @@ examples:
         "201":
           application/json: {"id": "7710d5c4-d902-410b-992f-18b814155b53", "name": "oas.yaml", "content": "My YAML or JSON formatted OAS content", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
-          application/problem+json: {"status": 503615, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "dependent_fields", "reason": "is a required field", "dependents": ["<value>", "<value>", "<value>"], "source": "body"}, {"field": "name", "rule": "min_digits", "minimum": 8, "source": "body", "reason": "is a required field"}]}
+          application/problem+json: {"status": 503615, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "dependent_fields", "reason": "is a required field", "dependents": ["<value>", "<value>", "<value>"], "source": "body"}, {"field": "name", "rule": "min_digits", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -2480,7 +2481,7 @@ examples:
         "201":
           application/json: {"name": "us-east-2 transit gateway", "dns_config": [{"remote_dns_server_ip_addresses": ["10.0.0.2"], "domain_proxy_list": ["foobar.com"]}, {"remote_dns_server_ip_addresses": ["10.0.0.2"], "domain_proxy_list": ["foobar.com"]}], "cidr_blocks": ["10.0.0.0/8", "100.64.0.0/10", "172.16.0.0/12"], "transit_gateway_attachment_config": {"kind": "aws-transit-gateway-attachment", "transit_gateway_id": "<id>", "ram_share_arn": "<value>"}, "id": "0850820b-d153-4a2a-b9be-7d2204779139", "state": "ready", "entity_version": 1, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
-          application/problem+json: {"status": 471082, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_digits", "minimum": 8, "source": "body", "reason": "is a required field"}]}
+          application/problem+json: {"status": 471082, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_digits", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -2529,7 +2530,7 @@ examples:
         "200":
           application/json: {"meta": {"page": {"number": 1, "size": 10, "total": 100}}, "data": [{"id": "929b2449-c69f-44c4-b6ad-9ecec6f811ae", "provider": "aws", "provider_account_id": "<id>", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}]}
         "400":
-          application/problem+json: {"status": 627108, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_digits", "minimum": 8, "source": "body", "reason": "is a required field"}]}
+          application/problem+json: {"status": 627108, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_digits", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -2562,7 +2563,7 @@ examples:
         "200":
           application/json: {"id": "7f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "Test Control Plane", "description": "A test control plane for exploration.", "labels": {"env": "test"}, "config": {"control_plane_endpoint": "https://acfe5f253f.cp0.konghq.com", "telemetry_endpoint": "https://acfe5f253f.tp0.konghq.com", "cluster_type": "CLUSTER_TYPE_CONTROL_PLANE", "auth_type": "pinned_client_certs", "cloud_gateway": true, "proxy_urls": [{"host": "example.com", "port": 443, "protocol": "https"}]}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
-          application/problem+json: {"status": 95128, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_uppercase", "minimum": 8, "source": "body", "reason": "is a required field"}, {"field": "name", "rule": "dependent_fields", "reason": "is a required field", "dependents": [], "source": "body"}]}
+          application/problem+json: {"status": 95128, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_uppercase", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}, {"field": "name", "rule": "dependent_fields", "reason": "is a required field", "dependents": [], "source": "body"}]}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -3046,7 +3047,7 @@ examples:
         "201":
           application/json: {"item": {"lua_schema": "return { name = \\\"myplugin\\\", fields = { { config = { type = \\\"record\\\", fields = { } } } } }", "name": "myplugin", "created_at": 1422386534, "updated_at": 1422412345}}
         "400":
-          application/problem+json: {"status": 747162, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value>"], "source": "body"}, {"field": "name", "rule": "min_lowercase", "minimum": 8, "source": "body", "reason": "is a required field"}]}
+          application/problem+json: {"status": 747162, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value>"], "source": "body"}, {"field": "name", "rule": "min_lowercase", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -7016,7 +7017,7 @@ examples:
         "200":
           application/json: {"meta": {"page": {"number": 1, "size": 10, "total": 100}}, "data": [{"id": "9f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-02-07T17:46:57.52Z", "updated_at": "2022-10-08T17:00:00.52Z", "name": "Portal A", "display_name": "Developer Portal A", "description": "The Portal A", "default_domain": "123455678abcd.us.portal.konghq.com", "is_public": false, "rbac_enabled": true, "auto_approve_applications": false, "auto_approve_developers": true, "custom_domain": "api.example.com", "custom_client_domain": "portal.example.com", "default_application_auth_strategy_id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "labels": {"env": "test"}, "application_count": 0, "developer_count": 0, "published_product_count": 0}]}
         "400":
-          application/problem+json: {"status": 654330, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value>"], "source": "body"}, {"field": "name", "rule": "dependent_fields", "reason": "is a required field", "dependents": ["<value>", "<value>", "<value>"], "source": "body"}, {"field": "name", "rule": "min_lowercase", "minimum": 8, "source": "body", "reason": "is a required field"}]}
+          application/problem+json: {"status": 654330, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value>"], "source": "body"}, {"field": "name", "rule": "dependent_fields", "reason": "is a required field", "dependents": ["<value>", "<value>", "<value>"], "source": "body"}, {"field": "name", "rule": "min_lowercase", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -7094,7 +7095,7 @@ examples:
         "200":
           application/json: {"theme_name": "mint_rocket", "custom_theme": {"colors": {"section": {"header": {"value": "#000000", "description": "The color for a type of thing"}, "body": {"value": "#000000", "description": "The color for a type of thing"}, "hero": {"value": "#000000", "description": "The color for a type of thing"}, "accent": {"value": "#000000", "description": "The color for a type of thing"}, "tertiary": {"value": "#000000", "description": "The color for a type of thing"}, "stroke": {"value": "#000000", "description": "The color for a type of thing"}, "footer": {"value": "#000000", "description": "The color for a type of thing"}}, "text": {"header": {"value": "#000000", "description": "The color for a type of thing"}, "hero": {"value": "#000000", "description": "The color for a type of thing"}, "headings": {"value": "#000000", "description": "The color for a type of thing"}, "primary": {"value": "#000000", "description": "The color for a type of thing"}, "secondary": {"value": "#000000", "description": "The color for a type of thing"}, "accent": {"value": "#000000", "description": "The color for a type of thing"}, "link": {"value": "#000000", "description": "The color for a type of thing"}, "footer": {"value": "#000000", "description": "The color for a type of thing"}}, "button": {"primary_fill": {"value": "#000000", "description": "The color for a type of thing"}, "primary_text": {"value": "#000000", "description": "The color for a type of thing"}}}}, "custom_fonts": {"base": "Roboto", "code": "Roboto", "headings": "Roboto"}, "use_custom_fonts": true, "text": {"catalog": {"welcome_message": "Welcome to our service catalog", "primary_header": "Find All of Our Services in a Single Place"}}, "images": {"logo": {"data": "data:image/png,YW5faW1hZ2VfZmlsZQ==", "filename": "logo.png"}, "favicon": {"data": "data:image/png,YW5faW1hZ2VfZmlsZQ==", "filename": "favicon.ico"}, "catalog_cover": {"data": "data:image/png,YW5faW1hZ2VfZmlsZQ=="}}}
         "400":
-          application/problem+json: {"status": 364917, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_lowercase", "minimum": 8, "source": "body", "reason": "is a required field"}]}
+          application/problem+json: {"status": 364917, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_lowercase", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -7309,7 +7310,7 @@ examples:
         "201":
           application/json: {"id": "7f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "IDM - Developers", "description": "The developers for the IDM API.", "system_team": false, "labels": {"env": "test"}, "created_at": "1992-02-07T17:46:57.52Z", "updated_at": "2022-02-07T17:00:00.52Z"}
         "400":
-          application/problem+json: {"status": 100185, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}, {"field": "name", "rule": "min_length", "minimum": 8, "source": "body", "reason": "is a required field"}]}
+          application/problem+json: {"status": 100185, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}, {"field": "name", "rule": "min_length", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
         "403":
           application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
   get-team:
@@ -7335,7 +7336,7 @@ examples:
         "200":
           application/json: {"id": "7f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "IDM - Developers", "description": "The developers for the IDM API.", "system_team": false, "labels": {"env": "test"}, "created_at": "1992-02-07T17:46:57.52Z", "updated_at": "2022-02-07T17:00:00.52Z"}
         "400":
-          application/problem+json: {"status": 338118, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_symbols", "minimum": 8, "source": "body", "reason": "is a required field"}, {"field": "name", "rule": "min_digits", "minimum": 8, "source": "body", "reason": "is a required field"}, {"field": "name", "rule": "min_lowercase", "minimum": 8, "source": "body", "reason": "is a required field"}]}
+          application/problem+json: {"status": 338118, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_symbols", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}, {"field": "name", "rule": "min_digits", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}, {"field": "name", "rule": "min_lowercase", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   delete-team:
@@ -7376,7 +7377,7 @@ examples:
           roleId: "8350205f-a305-4e39-abe9-bc082a80091a"
       responses:
         "400":
-          application/problem+json: {"status": 187339, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_length", "minimum": 8, "source": "body", "reason": "is a required field"}]}
+          application/problem+json: {"status": 187339, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_length", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":

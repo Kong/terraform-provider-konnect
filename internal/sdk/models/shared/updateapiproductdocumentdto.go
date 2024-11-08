@@ -12,8 +12,7 @@ type UpdateAPIProductDocumentDTO struct {
 	//
 	ParentDocumentID *string `json:"parent_document_id,omitempty"`
 	// document slug. must be unique accross documents belonging to an api product
-	Slug *string `json:"slug,omitempty"`
-	// document publish status
+	Slug   *string        `json:"slug,omitempty"`
 	Status *PublishStatus `json:"status,omitempty"`
 	// document title
 	Title *string `json:"title,omitempty"`
