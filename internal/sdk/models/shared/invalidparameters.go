@@ -13,6 +13,7 @@ type InvalidParametersType string
 const (
 	InvalidParametersTypeInvalidParameterStandard      InvalidParametersType = "InvalidParameterStandard"
 	InvalidParametersTypeInvalidParameterMinimumLength InvalidParametersType = "InvalidParameterMinimumLength"
+	InvalidParametersTypeInvalidParameterMaximumLength InvalidParametersType = "InvalidParameterMaximumLength"
 	InvalidParametersTypeInvalidParameterChoiceItem    InvalidParametersType = "InvalidParameterChoiceItem"
 	InvalidParametersTypeInvalidParameterDependentItem InvalidParametersType = "InvalidParameterDependentItem"
 )
@@ -20,6 +21,7 @@ const (
 type InvalidParameters struct {
 	InvalidParameterStandard      *InvalidParameterStandard
 	InvalidParameterMinimumLength *InvalidParameterMinimumLength
+	InvalidParameterMaximumLength *InvalidParameterMaximumLength
 	InvalidParameterChoiceItem    *InvalidParameterChoiceItem
 	InvalidParameterDependentItem *InvalidParameterDependentItem
 
@@ -40,6 +42,15 @@ func CreateInvalidParametersInvalidParameterMinimumLength(invalidParameterMinimu
 
 	return InvalidParameters{
 		InvalidParameterMinimumLength: &invalidParameterMinimumLength,
+		Type:                          typ,
+	}
+}
+
+func CreateInvalidParametersInvalidParameterMaximumLength(invalidParameterMaximumLength InvalidParameterMaximumLength) InvalidParameters {
+	typ := InvalidParametersTypeInvalidParameterMaximumLength
+
+	return InvalidParameters{
+		InvalidParameterMaximumLength: &invalidParameterMaximumLength,
 		Type:                          typ,
 	}
 }
@@ -78,6 +89,13 @@ func (u *InvalidParameters) UnmarshalJSON(data []byte) error {
 		return nil
 	}
 
+	var invalidParameterMaximumLength InvalidParameterMaximumLength = InvalidParameterMaximumLength{}
+	if err := utils.UnmarshalJSON(data, &invalidParameterMaximumLength, "", true, true); err == nil {
+		u.InvalidParameterMaximumLength = &invalidParameterMaximumLength
+		u.Type = InvalidParametersTypeInvalidParameterMaximumLength
+		return nil
+	}
+
 	var invalidParameterChoiceItem InvalidParameterChoiceItem = InvalidParameterChoiceItem{}
 	if err := utils.UnmarshalJSON(data, &invalidParameterChoiceItem, "", true, true); err == nil {
 		u.InvalidParameterChoiceItem = &invalidParameterChoiceItem
@@ -102,6 +120,10 @@ func (u InvalidParameters) MarshalJSON() ([]byte, error) {
 
 	if u.InvalidParameterMinimumLength != nil {
 		return utils.MarshalJSON(u.InvalidParameterMinimumLength, "", true)
+	}
+
+	if u.InvalidParameterMaximumLength != nil {
+		return utils.MarshalJSON(u.InvalidParameterMaximumLength, "", true)
 	}
 
 	if u.InvalidParameterChoiceItem != nil {

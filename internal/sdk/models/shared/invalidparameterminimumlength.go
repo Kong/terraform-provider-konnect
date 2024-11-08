@@ -16,6 +16,8 @@ const (
 	RuleMinLowercase Rule = "min_lowercase"
 	RuleMinUppercase Rule = "min_uppercase"
 	RuleMinSymbols   Rule = "min_symbols"
+	RuleMinItems     Rule = "min_items"
+	RuleMin          Rule = "min"
 )
 
 func (e Rule) ToPointer() *Rule {
@@ -36,6 +38,10 @@ func (e *Rule) UnmarshalJSON(data []byte) error {
 	case "min_uppercase":
 		fallthrough
 	case "min_symbols":
+		fallthrough
+	case "min_items":
+		fallthrough
+	case "min":
 		*e = Rule(v)
 		return nil
 	default:

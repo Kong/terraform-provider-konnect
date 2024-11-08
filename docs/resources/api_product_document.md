@@ -33,7 +33,7 @@ resource "konnect_api_product_document" "my_apiproductdocument" {
 
 - `api_product_id` (String) The API product identifier
 - `slug` (String) document slug. must be unique accross documents belonging to an api product
-- `status` (String) document publish status. must be one of ["published", "unpublished"]
+- `status` (String) must be one of ["published", "unpublished"]
 - `title` (String) document title
 
 ### Optional

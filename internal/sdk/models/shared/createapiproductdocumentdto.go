@@ -11,8 +11,7 @@ type CreateAPIProductDocumentDTO struct {
 	// parent document id
 	ParentDocumentID *string `json:"parent_document_id,omitempty"`
 	// document slug. must be unique accross documents belonging to an api product
-	Slug string `json:"slug"`
-	// document publish status
+	Slug   string        `json:"slug"`
 	Status PublishStatus `json:"status"`
 	// document title
 	Title string `json:"title"`
