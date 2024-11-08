@@ -104,11 +104,9 @@ func (r *PortalProductVersionResource) Schema(ctx context.Context, req resource.
 							Attributes: map[string]schema.Attribute{
 								"credential_type": schema.StringAttribute{
 									Computed:    true,
-									Description: `must be one of ["key_auth"]`,
+									Description: `must be "key_auth"`,
 									Validators: []validator.String{
-										stringvalidator.OneOf(
-											"key_auth",
-										),
+										stringvalidator.OneOf("key_auth"),
 									},
 								},
 								"id": schema.StringAttribute{
@@ -126,9 +124,6 @@ func (r *PortalProductVersionResource) Schema(ctx context.Context, req resource.
 								}...),
 							},
 						},
-					},
-					Validators: []validator.Object{
-						validators.ExactlyOneChild(),
 					},
 				},
 				Description: `A list of authentication strategies`,

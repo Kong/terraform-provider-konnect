@@ -2,6 +2,7 @@
 
 package shared
 
+// SlugConflict - Conflict - `slug` property must be unique
 type SlugConflict struct {
 	Status   float64 `json:"status"`
 	Title    string  `json:"title"`

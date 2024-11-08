@@ -15,7 +15,17 @@ CloudGatewayTransitGateway Resource
 ```terraform
 resource "konnect_cloud_gateway_transit_gateway" "my_cloudgatewaytransitgateway" {
   cidr_blocks = [
-    "...",
+    "..."
+  ]
+  dns_config = [
+    {
+      domain_proxy_list = [
+        "..."
+      ]
+      remote_dns_server_ip_addresses = [
+        "..."
+      ]
+    }
   ]
   name       = "us-east-2 transit gateway"
   network_id = "36ae63d3-efd1-4bec-b246-62aa5d3f5695"
@@ -26,7 +36,6 @@ resource "konnect_cloud_gateway_transit_gateway" "my_cloudgatewaytransitgateway"
       transit_gateway_id = "...my_transit_gateway_id..."
     }
   }
-  transit_gateway_id = "0850820b-d153-4a2a-b9be-7d2204779139"
 }
 ```
 
@@ -37,7 +46,6 @@ resource "konnect_cloud_gateway_transit_gateway" "my_cloudgatewaytransitgateway"
 
 - `cidr_blocks` (List of String) CIDR blocks for constructing a route table for the transit gateway, when attaching to the owning
 network.
-
 Requires replacement if changed.
 - `name` (String) Human-readable name of the transit gateway. Requires replacement if changed.
 - `network_id` (String) The network to operate on. Requires replacement if changed.
@@ -47,7 +55,6 @@ Requires replacement if changed.
 
 - `dns_config` (Attributes List) List of mappings from remote DNS server IP address sets to proxied internal domains, for a transit gateway
 attachment.
-
 Requires replacement if changed. (see [below for nested schema](#nestedatt--dns_config))
 
 ### Read-Only
@@ -71,9 +78,9 @@ Optional:
 
 Optional:
 
-- `kind` (String) Requires replacement if changed. ; Not Null; must be one of ["aws-transit-gateway-attachment"]
-- `ram_share_arn` (String) Resource Share ARN to verify request to create transit gateway attachment. Requires replacement if changed. ; Not Null
-- `transit_gateway_id` (String) AWS Transit Gateway ID to create attachment to. Requires replacement if changed. ; Not Null
+- `kind` (String) Not Null; must be "aws-transit-gateway-attachment"; Requires replacement if changed.
+- `ram_share_arn` (String) Resource Share ARN to verify request to create transit gateway attachment. Not Null; Requires replacement if changed.
+- `transit_gateway_id` (String) AWS Transit Gateway ID to create attachment to. Not Null; Requires replacement if changed.
 
 
 
@@ -84,9 +91,8 @@ Optional:
 
 - `domain_proxy_list` (List of String) Internal domain names to proxy for DNS resolution from the listed remote DNS server IP addresses,
 for a transit gateway.
-
-Requires replacement if changed. ; Not Null
-- `remote_dns_server_ip_addresses` (List of String) Remote DNS Server IP Addresses to connect to for resolving internal DNS via a transit gateway. Requires replacement if changed. ; Not Null
+Not Null; Requires replacement if changed.
+- `remote_dns_server_ip_addresses` (List of String) Remote DNS Server IP Addresses to connect to for resolving internal DNS via a transit gateway. Not Null; Requires replacement if changed.
 
 ## Import
 

@@ -14,20 +14,28 @@ GatewayService Resource
 
 ```terraform
 resource "konnect_gateway_service" "my_gatewayservice" {
-  connect_timeout  = 3
+  ca_certificates = [
+    "..."
+  ]
+  client_certificate = {
+    id = "...my_id..."
+  }
+  connect_timeout  = 9
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-  enabled          = false
+  enabled          = true
   host             = "...my_host..."
-  name             = "Sammy Mills"
+  name             = "...my_name..."
   path             = "...my_path..."
-  port             = 6
-  protocol         = "wss"
-  read_timeout     = 4
-  retries          = 8
-  service_id       = "7fca84d6-7d37-4a74-a7b0-93e576089a41"
-  tls_verify       = false
-  tls_verify_depth = 10
-  write_timeout    = 2
+  port             = 2
+  protocol         = "tls"
+  read_timeout     = 5
+  retries          = 3
+  tags = [
+    "..."
+  ]
+  tls_verify       = true
+  tls_verify_depth = 8
+  write_timeout    = 9
 }
 ```
 

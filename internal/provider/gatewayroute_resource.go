@@ -22,6 +22,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/internal/validators"
+	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/internal/validators/objectvalidators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -72,11 +73,11 @@ func (r *GatewayRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 		MarkdownDescription: "GatewayRoute Resource",
 		Attributes: map[string]schema.Attribute{
 			"control_plane_id": schema.StringAttribute{
+				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed. `,
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.`,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
@@ -86,6 +87,9 @@ func (r *GatewayRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
+					Validators: []validator.Object{
+						speakeasy_objectvalidators.NotNull(),
+					},
 					Attributes: map[string]schema.Attribute{
 						"ip": schema.StringAttribute{
 							Computed: true,
@@ -120,13 +124,11 @@ func (r *GatewayRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 				Description: `The status code Kong responds with when all properties of a Route match except the protocol i.e. if the protocol of the request is ` + "`" + `HTTP` + "`" + ` instead of ` + "`" + `HTTPS` + "`" + `. ` + "`" + `Location` + "`" + ` header is injected by Kong if the field is set to 301, 302, 307 or 308. Note: This config applies only if the Route is configured to only accept the ` + "`" + `https` + "`" + ` protocol. must be one of ["426", "301", "302", "307", "308"]`,
 				Validators: []validator.Int64{
 					int64validator.OneOf(
-						[]int64{
-							426,
-							301,
-							302,
-							307,
-							308,
-						}...,
+						426,
+						301,
+						302,
+						307,
+						308,
 					),
 				},
 			},
@@ -149,10 +151,7 @@ func (r *GatewayRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 				Optional:    true,
 				Description: `Controls how the Service path, Route path and requested path are combined when sending a request to the upstream. See above for a detailed description of each behavior. must be one of ["v0", "v1"]`,
 				Validators: []validator.String{
-					stringvalidator.OneOf(
-						"v0",
-						"v1",
-					),
+					stringvalidator.OneOf("v0", "v1"),
 				},
 			},
 			"paths": schema.ListAttribute{
@@ -208,6 +207,9 @@ func (r *GatewayRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
+					Validators: []validator.Object{
+						speakeasy_objectvalidators.NotNull(),
+					},
 					Attributes: map[string]schema.Attribute{
 						"ip": schema.StringAttribute{
 							Computed: true,

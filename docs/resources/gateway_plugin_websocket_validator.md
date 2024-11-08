@@ -14,10 +14,61 @@ GatewayPluginWebsocketValidator Resource
 
 ```terraform
 resource "konnect_gateway_plugin_websocket_validator" "my_gatewaypluginwebsocketvalidator" {
+  config = {
+    client = {
+      binary = {
+        schema = "...my_schema..."
+        type   = "draft4"
+      }
+      text = {
+        schema = "...my_schema..."
+        type   = "draft4"
+      }
+    }
+    upstream = {
+      binary = {
+        schema = "...my_schema..."
+        type   = "draft4"
+      }
+      text = {
+        schema = "...my_schema..."
+        type   = "draft4"
+      }
+    }
+  }
+  consumer = {
+    id = "...my_id..."
+  }
+  consumer_group = {
+    id = "...my_id..."
+  }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   enabled          = true
   instance_name    = "...my_instance_name..."
-  plugin_id        = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+  ordering = {
+    after = {
+      access = [
+        "..."
+      ]
+    }
+    before = {
+      access = [
+        "..."
+      ]
+    }
+  }
+  protocols = [
+    "tls"
+  ]
+  route = {
+    id = "...my_id..."
+  }
+  service = {
+    id = "...my_id..."
+  }
+  tags = [
+    "..."
+  ]
 }
 ```
 
@@ -69,7 +120,7 @@ Optional:
 Optional:
 
 - `schema` (String) Schema used to validate upstream-originated binary frames. The semantics of this field depend on the validation type set by `config.upstream.binary.type`. Not Null
-- `type` (String) The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported. Not Null; must be one of ["draft4"]
+- `type` (String) The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported. Not Null; must be "draft4"
 
 
 <a id="nestedatt--config--client--text"></a>
@@ -78,7 +129,7 @@ Optional:
 Optional:
 
 - `schema` (String) Schema used to validate upstream-originated binary frames. The semantics of this field depend on the validation type set by `config.upstream.binary.type`. Not Null
-- `type` (String) The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported. Not Null; must be one of ["draft4"]
+- `type` (String) The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported. Not Null; must be "draft4"
 
 
 
@@ -96,7 +147,7 @@ Optional:
 Optional:
 
 - `schema` (String) Schema used to validate upstream-originated binary frames. The semantics of this field depend on the validation type set by `config.upstream.binary.type`. Not Null
-- `type` (String) The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported. Not Null; must be one of ["draft4"]
+- `type` (String) The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported. Not Null; must be "draft4"
 
 
 <a id="nestedatt--config--upstream--text"></a>
@@ -105,7 +156,7 @@ Optional:
 Optional:
 
 - `schema` (String) Schema used to validate upstream-originated binary frames. The semantics of this field depend on the validation type set by `config.upstream.binary.type`. Not Null
-- `type` (String) The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported. Not Null; must be one of ["draft4"]
+- `type` (String) The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported. Not Null; must be "draft4"
 
 
 

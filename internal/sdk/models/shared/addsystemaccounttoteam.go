@@ -2,6 +2,7 @@
 
 package shared
 
+// AddSystemAccountToTeam - The request schema for adding a system account to a team.
 type AddSystemAccountToTeam struct {
 	// ID of the system account.
 	AccountID *string `json:"id,omitempty"`

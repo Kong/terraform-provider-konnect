@@ -14,11 +14,11 @@ GatewayControlPlaneMembership Resource
 
 ```terraform
 resource "konnect_gateway_control_plane_membership" "my_gatewaycontrolplanemembership" {
-  id = "e54c8364-5efc-4546-b665-9f241f3372c5"
+  id = "...my_id..."
   members = [
     {
-      id = "c0c27972-2126-494b-9744-0aa1ad80e6f6"
-    },
+      id = "...my_id..."
+    }
   ]
 }
 ```

@@ -7,6 +7,7 @@ import (
 	"time"
 )
 
+// CreateSystemAccountAccessToken - The request body to create a system account access token.
 type CreateSystemAccountAccessToken struct {
 	Name      *string    `json:"name,omitempty"`
 	ExpiresAt *time.Time `json:"expires_at,omitempty"`

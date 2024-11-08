@@ -174,12 +174,7 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 								Optional:    true,
 								Description: `The number of of queue delivery timers. -1 indicates unlimited. must be one of ["-1", "1"]`,
 								Validators: []validator.Int64{
-									int64validator.OneOf(
-										[]int64{
-											-1,
-											1,
-										}...,
-									),
+									int64validator.OneOf(-1, 1),
 								},
 							},
 							"initial_retry_delay": schema.NumberAttribute{
@@ -283,11 +278,11 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 				},
 			},
 			"control_plane_id": schema.StringAttribute{
+				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed. `,
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.`,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,

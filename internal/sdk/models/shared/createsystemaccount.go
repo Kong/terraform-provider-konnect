@@ -2,6 +2,7 @@
 
 package shared
 
+// CreateSystemAccount - The request schema to create a system account.
 type CreateSystemAccount struct {
 	// Name of the system account.
 	Name string `json:"name"`

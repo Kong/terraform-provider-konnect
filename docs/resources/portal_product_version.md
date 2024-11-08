@@ -14,16 +14,15 @@ PortalProductVersion Resource
 
 ```terraform
 resource "konnect_portal_product_version" "my_portalproductversion" {
-  application_registration_enabled = false
+  application_registration_enabled = true
   auth_strategy_ids = [
-    "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7",
   ]
-  auto_approve_registration = false
+  auto_approve_registration = true
   deprecated                = false
   notify_developers         = false
   portal_id                 = "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
   product_version_id        = "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
-  publish_status            = "unpublished"
+  publish_status            = "published"
 }
 ```
 
@@ -75,7 +74,7 @@ Read-Only:
 
 Read-Only:
 
-- `credential_type` (String) must be one of ["key_auth"]
+- `credential_type` (String) must be "key_auth"
 - `id` (String) The Application Auth Strategy ID.
 - `name` (String)
 

@@ -79,7 +79,6 @@ func (r *APIProductDocumentResource) Schema(ctx context.Context, req resource.Sc
 			"metadata": schema.SingleNestedAttribute{
 				Computed:    true,
 				Optional:    true,
-				Attributes:  map[string]schema.Attribute{},
 				Description: `metadata of the document`,
 			},
 			"parent_document_id": schema.StringAttribute{

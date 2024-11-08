@@ -2,6 +2,7 @@
 
 package shared
 
+// ListProviderAccountsResponse - A paginated list for a collection of provider accounts.
 type ListProviderAccountsResponse struct {
 	// returns the pagination information
 	Meta PaginatedMeta     `json:"meta"`

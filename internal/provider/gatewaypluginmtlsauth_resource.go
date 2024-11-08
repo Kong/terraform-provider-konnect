@@ -80,10 +80,7 @@ func (r *GatewayPluginMtlsAuthResource) Schema(ctx context.Context, req resource
 						Optional:    true,
 						Description: `Certificate property to use as the authenticated group. Valid values are ` + "`" + `CN` + "`" + ` (Common Name) or ` + "`" + `DN` + "`" + ` (Distinguished Name). Once ` + "`" + `skip_consumer_lookup` + "`" + ` is applied, any client with a valid certificate can access the Service/API. To restrict usage to only some of the authenticated users, also add the ACL plugin (not covered here) and create allowed or denied groups of users. must be one of ["CN", "DN"]`,
 						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"CN",
-								"DN",
-							),
+							stringvalidator.OneOf("CN", "DN"),
 						},
 					},
 					"ca_certificates": schema.ListAttribute{
@@ -190,11 +187,11 @@ func (r *GatewayPluginMtlsAuthResource) Schema(ctx context.Context, req resource
 				},
 			},
 			"control_plane_id": schema.StringAttribute{
+				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed. `,
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.`,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,

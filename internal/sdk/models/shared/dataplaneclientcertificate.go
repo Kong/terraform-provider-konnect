@@ -41,6 +41,7 @@ func (o *DataPlaneClientCertificateItem) GetCert() *string {
 	return o.Cert
 }
 
+// DataPlaneClientCertificate - Response body for retrieving a dp-client-certificate.
 type DataPlaneClientCertificate struct {
 	Item *DataPlaneClientCertificateItem `json:"item,omitempty"`
 }

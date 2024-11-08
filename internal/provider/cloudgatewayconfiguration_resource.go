@@ -63,7 +63,7 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 				Computed:    true,
 				Optional:    true,
 				Default:     stringdefault.StaticString("private+public"),
-				Description: `Type of API access data-plane groups will support for a configuration. must be one of ["private", "public", "private+public"]; Default: "private+public"`,
+				Description: `Type of API access data-plane groups will support for a configuration. Default: "private+public"; must be one of ["private", "public", "private+public"]`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
 						"private",
@@ -109,7 +109,7 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 										},
 										"kind": schema.StringAttribute{
 											Computed:    true,
-											Description: `must be one of ["autopilot"]`,
+											Description: `must be "autopilot"`,
 											Validators: []validator.String{
 												stringvalidator.OneOf(
 													"autopilot",
@@ -144,11 +144,9 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 										},
 										"kind": schema.StringAttribute{
 											Computed:    true,
-											Description: `must be one of ["static"]`,
+											Description: `must be "static"`,
 											Validators: []validator.String{
-												stringvalidator.OneOf(
-													"static",
-												),
+												stringvalidator.OneOf("static"),
 											},
 										},
 										"requested_instances": schema.Int64Attribute{
@@ -164,20 +162,15 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 									},
 								},
 							},
-							Validators: []validator.Object{
-								validators.ExactlyOneChild(),
-							},
 						},
 						"cloud_gateway_network_id": schema.StringAttribute{
 							Computed: true,
 						},
 						"provider": schema.StringAttribute{
 							Computed:    true,
-							Description: `Name of cloud provider. must be one of ["aws"]`,
+							Description: `Name of cloud provider. must be "aws"`,
 							Validators: []validator.String{
-								stringvalidator.OneOf(
-									"aws",
-								),
+								stringvalidator.OneOf("aws"),
 							},
 						},
 						"region": schema.StringAttribute{
@@ -191,6 +184,9 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 			"dataplane_groups": schema.SetNestedAttribute{
 				Required: true,
 				NestedObject: schema.NestedAttributeObject{
+					Validators: []validator.Object{
+						speakeasy_objectvalidators.NotNull(),
+					},
 					Attributes: map[string]schema.Attribute{
 						"autoscale": schema.SingleNestedAttribute{
 							Computed: true,
@@ -211,7 +207,7 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 										"kind": schema.StringAttribute{
 											Computed:    true,
 											Optional:    true,
-											Description: `Not Null; must be one of ["autopilot"]`,
+											Description: `Not Null; must be "autopilot"`,
 											Validators: []validator.String{
 												speakeasy_stringvalidators.NotNull(),
 												stringvalidator.OneOf(
@@ -252,12 +248,10 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 										"kind": schema.StringAttribute{
 											Computed:    true,
 											Optional:    true,
-											Description: `Not Null; must be one of ["static"]`,
+											Description: `Not Null; must be "static"`,
 											Validators: []validator.String{
 												speakeasy_stringvalidators.NotNull(),
-												stringvalidator.OneOf(
-													"static",
-												),
+												stringvalidator.OneOf("static"),
 											},
 										},
 										"requested_instances": schema.Int64Attribute{
@@ -280,7 +274,6 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 							Description: `Not Null`,
 							Validators: []validator.Object{
 								speakeasy_objectvalidators.NotNull(),
-								validators.ExactlyOneChild(),
 							},
 						},
 						"cloud_gateway_network_id": schema.StringAttribute{
@@ -301,8 +294,7 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 						"egress_ip_addresses": schema.ListAttribute{
 							Computed:    true,
 							ElementType: types.StringType,
-							MarkdownDescription: `List of egress IP addresses for the network that this data-plane group runs on.` + "\n" +
-								``,
+							Description: `List of egress IP addresses for the network that this data-plane group runs on.`,
 						},
 						"id": schema.StringAttribute{
 							Computed:    true,
@@ -311,18 +303,15 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 						"private_ip_addresses": schema.ListAttribute{
 							Computed:    true,
 							ElementType: types.StringType,
-							MarkdownDescription: `List of private IP addresses of the internal load balancer that proxies traffic to this data-plane group.` + "\n" +
-								``,
+							Description: `List of private IP addresses of the internal load balancer that proxies traffic to this data-plane group.`,
 						},
 						"provider": schema.StringAttribute{
 							Computed:    true,
 							Optional:    true,
-							Description: `Name of cloud provider. Not Null; must be one of ["aws"]`,
+							Description: `Name of cloud provider. Not Null; must be "aws"`,
 							Validators: []validator.String{
 								speakeasy_stringvalidators.NotNull(),
-								stringvalidator.OneOf(
-									"aws",
-								),
+								stringvalidator.OneOf("aws"),
 							},
 						},
 						"region": schema.StringAttribute{
@@ -358,9 +347,8 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 				Description: `List of data-plane groups that describe where to deploy instances, along with how many instances.`,
 			},
 			"entity_version": schema.NumberAttribute{
-				Computed: true,
-				MarkdownDescription: `Positive, monotonically increasing version integer, to serialize configuration changes.` + "\n" +
-					``,
+				Computed:    true,
+				Description: `Positive, monotonically increasing version integer, to serialize configuration changes.`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,

@@ -20,6 +20,7 @@ import (
 	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
+	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/internal/validators/stringvalidators"
 )
 
@@ -207,12 +208,7 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 								Optional:    true,
 								Description: `The number of of queue delivery timers. -1 indicates unlimited. must be one of ["-1", "1"]`,
 								Validators: []validator.Int64{
-									int64validator.OneOf(
-										[]int64{
-											-1,
-											1,
-										}...,
-									),
+									int64validator.OneOf(-1, 1),
 								},
 							},
 							"initial_retry_delay": schema.NumberAttribute{
@@ -269,7 +265,7 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 					"sample_ratio": schema.NumberAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `How often to sample requests that do not contain trace IDs. Set to ` + "`" + `0` + "`" + ` to turn sampling off, or to ` + "`" + `1` + "`" + ` to sample **all** requests. `,
+						Description: `How often to sample requests that do not contain trace IDs. Set to ` + "`" + `0` + "`" + ` to turn sampling off, or to ` + "`" + `1` + "`" + ` to sample **all** requests.`,
 					},
 					"send_timeout": schema.Int64Attribute{
 						Computed:    true,
@@ -283,6 +279,9 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
 							Attributes: map[string]schema.Attribute{
 								"name": schema.StringAttribute{
 									Computed:    true,
@@ -314,12 +313,7 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 						Optional:    true,
 						Description: `The length in bytes of each request's Trace ID. must be one of ["8", "16"]`,
 						Validators: []validator.Int64{
-							int64validator.OneOf(
-								[]int64{
-									8,
-									16,
-								}...,
-							),
+							int64validator.OneOf(8, 16),
 						},
 					},
 				},
@@ -346,11 +340,11 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 				},
 			},
 			"control_plane_id": schema.StringAttribute{
+				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed. `,
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.`,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,

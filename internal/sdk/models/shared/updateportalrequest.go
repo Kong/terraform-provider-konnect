@@ -2,6 +2,7 @@
 
 package shared
 
+// UpdatePortalRequest - Update a portal's settings.
 type UpdatePortalRequest struct {
 	// The name of the portal, used to distinguish it from other portals. Name must be unique.
 	Name *string `json:"name,omitempty"`

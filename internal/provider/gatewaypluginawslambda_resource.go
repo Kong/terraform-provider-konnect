@@ -75,10 +75,7 @@ func (r *GatewayPluginAwsLambdaResource) Schema(ctx context.Context, req resourc
 						Optional:    true,
 						Description: `Identifier to select the IMDS protocol version to use: ` + "`" + `v1` + "`" + ` or ` + "`" + `v2` + "`" + `. must be one of ["v1", "v2"]`,
 						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"v1",
-								"v2",
-							),
+							stringvalidator.OneOf("v1", "v2"),
 						},
 					},
 					"aws_key": schema.StringAttribute{
@@ -99,7 +96,7 @@ func (r *GatewayPluginAwsLambdaResource) Schema(ctx context.Context, req resourc
 					"aws_secret": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The AWS secret credential to be used when invoking the function. `,
+						Description: `The AWS secret credential to be used when invoking the function.`,
 					},
 					"aws_sts_endpoint_url": schema.StringAttribute{
 						Computed:    true,
@@ -134,7 +131,7 @@ func (r *GatewayPluginAwsLambdaResource) Schema(ctx context.Context, req resourc
 					"forward_request_body": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `An optional value that defines whether the request body is sent in the request_body field of the JSON-encoded request. If the body arguments can be parsed, they are sent in the separate request_body_args field of the request. `,
+						Description: `An optional value that defines whether the request body is sent in the request_body field of the JSON-encoded request. If the body arguments can be parsed, they are sent in the separate request_body_args field of the request.`,
 					},
 					"forward_request_headers": schema.BoolAttribute{
 						Computed:    true,
@@ -254,11 +251,11 @@ func (r *GatewayPluginAwsLambdaResource) Schema(ctx context.Context, req resourc
 				},
 			},
 			"control_plane_id": schema.StringAttribute{
+				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed. `,
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.`,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,

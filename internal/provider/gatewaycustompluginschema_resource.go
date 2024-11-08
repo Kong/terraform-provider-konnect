@@ -49,24 +49,23 @@ func (r *GatewayCustomPluginSchemaResource) Schema(ctx context.Context, req reso
 		MarkdownDescription: "GatewayCustomPluginSchema Resource",
 		Attributes: map[string]schema.Attribute{
 			"control_plane_id": schema.StringAttribute{
+				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed. `,
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.`,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
 				Description: `An ISO-8604 timestamp representation of custom plugin schema creation date.`,
 			},
 			"lua_schema": schema.StringAttribute{
-				Required: true,
-				MarkdownDescription: `The custom plugin schema; ` + "`" + `jq -Rs '.' schema.lua` + "`" + `.` + "\n" +
-					``,
+				Required:    true,
+				Description: `The custom plugin schema; ` + "`" + `jq -Rs '.' schema.lua` + "`" + `.`,
 			},
 			"name": schema.StringAttribute{
 				Computed:    true,
-				Description: `The custom plugin name`,
+				Description: `The custom plugin name determined by the custom plugin schema.`,
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,

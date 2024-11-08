@@ -84,12 +84,10 @@ func (r *GatewayPluginWebsocketValidatorResource) Schema(ctx context.Context, re
 									"type": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `The corresponding validation library for ` + "`" + `config.upstream.binary.schema` + "`" + `. Currently, only ` + "`" + `draft4` + "`" + ` is supported. Not Null; must be one of ["draft4"]`,
+										Description: `The corresponding validation library for ` + "`" + `config.upstream.binary.schema` + "`" + `. Currently, only ` + "`" + `draft4` + "`" + ` is supported. Not Null; must be "draft4"`,
 										Validators: []validator.String{
 											speakeasy_stringvalidators.NotNull(),
-											stringvalidator.OneOf(
-												"draft4",
-											),
+											stringvalidator.OneOf("draft4"),
 										},
 									},
 								},
@@ -109,12 +107,10 @@ func (r *GatewayPluginWebsocketValidatorResource) Schema(ctx context.Context, re
 									"type": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `The corresponding validation library for ` + "`" + `config.upstream.binary.schema` + "`" + `. Currently, only ` + "`" + `draft4` + "`" + ` is supported. Not Null; must be one of ["draft4"]`,
+										Description: `The corresponding validation library for ` + "`" + `config.upstream.binary.schema` + "`" + `. Currently, only ` + "`" + `draft4` + "`" + ` is supported. Not Null; must be "draft4"`,
 										Validators: []validator.String{
 											speakeasy_stringvalidators.NotNull(),
-											stringvalidator.OneOf(
-												"draft4",
-											),
+											stringvalidator.OneOf("draft4"),
 										},
 									},
 								},
@@ -140,12 +136,10 @@ func (r *GatewayPluginWebsocketValidatorResource) Schema(ctx context.Context, re
 									"type": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `The corresponding validation library for ` + "`" + `config.upstream.binary.schema` + "`" + `. Currently, only ` + "`" + `draft4` + "`" + ` is supported. Not Null; must be one of ["draft4"]`,
+										Description: `The corresponding validation library for ` + "`" + `config.upstream.binary.schema` + "`" + `. Currently, only ` + "`" + `draft4` + "`" + ` is supported. Not Null; must be "draft4"`,
 										Validators: []validator.String{
 											speakeasy_stringvalidators.NotNull(),
-											stringvalidator.OneOf(
-												"draft4",
-											),
+											stringvalidator.OneOf("draft4"),
 										},
 									},
 								},
@@ -165,12 +159,10 @@ func (r *GatewayPluginWebsocketValidatorResource) Schema(ctx context.Context, re
 									"type": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `The corresponding validation library for ` + "`" + `config.upstream.binary.schema` + "`" + `. Currently, only ` + "`" + `draft4` + "`" + ` is supported. Not Null; must be one of ["draft4"]`,
+										Description: `The corresponding validation library for ` + "`" + `config.upstream.binary.schema` + "`" + `. Currently, only ` + "`" + `draft4` + "`" + ` is supported. Not Null; must be "draft4"`,
 										Validators: []validator.String{
 											speakeasy_stringvalidators.NotNull(),
-											stringvalidator.OneOf(
-												"draft4",
-											),
+											stringvalidator.OneOf("draft4"),
 										},
 									},
 								},
@@ -201,11 +193,11 @@ func (r *GatewayPluginWebsocketValidatorResource) Schema(ctx context.Context, re
 				},
 			},
 			"control_plane_id": schema.StringAttribute{
+				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed. `,
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.`,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,

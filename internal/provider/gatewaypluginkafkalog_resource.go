@@ -23,6 +23,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/internal/validators"
 	speakeasy_int64validators "github.com/kong/terraform-provider-konnect/internal/validators/int64validators"
+	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/internal/validators/stringvalidators"
 )
 
@@ -93,11 +94,9 @@ func (r *GatewayPluginKafkaLogResource) Schema(ctx context.Context, req resource
 							"strategy": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `The authentication strategy for the plugin, the only option for the value is ` + "`" + `sasl` + "`" + `. must be one of ["sasl"]`,
+								Description: `The authentication strategy for the plugin, the only option for the value is ` + "`" + `sasl` + "`" + `. must be "sasl"`,
 								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"sasl",
-									),
+									stringvalidator.OneOf("sasl"),
 								},
 							},
 							"tokenauth": schema.BoolAttribute{
@@ -116,6 +115,9 @@ func (r *GatewayPluginKafkaLogResource) Schema(ctx context.Context, req resource
 						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
 							Attributes: map[string]schema.Attribute{
 								"host": schema.StringAttribute{
 									Computed:    true,
@@ -180,13 +182,7 @@ func (r *GatewayPluginKafkaLogResource) Schema(ctx context.Context, req resource
 						Optional:    true,
 						Description: `The number of acknowledgments the producer requires the leader to have received before considering a request complete. Allowed values: 0 for no acknowledgments; 1 for only the leader; and -1 for the full ISR (In-Sync Replica set). must be one of ["-1", "0", "1"]`,
 						Validators: []validator.Int64{
-							int64validator.OneOf(
-								[]int64{
-									-1,
-									0,
-									1,
-								}...,
-							),
+							int64validator.OneOf(-1, 0, 1),
 						},
 					},
 					"producer_request_limits_bytes_per_request": schema.Int64Attribute{
@@ -264,11 +260,11 @@ func (r *GatewayPluginKafkaLogResource) Schema(ctx context.Context, req resource
 				},
 			},
 			"control_plane_id": schema.StringAttribute{
+				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed. `,
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.`,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,

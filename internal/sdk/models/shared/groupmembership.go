@@ -13,6 +13,7 @@ func (o *Members) GetID() *string {
 	return o.ID
 }
 
+// GroupMembership - Request body for adding a list of child control planes to a control plane group membership.
 type GroupMembership struct {
 	Members []Members `json:"members,omitempty"`
 }
