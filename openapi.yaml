@@ -9035,7 +9035,7 @@ paths:
       summary: Add Control Plane Group Members
       description: Adds one or more control planes as a member of a control plane group.
       requestBody:
-        $ref: '#/components/requestBodies/GroupMemebershipAdd'
+        $ref: '#/components/requestBodies/GroupMembershipAdd'
       responses:
         '204':
           description: No Content
@@ -10186,9 +10186,13 @@ components:
           type: array
           items:
             type: object
+            required:
+              - id
             properties:
               id:
                 type: string
+      required:
+        - members
     CreateControlPlaneRequest:
       x-speakeasy-entity: GatewayControlPlane
       description: The request schema for the create control plane request.
@@ -10208,7 +10212,6 @@ components:
           example: CLUSTER_TYPE_CONTROL_PLANE
           enum:
             - CLUSTER_TYPE_CONTROL_PLANE
-            - CLUSTER_TYPE_HYBRID
             - CLUSTER_TYPE_K8S_INGRESS_CONTROLLER
             - CLUSTER_TYPE_CONTROL_PLANE_GROUP
             - CLUSTER_TYPE_SERVERLESS
@@ -10258,44 +10261,6 @@ components:
       title: UpdateControlPlaneRequest
     ControlPlane:
       x-speakeasy-entity: GatewayControlPlane
-      allOf:
-        - $ref: '#/components/schemas/ControlPlaneSummary'
-        - type: object
-          properties:
-            labels:
-              $ref: '#/components/schemas/Labels'
-            config:
-              description: CP configuration object for related access endpoints.
-              type: object
-              properties:
-                control_plane_endpoint:
-                  description: Control Plane Endpoint.
-                  type: string
-                  format: url
-                  example: 'https://acfe5f253f.cp0.konghq.com'
-                  readOnly: true
-                telemetry_endpoint:
-                  description: Telemetry Endpoint.
-                  type: string
-                  format: url
-                  example: 'https://acfe5f253f.tp0.konghq.com'
-                  readOnly: true
-              x-speakeasy-param-suppress-computed-diff: true
-            created_at:
-              description: An ISO-8604 timestamp representation of control plane creation date.
-              type: string
-              format: date-time
-              example: '2022-11-04T20:10:06.927Z'
-              readOnly: true
-              x-speakeasy-terraform-ignore: true
-            updated_at:
-              description: An ISO-8604 timestamp representation of control plane update date.
-              type: string
-              format: date-time
-              example: '2022-11-04T20:10:06.927Z'
-              readOnly: true
-              x-speakeasy-terraform-ignore: true
-    ControlPlaneSummary:
       description: The control plane object contains information about a Kong control plane.
       type: object
       properties:
@@ -10339,7 +10304,6 @@ components:
               example: CLUSTER_TYPE_CONTROL_PLANE
               enum:
                 - CLUSTER_TYPE_CONTROL_PLANE
-                - CLUSTER_TYPE_HYBRID
                 - CLUSTER_TYPE_K8S_INGRESS_CONTROLLER
                 - CLUSTER_TYPE_CONTROL_PLANE_GROUP
                 - CLUSTER_TYPE_SERVERLESS
@@ -10365,13 +10329,26 @@ components:
             - auth_type
             - cloud_gateway
         created_at:
+          description: An ISO-8604 timestamp representation of control plane creation date.
           type: string
           format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          readOnly: true
+          x-speakeasy-terraform-ignore: true
         updated_at:
+          description: An ISO-8604 timestamp representation of control plane update date.
           type: string
           format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          readOnly: true
+          x-speakeasy-terraform-ignore: true
       additionalProperties: false
-      title: ControlPlaneSummary
+      required:
+        - id
+        - name
+        - config
+        - created_at
+        - updated_at
     Labels:
       description: |
         Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
@@ -25301,7 +25278,7 @@ components:
           type: string
           const: zipkin
   requestBodies:
-    GroupMemebershipAdd:
+    GroupMembershipAdd:
       content:
         application/json:
           schema:
