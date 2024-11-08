@@ -408,21 +408,21 @@ func tagsToStringSlice(s []string) []basetypes.StringValue {
 	return x
 }
 
-func orderingToValue(o *shared.Ordering) *tfTypes.CreateACLPluginOrdering {
+func orderingToValue(o *shared.Ordering) *tfTypes.ACLPluginOrdering {
 	if o == nil {
 		return nil
 	}
 
-	x := &tfTypes.CreateACLPluginOrdering{}
+	x := &tfTypes.ACLPluginOrdering{}
 
 	if o.After != nil {
-		x.After = &tfTypes.CreateACLPluginAfter{
+		x.After = &tfTypes.ACLPluginAfter{
 			Access: tagsToStringSlice(o.After.Access),
 		}
 	}
 
 	if o.Before != nil {
-		x.Before = &tfTypes.CreateACLPluginAfter{
+		x.Before = &tfTypes.ACLPluginAfter{
 			Access: tagsToStringSlice(o.Before.Access),
 		}
 	}
@@ -433,7 +433,7 @@ func orderingToValue(o *shared.Ordering) *tfTypes.CreateACLPluginOrdering {
 func (r *CustomPluginResourceModel) RefreshFromResponse(ctx context.Context, client *sdk.Konnect, diags diag.Diagnostics, resp *shared.Plugin) {
 
 	r.ID = types.StringPointerValue(resp.ID)
-	r.Name = types.StringPointerValue(resp.Name)
+	r.Name = types.StringValue(resp.Name)
 	r.Consumer = pointerToId(resp.Consumer)
 	r.ConsumerGroup = pointerToId(resp.ConsumerGroup)
 	r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
@@ -466,7 +466,7 @@ func (r *CustomPluginResourceModel) RefreshFromResponse(ctx context.Context, cli
 	}
 
 	// Remove default values
-	utils.PruneConfigValues(ctx, resp.Config.(map[string]any), config.Fields)
+	utils.PruneConfigValues(ctx, resp.Config, config.Fields)
 
 	// Convert to Terraform types
 	_, c, diag := utils.ConvertToTerraformType(resp.Config)
