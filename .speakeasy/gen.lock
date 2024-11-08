@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 5f0129001527d10c974a67691f803720
+  docChecksum: fe4b492f11e8731532741ddba3c17e41
   docVersion: 2.0.0
   speakeasyVersion: 1.430.0
   generationVersion: 2.449.0
@@ -7410,6 +7410,8 @@ examples:
           application/problem+json: {"status": 346361, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "dependent_fields", "reason": "is a required field", "dependents": ["<value>"], "source": "body"}, {"field": "name", "rule": "enum", "reason": "is a required field", "choices": [], "source": "body"}]}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "409":
+          application/problem+json: {"status": 409, "title": "Conflict", "type": "https://httpstatuses.com/409", "instance": "kong:trace:1234567890", "detail": "Conflict"}
   remove-user-from-team:
     speakeasy-default-remove-user-from-team:
       parameters:
