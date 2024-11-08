@@ -118,7 +118,7 @@ func (r *PortalProductVersionDataSource) Schema(ctx context.Context, req datasou
 			},
 			"portal_id": schema.StringAttribute{
 				Required:    true,
-				Description: `portal identifier`,
+				Description: `ID of the portal.`,
 			},
 			"product_version_id": schema.StringAttribute{
 				Required:    true,
