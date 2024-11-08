@@ -11019,28 +11019,6 @@ components:
         - terminated
       readOnly: true
       title: Network State
-    NetworkFirewallConfig:
-      description: Firewall configuration for a network.
-      type: object
-      properties:
-        allowed_cidr_blocks:
-          description: List of allowed CIDR blocks to access a network.
-          type: array
-          items:
-            type: string
-          example:
-            - 10.0.0.0/8
-          title: Allowed CIDR Blocks
-        denied_cidr_blocks:
-          description: List of denied CIDR blocks to access a network.
-          type: array
-          items:
-            type: string
-          example:
-            - 10.100.0.0/16
-          title: Denied CIDR Blocks
-      additionalProperties: false
-      title: Network Firewall Config
     NetworkProviderMetadata:
       description: Metadata describing attributes returned by cloud-provider for the network.
       type: object
@@ -11066,11 +11044,6 @@ components:
       type: string
       example: 10.0.0.0/8
       title: Network CIDR Block
-    NetworkDDOSProtection:
-      description: Whether DDOS protection is enabled for the network.
-      type: boolean
-      example: false
-      title: Network DDOS Protection
     NetworkAvailabilityZones:
       description: List of availability zones that the network is attached to.
       type: array
@@ -11103,10 +11076,6 @@ components:
           $ref: '#/components/schemas/NetworkAvailabilityZones'
         cidr_block:
           $ref: '#/components/schemas/NetworkCIDRBlock'
-        firewall:
-          $ref: '#/components/schemas/NetworkFirewallConfig'
-        ddos_protection:
-          $ref: '#/components/schemas/NetworkDDOSProtection'
         state:
           $ref: '#/components/schemas/NetworkState'
         provider_metadata:
@@ -11170,10 +11139,6 @@ components:
           $ref: '#/components/schemas/NetworkAvailabilityZones'
         cidr_block:
           $ref: '#/components/schemas/NetworkCIDRBlock'
-        firewall:
-          $ref: '#/components/schemas/NetworkFirewallConfig'
-        ddos_protection:
-          $ref: '#/components/schemas/NetworkDDOSProtection'
       additionalProperties: false
       required:
         - name
@@ -11189,8 +11154,6 @@ components:
       properties:
         name:
           $ref: '#/components/schemas/NetworkName'
-        firewall:
-          $ref: '#/components/schemas/NetworkFirewallConfig'
       additionalProperties: false
       title: PatchNetworkRequest
     TransitGatewayState:
