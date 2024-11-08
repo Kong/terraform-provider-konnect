@@ -29,14 +29,11 @@ resource "konnect_gateway_control_plane_membership" "my_gatewaycontrolplanemembe
 ### Required
 
 - `id` (String) ID of a control plane group. Requires replacement if changed.
-
-### Optional
-
 - `members` (Attributes List) Requires replacement if changed. (see [below for nested schema](#nestedatt--members))
 
 <a id="nestedatt--members"></a>
 ### Nested Schema for `members`
 
-Optional:
+Required:
 
 - `id` (String) Requires replacement if changed.

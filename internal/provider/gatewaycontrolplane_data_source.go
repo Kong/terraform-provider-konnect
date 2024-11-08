@@ -29,7 +29,7 @@ type GatewayControlPlaneDataSource struct {
 
 // GatewayControlPlaneDataSourceModel describes the data model.
 type GatewayControlPlaneDataSourceModel struct {
-	Config      *tfTypes.Config         `tfsdk:"config"`
+	Config      tfTypes.Config          `tfsdk:"config"`
 	Description types.String            `tfsdk:"description"`
 	ID          types.String            `tfsdk:"id"`
 	Labels      map[string]types.String `tfsdk:"labels"`
@@ -50,9 +50,41 @@ func (r *GatewayControlPlaneDataSource) Schema(ctx context.Context, req datasour
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
+					"auth_type": schema.StringAttribute{
+						Computed:    true,
+						Description: `The auth type value of the cluster associated with the Runtime Group.`,
+					},
+					"cloud_gateway": schema.BoolAttribute{
+						Computed:    true,
+						Description: `Whether the Control Plane can be used for cloud-gateways.`,
+					},
+					"cluster_type": schema.StringAttribute{
+						Computed:    true,
+						Description: `The ClusterType value of the cluster associated with the Control Plane.`,
+					},
 					"control_plane_endpoint": schema.StringAttribute{
 						Computed:    true,
 						Description: `Control Plane Endpoint.`,
+					},
+					"proxy_urls": schema.SetNestedAttribute{
+						Computed: true,
+						NestedObject: schema.NestedAttributeObject{
+							Attributes: map[string]schema.Attribute{
+								"host": schema.StringAttribute{
+									Computed:    true,
+									Description: `Hostname of the proxy URL.`,
+								},
+								"port": schema.Int64Attribute{
+									Computed:    true,
+									Description: `Port of the proxy URL.`,
+								},
+								"protocol": schema.StringAttribute{
+									Computed:    true,
+									Description: `Protocol of the proxy URL.`,
+								},
+							},
+						},
+						Description: `Array of proxy URLs associated with reaching the data-planes connected to a control-plane.`,
 					},
 					"telemetry_endpoint": schema.StringAttribute{
 						Computed:    true,
