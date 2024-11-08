@@ -166,11 +166,36 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 						"cloud_gateway_network_id": schema.StringAttribute{
 							Computed: true,
 						},
+						"environment": schema.ListNestedAttribute{
+							Computed: true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"name": schema.StringAttribute{
+										Computed:    true,
+										Description: `Name of the environment variable field to set for the data-plane group. Must be prefixed by KONG_.`,
+										Validators: []validator.String{
+											stringvalidator.UTF8LengthBetween(6, 120),
+										},
+									},
+									"value": schema.StringAttribute{
+										Computed:    true,
+										Description: `Value assigned to the environment variable field for the data-plane group.`,
+										Validators: []validator.String{
+											stringvalidator.UTF8LengthBetween(1, 120),
+										},
+									},
+								},
+							},
+							Description: `Array of environment variables to set for a data-plane group.`,
+						},
 						"provider": schema.StringAttribute{
 							Computed:    true,
-							Description: `Name of cloud provider. must be "aws"`,
+							Description: `Name of cloud provider. must be one of ["aws", "azure"]`,
 							Validators: []validator.String{
-								stringvalidator.OneOf("aws"),
+								stringvalidator.OneOf(
+									"aws",
+									"azure",
+								),
 							},
 						},
 						"region": schema.StringAttribute{
@@ -296,6 +321,36 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 							ElementType: types.StringType,
 							Description: `List of egress IP addresses for the network that this data-plane group runs on.`,
 						},
+						"environment": schema.ListNestedAttribute{
+							Computed: true,
+							Optional: true,
+							NestedObject: schema.NestedAttributeObject{
+								Validators: []validator.Object{
+									speakeasy_objectvalidators.NotNull(),
+								},
+								Attributes: map[string]schema.Attribute{
+									"name": schema.StringAttribute{
+										Computed:    true,
+										Optional:    true,
+										Description: `Name of the environment variable field to set for the data-plane group. Must be prefixed by KONG_. Not Null`,
+										Validators: []validator.String{
+											speakeasy_stringvalidators.NotNull(),
+											stringvalidator.UTF8LengthBetween(6, 120),
+										},
+									},
+									"value": schema.StringAttribute{
+										Computed:    true,
+										Optional:    true,
+										Description: `Value assigned to the environment variable field for the data-plane group. Not Null`,
+										Validators: []validator.String{
+											speakeasy_stringvalidators.NotNull(),
+											stringvalidator.UTF8LengthBetween(1, 120),
+										},
+									},
+								},
+							},
+							Description: `Array of environment variables to set for a data-plane group.`,
+						},
 						"id": schema.StringAttribute{
 							Computed:    true,
 							Description: `ID of the data-plane group that represents a deployment target for a set of data-planes.`,
@@ -308,10 +363,13 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 						"provider": schema.StringAttribute{
 							Computed:    true,
 							Optional:    true,
-							Description: `Name of cloud provider. Not Null; must be "aws"`,
+							Description: `Name of cloud provider. Not Null; must be one of ["aws", "azure"]`,
 							Validators: []validator.String{
 								speakeasy_stringvalidators.NotNull(),
-								stringvalidator.OneOf("aws"),
+								stringvalidator.OneOf(
+									"aws",
+									"azure",
+								),
 							},
 						},
 						"region": schema.StringAttribute{

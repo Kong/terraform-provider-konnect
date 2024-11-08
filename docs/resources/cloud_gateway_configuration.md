@@ -32,8 +32,14 @@ resource "konnect_cloud_gateway_configuration" "my_cloudgatewayconfiguration" {
         }
       }
       cloud_gateway_network_id = "36ae63d3-efd1-4bec-b246-62aa5d3f5695"
-      provider                 = "aws"
-      region                   = "us-east-2"
+      environment = [
+        {
+          name  = "KONG_LOG_LEVEL"
+          value = "INFO"
+        }
+      ]
+      provider = "aws"
+      region   = "us-east-2"
     }
   ]
   version = "3.2"
@@ -69,7 +75,8 @@ Optional:
 
 - `autoscale` (Attributes) Not Null (see [below for nested schema](#nestedatt--dataplane_groups--autoscale))
 - `cloud_gateway_network_id` (String) Not Null
-- `provider` (String) Name of cloud provider. Not Null; must be "aws"
+- `environment` (Attributes List) Array of environment variables to set for a data-plane group. (see [below for nested schema](#nestedatt--dataplane_groups--environment))
+- `provider` (String) Name of cloud provider. Not Null; must be one of ["aws", "azure"]
 - `region` (String) Region ID for cloud provider region. Not Null
 
 Read-Only:
@@ -110,6 +117,15 @@ Optional:
 
 
 
+<a id="nestedatt--dataplane_groups--environment"></a>
+### Nested Schema for `dataplane_groups.environment`
+
+Optional:
+
+- `name` (String) Name of the environment variable field to set for the data-plane group. Must be prefixed by KONG_. Not Null
+- `value` (String) Value assigned to the environment variable field for the data-plane group. Not Null
+
+
 
 <a id="nestedatt--dataplane_group_config"></a>
 ### Nested Schema for `dataplane_group_config`
@@ -118,7 +134,8 @@ Read-Only:
 
 - `autoscale` (Attributes) (see [below for nested schema](#nestedatt--dataplane_group_config--autoscale))
 - `cloud_gateway_network_id` (String)
-- `provider` (String) Name of cloud provider. must be "aws"
+- `environment` (Attributes List) Array of environment variables to set for a data-plane group. (see [below for nested schema](#nestedatt--dataplane_group_config--environment))
+- `provider` (String) Name of cloud provider. must be one of ["aws", "azure"]
 - `region` (String) Region ID for cloud provider region.
 
 <a id="nestedatt--dataplane_group_config--autoscale"></a>
@@ -147,6 +164,16 @@ Read-Only:
 - `instance_type` (String) Instance type name to indicate capacity. must be one of ["small", "medium", "large"]
 - `kind` (String) must be "static"
 - `requested_instances` (Number) Number of data-planes the deployment target will contain.
+
+
+
+<a id="nestedatt--dataplane_group_config--environment"></a>
+### Nested Schema for `dataplane_group_config.environment`
+
+Read-Only:
+
+- `name` (String) Name of the environment variable field to set for the data-plane group. Must be prefixed by KONG_.
+- `value` (String) Value assigned to the environment variable field for the data-plane group.
 
 ## Import
 

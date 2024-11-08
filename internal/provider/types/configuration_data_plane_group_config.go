@@ -5,8 +5,9 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type ConfigurationDataPlaneGroupConfig struct {
-	Autoscale             ConfigurationDataPlaneGroupAutoscale `tfsdk:"autoscale"`
-	CloudGatewayNetworkID types.String                         `tfsdk:"cloud_gateway_network_id"`
-	Provider              types.String                         `tfsdk:"provider"`
-	Region                types.String                         `tfsdk:"region"`
+	Autoscale             ConfigurationDataPlaneGroupAutoscale          `tfsdk:"autoscale"`
+	CloudGatewayNetworkID types.String                                  `tfsdk:"cloud_gateway_network_id"`
+	Environment           []ConfigurationDataPlaneGroupEnvironmentField `tfsdk:"environment"`
+	Provider              types.String                                  `tfsdk:"provider"`
+	Region                types.String                                  `tfsdk:"region"`
 }

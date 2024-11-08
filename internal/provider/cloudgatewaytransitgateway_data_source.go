@@ -29,16 +29,12 @@ type CloudGatewayTransitGatewayDataSource struct {
 
 // CloudGatewayTransitGatewayDataSourceModel describes the data model.
 type CloudGatewayTransitGatewayDataSourceModel struct {
-	CidrBlocks                     []types.String                         `tfsdk:"cidr_blocks"`
-	CreatedAt                      types.String                           `tfsdk:"created_at"`
-	DNSConfig                      []tfTypes.TransitGatewayDNSConfig      `tfsdk:"dns_config"`
-	EntityVersion                  types.Int64                            `tfsdk:"entity_version"`
-	ID                             types.String                           `tfsdk:"id"`
-	Name                           types.String                           `tfsdk:"name"`
-	NetworkID                      types.String                           `tfsdk:"network_id"`
-	State                          types.String                           `tfsdk:"state"`
-	TransitGatewayAttachmentConfig tfTypes.TransitGatewayAttachmentConfig `tfsdk:"transit_gateway_attachment_config"`
-	UpdatedAt                      types.String                           `tfsdk:"updated_at"`
+	AwsTransitGatewayResponse   *tfTypes.AwsTransitGatewayResponse   `tfsdk:"aws_transit_gateway_response" tfPlanOnly:"true"`
+	AzureTransitGatewayResponse *tfTypes.AzureTransitGatewayResponse `tfsdk:"azure_transit_gateway_response" tfPlanOnly:"true"`
+	EntityVersion               types.Int64                          `tfsdk:"entity_version"`
+	ID                          types.String                         `tfsdk:"id"`
+	Name                        types.String                         `tfsdk:"name"`
+	NetworkID                   types.String                         `tfsdk:"network_id"`
 }
 
 // Metadata returns the data source type name.
@@ -52,35 +48,149 @@ func (r *CloudGatewayTransitGatewayDataSource) Schema(ctx context.Context, req d
 		MarkdownDescription: "CloudGatewayTransitGateway DataSource",
 
 		Attributes: map[string]schema.Attribute{
-			"cidr_blocks": schema.ListAttribute{
-				Computed:    true,
-				ElementType: types.StringType,
-				MarkdownDescription: `CIDR blocks for constructing a route table for the transit gateway, when attaching to the owning` + "\n" +
-					`network.`,
-			},
-			"created_at": schema.StringAttribute{
-				Computed:    true,
-				Description: `An RFC-3339 timestamp representation of transit gateway creation date.`,
-			},
-			"dns_config": schema.ListNestedAttribute{
+			"aws_transit_gateway_response": schema.SingleNestedAttribute{
 				Computed: true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"domain_proxy_list": schema.ListAttribute{
-							Computed:    true,
-							ElementType: types.StringType,
-							MarkdownDescription: `Internal domain names to proxy for DNS resolution from the listed remote DNS server IP addresses,` + "\n" +
-								`for a transit gateway.`,
+				Attributes: map[string]schema.Attribute{
+					"cidr_blocks": schema.ListAttribute{
+						Computed:    true,
+						ElementType: types.StringType,
+						MarkdownDescription: `CIDR blocks for constructing a route table for the transit gateway, when attaching to the owning` + "\n" +
+							`network.`,
+					},
+					"created_at": schema.StringAttribute{
+						Computed:    true,
+						Description: `An RFC-3339 timestamp representation of transit gateway creation date.`,
+					},
+					"dns_config": schema.ListNestedAttribute{
+						Computed: true,
+						NestedObject: schema.NestedAttributeObject{
+							Attributes: map[string]schema.Attribute{
+								"domain_proxy_list": schema.ListAttribute{
+									Computed:    true,
+									ElementType: types.StringType,
+									MarkdownDescription: `Internal domain names to proxy for DNS resolution from the listed remote DNS server IP addresses,` + "\n" +
+										`for a transit gateway.`,
+								},
+								"remote_dns_server_ip_addresses": schema.ListAttribute{
+									Computed:    true,
+									ElementType: types.StringType,
+									Description: `Remote DNS Server IP Addresses to connect to for resolving internal DNS via a transit gateway.`,
+								},
+							},
 						},
-						"remote_dns_server_ip_addresses": schema.ListAttribute{
-							Computed:    true,
-							ElementType: types.StringType,
-							Description: `Remote DNS Server IP Addresses to connect to for resolving internal DNS via a transit gateway.`,
+						MarkdownDescription: `List of mappings from remote DNS server IP address sets to proxied internal domains, for a transit gateway` + "\n" +
+							`attachment.`,
+					},
+					"entity_version": schema.Int64Attribute{
+						Computed: true,
+						MarkdownDescription: `Monotonically-increasing version count of the transit gateway, to indicate the order of updates to the` + "\n" +
+							`transit gateway.`,
+					},
+					"id": schema.StringAttribute{
+						Computed: true,
+					},
+					"name": schema.StringAttribute{
+						Computed:    true,
+						Description: `Human-readable name of the transit gateway.`,
+					},
+					"state": schema.StringAttribute{
+						Computed:    true,
+						Description: `State of the transit gateway.`,
+					},
+					"transit_gateway_attachment_config": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"kind": schema.StringAttribute{
+								Computed: true,
+							},
+							"ram_share_arn": schema.StringAttribute{
+								Computed:    true,
+								Description: `Resource Share ARN to verify request to create transit gateway attachment.`,
+							},
+							"transit_gateway_id": schema.StringAttribute{
+								Computed:    true,
+								Description: `AWS Transit Gateway ID to create attachment to.`,
+							},
 						},
 					},
+					"updated_at": schema.StringAttribute{
+						Computed:    true,
+						Description: `An RFC-3339 timestamp representation of transit gateway update date.`,
+					},
 				},
-				MarkdownDescription: `List of mappings from remote DNS server IP address sets to proxied internal domains, for a transit gateway` + "\n" +
-					`attachment.`,
+			},
+			"azure_transit_gateway_response": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"created_at": schema.StringAttribute{
+						Computed:    true,
+						Description: `An RFC-3339 timestamp representation of transit gateway creation date.`,
+					},
+					"dns_config": schema.ListNestedAttribute{
+						Computed: true,
+						NestedObject: schema.NestedAttributeObject{
+							Attributes: map[string]schema.Attribute{
+								"domain_proxy_list": schema.ListAttribute{
+									Computed:    true,
+									ElementType: types.StringType,
+									MarkdownDescription: `Internal domain names to proxy for DNS resolution from the listed remote DNS server IP addresses,` + "\n" +
+										`for a transit gateway.`,
+								},
+								"remote_dns_server_ip_addresses": schema.ListAttribute{
+									Computed:    true,
+									ElementType: types.StringType,
+									Description: `Remote DNS Server IP Addresses to connect to for resolving internal DNS via a transit gateway.`,
+								},
+							},
+						},
+						MarkdownDescription: `List of mappings from remote DNS server IP address sets to proxied internal domains, for a transit gateway` + "\n" +
+							`attachment.`,
+					},
+					"entity_version": schema.Int64Attribute{
+						Computed: true,
+						MarkdownDescription: `Monotonically-increasing version count of the transit gateway, to indicate the order of updates to the` + "\n" +
+							`transit gateway.`,
+					},
+					"id": schema.StringAttribute{
+						Computed: true,
+					},
+					"name": schema.StringAttribute{
+						Computed:    true,
+						Description: `Human-readable name of the transit gateway.`,
+					},
+					"state": schema.StringAttribute{
+						Computed:    true,
+						Description: `State of the transit gateway.`,
+					},
+					"transit_gateway_attachment_config": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"kind": schema.StringAttribute{
+								Computed: true,
+							},
+							"resource_group_name": schema.StringAttribute{
+								Computed:    true,
+								Description: `Resource Group Name for the Azure VNET Peering attachment.`,
+							},
+							"subscription_id": schema.StringAttribute{
+								Computed:    true,
+								Description: `Subscription ID for the Azure VNET Peering attachment.`,
+							},
+							"tenant_id": schema.StringAttribute{
+								Computed:    true,
+								Description: `Tenant ID for the Azure VNET Peering attachment.`,
+							},
+							"vnet_name": schema.StringAttribute{
+								Computed:    true,
+								Description: `VNET Name for the Azure VNET Peering attachment.`,
+							},
+						},
+					},
+					"updated_at": schema.StringAttribute{
+						Computed:    true,
+						Description: `An RFC-3339 timestamp representation of transit gateway update date.`,
+					},
+				},
 			},
 			"entity_version": schema.Int64Attribute{
 				Computed: true,
@@ -97,35 +207,6 @@ func (r *CloudGatewayTransitGatewayDataSource) Schema(ctx context.Context, req d
 			"network_id": schema.StringAttribute{
 				Required:    true,
 				Description: `The network to operate on.`,
-			},
-			"state": schema.StringAttribute{
-				Computed:    true,
-				Description: `State of the transit gateway.`,
-			},
-			"transit_gateway_attachment_config": schema.SingleNestedAttribute{
-				Computed: true,
-				Attributes: map[string]schema.Attribute{
-					"aws_transit_gateway_attachment_config": schema.SingleNestedAttribute{
-						Computed: true,
-						Attributes: map[string]schema.Attribute{
-							"kind": schema.StringAttribute{
-								Computed: true,
-							},
-							"ram_share_arn": schema.StringAttribute{
-								Computed:    true,
-								Description: `Resource Share ARN to verify request to create transit gateway attachment.`,
-							},
-							"transit_gateway_id": schema.StringAttribute{
-								Computed:    true,
-								Description: `AWS Transit Gateway ID to create attachment to.`,
-							},
-						},
-					},
-				},
-			},
-			"updated_at": schema.StringAttribute{
-				Computed:    true,
-				Description: `An RFC-3339 timestamp representation of transit gateway update date.`,
 			},
 		},
 	}
@@ -199,11 +280,11 @@ func (r *CloudGatewayTransitGatewayDataSource) Read(ctx context.Context, req dat
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.TransitGateway != nil) {
+	if !(res.TransitGatewayResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedTransitGateway(res.TransitGateway)
+	data.RefreshFromSharedTransitGatewayResponse(res.TransitGatewayResponse)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

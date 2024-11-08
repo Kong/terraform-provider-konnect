@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: fe4b492f11e8731532741ddba3c17e41
+  docChecksum: 39535cfd7b398832cccc00c833bb1a11
   docVersion: 2.0.0
   speakeasyVersion: 1.430.0
   generationVersion: 2.449.0
@@ -936,8 +936,13 @@ generatedFiles:
   - internal/provider/types/auth_strategy_key_auth.go
   - internal/provider/types/authentication.go
   - internal/provider/types/aws_lambda_plugin_config.go
+  - internal/provider/types/aws_transit_gateway.go
   - internal/provider/types/aws_transit_gateway_attachment_config.go
+  - internal/provider/types/aws_transit_gateway_response.go
   - internal/provider/types/azure_functions_plugin_config.go
+  - internal/provider/types/azure_transit_gateway.go
+  - internal/provider/types/azure_transit_gateway_response.go
+  - internal/provider/types/azure_vnet_peering_attachment_config.go
   - internal/provider/types/basic_auth_plugin_config.go
   - internal/provider/types/bedrock.go
   - internal/provider/types/binary.go
@@ -954,6 +959,7 @@ generatedFiles:
   - internal/provider/types/configuration_data_plane_group_autoscale_autopilot.go
   - internal/provider/types/configuration_data_plane_group_autoscale_static.go
   - internal/provider/types/configuration_data_plane_group_config.go
+  - internal/provider/types/configuration_data_plane_group_environment_field.go
   - internal/provider/types/consul.go
   - internal/provider/types/correlation_id_plugin_config.go
   - internal/provider/types/cors_plugin_config.go
@@ -1064,7 +1070,6 @@ generatedFiles:
   - internal/provider/types/serverless_control_plane.go
   - internal/provider/types/session_plugin_config.go
   - internal/provider/types/shm.go
-  - internal/provider/types/static_tags.go
   - internal/provider/types/statsd_advanced_plugin_config.go
   - internal/provider/types/statsd_plugin_config.go
   - internal/provider/types/statsd_plugin_metrics.go
@@ -1076,7 +1081,6 @@ generatedFiles:
   - internal/provider/types/tls_handshake_modifier_plugin_config.go
   - internal/provider/types/tls_metadata_headers_plugin_config.go
   - internal/provider/types/transform.go
-  - internal/provider/types/transit_gateway_attachment_config.go
   - internal/provider/types/transit_gateway_dns_config.go
   - internal/provider/types/udp_log_plugin_config.go
   - internal/provider/types/unhealthy.go
@@ -1635,7 +1639,10 @@ generatedFiles:
   - internal/sdk/models/shared/authstrategysyncerror.go
   - internal/sdk/models/shared/awslambdaplugin.go
   - internal/sdk/models/shared/awstransitgatewayattachmentconfig.go
+  - internal/sdk/models/shared/awstransitgatewayresponse.go
   - internal/sdk/models/shared/azurefunctionsplugin.go
+  - internal/sdk/models/shared/azuretransitgatewayresponse.go
+  - internal/sdk/models/shared/azurevnetpeeringattachmentconfig.go
   - internal/sdk/models/shared/badrequesterror.go
   - internal/sdk/models/shared/basicauth.go
   - internal/sdk/models/shared/basicauthplugin.go
@@ -1651,6 +1658,7 @@ generatedFiles:
   - internal/sdk/models/shared/configurationdataplanegroupautoscaleautopilot.go
   - internal/sdk/models/shared/configurationdataplanegroupautoscalestatic.go
   - internal/sdk/models/shared/configurationdataplanegroupconfig.go
+  - internal/sdk/models/shared/configurationdataplanegroupenvironmentfield.go
   - internal/sdk/models/shared/configurationmanifest.go
   - internal/sdk/models/shared/conflicterror.go
   - internal/sdk/models/shared/consumer.go
@@ -1741,6 +1749,7 @@ generatedFiles:
   - internal/sdk/models/shared/mockingplugin.go
   - internal/sdk/models/shared/mtlsauthplugin.go
   - internal/sdk/models/shared/network.go
+  - internal/sdk/models/shared/networkcreatestate.go
   - internal/sdk/models/shared/networkprovidermetadata.go
   - internal/sdk/models/shared/networkstate.go
   - internal/sdk/models/shared/notfounderror.go
@@ -1811,9 +1820,8 @@ generatedFiles:
   - internal/sdk/models/shared/team.go
   - internal/sdk/models/shared/tlshandshakemodifierplugin.go
   - internal/sdk/models/shared/tlsmetadataheadersplugin.go
-  - internal/sdk/models/shared/transitgateway.go
-  - internal/sdk/models/shared/transitgatewayattachmentconfig.go
   - internal/sdk/models/shared/transitgatewaydnsconfig.go
+  - internal/sdk/models/shared/transitgatewayresponse.go
   - internal/sdk/models/shared/transitgatewaystate.go
   - internal/sdk/models/shared/udplogplugin.go
   - internal/sdk/models/shared/unauthorizederror.go
@@ -2325,10 +2333,10 @@ examples:
   create-configuration:
     speakeasy-default-create-configuration:
       requestBody:
-        application/json: {"control_plane_id": "0949471e-b759-45ba-87ab-ee63fb781388", "control_plane_geo": "us", "version": "3.2", "dataplane_groups": [{"provider": "aws", "region": "us-east-2", "cloud_gateway_network_id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695", "autoscale": {"kind": "static", "instance_type": "medium", "requested_instances": 3}}]}
+        application/json: {"control_plane_id": "0949471e-b759-45ba-87ab-ee63fb781388", "control_plane_geo": "us", "version": "3.2", "dataplane_groups": [{"provider": "aws", "region": "us-east-2", "cloud_gateway_network_id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695", "autoscale": {"kind": "static", "instance_type": "medium", "requested_instances": 3}, "environment": []}]}
       responses:
         "200":
-          application/json: {"id": "edaf40f9-9fb0-4ffe-bb74-4e763a6bd471", "version": "3.2", "dataplane_group_config": [{"provider": "aws", "region": "us-east-2", "cloud_gateway_network_id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695", "autoscale": {"kind": "autopilot", "base_rps": 1, "max_rps": 1000}}, {"provider": "aws", "region": "us-east-2", "cloud_gateway_network_id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695", "autoscale": {"kind": "autopilot", "base_rps": 1, "max_rps": 1000}}], "dataplane_groups": [{"id": "cbb8872a-1f83-4806-bf69-fdf0b4783c7e", "provider": "aws", "region": "us-east-2", "autoscale": {"kind": "autopilot", "base_rps": 1, "max_rps": 1000}, "cloud_gateway_network_id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695", "state": "initializing", "private_ip_addresses": ["192.168.248.132", "192.168.66.81", "192.168.137.135"], "egress_ip_addresses": ["71.78.149.75", "91.149.112.244", "51.235.15.121"], "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}, {"id": "cbb8872a-1f83-4806-bf69-fdf0b4783c7e", "provider": "aws", "region": "us-east-2", "autoscale": {"kind": "static", "instance_type": "large", "requested_instances": 3}, "cloud_gateway_network_id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695", "state": "initializing", "private_ip_addresses": ["192.168.248.132", "192.168.66.81", "192.168.137.135"], "egress_ip_addresses": ["71.78.149.75", "91.149.112.244", "51.235.15.121"], "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}, {"id": "cbb8872a-1f83-4806-bf69-fdf0b4783c7e", "provider": "aws", "region": "us-east-2", "autoscale": {"kind": "autopilot", "base_rps": 1, "max_rps": 1000}, "cloud_gateway_network_id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695", "state": "terminating", "private_ip_addresses": ["192.168.248.132", "192.168.66.81", "192.168.137.135"], "egress_ip_addresses": ["71.78.149.75", "91.149.112.244", "51.235.15.121"], "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}], "entity_version": 1, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "control_plane_id": "0949471e-b759-45ba-87ab-ee63fb781388", "control_plane_geo": "eu"}
+          application/json: {"id": "edaf40f9-9fb0-4ffe-bb74-4e763a6bd471", "version": "3.2", "dataplane_group_config": [{"provider": "aws", "region": "us-east-2", "cloud_gateway_network_id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695", "autoscale": {"kind": "autopilot", "base_rps": 1, "max_rps": 1000}, "environment": [{"name": "KONG_LOG_LEVEL", "value": "INFO"}]}, {"provider": "aws", "region": "us-east-2", "cloud_gateway_network_id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695", "autoscale": {"kind": "autopilot", "base_rps": 1, "max_rps": 1000}, "environment": [{"name": "KONG_LOG_LEVEL", "value": "INFO"}]}], "dataplane_groups": [{"id": "cbb8872a-1f83-4806-bf69-fdf0b4783c7e", "provider": "aws", "region": "us-east-2", "autoscale": {"kind": "autopilot", "base_rps": 1, "max_rps": 1000}, "environment": [{"name": "KONG_LOG_LEVEL", "value": "INFO"}], "cloud_gateway_network_id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695", "state": "initializing", "private_ip_addresses": ["192.168.248.132", "192.168.66.81", "192.168.137.135"], "egress_ip_addresses": ["71.78.149.75", "91.149.112.244", "51.235.15.121"], "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}, {"id": "cbb8872a-1f83-4806-bf69-fdf0b4783c7e", "provider": "aws", "region": "us-east-2", "autoscale": {"kind": "static", "instance_type": "large", "requested_instances": 3}, "environment": [{"name": "KONG_LOG_LEVEL", "value": "INFO"}, {"name": "KONG_LOG_LEVEL", "value": "INFO"}], "cloud_gateway_network_id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695", "state": "initializing", "private_ip_addresses": ["192.168.248.132", "192.168.66.81", "192.168.137.135"], "egress_ip_addresses": ["71.78.149.75", "91.149.112.244", "51.235.15.121"], "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}, {"id": "cbb8872a-1f83-4806-bf69-fdf0b4783c7e", "provider": "aws", "region": "us-east-2", "autoscale": {"kind": "autopilot", "base_rps": 1, "max_rps": 1000}, "environment": [{"name": "KONG_LOG_LEVEL", "value": "INFO"}, {"name": "KONG_LOG_LEVEL", "value": "INFO"}, {"name": "KONG_LOG_LEVEL", "value": "INFO"}], "cloud_gateway_network_id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695", "state": "terminating", "private_ip_addresses": ["192.168.248.132", "192.168.66.81", "192.168.137.135"], "egress_ip_addresses": ["71.78.149.75", "91.149.112.244", "51.235.15.121"], "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}], "entity_version": 1, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "control_plane_id": "0949471e-b759-45ba-87ab-ee63fb781388", "control_plane_geo": "eu"}
         "400":
           application/problem+json: {"status": 830862, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -2346,7 +2354,7 @@ examples:
           configurationId: "edaf40f9-9fb0-4ffe-bb74-4e763a6bd471"
       responses:
         "200":
-          application/json: {"id": "edaf40f9-9fb0-4ffe-bb74-4e763a6bd471", "version": "3.2", "dataplane_group_config": [{"provider": "aws", "region": "us-east-2", "cloud_gateway_network_id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695", "autoscale": {"kind": "autopilot", "base_rps": 1, "max_rps": 1000}}, {"provider": "aws", "region": "us-east-2", "cloud_gateway_network_id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695", "autoscale": {"kind": "autopilot", "base_rps": 1, "max_rps": 1000}}, {"provider": "aws", "region": "us-east-2", "cloud_gateway_network_id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695", "autoscale": {"kind": "autopilot", "base_rps": 1, "max_rps": 1000}}], "dataplane_groups": [], "entity_version": 1, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "control_plane_id": "0949471e-b759-45ba-87ab-ee63fb781388", "control_plane_geo": "au"}
+          application/json: {"id": "edaf40f9-9fb0-4ffe-bb74-4e763a6bd471", "version": "3.2", "dataplane_group_config": [{"provider": "aws", "region": "us-east-2", "cloud_gateway_network_id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695", "autoscale": {"kind": "autopilot", "base_rps": 1, "max_rps": 1000}, "environment": [{"name": "KONG_LOG_LEVEL", "value": "INFO"}, {"name": "KONG_LOG_LEVEL", "value": "INFO"}, {"name": "KONG_LOG_LEVEL", "value": "INFO"}]}, {"provider": "aws", "region": "us-east-2", "cloud_gateway_network_id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695", "autoscale": {"kind": "autopilot", "base_rps": 1, "max_rps": 1000}, "environment": [{"name": "KONG_LOG_LEVEL", "value": "INFO"}, {"name": "KONG_LOG_LEVEL", "value": "INFO"}, {"name": "KONG_LOG_LEVEL", "value": "INFO"}]}, {"provider": "aws", "region": "us-east-2", "cloud_gateway_network_id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695", "autoscale": {"kind": "autopilot", "base_rps": 1, "max_rps": 1000}, "environment": [{"name": "KONG_LOG_LEVEL", "value": "INFO"}, {"name": "KONG_LOG_LEVEL", "value": "INFO"}]}], "dataplane_groups": [], "entity_version": 1, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "control_plane_id": "0949471e-b759-45ba-87ab-ee63fb781388", "control_plane_geo": "au"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -2467,10 +2475,10 @@ examples:
         path:
           networkId: "36ae63d3-efd1-4bec-b246-62aa5d3f5695"
       requestBody:
-        application/json: {"name": "us-east-2 transit gateway", "cidr_blocks": ["10.0.0.0/8", "100.64.0.0/10", "172.16.0.0/12"], "transit_gateway_attachment_config": {"kind": "aws-transit-gateway-attachment", "transit_gateway_id": "<id>", "ram_share_arn": "<value>"}, "dns_config": [{"remote_dns_server_ip_addresses": ["10.0.0.2"], "domain_proxy_list": ["foobar.com"]}]}
+        application/json: {"name": "us-east-2 transit gateway", "dns_config": [{"remote_dns_server_ip_addresses": ["10.0.0.2"], "domain_proxy_list": ["foobar.com"]}], "cidr_blocks": ["10.0.0.0/8", "100.64.0.0/10", "172.16.0.0/12"], "transit_gateway_attachment_config": {"kind": "aws-transit-gateway-attachment", "transit_gateway_id": "<id>", "ram_share_arn": "<value>"}}
       responses:
         "201":
-          application/json: {"id": "0850820b-d153-4a2a-b9be-7d2204779139", "name": "us-east-2 transit gateway", "cidr_blocks": ["10.0.0.0/8", "100.64.0.0/10", "172.16.0.0/12"], "transit_gateway_attachment_config": {"kind": "aws-transit-gateway-attachment", "transit_gateway_id": "<id>", "ram_share_arn": "<value>"}, "dns_config": [{"remote_dns_server_ip_addresses": ["10.0.0.2"], "domain_proxy_list": ["foobar.com"]}, {"remote_dns_server_ip_addresses": ["10.0.0.2"], "domain_proxy_list": ["foobar.com"]}], "state": "ready", "entity_version": 1, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"name": "us-east-2 transit gateway", "dns_config": [{"remote_dns_server_ip_addresses": ["10.0.0.2"], "domain_proxy_list": ["foobar.com"]}, {"remote_dns_server_ip_addresses": ["10.0.0.2"], "domain_proxy_list": ["foobar.com"]}], "cidr_blocks": ["10.0.0.0/8", "100.64.0.0/10", "172.16.0.0/12"], "transit_gateway_attachment_config": {"kind": "aws-transit-gateway-attachment", "transit_gateway_id": "<id>", "ram_share_arn": "<value>"}, "id": "0850820b-d153-4a2a-b9be-7d2204779139", "state": "ready", "entity_version": 1, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 471082, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_digits", "minimum": 8, "source": "body", "reason": "is a required field"}]}
         "401":
@@ -2489,7 +2497,7 @@ examples:
           transitGatewayId: "0850820b-d153-4a2a-b9be-7d2204779139"
       responses:
         "200":
-          application/json: {"id": "0850820b-d153-4a2a-b9be-7d2204779139", "name": "us-east-2 transit gateway", "cidr_blocks": ["10.0.0.0/8", "100.64.0.0/10", "172.16.0.0/12"], "transit_gateway_attachment_config": {"kind": "aws-transit-gateway-attachment", "transit_gateway_id": "<id>", "ram_share_arn": "<value>"}, "dns_config": [{"remote_dns_server_ip_addresses": ["10.0.0.2"], "domain_proxy_list": ["foobar.com"]}, {"remote_dns_server_ip_addresses": ["10.0.0.2"], "domain_proxy_list": ["foobar.com"]}], "state": "initializing", "entity_version": 1, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"name": "us-east-2 transit gateway", "dns_config": [{"remote_dns_server_ip_addresses": ["10.0.0.2"], "domain_proxy_list": ["foobar.com"]}, {"remote_dns_server_ip_addresses": ["10.0.0.2"], "domain_proxy_list": ["foobar.com"]}], "cidr_blocks": ["10.0.0.0/8", "100.64.0.0/10", "172.16.0.0/12"], "transit_gateway_attachment_config": {"kind": "aws-transit-gateway-attachment", "transit_gateway_id": "<id>", "ram_share_arn": "<value>"}, "id": "0850820b-d153-4a2a-b9be-7d2204779139", "state": "initializing", "entity_version": 1, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
