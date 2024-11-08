@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.1.0
+> Released on 2024/11/??
+
+### 🚨 Significant Changes
+* The `konnect_cloud_gateway_transit_gateway` resource structure has had a bug fix that enables both AWS and Azure support. Unfortunately, this has changed the resource structure and you will need to recreate any transit gateway attachments.
+
+### Features
+
+* Updated Kong Gateway plugin schemas to 3.8.x
+* Added support for Azure Cloud Gateways deployments
+
+### Bug Fixes
+
+* Fix OpenAPI filename validation in API Products when using variables
+
 ## 1.0.0
 > Released on 2024/09/11
 
