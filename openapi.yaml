@@ -9832,6 +9832,8 @@ paths:
           $ref: '#/components/responses/IdentityBadRequest'
         '404':
           $ref: '#/components/responses/IdentityNotFound'
+        '409':
+          $ref: '#/components/responses/IdentityConflict'
       servers:
         - url: 'https://global.api.konghq.com/'
       tags:
@@ -25459,6 +25461,7 @@ components:
                 type: string
                 example: Control Planes
                 enum:
+                  - APIs
                   - API Products
                   - Application Auth Strategies
                   - Audit Logs
