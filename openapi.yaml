@@ -9204,7 +9204,7 @@ paths:
       summary: Get Appearance Configuration
       description: 'Returns the current portal appearance configuration including any custom theme, colors, fonts, and image settings. Portals using the fully-customizable portal client may override or ignore these settings by disregarding them in the code.'
       parameters:
-        - $ref: '#/components/parameters/parameters-PortalId'
+        - $ref: '#/components/parameters/PortalId'
       responses:
         '200':
           $ref: '#/components/responses/GetPortalAppearance'
@@ -9222,7 +9222,7 @@ paths:
       summary: Update Appearance Configuration
       description: 'Updates the current appearance configuration for this portal including setting pre-defined or custom themes, fonts, colors, and images. Note that portals using the fully-customizable portal client may override or ignore these settings by disregarding them in the code.'
       parameters:
-        - $ref: '#/components/parameters/parameters-PortalId'
+        - $ref: '#/components/parameters/PortalId'
       requestBody:
         $ref: '#/components/requestBodies/UpdatePortalAppearance'
       responses:
@@ -9244,7 +9244,7 @@ paths:
         - Portal Appearance
   '/v2/portals/{portalId}/authentication-settings':
     parameters:
-      - $ref: '#/components/parameters/parameters-PortalId'
+      - $ref: '#/components/parameters/PortalId'
     get:
       x-speakeasy-entity-operation: PortalAuth#read
       operationId: get-portal-authentication-settings
@@ -10056,12 +10056,13 @@ components:
         type: string
       x-speakeasy-match: id
     PortalId:
+      schema:
+        type: string
+        format: uuid
       name: portalId
-      description: portal identifier
       in: path
       required: true
-      schema:
-        $ref: '#/components/schemas/schemas-UUID'
+      description: ID of the portal.
     ProductVersionId:
       name: productVersionId
       description: API product version identifier
@@ -10169,14 +10170,6 @@ components:
         format: uuid
         example: 9524ec7d-36d9-465d-a8c5-83a3c9390458
       description: The UUID of your control plane. This variable is available in the Konnect manager.
-    parameters-PortalId:
-      schema:
-        type: string
-        format: uuid
-      name: portalId
-      in: path
-      required: true
-      description: ID of the portal.
   schemas:
     GroupMembership:
       x-speakeasy-entity: GatewayControlPlaneMembership
@@ -12316,11 +12309,11 @@ components:
       type: object
       properties:
         basic_auth_enabled:
-          description: The organization has basic auth enabled.
+          description: The portal has basic auth enabled or disabled.
           type: boolean
           example: true
         oidc_auth_enabled:
-          description: The organization has OIDC disabled.
+          description: The portal has OIDC enabled or disabled.
           type: boolean
           example: false
         oidc_team_mapping_enabled:
