@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 2ff601bbb1a68c863a3976f13b17577b
+  docChecksum: a2fb339ea381cdea06b6ae2e651e0152
   docVersion: 2.0.0
   speakeasyVersion: 1.430.0
   generationVersion: 2.449.0
@@ -1002,7 +1002,6 @@ generatedFiles:
   - internal/provider/types/mocking_plugin_config.go
   - internal/provider/types/model.go
   - internal/provider/types/mtls_auth_plugin_config.go
-  - internal/provider/types/network_firewall_config.go
   - internal/provider/types/network_provider_metadata.go
   - internal/provider/types/nullable_appearance_fonts.go
   - internal/provider/types/nullable_appearance_text_variables.go
@@ -1742,7 +1741,6 @@ generatedFiles:
   - internal/sdk/models/shared/mockingplugin.go
   - internal/sdk/models/shared/mtlsauthplugin.go
   - internal/sdk/models/shared/network.go
-  - internal/sdk/models/shared/networkfirewallconfig.go
   - internal/sdk/models/shared/networkprovidermetadata.go
   - internal/sdk/models/shared/networkstate.go
   - internal/sdk/models/shared/notfounderror.go
@@ -2403,10 +2401,10 @@ examples:
   create-network:
     speakeasy-default-create-network:
       requestBody:
-        application/json: {"name": "us-east-2 network", "cloud_gateway_provider_account_id": "929b2449-c69f-44c4-b6ad-9ecec6f811ae", "region": "us-east-2", "availability_zones": ["use2-az1", "use2-az2", "use2-az3"], "cidr_block": "10.0.0.0/8", "firewall": {"allowed_cidr_blocks": ["10.0.0.0/8"], "denied_cidr_blocks": ["10.100.0.0/16"]}, "ddos_protection": false}
+        application/json: {"name": "us-east-2 network", "cloud_gateway_provider_account_id": "929b2449-c69f-44c4-b6ad-9ecec6f811ae", "region": "us-east-2", "availability_zones": ["use2-az1", "use2-az2", "use2-az3"], "cidr_block": "10.0.0.0/8"}
       responses:
         "201":
-          application/json: {"id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695", "name": "us-east-2 network", "default": false, "cloud_gateway_provider_account_id": "929b2449-c69f-44c4-b6ad-9ecec6f811ae", "region": "us-east-2", "availability_zones": ["use2-az1", "use2-az2", "use2-az3"], "cidr_block": "10.0.0.0/8", "firewall": {"allowed_cidr_blocks": ["10.0.0.0/8"], "denied_cidr_blocks": ["10.100.0.0/16"]}, "ddos_protection": false, "state": "ready", "transit_gateway_count": 0, "configuration_reference_count": 0, "entity_version": 1, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695", "name": "us-east-2 network", "default": false, "cloud_gateway_provider_account_id": "929b2449-c69f-44c4-b6ad-9ecec6f811ae", "region": "us-east-2", "availability_zones": ["use2-az1", "use2-az2", "use2-az3"], "cidr_block": "10.0.0.0/8", "state": "ready", "transit_gateway_count": 0, "configuration_reference_count": 0, "entity_version": 1, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 651863, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "dependent_fields", "reason": "is a required field", "dependents": ["<value>"], "source": "body"}, {"field": "name", "source": "body", "reason": "is a required field"}, {"field": "name", "source": "body", "reason": "is a required field"}]}
         "401":
@@ -2422,7 +2420,7 @@ examples:
           networkId: "36ae63d3-efd1-4bec-b246-62aa5d3f5695"
       responses:
         "200":
-          application/json: {"id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695", "name": "us-east-2 network", "default": false, "cloud_gateway_provider_account_id": "929b2449-c69f-44c4-b6ad-9ecec6f811ae", "region": "us-east-2", "availability_zones": ["use2-az1", "use2-az2", "use2-az3"], "cidr_block": "10.0.0.0/8", "firewall": {"allowed_cidr_blocks": ["10.0.0.0/8"], "denied_cidr_blocks": ["10.100.0.0/16"]}, "ddos_protection": false, "state": "created", "transit_gateway_count": 0, "configuration_reference_count": 0, "entity_version": 1, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695", "name": "us-east-2 network", "default": false, "cloud_gateway_provider_account_id": "929b2449-c69f-44c4-b6ad-9ecec6f811ae", "region": "us-east-2", "availability_zones": ["use2-az1", "use2-az2", "use2-az3"], "cidr_block": "10.0.0.0/8", "state": "created", "transit_gateway_count": 0, "configuration_reference_count": 0, "entity_version": 1, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -2435,10 +2433,10 @@ examples:
         path:
           networkId: "36ae63d3-efd1-4bec-b246-62aa5d3f5695"
       requestBody:
-        application/json: {"name": "us-east-2 network", "firewall": {"allowed_cidr_blocks": ["10.0.0.0/8"], "denied_cidr_blocks": ["10.100.0.0/16"]}}
+        application/json: {"name": "us-east-2 network"}
       responses:
         "200":
-          application/json: {"id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695", "name": "us-east-2 network", "default": false, "cloud_gateway_provider_account_id": "929b2449-c69f-44c4-b6ad-9ecec6f811ae", "region": "us-east-2", "availability_zones": ["use2-az1", "use2-az2", "use2-az3"], "cidr_block": "10.0.0.0/8", "firewall": {"allowed_cidr_blocks": ["10.0.0.0/8"], "denied_cidr_blocks": ["10.100.0.0/16"]}, "ddos_protection": false, "state": "offline", "transit_gateway_count": 0, "configuration_reference_count": 0, "entity_version": 1, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695", "name": "us-east-2 network", "default": false, "cloud_gateway_provider_account_id": "929b2449-c69f-44c4-b6ad-9ecec6f811ae", "region": "us-east-2", "availability_zones": ["use2-az1", "use2-az2", "use2-az3"], "cidr_block": "10.0.0.0/8", "state": "offline", "transit_gateway_count": 0, "configuration_reference_count": 0, "entity_version": 1, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 168453, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":

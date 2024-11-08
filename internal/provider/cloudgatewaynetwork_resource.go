@@ -9,14 +9,12 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	speakeasy_boolplanmodifier "github.com/kong/terraform-provider-konnect/internal/planmodifiers/boolplanmodifier"
 	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/internal/planmodifiers/listplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
@@ -45,10 +43,8 @@ type CloudGatewayNetworkResourceModel struct {
 	CloudGatewayProviderAccountID types.String                    `tfsdk:"cloud_gateway_provider_account_id"`
 	ConfigurationReferenceCount   types.Int64                     `tfsdk:"configuration_reference_count"`
 	CreatedAt                     types.String                    `tfsdk:"created_at"`
-	DdosProtection                types.Bool                      `tfsdk:"ddos_protection"`
 	Default                       types.Bool                      `tfsdk:"default"`
 	EntityVersion                 types.Int64                     `tfsdk:"entity_version"`
-	Firewall                      *tfTypes.NetworkFirewallConfig  `tfsdk:"firewall"`
 	ID                            types.String                    `tfsdk:"id"`
 	Name                          types.String                    `tfsdk:"name"`
 	ProviderMetadata              tfTypes.NetworkProviderMetadata `tfsdk:"provider_metadata"`
@@ -102,15 +98,6 @@ func (r *CloudGatewayNetworkResource) Schema(ctx context.Context, req resource.S
 					validators.IsRFC3339(),
 				},
 			},
-			"ddos_protection": schema.BoolAttribute{
-				Computed: true,
-				Optional: true,
-				PlanModifiers: []planmodifier.Bool{
-					boolplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
-				},
-				Description: `Whether DDOS protection is enabled for the network. Requires replacement if changed.`,
-			},
 			"default": schema.BoolAttribute{
 				Computed: true,
 				MarkdownDescription: `Whether the network is a default network or not. Default networks are Networks that are created` + "\n" +
@@ -119,25 +106,6 @@ func (r *CloudGatewayNetworkResource) Schema(ctx context.Context, req resource.S
 			"entity_version": schema.Int64Attribute{
 				Computed:    true,
 				Description: `Monotonically-increasing version count of the network, to indicate the order of updates to the network.`,
-			},
-			"firewall": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
-				Attributes: map[string]schema.Attribute{
-					"allowed_cidr_blocks": schema.ListAttribute{
-						Computed:    true,
-						Optional:    true,
-						ElementType: types.StringType,
-						Description: `List of allowed CIDR blocks to access a network.`,
-					},
-					"denied_cidr_blocks": schema.ListAttribute{
-						Computed:    true,
-						Optional:    true,
-						ElementType: types.StringType,
-						Description: `List of denied CIDR blocks to access a network.`,
-					},
-				},
-				Description: `Firewall configuration for a network.`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
